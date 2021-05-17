@@ -1,0 +1,122 @@
+﻿Imports System.Globalization
+Public Class frmMainForm
+
+    '======================================Buttons================================================== 
+
+    Private Sub btnManageEmployee_Click(sender As Object, e As EventArgs) Handles Employee_BTN.Click
+        OpenWindowsForm("frmEmployee")
+    End Sub
+
+    Private Sub Attendance_BTN_Click(sender As Object, e As EventArgs) Handles Attendance_BTN.Click
+        OpenWindowsForm("frmAttendance")
+    End Sub
+
+    '======================================MouseEnter-MouseLeave================================================== 
+
+    Private Sub Label3_Click(sender As Object, e As EventArgs) Handles Exit_LBL.Click
+        Close()
+    End Sub
+
+    Private Sub Label1_Click(sender As Object, e As EventArgs) Handles Minimize_LBL.Click
+        Me.WindowState = FormWindowState.Minimized
+    End Sub
+
+    Private Sub Label3_MouseEnter(sender As Object, e As EventArgs) Handles Exit_LBL.MouseEnter
+        Exit_LBL.ForeColor = Color.Red
+    End Sub
+
+    Private Sub Exit_LBL_MouseLeave(sender As Object, e As EventArgs) Handles Exit_LBL.MouseLeave
+        Exit_LBL.ForeColor = Color.Black
+    End Sub
+
+    Private Sub Label1_MouseEnter(sender As Object, e As EventArgs) Handles Minimize_LBL.MouseEnter
+        Minimize_LBL.ForeColor = Color.Red
+    End Sub
+
+    Private Sub Minimize_LBL_MouseLeave(sender As Object, e As EventArgs) Handles Minimize_LBL.MouseLeave
+        Minimize_LBL.ForeColor = Color.Black
+    End Sub
+
+
+    Private Sub frmMainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        AppDateTime.Text = Date.Now.ToString("dddd, MMMM dd, yyyy hh:mm:ss tt", CultureInfo.CurrentCulture)
+    End Sub
+
+
+    Private Sub Question_lbl_Click(sender As Object, e As EventArgs) Handles Question_lbl.Click
+
+        UpdateTablesImagesToFolder()
+
+        '======================================= ADDING RATE DETAILS FOR PAYROLL ======================================
+
+        'RunCommand("ALTER TABLE TBL_EMPLOYEE ADD EMP_RATE DECIMAL(12, 2) DEFAULT 0 NOT NULL;")
+        'RunCommand("ALTER TABLE TBL_EMPLOYEE ADD FIX_RATE VARCHAR(5) DEFAULT 'NO' NOT NULL;")
+        'RunCommand("ALTER TABLE TBL_EMPLOYEE ADD NO_OF_DAYS COMPUTED BY ( DateDiff(Day, DATEHIRED, CURRENT_TIMESTAMP)  );")
+    End Sub
+
+    '========================================MOUSEENTER MOUSELEAVE=======================
+    Private Sub BTN_Dashboard_MouseEnter(sender As Object, e As EventArgs) Handles Dashboard_BTN.MouseEnter
+        Dashboard_BTN.BackColor = Color.DimGray
+    End Sub
+
+    Private Sub BTN_Dashboard_MouseLeave(sender As Object, e As EventArgs) Handles Dashboard_BTN.MouseLeave
+        Dashboard_BTN.BackColor = Color.Black
+    End Sub
+
+    Private Sub Employee_BTN_MouseEnter(sender As Object, e As EventArgs) Handles Employee_BTN.MouseEnter
+        Employee_BTN.BackColor = Color.DimGray
+    End Sub
+
+    Private Sub Employee_BTN_MouseLeave(sender As Object, e As EventArgs) Handles Employee_BTN.MouseLeave
+        Employee_BTN.BackColor = Color.Black
+    End Sub
+
+    Private Sub Management_BTN_MouseEnter(sender As Object, e As EventArgs) Handles Attendance_BTN.MouseEnter
+        Attendance_BTN.BackColor = Color.DimGray
+    End Sub
+
+    Private Sub Management_BTN_MouseLeave(sender As Object, e As EventArgs) Handles Attendance_BTN.MouseLeave
+        Attendance_BTN.BackColor = Color.Black
+    End Sub
+
+    Private Sub DTR_BTN_MouseEnter(sender As Object, e As EventArgs) Handles Payout_BTN.MouseEnter
+        Payout_BTN.BackColor = Color.DimGray
+    End Sub
+
+    Private Sub DTR_BTN_MouseLeave(sender As Object, e As EventArgs) Handles Payout_BTN.MouseLeave
+        Payout_BTN.BackColor = Color.Black
+    End Sub
+
+    Private Sub Paysilp_BTN_MouseEnter(sender As Object, e As EventArgs) Handles Paysilp_BTN.MouseEnter
+        Paysilp_BTN.BackColor = Color.DimGray
+    End Sub
+
+    Private Sub Paysilp_BTN_MouseLeave(sender As Object, e As EventArgs) Handles Paysilp_BTN.MouseLeave
+        Paysilp_BTN.BackColor = Color.Black
+    End Sub
+
+    Private Sub Loan_BTN_MouseEnter(sender As Object, e As EventArgs) Handles Loan_BTN.MouseEnter
+        Loan_BTN.BackColor = Color.DimGray
+    End Sub
+
+    Private Sub Loan_BTN_MouseLeave(sender As Object, e As EventArgs) Handles Loan_BTN.MouseLeave
+        Loan_BTN.BackColor = Color.Black
+    End Sub
+
+    Private Sub Calculator_BTN_MouseEnter(sender As Object, e As EventArgs) Handles Calculator_BTN.MouseEnter
+        Calculator_BTN.BackColor = Color.DimGray
+    End Sub
+
+    Private Sub Calculator_BTN_MouseLeave(sender As Object, e As EventArgs) Handles Calculator_BTN.MouseLeave
+        Calculator_BTN.BackColor = Color.Black
+    End Sub
+
+    Private Sub Settings_BTN_MouseEnter(sender As Object, e As EventArgs) Handles Settings_BTN.MouseEnter
+        Settings_BTN.BackColor = Color.DimGray
+    End Sub
+
+    Private Sub Settings_BTN_MouseLeave(sender As Object, e As EventArgs) Handles Settings_BTN.MouseLeave
+        Settings_BTN.BackColor = Color.Black
+    End Sub
+
+End Class
