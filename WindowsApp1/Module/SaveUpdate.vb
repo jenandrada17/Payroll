@@ -1,0 +1,78 @@
+﻿Module SaveUpdate
+
+    Friend Sub SaveHoliday(datee As String, namee As String, kinds As String)
+        Dim mysql As String = "Select * From PAYROLL_HOLIDAY Rows 1"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_HOLIDAY")
+
+            Dim dsNewRow As DataRow
+            dsNewRow = ds.Tables(0).NewRow
+            With dsNewRow
+
+                .Item("DATEE") = datee
+                .Item("NAME") = namee
+                .Item("KINDS") = kinds
+
+            End With
+            ds.Tables(0).Rows.Add(dsNewRow)
+            SaveEntry(ds)
+        End Using
+
+        MsgBox("New Holiday Added!", MsgBoxStyle.Information, "Information")
+    End Sub
+
+    Friend Sub UpdateHoliday(datee As String, namee As String, kinds As String)
+        Dim mysql As String = "Select * From PAYROLL_HOLIDAY Where DATEE = '" & datee & "'"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_HOLIDAY")
+
+            With ds.Tables(0).Rows(0)
+                .Item("NAME") = namee
+                .Item("KINDS") = kinds
+            End With
+            SaveEntry(ds, False)
+        End Using
+
+        MsgBox("Succesfully Updated!", MsgBoxStyle.Information, "Information")
+    End Sub
+
+
+    Friend Sub RemoveHoliday(datee As String)
+        RunCommand("DELETE FROM PAYROLL_HOLIDAY WHERE DATEE = '" & datee & "'")
+    End Sub
+
+    Friend Sub SaveAttendance(biometric As String, paydate As String, days As String, daysHR As String, lateHR As String, lateMIN As String,
+                              underHR As String, underMIN As String, absentDays As String, absentHR As String, overTime As String,
+                              regHoliday As String, specHoliday As String)
+
+        Dim mysql As String = "Select * From PAYROLL_ATTENDANCE Rows 1"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
+
+            Dim dsNewRow As DataRow
+            dsNewRow = ds.Tables(0).NewRow
+            With dsNewRow
+
+                .Item("BIOMETRICID") = biometric
+                .Item("PAYDATE") = paydate
+                .Item("TOTALDAYS") = days
+                .Item("TOTALDAYSHOUR") = daysHR
+                .Item("TOTALLATEHOUR") = lateHR
+                .Item("TOTALLATEMINUTE") = lateMIN
+
+                .Item("TOTALUTHOUR") = underHR
+                .Item("TOTALUTMINUTE") = underMIN
+
+                .Item("TOTALABSENTDAYS") = absentDays
+                .Item("TOTALABSENTHOUR") = absentHR
+
+                .Item("TOTALOVERTIME") = overTime
+                .Item("TOTALREGHOLIDAY") = regHoliday
+                .Item("TOTALSPECHOLIDAY") = specHoliday
+
+            End With
+            ds.Tables(0).Rows.Add(dsNewRow)
+            SaveEntry(ds)
+        End Using
+
+        MsgBox("New Attendance Added!", MsgBoxStyle.Information, "Information")
+    End Sub
+
+End Module

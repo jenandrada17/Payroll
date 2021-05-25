@@ -56,13 +56,16 @@ Public Class frmEmployee
     End Sub
 
     Private Sub AddItem(ByVal dr As DataRow)
+
         With dr
+            Dim a As Date = .Item("DATEHIRED")
+            Dim datee As String
+            datee = a.ToString("MMMM dd, yyyy")
+
             Dim lv As ListViewItem = lvEmployee.Items.Add(.Item("ID"))
             lv.SubItems.Add(.Item("BIOMETRICID"))
             lv.SubItems.Add(String.Format("{0}, {1} {2}", .Item("LastName"), .Item("FirstName"), .Item("MiddleName")))
-            lv.SubItems.Add(.Item("EMP_RATE"))
-            lv.SubItems.Add(.Item("FIX_RATE"))
-            lv.SubItems.Add(.Item("DATEHIRED"))
+            lv.SubItems.Add(datee)
             lv.SubItems.Add(.Item("NO_OF_DAYS"))
             lv.SubItems.Add(.Item("CONTACTNO"))
             lv.SubItems.Add(.Item("EmailAdd"))
@@ -75,6 +78,7 @@ Public Class frmEmployee
 
     Private Sub frmEmployee_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         LoadEmployee()
+        Console.WriteLine("sssssssss " & txtSearch.Tag)
     End Sub
 
     Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
@@ -90,11 +94,50 @@ Public Class frmEmployee
     End Sub
 
     Private Sub lvEmployee_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles lvEmployee.MouseDoubleClick
-        Modify_Panel.Location = New Point(e.X, e.Y)
-        Modify_Panel.Visible = True
+        'Modify_Panel.Location = New Point(e.X, e.Y)
+        'Modify_Panel.Visible = True
 
-        Rate_TXT.Text = lvEmployee.SelectedItems(0).SubItems(3).Text
-        Fix_Combo.SelectedItem = lvEmployee.SelectedItems(0).SubItems(4).Text
+        'Rate_TXT.Text = lvEmployee.SelectedItems(0).SubItems(3).Text
+        'Fix_Combo.SelectedItem = lvEmployee.SelectedItems(0).SubItems(4).Text
+
+        If txtSearch.Tag = "Attendance1" Then
+
+            If frmAttendance Is Nothing Then
+                Dim frm As New frmAttendance With {
+                    .MdiParent = frmMainForm
+                }
+                frmMainForm.pNavigate.Controls.Add(frm)
+                frmMainForm.pNavigate.Tag = frm
+                frm.BiometricID_TXT.Text = lvEmployee.FocusedItem.SubItems(1).Text
+                frm.Name_TXT.Text = lvEmployee.FocusedItem.SubItems(2).Text
+                frm.Show()
+                frm.Dock = DockStyle.Fill
+                frm.BringToFront()
+
+            Else
+                frmEmployeeInfo.BringToFront()
+
+            End If
+
+        ElseIf txtSearch.Tag = "Payout" Then
+
+            If frmPayout Is Nothing Then
+                Dim frm As New frmPayout With {
+                    .MdiParent = frmMainForm
+                }
+                frmMainForm.pNavigate.Controls.Add(frm)
+                frmMainForm.pNavigate.Tag = frm
+                frm.BiometricID_TXT.Text = lvEmployee.FocusedItem.SubItems(1).Text
+                frm.Name_TXT.Text = lvEmployee.FocusedItem.SubItems(2).Text
+
+                frm.Show()
+                frm.Dock = DockStyle.Fill
+                frm.BringToFront()
+
+            Else
+                frmEmployeeInfo.BringToFront()
+            End If
+        End If
 
     End Sub
 
@@ -151,5 +194,28 @@ Public Class frmEmployee
         If e.KeyChar = ChrW(Keys.Enter) Then
             Check_BTN.PerformClick()
         End If
+    End Sub
+
+    Private Sub View_Context_Click(sender As Object, e As EventArgs) Handles View_Context.Click
+        If frmEmployeeInfo Is Nothing Then
+            Dim frm As New frmEmployeeInfo With {
+                .MdiParent = frmMainForm
+            }
+            frmMainForm.pNavigate.Controls.Add(frm)
+            frmMainForm.pNavigate.Tag = frm
+            frm.Biometric_TXT.Text = lvEmployee.FocusedItem.SubItems(1).Text
+            Console.WriteLine("Biometric  = " & lvEmployee.FocusedItem.SubItems(1).Text)
+            frm.Show()
+            frm.Dock = DockStyle.Fill
+            frm.BringToFront()
+
+        Else
+            frmEmployeeInfo.BringToFront()
+        End If
+
+    End Sub
+
+    Private Sub txtSearch_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtSearch.KeyPress
+        btnSearch.PerformClick()
     End Sub
 End Class

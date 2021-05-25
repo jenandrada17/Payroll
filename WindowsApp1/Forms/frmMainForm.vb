@@ -9,6 +9,15 @@ Public Class frmMainForm
 
     Private Sub Attendance_BTN_Click(sender As Object, e As EventArgs) Handles Attendance_BTN.Click
         OpenWindowsForm("frmAttendance")
+
+    End Sub
+
+    Private Sub Payout_BTN_Click(sender As Object, e As EventArgs) Handles Payout_BTN.Click
+        OpenWindowsForm("frmPayout")
+    End Sub
+
+    Private Sub Settings_BTN_Click(sender As Object, e As EventArgs) Handles Settings_BTN.Click
+        OpenWindowsForm("frmSettings")
     End Sub
 
     '======================================MouseEnter-MouseLeave================================================== 
@@ -37,22 +46,10 @@ Public Class frmMainForm
         Minimize_LBL.ForeColor = Color.Black
     End Sub
 
-
     Private Sub frmMainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         AppDateTime.Text = Date.Now.ToString("dddd, MMMM dd, yyyy hh:mm:ss tt", CultureInfo.CurrentCulture)
     End Sub
 
-
-    Private Sub Question_lbl_Click(sender As Object, e As EventArgs) Handles Question_lbl.Click
-
-        UpdateTablesImagesToFolder()
-
-        '======================================= ADDING RATE DETAILS FOR PAYROLL ======================================
-
-        'RunCommand("ALTER TABLE TBL_EMPLOYEE ADD EMP_RATE DECIMAL(12, 2) DEFAULT 0 NOT NULL;")
-        'RunCommand("ALTER TABLE TBL_EMPLOYEE ADD FIX_RATE VARCHAR(5) DEFAULT 'NO' NOT NULL;")
-        'RunCommand("ALTER TABLE TBL_EMPLOYEE ADD NO_OF_DAYS COMPUTED BY ( DateDiff(Day, DATEHIRED, CURRENT_TIMESTAMP)  );")
-    End Sub
 
     '========================================MOUSEENTER MOUSELEAVE=======================
     Private Sub BTN_Dashboard_MouseEnter(sender As Object, e As EventArgs) Handles Dashboard_BTN.MouseEnter

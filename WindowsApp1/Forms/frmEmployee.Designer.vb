@@ -27,22 +27,19 @@ Partial Class frmEmployee
         Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader2 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader3 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader6 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader7 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader8 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader9 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader10 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader11 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader12 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader13 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader4 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader5 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader6 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader7 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.btnSearch = New System.Windows.Forms.Button()
         Me.txtSearch = New System.Windows.Forms.TextBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Close_LBL = New System.Windows.Forms.Label()
         Me.Context_Action = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.Modify_Context = New System.Windows.Forms.ToolStripMenuItem()
         Me.View_Context = New System.Windows.Forms.ToolStripMenuItem()
         Me.Modify_Panel = New System.Windows.Forms.Panel()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
@@ -62,7 +59,7 @@ Partial Class frmEmployee
         Me.lvEmployee.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.lvEmployee.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader3, Me.ColumnHeader4, Me.ColumnHeader5, Me.ColumnHeader6, Me.ColumnHeader7, Me.ColumnHeader8, Me.ColumnHeader9, Me.ColumnHeader10, Me.ColumnHeader11, Me.ColumnHeader12, Me.ColumnHeader13})
+        Me.lvEmployee.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader3, Me.ColumnHeader6, Me.ColumnHeader7, Me.ColumnHeader8, Me.ColumnHeader9, Me.ColumnHeader10, Me.ColumnHeader11, Me.ColumnHeader12, Me.ColumnHeader13})
         Me.lvEmployee.Font = New System.Drawing.Font("Dubai", 12.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lvEmployee.FullRowSelect = True
         Me.lvEmployee.GridLines = True
@@ -89,6 +86,17 @@ Partial Class frmEmployee
         '
         Me.ColumnHeader3.Text = "Fullname"
         Me.ColumnHeader3.Width = 350
+        '
+        'ColumnHeader6
+        '
+        Me.ColumnHeader6.Text = "Date Started"
+        Me.ColumnHeader6.Width = 150
+        '
+        'ColumnHeader7
+        '
+        Me.ColumnHeader7.Text = "No. of Days"
+        Me.ColumnHeader7.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        Me.ColumnHeader7.Width = 100
         '
         'ColumnHeader8
         '
@@ -119,29 +127,6 @@ Partial Class frmEmployee
         '
         Me.ColumnHeader13.Text = "Branch"
         Me.ColumnHeader13.Width = 250
-        '
-        'ColumnHeader4
-        '
-        Me.ColumnHeader4.Text = "Rate"
-        Me.ColumnHeader4.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.ColumnHeader4.Width = 100
-        '
-        'ColumnHeader5
-        '
-        Me.ColumnHeader5.Text = "Fixed"
-        Me.ColumnHeader5.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.ColumnHeader5.Width = 100
-        '
-        'ColumnHeader6
-        '
-        Me.ColumnHeader6.Text = "Date Started"
-        Me.ColumnHeader6.Width = 120
-        '
-        'ColumnHeader7
-        '
-        Me.ColumnHeader7.Text = "No. of Days"
-        Me.ColumnHeader7.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
-        Me.ColumnHeader7.Width = 100
         '
         'btnSearch
         '
@@ -186,21 +171,15 @@ Partial Class frmEmployee
         '
         'Context_Action
         '
-        Me.Context_Action.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.Modify_Context, Me.View_Context})
+        Me.Context_Action.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.View_Context})
         Me.Context_Action.Name = "Context_Action"
-        Me.Context_Action.Size = New System.Drawing.Size(138, 48)
-        '
-        'Modify_Context
-        '
-        Me.Modify_Context.Name = "Modify_Context"
-        Me.Modify_Context.Size = New System.Drawing.Size(137, 22)
-        Me.Modify_Context.Text = "Modify"
+        Me.Context_Action.Size = New System.Drawing.Size(142, 26)
         '
         'View_Context
         '
         Me.View_Context.Name = "View_Context"
-        Me.View_Context.Size = New System.Drawing.Size(137, 22)
-        Me.View_Context.Text = "View Details"
+        Me.View_Context.Size = New System.Drawing.Size(141, 22)
+        Me.View_Context.Text = "Go to Details"
         '
         'Modify_Panel
         '
@@ -323,12 +302,9 @@ Partial Class frmEmployee
     Friend WithEvents ColumnHeader11 As ColumnHeader
     Friend WithEvents ColumnHeader12 As ColumnHeader
     Friend WithEvents ColumnHeader13 As ColumnHeader
-    Friend WithEvents ColumnHeader4 As ColumnHeader
-    Friend WithEvents ColumnHeader5 As ColumnHeader
     Friend WithEvents ColumnHeader6 As ColumnHeader
     Friend WithEvents ColumnHeader7 As ColumnHeader
     Friend WithEvents Context_Action As ContextMenuStrip
-    Friend WithEvents Modify_Context As ToolStripMenuItem
     Friend WithEvents View_Context As ToolStripMenuItem
     Friend WithEvents Modify_Panel As Panel
     Friend WithEvents Label4 As Label
