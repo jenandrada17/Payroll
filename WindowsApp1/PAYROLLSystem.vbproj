@@ -77,6 +77,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Class\Employee.vb" />
     <Compile Include="Forms\DailyTimeRecord.Designer.vb">
       <DependentUpon>DailyTimeRecord.vb</DependentUpon>
     </Compile>
@@ -95,6 +96,12 @@
     <Compile Include="Forms\frmEmployee.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Forms\frmEmployeeInfo.Designer.vb">
+      <DependentUpon>frmEmployeeInfo.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmEmployeeInfo.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\frmMainForm.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -102,13 +109,29 @@
       <DependentUpon>frmMainForm.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Forms\frmPayout.Designer.vb">
+      <DependentUpon>frmPayout.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmPayout.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmSettings.Designer.vb">
+      <DependentUpon>frmSettings.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmSettings.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Module\Database.vb" />
     <Compile Include="Module\Developer.vb" />
     <Compile Include="Module\Public_Function.vb" />
+    <Compile Include="Module\SaveUpdate.vb" />
+    <Compile Include="Module\SelectFromDatabase.vb" />
+    <Compile Include="Module\SwitchForm.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
       <DependentUpon>Application.myapp</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="My Project\Resources.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -131,8 +154,17 @@
     <EmbeddedResource Include="Forms\frmEmployee.resx">
       <DependentUpon>frmEmployee.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmEmployeeInfo.resx">
+      <DependentUpon>frmEmployeeInfo.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmMainForm.resx">
       <DependentUpon>frmMainForm.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmPayout.resx">
+      <DependentUpon>frmPayout.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmSettings.resx">
+      <DependentUpon>frmSettings.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>

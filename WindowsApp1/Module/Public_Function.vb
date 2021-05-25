@@ -20,7 +20,7 @@ Module Public_Function
 
         Catch ex As Exception
 
-        End Try
+        End Try 
     End Sub
 
     Public Function CreateObjectInstance(ByVal objectName As String) As Object
@@ -61,6 +61,8 @@ Module Public_Function
         fs.Close()
         Console.WriteLine("Recorded")
     End Sub
+
+
 
 #Region "Log Module"
 
