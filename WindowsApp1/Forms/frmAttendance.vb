@@ -5,7 +5,7 @@ Public Class frmAttendance
     Dim DateNow As DateTime = DateTime.Now
     Dim startingDate, EndingDate As DateTime
     Dim DateNowADDMonth As DateTime = DateTime.Now.AddMonths(1)
-    Dim StartFour, EndFour, StartNineteen, EndNineteen As DateTime
+    Dim StartFour, EndFour, StartNineteen, EndNineteen, Paydate As DateTime
     Dim newNo As Integer
 
     Private Sub frmAttendance_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -36,7 +36,11 @@ Public Class frmAttendance
         StartNineteen = New DateTime(DateNow.Year, DateNow.Month, 19).AddMonths(-1).AddDays(-1)
         EndNineteen = New DateTime(StartNineteen.Year, StartNineteen.Month, 3).AddMonths(1)
 
+
         If DateNow.Day - 16 <= 2 And DateNow.Day - 16 >= -12 Then
+
+            Paydate = EndNineteen.AddDays(12)
+            DataGridView1.Tag = Paydate
 
             While (StartNineteen < EndNineteen)
                 startingDate = StartNineteen.ToString("d")
@@ -46,6 +50,9 @@ Public Class frmAttendance
             End While
 
         Else
+
+            Paydate = New DateTime(EndFour.Year, EndFour.Month, DateTime.DaysInMonth(EndFour.Year, EndFour.Month))
+            DataGridView1.Tag = Paydate
 
             While (StartFour < EndFour)
 
@@ -456,6 +463,7 @@ Public Class frmAttendance
 
     Private Sub Save_BTN_Click(sender As Object, e As EventArgs) Handles Save_BTN.Click
 
+        Console.WriteLine("aaaaaa = " & BiometricID_TXT.Text)
         If Not BiometricID_TXT.Text = "" Then
 
             'If isNotExist() Then
@@ -464,13 +472,12 @@ Public Class frmAttendance
             '                TotalUTHR_LBL.Text, TotalUTMIN_LBL.Text, TotalAbsent_LBL.Text, AbsentHour_LBL.Text, TotalOTHr_LBL.Text,
             '                TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text)
 
+
             Dim mysql As String = "Select * From PAYROLL_ATTENDANCE Rows 1"
             Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
 
-                Dim dsNewRow As DataRow
-                dsNewRow = ds.Tables(0).NewRow
+                Dim dsNewRow As DataRow = ds.Tables(0).NewRow
                 With dsNewRow
-
                     .Item("BIOMETRICID") = BiometricID_TXT.Text
                     .Item("PAYDATE") = DataGridView1.Tag
                     .Item("TOTALDAYS") = TotalDays_LBL.Text
@@ -533,10 +540,10 @@ Public Class frmAttendance
             'End If
 
         Else
-            MsgBox("Please Enter Employee's Name!", MsgBoxStyle.Critical, "Error")
+            MsgBox("Please Choose Employee's Name!", MsgBoxStyle.Critical, "Error")
         End If
 
-        ClearAfter()
+        'ClearAfter()
     End Sub
 
 
@@ -636,6 +643,7 @@ Public Class frmAttendance
     End Sub
 
     Private Sub ClearAfter()
+
         BiometricID_TXT.Clear()
         Name_TXT.Clear()
 
@@ -650,6 +658,7 @@ Public Class frmAttendance
 
         TotalAbsent_LBL.Text = 0
         AbsentHour_LBL.Text = 0
+
         LoadDateTime()
         CheckALL_CheckBox.Checked = True
     End Sub
