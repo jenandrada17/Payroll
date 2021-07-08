@@ -147,7 +147,7 @@ Public Class frmSettings
     Private Sub Rate_EmpSave_BTN_Click(sender As Object, e As EventArgs) Handles Rate_EmpSave_BTN.Click
         If Not Rate_BioNo_TXT.Text = "" Then
 
-            SaveRATE(Rate_BioNo_TXT.Text, "BIOMETRICID", Rate_EmpAmount_TXT.Text, False, Rate_BioNo_TXT.Tag) ' === Rate_BioNo_TXT.Tag is BRANCHid ====
+            SaveRATE(Rate_BioNo_TXT.Text, "BIOMETRICID", Rate_EmpAmount_TXT.Text, False, Rate_EmpAmount_TXT.Tag) ' === Rate_BioNo_TXT.Tag is BRANCHid ==== 
 
 
             Rate_EmpClear_BTN.PerformClick()

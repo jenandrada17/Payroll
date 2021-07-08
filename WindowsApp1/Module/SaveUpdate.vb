@@ -306,16 +306,16 @@
 
     End Sub
 
-    Friend Sub SaveSettings(bioNo As String, branchID As String, category As String, amount As String, fix As Boolean)
+    Friend Sub SaveSettings(bioNo As String, branchID As String, categoryColumn As String, amount As String, fix As Boolean)
         Dim mysql As String
 
-        mysql = $"Select * FROM PAYROLL_ALLOWANCE where BIOMETRIC_NO = '{bioNo}' and BRANCH_ID = '{branchID}' and CATEGORY = '{category}' "
+        mysql = $"Select * FROM PAYROLL_ALLOWANCE where BIOMETRIC_NO = '{bioNo}' and BRANCH_ID = '{branchID}'"
         Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_ALLOWANCE")
         If ds.Tables(0).Rows.Count > 0 Then
 
             With ds.Tables(0).Rows(0)
 
-                .Item("AMOUNT") = amount
+                .Item(categoryColumn) = amount
                 .Item("ALLOWED") = DBNull.Value
 
                 If fix Then
@@ -336,8 +336,7 @@
 
                     .Item("BIOMETRIC_NO") = bioNo
                     .Item("BRANCH_ID") = branchID
-                    .Item("CATEGORY") = category
-                    .Item("AMOUNT") = amount
+                    .Item(categoryColumn) = amount
 
                     If fix Then
                         .Item("fix") = "FIX"
@@ -356,7 +355,7 @@
     Friend Sub AllowanceRemove(bioNo As String, branchID As String, category As String)
         Dim mysql As String
 
-        mysql = $"Select * FROM PAYROLL_ALLOWANCE where BIOMETRIC_NO = '{bioNo}' and BRANCH_ID = '{branchID}' and CATEGORY = '{category}' "
+        mysql = $"Select * FROM PAYROLL_ALLOWANCE where BIOMETRIC_NO = '{bioNo}' and BRANCH_ID = '{branchID}'"
         Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_ALLOWANCE")
         If ds.Tables(0).Rows.Count > 0 Then
 

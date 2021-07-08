@@ -146,33 +146,21 @@ Module SelectFromDatabase
         Dim mysql As String = $"Select * From PAYROLL_ALLOWANCE WHERE BIOMETRIC_NO = '{biometric}' and BRANCH_ID = '{branchID}'"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ALLOWANCE")
             If ds.Tables(0).Rows.Count > 0 Then
-
                 For Each dr In ds.Tables(0).Rows
                     With dr
-
-                        If .Item("CATEGORY") = "Positional" Then
-                            Positional_TXT.Text = .Item("AMOUNT")
-                            Positional_TXT.Tag = IIf(IsDBNull(.Item("FIX")), "", .Item("FIX"))
-                        ElseIf .Item("CATEGORY") = "Incentives" Then
-                            Incentive_TXT.Text = .Item("AMOUNT")
-                        ElseIf .Item("CATEGORY") = "Boarding" Then
-                            Boarding_TXT.Text = .Item("AMOUNT")
-                        ElseIf .Item("CATEGORY") = "Positional" Then
-                            Carekit_TXT.Text = .Item("AMOUNT")
-                        ElseIf .Item("CATEGORY") = "Positional" Then
-                            Transport_TXT.Text = .Item("AMOUNT")
-                        End If
-
+                        Positional_TXT.Text = IIf(IsDBNull(.Item("POSITIONAL")), "", .Item("POSITIONAL"))
+                        Positional_TXT.Tag = IIf(IsDBNull(.Item("FIX")), "", .Item("FIX"))
+                        Incentive_TXT.Text = IIf(IsDBNull(.Item("INCENTIVES")), "", .Item("INCENTIVES"))
+                        Boarding_TXT.Text = IIf(IsDBNull(.Item("BOARDING")), "", .Item("BOARDING"))
+                        Carekit_TXT.Text = IIf(IsDBNull(.Item("CAREKIT")), "", .Item("CAREKIT"))
+                        Transport_TXT.Text = IIf(IsDBNull(.Item("TRANSPORTATION")), "", .Item("TRANSPORTATION"))
                     End With
                 Next
             Else
                 Exit Sub
             End If
-
-
         End Using
     End Sub
-
 
     Friend Function isNotExistHoliday(datee As String)
         Dim mysql As String = "SELECT * FROM PAYROLL_HOLIDAY Where DATEE = '" & datee & "'"
@@ -483,8 +471,6 @@ Module SelectFromDatabase
                     ratee.Tag = .Item("BRANCH_ID")
                     name.Text = .Item("FIRSTNAME") & " " & MI & " " & .Item("LASTNAME") & " " & .Item("SUFFIX")
                     name.Tag = .Item("ID")
-
-                    Console.WriteLine("Branchhh " & ratee.Tag)
                 End With
             Else
                 name.Text = ""
@@ -620,16 +606,6 @@ Module SelectFromDatabase
 
     End Sub
 
-    Private Sub AddRow_Allowance(ByVal dr As DataRow, LV As ListView)
-
-        With dr
-            Dim i As ListViewItem = LV.Items.Add(.Item("CATEGORY"))
-            i.Tag = .Item("BIOMETRIC_NO")
-            i.SubItems.Add(.Item("LASTNAME") & ", " & .Item("FIRSTNAME") & " " & .Item("MIDDLENAME")).Tag = .Item("BRANCH_ID")
-            i.SubItems.Add(.Item("AMOUNT")).Tag = IIf(IsDBNull(.Item("ALLOWED")), "", .Item("ALLOWED"))
-        End With
-    End Sub
-
     Friend Sub Lists_Allowance(LV As ListView, Optional searchName As String = "")
 
         Dim secured_str As String = searchName
@@ -646,9 +622,7 @@ Module SelectFromDatabase
                 mysql &= $"{vbCr}UPPER(BIOMETRIC_NO) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(firstname) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(lastname) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(AMOUNT) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(FIX) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(CATEGORY) LIKE UPPER('%{name}%')  ORDER BY LASTNAME ASC, FIRSTNAME, MIDDLENAME "
+                mysql &= $"{vbCr}UPPER(FIX) LIKE UPPER('%{name}%') ORDER BY LASTNAME ASC, FIRSTNAME, MIDDLENAME "
             Next
 
         Else
@@ -663,5 +637,20 @@ Module SelectFromDatabase
         End Using
 
     End Sub
+
+    Private Sub AddRow_Allowance(ByVal dr As DataRow, LV As ListView)
+
+        With dr
+            Dim i As ListViewItem = LV.Items.Add(.Item("BIOMETRIC_NO"))
+            i.Tag = IIf(IsDBNull(.Item("ALLOWED")), "", .Item("ALLOWED"))
+            i.SubItems.Add(.Item("LASTNAME") & ", " & .Item("FIRSTNAME") & " " & .Item("MIDDLENAME")).Tag = .Item("BRANCH_ID")
+            i.SubItems.Add(IIf(IsDBNull(.Item("POSITIONAL")), "", .Item("POSITIONAL")))
+            i.SubItems.Add(IIf(IsDBNull(.Item("INCENTIVES")), "", .Item("INCENTIVES")))
+            i.SubItems.Add(IIf(IsDBNull(.Item("BOARDING")), "", .Item("BOARDING")))
+            i.SubItems.Add(IIf(IsDBNull(.Item("CAREKIT")), "", .Item("CAREKIT")))
+            i.SubItems.Add(IIf(IsDBNull(.Item("TRANSPORTATION")), "", .Item("TRANSPORTATION")))
+        End With
+    End Sub
+
 
 End Module

@@ -23,7 +23,7 @@ Partial Class frmSettings
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.Close_LBL = New System.Windows.Forms.Label()
         Me.Settings_Tab = New System.Windows.Forms.TabControl()
         Me.TabPage5 = New System.Windows.Forms.TabPage()
@@ -102,6 +102,10 @@ Partial Class frmSettings
         Me.FileSystemWatcher1 = New System.IO.FileSystemWatcher()
         Me.Allowance_Remove = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.Allow_Remove = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ColumnHeader6 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader7 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader8 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader9 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.Settings_Tab.SuspendLayout()
         Me.TabPage5.SuspendLayout()
         CType(Me.Rate_grid, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -201,8 +205,8 @@ Partial Class frmSettings
         '
         'Rate_Rate_DGV
         '
-        DataGridViewCellStyle5.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Rate_Rate_DGV.DefaultCellStyle = DataGridViewCellStyle5
+        DataGridViewCellStyle7.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Rate_Rate_DGV.DefaultCellStyle = DataGridViewCellStyle7
         Me.Rate_Rate_DGV.HeaderText = "Rate"
         Me.Rate_Rate_DGV.Name = "Rate_Rate_DGV"
         Me.Rate_Rate_DGV.ReadOnly = True
@@ -676,9 +680,9 @@ Partial Class frmSettings
         'Allow_Cancel_BTN
         '
         Me.Allow_Cancel_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Allow_Cancel_BTN.Location = New System.Drawing.Point(106, 310)
+        Me.Allow_Cancel_BTN.Location = New System.Drawing.Point(692, 97)
         Me.Allow_Cancel_BTN.Name = "Allow_Cancel_BTN"
-        Me.Allow_Cancel_BTN.Size = New System.Drawing.Size(90, 34)
+        Me.Allow_Cancel_BTN.Size = New System.Drawing.Size(90, 33)
         Me.Allow_Cancel_BTN.TabIndex = 110
         Me.Allow_Cancel_BTN.Text = "Cancel"
         Me.Allow_Cancel_BTN.UseVisualStyleBackColor = True
@@ -686,15 +690,15 @@ Partial Class frmSettings
         'Allow_Search_TXT
         '
         Me.Allow_Search_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Allow_Search_TXT.Location = New System.Drawing.Point(502, 33)
+        Me.Allow_Search_TXT.Location = New System.Drawing.Point(21, 182)
         Me.Allow_Search_TXT.Name = "Allow_Search_TXT"
-        Me.Allow_Search_TXT.Size = New System.Drawing.Size(315, 33)
+        Me.Allow_Search_TXT.Size = New System.Drawing.Size(384, 33)
         Me.Allow_Search_TXT.TabIndex = 108
         '
         'Allow_Search_BTN
         '
         Me.Allow_Search_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Allow_Search_BTN.Location = New System.Drawing.Point(823, 32)
+        Me.Allow_Search_BTN.Location = New System.Drawing.Point(411, 181)
         Me.Allow_Search_BTN.Name = "Allow_Search_BTN"
         Me.Allow_Search_BTN.Size = New System.Drawing.Size(82, 33)
         Me.Allow_Search_BTN.TabIndex = 109
@@ -706,41 +710,41 @@ Partial Class frmSettings
         Me.Allowance_LV.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Allowance_LV.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader3, Me.ColumnHeader4, Me.ColumnHeader5})
+        Me.Allowance_LV.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader3, Me.ColumnHeader4, Me.ColumnHeader5, Me.ColumnHeader6, Me.ColumnHeader7, Me.ColumnHeader8, Me.ColumnHeader9})
         Me.Allowance_LV.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Allowance_LV.FullRowSelect = True
         Me.Allowance_LV.GridLines = True
         Me.Allowance_LV.HideSelection = False
-        Me.Allowance_LV.Location = New System.Drawing.Point(502, 72)
+        Me.Allowance_LV.Location = New System.Drawing.Point(21, 221)
         Me.Allowance_LV.MultiSelect = False
         Me.Allowance_LV.Name = "Allowance_LV"
-        Me.Allowance_LV.Size = New System.Drawing.Size(639, 525)
+        Me.Allowance_LV.Size = New System.Drawing.Size(1120, 376)
         Me.Allowance_LV.TabIndex = 107
         Me.Allowance_LV.UseCompatibleStateImageBehavior = False
         Me.Allowance_LV.View = System.Windows.Forms.View.Details
         '
         'ColumnHeader3
         '
-        Me.ColumnHeader3.Text = "Category"
+        Me.ColumnHeader3.Text = "Biometric No"
         Me.ColumnHeader3.Width = 135
         '
         'ColumnHeader4
         '
         Me.ColumnHeader4.Text = "Fullname"
-        Me.ColumnHeader4.Width = 380
+        Me.ColumnHeader4.Width = 420
         '
         'ColumnHeader5
         '
-        Me.ColumnHeader5.Text = "Amount"
-        Me.ColumnHeader5.Width = 90
+        Me.ColumnHeader5.Text = "Positional"
+        Me.ColumnHeader5.Width = 105
         '
         'Allow_Fix_group
         '
         Me.Allow_Fix_group.Controls.Add(Me.FixYes_RadioB)
         Me.Allow_Fix_group.Controls.Add(Me.FixNo_RadioB)
-        Me.Allow_Fix_group.Location = New System.Drawing.Point(106, 201)
+        Me.Allow_Fix_group.Location = New System.Drawing.Point(429, 1)
         Me.Allow_Fix_group.Name = "Allow_Fix_group"
-        Me.Allow_Fix_group.Size = New System.Drawing.Size(319, 52)
+        Me.Allow_Fix_group.Size = New System.Drawing.Size(210, 52)
         Me.Allow_Fix_group.TabIndex = 106
         Me.Allow_Fix_group.TabStop = False
         Me.Allow_Fix_group.Text = "Fix"
@@ -750,7 +754,7 @@ Partial Class frmSettings
         '
         Me.FixYes_RadioB.AutoSize = True
         Me.FixYes_RadioB.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.FixYes_RadioB.Location = New System.Drawing.Point(93, 15)
+        Me.FixYes_RadioB.Location = New System.Drawing.Point(47, 15)
         Me.FixYes_RadioB.Name = "FixYes_RadioB"
         Me.FixYes_RadioB.Size = New System.Drawing.Size(54, 31)
         Me.FixYes_RadioB.TabIndex = 96
@@ -762,7 +766,7 @@ Partial Class frmSettings
         Me.FixNo_RadioB.AutoSize = True
         Me.FixNo_RadioB.Checked = True
         Me.FixNo_RadioB.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.FixNo_RadioB.Location = New System.Drawing.Point(182, 15)
+        Me.FixNo_RadioB.Location = New System.Drawing.Point(153, 15)
         Me.FixNo_RadioB.Name = "FixNo_RadioB"
         Me.FixNo_RadioB.Size = New System.Drawing.Size(49, 31)
         Me.FixNo_RadioB.TabIndex = 97
@@ -773,7 +777,7 @@ Partial Class frmSettings
         'Allow_SearchEmp_BTN
         '
         Me.Allow_SearchEmp_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Allow_SearchEmp_BTN.Location = New System.Drawing.Point(434, 104)
+        Me.Allow_SearchEmp_BTN.Location = New System.Drawing.Point(417, 62)
         Me.Allow_SearchEmp_BTN.Name = "Allow_SearchEmp_BTN"
         Me.Allow_SearchEmp_BTN.Size = New System.Drawing.Size(47, 31)
         Me.Allow_SearchEmp_BTN.TabIndex = 105
@@ -784,7 +788,7 @@ Partial Class frmSettings
         '
         Me.Label14.AutoSize = True
         Me.Label14.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label14.Location = New System.Drawing.Point(16, 110)
+        Me.Label14.Location = New System.Drawing.Point(16, 62)
         Me.Label14.Name = "Label14"
         Me.Label14.Size = New System.Drawing.Size(49, 27)
         Me.Label14.TabIndex = 103
@@ -794,7 +798,7 @@ Partial Class frmSettings
         '
         Me.Label13.AutoSize = True
         Me.Label13.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label13.Location = New System.Drawing.Point(16, 52)
+        Me.Label13.Location = New System.Drawing.Point(16, 22)
         Me.Label13.Name = "Label13"
         Me.Label13.Size = New System.Drawing.Size(70, 27)
         Me.Label13.TabIndex = 102
@@ -803,7 +807,7 @@ Partial Class frmSettings
         'Allow_Name_TXT
         '
         Me.Allow_Name_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Allow_Name_TXT.Location = New System.Drawing.Point(106, 104)
+        Me.Allow_Name_TXT.Location = New System.Drawing.Point(92, 60)
         Me.Allow_Name_TXT.Name = "Allow_Name_TXT"
         Me.Allow_Name_TXT.ReadOnly = True
         Me.Allow_Name_TXT.Size = New System.Drawing.Size(319, 33)
@@ -813,7 +817,7 @@ Partial Class frmSettings
         '
         Me.Label16.AutoSize = True
         Me.Label16.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label16.Location = New System.Drawing.Point(16, 164)
+        Me.Label16.Location = New System.Drawing.Point(16, 103)
         Me.Label16.Name = "Label16"
         Me.Label16.Size = New System.Drawing.Size(64, 27)
         Me.Label16.TabIndex = 95
@@ -822,9 +826,9 @@ Partial Class frmSettings
         'Allow_Save_BTN
         '
         Me.Allow_Save_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Allow_Save_BTN.Location = New System.Drawing.Point(335, 310)
+        Me.Allow_Save_BTN.Location = New System.Drawing.Point(692, 20)
         Me.Allow_Save_BTN.Name = "Allow_Save_BTN"
-        Me.Allow_Save_BTN.Size = New System.Drawing.Size(90, 34)
+        Me.Allow_Save_BTN.Size = New System.Drawing.Size(90, 33)
         Me.Allow_Save_BTN.TabIndex = 85
         Me.Allow_Save_BTN.Text = "Save"
         Me.Allow_Save_BTN.UseVisualStyleBackColor = True
@@ -834,7 +838,7 @@ Partial Class frmSettings
         Me.Allow_Category_Combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Allow_Category_Combo.FormattingEnabled = True
         Me.Allow_Category_Combo.Items.AddRange(New Object() {"Carekit", "Boarding", "Incentives", "Positional", "Transportation"})
-        Me.Allow_Category_Combo.Location = New System.Drawing.Point(106, 47)
+        Me.Allow_Category_Combo.Location = New System.Drawing.Point(92, 20)
         Me.Allow_Category_Combo.Name = "Allow_Category_Combo"
         Me.Allow_Category_Combo.Size = New System.Drawing.Size(319, 33)
         Me.Allow_Category_Combo.TabIndex = 8
@@ -843,7 +847,7 @@ Partial Class frmSettings
         'Allow_Amount_TXT
         '
         Me.Allow_Amount_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Allow_Amount_TXT.Location = New System.Drawing.Point(106, 162)
+        Me.Allow_Amount_TXT.Location = New System.Drawing.Point(92, 103)
         Me.Allow_Amount_TXT.Name = "Allow_Amount_TXT"
         Me.Allow_Amount_TXT.Size = New System.Drawing.Size(319, 33)
         Me.Allow_Amount_TXT.TabIndex = 9
@@ -911,8 +915,28 @@ Partial Class frmSettings
         'Allow_Remove
         '
         Me.Allow_Remove.Name = "Allow_Remove"
-        Me.Allow_Remove.Size = New System.Drawing.Size(180, 22)
+        Me.Allow_Remove.Size = New System.Drawing.Size(117, 22)
         Me.Allow_Remove.Text = "Remove"
+        '
+        'ColumnHeader6
+        '
+        Me.ColumnHeader6.Text = "Incentives"
+        Me.ColumnHeader6.Width = 105
+        '
+        'ColumnHeader7
+        '
+        Me.ColumnHeader7.Text = "Boarding"
+        Me.ColumnHeader7.Width = 100
+        '
+        'ColumnHeader8
+        '
+        Me.ColumnHeader8.Text = "Carekit"
+        Me.ColumnHeader8.Width = 100
+        '
+        'ColumnHeader9
+        '
+        Me.ColumnHeader9.Text = "Transportation"
+        Me.ColumnHeader9.Width = 120
         '
         'frmSettings
         '
@@ -1030,4 +1054,8 @@ Partial Class frmSettings
     Friend WithEvents Allow_Cancel_BTN As Button
     Friend WithEvents Allowance_Remove As ContextMenuStrip
     Friend WithEvents Allow_Remove As ToolStripMenuItem
+    Friend WithEvents ColumnHeader6 As ColumnHeader
+    Friend WithEvents ColumnHeader7 As ColumnHeader
+    Friend WithEvents ColumnHeader8 As ColumnHeader
+    Friend WithEvents ColumnHeader9 As ColumnHeader
 End Class

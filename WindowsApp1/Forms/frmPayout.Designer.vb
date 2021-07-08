@@ -108,7 +108,6 @@ Partial Class frmPayout
         Me.Label32 = New System.Windows.Forms.Label()
         Me.Label33 = New System.Windows.Forms.Label()
         Me.Close_LBL = New System.Windows.Forms.Label()
-        Me.Calculate_BTN = New System.Windows.Forms.Button()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.Cancel_BTN = New System.Windows.Forms.Button()
         Me.GroupBox6.SuspendLayout()
@@ -419,6 +418,7 @@ Partial Class frmPayout
         Me.Positional_TXT.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Positional_TXT.Location = New System.Drawing.Point(141, 31)
         Me.Positional_TXT.Name = "Positional_TXT"
+        Me.Positional_TXT.ReadOnly = True
         Me.Positional_TXT.Size = New System.Drawing.Size(167, 29)
         Me.Positional_TXT.TabIndex = 23
         '
@@ -437,6 +437,7 @@ Partial Class frmPayout
         Me.Incentive_TXT.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Incentive_TXT.Location = New System.Drawing.Point(141, 66)
         Me.Incentive_TXT.Name = "Incentive_TXT"
+        Me.Incentive_TXT.ReadOnly = True
         Me.Incentive_TXT.Size = New System.Drawing.Size(167, 29)
         Me.Incentive_TXT.TabIndex = 27
         '
@@ -483,6 +484,7 @@ Partial Class frmPayout
         Me.Transport_TXT.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Transport_TXT.Location = New System.Drawing.Point(141, 175)
         Me.Transport_TXT.Name = "Transport_TXT"
+        Me.Transport_TXT.ReadOnly = True
         Me.Transport_TXT.Size = New System.Drawing.Size(167, 29)
         Me.Transport_TXT.TabIndex = 18
         '
@@ -491,6 +493,7 @@ Partial Class frmPayout
         Me.Carekit_TXT.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Carekit_TXT.Location = New System.Drawing.Point(141, 138)
         Me.Carekit_TXT.Name = "Carekit_TXT"
+        Me.Carekit_TXT.ReadOnly = True
         Me.Carekit_TXT.Size = New System.Drawing.Size(167, 29)
         Me.Carekit_TXT.TabIndex = 17
         '
@@ -519,6 +522,7 @@ Partial Class frmPayout
         Me.Boarding_TXT.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Boarding_TXT.Location = New System.Drawing.Point(141, 102)
         Me.Boarding_TXT.Name = "Boarding_TXT"
+        Me.Boarding_TXT.ReadOnly = True
         Me.Boarding_TXT.Size = New System.Drawing.Size(167, 29)
         Me.Boarding_TXT.TabIndex = 16
         '
@@ -1052,16 +1056,6 @@ Partial Class frmPayout
         Me.Close_LBL.TabIndex = 75
         Me.Close_LBL.Text = "Close"
         '
-        'Calculate_BTN
-        '
-        Me.Calculate_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Calculate_BTN.Location = New System.Drawing.Point(148, 546)
-        Me.Calculate_BTN.Name = "Calculate_BTN"
-        Me.Calculate_BTN.Size = New System.Drawing.Size(102, 37)
-        Me.Calculate_BTN.TabIndex = 76
-        Me.Calculate_BTN.Text = "Calculate"
-        Me.Calculate_BTN.UseVisualStyleBackColor = True
-        '
         'Button1
         '
         Me.Button1.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -1089,7 +1083,6 @@ Partial Class frmPayout
         Me.ClientSize = New System.Drawing.Size(1169, 665)
         Me.Controls.Add(Me.Cancel_BTN)
         Me.Controls.Add(Me.Button1)
-        Me.Controls.Add(Me.Calculate_BTN)
         Me.Controls.Add(Me.Close_LBL)
         Me.Controls.Add(Me.GroupBox4)
         Me.Controls.Add(Me.GroupBox3)
@@ -1194,7 +1187,6 @@ Partial Class frmPayout
     Friend WithEvents Label27 As Label
     Friend WithEvents OtherDeduction_TXT As TextBox
     Friend WithEvents Close_LBL As Label
-    Friend WithEvents Calculate_BTN As Button
     Friend WithEvents Button1 As Button
     Friend WithEvents Cancel_BTN As Button
     Friend WithEvents TotalHours_LBL As Label

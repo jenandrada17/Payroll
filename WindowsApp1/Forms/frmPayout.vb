@@ -31,7 +31,7 @@
     Private Sub BiometricID_TXT_TextChanged(sender As Object, e As EventArgs) Handles BiometricID_TXT.TextChanged
 
         If BiometricID_TXT.Text = "" Then
-            Name_TXT.Text = ""
+            Cancel_BTN.PerformClick()
         Else
             BiometricNo_Payout(BiometricID_TXT.Text, Name_TXT, Rate_TXT)
         End If
@@ -42,65 +42,19 @@
         Close()
     End Sub
 
-    Private Sub Calculate_BTN_Click(sender As Object, e As EventArgs) Handles Calculate_BTN.Click
-
-        'If Not BiometricID_TXT.Text = "" Then
-
-        '    Dim mysql As String = "Select * From payroll_attendance WHERE BIOMETRICID= '" & BiometricID_TXT.Text & "' and PAYDATE = '" & paydate_ & "'"
-        '    Using ds As DataSet = LoadSQL(mysql, "payroll_attendance")
-
-        '        If ds.Tables(0).Rows.Count > 0 Then
-        '            Dim data As DataRow = ds.Tables(0).Rows(0)
-        '            With data
-
-        '                NoOfDays_TXT.Text = .Item("PRESENT_DAYS")
-
-        '                Dim Late_Total As TimeSpan = .Item("LATE")  '========== TO SEPARATE
-
-        '                Late_TXT.Text = Late_Total.Hours
-        '                UnderTime_TXT.Text = Late_Total.Minutes
-
-        '            End With
-        '        End If
-
-        '    End Using
-        'End If
-
-    End Sub
-
     Private Sub Name_TXT_TextChanged(sender As Object, e As EventArgs) Handles Name_TXT.TextChanged
         If String.IsNullOrEmpty(Name_TXT.Text) And String.IsNullOrEmpty(Rate_TXT.Text) Then
         Else
             If Bio_Exist_Attendance(BiometricID_TXT.Text, paydate_) Then
-
-                Cancel_BTN.PerformClick()
 
                 AttendanceDetails(BiometricID_TXT.Text, paydate_, NoOfDays_TXT, RegularOT_TXT, SpecialHol_TXT, RegularHol_TXT,
                                             Late_TXT, UnderTime_TXT)
 
                 AllowanceDetails(BiometricID_TXT.Text, Rate_TXT.Tag, Positional_TXT, Incentive_TXT, Boarding_TXT, Carekit_TXT, Transport_TXT)   '============ Rate_TXT.Tag is branchID (for same biometric) ======
 
-                TotalBasic_LBL.Text = NoOfDays_TXT.Text * Rate_TXT.Text
+                Calculate_Gross()
 
-                TotalHol_LBL.Text = (((Convert.ToInt32(SpecialHol_TXT.Text) * Convert.ToInt32(Rate_TXT.Text)) * specHoliday) / specHoliday) + (((Convert.ToInt32(RegularHol_TXT.Text) * Convert.ToInt32(Rate_TXT.Text)) * regHoliday) / regHoliday) ' =========== CALCULATE hOLIDAY TO PESO ===========
-
-                TotalOT_LBL.Text = ((Convert.ToInt32(Rate_TXT.Text) / 8) * 1.25) * Convert.ToInt32(RegularOT_TXT.Text) ' =========== CALCULATE OVERTIME TO PESO ===========
-
-                Dim late_split() As String, under_split() As String, lateTOMinute, underToMinute As Double
-
-                late_split = Split(Late_TXT.Text, ":")
-                under_split = Split(UnderTime_TXT.Text, ":")
-
-                lateTOMinute = CDbl(late_split(0)) * 60 + CDbl(late_split(1)) + CDbl(late_split(2)) / 60
-                underToMinute = (CDbl(under_split(0)) * 60 + CDbl(under_split(1)) + CDbl(under_split(2)) / 60) / 60
-
-                Dim LATEE, UNDERTIMEE As Double
-                LATEE = ((Convert.ToInt32(Rate_TXT.Text) / 8) / 60) * lateTOMinute
-                UNDERTIMEE = (Convert.ToInt32(Rate_TXT.Text) / 8) * underToMinute
-
-                TotalLateUnder_LBL.Text = LATEE + UNDERTIMEE
-
-                GrossAmount_LBL.Text = (Convert.ToDouble(TotalBasic_LBL.Text) + Convert.ToDouble(TotalHol_LBL.Text) + Convert.ToDouble(TotalOT_LBL.Text)) - Convert.ToDouble(TotalLateUnder_LBL.Text)
+                Calculate_Allowance()
 
             End If
         End If
@@ -137,13 +91,47 @@
 
     End Sub
 
-    'Private Sub Rate_TXT_TextChanged(sender As Object, e As EventArgs) Handles Rate_TXT.TextChanged
-    '    If Rate_TXT.Text = "" Then
-    '        TotalBasic_LBL.Text = 0
-    '    Else
-    '        TotalBasic_LBL.Text = (NoOfDays_TXT.Tag * Rate_TXT.Text).ToString
-    '        TotalOT_LBL.Text = ((Rate_TXT.Text / 8) * RegularOT_TXT.Text).ToString
-    '    End If
-    'End Sub
+    Private Sub OtherAllowance_TXT_TextChanged(sender As Object, e As EventArgs) Handles OtherAllowance_TXT.TextChanged
+        Calculate_Allowance()
+    End Sub
 
+    Private Sub Calculate_Gross()
+
+        TotalBasic_LBL.Text = NoOfDays_TXT.Text * Rate_TXT.Text
+
+        TotalHol_LBL.Text = (((Convert.ToInt32(SpecialHol_TXT.Text) * Convert.ToInt32(Rate_TXT.Text)) * specHoliday) / specHoliday) + (((Convert.ToInt32(RegularHol_TXT.Text) * Convert.ToInt32(Rate_TXT.Text)) * regHoliday) / regHoliday) ' =========== CALCULATE hOLIDAY TO PESO ===========
+
+        TotalOT_LBL.Text = ((Convert.ToInt32(Rate_TXT.Text) / 8) * 1.25) * Convert.ToInt32(RegularOT_TXT.Text) ' =========== CALCULATE OVERTIME TO PESO ===========
+
+        Dim late_split() As String, under_split() As String, lateTOMinute, underToMinute As Double
+
+        late_split = Split(Late_TXT.Text, ":")
+        under_split = Split(UnderTime_TXT.Text, ":")
+
+        lateTOMinute = CDbl(late_split(0)) * 60 + CDbl(late_split(1)) + CDbl(late_split(2)) / 60
+        underToMinute = (CDbl(under_split(0)) * 60 + CDbl(under_split(1)) + CDbl(under_split(2)) / 60) / 60
+
+        Dim LATEE, UNDERTIMEE As Double
+        LATEE = ((Convert.ToInt32(Rate_TXT.Text) / 8) / 60) * lateTOMinute
+        UNDERTIMEE = (Convert.ToInt32(Rate_TXT.Text) / 8) * underToMinute
+
+        TotalLateUnder_LBL.Text = LATEE + UNDERTIMEE
+
+
+        GrossAmount_LBL.Text = (Convert.ToDouble(TotalBasic_LBL.Text) + Convert.ToDouble(TotalHol_LBL.Text) + Convert.ToDouble(TotalOT_LBL.Text)) - Convert.ToDouble(TotalLateUnder_LBL.Text)
+
+    End Sub
+
+    Private Sub Calculate_Allowance()
+        Dim CAREKIT, BOARDING, INCENTIVES, positional, TRANSPORTATION, other As Double
+
+        CAREKIT = If(Not (Carekit_TXT.Text = String.Empty), Carekit_TXT.Text, 0)
+        BOARDING = If(Not (Boarding_TXT.Text = String.Empty), Boarding_TXT.Text, 0)
+        INCENTIVES = If(Not (Incentive_TXT.Text = String.Empty), Incentive_TXT.Text, 0)
+        positional = If(Not (Positional_TXT.Text = String.Empty), Positional_TXT.Text, 0)
+        TRANSPORTATION = If(Not (Transport_TXT.Text = String.Empty), Transport_TXT.Text, 0)
+        other = If(Not (OtherAllowance_TXT.Text = String.Empty), OtherAllowance_TXT.Text, 0)
+
+        Allowances_LBL.Text = CAREKIT + BOARDING + INCENTIVES + positional + TRANSPORTATION + other
+    End Sub
 End Class
