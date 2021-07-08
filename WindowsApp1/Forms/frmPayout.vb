@@ -22,12 +22,11 @@
 
     Private Sub BiometricID_TXT_TextChanged(sender As Object, e As EventArgs) Handles BiometricID_TXT.TextChanged
 
-        If Not BiometricID_TXT.Text = "" Then
-            Console.WriteLine("MEEE = " & BiometricID_TXT.Text)
-
+        If BiometricID_TXT.Text = "" Then
+            Exit Sub
+        Else
             AllowanceDeductionDetails(BiometricID_TXT.Text, Name_TXT, Yes_RB, Rate_TXT, Boarding_TXT, Carekit_TXT, Positional_TXT, Transport_TXT,
                                     Medical_TXT, OtherAllowance_TXT, CashAdvance_TXT, Savings_TXT, Loan_TXT, Charges_TXT, Meal_TXT, OtherDeduction_TXT)
-
         End If
 
     End Sub

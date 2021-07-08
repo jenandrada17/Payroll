@@ -203,9 +203,9 @@ Partial Class frmSettings
         Me.Label1.Font = New System.Drawing.Font("Dubai", 15.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label1.Location = New System.Drawing.Point(4, -1)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(117, 36)
+        Me.Label1.Size = New System.Drawing.Size(89, 36)
         Me.Label1.TabIndex = 75
-        Me.Label1.Text = "Attendance"
+        Me.Label1.Text = "Settings"
         '
         'Context_Remove
         '

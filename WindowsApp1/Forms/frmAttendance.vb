@@ -11,6 +11,7 @@ Public Class frmAttendance
     Private Sub frmAttendance_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         LoadDateTime()
         CheckALL_CheckBox.Checked = True
+        DataGridView1.ClearSelection()
     End Sub
 
     Private Sub Close_LBL_Click(sender As Object, e As EventArgs) Handles Close_LBL.Click
@@ -114,9 +115,9 @@ Public Class frmAttendance
 
             If asss.DayOfWeek = DayOfWeek.Sunday Then
 
-                r.DefaultCellStyle.BackColor = Color.Coral
+                r.DefaultCellStyle.ForeColor = Color.Red
 
-                DataGridView1.Rows(i).Cells(5).Value = False
+                DataGridView1.Rows(i).Cells(5) = New DataGridViewTextBoxCell()
                 DataGridView1.Rows(i).Cells(1).Value = ""
                 DataGridView1.Rows(i).Cells(2).Value = ""
                 DataGridView1.Rows(i).Cells(3).Value = ""
@@ -153,8 +154,8 @@ Public Class frmAttendance
         If CheckALL_CheckBox.Checked = True Then
             For i = 0 To DataGridView1.RowCount - 1
                 Dim row As DataGridViewRow = DataGridView1.Rows(i)
-                If row.DefaultCellStyle.BackColor = Color.Coral Then
-                    DataGridView1.Rows(i).Cells(5).Value = False
+                If row.DefaultCellStyle.ForeColor = Color.Red Then
+                    DataGridView1.Rows(i).Cells(5) = New DataGridViewTextBoxCell()
                     DataGridView1.Rows(i).Cells(5).ReadOnly = True
                     DataGridView1.Rows(i).Cells(1).Value = ""
                     DataGridView1.Rows(i).Cells(1).ReadOnly = True
@@ -463,7 +464,6 @@ Public Class frmAttendance
 
     Private Sub Save_BTN_Click(sender As Object, e As EventArgs) Handles Save_BTN.Click
 
-        Console.WriteLine("aaaaaa = " & BiometricID_TXT.Text)
         If Not BiometricID_TXT.Text = "" Then
 
             'If isNotExist() Then
@@ -478,6 +478,7 @@ Public Class frmAttendance
 
                 Dim dsNewRow As DataRow = ds.Tables(0).NewRow
                 With dsNewRow
+                    .Item("EMP_ID") = Name_TXT.Tag
                     .Item("BIOMETRICID") = BiometricID_TXT.Text
                     .Item("PAYDATE") = DataGridView1.Tag
                     .Item("TOTALDAYS") = TotalDays_LBL.Text
@@ -619,27 +620,37 @@ Public Class frmAttendance
 
     Private Sub BiometricID_TXT_TextChanged(sender As Object, e As EventArgs) Handles BiometricID_TXT.TextChanged
 
-        Dim mysql As String = "Select * From tbl_Employee WHERE BIOMETRICID= '" & BiometricID_TXT.Text & "'"
-        Using ds As DataSet = LoadSQL(mysql, "tbl_Employee")
+        If BiometricID_TXT.Text = "" Then
+            Name_TXT.Text = ""
+        Else
 
-            If ds.Tables(0).Rows.Count > 0 Then
+            Dim mysql As String = "Select * From tbl_Employee WHERE BIOMETRICID= '" & BiometricID_TXT.Text & "'"
+            Using ds As DataSet = LoadSQL(mysql, "tbl_Employee")
 
-                Dim data As DataRow = ds.Tables(0).Rows(0)
+                If ds.Tables(0).Rows.Count > 0 Then
 
-                With data
+                    Dim data As DataRow = ds.Tables(0).Rows(0)
 
-                    Dim MI As String
+                    With data
 
-                    If String.IsNullOrEmpty(.Item("MIDDLENAME")) Then
-                        MI = ""
-                    Else
-                        MI = .Item("MIDDLENAME").Substring(0, 1) & "."
-                    End If
+                        Dim MI As String
 
-                    Name_TXT.Text = .Item("FIRSTNAME") & " " & MI & " " & .Item("LASTNAME") & " " & .Item("SUFFIX")
-                End With
-            End If
-        End Using
+                        If String.IsNullOrEmpty(.Item("MIDDLENAME")) Then
+                            MI = ""
+                        Else
+                            MI = .Item("MIDDLENAME").Substring(0, 1) & "."
+                        End If
+
+                        Name_TXT.Text = .Item("FIRSTNAME") & " " & MI & " " & .Item("LASTNAME") & " " & .Item("SUFFIX")
+                        Name_TXT.Tag = .Item("ID")
+                    End With
+                Else
+                    Name_TXT.Text = ""
+                End If
+            End Using
+
+        End If
+
     End Sub
 
     Private Sub ClearAfter()

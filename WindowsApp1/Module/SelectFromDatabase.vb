@@ -67,8 +67,9 @@ Module SelectFromDatabase
 
         End Using
 
-        mysql = "Select * From payroll_allow_deduc WHERE EMP_ID = '" & namee.Tag & "'"
-        Using ds As DataSet = LoadSQL(mysql, "payroll_allow_deduc")
+
+        mysql = "Select * From PAYROLL_ATTENDANCE WHERE EMP_ID = '" & namee.Tag & "'"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
 
             If ds.Tables(0).Rows.Count > 0 Then
                 Dim data As DataRow = ds.Tables(0).Rows(0)
@@ -99,6 +100,39 @@ Module SelectFromDatabase
             End If
 
         End Using
+
+        'mysql = "Select * From payroll_allow_deduc WHERE EMP_ID = '" & namee.Tag & "'"
+        'Using ds As DataSet = LoadSQL(mysql, "payroll_allow_deduc")
+
+        '    If ds.Tables(0).Rows.Count > 0 Then
+        '        Dim data As DataRow = ds.Tables(0).Rows(0)
+        '        With data
+
+        '            If .Item("FIX_RATE") = "YES" Then
+        '                yess.Checked = True
+        '            Else
+        '                yess.Checked = False
+        '            End If
+
+        '            ratee.Text = .Item("DAILY_SALARY")
+        '            boarding.Text = .Item("BOARDING_ALLOWANCE")
+        '            carekit.Text = .Item("CAREKIT_ALLOWANCE")
+        '            positional.Text = .Item("POSITIONAL_ALLOWANCE")
+        '            Transport.Text = .Item("TRANSPO_ALLOWANCE")
+        '            Medical.Text = .Item("MEDICAL_ALLOWANCE")
+        '            OtherAllowance.Text = .Item("OTHER_ALLOWANCE")
+
+        '            CashAdvance.Text = .Item("CASH_ADVANCE")
+        '            Savings.Text = .Item("SAVINGS_DEDUCTION")
+        '            Loan.Text = .Item("LOANS_DEDUCTION")
+        '            Charges.Text = .Item("CHARGES_DEDUCTION")
+        '            Meal.Text = .Item("MEAL_DEDUCTION")
+        '            OtherDeduction.Text = .Item("OTHER_DEDUCTION")
+
+        '        End With
+        '    End If
+
+        'End Using
     End Sub
 
 
