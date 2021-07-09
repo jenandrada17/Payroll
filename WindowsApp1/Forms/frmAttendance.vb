@@ -297,16 +297,6 @@ Public Class frmAttendance
 
         under_count.Clear()
 
-        '===================================== SUM UP OVERTIME ==================================== 
-        Dim oVER_Total As New TimeSpan
-        For Each value As TimeSpan In over_count
-            oVER_Total = oVER_Total + value
-        Next
-
-        TotalOTHr_LBL.Text = oVER_Total.Hours
-
-        over_count.Clear()
-
         '===================================== SUM UP PRESENT AND ABSENT ==================================== 
         Dim Present As Integer = 0
         Dim Absent As Integer = 0
@@ -324,6 +314,7 @@ Public Class frmAttendance
         TotalDays_LBL.Text = Present
         TotalAbsent_LBL.Text = Absent
 
+
         '===================================== SUM UP HALF DAY ====================================  
         Dim halfday_Hour As Integer = 0
         For Each oRow As DataGridViewRow In DataGridView1.Rows
@@ -333,28 +324,62 @@ Public Class frmAttendance
             End If
         Next
 
-        If halfday_Hour > 4 Then
+        If halfday_Hour = 4 Then
+
+            TotalAbsent_LBL.Text = Convert.ToInt32(TotalAbsent_LBL.Text) + 0.5
+
+        ElseIf halfday_Hour > 4 Then
+
             Dim result As Integer
             result = halfday_Hour / 8
 
-            If halfday_Hour Mod 8 = 0 Then
-                TotalAbsent_LBL.Text = result + Convert.ToInt32(TotalAbsent_LBL.Text)
-            Else
-                result = Math.Floor(result)
-                TotalAbsent_LBL.Text = (result + Convert.ToInt32(TotalAbsent_LBL.Text)).ToString & ".5"
-            End If
+            TotalAbsent_LBL.Text = result + Convert.ToInt32(TotalAbsent_LBL.Text)
         End If
 
         Dim product As Double
         product = ((Convert.ToInt32(TotalDays_LBL.Text) * 8)) - halfday_Hour
+        product = product / 8
+        TotalDays_LBL.Text = product
 
-        If product Mod 8 = 0 Then
-            product = product / 8
-            TotalDays_LBL.Text = product
-        Else
-            product = product / 8
-            TotalDays_LBL.Text = CInt(Math.Floor(product)).ToString & ".5"
-        End If
+        'If product Mod 8 = 0 Then
+        '    product = product / 8
+        '    TotalDays_LBL.Text = product
+        'Else
+        '    product = (product / 8)
+        '    TotalDays_LBL.Text = product
+        'End If
+
+        ''===================================== SUM UP HALF DAY ====================================  
+        'Dim halfday_Hour As Integer = 0
+        'For Each oRow As DataGridViewRow In DataGridView1.Rows
+
+        '    If CountCELL_Nothing(oRow) = 3 Or CountCELL_Consecutive(oRow) = "HALFDAY" Then
+        '        halfday_Hour += 4
+        '    End If
+        'Next
+
+        'If halfday_Hour > 4 Then
+        '    Dim result As Integer
+        '    result = halfday_Hour / 8
+
+        '    If halfday_Hour Mod 8 = 0 Then
+        '        TotalAbsent_LBL.Text = result + Convert.ToInt32(TotalAbsent_LBL.Text)
+        '    Else
+        '        result = Math.Floor(result)
+        '        TotalAbsent_LBL.Text = (result + Convert.ToInt32(TotalAbsent_LBL.Text)).ToString & ".5"
+        '    End If
+        'End If
+
+        'Dim product As Double
+        'product = ((Convert.ToInt32(TotalDays_LBL.Text) * 8)) - halfday_Hour
+
+        'If product Mod 8 = 0 Then
+        '    product = product / 8
+        '    TotalDays_LBL.Text = product
+        'Else
+        '    product = product / 8
+        '    TotalDays_LBL.Text = CInt(Math.Floor(product)).ToString & ".5"
+        'End If
 
     End Sub
 
@@ -431,13 +456,6 @@ Public Class frmAttendance
 
             Dim inHour = New DateTime(Now.Year, Now.Month, Now.Day, 17, 0, 0, 0).ToString("t")
             Dim OTHour As TimeSpan = DateTime.Parse(row.Cells(4).Value).Subtract(DateTime.Parse(inHour))
-
-            Dim cellValue As DateTime = row.Cells(4).Value
-            Dim limit As DateTime = "17:00 PM"
-
-            If cellValue > limit Then
-                over_count.Add(OTHour)
-            End If
 
             If OTHour.Hours > 0 Then
 
@@ -819,7 +837,6 @@ Public Class frmAttendance
             Dim Late_Total As New TimeSpan
             For Each valueE As TimeSpan In late_count
                 Late_Total = Late_Total + valueE
-                Console.WriteLine("LATEEE " & Late_Total.ToString)
             Next
 
             late_count.Clear()
@@ -831,14 +848,6 @@ Public Class frmAttendance
             Next
 
             under_count.Clear()
-
-            '===================================== SUM UP OVERTIME ==================================== 
-            Dim oVER_Total As New TimeSpan
-            For Each value As TimeSpan In over_count
-                oVER_Total = oVER_Total + value
-            Next
-
-            over_count.Clear()
 
             '===================================== SUM UP PRESENT AND ABSENT ==================================== 
             Dim Present As Integer = 0
@@ -866,44 +875,25 @@ Public Class frmAttendance
                 End If
             Next
 
-            If halfday_Hour > 4 Then
+            If halfday_Hour = 4 Then
+
+                TotalAbsent_LBL.Text = Convert.ToInt32(TotalAbsent_LBL.Text) + 0.5
+
+            ElseIf halfday_Hour > 4 Then
+
                 Dim result As Integer
                 result = halfday_Hour / 8
 
-                If halfday_Hour Mod 8 = 0 Then
-                    TotalAbsent_LBL.Text = result + Convert.ToInt32(TotalAbsent_LBL.Text)
-                    'AbsentHour_LBL.Text = 0
-                Else
-                    result = Math.Floor(result)
-                    result = result + Convert.ToInt32(TotalAbsent_LBL.Text)
-                    TotalAbsent_LBL.Text = result.ToString & ".5"
-                    'AbsentHour_LBL.Text = 4
-                End If
-
-                'Else
-                '    AbsentHour_LBL.Text = halfday_Hour
+                TotalAbsent_LBL.Text = result + Convert.ToInt32(TotalAbsent_LBL.Text)
             End If
 
             Dim product As Double
             product = ((Convert.ToInt32(TotalDays_LBL.Text) * 8)) - halfday_Hour
-
-            If product Mod 8 = 0 Then
-                product = product / 8
-                TotalDays_LBL.Text = product
-                'hourOfDay_LBL.Text = 0
-            Else
-                product = product / 8
-                TotalDays_LBL.Text = CInt(Math.Floor(product)).ToString & ".5"
-                'hourOfDay_LBL.Text = 4
-            End If
-
-            'SaveAttendance(biometric_No, paydate_, TotalDays_LBL.Text, hourOfDay_LBL.Text,
-            '            TotalOTHr_LBL.Text, Late_Total.ToString, Under_Total.ToString, TotalAbsent_LBL.Text, AbsentHour_LBL.Text, TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text, Branch_ComboB.SelectedItem)
-
+            product = product / 8
+            TotalDays_LBL.Text = product
 
             SaveAttendanceEE(biometric_No, paydate_, TotalDays_LBL.Text, TotalOTHr_LBL.Text, Late_Total.ToString, Under_Total.ToString,
                              TotalAbsent_LBL.Text, TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text, Branch_ComboB.SelectedItem)
-
         Next
     End Sub
 
