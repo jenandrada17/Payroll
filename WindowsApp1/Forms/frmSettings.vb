@@ -10,6 +10,9 @@ Public Class frmSettings
             HolidayRate(RegularRate_TXT, SpecialRate_TXT)
         End If
 
+        PopulateComboBox(Rate_Branch_ComboB, "tbl_branch", "BRANCHNAME")
+        PopulateComboBox(Rate_Pos_ComboB, "tbl_employee", "EMP_POSITION")
+
     End Sub
 
     Private Sub Close_LBL_Click(sender As Object, e As EventArgs) Handles Close_LBL.Click
@@ -116,6 +119,66 @@ Public Class frmSettings
 
             MsgBox("Holiday Rate Saved!", MsgBoxStyle.Information, "Information")
         End If
+
+    End Sub
+
+    Private Sub Rate_EmpSelect_BTN_Click(sender As Object, e As EventArgs) Handles Rate_EmpSelect_BTN.Click
+
+        If frmEmployee Is Nothing Then
+            Dim frm As New frmEmployee With {
+                .MdiParent = frmMainForm
+            }
+            frmMainForm.pNavigate.Controls.Add(frm)
+            frmMainForm.pNavigate.Tag = frm
+            frm.txtSearch.Tag = "Settings-Rate"
+            frm.Show()
+            frm.Dock = DockStyle.Fill
+            frm.BringToFront()
+        Else
+            frmEmployeeInfo.BringToFront()
+        End If
+
+        Close()
+
+    End Sub
+
+    Private Sub Rate_EmpSave_BTN_Click(sender As Object, e As EventArgs) Handles Rate_EmpSave_BTN.Click
+        If Not Rate_BioNo_TXT.Text = "" Then
+            SaveSettings(Rate_BioNo_TXT.Text, "RATE", Rate_EmpAmount_TXT.Text, False)
+            Rate_EmpClear_BTN.PerformClick()
+        End If
+    End Sub
+
+    Private Sub Rate_EmpClear_BTN_Click(sender As Object, e As EventArgs) Handles Rate_EmpClear_BTN.Click
+        Rate_BioNo_TXT.Text = ""
+        Rate_Employee_TXT.Text = ""
+        Rate_EmpAmount_TXT.Text = ""
+    End Sub
+
+    Private Sub Rate_BioNo_TXT_TextChanged(sender As Object, e As EventArgs) Handles Rate_BioNo_TXT.TextChanged
+
+        If Rate_BioNo_TXT.Text = "" Then
+            Rate_Employee_TXT.Text = ""
+        Else
+            BiometricNo_Payout(Rate_BioNo_TXT.Text, Rate_Employee_TXT)
+        End If
+
+    End Sub
+
+    Private Sub Rate_Position_BTN_Click(sender As Object, e As EventArgs) Handles Rate_Position_BTN.Click
+        If Rate_Pos_ComboB.SelectedIndex >= 0 Then
+            Console.WriteLine("thiss " & )
+            SaveSettings(Rate_Pos_ComboB.SelectedItem, "EMP_POSITION", Rate_PosAmount_TXT.Text, True)
+            Rate_PosAmount_TXT.Text = "   Select Position"
+            Rate_PosAmount_TXT.Clear()
+        End If
+    End Sub
+
+    Private Sub Rate_Branch_ComboB_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Rate_Branch_ComboB.SelectedIndexChanged
+        Get_Branch_ID(Rate_Branch_ComboB.SelectedItem, Rate_Branch_ComboB)
+    End Sub
+
+    Private Sub Rate_Branch_BTN_Click(sender As Object, e As EventArgs) Handles Rate_Branch_BTN.Click
 
     End Sub
 End Class

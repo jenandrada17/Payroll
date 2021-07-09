@@ -276,9 +276,12 @@ Module SelectFromDatabase
                         combo.Items.Remove(paydate)
                     Else
                         combo.Items.Add(rdr.Item(0).ToString)
+                        combo.Items.Remove("")
                     End If
 
                 End With
+            Else
+                Exit Sub
             End If
         End While
     End Sub
@@ -406,5 +409,43 @@ Module SelectFromDatabase
         End If
         Return False
     End Function
+
+    Public Sub GetName(BiometricID_TXT As String, name As TextBox)
+
+        Dim mysql As String = "Select * From tbl_Employee WHERE BIOMETRICID= '" & BiometricID_TXT & "'"
+        Using ds As DataSet = LoadSQL(mysql, "tbl_Employee")
+            If ds.Tables(0).Rows.Count > 0 Then
+                Dim data As DataRow = ds.Tables(0).Rows(0)
+                With data
+
+                    Dim MI As String
+
+                    If String.IsNullOrEmpty(.Item("MIDDLENAME")) Then
+                        MI = ""
+                    Else
+                        MI = .Item("MIDDLENAME").Substring(0, 1) & "."
+                    End If
+
+                    name.Text = .Item("FIRSTNAME") & " " & MI & " " & .Item("LASTNAME") & " " & .Item("SUFFIX")
+                    name.Tag = .Item("ID")
+
+                End With
+            Else
+                name.Text = ""
+            End If
+        End Using
+    End Sub
+
+    Public Sub Get_Branch_ID(BranchName As String, combo As ComboBox)
+        Dim mysql As String = "Select * FROM tbl_Branch where BRANCHNAME = '" & BranchName & "'"
+        Using ds As DataSet = LoadSQL(mysql)
+            If ds.Tables(0).Rows.Count > 0 Then
+                Dim dr As DataRow = ds.Tables(0).Rows(0)
+                With dr
+                    combo.Tag = .Item("ID")
+                End With
+            End If
+        End Using
+    End Sub
 
 End Module

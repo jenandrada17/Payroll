@@ -109,12 +109,13 @@ Public Class frmEmployee
                 frmMainForm.pNavigate.Controls.Add(frm)
                 frmMainForm.pNavigate.Tag = frm
                 frm.BiometricID_TXT.Text = lvEmployee.FocusedItem.SubItems(0).Text
-                frm.Name_TXT.Text = lvEmployee.FocusedItem.SubItems(2).Text
-                frm.Name_TXT.Tag = lvEmployee.FocusedItem.SubItems(2).Tag
+                frm.Name_TXT.Text = lvEmployee.FocusedItem.SubItems(1).Text
+                frm.Name_TXT.Tag = lvEmployee.FocusedItem.SubItems(1).Tag
                 frm.Attendance_Tab.SelectedIndex = 1
                 frm.Show()
                 frm.Dock = DockStyle.Fill
                 frm.BringToFront()
+                frm.Attendance_Per_Employee(lvEmployee.FocusedItem.SubItems(0).Text)
 
             Else
                 frmEmployeeInfo.BringToFront()
@@ -129,10 +130,28 @@ Public Class frmEmployee
                 }
                 frmMainForm.pNavigate.Controls.Add(frm)
                 frmMainForm.pNavigate.Tag = frm
-                frm.BiometricID_TXT.Text = lvEmployee.FocusedItem.SubItems(1).Text
-                frm.Name_TXT.Text = lvEmployee.FocusedItem.SubItems(2).Text
-                frm.Name_TXT.Tag = lvEmployee.FocusedItem.SubItems(2).Tag
+                frm.BiometricID_TXT.Text = lvEmployee.FocusedItem.SubItems(0).Text
+                frm.Name_TXT.Text = lvEmployee.FocusedItem.SubItems(1).Text
+                frm.Name_TXT.Tag = lvEmployee.FocusedItem.SubItems(1).Tag
+                frm.Show()
+                frm.Dock = DockStyle.Fill
+                frm.BringToFront()
 
+            Else
+                frmEmployeeInfo.BringToFront()
+            End If
+
+        ElseIf txtSearch.Tag = "Settings-Rate" Then
+
+            If frmSettings Is Nothing Then
+                Dim frm As New frmSettings With {
+                    .MdiParent = frmMainForm
+                }
+                frmMainForm.pNavigate.Controls.Add(frm)
+                frmMainForm.pNavigate.Tag = frm
+                frm.Rate_BioNo_TXT.Text = lvEmployee.FocusedItem.SubItems(0).Text
+                frm.Rate_Employee_TXT.Text = lvEmployee.FocusedItem.SubItems(1).Text
+                frm.Rate_Employee_TXT.Tag = lvEmployee.FocusedItem.SubItems(1).Tag
                 frm.Show()
                 frm.Dock = DockStyle.Fill
                 frm.BringToFront()

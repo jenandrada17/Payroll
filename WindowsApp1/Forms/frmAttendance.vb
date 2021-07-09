@@ -37,7 +37,7 @@ Public Class frmAttendance
         Close()
     End Sub
 
-    Private Sub LoadDateTime()
+    Public Sub LoadDateTime()
 
         TotalAbsent_LBL.Text = 0
         TotalDays_LBL.Text = 0
@@ -431,6 +431,8 @@ Public Class frmAttendance
 
     Private Sub Cancel_BTN_Click(sender As Object, e As EventArgs) Handles Cancel_BTN.Click
 
+        BiometricID_TXT.Clear()
+        Name_TXT.Clear()
         TotalAbsent_LBL.Text = 0
         TotalDays_LBL.Text = 0
         TotalRHoliday_LBL.Text = 0
@@ -1029,14 +1031,14 @@ Public Class frmAttendance
 
         DataGridView1.ClearSelection()
 
-        Attendance(Bio_grid.Item(0, i).Value)
+        Attendance_Per_Branch(Bio_grid.Item(0, i).Value, Branch_ComboB.SelectedItem)
     End Sub
 
-    Private Sub Attendance(bioNo As String)
+    Public Sub Attendance_Per_Branch(bioNo As String, branch As String)
+
         Dim paydate_ As String = Paydate.ToString("d")
 
-        list_inOut.Clear()
-        Dim mysql As String = $"Select * From BIOMETRIC_DTR A inner join PAYROLL_ATTENDANCE B on B.BIOMETRICID = A.BIO_ID where A.BIO_ID = '{bioNo}' and A.BRANCH = '{Branch_ComboB.SelectedItem}' and A.PAYDATE = '{paydate_}'"
+        Dim mysql As String = $"Select * From BIOMETRIC_DTR A inner join PAYROLL_ATTENDANCE B on B.BIOMETRICID = A.BIO_ID where A.BIO_ID = '{bioNo}' and A.BRANCH = '{branch}' and A.PAYDATE = '{paydate_}'"
         Using ds As DataSet = LoadSQL(mysql, "BIOMETRIC_DTR")
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
@@ -1138,33 +1140,60 @@ Public Class frmAttendance
         If BiometricID_TXT.Text = "" Then
             Name_TXT.Text = ""
         Else
+            GetName(BiometricID_TXT.Text, Name_TXT)
 
-            Dim mysql As String = "Select * From tbl_Employee WHERE BIOMETRICID= '" & BiometricID_TXT.Text & "'"
-            Using ds As DataSet = LoadSQL(mysql, "tbl_Employee")
+            If Not Name_TXT.Text = "" Then
 
-                If ds.Tables(0).Rows.Count > 0 Then
+                For Each oRow As DataGridViewRow In DataGridView1.Rows
+                    oRow.Cells(5).Value = False
+                    For cell As Integer = 1 To 4
+                        oRow.Cells(cell).Value = Nothing
+                    Next
+                Next
 
-                    Dim data As DataRow = ds.Tables(0).Rows(0)
-
-                    With data
-
-                        Dim MI As String
-
-                        If String.IsNullOrEmpty(.Item("MIDDLENAME")) Then
-                            MI = ""
-                        Else
-                            MI = .Item("MIDDLENAME").Substring(0, 1) & "."
-                        End If
-
-                        Name_TXT.Text = .Item("FIRSTNAME") & " " & MI & " " & .Item("LASTNAME") & " " & .Item("SUFFIX")
-                        Name_TXT.Tag = .Item("ID")
-                    End With
-                Else
-                    Name_TXT.Text = ""
-                End If
-            End Using
-
+                Attendance_Per_Employee(BiometricID_TXT.Text)
+            End If
         End If
+
+    End Sub
+
+    Public Sub Attendance_Per_Employee(bioNo As String)
+
+        Dim paydate_ As String = Paydate.ToString("d")
+
+        Dim mysql As String = $"Select * From BIOMETRIC_DTR A inner join PAYROLL_ATTENDANCE B on B.BIOMETRICID = A.BIO_ID where A.BIO_ID = '{bioNo}' and A.PAYDATE = '{paydate_}'"
+        Using ds As DataSet = LoadSQL(mysql, "BIOMETRIC_DTR")
+            If ds.Tables(0).Rows.Count > 0 Then
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+
+                        Dim date_ As Date = .Item("DATE_ONLY")
+
+                        For Each row As DataGridViewRow In DataGridView1.Rows
+
+                            Dim rowIndex As Integer = row.Index
+                            Dim asss As Date = DataGridView1.Rows(rowIndex).Tag
+
+                            If asss = date_ Then
+                                row.Cells(1).Value = IIf(IsDBNull(.Item("AM_IN")), "", .Item("AM_IN"))
+                                row.Cells(2).Value = IIf(IsDBNull(.Item("AM_OUT")), "", .Item("AM_OUT"))
+                                row.Cells(3).Value = IIf(IsDBNull(.Item("PM_IN")), "", .Item("PM_IN"))
+                                row.Cells(4).Value = IIf(IsDBNull(.Item("PM_OUT")), "", .Item("PM_OUT"))
+                                row.Cells(5) = New DataGridViewCheckBoxCell With {.Value = True}
+                            End If
+                        Next
+
+                        TotalDays_LBL.Text = .Item("PRESENT_DAYS")
+                        TotalRHoliday_LBL.Text = .Item("REGHOLIDAY")
+                        TotalSHoliday_LBL.Text = .Item("SPECHOLIDAY")
+                        TotalLateHR_LBL.Text = IIf(IsDBNull(.Item("LATE")), "00:00:00", .Item("LATE"))
+                        TotalUTHR_LBL.Text = IIf(IsDBNull(.Item("UNDERTIME")), "00:00:00", .Item("UNDERTIME"))
+                        TotalOTHr_LBL.Text = .Item("OVERTIME")
+
+                    End With
+                Next
+            End If
+        End Using
 
     End Sub
 

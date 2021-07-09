@@ -39,67 +39,6 @@
         RunCommand("DELETE FROM PAYROLL_HOLIDAY WHERE DATEE = '" & datee & "'")
     End Sub
 
-    'Friend Sub SaveAttendance(biometric As Integer, paydate As String, days As String, daysHR As String, overTime As String, late_total As String,
-    '                          under_total As String, absentDays As String, absentHR As String, regHoliday As String, specHoliday As String, branch As String)
-    '    Dim mysql As String
-
-    '    mysql = $"Select * FROM PAYROLL_ATTENDANCE where BIOMETRICID = '{biometric}' and PAYDATE = '{paydate}' and BRANCH = '{branch}'"
-    '    Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
-    '    If dss.Tables(0).Rows.Count > 0 Then
-    '        With dss.Tables(0).Rows(0)
-
-    '            .Item("PRESENT_DAYS") = days
-    '            .Item("PRESENT_HOURS") = daysHR
-
-    '            .Item("OVERTIME") = overTime
-    '            .Item("LATE") = late_total
-    '            .Item("UNDERTIME") = under_total
-
-    '            .Item("ABSENT_DAYS") = absentDays
-    '            .Item("ABSENT_HOURS") = absentHR
-
-    '            .Item("REGHOLIDAY") = regHoliday
-    '            .Item("SPECHOLIDAY") = specHoliday
-
-    '            .Item("BRANCH") = branch
-
-    '        End With
-    '        SaveEntry(dss, False)
-    '    Else
-
-    '        mysql = "Select * From PAYROLL_ATTENDANCE Rows 1"
-    '        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
-
-    '            Dim dsNewRow As DataRow = ds.Tables(0).NewRow
-    '            With dsNewRow
-
-    '                .Item("BIOMETRICID") = biometric
-    '                .Item("PAYDATE") = paydate
-
-    '                .Item("PRESENT_DAYS") = days
-    '                .Item("PRESENT_HOURS") = daysHR
-
-    '                .Item("OVERTIME") = overTime
-    '                .Item("LATE") = late_total
-    '                .Item("UNDERTIME") = under_total
-
-    '                .Item("ABSENT_DAYS") = absentDays
-    '                .Item("ABSENT_HOURS") = absentHR
-
-    '                .Item("REGHOLIDAY") = regHoliday
-    '                .Item("SPECHOLIDAY") = specHoliday
-
-    '                .Item("BRANCH") = branch
-
-    '            End With
-    '            ds.Tables(0).Rows.Add(dsNewRow)
-    '            SaveEntry(ds)
-    '        End Using
-    '    End If
-
-    'End Sub
-
-
     Friend Sub SaveAttendanceEE(biometric As Integer, paydate As String, days As String, overTime As String, late_total As String,
                               under_total As String, regHoliday As String, specHoliday As String, branch As String)
         Dim mysql As String
@@ -323,6 +262,49 @@
                 SaveEntry(dss)
             End Using
         End If
+
+    End Sub
+
+    Friend Sub SaveSettings(value As Integer, column As String, amount As Double, moreThan As Boolean) '=========== BOOLEAN IF MORE THAN 1 ==========
+
+        Dim mysql As String
+
+        If moreThan = True Then '============= PER BRANCH OR PER POSITION ==============
+
+            mysql = $"Select * FROM TBL_EMPLOYEE where {column} = '{value}'"
+            Dim dss As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
+            If dss.Tables(0).Rows.Count > 0 Then
+                For Each dr In dss.Tables(0).Rows
+
+                    With dr.Tables(0).Rows(0)
+
+                        .Item("RATE") = amount
+
+                    End With
+
+                    SaveEntry(dss, False)
+                Next
+
+                MsgBox("Successfully Updated!", MsgBoxStyle.Information, "Information")
+            End If
+
+        Else
+
+            mysql = $"Select * FROM TBL_EMPLOYEE where BIOMETRICID = '{value}'"
+            Dim dss As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
+            If dss.Tables(0).Rows.Count > 0 Then
+                With dss.Tables(0).Rows(0)
+
+                    .Item(column) = amount
+
+                End With
+                SaveEntry(dss, False)
+
+                MsgBox("Successfully Updated!", MsgBoxStyle.Information, "Information")
+            End If
+
+        End If
+
 
     End Sub
 
