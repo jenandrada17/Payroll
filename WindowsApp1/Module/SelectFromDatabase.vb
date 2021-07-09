@@ -124,15 +124,51 @@ Module SelectFromDatabase
 
         Dim mysql As String = $"Select * From PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{biometric}' and paydate = '{paydate}'"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
-            Dim dr As DataRow = ds.Tables(0).Rows(0)
-            With dr
-                NoOfDays_TXT.Text = .Item("PRESENT_DAYS")
-                RegularOT_TXT.Text = .Item("OVERTIME")
-                SpecialHol_TXT.Text = .Item("SPECHOLIDAY")
-                RegularHol_TXT.Text = .Item("REGHOLIDAY")
-                Late_TXT.Text = .Item("LATE")
-                UnderTime_TXT.Text = .Item("UNDERTIME")
-            End With
+            If ds.Tables(0).Rows.Count > 0 Then
+
+                Dim dr As DataRow = ds.Tables(0).Rows(0)
+                With dr
+                    NoOfDays_TXT.Text = .Item("PRESENT_DAYS")
+                    RegularOT_TXT.Text = .Item("OVERTIME")
+                    SpecialHol_TXT.Text = .Item("SPECHOLIDAY")
+                    RegularHol_TXT.Text = .Item("REGHOLIDAY")
+                    Late_TXT.Text = .Item("LATE")
+                    UnderTime_TXT.Text = .Item("UNDERTIME")
+                End With
+
+            End If
+        End Using
+    End Sub
+
+    Friend Sub AllowanceDetails(biometric As String, branchID As String, Positional_TXT As TextBox, Incentive_TXT As TextBox,
+                             Boarding_TXT As TextBox, Carekit_TXT As TextBox, Transport_TXT As TextBox)
+
+        Dim mysql As String = $"Select * From PAYROLL_ALLOWANCE WHERE BIOMETRIC_NO = '{biometric}' and BRANCH_ID = '{branchID}'"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ALLOWANCE")
+            If ds.Tables(0).Rows.Count > 0 Then
+
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+
+                        If .Item("CATEGORY") = "Positional" Then
+                            Positional_TXT.Text = .Item("AMOUNT")
+                            Positional_TXT.Tag = IIf(IsDBNull(.Item("FIX")), "", .Item("FIX"))
+                        ElseIf .Item("CATEGORY") = "Incentives" Then
+                            Incentive_TXT.Text = .Item("AMOUNT")
+                        ElseIf .Item("CATEGORY") = "Boarding" Then
+                            Boarding_TXT.Text = .Item("AMOUNT")
+                        ElseIf .Item("CATEGORY") = "Positional" Then
+                            Carekit_TXT.Text = .Item("AMOUNT")
+                        ElseIf .Item("CATEGORY") = "Positional" Then
+                            Transport_TXT.Text = .Item("AMOUNT")
+                        End If
+
+                    End With
+                Next
+            Else
+                Exit Sub
+            End If
+
 
         End Using
     End Sub
@@ -444,9 +480,11 @@ Module SelectFromDatabase
                     End If
 
                     ratee.Text = IIf(IsDBNull(.Item("RATE")), 0, .Item("RATE"))
+                    ratee.Tag = .Item("BRANCH_ID")
                     name.Text = .Item("FIRSTNAME") & " " & MI & " " & .Item("LASTNAME") & " " & .Item("SUFFIX")
                     name.Tag = .Item("ID")
 
+                    Console.WriteLine("Branchhh " & ratee.Tag)
                 End With
             Else
                 name.Text = ""
@@ -602,7 +640,7 @@ Module SelectFromDatabase
 
         If searchName.Length <> 0 Then
 
-            mysql = "select * from PAYROLL_ALLOWANCE A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRIC_NO where ALLOWED is null  and "
+            mysql = "select * from PAYROLL_ALLOWANCE A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRIC_NO and B.BRANCH_ID = A.BRANCH_ID where ALLOWED is null  and "
 
             For Each name In strWords
                 mysql &= $"{vbCr}UPPER(BIOMETRIC_NO) LIKE UPPER('%{name}%') OR "

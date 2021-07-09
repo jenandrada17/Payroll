@@ -110,7 +110,7 @@ Partial Class frmPayout
         Me.Close_LBL = New System.Windows.Forms.Label()
         Me.Calculate_BTN = New System.Windows.Forms.Button()
         Me.Button1 = New System.Windows.Forms.Button()
-        Me.Button2 = New System.Windows.Forms.Button()
+        Me.Cancel_BTN = New System.Windows.Forms.Button()
         Me.GroupBox6.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
@@ -1072,22 +1072,22 @@ Partial Class frmPayout
         Me.Button1.Text = "Save"
         Me.Button1.UseVisualStyleBackColor = True
         '
-        'Button2
+        'Cancel_BTN
         '
-        Me.Button2.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button2.Location = New System.Drawing.Point(28, 546)
-        Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(102, 37)
-        Me.Button2.TabIndex = 78
-        Me.Button2.Text = "Cancel"
-        Me.Button2.UseVisualStyleBackColor = True
+        Me.Cancel_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Cancel_BTN.Location = New System.Drawing.Point(28, 546)
+        Me.Cancel_BTN.Name = "Cancel_BTN"
+        Me.Cancel_BTN.Size = New System.Drawing.Size(102, 37)
+        Me.Cancel_BTN.TabIndex = 78
+        Me.Cancel_BTN.Text = "Cancel"
+        Me.Cancel_BTN.UseVisualStyleBackColor = True
         '
         'frmPayout
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1169, 665)
-        Me.Controls.Add(Me.Button2)
+        Me.Controls.Add(Me.Cancel_BTN)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.Calculate_BTN)
         Me.Controls.Add(Me.Close_LBL)
@@ -1196,7 +1196,7 @@ Partial Class frmPayout
     Friend WithEvents Close_LBL As Label
     Friend WithEvents Calculate_BTN As Button
     Friend WithEvents Button1 As Button
-    Friend WithEvents Button2 As Button
+    Friend WithEvents Cancel_BTN As Button
     Friend WithEvents TotalHours_LBL As Label
     Friend WithEvents Label34 As Label
     Friend WithEvents Label9 As Label

@@ -73,8 +73,12 @@
         Else
             If Bio_Exist_Attendance(BiometricID_TXT.Text, paydate_) Then
 
+                Cancel_BTN.PerformClick()
+
                 AttendanceDetails(BiometricID_TXT.Text, paydate_, NoOfDays_TXT, RegularOT_TXT, SpecialHol_TXT, RegularHol_TXT,
                                             Late_TXT, UnderTime_TXT)
+
+                AllowanceDetails(BiometricID_TXT.Text, Rate_TXT.Tag, Positional_TXT, Incentive_TXT, Boarding_TXT, Carekit_TXT, Transport_TXT)   '============ Rate_TXT.Tag is branchID (for same biometric) ======
 
                 TotalBasic_LBL.Text = NoOfDays_TXT.Text * Rate_TXT.Text
 
@@ -100,6 +104,37 @@
 
             End If
         End If
+    End Sub
+
+    Private Sub Cancel_BTN_Click(sender As Object, e As EventArgs) Handles Cancel_BTN.Click
+
+        For Each Ctl In GroupBox6.Controls
+            If TypeOf Ctl Is TextBox Then Ctl.Text = ""
+        Next
+
+        For Each Ctl In GroupBox1.Controls
+            If TypeOf Ctl Is TextBox Then Ctl.Text = ""
+        Next
+
+        For Each Ctl In GroupBox2.Controls
+            If TypeOf Ctl Is TextBox Then Ctl.Text = ""
+        Next
+
+        For Each Ctl In GroupBox3.Controls
+            If TypeOf Ctl Is TextBox Then Ctl.Text = ""
+        Next
+
+        For Each Ctl In GroupBox4.Controls
+
+            If TypeOf Ctl Is Label Then
+
+                If IsNumeric(Ctl.text) Then
+                    Ctl.Text = 0
+                End If
+
+            End If
+        Next
+
     End Sub
 
     'Private Sub Rate_TXT_TextChanged(sender As Object, e As EventArgs) Handles Rate_TXT.TextChanged
