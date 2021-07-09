@@ -42,6 +42,12 @@ Partial Class frmPayout
         Me.Label16 = New System.Windows.Forms.Label()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.Label36 = New System.Windows.Forms.Label()
+        Me.Label35 = New System.Windows.Forms.Label()
+        Me.Label34 = New System.Windows.Forms.Label()
+        Me.Label9 = New System.Windows.Forms.Label()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.TotalHours_LBL = New System.Windows.Forms.Label()
         Me.Label11 = New System.Windows.Forms.Label()
         Me.UnderTime_TXT = New System.Windows.Forms.TextBox()
         Me.Late_TXT = New System.Windows.Forms.TextBox()
@@ -119,12 +125,6 @@ Partial Class frmPayout
         Me.Calculate_BTN = New System.Windows.Forms.Button()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.Button2 = New System.Windows.Forms.Button()
-        Me.TotalHours_LBL = New System.Windows.Forms.Label()
-        Me.Label7 = New System.Windows.Forms.Label()
-        Me.Label9 = New System.Windows.Forms.Label()
-        Me.Label34 = New System.Windows.Forms.Label()
-        Me.Label35 = New System.Windows.Forms.Label()
-        Me.Label36 = New System.Windows.Forms.Label()
         Me.FixMontly_TXT.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
@@ -357,6 +357,66 @@ Partial Class frmPayout
         Me.GroupBox1.TabIndex = 19
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Input"
+        '
+        'Label36
+        '
+        Me.Label36.AutoSize = True
+        Me.Label36.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label36.Location = New System.Drawing.Point(359, 208)
+        Me.Label36.Name = "Label36"
+        Me.Label36.Size = New System.Drawing.Size(35, 25)
+        Me.Label36.TabIndex = 34
+        Me.Label36.Text = "min"
+        '
+        'Label35
+        '
+        Me.Label35.AutoSize = True
+        Me.Label35.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label35.Location = New System.Drawing.Point(359, 171)
+        Me.Label35.Name = "Label35"
+        Me.Label35.Size = New System.Drawing.Size(35, 25)
+        Me.Label35.TabIndex = 33
+        Me.Label35.Text = "min"
+        '
+        'Label34
+        '
+        Me.Label34.AutoSize = True
+        Me.Label34.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label34.Location = New System.Drawing.Point(359, 140)
+        Me.Label34.Name = "Label34"
+        Me.Label34.Size = New System.Drawing.Size(47, 25)
+        Me.Label34.TabIndex = 32
+        Me.Label34.Text = "day/s"
+        '
+        'Label9
+        '
+        Me.Label9.AutoSize = True
+        Me.Label9.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label9.Location = New System.Drawing.Point(359, 101)
+        Me.Label9.Name = "Label9"
+        Me.Label9.Size = New System.Drawing.Size(47, 25)
+        Me.Label9.TabIndex = 31
+        Me.Label9.Text = "day/s"
+        '
+        'Label7
+        '
+        Me.Label7.AutoSize = True
+        Me.Label7.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label7.Location = New System.Drawing.Point(359, 67)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(25, 25)
+        Me.Label7.TabIndex = 30
+        Me.Label7.Text = "hr"
+        '
+        'TotalHours_LBL
+        '
+        Me.TotalHours_LBL.AutoSize = True
+        Me.TotalHours_LBL.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TotalHours_LBL.Location = New System.Drawing.Point(359, 33)
+        Me.TotalHours_LBL.Name = "TotalHours_LBL"
+        Me.TotalHours_LBL.Size = New System.Drawing.Size(47, 25)
+        Me.TotalHours_LBL.TabIndex = 29
+        Me.TotalHours_LBL.Text = "day/s"
         '
         'Label11
         '
@@ -1170,66 +1230,6 @@ Partial Class frmPayout
         Me.Button2.TabIndex = 78
         Me.Button2.Text = "Cancel"
         Me.Button2.UseVisualStyleBackColor = True
-        '
-        'TotalHours_LBL
-        '
-        Me.TotalHours_LBL.AutoSize = True
-        Me.TotalHours_LBL.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TotalHours_LBL.Location = New System.Drawing.Point(359, 33)
-        Me.TotalHours_LBL.Name = "TotalHours_LBL"
-        Me.TotalHours_LBL.Size = New System.Drawing.Size(47, 25)
-        Me.TotalHours_LBL.TabIndex = 29
-        Me.TotalHours_LBL.Text = "day/s"
-        '
-        'Label7
-        '
-        Me.Label7.AutoSize = True
-        Me.Label7.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label7.Location = New System.Drawing.Point(359, 67)
-        Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(25, 25)
-        Me.Label7.TabIndex = 30
-        Me.Label7.Text = "hr"
-        '
-        'Label9
-        '
-        Me.Label9.AutoSize = True
-        Me.Label9.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label9.Location = New System.Drawing.Point(359, 101)
-        Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(47, 25)
-        Me.Label9.TabIndex = 31
-        Me.Label9.Text = "day/s"
-        '
-        'Label34
-        '
-        Me.Label34.AutoSize = True
-        Me.Label34.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label34.Location = New System.Drawing.Point(359, 140)
-        Me.Label34.Name = "Label34"
-        Me.Label34.Size = New System.Drawing.Size(47, 25)
-        Me.Label34.TabIndex = 32
-        Me.Label34.Text = "day/s"
-        '
-        'Label35
-        '
-        Me.Label35.AutoSize = True
-        Me.Label35.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label35.Location = New System.Drawing.Point(359, 171)
-        Me.Label35.Name = "Label35"
-        Me.Label35.Size = New System.Drawing.Size(35, 25)
-        Me.Label35.TabIndex = 33
-        Me.Label35.Text = "min"
-        '
-        'Label36
-        '
-        Me.Label36.AutoSize = True
-        Me.Label36.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label36.Location = New System.Drawing.Point(359, 208)
-        Me.Label36.Name = "Label36"
-        Me.Label36.Size = New System.Drawing.Size(35, 25)
-        Me.Label36.TabIndex = 34
-        Me.Label36.Text = "min"
         '
         'frmPayout
         '

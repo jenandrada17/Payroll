@@ -49,18 +49,18 @@
         If dss.Tables(0).Rows.Count > 0 Then
             With dss.Tables(0).Rows(0)
 
-                .Item("TOTALDAYS") = days
-                .Item("TOTALDAYSHOUR") = daysHR
+                .Item("PRESENT_DAYS") = days
+                .Item("PRESENT_HOURS") = daysHR
 
-                .Item("TOTALOVERTIME") = overTime
-                .Item("TOTALLATE") = late_total
-                .Item("TOTALUNDERTIME") = under_total
+                .Item("OVERTIME") = overTime
+                .Item("LATE") = late_total
+                .Item("UNDERTIME") = under_total
 
-                .Item("TOTALABSENTDAYS") = absentDays
-                .Item("TOTALABSENTHOUR") = absentHR
+                .Item("ABSENT_DAYS") = absentDays
+                .Item("ABSENT_HOURS") = absentHR
 
-                .Item("TOTALREGHOLIDAY") = regHoliday
-                .Item("TOTALSPECHOLIDAY") = specHoliday
+                .Item("REGHOLIDAY") = regHoliday
+                .Item("SPECHOLIDAY") = specHoliday
 
             End With
             SaveEntry(dss, False)
@@ -75,18 +75,19 @@
                     .Item("BIOMETRICID") = biometric
                     .Item("EMP_ID") = emp_id
                     .Item("PAYDATE") = paydate
-                    .Item("TOTALDAYS") = days
-                    .Item("TOTALDAYSHOUR") = daysHR
 
-                    .Item("TOTALOVERTIME") = overTime
-                    .Item("TOTALLATE") = late_total
-                    .Item("TOTALUNDERTIME") = under_total
+                    .Item("PRESENT_DAYS") = days
+                    .Item("PRESENT_HOURS") = daysHR
 
-                    .Item("TOTALABSENTDAYS") = absentDays
-                    .Item("TOTALABSENTHOUR") = absentHR
+                    .Item("OVERTIME") = overTime
+                    .Item("LATE") = late_total
+                    .Item("UNDERTIME") = under_total
 
-                    .Item("TOTALREGHOLIDAY") = regHoliday
-                    .Item("TOTALSPECHOLIDAY") = specHoliday
+                    .Item("ABSENT_DAYS") = absentDays
+                    .Item("ABSENT_HOURS") = absentHR
+
+                    .Item("REGHOLIDAY") = regHoliday
+                    .Item("SPECHOLIDAY") = specHoliday
 
                 End With
                 ds.Tables(0).Rows.Add(dsNewRow)

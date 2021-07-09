@@ -339,19 +339,29 @@ Public Class frmAttendance
             Dim result As Integer
             result = halfday_Hour / 8
 
-            TotalAbsent_LBL.Text = result + Convert.ToInt32(TotalAbsent_LBL.Text)
+            If halfday_Hour Mod 8 = 0 Then
+                TotalAbsent_LBL.Text = result + Convert.ToInt32(TotalAbsent_LBL.Text)
+                AbsentHour_LBL.Text = 0
+            Else
+                result = Math.Floor(result)
+                TotalAbsent_LBL.Text = result + Convert.ToInt32(TotalAbsent_LBL.Text)
+                AbsentHour_LBL.Text = 4
+            End If
+
         Else
             AbsentHour_LBL.Text = halfday_Hour
         End If
 
-        Dim product As Integer
+        Dim product As Double
         product = ((Convert.ToInt32(TotalDays_LBL.Text) * 8) + Convert.ToInt32(hourOfDay_LBL.Text)) - halfday_Hour
 
         If product Mod 8 = 0 Then
-            TotalDays_LBL.Text = Math.Floor(product / 8)
+            product = product / 8
+            TotalDays_LBL.Text = product
             hourOfDay_LBL.Text = 0
         Else
-            TotalDays_LBL.Text = Math.Floor(product / 8)
+            product = product / 8
+            TotalDays_LBL.Text = CInt(Math.Floor(product)).ToString
             hourOfDay_LBL.Text = 4
         End If
 
@@ -951,14 +961,16 @@ Public Class frmAttendance
 
     End Sub
 
-    Private Sub SAVE_DIRECT_Attendance()
+    Public Sub SAVE_DIRECT_Attendance()
 
         Dim paydate_ As String = Paydate.ToString("d")
-        Console.WriteLine("paydateee " & paydate_)
 
         For Each row_bio As DataGridViewRow In Bio_grid.Rows
 
-            Dim mysql As String = $"Select * From BIOMETRIC_DTR where BIO_ID = '{row_bio.Cells(0).Value}' and BRANCH = '{Branch_ComboB.SelectedItem}' and PAYDATE = '{paydate_}'"
+            Dim bioNum As Integer = row_bio.Cells(0).Value
+            Dim emp_id As Integer = row_bio.Cells(1).Tag
+
+            Dim mysql As String = $"Select * From BIOMETRIC_DTR where BIO_ID = '{bioNum}' and BRANCH = '{Branch_ComboB.SelectedItem}' and PAYDATE = '{paydate_}'"
             Using ds As DataSet = LoadSQL(mysql, "BIOMETRIC_DTR")
                 If ds.Tables(0).Rows.Count > 0 Then
                     For Each dr In ds.Tables(0).Rows
@@ -987,122 +999,12 @@ Public Class frmAttendance
                 End If
             End Using
 
-            TotalAbsent_LBL.Text = 0
-            AbsentHour_LBL.Text = 0
-            TotalDays_LBL.Text = 0
-            TotalRHoliday_LBL.Text = 0
-            TotalSHoliday_LBL.Text = 0
-            TotalLateHR_LBL.Text = 0
-            TotalLateMIN_LBL.Text = 0
-            TotalUTHR_LBL.Text = 0
-            TotalUTMIN_LBL.Text = 0
-            hourOfDay_LBL.Text = 0
-            TotalOTHr_LBL.Text = 0
+            Calculate_BTN.PerformClick()
 
-            For i = 0 To DataGridView1.RowCount - 1
-
-                Dim row As DataGridViewRow = DataGridView1.Rows(i)
-
-                If Not row.DefaultCellStyle.ForeColor = Color.Red Then
-
-                    '========================================================================= CALCULATE HOLIDAYS  ===========================================================
-                    If row.DefaultCellStyle.BackColor = Color.MediumOrchid Then
-
-
-                        TotalRHoliday_LBL.Text = TotalRHoliday_LBL.Text + 1
-
-                    ElseIf row.DefaultCellStyle.BackColor = Color.Plum Then
-
-
-                        TotalSHoliday_LBL.Text = TotalSHoliday_LBL.Text + 1
-
-                    End If
-
-
-                    CalculateLATE(i)
-
-                    CalculateuNDERTIME(i)
-
-                    CalculateuOVERTIME(i)
-
-                End If
-            Next
-
-            '===================================== SUM UP LATE ==================================== 
-            Dim Late_Total As New TimeSpan
-            For Each valueE As TimeSpan In late_count
-                Late_Total = Late_Total + valueE
-            Next
-
-            TotalLateHR_LBL.Text = Late_Total.Hours
-            TotalLateHR_LBL.Tag = Late_Total.ToString
-            TotalLateMIN_LBL.Text = Late_Total.Minutes
-
-            late_count.Clear()
-
-            '===================================== SUM UP UNDERTIME ==================================== 
-            Dim Under_Total As New TimeSpan
-            For Each value As TimeSpan In under_count
-                Under_Total = Under_Total + value
-            Next
-
-            TotalUTHR_LBL.Text = Under_Total.Hours
-            TotalUTHR_LBL.Tag = Under_Total.ToString
-            TotalUTMIN_LBL.Text = Under_Total.Minutes
-
-            under_count.Clear()
-
-            '===================================== SUM UP PRESENT AND ABSENT ==================================== 
-            Dim Present As Integer = 0
-            Dim Absent As Integer = 0
-            For Each oRow As DataGridViewRow In DataGridView1.Rows
-
-                If Not oRow.DefaultCellStyle.ForeColor = Color.Red And oRow.Cells(5).Value = True Then
-                    Present += 1
-                ElseIf Not oRow.DefaultCellStyle.ForeColor = Color.Red And oRow.Cells(5).Value = False Then
-                    If oRow.DefaultCellStyle.BackColor = Color.MediumOrchid Or oRow.DefaultCellStyle.BackColor = Color.Plum Then
-                    Else
-                        Absent += 1
-                    End If
-                End If
-            Next
-
-            TotalDays_LBL.Text = Present
-            TotalAbsent_LBL.Text = Absent
-
-            '===================================== SUM UP HALF DAY ====================================  
-            Dim halfday_Hour As Integer = 0
-            For Each oRow As DataGridViewRow In DataGridView1.Rows
-
-                If CountCELL_Nothing(oRow) = 3 Then
-                    halfday_Hour += 4
-                End If
-            Next
-
-            If halfday_Hour > 4 Then
-                Dim result As Integer
-                result = halfday_Hour / 8
-
-                TotalAbsent_LBL.Text = result + Convert.ToInt32(TotalAbsent_LBL.Text)
-            Else
-                AbsentHour_LBL.Text = halfday_Hour
-            End If
-
-            Dim product As Integer
-            product = ((Convert.ToInt32(TotalDays_LBL.Text) * 8) + Convert.ToInt32(hourOfDay_LBL.Text)) - halfday_Hour
-
-            If product Mod 8 = 0 Then
-                TotalDays_LBL.Text = Math.Floor(product / 8)
-                hourOfDay_LBL.Text = 0
-            Else
-                TotalDays_LBL.Text = Math.Floor(product / 8)
-                hourOfDay_LBL.Text = 4
-            End If
-
-            SaveAttendance(row_bio.Cells(0).Value, row_bio.Cells(1).Tag, DataGridView1.Tag, TotalDays_LBL.Text, hourOfDay_LBL.Text,
-                            TotalOTHr_LBL.Text, TotalLateHR_LBL.Tag, TotalUTHR_LBL.Tag,
-                            TotalAbsent_LBL.Text, AbsentHour_LBL.Text,
-                            TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text)
+            SaveAttendance(bioNum, emp_id, paydate_, TotalDays_LBL.Text, hourOfDay_LBL.Text,
+                        TotalOTHr_LBL.Text, TotalLateHR_LBL.Tag, TotalUTHR_LBL.Tag,
+                        TotalAbsent_LBL.Text, AbsentHour_LBL.Text,
+                        TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text)
 
         Next
     End Sub
@@ -1129,9 +1031,7 @@ Public Class frmAttendance
 
     Private Sub Attendance(bioNo As String)
 
-
         Dim paydate_ As String = Paydate.ToString("d")
-        Console.WriteLine("paydateee " & paydate_)
 
         list_inOut.Clear()
         Dim mysql As String = $"Select * From BIOMETRIC_DTR where BIO_ID = '{bioNo}' and BRANCH = '{Branch_ComboB.SelectedItem}' and PAYDATE = '{paydate_}'"

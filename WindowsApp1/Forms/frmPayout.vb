@@ -70,9 +70,12 @@
                     Dim data As DataRow = ds.Tables(0).Rows(0)
                     With data
 
-                        NoOfDays_TXT.Text = .Item("TOTALDAYS")
-                        Late_TXT.Text = .Item("TOTALLATEMINUTE")  '========== Minutes only
-                        UnderTime_TXT.Text = .Item("TOTALUTMINUTE")
+                        NoOfDays_TXT.Text = .Item("PRESENT_DAYS")
+
+                        Dim Late_Total As New TimeSpan = .Item("LATE")  '========== TO SEPARATE
+
+                        Late_TXT.Text = Late_Total.Hours
+                        UnderTime_TXT.Text = Late_Total.Minutes
 
                     End With
                 End If
@@ -98,4 +101,5 @@
             TotalOT_LBL.Text = ((Rate_TXT.Text / 8) * RegularOT_TXT.Text).ToString
         End If
     End Sub
+
 End Class

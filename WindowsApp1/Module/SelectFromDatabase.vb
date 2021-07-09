@@ -60,20 +60,20 @@ Module SelectFromDatabase
 
                 With dr
 
-                    If .Item("TOTALDAYSHOUR") = 0 Then
-                        NoOfDays_TXT.Text = .Item("TOTALDAYS")
-                        NoOfDays_TXT.Tag = .Item("TOTALDAYS")
+                    If .Item("PRESENT_HOURS") = 0 Then
+                        NoOfDays_TXT.Text = .Item("PRESENT_DAYS")
+                        NoOfDays_TXT.Tag = .Item("PRESENT_DAYS")
                     Else
-                        NoOfDays_TXT.Text = .Item("TOTALDAYS") & " and a Half Day"
-                        NoOfDays_TXT.Tag = (.Item("TOTALDAYS") + 0.5).ToString
+                        NoOfDays_TXT.Text = .Item("PRESENT_DAYS") & " and a Half Day"
+                        NoOfDays_TXT.Tag = (.Item("PRESENT_DAYS") + 0.5).ToString
                         Console.WriteLine("Thiss " & NoOfDays_TXT.Tag)
                     End If
 
-                    RegularOT_TXT.Text = .Item("TOTALOVERTIME")
-                    SpecialHol_TXT.Text = .Item("TOTALSPECHOLIDAY")
-                    RegularHol_TXT.Text = .Item("TOTALREGHOLIDAY")
-                    Late_TXT.Text = .Item("TOTALLATE")
-                    UnderTime_TXT.Text = .Item("TOTALUNDERTIME")
+                    RegularOT_TXT.Text = .Item("OVERTIME")
+                    SpecialHol_TXT.Text = .Item("SPECHOLIDAY")
+                    RegularHol_TXT.Text = .Item("REGHOLIDAY")
+                    Late_TXT.Text = .Item("LATE")
+                    UnderTime_TXT.Text = .Item("UNDERTIME")
                 End With
             Else
                 Exit Sub
@@ -361,13 +361,18 @@ Module SelectFromDatabase
     Public Function CountCELL_Nothing(row As DataGridViewRow) As Integer
 
         Dim count As New Integer
-        For cell As Integer = 1 To 4
-            If Not row.DefaultCellStyle.ForeColor = Color.Red And row.Cells(5).Value = True And row.Cells(cell).Value = Nothing Then
-                count += 1
-            End If
-        Next
+        If Not row.DefaultCellStyle.ForeColor = Color.Red And row.Cells(5).Value = True Then
+
+            For cell As Integer = 1 To 4
+                If row.Cells(cell).Value = Nothing Then
+                    count += 1
+                End If
+            Next
+
+        End If
 
         Console.WriteLine("Count " & count)
+
         Return count
     End Function
 
