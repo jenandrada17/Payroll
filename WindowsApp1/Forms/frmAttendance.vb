@@ -483,11 +483,14 @@ Public Class frmAttendance
                     .Item("PAYDATE") = DataGridView1.Tag
                     .Item("TOTALDAYS") = TotalDays_LBL.Text
                     .Item("TOTALDAYSHOUR") = hourOfDay_LBL.Text
-                    .Item("TOTALLATEHOUR") = TotalLateHR_LBL.Text
-                    .Item("TOTALLATEMINUTE") = TotalLateMIN_LBL.Text
 
-                    .Item("TOTALUTHOUR") = TotalUTHR_LBL.Text
-                    .Item("TOTALUTMINUTE") = TotalUTMIN_LBL.Text
+                    .Item("TOTALLATE") = TotalLateMIN_LBL.Text
+                    '.Item("TOTALLATEHOUR") = TotalLateHR_LBL.Text
+                    '.Item("TOTALLATEMINUTE") = TotalLateMIN_LBL.Text
+
+                    .Item("TOTALUNDERTIME") = TotalUTMIN_LBL.Text
+                    '.Item("TOTALUTHOUR") = TotalUTHR_LBL.Text
+                    '.Item("TOTALUTMINUTE") = TotalUTMIN_LBL.Text
 
                     .Item("TOTALABSENTDAYS") = TotalAbsent_LBL.Text
                     .Item("TOTALABSENTHOUR") = AbsentHour_LBL.Text
@@ -503,6 +506,7 @@ Public Class frmAttendance
 
             MsgBox("New Record Added!", MsgBoxStyle.Information, "Information")
 
+            ClearAfter()
             'Else
 
             'Dim result As DialogResult = MessageBox.Show("Name already exist. Do you want to update the existing record?", "Warning", MessageBoxButtons.YesNo)

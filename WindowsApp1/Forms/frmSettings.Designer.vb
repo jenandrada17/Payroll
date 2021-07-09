@@ -40,10 +40,17 @@ Partial Class frmSettings
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Context_Remove = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.RemoveToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.HolidayRate_BTN = New System.Windows.Forms.Button()
+        Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.RegularRate_TXT = New System.Windows.Forms.TextBox()
+        Me.SpecialRate_TXT = New System.Windows.Forms.TextBox()
         Me.TabControl1.SuspendLayout()
         Me.Holiday_Tab.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.Context_Remove.SuspendLayout()
+        Me.GroupBox2.SuspendLayout()
         Me.SuspendLayout()
         '
         'Close_LBL
@@ -68,7 +75,7 @@ Partial Class frmSettings
         '
         'Holiday_Tab
         '
-        Me.Holiday_Tab.Controls.Add(Me.Save_BTN)
+        Me.Holiday_Tab.Controls.Add(Me.GroupBox2)
         Me.Holiday_Tab.Controls.Add(Me.lvHoliday)
         Me.Holiday_Tab.Controls.Add(Me.Special_RB)
         Me.Holiday_Tab.Controls.Add(Me.Regular_RB)
@@ -84,7 +91,7 @@ Partial Class frmSettings
         'Save_BTN
         '
         Me.Save_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Save_BTN.Location = New System.Drawing.Point(194, 255)
+        Me.Save_BTN.Location = New System.Drawing.Point(172, 153)
         Me.Save_BTN.Name = "Save_BTN"
         Me.Save_BTN.Size = New System.Drawing.Size(99, 37)
         Me.Save_BTN.TabIndex = 84
@@ -147,12 +154,13 @@ Partial Class frmSettings
         '
         Me.GroupBox1.Controls.Add(Me.Date_DTP)
         Me.GroupBox1.Controls.Add(Me.Label3)
+        Me.GroupBox1.Controls.Add(Me.Save_BTN)
         Me.GroupBox1.Controls.Add(Me.Name_TXT)
         Me.GroupBox1.Controls.Add(Me.Label2)
         Me.GroupBox1.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GroupBox1.Location = New System.Drawing.Point(6, 74)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(443, 150)
+        Me.GroupBox1.Size = New System.Drawing.Size(458, 200)
         Me.GroupBox1.TabIndex = 0
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Employee"
@@ -164,7 +172,7 @@ Partial Class frmSettings
         Me.Date_DTP.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Date_DTP.Location = New System.Drawing.Point(89, 39)
         Me.Date_DTP.Name = "Date_DTP"
-        Me.Date_DTP.Size = New System.Drawing.Size(330, 33)
+        Me.Date_DTP.Size = New System.Drawing.Size(317, 33)
         Me.Date_DTP.TabIndex = 4
         Me.Date_DTP.Value = New Date(2021, 6, 2, 0, 0, 0, 0)
         '
@@ -184,7 +192,7 @@ Partial Class frmSettings
         Me.Name_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name_TXT.Location = New System.Drawing.Point(89, 91)
         Me.Name_TXT.Name = "Name_TXT"
-        Me.Name_TXT.Size = New System.Drawing.Size(330, 33)
+        Me.Name_TXT.Size = New System.Drawing.Size(317, 33)
         Me.Name_TXT.TabIndex = 3
         '
         'Label2
@@ -219,6 +227,71 @@ Partial Class frmSettings
         Me.RemoveToolStripMenuItem.Size = New System.Drawing.Size(117, 22)
         Me.RemoveToolStripMenuItem.Text = "Remove"
         '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label4.Location = New System.Drawing.Point(49, 39)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(58, 25)
+        Me.Label4.TabIndex = 5
+        Me.Label4.Text = "Regular"
+        '
+        'HolidayRate_BTN
+        '
+        Me.HolidayRate_BTN.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.HolidayRate_BTN.Location = New System.Drawing.Point(334, 63)
+        Me.HolidayRate_BTN.Name = "HolidayRate_BTN"
+        Me.HolidayRate_BTN.Size = New System.Drawing.Size(72, 31)
+        Me.HolidayRate_BTN.TabIndex = 85
+        Me.HolidayRate_BTN.Text = "Change"
+        Me.HolidayRate_BTN.UseVisualStyleBackColor = True
+        '
+        'GroupBox2
+        '
+        Me.GroupBox2.Controls.Add(Me.SpecialRate_TXT)
+        Me.GroupBox2.Controls.Add(Me.RegularRate_TXT)
+        Me.GroupBox2.Controls.Add(Me.Label6)
+        Me.GroupBox2.Controls.Add(Me.Label4)
+        Me.GroupBox2.Controls.Add(Me.HolidayRate_BTN)
+        Me.GroupBox2.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GroupBox2.Location = New System.Drawing.Point(6, 431)
+        Me.GroupBox2.Name = "GroupBox2"
+        Me.GroupBox2.Size = New System.Drawing.Size(443, 132)
+        Me.GroupBox2.TabIndex = 86
+        Me.GroupBox2.TabStop = False
+        Me.GroupBox2.Text = "Holiday Rate"
+        '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label6.Location = New System.Drawing.Point(49, 88)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(54, 25)
+        Me.Label6.TabIndex = 87
+        Me.Label6.Text = "Special"
+        '
+        'RegularRate_TXT
+        '
+        Me.RegularRate_TXT.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper
+        Me.RegularRate_TXT.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.RegularRate_TXT.Location = New System.Drawing.Point(135, 38)
+        Me.RegularRate_TXT.Name = "RegularRate_TXT"
+        Me.RegularRate_TXT.ReadOnly = True
+        Me.RegularRate_TXT.Size = New System.Drawing.Size(125, 29)
+        Me.RegularRate_TXT.TabIndex = 85
+        '
+        'SpecialRate_TXT
+        '
+        Me.SpecialRate_TXT.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper
+        Me.SpecialRate_TXT.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SpecialRate_TXT.Location = New System.Drawing.Point(135, 88)
+        Me.SpecialRate_TXT.Name = "SpecialRate_TXT"
+        Me.SpecialRate_TXT.ReadOnly = True
+        Me.SpecialRate_TXT.Size = New System.Drawing.Size(125, 29)
+        Me.SpecialRate_TXT.TabIndex = 88
+        '
         'frmSettings
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -236,6 +309,8 @@ Partial Class frmSettings
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
         Me.Context_Remove.ResumeLayout(False)
+        Me.GroupBox2.ResumeLayout(False)
+        Me.GroupBox2.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -258,4 +333,10 @@ Partial Class frmSettings
     Friend WithEvents Save_BTN As Button
     Friend WithEvents Context_Remove As ContextMenuStrip
     Friend WithEvents RemoveToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents Label4 As Label
+    Friend WithEvents HolidayRate_BTN As Button
+    Friend WithEvents GroupBox2 As GroupBox
+    Friend WithEvents SpecialRate_TXT As TextBox
+    Friend WithEvents RegularRate_TXT As TextBox
+    Friend WithEvents Label6 As Label
 End Class

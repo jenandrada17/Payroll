@@ -5,6 +5,11 @@ Public Class frmSettings
 
     Private Sub frmSettings_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Date_DTP.CustomFormat = "MM/yyyy"
+
+        If ThisHasRow("PAYROLL_HOLIDAY_RATE") Then
+            HolidayRate(RegularRate_TXT, SpecialRate_TXT)
+        End If
+
     End Sub
 
     Private Sub Close_LBL_Click(sender As Object, e As EventArgs) Handles Close_LBL.Click
@@ -97,4 +102,22 @@ Public Class frmSettings
         End If
     End Sub
 
+    Private Sub HolidayRate_BTN_Click(sender As Object, e As EventArgs) Handles HolidayRate_BTN.Click
+
+        If HolidayRate_BTN.Text = "Change" Then
+            RegularRate_TXT.ReadOnly = False
+            SpecialRate_TXT.ReadOnly = False
+            HolidayRate_BTN.Text = "Save"
+        Else
+            SaveHOLIDAY_RATE("REGULAR", RegularRate_TXT.Text)
+            SaveHOLIDAY_RATE("SPECIAL", SpecialRate_TXT.Text)
+
+            RegularRate_TXT.ReadOnly = True
+            SpecialRate_TXT.ReadOnly = True
+            HolidayRate_BTN.Text = "Change"
+
+            MsgBox("Holiday Rate Saved!", MsgBoxStyle.Information, "Information")
+        End If
+
+    End Sub
 End Class

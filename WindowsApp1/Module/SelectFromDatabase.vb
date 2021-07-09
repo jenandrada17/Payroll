@@ -2,6 +2,16 @@
 
 Module SelectFromDatabase
 
+    Public Function ThisHasRow(table As String)
+        Dim mysql As String = "Select * FROM " & table & ""
+        Dim ds As DataSet = LoadSQL(mysql, table)
+        If ds.Tables(0).Rows.Count > 0 Then
+            Return True
+        End If
+        Return False
+    End Function
+
+
     Friend Sub REGULDARHolidayLists(LV As ListView)
         Dim sql As String = "select  DATEE, NAME from PAYROLL_HOLIDAY where KINDS = 'REGULAR' "
 
@@ -37,66 +47,36 @@ Module SelectFromDatabase
     End Sub
 
 
-    Friend Sub AllowanceDeductionDetails(biometric As String, namee As TextBox, yess As RadioButton,
-                             ratee As TextBox, boarding As TextBox, carekit As TextBox,
-                             positional As TextBox, Transport As TextBox, Medical As TextBox,
-                             OtherAllowance As TextBox, CashAdvance As TextBox, Savings As TextBox,
-                             Loan As TextBox, Charges As TextBox, Meal As TextBox, OtherDeduction As TextBox)
-        Dim mysql As String
-
-        mysql = "Select * From tbl_Employee WHERE BIOMETRICID= '" & biometric & "'"
-        Using ds As DataSet = LoadSQL(mysql, "tbl_Employee")
-
-            If ds.Tables(0).Rows.Count > 0 Then
-
-                Dim data As DataRow = ds.Tables(0).Rows(0)
-                With data
-
-                    Dim MI As String
-
-                    If String.IsNullOrEmpty(.Item("MIDDLENAME")) Then
-                        MI = ""
-                    Else
-                        MI = .Item("MIDDLENAME").Substring(0, 1) & "."
-                    End If
-
-                    namee.Text = .Item("FIRSTNAME") & " " & MI & " " & .Item("LASTNAME") & " " & .Item("SUFFIX")
-                    namee.Tag = .Item("ID")
-                End With
-            End If
-
-        End Using
+    Friend Sub AttendanceDetails(biometric As String, NoOfDays_TXT As TextBox, RegularOT_TXT As TextBox,
+                             SpecialHol_TXT As TextBox, RegularHol_TXT As TextBox, Late_TXT As TextBox,
+                             UnderTime_TXT As TextBox)
 
 
-        mysql = "Select * From PAYROLL_ATTENDANCE WHERE EMP_ID = '" & namee.Tag & "'"
+        Dim mysql As String = "Select * From PAYROLL_ATTENDANCE WHERE BIOMETRICID = '" & biometric & "'"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
 
-            If ds.Tables(0).Rows.Count > 0 Then
-                Dim data As DataRow = ds.Tables(0).Rows(0)
-                With data
+            Dim dr As DataRow = ds.Tables(0).Rows(0)
+            If dr.Table.Rows.Count > 0 Then
 
-                    If .Item("FIX_RATE") = "YES" Then
-                        yess.Checked = True
+                With dr
+
+                    If .Item("TOTALDAYSHOUR") = 0 Then
+                        NoOfDays_TXT.Text = .Item("TOTALDAYS")
+                        NoOfDays_TXT.Tag = .Item("TOTALDAYS")
                     Else
-                        yess.Checked = False
+                        NoOfDays_TXT.Text = .Item("TOTALDAYS") & " and a Half Day"
+                        NoOfDays_TXT.Tag = (.Item("TOTALDAYS") + 0.5).ToString
+                        Console.WriteLine("Thiss " & NoOfDays_TXT.Tag)
                     End If
 
-                    ratee.Text = .Item("DAILY_SALARY")
-                    boarding.Text = .Item("BOARDING_ALLOWANCE")
-                    carekit.Text = .Item("CAREKIT_ALLOWANCE")
-                    positional.Text = .Item("POSITIONAL_ALLOWANCE")
-                    Transport.Text = .Item("TRANSPO_ALLOWANCE")
-                    Medical.Text = .Item("MEDICAL_ALLOWANCE")
-                    OtherAllowance.Text = .Item("OTHER_ALLOWANCE")
-
-                    CashAdvance.Text = .Item("CASH_ADVANCE")
-                    Savings.Text = .Item("SAVINGS_DEDUCTION")
-                    Loan.Text = .Item("LOANS_DEDUCTION")
-                    Charges.Text = .Item("CHARGES_DEDUCTION")
-                    Meal.Text = .Item("MEAL_DEDUCTION")
-                    OtherDeduction.Text = .Item("OTHER_DEDUCTION")
-
+                    RegularOT_TXT.Text = .Item("TOTALOVERTIME")
+                    SpecialHol_TXT.Text = .Item("TOTALSPECHOLIDAY")
+                    RegularHol_TXT.Text = .Item("TOTALREGHOLIDAY")
+                    Late_TXT.Text = .Item("TOTALLATE")
+                    UnderTime_TXT.Text = .Item("TOTALUNDERTIME")
                 End With
+            Else
+                Exit Sub
             End If
 
         End Using
@@ -185,5 +165,30 @@ Module SelectFromDatabase
 
         End If
     End Sub
+
+
+    Friend Sub HolidayRate(regularRate As TextBox, SpecialRate As TextBox)
+
+        Dim mysql As String = "Select * From PAYROLL_HOLIDAY_RATE"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_HOLIDAY_RATE")
+
+            If ds.Tables(0).Rows.Count > 0 Then
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+                        If .Item("HOLIDAY") = "REGULAR" Then
+                            regularRate.Text = .Item("RATE")
+                        Else
+                            SpecialRate.Text = .Item("RATE")
+                        End If
+                    End With
+                Next
+            End If
+
+        End Using
+
+
+
+    End Sub
+
 
 End Module

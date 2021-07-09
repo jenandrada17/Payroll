@@ -75,4 +75,38 @@
         MsgBox("New Attendance Added!", MsgBoxStyle.Information, "Information")
     End Sub
 
+
+    Friend Sub SaveHOLIDAY_RATE(HOLIDAY As String, RATE As String)
+        Dim mysql As String
+
+        mysql = "Select * FROM PAYROLL_HOLIDAY_RATE where HOLIDAY = '" & HOLIDAY & "'"
+        Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_HOLIDAY_RATE")
+        If dss.Tables(0).Rows.Count > 0 Then
+            With dss.Tables(0).Rows(0)
+
+                .Item("RATE") = RATE
+
+            End With
+            SaveEntry(dss, False)
+
+        Else
+
+            mysql = "Select * From PAYROLL_HOLIDAY_RATE Rows 1"
+            Using ds As DataSet = LoadSQL(mysql, "PAYROLL_HOLIDAY_RATE")
+
+                Dim dsNewRow As DataRow = ds.Tables(0).NewRow
+                With dsNewRow
+
+                    .Item("HOLIDAY") = HOLIDAY
+                    .Item("RATE") = RATE
+
+                End With
+                ds.Tables(0).Rows.Add(dsNewRow)
+                SaveEntry(ds)
+            End Using
+
+        End If
+
+    End Sub
+
 End Module

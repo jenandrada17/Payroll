@@ -1,4 +1,5 @@
 ﻿Public Class frmPayout
+
     Private Sub Select_BTN_Click(sender As Object, e As EventArgs) Handles Select_BTN.Click
 
         If frmEmployee Is Nothing Then
@@ -11,7 +12,6 @@
             frm.Show()
             frm.Dock = DockStyle.Fill
             frm.BringToFront()
-
         Else
             frmEmployeeInfo.BringToFront()
         End If
@@ -23,10 +23,35 @@
     Private Sub BiometricID_TXT_TextChanged(sender As Object, e As EventArgs) Handles BiometricID_TXT.TextChanged
 
         If BiometricID_TXT.Text = "" Then
-            Exit Sub
+            Name_TXT.Text = ""
         Else
-            AllowanceDeductionDetails(BiometricID_TXT.Text, Name_TXT, Yes_RB, Rate_TXT, Boarding_TXT, Carekit_TXT, Positional_TXT, Transport_TXT,
-                                    Medical_TXT, OtherAllowance_TXT, CashAdvance_TXT, Savings_TXT, Loan_TXT, Charges_TXT, Meal_TXT, OtherDeduction_TXT)
+
+            Dim mysql As String = "Select * From tbl_Employee WHERE BIOMETRICID= '" & BiometricID_TXT.Text & "'"
+            Using ds As DataSet = LoadSQL(mysql, "tbl_Employee")
+
+                If ds.Tables(0).Rows.Count > 0 Then
+
+                    Dim data As DataRow = ds.Tables(0).Rows(0)
+
+                    With data
+
+                        Dim MI As String
+
+                        If String.IsNullOrEmpty(.Item("MIDDLENAME")) Then
+                            MI = ""
+                        Else
+                            MI = .Item("MIDDLENAME").Substring(0, 1) & "."
+                        End If
+
+                        Name_TXT.Text = .Item("FIRSTNAME") & " " & MI & " " & .Item("LASTNAME") & " " & .Item("SUFFIX")
+                        Name_TXT.Tag = .Item("ID")
+                        Console.WriteLine("Thissss " & Name_TXT.Tag)
+                    End With
+                Else
+                    Name_TXT.Text = ""
+                End If
+            End Using
+
         End If
 
     End Sub
@@ -59,5 +84,23 @@
 
     Private Sub frmPayout_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
+    End Sub
+
+    Private Sub Name_TXT_TextChanged(sender As Object, e As EventArgs) Handles Name_TXT.TextChanged
+        If String.IsNullOrEmpty(Name_TXT.Text) Then
+        Else
+
+            AttendanceDetails(BiometricID_TXT.Text, NoOfDays_TXT, RegularOT_TXT, SpecialHol_TXT, RegularHol_TXT,
+                                    Late_TXT, UnderTime_TXT)
+        End If
+    End Sub
+
+    Private Sub Rate_TXT_TextChanged(sender As Object, e As EventArgs) Handles Rate_TXT.TextChanged
+        If Rate_TXT.Text = "" Then
+            TotalBasic_LBL.Text = 0
+        Else
+            TotalBasic_LBL.Text = (NoOfDays_TXT.Tag * Rate_TXT.Text).ToString
+            TotalOT_LBL.Text = ((Rate_TXT.Text / 8) * RegularOT_TXT.Text).ToString
+        End If
     End Sub
 End Class
