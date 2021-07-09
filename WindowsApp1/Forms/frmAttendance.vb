@@ -1,4 +1,6 @@
-﻿Imports FirebirdSql.Data.FirebirdClient
+﻿Imports System.IO
+Imports FirebirdSql.Data.FirebirdClient
+Imports Microsoft.Office.Interop
 
 Public Class frmAttendance
 
@@ -7,6 +9,10 @@ Public Class frmAttendance
     Dim DateNowADDMonth As DateTime = DateTime.Now.AddMonths(1)
     Dim StartFour, EndFour, StartNineteen, EndNineteen, Paydate As DateTime
     Dim newNo As Integer
+    Dim eApp As New Excel.Application
+    Dim eBook As Excel.Workbook = Nothing
+    Dim eSheet As Excel.Worksheet = Nothing
+    Dim eCell As Excel.Range
 
     Private Sub frmAttendance_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         LoadDateTime()
@@ -596,6 +602,53 @@ Public Class frmAttendance
         Name_TXT.AutoCompleteMode = AutoCompleteMode.Suggest
         Name_TXT.AutoCompleteSource = AutoCompleteSource.CustomSource
 
+    End Sub
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs)
+        Dim f As New SampleImport
+        f.Show()
+    End Sub
+    Private Function ExcelFilePath(ByVal filePath As String) As String
+        DefaultFolder = Path.GetDirectoryName(filePath)
+        TargetFile = filePath
+        Return TargetFile
+    End Function
+
+    Private Sub OpenFile_BTN_Click(sender As Object, e As EventArgs) Handles OpenFile_BTN.Click
+        Using f As New OpenFileDialog
+            f.Filter = "Excel 2003|*.xls|Excel 2007|*.xlsx"
+            If DialogResult.OK = f.ShowDialog() Then
+                Path_TXT.Text = f.FileName
+                ExcelFilePath(Path_TXT.Text)
+            End If
+        End Using
+    End Sub
+
+    Private Sub Import_BTN_Click(sender As Object, e As EventArgs) Handles Import_BTN.Click
+
+        eApp = New Excel.Application
+        eBook = eApp.Workbooks.Open(Path_TXT.Text)
+        eSheet = eBook.Worksheets(1)
+        eCell = eSheet.UsedRange
+        Dim row As Integer
+
+        Dim MyConnection As System.Data.OleDb.OleDbConnection
+        Dim DtSet As System.Data.DataSet
+        Dim MyCommand As System.Data.OleDb.OleDbDataAdapter
+        MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path_TXT.Text}';Extended Properties=Excel 8.0;")
+        MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
+        MyCommand.TableMappings.Add("Table", "Net-informations.com")
+        DtSet = New System.Data.DataSet
+        MyCommand.Fill(DtSet)
+
+        For row = 2 To DtSet.Tables(0).Rows.Count
+            SaveBiometricSheet(Paydate, eCell(row, 1).Value, eCell(row, 2).Value)
+        Next
+
+        'Bio_grid.DataSource = DtSet.Tables(0)
+
+        MessageBox.Show("Succesfully Saved!", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        MyConnection.Close()
     End Sub
 
     Private Sub DataGridView1_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView1.CellClick

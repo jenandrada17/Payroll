@@ -22,11 +22,11 @@ Partial Class frmAttendance
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle21 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle24 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle25 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle22 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle23 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.Manual_Tab = New System.Windows.Forms.TabPage()
@@ -82,11 +82,21 @@ Partial Class frmAttendance
         Me.Label2 = New System.Windows.Forms.Label()
         Me.BiometricID_TXT = New System.Windows.Forms.TextBox()
         Me.Close_LBL = New System.Windows.Forms.Label()
+        Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.Bio_grid = New System.Windows.Forms.DataGridView()
+        Me.FlowLayoutPanel1 = New System.Windows.Forms.FlowLayoutPanel()
+        Me.Import_BTN = New System.Windows.Forms.Button()
+        Me.Path_TXT = New System.Windows.Forms.TextBox()
+        Me.OpenFile_BTN = New System.Windows.Forms.Button()
+        Me.Name_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.TabControl1.SuspendLayout()
         Me.Manual_Tab.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
+        Me.TabPage1.SuspendLayout()
+        CType(Me.Bio_grid, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.FlowLayoutPanel1.SuspendLayout()
         Me.SuspendLayout()
         '
         'Label1
@@ -102,6 +112,7 @@ Partial Class frmAttendance
         'TabControl1
         '
         Me.TabControl1.Controls.Add(Me.Manual_Tab)
+        Me.TabControl1.Controls.Add(Me.TabPage1)
         Me.TabControl1.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.TabControl1.Location = New System.Drawing.Point(18, 37)
         Me.TabControl1.Name = "TabControl1"
@@ -152,7 +163,7 @@ Partial Class frmAttendance
         Me.Manual_Tab.Padding = New System.Windows.Forms.Padding(3)
         Me.Manual_Tab.Size = New System.Drawing.Size(1138, 569)
         Me.Manual_Tab.TabIndex = 0
-        Me.Manual_Tab.Text = "Encode"
+        Me.Manual_Tab.Text = "Manual"
         Me.Manual_Tab.UseVisualStyleBackColor = True
         '
         'Label15
@@ -549,34 +560,34 @@ Partial Class frmAttendance
         Me.DataGridView1.AllowUserToAddRows = False
         Me.DataGridView1.AllowUserToResizeColumns = False
         Me.DataGridView1.AllowUserToResizeRows = False
-        DataGridViewCellStyle1.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.DataGridView1.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle21.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DataGridView1.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle21
         Me.DataGridView1.BackgroundColor = System.Drawing.Color.White
         Me.DataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.DataGridView1.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText
         Me.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.DataGridView1.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Date_DataGrid, Me.AM_In_DataGrid, Me.AM_Out_DataGrid, Me.PM_IN_DataGrid, Me.PM_Out_DataGrid, Me.Select_Datagrid})
-        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.InactiveCaption
-        DataGridViewCellStyle4.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.DataGridView1.DefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle24.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle24.BackColor = System.Drawing.SystemColors.InactiveCaption
+        DataGridViewCellStyle24.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle24.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle24.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle24.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle24.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.DataGridView1.DefaultCellStyle = DataGridViewCellStyle24
         Me.DataGridView1.Location = New System.Drawing.Point(6, 44)
         Me.DataGridView1.Name = "DataGridView1"
         Me.DataGridView1.RowHeadersVisible = False
-        DataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.Transparent
-        DataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.Transparent
-        Me.DataGridView1.RowsDefaultCellStyle = DataGridViewCellStyle5
+        DataGridViewCellStyle25.SelectionBackColor = System.Drawing.Color.Transparent
+        DataGridViewCellStyle25.SelectionForeColor = System.Drawing.Color.Transparent
+        Me.DataGridView1.RowsDefaultCellStyle = DataGridViewCellStyle25
         Me.DataGridView1.Size = New System.Drawing.Size(684, 487)
         Me.DataGridView1.TabIndex = 65
         '
         'Date_DataGrid
         '
-        DataGridViewCellStyle2.NullValue = Nothing
-        Me.Date_DataGrid.DefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle22.NullValue = Nothing
+        Me.Date_DataGrid.DefaultCellStyle = DataGridViewCellStyle22
         Me.Date_DataGrid.HeaderText = "Date"
         Me.Date_DataGrid.Name = "Date_DataGrid"
         Me.Date_DataGrid.ReadOnly = True
@@ -586,9 +597,9 @@ Partial Class frmAttendance
         '
         'AM_In_DataGrid
         '
-        DataGridViewCellStyle3.Format = "t"
-        DataGridViewCellStyle3.NullValue = Nothing
-        Me.AM_In_DataGrid.DefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle23.Format = "t"
+        DataGridViewCellStyle23.NullValue = Nothing
+        Me.AM_In_DataGrid.DefaultCellStyle = DataGridViewCellStyle23
         Me.AM_In_DataGrid.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.[Nothing]
         Me.AM_In_DataGrid.HeaderText = "In"
         Me.AM_In_DataGrid.Name = "AM_In_DataGrid"
@@ -697,6 +708,77 @@ Partial Class frmAttendance
         Me.Close_LBL.TabIndex = 74
         Me.Close_LBL.Text = "Close"
         '
+        'TabPage1
+        '
+        Me.TabPage1.Controls.Add(Me.Import_BTN)
+        Me.TabPage1.Controls.Add(Me.Path_TXT)
+        Me.TabPage1.Controls.Add(Me.OpenFile_BTN)
+        Me.TabPage1.Controls.Add(Me.FlowLayoutPanel1)
+        Me.TabPage1.Location = New System.Drawing.Point(4, 41)
+        Me.TabPage1.Name = "TabPage1"
+        Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage1.Size = New System.Drawing.Size(1138, 569)
+        Me.TabPage1.TabIndex = 1
+        Me.TabPage1.Text = "Biometric"
+        Me.TabPage1.UseVisualStyleBackColor = True
+        '
+        'Bio_grid
+        '
+        Me.Bio_grid.AllowUserToAddRows = False
+        Me.Bio_grid.BackgroundColor = System.Drawing.Color.White
+        Me.Bio_grid.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.Bio_grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.Bio_grid.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Name_DGV})
+        Me.Bio_grid.Location = New System.Drawing.Point(3, 3)
+        Me.Bio_grid.Name = "Bio_grid"
+        Me.Bio_grid.RowHeadersVisible = False
+        Me.Bio_grid.Size = New System.Drawing.Size(554, 48)
+        Me.Bio_grid.TabIndex = 1
+        '
+        'FlowLayoutPanel1
+        '
+        Me.FlowLayoutPanel1.AutoScroll = True
+        Me.FlowLayoutPanel1.Controls.Add(Me.Bio_grid)
+        Me.FlowLayoutPanel1.Location = New System.Drawing.Point(544, 6)
+        Me.FlowLayoutPanel1.Name = "FlowLayoutPanel1"
+        Me.FlowLayoutPanel1.Size = New System.Drawing.Size(588, 557)
+        Me.FlowLayoutPanel1.TabIndex = 2
+        '
+        'Import_BTN
+        '
+        Me.Import_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Import_BTN.Location = New System.Drawing.Point(432, 61)
+        Me.Import_BTN.Name = "Import_BTN"
+        Me.Import_BTN.Size = New System.Drawing.Size(82, 31)
+        Me.Import_BTN.TabIndex = 5
+        Me.Import_BTN.Text = "Import"
+        Me.Import_BTN.UseVisualStyleBackColor = True
+        '
+        'Path_TXT
+        '
+        Me.Path_TXT.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Path_TXT.Location = New System.Drawing.Point(6, 63)
+        Me.Path_TXT.Name = "Path_TXT"
+        Me.Path_TXT.Size = New System.Drawing.Size(411, 24)
+        Me.Path_TXT.TabIndex = 4
+        '
+        'OpenFile_BTN
+        '
+        Me.OpenFile_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.OpenFile_BTN.Location = New System.Drawing.Point(6, 19)
+        Me.OpenFile_BTN.Name = "OpenFile_BTN"
+        Me.OpenFile_BTN.Size = New System.Drawing.Size(101, 38)
+        Me.OpenFile_BTN.TabIndex = 3
+        Me.OpenFile_BTN.Text = "Select File"
+        Me.OpenFile_BTN.UseVisualStyleBackColor = True
+        '
+        'Name_DGV
+        '
+        Me.Name_DGV.HeaderText = "Name"
+        Me.Name_DGV.Name = "Name_DGV"
+        Me.Name_DGV.ReadOnly = True
+        Me.Name_DGV.Width = 550
+        '
         'frmAttendance
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -716,6 +798,10 @@ Partial Class frmAttendance
         CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
+        Me.TabPage1.ResumeLayout(False)
+        Me.TabPage1.PerformLayout()
+        CType(Me.Bio_grid, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.FlowLayoutPanel1.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -776,4 +862,11 @@ Partial Class frmAttendance
     Friend WithEvents Label4 As Label
     Friend WithEvents Label15 As Label
     Friend WithEvents Label14 As Label
+    Friend WithEvents TabPage1 As TabPage
+    Friend WithEvents FlowLayoutPanel1 As FlowLayoutPanel
+    Friend WithEvents Bio_grid As DataGridView
+    Friend WithEvents Import_BTN As Button
+    Friend WithEvents Path_TXT As TextBox
+    Friend WithEvents OpenFile_BTN As Button
+    Friend WithEvents Name_DGV As DataGridViewTextBoxColumn
 End Class

@@ -109,4 +109,45 @@
 
     End Sub
 
+    Public Sub SaveBiometricSheet(sheetName As String, bio As String, dateTime As String, payDate As String)
+
+        Dim mysql As String
+
+        mysql = "Select * FROM SAMPLE where SHEETNAME = '" & sheetName & "'"
+        Dim dss As DataSet = LoadSQL(mysql, "SAMPLE")
+        If dss.Tables(0).Rows.Count > 0 Then
+
+            Dim result As DialogResult = MessageBox.Show("File already imported, Do you want to modify?", "Already Imported", MessageBoxButtons.YesNo)
+            If result = DialogResult.Yes Then
+
+                With dss.Tables(0).Rows(0)
+
+                    .Item("BIOMETRICID") = bio
+                    .Item("DATEANDTIME") = dateTime
+                    .Item("PAYDATE") = payDate
+
+                End With
+                SaveEntry(dss, False)
+            Else
+                Exit Sub
+            End If
+        Else
+
+            mysql = "Select * From SAMPLE Rows 1"
+            Using ds As DataSet = LoadSQL(mysql, "SAMPLE")
+
+                Dim dsNewRow As DataRow = ds.Tables(0).NewRow
+                With dsNewRow
+
+                    .Item("BIOMETRICID") = bio
+                    .Item("DATEANDTIME") = dateTime
+
+                End With
+                ds.Tables(0).Rows.Add(dsNewRow)
+                SaveEntry(ds)
+            End Using
+
+        End If
+    End Sub
+
 End Module

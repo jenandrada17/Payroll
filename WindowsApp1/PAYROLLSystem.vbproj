@@ -48,8 +48,14 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DeathCodez">
+      <HintPath>D:\HRSystem\HRSystem\DeathCodez.dll</HintPath>
+    </Reference>
     <Reference Include="FirebirdSql.Data.FirebirdClient">
       <HintPath>..\..\..\HRSystem\DBConnect\bin\Debug\FirebirdSql.Data.FirebirdClient.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -78,6 +84,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class\Employee.vb" />
+    <Compile Include="For Testing Only\SampleImport.Designer.vb">
+      <DependentUpon>SampleImport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="For Testing Only\SampleImport.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\DailyTimeRecord.Designer.vb">
       <DependentUpon>DailyTimeRecord.vb</DependentUpon>
     </Compile>
@@ -123,6 +135,7 @@
     </Compile>
     <Compile Include="Module\Database.vb" />
     <Compile Include="Module\Developer.vb" />
+    <Compile Include="Module\FileDirectory.vb" />
     <Compile Include="Module\Public_Function.vb" />
     <Compile Include="Module\SaveUpdate.vb" />
     <Compile Include="Module\SelectFromDatabase.vb" />
@@ -145,6 +158,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="For Testing Only\SampleImport.resx">
+      <DependentUpon>SampleImport.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\DailyTimeRecord.resx">
       <DependentUpon>DailyTimeRecord.vb</DependentUpon>
     </EmbeddedResource>
