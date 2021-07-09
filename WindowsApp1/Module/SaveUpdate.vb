@@ -39,69 +39,69 @@
         RunCommand("DELETE FROM PAYROLL_HOLIDAY WHERE DATEE = '" & datee & "'")
     End Sub
 
-    Friend Sub SaveAttendance(biometric As Integer, paydate As String, days As String, daysHR As String, overTime As String, late_total As String,
-                              under_total As String, absentDays As String, absentHR As String, regHoliday As String, specHoliday As String, branch As String)
-        Dim mysql As String
+    'Friend Sub SaveAttendance(biometric As Integer, paydate As String, days As String, daysHR As String, overTime As String, late_total As String,
+    '                          under_total As String, absentDays As String, absentHR As String, regHoliday As String, specHoliday As String, branch As String)
+    '    Dim mysql As String
 
-        mysql = $"Select * FROM PAYROLL_ATTENDANCE where BIOMETRICID = '{biometric}' and PAYDATE = '{paydate}' and BRANCH = '{branch}'"
-        Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
-        If dss.Tables(0).Rows.Count > 0 Then
-            With dss.Tables(0).Rows(0)
+    '    mysql = $"Select * FROM PAYROLL_ATTENDANCE where BIOMETRICID = '{biometric}' and PAYDATE = '{paydate}' and BRANCH = '{branch}'"
+    '    Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
+    '    If dss.Tables(0).Rows.Count > 0 Then
+    '        With dss.Tables(0).Rows(0)
 
-                .Item("PRESENT_DAYS") = days
-                .Item("PRESENT_HOURS") = daysHR
+    '            .Item("PRESENT_DAYS") = days
+    '            .Item("PRESENT_HOURS") = daysHR
 
-                .Item("OVERTIME") = overTime
-                .Item("LATE") = late_total
-                .Item("UNDERTIME") = under_total
+    '            .Item("OVERTIME") = overTime
+    '            .Item("LATE") = late_total
+    '            .Item("UNDERTIME") = under_total
 
-                .Item("ABSENT_DAYS") = absentDays
-                .Item("ABSENT_HOURS") = absentHR
+    '            .Item("ABSENT_DAYS") = absentDays
+    '            .Item("ABSENT_HOURS") = absentHR
 
-                .Item("REGHOLIDAY") = regHoliday
-                .Item("SPECHOLIDAY") = specHoliday
+    '            .Item("REGHOLIDAY") = regHoliday
+    '            .Item("SPECHOLIDAY") = specHoliday
 
-                .Item("BRANCH") = branch
+    '            .Item("BRANCH") = branch
 
-            End With
-            SaveEntry(dss, False)
-        Else
+    '        End With
+    '        SaveEntry(dss, False)
+    '    Else
 
-            mysql = "Select * From PAYROLL_ATTENDANCE Rows 1"
-            Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
+    '        mysql = "Select * From PAYROLL_ATTENDANCE Rows 1"
+    '        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
 
-                Dim dsNewRow As DataRow = ds.Tables(0).NewRow
-                With dsNewRow
+    '            Dim dsNewRow As DataRow = ds.Tables(0).NewRow
+    '            With dsNewRow
 
-                    .Item("BIOMETRICID") = biometric
-                    .Item("PAYDATE") = paydate
+    '                .Item("BIOMETRICID") = biometric
+    '                .Item("PAYDATE") = paydate
 
-                    .Item("PRESENT_DAYS") = days
-                    .Item("PRESENT_HOURS") = daysHR
+    '                .Item("PRESENT_DAYS") = days
+    '                .Item("PRESENT_HOURS") = daysHR
 
-                    .Item("OVERTIME") = overTime
-                    .Item("LATE") = late_total
-                    .Item("UNDERTIME") = under_total
+    '                .Item("OVERTIME") = overTime
+    '                .Item("LATE") = late_total
+    '                .Item("UNDERTIME") = under_total
 
-                    .Item("ABSENT_DAYS") = absentDays
-                    .Item("ABSENT_HOURS") = absentHR
+    '                .Item("ABSENT_DAYS") = absentDays
+    '                .Item("ABSENT_HOURS") = absentHR
 
-                    .Item("REGHOLIDAY") = regHoliday
-                    .Item("SPECHOLIDAY") = specHoliday
+    '                .Item("REGHOLIDAY") = regHoliday
+    '                .Item("SPECHOLIDAY") = specHoliday
 
-                    .Item("BRANCH") = branch
+    '                .Item("BRANCH") = branch
 
-                End With
-                ds.Tables(0).Rows.Add(dsNewRow)
-                SaveEntry(ds)
-            End Using
-        End If
+    '            End With
+    '            ds.Tables(0).Rows.Add(dsNewRow)
+    '            SaveEntry(ds)
+    '        End Using
+    '    End If
 
-    End Sub
+    'End Sub
 
 
     Friend Sub SaveAttendanceEE(biometric As Integer, paydate As String, days As String, overTime As String, late_total As String,
-                              under_total As String, absentDays As String, regHoliday As String, specHoliday As String, branch As String)
+                              under_total As String, regHoliday As String, specHoliday As String, branch As String)
         Dim mysql As String
 
         mysql = $"Select * FROM PAYROLL_ATTENDANCE where BIOMETRICID = '{biometric}' and PAYDATE = '{paydate}' and BRANCH = '{branch}'"
@@ -115,7 +115,7 @@
                 .Item("LATE") = late_total
                 .Item("UNDERTIME") = under_total
 
-                .Item("ABSENT_DAYS") = absentDays
+                '.Item("ABSENT_DAYS") = absentDays
 
                 .Item("REGHOLIDAY") = regHoliday
                 .Item("SPECHOLIDAY") = specHoliday
@@ -141,7 +141,7 @@
                     .Item("LATE") = late_total
                     .Item("UNDERTIME") = under_total
 
-                    .Item("ABSENT_DAYS") = absentDays
+                    '.Item("ABSENT_DAYS") = absentDays
 
                     .Item("REGHOLIDAY") = regHoliday
                     .Item("SPECHOLIDAY") = specHoliday

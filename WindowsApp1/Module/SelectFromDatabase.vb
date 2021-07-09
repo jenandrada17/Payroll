@@ -238,11 +238,26 @@ Module SelectFromDatabase
             row.Cells("BIOID_DGVV").Value = .Item("BIOMETRICID")
             row.Cells("Name_DGVV").Value = .Item("LASTNAME") & ", " & .Item("FIRSTNAME") & " " & .Item("MIDDLENAME")
             row.Cells("Name_DGVV").Tag = .Item("ID")
-            row.Cells("Overtime_DGVV").Value = .Item("OVERTIME")
-            row.Cells("Late_DGVV").Value = .Item("LATE")
-            row.Cells("Undertime_DGVV").Value = .Item("UNDERTIME")
             row.Cells("PRESENT_DGVV").Value = .Item("PRESENT_DAYS")
-            row.Cells("Absent_DGVV").Value = .Item("ABSENT_DAYS")
+
+            If .Item("OVERTIME") = 0 Then
+                row.Cells("Overtime_DGVV").Value = ""
+            Else
+                row.Cells("Overtime_DGVV").Value = .Item("OVERTIME")
+            End If
+
+            If .Item("LATE").Equals("00:00:00") Then
+                row.Cells("Late_DGVV").Value = ""
+            Else
+                row.Cells("Late_DGVV").Value = IIf(IsDBNull(.Item("LATE")), "", .Item("LATE"))
+            End If
+
+            If .Item("UNDERTIME").Equals("00:00:00") Then
+                row.Cells("Undertime_DGVV").Value = ""
+            Else
+                row.Cells("Undertime_DGVV").Value = IIf(IsDBNull(.Item("UNDERTIME")), "", .Item("UNDERTIME"))
+            End If
+
             row.Height = 35
 
         End With
@@ -272,6 +287,8 @@ Module SelectFromDatabase
                 AAA = AAA.ToString("t")
                 HourGroup.Add(AAA)
             End If
+
+            Console.WriteLine("SortCountedDATE " & c & "val " & datee)
         Next
 
         Return HourGroup
@@ -298,6 +315,10 @@ Module SelectFromDatabase
                 With rdr
 
                     If combo.Name = "Paydate_ComboB" Then
+                        Dim datee As DateTime = rdr.Item(0).ToString
+                        combo.Items.Add(datee.ToString("d"))
+                        combo.Items.Remove(paydate)
+                    ElseIf combo.Name = "RE_Paydate_Combo" Then
                         Dim datee As DateTime = rdr.Item(0).ToString
                         combo.Items.Add(datee.ToString("d"))
                         combo.Items.Remove(paydate)
@@ -342,22 +363,43 @@ Module SelectFromDatabase
         Return status
     End Function
 
-    'Friend Sub Select_IMPORT_TABLE()
+    Friend Sub PopulateAttendanceRECORD(datagrid As DataGridView, Paydate As String)
 
-    '    Dim mysql As String = "Select * From IMPORT_DTR GROUP BY BIO_ID"
-    '    Using ds As DataSet = LoadSQL(mysql, "IMPORT_DTR")
+        datagrid.Rows.Clear()
+        Dim mysql As String = $"Select * From PAYROLL_ATTENDANCE A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRICID where A.PAYDATE = '{Paydate}' ORDER BY BRANCH"
 
-    '        If ds.Tables(0).Rows.Count > 0 Then
-    '            For Each dr In ds.Tables(0).Rows
-    '                With dr
-    '                    Console.WriteLine("Group by bio_id " & .Item("BIO_ID"))
-    '                End With
-    '            Next
-    '        End If
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
+            If ds.Tables(0).Rows.Count > 0 Then
+                For Each dr In ds.Tables(0).Rows
+                    AddRowRECORDS(dr, datagrid)
+                Next
+                AdjustHeightOfGridBasedOnRows(datagrid)
+            Else
+                datagrid.Rows.Clear()
+            End If
+        End Using
 
-    '    End Using
+    End Sub
 
-    'End Sub
+    Public Sub AddRowRECORDS(ByVal dr As DataRow, datagrid As DataGridView)
+
+        With dr
+
+            Dim rowId As Integer = datagrid.Rows.Add()
+            Dim row As DataGridViewRow = datagrid.Rows(rowId)
+            row.Cells("RE_BIO_DGV").Value = .Item("BIOMETRICID")
+            row.Cells("RE_NAME_DGV").Value = .Item("LASTNAME") & ", " & .Item("FIRSTNAME") & " " & .Item("MIDDLENAME")
+            row.Cells("RE_NAME_DGV").Tag = .Item("ID")
+            row.Cells("RE_OT_DGV").Value = .Item("OVERTIME")
+            row.Cells("RE_LATE_DGV").Value = .Item("LATE")
+            row.Cells("RE_UT_DGV").Value = .Item("UNDERTIME")
+            row.Cells("RE_DAYS_DGV").Value = .Item("PRESENT_DAYS")
+            row.Cells("RE_BRANCH_DGV").Value = .Item("BRANCH")
+            row.Height = 35
+
+        End With
+
+    End Sub
 
 
 End Module

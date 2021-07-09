@@ -26,8 +26,10 @@ Public Class frmAttendance
         DataGridView1.ClearSelection()
         CheckALL_CheckBox.Checked = True
         PopulateComboBox(Branch_ComboB, "tbl_branch", "BRANCHNAME")
-        PopulateComboBox(Paydate_ComboB, "IMPORT_DTR", "PAYDATE", Paydate)
+        PopulateComboBox(Paydate_ComboB, "BIOMETRIC_DTR", "PAYDATE", Paydate)
+        PopulateComboBox(RE_Paydate_Combo, "BIOMETRIC_DTR", "PAYDATE", Paydate)
         Paydate_ComboB.Items.Insert(0, "Current")
+        RE_Paydate_Combo.Items.Insert(0, "Current")
 
     End Sub
 
@@ -302,17 +304,20 @@ Public Class frmAttendance
         Dim Absent As Integer = 0
         For Each oRow As DataGridViewRow In DataGridView1.Rows
 
-            If Not oRow.DefaultCellStyle.ForeColor = Color.Red And oRow.Cells(5).Value = True Then
+            If oRow.Cells(5).Value = True Then
                 Present += 1
-            ElseIf Not oRow.DefaultCellStyle.ForeColor = Color.Red And oRow.Cells(5).Value = False Then
-                If Not oRow.DefaultCellStyle.BackColor = Color.MediumOrchid Or Not oRow.DefaultCellStyle.BackColor = Color.Plum Then
-                    Absent += 1
-                End If
             End If
+            'If Not oRow.DefaultCellStyle.ForeColor = Color.Red And oRow.Cells(5).Value = True Then
+            '    Present += 1
+            'ElseIf Not oRow.DefaultCellStyle.ForeColor = Color.Red And oRow.Cells(5).Value = False Then
+            '    If Not oRow.DefaultCellStyle.BackColor = Color.MediumOrchid Or Not oRow.DefaultCellStyle.BackColor = Color.Plum Then
+            '        Absent += 1
+            '    End If
+            'End If
         Next
 
         TotalDays_LBL.Text = Present
-        TotalAbsent_LBL.Text = Absent
+        'TotalAbsent_LBL.Text = Absent
 
 
         '===================================== SUM UP HALF DAY ====================================  
@@ -324,63 +329,22 @@ Public Class frmAttendance
             End If
         Next
 
-        If halfday_Hour = 4 Then
+        'If halfday_Hour = 4 Then
 
-            TotalAbsent_LBL.Text = Convert.ToInt32(TotalAbsent_LBL.Text) + 0.5
+        '    TotalAbsent_LBL.Text = Convert.ToInt32(TotalAbsent_LBL.Text) + 0.5
 
-        ElseIf halfday_Hour > 4 Then
+        'ElseIf halfday_Hour > 4 Then
 
-            Dim result As Integer
-            result = halfday_Hour / 8
+        '    Dim result As Integer
+        '    result = halfday_Hour / 8
 
-            TotalAbsent_LBL.Text = result + Convert.ToInt32(TotalAbsent_LBL.Text)
-        End If
+        '    TotalAbsent_LBL.Text = result + Convert.ToInt32(TotalAbsent_LBL.Text)
+        'End If
 
         Dim product As Double
         product = ((Convert.ToInt32(TotalDays_LBL.Text) * 8)) - halfday_Hour
         product = product / 8
         TotalDays_LBL.Text = product
-
-        'If product Mod 8 = 0 Then
-        '    product = product / 8
-        '    TotalDays_LBL.Text = product
-        'Else
-        '    product = (product / 8)
-        '    TotalDays_LBL.Text = product
-        'End If
-
-        ''===================================== SUM UP HALF DAY ====================================  
-        'Dim halfday_Hour As Integer = 0
-        'For Each oRow As DataGridViewRow In DataGridView1.Rows
-
-        '    If CountCELL_Nothing(oRow) = 3 Or CountCELL_Consecutive(oRow) = "HALFDAY" Then
-        '        halfday_Hour += 4
-        '    End If
-        'Next
-
-        'If halfday_Hour > 4 Then
-        '    Dim result As Integer
-        '    result = halfday_Hour / 8
-
-        '    If halfday_Hour Mod 8 = 0 Then
-        '        TotalAbsent_LBL.Text = result + Convert.ToInt32(TotalAbsent_LBL.Text)
-        '    Else
-        '        result = Math.Floor(result)
-        '        TotalAbsent_LBL.Text = (result + Convert.ToInt32(TotalAbsent_LBL.Text)).ToString & ".5"
-        '    End If
-        'End If
-
-        'Dim product As Double
-        'product = ((Convert.ToInt32(TotalDays_LBL.Text) * 8)) - halfday_Hour
-
-        'If product Mod 8 = 0 Then
-        '    product = product / 8
-        '    TotalDays_LBL.Text = product
-        'Else
-        '    product = product / 8
-        '    TotalDays_LBL.Text = CInt(Math.Floor(product)).ToString & ".5"
-        'End If
-
     End Sub
 
     Private Sub CalculateLATE(row As DataGridViewRow)
@@ -503,20 +467,54 @@ Public Class frmAttendance
 
         If Not BiometricID_TXT.Text = "" Then
 
-            'SaveAttendance(BiometricID_TXT.Text, DataGridView1.Tag, TotalDays_LBL.Text, hourOfDay_LBL.Text,
-            '                TotalOTHr_LBL.Text, TotalLateHR_LBL.Tag, TotalUTHR_LBL.Tag,
-            '                TotalAbsent_LBL.Text, AbsentHour_LBL.Text,
-            '                TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text, Branch_ComboB.SelectedItem)
-
-
             SaveAttendanceEE(BiometricID_TXT.Text, DataGridView1.Tag, TotalDays_LBL.Text, TotalOTHr_LBL.Text, TotalLateHR_LBL.Tag, TotalUTHR_LBL.Tag,
-                             TotalAbsent_LBL.Text, TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text, Branch_ComboB.SelectedItem)
+                             TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text, Branch_ComboB.SelectedItem)
 
             ClearAfter()
         Else
             MsgBox("Please Choose Employee's Name!", MsgBoxStyle.Critical, "Error")
         End If
 
+    End Sub
+
+    Private Sub OT_BTN_Click(sender As Object, e As EventArgs) Handles OT_BTN.Click
+        TotalOTHr_LBL.Text = 0
+    End Sub
+
+    Private Sub Late_BTN_Click(sender As Object, e As EventArgs) Handles Late_BTN.Click
+        TotalLateHR_LBL.Text = "00:00:00"
+    End Sub
+
+    Private Sub UT_BTN_Click(sender As Object, e As EventArgs) Handles UT_BTN.Click
+        TotalUTHR_LBL.Text = "00:00:00"
+    End Sub
+
+    Private Sub Records_grid_CellFormatting(sender As Object, e As DataGridViewCellFormattingEventArgs) Handles Records_grid.CellFormatting
+
+        If e.RowIndex > 0 And e.ColumnIndex = 0 Then
+            If Records_grid.Item(0, e.RowIndex - 1).Value = e.Value Then
+                e.Value = ""
+            ElseIf e.RowIndex < Records_grid.Rows.Count - 1 Then
+                Records_grid.Rows(e.RowIndex).DefaultCellStyle.BackColor = Color.White
+            End If
+        End If
+    End Sub
+
+    Private Sub RE_Paydate_Combo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles RE_Paydate_Combo.SelectedIndexChanged
+
+        If RE_Paydate_Combo.SelectedIndex > 0 Then
+            PopulateAttendanceRECORD(Records_grid, RE_Paydate_Combo.SelectedItem)
+        Else
+            PopulateAttendanceRECORD(Records_grid, Paydate)
+        End If
+    End Sub
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        If Paydate_ComboB.SelectedIndex > 0 Then
+            PopulateBiometricSHEET(Bio_grid, Paydate_ComboB.SelectedItem, Branch_ComboB.SelectedItem)
+        Else
+            PopulateBiometricSHEET(Bio_grid, Paydate, Branch_ComboB.SelectedItem)
+        End If
     End Sub
 
     Private Sub LoadEmployeeDetails()
@@ -570,20 +568,10 @@ Public Class frmAttendance
         End Using
     End Sub
 
-    Private Sub forLoop_ALL_IMPORTED()   '================================ WORKS WELL- FOR ALL RECORDS ONLY (PARTNER WITH ToDAtabse()) =============================  
-        distinct_bio.Clear()
+    Private Sub forLoop_ALL_IMPORTED()   '================================ WORKS WELL- FOR ALL RECORDS ONLY (PARTNER WITH ToDAtabse()) =============================   
+        LoadDateTime()
         Dim paydate_ As String = Paydate.ToString("d")
-
-        Dim sql As String = $"Select distinct(BIO_ID) From IMPORT_DTR where BRANCH = '{Branch_ComboB.SelectedItem}' and PAYDATE = '{paydate_}'"
-        Using ds As DataSet = LoadSQL(sql, "IMPORT_DTR")
-            If ds.Tables(0).Rows.Count > 0 Then
-                For Each dr In ds.Tables(0).Rows
-                    With dr
-                        distinct_bio.Add(.Item("BIO_ID"))
-                    End With
-                Next
-            End If
-        End Using
+        distinct_bio = distinct_bio.Distinct().ToList
 
         For Each biometric_No As String In distinct_bio
             list_inOut.Clear()
@@ -614,6 +602,7 @@ Public Class frmAttendance
                 For Each timme As String In timee
                     If timme.StartsWith(asss.ToString("M/d/yyyy")) Then
                         groups_timee.Add(timme)
+
                     End If
                 Next
 
@@ -649,17 +638,17 @@ Public Class frmAttendance
 
                         If newValuee = val Then
 
-                            If CountDate(groups_timee, val) = 2 Then
+                            If CountDate(groups_timee, val) >= 2 Then
                                 list_Group = SortCountedDATE(groups_timee, val)
                             ElseIf CountDate(groups_timee, val) = 1 Then
                                 list_Group = SortCountedDATE(groups_timee, val)
                             End If
 
                             '======================== PRINT 12 NOON ================ WORKED FINE
-                            If list_Group.Count = 2 Then
+                            If list_Group.Count >= 2 Then
 
                                 Dim list1 As DateTime = list_Group.Item(0)
-                                Dim list2 As DateTime = list_Group.Item(1)
+                                Dim list2 As DateTime = list_Group.Item(list_Group.Count - 1)
 
                                 list_hour(1) = list1.ToString("t")
                                 list_hour(2) = list2.ToString("t")
@@ -697,12 +686,12 @@ Public Class frmAttendance
             MsgBox("Please Select File", MsgBoxStyle.Critical, "Error")
         Else
 
+            DataGridView1.Rows.Clear()
             Dim MyConnection As System.Data.OleDb.OleDbConnection
             Dim DtSet As System.Data.DataSet
             Dim MyCommand As System.Data.OleDb.OleDbDataAdapter
 
-            If Zkteco_RadioB.Checked Then
-
+            Try
                 eApp = New Excel.Application
                 eBook = eApp.Workbooks.Open(Path_TXT.Text)
                 eSheet = eBook.Worksheets(1)
@@ -715,12 +704,16 @@ Public Class frmAttendance
                 DtSet = New System.Data.DataSet
                 MyCommand.Fill(DtSet)
 
+                distinct_bio.Clear()
+                list_inOut.Clear()
+
                 If File_Exist(Branch_ComboB.SelectedItem, Paydate) Then
 
                     Cursor = Cursors.WaitCursor
 
                     For row = 2 To DtSet.Tables(0).Rows.Count
                         SaveBiometricSheet(Paydate, eCell(row, 1).Value, eCell(row, 2).Value, Branch_ComboB.SelectedItem)
+                        distinct_bio.Add(eCell(row, 1).Value)
                     Next
 
                     Cursor = Cursors.Default
@@ -731,6 +724,7 @@ Public Class frmAttendance
 
                     For row = 2 To DtSet.Tables(0).Rows.Count
                         SaveBiometricSheet(Paydate, eCell(row, 1).Value, eCell(row, 2).Value, Branch_ComboB.SelectedItem)
+                        distinct_bio.Add(eCell(row, 1).Value)
                     Next
 
                     Cursor = Cursors.Default
@@ -741,6 +735,8 @@ Public Class frmAttendance
                 Cursor = Cursors.WaitCursor
 
                 forLoop_ALL_IMPORTED()   ' ===== SAVE AM_IN, AM_OUT, PM_IN, PM_OUT ====
+                SAVE_DIRECT_Attendance() ' ===== DIRECT SAVE TO ATTENDANCE ====
+                PopulateBiometricSHEET(Bio_grid, Paydate, Branch_ComboB.SelectedItem) ' ===== POPULATE DATAGRIDVIEW FROM SHEET ====
 
                 Cursor = Cursors.Default
 
@@ -748,7 +744,8 @@ Public Class frmAttendance
                 Path_TXT.Clear()
                 MyConnection.Close()
 
-            Else
+
+            Catch
 
                 eApp = New Excel.Application
                 eBook = eApp.Workbooks.Open(Path_TXT.Text)
@@ -762,48 +759,114 @@ Public Class frmAttendance
                 DtSet = New System.Data.DataSet
                 MyCommand.Fill(DtSet)
 
+                distinct_bio.Clear()
+
+                Cursor = Cursors.WaitCursor
+
+                Dim groups_time As New List(Of String)()
                 For row = 7 To DtSet.Tables(0).Rows.Count
-                    SaveSheet_FC200(Paydate, eCell(row, 2).Value, eCell(row, 5).Value, Branch_ComboB.SelectedItem)
+
+                    If eCell(row, 5).Value = Nothing Then
+                        Continue For
+                    End If
+
+                    Dim list_hour(3) As String
+                    Dim bio_no As String
+
+                    '=============== BIO NUMBER ================
+                    If eCell(row, 2).Value <> Nothing Then
+                        bio_no = eCell(row, 2).Value
+                    End If
+
+                    '=============== GROUP 4 TIME IN ============= 
+                    For column = 7 To 11
+                        If eCell(row, column).Value <> Nothing Then
+                            groups_time.Add(eCell(row, column).Value)
+                        End If
+                    Next
+
+
+                    '=============== CHECK PER CELL IN A ROW ============= 
+                    For column = 7 To 11
+
+                        Dim time As DateTime = (New DateTime()).AddDays(eCell(row, column).Value)
+
+                        '============================== WORKED FINE ========================
+
+                        If time >= "5:00 AM" And time <= "11:59 AM" Then
+                            If list_hour(0) = "" Then
+
+                                list_hour(0) = time.ToString("t")
+                            Else
+                                list_hour(1) = time.ToString("t")
+                            End If
+
+                        ElseIf time >= "4:00 PM" And time <= "11:00 PM" Then
+
+                            list_hour(3) = time.ToString("t")
+
+                        ElseIf time >= "1:00 PM" And time <= "3:00 PM" Then
+
+                            list_hour(2) = time.ToString("t")
+
+                        ElseIf time >= "12:00 PM" And time <= "12:59 PM" Then
+
+                            Dim newValuee As String = time.TimeOfDay.Hours
+
+                            If newValuee = "12" Then
+
+                                If CountDate(groups_time, "12") >= 2 Then
+                                    list_Group = SortCountedDATE(groups_time, "12")
+                                ElseIf CountDate(groups_time, "12") = 1 Then
+                                    list_Group = SortCountedDATE(groups_time, "12")
+                                End If
+
+                                '======================== PRINT 12 NOON ================ WORKED FINE
+                                If list_Group.Count >= 2 Then
+
+                                    Dim list1 As DateTime = list_Group.Item(0)
+                                    Dim list2 As DateTime = list_Group.Item(list_Group.Count - 1)
+
+                                    list_hour(1) = list1.ToString("t")
+                                    list_hour(2) = list2.ToString("t")
+
+                                    list_Group.Clear()
+                                ElseIf list_Group.Count = 1 Then
+
+                                    Dim list1 As DateTime = list_Group.Item(0)
+
+                                    list_hour(1) = list1.ToString("t")
+
+                                    list_Group.Clear()
+                                End If
+
+                            End If
+                        Else
+                            list_hour(1) = time.ToString("t")
+                        End If
+                    Next
+
+                    If list_hour(1) = "12:00 AM" Then
+                        list_hour(1) = ""
+                    End If
+
+                    If list_hour(0) = "" And list_hour(1) = "" And list_hour(2) = "" And list_hour(3) = "" Then
+                    Else
+                        distinct_bio.Add(bio_no)
+                        SaveDTR(bio_no, Paydate, eCell(row, 5).Value, Branch_ComboB.SelectedItem, list_hour(0), list_hour(1), list_hour(2), list_hour(3))
+                    End If
                 Next
 
-
-                'If File_Exist(Branch_ComboB.SelectedItem, Paydate) Then
-
-                '    Cursor = Cursors.WaitCursor
-
-                '    For row = 7 To DtSet.Tables(0).Rows.Count
-                '        SaveSheet_FC200(Paydate, eCell(row, 2).Value, eCell(row, 2).Value, Branch_ComboB.SelectedItem)
-                '    Next
-
-                '    Cursor = Cursors.Default
-
-                'ElseIf File_NOT_Exist(Branch_ComboB.SelectedItem, Paydate) Then
-
-                '    Cursor = Cursors.WaitCursor
-
-                '    For row = 2 To DtSet.Tables(0).Rows.Count
-                '        SaveSheet_FC200(Paydate, eCell(row, 1).Value, eCell(row, 2).Value, Branch_ComboB.SelectedItem)
-                '    Next
-
-                '    Cursor = Cursors.Default
-                'Else
-                '    Path_TXT.Text = ""
-                'End If
-
-                'Cursor = Cursors.WaitCursor
-
-                'forLoop_ALL_IMPORTED()   ' ===== SAVE AM_IN, AM_OUT, PM_IN, PM_OUT ====
-
-                'Cursor = Cursors.Default
+                Cursor = Cursors.Default
 
                 Import_BTN.Enabled = False
                 Path_TXT.Clear()
                 MyConnection.Close()
 
-            End If
+                SAVE_DIRECT_Attendance() ' ===== DIRECT SAVE TO ATTENDANCE ====
+                PopulateBiometricSHEET(Bio_grid, Paydate, Branch_ComboB.SelectedItem) ' ===== POPULATE DATAGRIDVIEW FROM SHEET ====
 
-            SAVE_DIRECT_Attendance() ' ===== DIRECT SAVE TO ATTENDANCE ====
-            PopulateBiometricSHEET(Bio_grid, Paydate, Branch_ComboB.SelectedItem) ' ===== POPULATE DATAGRIDVIEW FROM SHEET ====
+            End Try
         End If
 
     End Sub
@@ -902,20 +965,24 @@ Public Class frmAttendance
 
             '===================================== SUM UP PRESENT AND ABSENT ==================================== 
             Dim Present As Integer = 0
-            Dim Absent As Integer = 0
+            'Dim Absent As Integer = 0
             For Each oRow As DataGridViewRow In DataGridView1.Rows
 
-                If Not oRow.DefaultCellStyle.ForeColor = Color.Red And oRow.Cells(5).Value = True Then
+                If oRow.Cells(5).Value = True Then
                     Present += 1
-                ElseIf Not oRow.DefaultCellStyle.ForeColor = Color.Red And oRow.Cells(5).Value = False Then
-                    If Not oRow.DefaultCellStyle.BackColor = Color.MediumOrchid Or Not oRow.DefaultCellStyle.BackColor = Color.Plum Then
-                        Absent += 1
-                    End If
                 End If
+                'If Not oRow.DefaultCellStyle.ForeColor = Color.Red And oRow.Cells(5).Value = True Then
+                '    Present += 1
+                'ElseIf Not oRow.DefaultCellStyle.ForeColor = Color.Red And oRow.Cells(5).Value = False Then
+                '    If Not oRow.DefaultCellStyle.BackColor = Color.MediumOrchid Or Not oRow.DefaultCellStyle.BackColor = Color.Plum Then
+                '        Absent += 1
+                '    End If
+                'End If
             Next
 
             TotalDays_LBL.Text = Present
-            TotalAbsent_LBL.Text = Absent
+            'TotalAbsent_LBL.Text = Absent
+
 
             '===================================== SUM UP HALF DAY ====================================  
             Dim halfday_Hour As Integer = 0
@@ -926,17 +993,17 @@ Public Class frmAttendance
                 End If
             Next
 
-            If halfday_Hour = 4 Then
+            'If halfday_Hour = 4 Then
 
-                TotalAbsent_LBL.Text = Convert.ToInt32(TotalAbsent_LBL.Text) + 0.5
+            '    TotalAbsent_LBL.Text = Convert.ToInt32(TotalAbsent_LBL.Text) + 0.5
 
-            ElseIf halfday_Hour > 4 Then
+            'ElseIf halfday_Hour > 4 Then
 
-                Dim result As Integer
-                result = halfday_Hour / 8
+            '    Dim result As Integer
+            '    result = halfday_Hour / 8
 
-                TotalAbsent_LBL.Text = result + Convert.ToInt32(TotalAbsent_LBL.Text)
-            End If
+            '    TotalAbsent_LBL.Text = result + Convert.ToInt32(TotalAbsent_LBL.Text)
+            'End If
 
             Dim product As Double
             product = ((Convert.ToInt32(TotalDays_LBL.Text) * 8)) - halfday_Hour
@@ -944,7 +1011,7 @@ Public Class frmAttendance
             TotalDays_LBL.Text = product
 
             SaveAttendanceEE(biometric_No, paydate_, TotalDays_LBL.Text, TotalOTHr_LBL.Text, Late_Total.ToString, Under_Total.ToString,
-                             TotalAbsent_LBL.Text, TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text, Branch_ComboB.SelectedItem)
+                             TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text, Branch_ComboB.SelectedItem)
         Next
     End Sub
 
@@ -969,11 +1036,10 @@ Public Class frmAttendance
     End Sub
 
     Private Sub Attendance(bioNo As String)
-
         Dim paydate_ As String = Paydate.ToString("d")
 
         list_inOut.Clear()
-        Dim mysql As String = $"Select * From BIOMETRIC_DTR where BIO_ID = '{bioNo}' and BRANCH = '{Branch_ComboB.SelectedItem}' and PAYDATE = '{paydate_}'"
+        Dim mysql As String = $"Select * From BIOMETRIC_DTR A inner join PAYROLL_ATTENDANCE B on B.BIOMETRICID = A.BIO_ID where A.BIO_ID = '{bioNo}' and A.BRANCH = '{Branch_ComboB.SelectedItem}' and A.PAYDATE = '{paydate_}'"
         Using ds As DataSet = LoadSQL(mysql, "BIOMETRIC_DTR")
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
@@ -995,12 +1061,18 @@ Public Class frmAttendance
                             End If
                         Next
 
+                        TotalDays_LBL.Text = .Item("PRESENT_DAYS")
+                        TotalRHoliday_LBL.Text = .Item("REGHOLIDAY")
+                        TotalSHoliday_LBL.Text = .Item("SPECHOLIDAY")
+                        TotalLateHR_LBL.Text = IIf(IsDBNull(.Item("LATE")), "00:00:00", .Item("LATE"))
+                        TotalUTHR_LBL.Text = IIf(IsDBNull(.Item("UNDERTIME")), "00:00:00", .Item("UNDERTIME"))
+                        TotalOTHr_LBL.Text = .Item("OVERTIME")
+
                     End With
                 Next
             End If
         End Using
 
-        Calculate_BTN.PerformClick()
     End Sub
 
     Private Function CheckTimeRange(myDate As DateTime, minTime As TimeSpan, maxTime As TimeSpan) As Boolean
@@ -1021,16 +1093,10 @@ Public Class frmAttendance
 
     Private Sub Branch_ComboB_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Branch_ComboB.SelectedIndexChanged
 
-        If Zkteco_RadioB.Checked Then
-
-            If Paydate_ComboB.SelectedIndex > 0 Then
-                PopulateBiometricSHEET(Bio_grid, Paydate_ComboB.SelectedItem, Branch_ComboB.SelectedItem)
-            Else
-                PopulateBiometricSHEET(Bio_grid, Paydate, Branch_ComboB.SelectedItem)
-            End If
-
+        If Paydate_ComboB.SelectedIndex > 0 Then
+            PopulateBiometricSHEET(Bio_grid, Paydate_ComboB.SelectedItem, Branch_ComboB.SelectedItem)
         Else
-            Bio_grid.Rows.Clear()
+            PopulateBiometricSHEET(Bio_grid, Paydate, Branch_ComboB.SelectedItem)
         End If
     End Sub
 
@@ -1048,6 +1114,8 @@ Public Class frmAttendance
     Private Sub Attendance_Tab_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Attendance_Tab.SelectedIndexChanged
         If Attendance_Tab.SelectedIndex = 1 Then
             DataGridView1.ClearSelection()
+        ElseIf Attendance_Tab.SelectedIndex = 2 Then
+            PopulateAttendanceRECORD(Records_grid, Paydate)
         End If
     End Sub
 
