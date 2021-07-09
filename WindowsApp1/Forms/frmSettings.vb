@@ -16,7 +16,7 @@ Public Class frmSettings
 
         PopulateComboBox(Rate_Branch_ComboB, "tbl_branch", "BRANCHNAME")
         PopulateComboBox(Rate_Pos_ComboB, "tbl_employee", "EMP_POSITION")
-        PopulateSettings_Rate(Rate_grid, "BRANCHNAME")
+        Lists_Rate(Rate_list)
         Lists_Allowance(Allowance_LV)
         Lists_deduction(Deduction_List)
 
@@ -155,7 +155,6 @@ Public Class frmSettings
 
             SaveRATE(Rate_BioNo_TXT.Text, "BIOMETRICID", Rate_EmpAmount_TXT.Text, False, Rate_EmpAmount_TXT.Tag) ' === Rate_BioNo_TXT.Tag is BRANCHid ==== 
 
-
             Rate_EmpClear_BTN.PerformClick()
         End If
     End Sub
@@ -171,7 +170,7 @@ Public Class frmSettings
         If Rate_BioNo_TXT.Text = "" Then
             Rate_Employee_TXT.Text = ""
         Else
-            BiometricNo_Payout(Rate_BioNo_TXT.Text, Rate_Employee_TXT, Rate_EmpAmount_TXT)
+            Payout_Details(Rate_BioNo_TXT.Text, Rate_Employee_TXT, Rate_EmpAmount_TXT)
         End If
 
     End Sub
@@ -184,7 +183,7 @@ Public Class frmSettings
             Rate_Pos_ComboB.Text = "   Select Position"
             Rate_PosAmount_TXT.Clear()
 
-            PopulateSettings_Rate(Rate_grid, "EMP_POSITION")
+            Lists_Rate(Rate_list, "", "EMP_POSITION")
         End If
     End Sub
 
@@ -200,12 +199,15 @@ Public Class frmSettings
             Rate_Branch_ComboB.Text = "   Select Branch"
             Rate_BranchAmount_TXT.Clear()
 
-            PopulateSettings_Rate(Rate_grid, "BRANCHNAME")
+            Lists_Rate(Rate_list, "", "BRANCHNAME")
 
         End If
     End Sub
 
-    Private Sub Rate_BranchAmount_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Rate_PosAmount_TXT.KeyPress, Rate_EmpAmount_TXT.KeyPress, Rate_BranchAmount_TXT.KeyPress, Rate_BioNo_TXT.KeyPress, Allow_Amount_TXT.KeyPress
+    Private Sub Rate_BranchAmount_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Rate_PosAmount_TXT.KeyPress, Rate_EmpAmount_TXT.KeyPress,
+                                                Rate_BranchAmount_TXT.KeyPress, Rate_BioNo_TXT.KeyPress, Allow_Amount_TXT.KeyPress, DE_NoOfGives_TXT.KeyPress,
+                                                DE_AmountGive_TXT.KeyPress, DE_Total_TXT.KeyPress
+
         If e.KeyChar <> ChrW(Keys.Back) Then
             If Char.IsNumber(e.KeyChar) Then
             Else
@@ -215,7 +217,7 @@ Public Class frmSettings
     End Sub
 
     Private Sub Rate_Search_BTN_Click(sender As Object, e As EventArgs) Handles Rate_Search_BTN.Click
-        Search_Settings_Rate(Rate_Search_TXT.Text, Rate_grid)
+        Lists_Rate(Rate_list, Rate_Search_TXT.Text, "BRANCHNAME")
     End Sub
 
     Private Sub Rate_Search_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Rate_Search_TXT.KeyPress
@@ -323,19 +325,15 @@ Public Class frmSettings
 
     Private Sub DE_Cancel_BTN_Click(sender As Object, e As EventArgs) Handles DE_Cancel_BTN.Click
         DE_Category_Combo.Text = "Select"
-        DE_Name_TXT.Text = ""
-        DE_Amount_TXT.Text = ""
+        DE_Name_TXT.Clear()
+        DE_Total_TXT.Clear()
+        DE_NoOfGives_TXT.Clear()
+        DE_AmountGive_TXT.Clear()
     End Sub
-
     Private Sub DE_Save_BTN_Click(sender As Object, e As EventArgs) Handles DE_Save_BTN.Click
 
         If DE_Category_Combo.SelectedIndex >= 0 And Not DE_Name_TXT.Text = "" Then
-
-            If DE_Category_Combo.SelectedIndex = 2 Then
-                SaveDeduction(DE_Name_TXT.Tag, DE_SearchEmp_BTN.Tag, "CASH_ADVANCE", DE_Amount_TXT.Text)
-            Else
-                SaveDeduction(DE_Name_TXT.Tag, DE_SearchEmp_BTN.Tag, DE_Category_Combo.SelectedItem, DE_Amount_TXT.Text)
-            End If
+            SaveDeductionS(DE_Name_TXT.Tag, DE_SearchEmp_BTN.Tag, DE_Category_Combo.SelectedItem, DE_Total_TXT.Text, DE_NoOfGives_TXT.Text, DE_AmountGive_TXT.Text)
 
             Lists_deduction(Deduction_List)
             DE_Cancel_BTN.PerformClick()
@@ -353,5 +351,21 @@ Public Class frmSettings
 
     Private Sub SBU_Change_BTN_Click(sender As Object, e As EventArgs) Handles SBU_Change_BTN.Click
         SBU_group.Visible = True
+    End Sub
+
+    Private Sub DE_NoOfGives_TXT_TextChanged(sender As Object, e As EventArgs) Handles DE_NoOfGives_TXT.TextChanged
+        If Not DE_Total_TXT.Text = String.Empty And Not DE_NoOfGives_TXT.Text = String.Empty And IsNumeric(DE_NoOfGives_TXT.Text) Then
+            DE_AmountGive_TXT.Text = Math.Ceiling(Convert.ToDouble(DE_Total_TXT.Text) / Convert.ToDouble(DE_NoOfGives_TXT.Text))
+        Else
+            DE_AmountGive_TXT.Clear()
+        End If
+    End Sub
+
+    Private Sub DE_Search_BTN_Click(sender As Object, e As EventArgs) Handles DE_Search_BTN.Click
+        Lists_deduction(Deduction_List, DE_Search_TXT.Text)
+    End Sub
+
+    Private Sub DE_Search_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles DE_Search_TXT.KeyPress
+        If IsEnter(e) Then DE_Search_BTN.PerformClick()
     End Sub
 End Class

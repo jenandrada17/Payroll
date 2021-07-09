@@ -551,7 +551,6 @@ Public Class frmAttendance
         Name_TXT.AutoCompleteSource = AutoCompleteSource.CustomSource
 
     End Sub
-
     Private Function ExcelFilePath(ByVal filePath As String) As String
         DefaultFolder = Path.GetDirectoryName(filePath)
         TargetFile = filePath
