@@ -66,7 +66,6 @@ Module SelectFromDatabase
                     Else
                         NoOfDays_TXT.Text = .Item("PRESENT_DAYS") & " and a Half Day"
                         NoOfDays_TXT.Tag = (.Item("PRESENT_DAYS") + 0.5).ToString
-                        Console.WriteLine("Thiss " & NoOfDays_TXT.Tag)
                     End If
 
                     RegularOT_TXT.Text = .Item("OVERTIME")
@@ -215,9 +214,9 @@ Module SelectFromDatabase
     Friend Sub PopulateBiometricSHEET(datagrid As DataGridView, Paydate As String, BRANCHNAME As String)
 
         datagrid.Rows.Clear()
-        Dim mysql As String = $"Select distinct(BIO_ID), B.ID, B.LASTNAME, B.FIRSTNAME, B.MIDDLENAME From IMPORT_DTR A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIO_ID where A.PAYDATE = '{Paydate}' and A.BRANCH = '{BRANCHNAME}'"
+        Dim mysql As String = $"Select * From PAYROLL_ATTENDANCE A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRICID where A.PAYDATE = '{Paydate}' and A.BRANCH = '{BRANCHNAME}'"
 
-        Using ds As DataSet = LoadSQL(mysql, "IMPORT_DTR")
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
                     AddRowBiometric(dr, datagrid)
@@ -236,62 +235,15 @@ Module SelectFromDatabase
 
             Dim rowId As Integer = datagrid.Rows.Add()
             Dim row As DataGridViewRow = datagrid.Rows(rowId)
-            row.Cells("BIOID_DGVV").Value = .Item("BIO_ID")
+            row.Cells("BIOID_DGVV").Value = .Item("BIOMETRICID")
             row.Cells("Name_DGVV").Value = .Item("LASTNAME") & ", " & .Item("FIRSTNAME") & " " & .Item("MIDDLENAME")
             row.Cells("Name_DGVV").Tag = .Item("ID")
+            row.Cells("Overtime_DGVV").Value = .Item("OVERTIME")
+            row.Cells("Late_DGVV").Value = .Item("LATE")
+            row.Cells("Undertime_DGVV").Value = .Item("UNDERTIME")
+            row.Cells("PRESENT_DGVV").Value = .Item("PRESENT_DAYS")
+            row.Cells("Absent_DGVV").Value = .Item("ABSENT_DAYS")
             row.Height = 35
-
-
-            Dim mysql As String = $"Select * From IMPORT_DTR where BIO_ID = '{ .Item("BIO_ID")}'"
-            Using ds As DataSet = LoadSQL(mysql, "IMPORT_DTR")
-                If ds.Tables(0).Rows.Count > 0 Then
-
-                    Dim list_dateHour, list_dateonly As New List(Of String)()
-
-                    For Each dr In ds.Tables(0).Rows
-                        With dr
-                            Dim datt As DateTime = .Item("DATEANDTIME")
-                            datt.ToShortTimeString()
-                            Dim str As String = .Item("PAYDATE") & " " & .Item("BIO_ID") & " " & datt
-
-                            If str.Length <> 0 Then
-                                str = str.Substring(0, str.Length - 9)
-                                list_dateHour.Add(str)
-                            End If
-                        End With
-                    Next
-
-                    Dim result As List(Of String) = list_dateHour.Distinct().ToList  ' Date with hour
-
-
-                    For Each value As String In result                      'Trim to convert to Date Only 
-                        Dim pos As Integer = value.LastIndexOf(" ")
-                        If pos <> -1 Then
-                            value = value.Substring(0, pos)
-                            list_dateonly.Add(value)
-                        End If
-                    Next
-
-
-                    For Each value As String In result                      ' Check if Standard DTR
-
-                        Dim pos As Integer = value.LastIndexOf(" ")
-                        If pos <> -1 Then
-                            value = value.Substring(0, pos)
-                        End If
-
-                        Console.WriteLine("Final " & value)
-
-                        'If CountDate(list_dateonly, value) = 4 Then
-                        '    row.DefaultCellStyle.ForeColor = Color.Black
-                        'Else
-                        '    row.DefaultCellStyle.ForeColor = Color.Red
-                        'End If
-
-                    Next
-
-                End If
-            End Using
 
         End With
 
@@ -371,9 +323,23 @@ Module SelectFromDatabase
 
         End If
 
-        Console.WriteLine("Count " & count)
-
         Return count
+    End Function
+
+    Public Function CountCELL_Consecutive(row As DataGridViewRow) As String
+
+        Dim status As String = ""
+        If Not row.DefaultCellStyle.ForeColor = Color.Red And row.Cells(5).Value = True Then
+
+            If row.Cells(1).Value = Nothing And row.Cells(2).Value = Nothing Then
+                status = "HALFDAY"
+            ElseIf row.Cells(3).Value = Nothing And row.Cells(4).Value = Nothing Then
+                status = "HALFDAY"
+            End If
+
+        End If
+
+        Return status
     End Function
 
     'Friend Sub Select_IMPORT_TABLE()

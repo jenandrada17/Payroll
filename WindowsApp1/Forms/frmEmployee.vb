@@ -79,7 +79,6 @@ Public Class frmEmployee
 
     Private Sub frmEmployee_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         LoadEmployee()
-        Console.WriteLine("sssssssss " & txtSearch.Tag)
     End Sub
 
     Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click

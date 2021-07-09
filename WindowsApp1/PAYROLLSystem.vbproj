@@ -132,7 +132,6 @@
     <Compile Include="Module\Public_Function.vb" />
     <Compile Include="Module\SaveUpdate.vb" />
     <Compile Include="Module\SelectFromDatabase.vb" />
-    <Compile Include="Module\SwitchForm.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>

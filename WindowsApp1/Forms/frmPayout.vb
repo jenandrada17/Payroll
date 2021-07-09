@@ -72,7 +72,7 @@
 
                         NoOfDays_TXT.Text = .Item("PRESENT_DAYS")
 
-                        Dim Late_Total As New TimeSpan = .Item("LATE")  '========== TO SEPARATE
+                        Dim Late_Total As TimeSpan = .Item("LATE")  '========== TO SEPARATE
 
                         Late_TXT.Text = Late_Total.Hours
                         UnderTime_TXT.Text = Late_Total.Minutes

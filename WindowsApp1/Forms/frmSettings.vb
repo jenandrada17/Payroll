@@ -76,8 +76,6 @@ Public Class frmSettings
             For Each item As ListViewItem In lvHoliday.SelectedItems
                 RemoveHoliday(item.SubItems(0).Text)
 
-                Console.WriteLine("sssssss " & item.SubItems(0).Text)
-
                 If Regular_RB.Checked = True Then
                     REGULDARHolidayLists(lvHoliday)
                 Else

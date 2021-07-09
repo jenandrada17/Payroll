@@ -22,11 +22,14 @@ Partial Class frmAttendance
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle17 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle19 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle20 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle23 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle24 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle21 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle22 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle18 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Attendance_Tab = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
@@ -40,21 +43,13 @@ Partial Class frmAttendance
         Me.OpenFile_BTN = New System.Windows.Forms.Button()
         Me.FlowLayoutPanel1 = New System.Windows.Forms.FlowLayoutPanel()
         Me.Bio_grid = New System.Windows.Forms.DataGridView()
-        Me.BIOID_DGVV = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Name_DGVV = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Manual_Tab = New System.Windows.Forms.TabPage()
         Me.Label15 = New System.Windows.Forms.Label()
         Me.Label14 = New System.Windows.Forms.Label()
-        Me.Label13 = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.Label24 = New System.Windows.Forms.Label()
-        Me.Label25 = New System.Windows.Forms.Label()
-        Me.Label23 = New System.Windows.Forms.Label()
-        Me.Label22 = New System.Windows.Forms.Label()
-        Me.Label21 = New System.Windows.Forms.Label()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.Label16 = New System.Windows.Forms.Label()
-        Me.Label20 = New System.Windows.Forms.Label()
         Me.TotalRHoliday_LBL = New System.Windows.Forms.Label()
         Me.Label19 = New System.Windows.Forms.Label()
         Me.Label18 = New System.Windows.Forms.Label()
@@ -62,11 +57,7 @@ Partial Class frmAttendance
         Me.TotalSHoliday_LBL = New System.Windows.Forms.Label()
         Me.Label6 = New System.Windows.Forms.Label()
         Me.Label17 = New System.Windows.Forms.Label()
-        Me.AbsentHour_LBL = New System.Windows.Forms.Label()
-        Me.hourOfDay_LBL = New System.Windows.Forms.Label()
         Me.Cancel_BTN = New System.Windows.Forms.Button()
-        Me.TotalUTMIN_LBL = New System.Windows.Forms.Label()
-        Me.TotalLateMIN_LBL = New System.Windows.Forms.Label()
         Me.Save_BTN = New System.Windows.Forms.Button()
         Me.Calculate_BTN = New System.Windows.Forms.Button()
         Me.TotalUTHR_LBL = New System.Windows.Forms.Label()
@@ -95,6 +86,13 @@ Partial Class frmAttendance
         Me.Label2 = New System.Windows.Forms.Label()
         Me.BiometricID_TXT = New System.Windows.Forms.TextBox()
         Me.Close_LBL = New System.Windows.Forms.Label()
+        Me.BIOID_DGVV = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Name_DGVV = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.PRESENT_DGVV = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Absent_DGVV = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Overtime_DGVV = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Late_DGVV = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Undertime_DGVV = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Attendance_Tab.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
@@ -110,7 +108,7 @@ Partial Class frmAttendance
         '
         Me.Label1.AutoSize = True
         Me.Label1.Font = New System.Drawing.Font("Dubai", 15.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.Location = New System.Drawing.Point(12, 3)
+        Me.Label1.Location = New System.Drawing.Point(3, 3)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(117, 36)
         Me.Label1.TabIndex = 66
@@ -121,10 +119,10 @@ Partial Class frmAttendance
         Me.Attendance_Tab.Controls.Add(Me.TabPage1)
         Me.Attendance_Tab.Controls.Add(Me.Manual_Tab)
         Me.Attendance_Tab.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Attendance_Tab.Location = New System.Drawing.Point(18, 37)
+        Me.Attendance_Tab.Location = New System.Drawing.Point(5, 42)
         Me.Attendance_Tab.Name = "Attendance_Tab"
         Me.Attendance_Tab.SelectedIndex = 0
-        Me.Attendance_Tab.Size = New System.Drawing.Size(1146, 614)
+        Me.Attendance_Tab.Size = New System.Drawing.Size(1159, 609)
         Me.Attendance_Tab.TabIndex = 67
         '
         'TabPage1
@@ -139,7 +137,7 @@ Partial Class frmAttendance
         Me.TabPage1.Location = New System.Drawing.Point(4, 41)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(1138, 569)
+        Me.TabPage1.Size = New System.Drawing.Size(1151, 564)
         Me.TabPage1.TabIndex = 1
         Me.TabPage1.Text = "Biometric"
         Me.TabPage1.UseVisualStyleBackColor = True
@@ -148,7 +146,7 @@ Partial Class frmAttendance
         '
         Me.Paydate_ComboB.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Paydate_ComboB.FormattingEnabled = True
-        Me.Paydate_ComboB.Location = New System.Drawing.Point(221, 104)
+        Me.Paydate_ComboB.Location = New System.Drawing.Point(220, 23)
         Me.Paydate_ComboB.Name = "Paydate_ComboB"
         Me.Paydate_ComboB.Size = New System.Drawing.Size(197, 33)
         Me.Paydate_ComboB.TabIndex = 8
@@ -158,7 +156,7 @@ Partial Class frmAttendance
         '
         Me.Branch_ComboB.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Branch_ComboB.FormattingEnabled = True
-        Me.Branch_ComboB.Location = New System.Drawing.Point(7, 104)
+        Me.Branch_ComboB.Location = New System.Drawing.Point(6, 23)
         Me.Branch_ComboB.Name = "Branch_ComboB"
         Me.Branch_ComboB.Size = New System.Drawing.Size(197, 33)
         Me.Branch_ComboB.TabIndex = 7
@@ -169,7 +167,7 @@ Partial Class frmAttendance
         Me.GroupBox2.Controls.Add(Me.Fs200_RadioB)
         Me.GroupBox2.Controls.Add(Me.Zkteco_RadioB)
         Me.GroupBox2.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GroupBox2.Location = New System.Drawing.Point(165, 9)
+        Me.GroupBox2.Location = New System.Drawing.Point(917, 6)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(228, 67)
         Me.GroupBox2.TabIndex = 6
@@ -204,7 +202,7 @@ Partial Class frmAttendance
         '
         Me.Import_BTN.Enabled = False
         Me.Import_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Import_BTN.Location = New System.Drawing.Point(7, 179)
+        Me.Import_BTN.Location = New System.Drawing.Point(6, 99)
         Me.Import_BTN.Name = "Import_BTN"
         Me.Import_BTN.Size = New System.Drawing.Size(82, 31)
         Me.Import_BTN.TabIndex = 5
@@ -214,16 +212,16 @@ Partial Class frmAttendance
         'Path_TXT
         '
         Me.Path_TXT.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Path_TXT.Location = New System.Drawing.Point(7, 145)
+        Me.Path_TXT.Location = New System.Drawing.Point(6, 64)
         Me.Path_TXT.Name = "Path_TXT"
         Me.Path_TXT.ReadOnly = True
-        Me.Path_TXT.Size = New System.Drawing.Size(411, 29)
+        Me.Path_TXT.Size = New System.Drawing.Size(527, 29)
         Me.Path_TXT.TabIndex = 4
         '
         'OpenFile_BTN
         '
         Me.OpenFile_BTN.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.OpenFile_BTN.Location = New System.Drawing.Point(424, 142)
+        Me.OpenFile_BTN.Location = New System.Drawing.Point(539, 62)
         Me.OpenFile_BTN.Name = "OpenFile_BTN"
         Me.OpenFile_BTN.Size = New System.Drawing.Size(78, 31)
         Me.OpenFile_BTN.TabIndex = 3
@@ -234,9 +232,9 @@ Partial Class frmAttendance
         '
         Me.FlowLayoutPanel1.AutoScroll = True
         Me.FlowLayoutPanel1.Controls.Add(Me.Bio_grid)
-        Me.FlowLayoutPanel1.Location = New System.Drawing.Point(544, 6)
+        Me.FlowLayoutPanel1.Location = New System.Drawing.Point(22, 167)
         Me.FlowLayoutPanel1.Name = "FlowLayoutPanel1"
-        Me.FlowLayoutPanel1.Size = New System.Drawing.Size(588, 557)
+        Me.FlowLayoutPanel1.Size = New System.Drawing.Size(1110, 391)
         Me.FlowLayoutPanel1.TabIndex = 2
         '
         'Bio_grid
@@ -245,44 +243,40 @@ Partial Class frmAttendance
         Me.Bio_grid.AllowUserToResizeRows = False
         Me.Bio_grid.BackgroundColor = System.Drawing.Color.White
         Me.Bio_grid.BorderStyle = System.Windows.Forms.BorderStyle.None
+        DataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle17.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle17.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle17.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle17.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle17.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle17.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.Bio_grid.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle17
         Me.Bio_grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.Bio_grid.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.BIOID_DGVV, Me.Name_DGVV})
+        Me.Bio_grid.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.BIOID_DGVV, Me.Name_DGVV, Me.PRESENT_DGVV, Me.Absent_DGVV, Me.Overtime_DGVV, Me.Late_DGVV, Me.Undertime_DGVV})
+        DataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle19.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle19.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle19.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle19.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle19.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle19.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.Bio_grid.DefaultCellStyle = DataGridViewCellStyle19
         Me.Bio_grid.Location = New System.Drawing.Point(3, 3)
         Me.Bio_grid.Name = "Bio_grid"
         Me.Bio_grid.ReadOnly = True
         Me.Bio_grid.RowHeadersVisible = False
         Me.Bio_grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.Bio_grid.Size = New System.Drawing.Size(554, 48)
+        Me.Bio_grid.Size = New System.Drawing.Size(1097, 43)
         Me.Bio_grid.TabIndex = 1
-        '
-        'BIOID_DGVV
-        '
-        Me.BIOID_DGVV.HeaderText = "Biometric No."
-        Me.BIOID_DGVV.Name = "BIOID_DGVV"
-        Me.BIOID_DGVV.ReadOnly = True
-        Me.BIOID_DGVV.Width = 150
-        '
-        'Name_DGVV
-        '
-        Me.Name_DGVV.HeaderText = "Name"
-        Me.Name_DGVV.Name = "Name_DGVV"
-        Me.Name_DGVV.ReadOnly = True
-        Me.Name_DGVV.Width = 400
         '
         'Manual_Tab
         '
         Me.Manual_Tab.Controls.Add(Me.Label15)
         Me.Manual_Tab.Controls.Add(Me.Label14)
-        Me.Manual_Tab.Controls.Add(Me.Label13)
         Me.Manual_Tab.Controls.Add(Me.Label4)
         Me.Manual_Tab.Controls.Add(Me.Label24)
-        Me.Manual_Tab.Controls.Add(Me.Label25)
-        Me.Manual_Tab.Controls.Add(Me.Label23)
-        Me.Manual_Tab.Controls.Add(Me.Label22)
-        Me.Manual_Tab.Controls.Add(Me.Label21)
         Me.Manual_Tab.Controls.Add(Me.Label5)
         Me.Manual_Tab.Controls.Add(Me.Label16)
-        Me.Manual_Tab.Controls.Add(Me.Label20)
         Me.Manual_Tab.Controls.Add(Me.TotalRHoliday_LBL)
         Me.Manual_Tab.Controls.Add(Me.Label19)
         Me.Manual_Tab.Controls.Add(Me.Label18)
@@ -290,11 +284,7 @@ Partial Class frmAttendance
         Me.Manual_Tab.Controls.Add(Me.TotalSHoliday_LBL)
         Me.Manual_Tab.Controls.Add(Me.Label6)
         Me.Manual_Tab.Controls.Add(Me.Label17)
-        Me.Manual_Tab.Controls.Add(Me.AbsentHour_LBL)
-        Me.Manual_Tab.Controls.Add(Me.hourOfDay_LBL)
         Me.Manual_Tab.Controls.Add(Me.Cancel_BTN)
-        Me.Manual_Tab.Controls.Add(Me.TotalUTMIN_LBL)
-        Me.Manual_Tab.Controls.Add(Me.TotalLateMIN_LBL)
         Me.Manual_Tab.Controls.Add(Me.Save_BTN)
         Me.Manual_Tab.Controls.Add(Me.Calculate_BTN)
         Me.Manual_Tab.Controls.Add(Me.TotalUTHR_LBL)
@@ -310,7 +300,7 @@ Partial Class frmAttendance
         Me.Manual_Tab.Location = New System.Drawing.Point(4, 41)
         Me.Manual_Tab.Name = "Manual_Tab"
         Me.Manual_Tab.Padding = New System.Windows.Forms.Padding(3)
-        Me.Manual_Tab.Size = New System.Drawing.Size(1138, 569)
+        Me.Manual_Tab.Size = New System.Drawing.Size(1151, 564)
         Me.Manual_Tab.TabIndex = 0
         Me.Manual_Tab.Text = "Manual"
         Me.Manual_Tab.UseVisualStyleBackColor = True
@@ -320,7 +310,7 @@ Partial Class frmAttendance
         Me.Label15.AutoSize = True
         Me.Label15.BackColor = System.Drawing.Color.MediumOrchid
         Me.Label15.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label15.Location = New System.Drawing.Point(187, 238)
+        Me.Label15.Location = New System.Drawing.Point(187, 276)
         Me.Label15.Name = "Label15"
         Me.Label15.Size = New System.Drawing.Size(22, 22)
         Me.Label15.TabIndex = 111
@@ -331,27 +321,17 @@ Partial Class frmAttendance
         Me.Label14.AutoSize = True
         Me.Label14.BackColor = System.Drawing.Color.Plum
         Me.Label14.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label14.Location = New System.Drawing.Point(187, 274)
+        Me.Label14.Location = New System.Drawing.Point(187, 314)
         Me.Label14.Name = "Label14"
         Me.Label14.Size = New System.Drawing.Size(22, 22)
         Me.Label14.TabIndex = 110
         Me.Label14.Text = "    "
         '
-        'Label13
-        '
-        Me.Label13.AutoSize = True
-        Me.Label13.Font = New System.Drawing.Font("Dubai Light", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label13.Location = New System.Drawing.Point(360, 448)
-        Me.Label13.Name = "Label13"
-        Me.Label13.Size = New System.Drawing.Size(56, 25)
-        Me.Label13.TabIndex = 107
-        Me.Label13.Text = "Hour/s"
-        '
         'Label4
         '
         Me.Label4.AutoSize = True
         Me.Label4.Font = New System.Drawing.Font("Dubai Light", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label4.Location = New System.Drawing.Point(271, 450)
+        Me.Label4.Location = New System.Drawing.Point(287, 231)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(49, 25)
         Me.Label4.TabIndex = 106
@@ -361,57 +341,17 @@ Partial Class frmAttendance
         '
         Me.Label24.AutoSize = True
         Me.Label24.Font = New System.Drawing.Font("Dubai Light", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label24.Location = New System.Drawing.Point(271, 195)
+        Me.Label24.Location = New System.Drawing.Point(288, 193)
         Me.Label24.Name = "Label24"
         Me.Label24.Size = New System.Drawing.Size(49, 25)
         Me.Label24.TabIndex = 105
         Me.Label24.Text = "Day/s"
         '
-        'Label25
-        '
-        Me.Label25.AutoSize = True
-        Me.Label25.Font = New System.Drawing.Font("Dubai Light", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label25.Location = New System.Drawing.Point(360, 195)
-        Me.Label25.Name = "Label25"
-        Me.Label25.Size = New System.Drawing.Size(56, 25)
-        Me.Label25.TabIndex = 104
-        Me.Label25.Text = "Hour/s"
-        '
-        'Label23
-        '
-        Me.Label23.AutoSize = True
-        Me.Label23.Font = New System.Drawing.Font("Dubai Light", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label23.Location = New System.Drawing.Point(360, 363)
-        Me.Label23.Name = "Label23"
-        Me.Label23.Size = New System.Drawing.Size(48, 25)
-        Me.Label23.TabIndex = 102
-        Me.Label23.Text = "Min/s"
-        '
-        'Label22
-        '
-        Me.Label22.AutoSize = True
-        Me.Label22.Font = New System.Drawing.Font("Dubai Light", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label22.Location = New System.Drawing.Point(271, 363)
-        Me.Label22.Name = "Label22"
-        Me.Label22.Size = New System.Drawing.Size(56, 25)
-        Me.Label22.TabIndex = 101
-        Me.Label22.Text = "Hour/s"
-        '
-        'Label21
-        '
-        Me.Label21.AutoSize = True
-        Me.Label21.Font = New System.Drawing.Font("Dubai Light", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label21.Location = New System.Drawing.Point(360, 407)
-        Me.Label21.Name = "Label21"
-        Me.Label21.Size = New System.Drawing.Size(48, 25)
-        Me.Label21.TabIndex = 100
-        Me.Label21.Text = "Min/s"
-        '
         'Label5
         '
         Me.Label5.AutoSize = True
         Me.Label5.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label5.Location = New System.Drawing.Point(23, 234)
+        Me.Label5.Location = New System.Drawing.Point(23, 272)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(149, 25)
         Me.Label5.TabIndex = 90
@@ -421,27 +361,17 @@ Partial Class frmAttendance
         '
         Me.Label16.AutoSize = True
         Me.Label16.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label16.Location = New System.Drawing.Point(23, 274)
+        Me.Label16.Location = New System.Drawing.Point(23, 314)
         Me.Label16.Name = "Label16"
         Me.Label16.Size = New System.Drawing.Size(145, 25)
         Me.Label16.TabIndex = 92
         Me.Label16.Text = "Total Special Holiday "
         '
-        'Label20
-        '
-        Me.Label20.AutoSize = True
-        Me.Label20.Font = New System.Drawing.Font("Dubai Light", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label20.Location = New System.Drawing.Point(271, 408)
-        Me.Label20.Name = "Label20"
-        Me.Label20.Size = New System.Drawing.Size(56, 25)
-        Me.Label20.TabIndex = 99
-        Me.Label20.Text = "Hour/s"
-        '
         'TotalRHoliday_LBL
         '
         Me.TotalRHoliday_LBL.AutoSize = True
         Me.TotalRHoliday_LBL.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TotalRHoliday_LBL.Location = New System.Drawing.Point(238, 232)
+        Me.TotalRHoliday_LBL.Location = New System.Drawing.Point(238, 270)
         Me.TotalRHoliday_LBL.Name = "TotalRHoliday_LBL"
         Me.TotalRHoliday_LBL.Size = New System.Drawing.Size(21, 27)
         Me.TotalRHoliday_LBL.TabIndex = 93
@@ -451,7 +381,7 @@ Partial Class frmAttendance
         '
         Me.Label19.AutoSize = True
         Me.Label19.Font = New System.Drawing.Font("Dubai Light", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label19.Location = New System.Drawing.Point(270, 320)
+        Me.Label19.Location = New System.Drawing.Point(287, 356)
         Me.Label19.Name = "Label19"
         Me.Label19.Size = New System.Drawing.Size(56, 25)
         Me.Label19.TabIndex = 98
@@ -461,7 +391,7 @@ Partial Class frmAttendance
         '
         Me.Label18.AutoSize = True
         Me.Label18.Font = New System.Drawing.Font("Dubai Light", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label18.Location = New System.Drawing.Point(271, 274)
+        Me.Label18.Location = New System.Drawing.Point(288, 312)
         Me.Label18.Name = "Label18"
         Me.Label18.Size = New System.Drawing.Size(49, 25)
         Me.Label18.TabIndex = 96
@@ -471,7 +401,7 @@ Partial Class frmAttendance
         '
         Me.TotalOTHr_LBL.AutoSize = True
         Me.TotalOTHr_LBL.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TotalOTHr_LBL.Location = New System.Drawing.Point(238, 317)
+        Me.TotalOTHr_LBL.Location = New System.Drawing.Point(238, 355)
         Me.TotalOTHr_LBL.Name = "TotalOTHr_LBL"
         Me.TotalOTHr_LBL.Size = New System.Drawing.Size(21, 27)
         Me.TotalOTHr_LBL.TabIndex = 97
@@ -481,7 +411,7 @@ Partial Class frmAttendance
         '
         Me.TotalSHoliday_LBL.AutoSize = True
         Me.TotalSHoliday_LBL.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TotalSHoliday_LBL.Location = New System.Drawing.Point(238, 272)
+        Me.TotalSHoliday_LBL.Location = New System.Drawing.Point(238, 312)
         Me.TotalSHoliday_LBL.Name = "TotalSHoliday_LBL"
         Me.TotalSHoliday_LBL.Size = New System.Drawing.Size(21, 27)
         Me.TotalSHoliday_LBL.TabIndex = 94
@@ -491,7 +421,7 @@ Partial Class frmAttendance
         '
         Me.Label6.AutoSize = True
         Me.Label6.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label6.Location = New System.Drawing.Point(22, 319)
+        Me.Label6.Location = New System.Drawing.Point(22, 357)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(113, 25)
         Me.Label6.TabIndex = 91
@@ -501,31 +431,11 @@ Partial Class frmAttendance
         '
         Me.Label17.AutoSize = True
         Me.Label17.Font = New System.Drawing.Font("Dubai Light", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label17.Location = New System.Drawing.Point(271, 234)
+        Me.Label17.Location = New System.Drawing.Point(288, 270)
         Me.Label17.Name = "Label17"
         Me.Label17.Size = New System.Drawing.Size(49, 25)
         Me.Label17.TabIndex = 95
         Me.Label17.Text = "Day/s"
-        '
-        'AbsentHour_LBL
-        '
-        Me.AbsentHour_LBL.AutoSize = True
-        Me.AbsentHour_LBL.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.AbsentHour_LBL.Location = New System.Drawing.Point(331, 448)
-        Me.AbsentHour_LBL.Name = "AbsentHour_LBL"
-        Me.AbsentHour_LBL.Size = New System.Drawing.Size(21, 27)
-        Me.AbsentHour_LBL.TabIndex = 86
-        Me.AbsentHour_LBL.Text = "0"
-        '
-        'hourOfDay_LBL
-        '
-        Me.hourOfDay_LBL.AutoSize = True
-        Me.hourOfDay_LBL.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.hourOfDay_LBL.Location = New System.Drawing.Point(331, 193)
-        Me.hourOfDay_LBL.Name = "hourOfDay_LBL"
-        Me.hourOfDay_LBL.Size = New System.Drawing.Size(21, 27)
-        Me.hourOfDay_LBL.TabIndex = 83
-        Me.hourOfDay_LBL.Text = "0"
         '
         'Cancel_BTN
         '
@@ -536,26 +446,6 @@ Partial Class frmAttendance
         Me.Cancel_BTN.TabIndex = 81
         Me.Cancel_BTN.Text = "Cancel"
         Me.Cancel_BTN.UseVisualStyleBackColor = True
-        '
-        'TotalUTMIN_LBL
-        '
-        Me.TotalUTMIN_LBL.AutoSize = True
-        Me.TotalUTMIN_LBL.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TotalUTMIN_LBL.Location = New System.Drawing.Point(331, 407)
-        Me.TotalUTMIN_LBL.Name = "TotalUTMIN_LBL"
-        Me.TotalUTMIN_LBL.Size = New System.Drawing.Size(21, 27)
-        Me.TotalUTMIN_LBL.TabIndex = 80
-        Me.TotalUTMIN_LBL.Text = "0"
-        '
-        'TotalLateMIN_LBL
-        '
-        Me.TotalLateMIN_LBL.AutoSize = True
-        Me.TotalLateMIN_LBL.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TotalLateMIN_LBL.Location = New System.Drawing.Point(331, 363)
-        Me.TotalLateMIN_LBL.Name = "TotalLateMIN_LBL"
-        Me.TotalLateMIN_LBL.Size = New System.Drawing.Size(21, 27)
-        Me.TotalLateMIN_LBL.TabIndex = 78
-        Me.TotalLateMIN_LBL.Text = "0"
         '
         'Save_BTN
         '
@@ -581,7 +471,7 @@ Partial Class frmAttendance
         '
         Me.TotalUTHR_LBL.AutoSize = True
         Me.TotalUTHR_LBL.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TotalUTHR_LBL.Location = New System.Drawing.Point(238, 404)
+        Me.TotalUTHR_LBL.Location = New System.Drawing.Point(238, 442)
         Me.TotalUTHR_LBL.Name = "TotalUTHR_LBL"
         Me.TotalUTHR_LBL.Size = New System.Drawing.Size(21, 27)
         Me.TotalUTHR_LBL.TabIndex = 74
@@ -591,7 +481,7 @@ Partial Class frmAttendance
         '
         Me.TotalLateHR_LBL.AutoSize = True
         Me.TotalLateHR_LBL.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TotalLateHR_LBL.Location = New System.Drawing.Point(238, 363)
+        Me.TotalLateHR_LBL.Location = New System.Drawing.Point(238, 401)
         Me.TotalLateHR_LBL.Name = "TotalLateHR_LBL"
         Me.TotalLateHR_LBL.Size = New System.Drawing.Size(21, 27)
         Me.TotalLateHR_LBL.TabIndex = 73
@@ -601,7 +491,7 @@ Partial Class frmAttendance
         '
         Me.TotalAbsent_LBL.AutoSize = True
         Me.TotalAbsent_LBL.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TotalAbsent_LBL.Location = New System.Drawing.Point(238, 448)
+        Me.TotalAbsent_LBL.Location = New System.Drawing.Point(237, 231)
         Me.TotalAbsent_LBL.Name = "TotalAbsent_LBL"
         Me.TotalAbsent_LBL.Size = New System.Drawing.Size(21, 27)
         Me.TotalAbsent_LBL.TabIndex = 72
@@ -621,7 +511,7 @@ Partial Class frmAttendance
         '
         Me.Label12.AutoSize = True
         Me.Label12.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label12.Location = New System.Drawing.Point(23, 450)
+        Me.Label12.Location = New System.Drawing.Point(22, 233)
         Me.Label12.Name = "Label12"
         Me.Label12.Size = New System.Drawing.Size(119, 25)
         Me.Label12.TabIndex = 70
@@ -631,7 +521,7 @@ Partial Class frmAttendance
         '
         Me.Label11.AutoSize = True
         Me.Label11.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label11.Location = New System.Drawing.Point(23, 406)
+        Me.Label11.Location = New System.Drawing.Point(23, 444)
         Me.Label11.Name = "Label11"
         Me.Label11.Size = New System.Drawing.Size(129, 25)
         Me.Label11.TabIndex = 69
@@ -641,7 +531,7 @@ Partial Class frmAttendance
         '
         Me.Label10.AutoSize = True
         Me.Label10.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label10.Location = New System.Drawing.Point(25, 363)
+        Me.Label10.Location = New System.Drawing.Point(25, 401)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(75, 25)
         Me.Label10.TabIndex = 68
@@ -704,34 +594,34 @@ Partial Class frmAttendance
         Me.DataGridView1.AllowUserToAddRows = False
         Me.DataGridView1.AllowUserToResizeColumns = False
         Me.DataGridView1.AllowUserToResizeRows = False
-        DataGridViewCellStyle1.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.DataGridView1.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle20.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DataGridView1.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle20
         Me.DataGridView1.BackgroundColor = System.Drawing.Color.White
         Me.DataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.DataGridView1.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText
         Me.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.DataGridView1.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Date_DataGrid, Me.AM_In_DataGrid, Me.AM_Out_DataGrid, Me.PM_IN_DataGrid, Me.PM_Out_DataGrid, Me.Select_Datagrid})
-        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.InactiveCaption
-        DataGridViewCellStyle4.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.DataGridView1.DefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle23.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle23.BackColor = System.Drawing.SystemColors.InactiveCaption
+        DataGridViewCellStyle23.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle23.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle23.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle23.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle23.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.DataGridView1.DefaultCellStyle = DataGridViewCellStyle23
         Me.DataGridView1.Location = New System.Drawing.Point(6, 44)
         Me.DataGridView1.Name = "DataGridView1"
         Me.DataGridView1.RowHeadersVisible = False
-        DataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.Transparent
-        DataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.Transparent
-        Me.DataGridView1.RowsDefaultCellStyle = DataGridViewCellStyle5
+        DataGridViewCellStyle24.SelectionBackColor = System.Drawing.Color.Transparent
+        DataGridViewCellStyle24.SelectionForeColor = System.Drawing.Color.Transparent
+        Me.DataGridView1.RowsDefaultCellStyle = DataGridViewCellStyle24
         Me.DataGridView1.Size = New System.Drawing.Size(684, 487)
         Me.DataGridView1.TabIndex = 65
         '
         'Date_DataGrid
         '
-        DataGridViewCellStyle2.NullValue = Nothing
-        Me.Date_DataGrid.DefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle21.NullValue = Nothing
+        Me.Date_DataGrid.DefaultCellStyle = DataGridViewCellStyle21
         Me.Date_DataGrid.HeaderText = "Date"
         Me.Date_DataGrid.Name = "Date_DataGrid"
         Me.Date_DataGrid.ReadOnly = True
@@ -741,9 +631,9 @@ Partial Class frmAttendance
         '
         'AM_In_DataGrid
         '
-        DataGridViewCellStyle3.Format = "t"
-        DataGridViewCellStyle3.NullValue = Nothing
-        Me.AM_In_DataGrid.DefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle22.Format = "t"
+        DataGridViewCellStyle22.NullValue = Nothing
+        Me.AM_In_DataGrid.DefaultCellStyle = DataGridViewCellStyle22
         Me.AM_In_DataGrid.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.[Nothing]
         Me.AM_In_DataGrid.HeaderText = "In"
         Me.AM_In_DataGrid.Name = "AM_In_DataGrid"
@@ -852,6 +742,53 @@ Partial Class frmAttendance
         Me.Close_LBL.TabIndex = 74
         Me.Close_LBL.Text = "Close"
         '
+        'BIOID_DGVV
+        '
+        Me.BIOID_DGVV.HeaderText = "Biometric No."
+        Me.BIOID_DGVV.Name = "BIOID_DGVV"
+        Me.BIOID_DGVV.ReadOnly = True
+        Me.BIOID_DGVV.Width = 150
+        '
+        'Name_DGVV
+        '
+        Me.Name_DGVV.HeaderText = "Name"
+        Me.Name_DGVV.Name = "Name_DGVV"
+        Me.Name_DGVV.ReadOnly = True
+        Me.Name_DGVV.Width = 400
+        '
+        'PRESENT_DGVV
+        '
+        DataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.PRESENT_DGVV.DefaultCellStyle = DataGridViewCellStyle18
+        Me.PRESENT_DGVV.HeaderText = "Total Days"
+        Me.PRESENT_DGVV.Name = "PRESENT_DGVV"
+        Me.PRESENT_DGVV.ReadOnly = True
+        Me.PRESENT_DGVV.Width = 130
+        '
+        'Absent_DGVV
+        '
+        Me.Absent_DGVV.HeaderText = "Absent"
+        Me.Absent_DGVV.Name = "Absent_DGVV"
+        Me.Absent_DGVV.ReadOnly = True
+        '
+        'Overtime_DGVV
+        '
+        Me.Overtime_DGVV.HeaderText = "Overtime"
+        Me.Overtime_DGVV.Name = "Overtime_DGVV"
+        Me.Overtime_DGVV.ReadOnly = True
+        '
+        'Late_DGVV
+        '
+        Me.Late_DGVV.HeaderText = "Late"
+        Me.Late_DGVV.Name = "Late_DGVV"
+        Me.Late_DGVV.ReadOnly = True
+        '
+        'Undertime_DGVV
+        '
+        Me.Undertime_DGVV.HeaderText = "Undertime"
+        Me.Undertime_DGVV.Name = "Undertime_DGVV"
+        Me.Undertime_DGVV.ReadOnly = True
+        '
         'frmAttendance
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -906,11 +843,7 @@ Partial Class frmAttendance
     Friend WithEvents DataGridView1 As DataGridView
     Friend WithEvents Calculate_BTN As Button
     Friend WithEvents Save_BTN As Button
-    Friend WithEvents TotalUTMIN_LBL As Label
-    Friend WithEvents TotalLateMIN_LBL As Label
     Friend WithEvents Cancel_BTN As Button
-    Friend WithEvents hourOfDay_LBL As Label
-    Friend WithEvents AbsentHour_LBL As Label
     Friend WithEvents SearchEMP_BTN As Button
     Friend WithEvents Date_DataGrid As DataGridViewTextBoxColumn
     Friend WithEvents AM_In_DataGrid As DataGridViewComboBoxColumn
@@ -928,12 +861,6 @@ Partial Class frmAttendance
     Friend WithEvents TotalOTHr_LBL As Label
     Friend WithEvents Label19 As Label
     Friend WithEvents Label24 As Label
-    Friend WithEvents Label25 As Label
-    Friend WithEvents Label23 As Label
-    Friend WithEvents Label22 As Label
-    Friend WithEvents Label21 As Label
-    Friend WithEvents Label20 As Label
-    Friend WithEvents Label13 As Label
     Friend WithEvents Label4 As Label
     Friend WithEvents Label15 As Label
     Friend WithEvents Label14 As Label
@@ -943,11 +870,16 @@ Partial Class frmAttendance
     Friend WithEvents Import_BTN As Button
     Friend WithEvents Path_TXT As TextBox
     Friend WithEvents OpenFile_BTN As Button
-    Friend WithEvents BIOID_DGVV As DataGridViewTextBoxColumn
-    Friend WithEvents Name_DGVV As DataGridViewTextBoxColumn
     Friend WithEvents GroupBox2 As GroupBox
     Friend WithEvents Fs200_RadioB As RadioButton
     Friend WithEvents Zkteco_RadioB As RadioButton
     Friend WithEvents Branch_ComboB As ComboBox
     Friend WithEvents Paydate_ComboB As ComboBox
+    Friend WithEvents BIOID_DGVV As DataGridViewTextBoxColumn
+    Friend WithEvents Name_DGVV As DataGridViewTextBoxColumn
+    Friend WithEvents PRESENT_DGVV As DataGridViewTextBoxColumn
+    Friend WithEvents Absent_DGVV As DataGridViewTextBoxColumn
+    Friend WithEvents Overtime_DGVV As DataGridViewTextBoxColumn
+    Friend WithEvents Late_DGVV As DataGridViewTextBoxColumn
+    Friend WithEvents Undertime_DGVV As DataGridViewTextBoxColumn
 End Class
