@@ -67,7 +67,6 @@ Public Class frmAttendance
                 EndingDate = EndNineteen.ToString("d")
 
                 rowIndex = DataGridView1.Rows.Add(StartNineteen.AddDays(1).ToString("D"))
-                Console.WriteLine("TAG " & rowIndex)
                 DataGridView1.Rows(rowIndex).Tag = StartNineteen.AddDays(1).ToString("D")
 
                 StartNineteen = StartNineteen.AddDays(1)
@@ -467,7 +466,7 @@ Public Class frmAttendance
 
         If Not BiometricID_TXT.Text = "" Then
 
-            SaveAttendanceEE(BiometricID_TXT.Text, DataGridView1.Tag, TotalDays_LBL.Text, TotalOTHr_LBL.Text, TotalLateHR_LBL.Tag, TotalUTHR_LBL.Tag,
+            SaveAttendanceEE(BiometricID_TXT.Text, DataGridView1.Tag, TotalDays_LBL.Text, TotalOTHr_LBL.Text, TotalLateHR_LBL.Text, TotalUTHR_LBL.Text,
                              TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text, Branch_ComboB.SelectedItem)
 
             ClearAfter()
@@ -764,6 +763,7 @@ Public Class frmAttendance
                 Cursor = Cursors.WaitCursor
 
                 Dim groups_time As New List(Of String)()
+                Dim bio_no As String = "" ' ======================================== GIMOVE SA GAWAS BASI DILI MAGANA =======================
                 For row = 7 To DtSet.Tables(0).Rows.Count
 
                     If eCell(row, 5).Value = Nothing Then
@@ -771,7 +771,6 @@ Public Class frmAttendance
                     End If
 
                     Dim list_hour(3) As String
-                    Dim bio_no As String
 
                     '=============== BIO NUMBER ================
                     If eCell(row, 2).Value <> Nothing Then
@@ -784,7 +783,6 @@ Public Class frmAttendance
                             groups_time.Add(eCell(row, column).Value)
                         End If
                     Next
-
 
                     '=============== CHECK PER CELL IN A ROW ============= 
                     For column = 7 To 11
@@ -876,7 +874,6 @@ Public Class frmAttendance
         Dim paydate_ As String = Paydate.ToString("d")
 
         For Each biometric_No As String In distinct_bio
-
 
             For Each oRow As DataGridViewRow In DataGridView1.Rows
                 oRow.Cells(5).Value = False

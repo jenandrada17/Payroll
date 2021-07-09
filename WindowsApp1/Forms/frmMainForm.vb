@@ -1,6 +1,29 @@
 ﻿Imports System.Globalization
 Public Class frmMainForm
 
+    Dim DateNow As DateTime = DateTime.Now
+    Dim StartFour, EndFour, StartNineteen, EndNineteen As DateTime
+    Public Paydate As DateTime
+
+    Private Sub frmMainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+        AppDateTime.Text = Date.Now.ToString("dddd, MMMM dd, yyyy hh:mm:ss tt", CultureInfo.CurrentCulture)
+
+        StartFour = New DateTime(DateNow.Year, DateNow.Month, 4).AddDays(-1)
+        EndFour = New DateTime(DateNow.Year, DateNow.Month, 18)
+
+        StartNineteen = New DateTime(DateNow.Year, DateNow.Month, 19).AddMonths(-1).AddDays(-1)
+        EndNineteen = New DateTime(StartNineteen.Year, StartNineteen.Month, 3).AddMonths(1)
+
+
+        If DateNow.Day - 16 <= 2 And DateNow.Day - 16 >= -12 Then
+            Paydate = EndNineteen.AddDays(12)
+        Else
+            Paydate = New DateTime(EndFour.Year, EndFour.Month, DateTime.DaysInMonth(EndFour.Year, EndFour.Month))
+        End If
+
+    End Sub
+
     '======================================Buttons================================================== 
 
     Private Sub btnManageEmployee_Click(sender As Object, e As EventArgs) Handles Employee_BTN.Click
@@ -45,11 +68,6 @@ Public Class frmMainForm
     Private Sub Minimize_LBL_MouseLeave(sender As Object, e As EventArgs) Handles Minimize_LBL.MouseLeave
         Minimize_LBL.ForeColor = Color.Black
     End Sub
-
-    Private Sub frmMainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        AppDateTime.Text = Date.Now.ToString("dddd, MMMM dd, yyyy hh:mm:ss tt", CultureInfo.CurrentCulture)
-    End Sub
-
 
     '========================================MOUSEENTER MOUSELEAVE=======================
     Private Sub BTN_Dashboard_MouseEnter(sender As Object, e As EventArgs) Handles Dashboard_BTN.MouseEnter

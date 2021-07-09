@@ -43,24 +43,6 @@ Partial Class frmMainForm
         Me.ImportEployeeFromFileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
         Me.ExitToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ReportsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.DailyReportToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ManPowerToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.RelieverToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.DeclinedToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.DeclinedToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.AssesmentToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.AppointmentToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.MonthlyReportToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ManPowerToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.RelieverToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.MontlyAggreeAssignToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.RelievedAgreementToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.AssesmentToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.AppointmentToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.BhouseAllowanceToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ManPowerActiveListToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ManPowerReportToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.AboutUsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.UserName_LBL = New System.Windows.Forms.Label()
         Me.Dashboard_BTN = New System.Windows.Forms.Button()
@@ -97,9 +79,10 @@ Partial Class frmMainForm
         'NavagationPanel
         '
         Me.NavagationPanel.BackColor = System.Drawing.Color.White
-        Me.NavagationPanel.Controls.Add(Me.PictureBox10)
-        Me.NavagationPanel.Controls.Add(Me.PictureBox9)
         Me.NavagationPanel.Controls.Add(Me.PictureBox8)
+        Me.NavagationPanel.Controls.Add(Me.PictureBox10)
+        Me.NavagationPanel.Controls.Add(Me.Loan_BTN)
+        Me.NavagationPanel.Controls.Add(Me.PictureBox9)
         Me.NavagationPanel.Controls.Add(Me.PictureBox7)
         Me.NavagationPanel.Controls.Add(Me.PictureBox3)
         Me.NavagationPanel.Controls.Add(Me.PictureBox2)
@@ -112,7 +95,6 @@ Partial Class frmMainForm
         Me.NavagationPanel.Controls.Add(Me.Payout_BTN)
         Me.NavagationPanel.Controls.Add(Me.Paysilp_BTN)
         Me.NavagationPanel.Controls.Add(Me.Settings_BTN)
-        Me.NavagationPanel.Controls.Add(Me.Loan_BTN)
         Me.NavagationPanel.Controls.Add(Me.Calculator_BTN)
         Me.NavagationPanel.Location = New System.Drawing.Point(1, 1)
         Me.NavagationPanel.Name = "NavagationPanel"
@@ -123,7 +105,7 @@ Partial Class frmMainForm
         '
         Me.PictureBox10.BackColor = System.Drawing.Color.Black
         Me.PictureBox10.Image = Global.WindowsApp1.My.Resources.Resources.settings
-        Me.PictureBox10.Location = New System.Drawing.Point(13, 660)
+        Me.PictureBox10.Location = New System.Drawing.Point(10, 505)
         Me.PictureBox10.Name = "PictureBox10"
         Me.PictureBox10.Size = New System.Drawing.Size(42, 38)
         Me.PictureBox10.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
@@ -145,7 +127,7 @@ Partial Class frmMainForm
         '
         Me.PictureBox8.BackColor = System.Drawing.Color.Black
         Me.PictureBox8.Image = Global.WindowsApp1.My.Resources.Resources.loans
-        Me.PictureBox8.Location = New System.Drawing.Point(11, 509)
+        Me.PictureBox8.Location = New System.Drawing.Point(11, 659)
         Me.PictureBox8.Name = "PictureBox8"
         Me.PictureBox8.Size = New System.Drawing.Size(42, 38)
         Me.PictureBox8.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
@@ -261,10 +243,10 @@ Partial Class frmMainForm
         '
         Me.MenuStrip1.BackColor = System.Drawing.Color.Black
         Me.MenuStrip1.Dock = System.Windows.Forms.DockStyle.None
-        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileToolStripMenuItem, Me.ReportsToolStripMenuItem, Me.AboutUsToolStripMenuItem})
+        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileToolStripMenuItem, Me.AboutUsToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(-5, 80)
         Me.MenuStrip1.Name = "MenuStrip1"
-        Me.MenuStrip1.Size = New System.Drawing.Size(172, 24)
+        Me.MenuStrip1.Size = New System.Drawing.Size(113, 24)
         Me.MenuStrip1.TabIndex = 3
         Me.MenuStrip1.Text = "MenuStrip1"
         '
@@ -310,118 +292,6 @@ Partial Class frmMainForm
         Me.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem"
         Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(217, 22)
         Me.ExitToolStripMenuItem.Text = "&Exit"
-        '
-        'ReportsToolStripMenuItem
-        '
-        Me.ReportsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.DailyReportToolStripMenuItem, Me.MonthlyReportToolStripMenuItem, Me.ManPowerActiveListToolStripMenuItem, Me.ManPowerReportToolStripMenuItem})
-        Me.ReportsToolStripMenuItem.ForeColor = System.Drawing.Color.White
-        Me.ReportsToolStripMenuItem.Name = "ReportsToolStripMenuItem"
-        Me.ReportsToolStripMenuItem.Size = New System.Drawing.Size(59, 20)
-        Me.ReportsToolStripMenuItem.Text = "&Reports"
-        '
-        'DailyReportToolStripMenuItem
-        '
-        Me.DailyReportToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ManPowerToolStripMenuItem, Me.RelieverToolStripMenuItem, Me.DeclinedToolStripMenuItem, Me.DeclinedToolStripMenuItem1, Me.AssesmentToolStripMenuItem1, Me.AppointmentToolStripMenuItem})
-        Me.DailyReportToolStripMenuItem.Name = "DailyReportToolStripMenuItem"
-        Me.DailyReportToolStripMenuItem.Size = New System.Drawing.Size(191, 22)
-        Me.DailyReportToolStripMenuItem.Text = "Daily Report"
-        '
-        'ManPowerToolStripMenuItem
-        '
-        Me.ManPowerToolStripMenuItem.Name = "ManPowerToolStripMenuItem"
-        Me.ManPowerToolStripMenuItem.Size = New System.Drawing.Size(184, 22)
-        Me.ManPowerToolStripMenuItem.Text = "Man Power"
-        '
-        'RelieverToolStripMenuItem
-        '
-        Me.RelieverToolStripMenuItem.Name = "RelieverToolStripMenuItem"
-        Me.RelieverToolStripMenuItem.Size = New System.Drawing.Size(184, 22)
-        Me.RelieverToolStripMenuItem.Text = "Reliever"
-        '
-        'DeclinedToolStripMenuItem
-        '
-        Me.DeclinedToolStripMenuItem.Name = "DeclinedToolStripMenuItem"
-        Me.DeclinedToolStripMenuItem.Size = New System.Drawing.Size(184, 22)
-        Me.DeclinedToolStripMenuItem.Text = "Assigned Agreement"
-        '
-        'DeclinedToolStripMenuItem1
-        '
-        Me.DeclinedToolStripMenuItem1.Name = "DeclinedToolStripMenuItem1"
-        Me.DeclinedToolStripMenuItem1.Size = New System.Drawing.Size(184, 22)
-        Me.DeclinedToolStripMenuItem1.Text = "Relieved Agreement"
-        '
-        'AssesmentToolStripMenuItem1
-        '
-        Me.AssesmentToolStripMenuItem1.Name = "AssesmentToolStripMenuItem1"
-        Me.AssesmentToolStripMenuItem1.Size = New System.Drawing.Size(184, 22)
-        Me.AssesmentToolStripMenuItem1.Text = "Assesment"
-        '
-        'AppointmentToolStripMenuItem
-        '
-        Me.AppointmentToolStripMenuItem.Name = "AppointmentToolStripMenuItem"
-        Me.AppointmentToolStripMenuItem.Size = New System.Drawing.Size(184, 22)
-        Me.AppointmentToolStripMenuItem.Text = "Appointment"
-        '
-        'MonthlyReportToolStripMenuItem
-        '
-        Me.MonthlyReportToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ManPowerToolStripMenuItem1, Me.RelieverToolStripMenuItem1, Me.MontlyAggreeAssignToolStripMenuItem, Me.RelievedAgreementToolStripMenuItem, Me.AssesmentToolStripMenuItem, Me.AppointmentToolStripMenuItem1, Me.BhouseAllowanceToolStripMenuItem})
-        Me.MonthlyReportToolStripMenuItem.Name = "MonthlyReportToolStripMenuItem"
-        Me.MonthlyReportToolStripMenuItem.Size = New System.Drawing.Size(191, 22)
-        Me.MonthlyReportToolStripMenuItem.Text = "Monthly Report"
-        '
-        'ManPowerToolStripMenuItem1
-        '
-        Me.ManPowerToolStripMenuItem1.Name = "ManPowerToolStripMenuItem1"
-        Me.ManPowerToolStripMenuItem1.Size = New System.Drawing.Size(184, 22)
-        Me.ManPowerToolStripMenuItem1.Text = "Man Power"
-        '
-        'RelieverToolStripMenuItem1
-        '
-        Me.RelieverToolStripMenuItem1.Name = "RelieverToolStripMenuItem1"
-        Me.RelieverToolStripMenuItem1.Size = New System.Drawing.Size(184, 22)
-        Me.RelieverToolStripMenuItem1.Text = "Reliever"
-        '
-        'MontlyAggreeAssignToolStripMenuItem
-        '
-        Me.MontlyAggreeAssignToolStripMenuItem.Name = "MontlyAggreeAssignToolStripMenuItem"
-        Me.MontlyAggreeAssignToolStripMenuItem.Size = New System.Drawing.Size(184, 22)
-        Me.MontlyAggreeAssignToolStripMenuItem.Text = "Assigned Agreement"
-        '
-        'RelievedAgreementToolStripMenuItem
-        '
-        Me.RelievedAgreementToolStripMenuItem.Name = "RelievedAgreementToolStripMenuItem"
-        Me.RelievedAgreementToolStripMenuItem.Size = New System.Drawing.Size(184, 22)
-        Me.RelievedAgreementToolStripMenuItem.Text = "Relieved Agreement"
-        '
-        'AssesmentToolStripMenuItem
-        '
-        Me.AssesmentToolStripMenuItem.Name = "AssesmentToolStripMenuItem"
-        Me.AssesmentToolStripMenuItem.Size = New System.Drawing.Size(184, 22)
-        Me.AssesmentToolStripMenuItem.Text = "Assesment"
-        '
-        'AppointmentToolStripMenuItem1
-        '
-        Me.AppointmentToolStripMenuItem1.Name = "AppointmentToolStripMenuItem1"
-        Me.AppointmentToolStripMenuItem1.Size = New System.Drawing.Size(184, 22)
-        Me.AppointmentToolStripMenuItem1.Text = "Appointment"
-        '
-        'BhouseAllowanceToolStripMenuItem
-        '
-        Me.BhouseAllowanceToolStripMenuItem.Name = "BhouseAllowanceToolStripMenuItem"
-        Me.BhouseAllowanceToolStripMenuItem.Size = New System.Drawing.Size(184, 22)
-        Me.BhouseAllowanceToolStripMenuItem.Text = "Bhouse Allowance"
-        '
-        'ManPowerActiveListToolStripMenuItem
-        '
-        Me.ManPowerActiveListToolStripMenuItem.Name = "ManPowerActiveListToolStripMenuItem"
-        Me.ManPowerActiveListToolStripMenuItem.Size = New System.Drawing.Size(191, 22)
-        Me.ManPowerActiveListToolStripMenuItem.Text = "Man Power Active List"
-        '
-        'ManPowerReportToolStripMenuItem
-        '
-        Me.ManPowerReportToolStripMenuItem.Name = "ManPowerReportToolStripMenuItem"
-        Me.ManPowerReportToolStripMenuItem.Size = New System.Drawing.Size(191, 22)
-        Me.ManPowerReportToolStripMenuItem.Text = "Man Power Report"
         '
         'AboutUsToolStripMenuItem
         '
@@ -514,7 +384,7 @@ Partial Class frmMainForm
         Me.Settings_BTN.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Settings_BTN.ForeColor = System.Drawing.Color.White
         Me.Settings_BTN.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Settings_BTN.Location = New System.Drawing.Point(0, 640)
+        Me.Settings_BTN.Location = New System.Drawing.Point(0, 564)
         Me.Settings_BTN.Name = "Settings_BTN"
         Me.Settings_BTN.Size = New System.Drawing.Size(197, 75)
         Me.Settings_BTN.TabIndex = 10
@@ -530,7 +400,7 @@ Partial Class frmMainForm
         Me.Loan_BTN.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Loan_BTN.ForeColor = System.Drawing.Color.White
         Me.Loan_BTN.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Loan_BTN.Location = New System.Drawing.Point(0, 488)
+        Me.Loan_BTN.Location = New System.Drawing.Point(-1, 640)
         Me.Loan_BTN.Name = "Loan_BTN"
         Me.Loan_BTN.Size = New System.Drawing.Size(197, 75)
         Me.Loan_BTN.TabIndex = 7
@@ -546,7 +416,7 @@ Partial Class frmMainForm
         Me.Calculator_BTN.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Calculator_BTN.ForeColor = System.Drawing.Color.White
         Me.Calculator_BTN.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Calculator_BTN.Location = New System.Drawing.Point(0, 564)
+        Me.Calculator_BTN.Location = New System.Drawing.Point(0, 488)
         Me.Calculator_BTN.Name = "Calculator_BTN"
         Me.Calculator_BTN.Size = New System.Drawing.Size(197, 75)
         Me.Calculator_BTN.TabIndex = 12
@@ -683,24 +553,6 @@ Partial Class frmMainForm
     Friend WithEvents ImportEployeeFromFileToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ToolStripSeparator2 As ToolStripSeparator
     Friend WithEvents ExitToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents ReportsToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents DailyReportToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents ManPowerToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents RelieverToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents DeclinedToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents DeclinedToolStripMenuItem1 As ToolStripMenuItem
-    Friend WithEvents AssesmentToolStripMenuItem1 As ToolStripMenuItem
-    Friend WithEvents AppointmentToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents MonthlyReportToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents ManPowerToolStripMenuItem1 As ToolStripMenuItem
-    Friend WithEvents RelieverToolStripMenuItem1 As ToolStripMenuItem
-    Friend WithEvents MontlyAggreeAssignToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents RelievedAgreementToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents AssesmentToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents AppointmentToolStripMenuItem1 As ToolStripMenuItem
-    Friend WithEvents BhouseAllowanceToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents ManPowerActiveListToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents ManPowerReportToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents AboutUsToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents UserName_LBL As Label
     Friend WithEvents Dashboard_BTN As Button

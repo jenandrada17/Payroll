@@ -47,71 +47,24 @@ Module SelectFromDatabase
     End Sub
 
 
-    Friend Sub AttendanceDetails(biometric As String, NoOfDays_TXT As TextBox, RegularOT_TXT As TextBox,
+    Friend Sub AttendanceDetails(biometric As String, paydate As String, NoOfDays_TXT As TextBox, RegularOT_TXT As TextBox,
                              SpecialHol_TXT As TextBox, RegularHol_TXT As TextBox, Late_TXT As TextBox,
                              UnderTime_TXT As TextBox)
 
 
-        Dim mysql As String = "Select * From PAYROLL_ATTENDANCE WHERE BIOMETRICID = '" & biometric & "'"
+        Dim mysql As String = $"Select * From PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{biometric}' and paydate = '{paydate}'"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
-
             Dim dr As DataRow = ds.Tables(0).Rows(0)
-            If dr.Table.Rows.Count > 0 Then
-
-                With dr
-
-                    If .Item("PRESENT_HOURS") = 0 Then
-                        NoOfDays_TXT.Text = .Item("PRESENT_DAYS")
-                        NoOfDays_TXT.Tag = .Item("PRESENT_DAYS")
-                    Else
-                        NoOfDays_TXT.Text = .Item("PRESENT_DAYS") & " and a Half Day"
-                        NoOfDays_TXT.Tag = (.Item("PRESENT_DAYS") + 0.5).ToString
-                    End If
-
-                    RegularOT_TXT.Text = .Item("OVERTIME")
-                    SpecialHol_TXT.Text = .Item("SPECHOLIDAY")
-                    RegularHol_TXT.Text = .Item("REGHOLIDAY")
-                    Late_TXT.Text = .Item("LATE")
-                    UnderTime_TXT.Text = .Item("UNDERTIME")
-                End With
-            Else
-                Exit Sub
-            End If
+            With dr
+                NoOfDays_TXT.Text = .Item("PRESENT_DAYS")
+                RegularOT_TXT.Text = .Item("OVERTIME")
+                SpecialHol_TXT.Text = .Item("SPECHOLIDAY")
+                RegularHol_TXT.Text = .Item("REGHOLIDAY")
+                Late_TXT.Text = .Item("LATE")
+                UnderTime_TXT.Text = .Item("UNDERTIME")
+            End With
 
         End Using
-
-        'mysql = "Select * From payroll_allow_deduc WHERE EMP_ID = '" & namee.Tag & "'"
-        'Using ds As DataSet = LoadSQL(mysql, "payroll_allow_deduc")
-
-        '    If ds.Tables(0).Rows.Count > 0 Then
-        '        Dim data As DataRow = ds.Tables(0).Rows(0)
-        '        With data
-
-        '            If .Item("FIX_RATE") = "YES" Then
-        '                yess.Checked = True
-        '            Else
-        '                yess.Checked = False
-        '            End If
-
-        '            ratee.Text = .Item("DAILY_SALARY")
-        '            boarding.Text = .Item("BOARDING_ALLOWANCE")
-        '            carekit.Text = .Item("CAREKIT_ALLOWANCE")
-        '            positional.Text = .Item("POSITIONAL_ALLOWANCE")
-        '            Transport.Text = .Item("TRANSPO_ALLOWANCE")
-        '            Medical.Text = .Item("MEDICAL_ALLOWANCE")
-        '            OtherAllowance.Text = .Item("OTHER_ALLOWANCE")
-
-        '            CashAdvance.Text = .Item("CASH_ADVANCE")
-        '            Savings.Text = .Item("SAVINGS_DEDUCTION")
-        '            Loan.Text = .Item("LOANS_DEDUCTION")
-        '            Charges.Text = .Item("CHARGES_DEDUCTION")
-        '            Meal.Text = .Item("MEAL_DEDUCTION")
-        '            OtherDeduction.Text = .Item("OTHER_DEDUCTION")
-
-        '        End With
-        '    End If
-
-        'End Using
     End Sub
 
 
@@ -277,7 +230,6 @@ Module SelectFromDatabase
         Return cnt
     End Function
 
-
     Public Function SortCountedDATE(list As List(Of String), datee As String) As List(Of String)
 
         Dim HourGroup As New List(Of String)()
@@ -401,5 +353,58 @@ Module SelectFromDatabase
 
     End Sub
 
+    Public Sub BiometricNo_Payout(bioNo As String, name As TextBox)
+
+        Dim mysql As String = "Select * From tbl_employee WHERE BIOMETRICID= '" & bioNo & "'"
+        Using ds As DataSet = LoadSQL(mysql, "tbl_employee")
+
+            If ds.Tables(0).Rows.Count > 0 Then
+
+                Dim data As DataRow = ds.Tables(0).Rows(0)
+
+                With data
+
+                    Dim MI As String
+
+                    If String.IsNullOrEmpty(.Item("MIDDLENAME")) Then
+                        MI = ""
+                    Else
+                        MI = .Item("MIDDLENAME").Substring(0, 1) & "."
+                    End If
+
+                    name.Text = .Item("FIRSTNAME") & " " & MI & " " & .Item("LASTNAME") & " " & .Item("SUFFIX")
+                    name.Tag = .Item("ID")
+
+                End With
+            Else
+                name.Text = ""
+            End If
+        End Using
+    End Sub
+
+    Public Function Holiday_Rate(holiday As String) As Integer
+        Dim rate As Integer = 0
+        Dim mysql As String = "Select * From payroll_holiday_rate WHERE HOLIDAY= '" & holiday & "'"
+        Using ds As DataSet = LoadSQL(mysql, "payroll_holiday_rate")
+            If ds.Tables(0).Rows.Count > 0 Then
+                Dim data As DataRow = ds.Tables(0).Rows(0)
+                With data
+                    rate = .Item("RATE")
+                End With
+            End If
+        End Using
+
+        Return rate
+    End Function
+
+    Public Function Bio_Exist_Attendance(bioNo As String, paydate As String)
+        Dim mysql As String = $"Select * FROM PAYROLL_ATTENDANCE where BIOMETRICID = '{bioNo}' and PAYDATE = '{paydate}'"
+        Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
+        If ds.Tables(0).Rows.Count > 0 Then
+            Return True
+            Console.WriteLine("TRUE")
+        End If
+        Return False
+    End Function
 
 End Module
