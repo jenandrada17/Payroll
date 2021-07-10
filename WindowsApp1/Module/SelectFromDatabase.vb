@@ -298,6 +298,22 @@ Module SelectFromDatabase
         Return False
     End Function
 
+
+    Public Function File_Exist_f200(branch As String, PAYDATE As String)
+        Dim mysql As String = $"Select * FROM BIOMETRIC_DTR where BRANCH = '{branch}' and PAYDATE = '{PAYDATE}'"
+        Dim ds As DataSet = LoadSQL(mysql, "BIOMETRIC_DTR")
+        If ds.Tables(0).Rows.Count > 0 Then
+            Dim result As DialogResult = MessageBox.Show("File already imported, Do you want to modify?", "Warning", MessageBoxButtons.YesNo)
+            If result = DialogResult.Yes Then
+                RunCommand("DELETE FROM IMPORT_DTR WHERE BRANCH = '" & branch & "' and PAYDATE = '" & PAYDATE & "';")  'THIS IS TO DELETE EXISTING SHEETS IN IMPORT_DTR
+                RunCommand("DELETE FROM BIOMETRIC_DTR WHERE BRANCH = '" & branch & "' and PAYDATE = '" & PAYDATE & "';")  'THIS IS TO DELETE EXISTING ATTENDANCE IN BIOMETRIC_DTR
+                Return True
+            End If
+        End If
+        Return False
+    End Function
+
+
     Friend Sub PopulateBiometricSHEET(datagrid As DataGridView, Paydate As String, BRANCHNAME As String)
 
         datagrid.Rows.Clear()
@@ -305,10 +321,10 @@ Module SelectFromDatabase
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
             If ds.Tables(0).Rows.Count > 0 Then
+
                 For Each dr In ds.Tables(0).Rows
                     AddRowBiometric(dr, datagrid)
                 Next
-                'AdjustHeightOfGridBasedOnRows(datagrid)
             Else
                 datagrid.Rows.Clear()
             End If
@@ -515,36 +531,6 @@ Module SelectFromDatabase
         End Using
     End Sub
 
-
-    'Public Sub Payout_ALL(bioNo As String, name As TextBox, ratee As TextBox, paydate As String)
-
-    '    Dim mysql As String = "Select * From payroll_attendance WHERE PAYDATE= '" & paydate & "'"
-    '    Using ds As DataSet = LoadSQL(mysql, "payroll_attendance")
-
-    '        If ds.Tables(0).Rows.Count > 0 Then
-    '            For Each dr In ds.Tables(0).Rows
-    '                With dr 
-    '                    Dim MI As String
-
-    '                    If String.IsNullOrEmpty(.Item("MIDDLENAME")) Then
-    '                        MI = ""
-    '                    Else
-    '                        MI = .Item("MIDDLENAME").Substring(0, 1) & "."
-    '                    End If
-
-    '                    ratee.Text = IIf(IsDBNull(.Item("RATE")), 0, .Item("RATE"))
-    '                    ratee.Tag = .Item("BRANCH_ID")
-    '                    name.Text = .Item("FIRSTNAME") & " " & MI & " " & .Item("LASTNAME") & " " & .Item("SUFFIX")
-    '                    name.Tag = .Item("ID")
-    '                End With
-    '            Next
-    '        Else
-    '            Exit Sub
-    '        End If
-    '    End Using
-    'End Sub
-
-
     Public Function Holiday_Rate(holiday As String) As Integer
         Dim rate As Integer = 0
         Dim mysql As String = "Select * From payroll_holiday_rate WHERE HOLIDAY= '" & holiday & "'"
@@ -649,9 +635,12 @@ Module SelectFromDatabase
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ALLOWANCE")
             LV.Items.Clear()
+            progressBarStart(ds)
             For Each dr In ds.Tables(0).Rows
                 AddRow_Allowance(dr, LV)
+                frmMainForm.AppProgressBar.Value += 1
             Next
+            progressBarEnd()
         End Using
 
     End Sub
@@ -695,9 +684,12 @@ Module SelectFromDatabase
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_DEDUCTIONS")
             LV.Items.Clear()
+            progressBarStart(ds)
             For Each dr In ds.Tables(0).Rows
                 AddRow_Deduction(dr, LV)
+                frmMainForm.AppProgressBar.Value += 1
             Next
+            progressBarEnd()
         End Using
 
     End Sub
@@ -744,11 +736,12 @@ Module SelectFromDatabase
             If ds.Tables(0).Rows.Count > 0 Then
 
                 rowCount = ds.Tables(0).Rows.Count
-                Dim maxEntries As Integer = ds.Tables(0).Rows.Count
-                frmMainForm.AppProgressBar.Maximum = maxEntries
+                frmMainForm.AppProgressBar.Maximum = rowCount
                 frmMainForm.AppProgressBar.Visible = True
 
                 listview.Items.Clear()
+                progressBarStart(ds)
+
                 For Each dr In ds.Tables(0).Rows
                     AddRow_RATE(dr, listview)
                     frmMainForm.AppProgressBar.Value += 1
@@ -756,9 +749,7 @@ Module SelectFromDatabase
             End If
         End Using
 
-        frmMainForm.AppProgressBar.Value = 0
-        frmMainForm.AppProgressBar.Maximum = 1000
-        frmMainForm.AppProgressBar.Visible = False
+        progressBarEnd()
     End Sub
 
     Private Sub AddRow_RATE(ByVal dr As DataRow, listview As ListView)
@@ -822,10 +813,56 @@ Module SelectFromDatabase
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
             LV.Items.Clear()
+            progressBarStart(ds)
             For Each dr In ds.Tables(0).Rows
                 AddRow_PAYOUT(dr, LV)
+
+                frmMainForm.AppProgressBar.Value += 1
             Next
+            progressBarEnd()
         End Using
+
+    End Sub
+
+    Public Sub GetPayout_TOTALS(P_GrossAmount_LBL As Label, P_BenifitsComp_LBL As Label, P_BenifitsLoan_LBL As Label,
+                                P_NetTax_LBL As Label, P_Allowance_LBL As Label, P_Deduction_LBL As Label, P_NetPay_LBL As Label)
+
+        Dim mysql As String = "Select SUM(GROSS_AMOUNT) As gross, SUM(SSS_COMP) As sss_comp, SUM(PAGIBIG_COMP) As pagibig_comp, SUM(PHILHEALTH_COMP) As philH_comp From PAYROLL_PAYOUT"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
+            If ds.Tables(0).Rows.Count > 0 Then
+                Dim data As DataRow = ds.Tables(0).Rows(0)
+                With data
+                    P_GrossAmount_LBL.Text = .Item("gross")
+                    P_BenifitsComp_LBL.Text = .Item("sss_comp") + .Item("pagibig_comp") + .Item("philH_comp")
+                    P_BenifitsLoan_LBL.Text = .Item("gross")
+                    P_NetTax_LBL.Text = .Item("gross")
+                    P_Allowance_LBL.Text = .Item("gross")
+                    P_Deduction_LBL.Text = .Item("gross")
+                    P_NetPay_LBL.Text = .Item("gross")
+
+                End With
+            End If
+        End Using
+    End Sub
+
+
+    Friend Sub progressBarStart(ByVal objectt As Object)
+
+        Try
+            rowCount = objectt.Tables(0).Rows.Count
+        Catch
+            rowCount = objectt.Count
+        End Try
+
+        frmMainForm.AppProgressBar.Maximum = rowCount
+        frmMainForm.AppProgressBar.Visible = True
+    End Sub
+
+    Friend Sub progressBarEnd()
+
+        frmMainForm.AppProgressBar.Value = 0
+        frmMainForm.AppProgressBar.Maximum = 1000
+        frmMainForm.AppProgressBar.Visible = False
 
     End Sub
 

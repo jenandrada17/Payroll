@@ -12,6 +12,7 @@
         Savings_TXT.Text = SBU_Amount()
         Payout_ALL()
         Lists_Payout(Payout_list, paydate_)
+        GetPayout_TOTALS(P_GrossAmount_LBL, P_BenifitsComp_LBL, P_BenifitsLoan_LBL, P_NetTax_LBL, P_Allowance_LBL, P_Deduction_LBL, P_NetPay_LBL)
         PopulateComboBox(Paydate_ComboB, "PAYROLL_PAYOUT", "PAYDATE", paydate_)
     End Sub
 
@@ -44,10 +45,7 @@
 
             If ds.Tables(0).Rows.Count > 0 Then
 
-                rowCount = ds.Tables(0).Rows.Count
-                Dim maxEntries As Integer = ds.Tables(0).Rows.Count
-                frmMainForm.AppProgressBar.Maximum = maxEntries
-                frmMainForm.AppProgressBar.Visible = True
+                progressBarStart(ds)
 
                 For Each dr In ds.Tables(0).Rows
                     With dr
@@ -93,9 +91,7 @@
             End If
         End Using
 
-        frmMainForm.AppProgressBar.Value = 0
-        frmMainForm.AppProgressBar.Maximum = 1000
-        frmMainForm.AppProgressBar.Visible = False
+        progressBarEnd()
     End Sub
 
 

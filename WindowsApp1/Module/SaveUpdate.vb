@@ -63,6 +63,8 @@
 
             End With
             SaveEntry(dss, False)
+
+            MsgBox("Succesfully Updated!", MsgBoxStyle.Information, "Information")
         Else
 
             mysql = "Select * From PAYROLL_ATTENDANCE Rows 1"
@@ -90,6 +92,8 @@
                 End With
                 ds.Tables(0).Rows.Add(dsNewRow)
                 SaveEntry(ds)
+
+                MsgBox("Succesfully Saved!", MsgBoxStyle.Information, "Information")
             End Using
         End If
 
@@ -146,6 +150,7 @@
             ds.Tables(0).Rows.Add(dsNewRow)
             SaveEntry(ds)
         End Using
+
     End Sub
 
 

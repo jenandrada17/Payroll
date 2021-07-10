@@ -430,17 +430,16 @@ Public Class frmAttendance
     End Sub
 
     Private Sub Cancel_BTN_Click(sender As Object, e As EventArgs) Handles Cancel_BTN.Click
-
         BiometricID_TXT.Clear()
         Name_TXT.Clear()
-        TotalAbsent_LBL.Text = 0
-        TotalDays_LBL.Text = 0
-        TotalRHoliday_LBL.Text = 0
-        TotalSHoliday_LBL.Text = 0
-        TotalLateHR_LBL.Text = 0
-        TotalUTHR_LBL.Text = 0
-        TotalOTHr_LBL.Text = 0
-
+        LoadDateTime()
+        'TotalAbsent_LBL.Text = 0
+        'TotalDays_LBL.Text = 0
+        'TotalRHoliday_LBL.Text = 0
+        'TotalSHoliday_LBL.Text = 0
+        'TotalLateHR_LBL.Text = 0
+        'TotalUTHR_LBL.Text = 0
+        'TotalOTHr_LBL.Text = 0
         'CheckALL_CheckBox.Checked = False
 
     End Sub
@@ -551,6 +550,7 @@ Public Class frmAttendance
         Name_TXT.AutoCompleteSource = AutoCompleteSource.CustomSource
 
     End Sub
+
     Private Function ExcelFilePath(ByVal filePath As String) As String
         DefaultFolder = Path.GetDirectoryName(filePath)
         TargetFile = filePath
@@ -709,25 +709,34 @@ Public Class frmAttendance
 
                 If File_Exist(Branch_ComboB.SelectedItem, Paydate) Then
 
-                    Cursor = Cursors.WaitCursor
+                    progressBarStart(DtSet)
 
                     For row = 2 To DtSet.Tables(0).Rows.Count
                         SaveBiometricSheet(Paydate, eCell(row, 1).Value, eCell(row, 2).Value, Branch_ComboB.SelectedItem)
                         distinct_bio.Add(eCell(row, 1).Value)
+
+                        frmMainForm.AppProgressBar.Value += 1
+
                     Next
 
-                    Cursor = Cursors.Default
+                    progressBarEnd()
+
+                    'Cursor = Cursors.Default
 
                 ElseIf File_NOT_Exist(Branch_ComboB.SelectedItem, Paydate) Then
 
-                    Cursor = Cursors.WaitCursor
+                    'Cursor = Cursors.WaitCursor
+                    progressBarStart(DtSet)
 
                     For row = 2 To DtSet.Tables(0).Rows.Count
                         SaveBiometricSheet(Paydate, eCell(row, 1).Value, eCell(row, 2).Value, Branch_ComboB.SelectedItem)
                         distinct_bio.Add(eCell(row, 1).Value)
+
+                        frmMainForm.AppProgressBar.Value += 1
                     Next
 
-                    Cursor = Cursors.Default
+                    progressBarEnd()
+                    'Cursor = Cursors.Default
                 Else
                     Path_TXT.Text = ""
                 End If
@@ -761,10 +770,9 @@ Public Class frmAttendance
 
                 distinct_bio.Clear()
 
-                Cursor = Cursors.WaitCursor
-
                 Dim groups_time As New List(Of String)()
                 Dim bio_no As String = "" ' ======================================== GIMOVE SA GAWAS BASI DILI MAGANA =======================
+                progressBarStart(DtSet)
                 For row = 7 To DtSet.Tables(0).Rows.Count
 
                     If eCell(row, 5).Value = Nothing Then
@@ -853,18 +861,23 @@ Public Class frmAttendance
                     Else
                         distinct_bio.Add(bio_no)
                         SaveDTR(bio_no, Paydate, eCell(row, 5).Value, Branch_ComboB.SelectedItem, list_hour(0), list_hour(1), list_hour(2), list_hour(3))
-                    End If
-                Next
 
-                Cursor = Cursors.Default
+                        frmMainForm.AppProgressBar.Value += 1
+                    End If
+
+                Next
+                progressBarEnd()
 
                 Import_BTN.Enabled = False
                 Path_TXT.Clear()
                 MyConnection.Close()
 
-                SAVE_DIRECT_Attendance() ' ===== DIRECT SAVE TO ATTENDANCE ====
-                PopulateBiometricSHEET(Bio_grid, Paydate, Branch_ComboB.SelectedItem) ' ===== POPULATE DATAGRIDVIEW FROM SHEET ====
+                Cursor = Cursors.WaitCursor
 
+                SAVE_DIRECT_Attendance() ' ===== DIRECT SAVE TO ATTENDANCE ====
+                PopulateBiometricSHEET(Bio_grid, Paydate, Branch_ComboB.SelectedItem) ' ===== POPULATE DATAGRIDVIEW FROM SHEET ==== 
+
+                Cursor = Cursors.Default
             End Try
         End If
 
