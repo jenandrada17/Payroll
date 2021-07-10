@@ -20,7 +20,7 @@ Module Public_Function
 
         Catch ex As Exception
 
-        End Try 
+        End Try
     End Sub
 
     Public Function CreateObjectInstance(ByVal objectName As String) As Object
@@ -61,6 +61,13 @@ Module Public_Function
         fs.Close()
         Console.WriteLine("Recorded")
     End Sub
+
+    Friend Function IsEnter(ByVal e As KeyPressEventArgs) As Boolean
+        If Asc(e.KeyChar) = 13 Then
+            Return True
+        End If
+        Return False
+    End Function
 
 
 

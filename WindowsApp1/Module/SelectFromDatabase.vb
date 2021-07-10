@@ -126,7 +126,6 @@ Module SelectFromDatabase
         Return True
     End Function
 
-
     Friend Function HolidayExist(datee As String)
         Dim mysql As String = "SELECT * FROM PAYROLL_HOLIDAY Where DATEE = '" & datee & "' "
         Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_HOLIDAY")
@@ -185,10 +184,117 @@ Module SelectFromDatabase
             End If
 
         End Using
+    End Sub
 
+    Public Function FileName_Exist(FILENAME As String, path As TextBox, branch As String, PAYDATE As String)
+        Dim mysql As String = $"Select * FROM IMPORT_DTR where FILENAME = '{FILENAME}' and BRANCH = '{branch}' and PAYDATE = '{PAYDATE}'"
+        Dim ds As DataSet = LoadSQL(mysql, "IMPORT_DTR")
+        If ds.Tables(0).Rows.Count > 0 Then
+            Dim result As DialogResult = MessageBox.Show("File already imported, Do you want to modify?", "Warning", MessageBoxButtons.YesNo)
+            If result = DialogResult.Yes Then
+                Return True
+            End If
+        End If
+        Return False
+    End Function
 
+    Public Function FileName_NOT_Exist(FILENAME As String, path As TextBox, branch As String, PAYDATE As String)
+        Dim mysql As String = $"Select * FROM IMPORT_DTR where FILENAME = '{FILENAME}' and BRANCH = '{branch}' and PAYDATE = '{PAYDATE}'"
+        Dim ds As DataSet = LoadSQL(mysql, "IMPORT_DTR")
+        If ds.Tables(0).Rows.Count > 0 Then
+            Return False
+        Else
+            Return True
+        End If
+        Return False
+    End Function
+
+    Friend Sub PopulateBiometricSHEET(datagrid As DataGridView, FILENAME As String, Paydate As String, BRANCHNAME As String)
+
+        datagrid.Rows.Clear()
+        Dim mysql As String = $"Select distinct(BIO_ID), B.LASTNAME, B.FIRSTNAME, B.MIDDLENAME From IMPORT_DTR A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIO_ID where A.FILENAME = '{FILENAME}' and A.PAYDATE = '{Paydate}' and A.BRANCH = '{BRANCHNAME}'"
+
+        Using ds As DataSet = LoadSQL(mysql, "IMPORT_DTR")
+            If ds.Tables(0).Rows.Count > 0 Then
+                For Each dr In ds.Tables(0).Rows
+                    AddRowBiometric(dr, datagrid)
+                Next
+                AdjustHeightOfGridBasedOnRows(datagrid)
+            End If
+        End Using
 
     End Sub
 
+    Friend Sub CheckTHIS()
+
+        'Dim mysql As String = $"Select A.*, B.LASTNAME, B.FIRSTNAME, B.MIDDLENAME From IMPORT_DTR A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIO_ID where A.FILENAME = '{FILENAME}' and A.PAYDATE = '{Paydate}' and A.BRANCH = '{BRANCHNAME}'"
+
+        Dim mysql As String = $"Select * From IMPORT_DTR where BIO_ID = '3796'"
+        Using ds As DataSet = LoadSQL(mysql, "IMPORT_DTR")
+            If ds.Tables(0).Rows.Count > 0 Then
+
+                Dim list As New List(Of String)()
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+                        Dim datt As DateTime = .Item("DATEANDTIME")
+                        datt.ToShortTimeString()
+                        Dim str As String = datt
+
+                        If str.Length <> 0 Then
+                            str = str.Substring(0, str.Length - 9)
+                            list.Add(str)
+                        End If
+                    End With
+                Next
+
+                list.Distinct().ToList
+
+                For Each value As String In list
+                    Console.WriteLine("Hour Lang " & value)
+                Next
+
+            End If
+        End Using
+
+    End Sub
+
+    Public Sub AddRowBiometric(ByVal dr As DataRow, datagrid As DataGridView)
+
+        With dr
+
+            Dim rowId As Integer = datagrid.Rows.Add()
+            Dim row As DataGridViewRow = datagrid.Rows(rowId)
+            row.Cells("BIOID_DGVV").Value = .Item("BIO_ID")
+            row.Cells("Name_DGVV").Value = .Item("LASTNAME") & ", " & .Item("FIRSTNAME") & " " & .Item("MIDDLENAME")
+            row.Height = 35
+
+        End With
+
+    End Sub
+
+    Public Sub AdjustHeightOfGridBasedOnRows(ByVal dataGrid As DataGridView)
+
+        If dataGrid.Rows.Count > 0 Then
+            Dim totalRowHeight As Integer = dataGrid.ColumnHeadersHeight
+            For Each row As DataGridViewRow In dataGrid.Rows
+                totalRowHeight += row.Height
+            Next
+            dataGrid.Height = totalRowHeight
+        End If
+
+    End Sub
+
+    Public Sub PopulateComboBox(combo As ComboBox)
+        Dim sql As String = $"select distinct(BRANCHNAME) from TBL_BRANCH"
+        Dim rdr As FbDataReader = LoadSQL_byDataReader(sql)
+        combo.Items.Clear()
+        While rdr.Read()
+            If rdr.HasRows Then
+                With rdr
+                    combo.Items.Add(rdr.Item(0).ToString)
+                End With
+            End If
+        End While
+    End Sub
 
 End Module

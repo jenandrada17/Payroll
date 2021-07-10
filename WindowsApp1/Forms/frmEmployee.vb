@@ -20,16 +20,17 @@ Public Class frmEmployee
         Try
             Dim secured_str As String = str
             secured_str = DreadKnight(secured_str)
-            'Dim strWords As String() = secured_str.Split(New Char() {" "c})
-            'Dim name As String
             Dim mysql As String
 
 
             If str.Length <> 0 Then
-                mysql = "select * from tbl_Employee A inner join tbl_branch B on A.BRANCH_ID = B.ID
-                    Where Upper(A.firstname) Like Upper('%" & secured_str & "%') OR Upper(A.lastname) Like Upper('%" & secured_str & "%') 
-                    OR Upper(B.branchname) Like Upper('%" & secured_str & "%')  OR Upper(B.COMPANYNAME) Like Upper('%" & secured_str & "%')
-                    OR Upper(A.STATUS) Like Upper('%" & secured_str & "%') "
+                mysql = "select * from tbl_Employee A inner join tbl_branch B on A.BRANCH_ID = B.ID Where 
+                                A.BIOMETRICID = '" & secured_str & "'
+                                OR Upper(A.firstname) Like Upper('%" & secured_str & "%') 
+                                OR Upper(A.lastname) Like Upper('%" & secured_str & "%') 
+                                OR Upper(B.branchname) Like Upper('%" & secured_str & "%')  
+                                OR Upper(B.COMPANYNAME) Like Upper('%" & secured_str & "%')
+                                OR Upper(A.STATUS) Like Upper('%" & secured_str & "%') "
             Else
                 mysql = "Select * From tbl_Employee A inner join tbl_branch B on A.BRANCH_ID = B.ID  "
             End If
@@ -62,9 +63,9 @@ Public Class frmEmployee
             Dim datee As String
             datee = a.ToString("MMMM dd, yyyy")
 
-            Dim lv As ListViewItem = lvEmployee.Items.Add(.Item("ID"))
-            lv.SubItems.Add(.Item("BIOMETRICID"))
+            Dim lv As ListViewItem = lvEmployee.Items.Add(.Item("BIOMETRICID"))
             lv.SubItems.Add(String.Format("{0}, {1} {2}", .Item("LastName"), .Item("FirstName"), .Item("MiddleName")))
+            lv.Tag = .Item("ID")
             lv.SubItems.Add(datee)
             lv.SubItems.Add(.Item("NO_OF_DAYS"))
             lv.SubItems.Add(.Item("CONTACTNO"))
@@ -108,8 +109,9 @@ Public Class frmEmployee
                 }
                 frmMainForm.pNavigate.Controls.Add(frm)
                 frmMainForm.pNavigate.Tag = frm
-                frm.BiometricID_TXT.Text = lvEmployee.FocusedItem.SubItems(1).Text
+                frm.BiometricID_TXT.Text = lvEmployee.FocusedItem.SubItems(0).Text
                 frm.Name_TXT.Text = lvEmployee.FocusedItem.SubItems(2).Text
+                frm.Name_TXT.Tag = lvEmployee.FocusedItem.SubItems(2).Tag
                 frm.Show()
                 frm.Dock = DockStyle.Fill
                 frm.BringToFront()
@@ -129,6 +131,7 @@ Public Class frmEmployee
                 frmMainForm.pNavigate.Tag = frm
                 frm.BiometricID_TXT.Text = lvEmployee.FocusedItem.SubItems(1).Text
                 frm.Name_TXT.Text = lvEmployee.FocusedItem.SubItems(2).Text
+                frm.Name_TXT.Tag = lvEmployee.FocusedItem.SubItems(2).Tag
 
                 frm.Show()
                 frm.Dock = DockStyle.Fill
@@ -155,7 +158,7 @@ Public Class frmEmployee
 
     Public Sub UpdateRateDetails()
 
-        Dim idx As Integer = lvEmployee.FocusedItem.Text
+        Dim idx As Integer = lvEmployee.FocusedItem.SubItems(2).Tag
 
         Dim mysql As String = "Select * From tbl_employee Where id = '" & idx & "'"
         Using ds As DataSet = LoadSQL(mysql, "tbl_employee")
@@ -203,19 +206,17 @@ Public Class frmEmployee
             }
             frmMainForm.pNavigate.Controls.Add(frm)
             frmMainForm.pNavigate.Tag = frm
-            frm.Biometric_TXT.Text = lvEmployee.FocusedItem.SubItems(1).Text
-            Console.WriteLine("Biometric  = " & lvEmployee.FocusedItem.SubItems(1).Text)
+            frm.Biometric_TXT.Text = lvEmployee.FocusedItem.SubItems(0).Text
             frm.Show()
             frm.Dock = DockStyle.Fill
             frm.BringToFront()
-
         Else
             frmEmployeeInfo.BringToFront()
         End If
-
     End Sub
 
     Private Sub txtSearch_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtSearch.KeyPress
-        btnSearch.PerformClick()
+        If IsEnter(e) Then btnSearch.PerformClick()
     End Sub
+
 End Class

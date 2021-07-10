@@ -84,12 +84,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class\Employee.vb" />
-    <Compile Include="For Testing Only\SampleImport.Designer.vb">
-      <DependentUpon>SampleImport.vb</DependentUpon>
-    </Compile>
-    <Compile Include="For Testing Only\SampleImport.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Forms\DailyTimeRecord.Designer.vb">
       <DependentUpon>DailyTimeRecord.vb</DependentUpon>
     </Compile>
@@ -158,9 +152,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="For Testing Only\SampleImport.resx">
-      <DependentUpon>SampleImport.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\DailyTimeRecord.resx">
       <DependentUpon>DailyTimeRecord.vb</DependentUpon>
     </EmbeddedResource>
@@ -230,6 +221,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\settings.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="For Testing Only\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

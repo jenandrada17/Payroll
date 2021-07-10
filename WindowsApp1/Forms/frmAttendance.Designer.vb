@@ -22,11 +22,12 @@ Partial Class frmAttendance
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle21 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle24 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle25 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle22 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle23 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle11 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle12 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle13 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.Manual_Tab = New System.Windows.Forms.TabPage()
@@ -81,22 +82,28 @@ Partial Class frmAttendance
         Me.Name_TXT = New System.Windows.Forms.TextBox()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.BiometricID_TXT = New System.Windows.Forms.TextBox()
-        Me.Close_LBL = New System.Windows.Forms.Label()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
-        Me.Bio_grid = New System.Windows.Forms.DataGridView()
-        Me.FlowLayoutPanel1 = New System.Windows.Forms.FlowLayoutPanel()
+        Me.Branch_ComboB = New System.Windows.Forms.ComboBox()
+        Me.GroupBox2 = New System.Windows.Forms.GroupBox()
+        Me.Fs200_RadioB = New System.Windows.Forms.RadioButton()
+        Me.Zkteco_RadioB = New System.Windows.Forms.RadioButton()
         Me.Import_BTN = New System.Windows.Forms.Button()
         Me.Path_TXT = New System.Windows.Forms.TextBox()
         Me.OpenFile_BTN = New System.Windows.Forms.Button()
-        Me.Name_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.FlowLayoutPanel1 = New System.Windows.Forms.FlowLayoutPanel()
+        Me.Bio_grid = New System.Windows.Forms.DataGridView()
+        Me.BIOID_DGVV = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Name_DGVV = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Close_LBL = New System.Windows.Forms.Label()
         Me.TabControl1.SuspendLayout()
         Me.Manual_Tab.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
-        CType(Me.Bio_grid, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GroupBox2.SuspendLayout()
         Me.FlowLayoutPanel1.SuspendLayout()
+        CType(Me.Bio_grid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Label1
@@ -111,8 +118,8 @@ Partial Class frmAttendance
         '
         'TabControl1
         '
-        Me.TabControl1.Controls.Add(Me.Manual_Tab)
         Me.TabControl1.Controls.Add(Me.TabPage1)
+        Me.TabControl1.Controls.Add(Me.Manual_Tab)
         Me.TabControl1.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.TabControl1.Location = New System.Drawing.Point(18, 37)
         Me.TabControl1.Name = "TabControl1"
@@ -560,34 +567,34 @@ Partial Class frmAttendance
         Me.DataGridView1.AllowUserToAddRows = False
         Me.DataGridView1.AllowUserToResizeColumns = False
         Me.DataGridView1.AllowUserToResizeRows = False
-        DataGridViewCellStyle21.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.DataGridView1.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle21
+        DataGridViewCellStyle8.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DataGridView1.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle8
         Me.DataGridView1.BackgroundColor = System.Drawing.Color.White
         Me.DataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.DataGridView1.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText
         Me.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.DataGridView1.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Date_DataGrid, Me.AM_In_DataGrid, Me.AM_Out_DataGrid, Me.PM_IN_DataGrid, Me.PM_Out_DataGrid, Me.Select_Datagrid})
-        DataGridViewCellStyle24.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle24.BackColor = System.Drawing.SystemColors.InactiveCaption
-        DataGridViewCellStyle24.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle24.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle24.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle24.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle24.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.DataGridView1.DefaultCellStyle = DataGridViewCellStyle24
+        DataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.InactiveCaption
+        DataGridViewCellStyle11.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.DataGridView1.DefaultCellStyle = DataGridViewCellStyle11
         Me.DataGridView1.Location = New System.Drawing.Point(6, 44)
         Me.DataGridView1.Name = "DataGridView1"
         Me.DataGridView1.RowHeadersVisible = False
-        DataGridViewCellStyle25.SelectionBackColor = System.Drawing.Color.Transparent
-        DataGridViewCellStyle25.SelectionForeColor = System.Drawing.Color.Transparent
-        Me.DataGridView1.RowsDefaultCellStyle = DataGridViewCellStyle25
+        DataGridViewCellStyle12.SelectionBackColor = System.Drawing.Color.Transparent
+        DataGridViewCellStyle12.SelectionForeColor = System.Drawing.Color.Transparent
+        Me.DataGridView1.RowsDefaultCellStyle = DataGridViewCellStyle12
         Me.DataGridView1.Size = New System.Drawing.Size(684, 487)
         Me.DataGridView1.TabIndex = 65
         '
         'Date_DataGrid
         '
-        DataGridViewCellStyle22.NullValue = Nothing
-        Me.Date_DataGrid.DefaultCellStyle = DataGridViewCellStyle22
+        DataGridViewCellStyle9.NullValue = Nothing
+        Me.Date_DataGrid.DefaultCellStyle = DataGridViewCellStyle9
         Me.Date_DataGrid.HeaderText = "Date"
         Me.Date_DataGrid.Name = "Date_DataGrid"
         Me.Date_DataGrid.ReadOnly = True
@@ -597,9 +604,9 @@ Partial Class frmAttendance
         '
         'AM_In_DataGrid
         '
-        DataGridViewCellStyle23.Format = "t"
-        DataGridViewCellStyle23.NullValue = Nothing
-        Me.AM_In_DataGrid.DefaultCellStyle = DataGridViewCellStyle23
+        DataGridViewCellStyle10.Format = "t"
+        DataGridViewCellStyle10.NullValue = Nothing
+        Me.AM_In_DataGrid.DefaultCellStyle = DataGridViewCellStyle10
         Me.AM_In_DataGrid.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.[Nothing]
         Me.AM_In_DataGrid.HeaderText = "In"
         Me.AM_In_DataGrid.Name = "AM_In_DataGrid"
@@ -698,18 +705,10 @@ Partial Class frmAttendance
         Me.BiometricID_TXT.Size = New System.Drawing.Size(232, 29)
         Me.BiometricID_TXT.TabIndex = 1
         '
-        'Close_LBL
-        '
-        Me.Close_LBL.AutoSize = True
-        Me.Close_LBL.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Close_LBL.Location = New System.Drawing.Point(1116, -3)
-        Me.Close_LBL.Name = "Close_LBL"
-        Me.Close_LBL.Size = New System.Drawing.Size(57, 32)
-        Me.Close_LBL.TabIndex = 74
-        Me.Close_LBL.Text = "Close"
-        '
         'TabPage1
         '
+        Me.TabPage1.Controls.Add(Me.Branch_ComboB)
+        Me.TabPage1.Controls.Add(Me.GroupBox2)
         Me.TabPage1.Controls.Add(Me.Import_BTN)
         Me.TabPage1.Controls.Add(Me.Path_TXT)
         Me.TabPage1.Controls.Add(Me.OpenFile_BTN)
@@ -722,18 +721,80 @@ Partial Class frmAttendance
         Me.TabPage1.Text = "Biometric"
         Me.TabPage1.UseVisualStyleBackColor = True
         '
-        'Bio_grid
+        'Branch_ComboB
         '
-        Me.Bio_grid.AllowUserToAddRows = False
-        Me.Bio_grid.BackgroundColor = System.Drawing.Color.White
-        Me.Bio_grid.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.Bio_grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.Bio_grid.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Name_DGV})
-        Me.Bio_grid.Location = New System.Drawing.Point(3, 3)
-        Me.Bio_grid.Name = "Bio_grid"
-        Me.Bio_grid.RowHeadersVisible = False
-        Me.Bio_grid.Size = New System.Drawing.Size(554, 48)
-        Me.Bio_grid.TabIndex = 1
+        Me.Branch_ComboB.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Branch_ComboB.FormattingEnabled = True
+        Me.Branch_ComboB.Location = New System.Drawing.Point(7, 104)
+        Me.Branch_ComboB.Name = "Branch_ComboB"
+        Me.Branch_ComboB.Size = New System.Drawing.Size(197, 35)
+        Me.Branch_ComboB.TabIndex = 7
+        Me.Branch_ComboB.Text = "   Select Branch"
+        '
+        'GroupBox2
+        '
+        Me.GroupBox2.Controls.Add(Me.Fs200_RadioB)
+        Me.GroupBox2.Controls.Add(Me.Zkteco_RadioB)
+        Me.GroupBox2.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GroupBox2.Location = New System.Drawing.Point(165, 9)
+        Me.GroupBox2.Name = "GroupBox2"
+        Me.GroupBox2.Size = New System.Drawing.Size(228, 67)
+        Me.GroupBox2.TabIndex = 6
+        Me.GroupBox2.TabStop = False
+        Me.GroupBox2.Text = "Kind of Biometric"
+        '
+        'Fs200_RadioB
+        '
+        Me.Fs200_RadioB.AutoSize = True
+        Me.Fs200_RadioB.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Fs200_RadioB.Location = New System.Drawing.Point(145, 30)
+        Me.Fs200_RadioB.Name = "Fs200_RadioB"
+        Me.Fs200_RadioB.Size = New System.Drawing.Size(73, 31)
+        Me.Fs200_RadioB.TabIndex = 114
+        Me.Fs200_RadioB.Text = "fs200 "
+        Me.Fs200_RadioB.UseVisualStyleBackColor = True
+        '
+        'Zkteco_RadioB
+        '
+        Me.Zkteco_RadioB.AutoSize = True
+        Me.Zkteco_RadioB.Checked = True
+        Me.Zkteco_RadioB.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Zkteco_RadioB.Location = New System.Drawing.Point(19, 30)
+        Me.Zkteco_RadioB.Name = "Zkteco_RadioB"
+        Me.Zkteco_RadioB.Size = New System.Drawing.Size(72, 31)
+        Me.Zkteco_RadioB.TabIndex = 113
+        Me.Zkteco_RadioB.TabStop = True
+        Me.Zkteco_RadioB.Text = "zkteco"
+        Me.Zkteco_RadioB.UseVisualStyleBackColor = True
+        '
+        'Import_BTN
+        '
+        Me.Import_BTN.Enabled = False
+        Me.Import_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Import_BTN.Location = New System.Drawing.Point(7, 175)
+        Me.Import_BTN.Name = "Import_BTN"
+        Me.Import_BTN.Size = New System.Drawing.Size(82, 31)
+        Me.Import_BTN.TabIndex = 5
+        Me.Import_BTN.Text = "Import"
+        Me.Import_BTN.UseVisualStyleBackColor = True
+        '
+        'Path_TXT
+        '
+        Me.Path_TXT.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Path_TXT.Location = New System.Drawing.Point(7, 145)
+        Me.Path_TXT.Name = "Path_TXT"
+        Me.Path_TXT.Size = New System.Drawing.Size(411, 26)
+        Me.Path_TXT.TabIndex = 4
+        '
+        'OpenFile_BTN
+        '
+        Me.OpenFile_BTN.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.OpenFile_BTN.Location = New System.Drawing.Point(424, 142)
+        Me.OpenFile_BTN.Name = "OpenFile_BTN"
+        Me.OpenFile_BTN.Size = New System.Drawing.Size(78, 31)
+        Me.OpenFile_BTN.TabIndex = 3
+        Me.OpenFile_BTN.Text = "Browse"
+        Me.OpenFile_BTN.UseVisualStyleBackColor = True
         '
         'FlowLayoutPanel1
         '
@@ -744,40 +805,50 @@ Partial Class frmAttendance
         Me.FlowLayoutPanel1.Size = New System.Drawing.Size(588, 557)
         Me.FlowLayoutPanel1.TabIndex = 2
         '
-        'Import_BTN
+        'Bio_grid
         '
-        Me.Import_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Import_BTN.Location = New System.Drawing.Point(432, 61)
-        Me.Import_BTN.Name = "Import_BTN"
-        Me.Import_BTN.Size = New System.Drawing.Size(82, 31)
-        Me.Import_BTN.TabIndex = 5
-        Me.Import_BTN.Text = "Import"
-        Me.Import_BTN.UseVisualStyleBackColor = True
+        Me.Bio_grid.AllowUserToAddRows = False
+        Me.Bio_grid.BackgroundColor = System.Drawing.Color.White
+        Me.Bio_grid.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.Bio_grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.Bio_grid.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.BIOID_DGVV, Me.Name_DGVV})
+        DataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle13.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle13.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle13.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle13.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle13.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.Bio_grid.DefaultCellStyle = DataGridViewCellStyle13
+        Me.Bio_grid.Location = New System.Drawing.Point(3, 3)
+        Me.Bio_grid.Name = "Bio_grid"
+        Me.Bio_grid.RowHeadersVisible = False
+        Me.Bio_grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.Bio_grid.Size = New System.Drawing.Size(554, 48)
+        Me.Bio_grid.TabIndex = 1
         '
-        'Path_TXT
+        'BIOID_DGVV
         '
-        Me.Path_TXT.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Path_TXT.Location = New System.Drawing.Point(6, 63)
-        Me.Path_TXT.Name = "Path_TXT"
-        Me.Path_TXT.Size = New System.Drawing.Size(411, 24)
-        Me.Path_TXT.TabIndex = 4
+        Me.BIOID_DGVV.HeaderText = "Biometric No."
+        Me.BIOID_DGVV.Name = "BIOID_DGVV"
+        Me.BIOID_DGVV.Width = 150
         '
-        'OpenFile_BTN
+        'Name_DGVV
         '
-        Me.OpenFile_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.OpenFile_BTN.Location = New System.Drawing.Point(6, 19)
-        Me.OpenFile_BTN.Name = "OpenFile_BTN"
-        Me.OpenFile_BTN.Size = New System.Drawing.Size(101, 38)
-        Me.OpenFile_BTN.TabIndex = 3
-        Me.OpenFile_BTN.Text = "Select File"
-        Me.OpenFile_BTN.UseVisualStyleBackColor = True
+        Me.Name_DGVV.HeaderText = "Name"
+        Me.Name_DGVV.Name = "Name_DGVV"
+        Me.Name_DGVV.ReadOnly = True
+        Me.Name_DGVV.Width = 400
         '
-        'Name_DGV
+        'Close_LBL
         '
-        Me.Name_DGV.HeaderText = "Name"
-        Me.Name_DGV.Name = "Name_DGV"
-        Me.Name_DGV.ReadOnly = True
-        Me.Name_DGV.Width = 550
+        Me.Close_LBL.AutoSize = True
+        Me.Close_LBL.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Close_LBL.Location = New System.Drawing.Point(1116, -3)
+        Me.Close_LBL.Name = "Close_LBL"
+        Me.Close_LBL.Size = New System.Drawing.Size(57, 32)
+        Me.Close_LBL.TabIndex = 74
+        Me.Close_LBL.Text = "Close"
         '
         'frmAttendance
         '
@@ -800,8 +871,10 @@ Partial Class frmAttendance
         Me.GroupBox1.PerformLayout()
         Me.TabPage1.ResumeLayout(False)
         Me.TabPage1.PerformLayout()
-        CType(Me.Bio_grid, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.GroupBox2.ResumeLayout(False)
+        Me.GroupBox2.PerformLayout()
         Me.FlowLayoutPanel1.ResumeLayout(False)
+        CType(Me.Bio_grid, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -868,5 +941,10 @@ Partial Class frmAttendance
     Friend WithEvents Import_BTN As Button
     Friend WithEvents Path_TXT As TextBox
     Friend WithEvents OpenFile_BTN As Button
-    Friend WithEvents Name_DGV As DataGridViewTextBoxColumn
+    Friend WithEvents BIOID_DGVV As DataGridViewTextBoxColumn
+    Friend WithEvents Name_DGVV As DataGridViewTextBoxColumn
+    Friend WithEvents GroupBox2 As GroupBox
+    Friend WithEvents Fs200_RadioB As RadioButton
+    Friend WithEvents Zkteco_RadioB As RadioButton
+    Friend WithEvents Branch_ComboB As ComboBox
 End Class

@@ -45,7 +45,6 @@
 
                         Name_TXT.Text = .Item("FIRSTNAME") & " " & MI & " " & .Item("LASTNAME") & " " & .Item("SUFFIX")
                         Name_TXT.Tag = .Item("ID")
-                        Console.WriteLine("Thissss " & Name_TXT.Tag)
                     End With
                 Else
                     Name_TXT.Text = ""
@@ -80,10 +79,6 @@
 
             End Using
         End If
-    End Sub
-
-    Private Sub frmPayout_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
     End Sub
 
     Private Sub Name_TXT_TextChanged(sender As Object, e As EventArgs) Handles Name_TXT.TextChanged

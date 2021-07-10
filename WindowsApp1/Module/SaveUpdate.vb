@@ -109,44 +109,39 @@
 
     End Sub
 
-    Public Sub SaveBiometricSheet(sheetName As String, bio As String, dateTime As String, payDate As String)
+    Public Sub SaveBiometricSheet(FILENAME As String, payDate As String, bioID As String, dateTime As String, BRANCHNAME As String)
 
-        Dim mysql As String
+        Dim mysql As String = "Select * From IMPORT_DTR Rows 1"
+        Using ds As DataSet = LoadSQL(mysql, "IMPORT_DTR")
 
-        mysql = "Select * FROM SAMPLE where SHEETNAME = '" & sheetName & "'"
-        Dim dss As DataSet = LoadSQL(mysql, "SAMPLE")
+            Dim dsNewRow As DataRow = ds.Tables(0).NewRow
+            With dsNewRow
+
+                .Item("BIO_ID") = bioID
+                .Item("DATEANDTIME") = dateTime
+                .Item("PAYDATE") = payDate
+                .Item("FILENAME") = FILENAME
+                .Item("BRANCH") = BRANCHNAME
+
+            End With
+            ds.Tables(0).Rows.Add(dsNewRow)
+            SaveEntry(ds)
+        End Using
+    End Sub
+
+    Public Sub UpdateBiometricSheet(FILENAME As String, payDate As String, bioID As String, dateTime As String, BRANCHNAME As String)
+
+        Dim mysql As String = $"Select * FROM IMPORT_DTR where FILENAME = '{FILENAME}' and BRANCH = '{BRANCHNAME}' and PAYDATE = '{payDate}'"
+        Dim dss As DataSet = LoadSQL(mysql, "IMPORT_DTR")
         If dss.Tables(0).Rows.Count > 0 Then
 
-            Dim result As DialogResult = MessageBox.Show("File already imported, Do you want to modify?", "Already Imported", MessageBoxButtons.YesNo)
-            If result = DialogResult.Yes Then
+            With dss.Tables(0).Rows(0)
 
-                With dss.Tables(0).Rows(0)
+                .Item("BIO_ID") = bioID
+                .Item("DATEANDTIME") = dateTime
 
-                    .Item("BIOMETRICID") = bio
-                    .Item("DATEANDTIME") = dateTime
-                    .Item("PAYDATE") = payDate
-
-                End With
-                SaveEntry(dss, False)
-            Else
-                Exit Sub
-            End If
-        Else
-
-            mysql = "Select * From SAMPLE Rows 1"
-            Using ds As DataSet = LoadSQL(mysql, "SAMPLE")
-
-                Dim dsNewRow As DataRow = ds.Tables(0).NewRow
-                With dsNewRow
-
-                    .Item("BIOMETRICID") = bio
-                    .Item("DATEANDTIME") = dateTime
-
-                End With
-                ds.Tables(0).Rows.Add(dsNewRow)
-                SaveEntry(ds)
-            End Using
-
+            End With
+            SaveEntry(dss, False)
         End If
     End Sub
 

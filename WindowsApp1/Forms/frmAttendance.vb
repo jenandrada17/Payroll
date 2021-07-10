@@ -15,9 +15,11 @@ Public Class frmAttendance
     Dim eCell As Excel.Range
 
     Private Sub frmAttendance_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        CheckTHIS()
         LoadDateTime()
         CheckALL_CheckBox.Checked = True
         DataGridView1.ClearSelection()
+        PopulateComboBox(Branch_ComboB)
     End Sub
 
     Private Sub Close_LBL_Click(sender As Object, e As EventArgs) Handles Close_LBL.Click
@@ -604,10 +606,6 @@ Public Class frmAttendance
 
     End Sub
 
-    Private Sub Button1_Click(sender As Object, e As EventArgs)
-        Dim f As New SampleImport
-        f.Show()
-    End Sub
     Private Function ExcelFilePath(ByVal filePath As String) As String
         DefaultFolder = Path.GetDirectoryName(filePath)
         TargetFile = filePath
@@ -620,35 +618,79 @@ Public Class frmAttendance
             If DialogResult.OK = f.ShowDialog() Then
                 Path_TXT.Text = f.FileName
                 ExcelFilePath(Path_TXT.Text)
+                Import_BTN.Enabled = True
             End If
         End Using
     End Sub
 
     Private Sub Import_BTN_Click(sender As Object, e As EventArgs) Handles Import_BTN.Click
 
-        eApp = New Excel.Application
-        eBook = eApp.Workbooks.Open(Path_TXT.Text)
-        eSheet = eBook.Worksheets(1)
-        eCell = eSheet.UsedRange
-        Dim row As Integer
+        If Branch_ComboB.SelectedItem = "" Then
+            MsgBox("Please Select File", MsgBoxStyle.Critical, "Error")
+        Else
 
-        Dim MyConnection As System.Data.OleDb.OleDbConnection
-        Dim DtSet As System.Data.DataSet
-        Dim MyCommand As System.Data.OleDb.OleDbDataAdapter
-        MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path_TXT.Text}';Extended Properties=Excel 8.0;")
-        MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
-        MyCommand.TableMappings.Add("Table", "Net-informations.com")
-        DtSet = New System.Data.DataSet
-        MyCommand.Fill(DtSet)
+            If Zkteco_RadioB.Checked Then
 
-        For row = 2 To DtSet.Tables(0).Rows.Count
-            SaveBiometricSheet(Paydate, eCell(row, 1).Value, eCell(row, 2).Value)
-        Next
+                eApp = New Excel.Application
+                eBook = eApp.Workbooks.Open(Path_TXT.Text)
+                eSheet = eBook.Worksheets(1)
+                eCell = eSheet.UsedRange
+                Dim row As Integer
 
-        'Bio_grid.DataSource = DtSet.Tables(0)
+                Dim MyConnection As System.Data.OleDb.OleDbConnection
+                Dim DtSet As System.Data.DataSet
+                Dim MyCommand As System.Data.OleDb.OleDbDataAdapter
+                MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path_TXT.Text}';Extended Properties=Excel 8.0;")
+                MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
+                MyCommand.TableMappings.Add("Table", "Net-informations.com")
+                DtSet = New System.Data.DataSet
+                MyCommand.Fill(DtSet)
 
-        MessageBox.Show("Succesfully Saved!", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information)
-        MyConnection.Close()
+                If FileName_Exist(eBook.Name, Path_TXT, Branch_ComboB.SelectedItem, Paydate) Then
+
+                    Cursor = Cursors.WaitCursor
+
+                    For row = 2 To DtSet.Tables(0).Rows.Count
+                        UpdateBiometricSheet(eBook.Name, Paydate, eCell(row, 1).Value, eCell(row, 2).Value, Branch_ComboB.SelectedItem)
+                    Next
+
+                    Cursor = Cursors.Default
+
+                ElseIf FileName_NOT_Exist(eBook.Name, Path_TXT, Branch_ComboB.SelectedItem, Paydate) Then
+
+                    Cursor = Cursors.WaitCursor
+
+                    For row = 2 To DtSet.Tables(0).Rows.Count
+                        SaveBiometricSheet(eBook.Name, Paydate, eCell(row, 1).Value, eCell(row, 2).Value, Branch_ComboB.SelectedItem)
+                    Next
+
+                    Cursor = Cursors.Default
+                Else
+                    Path_TXT.Text = ""
+                End If
+
+                PopulateBiometricSHEET(Bio_grid, eBook.Name, Paydate, Branch_ComboB.SelectedItem)
+                Import_BTN.Enabled = False
+                Path_TXT.Clear()
+                Branch_ComboB.Text = "   Select Branch"
+                MyConnection.Close()
+
+            Else
+
+                'other bio
+
+            End If
+        End If
+
+    End Sub
+
+    Private Sub Bio_grid_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles Bio_grid.MouseDoubleClick
+
+        Dim i As Integer = Bio_grid.CurrentRow.Index
+        TabControl1.SelectedIndex = 1
+        BiometricID_TXT.Text = Bio_grid.Item(0, i).Value
+        Name_TXT.Text = Bio_grid.Item(1, i).Value
+
     End Sub
 
     Private Sub DataGridView1_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView1.CellClick
@@ -658,14 +700,6 @@ Public Class frmAttendance
         End If
 
     End Sub
-
-    'Private Sub DataGridView1_SelectionChanged(sender As Object, e As EventArgs) Handles DataGridView1.SelectionChanged
-    '    Calculate_BTN.PerformClick()
-    'End Sub
-
-    'Private Sub DataGridView1_CellValueChanged(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView1.CellValueChanged
-    '    Calculate_BTN.PerformClick()
-    'End Sub
 
     Private Sub Name_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Name_TXT.KeyPress
         LoadEmployeeDetails()
@@ -729,6 +763,118 @@ Public Class frmAttendance
 
         LoadDateTime()
         CheckALL_CheckBox.Checked = True
+    End Sub
+
+    Private Sub LoadDTR()
+
+        TotalAbsent_LBL.Text = 0
+        TotalDays_LBL.Text = 0
+        TotalLateHR_LBL.Text = 0
+        TotalLateMIN_LBL.Text = 0
+        TotalUTHR_LBL.Text = 0
+        TotalUTMIN_LBL.Text = 0
+        TotalOTHr_LBL.Text = 0
+        TotalRHoliday_LBL.Text = 0
+        TotalSHoliday_LBL.Text = 0
+        DataGridView1.Rows.Clear()
+
+        StartFour = New DateTime(DateNow.Year, DateNow.Month, 4).AddDays(-1)
+        EndFour = New DateTime(DateNow.Year, DateNow.Month, 18)
+
+        StartNineteen = New DateTime(DateNow.Year, DateNow.Month, 19).AddMonths(-1).AddDays(-1)
+        EndNineteen = New DateTime(StartNineteen.Year, StartNineteen.Month, 3).AddMonths(1)
+
+
+        If DateNow.Day - 16 <= 2 And DateNow.Day - 16 >= -12 Then
+
+            Paydate = EndNineteen.AddDays(12)
+            DataGridView1.Tag = Paydate
+
+            While (StartNineteen < EndNineteen)
+                startingDate = StartNineteen.ToString("d")
+                EndingDate = EndNineteen.ToString("d")
+                DataGridView1.Rows.Add(StartNineteen.AddDays(1).ToString("D"))
+                StartNineteen = StartNineteen.AddDays(1)
+            End While
+
+        Else
+
+            Paydate = New DateTime(EndFour.Year, EndFour.Month, DateTime.DaysInMonth(EndFour.Year, EndFour.Month))
+            DataGridView1.Tag = Paydate
+
+            While (StartFour < EndFour)
+
+                startingDate = StartFour.ToString("d")
+                EndingDate = EndFour.ToString("d")
+                DataGridView1.Rows.Add(StartFour.AddDays(1).ToString("D"))
+                StartFour = StartFour.AddDays(1)
+
+            End While
+
+        End If
+
+        Dim ss As DateTime = Date.UtcNow
+        Dim CurrD As DateTime = ss.AddDays(-1)
+
+        '==============================================AM IN 6AM to 9AM==================================================
+        For y = 0 To 180
+
+            Dim myDate = New DateTime(CurrD.Year, CurrD.Month, CurrD.Day, 6, 0, 0, 0).AddMinutes(y)
+            AM_In_DataGrid.Items.Add(myDate.ToString("t"))
+
+        Next
+
+        '==============================================AM OUT 11AM to 1PM==================================================
+        For y = 0 To 120
+
+            Dim myDate = New DateTime(CurrD.Year, CurrD.Month, CurrD.Day, 11, 0, 0, 0).AddMinutes(y)
+            AM_Out_DataGrid.Items.Add(myDate.ToString("t"))
+
+        Next
+
+        '==============================================PM IN 12AM to 3PM==================================================
+        For y = 0 To 180
+
+            Dim myDate = New DateTime(CurrD.Year, CurrD.Month, CurrD.Day, 12, 0, 0, 0).AddMinutes(y)
+            PM_IN_DataGrid.Items.Add(myDate.ToString("t"))
+
+        Next
+
+
+        '==============================================PM OUT 3PM to 3PM==================================================
+        For y = 0 To 480
+
+            Dim myDate = New DateTime(CurrD.Year, CurrD.Month, CurrD.Day, 15, 0, 0, 0).AddMinutes(y)
+            PM_Out_DataGrid.Items.Add(myDate.ToString("t"))
+
+        Next
+
+        For i = 0 To DataGridView1.Rows.Count - 1
+            Dim r As DataGridViewRow = DataGridView1.Rows(i)
+            r.Height = 28
+
+            Dim asss As Date = DataGridView1.Rows(i).Cells(0).Value
+
+            Dim customizeDate As String = asss.ToString("M")
+
+            If asss.DayOfWeek = DayOfWeek.Sunday Then
+
+                r.DefaultCellStyle.ForeColor = Color.Red
+
+                DataGridView1.Rows(i).Cells(5) = New DataGridViewTextBoxCell()
+                DataGridView1.Rows(i).Cells(1).Value = ""
+                DataGridView1.Rows(i).Cells(2).Value = ""
+                DataGridView1.Rows(i).Cells(3).Value = ""
+                DataGridView1.Rows(i).Cells(4).Value = ""
+
+            ElseIf HolidayExist(customizeDate) Then
+
+                HolidayDetails(customizeDate, i, DataGridView1)
+
+            End If
+
+        Next
+
     End Sub
 
 End Class
