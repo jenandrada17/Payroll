@@ -408,7 +408,7 @@ Module SelectFromDatabase
 
     End Sub
 
-    Public Sub PopulateComboBox(combo As ComboBox, table As String, column As String, Optional paydate As String = "")
+    Public Sub PopulateComboBox(combo As ComboBox, table As String, column As String)
         Dim sql As String = $"select distinct({column}) from {table}"
         Dim rdr As FbDataReader = LoadSQL_byDataReader(sql)
         combo.Items.Clear()
@@ -824,21 +824,33 @@ Module SelectFromDatabase
 
     End Sub
 
-    Public Sub GetPayout_TOTALS(P_GrossAmount_LBL As Label, P_BenifitsComp_LBL As Label, P_BenifitsLoan_LBL As Label,
-                                P_NetTax_LBL As Label, P_Allowance_LBL As Label, P_Deduction_LBL As Label, P_NetPay_LBL As Label)
+    Public Sub GetPayout_TOTALS(paydate As String, P_GrossAmount_LBL As Label, P_SSSComp_LBL As Label, P_PagibigComp_LBL As Label, P_PhilHComp_LBL As Label,
+                                 P_Taxable_LBL As Label, P_TaxWH_LBL As Label, P_SSSLoan_LBL As Label, P_PagibigLoan_LBL As Label,
+                                 P_Allowance_LBL As Label, P_Deduction_LBL As Label, P_NetPay_LBL As Label)
 
-        Dim mysql As String = "Select SUM(GROSS_AMOUNT) As gross, SUM(SSS_COMP) As sss_comp, SUM(PAGIBIG_COMP) As pagibig_comp, SUM(PHILHEALTH_COMP) As philH_comp From PAYROLL_PAYOUT"
+        Dim mysql As String = $"Select SUM(GROSS_AMOUNT) as gross, SUM(SSS_COMP) as sssC, SUM(PAGIBIG_COMP) as pagibiC, SUM(PHILHEALTH_COMP) as philHC,
+                                       SUM(TAXABLE) as tax, SUM(TAX_WHELD) as taxWH, SUM(SSS_LOAN) as sssLoan, SUM(PAGIBIG_LOAN) as pagibigLoan,
+                                       SUM(TOTAL_ALLOWANCE) as allowance, SUM(TOTAL_DEDUCTION) as deducttion,
+                                       SUM(NET_PAY) as netPay FROM PAYROLL_PAYOUT where paydate = '{paydate}'"
+
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
             If ds.Tables(0).Rows.Count > 0 Then
                 Dim data As DataRow = ds.Tables(0).Rows(0)
                 With data
                     P_GrossAmount_LBL.Text = .Item("gross")
-                    P_BenifitsComp_LBL.Text = .Item("sss_comp") + .Item("pagibig_comp") + .Item("philH_comp")
-                    P_BenifitsLoan_LBL.Text = .Item("gross")
-                    P_NetTax_LBL.Text = .Item("gross")
-                    P_Allowance_LBL.Text = .Item("gross")
-                    P_Deduction_LBL.Text = .Item("gross")
-                    P_NetPay_LBL.Text = .Item("gross")
+                    P_SSSComp_LBL.Text = .Item("sssC")
+                    P_PagibigComp_LBL.Text = .Item("pagibiC")
+                    P_PhilHComp_LBL.Text = .Item("philHC")
+
+                    P_Taxable_LBL.Text = .Item("tax")
+                    P_TaxWH_LBL.Text = .Item("taxWH")
+
+                    P_SSSLoan_LBL.Text = .Item("sssLoan")
+                    P_PagibigLoan_LBL.Text = .Item("pagibigLoan")
+
+                    P_Allowance_LBL.Text = .Item("allowance")
+                    P_Deduction_LBL.Text = .Item("deducttion")
+                    P_NetPay_LBL.Text = .Item("netPay")
 
                 End With
             End If

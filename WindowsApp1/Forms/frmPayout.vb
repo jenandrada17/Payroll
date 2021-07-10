@@ -10,10 +10,10 @@
         regHoliday = Holiday_Rate("REGULAR")
         specHoliday = Holiday_Rate("SPECIAL")
         Savings_TXT.Text = SBU_Amount()
-        Payout_ALL()
+        PopulateComboBox(Paydate_ComboB, "PAYROLL_PAYOUT", "PAYDATE")
         Lists_Payout(Payout_list, paydate_)
-        GetPayout_TOTALS(P_GrossAmount_LBL, P_BenifitsComp_LBL, P_BenifitsLoan_LBL, P_NetTax_LBL, P_Allowance_LBL, P_Deduction_LBL, P_NetPay_LBL)
-        PopulateComboBox(Paydate_ComboB, "PAYROLL_PAYOUT", "PAYDATE", paydate_)
+        GetPayout_TOTALS(paydate_, P_GrossAmount_LBL, P_SSSComp_LBL, P_PagibigComp_LBL, P_PhilHComp_LBL, P_Taxable_LBL, P_TaxWH_LBL,
+                         P_SSSLoan_LBL, P_PagibigLoan_LBL, P_Allowance_LBL, P_Deduction_LBL, P_NetPay_LBL)
     End Sub
 
     Private Sub Select_BTN_Click(sender As Object, e As EventArgs) Handles Select_BTN.Click
@@ -34,66 +34,6 @@
 
         Close()
     End Sub
-
-    Private Sub Payout_ALL() '========== AUTO SAVE TO PAYOUT ============
-
-        Dim mysql As String = "Select * From payroll_attendance A 
-                                inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRICID 
-                                left join TBL_BRANCH C on C.BRANCHNAME = A.BRANCH and B.BRANCH_ID = C.ID WHERE A.PAYDATE = '" & paydate_ & "'"
-
-        Using ds As DataSet = LoadSQL(mysql, "payroll_attendance")
-
-            If ds.Tables(0).Rows.Count > 0 Then
-
-                progressBarStart(ds)
-
-                For Each dr In ds.Tables(0).Rows
-                    With dr
-                        Cancel_BTN.PerformClick()
-
-                        Dim MI As String
-
-                        If String.IsNullOrEmpty(.Item("MIDDLENAME")) Then
-                            MI = ""
-                        Else
-                            MI = .Item("MIDDLENAME").Substring(0, 1) & "."
-                        End If
-
-                        BiometricID_TXT.Text = .Item("BIOMETRICID")
-                        Name_TXT.Text = .Item("FIRSTNAME") & " " & MI & " " & .Item("LASTNAME") & " " & .Item("SUFFIX")
-                        Name_TXT.Tag = .Item("ID")
-                        Rate_TXT.Text = IIf(IsDBNull(.Item("RATE")), 0, .Item("RATE"))
-                        Rate_TXT.Tag = .Item("BRANCH_ID")
-
-                        AttendanceDetails(BiometricID_TXT.Text, paydate_, NoOfDays_TXT, RegularOT_TXT, SpecialHol_TXT, RegularHol_TXT,
-                                                    Late_TXT, UnderTime_TXT)
-
-                        AllowanceDetails(BiometricID_TXT.Text, Rate_TXT.Tag, Positional_TXT, Incentive_TXT, Boarding_TXT, Carekit_TXT, Transport_TXT)   '============ Rate_TXT.Tag is branchID (for same biometric) ======
-
-                        DeductioneDetails(BiometricID_TXT.Text, Rate_TXT.Tag, CashAdvance_TXT, Loan_TXT, Charges_TXT)
-
-                        Calculate_Gross()
-
-                        Calculate_Allowance()
-
-                        Calculate_Deduction()
-
-                        Calculate_NetPay()
-
-                        SavePayout(BiometricID_TXT.Text, Rate_TXT.Tag, paydate_, TotalBasic_LBL.Text, TotalOT_LBL.Text,
-                                  TotalLateUnder_LBL.Text, GrossAmount_LBL.Text, SSSComp_LBL.Text, Pagibig_LBL.Text, Philhealth_LBL.Text,
-                                  TaxComp_LBL.Text, Tax_Wheld_LBL.Text, NetTax_LBL.Text, SSSLoan_LBL.Text, PagibigLoan_LBL.Text,
-                                  Allowances_LBL.Text, Deduction_LBL.Text, NetPay_LBL.Text, True)
-
-                        frmMainForm.AppProgressBar.Value += 1
-                    End With
-                Next
-            End If
-        End Using
-
-        progressBarEnd()
-    End Sub
-
 
     Private Sub BiometricID_TXT_TextChanged(sender As Object, e As EventArgs) Handles BiometricID_TXT.TextChanged
 
@@ -168,6 +108,13 @@
         If Not Name_TXT.Text = String.Empty Then
             Calculate_Allowance()
         End If
+    End Sub
+
+    Private Sub Paydate_ComboB_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Paydate_ComboB.SelectedIndexChanged
+        Lists_Payout(Payout_list, Paydate_ComboB.SelectedItem)
+
+        GetPayout_TOTALS(Paydate_ComboB.SelectedItem, P_GrossAmount_LBL, P_SSSComp_LBL, P_PagibigComp_LBL, P_PhilHComp_LBL, P_Taxable_LBL, P_TaxWH_LBL,
+                         P_SSSLoan_LBL, P_PagibigLoan_LBL, P_Allowance_LBL, P_Deduction_LBL, P_NetPay_LBL)
     End Sub
 
     Private Sub Payout_list_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles Payout_list.MouseDoubleClick

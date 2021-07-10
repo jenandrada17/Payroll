@@ -26,10 +26,10 @@ Public Class frmAttendance
         DataGridView1.ClearSelection()
         CheckALL_CheckBox.Checked = True
         PopulateComboBox(Branch_ComboB, "tbl_branch", "BRANCHNAME")
-        PopulateComboBox(Paydate_ComboB, "BIOMETRIC_DTR", "PAYDATE", Paydate)
-        PopulateComboBox(RE_Paydate_Combo, "BIOMETRIC_DTR", "PAYDATE", Paydate)
-        Paydate_ComboB.Items.Insert(0, "Current")
-        RE_Paydate_Combo.Items.Insert(0, "Current")
+        PopulateComboBox(Paydate_ComboB, "BIOMETRIC_DTR", "PAYDATE")
+        PopulateComboBox(RE_Paydate_Combo, "BIOMETRIC_DTR", "PAYDATE")
+        'Paydate_ComboB.Items.Insert(0, "Current")
+        'RE_Paydate_Combo.Items.Insert(0, "Current")
 
     End Sub
 
@@ -551,6 +551,10 @@ Public Class frmAttendance
 
     End Sub
 
+    Private Sub Button2_Click_1(sender As Object, e As EventArgs) Handles Button2.Click
+        SavePayout_ALL(Paydate)
+    End Sub
+
     Private Function ExcelFilePath(ByVal filePath As String) As String
         DefaultFolder = Path.GetDirectoryName(filePath)
         TargetFile = filePath
@@ -721,11 +725,8 @@ Public Class frmAttendance
 
                     progressBarEnd()
 
-                    'Cursor = Cursors.Default
-
                 ElseIf File_NOT_Exist(Branch_ComboB.SelectedItem, Paydate) Then
 
-                    'Cursor = Cursors.WaitCursor
                     progressBarStart(DtSet)
 
                     For row = 2 To DtSet.Tables(0).Rows.Count
@@ -736,7 +737,6 @@ Public Class frmAttendance
                     Next
 
                     progressBarEnd()
-                    'Cursor = Cursors.Default
                 Else
                     Path_TXT.Text = ""
                 End If
@@ -746,13 +746,13 @@ Public Class frmAttendance
                 forLoop_ALL_IMPORTED()   ' ===== SAVE AM_IN, AM_OUT, PM_IN, PM_OUT ====
                 SAVE_DIRECT_Attendance() ' ===== DIRECT SAVE TO ATTENDANCE ====
                 PopulateBiometricSHEET(Bio_grid, Paydate, Branch_ComboB.SelectedItem) ' ===== POPULATE DATAGRIDVIEW FROM SHEET ====
+                SavePayout_ALL(Paydate)
 
                 Cursor = Cursors.Default
 
                 Import_BTN.Enabled = False
                 Path_TXT.Clear()
                 MyConnection.Close()
-
 
             Catch
 
@@ -876,6 +876,7 @@ Public Class frmAttendance
 
                 SAVE_DIRECT_Attendance() ' ===== DIRECT SAVE TO ATTENDANCE ====
                 PopulateBiometricSHEET(Bio_grid, Paydate, Branch_ComboB.SelectedItem) ' ===== POPULATE DATAGRIDVIEW FROM SHEET ==== 
+                SavePayout_ALL(Paydate)
 
                 Cursor = Cursors.Default
             End Try
