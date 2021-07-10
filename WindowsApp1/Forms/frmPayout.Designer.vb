@@ -161,15 +161,16 @@ Partial Class frmPayout
         Me.Rate_TXT.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Rate_TXT.Location = New System.Drawing.Point(156, 89)
         Me.Rate_TXT.Name = "Rate_TXT"
+        Me.Rate_TXT.ReadOnly = True
         Me.Rate_TXT.Size = New System.Drawing.Size(208, 29)
         Me.Rate_TXT.TabIndex = 18
-        Me.Rate_TXT.Text = "336"
         '
         'Name_TXT
         '
         Me.Name_TXT.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Name_TXT.Location = New System.Drawing.Point(156, 55)
         Me.Name_TXT.Name = "Name_TXT"
+        Me.Name_TXT.ReadOnly = True
         Me.Name_TXT.Size = New System.Drawing.Size(208, 29)
         Me.Name_TXT.TabIndex = 17
         '
@@ -616,7 +617,6 @@ Partial Class frmPayout
         Me.Savings_TXT.ReadOnly = True
         Me.Savings_TXT.Size = New System.Drawing.Size(167, 29)
         Me.Savings_TXT.TabIndex = 18
-        Me.Savings_TXT.Text = "250"
         '
         'Label26
         '

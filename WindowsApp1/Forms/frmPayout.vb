@@ -33,7 +33,7 @@
         If BiometricID_TXT.Text = "" Then
             Name_TXT.Text = ""
         Else
-            BiometricNo_Payout(BiometricID_TXT.Text, Name_TXT)
+            BiometricNo_Payout(BiometricID_TXT.Text, Name_TXT, Rate_TXT)
         End If
 
     End Sub
@@ -44,39 +44,39 @@
 
     Private Sub Calculate_BTN_Click(sender As Object, e As EventArgs) Handles Calculate_BTN.Click
 
-        If Not BiometricID_TXT.Text = "" Then
+        'If Not BiometricID_TXT.Text = "" Then
 
-            Dim mysql As String = "Select * From payroll_attendance WHERE BIOMETRICID= '" & BiometricID_TXT.Text & "' and PAYDATE = '" & paydate_ & "'"
-            Using ds As DataSet = LoadSQL(mysql, "payroll_attendance")
+        '    Dim mysql As String = "Select * From payroll_attendance WHERE BIOMETRICID= '" & BiometricID_TXT.Text & "' and PAYDATE = '" & paydate_ & "'"
+        '    Using ds As DataSet = LoadSQL(mysql, "payroll_attendance")
 
-                If ds.Tables(0).Rows.Count > 0 Then
-                    Dim data As DataRow = ds.Tables(0).Rows(0)
-                    With data
+        '        If ds.Tables(0).Rows.Count > 0 Then
+        '            Dim data As DataRow = ds.Tables(0).Rows(0)
+        '            With data
 
-                        NoOfDays_TXT.Text = .Item("PRESENT_DAYS")
+        '                NoOfDays_TXT.Text = .Item("PRESENT_DAYS")
 
-                        Dim Late_Total As TimeSpan = .Item("LATE")  '========== TO SEPARATE
+        '                Dim Late_Total As TimeSpan = .Item("LATE")  '========== TO SEPARATE
 
-                        Late_TXT.Text = Late_Total.Hours
-                        UnderTime_TXT.Text = Late_Total.Minutes
+        '                Late_TXT.Text = Late_Total.Hours
+        '                UnderTime_TXT.Text = Late_Total.Minutes
 
-                    End With
-                End If
+        '            End With
+        '        End If
 
-            End Using
-        End If
+        '    End Using
+        'End If
 
     End Sub
 
     Private Sub Name_TXT_TextChanged(sender As Object, e As EventArgs) Handles Name_TXT.TextChanged
-        If String.IsNullOrEmpty(Name_TXT.Text) Then
+        If String.IsNullOrEmpty(Name_TXT.Text) And String.IsNullOrEmpty(Rate_TXT.Text) Then
         Else
             If Bio_Exist_Attendance(BiometricID_TXT.Text, paydate_) Then
 
                 AttendanceDetails(BiometricID_TXT.Text, paydate_, NoOfDays_TXT, RegularOT_TXT, SpecialHol_TXT, RegularHol_TXT,
                                             Late_TXT, UnderTime_TXT)
 
-                TotalBasic_LBL.Text = (NoOfDays_TXT.Text * Rate_TXT.Text).ToString
+                TotalBasic_LBL.Text = NoOfDays_TXT.Text * Rate_TXT.Text
 
                 TotalHol_LBL.Text = (((Convert.ToInt32(SpecialHol_TXT.Text) * Convert.ToInt32(Rate_TXT.Text)) * specHoliday) / specHoliday) + (((Convert.ToInt32(RegularHol_TXT.Text) * Convert.ToInt32(Rate_TXT.Text)) * regHoliday) / regHoliday) ' =========== CALCULATE hOLIDAY TO PESO ===========
 

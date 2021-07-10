@@ -265,7 +265,7 @@
 
     End Sub
 
-    Friend Sub SaveSettings(value As Integer, column As String, amount As Double, moreThan As Boolean) '=========== BOOLEAN IF MORE THAN 1 ==========
+    Friend Sub SaveSettings(value As String, column As String, amount As String, moreThan As Boolean) '=========== BOOLEAN IF MORE THAN 1 ==========
 
         Dim mysql As String
 
@@ -275,27 +275,25 @@
             Dim dss As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
             If dss.Tables(0).Rows.Count > 0 Then
                 For Each dr In dss.Tables(0).Rows
-
-                    With dr.Tables(0).Rows(0)
+                    With dr
 
                         .Item("RATE") = amount
 
                     End With
-
                     SaveEntry(dss, False)
                 Next
 
                 MsgBox("Successfully Updated!", MsgBoxStyle.Information, "Information")
             End If
 
-        Else
+        Else  '============ PER EMPLOYEE (FOR THERE ARE SAME BIOMETRIC NUMBER BUT DIFFERENT NAME/EMPLOYEE) ===========
 
-            mysql = $"Select * FROM TBL_EMPLOYEE where BIOMETRICID = '{value}'"
+            mysql = $"Select * FROM TBL_EMPLOYEE where {column} = '{value}'"
             Dim dss As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
             If dss.Tables(0).Rows.Count > 0 Then
                 With dss.Tables(0).Rows(0)
 
-                    .Item(column) = amount
+                    .Item("RATE") = amount
 
                 End With
                 SaveEntry(dss, False)

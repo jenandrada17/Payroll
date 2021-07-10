@@ -15,74 +15,12 @@ Public Class frmEmployee
         Close()
     End Sub
 
-    Private Sub LoadEmployee(Optional ByVal str As String = "")
-
-        Try
-            Dim secured_str As String = str
-            secured_str = DreadKnight(secured_str)
-            Dim mysql As String
-
-
-            If str.Length <> 0 Then
-                mysql = "select * from tbl_Employee A inner join tbl_branch B on A.BRANCH_ID = B.ID Where 
-                                A.BIOMETRICID = '" & secured_str & "'
-                                OR Upper(A.firstname) Like Upper('%" & secured_str & "%') 
-                                OR Upper(A.lastname) Like Upper('%" & secured_str & "%') 
-                                OR Upper(B.branchname) Like Upper('%" & secured_str & "%')  
-                                OR Upper(B.COMPANYNAME) Like Upper('%" & secured_str & "%')
-                                OR Upper(A.STATUS) Like Upper('%" & secured_str & "%') "
-            Else
-                mysql = "Select * From tbl_Employee A inner join tbl_branch B on A.BRANCH_ID = B.ID  "
-            End If
-
-
-            Using ds As DataSet = LoadSQL(mysql, "tbl_Employee")
-                rowCount = ds.Tables(0).Rows.Count
-                Dim maxEntries As Integer = ds.Tables(0).Rows.Count
-                frmMainForm.AppProgressBar.Maximum = maxEntries
-                frmMainForm.AppProgressBar.Visible = True
-                lvEmployee.Items.Clear()
-                For Each dr In ds.Tables(0).Rows
-                    AddItem(dr)
-                    frmMainForm.AppProgressBar.Value += 1
-                Next
-            End Using
-
-            frmMainForm.AppProgressBar.Value = 0
-            frmMainForm.AppProgressBar.Maximum = 1000
-            frmMainForm.AppProgressBar.Visible = False
-        Catch ex As Exception
-            Log_Report(ex.ToString())
-        End Try
-    End Sub
-
-    Private Sub AddItem(ByVal dr As DataRow)
-
-        With dr
-            Dim a As Date = .Item("DATEHIRED")
-            Dim datee As String
-            datee = a.ToString("MMMM dd, yyyy")
-
-            Dim lv As ListViewItem = lvEmployee.Items.Add(.Item("BIOMETRICID"))
-            lv.SubItems.Add(String.Format("{0}, {1} {2}", .Item("LastName"), .Item("FirstName"), .Item("MiddleName")))
-            lv.Tag = .Item("ID")
-            lv.SubItems.Add(datee)
-            lv.SubItems.Add(.Item("NO_OF_DAYS"))
-            lv.SubItems.Add(.Item("CONTACTNO"))
-            lv.SubItems.Add(.Item("EmailAdd"))
-            lv.SubItems.Add(.Item("STATUS"))
-            lv.SubItems.Add(.Item("EMP_POSITION"))
-            lv.SubItems.Add(.Item("COMPANYNAME"))
-            lv.SubItems.Add(.Item("BRANCHNAME"))
-        End With
-    End Sub
-
     Private Sub frmEmployee_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        LoadEmployee()
+        LoadEmployee(lvEmployee)
     End Sub
 
     Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
-        LoadEmployee(txtSearch.Text)
+        LoadEmployee(lvEmployee, txtSearch.Text)
     End Sub
 
     Private Sub lvEmployee_MouseClick(sender As Object, e As MouseEventArgs) Handles lvEmployee.MouseClick
@@ -159,6 +97,26 @@ Public Class frmEmployee
             Else
                 frmEmployeeInfo.BringToFront()
             End If
+
+        ElseIf txtSearch.Tag = "Settings-Allowance" Then
+
+            If frmSettings Is Nothing Then
+                Dim frm As New frmSettings With {
+                    .MdiParent = frmMainForm
+                }
+                frmMainForm.pNavigate.Controls.Add(frm)
+                frmMainForm.pNavigate.Tag = frm
+                frm.Allow_Name_TXT.Text = lvEmployee.FocusedItem.SubItems(1).Text
+                frm.Rate_Employee_TXT.Tag = lvEmployee.FocusedItem.SubItems(1).Tag
+                frm.Settings_Tab.SelectedIndex = 2
+                frm.Allow_Category_Combo.SelectedItem = btnSearch.Tag
+                frm.Show()
+                frm.Dock = DockStyle.Fill
+                frm.BringToFront()
+
+            Else
+                frmEmployeeInfo.BringToFront()
+            End If
         End If
 
     End Sub
@@ -188,7 +146,7 @@ Public Class frmEmployee
                         .Item("EMP_RATE") = Rate_TXT.Text
                         .Item("FIX_RATE") = Fix_Combo.Text
                         SaveEntry(ds, False)
-                        LoadEmployee()
+                        LoadEmployee(lvEmployee)
                     Else
                         Rate_TXT.Region = New Region(New Rectangle(2, 2, Rate_TXT.Width - 4, Rate_TXT.Height - 4))
                     End If

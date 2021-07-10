@@ -2,6 +2,8 @@
 
 Module SelectFromDatabase
 
+    Dim rowCount As Integer
+
     Public Function ThisHasRow(table As String)
         Dim mysql As String = "Select * FROM " & table & ""
         Dim ds As DataSet = LoadSQL(mysql, table)
@@ -10,6 +12,74 @@ Module SelectFromDatabase
         End If
         Return False
     End Function
+
+
+    Public Sub LoadEmployee(listview As ListView, Optional ByVal str As String = "")
+
+        Try
+
+            Dim secured_str As String = str
+            secured_str = DreadKnight(secured_str)
+            Dim strWords As String() = secured_str.Split(New Char() {" "c})
+            Dim name As String
+            Dim mysql As String
+            If str.Length <> 0 Then
+
+                mysql = "select * from tbl_Employee A inner join tbl_branch B on B.ID = A.BRANCH_ID Where "
+
+                For Each name In strWords
+                    mysql &= $"{vbCr}UPPER(BIOMETRICID) LIKE UPPER('%{name}%') OR "
+                    mysql &= $"{vbCr}UPPER(firstname) LIKE UPPER('%{name}%') OR "
+                    mysql &= $"{vbCr}UPPER(lastname) LIKE UPPER('%{name}%') OR "
+                    mysql &= $"{vbCr}UPPER(branchname) LIKE UPPER('%{name}%') OR "
+                    mysql &= $"{vbCr}UPPER(A.STATUS) LIKE UPPER('%{name}%') OR "
+                    mysql &= $"{vbCr}UPPER(COMPANYNAME) LIKE UPPER('%{name}%')"
+                Next
+
+            Else
+                mysql = "Select * From tbl_Employee A inner join tbl_branch B on B.ID = A.BRANCH_ID"
+            End If
+
+            Using ds As DataSet = LoadSQL(mysql, "tbl_Employee")
+                rowCount = ds.Tables(0).Rows.Count
+                Dim maxEntries As Integer = ds.Tables(0).Rows.Count
+                frmMainForm.AppProgressBar.Maximum = maxEntries
+                frmMainForm.AppProgressBar.Visible = True
+                listview.Items.Clear()
+                For Each dr In ds.Tables(0).Rows
+                    AddItem(dr, listview)
+                    frmMainForm.AppProgressBar.Value += 1
+                Next
+            End Using
+
+            frmMainForm.AppProgressBar.Value = 0
+            frmMainForm.AppProgressBar.Maximum = 1000
+            frmMainForm.AppProgressBar.Visible = False
+        Catch ex As Exception
+            Log_Report(ex.ToString())
+        End Try
+    End Sub
+
+    Private Sub AddItem(ByVal dr As DataRow, listview As ListView)
+
+        With dr
+            Dim a As Date = .Item("DATEHIRED")
+            Dim datee As String
+            datee = a.ToString("MMMM dd, yyyy")
+
+            Dim lv As ListViewItem = listview.Items.Add(.Item("BIOMETRICID"))
+            lv.SubItems.Add(String.Format("{0}, {1} {2}", .Item("LastName"), .Item("FirstName"), .Item("MiddleName")))
+            lv.Tag = .Item("ID")
+            lv.SubItems.Add(datee)
+            lv.SubItems.Add(.Item("NO_OF_DAYS"))
+            lv.SubItems.Add(.Item("CONTACTNO"))
+            lv.SubItems.Add(.Item("EmailAdd"))
+            lv.SubItems.Add(.Item("STATUS"))
+            lv.SubItems.Add(.Item("EMP_POSITION"))
+            lv.SubItems.Add(.Item("COMPANYNAME"))
+            lv.SubItems.Add(.Item("BRANCHNAME"))
+        End With
+    End Sub
 
 
     Friend Sub REGULDARHolidayLists(LV As ListView)
@@ -174,7 +244,7 @@ Module SelectFromDatabase
                 For Each dr In ds.Tables(0).Rows
                     AddRowBiometric(dr, datagrid)
                 Next
-                AdjustHeightOfGridBasedOnRows(datagrid)
+                'AdjustHeightOfGridBasedOnRows(datagrid)
             Else
                 datagrid.Rows.Clear()
             End If
@@ -328,7 +398,7 @@ Module SelectFromDatabase
                 For Each dr In ds.Tables(0).Rows
                     AddRowRECORDS(dr, datagrid)
                 Next
-                AdjustHeightOfGridBasedOnRows(datagrid)
+                'AdjustHeightOfGridBasedOnRows(datagrid)
             Else
                 datagrid.Rows.Clear()
             End If
@@ -339,7 +409,6 @@ Module SelectFromDatabase
     Public Sub AddRowRECORDS(ByVal dr As DataRow, datagrid As DataGridView)
 
         With dr
-
             Dim rowId As Integer = datagrid.Rows.Add()
             Dim row As DataGridViewRow = datagrid.Rows(rowId)
             row.Cells("RE_BIO_DGV").Value = .Item("BIOMETRICID")
@@ -351,12 +420,11 @@ Module SelectFromDatabase
             row.Cells("RE_DAYS_DGV").Value = .Item("PRESENT_DAYS")
             row.Cells("RE_BRANCH_DGV").Value = .Item("BRANCH")
             row.Height = 35
-
         End With
 
     End Sub
 
-    Public Sub BiometricNo_Payout(bioNo As String, name As TextBox)
+    Public Sub BiometricNo_Payout(bioNo As String, name As TextBox, ratee As TextBox)
 
         Dim mysql As String = "Select * From tbl_employee WHERE BIOMETRICID= '" & bioNo & "'"
         Using ds As DataSet = LoadSQL(mysql, "tbl_employee")
@@ -375,6 +443,7 @@ Module SelectFromDatabase
                         MI = .Item("MIDDLENAME").Substring(0, 1) & "."
                     End If
 
+                    ratee.Text = IIf(IsDBNull(.Item("RATE")), 0, .Item("RATE"))
                     name.Text = .Item("FIRSTNAME") & " " & MI & " " & .Item("LASTNAME") & " " & .Item("SUFFIX")
                     name.Tag = .Item("ID")
 
@@ -447,5 +516,71 @@ Module SelectFromDatabase
             End If
         End Using
     End Sub
+
+
+    Friend Sub PopulateSettings_Rate(datagrid As DataGridView, orderBy As String)
+
+        datagrid.Rows.Clear()
+        Dim mysql As String = $"Select * From TBL_EMPLOYEE A inner join TBL_BRANCH B on B.ID = A.BRANCH_ID ORDER BY {orderBy}"
+
+        Using ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
+            If ds.Tables(0).Rows.Count > 0 Then
+                For Each dr In ds.Tables(0).Rows
+                    AddRow_RATE(dr, datagrid)
+                Next
+            End If
+        End Using
+
+    End Sub
+
+    Public Sub AddRow_RATE(ByVal dr As DataRow, datagrid As DataGridView)
+
+        With dr
+            Dim rowId As Integer = datagrid.Rows.Add()
+            Dim row As DataGridViewRow = datagrid.Rows(rowId)
+            row.Cells("Rate_Branch_DGV").Value = .Item("BRANCHNAME")
+            row.Cells("Rate_Name_DGV").Value = .Item("LASTNAME") & ", " & .Item("FIRSTNAME") & " " & .Item("MIDDLENAME")
+            row.Cells("Rate_Name_DGV").Tag = .Item("BIOMETRICID")
+            row.Cells("Rate_Pos_DGV").Value = .Item("EMP_POSITION")
+            row.Cells("Rate_Rate_DGV").Value = .Item("RATE")
+            row.Height = 35
+        End With
+
+    End Sub
+
+    Friend Sub Search_Settings_Rate(searchName As String, datagrid As DataGridView)
+
+        datagrid.Rows.Clear()
+        Dim secured_str As String = searchName
+        secured_str = DreadKnight(secured_str)
+        Dim strWords As String() = secured_str.Split(New Char() {" "c})
+        Dim name As String
+        Dim mysql As String
+
+        If searchName.Length <> 0 Then
+
+            mysql = "select * from tbl_Employee A inner join tbl_branch B on B.ID = A.BRANCH_ID Where "
+
+            For Each name In strWords
+                mysql &= $"{vbCr}UPPER(BIOMETRICID) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(firstname) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(lastname) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(branchname) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(EMP_POSITION) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(rate) LIKE UPPER('%{name}%')"
+            Next
+
+        Else
+            mysql = "Select * From tbl_Employee A inner join tbl_branch B on B.ID = A.BRANCH_ID"
+        End If
+
+        Using ds As DataSet = LoadSQL(mysql, "tbl_Employee")
+            For Each dr In ds.Tables(0).Rows
+                AddRow_RATE(dr, datagrid)
+            Next
+        End Using
+
+    End Sub
+
 
 End Module

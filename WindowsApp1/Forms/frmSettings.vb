@@ -12,6 +12,7 @@ Public Class frmSettings
 
         PopulateComboBox(Rate_Branch_ComboB, "tbl_branch", "BRANCHNAME")
         PopulateComboBox(Rate_Pos_ComboB, "tbl_employee", "EMP_POSITION")
+        PopulateSettings_Rate(Rate_grid, "BRANCHNAME")
 
     End Sub
 
@@ -144,7 +145,7 @@ Public Class frmSettings
 
     Private Sub Rate_EmpSave_BTN_Click(sender As Object, e As EventArgs) Handles Rate_EmpSave_BTN.Click
         If Not Rate_BioNo_TXT.Text = "" Then
-            SaveSettings(Rate_BioNo_TXT.Text, "RATE", Rate_EmpAmount_TXT.Text, False)
+            SaveSettings(Rate_BioNo_TXT.Text, "BIOMETRICID", Rate_EmpAmount_TXT.Text, False)
             Rate_EmpClear_BTN.PerformClick()
         End If
     End Sub
@@ -160,17 +161,20 @@ Public Class frmSettings
         If Rate_BioNo_TXT.Text = "" Then
             Rate_Employee_TXT.Text = ""
         Else
-            BiometricNo_Payout(Rate_BioNo_TXT.Text, Rate_Employee_TXT)
+            BiometricNo_Payout(Rate_BioNo_TXT.Text, Rate_Employee_TXT, Rate_EmpAmount_TXT)
         End If
 
     End Sub
 
     Private Sub Rate_Position_BTN_Click(sender As Object, e As EventArgs) Handles Rate_Position_BTN.Click
-        If Rate_Pos_ComboB.SelectedIndex >= 0 Then
-            Console.WriteLine("thiss " & )
+        If Rate_Pos_ComboB.SelectedIndex >= 0 And Not Rate_PosAmount_TXT.Text = "" Then
+
             SaveSettings(Rate_Pos_ComboB.SelectedItem, "EMP_POSITION", Rate_PosAmount_TXT.Text, True)
-            Rate_PosAmount_TXT.Text = "   Select Position"
+
+            Rate_Pos_ComboB.Text = "   Select Position"
             Rate_PosAmount_TXT.Clear()
+
+            PopulateSettings_Rate(Rate_grid, "EMP_POSITION")
         End If
     End Sub
 
@@ -179,6 +183,61 @@ Public Class frmSettings
     End Sub
 
     Private Sub Rate_Branch_BTN_Click(sender As Object, e As EventArgs) Handles Rate_Branch_BTN.Click
+        If Rate_Branch_ComboB.SelectedIndex >= 0 And Not Rate_BranchAmount_TXT.Text = "" Then
 
+            SaveSettings(Rate_Branch_ComboB.Tag, "BRANCH_ID", Rate_BranchAmount_TXT.Text, True)
+
+            Rate_Branch_ComboB.Text = "   Select Branch"
+            Rate_BranchAmount_TXT.Clear()
+
+            PopulateSettings_Rate(Rate_grid, "BRANCHNAME")
+
+        End If
+    End Sub
+
+    Private Sub Rate_BranchAmount_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Rate_PosAmount_TXT.KeyPress, Rate_EmpAmount_TXT.KeyPress, Rate_BranchAmount_TXT.KeyPress, Rate_BioNo_TXT.KeyPress
+        If e.KeyChar <> ChrW(Keys.Back) Then
+            If Char.IsNumber(e.KeyChar) Then
+            Else
+                e.Handled = True
+            End If
+        End If
+    End Sub
+
+    Private Sub Rate_Search_BTN_Click(sender As Object, e As EventArgs) Handles Rate_Search_BTN.Click
+        Search_Settings_Rate(Rate_Search_TXT.Text, Rate_grid)
+    End Sub
+
+    Private Sub Rate_Search_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Rate_Search_TXT.KeyPress
+        If IsEnter(e) Then Rate_Search_BTN.PerformClick()
+    End Sub
+
+    Private Sub Allow_Search_BTN_Click(sender As Object, e As EventArgs) Handles Allow_Search_BTN.Click
+
+        If frmEmployee Is Nothing Then
+            Dim frm As New frmEmployee With {
+                .MdiParent = frmMainForm
+            }
+            frmMainForm.pNavigate.Controls.Add(frm)
+            frmMainForm.pNavigate.Tag = frm
+            frm.txtSearch.Tag = "Settings-Allowance"
+            frm.btnSearch.Tag = Allow_Category_Combo.SelectedItem
+            frm.Show()
+            frm.Dock = DockStyle.Fill
+            frm.BringToFront()
+        Else
+            frmEmployeeInfo.BringToFront()
+        End If
+
+        Close()
+
+    End Sub
+
+    Private Sub Allow_Category_Combo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Allow_Category_Combo.SelectedIndexChanged
+        If Allow_Category_Combo.SelectedIndex = 3 Then
+            Allow_Fix_group.Visible = True
+        Else
+            Allow_Fix_group.Visible = False
+        End If
     End Sub
 End Class
