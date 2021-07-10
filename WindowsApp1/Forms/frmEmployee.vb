@@ -41,6 +41,7 @@ Public Class frmEmployee
                 frmMainForm.pNavigate.Controls.Add(frm)
                 frmMainForm.pNavigate.Tag = frm
                 frm.BiometricID_TXT.Text = lvEmployee.FocusedItem.SubItems(0).Text
+                frm.Branch_Name = lvEmployee.FocusedItem.SubItems(9).Text
                 frm.Name_TXT.Text = lvEmployee.FocusedItem.SubItems(1).Text
                 frm.Name_TXT.Tag = lvEmployee.FocusedItem.SubItems(1).Tag
                 frm.Attendance_Tab.SelectedIndex = 1

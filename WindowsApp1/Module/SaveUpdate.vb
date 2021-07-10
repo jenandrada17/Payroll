@@ -40,7 +40,7 @@
     End Sub
 
     Friend Sub SaveAttendanceEE(biometric As Integer, paydate As String, days As String, overTime As String, late_total As String,
-                              under_total As String, regHoliday As String, specHoliday As String, branch As String)
+                              under_total As String, regHoliday As String, specHoliday As String, branch As String, Optional group As String = "")
         Dim mysql As String
 
         mysql = $"Select * FROM PAYROLL_ATTENDANCE where BIOMETRICID = '{biometric}' and PAYDATE = '{paydate}' and BRANCH = '{branch}'"
@@ -63,6 +63,10 @@
 
             End With
             SaveEntry(dss, False)
+
+            If group = "" Then
+                MsgBox("Succesfully Updated!", MsgBoxStyle.Information, "Information")
+            End If
         Else
 
             mysql = "Select * From PAYROLL_ATTENDANCE Rows 1"
@@ -90,6 +94,11 @@
                 End With
                 ds.Tables(0).Rows.Add(dsNewRow)
                 SaveEntry(ds)
+
+                If group = "" Then
+                    MsgBox("Succesfully Saved!", MsgBoxStyle.Information, "Information")
+                End If
+
             End Using
         End If
 
@@ -168,22 +177,6 @@
             SaveEntry(ds)
         End Using
     End Sub
-
-    'Public Sub UpdateBiometricSheet(payDate As String, bioID As String, dateTime As String, BRANCHNAME As String)
-
-    '    Dim mysql As String = $"Select * FROM IMPORT_DTR where BRANCH = '{BRANCHNAME}' and PAYDATE = '{payDate}'"
-    '    Dim dss As DataSet = LoadSQL(mysql, "IMPORT_DTR")
-    '    If dss.Tables(0).Rows.Count > 0 Then
-
-    '        With dss.Tables(0).Rows(0)
-
-    '            .Item("BIO_ID") = bioID
-    '            .Item("DATEANDTIME") = dateTime
-
-    '        End With
-    '        SaveEntry(dss, False)
-    '    End If
-    'End Sub
 
     Public Sub SaveDTR(bioID As String, payDate As String, DATE_ONLY As String, BRANCH As String, AM_IN As String, AM_OUT As String, PM_IN As String, PM_OUT As String)
 
@@ -486,11 +479,10 @@
 
     End Sub
 
-
     Friend Sub SavePayout(BIOMETRIC_ID As String, BRANCH_ID As String, PAYDATE As String, TOTAL_BASIC As String, TOTAL_OVERTIME As String, TOTAL_LATE_UT As String,
                           GROSS_AMOUNT As String, SSS_COMP As String, PAGIBIG_COMP As String, PHILHEALTH_COMP As String, TAXABLE As String,
                           TAX_WHELD As String, NET_TAX_COMP As String, SSS_LOAN As String, PAGIBIG_LOAN As String, TOTAL_ALLOWANCE As String,
-                          TOTAL_DEDUCTION As String, NET_PAY As String, Optional all As Boolean = False)
+                          TOTAL_DEDUCTION As String, NET_PAY As String, SBU As String, Optional all As String = "")
 
         Dim mysql As String
 
@@ -515,22 +507,22 @@
                     .Item("TOTAL_ALLOWANCE") = TOTAL_ALLOWANCE
                     .Item("TOTAL_DEDUCTION") = TOTAL_DEDUCTION
                     .Item("NET_PAY") = NET_PAY
+                    .Item("SBU") = SBU
 
                 End With
                 SaveEntry(dss, False)
             Next
 
-            If all = False Then
+            If all = "" Then
                 MsgBox("Successfully Updated!", MsgBoxStyle.Information, "Information")
             End If
+
 
         Else
             mysql = "Select * From PAYROLL_PAYOUT Rows 1"
             Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
-
                 Dim dsNewRow As DataRow = ds.Tables(0).NewRow
                 With dsNewRow
-
                     .Item("BIOMETRIC_ID") = BIOMETRIC_ID
                     .Item("BRANCH_ID") = BRANCH_ID
                     .Item("TOTAL_BASIC") = TOTAL_BASIC
@@ -549,18 +541,36 @@
                     .Item("TOTAL_DEDUCTION") = TOTAL_DEDUCTION
                     .Item("NET_PAY") = NET_PAY
                     .Item("PAYDATE") = PAYDATE
+                    .Item("SBU") = SBU
 
                 End With
+
                 ds.Tables(0).Rows.Add(dsNewRow)
                 SaveEntry(ds)
-
-                If all = False Then
-                    MsgBox("Successfully Saved!", MsgBoxStyle.Information, "Information")
-                End If
-
             End Using
+
+            If all = "" Then
+                MsgBox("Successfully Saved!", MsgBoxStyle.Information, "Information")
+            End If
         End If
     End Sub
+
+
+    Friend Sub Save_SBU_AND_OTHER(BIOMETRIC_ID As String, BRANCH_ID As String, PAYDATE As String, otherAllowance As String, OtherDeduction As String)
+
+        Dim mysql As String = $"Select * FROM PAYROLL_PAYOUT where BIOMETRIC_ID = '{BIOMETRIC_ID}' and BRANCH_ID = '{BRANCH_ID}' and PAYDATE = '{PAYDATE}'"
+        Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
+        If dss.Tables(0).Rows.Count > 0 Then
+            For Each dr In dss.Tables(0).Rows
+                With dr
+                    .Item("OTHER_ALLOWANCE") = IIf(String.IsNullOrEmpty(otherAllowance), DBNull.Value, otherAllowance)
+                    .Item("OTHER_DEDUCTION") = IIf(String.IsNullOrEmpty(OtherDeduction), DBNull.Value, OtherDeduction)
+                End With
+                SaveEntry(dss, False)
+            Next
+        End If
+    End Sub
+
 
     Friend Sub SavePayout_ALL(paydate_ As String) '========== AUTO SAVE TO PAYOUT ============ 
 
@@ -580,7 +590,9 @@
                 For Each dr In ds.Tables(0).Rows
                     With dr
 
-                        Dim BiometricID, branchID, Late, UnderTime As String
+                        Dim BiometricID, branchID As String
+                        Dim Late As String = ""
+                        Dim UnderTime As String = ""
                         Dim rate, NoOfDays, RegularOT, SpecialHol, RegularHol As Double
                         Dim Positional, Incentive, Boarding, Carekit, Transport, CashAdvance, Loan, Charges, Allowances, Deduction As Double
 
@@ -692,7 +704,7 @@
                         SavePayout(BiometricID, branchID, paydate_, TotalBasic, TotalOT,
                                   TotalLateUnder, GrossAmount, SSSComp, PagibigComp, PhilhealthComp,
                                   TaxComp, Tax_Wheld, netTax, sssLoan, pagibigLoan,
-                                  Allowances, Deduction, NetPay, True)
+                                  Allowances, Deduction, NetPay, SBU, "Group")
 
                         frmMainForm.AppProgressBar.Value += 1
                     End With

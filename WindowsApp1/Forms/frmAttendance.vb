@@ -18,7 +18,7 @@ Public Class frmAttendance
     Dim hourMinn, timee, bio_list As List(Of String)
     Dim dateee As DateTime
     Dim DATE_ONLY, am_in, am_out, pm_in, pm_out As String
-    'Dim list_hour(3) As String
+    Public Branch_Name As String
 
     Private Sub frmAttendance_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
@@ -155,6 +155,11 @@ Public Class frmAttendance
             End If
 
         Next
+
+        AM_In_DataGrid.Items.Insert(0, "")
+        AM_Out_DataGrid.Items.Insert(0, "")
+        PM_IN_DataGrid.Items.Insert(0, "")
+        PM_Out_DataGrid.Items.Insert(0, "")
 
     End Sub
 
@@ -432,15 +437,14 @@ Public Class frmAttendance
     Private Sub Cancel_BTN_Click(sender As Object, e As EventArgs) Handles Cancel_BTN.Click
         BiometricID_TXT.Clear()
         Name_TXT.Clear()
-        LoadDateTime()
-        'TotalAbsent_LBL.Text = 0
-        'TotalDays_LBL.Text = 0
-        'TotalRHoliday_LBL.Text = 0
-        'TotalSHoliday_LBL.Text = 0
-        'TotalLateHR_LBL.Text = 0
-        'TotalUTHR_LBL.Text = 0
-        'TotalOTHr_LBL.Text = 0
-        'CheckALL_CheckBox.Checked = False
+        CheckALL_CheckBox.Checked = False
+        TotalAbsent_LBL.Text = 0
+        TotalDays_LBL.Text = 0
+        TotalRHoliday_LBL.Text = 0
+        TotalSHoliday_LBL.Text = 0
+        TotalLateHR_LBL.Text = 0
+        TotalUTHR_LBL.Text = 0
+        TotalOTHr_LBL.Text = 0
 
     End Sub
 
@@ -467,10 +471,22 @@ Public Class frmAttendance
 
         If Not BiometricID_TXT.Text = "" Then
 
-            SaveAttendanceEE(BiometricID_TXT.Text, DataGridView1.Tag, TotalDays_LBL.Text, TotalOTHr_LBL.Text, TotalLateHR_LBL.Text, TotalUTHR_LBL.Text,
-                             TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text, Branch_ComboB.SelectedItem)
+            For Each row As DataGridViewRow In DataGridView1.Rows
 
-            ClearAfter()
+                Dim dateOnly As DateTime = DataGridView1.Rows(row.Index).Tag
+
+                If row.Cells(1).Value = "" And row.Cells(2).Value = "" And row.Cells(3).Value = "" And row.Cells(4).Value = "" Then
+                Else
+                    SaveDTR(BiometricID_TXT.Text, Paydate, dateOnly.ToString("d"), Branch_Name,
+                        row.Cells(1).Value, row.Cells(2).Value, row.Cells(3).Value, row.Cells(4).Value)
+                End If
+
+            Next
+
+            SaveAttendanceEE(BiometricID_TXT.Text, DataGridView1.Tag, TotalDays_LBL.Text, TotalOTHr_LBL.Text, TotalLateHR_LBL.Text, TotalUTHR_LBL.Text,
+                             TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text, Branch_Name)
+
+            Cancel_BTN.PerformClick()
         Else
             MsgBox("Please Choose Employee's Name!", MsgBoxStyle.Critical, "Error")
         End If
@@ -549,10 +565,6 @@ Public Class frmAttendance
         Name_TXT.AutoCompleteMode = AutoCompleteMode.Suggest
         Name_TXT.AutoCompleteSource = AutoCompleteSource.CustomSource
 
-    End Sub
-
-    Private Sub Button2_Click_1(sender As Object, e As EventArgs) Handles Button2.Click
-        SavePayout_ALL(Paydate)
     End Sub
 
     Private Function ExcelFilePath(ByVal filePath As String) As String
@@ -1023,7 +1035,7 @@ Public Class frmAttendance
             TotalDays_LBL.Text = product
 
             SaveAttendanceEE(biometric_No, paydate_, TotalDays_LBL.Text, TotalOTHr_LBL.Text, Late_Total.ToString, Under_Total.ToString,
-                             TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text, Branch_ComboB.SelectedItem)
+                             TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text, Branch_ComboB.SelectedItem, "GROUP")
         Next
     End Sub
 
@@ -1043,6 +1055,7 @@ Public Class frmAttendance
         Name_TXT.Text = Bio_grid.Item(1, i).Value
 
         DataGridView1.ClearSelection()
+        Branch_Name = Branch_ComboB.SelectedItem
 
         Attendance_Per_Branch(Bio_grid.Item(0, i).Value, Branch_ComboB.SelectedItem)
     End Sub
@@ -1205,31 +1218,22 @@ Public Class frmAttendance
 
                     End With
                 Next
+            Else
+                ClearAfter()
             End If
         End Using
 
     End Sub
 
     Private Sub ClearAfter()
-
-        BiometricID_TXT.Clear()
-        Name_TXT.Clear()
-
+        CheckALL_CheckBox.Checked = False
+        TotalAbsent_LBL.Text = 0
         TotalDays_LBL.Text = 0
-
         TotalRHoliday_LBL.Text = 0
         TotalSHoliday_LBL.Text = 0
-
-        TotalOTHr_LBL.Text = 0
-
         TotalLateHR_LBL.Text = 0
-
         TotalUTHR_LBL.Text = 0
-
-        TotalAbsent_LBL.Text = 0
-
-        LoadDateTime()
-        CheckALL_CheckBox.Checked = True
+        TotalOTHr_LBL.Text = 0
     End Sub
 
     Private Sub LoadDTR()

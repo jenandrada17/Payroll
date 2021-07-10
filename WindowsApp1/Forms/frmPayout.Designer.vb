@@ -109,25 +109,32 @@ Partial Class frmPayout
         Me.Label32 = New System.Windows.Forms.Label()
         Me.Label33 = New System.Windows.Forms.Label()
         Me.Close_LBL = New System.Windows.Forms.Label()
-        Me.Button1 = New System.Windows.Forms.Button()
         Me.Cancel_BTN = New System.Windows.Forms.Button()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
-        Me.P_NetPay_LBL = New System.Windows.Forms.Label()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.P_TaxWH_LBL = New System.Windows.Forms.Label()
+        Me.P_NetPay_LBL = New System.Windows.Forms.Label()
+        Me.P_PagibigLoan_LBL = New System.Windows.Forms.Label()
+        Me.Label30 = New System.Windows.Forms.Label()
+        Me.P_PhilHComp_LBL = New System.Windows.Forms.Label()
+        Me.P_PagibigComp_LBL = New System.Windows.Forms.Label()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.P_Taxable_LBL = New System.Windows.Forms.Label()
+        Me.Label35 = New System.Windows.Forms.Label()
+        Me.Label36 = New System.Windows.Forms.Label()
+        Me.Label8 = New System.Windows.Forms.Label()
         Me.P_Allowance_LBL = New System.Windows.Forms.Label()
         Me.P_Deduction_LBL = New System.Windows.Forms.Label()
         Me.Label19 = New System.Windows.Forms.Label()
         Me.Label29 = New System.Windows.Forms.Label()
         Me.P_SSSLoan_LBL = New System.Windows.Forms.Label()
-        Me.P_Taxable_LBL = New System.Windows.Forms.Label()
         Me.P_SSSComp_LBL = New System.Windows.Forms.Label()
         Me.P_GrossAmount_LBL = New System.Windows.Forms.Label()
         Me.labelee = New System.Windows.Forms.Label()
-        Me.Label3 = New System.Windows.Forms.Label()
         Me.labell = New System.Windows.Forms.Label()
         Me.Label13 = New System.Windows.Forms.Label()
-        Me.Label35 = New System.Windows.Forms.Label()
         Me.Paydate_ComboB = New System.Windows.Forms.ComboBox()
         Me.Search_TXT = New System.Windows.Forms.TextBox()
         Me.Search_BTN = New System.Windows.Forms.Button()
@@ -149,14 +156,7 @@ Partial Class frmPayout
         Me.ColumnHeader12 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader13 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.TabPage1 = New System.Windows.Forms.TabPage()
-        Me.P_PagibigComp_LBL = New System.Windows.Forms.Label()
-        Me.Label8 = New System.Windows.Forms.Label()
-        Me.P_PhilHComp_LBL = New System.Windows.Forms.Label()
-        Me.Label36 = New System.Windows.Forms.Label()
-        Me.P_PagibigLoan_LBL = New System.Windows.Forms.Label()
-        Me.Label30 = New System.Windows.Forms.Label()
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.P_TaxWH_LBL = New System.Windows.Forms.Label()
+        Me.Details_Save_BTN = New System.Windows.Forms.Button()
         Me.GroupBox6.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
@@ -1115,22 +1115,10 @@ Partial Class frmPayout
         Me.Close_LBL.TabIndex = 75
         Me.Close_LBL.Text = "X"
         '
-        'Button1
-        '
-        Me.Button1.BackColor = System.Drawing.Color.DarkSalmon
-        Me.Button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.Button1.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button1.Location = New System.Drawing.Point(114, 562)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(102, 37)
-        Me.Button1.TabIndex = 77
-        Me.Button1.Text = "Save"
-        Me.Button1.UseVisualStyleBackColor = False
-        '
         'Cancel_BTN
         '
         Me.Cancel_BTN.BackColor = System.Drawing.Color.PeachPuff
-        Me.Cancel_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Cancel_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.Cancel_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Cancel_BTN.Location = New System.Drawing.Point(6, 562)
         Me.Cancel_BTN.Name = "Cancel_BTN"
@@ -1165,18 +1153,6 @@ Partial Class frmPayout
         Me.TabPage2.Text = "  Payout  "
         Me.TabPage2.UseVisualStyleBackColor = True
         '
-        'P_NetPay_LBL
-        '
-        Me.P_NetPay_LBL.AutoSize = True
-        Me.P_NetPay_LBL.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.P_NetPay_LBL.ForeColor = System.Drawing.Color.DarkRed
-        Me.P_NetPay_LBL.Location = New System.Drawing.Point(470, 106)
-        Me.P_NetPay_LBL.Name = "P_NetPay_LBL"
-        Me.P_NetPay_LBL.Size = New System.Drawing.Size(25, 32)
-        Me.P_NetPay_LBL.TabIndex = 94
-        Me.P_NetPay_LBL.Text = "0"
-        Me.P_NetPay_LBL.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        '
         'GroupBox5
         '
         Me.GroupBox5.Controls.Add(Me.Label1)
@@ -1208,6 +1184,134 @@ Partial Class frmPayout
         Me.GroupBox5.TabIndex = 104
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "Total"
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Location = New System.Drawing.Point(257, 35)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(109, 22)
+        Me.Label1.TabIndex = 109
+        Me.Label1.Text = "Total Tax W/Held"
+        '
+        'P_TaxWH_LBL
+        '
+        Me.P_TaxWH_LBL.AutoSize = True
+        Me.P_TaxWH_LBL.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.P_TaxWH_LBL.Location = New System.Drawing.Point(375, 34)
+        Me.P_TaxWH_LBL.Name = "P_TaxWH_LBL"
+        Me.P_TaxWH_LBL.Size = New System.Drawing.Size(17, 22)
+        Me.P_TaxWH_LBL.TabIndex = 110
+        Me.P_TaxWH_LBL.Text = "0"
+        Me.P_TaxWH_LBL.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'P_NetPay_LBL
+        '
+        Me.P_NetPay_LBL.AutoSize = True
+        Me.P_NetPay_LBL.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.P_NetPay_LBL.ForeColor = System.Drawing.Color.DarkRed
+        Me.P_NetPay_LBL.Location = New System.Drawing.Point(470, 106)
+        Me.P_NetPay_LBL.Name = "P_NetPay_LBL"
+        Me.P_NetPay_LBL.Size = New System.Drawing.Size(25, 32)
+        Me.P_NetPay_LBL.TabIndex = 94
+        Me.P_NetPay_LBL.Text = "0"
+        Me.P_NetPay_LBL.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'P_PagibigLoan_LBL
+        '
+        Me.P_PagibigLoan_LBL.AutoSize = True
+        Me.P_PagibigLoan_LBL.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.P_PagibigLoan_LBL.Location = New System.Drawing.Point(375, 79)
+        Me.P_PagibigLoan_LBL.Name = "P_PagibigLoan_LBL"
+        Me.P_PagibigLoan_LBL.Size = New System.Drawing.Size(17, 22)
+        Me.P_PagibigLoan_LBL.TabIndex = 108
+        Me.P_PagibigLoan_LBL.Text = "0"
+        Me.P_PagibigLoan_LBL.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'Label30
+        '
+        Me.Label30.AutoSize = True
+        Me.Label30.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label30.Location = New System.Drawing.Point(257, 78)
+        Me.Label30.Name = "Label30"
+        Me.Label30.Size = New System.Drawing.Size(110, 22)
+        Me.Label30.TabIndex = 107
+        Me.Label30.Text = "Total Pagibig Loan"
+        '
+        'P_PhilHComp_LBL
+        '
+        Me.P_PhilHComp_LBL.AutoSize = True
+        Me.P_PhilHComp_LBL.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.P_PhilHComp_LBL.Location = New System.Drawing.Point(160, 81)
+        Me.P_PhilHComp_LBL.Name = "P_PhilHComp_LBL"
+        Me.P_PhilHComp_LBL.Size = New System.Drawing.Size(17, 22)
+        Me.P_PhilHComp_LBL.TabIndex = 106
+        Me.P_PhilHComp_LBL.Text = "0"
+        Me.P_PhilHComp_LBL.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'P_PagibigComp_LBL
+        '
+        Me.P_PagibigComp_LBL.AutoSize = True
+        Me.P_PagibigComp_LBL.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.P_PagibigComp_LBL.Location = New System.Drawing.Point(160, 58)
+        Me.P_PagibigComp_LBL.Name = "P_PagibigComp_LBL"
+        Me.P_PagibigComp_LBL.Size = New System.Drawing.Size(17, 22)
+        Me.P_PagibigComp_LBL.TabIndex = 94
+        Me.P_PagibigComp_LBL.Text = "0"
+        Me.P_PagibigComp_LBL.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label3.Location = New System.Drawing.Point(257, 13)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(84, 22)
+        Me.Label3.TabIndex = 83
+        Me.Label3.Text = "Total Taxable"
+        '
+        'P_Taxable_LBL
+        '
+        Me.P_Taxable_LBL.AutoSize = True
+        Me.P_Taxable_LBL.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.P_Taxable_LBL.Location = New System.Drawing.Point(375, 12)
+        Me.P_Taxable_LBL.Name = "P_Taxable_LBL"
+        Me.P_Taxable_LBL.Size = New System.Drawing.Size(17, 22)
+        Me.P_Taxable_LBL.TabIndex = 87
+        Me.P_Taxable_LBL.Text = "0"
+        Me.P_Taxable_LBL.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'Label35
+        '
+        Me.Label35.AutoSize = True
+        Me.Label35.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label35.ForeColor = System.Drawing.Color.DarkRed
+        Me.Label35.Location = New System.Drawing.Point(376, 107)
+        Me.Label35.Name = "Label35"
+        Me.Label35.Size = New System.Drawing.Size(66, 27)
+        Me.Label35.TabIndex = 93
+        Me.Label35.Text = "Net Pay"
+        '
+        'Label36
+        '
+        Me.Label36.AutoSize = True
+        Me.Label36.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label36.Location = New System.Drawing.Point(42, 80)
+        Me.Label36.Name = "Label36"
+        Me.Label36.Size = New System.Drawing.Size(103, 22)
+        Me.Label36.TabIndex = 105
+        Me.Label36.Text = "Total PhilH Distr."
+        '
+        'Label8
+        '
+        Me.Label8.AutoSize = True
+        Me.Label8.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label8.Location = New System.Drawing.Point(42, 57)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(112, 22)
+        Me.Label8.TabIndex = 93
+        Me.Label8.Text = "Total Pagibig Distr."
         '
         'P_Allowance_LBL
         '
@@ -1262,17 +1366,6 @@ Partial Class frmPayout
         Me.P_SSSLoan_LBL.Text = "0"
         Me.P_SSSLoan_LBL.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
-        'P_Taxable_LBL
-        '
-        Me.P_Taxable_LBL.AutoSize = True
-        Me.P_Taxable_LBL.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.P_Taxable_LBL.Location = New System.Drawing.Point(375, 12)
-        Me.P_Taxable_LBL.Name = "P_Taxable_LBL"
-        Me.P_Taxable_LBL.Size = New System.Drawing.Size(17, 22)
-        Me.P_Taxable_LBL.TabIndex = 87
-        Me.P_Taxable_LBL.Text = "0"
-        Me.P_Taxable_LBL.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        '
         'P_SSSComp_LBL
         '
         Me.P_SSSComp_LBL.AutoSize = True
@@ -1305,25 +1398,15 @@ Partial Class frmPayout
         Me.labelee.TabIndex = 84
         Me.labelee.Text = "Total SSS Loan"
         '
-        'Label3
-        '
-        Me.Label3.AutoSize = True
-        Me.Label3.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label3.Location = New System.Drawing.Point(257, 13)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(84, 22)
-        Me.Label3.TabIndex = 83
-        Me.Label3.Text = "Total Taxable"
-        '
         'labell
         '
         Me.labell.AutoSize = True
         Me.labell.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.labell.Location = New System.Drawing.Point(42, 35)
         Me.labell.Name = "labell"
-        Me.labell.Size = New System.Drawing.Size(99, 22)
+        Me.labell.Size = New System.Drawing.Size(95, 22)
         Me.labell.TabIndex = 82
-        Me.labell.Text = "Total SSS Comp."
+        Me.labell.Text = "Total SSS Distr."
         '
         'Label13
         '
@@ -1334,17 +1417,6 @@ Partial Class frmPayout
         Me.Label13.Size = New System.Drawing.Size(87, 22)
         Me.Label13.TabIndex = 81
         Me.Label13.Text = "Gross Amount"
-        '
-        'Label35
-        '
-        Me.Label35.AutoSize = True
-        Me.Label35.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label35.ForeColor = System.Drawing.Color.DarkRed
-        Me.Label35.Location = New System.Drawing.Point(376, 107)
-        Me.Label35.Name = "Label35"
-        Me.Label35.Size = New System.Drawing.Size(66, 27)
-        Me.Label35.TabIndex = 93
-        Me.Label35.Text = "Net Pay"
         '
         'Paydate_ComboB
         '
@@ -1459,9 +1531,9 @@ Partial Class frmPayout
         '
         'TabPage1
         '
+        Me.TabPage1.Controls.Add(Me.Details_Save_BTN)
         Me.TabPage1.Controls.Add(Me.GroupBox6)
         Me.TabPage1.Controls.Add(Me.Cancel_BTN)
-        Me.TabPage1.Controls.Add(Me.Button1)
         Me.TabPage1.Controls.Add(Me.GroupBox1)
         Me.TabPage1.Controls.Add(Me.GroupBox2)
         Me.TabPage1.Controls.Add(Me.GroupBox3)
@@ -1474,89 +1546,17 @@ Partial Class frmPayout
         Me.TabPage1.Text = "  Details  "
         Me.TabPage1.UseVisualStyleBackColor = True
         '
-        'P_PagibigComp_LBL
+        'Details_Save_BTN
         '
-        Me.P_PagibigComp_LBL.AutoSize = True
-        Me.P_PagibigComp_LBL.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.P_PagibigComp_LBL.Location = New System.Drawing.Point(160, 58)
-        Me.P_PagibigComp_LBL.Name = "P_PagibigComp_LBL"
-        Me.P_PagibigComp_LBL.Size = New System.Drawing.Size(17, 22)
-        Me.P_PagibigComp_LBL.TabIndex = 94
-        Me.P_PagibigComp_LBL.Text = "0"
-        Me.P_PagibigComp_LBL.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        '
-        'Label8
-        '
-        Me.Label8.AutoSize = True
-        Me.Label8.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label8.Location = New System.Drawing.Point(42, 57)
-        Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(116, 22)
-        Me.Label8.TabIndex = 93
-        Me.Label8.Text = "Total Pagibig Comp."
-        '
-        'P_PhilHComp_LBL
-        '
-        Me.P_PhilHComp_LBL.AutoSize = True
-        Me.P_PhilHComp_LBL.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.P_PhilHComp_LBL.Location = New System.Drawing.Point(160, 81)
-        Me.P_PhilHComp_LBL.Name = "P_PhilHComp_LBL"
-        Me.P_PhilHComp_LBL.Size = New System.Drawing.Size(17, 22)
-        Me.P_PhilHComp_LBL.TabIndex = 106
-        Me.P_PhilHComp_LBL.Text = "0"
-        Me.P_PhilHComp_LBL.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        '
-        'Label36
-        '
-        Me.Label36.AutoSize = True
-        Me.Label36.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label36.Location = New System.Drawing.Point(42, 80)
-        Me.Label36.Name = "Label36"
-        Me.Label36.Size = New System.Drawing.Size(107, 22)
-        Me.Label36.TabIndex = 105
-        Me.Label36.Text = "Total PhilH Comp."
-        '
-        'P_PagibigLoan_LBL
-        '
-        Me.P_PagibigLoan_LBL.AutoSize = True
-        Me.P_PagibigLoan_LBL.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.P_PagibigLoan_LBL.Location = New System.Drawing.Point(375, 79)
-        Me.P_PagibigLoan_LBL.Name = "P_PagibigLoan_LBL"
-        Me.P_PagibigLoan_LBL.Size = New System.Drawing.Size(17, 22)
-        Me.P_PagibigLoan_LBL.TabIndex = 108
-        Me.P_PagibigLoan_LBL.Text = "0"
-        Me.P_PagibigLoan_LBL.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        '
-        'Label30
-        '
-        Me.Label30.AutoSize = True
-        Me.Label30.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label30.Location = New System.Drawing.Point(257, 78)
-        Me.Label30.Name = "Label30"
-        Me.Label30.Size = New System.Drawing.Size(110, 22)
-        Me.Label30.TabIndex = 107
-        Me.Label30.Text = "Total Pagibig Loan"
-        '
-        'Label1
-        '
-        Me.Label1.AutoSize = True
-        Me.Label1.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.Location = New System.Drawing.Point(257, 35)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(109, 22)
-        Me.Label1.TabIndex = 109
-        Me.Label1.Text = "Total Tax W/Held"
-        '
-        'P_TaxWH_LBL
-        '
-        Me.P_TaxWH_LBL.AutoSize = True
-        Me.P_TaxWH_LBL.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.P_TaxWH_LBL.Location = New System.Drawing.Point(375, 34)
-        Me.P_TaxWH_LBL.Name = "P_TaxWH_LBL"
-        Me.P_TaxWH_LBL.Size = New System.Drawing.Size(17, 22)
-        Me.P_TaxWH_LBL.TabIndex = 110
-        Me.P_TaxWH_LBL.Text = "0"
-        Me.P_TaxWH_LBL.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.Details_Save_BTN.BackColor = System.Drawing.Color.Coral
+        Me.Details_Save_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Details_Save_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Details_Save_BTN.Location = New System.Drawing.Point(114, 562)
+        Me.Details_Save_BTN.Name = "Details_Save_BTN"
+        Me.Details_Save_BTN.Size = New System.Drawing.Size(102, 37)
+        Me.Details_Save_BTN.TabIndex = 79
+        Me.Details_Save_BTN.Text = "Save"
+        Me.Details_Save_BTN.UseVisualStyleBackColor = False
         '
         'frmPayout
         '
@@ -1665,7 +1665,6 @@ Partial Class frmPayout
     Friend WithEvents Label27 As Label
     Friend WithEvents OtherDeduction_TXT As TextBox
     Friend WithEvents Close_LBL As Label
-    Friend WithEvents Button1 As Button
     Friend WithEvents Cancel_BTN As Button
     Friend WithEvents TotalHours_LBL As Label
     Friend WithEvents Label34 As Label
@@ -1723,4 +1722,5 @@ Partial Class frmPayout
     Friend WithEvents Label30 As Label
     Friend WithEvents Label1 As Label
     Friend WithEvents P_TaxWH_LBL As Label
+    Friend WithEvents Details_Save_BTN As Button
 End Class

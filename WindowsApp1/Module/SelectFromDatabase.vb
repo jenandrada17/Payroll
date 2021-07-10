@@ -150,7 +150,7 @@ Module SelectFromDatabase
     End Sub
 
     Friend Sub AllowanceDetails(biometric As String, branchID As String, Positional_TXT As TextBox, Incentive_TXT As TextBox,
-                             Boarding_TXT As TextBox, Carekit_TXT As TextBox, Transport_TXT As TextBox)
+                                Boarding_TXT As TextBox, Carekit_TXT As TextBox, Transport_TXT As TextBox)
 
 
         Positional_TXT.Clear()
@@ -201,6 +201,27 @@ Module SelectFromDatabase
             End If
         End Using
     End Sub
+
+    Friend Sub OtherDetails(biometric As String, branchID As String, PAYDATE As String, Savings_TXT As TextBox, OtherAllowance_TXT As TextBox, OtherDeduction_TXT As TextBox)
+
+        OtherAllowance_TXT.Clear()
+        OtherDeduction_TXT.Clear()
+        Savings_TXT.Clear()
+
+        Dim mysql As String = $"Select * FROM PAYROLL_PAYOUT where BIOMETRIC_ID = '{biometric}' and BRANCH_ID = '{branchID}' and PAYDATE = '{PAYDATE}'"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_DEDUCTIONS")
+            If ds.Tables(0).Rows.Count > 0 Then
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+                        Savings_TXT.Text = IIf(IsDBNull(.Item("SBU")), "", .Item("SBU"))
+                        OtherAllowance_TXT.Text = IIf(IsDBNull(.Item("OTHER_ALLOWANCE")), "", .Item("OTHER_ALLOWANCE"))
+                        OtherDeduction_TXT.Text = IIf(IsDBNull(.Item("OTHER_DEDUCTION")), "", .Item("OTHER_DEDUCTION"))
+                    End With
+                Next
+            End If
+        End Using
+    End Sub
+
 
     Friend Function isNotExistHoliday(datee As String)
         Dim mysql As String = "SELECT * FROM PAYROLL_HOLIDAY Where DATEE = '" & datee & "'"
