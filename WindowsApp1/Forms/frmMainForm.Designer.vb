@@ -24,8 +24,9 @@ Partial Class frmMainForm
     Private Sub InitializeComponent()
         Me.NavagationPanel = New System.Windows.Forms.Panel()
         Me.PictureBox10 = New System.Windows.Forms.PictureBox()
-        Me.PictureBox9 = New System.Windows.Forms.PictureBox()
         Me.PictureBox8 = New System.Windows.Forms.PictureBox()
+        Me.Loan_BTN = New System.Windows.Forms.Button()
+        Me.PictureBox9 = New System.Windows.Forms.PictureBox()
         Me.PictureBox7 = New System.Windows.Forms.PictureBox()
         Me.PictureBox3 = New System.Windows.Forms.PictureBox()
         Me.PictureBox2 = New System.Windows.Forms.PictureBox()
@@ -50,8 +51,7 @@ Partial Class frmMainForm
         Me.Payout_BTN = New System.Windows.Forms.Button()
         Me.Paysilp_BTN = New System.Windows.Forms.Button()
         Me.Settings_BTN = New System.Windows.Forms.Button()
-        Me.Loan_BTN = New System.Windows.Forms.Button()
-        Me.Calculator_BTN = New System.Windows.Forms.Button()
+        Me.Contribution_BTN = New System.Windows.Forms.Button()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.AppProgressBar = New System.Windows.Forms.ProgressBar()
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
@@ -62,8 +62,8 @@ Partial Class frmMainForm
         Me.pNavigate = New System.Windows.Forms.Panel()
         Me.NavagationPanel.SuspendLayout()
         CType(Me.PictureBox10, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.PictureBox9, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox8, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.PictureBox9, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -79,8 +79,8 @@ Partial Class frmMainForm
         'NavagationPanel
         '
         Me.NavagationPanel.BackColor = System.Drawing.Color.White
-        Me.NavagationPanel.Controls.Add(Me.PictureBox8)
         Me.NavagationPanel.Controls.Add(Me.PictureBox10)
+        Me.NavagationPanel.Controls.Add(Me.PictureBox8)
         Me.NavagationPanel.Controls.Add(Me.Loan_BTN)
         Me.NavagationPanel.Controls.Add(Me.PictureBox9)
         Me.NavagationPanel.Controls.Add(Me.PictureBox7)
@@ -95,7 +95,7 @@ Partial Class frmMainForm
         Me.NavagationPanel.Controls.Add(Me.Payout_BTN)
         Me.NavagationPanel.Controls.Add(Me.Paysilp_BTN)
         Me.NavagationPanel.Controls.Add(Me.Settings_BTN)
-        Me.NavagationPanel.Controls.Add(Me.Calculator_BTN)
+        Me.NavagationPanel.Controls.Add(Me.Contribution_BTN)
         Me.NavagationPanel.Location = New System.Drawing.Point(1, 1)
         Me.NavagationPanel.Name = "NavagationPanel"
         Me.NavagationPanel.Size = New System.Drawing.Size(196, 715)
@@ -105,23 +105,12 @@ Partial Class frmMainForm
         '
         Me.PictureBox10.BackColor = System.Drawing.Color.Black
         Me.PictureBox10.Image = Global.WindowsApp1.My.Resources.Resources.settings
-        Me.PictureBox10.Location = New System.Drawing.Point(10, 505)
+        Me.PictureBox10.Location = New System.Drawing.Point(14, 583)
         Me.PictureBox10.Name = "PictureBox10"
         Me.PictureBox10.Size = New System.Drawing.Size(42, 38)
         Me.PictureBox10.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.PictureBox10.TabIndex = 29
         Me.PictureBox10.TabStop = False
-        '
-        'PictureBox9
-        '
-        Me.PictureBox9.BackColor = System.Drawing.Color.Black
-        Me.PictureBox9.Image = Global.WindowsApp1.My.Resources.Resources.calculator
-        Me.PictureBox9.Location = New System.Drawing.Point(11, 583)
-        Me.PictureBox9.Name = "PictureBox9"
-        Me.PictureBox9.Size = New System.Drawing.Size(42, 38)
-        Me.PictureBox9.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.PictureBox9.TabIndex = 28
-        Me.PictureBox9.TabStop = False
         '
         'PictureBox8
         '
@@ -133,6 +122,33 @@ Partial Class frmMainForm
         Me.PictureBox8.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.PictureBox8.TabIndex = 27
         Me.PictureBox8.TabStop = False
+        '
+        'Loan_BTN
+        '
+        Me.Loan_BTN.BackColor = System.Drawing.Color.Black
+        Me.Loan_BTN.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.Loan_BTN.FlatAppearance.BorderSize = 0
+        Me.Loan_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Loan_BTN.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Loan_BTN.ForeColor = System.Drawing.Color.White
+        Me.Loan_BTN.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Loan_BTN.Location = New System.Drawing.Point(-1, 640)
+        Me.Loan_BTN.Name = "Loan_BTN"
+        Me.Loan_BTN.Size = New System.Drawing.Size(197, 75)
+        Me.Loan_BTN.TabIndex = 7
+        Me.Loan_BTN.Text = "     &Loans"
+        Me.Loan_BTN.UseVisualStyleBackColor = False
+        '
+        'PictureBox9
+        '
+        Me.PictureBox9.BackColor = System.Drawing.Color.Black
+        Me.PictureBox9.Image = Global.WindowsApp1.My.Resources.Resources.calculator
+        Me.PictureBox9.Location = New System.Drawing.Point(14, 508)
+        Me.PictureBox9.Name = "PictureBox9"
+        Me.PictureBox9.Size = New System.Drawing.Size(42, 38)
+        Me.PictureBox9.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.PictureBox9.TabIndex = 28
+        Me.PictureBox9.TabStop = False
         '
         'PictureBox7
         '
@@ -391,37 +407,21 @@ Partial Class frmMainForm
         Me.Settings_BTN.Text = "        &Settings"
         Me.Settings_BTN.UseVisualStyleBackColor = False
         '
-        'Loan_BTN
+        'Contribution_BTN
         '
-        Me.Loan_BTN.BackColor = System.Drawing.Color.Black
-        Me.Loan_BTN.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.Loan_BTN.FlatAppearance.BorderSize = 0
-        Me.Loan_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.Loan_BTN.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Loan_BTN.ForeColor = System.Drawing.Color.White
-        Me.Loan_BTN.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Loan_BTN.Location = New System.Drawing.Point(-1, 640)
-        Me.Loan_BTN.Name = "Loan_BTN"
-        Me.Loan_BTN.Size = New System.Drawing.Size(197, 75)
-        Me.Loan_BTN.TabIndex = 7
-        Me.Loan_BTN.Text = "     &Loans"
-        Me.Loan_BTN.UseVisualStyleBackColor = False
-        '
-        'Calculator_BTN
-        '
-        Me.Calculator_BTN.BackColor = System.Drawing.Color.Black
-        Me.Calculator_BTN.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.Calculator_BTN.FlatAppearance.BorderSize = 0
-        Me.Calculator_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.Calculator_BTN.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Calculator_BTN.ForeColor = System.Drawing.Color.White
-        Me.Calculator_BTN.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Calculator_BTN.Location = New System.Drawing.Point(0, 488)
-        Me.Calculator_BTN.Name = "Calculator_BTN"
-        Me.Calculator_BTN.Size = New System.Drawing.Size(197, 75)
-        Me.Calculator_BTN.TabIndex = 12
-        Me.Calculator_BTN.Text = "            &Calculator"
-        Me.Calculator_BTN.UseVisualStyleBackColor = False
+        Me.Contribution_BTN.BackColor = System.Drawing.Color.Black
+        Me.Contribution_BTN.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.Contribution_BTN.FlatAppearance.BorderSize = 0
+        Me.Contribution_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Contribution_BTN.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Contribution_BTN.ForeColor = System.Drawing.Color.White
+        Me.Contribution_BTN.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Contribution_BTN.Location = New System.Drawing.Point(0, 488)
+        Me.Contribution_BTN.Name = "Contribution_BTN"
+        Me.Contribution_BTN.Size = New System.Drawing.Size(197, 75)
+        Me.Contribution_BTN.TabIndex = 12
+        Me.Contribution_BTN.Text = "            &Contribution"
+        Me.Contribution_BTN.UseVisualStyleBackColor = False
         '
         'Panel1
         '
@@ -522,8 +522,8 @@ Partial Class frmMainForm
         Me.Text = "Form1"
         Me.NavagationPanel.ResumeLayout(False)
         CType(Me.PictureBox10, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.PictureBox9, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox8, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.PictureBox9, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
@@ -562,7 +562,7 @@ Partial Class frmMainForm
     Friend WithEvents Paysilp_BTN As Button
     Friend WithEvents Settings_BTN As Button
     Friend WithEvents Loan_BTN As Button
-    Friend WithEvents Calculator_BTN As Button
+    Friend WithEvents Contribution_BTN As Button
     Friend WithEvents Panel1 As Panel
     Friend WithEvents AppDateTime As Label
     Friend WithEvents AppProgressBar As ProgressBar

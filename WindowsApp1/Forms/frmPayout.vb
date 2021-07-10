@@ -11,9 +11,7 @@
         specHoliday = Holiday_Rate("SPECIAL")
         Savings_TXT.Text = SBU_Amount()
         PopulateComboBox(Paydate_ComboB, "PAYROLL_PAYOUT", "PAYDATE")
-        Lists_Payout(Payout_list, paydate_)
-        GetPayout_TOTALS(paydate_, P_GrossAmount_LBL, P_SSSComp_LBL, P_PagibigComp_LBL, P_PhilHComp_LBL, P_Taxable_LBL, P_TaxWH_LBL,
-                         P_SSSLoan_LBL, P_PagibigLoan_LBL, P_Allowance_LBL, P_Deduction_LBL, P_NetPay_LBL)
+
     End Sub
 
     Private Sub Select_BTN_Click(sender As Object, e As EventArgs) Handles Select_BTN.Click
@@ -63,6 +61,10 @@
 
                 OtherDetails(BiometricID_TXT.Text, Rate_TXT.Tag, paydate_, Savings_TXT, OtherAllowance_TXT, OtherDeduction_TXT)
 
+                'If IsLastDay(paydate_) Then
+                '    Distribution_Details(8736, SSSComp_LBL, Pagibig_LBL, Philhealth_LBL)
+                'End If
+
                 Calculate_Gross()
 
                 Calculate_Allowance()
@@ -74,6 +76,11 @@
             End If
         End If
     End Sub
+
+    Function IsLastDay(ByVal myDate As Date) As Boolean
+        Return myDate.Day = Date.DaysInMonth(myDate.Year, myDate.Month)
+        Console.WriteLine("QQQ " & myDate.Day)
+    End Function
 
     Private Sub Cancel_BTN_Click(sender As Object, e As EventArgs) Handles Cancel_BTN.Click
 
@@ -128,16 +135,24 @@
     End Sub
 
     Private Sub TabControl1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles TabControl1.SelectedIndexChanged
-        Lists_Payout(Payout_list, paydate_)
-        GetPayout_TOTALS(paydate_, P_GrossAmount_LBL, P_SSSComp_LBL, P_PagibigComp_LBL, P_PhilHComp_LBL, P_Taxable_LBL, P_TaxWH_LBL,
-                         P_SSSLoan_LBL, P_PagibigLoan_LBL, P_Allowance_LBL, P_Deduction_LBL, P_NetPay_LBL)
+        'If Paydate_ComboB.Text = "   Select Pay date" Then
+        '    paydate_ = frmMainForm.Paydate.ToString("d")
+        'Else
+        '    paydate_ = Paydate_ComboB.SelectedItem
+        'End If
+        'If TabControl1.SelectedIndex = 0 Then
+        '    Lists_Payout(Payout_list, paydate_)
+        '    GetPayout_TOTALS(paydate_, P_GrossAmount_LBL, P_SSSComp_LBL, P_PagibigComp_LBL, P_PhilHComp_LBL, P_Taxable_LBL, P_TaxWH_LBL,
+        '                     P_SSSLoan_LBL, P_PagibigLoan_LBL, P_Allowance_LBL, P_Deduction_LBL, P_NetPay_LBL)
+        'End If
+
     End Sub
 
     Private Sub Paydate_ComboB_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Paydate_ComboB.SelectedIndexChanged
         paydate_ = Paydate_ComboB.SelectedItem
-        Lists_Payout(Payout_list, Paydate_ComboB.SelectedItem)
+        Lists_Payout(Payout_list, paydate_)
 
-        GetPayout_TOTALS(Paydate_ComboB.SelectedItem, P_GrossAmount_LBL, P_SSSComp_LBL, P_PagibigComp_LBL, P_PhilHComp_LBL, P_Taxable_LBL, P_TaxWH_LBL,
+        GetPayout_TOTALS(paydate_, P_GrossAmount_LBL, P_SSSComp_LBL, P_PagibigComp_LBL, P_PhilHComp_LBL, P_Taxable_LBL, P_TaxWH_LBL,
                          P_SSSLoan_LBL, P_PagibigLoan_LBL, P_Allowance_LBL, P_Deduction_LBL, P_NetPay_LBL)
     End Sub
 
@@ -146,6 +161,7 @@
             Cancel_BTN.PerformClick()
             BiometricID_TXT.Text = Payout_list.FocusedItem.SubItems(1).Tag
             TabControl1.SelectedIndex = 1
+
         End If
     End Sub
 
@@ -172,6 +188,7 @@
     End Sub
 
     Private Sub Search_BTN_Click(sender As Object, e As EventArgs) Handles Search_BTN.Click
+        'Grid_Payout(Payout_grid, paydate_, Search_TXT.Text)
         Lists_Payout(Payout_list, paydate_, Search_TXT.Text)
     End Sub
 

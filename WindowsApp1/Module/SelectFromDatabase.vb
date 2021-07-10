@@ -4,6 +4,105 @@ Module SelectFromDatabase
 
     Dim rowCount As Integer
 
+    'Friend Sub Grid_Payout(dataGrid As DataGridView, paydate As String, Optional searchName As String = "")
+
+    '    Dim secured_str As String = searchName
+    '    secured_str = DreadKnight(secured_str)
+    '    Dim strWords As String() = secured_str.Split(New Char() {" "c})
+    '    Dim name As String
+    '    Dim mysql As String
+
+    '    If searchName.Length <> 0 Then
+
+    '        mysql = $"Select * From PAYROLL_PAYOUT A inner join tbl_employee B on B.BIOMETRICID = A.BIOMETRIC_ID  inner join tbl_branch C on C.ID = B.BRANCH_ID  where paydate =' {paydate}' and "
+
+    '        For Each name In strWords
+    '            mysql &= $"{vbCr}UPPER(BIOMETRIC_ID) LIKE UPPER('%{name}%') OR "
+    '            mysql &= $"{vbCr}UPPER(firstname) LIKE UPPER('%{name}%') OR "
+    '            mysql &= $"{vbCr}UPPER(lastname) LIKE UPPER('%{name}%') OR "
+    '            mysql &= $"{vbCr}UPPER(EMP_POSITION) LIKE UPPER('%{name}%') OR "
+    '            mysql &= $"{vbCr}UPPER(rate) LIKE UPPER('%{name}%') "
+    '        Next
+
+    '    Else
+    '        mysql = $"Select * From PAYROLL_PAYOUT A inner join tbl_employee B on B.BIOMETRICID = A.BIOMETRIC_ID  inner join tbl_branch C on C.ID = B.BRANCH_ID  where paydate =' {paydate}'"
+    '    End If
+
+    '    Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
+    '        dataGrid.Rows.Clear()
+    '        progressBarStart(ds)
+    '        For Each dr In ds.Tables(0).Rows
+    '            AddRow_PAYOUT_GRID(dr, dataGrid)
+
+    '            frmMainForm.AppProgressBar.Value += 1
+    '        Next
+    '        progressBarEnd()
+    '    End Using
+
+    'End Sub
+
+
+    'Private Sub AddRow_PAYOUT_GRID(ByVal dr As DataRow, dataGrid As DataGridView)
+
+    '    With dr
+    '        Dim rowId As Integer = dataGrid.Rows.Add()
+    '        Dim row As DataGridViewRow = dataGrid.Rows(rowId)
+    '        row.Cells("Name_dgv").Value = .Item("LASTNAME") & ", " & .Item("FIRSTNAME") & " " & .Item("MIDDLENAME")
+    '        row.Cells("Name_dgv").Tag = .Item("BIOMETRICID")
+    '        row.Cells("basic_dgv").Value = .Item("TOTAL_BASIC")
+    '        row.Cells("basic_dgv").Tag = .Item("BRANCH_ID")
+    '        row.Cells("overtime_dgv").Value = .Item("TOTAL_OVERTIME")
+    '        row.Cells("late_dgv").Value = .Item("TOTAL_LATE_UT")
+    '        row.Cells("gross_dgv").Value = .Item("GROSS_AMOUNT")
+    '        row.Cells("sssDis_dgv").Value = .Item("SSS_COMP")
+    '        row.Cells("PagibigDis_dgv").Value = .Item("PAGIBIG_COMP")
+    '        row.Cells("philH_dgv").Value = .Item("PHILHEALTH_COMP")
+    '        row.Cells("taxable_dgv").Value = .Item("TAXABLE")
+    '        row.Cells("taxWH_dgv").Value = .Item("TAX_WHELD")
+    '        row.Cells("netTax_dgv").Value = .Item("NET_TAX_COMP")
+    '        row.Cells("sssLoan_dgv").Value = .Item("SSS_LOAN")
+    '        row.Cells("pagibigLoan_dgv").Value = .Item("PAGIBIG_LOAN")
+    '        row.Cells("allowance_dgv").Value = .Item("TOTAL_ALLOWANCE")
+    '        row.Cells("deduction_dgv").Value = .Item("TOTAL_DEDUCTION")
+    '        row.Cells("netPay_dgv").Value = .Item("NET_PAY")
+    '        row.Height = 35
+    '    End With
+
+    'End Sub
+
+    Public Sub GetPayout_TOTALS(paydate As String, P_GrossAmount_LBL As Label, P_SSSComp_LBL As Label, P_PagibigComp_LBL As Label, P_PhilHComp_LBL As Label,
+                                 P_Taxable_LBL As Label, P_TaxWH_LBL As Label, P_SSSLoan_LBL As Label, P_PagibigLoan_LBL As Label,
+                                 P_Allowance_LBL As Label, P_Deduction_LBL As Label, P_NetPay_LBL As Label)
+
+        Dim mysql As String = $"Select SUM(GROSS_AMOUNT) as gross, SUM(SSS_COMP) as sssC, SUM(PAGIBIG_COMP) as pagibiC, SUM(PHILHEALTH_COMP) as philHC,
+                                       SUM(TAXABLE) as tax, SUM(TAX_WHELD) as taxWH, SUM(SSS_LOAN) as sssLoan, SUM(PAGIBIG_LOAN) as pagibigLoan,
+                                       SUM(TOTAL_ALLOWANCE) as allowance, SUM(TOTAL_DEDUCTION) as deducttion,
+                                       SUM(NET_PAY) as netPay FROM PAYROLL_PAYOUT where paydate = '{paydate}'"
+
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
+            If ds.Tables(0).Rows.Count > 0 Then
+                Dim data As DataRow = ds.Tables(0).Rows(0)
+                With data
+                    P_GrossAmount_LBL.Text = .Item("gross")
+                    P_SSSComp_LBL.Text = .Item("sssC")
+                    P_PagibigComp_LBL.Text = .Item("pagibiC")
+                    P_PhilHComp_LBL.Text = .Item("philHC")
+
+                    P_Taxable_LBL.Text = .Item("tax")
+                    P_TaxWH_LBL.Text = .Item("taxWH")
+
+                    P_SSSLoan_LBL.Text = .Item("sssLoan")
+                    P_PagibigLoan_LBL.Text = .Item("pagibigLoan")
+
+                    P_Allowance_LBL.Text = .Item("allowance")
+                    P_Deduction_LBL.Text = .Item("deducttion")
+                    P_NetPay_LBL.Text = .Item("netPay")
+
+                End With
+            End If
+        End Using
+    End Sub
+
     Public Function ThisHasRow(table As String)
         Dim mysql As String = "Select * FROM " & table & ""
         Dim ds As DataSet = LoadSQL(mysql, table)
@@ -222,6 +321,36 @@ Module SelectFromDatabase
         End Using
     End Sub
 
+    Friend Sub Distribution_Details(monthly_Rate As Double, sss As Label, pagibig As Label, philhealth As Label)
+
+        sss.Text = 0
+        pagibig.Text = 0
+        philhealth.Text = 0
+
+        Dim mysql As String = $"Select * FROM PAYROLL_SSS"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_SSS")
+            If ds.Tables(0).Rows.Count > 0 Then
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+
+                        Dim range As String = .Item("RANGECOMP")
+                        Dim strWords As String() = range.Split(New Char() {" "c})
+
+                        If strWords(0).Contains("Below") Then
+                            strWords(0) = 1
+                        End If
+
+                        If (Enumerable.Range(strWords(0), strWords.Last).Contains(monthly_Rate)) Then
+                            sss.Text = .Item("RSS_EE")
+                        End If
+
+                        'pagibig.Text = IIf(IsDBNull(.Item("OTHER_ALLOWANCE")), "", .Item("OTHER_ALLOWANCE"))
+                        'philhealth.Text = IIf(IsDBNull(.Item("OTHER_DEDUCTION")), "", .Item("OTHER_DEDUCTION"))
+                    End With
+                Next
+            End If
+        End Using
+    End Sub
 
     Friend Function isNotExistHoliday(datee As String)
         Dim mysql As String = "SELECT * FROM PAYROLL_HOLIDAY Where DATEE = '" & datee & "'"
@@ -656,7 +785,7 @@ Module SelectFromDatabase
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ALLOWANCE")
             LV.Items.Clear()
-            progressBarStart(ds)
+            progressBarStart(ds.Tables(0).Rows.Count)
             For Each dr In ds.Tables(0).Rows
                 AddRow_Allowance(dr, LV)
                 frmMainForm.AppProgressBar.Value += 1
@@ -705,7 +834,7 @@ Module SelectFromDatabase
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_DEDUCTIONS")
             LV.Items.Clear()
-            progressBarStart(ds)
+            progressBarStart(ds.Tables(0).Rows.Count)
             For Each dr In ds.Tables(0).Rows
                 AddRow_Deduction(dr, LV)
                 frmMainForm.AppProgressBar.Value += 1
@@ -756,12 +885,8 @@ Module SelectFromDatabase
         Using ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
             If ds.Tables(0).Rows.Count > 0 Then
 
-                rowCount = ds.Tables(0).Rows.Count
-                frmMainForm.AppProgressBar.Maximum = rowCount
-                frmMainForm.AppProgressBar.Visible = True
-
                 listview.Items.Clear()
-                progressBarStart(ds)
+                progressBarStart(ds.Tables(0).Rows.Count)
 
                 For Each dr In ds.Tables(0).Rows
                     AddRow_RATE(dr, listview)
@@ -788,11 +913,11 @@ Module SelectFromDatabase
 
         With dr
             Dim i As ListViewItem = listview.Items.Add(.Item("LASTNAME") & ", " & .Item("FIRSTNAME") & " " & .Item("MIDDLENAME"))
-            i.SubItems.Add(.Item("TOTAL_BASIC")).Tag = .Item("BIOMETRIC_ID")
-            i.SubItems.Add(.Item("TOTAL_OVERTIME")).Tag = .Item("BRANCH_ID")
-            i.SubItems.Add(.Item("TOTAL_LATE_UT"))
-            i.SubItems.Add(.Item("GROSS_AMOUNT"))
-            i.SubItems.Add(.Item("SSS_COMP"))
+            'i.SubItems.Add(.Item("TOTAL_BASIC")).Tag = .Item("BIOMETRIC_ID")
+            'i.SubItems.Add(.Item("TOTAL_OVERTIME")).Tag = .Item("BRANCH_ID")
+            'i.SubItems.Add(.Item("TOTAL_LATE_UT"))
+            i.SubItems.Add(.Item("GROSS_AMOUNT")).Tag = .Item("BIOMETRIC_ID")
+            i.SubItems.Add(.Item("SSS_COMP")).Tag = .Item("BRANCH_ID")
             i.SubItems.Add(.Item("PAGIBIG_COMP"))
             i.SubItems.Add(.Item("PHILHEALTH_COMP"))
             i.SubItems.Add(.Item("TAXABLE"))
@@ -834,7 +959,7 @@ Module SelectFromDatabase
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
             LV.Items.Clear()
-            progressBarStart(ds)
+            progressBarStart(ds.Tables(0).Rows.Count)
             For Each dr In ds.Tables(0).Rows
                 AddRow_PAYOUT(dr, LV)
 
@@ -845,49 +970,8 @@ Module SelectFromDatabase
 
     End Sub
 
-    Public Sub GetPayout_TOTALS(paydate As String, P_GrossAmount_LBL As Label, P_SSSComp_LBL As Label, P_PagibigComp_LBL As Label, P_PhilHComp_LBL As Label,
-                                 P_Taxable_LBL As Label, P_TaxWH_LBL As Label, P_SSSLoan_LBL As Label, P_PagibigLoan_LBL As Label,
-                                 P_Allowance_LBL As Label, P_Deduction_LBL As Label, P_NetPay_LBL As Label)
-
-        Dim mysql As String = $"Select SUM(GROSS_AMOUNT) as gross, SUM(SSS_COMP) as sssC, SUM(PAGIBIG_COMP) as pagibiC, SUM(PHILHEALTH_COMP) as philHC,
-                                       SUM(TAXABLE) as tax, SUM(TAX_WHELD) as taxWH, SUM(SSS_LOAN) as sssLoan, SUM(PAGIBIG_LOAN) as pagibigLoan,
-                                       SUM(TOTAL_ALLOWANCE) as allowance, SUM(TOTAL_DEDUCTION) as deducttion,
-                                       SUM(NET_PAY) as netPay FROM PAYROLL_PAYOUT where paydate = '{paydate}'"
-
-        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
-            If ds.Tables(0).Rows.Count > 0 Then
-                Dim data As DataRow = ds.Tables(0).Rows(0)
-                With data
-                    P_GrossAmount_LBL.Text = .Item("gross")
-                    P_SSSComp_LBL.Text = .Item("sssC")
-                    P_PagibigComp_LBL.Text = .Item("pagibiC")
-                    P_PhilHComp_LBL.Text = .Item("philHC")
-
-                    P_Taxable_LBL.Text = .Item("tax")
-                    P_TaxWH_LBL.Text = .Item("taxWH")
-
-                    P_SSSLoan_LBL.Text = .Item("sssLoan")
-                    P_PagibigLoan_LBL.Text = .Item("pagibigLoan")
-
-                    P_Allowance_LBL.Text = .Item("allowance")
-                    P_Deduction_LBL.Text = .Item("deducttion")
-                    P_NetPay_LBL.Text = .Item("netPay")
-
-                End With
-            End If
-        End Using
-    End Sub
-
-
-    Friend Sub progressBarStart(ByVal objectt As Object)
-
-        Try
-            rowCount = objectt.Tables(0).Rows.Count
-        Catch
-            rowCount = objectt.Count
-        End Try
-
-        frmMainForm.AppProgressBar.Maximum = rowCount
+    Friend Sub progressBarStart(ByVal objectt As Integer)
+        frmMainForm.AppProgressBar.Maximum = objectt
         frmMainForm.AppProgressBar.Visible = True
     End Sub
 
@@ -896,6 +980,64 @@ Module SelectFromDatabase
         frmMainForm.AppProgressBar.Value = 0
         frmMainForm.AppProgressBar.Maximum = 1000
         frmMainForm.AppProgressBar.Visible = False
+
+    End Sub
+
+
+    Friend Sub Populate_SSS(datagrid As DataGridView)
+
+        datagrid.Rows.Clear()
+        Dim mysql As String = $"Select * From PAYROLL_SSS "
+
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_SSS")
+            If ds.Tables(0).Rows.Count > 0 Then
+
+                For Each dr In ds.Tables(0).Rows
+                    AddRow_SSS(dr, datagrid)
+                Next
+                'AdjustHeightOfGridBasedOnRows(datagrid)
+            Else
+                datagrid.Rows.Clear()
+            End If
+        End Using
+
+    End Sub
+
+    Public Sub AddRow_SSS(ByVal dr As DataRow, datagrid As DataGridView)
+
+        With dr
+
+            Dim rowId As Integer = datagrid.Rows.Add()
+            Dim row As DataGridViewRow = datagrid.Rows(rowId)
+            row.Cells("one").Value = .Item("rangeComp")
+            row.Cells("two").Value = .Item("rss_ec")
+            row.Cells("three").Value = .Item("mpf")
+            row.Cells("four").Value = .Item("total")
+            row.Cells("five").Value = .Item("rss_er")
+            row.Cells("six").Value = .Item("rss_ee")
+            row.Cells("seven").Value = .Item("rss_total")
+            row.Cells("eight").Value = .Item("ec_er")
+            row.Cells("nine").Value = .Item("ec_ee")
+            row.Cells("ten").Value = .Item("ec_total")
+            row.Cells("eleven").Value = .Item("mpf_er")
+            row.Cells("twelve").Value = .Item("mpf_ee")
+            row.Cells("thirteen").Value = .Item("mpf_total")
+            row.Cells("fourteen").Value = .Item("total_er")
+            row.Cells("fifteen").Value = .Item("total_ee")
+            row.Cells("sixteen").Value = .Item("total_total")
+
+            row.Height = 25
+
+        End With
+    End Sub
+
+    Public Sub Has_Rows_Delete(table As String)
+
+        Dim mysql As String = $"Select * FROM {table}"
+        Dim dss As DataSet = LoadSQL(mysql, table)
+        If dss.Tables(0).Rows.Count > 0 Then
+            RunCommand($"DELETE FROM {table};")  'THIS IS TO DELETE EXISTING DATA 
+        End If
 
     End Sub
 

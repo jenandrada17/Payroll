@@ -585,7 +585,7 @@
         Using ds As DataSet = LoadSQL(mysql, "payroll_attendance")
             If ds.Tables(0).Rows.Count > 0 Then
 
-                progressBarStart(ds)
+                progressBarStart(ds.Tables(0).Rows.Count)
 
                 For Each dr In ds.Tables(0).Rows
                     With dr
@@ -713,6 +713,39 @@
         End Using
 
         progressBarEnd()
+    End Sub
+
+    Public Sub SaveSSS_Contribution(one As String, two As String, three As String, four As String, five As String, six As String, seven As String,
+                                    eight As String, nine As String, ten As String, eleven As String, twelve As String, thirteen As String, fourteen As String,
+                                    fifteen As String, sixteen As String)
+
+        Dim sql As String = "Select * From PAYROLL_SSS Rows 1"
+        Using ds As DataSet = LoadSQL(sql, "PAYROLL_SSS")
+
+            Dim dsNewRow As DataRow = ds.Tables(0).NewRow
+            With dsNewRow
+
+                .Item("rangeComp") = one
+                .Item("rss_ec") = two
+                .Item("mpf") = three
+                .Item("total") = four
+                .Item("rss_er") = five
+                .Item("rss_ee") = six
+                .Item("rss_total") = seven
+                .Item("ec_er") = eight
+                .Item("ec_ee") = nine
+                .Item("ec_total") = ten
+                .Item("mpf_er") = eleven
+                .Item("mpf_ee") = twelve
+                .Item("mpf_total") = thirteen
+                .Item("total_er") = fourteen
+                .Item("total_ee") = fifteen
+                .Item("total_total") = sixteen
+
+            End With
+            ds.Tables(0).Rows.Add(dsNewRow)
+            SaveEntry(ds)
+        End Using
     End Sub
 
 

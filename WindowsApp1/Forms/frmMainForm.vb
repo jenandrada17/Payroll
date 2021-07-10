@@ -118,12 +118,16 @@ Public Class frmMainForm
         Loan_BTN.BackColor = Color.Black
     End Sub
 
-    Private Sub Calculator_BTN_MouseEnter(sender As Object, e As EventArgs) Handles Calculator_BTN.MouseEnter
-        Calculator_BTN.BackColor = Color.DimGray
+    Private Sub Calculator_BTN_MouseEnter(sender As Object, e As EventArgs) Handles Contribution_BTN.MouseEnter
+        Contribution_BTN.BackColor = Color.DimGray
     End Sub
 
-    Private Sub Calculator_BTN_MouseLeave(sender As Object, e As EventArgs) Handles Calculator_BTN.MouseLeave
-        Calculator_BTN.BackColor = Color.Black
+    Private Sub Contribution_BTN_Click(sender As Object, e As EventArgs) Handles Contribution_BTN.Click
+        OpenWindowsForm("frmContribution")
+    End Sub
+
+    Private Sub Calculator_BTN_MouseLeave(sender As Object, e As EventArgs) Handles Contribution_BTN.MouseLeave
+        Contribution_BTN.BackColor = Color.Black
     End Sub
 
     Private Sub Settings_BTN_MouseEnter(sender As Object, e As EventArgs) Handles Settings_BTN.MouseEnter

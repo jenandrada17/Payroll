@@ -1,5 +1,4 @@
-﻿Imports System.IO
-Imports FirebirdSql.Data.FirebirdClient
+﻿Imports FirebirdSql.Data.FirebirdClient
 Imports Microsoft.Office.Interop
 
 Public Class frmAttendance
@@ -567,11 +566,9 @@ Public Class frmAttendance
 
     End Sub
 
-    Private Function ExcelFilePath(ByVal filePath As String) As String
-        DefaultFolder = Path.GetDirectoryName(filePath)
-        TargetFile = filePath
-        Return TargetFile
-    End Function
+    Private Sub Path_TXT_TextChanged(sender As Object, e As EventArgs) Handles Path_TXT.TextChanged
+
+    End Sub
 
     Private Sub OpenFile_BTN_Click(sender As Object, e As EventArgs) Handles OpenFile_BTN.Click
         Using f As New OpenFileDialog
@@ -725,7 +722,7 @@ Public Class frmAttendance
 
                 If File_Exist(Branch_ComboB.SelectedItem, Paydate) Then
 
-                    progressBarStart(DtSet)
+                    progressBarStart(DtSet.Tables(0).Rows.Count)
 
                     For row = 2 To DtSet.Tables(0).Rows.Count
                         SaveBiometricSheet(Paydate, eCell(row, 1).Value, eCell(row, 2).Value, Branch_ComboB.SelectedItem)
@@ -739,7 +736,7 @@ Public Class frmAttendance
 
                 ElseIf File_NOT_Exist(Branch_ComboB.SelectedItem, Paydate) Then
 
-                    progressBarStart(DtSet)
+                    progressBarStart(DtSet.Tables(0).Rows.Count)
 
                     For row = 2 To DtSet.Tables(0).Rows.Count
                         SaveBiometricSheet(Paydate, eCell(row, 1).Value, eCell(row, 2).Value, Branch_ComboB.SelectedItem)
@@ -784,7 +781,7 @@ Public Class frmAttendance
 
                 Dim groups_time As New List(Of String)()
                 Dim bio_no As String = "" ' ======================================== GIMOVE SA GAWAS BASI DILI MAGANA =======================
-                progressBarStart(DtSet)
+                progressBarStart(DtSet.Tables(0).Rows.Count)
                 For row = 7 To DtSet.Tables(0).Rows.Count
 
                     If eCell(row, 5).Value = Nothing Then

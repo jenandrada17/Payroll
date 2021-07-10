@@ -22,6 +22,11 @@ Partial Class frmPayout
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.GroupBox6 = New System.Windows.Forms.GroupBox()
         Me.Label15 = New System.Windows.Forms.Label()
         Me.Select_BTN = New System.Windows.Forms.Button()
@@ -112,6 +117,23 @@ Partial Class frmPayout
         Me.Cancel_BTN = New System.Windows.Forms.Button()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.Payout_grid = New System.Windows.Forms.DataGridView()
+        Me.Name_dgv = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.basic_dgv = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.overtime_dgv = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.late_dgv = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.gross_dgv = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.sssDis_dgv = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.PagibigDis_dgv = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.philH_dgv = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.taxable_dgv = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.taxWH_dgv = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.netTax_dgv = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.sssLoan_dgv = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.pagibigLoan_dgv = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.allowance_dgv = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.deduction_dgv = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.netPay_dgv = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.P_TaxWH_LBL = New System.Windows.Forms.Label()
@@ -140,9 +162,6 @@ Partial Class frmPayout
         Me.Search_BTN = New System.Windows.Forms.Button()
         Me.Payout_list = New System.Windows.Forms.ListView()
         Me.ColumnHeader18 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader19 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader20 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader2 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader3 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader4 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -164,6 +183,7 @@ Partial Class frmPayout
         Me.GroupBox4.SuspendLayout()
         Me.TabControl1.SuspendLayout()
         Me.TabPage2.SuspendLayout()
+        CType(Me.Payout_grid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox5.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.SuspendLayout()
@@ -1140,6 +1160,7 @@ Partial Class frmPayout
         '
         'TabPage2
         '
+        Me.TabPage2.Controls.Add(Me.Payout_grid)
         Me.TabPage2.Controls.Add(Me.GroupBox5)
         Me.TabPage2.Controls.Add(Me.Paydate_ComboB)
         Me.TabPage2.Controls.Add(Me.Search_TXT)
@@ -1152,6 +1173,158 @@ Partial Class frmPayout
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "  Payout  "
         Me.TabPage2.UseVisualStyleBackColor = True
+        '
+        'Payout_grid
+        '
+        Me.Payout_grid.AllowUserToAddRows = False
+        Me.Payout_grid.AllowUserToResizeColumns = False
+        Me.Payout_grid.AllowUserToResizeRows = False
+        DataGridViewCellStyle6.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Payout_grid.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle6
+        Me.Payout_grid.BackgroundColor = System.Drawing.Color.White
+        Me.Payout_grid.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.Payout_grid.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText
+        Me.Payout_grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.Payout_grid.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Name_dgv, Me.basic_dgv, Me.overtime_dgv, Me.late_dgv, Me.gross_dgv, Me.sssDis_dgv, Me.PagibigDis_dgv, Me.philH_dgv, Me.taxable_dgv, Me.taxWH_dgv, Me.netTax_dgv, Me.sssLoan_dgv, Me.pagibigLoan_dgv, Me.allowance_dgv, Me.deduction_dgv, Me.netPay_dgv})
+        DataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.InactiveCaption
+        DataGridViewCellStyle9.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.Payout_grid.DefaultCellStyle = DataGridViewCellStyle9
+        Me.Payout_grid.Location = New System.Drawing.Point(6, 573)
+        Me.Payout_grid.Name = "Payout_grid"
+        Me.Payout_grid.RowHeadersVisible = False
+        DataGridViewCellStyle10.SelectionBackColor = System.Drawing.Color.Transparent
+        DataGridViewCellStyle10.SelectionForeColor = System.Drawing.Color.Transparent
+        Me.Payout_grid.RowsDefaultCellStyle = DataGridViewCellStyle10
+        Me.Payout_grid.Size = New System.Drawing.Size(1130, 26)
+        Me.Payout_grid.TabIndex = 105
+        Me.Payout_grid.Visible = False
+        '
+        'Name_dgv
+        '
+        DataGridViewCellStyle7.NullValue = Nothing
+        Me.Name_dgv.DefaultCellStyle = DataGridViewCellStyle7
+        Me.Name_dgv.Frozen = True
+        Me.Name_dgv.HeaderText = "Name"
+        Me.Name_dgv.Name = "Name_dgv"
+        Me.Name_dgv.ReadOnly = True
+        Me.Name_dgv.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.Name_dgv.Width = 250
+        '
+        'basic_dgv
+        '
+        DataGridViewCellStyle8.NullValue = Nothing
+        Me.basic_dgv.DefaultCellStyle = DataGridViewCellStyle8
+        Me.basic_dgv.HeaderText = "Basic"
+        Me.basic_dgv.Name = "basic_dgv"
+        Me.basic_dgv.ReadOnly = True
+        Me.basic_dgv.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.basic_dgv.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        Me.basic_dgv.Width = 105
+        '
+        'overtime_dgv
+        '
+        Me.overtime_dgv.HeaderText = "Overtime"
+        Me.overtime_dgv.Name = "overtime_dgv"
+        Me.overtime_dgv.ReadOnly = True
+        Me.overtime_dgv.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.overtime_dgv.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        Me.overtime_dgv.Width = 105
+        '
+        'late_dgv
+        '
+        Me.late_dgv.HeaderText = "Late/UT"
+        Me.late_dgv.Name = "late_dgv"
+        Me.late_dgv.ReadOnly = True
+        Me.late_dgv.Width = 105
+        '
+        'gross_dgv
+        '
+        Me.gross_dgv.HeaderText = "Gross"
+        Me.gross_dgv.Name = "gross_dgv"
+        Me.gross_dgv.ReadOnly = True
+        Me.gross_dgv.Width = 105
+        '
+        'sssDis_dgv
+        '
+        Me.sssDis_dgv.HeaderText = "SSS Dist."
+        Me.sssDis_dgv.Name = "sssDis_dgv"
+        Me.sssDis_dgv.ReadOnly = True
+        Me.sssDis_dgv.Width = 105
+        '
+        'PagibigDis_dgv
+        '
+        Me.PagibigDis_dgv.HeaderText = "Pagibig Dist."
+        Me.PagibigDis_dgv.Name = "PagibigDis_dgv"
+        Me.PagibigDis_dgv.ReadOnly = True
+        Me.PagibigDis_dgv.Width = 105
+        '
+        'philH_dgv
+        '
+        Me.philH_dgv.HeaderText = "Phil Dist."
+        Me.philH_dgv.Name = "philH_dgv"
+        Me.philH_dgv.ReadOnly = True
+        Me.philH_dgv.Width = 105
+        '
+        'taxable_dgv
+        '
+        Me.taxable_dgv.HeaderText = "Taxable"
+        Me.taxable_dgv.Name = "taxable_dgv"
+        Me.taxable_dgv.ReadOnly = True
+        Me.taxable_dgv.Width = 105
+        '
+        'taxWH_dgv
+        '
+        Me.taxWH_dgv.HeaderText = "Tax WH"
+        Me.taxWH_dgv.Name = "taxWH_dgv"
+        Me.taxWH_dgv.ReadOnly = True
+        Me.taxWH_dgv.Width = 105
+        '
+        'netTax_dgv
+        '
+        Me.netTax_dgv.HeaderText = "Net Tax"
+        Me.netTax_dgv.Name = "netTax_dgv"
+        Me.netTax_dgv.ReadOnly = True
+        Me.netTax_dgv.Width = 105
+        '
+        'sssLoan_dgv
+        '
+        Me.sssLoan_dgv.HeaderText = "SSS Loan"
+        Me.sssLoan_dgv.Name = "sssLoan_dgv"
+        Me.sssLoan_dgv.ReadOnly = True
+        Me.sssLoan_dgv.Width = 105
+        '
+        'pagibigLoan_dgv
+        '
+        Me.pagibigLoan_dgv.HeaderText = "Pagibig Loan"
+        Me.pagibigLoan_dgv.Name = "pagibigLoan_dgv"
+        Me.pagibigLoan_dgv.ReadOnly = True
+        Me.pagibigLoan_dgv.Width = 105
+        '
+        'allowance_dgv
+        '
+        Me.allowance_dgv.HeaderText = "Allowance"
+        Me.allowance_dgv.Name = "allowance_dgv"
+        Me.allowance_dgv.ReadOnly = True
+        Me.allowance_dgv.Width = 105
+        '
+        'deduction_dgv
+        '
+        Me.deduction_dgv.HeaderText = "Deduction"
+        Me.deduction_dgv.Name = "deduction_dgv"
+        Me.deduction_dgv.ReadOnly = True
+        Me.deduction_dgv.Width = 105
+        '
+        'netPay_dgv
+        '
+        Me.netPay_dgv.HeaderText = "Net Pay"
+        Me.netPay_dgv.Name = "netPay_dgv"
+        Me.netPay_dgv.ReadOnly = True
+        Me.netPay_dgv.Width = 105
         '
         'GroupBox5
         '
@@ -1451,15 +1624,15 @@ Partial Class frmPayout
         Me.Payout_list.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Payout_list.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader18, Me.ColumnHeader19, Me.ColumnHeader20, Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader3, Me.ColumnHeader4, Me.ColumnHeader5, Me.ColumnHeader6, Me.ColumnHeader7, Me.ColumnHeader8, Me.ColumnHeader9, Me.ColumnHeader10, Me.ColumnHeader11, Me.ColumnHeader12, Me.ColumnHeader13})
+        Me.Payout_list.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader18, Me.ColumnHeader2, Me.ColumnHeader3, Me.ColumnHeader4, Me.ColumnHeader5, Me.ColumnHeader6, Me.ColumnHeader7, Me.ColumnHeader8, Me.ColumnHeader9, Me.ColumnHeader10, Me.ColumnHeader11, Me.ColumnHeader12, Me.ColumnHeader13})
         Me.Payout_list.Font = New System.Drawing.Font("Dubai", 8.999999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Payout_list.FullRowSelect = True
         Me.Payout_list.GridLines = True
         Me.Payout_list.HideSelection = False
-        Me.Payout_list.Location = New System.Drawing.Point(2, 141)
+        Me.Payout_list.Location = New System.Drawing.Point(6, 158)
         Me.Payout_list.MultiSelect = False
         Me.Payout_list.Name = "Payout_list"
-        Me.Payout_list.Size = New System.Drawing.Size(1140, 458)
+        Me.Payout_list.Size = New System.Drawing.Size(1140, 430)
         Me.Payout_list.TabIndex = 100
         Me.Payout_list.UseCompatibleStateImageBehavior = False
         Me.Payout_list.View = System.Windows.Forms.View.Details
@@ -1469,65 +1642,65 @@ Partial Class frmPayout
         Me.ColumnHeader18.Text = "Name"
         Me.ColumnHeader18.Width = 215
         '
-        'ColumnHeader19
-        '
-        Me.ColumnHeader19.Text = "Basic"
-        '
-        'ColumnHeader20
-        '
-        Me.ColumnHeader20.Text = "Overtime"
-        '
-        'ColumnHeader1
-        '
-        Me.ColumnHeader1.Text = "Late/Undertime"
-        '
         'ColumnHeader2
         '
         Me.ColumnHeader2.Text = "Gross"
+        Me.ColumnHeader2.Width = 75
         '
         'ColumnHeader3
         '
-        Me.ColumnHeader3.Text = "SSS Comp."
+        Me.ColumnHeader3.Text = "SSS Dist."
+        Me.ColumnHeader3.Width = 75
         '
         'ColumnHeader4
         '
-        Me.ColumnHeader4.Text = "Pagibig Comp"
+        Me.ColumnHeader4.Text = "Pagibig Dist."
+        Me.ColumnHeader4.Width = 75
         '
         'ColumnHeader5
         '
-        Me.ColumnHeader5.Text = "PhilHealth Comp."
+        Me.ColumnHeader5.Text = "PhilH Dist."
+        Me.ColumnHeader5.Width = 75
         '
         'ColumnHeader6
         '
         Me.ColumnHeader6.Text = "Taxable"
+        Me.ColumnHeader6.Width = 75
         '
         'ColumnHeader7
         '
         Me.ColumnHeader7.Text = "Tax W/Held"
+        Me.ColumnHeader7.Width = 75
         '
         'ColumnHeader8
         '
         Me.ColumnHeader8.Text = "Net Tax Comp."
+        Me.ColumnHeader8.Width = 75
         '
         'ColumnHeader9
         '
         Me.ColumnHeader9.Text = "SSS Loan"
+        Me.ColumnHeader9.Width = 75
         '
         'ColumnHeader10
         '
         Me.ColumnHeader10.Text = "Pagibig Loan"
+        Me.ColumnHeader10.Width = 75
         '
         'ColumnHeader11
         '
         Me.ColumnHeader11.Text = "Allowance"
+        Me.ColumnHeader11.Width = 75
         '
         'ColumnHeader12
         '
         Me.ColumnHeader12.Text = "Deduction"
+        Me.ColumnHeader12.Width = 75
         '
         'ColumnHeader13
         '
         Me.ColumnHeader13.Text = "NET PAY"
+        Me.ColumnHeader13.Width = 75
         '
         'TabPage1
         '
@@ -1581,6 +1754,7 @@ Partial Class frmPayout
         Me.TabControl1.ResumeLayout(False)
         Me.TabPage2.ResumeLayout(False)
         Me.TabPage2.PerformLayout()
+        CType(Me.Payout_grid, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox5.ResumeLayout(False)
         Me.GroupBox5.PerformLayout()
         Me.TabPage1.ResumeLayout(False)
@@ -1681,18 +1855,12 @@ Partial Class frmPayout
     Friend WithEvents TabPage1 As TabPage
     Friend WithEvents Payout_list As ListView
     Friend WithEvents ColumnHeader18 As ColumnHeader
-    Friend WithEvents ColumnHeader19 As ColumnHeader
-    Friend WithEvents ColumnHeader20 As ColumnHeader
-    Friend WithEvents ColumnHeader1 As ColumnHeader
     Friend WithEvents ColumnHeader2 As ColumnHeader
     Friend WithEvents ColumnHeader3 As ColumnHeader
-    Friend WithEvents ColumnHeader4 As ColumnHeader
-    Friend WithEvents ColumnHeader5 As ColumnHeader
     Friend WithEvents ColumnHeader6 As ColumnHeader
     Friend WithEvents ColumnHeader7 As ColumnHeader
     Friend WithEvents ColumnHeader8 As ColumnHeader
     Friend WithEvents ColumnHeader9 As ColumnHeader
-    Friend WithEvents ColumnHeader10 As ColumnHeader
     Friend WithEvents ColumnHeader11 As ColumnHeader
     Friend WithEvents ColumnHeader12 As ColumnHeader
     Friend WithEvents ColumnHeader13 As ColumnHeader
@@ -1723,4 +1891,24 @@ Partial Class frmPayout
     Friend WithEvents Label1 As Label
     Friend WithEvents P_TaxWH_LBL As Label
     Friend WithEvents Details_Save_BTN As Button
+    Friend WithEvents ColumnHeader4 As ColumnHeader
+    Friend WithEvents ColumnHeader5 As ColumnHeader
+    Friend WithEvents ColumnHeader10 As ColumnHeader
+    Friend WithEvents Payout_grid As DataGridView
+    Friend WithEvents Name_dgv As DataGridViewTextBoxColumn
+    Friend WithEvents basic_dgv As DataGridViewTextBoxColumn
+    Friend WithEvents overtime_dgv As DataGridViewTextBoxColumn
+    Friend WithEvents late_dgv As DataGridViewTextBoxColumn
+    Friend WithEvents gross_dgv As DataGridViewTextBoxColumn
+    Friend WithEvents sssDis_dgv As DataGridViewTextBoxColumn
+    Friend WithEvents PagibigDis_dgv As DataGridViewTextBoxColumn
+    Friend WithEvents philH_dgv As DataGridViewTextBoxColumn
+    Friend WithEvents taxable_dgv As DataGridViewTextBoxColumn
+    Friend WithEvents taxWH_dgv As DataGridViewTextBoxColumn
+    Friend WithEvents netTax_dgv As DataGridViewTextBoxColumn
+    Friend WithEvents sssLoan_dgv As DataGridViewTextBoxColumn
+    Friend WithEvents pagibigLoan_dgv As DataGridViewTextBoxColumn
+    Friend WithEvents allowance_dgv As DataGridViewTextBoxColumn
+    Friend WithEvents deduction_dgv As DataGridViewTextBoxColumn
+    Friend WithEvents netPay_dgv As DataGridViewTextBoxColumn
 End Class

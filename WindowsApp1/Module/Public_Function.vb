@@ -2,6 +2,12 @@
 Imports System.Reflection
 
 Module Public_Function
+    Friend Function ExcelFilePath(ByVal filePath As String) As String
+        DefaultFolder = Path.GetDirectoryName(filePath)
+        TargetFile = filePath
+        Return TargetFile
+    End Function
+
     Friend Sub OpenWindowsForm(ByVal FormName As String)
         Try
             Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = FormName).SingleOrDefault()
