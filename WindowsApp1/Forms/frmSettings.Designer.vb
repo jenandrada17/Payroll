@@ -23,12 +23,15 @@ Partial Class frmSettings
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim DataGridViewCellStyle16 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle18 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle17 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.Close_LBL = New System.Windows.Forms.Label()
         Me.Settings_Tab = New System.Windows.Forms.TabControl()
         Me.TabPage5 = New System.Windows.Forms.TabPage()
+        Me.Rate_grid = New System.Windows.Forms.DataGridView()
+        Me.Rate_Branch_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Rate_Name_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Rate_Pos_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Rate_Rate_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Rate_Search_TXT = New System.Windows.Forms.TextBox()
         Me.Rate_Search_BTN = New System.Windows.Forms.Button()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
@@ -72,32 +75,36 @@ Partial Class frmSettings
         Me.Name_TXT = New System.Windows.Forms.TextBox()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
-        Me.TabPage2 = New System.Windows.Forms.TabPage()
-        Me.TabPage3 = New System.Windows.Forms.TabPage()
-        Me.TabPage4 = New System.Windows.Forms.TabPage()
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.Context_Remove = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.RemoveToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.FileSystemWatcher1 = New System.IO.FileSystemWatcher()
-        Me.Rate_grid = New System.Windows.Forms.DataGridView()
-        Me.Rate_Branch_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Rate_Name_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Rate_Pos_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Rate_Rate_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.RadioButton1 = New System.Windows.Forms.RadioButton()
-        Me.RadioButton2 = New System.Windows.Forms.RadioButton()
+        Me.Allow_Cancel_BTN = New System.Windows.Forms.Button()
+        Me.Allow_Search_TXT = New System.Windows.Forms.TextBox()
+        Me.Allow_Search_BTN = New System.Windows.Forms.Button()
+        Me.Allowance_LV = New System.Windows.Forms.ListView()
+        Me.ColumnHeader3 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader4 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader5 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.Allow_Fix_group = New System.Windows.Forms.GroupBox()
+        Me.FixYes_RadioB = New System.Windows.Forms.RadioButton()
+        Me.FixNo_RadioB = New System.Windows.Forms.RadioButton()
+        Me.Allow_SearchEmp_BTN = New System.Windows.Forms.Button()
+        Me.Label14 = New System.Windows.Forms.Label()
+        Me.Label13 = New System.Windows.Forms.Label()
+        Me.Allow_Name_TXT = New System.Windows.Forms.TextBox()
         Me.Label16 = New System.Windows.Forms.Label()
         Me.Allow_Save_BTN = New System.Windows.Forms.Button()
         Me.Allow_Category_Combo = New System.Windows.Forms.ComboBox()
         Me.Allow_Amount_TXT = New System.Windows.Forms.TextBox()
-        Me.Allow_Name_TXT = New System.Windows.Forms.TextBox()
-        Me.Label13 = New System.Windows.Forms.Label()
-        Me.Label14 = New System.Windows.Forms.Label()
-        Me.Label17 = New System.Windows.Forms.Label()
-        Me.Allow_Search_BTN = New System.Windows.Forms.Button()
-        Me.Allow_Fix_group = New System.Windows.Forms.GroupBox()
+        Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.TabPage3 = New System.Windows.Forms.TabPage()
+        Me.TabPage4 = New System.Windows.Forms.TabPage()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.Holiday_Remove = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.RemoveToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.FileSystemWatcher1 = New System.IO.FileSystemWatcher()
+        Me.Allowance_Remove = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.Allow_Remove = New System.Windows.Forms.ToolStripMenuItem()
         Me.Settings_Tab.SuspendLayout()
         Me.TabPage5.SuspendLayout()
+        CType(Me.Rate_grid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox5.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
@@ -105,10 +112,10 @@ Partial Class frmSettings
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
-        Me.Context_Remove.SuspendLayout()
-        CType(Me.FileSystemWatcher1, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.Rate_grid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Allow_Fix_group.SuspendLayout()
+        Me.Holiday_Remove.SuspendLayout()
+        CType(Me.FileSystemWatcher1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.Allowance_Remove.SuspendLayout()
         Me.SuspendLayout()
         '
         'Close_LBL
@@ -151,6 +158,56 @@ Partial Class frmSettings
         Me.TabPage5.TabIndex = 5
         Me.TabPage5.Text = "  Rate  "
         Me.TabPage5.UseVisualStyleBackColor = True
+        '
+        'Rate_grid
+        '
+        Me.Rate_grid.AllowUserToAddRows = False
+        Me.Rate_grid.AllowUserToResizeRows = False
+        Me.Rate_grid.BackgroundColor = System.Drawing.SystemColors.ButtonFace
+        Me.Rate_grid.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.Rate_grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.Rate_grid.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Rate_Branch_DGV, Me.Rate_Name_DGV, Me.Rate_Pos_DGV, Me.Rate_Rate_DGV})
+        Me.Rate_grid.GridColor = System.Drawing.Color.White
+        Me.Rate_grid.Location = New System.Drawing.Point(526, 74)
+        Me.Rate_grid.Name = "Rate_grid"
+        Me.Rate_grid.RowHeadersVisible = False
+        Me.Rate_grid.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
+        Me.Rate_grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.Rate_grid.Size = New System.Drawing.Size(618, 523)
+        Me.Rate_grid.TabIndex = 98
+        '
+        'Rate_Branch_DGV
+        '
+        Me.Rate_Branch_DGV.HeaderText = "Branch"
+        Me.Rate_Branch_DGV.Name = "Rate_Branch_DGV"
+        Me.Rate_Branch_DGV.ReadOnly = True
+        Me.Rate_Branch_DGV.Width = 140
+        '
+        'Rate_Name_DGV
+        '
+        Me.Rate_Name_DGV.HeaderText = "Name"
+        Me.Rate_Name_DGV.Name = "Rate_Name_DGV"
+        Me.Rate_Name_DGV.ReadOnly = True
+        Me.Rate_Name_DGV.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.Rate_Name_DGV.Width = 250
+        '
+        'Rate_Pos_DGV
+        '
+        Me.Rate_Pos_DGV.HeaderText = "Position"
+        Me.Rate_Pos_DGV.Name = "Rate_Pos_DGV"
+        Me.Rate_Pos_DGV.ReadOnly = True
+        Me.Rate_Pos_DGV.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.Rate_Pos_DGV.Width = 130
+        '
+        'Rate_Rate_DGV
+        '
+        DataGridViewCellStyle5.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Rate_Rate_DGV.DefaultCellStyle = DataGridViewCellStyle5
+        Me.Rate_Rate_DGV.HeaderText = "Rate"
+        Me.Rate_Rate_DGV.Name = "Rate_Rate_DGV"
+        Me.Rate_Rate_DGV.ReadOnly = True
+        Me.Rate_Rate_DGV.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.Rate_Rate_DGV.Width = 80
         '
         'Rate_Search_TXT
         '
@@ -595,8 +652,12 @@ Partial Class frmSettings
         '
         'TabPage1
         '
-        Me.TabPage1.Controls.Add(Me.Allow_Fix_group)
+        Me.TabPage1.Controls.Add(Me.Allow_Cancel_BTN)
+        Me.TabPage1.Controls.Add(Me.Allow_Search_TXT)
         Me.TabPage1.Controls.Add(Me.Allow_Search_BTN)
+        Me.TabPage1.Controls.Add(Me.Allowance_LV)
+        Me.TabPage1.Controls.Add(Me.Allow_Fix_group)
+        Me.TabPage1.Controls.Add(Me.Allow_SearchEmp_BTN)
         Me.TabPage1.Controls.Add(Me.Label14)
         Me.TabPage1.Controls.Add(Me.Label13)
         Me.TabPage1.Controls.Add(Me.Allow_Name_TXT)
@@ -612,148 +673,141 @@ Partial Class frmSettings
         Me.TabPage1.Text = "  Allowances  "
         Me.TabPage1.UseVisualStyleBackColor = True
         '
-        'TabPage2
+        'Allow_Cancel_BTN
         '
-        Me.TabPage2.Location = New System.Drawing.Point(4, 38)
-        Me.TabPage2.Name = "TabPage2"
-        Me.TabPage2.Size = New System.Drawing.Size(1147, 604)
-        Me.TabPage2.TabIndex = 2
-        Me.TabPage2.Text = "  Deductions  "
-        Me.TabPage2.UseVisualStyleBackColor = True
+        Me.Allow_Cancel_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Allow_Cancel_BTN.Location = New System.Drawing.Point(106, 310)
+        Me.Allow_Cancel_BTN.Name = "Allow_Cancel_BTN"
+        Me.Allow_Cancel_BTN.Size = New System.Drawing.Size(90, 34)
+        Me.Allow_Cancel_BTN.TabIndex = 110
+        Me.Allow_Cancel_BTN.Text = "Cancel"
+        Me.Allow_Cancel_BTN.UseVisualStyleBackColor = True
         '
-        'TabPage3
+        'Allow_Search_TXT
         '
-        Me.TabPage3.Location = New System.Drawing.Point(4, 38)
-        Me.TabPage3.Name = "TabPage3"
-        Me.TabPage3.Size = New System.Drawing.Size(1138, 572)
-        Me.TabPage3.TabIndex = 3
-        Me.TabPage3.Text = "  Charges  "
-        Me.TabPage3.UseVisualStyleBackColor = True
+        Me.Allow_Search_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Allow_Search_TXT.Location = New System.Drawing.Point(502, 33)
+        Me.Allow_Search_TXT.Name = "Allow_Search_TXT"
+        Me.Allow_Search_TXT.Size = New System.Drawing.Size(315, 33)
+        Me.Allow_Search_TXT.TabIndex = 108
         '
-        'TabPage4
+        'Allow_Search_BTN
         '
-        Me.TabPage4.Location = New System.Drawing.Point(4, 38)
-        Me.TabPage4.Name = "TabPage4"
-        Me.TabPage4.Size = New System.Drawing.Size(1138, 572)
-        Me.TabPage4.TabIndex = 4
-        Me.TabPage4.Text = "  Loans  "
-        Me.TabPage4.UseVisualStyleBackColor = True
+        Me.Allow_Search_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Allow_Search_BTN.Location = New System.Drawing.Point(823, 32)
+        Me.Allow_Search_BTN.Name = "Allow_Search_BTN"
+        Me.Allow_Search_BTN.Size = New System.Drawing.Size(82, 33)
+        Me.Allow_Search_BTN.TabIndex = 109
+        Me.Allow_Search_BTN.Text = "Search"
+        Me.Allow_Search_BTN.UseVisualStyleBackColor = True
         '
-        'Label1
+        'Allowance_LV
         '
-        Me.Label1.AutoSize = True
-        Me.Label1.Font = New System.Drawing.Font("Dubai", 15.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.Location = New System.Drawing.Point(4, -1)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(89, 36)
-        Me.Label1.TabIndex = 75
-        Me.Label1.Text = "Settings"
+        Me.Allowance_LV.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Allowance_LV.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader3, Me.ColumnHeader4, Me.ColumnHeader5})
+        Me.Allowance_LV.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Allowance_LV.FullRowSelect = True
+        Me.Allowance_LV.GridLines = True
+        Me.Allowance_LV.HideSelection = False
+        Me.Allowance_LV.Location = New System.Drawing.Point(502, 72)
+        Me.Allowance_LV.MultiSelect = False
+        Me.Allowance_LV.Name = "Allowance_LV"
+        Me.Allowance_LV.Size = New System.Drawing.Size(639, 525)
+        Me.Allowance_LV.TabIndex = 107
+        Me.Allowance_LV.UseCompatibleStateImageBehavior = False
+        Me.Allowance_LV.View = System.Windows.Forms.View.Details
         '
-        'Context_Remove
+        'ColumnHeader3
         '
-        Me.Context_Remove.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.RemoveToolStripMenuItem})
-        Me.Context_Remove.Name = "ContextMenuStrip1"
-        Me.Context_Remove.Size = New System.Drawing.Size(118, 26)
+        Me.ColumnHeader3.Text = "Category"
+        Me.ColumnHeader3.Width = 135
         '
-        'RemoveToolStripMenuItem
+        'ColumnHeader4
         '
-        Me.RemoveToolStripMenuItem.Name = "RemoveToolStripMenuItem"
-        Me.RemoveToolStripMenuItem.Size = New System.Drawing.Size(117, 22)
-        Me.RemoveToolStripMenuItem.Text = "Remove"
+        Me.ColumnHeader4.Text = "Fullname"
+        Me.ColumnHeader4.Width = 380
         '
-        'FileSystemWatcher1
+        'ColumnHeader5
         '
-        Me.FileSystemWatcher1.EnableRaisingEvents = True
-        Me.FileSystemWatcher1.SynchronizingObject = Me
+        Me.ColumnHeader5.Text = "Amount"
+        Me.ColumnHeader5.Width = 90
         '
-        'Rate_grid
+        'Allow_Fix_group
         '
-        Me.Rate_grid.AllowUserToAddRows = False
-        Me.Rate_grid.AllowUserToResizeRows = False
-        Me.Rate_grid.BackgroundColor = System.Drawing.SystemColors.ButtonFace
-        Me.Rate_grid.BorderStyle = System.Windows.Forms.BorderStyle.None
-        DataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle16.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle16.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle16.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle16.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle16.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle16.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.Rate_grid.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle16
-        Me.Rate_grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.Rate_grid.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Rate_Branch_DGV, Me.Rate_Name_DGV, Me.Rate_Pos_DGV, Me.Rate_Rate_DGV})
-        DataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle18.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle18.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle18.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle18.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle18.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle18.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.Rate_grid.DefaultCellStyle = DataGridViewCellStyle18
-        Me.Rate_grid.GridColor = System.Drawing.Color.White
-        Me.Rate_grid.Location = New System.Drawing.Point(526, 74)
-        Me.Rate_grid.Name = "Rate_grid"
-        Me.Rate_grid.RowHeadersVisible = False
-        Me.Rate_grid.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
-        Me.Rate_grid.Size = New System.Drawing.Size(618, 523)
-        Me.Rate_grid.TabIndex = 98
+        Me.Allow_Fix_group.Controls.Add(Me.FixYes_RadioB)
+        Me.Allow_Fix_group.Controls.Add(Me.FixNo_RadioB)
+        Me.Allow_Fix_group.Location = New System.Drawing.Point(106, 201)
+        Me.Allow_Fix_group.Name = "Allow_Fix_group"
+        Me.Allow_Fix_group.Size = New System.Drawing.Size(319, 52)
+        Me.Allow_Fix_group.TabIndex = 106
+        Me.Allow_Fix_group.TabStop = False
+        Me.Allow_Fix_group.Text = "Fix"
+        Me.Allow_Fix_group.Visible = False
         '
-        'Rate_Branch_DGV
+        'FixYes_RadioB
         '
-        Me.Rate_Branch_DGV.HeaderText = "Branch"
-        Me.Rate_Branch_DGV.Name = "Rate_Branch_DGV"
-        Me.Rate_Branch_DGV.ReadOnly = True
-        Me.Rate_Branch_DGV.Width = 140
+        Me.FixYes_RadioB.AutoSize = True
+        Me.FixYes_RadioB.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.FixYes_RadioB.Location = New System.Drawing.Point(93, 15)
+        Me.FixYes_RadioB.Name = "FixYes_RadioB"
+        Me.FixYes_RadioB.Size = New System.Drawing.Size(54, 31)
+        Me.FixYes_RadioB.TabIndex = 96
+        Me.FixYes_RadioB.Text = "Yes"
+        Me.FixYes_RadioB.UseVisualStyleBackColor = True
         '
-        'Rate_Name_DGV
+        'FixNo_RadioB
         '
-        Me.Rate_Name_DGV.HeaderText = "Name"
-        Me.Rate_Name_DGV.Name = "Rate_Name_DGV"
-        Me.Rate_Name_DGV.ReadOnly = True
-        Me.Rate_Name_DGV.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.Rate_Name_DGV.Width = 250
+        Me.FixNo_RadioB.AutoSize = True
+        Me.FixNo_RadioB.Checked = True
+        Me.FixNo_RadioB.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.FixNo_RadioB.Location = New System.Drawing.Point(182, 15)
+        Me.FixNo_RadioB.Name = "FixNo_RadioB"
+        Me.FixNo_RadioB.Size = New System.Drawing.Size(49, 31)
+        Me.FixNo_RadioB.TabIndex = 97
+        Me.FixNo_RadioB.TabStop = True
+        Me.FixNo_RadioB.Text = "No"
+        Me.FixNo_RadioB.UseVisualStyleBackColor = True
         '
-        'Rate_Pos_DGV
+        'Allow_SearchEmp_BTN
         '
-        Me.Rate_Pos_DGV.HeaderText = "Position"
-        Me.Rate_Pos_DGV.Name = "Rate_Pos_DGV"
-        Me.Rate_Pos_DGV.ReadOnly = True
-        Me.Rate_Pos_DGV.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.Rate_Pos_DGV.Width = 130
+        Me.Allow_SearchEmp_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Allow_SearchEmp_BTN.Location = New System.Drawing.Point(434, 104)
+        Me.Allow_SearchEmp_BTN.Name = "Allow_SearchEmp_BTN"
+        Me.Allow_SearchEmp_BTN.Size = New System.Drawing.Size(47, 31)
+        Me.Allow_SearchEmp_BTN.TabIndex = 105
+        Me.Allow_SearchEmp_BTN.Text = "..."
+        Me.Allow_SearchEmp_BTN.UseVisualStyleBackColor = True
         '
-        'Rate_Rate_DGV
+        'Label14
         '
-        DataGridViewCellStyle17.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Rate_Rate_DGV.DefaultCellStyle = DataGridViewCellStyle17
-        Me.Rate_Rate_DGV.HeaderText = "Rate"
-        Me.Rate_Rate_DGV.Name = "Rate_Rate_DGV"
-        Me.Rate_Rate_DGV.ReadOnly = True
-        Me.Rate_Rate_DGV.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.Rate_Rate_DGV.Width = 80
+        Me.Label14.AutoSize = True
+        Me.Label14.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label14.Location = New System.Drawing.Point(16, 110)
+        Me.Label14.Name = "Label14"
+        Me.Label14.Size = New System.Drawing.Size(49, 27)
+        Me.Label14.TabIndex = 103
+        Me.Label14.Text = "Name"
         '
-        'RadioButton1
+        'Label13
         '
-        Me.RadioButton1.AutoSize = True
-        Me.RadioButton1.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.RadioButton1.Location = New System.Drawing.Point(93, 18)
-        Me.RadioButton1.Name = "RadioButton1"
-        Me.RadioButton1.Size = New System.Drawing.Size(54, 31)
-        Me.RadioButton1.TabIndex = 96
-        Me.RadioButton1.Text = "Yes"
-        Me.RadioButton1.UseVisualStyleBackColor = True
+        Me.Label13.AutoSize = True
+        Me.Label13.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label13.Location = New System.Drawing.Point(16, 52)
+        Me.Label13.Name = "Label13"
+        Me.Label13.Size = New System.Drawing.Size(70, 27)
+        Me.Label13.TabIndex = 102
+        Me.Label13.Text = "Category"
         '
-        'RadioButton2
+        'Allow_Name_TXT
         '
-        Me.RadioButton2.AutoSize = True
-        Me.RadioButton2.Checked = True
-        Me.RadioButton2.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.RadioButton2.Location = New System.Drawing.Point(306, 18)
-        Me.RadioButton2.Name = "RadioButton2"
-        Me.RadioButton2.Size = New System.Drawing.Size(49, 31)
-        Me.RadioButton2.TabIndex = 97
-        Me.RadioButton2.TabStop = True
-        Me.RadioButton2.Text = "No"
-        Me.RadioButton2.UseVisualStyleBackColor = True
+        Me.Allow_Name_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Allow_Name_TXT.Location = New System.Drawing.Point(106, 104)
+        Me.Allow_Name_TXT.Name = "Allow_Name_TXT"
+        Me.Allow_Name_TXT.ReadOnly = True
+        Me.Allow_Name_TXT.Size = New System.Drawing.Size(319, 33)
+        Me.Allow_Name_TXT.TabIndex = 101
         '
         'Label16
         '
@@ -768,9 +822,9 @@ Partial Class frmSettings
         'Allow_Save_BTN
         '
         Me.Allow_Save_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Allow_Save_BTN.Location = New System.Drawing.Point(155, 312)
+        Me.Allow_Save_BTN.Location = New System.Drawing.Point(335, 310)
         Me.Allow_Save_BTN.Name = "Allow_Save_BTN"
-        Me.Allow_Save_BTN.Size = New System.Drawing.Size(138, 34)
+        Me.Allow_Save_BTN.Size = New System.Drawing.Size(90, 34)
         Me.Allow_Save_BTN.TabIndex = 85
         Me.Allow_Save_BTN.Text = "Save"
         Me.Allow_Save_BTN.UseVisualStyleBackColor = True
@@ -782,7 +836,7 @@ Partial Class frmSettings
         Me.Allow_Category_Combo.Items.AddRange(New Object() {"Carekit", "Boarding", "Incentives", "Positional", "Transportation"})
         Me.Allow_Category_Combo.Location = New System.Drawing.Point(106, 47)
         Me.Allow_Category_Combo.Name = "Allow_Category_Combo"
-        Me.Allow_Category_Combo.Size = New System.Drawing.Size(262, 33)
+        Me.Allow_Category_Combo.Size = New System.Drawing.Size(319, 33)
         Me.Allow_Category_Combo.TabIndex = 8
         Me.Allow_Category_Combo.Text = "Select "
         '
@@ -791,68 +845,74 @@ Partial Class frmSettings
         Me.Allow_Amount_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Allow_Amount_TXT.Location = New System.Drawing.Point(106, 162)
         Me.Allow_Amount_TXT.Name = "Allow_Amount_TXT"
-        Me.Allow_Amount_TXT.Size = New System.Drawing.Size(262, 33)
+        Me.Allow_Amount_TXT.Size = New System.Drawing.Size(319, 33)
         Me.Allow_Amount_TXT.TabIndex = 9
         '
-        'Allow_Name_TXT
+        'TabPage2
         '
-        Me.Allow_Name_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Allow_Name_TXT.Location = New System.Drawing.Point(106, 104)
-        Me.Allow_Name_TXT.Name = "Allow_Name_TXT"
-        Me.Allow_Name_TXT.Size = New System.Drawing.Size(262, 33)
-        Me.Allow_Name_TXT.TabIndex = 101
+        Me.TabPage2.Location = New System.Drawing.Point(4, 38)
+        Me.TabPage2.Name = "TabPage2"
+        Me.TabPage2.Size = New System.Drawing.Size(1147, 604)
+        Me.TabPage2.TabIndex = 2
+        Me.TabPage2.Text = "  Deductions  "
+        Me.TabPage2.UseVisualStyleBackColor = True
         '
-        'Label13
+        'TabPage3
         '
-        Me.Label13.AutoSize = True
-        Me.Label13.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label13.Location = New System.Drawing.Point(16, 52)
-        Me.Label13.Name = "Label13"
-        Me.Label13.Size = New System.Drawing.Size(70, 27)
-        Me.Label13.TabIndex = 102
-        Me.Label13.Text = "Category"
+        Me.TabPage3.Location = New System.Drawing.Point(4, 38)
+        Me.TabPage3.Name = "TabPage3"
+        Me.TabPage3.Size = New System.Drawing.Size(1147, 604)
+        Me.TabPage3.TabIndex = 3
+        Me.TabPage3.Text = "  Charges  "
+        Me.TabPage3.UseVisualStyleBackColor = True
         '
-        'Label14
+        'TabPage4
         '
-        Me.Label14.AutoSize = True
-        Me.Label14.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label14.Location = New System.Drawing.Point(16, 110)
-        Me.Label14.Name = "Label14"
-        Me.Label14.Size = New System.Drawing.Size(49, 27)
-        Me.Label14.TabIndex = 103
-        Me.Label14.Text = "Name"
+        Me.TabPage4.Location = New System.Drawing.Point(4, 38)
+        Me.TabPage4.Name = "TabPage4"
+        Me.TabPage4.Size = New System.Drawing.Size(1147, 604)
+        Me.TabPage4.TabIndex = 4
+        Me.TabPage4.Text = "  Loans  "
+        Me.TabPage4.UseVisualStyleBackColor = True
         '
-        'Label17
+        'Label1
         '
-        Me.Label17.AutoSize = True
-        Me.Label17.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label17.Location = New System.Drawing.Point(3, 22)
-        Me.Label17.Name = "Label17"
-        Me.Label17.Size = New System.Drawing.Size(31, 27)
-        Me.Label17.TabIndex = 104
-        Me.Label17.Text = "Fix"
+        Me.Label1.AutoSize = True
+        Me.Label1.Font = New System.Drawing.Font("Dubai", 15.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Location = New System.Drawing.Point(4, -1)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(89, 36)
+        Me.Label1.TabIndex = 75
+        Me.Label1.Text = "Settings"
         '
-        'Allow_Search_BTN
+        'Holiday_Remove
         '
-        Me.Allow_Search_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Allow_Search_BTN.Location = New System.Drawing.Point(371, 106)
-        Me.Allow_Search_BTN.Name = "Allow_Search_BTN"
-        Me.Allow_Search_BTN.Size = New System.Drawing.Size(47, 31)
-        Me.Allow_Search_BTN.TabIndex = 105
-        Me.Allow_Search_BTN.Text = "..."
-        Me.Allow_Search_BTN.UseVisualStyleBackColor = True
+        Me.Holiday_Remove.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.RemoveToolStripMenuItem})
+        Me.Holiday_Remove.Name = "ContextMenuStrip1"
+        Me.Holiday_Remove.Size = New System.Drawing.Size(118, 26)
         '
-        'Allow_Fix_group
+        'RemoveToolStripMenuItem
         '
-        Me.Allow_Fix_group.Controls.Add(Me.RadioButton1)
-        Me.Allow_Fix_group.Controls.Add(Me.RadioButton2)
-        Me.Allow_Fix_group.Controls.Add(Me.Label17)
-        Me.Allow_Fix_group.Location = New System.Drawing.Point(14, 201)
-        Me.Allow_Fix_group.Name = "Allow_Fix_group"
-        Me.Allow_Fix_group.Size = New System.Drawing.Size(354, 52)
-        Me.Allow_Fix_group.TabIndex = 106
-        Me.Allow_Fix_group.TabStop = False
-        Me.Allow_Fix_group.Visible = False
+        Me.RemoveToolStripMenuItem.Name = "RemoveToolStripMenuItem"
+        Me.RemoveToolStripMenuItem.Size = New System.Drawing.Size(117, 22)
+        Me.RemoveToolStripMenuItem.Text = "Remove"
+        '
+        'FileSystemWatcher1
+        '
+        Me.FileSystemWatcher1.EnableRaisingEvents = True
+        Me.FileSystemWatcher1.SynchronizingObject = Me
+        '
+        'Allowance_Remove
+        '
+        Me.Allowance_Remove.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.Allow_Remove})
+        Me.Allowance_Remove.Name = "ContextMenuStrip1"
+        Me.Allowance_Remove.Size = New System.Drawing.Size(118, 26)
+        '
+        'Allow_Remove
+        '
+        Me.Allow_Remove.Name = "Allow_Remove"
+        Me.Allow_Remove.Size = New System.Drawing.Size(180, 22)
+        Me.Allow_Remove.Text = "Remove"
         '
         'frmSettings
         '
@@ -868,6 +928,7 @@ Partial Class frmSettings
         Me.Settings_Tab.ResumeLayout(False)
         Me.TabPage5.ResumeLayout(False)
         Me.TabPage5.PerformLayout()
+        CType(Me.Rate_grid, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox5.ResumeLayout(False)
         Me.GroupBox5.PerformLayout()
         Me.GroupBox4.ResumeLayout(False)
@@ -881,11 +942,11 @@ Partial Class frmSettings
         Me.GroupBox1.PerformLayout()
         Me.TabPage1.ResumeLayout(False)
         Me.TabPage1.PerformLayout()
-        Me.Context_Remove.ResumeLayout(False)
-        CType(Me.FileSystemWatcher1, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.Rate_grid, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Allow_Fix_group.ResumeLayout(False)
         Me.Allow_Fix_group.PerformLayout()
+        Me.Holiday_Remove.ResumeLayout(False)
+        CType(Me.FileSystemWatcher1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.Allowance_Remove.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -906,7 +967,7 @@ Partial Class frmSettings
     Friend WithEvents ColumnHeader1 As ColumnHeader
     Friend WithEvents ColumnHeader2 As ColumnHeader
     Friend WithEvents Save_BTN As Button
-    Friend WithEvents Context_Remove As ContextMenuStrip
+    Friend WithEvents Holiday_Remove As ContextMenuStrip
     Friend WithEvents RemoveToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents Label4 As Label
     Friend WithEvents HolidayRate_BTN As Button
@@ -949,16 +1010,24 @@ Partial Class frmSettings
     Friend WithEvents Rate_Name_DGV As DataGridViewTextBoxColumn
     Friend WithEvents Rate_Pos_DGV As DataGridViewTextBoxColumn
     Friend WithEvents Rate_Rate_DGV As DataGridViewTextBoxColumn
-    Friend WithEvents RadioButton2 As RadioButton
-    Friend WithEvents RadioButton1 As RadioButton
+    Friend WithEvents FixNo_RadioB As RadioButton
+    Friend WithEvents FixYes_RadioB As RadioButton
     Friend WithEvents Label13 As Label
     Friend WithEvents Allow_Name_TXT As TextBox
     Friend WithEvents Label16 As Label
     Friend WithEvents Allow_Save_BTN As Button
     Friend WithEvents Allow_Category_Combo As ComboBox
     Friend WithEvents Allow_Amount_TXT As TextBox
-    Friend WithEvents Label17 As Label
     Friend WithEvents Label14 As Label
-    Friend WithEvents Allow_Search_BTN As Button
+    Friend WithEvents Allow_SearchEmp_BTN As Button
     Friend WithEvents Allow_Fix_group As GroupBox
+    Friend WithEvents Allowance_LV As ListView
+    Friend WithEvents ColumnHeader3 As ColumnHeader
+    Friend WithEvents ColumnHeader4 As ColumnHeader
+    Friend WithEvents ColumnHeader5 As ColumnHeader
+    Friend WithEvents Allow_Search_TXT As TextBox
+    Friend WithEvents Allow_Search_BTN As Button
+    Friend WithEvents Allow_Cancel_BTN As Button
+    Friend WithEvents Allowance_Remove As ContextMenuStrip
+    Friend WithEvents Allow_Remove As ToolStripMenuItem
 End Class

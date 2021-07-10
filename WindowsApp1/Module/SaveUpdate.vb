@@ -265,7 +265,7 @@
 
     End Sub
 
-    Friend Sub SaveSettings(value As String, column As String, amount As String, moreThan As Boolean) '=========== BOOLEAN IF MORE THAN 1 ==========
+    Friend Sub SaveRATE(value As String, column As String, amount As String, moreThan As Boolean, Optional branchID As String = "") '=========== BOOLEAN IF MORE THAN 1 ==========
 
         Dim mysql As String
 
@@ -288,7 +288,7 @@
 
         Else  '============ PER EMPLOYEE (FOR THERE ARE SAME BIOMETRIC NUMBER BUT DIFFERENT NAME/EMPLOYEE) ===========
 
-            mysql = $"Select * FROM TBL_EMPLOYEE where {column} = '{value}'"
+            mysql = $"Select * FROM TBL_EMPLOYEE where {column} = '{value}' and BRANCH_ID = '{branchID}'"
             Dim dss As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
             If dss.Tables(0).Rows.Count > 0 Then
                 With dss.Tables(0).Rows(0)
@@ -306,4 +306,69 @@
 
     End Sub
 
+    Friend Sub SaveSettings(bioNo As String, branchID As String, category As String, amount As String, fix As Boolean)
+        Dim mysql As String
+
+        mysql = $"Select * FROM PAYROLL_ALLOWANCE where BIOMETRIC_NO = '{bioNo}' and BRANCH_ID = '{branchID}' and CATEGORY = '{category}' "
+        Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_ALLOWANCE")
+        If ds.Tables(0).Rows.Count > 0 Then
+
+            With ds.Tables(0).Rows(0)
+
+                .Item("AMOUNT") = amount
+                .Item("ALLOWED") = DBNull.Value
+
+                If fix Then
+                    .Item("fix") = "FIX"
+                End If
+
+            End With
+            SaveEntry(ds, False)
+
+            MsgBox("Successfully Updated!", MsgBoxStyle.Information, "Information")
+
+        Else
+            mysql = "Select * From PAYROLL_ALLOWANCE Rows 1"
+            Using dss As DataSet = LoadSQL(mysql, "PAYROLL_ALLOWANCE")
+
+                Dim dsNewRow As DataRow = dss.Tables(0).NewRow
+                With dsNewRow
+
+                    .Item("BIOMETRIC_NO") = bioNo
+                    .Item("BRANCH_ID") = branchID
+                    .Item("CATEGORY") = category
+                    .Item("AMOUNT") = amount
+
+                    If fix Then
+                        .Item("fix") = "FIX"
+                    End If
+
+                End With
+                dss.Tables(0).Rows.Add(dsNewRow)
+                SaveEntry(dss)
+
+                MsgBox("Successfully Saved!", MsgBoxStyle.Information, "Information")
+            End Using
+        End If
+
+    End Sub
+
+    Friend Sub AllowanceRemove(bioNo As String, branchID As String, category As String)
+        Dim mysql As String
+
+        mysql = $"Select * FROM PAYROLL_ALLOWANCE where BIOMETRIC_NO = '{bioNo}' and BRANCH_ID = '{branchID}' and CATEGORY = '{category}' "
+        Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_ALLOWANCE")
+        If ds.Tables(0).Rows.Count > 0 Then
+
+            With ds.Tables(0).Rows(0)
+
+                .Item("ALLOWED") = "NO"
+
+            End With
+            SaveEntry(ds, False)
+
+            MsgBox("Successfully Removed from the list!", MsgBoxStyle.Information, "Information")
+        End If
+
+    End Sub
 End Module

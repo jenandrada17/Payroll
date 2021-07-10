@@ -13,6 +13,7 @@ Public Class frmSettings
         PopulateComboBox(Rate_Branch_ComboB, "tbl_branch", "BRANCHNAME")
         PopulateComboBox(Rate_Pos_ComboB, "tbl_employee", "EMP_POSITION")
         PopulateSettings_Rate(Rate_grid, "BRANCHNAME")
+        Lists_Allowance(Allowance_LV)
 
     End Sub
 
@@ -93,7 +94,7 @@ Public Class frmSettings
     Private Sub lvHoliday_MouseClick(sender As Object, e As MouseEventArgs) Handles lvHoliday.MouseClick
         If e.Button = MouseButtons.Right Then
             If lvHoliday.Items.Count > 0 Then
-                Context_Remove.Show(lvHoliday, New Point(e.X, e.Y))
+                Holiday_Remove.Show(lvHoliday, New Point(e.X, e.Y))
             End If
         End If
     End Sub
@@ -145,7 +146,10 @@ Public Class frmSettings
 
     Private Sub Rate_EmpSave_BTN_Click(sender As Object, e As EventArgs) Handles Rate_EmpSave_BTN.Click
         If Not Rate_BioNo_TXT.Text = "" Then
-            SaveSettings(Rate_BioNo_TXT.Text, "BIOMETRICID", Rate_EmpAmount_TXT.Text, False)
+
+            SaveRATE(Rate_BioNo_TXT.Text, "BIOMETRICID", Rate_EmpAmount_TXT.Text, False, Rate_BioNo_TXT.Tag) ' === Rate_BioNo_TXT.Tag is BRANCHid ====
+
+
             Rate_EmpClear_BTN.PerformClick()
         End If
     End Sub
@@ -169,7 +173,7 @@ Public Class frmSettings
     Private Sub Rate_Position_BTN_Click(sender As Object, e As EventArgs) Handles Rate_Position_BTN.Click
         If Rate_Pos_ComboB.SelectedIndex >= 0 And Not Rate_PosAmount_TXT.Text = "" Then
 
-            SaveSettings(Rate_Pos_ComboB.SelectedItem, "EMP_POSITION", Rate_PosAmount_TXT.Text, True)
+            SaveRATE(Rate_Pos_ComboB.SelectedItem, "EMP_POSITION", Rate_PosAmount_TXT.Text, True)
 
             Rate_Pos_ComboB.Text = "   Select Position"
             Rate_PosAmount_TXT.Clear()
@@ -185,7 +189,7 @@ Public Class frmSettings
     Private Sub Rate_Branch_BTN_Click(sender As Object, e As EventArgs) Handles Rate_Branch_BTN.Click
         If Rate_Branch_ComboB.SelectedIndex >= 0 And Not Rate_BranchAmount_TXT.Text = "" Then
 
-            SaveSettings(Rate_Branch_ComboB.Tag, "BRANCH_ID", Rate_BranchAmount_TXT.Text, True)
+            SaveRATE(Rate_Branch_ComboB.Tag, "BRANCH_ID", Rate_BranchAmount_TXT.Text, True)
 
             Rate_Branch_ComboB.Text = "   Select Branch"
             Rate_BranchAmount_TXT.Clear()
@@ -195,7 +199,7 @@ Public Class frmSettings
         End If
     End Sub
 
-    Private Sub Rate_BranchAmount_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Rate_PosAmount_TXT.KeyPress, Rate_EmpAmount_TXT.KeyPress, Rate_BranchAmount_TXT.KeyPress, Rate_BioNo_TXT.KeyPress
+    Private Sub Rate_BranchAmount_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Rate_PosAmount_TXT.KeyPress, Rate_EmpAmount_TXT.KeyPress, Rate_BranchAmount_TXT.KeyPress, Rate_BioNo_TXT.KeyPress, Allow_Amount_TXT.KeyPress
         If e.KeyChar <> ChrW(Keys.Back) Then
             If Char.IsNumber(e.KeyChar) Then
             Else
@@ -212,7 +216,7 @@ Public Class frmSettings
         If IsEnter(e) Then Rate_Search_BTN.PerformClick()
     End Sub
 
-    Private Sub Allow_Search_BTN_Click(sender As Object, e As EventArgs) Handles Allow_Search_BTN.Click
+    Private Sub Allow_Search_BTN_Click(sender As Object, e As EventArgs) Handles Allow_SearchEmp_BTN.Click
 
         If frmEmployee Is Nothing Then
             Dim frm As New frmEmployee With {
@@ -239,5 +243,54 @@ Public Class frmSettings
         Else
             Allow_Fix_group.Visible = False
         End If
+    End Sub
+
+    Private Sub Allow_Save_BTN_Click(sender As Object, e As EventArgs) Handles Allow_Save_BTN.Click
+
+        If Allow_Category_Combo.SelectedIndex >= 0 And Not Allow_Name_TXT.Text = "" Then
+
+            If FixYes_RadioB.Checked Then
+                SaveSettings(Allow_Name_TXT.Tag, Allow_SearchEmp_BTN.Tag, Allow_Category_Combo.SelectedItem, Allow_Amount_TXT.Text, True)
+            Else
+                SaveSettings(Allow_Name_TXT.Tag, Allow_SearchEmp_BTN.Tag, Allow_Category_Combo.SelectedItem, Allow_Amount_TXT.Text, False)
+            End If
+
+            Lists_Allowance(Allowance_LV)
+            Allow_Cancel_BTN.PerformClick()
+        End If
+
+    End Sub
+
+    Private Sub Allow_Cancel_BTN_Click(sender As Object, e As EventArgs) Handles Allow_Cancel_BTN.Click
+        Allow_Category_Combo.Text = "Select"
+        Allow_Name_TXT.Text = ""
+        Allow_Amount_TXT.Text = ""
+        FixNo_RadioB.Checked = False
+        Allow_Fix_group.Visible = False
+    End Sub
+
+    Private Sub Allow_Remove_Click(sender As Object, e As EventArgs) Handles Allow_Remove.Click
+        If Allowance_LV.SelectedItems.Count > 0 Then
+            For Each item As ListViewItem In Allowance_LV.SelectedItems
+                AllowanceRemove(item.Tag, item.SubItems(1).Tag, item.SubItems(0).Text)
+                Lists_Allowance(Allowance_LV)
+            Next
+        End If
+    End Sub
+
+    Private Sub Allowance_LV_MouseClick(sender As Object, e As MouseEventArgs) Handles Allowance_LV.MouseClick
+        If e.Button = MouseButtons.Right Then
+            If Allowance_LV.Items.Count > 0 Then
+                Allowance_Remove.Show(Allowance_LV, New Point(e.X, e.Y))
+            End If
+        End If
+    End Sub
+
+    Private Sub Allow_Search_BTN_Click_1(sender As Object, e As EventArgs) Handles Allow_Search_BTN.Click
+        Lists_Allowance(Allowance_LV, Allow_Search_TXT.Text)
+    End Sub
+
+    Private Sub Allow_Search_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Allow_Search_TXT.KeyPress
+        If IsEnter(e) Then Allow_Search_BTN.PerformClick()
     End Sub
 End Class

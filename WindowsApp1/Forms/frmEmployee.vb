@@ -32,12 +32,6 @@ Public Class frmEmployee
     End Sub
 
     Private Sub lvEmployee_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles lvEmployee.MouseDoubleClick
-        'Modify_Panel.Location = New Point(e.X, e.Y)
-        'Modify_Panel.Visible = True
-
-        'Rate_TXT.Text = lvEmployee.SelectedItems(0).SubItems(3).Text
-        'Fix_Combo.SelectedItem = lvEmployee.SelectedItems(0).SubItems(4).Text
-
         If txtSearch.Tag = "Attendance1" Then
 
             If frmAttendance Is Nothing Then
@@ -88,6 +82,7 @@ Public Class frmEmployee
                 frmMainForm.pNavigate.Controls.Add(frm)
                 frmMainForm.pNavigate.Tag = frm
                 frm.Rate_BioNo_TXT.Text = lvEmployee.FocusedItem.SubItems(0).Text
+                frm.Rate_BioNo_TXT.Tag = lvEmployee.FocusedItem.SubItems(9).Tag '==== Branch_id ===  
                 frm.Rate_Employee_TXT.Text = lvEmployee.FocusedItem.SubItems(1).Text
                 frm.Rate_Employee_TXT.Tag = lvEmployee.FocusedItem.SubItems(1).Tag
                 frm.Show()
@@ -107,7 +102,8 @@ Public Class frmEmployee
                 frmMainForm.pNavigate.Controls.Add(frm)
                 frmMainForm.pNavigate.Tag = frm
                 frm.Allow_Name_TXT.Text = lvEmployee.FocusedItem.SubItems(1).Text
-                frm.Rate_Employee_TXT.Tag = lvEmployee.FocusedItem.SubItems(1).Tag
+                frm.Allow_Name_TXT.Tag = lvEmployee.FocusedItem.SubItems(0).Text
+                frm.Allow_SearchEmp_BTN.Tag = lvEmployee.FocusedItem.SubItems(9).Tag '==== Branch_id ===  
                 frm.Settings_Tab.SelectedIndex = 2
                 frm.Allow_Category_Combo.SelectedItem = btnSearch.Tag
                 frm.Show()
