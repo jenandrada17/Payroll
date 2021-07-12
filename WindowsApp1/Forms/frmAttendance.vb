@@ -41,6 +41,7 @@ Public Class frmAttendance
         TotalRHoliday_LBL.Text = 0
         TotalSHoliday_LBL.Text = 0
         DataGridView1.Rows.Clear()
+        Dim rowIndex As Integer
 
         StartFour = New DateTime(DateNow.Year, DateNow.Month, 4).AddDays(-1)
         EndFour = New DateTime(DateNow.Year, DateNow.Month, 18)
@@ -57,7 +58,11 @@ Public Class frmAttendance
             While (StartNineteen < EndNineteen)
                 startingDate = StartNineteen.ToString("d")
                 EndingDate = EndNineteen.ToString("d")
-                DataGridView1.Rows.Add(StartNineteen.AddDays(1).ToString("D"))
+
+                rowIndex = DataGridView1.Rows.Add(StartNineteen.AddDays(1).ToString("D"))
+                Console.WriteLine("TAG " & rowIndex)
+                DataGridView1.Rows(rowIndex).Tag = StartNineteen.AddDays(1).ToString("D")
+
                 StartNineteen = StartNineteen.AddDays(1)
             End While
 
@@ -70,7 +75,10 @@ Public Class frmAttendance
 
                 startingDate = StartFour.ToString("d")
                 EndingDate = EndFour.ToString("d")
-                DataGridView1.Rows.Add(StartFour.AddDays(1).ToString("D"))
+
+                rowIndex = DataGridView1.Rows.Add(StartFour.AddDays(1).ToString("D"))
+                DataGridView1.Rows(rowIndex).Tag = StartFour.AddDays(1).ToString("D")
+
                 StartFour = StartFour.AddDays(1)
 
             End While
@@ -689,6 +697,7 @@ Public Class frmAttendance
 
     Private Sub Bio_grid_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles Bio_grid.MouseDoubleClick
 
+        CheckALL_CheckBox.Checked = False
         Dim i As Integer = Bio_grid.CurrentRow.Index
         Attendance_Tab.SelectedIndex = 1
         BiometricID_TXT.Text = Bio_grid.Item(0, i).Value
@@ -708,7 +717,7 @@ Public Class frmAttendance
         Using ds As DataSet = LoadSQL(mysql, "IMPORT_DTR")
             If ds.Tables(0).Rows.Count > 0 Then
 
-                Dim list_dateHour, list_dateonly As New List(Of String)()
+                Dim list_dateHour, list_inOut As New List(Of String)()
 
                 For Each dr In ds.Tables(0).Rows
                     With dr
@@ -719,42 +728,74 @@ Public Class frmAttendance
                         If str.Length <> 0 Then
                             str = str.Substring(0, str.Length - 9)
                             list_dateHour.Add(str)
+                            list_inOut.Add(datt)
+                            Console.WriteLine("This " & datt)
                         End If
                     End With
                 Next
 
-                Dim result As List(Of String) = list_dateHour.Distinct().ToList  ' Date with hour
+                Dim result As List(Of String) = list_dateHour.Distinct().ToList  ' Date with hour  
+                Dim timee As List(Of String) = list_inOut.Distinct().ToList
 
-
-                For Each value As String In result                      'Trim to convert to Date Only 
+                For Each value As String In result
+                    Dim newValue As String
                     Dim pos As Integer = value.LastIndexOf(" ")
+
                     If pos <> -1 Then
-                        value = value.Substring(0, pos)
+                        newValue = value.Substring(0, pos)
+                        Dim date_table As Date = newValue
 
+                        For Each row As DataGridViewRow In DataGridView1.Rows
 
-                        'list_dateonly.Add(value)
+                            Dim rowIndex As Integer = row.Index
+                            Dim asss As Date = DataGridView1.Rows(rowIndex).Tag
+
+                            If asss = date_table Then
+                                row.Cells(5) = New DataGridViewCheckBoxCell With {.Value = True}
+
+                                For Each timeValue As String In timee
+                                    If timeValue.StartsWith(value) Then
+
+                                        Console.WriteLine("laa " & value)
+                                        'value = value.Substring(value.IndexOf(" "), 0).Trim()
+
+                                        value = (value.IndexOf(" ") + 1)
+
+                                        Console.WriteLine("laa " & value)
+                                        'Dim aa As Integer = Convert.ToInt32(value.Last)
+
+                                    Else
+                                    End If
+                                Next
+
+                            End If
+                        Next
+
                     End If
                 Next
 
+                'For Each value As String In result
+                '    Dim newValue As String
+                '    Dim pos As Integer = value.LastIndexOf(" ")
 
-                For Each value As String In result                      ' Check if Standard DTR
+                '    If pos <> -1 Then
+                '        newValue = value.Substring(0, pos)
+                '        Dim date_table As Date = newValue
 
-                    Dim pos As Integer = value.LastIndexOf(" ")
-                    If pos <> -1 Then
-                        value = value.Substring(0, pos)
-                    End If
+                '        For Each row As DataGridViewRow In DataGridView1.Rows
 
-                    'Console.WriteLine("Final " & value)
+                '            Dim rowIndex As Integer = row.Index
+                '            Dim asss As Date = DataGridView1.Rows(rowIndex).Tag
 
-                    If CountDate(list_dateonly, value) = 4 Then
-                    Else
-                    End If
+                '            If asss = date_table Then
+                '                row.Cells(5) = New DataGridViewCheckBoxCell With {.Value = True}
+                '            End If
+                '        Next
 
-                Next
-
+                '    End If
+                'Next
             End If
         End Using
-
 
     End Sub
 

@@ -154,6 +154,7 @@ Module SelectFromDatabase
                 End If
 
                 dategrid.Rows(rowID).Cells(0).Value = .Item("NAME")
+                dategrid.Rows(rowID).Cells(0).Tag = .Item("DATEE")
                 dategrid.Rows(rowID).Cells(1).Value = ""
                 dategrid.Rows(rowID).Cells(2).Value = ""
                 dategrid.Rows(rowID).Cells(3).Value = ""
