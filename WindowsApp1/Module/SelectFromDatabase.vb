@@ -186,8 +186,8 @@ Module SelectFromDatabase
         End Using
     End Sub
 
-    Public Function FileName_Exist(FILENAME As String, path As TextBox, branch As String, PAYDATE As String)
-        Dim mysql As String = $"Select * FROM IMPORT_DTR where FILENAME = '{FILENAME}' and BRANCH = '{branch}' and PAYDATE = '{PAYDATE}'"
+    Public Function File_Exist(path As TextBox, branch As String, PAYDATE As String)
+        Dim mysql As String = $"Select * FROM IMPORT_DTR where BRANCH = '{branch}' and PAYDATE = '{PAYDATE}'"
         Dim ds As DataSet = LoadSQL(mysql, "IMPORT_DTR")
         If ds.Tables(0).Rows.Count > 0 Then
             Dim result As DialogResult = MessageBox.Show("File already imported, Do you want to modify?", "Warning", MessageBoxButtons.YesNo)
@@ -198,8 +198,8 @@ Module SelectFromDatabase
         Return False
     End Function
 
-    Public Function FileName_NOT_Exist(FILENAME As String, path As TextBox, branch As String, PAYDATE As String)
-        Dim mysql As String = $"Select * FROM IMPORT_DTR where FILENAME = '{FILENAME}' and BRANCH = '{branch}' and PAYDATE = '{PAYDATE}'"
+    Public Function File_NOT_Exist(path As TextBox, branch As String, PAYDATE As String)
+        Dim mysql As String = $"Select * FROM IMPORT_DTR where BRANCH = '{branch}' and PAYDATE = '{PAYDATE}'"
         Dim ds As DataSet = LoadSQL(mysql, "IMPORT_DTR")
         If ds.Tables(0).Rows.Count > 0 Then
             Return False
@@ -209,10 +209,10 @@ Module SelectFromDatabase
         Return False
     End Function
 
-    Friend Sub PopulateBiometricSHEET(datagrid As DataGridView, FILENAME As String, Paydate As String, BRANCHNAME As String)
+    Friend Sub PopulateBiometricSHEET(datagrid As DataGridView, Paydate As String, BRANCHNAME As String)
 
         datagrid.Rows.Clear()
-        Dim mysql As String = $"Select distinct(BIO_ID), B.LASTNAME, B.FIRSTNAME, B.MIDDLENAME From IMPORT_DTR A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIO_ID where A.FILENAME = '{FILENAME}' and A.PAYDATE = '{Paydate}' and A.BRANCH = '{BRANCHNAME}'"
+        Dim mysql As String = $"Select distinct(BIO_ID), B.LASTNAME, B.FIRSTNAME, B.MIDDLENAME From IMPORT_DTR A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIO_ID where A.PAYDATE = '{Paydate}' and A.BRANCH = '{BRANCHNAME}'"
 
         Using ds As DataSet = LoadSQL(mysql, "IMPORT_DTR")
             If ds.Tables(0).Rows.Count > 0 Then
@@ -220,39 +220,8 @@ Module SelectFromDatabase
                     AddRowBiometric(dr, datagrid)
                 Next
                 AdjustHeightOfGridBasedOnRows(datagrid)
-            End If
-        End Using
-
-    End Sub
-
-    Friend Sub CheckTHIS()
-
-        'Dim mysql As String = $"Select A.*, B.LASTNAME, B.FIRSTNAME, B.MIDDLENAME From IMPORT_DTR A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIO_ID where A.FILENAME = '{FILENAME}' and A.PAYDATE = '{Paydate}' and A.BRANCH = '{BRANCHNAME}'"
-
-        Dim mysql As String = $"Select * From IMPORT_DTR where BIO_ID = '3796'"
-        Using ds As DataSet = LoadSQL(mysql, "IMPORT_DTR")
-            If ds.Tables(0).Rows.Count > 0 Then
-
-                Dim list As New List(Of String)()
-                For Each dr In ds.Tables(0).Rows
-                    With dr
-                        Dim datt As DateTime = .Item("DATEANDTIME")
-                        datt.ToShortTimeString()
-                        Dim str As String = datt
-
-                        If str.Length <> 0 Then
-                            str = str.Substring(0, str.Length - 9)
-                            list.Add(str)
-                        End If
-                    End With
-                Next
-
-                list.Distinct().ToList
-
-                For Each value As String In list
-                    Console.WriteLine("Hour Lang " & value)
-                Next
-
+            Else
+                datagrid.Rows.Clear()
             End If
         End Using
 
@@ -268,9 +237,73 @@ Module SelectFromDatabase
             row.Cells("Name_DGVV").Value = .Item("LASTNAME") & ", " & .Item("FIRSTNAME") & " " & .Item("MIDDLENAME")
             row.Height = 35
 
+
+            Dim mysql As String = $"Select * From IMPORT_DTR where BIO_ID = '{ .Item("BIO_ID")}'"
+            Using ds As DataSet = LoadSQL(mysql, "IMPORT_DTR")
+                If ds.Tables(0).Rows.Count > 0 Then
+
+                    Dim list_dateHour, list_dateonly As New List(Of String)()
+
+                    For Each dr In ds.Tables(0).Rows
+                        With dr
+                            Dim datt As DateTime = .Item("DATEANDTIME")
+                            datt.ToShortTimeString()
+                            Dim str As String = .Item("PAYDATE") & " " & .Item("BIO_ID") & " " & datt
+
+                            If str.Length <> 0 Then
+                                str = str.Substring(0, str.Length - 9)
+                                list_dateHour.Add(str)
+                            End If
+                        End With
+                    Next
+
+                    Dim result As List(Of String) = list_dateHour.Distinct().ToList  ' Date with hour
+
+
+                    For Each value As String In result                      'Trim to convert to Date Only 
+                        Dim pos As Integer = value.LastIndexOf(" ")
+                        If pos <> -1 Then
+                            value = value.Substring(0, pos)
+                            list_dateonly.Add(value)
+                        End If
+                    Next
+
+
+                    For Each value As String In result                      ' Check if Standard DTR
+
+                        Dim pos As Integer = value.LastIndexOf(" ")
+                        If pos <> -1 Then
+                            value = value.Substring(0, pos)
+                        End If
+
+                        Console.WriteLine("Final " & value)
+
+                        If CountDate(list_dateonly, value) = 4 Then
+                            row.DefaultCellStyle.ForeColor = Color.Black
+                        Else
+                            row.DefaultCellStyle.ForeColor = Color.Red
+                        End If
+
+                    Next
+
+                End If
+            End Using
+
         End With
 
     End Sub
+    Public Function CountDate(list As List(Of String), datee As String) As Integer
+        Dim cnt As Integer = 0
+        For Each c As String In list
+            If c = datee Then
+                cnt = cnt + 1
+            End If
+        Next
+
+        Console.WriteLine("result " & cnt)
+        Return cnt
+    End Function
+
 
     Public Sub AdjustHeightOfGridBasedOnRows(ByVal dataGrid As DataGridView)
 
@@ -284,14 +317,22 @@ Module SelectFromDatabase
 
     End Sub
 
-    Public Sub PopulateComboBox(combo As ComboBox)
-        Dim sql As String = $"select distinct(BRANCHNAME) from TBL_BRANCH"
+    Public Sub PopulateComboBox(combo As ComboBox, table As String, column As String, Optional paydate As String = "")
+        Dim sql As String = $"select distinct({column}) from {table}"
         Dim rdr As FbDataReader = LoadSQL_byDataReader(sql)
         combo.Items.Clear()
         While rdr.Read()
             If rdr.HasRows Then
                 With rdr
-                    combo.Items.Add(rdr.Item(0).ToString)
+
+                    If combo.Name = "Paydate_ComboB" Then
+                        Dim datee As DateTime = rdr.Item(0).ToString
+                        combo.Items.Add(datee.ToString("d"))
+                        combo.Items.Remove(paydate)
+                    Else
+                        combo.Items.Add(rdr.Item(0).ToString)
+                    End If
+
                 End With
             End If
         End While

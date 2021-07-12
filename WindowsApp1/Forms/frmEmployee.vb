@@ -112,6 +112,7 @@ Public Class frmEmployee
                 frm.BiometricID_TXT.Text = lvEmployee.FocusedItem.SubItems(0).Text
                 frm.Name_TXT.Text = lvEmployee.FocusedItem.SubItems(2).Text
                 frm.Name_TXT.Tag = lvEmployee.FocusedItem.SubItems(2).Tag
+                frm.Attendance_Tab.SelectedIndex = 1
                 frm.Show()
                 frm.Dock = DockStyle.Fill
                 frm.BringToFront()

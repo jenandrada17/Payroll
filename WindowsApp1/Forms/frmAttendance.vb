@@ -15,11 +15,14 @@ Public Class frmAttendance
     Dim eCell As Excel.Range
 
     Private Sub frmAttendance_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        CheckTHIS()
+
         LoadDateTime()
-        CheckALL_CheckBox.Checked = True
         DataGridView1.ClearSelection()
-        PopulateComboBox(Branch_ComboB)
+        CheckALL_CheckBox.Checked = True
+        PopulateComboBox(Branch_ComboB, "tbl_branch", "BRANCHNAME")
+        PopulateComboBox(Paydate_ComboB, "IMPORT_DTR", "PAYDATE", Paydate)
+        Paydate_ComboB.Items.Insert(0, "Current")
+
     End Sub
 
     Private Sub Close_LBL_Click(sender As Object, e As EventArgs) Handles Close_LBL.Click
@@ -646,22 +649,22 @@ Public Class frmAttendance
                 DtSet = New System.Data.DataSet
                 MyCommand.Fill(DtSet)
 
-                If FileName_Exist(eBook.Name, Path_TXT, Branch_ComboB.SelectedItem, Paydate) Then
+                If File_Exist(Path_TXT, Branch_ComboB.SelectedItem, Paydate) Then
 
                     Cursor = Cursors.WaitCursor
 
                     For row = 2 To DtSet.Tables(0).Rows.Count
-                        UpdateBiometricSheet(eBook.Name, Paydate, eCell(row, 1).Value, eCell(row, 2).Value, Branch_ComboB.SelectedItem)
+                        UpdateBiometricSheet(Paydate, eCell(row, 1).Value, eCell(row, 2).Value, Branch_ComboB.SelectedItem)
                     Next
 
                     Cursor = Cursors.Default
 
-                ElseIf FileName_NOT_Exist(eBook.Name, Path_TXT, Branch_ComboB.SelectedItem, Paydate) Then
+                ElseIf File_NOT_Exist(Path_TXT, Branch_ComboB.SelectedItem, Paydate) Then
 
                     Cursor = Cursors.WaitCursor
 
                     For row = 2 To DtSet.Tables(0).Rows.Count
-                        SaveBiometricSheet(eBook.Name, Paydate, eCell(row, 1).Value, eCell(row, 2).Value, Branch_ComboB.SelectedItem)
+                        SaveBiometricSheet(Paydate, eCell(row, 1).Value, eCell(row, 2).Value, Branch_ComboB.SelectedItem)
                     Next
 
                     Cursor = Cursors.Default
@@ -669,10 +672,10 @@ Public Class frmAttendance
                     Path_TXT.Text = ""
                 End If
 
-                PopulateBiometricSHEET(Bio_grid, eBook.Name, Paydate, Branch_ComboB.SelectedItem)
+                PopulateBiometricSHEET(Bio_grid, Paydate, Branch_ComboB.SelectedItem)
                 Import_BTN.Enabled = False
                 Path_TXT.Clear()
-                Branch_ComboB.Text = "   Select Branch"
+                'Branch_ComboB.Text = "   Select Branch"
                 MyConnection.Close()
 
             Else
@@ -687,9 +690,71 @@ Public Class frmAttendance
     Private Sub Bio_grid_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles Bio_grid.MouseDoubleClick
 
         Dim i As Integer = Bio_grid.CurrentRow.Index
-        TabControl1.SelectedIndex = 1
+        Attendance_Tab.SelectedIndex = 1
         BiometricID_TXT.Text = Bio_grid.Item(0, i).Value
         Name_TXT.Text = Bio_grid.Item(1, i).Value
+        DataGridView1.ClearSelection()
+
+        Dim paydatee As String
+
+        If Paydate_ComboB.SelectedIndex > 0 Then
+            paydatee = Paydate_ComboB.SelectedItem
+        Else
+            paydatee = Paydate
+        End If
+
+
+        Dim mysql As String = $"Select * From IMPORT_DTR where BIO_ID = '{Bio_grid.Item(0, i).Value}' and BRANCH = '{Branch_ComboB.SelectedItem}' and PAYDATE = '{paydatee}'"
+        Using ds As DataSet = LoadSQL(mysql, "IMPORT_DTR")
+            If ds.Tables(0).Rows.Count > 0 Then
+
+                Dim list_dateHour, list_dateonly As New List(Of String)()
+
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+                        Dim datt As DateTime = .Item("DATEANDTIME")
+                        datt.ToShortTimeString()
+                        Dim str As String = datt
+
+                        If str.Length <> 0 Then
+                            str = str.Substring(0, str.Length - 9)
+                            list_dateHour.Add(str)
+                        End If
+                    End With
+                Next
+
+                Dim result As List(Of String) = list_dateHour.Distinct().ToList  ' Date with hour
+
+
+                For Each value As String In result                      'Trim to convert to Date Only 
+                    Dim pos As Integer = value.LastIndexOf(" ")
+                    If pos <> -1 Then
+                        value = value.Substring(0, pos)
+
+
+                        'list_dateonly.Add(value)
+                    End If
+                Next
+
+
+                For Each value As String In result                      ' Check if Standard DTR
+
+                    Dim pos As Integer = value.LastIndexOf(" ")
+                    If pos <> -1 Then
+                        value = value.Substring(0, pos)
+                    End If
+
+                    'Console.WriteLine("Final " & value)
+
+                    If CountDate(list_dateonly, value) = 4 Then
+                    Else
+                    End If
+
+                Next
+
+            End If
+        End Using
+
 
     End Sub
 
@@ -699,6 +764,47 @@ Public Class frmAttendance
             MsgBox("Please Enter Employee's Name.", MsgBoxStyle.Critical, "Error")
         End If
 
+    End Sub
+
+    Private Sub Branch_ComboB_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Branch_ComboB.SelectedIndexChanged
+
+        If Zkteco_RadioB.Checked Then
+
+            If Paydate_ComboB.SelectedIndex > 0 Then
+                PopulateBiometricSHEET(Bio_grid, Paydate_ComboB.SelectedItem, Branch_ComboB.SelectedItem)
+            Else
+                PopulateBiometricSHEET(Bio_grid, Paydate, Branch_ComboB.SelectedItem)
+            End If
+
+        Else
+
+        End If
+    End Sub
+
+    Private Sub Paydate_ComboB_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Paydate_ComboB.SelectedIndexChanged
+
+        If Branch_ComboB.SelectedIndex >= 0 Then
+            If Paydate_ComboB.SelectedIndex > 0 Then
+                PopulateBiometricSHEET(Bio_grid, Paydate_ComboB.SelectedItem, Branch_ComboB.SelectedItem)
+            Else
+                PopulateBiometricSHEET(Bio_grid, Paydate, Branch_ComboB.SelectedItem)
+            End If
+        End If
+    End Sub
+
+    Private Sub Attendance_Tab_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Attendance_Tab.SelectedIndexChanged
+        If Attendance_Tab.SelectedIndex = 1 Then
+            DataGridView1.ClearSelection()
+        End If
+    End Sub
+
+    Private Sub BiometricID_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles BiometricID_TXT.KeyPress
+        If e.KeyChar <> ChrW(Keys.Back) Then
+            If Char.IsNumber(e.KeyChar) Then
+            Else
+                e.Handled = True
+            End If
+        End If
     End Sub
 
     Private Sub Name_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Name_TXT.KeyPress
