@@ -756,14 +756,15 @@ Public Class frmAttendance
                                 For Each timeValue As String In timee
                                     If timeValue.StartsWith(value) Then
 
-                                        Console.WriteLine("laa " & value)
-                                        'value = value.Substring(value.IndexOf(" "), 0).Trim()
+                                        Dim datt As DateTime = timeValue
 
-                                        value = (value.IndexOf(" ") + 1)
+                                        Console.WriteLine("second " & datt.ToShortTimeString())
 
-                                        Console.WriteLine("laa " & value)
-                                        'Dim aa As Integer = Convert.ToInt32(value.Last)
+                                        '==============================
 
+                                        Dim minTime As New TimeSpan(23, 0, 0) 'Should be converted from 11.00 PM
+                                        Dim maxTime As New TimeSpan(5, 0, 0) 'Should be converted from 5.00 AM
+                                        row.Cells(5).Value =
                                     Else
                                     End If
                                 Next
@@ -773,31 +774,18 @@ Public Class frmAttendance
 
                     End If
                 Next
-
-                'For Each value As String In result
-                '    Dim newValue As String
-                '    Dim pos As Integer = value.LastIndexOf(" ")
-
-                '    If pos <> -1 Then
-                '        newValue = value.Substring(0, pos)
-                '        Dim date_table As Date = newValue
-
-                '        For Each row As DataGridViewRow In DataGridView1.Rows
-
-                '            Dim rowIndex As Integer = row.Index
-                '            Dim asss As Date = DataGridView1.Rows(rowIndex).Tag
-
-                '            If asss = date_table Then
-                '                row.Cells(5) = New DataGridViewCheckBoxCell With {.Value = True}
-                '            End If
-                '        Next
-
-                '    End If
-                'Next
             End If
         End Using
 
     End Sub
+
+    'Private Function CheckTimeRange(myDate As DateTime, minTime As TimeSpan, maxTime As TimeSpan) As Boolean
+    '    If minTime > maxTime Then
+    '        Return myDate.TimeOfDay >= minTime OrElse myDate.TimeOfDay < maxTime
+    '    Else
+    '        Return myDate.TimeOfDay >= minTime AndAlso myDate.TimeOfDay < maxTime
+    '    End If
+    'End Function
 
     Private Sub DataGridView1_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView1.CellClick
 
