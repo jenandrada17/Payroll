@@ -717,27 +717,32 @@ Public Class frmAttendance
         Using ds As DataSet = LoadSQL(mysql, "IMPORT_DTR")
             If ds.Tables(0).Rows.Count > 0 Then
 
-                Dim list_dateHour, list_inOut As New List(Of String)()
+                Dim list_dateHour, list_inOut, list_hourMin As New List(Of String)()
 
                 For Each dr In ds.Tables(0).Rows
                     With dr
                         Dim datt As DateTime = .Item("DATEANDTIME")
                         datt.ToShortTimeString()
                         Dim str As String = datt
+                        Dim hourMin As String = datt
 
                         If str.Length <> 0 Then
                             str = str.Substring(0, str.Length - 9)
-                            list_dateHour.Add(str)
                             list_inOut.Add(datt)
-                            Console.WriteLine("This " & datt)
+                        End If
+
+                        If hourMin.Length <> 0 Then
+                            hourMin = hourMin.Substring(0, hourMin.Length - 6)
+                            list_hourMin.Add(hourMin)
+                            Console.WriteLine("that " & hourMin)
                         End If
                     End With
                 Next
 
-                Dim result As List(Of String) = list_dateHour.Distinct().ToList  ' Date with hour  
                 Dim timee As List(Of String) = list_inOut.Distinct().ToList
+                Dim hourMinn As List(Of String) = list_hourMin.Distinct().ToList
 
-                For Each value As String In result
+                For Each value As String In hourMinn
                     Dim newValue As String
                     Dim pos As Integer = value.LastIndexOf(" ")
 
@@ -756,15 +761,46 @@ Public Class frmAttendance
                                 For Each timeValue As String In timee
                                     If timeValue.StartsWith(value) Then
 
-                                        Dim datt As DateTime = timeValue
+                                        Dim dateee As DateTime = timeValue
 
-                                        Console.WriteLine("second " & datt.ToShortTimeString())
+                                        Console.WriteLine("second " & dateee.TimeOfDay.ToString)
 
                                         '==============================
 
-                                        Dim minTime As New TimeSpan(23, 0, 0) 'Should be converted from 11.00 PM
-                                        Dim maxTime As New TimeSpan(5, 0, 0) 'Should be converted from 5.00 AM
-                                        row.Cells(5).Value =
+                                        Dim minAM_IN As New TimeSpan(5, 0, 0)
+                                        Dim maxAM_IN As New TimeSpan(11, 0, 0)
+
+                                        Dim minAM_OUT As New TimeSpan(12, 0, 0)
+                                        Dim maxAM_OUT As New TimeSpan(12, 1, 0)
+
+                                        Dim minPM_IN As New TimeSpan(12, 11, 0)
+                                        Dim maxPM_IN As New TimeSpan(15, 0, 0)
+
+                                        Dim minPM_OUT As New TimeSpan(16, 0, 0)
+                                        Dim maxPM_OUT As New TimeSpan(23, 0, 0)
+
+
+                                        If dateee.TimeOfDay >= minAM_IN And dateee.TimeOfDay <= maxAM_IN Then
+
+                                            row.Cells(1).Value = dateee.ToString("t")
+                                            Exit For
+
+                                        ElseIf dateee.TimeOfDay >= minAM_OUT And dateee.TimeOfDay <= maxAM_OUT Then
+
+                                            row.Cells(2).Value = dateee.ToString("t")
+                                            Exit For
+
+                                        ElseIf dateee.TimeOfDay >= minPM_IN And dateee.TimeOfDay <= maxPM_IN Then
+
+                                            row.Cells(3).Value = dateee.ToString("t")
+                                            Exit For
+
+                                        ElseIf dateee.TimeOfDay >= minPM_OUT And dateee.TimeOfDay <= maxPM_OUT Then
+
+                                            row.Cells(4).Value = dateee.ToString("t")
+                                            Exit For
+                                        End If
+
                                     Else
                                     End If
                                 Next
@@ -779,13 +815,13 @@ Public Class frmAttendance
 
     End Sub
 
-    'Private Function CheckTimeRange(myDate As DateTime, minTime As TimeSpan, maxTime As TimeSpan) As Boolean
-    '    If minTime > maxTime Then
-    '        Return myDate.TimeOfDay >= minTime OrElse myDate.TimeOfDay < maxTime
-    '    Else
-    '        Return myDate.TimeOfDay >= minTime AndAlso myDate.TimeOfDay < maxTime
-    '    End If
-    'End Function
+    Private Function CheckTimeRange(myDate As DateTime, minTime As TimeSpan, maxTime As TimeSpan) As Boolean
+        If minTime > maxTime Then
+            Return myDate.TimeOfDay >= minTime OrElse myDate.TimeOfDay < maxTime
+        Else
+            Return myDate.TimeOfDay >= minTime AndAlso myDate.TimeOfDay < maxTime
+        End If
+    End Function
 
     Private Sub DataGridView1_CellClick(sender As Object, e As DataGridViewCellEventArgs) Handles DataGridView1.CellClick
 
