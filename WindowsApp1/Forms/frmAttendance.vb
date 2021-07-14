@@ -90,7 +90,7 @@ Public Class frmAttendance
         Dim CurrD As DateTime = ss.AddDays(-1)
 
         '==============================================AM IN 6AM to 9AM==================================================
-        For y = 0 To 180
+        For y = 0 To 300
 
             Dim myDate = New DateTime(CurrD.Year, CurrD.Month, CurrD.Day, 6, 0, 0, 0).AddMinutes(y)
             AM_In_DataGrid.Items.Add(myDate.ToString("t"))
@@ -99,16 +99,16 @@ Public Class frmAttendance
 
 
         '==============================================AM OUT 11AM to 1PM==================================================
-        For y = 0 To 120
+        For y = 0 To 300
 
-            Dim myDate = New DateTime(CurrD.Year, CurrD.Month, CurrD.Day, 11, 0, 0, 0).AddMinutes(y)
+            Dim myDate = New DateTime(CurrD.Year, CurrD.Month, CurrD.Day, 8, 0, 0, 0).AddMinutes(y)
             AM_Out_DataGrid.Items.Add(myDate.ToString("t"))
 
         Next
 
 
         '==============================================PM IN 12AM to 3PM==================================================
-        For y = 0 To 180
+        For y = 0 To 360
 
             Dim myDate = New DateTime(CurrD.Year, CurrD.Month, CurrD.Day, 12, 0, 0, 0).AddMinutes(y)
             PM_IN_DataGrid.Items.Add(myDate.ToString("t"))
@@ -117,9 +117,9 @@ Public Class frmAttendance
 
 
         '==============================================PM OUT 3PM to 3PM==================================================
-        For y = 0 To 480
+        For y = 0 To 660
 
-            Dim myDate = New DateTime(CurrD.Year, CurrD.Month, CurrD.Day, 15, 0, 0, 0).AddMinutes(y)
+            Dim myDate = New DateTime(CurrD.Year, CurrD.Month, CurrD.Day, 12, 0, 0, 0).AddMinutes(y)
             PM_Out_DataGrid.Items.Add(myDate.ToString("t"))
 
         Next
@@ -717,7 +717,7 @@ Public Class frmAttendance
         Using ds As DataSet = LoadSQL(mysql, "IMPORT_DTR")
             If ds.Tables(0).Rows.Count > 0 Then
 
-                Dim list_dateHour, list_inOut, list_hourMin As New List(Of String)()
+                Dim list_dateHour, list_inOut, list_hourMin, list_Group, list_count As New List(Of String)()
 
                 For Each dr In ds.Tables(0).Rows
                     With dr
@@ -734,7 +734,7 @@ Public Class frmAttendance
                         If hourMin.Length <> 0 Then
                             hourMin = hourMin.Substring(0, hourMin.Length - 6)
                             list_hourMin.Add(hourMin)
-                            Console.WriteLine("that " & hourMin)
+                            Console.WriteLine("that " & datt)
                         End If
                     End With
                 Next
@@ -762,19 +762,53 @@ Public Class frmAttendance
                                     If timeValue.StartsWith(value) Then
 
                                         Dim dateee As DateTime = timeValue
+                                        Dim newVv As DateTime = value ' new
 
-                                        Console.WriteLine("second " & dateee.TimeOfDay.ToString)
+                                        Console.WriteLine(value & "  second " & dateee.ToShortTimeString())
 
-                                        '==============================
+                                        'If newVv.ToString("d") = dateee.ToString("d") Then
+
+                                        '    Console.WriteLine(newVv.ToString("d") & " VS " & dateee.ToString("d"))
+
+                                        '    If CountDate(hourMinn, newVv.ToString("d")) = 3 Then
+                                        '        Console.WriteLine("3 dates ")
+                                        '        list_count = SortCountedDATE(hourMinn, newVv.ToString("d"))
+                                        '    ElseIf CountDate(hourMinn, newVv.ToString("d")) = 4 Then
+                                        '        Console.WriteLine("4 dates ")
+                                        '        list_count = SortCountedDATE(hourMinn, newVv.ToString("d"))
+                                        '    End If
+
+                                        'End If
+
+
+                                        'If list_count.Count = 4 Then
+
+                                        '    Console.WriteLine("lIST cOUNT " & list_count.Count)
+
+                                        '    Dim aa As Integer = 1
+
+                                        '    For Each groupHour As String In list_count
+
+                                        '        Dim aaa As DateTime = groupHour
+                                        '        row.Cells(aa).Value = aaa.ToString("t")
+                                        '        aa += 1
+
+
+                                        '        Console.WriteLine("VALUEE " & aaa.ToString("t"))
+                                        '    Next
+
+                                        '    list_count.Clear()
+                                        'Else
+
+                                        '    Console.WriteLine("NOT lIST cOUNT  " & list_count.Count)
+                                        '============================== WORKED FINE ========================
+
 
                                         Dim minAM_IN As New TimeSpan(5, 0, 0)
-                                        Dim maxAM_IN As New TimeSpan(11, 0, 0)
+                                        Dim maxAM_IN As New TimeSpan(11, 5, 9)
 
-                                        Dim minAM_OUT As New TimeSpan(12, 0, 0)
-                                        Dim maxAM_OUT As New TimeSpan(12, 1, 0)
-
-                                        Dim minPM_IN As New TimeSpan(12, 11, 0)
-                                        Dim maxPM_IN As New TimeSpan(15, 0, 0)
+                                        Dim min_noon As New TimeSpan(13, 0, 0)
+                                        Dim max_noon As New TimeSpan(15, 0, 0)
 
                                         Dim minPM_OUT As New TimeSpan(16, 0, 0)
                                         Dim maxPM_OUT As New TimeSpan(23, 0, 0)
@@ -782,30 +816,74 @@ Public Class frmAttendance
 
                                         If dateee.TimeOfDay >= minAM_IN And dateee.TimeOfDay <= maxAM_IN Then
 
+                                            Dim checkThis As String = row.Cells(1).Value
+
                                             row.Cells(1).Value = dateee.ToString("t")
-                                            Exit For
-
-                                        ElseIf dateee.TimeOfDay >= minAM_OUT And dateee.TimeOfDay <= maxAM_OUT Then
-
-                                            row.Cells(2).Value = dateee.ToString("t")
-                                            Exit For
-
-                                        ElseIf dateee.TimeOfDay >= minPM_IN And dateee.TimeOfDay <= maxPM_IN Then
-
-                                            row.Cells(3).Value = dateee.ToString("t")
                                             Exit For
 
                                         ElseIf dateee.TimeOfDay >= minPM_OUT And dateee.TimeOfDay <= maxPM_OUT Then
 
                                             row.Cells(4).Value = dateee.ToString("t")
                                             Exit For
+
+                                        ElseIf dateee.TimeOfDay >= min_noon And dateee.TimeOfDay <= max_noon Then
+
+                                            row.Cells(3).Value = dateee.ToString("t")
+                                            Exit For
+
+                                        Else
+
+                                            Dim oldValuee As DateTime = value
+                                            Dim newValuee As String = oldValuee.ToString("d") & " " & oldValuee.TimeOfDay.Hours
+                                            Dim val As String = oldValuee.ToString("d") & " " & "12"
+
+                                            If newValuee = val Then
+
+                                                If CountDate(hourMinn, val) = 2 Then
+                                                    list_Group = SortCountedDATE(hourMinn, val)
+                                                ElseIf CountDate(hourMinn, val) = 1 Then
+                                                    list_Group = SortCountedDATE(hourMinn, val)
+                                                End If
+
+
+                                                '======================== PRINT 12 NOON ================ WORKED FINE
+                                                If list_Group.Count = 2 Then
+                                                    Dim aa As Integer = 2
+
+                                                    For Each groupHour As String In list_Group
+
+                                                        Dim aaa As DateTime = groupHour
+                                                        row.Cells(aa).Value = aaa.ToString("t")
+                                                        'Console.WriteLine("Group " & groupHour)
+                                                        aa += 1
+                                                    Next
+
+                                                    list_Group.Clear()
+
+                                                ElseIf list_Group.Count = 1 Then
+
+                                                    For Each groupHour As String In list_Group
+
+                                                        Dim aaa As DateTime = groupHour
+                                                        row.Cells(2).Value = aaa.ToString("t")
+                                                        'Console.WriteLine("Group " & groupHour)
+
+                                                    Next
+
+                                                    list_Group.Clear()
+                                                End If
+
+                                            End If
+                                            'End If
                                         End If
 
-                                    Else
                                     End If
                                 Next
 
+                                '======================================== TESTING ====================================================
+
                             End If
+
                         Next
 
                     End If
@@ -842,7 +920,7 @@ Public Class frmAttendance
             End If
 
         Else
-
+            Bio_grid.Rows.Clear()
         End If
     End Sub
 

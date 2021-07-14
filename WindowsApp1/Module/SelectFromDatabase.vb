@@ -279,11 +279,11 @@ Module SelectFromDatabase
 
                         Console.WriteLine("Final " & value)
 
-                        If CountDate(list_dateonly, value) = 4 Then
-                            row.DefaultCellStyle.ForeColor = Color.Black
-                        Else
-                            row.DefaultCellStyle.ForeColor = Color.Red
-                        End If
+                        'If CountDate(list_dateonly, value) = 4 Then
+                        '    row.DefaultCellStyle.ForeColor = Color.Black
+                        'Else
+                        '    row.DefaultCellStyle.ForeColor = Color.Red
+                        'End If
 
                     Next
 
@@ -293,16 +293,34 @@ Module SelectFromDatabase
         End With
 
     End Sub
+
     Public Function CountDate(list As List(Of String), datee As String) As Integer
         Dim cnt As Integer = 0
         For Each c As String In list
-            If c = datee Then
+            If c.StartsWith(datee) Then
                 cnt = cnt + 1
             End If
         Next
 
-        Console.WriteLine("result " & cnt)
+        'Console.WriteLine("result " & cnt)
         Return cnt
+    End Function
+
+
+    Public Function SortCountedDATE(list As List(Of String), datee As String) As List(Of String)
+
+        Dim HourGroup As New List(Of String)()
+        For Each c As String In list
+            If c.StartsWith(datee) Then
+                Dim AAA As DateTime = c
+                AAA = AAA.ToString("t")
+                HourGroup.Add(AAA)
+
+                'Console.WriteLine(c & " AAA " & AAA)
+            End If
+        Next
+
+        Return HourGroup
     End Function
 
 
