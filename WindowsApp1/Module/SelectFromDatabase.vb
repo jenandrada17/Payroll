@@ -302,7 +302,6 @@ Module SelectFromDatabase
             End If
         Next
 
-        'Console.WriteLine("result " & cnt)
         Return cnt
     End Function
 
@@ -315,14 +314,11 @@ Module SelectFromDatabase
                 Dim AAA As DateTime = c
                 AAA = AAA.ToString("t")
                 HourGroup.Add(AAA)
-
-                'Console.WriteLine(c & " AAA " & AAA)
             End If
         Next
 
         Return HourGroup
     End Function
-
 
     Public Sub AdjustHeightOfGridBasedOnRows(ByVal dataGrid As DataGridView)
 
@@ -356,5 +352,18 @@ Module SelectFromDatabase
             End If
         End While
     End Sub
+
+    Public Function CountCELL_Nothing(row As DataGridViewRow) As Integer
+
+        Dim count As New Integer
+        For cell As Integer = 1 To 4
+            If Not row.DefaultCellStyle.ForeColor = Color.Red And row.Cells(5).Value = True And row.Cells(cell).Value = Nothing Then
+                count += 1
+            End If
+        Next
+
+        Console.WriteLine("Count " & count)
+        Return count
+    End Function
 
 End Module

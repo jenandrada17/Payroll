@@ -128,7 +128,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Module\Database.vb" />
-    <Compile Include="Module\Developer.vb" />
     <Compile Include="Module\FileDirectory.vb" />
     <Compile Include="Module\Public_Function.vb" />
     <Compile Include="Module\SaveUpdate.vb" />

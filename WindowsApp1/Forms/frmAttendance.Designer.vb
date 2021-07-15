@@ -22,11 +22,11 @@ Partial Class frmAttendance
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle16 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle19 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle20 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle17 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle18 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Attendance_Tab = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
@@ -242,6 +242,7 @@ Partial Class frmAttendance
         'Bio_grid
         '
         Me.Bio_grid.AllowUserToAddRows = False
+        Me.Bio_grid.AllowUserToResizeRows = False
         Me.Bio_grid.BackgroundColor = System.Drawing.Color.White
         Me.Bio_grid.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.Bio_grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
@@ -343,7 +344,6 @@ Partial Class frmAttendance
         Me.Label13.Size = New System.Drawing.Size(56, 25)
         Me.Label13.TabIndex = 107
         Me.Label13.Text = "Hour/s"
-        Me.Label13.Visible = False
         '
         'Label4
         '
@@ -354,7 +354,6 @@ Partial Class frmAttendance
         Me.Label4.Size = New System.Drawing.Size(49, 25)
         Me.Label4.TabIndex = 106
         Me.Label4.Text = "Day/s"
-        Me.Label4.Visible = False
         '
         'Label24
         '
@@ -515,7 +514,6 @@ Partial Class frmAttendance
         Me.AbsentHour_LBL.Size = New System.Drawing.Size(21, 27)
         Me.AbsentHour_LBL.TabIndex = 86
         Me.AbsentHour_LBL.Text = "0"
-        Me.AbsentHour_LBL.Visible = False
         '
         'hourOfDay_LBL
         '
@@ -606,7 +604,6 @@ Partial Class frmAttendance
         Me.TotalAbsent_LBL.Size = New System.Drawing.Size(21, 27)
         Me.TotalAbsent_LBL.TabIndex = 72
         Me.TotalAbsent_LBL.Text = "0"
-        Me.TotalAbsent_LBL.Visible = False
         '
         'TotalDays_LBL
         '
@@ -627,7 +624,6 @@ Partial Class frmAttendance
         Me.Label12.Size = New System.Drawing.Size(119, 25)
         Me.Label12.TabIndex = 70
         Me.Label12.Text = "Total Absent       "
-        Me.Label12.Visible = False
         '
         'Label11
         '
@@ -706,34 +702,34 @@ Partial Class frmAttendance
         Me.DataGridView1.AllowUserToAddRows = False
         Me.DataGridView1.AllowUserToResizeColumns = False
         Me.DataGridView1.AllowUserToResizeRows = False
-        DataGridViewCellStyle16.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.DataGridView1.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle16
+        DataGridViewCellStyle1.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DataGridView1.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
         Me.DataGridView1.BackgroundColor = System.Drawing.Color.White
         Me.DataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.DataGridView1.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText
         Me.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.DataGridView1.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Date_DataGrid, Me.AM_In_DataGrid, Me.AM_Out_DataGrid, Me.PM_IN_DataGrid, Me.PM_Out_DataGrid, Me.Select_Datagrid})
-        DataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle19.BackColor = System.Drawing.SystemColors.InactiveCaption
-        DataGridViewCellStyle19.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle19.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle19.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle19.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle19.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.DataGridView1.DefaultCellStyle = DataGridViewCellStyle19
+        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.InactiveCaption
+        DataGridViewCellStyle4.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.DataGridView1.DefaultCellStyle = DataGridViewCellStyle4
         Me.DataGridView1.Location = New System.Drawing.Point(6, 44)
         Me.DataGridView1.Name = "DataGridView1"
         Me.DataGridView1.RowHeadersVisible = False
-        DataGridViewCellStyle20.SelectionBackColor = System.Drawing.Color.Transparent
-        DataGridViewCellStyle20.SelectionForeColor = System.Drawing.Color.Transparent
-        Me.DataGridView1.RowsDefaultCellStyle = DataGridViewCellStyle20
+        DataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.Transparent
+        DataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.Transparent
+        Me.DataGridView1.RowsDefaultCellStyle = DataGridViewCellStyle5
         Me.DataGridView1.Size = New System.Drawing.Size(684, 487)
         Me.DataGridView1.TabIndex = 65
         '
         'Date_DataGrid
         '
-        DataGridViewCellStyle17.NullValue = Nothing
-        Me.Date_DataGrid.DefaultCellStyle = DataGridViewCellStyle17
+        DataGridViewCellStyle2.NullValue = Nothing
+        Me.Date_DataGrid.DefaultCellStyle = DataGridViewCellStyle2
         Me.Date_DataGrid.HeaderText = "Date"
         Me.Date_DataGrid.Name = "Date_DataGrid"
         Me.Date_DataGrid.ReadOnly = True
@@ -743,9 +739,9 @@ Partial Class frmAttendance
         '
         'AM_In_DataGrid
         '
-        DataGridViewCellStyle18.Format = "t"
-        DataGridViewCellStyle18.NullValue = Nothing
-        Me.AM_In_DataGrid.DefaultCellStyle = DataGridViewCellStyle18
+        DataGridViewCellStyle3.Format = "t"
+        DataGridViewCellStyle3.NullValue = Nothing
+        Me.AM_In_DataGrid.DefaultCellStyle = DataGridViewCellStyle3
         Me.AM_In_DataGrid.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.[Nothing]
         Me.AM_In_DataGrid.HeaderText = "In"
         Me.AM_In_DataGrid.Name = "AM_In_DataGrid"

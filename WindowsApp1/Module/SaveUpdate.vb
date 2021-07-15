@@ -39,40 +39,65 @@
         RunCommand("DELETE FROM PAYROLL_HOLIDAY WHERE DATEE = '" & datee & "'")
     End Sub
 
-    Friend Sub SaveAttendance(biometric As String, paydate As String, days As String, daysHR As String, lateHR As String, lateMIN As String,
-                              underHR As String, underMIN As String, absentDays As String, absentHR As String, overTime As String,
+    Friend Sub SaveAttendance(biometric As String, emp_id As String, paydate As String, days As String, daysHR As String, overTime As String, late_total As String,
+                              under_total As String, absentDays As String, absentHR As String,
                               regHoliday As String, specHoliday As String)
+        Dim mysql As String
 
-        Dim mysql As String = "Select * From PAYROLL_ATTENDANCE Rows 1"
-        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
+        mysql = $"Select * FROM PAYROLL_ATTENDANCE where BIOMETRICID = '{biometric}' and PAYDATE = '{paydate}' and EMP_ID = '{emp_id}'"
+        Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
+        If dss.Tables(0).Rows.Count > 0 Then
+            With dss.Tables(0).Rows(0)
 
-            Dim dsNewRow As DataRow
-            dsNewRow = ds.Tables(0).NewRow
-            With dsNewRow
-
-                .Item("BIOMETRICID") = biometric
-                .Item("PAYDATE") = paydate
                 .Item("TOTALDAYS") = days
                 .Item("TOTALDAYSHOUR") = daysHR
-                .Item("TOTALLATEHOUR") = lateHR
-                .Item("TOTALLATEMINUTE") = lateMIN
 
-                .Item("TOTALUTHOUR") = underHR
-                .Item("TOTALUTMINUTE") = underMIN
+                .Item("TOTALOVERTIME") = overTime
+                .Item("TOTALLATE") = late_total
+                .Item("TOTALUNDERTIME") = under_total
 
                 .Item("TOTALABSENTDAYS") = absentDays
                 .Item("TOTALABSENTHOUR") = absentHR
 
-                .Item("TOTALOVERTIME") = overTime
                 .Item("TOTALREGHOLIDAY") = regHoliday
                 .Item("TOTALSPECHOLIDAY") = specHoliday
 
             End With
-            ds.Tables(0).Rows.Add(dsNewRow)
-            SaveEntry(ds)
-        End Using
+            SaveEntry(dss, False)
 
-        MsgBox("New Attendance Added!", MsgBoxStyle.Information, "Information")
+            MsgBox("Attendance updated!", MsgBoxStyle.Information, "Information")
+        Else
+
+            mysql = "Select * From PAYROLL_ATTENDANCE Rows 1"
+            Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
+
+                Dim dsNewRow As DataRow = ds.Tables(0).NewRow
+                With dsNewRow
+
+                    .Item("BIOMETRICID") = biometric
+                    .Item("EMP_ID") = emp_id
+                    .Item("PAYDATE") = paydate
+                    .Item("TOTALDAYS") = days
+                    .Item("TOTALDAYSHOUR") = daysHR
+
+                    .Item("TOTALOVERTIME") = overTime
+                    .Item("TOTALLATE") = late_total
+                    .Item("TOTALUNDERTIME") = under_total
+
+                    .Item("TOTALABSENTDAYS") = absentDays
+                    .Item("TOTALABSENTHOUR") = absentHR
+
+                    .Item("TOTALREGHOLIDAY") = regHoliday
+                    .Item("TOTALSPECHOLIDAY") = specHoliday
+
+                End With
+                ds.Tables(0).Rows.Add(dsNewRow)
+                SaveEntry(ds)
+            End Using
+
+            MsgBox("New Attendance Added!", MsgBoxStyle.Information, "Information")
+        End If
+
     End Sub
 
 

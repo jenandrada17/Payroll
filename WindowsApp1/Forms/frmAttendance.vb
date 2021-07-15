@@ -13,6 +13,10 @@ Public Class frmAttendance
     Dim eBook As Excel.Workbook = Nothing
     Dim eSheet As Excel.Worksheet = Nothing
     Dim eCell As Excel.Range
+    Dim late_count, under_count As New List(Of TimeSpan)()
+    Dim list_dateHour, list_inOut, list_hourMin, list_Group, list_count As New List(Of String)()
+    Dim hourMinn As List(Of String)
+    Dim dateee As DateTime
 
     Private Sub frmAttendance_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
@@ -238,6 +242,7 @@ Public Class frmAttendance
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Calculate_BTN.Click
 
         TotalAbsent_LBL.Text = 0
+        AbsentHour_LBL.Text = 0
         TotalDays_LBL.Text = 0
         TotalRHoliday_LBL.Text = 0
         TotalSHoliday_LBL.Text = 0
@@ -249,71 +254,10 @@ Public Class frmAttendance
         TotalOTHr_LBL.Text = 0
 
         For i = 0 To DataGridView1.RowCount - 1
+
             Dim row As DataGridViewRow = DataGridView1.Rows(i)
 
-            '========================================================================= CALCULATE DAYS PRESENT AND ABSENT  ===========================================================
-            If Not row.DefaultCellStyle.BackColor = Color.Red Then
-
-                If DataGridView1.Rows(i).Cells(5).Value = False Then
-
-                    'TotalAbsent_LBL.Text = TotalAbsent_LBL.Text + 1
-
-                    '========================================================================= CALCULATE AM NUMBER OF HOURS IF HALFDAY  ===========================================================
-                    If Not DataGridView1.Rows(i).Cells(1).Value = Nothing And Not DataGridView1.Rows(i).Cells(2).Value = Nothing Then
-
-                        Dim AM As TimeSpan = DateTime.Parse(DataGridView1.Rows(i).Cells(2).Value).Subtract(DateTime.Parse(DataGridView1.Rows(i).Cells(1).Value))
-
-                        If AM.Hours > 4 Then
-                            newNo = 4
-                        Else
-                            newNo = AM.Hours
-                        End If
-
-                        hourOfDay_LBL.Text = Convert.ToInt32(hourOfDay_LBL.Text) + newNo
-
-
-                        If hourOfDay_LBL.Text >= 8 Then
-                            Dim ConvertToDAy As Integer = Convert.ToInt32(hourOfDay_LBL.Text) / 8
-
-                            TotalDays_LBL.Text = Convert.ToInt32(TotalDays_LBL.Text) + ConvertToDAy
-
-                            hourOfDay_LBL.Text = Convert.ToInt32(hourOfDay_LBL.Text) Mod 8
-                        End If
-
-                        '========================================================================= CALCULATE PM NUMBER OF HOURS IF HALFDAY   ===========================================================
-                    ElseIf Not DataGridView1.Rows(i).Cells(3).Value = Nothing And Not DataGridView1.Rows(i).Cells(4).Value = Nothing Then
-
-                        Dim PM As TimeSpan = DateTime.Parse(DataGridView1.Rows(i).Cells(4).Value).Subtract(DateTime.Parse(DataGridView1.Rows(i).Cells(3).Value))
-
-                        If PM.Hours > 4 Then
-                            newNo = 4
-                        Else
-                            newNo = PM.Hours
-                        End If
-
-                        hourOfDay_LBL.Text = Convert.ToInt32(hourOfDay_LBL.Text) + newNo
-
-                        If hourOfDay_LBL.Text >= 8 Then
-                            Dim ConvertToDAy As Integer = Convert.ToInt32(hourOfDay_LBL.Text) / 8
-
-                            TotalDays_LBL.Text = Convert.ToInt32(TotalDays_LBL.Text) + ConvertToDAy
-
-                            hourOfDay_LBL.Text = Convert.ToInt32(hourOfDay_LBL.Text) Mod 8
-                        End If
-
-                    ElseIf Not DataGridView1.Rows(i).Cells(1).Value = Nothing AndAlso Not DataGridView1.Rows(i).Cells(2).Value = Nothing AndAlso Not DataGridView1.Rows(i).Cells(3).Value = Nothing AndAlso Not DataGridView1.Rows(i).Cells(4).Value = Nothing Then
-
-                        hourOfDay_LBL.Text = 0
-                        DataGridView1.Rows(i).Cells(5).Value = True
-
-                    End If
-
-                Else
-
-                    TotalDays_LBL.Text = TotalDays_LBL.Text + 1
-
-                End If
-
+            If Not row.DefaultCellStyle.ForeColor = Color.Red Then
 
                 '========================================================================= CALCULATE HOLIDAYS  ===========================================================
                 If row.DefaultCellStyle.BackColor = Color.MediumOrchid Then
@@ -338,6 +282,77 @@ Public Class frmAttendance
             End If
         Next
 
+        '===================================== SUM UP LATE ==================================== 
+        Dim Late_Total As New TimeSpan
+        For Each valueE As TimeSpan In late_count
+            Late_Total = Late_Total + valueE
+        Next
+
+        TotalLateHR_LBL.Text = Late_Total.Hours
+        TotalLateHR_LBL.Tag = Late_Total.ToString
+        TotalLateMIN_LBL.Text = Late_Total.Minutes
+
+        late_count.Clear()
+
+        '===================================== SUM UP UNDERTIME ==================================== 
+        Dim Under_Total As New TimeSpan
+        For Each value As TimeSpan In under_count
+            Under_Total = Under_Total + value
+        Next
+
+        TotalUTHR_LBL.Text = Under_Total.Hours
+        TotalUTHR_LBL.Tag = Under_Total.ToString
+        TotalUTMIN_LBL.Text = Under_Total.Minutes
+
+        under_count.Clear()
+
+        '===================================== SUM UP PRESENT AND ABSENT ==================================== 
+        Dim Present As Integer = 0
+        Dim Absent As Integer = 0
+        For Each oRow As DataGridViewRow In DataGridView1.Rows
+
+            If Not oRow.DefaultCellStyle.ForeColor = Color.Red And oRow.Cells(5).Value = True Then
+                Present += 1
+            ElseIf Not oRow.DefaultCellStyle.ForeColor = Color.Red And oRow.Cells(5).Value = False Then
+                If oRow.DefaultCellStyle.BackColor = Color.MediumOrchid Or oRow.DefaultCellStyle.BackColor = Color.Plum Then
+                Else
+                    Absent += 1
+                End If
+            End If
+        Next
+
+        TotalDays_LBL.Text = Present
+        TotalAbsent_LBL.Text = Absent
+
+        '===================================== SUM UP HALF DAY ====================================  
+        Dim halfday_Hour As Integer = 0
+        For Each oRow As DataGridViewRow In DataGridView1.Rows
+
+            If CountCELL_Nothing(oRow) = 3 Then
+                halfday_Hour += 4
+            End If
+        Next
+
+        If halfday_Hour > 4 Then
+            Dim result As Integer
+            result = halfday_Hour / 8
+
+            TotalAbsent_LBL.Text = result + Convert.ToInt32(TotalAbsent_LBL.Text)
+        Else
+            AbsentHour_LBL.Text = halfday_Hour
+        End If
+
+        Dim product As Integer
+        product = ((Convert.ToInt32(TotalDays_LBL.Text) * 8) + Convert.ToInt32(hourOfDay_LBL.Text)) - halfday_Hour
+
+        If product Mod 8 = 0 Then
+            TotalDays_LBL.Text = Math.Floor(product / 8)
+            hourOfDay_LBL.Text = 0
+        Else
+            TotalDays_LBL.Text = Math.Floor(product / 8)
+            hourOfDay_LBL.Text = 4
+        End If
+
     End Sub
 
     Private Sub CalculateLATE(rowNumber As Integer)
@@ -347,37 +362,27 @@ Public Class frmAttendance
 
             Dim inHour = New DateTime(Now.Year, Now.Month, Now.Day, 8, 0, 0, 0).ToString("t")
             Dim lateHour As TimeSpan = DateTime.Parse(DataGridView1.Rows(rowNumber).Cells(1).Value).Subtract(DateTime.Parse(inHour))
-            Dim lateMin As TimeSpan = DateTime.Parse(DataGridView1.Rows(rowNumber).Cells(1).Value).Subtract(DateTime.Parse(inHour))
 
-            If lateHour.Hours > 0 Then
+            Dim cellValue As DateTime = DataGridView1.Rows(rowNumber).Cells(1).Value
+            Dim limit As DateTime = "7:59 AM"
 
-                TotalLateHR_LBL.Text = Convert.ToInt32(TotalLateHR_LBL.Text) + lateHour.Hours
-
-            ElseIf lateMin.Minutes > 0 Then
-
-                TotalLateMIN_LBL.Text = Convert.ToInt32(TotalLateMIN_LBL.Text) + Format(lateMin.Minutes, "00")
-
+            If cellValue > limit Then
+                late_count.Add(lateHour)
             End If
-
         End If
 
         '========================================================================= CELL NUMBER PM IN ===========================================================
         If Not DataGridView1.Rows(rowNumber).Cells(3).Value = Nothing Then
 
-            Dim inHour = New DateTime(Now.Year, Now.Month, Now.Day, 13, 0, 0, 0).ToString("t")
-            Dim lateHour As TimeSpan = DateTime.Parse(DataGridView1.Rows(rowNumber).Cells(3).Value).Subtract(DateTime.Parse(inHour))
-            Dim lateMin As TimeSpan = DateTime.Parse(DataGridView1.Rows(rowNumber).Cells(3).Value).Subtract(DateTime.Parse(inHour))
+            Dim inHourr = New DateTime(Now.Year, Now.Month, Now.Day, 13, 0, 0, 0).ToString("t")
+            Dim lateHourr As TimeSpan = DateTime.Parse(DataGridView1.Rows(rowNumber).Cells(3).Value).Subtract(DateTime.Parse(inHourr))
 
-            If lateHour.Hours > 0 Then
+            Dim cellValue As DateTime = DataGridView1.Rows(rowNumber).Cells(3).Value
+            Dim limit As DateTime = "12:59 PM"
 
-                TotalLateHR_LBL.Text = Convert.ToInt32(TotalLateHR_LBL.Text) + lateHour.Hours
-
-            ElseIf lateMin.Minutes > 0 Then
-
-                TotalLateMIN_LBL.Text = Convert.ToInt32(TotalLateMIN_LBL.Text) + Format(lateMin.Minutes, "00")
-
+            If cellValue > limit Then
+                late_count.Add(lateHourr)
             End If
-
         End If
 
     End Sub
@@ -389,16 +394,12 @@ Public Class frmAttendance
 
             Dim inHour = New DateTime(Now.Year, Now.Month, Now.Day, 12, 0, 0, 0).ToString("t")
             Dim underHour As TimeSpan = DateTime.Parse(inHour).Subtract(DateTime.Parse(DataGridView1.Rows(rowNumber).Cells(2).Value))
-            Dim underMin As TimeSpan = DateTime.Parse(inHour).Subtract(DateTime.Parse(DataGridView1.Rows(rowNumber).Cells(2).Value))
 
-            If underHour.Hours > 0 Then
+            Dim cellValue As DateTime = DataGridView1.Rows(rowNumber).Cells(2).Value
+            Dim limit As DateTime = "12:00 PM"
 
-                TotalUTHR_LBL.Text = Convert.ToInt32(TotalUTHR_LBL.Text) + underHour.Hours
-
-            ElseIf underMin.Minutes > 0 Then
-
-                TotalUTMIN_LBL.Text = Convert.ToInt32(TotalUTMIN_LBL.Text) + Format(underMin.Minutes, "00")
-
+            If cellValue < limit Then
+                under_count.Add(underHour)
             End If
 
         End If
@@ -408,26 +409,15 @@ Public Class frmAttendance
 
             Dim inHour = New DateTime(Now.Year, Now.Month, Now.Day, 17, 0, 0, 0).ToString("t")
             Dim underHour As TimeSpan = DateTime.Parse(inHour).Subtract(DateTime.Parse(DataGridView1.Rows(rowNumber).Cells(4).Value))
-            Dim underMin As TimeSpan = DateTime.Parse(inHour).Subtract(DateTime.Parse(DataGridView1.Rows(rowNumber).Cells(4).Value))
 
-            If underHour.Hours > 0 Then
 
-                TotalUTHR_LBL.Text = Convert.ToInt32(TotalUTHR_LBL.Text) + underHour.Hours
+            Dim cellValue As DateTime = DataGridView1.Rows(rowNumber).Cells(4).Value
+            Dim limit As DateTime = "17:00 PM"
 
-            ElseIf underMin.Minutes > 0 Then
-
-                TotalUTMIN_LBL.Text = Convert.ToInt32(TotalUTMIN_LBL.Text) + Format(underMin.Minutes, "00")
-
+            If cellValue < limit Then
+                under_count.Add(underHour)
             End If
 
-        End If
-
-        If TotalUTMIN_LBL.Text >= 60 Then
-            Dim ConvertToDAy As Integer = Convert.ToInt32(TotalUTMIN_LBL.Text) / 60
-
-            TotalUTHR_LBL.Text = Convert.ToInt32(TotalUTHR_LBL.Text) + ConvertToDAy
-
-            TotalUTMIN_LBL.Text = Convert.ToInt32(TotalUTMIN_LBL.Text) Mod 60
         End If
 
     End Sub
@@ -485,103 +475,17 @@ Public Class frmAttendance
 
         If Not BiometricID_TXT.Text = "" Then
 
-            'If isNotExist() Then
-
-            'SaveAttendance(BiometricID_TXT.Text, DataGridView1.Tag, TotalDays_LBL.Text, hourOfDay_LBL.Text, TotalLateHR_LBL.Text, TotalLateMIN_LBL.Text,
-            '                TotalUTHR_LBL.Text, TotalUTMIN_LBL.Text, TotalAbsent_LBL.Text, AbsentHour_LBL.Text, TotalOTHr_LBL.Text,
-            '                TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text)
-
-
-            Dim mysql As String = "Select * From PAYROLL_ATTENDANCE Rows 1"
-            Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
-
-                Dim dsNewRow As DataRow = ds.Tables(0).NewRow
-                With dsNewRow
-                    .Item("EMP_ID") = Name_TXT.Tag
-                    .Item("BIOMETRICID") = BiometricID_TXT.Text
-                    .Item("PAYDATE") = DataGridView1.Tag
-                    .Item("TOTALDAYS") = TotalDays_LBL.Text
-                    .Item("TOTALDAYSHOUR") = hourOfDay_LBL.Text
-
-                    .Item("TOTALLATE") = TotalLateMIN_LBL.Text
-                    '.Item("TOTALLATEHOUR") = TotalLateHR_LBL.Text
-                    '.Item("TOTALLATEMINUTE") = TotalLateMIN_LBL.Text
-
-                    .Item("TOTALUNDERTIME") = TotalUTMIN_LBL.Text
-                    '.Item("TOTALUTHOUR") = TotalUTHR_LBL.Text
-                    '.Item("TOTALUTMINUTE") = TotalUTMIN_LBL.Text
-
-                    .Item("TOTALABSENTDAYS") = TotalAbsent_LBL.Text
-                    .Item("TOTALABSENTHOUR") = AbsentHour_LBL.Text
-
-                    .Item("TOTALOVERTIME") = TotalOTHr_LBL.Text
-                    .Item("TOTALREGHOLIDAY") = TotalRHoliday_LBL.Text
-                    .Item("TOTALSPECHOLIDAY") = TotalSHoliday_LBL.Text
-
-                End With
-                ds.Tables(0).Rows.Add(dsNewRow)
-                SaveEntry(ds)
-            End Using
-
-            MsgBox("New Record Added!", MsgBoxStyle.Information, "Information")
+            SaveAttendance(BiometricID_TXT.Text, Name_TXT.Tag, DataGridView1.Tag, TotalDays_LBL.Text, hourOfDay_LBL.Text,
+                            TotalOTHr_LBL.Text, TotalLateHR_LBL.Tag, TotalUTHR_LBL.Tag,
+                            TotalAbsent_LBL.Text, AbsentHour_LBL.Text,
+                            TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text)
 
             ClearAfter()
-            'Else
-
-            'Dim result As DialogResult = MessageBox.Show("Name already exist. Do you want to update the existing record?", "Warning", MessageBoxButtons.YesNo)
-
-            '    If result = DialogResult.Yes Then
-
-            '        Dim mysql As String = "Select * From PAYROLL_ATTENDANCE Where BIOMETRICID = '" & BiometricID_TXT.Text & "'"
-            '        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
-
-            '            With ds.Tables(0).Rows(0)
-            '                .Item("PAYDATE") = DataGridView1.Tag
-
-            '                .Item("TOTALDAYS") = TotalDays_LBL.Text
-            '                .Item("TOTALDAYSHOUR") = hourOfDay_LBL.Text
-
-            '                .Item("TOTALLATEHOUR") = TotalLateHR_LBL.Text
-            '                .Item("TOTALLATEMINUTE") = TotalLateMIN_LBL.Text
-
-            '                .Item("TOTALUTHOUR") = TotalUTHR_LBL.Text
-            '                .Item("TOTALUTMINUTE") = TotalUTMIN_LBL.Text
-
-            '                .Item("TOTALABSENTDAYS") = TotalAbsent_LBL.Text
-            '                .Item("TOTALABSENTHOUR") = AbsentHour_LBL.Text
-
-            '                .Item("TOTALOVERTIME") = TotalOTHr_LBL.Text
-            '                .Item("TOTALREGHOLIDAY") = TotalRHoliday_LBL.Text
-            '                .Item("TOTALSPECHOLIDAY") = TotalSHoliday_LBL.Text
-            '            End With
-            '            SaveEntry(ds, False)
-            '        End Using
-
-            '        MsgBox("Succesfully Updated!", MsgBoxStyle.Information, "Information")
-
-            '    End If
-
-            'End If
-
         Else
             MsgBox("Please Choose Employee's Name!", MsgBoxStyle.Critical, "Error")
         End If
 
-        'ClearAfter()
     End Sub
-
-
-    'Private Function isNotExist()
-
-    '    Dim mysql As String = "SELECT * FROM PAYROLL_ATTENDANCE Where BIOMETRICID = '" & BiometricID_TXT.Text & "' and FROMDATE = '" & startingDate & "' and TODATE = '" & startingDate & "'"
-    '    Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
-    '    If ds.Tables(0).Rows.Count > 0 Then
-    '        Return True
-    '    End If
-
-    '    Return False
-
-    'End Function
 
     Private Sub LoadEmployeeDetails()
 
@@ -687,7 +591,6 @@ Public Class frmAttendance
                 MyConnection.Close()
 
             Else
-
                 'other bio
 
             End If
@@ -697,12 +600,27 @@ Public Class frmAttendance
 
     Private Sub Bio_grid_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles Bio_grid.MouseDoubleClick
 
+        For Each oRow As DataGridViewRow In DataGridView1.Rows
+            For cell As Integer = 1 To 4
+                oRow.Cells(cell).Value = Nothing
+            Next
+            oRow.Cells(5).Value = False
+        Next
+
+        DataGridView1.Refresh()
+
         CheckALL_CheckBox.Checked = False
         Dim i As Integer = Bio_grid.CurrentRow.Index
         Attendance_Tab.SelectedIndex = 1
         BiometricID_TXT.Text = Bio_grid.Item(0, i).Value
         Name_TXT.Text = Bio_grid.Item(1, i).Value
+
         DataGridView1.ClearSelection()
+
+        Attendance(Bio_grid.Item(0, i).Value)
+    End Sub
+
+    Private Sub Attendance(bioNo As String)
 
         Dim paydatee As String
 
@@ -713,11 +631,9 @@ Public Class frmAttendance
         End If
 
 
-        Dim mysql As String = $"Select * From IMPORT_DTR where BIO_ID = '{Bio_grid.Item(0, i).Value}' and BRANCH = '{Branch_ComboB.SelectedItem}' and PAYDATE = '{paydatee}'"
+        Dim mysql As String = $"Select * From IMPORT_DTR where BIO_ID = '{bioNo}' and BRANCH = '{Branch_ComboB.SelectedItem}' and PAYDATE = '{paydatee}'"
         Using ds As DataSet = LoadSQL(mysql, "IMPORT_DTR")
             If ds.Tables(0).Rows.Count > 0 Then
-
-                Dim list_dateHour, list_inOut, list_hourMin, list_Group, list_count As New List(Of String)()
 
                 For Each dr In ds.Tables(0).Rows
                     With dr
@@ -740,7 +656,7 @@ Public Class frmAttendance
                 Next
 
                 Dim timee As List(Of String) = list_inOut.Distinct().ToList
-                Dim hourMinn As List(Of String) = list_hourMin.Distinct().ToList
+                hourMinn = list_hourMin.Distinct().ToList
 
                 For Each value As String In hourMinn
                     Dim newValue As String
@@ -756,53 +672,20 @@ Public Class frmAttendance
                             Dim asss As Date = DataGridView1.Rows(rowIndex).Tag
 
                             If asss = date_table Then
+
+                                Console.WriteLine(asss & "  same " & date_table)
+
                                 row.Cells(5) = New DataGridViewCheckBoxCell With {.Value = True}
 
                                 For Each timeValue As String In timee
                                     If timeValue.StartsWith(value) Then
 
-                                        Dim dateee As DateTime = timeValue
+                                        dateee = timeValue
                                         Dim newVv As DateTime = value ' new
 
-                                        Console.WriteLine(value & "  second " & dateee.ToShortTimeString())
+                                        Console.WriteLine(newVv.ToString("d") & "  second " & dateee.ToString("d"))
 
-                                        'If newVv.ToString("d") = dateee.ToString("d") Then
-
-                                        '    Console.WriteLine(newVv.ToString("d") & " VS " & dateee.ToString("d"))
-
-                                        '    If CountDate(hourMinn, newVv.ToString("d")) = 3 Then
-                                        '        Console.WriteLine("3 dates ")
-                                        '        list_count = SortCountedDATE(hourMinn, newVv.ToString("d"))
-                                        '    ElseIf CountDate(hourMinn, newVv.ToString("d")) = 4 Then
-                                        '        Console.WriteLine("4 dates ")
-                                        '        list_count = SortCountedDATE(hourMinn, newVv.ToString("d"))
-                                        '    End If
-
-                                        'End If
-
-
-                                        'If list_count.Count = 4 Then
-
-                                        '    Console.WriteLine("lIST cOUNT " & list_count.Count)
-
-                                        '    Dim aa As Integer = 1
-
-                                        '    For Each groupHour As String In list_count
-
-                                        '        Dim aaa As DateTime = groupHour
-                                        '        row.Cells(aa).Value = aaa.ToString("t")
-                                        '        aa += 1
-
-
-                                        '        Console.WriteLine("VALUEE " & aaa.ToString("t"))
-                                        '    Next
-
-                                        '    list_count.Clear()
-                                        'Else
-
-                                        '    Console.WriteLine("NOT lIST cOUNT  " & list_count.Count)
                                         '============================== WORKED FINE ========================
-
 
                                         Dim minAM_IN As New TimeSpan(5, 0, 0)
                                         Dim maxAM_IN As New TimeSpan(11, 5, 9)
@@ -813,10 +696,10 @@ Public Class frmAttendance
                                         Dim minPM_OUT As New TimeSpan(16, 0, 0)
                                         Dim maxPM_OUT As New TimeSpan(23, 0, 0)
 
+                                        Dim min_12 As New TimeSpan(12, 0, 0)
+                                        Dim max_12 As New TimeSpan(12, 5, 9)
 
                                         If dateee.TimeOfDay >= minAM_IN And dateee.TimeOfDay <= maxAM_IN Then
-
-                                            Dim checkThis As String = row.Cells(1).Value
 
                                             row.Cells(1).Value = dateee.ToString("t")
                                             Exit For
@@ -831,7 +714,7 @@ Public Class frmAttendance
                                             row.Cells(3).Value = dateee.ToString("t")
                                             Exit For
 
-                                        Else
+                                        ElseIf dateee.TimeOfDay >= min_12 And dateee.TimeOfDay <= max_12 Then
 
                                             Dim oldValuee As DateTime = value
                                             Dim newValuee As String = oldValuee.ToString("d") & " " & oldValuee.TimeOfDay.Hours
@@ -854,7 +737,6 @@ Public Class frmAttendance
 
                                                         Dim aaa As DateTime = groupHour
                                                         row.Cells(aa).Value = aaa.ToString("t")
-                                                        'Console.WriteLine("Group " & groupHour)
                                                         aa += 1
                                                     Next
 
@@ -866,7 +748,6 @@ Public Class frmAttendance
 
                                                         Dim aaa As DateTime = groupHour
                                                         row.Cells(2).Value = aaa.ToString("t")
-                                                        'Console.WriteLine("Group " & groupHour)
 
                                                     Next
 
@@ -874,14 +755,12 @@ Public Class frmAttendance
                                                 End If
 
                                             End If
-                                            'End If
+                                        Else
+                                            row.Cells(2).Value = dateee.ToString("t")
                                         End If
-
                                     End If
+
                                 Next
-
-                                '======================================== TESTING ====================================================
-
                             End If
 
                         Next
@@ -891,6 +770,319 @@ Public Class frmAttendance
             End If
         End Using
 
+        For Each lists As DateTime In list_count
+            Console.WriteLine("Lists " & lists)
+        Next
+
+        Calculate_BTN.PerformClick()
+    End Sub
+
+    'Public Sub FORsAFETY()
+    '    '========================================= To List ===============================
+
+    '    If newVv.ToString("d") = dateee.ToString("d") Then
+
+    '        list_count = SortCountedDATE(hourMinn, newVv.ToString("d"))
+
+    '        Console.WriteLine(" Count This " & list_count.Count)
+    '    End If
+
+    '    '======================================== Check List Count ==============================
+
+    '    If list_count.Count = 4 Then
+
+    '        For Each lists As DateTime In list_count
+
+    '            If lists > "5:00 AM" And lists < "11:59 AM" Then
+    '                row.Cells(1).Value = lists.ToString("t")
+    '            ElseIf lists > "13:00 PM" And lists < "15:00 PM" Then
+    '                row.Cells(3).Value = lists.ToString("t")
+    '            ElseIf lists > "16:00 PM" And lists < "23:00 PM" Then
+    '                row.Cells(4).Value = lists.ToString("t")
+    '            Else
+
+    '                Dim oldValuee As DateTime = value
+    '                Dim newValuee As String = oldValuee.ToString("d") & " " & oldValuee.TimeOfDay.Hours
+    '                Dim val As String = oldValuee.ToString("d") & " " & "12"
+
+    '                If newValuee = val Then
+
+    '                    If CountDate(hourMinn, val) = 2 Then
+    '                        list_Group = SortCountedDATE(hourMinn, val)
+    '                    ElseIf CountDate(hourMinn, val) = 1 Then
+    '                        list_Group = SortCountedDATE(hourMinn, val)
+    '                    End If
+
+
+    '                    '======================== PRINT 12 NOON ================ WORKED FINE
+    '                    If list_Group.Count = 2 Then
+    '                        Dim aa As Integer = 2
+
+    '                        For Each groupHour As String In list_Group
+
+    '                            Dim aaa As DateTime = groupHour
+    '                            row.Cells(aa).Value = aaa.ToString("t")
+    '                            aa += 1
+    '                        Next
+
+    '                        list_Group.Clear()
+
+    '                    ElseIf list_Group.Count = 1 Then
+
+    '                        For Each groupHour As String In list_Group
+
+    '                            Dim aaa As DateTime = groupHour
+    '                            row.Cells(2).Value = aaa.ToString("t")
+
+    '                        Next
+
+    '                        list_Group.Clear()
+    '                    End If
+    '                End If
+    '            End If
+    '        Next
+
+    '        list_count.Clear()
+
+    '    ElseIf list_count.Count = 3 Then
+
+    '        For Each lists As DateTime In list_count
+
+    '            If lists > "5:00 AM" And lists < "11:59 AM" Then
+    '                row.Cells(1).Value = lists.ToString("t")
+    '            ElseIf lists > "13:00 PM" And lists < "15:00 PM" Then
+    '                row.Cells(3).Value = lists.ToString("t")
+    '            ElseIf lists > "16:00 PM" And lists < "23:00 PM" Then
+    '                row.Cells(4).Value = lists.ToString("t")
+    '            Else
+
+    '                Dim oldValuee As DateTime = value
+    '                Dim newValuee As String = oldValuee.ToString("d") & " " & oldValuee.TimeOfDay.Hours
+    '                Dim val As String = oldValuee.ToString("d") & " " & "12"
+
+    '                If newValuee = val Then
+
+    '                    If CountDate(hourMinn, val) = 2 Then
+    '                        list_Group = SortCountedDATE(hourMinn, val)
+    '                    ElseIf CountDate(hourMinn, val) = 1 Then
+    '                        list_Group = SortCountedDATE(hourMinn, val)
+    '                    End If
+
+
+    '                    '======================== PRINT 12 NOON ================ WORKED FINE
+    '                    If list_Group.Count = 2 Then
+    '                        Dim aa As Integer = 2
+
+    '                        For Each groupHour As String In list_Group
+
+    '                            Dim aaa As DateTime = groupHour
+    '                            row.Cells(aa).Value = aaa.ToString("t")
+    '                            aa += 1
+    '                        Next
+
+    '                        list_Group.Clear()
+
+    '                    ElseIf list_Group.Count = 1 Then
+
+    '                        For Each groupHour As String In list_Group
+
+    '                            Dim aaa As DateTime = groupHour
+    '                            row.Cells(2).Value = aaa.ToString("t")
+
+    '                        Next
+
+    '                        list_Group.Clear()
+    '                    End If
+    '                End If
+    '            End If
+    '        Next
+
+    '        list_count.Clear()
+    '    ElseIf list_count.Count = 2 Then
+
+    '        For Each lists As DateTime In list_count
+
+    '            If lists > "5:00 AM" And lists < "11:59 AM" Then
+    '                row.Cells(1).Value = lists.ToString("t")
+    '            ElseIf lists > "13:00 PM" And lists < "15:00 PM" Then
+    '                row.Cells(3).Value = lists.ToString("t")
+    '            ElseIf lists > "16:00 PM" And lists < "23:00 PM" Then
+    '                row.Cells(4).Value = lists.ToString("t")
+    '            Else
+
+    '                Dim oldValuee As DateTime = value
+    '                Dim newValuee As String = oldValuee.ToString("d") & " " & oldValuee.TimeOfDay.Hours
+    '                Dim val As String = oldValuee.ToString("d") & " " & "12"
+
+    '                If newValuee = val Then
+
+    '                    If CountDate(hourMinn, val) = 2 Then
+    '                        list_Group = SortCountedDATE(hourMinn, val)
+    '                    ElseIf CountDate(hourMinn, val) = 1 Then
+    '                        list_Group = SortCountedDATE(hourMinn, val)
+    '                    End If
+
+
+    '                    '======================== PRINT 12 NOON ================ WORKED FINE
+    '                    If list_Group.Count = 2 Then
+    '                        Dim aa As Integer = 2
+
+    '                        For Each groupHour As String In list_Group
+
+    '                            Dim aaa As DateTime = groupHour
+    '                            row.Cells(aa).Value = aaa.ToString("t")
+    '                            aa += 1
+    '                        Next
+
+    '                        list_Group.Clear()
+
+    '                    ElseIf list_Group.Count = 1 Then
+
+    '                        For Each groupHour As String In list_Group
+
+    '                            Dim aaa As DateTime = groupHour
+    '                            row.Cells(2).Value = aaa.ToString("t")
+
+    '                        Next
+
+    '                        list_Group.Clear()
+    '                    End If
+    '                End If
+    '            End If
+    '        Next
+
+    '        list_count.Clear()
+
+    '    ElseIf list_count.Count = 1 Then
+
+    '        Dim lists As DateTime = list_count.Item(0)
+
+    '        If lists > "5:00 AM" And lists < "11:59 AM" Then
+    '            row.Cells(1).Value = list_count.Item(0).ToString("t")
+    '        ElseIf lists > "13:00 PM" And lists < "15:00 PM" Then
+    '            row.Cells(3).Value = list_count.Item(0).ToString("t")
+    '        ElseIf lists > "16:00 PM" And lists < "23:00 PM" Then
+    '            row.Cells(4).Value = list_count.Item(0).ToString("t")
+    '        Else
+
+    '            Dim oldValuee As DateTime = value
+    '            Dim newValuee As String = oldValuee.ToString("d") & " " & oldValuee.TimeOfDay.Hours
+    '            Dim val As String = oldValuee.ToString("d") & " " & "12"
+
+    '            If newValuee = val Then
+
+    '                If CountDate(hourMinn, val) = 2 Then
+    '                    list_Group = SortCountedDATE(hourMinn, val)
+    '                ElseIf CountDate(hourMinn, val) = 1 Then
+    '                    list_Group = SortCountedDATE(hourMinn, val)
+    '                End If
+
+
+    '                '======================== PRINT 12 NOON ================ WORKED FINE
+    '                If list_Group.Count = 2 Then
+    '                    Dim aa As Integer = 2
+
+    '                    For Each groupHour As String In list_Group
+
+    '                        Dim aaa As DateTime = groupHour
+    '                        row.Cells(aa).Value = aaa.ToString("t")
+    '                        aa += 1
+    '                    Next
+
+    '                    list_Group.Clear()
+
+    '                ElseIf list_Group.Count = 1 Then
+
+    '                    For Each groupHour As String In list_Group
+
+    '                        Dim aaa As DateTime = groupHour
+    '                        row.Cells(2).Value = aaa.ToString("t")
+
+    '                    Next
+
+    '                    list_Group.Clear()
+    '                End If
+    '            End If
+    '        End If
+
+    '        list_count.Clear()
+    '    End If
+
+    'End Sub
+
+    Private Sub sample(dateee As DateTime, value As DateTime)
+
+        For Each row As DataGridViewRow In DataGridView1.Rows
+            Dim minAM_IN As New TimeSpan(5, 0, 0)
+            Dim maxAM_IN As New TimeSpan(11, 5, 9)
+
+            Dim min_noon As New TimeSpan(13, 0, 0)
+            Dim max_noon As New TimeSpan(15, 0, 0)
+
+            Dim minPM_OUT As New TimeSpan(16, 0, 0)
+            Dim maxPM_OUT As New TimeSpan(23, 0, 0)
+
+
+            If dateee.TimeOfDay >= minAM_IN And dateee.TimeOfDay <= maxAM_IN Then
+
+                Dim checkThis As String = row.Cells(1).Value
+
+                row.Cells(1).Value = dateee.ToString("t")
+                Exit For
+
+            ElseIf dateee.TimeOfDay >= minPM_OUT And dateee.TimeOfDay <= maxPM_OUT Then
+
+                row.Cells(4).Value = dateee.ToString("t")
+                Exit For
+
+            ElseIf dateee.TimeOfDay >= min_noon And dateee.TimeOfDay <= max_noon Then
+
+                row.Cells(3).Value = dateee.ToString("t")
+                Exit For
+
+            Else
+
+                Dim oldValuee As DateTime = value
+                Dim newValuee As String = oldValuee.ToString("d") & " " & oldValuee.TimeOfDay.Hours
+                Dim val As String = oldValuee.ToString("d") & " " & "12"
+
+                If newValuee = val Then
+
+                    If CountDate(hourMinn, val) = 2 Then
+                        list_Group = SortCountedDATE(hourMinn, val)
+                    ElseIf CountDate(hourMinn, val) = 1 Then
+                        list_Group = SortCountedDATE(hourMinn, val)
+                    End If
+
+
+                    '======================== PRINT 12 NOON ================ WORKED FINE
+                    If list_Group.Count = 2 Then
+                        Dim aa As Integer = 2
+
+                        For Each groupHour As String In list_Group
+
+                            Dim aaa As DateTime = groupHour
+                            row.Cells(aa).Value = aaa.ToString("t")
+                            aa += 1
+                        Next
+
+                        list_Group.Clear()
+
+                    ElseIf list_Group.Count = 1 Then
+
+                        For Each groupHour As String In list_Group
+
+                            Dim aaa As DateTime = groupHour
+                            row.Cells(2).Value = aaa.ToString("t")
+
+                        Next
+
+                        list_Group.Clear()
+                    End If
+
+                End If
+            End If
+        Next
     End Sub
 
     Private Function CheckTimeRange(myDate As DateTime, minTime As TimeSpan, maxTime As TimeSpan) As Boolean
@@ -999,13 +1191,18 @@ Public Class frmAttendance
         Name_TXT.Clear()
 
         TotalDays_LBL.Text = 0
-        TotalLateHR_LBL.Text = 0
-        TotalLateMIN_LBL.Text = 0
-        TotalUTHR_LBL.Text = 0
-        TotalUTMIN_LBL.Text = 0
-        TotalOTHr_LBL.Text = 0
+        hourOfDay_LBL.Text = 0
+
         TotalRHoliday_LBL.Text = 0
         TotalSHoliday_LBL.Text = 0
+
+        TotalOTHr_LBL.Text = 0
+
+        TotalLateHR_LBL.Text = 0
+        TotalLateMIN_LBL.Text = 0
+
+        TotalUTHR_LBL.Text = 0
+        TotalUTMIN_LBL.Text = 0
 
         TotalAbsent_LBL.Text = 0
         AbsentHour_LBL.Text = 0
