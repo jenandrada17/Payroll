@@ -17,6 +17,8 @@ Public Class frmAttendance
     Dim list_dateHour, list_inOut, list_hourMin, list_Group, list_count As New List(Of String)()
     Dim hourMinn As List(Of String)
     Dim dateee As DateTime
+    Dim DATE_ONLY, am_in, am_out, pm_in, pm_out As String
+    Dim list_hour(3) As String
 
     Private Sub frmAttendance_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
@@ -538,6 +540,146 @@ Public Class frmAttendance
         End Using
     End Sub
 
+    Private Sub ToDAtabse(bio As String, datee As DateTime)
+        Dim datt As DateTime = datee
+        datt.ToShortTimeString()
+        Dim str As String = datt
+        Dim hourMin As String = datt
+
+        If str.Length <> 0 Then
+            list_inOut.Add(datt)
+        End If
+
+        If hourMin.Length <> 0 Then
+            hourMin = hourMin.Substring(0, hourMin.Length - 6)
+            list_hourMin.Add(hourMin)
+            Console.WriteLine("that " & datt)
+        End If
+
+        Dim timee As List(Of String) = list_inOut.Distinct().ToList
+        hourMinn = list_hourMin.Distinct().ToList
+
+        For Each value As String In hourMinn
+            Dim newValue As String
+            Dim pos As Integer = value.LastIndexOf(" ")
+
+            If pos <> -1 Then
+                newValue = value.Substring(0, pos)
+                Dim date_table As Date = newValue
+
+                For Each row As DataGridViewRow In DataGridView1.Rows
+
+                    Dim rowIndex As Integer = row.Index
+                    Dim asss As Date = DataGridView1.Rows(rowIndex).Tag
+
+                    If asss = date_table Then
+
+                        Console.WriteLine(asss & "  same " & date_table)
+
+                        For Each timeValue As String In timee
+                            If timeValue.StartsWith(value) Then
+                                dateee = timeValue
+                                Dim newVv As DateTime = value ' new 
+
+                                DATE_ONLY = dateee.ToString("d") '=============== FOR SAVING ===============
+
+                                Console.WriteLine(newVv.ToString("d") & "  second " & dateee.ToString("d"))
+
+                                '============================== WORKED FINE ========================
+
+                                Dim minAM_IN As New TimeSpan(5, 0, 0)
+                                Dim maxAM_IN As New TimeSpan(11, 5, 9)
+
+                                Dim min_noon As New TimeSpan(13, 0, 0)
+                                Dim max_noon As New TimeSpan(15, 0, 0)
+
+                                Dim minPM_OUT As New TimeSpan(16, 0, 0)
+                                Dim maxPM_OUT As New TimeSpan(23, 0, 0)
+
+                                Dim min_12 As New TimeSpan(12, 0, 0)
+                                Dim max_12 As New TimeSpan(12, 5, 9)
+
+                                If dateee.TimeOfDay >= minAM_IN And dateee.TimeOfDay <= maxAM_IN Then
+                                    'am_in = dateee.ToString("t") 
+
+                                    list_hour(0) = dateee.ToString("t")
+
+                                    Exit For
+
+                                ElseIf dateee.TimeOfDay >= minPM_OUT And dateee.TimeOfDay <= maxPM_OUT Then
+
+                                    'pm_out = dateee.ToString("t")
+                                    list_hour(3) = dateee.ToString("t")
+                                    Exit For
+
+                                ElseIf dateee.TimeOfDay >= min_noon And dateee.TimeOfDay <= max_noon Then
+
+                                    'pm_in = dateee.ToString("t")
+                                    list_hour(2) = dateee.ToString("t")
+                                    Exit For
+
+                                ElseIf dateee.TimeOfDay >= min_12 And dateee.TimeOfDay <= max_12 Then
+
+                                    Dim oldValuee As DateTime = value
+                                    Dim newValuee As String = oldValuee.ToString("d") & " " & oldValuee.TimeOfDay.Hours
+                                    Dim val As String = oldValuee.ToString("d") & " " & "12"
+
+                                    If newValuee = val Then
+
+                                        If CountDate(hourMinn, val) = 2 Then
+                                            list_Group = SortCountedDATE(hourMinn, val)
+                                        ElseIf CountDate(hourMinn, val) = 1 Then
+                                            list_Group = SortCountedDATE(hourMinn, val)
+                                        End If
+
+
+                                        '======================== PRINT 12 NOON ================ WORKED FINE
+                                        If list_Group.Count = 2 Then
+
+                                            Dim list1 As DateTime = list_Group.Item(0)
+                                            Dim list2 As DateTime = list_Group.Item(1)
+
+                                            'am_out = list1.ToString("t")
+                                            'pm_in = list2.ToString("t")
+
+                                            list_hour(1) = list1.ToString("t")
+                                            list_hour(2) = list2.ToString("t")
+
+                                            list_Group.Clear()
+                                            Exit For
+                                        ElseIf list_Group.Count = 1 Then
+
+                                            Dim list1 As DateTime = list_Group.Item(0)
+                                            'am_out = list1.ToString("t")
+
+                                            list_hour(1) = list1.ToString("t")
+
+                                            list_Group.Clear()
+                                            Exit For
+                                        End If
+
+                                    End If
+                                Else
+                                    'am_out = dateee.ToString("t")
+                                    list_hour(1) = dateee.ToString("t")
+                                    Exit For
+                                End If
+                            End If
+
+                        Next
+
+                    End If
+                Next
+
+            End If
+        Next
+
+        'Console.WriteLine(bio & " List Count " & list_hour.Count)
+        'For Each value As String In list_hour
+        '    Console.WriteLine("List " & value)
+        'Next
+    End Sub
+
     Private Sub Import_BTN_Click(sender As Object, e As EventArgs) Handles Import_BTN.Click
 
         If Branch_ComboB.SelectedItem = "" Then
@@ -566,9 +708,13 @@ Public Class frmAttendance
                     Cursor = Cursors.WaitCursor
 
                     For row = 2 To DtSet.Tables(0).Rows.Count
-                        UpdateBiometricSheet(Paydate, eCell(row, 1).Value, eCell(row, 2).Value, Branch_ComboB.SelectedItem)
+                        ToDAtabse(eCell(row, 1).Value, eCell(row, 2).Value)
+                        SaveDTR(eCell(row, 1).Value, Paydate, DATE_ONLY, Branch_ComboB.SelectedItem, list_hour(0), list_hour(1), list_hour(2), list_hour(3))
                     Next
-
+                    list_hour(0) = ""
+                    list_hour(1) = ""
+                    list_hour(2) = ""
+                    list_hour(3) = ""
                     Cursor = Cursors.Default
 
                 ElseIf File_NOT_Exist(Path_TXT, Branch_ComboB.SelectedItem, Paydate) Then
@@ -576,9 +722,14 @@ Public Class frmAttendance
                     Cursor = Cursors.WaitCursor
 
                     For row = 2 To DtSet.Tables(0).Rows.Count
-                        SaveBiometricSheet(Paydate, eCell(row, 1).Value, eCell(row, 2).Value, Branch_ComboB.SelectedItem)
+                        ToDAtabse(eCell(row, 1).Value, eCell(row, 2).Value)
+                        SaveDTR(eCell(row, 1).Value, Paydate, DATE_ONLY, Branch_ComboB.SelectedItem, list_hour(0), list_hour(1), list_hour(2), list_hour(3))
                     Next
 
+                    list_hour(0) = ""
+                    list_hour(1) = ""
+                    list_hour(2) = ""
+                    list_hour(3) = ""
                     Cursor = Cursors.Default
                 Else
                     Path_TXT.Text = ""
@@ -596,18 +747,73 @@ Public Class frmAttendance
             End If
         End If
 
+        '====================================================== ORIGIINAL ======================================
+        'If Branch_ComboB.SelectedItem = "" Then
+        '    MsgBox("Please Select File", MsgBoxStyle.Critical, "Error")
+        'Else
+
+        '    If Zkteco_RadioB.Checked Then
+
+        '        eApp = New Excel.Application
+        '        eBook = eApp.Workbooks.Open(Path_TXT.Text)
+        '        eSheet = eBook.Worksheets(1)
+        '        eCell = eSheet.UsedRange
+        '        Dim row As Integer
+
+        '        Dim MyConnection As System.Data.OleDb.OleDbConnection
+        '        Dim DtSet As System.Data.DataSet
+        '        Dim MyCommand As System.Data.OleDb.OleDbDataAdapter
+        '        MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path_TXT.Text}';Extended Properties=Excel 8.0;")
+        '        MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
+        '        MyCommand.TableMappings.Add("Table", "Net-informations.com")
+        '        DtSet = New System.Data.DataSet
+        '        MyCommand.Fill(DtSet)
+
+        '        If File_Exist(Path_TXT, Branch_ComboB.SelectedItem, Paydate) Then
+
+        '            Cursor = Cursors.WaitCursor
+
+        '            For row = 2 To DtSet.Tables(0).Rows.Count
+        '                UpdateBiometricSheet(Paydate, eCell(row, 1).Value, eCell(row, 2).Value, Branch_ComboB.SelectedItem)
+        '            Next
+
+        '            Cursor = Cursors.Default
+
+        '        ElseIf File_NOT_Exist(Path_TXT, Branch_ComboB.SelectedItem, Paydate) Then
+
+        '            Cursor = Cursors.WaitCursor
+
+        '            For row = 2 To DtSet.Tables(0).Rows.Count
+        '                SaveBiometricSheet(Paydate, eCell(row, 1).Value, eCell(row, 2).Value, Branch_ComboB.SelectedItem)
+        '            Next
+
+        '            Cursor = Cursors.Default
+        '        Else
+        '            Path_TXT.Text = ""
+        '        End If
+
+        '        PopulateBiometricSHEET(Bio_grid, Paydate, Branch_ComboB.SelectedItem)
+        '        Import_BTN.Enabled = False
+        '        Path_TXT.Clear()
+        '        'Branch_ComboB.Text = "   Select Branch"
+        '        MyConnection.Close()
+
+        '    Else
+        '        'other bio
+
+        '    End If
+        'End If
+
     End Sub
 
     Private Sub Bio_grid_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles Bio_grid.MouseDoubleClick
 
-        For Each oRow As DataGridViewRow In DataGridView1.Rows
-            For cell As Integer = 1 To 4
-                oRow.Cells(cell).Value = Nothing
-            Next
-            oRow.Cells(5).Value = False
-        Next
-
-        DataGridView1.Refresh()
+        'For Each oRow As DataGridViewRow In DataGridView1.Rows
+        '    oRow.Cells(5).Value = False
+        '    For cell As Integer = 1 To 4
+        '        oRow.Cells(cell).Value = Nothing
+        '    Next
+        'Next
 
         CheckALL_CheckBox.Checked = False
         Dim i As Integer = Bio_grid.CurrentRow.Index
@@ -643,7 +849,6 @@ Public Class frmAttendance
                         Dim hourMin As String = datt
 
                         If str.Length <> 0 Then
-                            str = str.Substring(0, str.Length - 9)
                             list_inOut.Add(datt)
                         End If
 
@@ -761,6 +966,8 @@ Public Class frmAttendance
                                     End If
 
                                 Next
+                            Else
+                                row.Cells(5) = New DataGridViewCheckBoxCell With {.Value = False}
                             End If
 
                         Next

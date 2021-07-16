@@ -169,4 +169,103 @@
         End If
     End Sub
 
+    Public Sub SaveDTR(bioID As String, payDate As String, DATE_ONLY As String, BRANCH As String, AM_IN As String, AM_OUT As String, PM_IN As String, PM_OUT As String)
+        Dim mysql As String
+
+        mysql = $"Select * FROM BIOMETRIC_DTR where BIO_ID = '{bioID}' and DATE_ONLY = '{DATE_ONLY}' and BRANCH = '{BRANCH}' and PAYDATE = '{payDate}'"
+        Dim ds As DataSet = LoadSQL(mysql, "BIOMETRIC_DTR")
+        If ds.Tables(0).Rows.Count > 0 Then
+
+            With ds.Tables(0).Rows(0)
+
+                .Item("AM_IN") = AM_IN
+                .Item("AM_OUT") = AM_OUT
+                .Item("PM_IN") = PM_IN
+                .Item("PM_OUT") = PM_OUT
+
+            End With
+            SaveEntry(ds, False)
+
+        Else
+
+            mysql = "Select * From BIOMETRIC_DTR Rows 1"
+            Using dss As DataSet = LoadSQL(mysql, "BIOMETRIC_DTR")
+
+                Dim dsNewRow As DataRow = dss.Tables(0).NewRow
+                With dsNewRow
+
+                    .Item("BIO_ID") = bioID
+                    .Item("PAYDATE") = payDate
+                    .Item("DATE_ONLY") = DATE_ONLY
+                    .Item("BRANCH") = BRANCH
+                    .Item("AM_IN") = AM_IN
+                    .Item("AM_OUT") = AM_OUT
+                    .Item("PM_IN") = PM_IN
+                    .Item("PM_OUT") = PM_OUT
+
+                End With
+                dss.Tables(0).Rows.Add(dsNewRow)
+                SaveEntry(dss)
+            End Using
+        End If
+
+    End Sub
+
+
+    Public Sub UpdateDTR(bioID As String, payDate As String, DATE_ONLY As String, BRANCH As String, AM_IN As String, AM_OUT As String, PM_IN As String, PM_OUT As String)
+
+        Dim mysql As String = $"Select * FROM BIOMETRIC_DTR where BRANCH = '{BRANCH}' and PAYDATE = '{payDate}'"
+        Dim dss As DataSet = LoadSQL(mysql, "BIOMETRIC_DTR")
+        If dss.Tables(0).Rows.Count > 0 Then
+
+            With dss.Tables(0).Rows(0)
+
+                .Item("BIO_ID") = bioID
+                .Item("DATE_ONLY") = DATE_ONLY
+                .Item("AM_IN") = AM_IN
+                .Item("AM_OUT") = AM_OUT
+                .Item("PM_IN") = PM_IN
+                .Item("PM_OUT") = PM_OUT
+
+            End With
+            SaveEntry(dss, False)
+        End If
+    End Sub
+
+    Public Sub SaveIndividual(bioID As String, payDate As String, DATE_ONLY As String, BRANCH As String, hour As String, column As String)
+        Dim mysql As String
+
+        mysql = $"Select * FROM BIOMETRIC_DTR where BIO_ID = '{bioID}' and DATE_ONLY = '{DATE_ONLY}' and BRANCH = '{BRANCH}' and PAYDATE = '{payDate}'"
+        Dim ds As DataSet = LoadSQL(mysql, "BIOMETRIC_DTR")
+        If ds.Tables(0).Rows.Count > 0 Then
+
+            With ds.Tables(0).Rows(0)
+
+                .Item(column) = hour
+
+            End With
+            SaveEntry(ds, False)
+
+        Else
+
+            mysql = "Select * From BIOMETRIC_DTR Rows 1"
+            Using dss As DataSet = LoadSQL(mysql, "BIOMETRIC_DTR")
+
+                Dim dsNewRow As DataRow = dss.Tables(0).NewRow
+                With dsNewRow
+
+                    .Item("BIO_ID") = bioID
+                    .Item("PAYDATE") = payDate
+                    .Item("DATE_ONLY") = DATE_ONLY
+                    .Item("BRANCH") = BRANCH
+                    .Item(column) = hour
+
+                End With
+                dss.Tables(0).Rows.Add(dsNewRow)
+                SaveEntry(dss)
+            End Using
+        End If
+
+    End Sub
+
 End Module
