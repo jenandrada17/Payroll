@@ -249,6 +249,7 @@ Partial Class frmAttendance
         Me.Bio_grid.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.BIOID_DGVV, Me.Name_DGVV})
         Me.Bio_grid.Location = New System.Drawing.Point(3, 3)
         Me.Bio_grid.Name = "Bio_grid"
+        Me.Bio_grid.ReadOnly = True
         Me.Bio_grid.RowHeadersVisible = False
         Me.Bio_grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.Bio_grid.Size = New System.Drawing.Size(554, 48)
@@ -258,6 +259,7 @@ Partial Class frmAttendance
         '
         Me.BIOID_DGVV.HeaderText = "Biometric No."
         Me.BIOID_DGVV.Name = "BIOID_DGVV"
+        Me.BIOID_DGVV.ReadOnly = True
         Me.BIOID_DGVV.Width = 150
         '
         'Name_DGVV

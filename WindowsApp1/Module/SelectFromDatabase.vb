@@ -187,19 +187,21 @@ Module SelectFromDatabase
         End Using
     End Sub
 
-    Public Function File_Exist(path As TextBox, branch As String, PAYDATE As String)
+    Public Function File_Exist(branch As String, PAYDATE As String)
         Dim mysql As String = $"Select * FROM IMPORT_DTR where BRANCH = '{branch}' and PAYDATE = '{PAYDATE}'"
         Dim ds As DataSet = LoadSQL(mysql, "IMPORT_DTR")
         If ds.Tables(0).Rows.Count > 0 Then
             Dim result As DialogResult = MessageBox.Show("File already imported, Do you want to modify?", "Warning", MessageBoxButtons.YesNo)
             If result = DialogResult.Yes Then
+                RunCommand("DELETE FROM IMPORT_DTR WHERE BRANCH = '" & branch & "' and PAYDATE = '" & PAYDATE & "';")  'THIS IS TO DELETE EXISTING SHEETS IN IMPORT_DTR
+                RunCommand("DELETE FROM BIOMETRIC_DTR WHERE BRANCH = '" & branch & "' and PAYDATE = '" & PAYDATE & "';")  'THIS IS TO DELETE EXISTING ATTENDANCE IN BIOMETRIC_DTR
                 Return True
             End If
         End If
         Return False
     End Function
 
-    Public Function File_NOT_Exist(path As TextBox, branch As String, PAYDATE As String)
+    Public Function File_NOT_Exist(branch As String, PAYDATE As String)
         Dim mysql As String = $"Select * FROM IMPORT_DTR where BRANCH = '{branch}' and PAYDATE = '{PAYDATE}'"
         Dim ds As DataSet = LoadSQL(mysql, "IMPORT_DTR")
         If ds.Tables(0).Rows.Count > 0 Then
@@ -213,7 +215,7 @@ Module SelectFromDatabase
     Friend Sub PopulateBiometricSHEET(datagrid As DataGridView, Paydate As String, BRANCHNAME As String)
 
         datagrid.Rows.Clear()
-        Dim mysql As String = $"Select distinct(BIO_ID), B.LASTNAME, B.FIRSTNAME, B.MIDDLENAME From IMPORT_DTR A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIO_ID where A.PAYDATE = '{Paydate}' and A.BRANCH = '{BRANCHNAME}'"
+        Dim mysql As String = $"Select distinct(BIO_ID), B.ID, B.LASTNAME, B.FIRSTNAME, B.MIDDLENAME From IMPORT_DTR A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIO_ID where A.PAYDATE = '{Paydate}' and A.BRANCH = '{BRANCHNAME}'"
 
         Using ds As DataSet = LoadSQL(mysql, "IMPORT_DTR")
             If ds.Tables(0).Rows.Count > 0 Then
@@ -236,6 +238,7 @@ Module SelectFromDatabase
             Dim row As DataGridViewRow = datagrid.Rows(rowId)
             row.Cells("BIOID_DGVV").Value = .Item("BIO_ID")
             row.Cells("Name_DGVV").Value = .Item("LASTNAME") & ", " & .Item("FIRSTNAME") & " " & .Item("MIDDLENAME")
+            row.Cells("Name_DGVV").Tag = .Item("ID")
             row.Height = 35
 
 
@@ -300,6 +303,8 @@ Module SelectFromDatabase
             If c.StartsWith(datee) Then
                 cnt = cnt + 1
             End If
+
+            Console.WriteLine("CountDate list_value- " & c & "val " & datee)
         Next
 
         Return cnt
@@ -365,5 +370,23 @@ Module SelectFromDatabase
         Console.WriteLine("Count " & count)
         Return count
     End Function
+
+    'Friend Sub Select_IMPORT_TABLE()
+
+    '    Dim mysql As String = "Select * From IMPORT_DTR GROUP BY BIO_ID"
+    '    Using ds As DataSet = LoadSQL(mysql, "IMPORT_DTR")
+
+    '        If ds.Tables(0).Rows.Count > 0 Then
+    '            For Each dr In ds.Tables(0).Rows
+    '                With dr
+    '                    Console.WriteLine("Group by bio_id " & .Item("BIO_ID"))
+    '                End With
+    '            Next
+    '        End If
+
+    '    End Using
+
+    'End Sub
+
 
 End Module

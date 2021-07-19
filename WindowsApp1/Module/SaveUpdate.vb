@@ -39,7 +39,7 @@
         RunCommand("DELETE FROM PAYROLL_HOLIDAY WHERE DATEE = '" & datee & "'")
     End Sub
 
-    Friend Sub SaveAttendance(biometric As String, emp_id As String, paydate As String, days As String, daysHR As String, overTime As String, late_total As String,
+    Friend Sub SaveAttendance(biometric As Integer, emp_id As Integer, paydate As String, days As String, daysHR As String, overTime As String, late_total As String,
                               under_total As String, absentDays As String, absentHR As String,
                               regHoliday As String, specHoliday As String)
         Dim mysql As String
@@ -64,8 +64,6 @@
 
             End With
             SaveEntry(dss, False)
-
-            MsgBox("Attendance updated!", MsgBoxStyle.Information, "Information")
         Else
 
             mysql = "Select * From PAYROLL_ATTENDANCE Rows 1"
@@ -94,8 +92,6 @@
                 ds.Tables(0).Rows.Add(dsNewRow)
                 SaveEntry(ds)
             End Using
-
-            MsgBox("New Attendance Added!", MsgBoxStyle.Information, "Information")
         End If
 
     End Sub
@@ -153,61 +149,43 @@
         End Using
     End Sub
 
-    Public Sub UpdateBiometricSheet(payDate As String, bioID As String, dateTime As String, BRANCHNAME As String)
+    'Public Sub UpdateBiometricSheet(payDate As String, bioID As String, dateTime As String, BRANCHNAME As String)
 
-        Dim mysql As String = $"Select * FROM IMPORT_DTR where BRANCH = '{BRANCHNAME}' and PAYDATE = '{payDate}'"
-        Dim dss As DataSet = LoadSQL(mysql, "IMPORT_DTR")
-        If dss.Tables(0).Rows.Count > 0 Then
+    '    Dim mysql As String = $"Select * FROM IMPORT_DTR where BRANCH = '{BRANCHNAME}' and PAYDATE = '{payDate}'"
+    '    Dim dss As DataSet = LoadSQL(mysql, "IMPORT_DTR")
+    '    If dss.Tables(0).Rows.Count > 0 Then
 
-            With dss.Tables(0).Rows(0)
+    '        With dss.Tables(0).Rows(0)
 
-                .Item("BIO_ID") = bioID
-                .Item("DATEANDTIME") = dateTime
+    '            .Item("BIO_ID") = bioID
+    '            .Item("DATEANDTIME") = dateTime
 
-            End With
-            SaveEntry(dss, False)
-        End If
-    End Sub
+    '        End With
+    '        SaveEntry(dss, False)
+    '    End If
+    'End Sub
 
     Public Sub SaveDTR(bioID As String, payDate As String, DATE_ONLY As String, BRANCH As String, AM_IN As String, AM_OUT As String, PM_IN As String, PM_OUT As String)
-        Dim mysql As String
 
-        mysql = $"Select * FROM BIOMETRIC_DTR where BIO_ID = '{bioID}' and DATE_ONLY = '{DATE_ONLY}' and BRANCH = '{BRANCH}' and PAYDATE = '{payDate}'"
-        Dim ds As DataSet = LoadSQL(mysql, "BIOMETRIC_DTR")
-        If ds.Tables(0).Rows.Count > 0 Then
+        Dim mysql As String = "Select * From BIOMETRIC_DTR Rows 1"
+        Using dss As DataSet = LoadSQL(mysql, "BIOMETRIC_DTR")
 
-            With ds.Tables(0).Rows(0)
+            Dim dsNewRow As DataRow = dss.Tables(0).NewRow
+            With dsNewRow
 
+                .Item("BIO_ID") = bioID
+                .Item("PAYDATE") = payDate
+                .Item("DATE_ONLY") = DATE_ONLY
+                .Item("BRANCH") = BRANCH
                 .Item("AM_IN") = AM_IN
                 .Item("AM_OUT") = AM_OUT
                 .Item("PM_IN") = PM_IN
                 .Item("PM_OUT") = PM_OUT
 
             End With
-            SaveEntry(ds, False)
-
-        Else
-
-            mysql = "Select * From BIOMETRIC_DTR Rows 1"
-            Using dss As DataSet = LoadSQL(mysql, "BIOMETRIC_DTR")
-
-                Dim dsNewRow As DataRow = dss.Tables(0).NewRow
-                With dsNewRow
-
-                    .Item("BIO_ID") = bioID
-                    .Item("PAYDATE") = payDate
-                    .Item("DATE_ONLY") = DATE_ONLY
-                    .Item("BRANCH") = BRANCH
-                    .Item("AM_IN") = AM_IN
-                    .Item("AM_OUT") = AM_OUT
-                    .Item("PM_IN") = PM_IN
-                    .Item("PM_OUT") = PM_OUT
-
-                End With
-                dss.Tables(0).Rows.Add(dsNewRow)
-                SaveEntry(dss)
-            End Using
-        End If
+            dss.Tables(0).Rows.Add(dsNewRow)
+            SaveEntry(dss)
+        End Using
 
     End Sub
 
