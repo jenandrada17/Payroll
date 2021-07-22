@@ -697,6 +697,10 @@ Public Class frmAttendance
             MsgBox("Please Select File", MsgBoxStyle.Critical, "Error")
         Else
 
+            Dim MyConnection As System.Data.OleDb.OleDbConnection
+            Dim DtSet As System.Data.DataSet
+            Dim MyCommand As System.Data.OleDb.OleDbDataAdapter
+
             If Zkteco_RadioB.Checked Then
 
                 eApp = New Excel.Application
@@ -705,9 +709,6 @@ Public Class frmAttendance
                 eCell = eSheet.UsedRange
                 Dim row As Integer
 
-                Dim MyConnection As System.Data.OleDb.OleDbConnection
-                Dim DtSet As System.Data.DataSet
-                Dim MyCommand As System.Data.OleDb.OleDbDataAdapter
                 MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path_TXT.Text}';Extended Properties=Excel 8.0;")
                 MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
                 MyCommand.TableMappings.Add("Table", "Net-informations.com")
@@ -748,7 +749,57 @@ Public Class frmAttendance
                 MyConnection.Close()
 
             Else
-                'other bio 
+
+                eApp = New Excel.Application
+                eBook = eApp.Workbooks.Open(Path_TXT.Text)
+                eSheet = eBook.Worksheets(1)
+                eCell = eSheet.UsedRange
+                Dim row As Integer
+
+                MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path_TXT.Text}';Extended Properties=Excel 8.0;")
+                MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
+                MyCommand.TableMappings.Add("Table", "Net-informations.com")
+                DtSet = New System.Data.DataSet
+                MyCommand.Fill(DtSet)
+
+                For row = 7 To DtSet.Tables(0).Rows.Count
+                    SaveSheet_FC200(Paydate, eCell(row, 2).Value, eCell(row, 5).Value, Branch_ComboB.SelectedItem)
+                Next
+
+
+                'If File_Exist(Branch_ComboB.SelectedItem, Paydate) Then
+
+                '    Cursor = Cursors.WaitCursor
+
+                '    For row = 7 To DtSet.Tables(0).Rows.Count
+                '        SaveSheet_FC200(Paydate, eCell(row, 2).Value, eCell(row, 2).Value, Branch_ComboB.SelectedItem)
+                '    Next
+
+                '    Cursor = Cursors.Default
+
+                'ElseIf File_NOT_Exist(Branch_ComboB.SelectedItem, Paydate) Then
+
+                '    Cursor = Cursors.WaitCursor
+
+                '    For row = 2 To DtSet.Tables(0).Rows.Count
+                '        SaveSheet_FC200(Paydate, eCell(row, 1).Value, eCell(row, 2).Value, Branch_ComboB.SelectedItem)
+                '    Next
+
+                '    Cursor = Cursors.Default
+                'Else
+                '    Path_TXT.Text = ""
+                'End If
+
+                'Cursor = Cursors.WaitCursor
+
+                'forLoop_ALL_IMPORTED()   ' ===== SAVE AM_IN, AM_OUT, PM_IN, PM_OUT ====
+
+                'Cursor = Cursors.Default
+
+                Import_BTN.Enabled = False
+                Path_TXT.Clear()
+                MyConnection.Close()
+
             End If
 
             SAVE_DIRECT_Attendance() ' ===== DIRECT SAVE TO ATTENDANCE ====

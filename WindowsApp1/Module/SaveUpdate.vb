@@ -209,6 +209,26 @@
         End Using
     End Sub
 
+
+    Public Sub SaveSheet_FC200(payDate As String, bioID As String, datee As String, BRANCHNAME As String)
+
+        Dim mysql As String = "Select * From IMPORT_DTR Rows 1"
+        Using ds As DataSet = LoadSQL(mysql, "IMPORT_DTR")
+
+            Dim dsNewRow As DataRow = ds.Tables(0).NewRow
+            With dsNewRow
+
+                .Item("BIO_ID") = bioID
+                .Item("DATEANDTIME") = datee
+                .Item("PAYDATE") = payDate
+                .Item("BRANCH") = BRANCHNAME
+
+            End With
+            ds.Tables(0).Rows.Add(dsNewRow)
+            SaveEntry(ds)
+        End Using
+    End Sub
+
     'Public Sub UpdateBiometricSheet(payDate As String, bioID As String, dateTime As String, BRANCHNAME As String)
 
     '    Dim mysql As String = $"Select * FROM IMPORT_DTR where BRANCH = '{BRANCHNAME}' and PAYDATE = '{payDate}'"
