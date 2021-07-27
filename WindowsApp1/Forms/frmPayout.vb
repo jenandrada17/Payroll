@@ -52,9 +52,14 @@
 
                 AllowanceDetails(BiometricID_TXT.Text, Rate_TXT.Tag, Positional_TXT, Incentive_TXT, Boarding_TXT, Carekit_TXT, Transport_TXT)   '============ Rate_TXT.Tag is branchID (for same biometric) ======
 
+                DeductioneDetails(BiometricID_TXT.Text, Rate_TXT.Tag, CashAdvance_TXT, Loan_TXT, Charges_TXT)
+
+
                 Calculate_Gross()
 
                 Calculate_Allowance()
+
+                Calculate_Deduction()
 
             End If
         End If
@@ -93,6 +98,10 @@
 
     Private Sub OtherAllowance_TXT_TextChanged(sender As Object, e As EventArgs) Handles OtherAllowance_TXT.TextChanged
         Calculate_Allowance()
+    End Sub
+
+    Private Sub OtherDeduction_TXT_TextChanged(sender As Object, e As EventArgs) Handles OtherDeduction_TXT.TextChanged
+        Calculate_Deduction()
     End Sub
 
     Private Sub Calculate_Gross()
@@ -134,4 +143,27 @@
 
         Allowances_LBL.Text = CAREKIT + BOARDING + INCENTIVES + positional + TRANSPORTATION + other
     End Sub
+
+    Private Sub Calculate_Deduction()
+
+        Dim SBU, Charges, Loan, CashAdvance, other As Double
+
+        Charges = If(Not (CashAdvance_TXT.Text = String.Empty), CashAdvance_TXT.Text, 0)
+        Loan = If(Not (Loan_TXT.Text = String.Empty), Loan_TXT.Text, 0)
+        CashAdvance = If(Not (Charges_TXT.Text = String.Empty), Charges_TXT.Text, 0)
+        other = If(Not (OtherDeduction_TXT.Text = String.Empty), OtherDeduction_TXT.Text, 0)
+
+        Deduction_LBL.Text = Charges + Loan + CashAdvance + other
+
+    End Sub
+
+    Private Sub OtherDeduction_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles OtherDeduction_TXT.KeyPress, OtherAllowance_TXT.KeyPress, BiometricID_TXT.KeyPress
+        If e.KeyChar <> ChrW(Keys.Back) Then
+            If Char.IsNumber(e.KeyChar) Then
+            Else
+                e.Handled = True
+            End If
+        End If
+    End Sub
+
 End Class

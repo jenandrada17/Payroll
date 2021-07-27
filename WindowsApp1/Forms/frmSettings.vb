@@ -10,10 +10,16 @@ Public Class frmSettings
             HolidayRate(RegularRate_TXT, SpecialRate_TXT)
         End If
 
+        If ThisHasRow("PAYROLL_SBU") Then
+            GetSBU(SBU_Label)
+        End If
+
         PopulateComboBox(Rate_Branch_ComboB, "tbl_branch", "BRANCHNAME")
         PopulateComboBox(Rate_Pos_ComboB, "tbl_employee", "EMP_POSITION")
         PopulateSettings_Rate(Rate_grid, "BRANCHNAME")
         Lists_Allowance(Allowance_LV)
+        Lists_deduction(Deduction_List)
+
 
     End Sub
 
@@ -250,9 +256,9 @@ Public Class frmSettings
         If Allow_Category_Combo.SelectedIndex >= 0 And Not Allow_Name_TXT.Text = "" Then
 
             If FixYes_RadioB.Checked Then
-                SaveSettings(Allow_Name_TXT.Tag, Allow_SearchEmp_BTN.Tag, Allow_Category_Combo.SelectedItem, Allow_Amount_TXT.Text, True)
+                SaveAllowance(Allow_Name_TXT.Tag, Allow_SearchEmp_BTN.Tag, Allow_Category_Combo.SelectedItem, Allow_Amount_TXT.Text, True)
             Else
-                SaveSettings(Allow_Name_TXT.Tag, Allow_SearchEmp_BTN.Tag, Allow_Category_Combo.SelectedItem, Allow_Amount_TXT.Text, False)
+                SaveAllowance(Allow_Name_TXT.Tag, Allow_SearchEmp_BTN.Tag, Allow_Category_Combo.SelectedItem, Allow_Amount_TXT.Text, False)
             End If
 
             Lists_Allowance(Allowance_LV)
@@ -292,5 +298,60 @@ Public Class frmSettings
 
     Private Sub Allow_Search_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Allow_Search_TXT.KeyPress
         If IsEnter(e) Then Allow_Search_BTN.PerformClick()
+    End Sub
+
+    Private Sub DE_SearchEmp_BTN_Click(sender As Object, e As EventArgs) Handles DE_SearchEmp_BTN.Click
+
+        If frmEmployee Is Nothing Then
+            Dim frm As New frmEmployee With {
+                .MdiParent = frmMainForm
+            }
+            frmMainForm.pNavigate.Controls.Add(frm)
+            frmMainForm.pNavigate.Tag = frm
+            frm.txtSearch.Tag = "Settings-Deduction"
+            frm.btnSearch.Tag = DE_Category_Combo.SelectedItem
+            frm.Show()
+            frm.Dock = DockStyle.Fill
+            frm.BringToFront()
+        Else
+            frmEmployeeInfo.BringToFront()
+        End If
+
+        Close()
+
+    End Sub
+
+    Private Sub DE_Cancel_BTN_Click(sender As Object, e As EventArgs) Handles DE_Cancel_BTN.Click
+        DE_Category_Combo.Text = "Select"
+        DE_Name_TXT.Text = ""
+        DE_Amount_TXT.Text = ""
+    End Sub
+
+    Private Sub DE_Save_BTN_Click(sender As Object, e As EventArgs) Handles DE_Save_BTN.Click
+
+        If DE_Category_Combo.SelectedIndex >= 0 And Not DE_Name_TXT.Text = "" Then
+
+            If DE_Category_Combo.SelectedIndex = 2 Then
+                SaveDeduction(DE_Name_TXT.Tag, DE_SearchEmp_BTN.Tag, "CASH_ADVANCE", DE_Amount_TXT.Text)
+            Else
+                SaveDeduction(DE_Name_TXT.Tag, DE_SearchEmp_BTN.Tag, DE_Category_Combo.SelectedItem, DE_Amount_TXT.Text)
+            End If
+
+            Lists_deduction(Deduction_List)
+            DE_Cancel_BTN.PerformClick()
+
+        End If
+
+    End Sub
+
+    Private Sub SBU_Save_BTN_Click(sender As Object, e As EventArgs) Handles SBU_Save_BTN.Click
+        SaveSBU(SBU_Amount_TXT.Text)
+        SBU_Amount_TXT.Text = ""
+        SBU_group.Visible = False
+        GetSBU(SBU_Label)
+    End Sub
+
+    Private Sub SBU_Change_BTN_Click(sender As Object, e As EventArgs) Handles SBU_Change_BTN.Click
+        SBU_group.Visible = True
     End Sub
 End Class

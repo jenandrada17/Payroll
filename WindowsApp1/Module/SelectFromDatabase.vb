@@ -13,6 +13,16 @@ Module SelectFromDatabase
         Return False
     End Function
 
+    Public Sub GetSBU(label As Label)
+        Dim mysql As String = "Select * FROM  PAYROLL_SBU WHERE ID = 1"
+        Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_SBU")
+        If ds.Tables(0).Rows.Count > 0 Then
+            Dim dr As DataRow = ds.Tables(0).Rows(0)
+            With dr
+                label.Text = .Item("AMOUNT")
+            End With
+        End If
+    End Sub
 
     Public Sub LoadEmployee(listview As ListView, Optional ByVal str As String = "")
 
@@ -154,6 +164,25 @@ Module SelectFromDatabase
                         Boarding_TXT.Text = IIf(IsDBNull(.Item("BOARDING")), "", .Item("BOARDING"))
                         Carekit_TXT.Text = IIf(IsDBNull(.Item("CAREKIT")), "", .Item("CAREKIT"))
                         Transport_TXT.Text = IIf(IsDBNull(.Item("TRANSPORTATION")), "", .Item("TRANSPORTATION"))
+                    End With
+                Next
+            Else
+                Exit Sub
+            End If
+        End Using
+    End Sub
+
+
+    Friend Sub DeductioneDetails(biometric As String, branchID As String, CashAdvance_TXT As TextBox, Loan_TXT As TextBox, Charges_TXT As TextBox)
+
+        Dim mysql As String = $"Select * From PAYROLL_DEDUCTION WHERE BIOMETRIC_NO = '{biometric}' and BRANCH_ID = '{branchID}'"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_DEDUCTION")
+            If ds.Tables(0).Rows.Count > 0 Then
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+                        CashAdvance_TXT.Text = IIf(IsDBNull(.Item("CHARGES")), "", .Item("CHARGES"))
+                        Loan_TXT.Text = IIf(IsDBNull(.Item("LOAN")), "", .Item("LOAN"))
+                        Charges_TXT.Text = IIf(IsDBNull(.Item("CASH_ADVANCE")), "", .Item("CASH_ADVANCE"))
                     End With
                 Next
             Else
@@ -622,11 +651,11 @@ Module SelectFromDatabase
                 mysql &= $"{vbCr}UPPER(BIOMETRIC_NO) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(firstname) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(lastname) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(FIX) LIKE UPPER('%{name}%') ORDER BY LASTNAME ASC, FIRSTNAME, MIDDLENAME "
+                mysql &= $"{vbCr}UPPER(FIX) LIKE UPPER('%{name}%') ORDER BY LASTNAME ASC "
             Next
 
         Else
-            mysql = "select * from PAYROLL_ALLOWANCE A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRIC_NO where ALLOWED is null  ORDER BY LASTNAME ASC, FIRSTNAME, MIDDLENAME "
+            mysql = "select * from PAYROLL_ALLOWANCE A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRIC_NO where ALLOWED is null  ORDER BY LASTNAME ASC "
         End If
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ALLOWANCE")
@@ -642,7 +671,6 @@ Module SelectFromDatabase
 
         With dr
             Dim i As ListViewItem = LV.Items.Add(.Item("BIOMETRIC_NO"))
-            i.Tag = IIf(IsDBNull(.Item("ALLOWED")), "", .Item("ALLOWED"))
             i.SubItems.Add(.Item("LASTNAME") & ", " & .Item("FIRSTNAME") & " " & .Item("MIDDLENAME")).Tag = .Item("BRANCH_ID")
             i.SubItems.Add(IIf(IsDBNull(.Item("POSITIONAL")), "", .Item("POSITIONAL")))
             i.SubItems.Add(IIf(IsDBNull(.Item("INCENTIVES")), "", .Item("INCENTIVES")))
@@ -652,5 +680,48 @@ Module SelectFromDatabase
         End With
     End Sub
 
+
+    Friend Sub Lists_deduction(LV As ListView, Optional searchName As String = "")
+
+        Dim secured_str As String = searchName
+        secured_str = DreadKnight(secured_str)
+        Dim strWords As String() = secured_str.Split(New Char() {" "c})
+        Dim name As String
+        Dim mysql As String
+
+        If searchName.Length <> 0 Then
+
+            mysql = "select * from PAYROLL_DEDUCTION A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRIC_NO and B.BRANCH_ID = A.BRANCH_ID where ALLOWED is null  and "
+
+            For Each name In strWords
+                mysql &= $"{vbCr}UPPER(BIOMETRIC_NO) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(firstname) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(lastname) LIKE UPPER('%{name}%') ORDER BY LASTNAME ASC"
+            Next
+
+        Else
+            mysql = "select * from PAYROLL_DEDUCTION A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRIC_NO where ALLOWED is null  ORDER BY LASTNAME ASC"
+        End If
+
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_DEDUCTION")
+            LV.Items.Clear()
+            For Each dr In ds.Tables(0).Rows
+                AddRow_Deduction(dr, LV)
+            Next
+        End Using
+
+    End Sub
+
+    Private Sub AddRow_Deduction(ByVal dr As DataRow, LV As ListView)
+
+        With dr
+            Dim i As ListViewItem = LV.Items.Add(.Item("BIOMETRIC_NO"))
+            i.SubItems.Add(.Item("LASTNAME") & ", " & .Item("FIRSTNAME") & " " & .Item("MIDDLENAME")).Tag = .Item("BRANCH_ID")
+            i.SubItems.Add(IIf(IsDBNull(.Item("CHARGES")), "", .Item("CHARGES")))
+            i.SubItems.Add(IIf(IsDBNull(.Item("LOAN")), "", .Item("LOAN")))
+            i.SubItems.Add(IIf(IsDBNull(.Item("CASH_ADVANCE")), "", .Item("CASH_ADVANCE")))
+        End With
+
+    End Sub
 
 End Module

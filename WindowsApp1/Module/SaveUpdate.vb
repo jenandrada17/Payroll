@@ -306,7 +306,7 @@
 
     End Sub
 
-    Friend Sub SaveSettings(bioNo As String, branchID As String, categoryColumn As String, amount As String, fix As Boolean)
+    Friend Sub SaveAllowance(bioNo As String, branchID As String, categoryColumn As String, amount As String, fix As Boolean)
         Dim mysql As String
 
         mysql = $"Select * FROM PAYROLL_ALLOWANCE where BIOMETRIC_NO = '{bioNo}' and BRANCH_ID = '{branchID}'"
@@ -370,4 +370,78 @@
         End If
 
     End Sub
+
+
+    Friend Sub SaveDeduction(bioNo As String, branchID As String, categoryColumn As String, amount As String)
+        Dim mysql As String
+
+        mysql = $"Select * FROM PAYROLL_DEDUCTION where BIOMETRIC_NO = '{bioNo}' and BRANCH_ID = '{branchID}'"
+        Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_DEDUCTION")
+        If ds.Tables(0).Rows.Count > 0 Then
+
+            With ds.Tables(0).Rows(0)
+
+                .Item(categoryColumn) = amount
+
+            End With
+            SaveEntry(ds, False)
+
+            MsgBox("Successfully Updated!", MsgBoxStyle.Information, "Information")
+
+        Else
+            mysql = "Select * From PAYROLL_DEDUCTION Rows 1"
+            Using dss As DataSet = LoadSQL(mysql, "PAYROLL_DEDUCTION")
+
+                Dim dsNewRow As DataRow = dss.Tables(0).NewRow
+                With dsNewRow
+
+                    .Item("BIOMETRIC_NO") = bioNo
+                    .Item("BRANCH_ID") = branchID
+                    .Item(categoryColumn) = amount
+
+                End With
+                dss.Tables(0).Rows.Add(dsNewRow)
+                SaveEntry(dss)
+
+                MsgBox("Successfully Saved!", MsgBoxStyle.Information, "Information")
+            End Using
+        End If
+
+    End Sub
+
+    Friend Sub SaveSBU(amount As String)
+        Dim mysql As String
+
+        mysql = $"Select * FROM PAYROLL_SBU WHERE id = 1 "
+        Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_SBU")
+        If ds.Tables(0).Rows.Count > 0 Then
+
+            With ds.Tables(0).Rows(0)
+
+                .Item("AMOUNT") = amount
+
+            End With
+            SaveEntry(ds, False)
+
+            MsgBox("Successfully Updated!", MsgBoxStyle.Information, "Information")
+
+        Else
+            mysql = "Select * From PAYROLL_SBU Rows 1"
+            Using dss As DataSet = LoadSQL(mysql, "PAYROLL_SBU")
+
+                Dim dsNewRow As DataRow = dss.Tables(0).NewRow
+                With dsNewRow
+
+                    .Item("AMOUNT") = amount
+
+                End With
+                dss.Tables(0).Rows.Add(dsNewRow)
+                SaveEntry(dss)
+
+                MsgBox("Successfully Saved!", MsgBoxStyle.Information, "Information")
+            End Using
+        End If
+
+    End Sub
+
 End Module

@@ -113,6 +113,27 @@ Public Class frmEmployee
             Else
                 frmEmployeeInfo.BringToFront()
             End If
+
+        ElseIf txtSearch.Tag = "Settings-Deduction" Then
+
+            If frmSettings Is Nothing Then
+                Dim frm As New frmSettings With {
+                    .MdiParent = frmMainForm
+                }
+                frmMainForm.pNavigate.Controls.Add(frm)
+                frmMainForm.pNavigate.Tag = frm
+                frm.DE_Name_TXT.Text = lvEmployee.FocusedItem.SubItems(1).Text
+                frm.DE_Name_TXT.Tag = lvEmployee.FocusedItem.SubItems(0).Text
+                frm.DE_SearchEmp_BTN.Tag = lvEmployee.FocusedItem.SubItems(9).Tag '==== Branch_id ===  
+                frm.Settings_Tab.SelectedIndex = 3
+                frm.DE_Category_Combo.SelectedItem = btnSearch.Tag
+                frm.Show()
+                frm.Dock = DockStyle.Fill
+                frm.BringToFront()
+
+            Else
+                frmEmployeeInfo.BringToFront()
+            End If
         End If
 
     End Sub
