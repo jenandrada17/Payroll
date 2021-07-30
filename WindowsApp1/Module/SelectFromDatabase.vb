@@ -467,10 +467,10 @@ Module SelectFromDatabase
         End Using
     End Sub
 
-    Friend Sub AllowanceDetails(biometric As String, branchID As String, datagrid As DataGridView)
+    Friend Sub AllowanceDetails(emp_id As String, datagrid As DataGridView, sched As String)
 
         datagrid.Rows.Clear()
-        Dim mysql_1 As String = $"select * from payroll_allowances  where BIOMETRIC_NO = '{biometric}' and BRANCH_ID = '{branchID}'"
+        Dim mysql_1 As String = $"select * from payroll_allowances  where emp_id = '{emp_id}' and ALLOWED is null and SCHEDULE = '{sched}'"
         Using ds As DataSet = LoadSQL(mysql_1, "payroll_allowances")
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
@@ -482,11 +482,15 @@ Module SelectFromDatabase
                         Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
                         Dim toProper As String = info.ToTitleCase(toLower)
 
-                        Dim rowId As Integer = datagrid.Rows.Add()
-                        Dim row As DataGridViewRow = datagrid.Rows(rowId)
-                        row.Cells(0).Value = toProper
-                        row.Cells(1).Value = amountt.ToString(”N”)
-                        row.Height = 25
+                        If .item("EFFECTIVE_DATE") <= Today Then
+
+                            Dim rowId As Integer = datagrid.Rows.Add()
+                            Dim row As DataGridViewRow = datagrid.Rows(rowId)
+                            row.Cells(0).Value = toProper
+                            row.Cells(1).Value = amountt.ToString(”N”)
+                            row.Height = 30
+
+                        End If
 
                     End With
                 Next
@@ -511,15 +515,18 @@ Module SelectFromDatabase
                         Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
                         Dim toProper As String = info.ToTitleCase(toLower)
 
-                        Dim rowId As Integer = datagrid.Rows.Add()
-                        Dim row As DataGridViewRow = datagrid.Rows(rowId)
-                        row.Cells(0).Value = toProper
-                        row.Cells(0).Tag = amountt.ToString(”N”)
-                        row.Cells(1).Value = amountt.ToString(”N”)
-                        row.Cells(2).Value = "OFF"
-                        row.Cells(2).Tag = .item("ID")
-                        row.Height = 25
+                        If .item("EFFECTIVE_DATE") <= Today Then
 
+                            Dim rowId As Integer = datagrid.Rows.Add()
+                            Dim row As DataGridViewRow = datagrid.Rows(rowId)
+                            row.Cells(0).Value = toProper
+                            row.Cells(0).Tag = amountt.ToString(”N”)
+                            row.Cells(1).Value = amountt.ToString(”N”)
+                            row.Cells(2).Value = "OFF"
+                            row.Cells(2).Tag = .item("ID")
+                            row.Height = 30
+
+                        End If
                     End With
                 Next
                 Dim sbu As Double = SBU_Amount()
@@ -564,7 +571,7 @@ Module SelectFromDatabase
                             row.Cells(2).Value = "OFF"
                         End If
 
-                        row.Height = 25
+                        row.Height = 30
                     End With
                 Next
                 Dim rowIdd As Integer = datagrid.Rows.Add()

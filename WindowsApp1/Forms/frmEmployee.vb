@@ -106,8 +106,9 @@ Public Class frmEmployee
                 frmMainForm.pNavigate.Controls.Add(frm)
                 frmMainForm.pNavigate.Tag = frm
                 frm.Allow_Name_TXT.Text = lvEmployee.FocusedItem.SubItems(1).Text
-                frm.Allow_Name_TXT.Tag = lvEmployee.FocusedItem.SubItems(0).Text
+                frm.Allow_Name_TXT.Tag = lvEmployee.FocusedItem.SubItems(0).Text '==== Biometric ===  
                 frm.Allow_SearchEmp_BTN.Tag = lvEmployee.FocusedItem.SubItems(9).Tag '==== Branch_id ===  
+                frm.Label14.Tag = lvEmployee.FocusedItem.SubItems(1).Tag '==== EMP_ID ===  
                 frm.Settings_Tab.SelectedIndex = 2
                 frm.Allow_Category_Combo.SelectedItem = btnSearch.Tag
                 frm.Show()

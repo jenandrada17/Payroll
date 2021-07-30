@@ -1,7 +1,4 @@
-﻿Imports System.IO
-Imports System.Security.Cryptography
-Imports System.Text
-Imports FirebirdSql.Data.FirebirdClient
+﻿Imports FirebirdSql.Data.FirebirdClient
 Imports Microsoft.Office.Interop
 
 Public Class frmAttendance

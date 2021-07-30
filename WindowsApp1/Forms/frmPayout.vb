@@ -66,8 +66,6 @@ Public Class frmPayout
             AttendanceDetails(BiometricID_TXT.Text, paydate_, NoOfDays_TXT, RegularOT_TXT, SpecialHol_TXT, RegularHol_TXT,
                                         Late_TXT, UnderTime_TXT)
 
-            AllowanceDetails(BiometricID_TXT.Text, Rate_TXT.Tag, Allowance_grid)   '===== Rate_TXT.Tag is branchID (for same biometric) ====== 
-
             '============================ CHECK IF CLOSE PAYROLL ================================== 
             If IsLastDay(paydate_) Then
 
@@ -99,9 +97,9 @@ Public Class frmPayout
                 sched_deduc = "OPEN PAYROLL"
             End If
 
+            AllowanceDetails(Name_TXT.Tag, Allowance_grid, sched_deduc)
 
             '========================== CHECK IF THERE IS/ARE EXISTING MODIFIED DEDUCTION ===================== 
-
             If isExist_single("MODIFIED_DEDUCTION", "EMP_ID", Name_TXT.Tag) Then
                 DeductioneDetails_MODIFIED(Name_TXT.Tag, paydate_, Deduction_grid, sched_deduc)
             Else
