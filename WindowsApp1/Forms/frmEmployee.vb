@@ -132,7 +132,6 @@ Public Class frmEmployee
                 frm.Show()
                 frm.Dock = DockStyle.Fill
                 frm.BringToFront()
-
             Else
                 frmEmployeeInfo.BringToFront()
             End If

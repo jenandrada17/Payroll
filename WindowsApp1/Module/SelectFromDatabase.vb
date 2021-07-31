@@ -136,19 +136,19 @@ Module SelectFromDatabase
             If ds.Tables(0).Rows.Count > 0 Then
                 Dim data As DataRow = ds.Tables(0).Rows(0)
                 With data
-                    P_GrossAmount_LBL.Text = IIf(IsDBNull(.Item("gross")), 0, .Item("gross"))
-                    P_SSSComp_LBL.Text = IIf(IsDBNull(.Item("sssC")), 0, .Item("sssC"))
-                    P_PagibigComp_LBL.Text = IIf(IsDBNull(.Item("pagibiC")), 0, .Item("pagibiC"))
-                    P_PhilHComp_LBL.Text = IIf(IsDBNull(.Item("philHC")), 0, .Item("philHC"))
+                    P_GrossAmount_LBL.Text = CDbl(IIf(IsDBNull(.Item("gross")), 0, .Item("gross"))).ToString("N")
+                    P_SSSComp_LBL.Text = CDbl(IIf(IsDBNull(.Item("sssC")), 0, .Item("sssC"))).ToString("N")
+                    P_PagibigComp_LBL.Text = CDbl(IIf(IsDBNull(.Item("pagibiC")), 0, .Item("pagibiC"))).ToString("N")
+                    P_PhilHComp_LBL.Text = CDbl(IIf(IsDBNull(.Item("philHC")), 0, .Item("philHC"))).ToString("N")
 
-                    P_TaxWH_LBL.Text = IIf(IsDBNull(.Item("taxWH")), 0, .Item("taxWH"))
+                    P_TaxWH_LBL.Text = CDbl(IIf(IsDBNull(.Item("taxWH")), 0, .Item("taxWH"))).ToString("N")
 
-                    P_SSSLoan_LBL.Text = IIf(IsDBNull(.Item("sssLoan")), 0, .Item("sssLoan"))
-                    P_PagibigLoan_LBL.Text = IIf(IsDBNull(.Item("pagibigLoan")), 0, .Item("pagibigLoan"))
+                    P_SSSLoan_LBL.Text = CDbl(IIf(IsDBNull(.Item("sssLoan")), 0, .Item("sssLoan"))).ToString("N")
+                    P_PagibigLoan_LBL.Text = CDbl(IIf(IsDBNull(.Item("pagibigLoan")), 0, .Item("pagibigLoan"))).ToString("N")
 
-                    P_Allowance_LBL.Text = IIf(IsDBNull(.Item("allowance")), 0, .Item("allowance"))
-                    P_Deduction_LBL.Text = IIf(IsDBNull(.Item("deducttion")), 0, .Item("deducttion"))
-                    P_NetPay_LBL.Text = IIf(IsDBNull(.Item("netPay")), 0, .Item("netPay"))
+                    P_Allowance_LBL.Text = CDbl(IIf(IsDBNull(.Item("allowance")), 0, .Item("allowance"))).ToString("N")
+                    P_Deduction_LBL.Text = CDbl(IIf(IsDBNull(.Item("deducttion")), 0, .Item("deducttion"))).ToString("N")
+                    P_NetPay_LBL.Text = CDbl(IIf(IsDBNull(.Item("netPay")), 0, .Item("netPay"))).ToString("N")
                 End With
             End If
         End Using
@@ -389,14 +389,18 @@ Module SelectFromDatabase
                         first_Basic = .Item("TOTAL_BASIC")
                     End With
                 Next
+            Else
+                first_Basic = 0
             End If
         End Using
+
         Return first_Basic
     End Function
 
     Public Function GetMonthly_Basic(biono As String, branchID As String, paydate As String) As Double
         Dim first_basic As Double = GetFirst_Basic(biono, branchID, paydate)
-        Dim second_basic, monthly_Basic As Double
+        Dim second_basic As Double = 0
+        Dim monthly_Basic As Double = 0
 
         Dim sqll As String = $"Select * FROM PAYROLL_PAYOUT where BIOMETRIC_ID = '{biono}' and BRANCH_ID = '{branchID}' and PAYDATE = '{paydate}'"
         Using ds As DataSet = LoadSQL(sqll, "PAYROLL_PAYOUT")
@@ -415,7 +419,35 @@ Module SelectFromDatabase
     End Function
 
     Public Function Get_SSS(monthly_Basic As String) As Double
-        Dim sss As Double
+
+        Console.WriteLine("monthly_Basic" & monthly_Basic)
+        Dim sss As Double = 0
+
+        Dim mysql As String = $"Select * FROM PAYROLL_SSS"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_SSS")
+            If ds.Tables(0).Rows.Count > 0 Then
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+                        Dim range As String = .Item("RANGECOMP")
+                        Dim strWords As String() = range.Split(New Char() {" "c})
+
+                        If strWords(0).Contains("Below") Then
+                            strWords(0) = 1
+                        End If
+
+                        If (Enumerable.Range(strWords(0), strWords.Last).Contains(monthly_Basic)) Then
+                            'sss = .Item("TOTAL_EE")
+                            sss = .Item("RSS_EE")
+                        End If
+                    End With
+                Next
+            End If
+        End Using
+        Return sss
+    End Function
+
+    Public Function Get_SSS_ER(monthly_Basic As String) As Double
+        Dim sss_ER As Double
 
         Dim mysql As String = $"Select * FROM PAYROLL_SSS"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_SSS")
@@ -431,15 +463,32 @@ Module SelectFromDatabase
                         End If
 
                         If (Enumerable.Range(strWords(0), strWords.Last).Contains(monthly_Basic)) Then
-                            sss = .Item("RSS_EE")
+                            sss_ER = .Item("TOTAL_ER")
                         End If
                     End With
                 Next
             End If
         End Using
 
-        Return sss
+        Return sss_ER
     End Function
+
+    Public Function Get_Pagibig_ER(monthly_Basic As String) As Double
+        Dim pagibig_ER As Double
+
+        Dim mysql As String = $"Select * FROM PAYROLL_PAGIBIG"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAGIBIG")
+            If ds.Tables(0).Rows.Count > 0 Then
+                Dim dr As DataRow = ds.Tables(0).Rows(0)
+                With dr
+                    pagibig_ER = .Item("EMPLOYER")
+                End With
+            End If
+        End Using
+
+        Return pagibig_ER
+    End Function
+
 
     Public Function Get_Pagibig(monthly_Basic As String) As Double
         Dim pagibig As Double

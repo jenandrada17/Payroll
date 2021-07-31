@@ -493,6 +493,8 @@ Public Class frmAttendance
             SaveAttendanceEE(BiometricID_TXT.Text, DataGridView1.Tag, TotalDays_LBL.Text, TotalOTHr_LBL.Text, TotalLateHR_LBL.Text, TotalUTHR_LBL.Text,
                              TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text, Branch_Name)
 
+            SavePayout_IndividualL(BiometricID_TXT.Text, Branch_Name, Paydate)
+
             Cancel_BTN.PerformClick()
         Else
             MsgBox("Please Choose Employee's Name!", MsgBoxStyle.Critical, "Error")
@@ -769,6 +771,7 @@ Public Class frmAttendance
                 SAVE_DIRECT_Attendance() ' ===== DIRECT SAVE TO ATTENDANCE ====
                 PopulateBiometricSHEET(Bio_grid, Paydate, Branch_ComboB.SelectedItem) ' ===== POPULATE DATAGRIDVIEW FROM SHEET ====
                 SavePayout_ALL(Paydate)
+                Console.WriteLine("Paydate " & Paydate)
 
                 Cursor = Cursors.Default
 
@@ -899,6 +902,7 @@ Public Class frmAttendance
                 SAVE_DIRECT_Attendance() ' ===== DIRECT SAVE TO ATTENDANCE ====
                 PopulateBiometricSHEET(Bio_grid, Paydate, Branch_ComboB.SelectedItem) ' ===== POPULATE DATAGRIDVIEW FROM SHEET ==== 
                 SavePayout_ALL(Paydate)
+                Console.WriteLine("Paydattttte " & Paydate)
 
                 Cursor = Cursors.Default
             End Try

@@ -34,7 +34,6 @@
         MsgBox("Succesfully Updated!", MsgBoxStyle.Information, "Information")
     End Sub
 
-
     Friend Sub RemoveHoliday(datee As String)
         RunCommand("DELETE FROM PAYROLL_HOLIDAY WHERE DATEE = '" & datee & "'")
     End Sub
@@ -621,20 +620,25 @@
                         End Using
 
                         '============================================= BENIFITS CONTRIBUTION ========================================================= 
-                        Dim SSSComp, PagibigComp, PhilhealthComp, Tax_Wheld, netTax, sssLoan, pagibigLoan As Double
+                        Dim TotalBasic, SSSComp, PagibigComp, PhilhealthComp, Tax_Wheld, netTax, sssLoan, pagibigLoan As Double
+
+                        TotalBasic = NoOfDays * rate
 
                         Dim date_pay As DateTime = Convert.ToDateTime(paydate_)
                         date_pay = date_pay.ToString("d")
 
                         If IsLastDay(date_pay) Then
 
-                            Dim monthly_Basic As Double = GetMonthly_Basic(BiometricID, branchID, paydate_)
+                            Dim first_Basic As Double = GetFirst_Basic(BiometricID, branchID, paydate_)
+                            Dim monthly_Basic As Double = TotalBasic + first_Basic
 
                             SSSComp = Get_SSS(monthly_Basic)
                             PagibigComp = Get_Pagibig(monthly_Basic)
                             PhilhealthComp = Get_PhilHealth(monthly_Basic)
-                            'TaxComp = Get_Taxable(monthly_Basic)
                             Tax_Wheld = Get_WHolding(monthly_Basic)
+
+                            'TaxComp = Get_Taxable(monthly_Basic)
+                            'SSS_ER = Get_SSS_ER(monthly_Basic)
 
                             netTax = monthly_Basic - (SSSComp + PagibigComp + PhilhealthComp + Tax_Wheld)
                         Else
@@ -642,9 +646,7 @@
                         End If
 
                         '============================================= Calculate_Gross() ========================================================= 
-                        Dim TotalBasic, TotalHol, TotalOT, TotalLateUnder, GrossAmount As Double
-
-                        TotalBasic = NoOfDays * rate
+                        Dim TotalHol, TotalOT, TotalLateUnder, GrossAmount As Double
 
                         TotalHol = (((SpecialHol * rate) * specHoliday) / specHoliday) + (((RegularHol * rate) * regHoliday) / regHoliday) ' =========== CALCULATE hOLIDAY TO PESO ===========
 
@@ -701,6 +703,168 @@
         End Using
 
         progressBarEnd()
+    End Sub
+
+
+    Friend Sub SavePayout_IndividualL(bioNo As String, branch As String, paydate_ As String) '========== AUTO SAVE TO PAYOUT ============ 
+
+        Dim regHoliday = Holiday_Rate("REGULAR")
+        Dim specHoliday = Holiday_Rate("SPECIAL")
+        Dim SBU = SBU_Amount()
+
+        Dim mysql As String = $"Select * From payroll_attendance A 
+                                inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRICID 
+                                left join TBL_BRANCH C on C.BRANCHNAME = A.BRANCH and B.BRANCH_ID = C.ID 
+                                    WHERE A.BIOMETRICID = '{bioNo}' and A.BRANCH = '{branch}' and A.PAYDATE = '{paydate_}'"
+        Using ds As DataSet = LoadSQL(mysql, "payroll_attendance")
+            If ds.Tables(0).Rows.Count > 0 Then
+
+                Dim dr As DataRow = ds.Tables(0).Rows(0)
+                With dr
+
+                    Dim branchID As String = .Item("BRANCH_ID")
+                    Dim Late As String = ""
+                    Dim UnderTime As String = ""
+                    Dim rate, NoOfDays, RegularOT, SpecialHol, RegularHol As Double
+                    Dim Positional, Incentive, Boarding, Carekit, Transport, CashAdvance, Loan, Charges, Allowances, Deduction As Double
+
+                    rate = IIf(IsDBNull(.Item("RATE")), 0, .Item("RATE"))
+
+                    '============================================= ATTENDANCE (TOTAL DAYS) =========================================================
+                    Dim sql_1 As String = $"Select * From PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{bioNo}' and paydate = '{paydate_}'"
+                    Using ds_1 As DataSet = LoadSQL(sql_1, "PAYROLL_ATTENDANCE")
+                        If ds_1.Tables(0).Rows.Count > 0 Then
+
+                            Dim dr_11 As DataRow = ds_1.Tables(0).Rows(0)
+                            With dr_11
+                                NoOfDays = .Item("PRESENT_DAYS")
+                                RegularOT = .Item("OVERTIME")
+                                SpecialHol = .Item("SPECHOLIDAY")
+                                RegularHol = .Item("REGHOLIDAY")
+                                Late = .Item("LATE")
+                                UnderTime = .Item("UNDERTIME")
+                            End With
+                        End If
+                    End Using
+
+                    '============================================= ALLOWANCE =========================================================
+                    Positional = 0
+                    Incentive = 0
+                    Boarding = 0
+                    Carekit = 0
+                    Transport = 0
+
+                    Dim sql_2 As String = $"Select * From PAYROLL_ALLOWANCE WHERE BIOMETRIC_NO = '{bioNo}' and BRANCH_ID = '{branchID}'"
+                    Using ds_2 As DataSet = LoadSQL(sql_2, "PAYROLL_ALLOWANCE")
+                        If ds_2.Tables(0).Rows.Count > 0 Then
+                            For Each dr_2 In ds_2.Tables(0).Rows
+                                With dr_2
+                                    Positional = IIf(IsDBNull(.Item("POSITIONAL")), 0, .Item("POSITIONAL"))
+                                    Incentive = IIf(IsDBNull(.Item("INCENTIVES")), 0, .Item("INCENTIVES"))
+                                    Boarding = IIf(IsDBNull(.Item("BOARDING")), 0, .Item("BOARDING"))
+                                    Carekit = IIf(IsDBNull(.Item("CAREKIT")), 0, .Item("CAREKIT"))
+                                    Transport = IIf(IsDBNull(.Item("TRANSPORTATION")), 0, .Item("TRANSPORTATION"))
+                                End With
+                            Next
+                        End If
+                    End Using
+
+                    '============================================= DEDUCTION =========================================================  
+                    Loan = 0
+                    Charges = 0
+                    CashAdvance = 0
+                    Dim sql_3 As String = $"Select * From PAYROLL_DEDUCTIONS WHERE BIOMETRIC_NO = '{bioNo}' and BRANCHID = '{branchID}'"
+                    Using ds_3 As DataSet = LoadSQL(sql_3, "PAYROLL_DEDUCTIONS")
+                        If ds_3.Tables(0).Rows.Count > 0 Then
+                            For Each dr_3 In ds_3.Tables(0).Rows
+                                With dr_3
+                                    If .Item("CATEGORY") = "Loan" Then
+                                        Loan = .Item("TOTAL_AMOUNT")
+                                    ElseIf .Item("CATEGORY") = "Charges" Then
+                                        Charges = .Item("TOTAL_AMOUNT")
+                                    ElseIf .Item("CATEGORY") = "Cash Advance" Then
+                                        CashAdvance = .Item("TOTAL_AMOUNT")
+                                    End If
+                                End With
+                            Next
+                        End If
+                    End Using
+
+                    '============================================= BENIFITS CONTRIBUTION ========================================================= 
+                    Dim TotalBasic, SSSComp, PagibigComp, PhilhealthComp, Tax_Wheld, netTax, sssLoan, pagibigLoan As Double
+
+                    TotalBasic = NoOfDays * rate
+
+                    Dim date_pay As DateTime = Convert.ToDateTime(paydate_)
+                    date_pay = date_pay.ToString("d")
+
+                    If IsLastDay(date_pay) Then
+
+                        Dim first_Basic As Double = GetFirst_Basic(bioNo, branchID, paydate_)
+                        Dim monthly_Basic As Double = TotalBasic + first_Basic
+
+                        SSSComp = Get_SSS(monthly_Basic)
+                        PagibigComp = Get_Pagibig(monthly_Basic)
+                        PhilhealthComp = Get_PhilHealth(monthly_Basic)
+                        Tax_Wheld = Get_WHolding(monthly_Basic)
+
+                        'TaxComp = Get_Taxable(monthly_Basic)
+                        'SSS_ER = Get_SSS_ER(monthly_Basic)
+
+                        netTax = monthly_Basic - (SSSComp + PagibigComp + PhilhealthComp + Tax_Wheld)
+                    Else
+                        netTax = 0
+                    End If
+
+                    '============================================= Calculate_Gross() ========================================================= 
+                    Dim TotalHol, TotalOT, TotalLateUnder, GrossAmount As Double
+
+                    TotalHol = (((SpecialHol * rate) * specHoliday) / specHoliday) + (((RegularHol * rate) * regHoliday) / regHoliday) ' =========== CALCULATE hOLIDAY TO PESO ===========
+
+                    TotalOT = ((rate / 8) * 1.25) * RegularOT ' =========== CALCULATE OVERTIME TO PESO ===========
+
+                    Dim late_split() As String, under_split() As String, lateTOMinute, underToMinute As Double
+
+                    late_split = Split(Late, ":")
+                    under_split = Split(UnderTime, ":")
+
+                    lateTOMinute = CDbl(late_split(0)) * 60 + CDbl(late_split(1)) + CDbl(late_split(2)) / 60
+                    underToMinute = (CDbl(under_split(0)) * 60 + CDbl(under_split(1)) + CDbl(under_split(2)) / 60) / 60
+
+                    Dim LATEE, UNDERTIMEE As Double
+                    LATEE = ((rate / 8) / 60) * lateTOMinute
+                    UNDERTIMEE = (rate / 8) * underToMinute
+
+                    TotalLateUnder = LATEE + UNDERTIMEE
+
+                    GrossAmount = (TotalBasic + TotalHol + TotalOT) - TotalLateUnder
+
+
+                    '============================================= Calculate =========================================================  
+                    Dim NetPay As Double
+
+                    Allowances = Carekit + Boarding + Incentive + Positional + Transport
+                    Deduction = SBU + Charges + Loan + CashAdvance
+
+                    Dim positive, negative As Double
+                    If IsLastDay(paydate_) Then
+                        positive = netTax + Allowances
+                        negative = sssLoan + pagibigLoan + Deduction
+                    Else
+                        'netTax = 0
+                        positive = GrossAmount + Allowances
+                        negative = Deduction
+                    End If
+
+                    NetPay = positive - negative
+
+                    SavePayout(bioNo, branchID, paydate_, TotalBasic, TotalOT,
+                                  TotalLateUnder, GrossAmount, SSSComp, PagibigComp, PhilhealthComp,
+                                  Tax_Wheld, netTax, sssLoan, pagibigLoan,
+                                  Allowances, Deduction, NetPay, SBU)
+                End With
+            End If
+        End Using
     End Sub
 
 

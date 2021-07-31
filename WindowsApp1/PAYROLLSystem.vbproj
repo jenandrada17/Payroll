@@ -114,14 +114,6 @@
     <Compile Include="Dataset\payslip.vb">
       <DependentUpon>payslip.xsd</DependentUpon>
     </Compile>
-    <Compile Include="Dataset\sample1xsd.Designer.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>sample1xsd.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="Dataset\sample1xsd.vb">
-      <DependentUpon>sample1xsd.xsd</DependentUpon>
-    </Compile>
     <Compile Include="Forms\frmAttendance.Designer.vb">
       <DependentUpon>frmAttendance.vb</DependentUpon>
     </Compile>
@@ -238,17 +230,6 @@
     </None>
     <None Include="Dataset\payslip.xss">
       <DependentUpon>payslip.xsd</DependentUpon>
-    </None>
-    <None Include="Dataset\sample1xsd.xsc">
-      <DependentUpon>sample1xsd.xsd</DependentUpon>
-    </None>
-    <None Include="Dataset\sample1xsd.xsd">
-      <SubType>Designer</SubType>
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>sample1xsd.Designer.vb</LastGenOutput>
-    </None>
-    <None Include="Dataset\sample1xsd.xss">
-      <DependentUpon>sample1xsd.xsd</DependentUpon>
     </None>
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>

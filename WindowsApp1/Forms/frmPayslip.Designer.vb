@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class frmPayslip
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,7 +20,7 @@ Partial Class frmPayslip
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Label21 = New System.Windows.Forms.Label()
@@ -31,12 +31,11 @@ Partial Class frmPayslip
         Me.Branch_group = New System.Windows.Forms.GroupBox()
         Me.Branch_ComboB = New System.Windows.Forms.ComboBox()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
-        Me.Rate_EmpSelect_BTN = New System.Windows.Forms.Button()
         Me.Rate_Employee_TXT = New System.Windows.Forms.TextBox()
+        Me.Rate_EmpSelect_BTN = New System.Windows.Forms.Button()
         Me.Close_LBL = New System.Windows.Forms.Label()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.ReportViewer_payslip = New Microsoft.Reporting.WinForms.ReportViewer()
-        Me.ReportViewer1 = New Microsoft.Reporting.WinForms.ReportViewer()
         Me.Branch_group.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
         Me.SuspendLayout()
@@ -140,6 +139,15 @@ Partial Class frmPayslip
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "Per Employee"
         '
+        'Rate_Employee_TXT
+        '
+        Me.Rate_Employee_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Rate_Employee_TXT.Location = New System.Drawing.Point(11, 25)
+        Me.Rate_Employee_TXT.Name = "Rate_Employee_TXT"
+        Me.Rate_Employee_TXT.ReadOnly = True
+        Me.Rate_Employee_TXT.Size = New System.Drawing.Size(319, 33)
+        Me.Rate_Employee_TXT.TabIndex = 90
+        '
         'Rate_EmpSelect_BTN
         '
         Me.Rate_EmpSelect_BTN.AutoSize = True
@@ -150,15 +158,6 @@ Partial Class frmPayslip
         Me.Rate_EmpSelect_BTN.TabIndex = 89
         Me.Rate_EmpSelect_BTN.Text = "Select"
         Me.Rate_EmpSelect_BTN.UseVisualStyleBackColor = True
-        '
-        'Rate_Employee_TXT
-        '
-        Me.Rate_Employee_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Rate_Employee_TXT.Location = New System.Drawing.Point(11, 25)
-        Me.Rate_Employee_TXT.Name = "Rate_Employee_TXT"
-        Me.Rate_Employee_TXT.ReadOnly = True
-        Me.Rate_Employee_TXT.Size = New System.Drawing.Size(319, 33)
-        Me.Rate_Employee_TXT.TabIndex = 90
         '
         'Close_LBL
         '
@@ -182,28 +181,17 @@ Partial Class frmPayslip
         'ReportViewer_payslip
         '
         Me.ReportViewer_payslip.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_payslip.rdlc"
-        Me.ReportViewer_payslip.Location = New System.Drawing.Point(566, 29)
+        Me.ReportViewer_payslip.Location = New System.Drawing.Point(640, 29)
         Me.ReportViewer_payslip.Name = "ReportViewer_payslip"
         Me.ReportViewer_payslip.ServerReport.BearerToken = Nothing
-        Me.ReportViewer_payslip.Size = New System.Drawing.Size(591, 624)
+        Me.ReportViewer_payslip.Size = New System.Drawing.Size(481, 624)
         Me.ReportViewer_payslip.TabIndex = 92
-        '
-        'ReportViewer1
-        '
-        Me.ReportViewer1.DocumentMapWidth = 54
-        Me.ReportViewer1.LocalReport.ReportEmbeddedResource = "WindowsApp1.sample.rdlc"
-        Me.ReportViewer1.Location = New System.Drawing.Point(222, 30)
-        Me.ReportViewer1.Name = "ReportViewer1"
-        Me.ReportViewer1.ServerReport.BearerToken = Nothing
-        Me.ReportViewer1.Size = New System.Drawing.Size(260, 124)
-        Me.ReportViewer1.TabIndex = 93
         '
         'frmPayslip
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1169, 665)
-        Me.Controls.Add(Me.ReportViewer1)
         Me.Controls.Add(Me.ReportViewer_payslip)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.Close_LBL)
@@ -216,7 +204,7 @@ Partial Class frmPayslip
         Me.Controls.Add(Me.Paydate_Combo)
         Me.Controls.Add(Me.Label1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
-        Me.Name = "frmPayslip"
+        Me.name = "frmPayslip"
         Me.Text = "frmPayslip"
         Me.Branch_group.ResumeLayout(False)
         Me.GroupBox5.ResumeLayout(False)
@@ -240,5 +228,4 @@ Partial Class frmPayslip
     Friend WithEvents Close_LBL As Label
     Friend WithEvents Button1 As Button
     Friend WithEvents ReportViewer_payslip As Microsoft.Reporting.WinForms.ReportViewer
-    Friend WithEvents ReportViewer1 As Microsoft.Reporting.WinForms.ReportViewer
 End Class

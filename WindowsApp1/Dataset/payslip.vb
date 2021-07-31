@@ -1,9 +1,4 @@
 ﻿Partial Class payslip
-    Partial Public Class sample1DataTable
-        Private Sub sample1DataTable_ColumnChanging(sender As Object, e As DataColumnChangeEventArgs) Handles Me.ColumnChanging
-        End Sub
-
-    End Class
 
     Partial Public Class payslip_dataTableDataTable
         Private Sub payslip_dataTableDataTable_payslip_dataTableRowChanging(sender As Object, e As payslip_dataTableRowChangeEvent) Handles Me.payslip_dataTableRowChanging

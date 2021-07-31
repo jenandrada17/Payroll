@@ -57,7 +57,7 @@
             <rd:DefaultName>Textbox1</rd:DefaultName>
             <Top>0.20708in</Top>
             <Left>0.2175in</Left>
-            <Height>0.54167in</Height>
+            <Height>0.23959in</Height>
             <Width>1.8125in</Width>
             <Style>
               <Border>
@@ -293,7 +293,7 @@
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>DataSet1</DataSetName>
-            <Top>1.06125in</Top>
+            <Top>0.51611in</Top>
             <Left>0.2175in</Left>
             <Height>0.5in</Height>
             <Width>3in</Width>
