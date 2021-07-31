@@ -22,11 +22,11 @@ Partial Class frmPayout
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle11 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle14 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle15 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle12 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle13 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.GroupBox6 = New System.Windows.Forms.GroupBox()
         Me.Label15 = New System.Windows.Forms.Label()
         Me.Select_BTN = New System.Windows.Forms.Button()
@@ -176,6 +176,7 @@ Partial Class frmPayout
         Me.ColumnHeader13 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.TabPage1 = New System.Windows.Forms.TabPage()
         Me.Details_Save_BTN = New System.Windows.Forms.Button()
+        Me.Pay_Refresh_BTN = New System.Windows.Forms.Button()
         Me.GroupBox6.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
@@ -975,9 +976,9 @@ Partial Class frmPayout
         Me.Label52.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label52.Location = New System.Drawing.Point(35, 259)
         Me.Label52.Name = "Label52"
-        Me.Label52.Size = New System.Drawing.Size(75, 25)
+        Me.Label52.Size = New System.Drawing.Size(106, 25)
         Me.Label52.TabIndex = 74
-        Me.Label52.Text = "PhilHealth"
+        Me.Label52.Text = "PhilHealth Dist."
         '
         'Label54
         '
@@ -985,9 +986,9 @@ Partial Class frmPayout
         Me.Label54.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label54.Location = New System.Drawing.Point(34, 199)
         Me.Label54.Name = "Label54"
-        Me.Label54.Size = New System.Drawing.Size(80, 25)
+        Me.Label54.Size = New System.Drawing.Size(67, 25)
         Me.Label54.TabIndex = 72
-        Me.Label54.Text = "SSS Comp."
+        Me.Label54.Text = "SSS Dist."
         '
         'Label55
         '
@@ -995,9 +996,9 @@ Partial Class frmPayout
         Me.Label55.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label55.Location = New System.Drawing.Point(35, 228)
         Me.Label55.Name = "Label55"
-        Me.Label55.Size = New System.Drawing.Size(55, 25)
+        Me.Label55.Size = New System.Drawing.Size(86, 25)
         Me.Label55.TabIndex = 73
-        Me.Label55.Text = "Pagibig"
+        Me.Label55.Text = "Pagibig Dist."
         '
         'TotalLateUnder_LBL
         '
@@ -1160,6 +1161,7 @@ Partial Class frmPayout
         '
         'TabPage2
         '
+        Me.TabPage2.Controls.Add(Me.Pay_Refresh_BTN)
         Me.TabPage2.Controls.Add(Me.Payout_grid)
         Me.TabPage2.Controls.Add(Me.GroupBox5)
         Me.TabPage2.Controls.Add(Me.Paydate_ComboB)
@@ -1179,35 +1181,35 @@ Partial Class frmPayout
         Me.Payout_grid.AllowUserToAddRows = False
         Me.Payout_grid.AllowUserToResizeColumns = False
         Me.Payout_grid.AllowUserToResizeRows = False
-        DataGridViewCellStyle6.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Payout_grid.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle6
+        DataGridViewCellStyle11.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Payout_grid.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle11
         Me.Payout_grid.BackgroundColor = System.Drawing.Color.White
         Me.Payout_grid.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.Payout_grid.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText
         Me.Payout_grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.Payout_grid.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Name_dgv, Me.basic_dgv, Me.overtime_dgv, Me.late_dgv, Me.gross_dgv, Me.sssDis_dgv, Me.PagibigDis_dgv, Me.philH_dgv, Me.taxable_dgv, Me.taxWH_dgv, Me.netTax_dgv, Me.sssLoan_dgv, Me.pagibigLoan_dgv, Me.allowance_dgv, Me.deduction_dgv, Me.netPay_dgv})
-        DataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.InactiveCaption
-        DataGridViewCellStyle9.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.Payout_grid.DefaultCellStyle = DataGridViewCellStyle9
+        DataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle14.BackColor = System.Drawing.SystemColors.InactiveCaption
+        DataGridViewCellStyle14.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle14.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle14.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle14.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.Payout_grid.DefaultCellStyle = DataGridViewCellStyle14
         Me.Payout_grid.Location = New System.Drawing.Point(6, 573)
         Me.Payout_grid.Name = "Payout_grid"
         Me.Payout_grid.RowHeadersVisible = False
-        DataGridViewCellStyle10.SelectionBackColor = System.Drawing.Color.Transparent
-        DataGridViewCellStyle10.SelectionForeColor = System.Drawing.Color.Transparent
-        Me.Payout_grid.RowsDefaultCellStyle = DataGridViewCellStyle10
+        DataGridViewCellStyle15.SelectionBackColor = System.Drawing.Color.Transparent
+        DataGridViewCellStyle15.SelectionForeColor = System.Drawing.Color.Transparent
+        Me.Payout_grid.RowsDefaultCellStyle = DataGridViewCellStyle15
         Me.Payout_grid.Size = New System.Drawing.Size(1130, 26)
         Me.Payout_grid.TabIndex = 105
         Me.Payout_grid.Visible = False
         '
         'Name_dgv
         '
-        DataGridViewCellStyle7.NullValue = Nothing
-        Me.Name_dgv.DefaultCellStyle = DataGridViewCellStyle7
+        DataGridViewCellStyle12.NullValue = Nothing
+        Me.Name_dgv.DefaultCellStyle = DataGridViewCellStyle12
         Me.Name_dgv.Frozen = True
         Me.Name_dgv.HeaderText = "Name"
         Me.Name_dgv.Name = "Name_dgv"
@@ -1217,8 +1219,8 @@ Partial Class frmPayout
         '
         'basic_dgv
         '
-        DataGridViewCellStyle8.NullValue = Nothing
-        Me.basic_dgv.DefaultCellStyle = DataGridViewCellStyle8
+        DataGridViewCellStyle13.NullValue = Nothing
+        Me.basic_dgv.DefaultCellStyle = DataGridViewCellStyle13
         Me.basic_dgv.HeaderText = "Basic"
         Me.basic_dgv.Name = "basic_dgv"
         Me.basic_dgv.ReadOnly = True
@@ -1595,16 +1597,16 @@ Partial Class frmPayout
         '
         Me.Paydate_ComboB.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Paydate_ComboB.FormattingEnabled = True
-        Me.Paydate_ComboB.Location = New System.Drawing.Point(3, 19)
+        Me.Paydate_ComboB.Location = New System.Drawing.Point(3, 59)
         Me.Paydate_ComboB.Name = "Paydate_ComboB"
-        Me.Paydate_ComboB.Size = New System.Drawing.Size(197, 33)
+        Me.Paydate_ComboB.Size = New System.Drawing.Size(315, 33)
         Me.Paydate_ComboB.TabIndex = 103
         Me.Paydate_ComboB.Text = "   Select Pay date"
         '
         'Search_TXT
         '
         Me.Search_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Search_TXT.Location = New System.Drawing.Point(3, 101)
+        Me.Search_TXT.Location = New System.Drawing.Point(3, 105)
         Me.Search_TXT.Name = "Search_TXT"
         Me.Search_TXT.Size = New System.Drawing.Size(315, 33)
         Me.Search_TXT.TabIndex = 101
@@ -1612,7 +1614,7 @@ Partial Class frmPayout
         'Search_BTN
         '
         Me.Search_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Search_BTN.Location = New System.Drawing.Point(324, 100)
+        Me.Search_BTN.Location = New System.Drawing.Point(324, 104)
         Me.Search_BTN.Name = "Search_BTN"
         Me.Search_BTN.Size = New System.Drawing.Size(82, 33)
         Me.Search_BTN.TabIndex = 102
@@ -1730,6 +1732,16 @@ Partial Class frmPayout
         Me.Details_Save_BTN.TabIndex = 79
         Me.Details_Save_BTN.Text = "Save"
         Me.Details_Save_BTN.UseVisualStyleBackColor = False
+        '
+        'Pay_Refresh_BTN
+        '
+        Me.Pay_Refresh_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Pay_Refresh_BTN.Location = New System.Drawing.Point(2, 13)
+        Me.Pay_Refresh_BTN.Name = "Pay_Refresh_BTN"
+        Me.Pay_Refresh_BTN.Size = New System.Drawing.Size(121, 33)
+        Me.Pay_Refresh_BTN.TabIndex = 106
+        Me.Pay_Refresh_BTN.Text = "Refresh"
+        Me.Pay_Refresh_BTN.UseVisualStyleBackColor = True
         '
         'frmPayout
         '
@@ -1911,4 +1923,5 @@ Partial Class frmPayout
     Friend WithEvents allowance_dgv As DataGridViewTextBoxColumn
     Friend WithEvents deduction_dgv As DataGridViewTextBoxColumn
     Friend WithEvents netPay_dgv As DataGridViewTextBoxColumn
+    Friend WithEvents Pay_Refresh_BTN As Button
 End Class

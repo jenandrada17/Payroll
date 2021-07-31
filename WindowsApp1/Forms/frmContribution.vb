@@ -70,4 +70,14 @@ Public Class frmContribution
         End Try
 
     End Sub
+
+    Private Sub PagChange_BTN_Click(sender As Object, e As EventArgs) Handles PagChange_BTN.Click
+        If PagChange_BTN.Text = "Change" Then
+            PagChange_BTN.Text = "Save"
+        Else
+            Save_Pagibig(Pagibig_grid)
+            PagChange_BTN.Text = "Change"
+        End If
+
+    End Sub
 End Class

@@ -17,7 +17,7 @@ Public Class frmAttendance
     Dim hourMinn, timee, bio_list As List(Of String)
     Dim dateee As DateTime
     Dim DATE_ONLY, am_in, am_out, pm_in, pm_out As String
-    Public Branch_Name As String
+    Public Branch_Name, paydate_ As String
 
     Private Sub frmAttendance_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
@@ -581,7 +581,7 @@ Public Class frmAttendance
         End Using
     End Sub
 
-    Private Sub forLoop_ALL_IMPORTED()   '================================ WORKS WELL- FOR ALL RECORDS ONLY (PARTNER WITH ToDAtabse()) =============================   
+    Private Sub forLoop_ALL_IMPORTED()   '================================ WORKS WELL- FOR ALL RECORDS ONLY (PARTNER WITH SAVE_DIRECT_Attendance()()) =============================   
         LoadDateTime()
         Dim paydate_ As String = Paydate.ToString("d")
         distinct_bio = distinct_bio.Distinct().ToList
@@ -696,7 +696,7 @@ Public Class frmAttendance
 
         '====================================================== ORIGIINAL ======================================
         If Branch_ComboB.SelectedItem = "" Then
-            MsgBox("Please Select File", MsgBoxStyle.Critical, "Error")
+            MsgBox("Please Select Branch", MsgBoxStyle.Critical, "Error")
         Else
 
             DataGridView1.Rows.Clear()
@@ -1054,47 +1054,14 @@ Public Class frmAttendance
         DataGridView1.ClearSelection()
         Branch_Name = Branch_ComboB.SelectedItem
 
-        Attendance_Per_Branch(Bio_grid.Item(0, i).Value, Branch_ComboB.SelectedItem)
-    End Sub
+        If Paydate_ComboB.Text = "   Select Pay date" Then
+            paydate_ = Paydate.ToString("d")
+        Else
+            paydate_ = Paydate_ComboB.SelectedItem
+        End If
 
-    Public Sub Attendance_Per_Branch(bioNo As String, branch As String)
-
-        Dim paydate_ As String = Paydate.ToString("d")
-
-        Dim mysql As String = $"Select * From BIOMETRIC_DTR A inner join PAYROLL_ATTENDANCE B on B.BIOMETRICID = A.BIO_ID where A.BIO_ID = '{bioNo}' and A.BRANCH = '{branch}' and A.PAYDATE = '{paydate_}'"
-        Using ds As DataSet = LoadSQL(mysql, "BIOMETRIC_DTR")
-            If ds.Tables(0).Rows.Count > 0 Then
-                For Each dr In ds.Tables(0).Rows
-                    With dr
-
-                        Dim date_ As Date = .Item("DATE_ONLY")
-
-                        For Each row As DataGridViewRow In DataGridView1.Rows
-
-                            Dim rowIndex As Integer = row.Index
-                            Dim asss As Date = DataGridView1.Rows(rowIndex).Tag
-
-                            If asss = date_ Then
-                                row.Cells(1).Value = IIf(IsDBNull(.Item("AM_IN")), "", .Item("AM_IN"))
-                                row.Cells(2).Value = IIf(IsDBNull(.Item("AM_OUT")), "", .Item("AM_OUT"))
-                                row.Cells(3).Value = IIf(IsDBNull(.Item("PM_IN")), "", .Item("PM_IN"))
-                                row.Cells(4).Value = IIf(IsDBNull(.Item("PM_OUT")), "", .Item("PM_OUT"))
-                                row.Cells(5) = New DataGridViewCheckBoxCell With {.Value = True}
-                            End If
-                        Next
-
-                        TotalDays_LBL.Text = .Item("PRESENT_DAYS")
-                        TotalRHoliday_LBL.Text = .Item("REGHOLIDAY")
-                        TotalSHoliday_LBL.Text = .Item("SPECHOLIDAY")
-                        TotalLateHR_LBL.Text = IIf(IsDBNull(.Item("LATE")), "00:00:00", .Item("LATE"))
-                        TotalUTHR_LBL.Text = IIf(IsDBNull(.Item("UNDERTIME")), "00:00:00", .Item("UNDERTIME"))
-                        TotalOTHr_LBL.Text = .Item("OVERTIME")
-
-                    End With
-                Next
-            End If
-        End Using
-
+        GetAttendance_Manual(Bio_grid.Item(0, i).Value, Branch_ComboB.SelectedItem, paydate_, DataGridView1,
+                                    TotalDays_LBL, TotalRHoliday_LBL, TotalSHoliday_LBL, TotalLateHR_LBL, TotalUTHR_LBL, TotalOTHr_LBL)
     End Sub
 
     Private Function CheckTimeRange(myDate As DateTime, minTime As TimeSpan, maxTime As TimeSpan) As Boolean
@@ -1124,12 +1091,14 @@ Public Class frmAttendance
 
     Private Sub Paydate_ComboB_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Paydate_ComboB.SelectedIndexChanged
 
+        If Paydate_ComboB.Text = "   Select Pay date" Then
+            paydate_ = Paydate.ToString("d")
+        Else
+            paydate_ = Paydate_ComboB.SelectedItem
+        End If
+
         If Branch_ComboB.SelectedIndex >= 0 Then
-            If Paydate_ComboB.SelectedIndex > 0 Then
-                PopulateBiometricSHEET(Bio_grid, Paydate_ComboB.SelectedItem, Branch_ComboB.SelectedItem)
-            Else
-                PopulateBiometricSHEET(Bio_grid, Paydate, Branch_ComboB.SelectedItem)
-            End If
+            PopulateBiometricSHEET(Bio_grid, paydate_, Branch_ComboB.SelectedItem)
         End If
     End Sub
 

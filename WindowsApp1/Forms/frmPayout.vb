@@ -55,15 +55,15 @@
                 AttendanceDetails(BiometricID_TXT.Text, paydate_, NoOfDays_TXT, RegularOT_TXT, SpecialHol_TXT, RegularHol_TXT,
                                             Late_TXT, UnderTime_TXT)
 
-                AllowanceDetails(BiometricID_TXT.Text, Rate_TXT.Tag, Positional_TXT, Incentive_TXT, Boarding_TXT, Carekit_TXT, Transport_TXT)   '============ Rate_TXT.Tag is branchID (for same biometric) ======
+                AllowanceDetails(BiometricID_TXT.Text, Rate_TXT.Tag, Positional_TXT, Incentive_TXT, Boarding_TXT, Carekit_TXT, Transport_TXT)   '===== Rate_TXT.Tag is branchID (for same biometric) ======
 
                 DeductioneDetails(BiometricID_TXT.Text, Rate_TXT.Tag, CashAdvance_TXT, Loan_TXT, Charges_TXT)
 
                 OtherDetails(BiometricID_TXT.Text, Rate_TXT.Tag, paydate_, Savings_TXT, OtherAllowance_TXT, OtherDeduction_TXT)
 
-                'If IsLastDay(paydate_) Then
-                '    Distribution_Details(8736, SSSComp_LBL, Pagibig_LBL, Philhealth_LBL)
-                'End If
+                If IsLastDay(paydate_) Then
+                    Distribution_Details(BiometricID_TXT.Text, Rate_TXT.Tag, paydate_, SSSComp_LBL, Pagibig_LBL, Philhealth_LBL)
+                End If
 
                 Calculate_Gross()
 
@@ -79,7 +79,6 @@
 
     Function IsLastDay(ByVal myDate As Date) As Boolean
         Return myDate.Day = Date.DaysInMonth(myDate.Year, myDate.Month)
-        Console.WriteLine("QQQ " & myDate.Day)
     End Function
 
     Private Sub Cancel_BTN_Click(sender As Object, e As EventArgs) Handles Cancel_BTN.Click
@@ -148,6 +147,15 @@
 
     End Sub
 
+    Private Sub Pay_Refresh_BTN_Click(sender As Object, e As EventArgs) Handles Pay_Refresh_BTN.Click
+        SavePayout_ALL(paydate_)
+
+        Lists_Payout(Payout_list, paydate_)
+
+        GetPayout_TOTALS(paydate_, P_GrossAmount_LBL, P_SSSComp_LBL, P_PagibigComp_LBL, P_PhilHComp_LBL, P_Taxable_LBL, P_TaxWH_LBL,
+                         P_SSSLoan_LBL, P_PagibigLoan_LBL, P_Allowance_LBL, P_Deduction_LBL, P_NetPay_LBL)
+    End Sub
+
     Private Sub Paydate_ComboB_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Paydate_ComboB.SelectedIndexChanged
         paydate_ = Paydate_ComboB.SelectedItem
         Lists_Payout(Payout_list, paydate_)
@@ -174,6 +182,7 @@
             CashAdvance_TXT.Text = CashAdvance
         End If
         Calculate_ON_OFF()
+        Calculate_NetPay()
     End Sub
 
     Private Sub Off_SBU_BTN_Click(sender As Object, e As EventArgs) Handles Off_SBU_BTN.Click
@@ -185,6 +194,7 @@
             Savings_TXT.Text = SBU
         End If
         Calculate_ON_OFF()
+        Calculate_NetPay()
     End Sub
 
     Private Sub Search_BTN_Click(sender As Object, e As EventArgs) Handles Search_BTN.Click
@@ -205,6 +215,7 @@
             Loan_TXT.Text = Loan
         End If
         Calculate_ON_OFF()
+        Calculate_NetPay()
     End Sub
 
     Private Sub Off_Charges_BTN_Click(sender As Object, e As EventArgs) Handles Off_Charges_BTN.Click
@@ -216,6 +227,7 @@
             Charges_TXT.Text = Charges
         End If
         Calculate_ON_OFF()
+        Calculate_NetPay()
     End Sub
 
     Private Sub OtherDeduction_TXT_TextChanged(sender As Object, e As EventArgs) Handles OtherDeduction_TXT.TextChanged

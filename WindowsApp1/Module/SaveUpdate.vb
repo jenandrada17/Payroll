@@ -572,15 +572,159 @@
     End Sub
 
 
+    'Friend Sub SavePayout_ALL(paydate_ As String) '========== AUTO SAVE TO PAYOUT ============ 
+
+    '    Dim regHoliday = Holiday_Rate("REGULAR")
+    '    Dim specHoliday = Holiday_Rate("SPECIAL")
+    '    Dim SBU = SBU_Amount()
+
+    '    Dim mysql As String = "Select * From payroll_attendance A 
+    '                            inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRICID 
+    '                            left join TBL_BRANCH C on C.BRANCHNAME = A.BRANCH and B.BRANCH_ID = C.ID WHERE A.PAYDATE = '" & paydate_ & "'"
+
+    '    Using ds As DataSet = LoadSQL(mysql, "payroll_attendance")
+    '        If ds.Tables(0).Rows.Count > 0 Then
+
+    '            progressBarStart(ds.Tables(0).Rows.Count)
+
+    '            For Each dr In ds.Tables(0).Rows
+    '                With dr
+
+    '                    Dim BiometricID, branchID As String
+    '                    Dim Late As String = ""
+    '                    Dim UnderTime As String = ""
+    '                    Dim rate, NoOfDays, RegularOT, SpecialHol, RegularHol As Double
+    '                    Dim Positional, Incentive, Boarding, Carekit, Transport, CashAdvance, Loan, Charges, Allowances, Deduction As Double
+
+    '                    BiometricID = .Item("BIOMETRICID")
+    '                    rate = IIf(IsDBNull(.Item("RATE")), 0, .Item("RATE"))
+    '                    branchID = .Item("BRANCH_ID")
+
+    '                    Dim sql_1 As String = $"Select * From PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{BiometricID}' and paydate = '{paydate_}'"
+    '                    Using ds_1 As DataSet = LoadSQL(sql_1, "PAYROLL_ATTENDANCE")
+    '                        If ds_1.Tables(0).Rows.Count > 0 Then
+
+    '                            Dim dr_11 As DataRow = ds_1.Tables(0).Rows(0)
+    '                            With dr_11
+    '                                NoOfDays = .Item("PRESENT_DAYS")
+    '                                RegularOT = .Item("OVERTIME")
+    '                                SpecialHol = .Item("SPECHOLIDAY")
+    '                                RegularHol = .Item("REGHOLIDAY")
+    '                                Late = .Item("LATE")
+    '                                UnderTime = .Item("UNDERTIME")
+    '                            End With
+    '                        End If
+    '                    End Using
+
+    '                    '============================================= ALLOWANCE =========================================================
+    '                    Positional = 0
+    '                    Incentive = 0
+    '                    Boarding = 0
+    '                    Carekit = 0
+    '                    Transport = 0
+
+    '                    Dim sql_2 As String = $"Select * From PAYROLL_ALLOWANCE WHERE BIOMETRIC_NO = '{BiometricID}' and BRANCH_ID = '{branchID}'"
+    '                    Using ds_2 As DataSet = LoadSQL(sql_2, "PAYROLL_ALLOWANCE")
+    '                        If ds_2.Tables(0).Rows.Count > 0 Then
+    '                            For Each dr_2 In ds_2.Tables(0).Rows
+    '                                With dr_2
+    '                                    Positional = IIf(IsDBNull(.Item("POSITIONAL")), 0, .Item("POSITIONAL"))
+    '                                    Incentive = IIf(IsDBNull(.Item("INCENTIVES")), 0, .Item("INCENTIVES"))
+    '                                    Boarding = IIf(IsDBNull(.Item("BOARDING")), 0, .Item("BOARDING"))
+    '                                    Carekit = IIf(IsDBNull(.Item("CAREKIT")), 0, .Item("CAREKIT"))
+    '                                    Transport = IIf(IsDBNull(.Item("TRANSPORTATION")), 0, .Item("TRANSPORTATION"))
+    '                                End With
+    '                            Next
+    '                        End If
+    '                    End Using
+
+    '                    '============================================= DEDUCTION =========================================================  
+    '                    Loan = 0
+    '                    Charges = 0
+    '                    CashAdvance = 0
+    '                    Dim sql_3 As String = $"Select * From PAYROLL_DEDUCTIONS WHERE BIOMETRIC_NO = '{BiometricID}' and BRANCHID = '{branchID}'"
+    '                    Using ds_3 As DataSet = LoadSQL(sql_3, "PAYROLL_DEDUCTIONS")
+    '                        If ds_3.Tables(0).Rows.Count > 0 Then
+    '                            For Each dr_3 In ds_3.Tables(0).Rows
+    '                                With dr_3
+    '                                    If .Item("CATEGORY") = "Loan" Then
+    '                                        Loan = .Item("TOTAL_AMOUNT")
+    '                                    ElseIf .Item("CATEGORY") = "Charges" Then
+    '                                        Charges = .Item("TOTAL_AMOUNT")
+    '                                    ElseIf .Item("CATEGORY") = "Cash Advance" Then
+    '                                        CashAdvance = .Item("TOTAL_AMOUNT")
+    '                                    End If
+    '                                End With
+    '                            Next
+    '                        End If
+    '                    End Using
+
+    '                    '============================================= BENIFITS / REMITANCE ========================================================= 
+    '                    Dim SSSComp, PagibigComp, PhilhealthComp, TaxComp, Tax_Wheld, netTax, sssLoan, pagibigLoan As Double
+    '                    'WALA PA SA_______________
+
+    '                    '============================================= Calculate_Gross() ========================================================= 
+    '                    Dim TotalBasic, TotalHol, TotalOT, TotalLateUnder, GrossAmount As Double
+
+    '                    TotalBasic = NoOfDays * rate
+
+    '                    TotalHol = (((SpecialHol * rate) * specHoliday) / specHoliday) + (((RegularHol * rate) * regHoliday) / regHoliday) ' =========== CALCULATE hOLIDAY TO PESO ===========
+
+    '                    TotalOT = ((rate / 8) * 1.25) * RegularOT ' =========== CALCULATE OVERTIME TO PESO ===========
+
+    '                    Dim late_split() As String, under_split() As String, lateTOMinute, underToMinute As Double
+
+    '                    late_split = Split(Late, ":")
+    '                    under_split = Split(UnderTime, ":")
+
+    '                    lateTOMinute = CDbl(late_split(0)) * 60 + CDbl(late_split(1)) + CDbl(late_split(2)) / 60
+    '                    underToMinute = (CDbl(under_split(0)) * 60 + CDbl(under_split(1)) + CDbl(under_split(2)) / 60) / 60
+
+    '                    Dim LATEE, UNDERTIMEE As Double
+    '                    LATEE = ((rate / 8) / 60) * lateTOMinute
+    '                    UNDERTIMEE = (rate / 8) * underToMinute
+
+    '                    TotalLateUnder = LATEE + UNDERTIMEE
+
+    '                    GrossAmount = (TotalBasic + TotalHol + TotalOT) - TotalLateUnder
+
+
+    '                    '============================================= Calculate =========================================================  
+    '                    Dim NetPay As Double
+
+    '                    Allowances = Carekit + Boarding + Incentive + Positional + Transport
+
+    '                    Deduction = SBU + Charges + Loan + CashAdvance
+
+    '                    Dim positive = GrossAmount + Allowances
+    '                    Dim negative = netTax + sssLoan + pagibigLoan + Deduction
+
+    '                    NetPay = positive - negative
+
+    '                    SavePayout(BiometricID, branchID, paydate_, TotalBasic, TotalOT,
+    '                              TotalLateUnder, GrossAmount, SSSComp, PagibigComp, PhilhealthComp,
+    '                              TaxComp, Tax_Wheld, netTax, sssLoan, pagibigLoan,
+    '                              Allowances, Deduction, NetPay, SBU, "Group")
+
+    '                    frmMainForm.AppProgressBar.Value += 1
+    '                End With
+    '            Next
+    '        End If
+    '    End Using
+
+    '    progressBarEnd()
+    'End Sub
+
+
     Friend Sub SavePayout_ALL(paydate_ As String) '========== AUTO SAVE TO PAYOUT ============ 
 
         Dim regHoliday = Holiday_Rate("REGULAR")
         Dim specHoliday = Holiday_Rate("SPECIAL")
         Dim SBU = SBU_Amount()
 
-        Dim mysql As String = "Select * From payroll_attendance A 
+        Dim mysql As String = $"Select * From payroll_attendance A 
                                 inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRICID 
-                                left join TBL_BRANCH C on C.BRANCHNAME = A.BRANCH and B.BRANCH_ID = C.ID WHERE A.PAYDATE = '" & paydate_ & "'"
+                                left join TBL_BRANCH C on C.BRANCHNAME = A.BRANCH and B.BRANCH_ID = C.ID WHERE A.PAYDATE = '{paydate_}'"
 
         Using ds As DataSet = LoadSQL(mysql, "payroll_attendance")
             If ds.Tables(0).Rows.Count > 0 Then
@@ -600,6 +744,7 @@
                         rate = IIf(IsDBNull(.Item("RATE")), 0, .Item("RATE"))
                         branchID = .Item("BRANCH_ID")
 
+                        '============================================= ATTENDANCE (TOTAL DAYS) =========================================================
                         Dim sql_1 As String = $"Select * From PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{BiometricID}' and paydate = '{paydate_}'"
                         Using ds_1 As DataSet = LoadSQL(sql_1, "PAYROLL_ATTENDANCE")
                             If ds_1.Tables(0).Rows.Count > 0 Then
@@ -715,6 +860,7 @@
         progressBarEnd()
     End Sub
 
+
     Public Sub SaveSSS_Contribution(one As String, two As String, three As String, four As String, five As String, six As String, seven As String,
                                     eight As String, nine As String, ten As String, eleven As String, twelve As String, thirteen As String, fourteen As String,
                                     fifteen As String, sixteen As String)
@@ -748,6 +894,32 @@
         End Using
     End Sub
 
+    Friend Sub Save_Pagibig(datagrid As DataGridView)
 
+        RunCommand("DELETE FROM PAYROLL_PAGIBIG;")
+
+        For Each row As DataGridViewRow In datagrid.Rows
+
+            Dim mysql As String = $"Select * FROM PAYROLL_PAGIBIG"
+            Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_PAGIBIG")
+            If dss.Tables(0).Rows.Count > 0 Then
+                Dim dsNewRow As DataRow = dss.Tables(0).NewRow
+                With dsNewRow
+                    .Item("RANGE") = row.Cells(0).Value
+                    .Item("EE_CONTRIB") = row.Cells(1).Value
+                    .Item("ER_CONTRIB") = row.Cells(2).Value
+                    .Item("TOTAL") = row.Cells(3).Value
+                End With
+
+                dss.Tables(0).Rows.Add(dsNewRow)
+                SaveEntry(dss)
+            End If
+
+
+            row.Height = 40
+        Next
+
+        MsgBox("Successfully Saved!", MsgBoxStyle.Information, "Information")
+    End Sub
 
 End Module

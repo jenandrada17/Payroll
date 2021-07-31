@@ -70,6 +70,55 @@ Module SelectFromDatabase
 
     'End Sub
 
+    Public Sub GetAttendance_Manual(bioNo As String, branch As String, paydate As String, datagrid As DataGridView,
+                                    TotalDays_LBL As Label, TotalRHoliday_LBL As Label, TotalSHoliday_LBL As Label,
+                                    TotalLateHR_LBL As Label, TotalUTHR_LBL As Label, TotalOTHr_LBL As Label)
+
+        Dim mysql As String = $"Select * From BIOMETRIC_DTR where BIO_ID = '{bioNo}' and BRANCH = '{branch}' and PAYDATE = '{paydate}'"
+        Using ds As DataSet = LoadSQL(mysql, "BIOMETRIC_DTR")
+            If ds.Tables(0).Rows.Count > 0 Then
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+
+                        Dim date_ As Date = .Item("DATE_ONLY")
+
+                        For Each row As DataGridViewRow In datagrid.Rows
+
+                            Dim rowIndex As Integer = row.Index
+                            Dim asss As Date = datagrid.Rows(rowIndex).Tag
+
+                            If asss = date_ Then
+                                row.Cells(1).Value = IIf(IsDBNull(.Item("AM_IN")), "", .Item("AM_IN"))
+                                row.Cells(2).Value = IIf(IsDBNull(.Item("AM_OUT")), "", .Item("AM_OUT"))
+                                row.Cells(3).Value = IIf(IsDBNull(.Item("PM_IN")), "", .Item("PM_IN"))
+                                row.Cells(4).Value = IIf(IsDBNull(.Item("PM_OUT")), "", .Item("PM_OUT"))
+                                row.Cells(5) = New DataGridViewCheckBoxCell With {.Value = True}
+                            End If
+                        Next
+                    End With
+                Next
+            End If
+        End Using
+
+
+        Dim sql As String = $"Select * From PAYROLL_ATTENDANCE where BIOMETRICID = '{bioNo}' and BRANCH = '{branch}' and PAYDATE = '{paydate}'"
+        Using ds As DataSet = LoadSQL(sql, "PAYROLL_ATTENDANCE")
+            If ds.Tables(0).Rows.Count > 0 Then
+                Dim data As DataRow = ds.Tables(0).Rows(0)
+                With data
+                    TotalDays_LBL.Text = .Item("PRESENT_DAYS")
+                    TotalRHoliday_LBL.Text = .Item("REGHOLIDAY")
+                    TotalSHoliday_LBL.Text = .Item("SPECHOLIDAY")
+                    TotalLateHR_LBL.Text = IIf(IsDBNull(.Item("LATE")), "00:00:00", .Item("LATE"))
+                    TotalUTHR_LBL.Text = IIf(IsDBNull(.Item("UNDERTIME")), "00:00:00", .Item("UNDERTIME"))
+                    TotalOTHr_LBL.Text = .Item("OVERTIME")
+                End With
+            End If
+        End Using
+
+    End Sub
+
+
     Public Sub GetPayout_TOTALS(paydate As String, P_GrossAmount_LBL As Label, P_SSSComp_LBL As Label, P_PagibigComp_LBL As Label, P_PhilHComp_LBL As Label,
                                  P_Taxable_LBL As Label, P_TaxWH_LBL As Label, P_SSSLoan_LBL As Label, P_PagibigLoan_LBL As Label,
                                  P_Allowance_LBL As Label, P_Deduction_LBL As Label, P_NetPay_LBL As Label)
@@ -308,7 +357,7 @@ Module SelectFromDatabase
         Savings_TXT.Clear()
 
         Dim mysql As String = $"Select * FROM PAYROLL_PAYOUT where BIOMETRIC_ID = '{biometric}' and BRANCH_ID = '{branchID}' and PAYDATE = '{PAYDATE}'"
-        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_DEDUCTIONS")
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
                     With dr
@@ -321,12 +370,53 @@ Module SelectFromDatabase
         End Using
     End Sub
 
-    Friend Sub Distribution_Details(monthly_Rate As Double, sss As Label, pagibig As Label, philhealth As Label)
+    Friend Sub Distribution_Details(biono As String, branchID As Integer, paydate As String, sss As Label, pagibig As Label, philhealth As Label)
 
         sss.Text = 0
         pagibig.Text = 0
         philhealth.Text = 0
 
+        Dim first_Basic As Double
+        Dim second_Basic As Double
+        Dim Monthly_Total As Double
+
+        Dim paydate_ As DateTime = Convert.ToDateTime(paydate)
+        paydate_ = paydate_.ToString("d")
+
+        Dim first_payroll = New DateTime(paydate_.Year, paydate_.Month, 1)
+        first_payroll = first_payroll.AddDays(14)
+        Console.WriteLine("SADSA " & first_payroll)
+        '=================================================================== 1st Payroll ===========================================================
+        Dim sql As String = $"Select * FROM PAYROLL_PAYOUT where BIOMETRIC_ID = '{biono}' and BRANCH_ID = '{branchID}' and PAYDATE = '{first_payroll.ToString("d")}'"
+        Using ds As DataSet = LoadSQL(sql, "PAYROLL_PAYOUT")
+            If ds.Tables(0).Rows.Count > 0 Then
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+                        first_Basic = .Item("TOTAL_BASIC")
+                    End With
+                Next
+            Else
+                Console.WriteLine("no dataaa ")
+            End If
+        End Using
+
+        '=================================================================== 2nd Payroll ===========================================================
+        Dim sqll As String = $"Select * FROM PAYROLL_PAYOUT where BIOMETRIC_ID = '{biono}' and BRANCH_ID = '{branchID}' and PAYDATE = '{paydate_.ToString("d")}'"
+        Using ds As DataSet = LoadSQL(sqll, "PAYROLL_PAYOUT")
+            If ds.Tables(0).Rows.Count > 0 Then
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+                        second_Basic = .Item("TOTAL_BASIC")
+                    End With
+                Next
+            Else
+                Console.WriteLine("no dataaassss ")
+            End If
+        End Using
+
+        Monthly_Total = first_Basic + second_Basic
+
+        '=================================================================== Total ===========================================================
         Dim mysql As String = $"Select * FROM PAYROLL_SSS"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_SSS")
             If ds.Tables(0).Rows.Count > 0 Then
@@ -340,7 +430,7 @@ Module SelectFromDatabase
                             strWords(0) = 1
                         End If
 
-                        If (Enumerable.Range(strWords(0), strWords.Last).Contains(monthly_Rate)) Then
+                        If (Enumerable.Range(strWords(0), strWords.Last).Contains(Monthly_Total)) Then
                             sss.Text = .Item("RSS_EE")
                         End If
 
