@@ -10,6 +10,8 @@ Public Class frmContribution
     Private Sub frmContribution_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         SSS_grid.ClearSelection()
         Populate_SSS(SSS_grid)
+        Populate_Pagibig(HMDF_EE_TXT, HMDF_ER_TXT)
+        Populate_PhilHeath(PhilH_grid)
     End Sub
 
     Private Sub OpenFile_BTN_Click(sender As Object, e As EventArgs) Handles OpenFile_BTN.Click
@@ -74,10 +76,28 @@ Public Class frmContribution
     Private Sub PagChange_BTN_Click(sender As Object, e As EventArgs) Handles PagChange_BTN.Click
         If PagChange_BTN.Text = "Change" Then
             PagChange_BTN.Text = "Save"
+            HMDF_EE_TXT.ReadOnly = False
+            HMDF_ER_TXT.ReadOnly = False
         Else
-            Save_Pagibig(Pagibig_grid)
+            Save_Pagibig(HMDF_EE_TXT.Text, HMDF_ER_TXT.Text)
             PagChange_BTN.Text = "Change"
+            HMDF_EE_TXT.ReadOnly = True
+            HMDF_ER_TXT.ReadOnly = True
+            Populate_Pagibig(HMDF_EE_TXT, HMDF_ER_TXT)
         End If
+    End Sub
 
+    Private Sub PhilH_Change_BTN_Click(sender As Object, e As EventArgs) Handles PhilH_Change_BTN.Click
+        If PhilH_Change_BTN.Text = "Change" Then
+            PhilH_Change_BTN.Text = "Save"
+            PhilH_grid.ReadOnly = False
+            PhilH_grid.AllowUserToAddRows = True
+        Else
+            Save_PhilHealth(PhilH_grid)
+            PhilH_Change_BTN.Text = "Change"
+            PhilH_grid.ReadOnly = True
+            Populate_PhilHeath(PhilH_grid)
+            PhilH_grid.AllowUserToAddRows = False
+        End If
     End Sub
 End Class

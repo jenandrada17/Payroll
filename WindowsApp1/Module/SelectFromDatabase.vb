@@ -132,21 +132,20 @@ Module SelectFromDatabase
             If ds.Tables(0).Rows.Count > 0 Then
                 Dim data As DataRow = ds.Tables(0).Rows(0)
                 With data
-                    P_GrossAmount_LBL.Text = .Item("gross")
-                    P_SSSComp_LBL.Text = .Item("sssC")
-                    P_PagibigComp_LBL.Text = .Item("pagibiC")
-                    P_PhilHComp_LBL.Text = .Item("philHC")
+                    P_GrossAmount_LBL.Text = IIf(IsDBNull(.Item("gross")), 0, .Item("gross"))
+                    P_SSSComp_LBL.Text = IIf(IsDBNull(.Item("sssC")), 0, .Item("sssC"))
+                    P_PagibigComp_LBL.Text = IIf(IsDBNull(.Item("pagibiC")), 0, .Item("pagibiC"))
+                    P_PhilHComp_LBL.Text = IIf(IsDBNull(.Item("philHC")), 0, .Item("philHC"))
 
-                    P_Taxable_LBL.Text = .Item("tax")
-                    P_TaxWH_LBL.Text = .Item("taxWH")
+                    P_Taxable_LBL.Text = IIf(IsDBNull(.Item("tax")), 0, .Item("tax"))
+                    P_TaxWH_LBL.Text = IIf(IsDBNull(.Item("taxWH")), 0, .Item("taxWH"))
 
-                    P_SSSLoan_LBL.Text = .Item("sssLoan")
-                    P_PagibigLoan_LBL.Text = .Item("pagibigLoan")
+                    P_SSSLoan_LBL.Text = IIf(IsDBNull(.Item("sssLoan")), 0, .Item("sssLoan"))
+                    P_PagibigLoan_LBL.Text = IIf(IsDBNull(.Item("pagibigLoan")), 0, .Item("pagibigLoan"))
 
-                    P_Allowance_LBL.Text = .Item("allowance")
-                    P_Deduction_LBL.Text = .Item("deducttion")
-                    P_NetPay_LBL.Text = .Item("netPay")
-
+                    P_Allowance_LBL.Text = IIf(IsDBNull(.Item("allowance")), 0, .Item("allowance"))
+                    P_Deduction_LBL.Text = IIf(IsDBNull(.Item("deducttion")), 0, .Item("deducttion"))
+                    P_NetPay_LBL.Text = IIf(IsDBNull(.Item("netPay")), 0, .Item("netPay"))
                 End With
             End If
         End Using
@@ -183,15 +182,15 @@ Module SelectFromDatabase
             Dim mysql As String
             If str.Length <> 0 Then
 
-                mysql = "select * from tbl_Employee A inner join tbl_branch B on B.ID = A.BRANCH_ID Where "
+                mysql = "Select * from tbl_Employee A inner join tbl_branch B On B.ID = A.BRANCH_ID Where "
 
                 For Each name In strWords
-                    mysql &= $"{vbCr}UPPER(BIOMETRICID) LIKE UPPER('%{name}%') OR "
-                    mysql &= $"{vbCr}UPPER(firstname) LIKE UPPER('%{name}%') OR "
-                    mysql &= $"{vbCr}UPPER(lastname) LIKE UPPER('%{name}%') OR "
-                    mysql &= $"{vbCr}UPPER(branchname) LIKE UPPER('%{name}%') OR "
-                    mysql &= $"{vbCr}UPPER(A.STATUS) LIKE UPPER('%{name}%') OR "
-                    mysql &= $"{vbCr}UPPER(COMPANYNAME) LIKE UPPER('%{name}%')"
+                    mysql &= $"{vbCr}UPPER(BIOMETRICID) Like UPPER('%{name}%') OR "
+                    mysql &= $"{vbCr}UPPER(firstname) Like UPPER('%{name}%') OR "
+                    mysql &= $"{vbCr}UPPER(lastname) Like UPPER('%{name}%') OR "
+                    mysql &= $"{vbCr}UPPER(branchname) Like UPPER('%{name}%') OR "
+                    mysql &= $"{vbCr}UPPER(A.STATUS) Like UPPER('%{name}%') OR "
+                    mysql &= $"{vbCr}UPPER(COMPANYNAME) Like UPPER('%{name}%')"
                 Next
 
             Else
@@ -1018,10 +1017,10 @@ Module SelectFromDatabase
             i.SubItems.Add(.Item("TOTAL_ALLOWANCE"))
             i.SubItems.Add(.Item("TOTAL_DEDUCTION"))
             i.SubItems.Add(.Item("NET_PAY"))
+
         End With
 
     End Sub
-
 
     Friend Sub Lists_Payout(LV As ListView, paydate As String, Optional searchName As String = "")
 
@@ -1033,18 +1032,18 @@ Module SelectFromDatabase
 
         If searchName.Length <> 0 Then
 
-            mysql = $"Select * From PAYROLL_PAYOUT A inner join tbl_employee B on B.BIOMETRICID = A.BIOMETRIC_ID  inner join tbl_branch C on C.ID = B.BRANCH_ID  where paydate =' {paydate}' and "
+            mysql = $"Select * From PAYROLL_PAYOUT A inner join tbl_employee B on B.BIOMETRICID = A.BIOMETRIC_ID  inner join tbl_branch C on C.ID = B.BRANCH_ID  where paydate = '{paydate}' and ( "
 
             For Each name In strWords
                 mysql &= $"{vbCr}UPPER(BIOMETRIC_ID) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(firstname) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(lastname) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(EMP_POSITION) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(rate) LIKE UPPER('%{name}%') "
+                mysql &= $"{vbCr}UPPER(rate) LIKE UPPER('%{name}%') )"
             Next
 
         Else
-            mysql = $"Select * From PAYROLL_PAYOUT A inner join tbl_employee B on B.BIOMETRICID = A.BIOMETRIC_ID  inner join tbl_branch C on C.ID = B.BRANCH_ID  where paydate =' {paydate}'"
+            mysql = $"Select * From PAYROLL_PAYOUT A inner join tbl_employee B on B.BIOMETRICID = A.BIOMETRIC_ID  inner join tbl_branch C on C.ID = B.BRANCH_ID  where paydate ='{paydate}'"
         End If
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
@@ -1073,6 +1072,46 @@ Module SelectFromDatabase
 
     End Sub
 
+    Friend Sub Populate_Pagibig(HMDF_EE_TXT As TextBox, HMDF_ER_TXT As TextBox)
+
+        Dim mysql As String = $"Select * From PAYROLL_Pagibig"
+
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_Pagibig")
+            If ds.Tables(0).Rows.Count > 0 Then
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+                        HMDF_EE_TXT.Text = .Item("EMPLOYEE")
+                        HMDF_ER_TXT.Text = .Item("EMPLOYER")
+                    End With
+                Next
+            End If
+        End Using
+
+    End Sub
+
+    Friend Sub Populate_PhilHeath(datagrid As DataGridView)
+
+        datagrid.Rows.Clear()
+        Dim mysql As String = $"Select * From PAYROLL_PHILHEALTH"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PHILHEALTH")
+            If ds.Tables(0).Rows.Count > 0 Then
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+                        Dim rowId As Integer = datagrid.Rows.Add()
+                        Dim row As DataGridViewRow = datagrid.Rows(rowId)
+                        row.Cells("philH_one").Value = .Item("MONTHLY_SALARY")
+                        row.Cells("philH_two").Value = .Item("MONTHLY_CONTRIB")
+                        row.Cells("philH_three").Value = .Item("EE_SHARE")
+                        row.Cells("philH_four").Value = .Item("ER_SHARE")
+
+                        row.Height = 40
+                    End With
+                Next
+            End If
+        End Using
+
+    End Sub
+
 
     Friend Sub Populate_SSS(datagrid As DataGridView)
 
@@ -1081,11 +1120,9 @@ Module SelectFromDatabase
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_SSS")
             If ds.Tables(0).Rows.Count > 0 Then
-
                 For Each dr In ds.Tables(0).Rows
                     AddRow_SSS(dr, datagrid)
                 Next
-                'AdjustHeightOfGridBasedOnRows(datagrid)
             Else
                 datagrid.Rows.Clear()
             End If

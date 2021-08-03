@@ -3,7 +3,7 @@ Imports Microsoft.Office.Interop
 
 Public Class frmAttendance
 
-    Dim DateNow As DateTime = DateTime.Now
+    Dim DateNow As DateTime
     Dim startingDate, EndingDate As DateTime
     Dim DateNowADDMonth As DateTime = DateTime.Now.AddMonths(1)
     Dim StartFour, EndFour, StartNineteen, EndNineteen, Paydate As DateTime
@@ -23,12 +23,13 @@ Public Class frmAttendance
 
         LoadDateTime()
         DataGridView1.ClearSelection()
+
         CheckALL_CheckBox.Checked = True
         PopulateComboBox(Branch_ComboB, "tbl_branch", "BRANCHNAME")
         PopulateComboBox(Paydate_ComboB, "BIOMETRIC_DTR", "PAYDATE")
         PopulateComboBox(RE_Paydate_Combo, "BIOMETRIC_DTR", "PAYDATE")
         'Paydate_ComboB.Items.Insert(0, "Current")
-        'RE_Paydate_Combo.Items.Insert(0, "Current")
+        'RE_Paydate_Combo.Items.Insert(0, "Current") 
 
     End Sub
 
@@ -36,7 +37,7 @@ Public Class frmAttendance
         Close()
     End Sub
 
-    Public Sub LoadDateTime()
+    Public Sub LoadDateTime(Optional datee As DateTime = Nothing)
 
         TotalAbsent_LBL.Text = 0
         TotalDays_LBL.Text = 0
@@ -48,6 +49,12 @@ Public Class frmAttendance
         DataGridView1.Rows.Clear()
 
         Dim rowIndex As Integer
+
+        If datee = Nothing Then
+            DateNow = DateTime.Now
+        Else
+            DateNow = datee
+        End If
 
         StartFour = New DateTime(DateNow.Year, DateNow.Month, 4).AddDays(-1)
         EndFour = New DateTime(DateNow.Year, DateNow.Month, 18)
@@ -71,6 +78,7 @@ Public Class frmAttendance
                 StartNineteen = StartNineteen.AddDays(1)
             End While
 
+            Console.WriteLine("PAydateee1 " & Paydate)
         Else
 
             Paydate = New DateTime(EndFour.Year, EndFour.Month, DateTime.DaysInMonth(EndFour.Year, EndFour.Month))
@@ -88,7 +96,7 @@ Public Class frmAttendance
 
             End While
 
-
+            Console.WriteLine("PAydateee2 " & Paydate)
         End If
 
         Dim ss As DateTime = Date.UtcNow
@@ -1051,15 +1059,15 @@ Public Class frmAttendance
         BiometricID_TXT.Text = Bio_grid.Item(0, i).Value
         Name_TXT.Text = Bio_grid.Item(1, i).Value
 
-        DataGridView1.ClearSelection()
         Branch_Name = Branch_ComboB.SelectedItem
 
-        If Paydate_ComboB.Text = "   Select Pay date" Then
+        If Paydate_ComboB.Text = "   Select Date" Then
             paydate_ = Paydate.ToString("d")
         Else
             paydate_ = Paydate_ComboB.SelectedItem
         End If
 
+        DataGridView1.ClearSelection()
         GetAttendance_Manual(Bio_grid.Item(0, i).Value, Branch_ComboB.SelectedItem, paydate_, DataGridView1,
                                     TotalDays_LBL, TotalRHoliday_LBL, TotalSHoliday_LBL, TotalLateHR_LBL, TotalUTHR_LBL, TotalOTHr_LBL)
     End Sub
@@ -1081,8 +1089,7 @@ Public Class frmAttendance
     End Sub
 
     Private Sub Branch_ComboB_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Branch_ComboB.SelectedIndexChanged
-
-        If Paydate_ComboB.SelectedIndex > 0 Then
+        If Paydate_ComboB.SelectedIndex >= 0 Then
             PopulateBiometricSHEET(Bio_grid, Paydate_ComboB.SelectedItem, Branch_ComboB.SelectedItem)
         Else
             PopulateBiometricSHEET(Bio_grid, Paydate, Branch_ComboB.SelectedItem)
@@ -1091,7 +1098,7 @@ Public Class frmAttendance
 
     Private Sub Paydate_ComboB_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Paydate_ComboB.SelectedIndexChanged
 
-        If Paydate_ComboB.Text = "   Select Pay date" Then
+        If Paydate_ComboB.Text = "   Select Date" Then
             paydate_ = Paydate.ToString("d")
         Else
             paydate_ = Paydate_ComboB.SelectedItem
@@ -1099,6 +1106,9 @@ Public Class frmAttendance
 
         If Branch_ComboB.SelectedIndex >= 0 Then
             PopulateBiometricSHEET(Bio_grid, paydate_, Branch_ComboB.SelectedItem)
+
+            Dim datee As DateTime = paydate_
+            LoadDateTime(datee)
         End If
     End Sub
 

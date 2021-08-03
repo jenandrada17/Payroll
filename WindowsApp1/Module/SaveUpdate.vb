@@ -894,32 +894,47 @@
         End Using
     End Sub
 
-    Friend Sub Save_Pagibig(datagrid As DataGridView)
+    Friend Sub Save_Pagibig(HMDF_EE_TXT As String, HMDF_ER_TXT As String)
 
-        RunCommand("DELETE FROM PAYROLL_PAGIBIG;")
+        Has_Rows_Delete("PAYROLL_PAGIBIG")
+
+        Dim mysql As String = $"Select * FROM PAYROLL_PAGIBIG"
+        Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_PAGIBIG")
+        Dim dsNewRow As DataRow = dss.Tables(0).NewRow
+        With dsNewRow
+            .Item("EMPLOYEE") = HMDF_EE_TXT
+            .Item("EMPLOYER") = HMDF_ER_TXT
+        End With
+
+        dss.Tables(0).Rows.Add(dsNewRow)
+        SaveEntry(dss)
+
+        MsgBox("Successfully Saved!", MsgBoxStyle.Information, "Information")
+
+    End Sub
+
+    Friend Sub Save_PhilHealth(datagrid As DataGridView)
+
+        Has_Rows_Delete("PAYROLL_PHILHEALTH")
 
         For Each row As DataGridViewRow In datagrid.Rows
+            Dim mysql As String = $"Select * FROM PAYROLL_PHILHEALTH"
+            Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_PHILHEALTH")
+            Dim dsNewRow As DataRow = dss.Tables(0).NewRow
+            With dsNewRow
+                .Item("MONTHLY_SALARY") = row.Cells(0).Value
+                .Item("MONTHLY_CONTRIB") = row.Cells(1).Value
+                .Item("EE_SHARE") = row.Cells(2).Value
+                .Item("ER_SHARE") = row.Cells(3).Value
+            End With
 
-            Dim mysql As String = $"Select * FROM PAYROLL_PAGIBIG"
-            Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_PAGIBIG")
-            If dss.Tables(0).Rows.Count > 0 Then
-                Dim dsNewRow As DataRow = dss.Tables(0).NewRow
-                With dsNewRow
-                    .Item("RANGE") = row.Cells(0).Value
-                    .Item("EE_CONTRIB") = row.Cells(1).Value
-                    .Item("ER_CONTRIB") = row.Cells(2).Value
-                    .Item("TOTAL") = row.Cells(3).Value
-                End With
-
-                dss.Tables(0).Rows.Add(dsNewRow)
-                SaveEntry(dss)
-            End If
-
-
-            row.Height = 40
+            dss.Tables(0).Rows.Add(dsNewRow)
+            SaveEntry(dss)
         Next
 
         MsgBox("Successfully Saved!", MsgBoxStyle.Information, "Information")
+        RunCommand("DELETE FROM PAYROLL_PHILHEALTH WHERE MONTHLY_SALARY is null")
+
     End Sub
 
 End Module
