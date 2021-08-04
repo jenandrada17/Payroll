@@ -369,22 +369,22 @@ Module SelectFromDatabase
         End Using
     End Sub
 
-    Friend Sub Distribution_Details(biono As String, branchID As Integer, paydate As String, sss As Label, pagibig As Label, philhealth As Label)
+    Friend Sub Distribution_Details(biono As String, branchID As Integer, paydate As String, sss As Label, pagibig As Label, philhealth As Label,
+                                    Prev_Amount_lbl As Label, TaxComp_LBL As Label, Tax_Wheld_LBL As Label)
 
         sss.Text = 0
         pagibig.Text = 0
         philhealth.Text = 0
+        TaxComp_LBL.Text = 0
+        Tax_Wheld_LBL.Text = 0
 
-        Dim first_Basic As Double
-        Dim second_Basic As Double
-        Dim Monthly_Total As Double
+        Dim first_Basic, second_Basic, Monthly_Total As Double
 
         Dim paydate_ As DateTime = Convert.ToDateTime(paydate)
         paydate_ = paydate_.ToString("d")
 
         Dim first_payroll = New DateTime(paydate_.Year, paydate_.Month, 1)
         first_payroll = first_payroll.AddDays(14)
-        Console.WriteLine("SADSA " & first_payroll)
         '=================================================================== 1st Payroll ===========================================================
         Dim sql As String = $"Select * FROM PAYROLL_PAYOUT where BIOMETRIC_ID = '{biono}' and BRANCH_ID = '{branchID}' and PAYDATE = '{first_payroll.ToString("d")}'"
         Using ds As DataSet = LoadSQL(sql, "PAYROLL_PAYOUT")
@@ -394,8 +394,6 @@ Module SelectFromDatabase
                         first_Basic = .Item("TOTAL_BASIC")
                     End With
                 Next
-            Else
-                Console.WriteLine("no dataaa ")
             End If
         End Using
 
@@ -408,16 +406,15 @@ Module SelectFromDatabase
                         second_Basic = .Item("TOTAL_BASIC")
                     End With
                 Next
-            Else
-                Console.WriteLine("no dataaassss ")
             End If
         End Using
 
         Monthly_Total = first_Basic + second_Basic
+        Prev_Amount_lbl.Text = first_Basic
 
-        '=================================================================== Total ===========================================================
-        Dim mysql As String = $"Select * FROM PAYROLL_SSS"
-        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_SSS")
+        '=================================================================== Total SSS ===========================================================
+        Dim mysql_SSS As String = $"Select * FROM PAYROLL_SSS"
+        Using ds As DataSet = LoadSQL(mysql_SSS, "PAYROLL_SSS")
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
                     With dr
@@ -432,13 +429,47 @@ Module SelectFromDatabase
                         If (Enumerable.Range(strWords(0), strWords.Last).Contains(Monthly_Total)) Then
                             sss.Text = .Item("RSS_EE")
                         End If
-
-                        'pagibig.Text = IIf(IsDBNull(.Item("OTHER_ALLOWANCE")), "", .Item("OTHER_ALLOWANCE"))
-                        'philhealth.Text = IIf(IsDBNull(.Item("OTHER_DEDUCTION")), "", .Item("OTHER_DEDUCTION"))
                     End With
                 Next
             End If
         End Using
+
+        '=================================================================== Total PAGIBIG ===========================================================
+        Dim mysql_PAGIBIG As String = $"Select * FROM PAYROLL_PAGIBIG"
+        Using ds As DataSet = LoadSQL(mysql_PAGIBIG, "PAYROLL_PAGIBIG")
+            If ds.Tables(0).Rows.Count > 0 Then
+                Dim dr As DataRow = ds.Tables(0).Rows(0)
+                With dr
+                    pagibig.Text = .Item("EMPLOYEE")
+                End With
+            End If
+        End Using
+
+        '=================================================================== Total PHILHEALTH ===========================================================
+        Dim mysql_PHILHEALTH As String = $"Select * FROM PAYROLL_PHILHEALTH"
+        Using ds As DataSet = LoadSQL(mysql_PHILHEALTH, "PAYROLL_PHILHEALTH")
+            If ds.Tables(0).Rows.Count > 0 Then
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+
+                        Dim convertTopercent As Decimal = .Item("PREMIUM_RATE") / 100
+                        Dim total As Decimal
+
+                        If Monthly_Total <= 10000 Then
+                            total = 10000 * convertTopercent
+                            philhealth.Text = total / 2
+                        Else
+                            total = Monthly_Total * convertTopercent
+                            philhealth.Text = total / 2
+                        End If
+
+                    End With
+                Next
+            End If
+        End Using
+
+        TaxComp_LBL.Text = Monthly_Total - (CDbl(sss.Text) + CDbl(pagibig.Text) + CDbl(philhealth.Text))
+
     End Sub
 
     Friend Function isNotExistHoliday(datee As String)
@@ -1089,24 +1120,15 @@ Module SelectFromDatabase
 
     End Sub
 
-    Friend Sub Populate_PhilHeath(datagrid As DataGridView)
+    Friend Sub Populate_PhilHeath(rate As TextBox)
 
-        datagrid.Rows.Clear()
         Dim mysql As String = $"Select * From PAYROLL_PHILHEALTH"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PHILHEALTH")
             If ds.Tables(0).Rows.Count > 0 Then
-                For Each dr In ds.Tables(0).Rows
-                    With dr
-                        Dim rowId As Integer = datagrid.Rows.Add()
-                        Dim row As DataGridViewRow = datagrid.Rows(rowId)
-                        row.Cells("philH_one").Value = .Item("MONTHLY_SALARY")
-                        row.Cells("philH_two").Value = .Item("MONTHLY_CONTRIB")
-                        row.Cells("philH_three").Value = .Item("EE_SHARE")
-                        row.Cells("philH_four").Value = .Item("ER_SHARE")
-
-                        row.Height = 40
-                    End With
-                Next
+                Dim data As DataRow = ds.Tables(0).Rows(0)
+                With data
+                    rate.Text = .Item("PREMIUM_RATE")
+                End With
             End If
         End Using
 
@@ -1121,7 +1143,28 @@ Module SelectFromDatabase
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_SSS")
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
-                    AddRow_SSS(dr, datagrid)
+                    With dr
+                        Dim rowId As Integer = datagrid.Rows.Add()
+                        Dim row As DataGridViewRow = datagrid.Rows(rowId)
+                        row.Cells("one").Value = .Item("rangeComp")
+                        row.Cells("two").Value = .Item("rss_ec")
+                        row.Cells("three").Value = .Item("mpf")
+                        row.Cells("four").Value = .Item("total")
+                        row.Cells("five").Value = .Item("rss_er")
+                        row.Cells("six").Value = .Item("rss_ee")
+                        row.Cells("seven").Value = .Item("rss_total")
+                        row.Cells("eight").Value = .Item("ec_er")
+                        row.Cells("nine").Value = .Item("ec_ee")
+                        row.Cells("ten").Value = .Item("ec_total")
+                        row.Cells("eleven").Value = .Item("mpf_er")
+                        row.Cells("twelve").Value = .Item("mpf_ee")
+                        row.Cells("thirteen").Value = .Item("mpf_total")
+                        row.Cells("fourteen").Value = .Item("total_er")
+                        row.Cells("fifteen").Value = .Item("total_ee")
+                        row.Cells("sixteen").Value = .Item("total_total")
+
+                        row.Height = 25
+                    End With
                 Next
             Else
                 datagrid.Rows.Clear()
@@ -1130,32 +1173,26 @@ Module SelectFromDatabase
 
     End Sub
 
-    Public Sub AddRow_SSS(ByVal dr As DataRow, datagrid As DataGridView)
+    Friend Sub Populate_WHOLDING_TAX(datagrid As DataGridView)
 
-        With dr
+        datagrid.Rows.Clear()
+        Dim mysql As String = $"Select * From PAYROLL_WHOLDING"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_WHOLDING")
+            If ds.Tables(0).Rows.Count > 0 Then
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+                        Dim rowId As Integer = datagrid.Rows.Add()
+                        Dim row As DataGridViewRow = datagrid.Rows(rowId)
+                        row.Cells("range_dgv").Value = .Item("COMP_RANGE")
+                        row.Cells("wh_dgv").Value = .Item("PRESCRIBE_WH_TAX")
+                        row.Height = 40
+                    End With
+                Next
+            Else
+                datagrid.Rows.Clear()
+            End If
+        End Using
 
-            Dim rowId As Integer = datagrid.Rows.Add()
-            Dim row As DataGridViewRow = datagrid.Rows(rowId)
-            row.Cells("one").Value = .Item("rangeComp")
-            row.Cells("two").Value = .Item("rss_ec")
-            row.Cells("three").Value = .Item("mpf")
-            row.Cells("four").Value = .Item("total")
-            row.Cells("five").Value = .Item("rss_er")
-            row.Cells("six").Value = .Item("rss_ee")
-            row.Cells("seven").Value = .Item("rss_total")
-            row.Cells("eight").Value = .Item("ec_er")
-            row.Cells("nine").Value = .Item("ec_ee")
-            row.Cells("ten").Value = .Item("ec_total")
-            row.Cells("eleven").Value = .Item("mpf_er")
-            row.Cells("twelve").Value = .Item("mpf_ee")
-            row.Cells("thirteen").Value = .Item("mpf_total")
-            row.Cells("fourteen").Value = .Item("total_er")
-            row.Cells("fifteen").Value = .Item("total_ee")
-            row.Cells("sixteen").Value = .Item("total_total")
-
-            row.Height = 25
-
-        End With
     End Sub
 
     Public Sub Has_Rows_Delete(table As String)

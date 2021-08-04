@@ -11,7 +11,8 @@ Public Class frmContribution
         SSS_grid.ClearSelection()
         Populate_SSS(SSS_grid)
         Populate_Pagibig(HMDF_EE_TXT, HMDF_ER_TXT)
-        Populate_PhilHeath(PhilH_grid)
+        Populate_PhilHeath(PhilH_Rate_TXT)
+        Populate_WHOLDING_TAX(WH_grid)
     End Sub
 
     Private Sub OpenFile_BTN_Click(sender As Object, e As EventArgs) Handles OpenFile_BTN.Click
@@ -87,17 +88,38 @@ Public Class frmContribution
         End If
     End Sub
 
-    Private Sub PhilH_Change_BTN_Click(sender As Object, e As EventArgs) Handles PhilH_Change_BTN.Click
-        If PhilH_Change_BTN.Text = "Change" Then
-            PhilH_Change_BTN.Text = "Save"
-            PhilH_grid.ReadOnly = False
-            PhilH_grid.AllowUserToAddRows = True
+    Private Sub PhilH_Save_BTN_Click(sender As Object, e As EventArgs) Handles PhilH_Save_BTN.Click
+        If PhilH_Save_BTN.Text = "Change" Then
+            PhilH_Save_BTN.Text = "Save"
+            PhilH_Rate_TXT.ReadOnly = False
         Else
-            Save_PhilHealth(PhilH_grid)
-            PhilH_Change_BTN.Text = "Change"
-            PhilH_grid.ReadOnly = True
-            Populate_PhilHeath(PhilH_grid)
-            PhilH_grid.AllowUserToAddRows = False
+            Save_PhilHealth(PhilH_Rate_TXT.Text)
+            PhilH_Save_BTN.Text = "Change"
+            PhilH_Rate_TXT.ReadOnly = True
+            Populate_PhilHeath(PhilH_Rate_TXT)
+        End If
+    End Sub
+
+    Private Sub HMDF_EE_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles HMDF_ER_TXT.KeyPress, HMDF_EE_TXT.KeyPress, PhilH_Rate_TXT.KeyPress
+        If e.KeyChar <> ChrW(Keys.Back) Then
+            If Char.IsNumber(e.KeyChar) Then
+            Else
+                e.Handled = True
+            End If
+        End If
+    End Sub
+
+    Private Sub WH_Change_BTN_Click(sender As Object, e As EventArgs) Handles WH_Change_BTN.Click
+        If WH_Change_BTN.Text = "Change" Then
+            WH_Change_BTN.Text = "Save"
+            WH_grid.ReadOnly = False
+            WH_grid.AllowUserToAddRows = True
+        Else
+            Save_WihtholdingTax(WH_grid)
+            WH_Change_BTN.Text = "Change"
+            WH_grid.ReadOnly = True
+            WH_grid.AllowUserToAddRows = False
+            Populate_WHOLDING_TAX(WH_grid)
         End If
     End Sub
 End Class

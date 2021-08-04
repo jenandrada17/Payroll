@@ -56,19 +56,23 @@ Partial Class frmContribution
         Me.HMDF_EE_TXT = New System.Windows.Forms.TextBox()
         Me.PagChange_BTN = New System.Windows.Forms.Button()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
-        Me.PhilH_grid = New System.Windows.Forms.DataGridView()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.PhilH_Rate_TXT = New System.Windows.Forms.TextBox()
+        Me.PhilH_Save_BTN = New System.Windows.Forms.Button()
+        Me.TabPage3 = New System.Windows.Forms.TabPage()
+        Me.WH_Change_BTN = New System.Windows.Forms.Button()
+        Me.WH_grid = New System.Windows.Forms.DataGridView()
         Me.Label1 = New System.Windows.Forms.Label()
-        Me.PhilH_Change_BTN = New System.Windows.Forms.Button()
-        Me.philH_one = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.philH_two = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.philH_three = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.philH_four = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.range_dgv = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.wh_dgv = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Attendance_Tab.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         CType(Me.SSS_grid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Manual_Tab.SuspendLayout()
         Me.TabPage2.SuspendLayout()
-        CType(Me.PhilH_grid, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.TabPage3.SuspendLayout()
+        CType(Me.WH_grid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Attendance_Tab
@@ -76,6 +80,7 @@ Partial Class frmContribution
         Me.Attendance_Tab.Controls.Add(Me.TabPage1)
         Me.Attendance_Tab.Controls.Add(Me.Manual_Tab)
         Me.Attendance_Tab.Controls.Add(Me.TabPage2)
+        Me.Attendance_Tab.Controls.Add(Me.TabPage3)
         Me.Attendance_Tab.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Attendance_Tab.Location = New System.Drawing.Point(5, 30)
         Me.Attendance_Tab.Name = "Attendance_Tab"
@@ -108,14 +113,6 @@ Partial Class frmContribution
         Me.SSS_grid.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.SSS_grid.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText
         Me.SSS_grid.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle2.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.SSS_grid.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle2
         Me.SSS_grid.ColumnHeadersHeight = 41
         Me.SSS_grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing
         Me.SSS_grid.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.one, Me.two, Me.three, Me.four, Me.five, Me.six, Me.seven, Me.eight, Me.nine, Me.ten, Me.eleven, Me.twelve, Me.thirteen, Me.fourteen, Me.fifteen, Me.sixteen})
@@ -124,8 +121,8 @@ Partial Class frmContribution
         Me.SSS_grid.ReadOnly = True
         Me.SSS_grid.RowHeadersVisible = False
         Me.SSS_grid.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
-        DataGridViewCellStyle3.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.SSS_grid.RowsDefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SSS_grid.RowsDefaultCellStyle = DataGridViewCellStyle2
         Me.SSS_grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.SSS_grid.Size = New System.Drawing.Size(1139, 542)
         Me.SSS_grid.TabIndex = 1
@@ -324,8 +321,10 @@ Partial Class frmContribution
         '
         'TabPage2
         '
-        Me.TabPage2.Controls.Add(Me.PhilH_Change_BTN)
-        Me.TabPage2.Controls.Add(Me.PhilH_grid)
+        Me.TabPage2.Controls.Add(Me.Label5)
+        Me.TabPage2.Controls.Add(Me.Label4)
+        Me.TabPage2.Controls.Add(Me.PhilH_Rate_TXT)
+        Me.TabPage2.Controls.Add(Me.PhilH_Save_BTN)
         Me.TabPage2.Location = New System.Drawing.Point(4, 41)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
@@ -334,36 +333,94 @@ Partial Class frmContribution
         Me.TabPage2.Text = "  Philhealth  "
         Me.TabPage2.UseVisualStyleBackColor = True
         '
-        'PhilH_grid
+        'Label5
         '
-        Me.PhilH_grid.AllowUserToAddRows = False
-        Me.PhilH_grid.AllowUserToDeleteRows = False
-        Me.PhilH_grid.AllowUserToResizeRows = False
-        Me.PhilH_grid.BackgroundColor = System.Drawing.Color.White
-        Me.PhilH_grid.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.PhilH_grid.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText
-        Me.PhilH_grid.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
-        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        Me.Label5.AutoSize = True
+        Me.Label5.Location = New System.Drawing.Point(301, 47)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(33, 32)
+        Me.Label5.TabIndex = 95
+        Me.Label5.Text = "%"
+        '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Location = New System.Drawing.Point(18, 44)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(127, 32)
+        Me.Label4.TabIndex = 94
+        Me.Label4.Text = "Premium Rate"
+        '
+        'PhilH_Rate_TXT
+        '
+        Me.PhilH_Rate_TXT.Location = New System.Drawing.Point(160, 41)
+        Me.PhilH_Rate_TXT.Name = "PhilH_Rate_TXT"
+        Me.PhilH_Rate_TXT.ReadOnly = True
+        Me.PhilH_Rate_TXT.Size = New System.Drawing.Size(135, 40)
+        Me.PhilH_Rate_TXT.TabIndex = 93
+        '
+        'PhilH_Save_BTN
+        '
+        Me.PhilH_Save_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.PhilH_Save_BTN.Location = New System.Drawing.Point(160, 110)
+        Me.PhilH_Save_BTN.Name = "PhilH_Save_BTN"
+        Me.PhilH_Save_BTN.Size = New System.Drawing.Size(135, 38)
+        Me.PhilH_Save_BTN.TabIndex = 92
+        Me.PhilH_Save_BTN.Text = "Change"
+        Me.PhilH_Save_BTN.UseVisualStyleBackColor = True
+        '
+        'TabPage3
+        '
+        Me.TabPage3.Controls.Add(Me.WH_Change_BTN)
+        Me.TabPage3.Controls.Add(Me.WH_grid)
+        Me.TabPage3.Location = New System.Drawing.Point(4, 41)
+        Me.TabPage3.Name = "TabPage3"
+        Me.TabPage3.Size = New System.Drawing.Size(1151, 591)
+        Me.TabPage3.TabIndex = 3
+        Me.TabPage3.Text = "W/Holding Tax"
+        Me.TabPage3.UseVisualStyleBackColor = True
+        '
+        'WH_Change_BTN
+        '
+        Me.WH_Change_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.WH_Change_BTN.Location = New System.Drawing.Point(6, 5)
+        Me.WH_Change_BTN.Name = "WH_Change_BTN"
+        Me.WH_Change_BTN.Size = New System.Drawing.Size(116, 33)
+        Me.WH_Change_BTN.TabIndex = 93
+        Me.WH_Change_BTN.Text = "Change"
+        Me.WH_Change_BTN.UseVisualStyleBackColor = True
+        '
+        'WH_grid
+        '
+        Me.WH_grid.AllowUserToAddRows = False
+        Me.WH_grid.AllowUserToDeleteRows = False
+        Me.WH_grid.AllowUserToResizeRows = False
+        DataGridViewCellStyle3.BackColor = System.Drawing.Color.LightBlue
+        Me.WH_grid.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle3
+        Me.WH_grid.BackgroundColor = System.Drawing.Color.White
+        Me.WH_grid.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.WH_grid.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText
+        Me.WH_grid.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
+        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
         DataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle4.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle4.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         DataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText
         DataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight
         DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText
         DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.PhilH_grid.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle4
-        Me.PhilH_grid.ColumnHeadersHeight = 41
-        Me.PhilH_grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing
-        Me.PhilH_grid.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.philH_one, Me.philH_two, Me.philH_three, Me.philH_four})
-        Me.PhilH_grid.Location = New System.Drawing.Point(6, 43)
-        Me.PhilH_grid.Name = "PhilH_grid"
-        Me.PhilH_grid.ReadOnly = True
-        Me.PhilH_grid.RowHeadersVisible = False
-        Me.PhilH_grid.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
+        Me.WH_grid.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle4
+        Me.WH_grid.ColumnHeadersHeight = 41
+        Me.WH_grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing
+        Me.WH_grid.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.range_dgv, Me.wh_dgv})
+        Me.WH_grid.Location = New System.Drawing.Point(6, 42)
+        Me.WH_grid.Name = "WH_grid"
+        Me.WH_grid.RowHeadersVisible = False
+        Me.WH_grid.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
         DataGridViewCellStyle5.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.PhilH_grid.RowsDefaultCellStyle = DataGridViewCellStyle5
-        Me.PhilH_grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.PhilH_grid.Size = New System.Drawing.Size(938, 394)
-        Me.PhilH_grid.TabIndex = 2
+        Me.WH_grid.RowsDefaultCellStyle = DataGridViewCellStyle5
+        Me.WH_grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.WH_grid.Size = New System.Drawing.Size(506, 524)
+        Me.WH_grid.TabIndex = 2
         '
         'Label1
         '
@@ -375,44 +432,18 @@ Partial Class frmContribution
         Me.Label1.TabIndex = 68
         Me.Label1.Text = "Contribution"
         '
-        'PhilH_Change_BTN
+        'range_dgv
         '
-        Me.PhilH_Change_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.PhilH_Change_BTN.Location = New System.Drawing.Point(6, 6)
-        Me.PhilH_Change_BTN.Name = "PhilH_Change_BTN"
-        Me.PhilH_Change_BTN.Size = New System.Drawing.Size(93, 31)
-        Me.PhilH_Change_BTN.TabIndex = 88
-        Me.PhilH_Change_BTN.Text = "Change"
-        Me.PhilH_Change_BTN.UseVisualStyleBackColor = True
+        Me.range_dgv.Frozen = True
+        Me.range_dgv.HeaderText = "Compensation Range"
+        Me.range_dgv.Name = "range_dgv"
+        Me.range_dgv.Width = 250
         '
-        'philH_one
+        'wh_dgv
         '
-        Me.philH_one.Frozen = True
-        Me.philH_one.HeaderText = "Monthly Basic Salary"
-        Me.philH_one.Name = "philH_one"
-        Me.philH_one.ReadOnly = True
-        Me.philH_one.Width = 230
-        '
-        'philH_two
-        '
-        Me.philH_two.HeaderText = "Total Monthly Contrib."
-        Me.philH_two.Name = "philH_two"
-        Me.philH_two.ReadOnly = True
-        Me.philH_two.Width = 230
-        '
-        'philH_three
-        '
-        Me.philH_three.HeaderText = "Employee Share"
-        Me.philH_three.Name = "philH_three"
-        Me.philH_three.ReadOnly = True
-        Me.philH_three.Width = 230
-        '
-        'philH_four
-        '
-        Me.philH_four.HeaderText = "Employer Share"
-        Me.philH_four.Name = "philH_four"
-        Me.philH_four.ReadOnly = True
-        Me.philH_four.Width = 230
+        Me.wh_dgv.HeaderText = "Prescribe Withholding tax"
+        Me.wh_dgv.Name = "wh_dgv"
+        Me.wh_dgv.Width = 250
         '
         'frmContribution
         '
@@ -431,7 +462,9 @@ Partial Class frmContribution
         Me.Manual_Tab.ResumeLayout(False)
         Me.Manual_Tab.PerformLayout()
         Me.TabPage2.ResumeLayout(False)
-        CType(Me.PhilH_grid, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.TabPage2.PerformLayout()
+        Me.TabPage3.ResumeLayout(False)
+        CType(Me.WH_grid, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -463,14 +496,17 @@ Partial Class frmContribution
     Friend WithEvents fifteen As DataGridViewTextBoxColumn
     Friend WithEvents sixteen As DataGridViewTextBoxColumn
     Friend WithEvents PagChange_BTN As Button
-    Friend WithEvents PhilH_grid As DataGridView
     Friend WithEvents HMDF_EE_TXT As TextBox
     Friend WithEvents Label3 As Label
     Friend WithEvents HMDF_ER_TXT As TextBox
     Friend WithEvents Label2 As Label
-    Friend WithEvents PhilH_Change_BTN As Button
-    Friend WithEvents philH_one As DataGridViewTextBoxColumn
-    Friend WithEvents philH_two As DataGridViewTextBoxColumn
-    Friend WithEvents philH_three As DataGridViewTextBoxColumn
-    Friend WithEvents philH_four As DataGridViewTextBoxColumn
+    Friend WithEvents Label4 As Label
+    Friend WithEvents PhilH_Rate_TXT As TextBox
+    Friend WithEvents PhilH_Save_BTN As Button
+    Friend WithEvents Label5 As Label
+    Friend WithEvents TabPage3 As TabPage
+    Friend WithEvents WH_Change_BTN As Button
+    Friend WithEvents WH_grid As DataGridView
+    Friend WithEvents range_dgv As DataGridViewTextBoxColumn
+    Friend WithEvents wh_dgv As DataGridViewTextBoxColumn
 End Class

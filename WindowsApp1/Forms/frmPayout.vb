@@ -63,7 +63,13 @@
                 OtherDetails(BiometricID_TXT.Text, Rate_TXT.Tag, paydate_, Savings_TXT, OtherAllowance_TXT, OtherDeduction_TXT)
 
                 If IsLastDay(paydate_) Then
-                    Distribution_Details(BiometricID_TXT.Text, Rate_TXT.Tag, paydate_, SSSComp_LBL, HDMF_LBL, Philhealth_LBL)
+                    Distribution_Details(BiometricID_TXT.Text, Rate_TXT.Tag, paydate_, SSSComp_LBL, HDMF_LBL, Philhealth_LBL, Prev_Amount_lbl, TaxComp_LBL, Tax_Wheld_LBL)
+                    Previous_groupB.Visible = True
+                Else
+                    SSSComp_LBL.Text = 0
+                    HDMF_LBL.Text = 0
+                    Philhealth_LBL.Text = 0
+                    Previous_groupB.Visible = False
                 End If
 
                 Calculate_Gross()

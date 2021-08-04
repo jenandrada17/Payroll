@@ -806,6 +806,12 @@
 
                         '============================================= BENIFITS / REMITANCE ========================================================= 
                         Dim SSSComp, PagibigComp, PhilhealthComp, TaxComp, Tax_Wheld, netTax, sssLoan, pagibigLoan As Double
+
+                        'If IsLastDay(paydate_) Then
+                        '    Distribution_Details(BiometricID_TXT.Text, Rate_TXT.Tag, paydate_, SSSComp_LBL, HDMF_LBL, Philhealth_LBL)
+                        'End If
+
+
                         'WALA PA SA_______________
 
                         '============================================= Calculate_Gross() ========================================================= 
@@ -913,27 +919,49 @@
 
     End Sub
 
-    Friend Sub Save_PhilHealth(datagrid As DataGridView)
+    Friend Sub Save_PhilHealth(rate As String)
 
         Has_Rows_Delete("PAYROLL_PHILHEALTH")
 
-        For Each row As DataGridViewRow In datagrid.Rows
-            Dim mysql As String = $"Select * FROM PAYROLL_PHILHEALTH"
-            Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_PHILHEALTH")
+        Dim mysql As String = $"Select * FROM PAYROLL_PHILHEALTH"
+        Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_PHILHEALTH")
+        Dim dsNewRow As DataRow = dss.Tables(0).NewRow
+        With dsNewRow
+
+            .Item("PREMIUM_RATE") = rate
+
+        End With
+
+        dss.Tables(0).Rows.Add(dsNewRow)
+        SaveEntry(dss)
+
+        MsgBox("Successfully Saved!", MsgBoxStyle.Information, "Information")
+
+    End Sub
+
+    Friend Sub Save_WihtholdingTax(datagird As DataGridView)
+
+        Has_Rows_Delete("PAYROLL_WHOLDING")
+
+        datagird.Rows.Clear()
+        For x As Integer = 0 To datagird.Rows.Count - 1
+
+            Dim mysql As String = $"Select * FROM PAYROLL_WHOLDING"
+            Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_WHOLDING")
             Dim dsNewRow As DataRow = dss.Tables(0).NewRow
             With dsNewRow
-                .Item("MONTHLY_SALARY") = row.Cells(0).Value
-                .Item("MONTHLY_CONTRIB") = row.Cells(1).Value
-                .Item("EE_SHARE") = row.Cells(2).Value
-                .Item("ER_SHARE") = row.Cells(3).Value
+
+                .Item("COMP_RANGE") = datagird.Rows(x).Cells(0).Value
+                .Item("PRESCRIBE_WH_TAX") = datagird.Rows(x).Cells(1).Value
+
             End With
 
             dss.Tables(0).Rows.Add(dsNewRow)
             SaveEntry(dss)
+
         Next
 
         MsgBox("Successfully Saved!", MsgBoxStyle.Information, "Information")
-        RunCommand("DELETE FROM PAYROLL_PHILHEALTH WHERE MONTHLY_SALARY is null")
 
     End Sub
 
