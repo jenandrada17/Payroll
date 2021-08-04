@@ -63,12 +63,25 @@
                 OtherDetails(BiometricID_TXT.Text, Rate_TXT.Tag, paydate_, Savings_TXT, OtherAllowance_TXT, OtherDeduction_TXT)
 
                 If IsLastDay(paydate_) Then
-                    Distribution_Details(BiometricID_TXT.Text, Rate_TXT.Tag, paydate_, SSSComp_LBL, HDMF_LBL, Philhealth_LBL, Prev_Amount_lbl, TaxComp_LBL, Tax_Wheld_LBL)
+
+                    Dim monthly_Basic As Double = GetMonthly_Basic(BiometricID_TXT.Text, Rate_TXT.Tag, paydate_)
+                    Prev_Amount_lbl.Text = GetFirst_Basic(BiometricID_TXT.Text, Rate_TXT.Tag, paydate_)
+
+                    SSSComp_LBL.Text = (Get_SSS(monthly_Basic)).ToString("N")
+                    HDMF_LBL.Text = (Get_Pagibig(monthly_Basic)).ToString("N")
+                    Philhealth_LBL.Text = (Get_PhilHealth(monthly_Basic)).ToString("N")
+                    'TaxComp_LBL.Text = (Get_Taxable(monthly_Basic)).ToString("N")
+                    Tax_Wheld_LBL.Text = (Get_WHolding(monthly_Basic)).ToString("N")
+
+                    NetTax_LBL.Text = (monthly_Basic - (CDbl(SSSComp_LBL.Text) + CDbl(HDMF_LBL.Text) + CDbl(Philhealth_LBL.Text) + CDbl(Tax_Wheld_LBL.Text))).ToString(”N”)
+
                     Previous_groupB.Visible = True
                 Else
                     SSSComp_LBL.Text = 0
                     HDMF_LBL.Text = 0
                     Philhealth_LBL.Text = 0
+                    'TaxComp_LBL.Text = 0
+                    Tax_Wheld_LBL.Text = 0
                     Previous_groupB.Visible = False
                 End If
 
@@ -83,10 +96,6 @@
             End If
         End If
     End Sub
-
-    Function IsLastDay(ByVal myDate As Date) As Boolean
-        Return myDate.Day = Date.DaysInMonth(myDate.Year, myDate.Month)
-    End Function
 
     Private Sub Cancel_BTN_Click(sender As Object, e As EventArgs) Handles Cancel_BTN.Click
 
@@ -130,27 +139,13 @@
 
             SavePayout(BiometricID_TXT.Text, Rate_TXT.Tag, paydate_, TotalBasic_LBL.Text, TotalOT_LBL.Text,
                           TotalLateUnder_LBL.Text, GrossAmount_LBL.Text, SSSComp_LBL.Text, HDMF_LBL.Text, Philhealth_LBL.Text,
-                          TaxComp_LBL.Text, Tax_Wheld_LBL.Text, NetTax_LBL.Text, SSSLoan_LBL.Text, PagibigLoan_LBL.Text,
+                          Tax_Wheld_LBL.Text, NetTax_LBL.Text, SSSLoan_LBL.Text, PagibigLoan_LBL.Text,
                           Allowances_LBL.Text, Deduction_LBL.Text, NetPay_LBL.Text, Savings_TXT.Text)
 
             Save_SBU_AND_OTHER(BiometricID_TXT.Text, Rate_TXT.Tag, paydate_, OtherAllowance_TXT.Text, OtherDeduction_TXT.Text)
 
             Cancel_BTN.PerformClick()
         End If
-
-    End Sub
-
-    Private Sub TabControl1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles TabControl1.SelectedIndexChanged
-        'If Paydate_ComboB.Text = "   Select Pay date" Then
-        '    paydate_ = frmMainForm.Paydate.ToString("d")
-        'Else
-        '    paydate_ = Paydate_ComboB.SelectedItem
-        'End If
-        'If TabControl1.SelectedIndex = 0 Then
-        '    Lists_Payout(Payout_list, paydate_)
-        '    GetPayout_TOTALS(paydate_, P_GrossAmount_LBL, P_SSSComp_LBL, P_PagibigComp_LBL, P_PhilHComp_LBL, P_Taxable_LBL, P_TaxWH_LBL,
-        '                     P_SSSLoan_LBL, P_PagibigLoan_LBL, P_Allowance_LBL, P_Deduction_LBL, P_NetPay_LBL)
-        'End If
 
     End Sub
 
@@ -249,11 +244,11 @@
 
     Private Sub Calculate_Gross()
 
-        TotalBasic_LBL.Text = NoOfDays_TXT.Text * Rate_TXT.Text
+        TotalBasic_LBL.Text = (NoOfDays_TXT.Text * Rate_TXT.Text).ToString("N")
 
-        TotalHol_LBL.Text = (((Convert.ToInt32(SpecialHol_TXT.Text) * Convert.ToInt32(Rate_TXT.Text)) * specHoliday) / specHoliday) + (((Convert.ToInt32(RegularHol_TXT.Text) * Convert.ToInt32(Rate_TXT.Text)) * regHoliday) / regHoliday) ' =========== CALCULATE hOLIDAY TO PESO ===========
+        TotalHol_LBL.Text = ((((Convert.ToInt32(SpecialHol_TXT.Text) * Convert.ToInt32(Rate_TXT.Text)) * specHoliday) / specHoliday) + (((Convert.ToInt32(RegularHol_TXT.Text) * Convert.ToInt32(Rate_TXT.Text)) * regHoliday) / regHoliday)).ToString("N") ' =========== CALCULATE hOLIDAY TO PESO ===========
 
-        TotalOT_LBL.Text = ((Convert.ToInt32(Rate_TXT.Text) / 8) * 1.25) * Convert.ToInt32(RegularOT_TXT.Text) ' =========== CALCULATE OVERTIME TO PESO ===========
+        TotalOT_LBL.Text = (((Convert.ToInt32(Rate_TXT.Text) / 8) * 1.25) * Convert.ToInt32(RegularOT_TXT.Text)).ToString("N") ' =========== CALCULATE OVERTIME TO PESO ===========
 
         Dim late_split() As String, under_split() As String, lateTOMinute, underToMinute As Double
 
@@ -267,9 +262,9 @@
         LATEE = ((Convert.ToInt32(Rate_TXT.Text) / 8) / 60) * lateTOMinute
         UNDERTIMEE = (Convert.ToInt32(Rate_TXT.Text) / 8) * underToMinute
 
-        TotalLateUnder_LBL.Text = LATEE + UNDERTIMEE
+        TotalLateUnder_LBL.Text = (LATEE + UNDERTIMEE).ToString("N")
 
-        GrossAmount_LBL.Text = (Convert.ToDouble(TotalBasic_LBL.Text) + Convert.ToDouble(TotalHol_LBL.Text) + Convert.ToDouble(TotalOT_LBL.Text)) - Convert.ToDouble(TotalLateUnder_LBL.Text)
+        GrossAmount_LBL.Text = ((Convert.ToDouble(TotalBasic_LBL.Text) + Convert.ToDouble(TotalHol_LBL.Text) + Convert.ToDouble(TotalOT_LBL.Text)) - Convert.ToDouble(TotalLateUnder_LBL.Text)).ToString("N")
 
     End Sub
 
@@ -283,7 +278,7 @@
         TRANSPORTATION = If(Not (Transport_TXT.Text = String.Empty), Transport_TXT.Text, 0)
         other = If(Not (OtherAllowance_TXT.Text = String.Empty), OtherAllowance_TXT.Text, 0)
 
-        Allowances_LBL.Text = CAREKIT + BOARDING + INCENTIVES + positional + TRANSPORTATION + other
+        Allowances_LBL.Text = (CAREKIT + BOARDING + INCENTIVES + positional + TRANSPORTATION + other).ToString("N")
     End Sub
 
     Private Sub Calculate_Deduction()
@@ -294,7 +289,7 @@
         Charges = If(Not (Charges_TXT.Text = String.Empty), Charges_TXT.Text, 0)
         other = If(Not (OtherDeduction_TXT.Text = String.Empty), OtherDeduction_TXT.Text, 0)
 
-        Deduction_LBL.Text = SBU + Charges + Loan + CashAdvance + other
+        Deduction_LBL.Text = (SBU + Charges + Loan + CashAdvance + other).ToString("N")
 
     End Sub
 
@@ -307,10 +302,17 @@
         allowance = If(Not (Allowances_LBL.Text = String.Empty), Allowances_LBL.Text, 0)
         deduction = If(Not (Deduction_LBL.Text = String.Empty), Deduction_LBL.Text, 0)
 
-        Dim positive = gross + allowance
-        Dim negative = netTax + sssLoan + pagibigLoan + deduction
+        Dim positive, negative As Double
+        If IsLastDay(paydate_) Then
+            positive = netTax + allowance
+        Else
+            positive = gross + allowance
+        End If
+        Dim negative = sssLoan + pagibigLoan + deduction
 
         NetPay_LBL.Text = positive - negative
+
+        NetPay_LBL.Text = (positive - negative).ToString("N")
 
     End Sub
 

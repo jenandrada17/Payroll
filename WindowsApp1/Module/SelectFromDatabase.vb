@@ -70,6 +70,10 @@ Module SelectFromDatabase
 
     'End Sub
 
+    Public Function IsLastDay(ByVal myDate As Date) As Boolean
+        Return myDate.Day = Date.DaysInMonth(myDate.Year, myDate.Month)
+    End Function
+
     Public Sub GetAttendance_Manual(bioNo As String, branch As String, paydate As String, datagrid As DataGridView,
                                     TotalDays_LBL As Label, TotalRHoliday_LBL As Label, TotalSHoliday_LBL As Label,
                                     TotalLateHR_LBL As Label, TotalUTHR_LBL As Label, TotalOTHr_LBL As Label)
@@ -369,23 +373,15 @@ Module SelectFromDatabase
         End Using
     End Sub
 
-    Friend Sub Distribution_Details(biono As String, branchID As Integer, paydate As String, sss As Label, pagibig As Label, philhealth As Label,
-                                    Prev_Amount_lbl As Label, TaxComp_LBL As Label, Tax_Wheld_LBL As Label)
-
-        sss.Text = 0
-        pagibig.Text = 0
-        philhealth.Text = 0
-        TaxComp_LBL.Text = 0
-        Tax_Wheld_LBL.Text = 0
-
-        Dim first_Basic, second_Basic, Monthly_Total As Double
+    Public Function GetFirst_Basic(biono As String, branchID As String, paydate As String) As Double
+        Dim first_Basic As Double
 
         Dim paydate_ As DateTime = Convert.ToDateTime(paydate)
         paydate_ = paydate_.ToString("d")
 
         Dim first_payroll = New DateTime(paydate_.Year, paydate_.Month, 1)
         first_payroll = first_payroll.AddDays(14)
-        '=================================================================== 1st Payroll ===========================================================
+
         Dim sql As String = $"Select * FROM PAYROLL_PAYOUT where BIOMETRIC_ID = '{biono}' and BRANCH_ID = '{branchID}' and PAYDATE = '{first_payroll.ToString("d")}'"
         Using ds As DataSet = LoadSQL(sql, "PAYROLL_PAYOUT")
             If ds.Tables(0).Rows.Count > 0 Then
@@ -396,25 +392,34 @@ Module SelectFromDatabase
                 Next
             End If
         End Using
+        Return first_Basic
+    End Function
 
-        '=================================================================== 2nd Payroll ===========================================================
-        Dim sqll As String = $"Select * FROM PAYROLL_PAYOUT where BIOMETRIC_ID = '{biono}' and BRANCH_ID = '{branchID}' and PAYDATE = '{paydate_.ToString("d")}'"
+    Public Function GetMonthly_Basic(biono As String, branchID As String, paydate As String) As Double
+        Dim first_basic As Double = GetFirst_Basic(biono, branchID, paydate)
+        Dim second_basic, monthly_Basic As Double
+
+        Dim sqll As String = $"Select * FROM PAYROLL_PAYOUT where BIOMETRIC_ID = '{biono}' and BRANCH_ID = '{branchID}' and PAYDATE = '{paydate}'"
         Using ds As DataSet = LoadSQL(sqll, "PAYROLL_PAYOUT")
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
                     With dr
-                        second_Basic = .Item("TOTAL_BASIC")
+                        second_basic = .Item("TOTAL_BASIC")
                     End With
                 Next
             End If
         End Using
 
-        Monthly_Total = first_Basic + second_Basic
-        Prev_Amount_lbl.Text = first_Basic
+        monthly_Basic = first_basic + second_basic
 
-        '=================================================================== Total SSS ===========================================================
-        Dim mysql_SSS As String = $"Select * FROM PAYROLL_SSS"
-        Using ds As DataSet = LoadSQL(mysql_SSS, "PAYROLL_SSS")
+        Return monthly_Basic
+    End Function
+
+    Public Function Get_SSS(monthly_Basic As String) As Double
+        Dim sss As Double
+
+        Dim mysql As String = $"Select * FROM PAYROLL_SSS"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_SSS")
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
                     With dr
@@ -426,28 +431,38 @@ Module SelectFromDatabase
                             strWords(0) = 1
                         End If
 
-                        If (Enumerable.Range(strWords(0), strWords.Last).Contains(Monthly_Total)) Then
-                            sss.Text = .Item("RSS_EE")
+                        If (Enumerable.Range(strWords(0), strWords.Last).Contains(monthly_Basic)) Then
+                            sss = .Item("RSS_EE")
                         End If
                     End With
                 Next
             End If
         End Using
 
-        '=================================================================== Total PAGIBIG ===========================================================
-        Dim mysql_PAGIBIG As String = $"Select * FROM PAYROLL_PAGIBIG"
-        Using ds As DataSet = LoadSQL(mysql_PAGIBIG, "PAYROLL_PAGIBIG")
+        Return sss
+    End Function
+
+    Public Function Get_Pagibig(monthly_Basic As String) As Double
+        Dim pagibig As Double
+
+        Dim mysql As String = $"Select * FROM PAYROLL_PAGIBIG"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAGIBIG")
             If ds.Tables(0).Rows.Count > 0 Then
                 Dim dr As DataRow = ds.Tables(0).Rows(0)
                 With dr
-                    pagibig.Text = .Item("EMPLOYEE")
+                    pagibig = .Item("EMPLOYEE")
                 End With
             End If
         End Using
 
-        '=================================================================== Total PHILHEALTH ===========================================================
-        Dim mysql_PHILHEALTH As String = $"Select * FROM PAYROLL_PHILHEALTH"
-        Using ds As DataSet = LoadSQL(mysql_PHILHEALTH, "PAYROLL_PHILHEALTH")
+        Return pagibig
+    End Function
+
+    Public Function Get_PhilHealth(monthly_Basic As String) As Double
+        Dim philhealth As Double
+
+        Dim mysql As String = $"Select * FROM PAYROLL_PHILHEALTH"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PHILHEALTH")
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
                     With dr
@@ -455,12 +470,12 @@ Module SelectFromDatabase
                         Dim convertTopercent As Decimal = .Item("PREMIUM_RATE") / 100
                         Dim total As Decimal
 
-                        If Monthly_Total <= 10000 Then
+                        If monthly_Basic <= 10000 Then
                             total = 10000 * convertTopercent
-                            philhealth.Text = total / 2
+                            philhealth = total / 2
                         Else
-                            total = Monthly_Total * convertTopercent
-                            philhealth.Text = total / 2
+                            total = monthly_Basic * convertTopercent
+                            philhealth = total / 2
                         End If
 
                     End With
@@ -468,9 +483,57 @@ Module SelectFromDatabase
             End If
         End Using
 
-        TaxComp_LBL.Text = Monthly_Total - (CDbl(sss.Text) + CDbl(pagibig.Text) + CDbl(philhealth.Text))
+        Return philhealth
+    End Function
 
-    End Sub
+    Public Function Get_Taxable(monthly_Basic As String) As Double
+        Dim sss As Double = Get_SSS(monthly_Basic)
+        Dim pagibig As Double = Get_Pagibig(monthly_Basic)
+        Dim philhealth As Double = Get_PhilHealth(monthly_Basic)
+        Dim taxable As Double
+
+        taxable = monthly_Basic - (sss + pagibig + philhealth)
+
+        Return taxable
+    End Function
+
+    Public Function Get_WHolding(monthly_Basic As String) As Double
+        Dim taxable As Double = Get_Taxable(monthly_Basic)
+        Dim Tax_Wheld As Double
+        Dim mysql As String = $"Select * FROM PAYROLL_WHOLDING"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_WHOLDING")
+            If ds.Tables(0).Rows.Count > 0 Then
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+
+                        Dim range As String = .Item("COMP_RANGE")
+                        Dim range_array As String() = range.Split(New Char() {" "c})
+
+                        Dim prescribe_WH As String = .Item("PRESCRIBE_WH_TAX")
+                        Dim prescrib_array As String() = prescribe_WH.Split(New Char() {" "c})
+
+                        If range_array.Last.Contains("elow") Then
+                            Tax_Wheld = 0
+                        Else
+                            Dim onlyDigits = New String(prescrib_array(2).Where(Function(c) Char.IsDigit(c)).ToArray())
+                            Dim num = Int32.Parse(onlyDigits)
+                            Dim percent = num / 100
+
+                            If range.Contains("above") Then
+                            Else
+                                If (Enumerable.Range(range_array.First, range_array.Last).Contains(taxable)) Then
+                                    Tax_Wheld = (CDbl(taxable) - CDbl(prescrib_array.Last)) * percent
+                                End If
+                            End If
+                        End If
+
+                    End With
+                Next
+            End If
+        End Using
+
+        Return Tax_Wheld
+    End Function
 
     Friend Function isNotExistHoliday(datee As String)
         Dim mysql As String = "SELECT * FROM PAYROLL_HOLIDAY Where DATEE = '" & datee & "'"

@@ -63,9 +63,10 @@ Partial Class frmContribution
         Me.TabPage3 = New System.Windows.Forms.TabPage()
         Me.WH_Change_BTN = New System.Windows.Forms.Button()
         Me.WH_grid = New System.Windows.Forms.DataGridView()
-        Me.Label1 = New System.Windows.Forms.Label()
         Me.range_dgv = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.wh_dgv = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.Label6 = New System.Windows.Forms.Label()
         Me.Attendance_Tab.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         CType(Me.SSS_grid, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -371,6 +372,7 @@ Partial Class frmContribution
         '
         'TabPage3
         '
+        Me.TabPage3.Controls.Add(Me.Label6)
         Me.TabPage3.Controls.Add(Me.WH_Change_BTN)
         Me.TabPage3.Controls.Add(Me.WH_grid)
         Me.TabPage3.Location = New System.Drawing.Point(4, 41)
@@ -383,7 +385,7 @@ Partial Class frmContribution
         'WH_Change_BTN
         '
         Me.WH_Change_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.WH_Change_BTN.Location = New System.Drawing.Point(6, 5)
+        Me.WH_Change_BTN.Location = New System.Drawing.Point(518, 53)
         Me.WH_Change_BTN.Name = "WH_Change_BTN"
         Me.WH_Change_BTN.Size = New System.Drawing.Size(116, 33)
         Me.WH_Change_BTN.TabIndex = 93
@@ -422,16 +424,6 @@ Partial Class frmContribution
         Me.WH_grid.Size = New System.Drawing.Size(506, 524)
         Me.WH_grid.TabIndex = 2
         '
-        'Label1
-        '
-        Me.Label1.AutoSize = True
-        Me.Label1.Font = New System.Drawing.Font("Dubai", 15.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.Location = New System.Drawing.Point(4, -2)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(127, 36)
-        Me.Label1.TabIndex = 68
-        Me.Label1.Text = "Contribution"
-        '
         'range_dgv
         '
         Me.range_dgv.Frozen = True
@@ -444,6 +436,26 @@ Partial Class frmContribution
         Me.wh_dgv.HeaderText = "Prescribe Withholding tax"
         Me.wh_dgv.Name = "wh_dgv"
         Me.wh_dgv.Width = 250
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Font = New System.Drawing.Font("Dubai", 15.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Location = New System.Drawing.Point(4, -2)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(127, 36)
+        Me.Label1.TabIndex = 68
+        Me.Label1.Text = "Contribution"
+        '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label6.Location = New System.Drawing.Point(6, 6)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(81, 32)
+        Me.Label6.TabIndex = 94
+        Me.Label6.Text = "Monthly"
         '
         'frmContribution
         '
@@ -464,6 +476,7 @@ Partial Class frmContribution
         Me.TabPage2.ResumeLayout(False)
         Me.TabPage2.PerformLayout()
         Me.TabPage3.ResumeLayout(False)
+        Me.TabPage3.PerformLayout()
         CType(Me.WH_grid, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
@@ -509,4 +522,5 @@ Partial Class frmContribution
     Friend WithEvents WH_grid As DataGridView
     Friend WithEvents range_dgv As DataGridViewTextBoxColumn
     Friend WithEvents wh_dgv As DataGridViewTextBoxColumn
+    Friend WithEvents Label6 As Label
 End Class
