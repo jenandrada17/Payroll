@@ -154,7 +154,7 @@
 
         Lists_Payout(Payout_list, paydate_)
 
-        GetPayout_TOTALS(paydate_, P_GrossAmount_LBL, P_SSSComp_LBL, P_PagibigComp_LBL, P_PhilHComp_LBL, P_Taxable_LBL, P_TaxWH_LBL,
+        GetPayout_TOTALS(paydate_, P_GrossAmount_LBL, P_SSSComp_LBL, P_PagibigComp_LBL, P_PhilHComp_LBL, P_TaxWH_LBL,
                          P_SSSLoan_LBL, P_PagibigLoan_LBL, P_Allowance_LBL, P_Deduction_LBL, P_NetPay_LBL)
     End Sub
 
@@ -163,7 +163,7 @@
 
         Lists_Payout(Payout_list, paydate_)
 
-        GetPayout_TOTALS(paydate_, P_GrossAmount_LBL, P_SSSComp_LBL, P_PagibigComp_LBL, P_PhilHComp_LBL, P_Taxable_LBL, P_TaxWH_LBL,
+        GetPayout_TOTALS(paydate_, P_GrossAmount_LBL, P_SSSComp_LBL, P_PagibigComp_LBL, P_PhilHComp_LBL, P_TaxWH_LBL,
                          P_SSSLoan_LBL, P_PagibigLoan_LBL, P_Allowance_LBL, P_Deduction_LBL, P_NetPay_LBL)
         Console.WriteLine("payyyy_combo_change " & paydate_)
     End Sub
@@ -305,12 +305,12 @@
         Dim positive, negative As Double
         If IsLastDay(paydate_) Then
             positive = netTax + allowance
+            negative = sssLoan + pagibigLoan + deduction
         Else
+            NetTax_LBL.Text = 0
             positive = gross + allowance
+            negative = deduction
         End If
-        Dim negative = sssLoan + pagibigLoan + deduction
-
-        NetPay_LBL.Text = positive - negative
 
         NetPay_LBL.Text = (positive - negative).ToString("N")
 

@@ -124,11 +124,11 @@ Module SelectFromDatabase
 
 
     Public Sub GetPayout_TOTALS(paydate As String, P_GrossAmount_LBL As Label, P_SSSComp_LBL As Label, P_PagibigComp_LBL As Label, P_PhilHComp_LBL As Label,
-                                 P_Taxable_LBL As Label, P_TaxWH_LBL As Label, P_SSSLoan_LBL As Label, P_PagibigLoan_LBL As Label,
+                                 P_TaxWH_LBL As Label, P_SSSLoan_LBL As Label, P_PagibigLoan_LBL As Label,
                                  P_Allowance_LBL As Label, P_Deduction_LBL As Label, P_NetPay_LBL As Label)
 
         Dim mysql As String = $"Select SUM(GROSS_AMOUNT) as gross, SUM(SSS_COMP) as sssC, SUM(PAGIBIG_COMP) as pagibiC, SUM(PHILHEALTH_COMP) as philHC,
-                                       SUM(TAXABLE) as tax, SUM(TAX_WHELD) as taxWH, SUM(SSS_LOAN) as sssLoan, SUM(PAGIBIG_LOAN) as pagibigLoan,
+                                       SUM(TAX_WHELD) as taxWH, SUM(SSS_LOAN) as sssLoan, SUM(PAGIBIG_LOAN) as pagibigLoan,
                                        SUM(TOTAL_ALLOWANCE) as allowance, SUM(TOTAL_DEDUCTION) as deducttion,
                                        SUM(NET_PAY) as netPay FROM PAYROLL_PAYOUT where paydate = '{paydate}'"
 
@@ -141,7 +141,6 @@ Module SelectFromDatabase
                     P_PagibigComp_LBL.Text = IIf(IsDBNull(.Item("pagibiC")), 0, .Item("pagibiC"))
                     P_PhilHComp_LBL.Text = IIf(IsDBNull(.Item("philHC")), 0, .Item("philHC"))
 
-                    P_Taxable_LBL.Text = IIf(IsDBNull(.Item("tax")), 0, .Item("tax"))
                     P_TaxWH_LBL.Text = IIf(IsDBNull(.Item("taxWH")), 0, .Item("taxWH"))
 
                     P_SSSLoan_LBL.Text = IIf(IsDBNull(.Item("sssLoan")), 0, .Item("sssLoan"))
@@ -170,7 +169,7 @@ Module SelectFromDatabase
         If ds.Tables(0).Rows.Count > 0 Then
             Dim dr As DataRow = ds.Tables(0).Rows(0)
             With dr
-                label.Text = .Item("AMOUNT")
+                label.Text = .Item("SBU_AMOUNT")
             End With
         End If
     End Sub
@@ -886,7 +885,7 @@ Module SelectFromDatabase
             If ds.Tables(0).Rows.Count > 0 Then
                 Dim data As DataRow = ds.Tables(0).Rows(0)
                 With data
-                    Amount = .Item("amount")
+                    Amount = .Item("SBU_AMOUNT")
                 End With
             End If
         End Using
@@ -1099,18 +1098,18 @@ Module SelectFromDatabase
             'i.SubItems.Add(.Item("TOTAL_BASIC")).Tag = .Item("BIOMETRIC_ID")
             'i.SubItems.Add(.Item("TOTAL_OVERTIME")).Tag = .Item("BRANCH_ID")
             'i.SubItems.Add(.Item("TOTAL_LATE_UT"))
-            i.SubItems.Add(.Item("GROSS_AMOUNT")).Tag = .Item("BIOMETRIC_ID")
-            i.SubItems.Add(.Item("SSS_COMP")).Tag = .Item("BRANCH_ID")
-            i.SubItems.Add(.Item("PAGIBIG_COMP"))
-            i.SubItems.Add(.Item("PHILHEALTH_COMP"))
-            i.SubItems.Add(.Item("TAXABLE"))
-            i.SubItems.Add(.Item("TAX_WHELD"))
-            i.SubItems.Add(.Item("NET_TAX_COMP"))
-            i.SubItems.Add(.Item("SSS_LOAN"))
-            i.SubItems.Add(.Item("PAGIBIG_LOAN"))
-            i.SubItems.Add(.Item("TOTAL_ALLOWANCE"))
-            i.SubItems.Add(.Item("TOTAL_DEDUCTION"))
-            i.SubItems.Add(.Item("NET_PAY"))
+            i.SubItems.Add(CDbl(.Item("GROSS_AMOUNT")).ToString("N")).Tag = .Item("BIOMETRIC_ID")
+            i.SubItems.Add(CDbl(.Item("SSS_COMP")).ToString("N")).Tag = .Item("BRANCH_ID")
+            i.SubItems.Add(CDbl(.Item("PAGIBIG_COMP")).ToString("N"))
+            i.SubItems.Add(CDbl(.Item("PHILHEALTH_COMP")).ToString("N"))
+            'i.SubItems.Add(CDbl(.Item("TAXABLE")).ToString("N"))
+            i.SubItems.Add(CDbl(.Item("TAX_WHELD")).ToString("N"))
+            i.SubItems.Add(CDbl(.Item("NET_TAX_COMP")).ToString("N"))
+            i.SubItems.Add(CDbl(.Item("SSS_LOAN")).ToString("N"))
+            i.SubItems.Add(CDbl(.Item("PAGIBIG_LOAN")).ToString("N"))
+            i.SubItems.Add(CDbl(.Item("TOTAL_ALLOWANCE")).ToString("N"))
+            i.SubItems.Add(CDbl(.Item("TOTAL_DEDUCTION")).ToString("N"))
+            i.SubItems.Add(CDbl(.Item("NET_PAY")).ToString("N"))
 
         End With
 

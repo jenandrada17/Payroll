@@ -22,6 +22,12 @@ Public Class frmAttendance
     Private Sub frmAttendance_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
         LoadDateTime()
+
+        AM_In_DataGrid.Items.Insert(0, "")
+        AM_Out_DataGrid.Items.Insert(0, "")
+        PM_IN_DataGrid.Items.Insert(0, "")
+        PM_Out_DataGrid.Items.Insert(0, "")
+
         DataGridView1.ClearSelection()
 
         CheckALL_CheckBox.Checked = True
@@ -162,12 +168,6 @@ Public Class frmAttendance
             End If
 
         Next
-
-        AM_In_DataGrid.Items.Insert(0, "")
-        AM_Out_DataGrid.Items.Insert(0, "")
-        PM_IN_DataGrid.Items.Insert(0, "")
-        PM_Out_DataGrid.Items.Insert(0, "")
-
     End Sub
 
     Private Sub HourMinute(from_HR As Integer, To_HR As Integer, combo As DataGridViewComboBoxColumn)
@@ -525,7 +525,7 @@ Public Class frmAttendance
 
     Private Sub RE_Paydate_Combo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles RE_Paydate_Combo.SelectedIndexChanged
 
-        If RE_Paydate_Combo.SelectedIndex > 0 Then
+        If RE_Paydate_Combo.SelectedIndex >= 0 Then
             PopulateAttendanceRECORD(Records_grid, RE_Paydate_Combo.SelectedItem)
         Else
             PopulateAttendanceRECORD(Records_grid, Paydate)
@@ -591,6 +591,11 @@ Public Class frmAttendance
 
     Private Sub forLoop_ALL_IMPORTED()   '================================ WORKS WELL- FOR ALL RECORDS ONLY (PARTNER WITH SAVE_DIRECT_Attendance()()) =============================   
         LoadDateTime()
+        AM_In_DataGrid.Items.Insert(0, "")
+        AM_Out_DataGrid.Items.Insert(0, "")
+        PM_IN_DataGrid.Items.Insert(0, "")
+        PM_Out_DataGrid.Items.Insert(0, "")
+
         Dim paydate_ As String = Paydate.ToString("d")
         distinct_bio = distinct_bio.Distinct().ToList
 
@@ -903,6 +908,12 @@ Public Class frmAttendance
 
     Public Sub SAVE_DIRECT_Attendance()
         LoadDateTime()
+
+        AM_In_DataGrid.Items.Insert(0, "")
+        AM_Out_DataGrid.Items.Insert(0, "")
+        PM_IN_DataGrid.Items.Insert(0, "")
+        PM_Out_DataGrid.Items.Insert(0, "")
+
         Dim paydate_ As String = Paydate.ToString("d")
 
         For Each biometric_No As String In distinct_bio
@@ -1109,6 +1120,11 @@ Public Class frmAttendance
 
             Dim datee As DateTime = paydate_
             LoadDateTime(datee)
+
+            AM_In_DataGrid.Items.Insert(0, "")
+            AM_Out_DataGrid.Items.Insert(0, "")
+            PM_IN_DataGrid.Items.Insert(0, "")
+            PM_Out_DataGrid.Items.Insert(0, "")
         End If
     End Sub
 

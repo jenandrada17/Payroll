@@ -122,4 +122,8 @@ Public Class frmContribution
             Populate_WHOLDING_TAX(WH_grid)
         End If
     End Sub
+
+    Private Sub Close_LBL_Click(sender As Object, e As EventArgs) Handles Close_LBL.Click
+        Close()
+    End Sub
 End Class

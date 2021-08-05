@@ -54,14 +54,36 @@
     <Reference Include="FirebirdSql.Data.FirebirdClient">
       <HintPath>..\..\..\HRSystem\DBConnect\bin\Debug\FirebirdSql.Data.FirebirdClient.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.Common, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.150.1449.0\lib\net40\Microsoft.ReportViewer.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.DataVisualization, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.150.1449.0\lib\net40\Microsoft.ReportViewer.DataVisualization.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.Design, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.150.1449.0\lib\net40\Microsoft.ReportViewer.Design.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.ProcessingObjectModel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.150.1449.0\lib\net40\Microsoft.ReportViewer.ProcessingObjectModel.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WinForms, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.150.1449.0\lib\net40\Microsoft.ReportViewer.WinForms.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.SqlServer.Types, Version=14.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.SqlServer.Types.14.0.314.76\lib\net40\Microsoft.SqlServer.Types.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.Services" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -84,6 +106,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class\Employee.vb" />
+    <Compile Include="Dataset\payslip.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>payslip.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Dataset\payslip.vb">
+      <DependentUpon>payslip.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Dataset\sample1xsd.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>sample1xsd.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Dataset\sample1xsd.vb">
+      <DependentUpon>sample1xsd.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Forms\frmAttendance.Designer.vb">
       <DependentUpon>frmAttendance.vb</DependentUpon>
     </Compile>
@@ -119,6 +157,12 @@
       <DependentUpon>frmPayout.vb</DependentUpon>
     </Compile>
     <Compile Include="Forms\frmPayout.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmPayslip.Designer.vb">
+      <DependentUpon>frmPayslip.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmPayslip.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\frmSettings.Designer.vb">
@@ -168,6 +212,9 @@
     <EmbeddedResource Include="Forms\frmPayout.resx">
       <DependentUpon>frmPayout.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmPayslip.resx">
+      <DependentUpon>frmPayslip.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmSettings.resx">
       <DependentUpon>frmSettings.vb</DependentUpon>
     </EmbeddedResource>
@@ -177,8 +224,32 @@
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reports\rpt_payslip.rdlc" />
+    <EmbeddedResource Include="Reports\sample.rdlc" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Dataset\payslip.xsc">
+      <DependentUpon>payslip.xsd</DependentUpon>
+    </None>
+    <None Include="Dataset\payslip.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>payslip.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Dataset\payslip.xss">
+      <DependentUpon>payslip.xsd</DependentUpon>
+    </None>
+    <None Include="Dataset\sample1xsd.xsc">
+      <DependentUpon>sample1xsd.xsd</DependentUpon>
+    </None>
+    <None Include="Dataset\sample1xsd.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>sample1xsd.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Dataset\sample1xsd.xss">
+      <DependentUpon>sample1xsd.xsd</DependentUpon>
+    </None>
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
@@ -189,6 +260,7 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <None Include="App.config" />
+    <None Include="packages.config" />
     <None Include="Resources\employee" />
     <None Include="Resources\employee1" />
     <None Include="Resources\new-employee" />
@@ -222,6 +294,10 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="For Testing Only\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="SqlServerTypes\Loader.cs" />
+    <Content Include="SqlServerTypes\readme.htm" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

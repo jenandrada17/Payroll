@@ -414,7 +414,7 @@
 
             With ds.Tables(0).Rows(0)
 
-                .Item("AMOUNT") = amount
+                .Item("SBU_AMOUNT") = amount
 
             End With
             SaveEntry(ds, False)
@@ -428,7 +428,7 @@
                 Dim dsNewRow As DataRow = dss.Tables(0).NewRow
                 With dsNewRow
 
-                    .Item("AMOUNT") = amount
+                    .Item("SBU_AMOUNT") = amount
 
                 End With
                 dss.Tables(0).Rows.Add(dsNewRow)
@@ -637,7 +637,8 @@
                             Tax_Wheld = Get_WHolding(monthly_Basic)
 
                             netTax = monthly_Basic - (SSSComp + PagibigComp + PhilhealthComp + Tax_Wheld)
-
+                        Else
+                            netTax = 0
                         End If
 
                         '============================================= Calculate_Gross() ========================================================= 
@@ -673,8 +674,18 @@
 
                         Deduction = SBU + Charges + Loan + CashAdvance
 
-                        Dim positive = netTax + Allowances
-                        Dim negative = sssLoan + pagibigLoan + Deduction
+                        'Dim positive = netTax + Allowances
+                        'Dim negative = sssLoan + pagibigLoan + Deduction 
+
+                        Dim positive, negative As Double
+                        If IsLastDay(paydate_) Then
+                            positive = netTax + Allowances
+                            negative = sssLoan + pagibigLoan + Deduction
+                        Else
+                            'netTax = 0
+                            positive = GrossAmount + Allowances
+                            negative = Deduction
+                        End If
 
                         NetPay = positive - negative
 

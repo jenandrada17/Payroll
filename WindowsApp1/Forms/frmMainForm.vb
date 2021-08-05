@@ -126,6 +126,10 @@ Public Class frmMainForm
         OpenWindowsForm("frmContribution")
     End Sub
 
+    Private Sub Paysilp_BTN_Click(sender As Object, e As EventArgs) Handles Paysilp_BTN.Click
+        OpenWindowsForm("frmPayslip")
+    End Sub
+
     Private Sub Calculator_BTN_MouseLeave(sender As Object, e As EventArgs) Handles Contribution_BTN.MouseLeave
         Contribution_BTN.BackColor = Color.Black
     End Sub

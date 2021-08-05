@@ -158,7 +158,7 @@ Partial Class frmSettings
         '
         Me.Close_LBL.AutoSize = True
         Me.Close_LBL.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Close_LBL.Location = New System.Drawing.Point(1117, -7)
+        Me.Close_LBL.Location = New System.Drawing.Point(1121, -7)
         Me.Close_LBL.Name = "Close_LBL"
         Me.Close_LBL.Size = New System.Drawing.Size(57, 32)
         Me.Close_LBL.TabIndex = 77
