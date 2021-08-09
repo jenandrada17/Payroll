@@ -159,7 +159,6 @@
                     New Microsoft.Reporting.WinForms.ReportParameter("paramNetPay", net_pay)
                     }
 
-
         'New Microsoft.Reporting.WinForms.ReportParameter("paramTIN", tin),
         'New Microsoft.Reporting.WinForms.ReportParameter("paramHDMF", hdmf),
         'New Microsoft.Reporting.WinForms.ReportParameter("paramPhilH", philH),
@@ -185,6 +184,7 @@
         'New Microsoft.Reporting.WinForms.ReportParameter("paramCashAdvance", cash_advance_perGive),
         'New Microsoft.Reporting.WinForms.ReportParameter("paramOtherLoan", otherLoan_perGive),
         'New Microsoft.Reporting.WinForms.ReportParameter("paramDeduction", total_deduction),
+
         Try
             '    DbOpen()
             '    Dim sql As String = "select * from TBL_Employee A 

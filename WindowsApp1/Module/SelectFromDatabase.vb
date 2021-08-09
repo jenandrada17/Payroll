@@ -1001,20 +1001,21 @@ Module SelectFromDatabase
 
         If searchName.Length <> 0 Then
 
-            mysql = "select * from PAYROLL_ALLOWANCE A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRIC_NO and B.BRANCH_ID = A.BRANCH_ID where ALLOWED is null  and "
+            mysql = "select * from PAYROLL_ALLOWANCES A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRIC_NO and B.BRANCH_ID = A.BRANCH_ID where ALLOWED is null  and "
 
             For Each name In strWords
                 mysql &= $"{vbCr}UPPER(BIOMETRIC_NO) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(firstname) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(lastname) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(AMOUNT) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(FIX) LIKE UPPER('%{name}%') ORDER BY LASTNAME ASC "
             Next
 
         Else
-            mysql = "select * from PAYROLL_ALLOWANCE A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRIC_NO where ALLOWED is null  ORDER BY LASTNAME ASC "
+            mysql = "select * from PAYROLL_ALLOWANCES A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRIC_NO where ALLOWED is null  ORDER BY LASTNAME ASC "
         End If
 
-        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ALLOWANCE")
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ALLOWANCES")
             LV.Items.Clear()
             progressBarStart(ds.Tables(0).Rows.Count)
             For Each dr In ds.Tables(0).Rows
@@ -1027,15 +1028,11 @@ Module SelectFromDatabase
     End Sub
 
     Private Sub AddRow_Allowance(ByVal dr As DataRow, LV As ListView)
-
         With dr
-            Dim i As ListViewItem = LV.Items.Add(.Item("BIOMETRIC_NO"))
-            i.SubItems.Add(.Item("LASTNAME") & ", " & .Item("FIRSTNAME") & " " & .Item("MIDDLENAME")).Tag = .Item("BRANCH_ID")
-            i.SubItems.Add(IIf(IsDBNull(.Item("POSITIONAL")), "", .Item("POSITIONAL")))
-            i.SubItems.Add(IIf(IsDBNull(.Item("INCENTIVES")), "", .Item("INCENTIVES")))
-            i.SubItems.Add(IIf(IsDBNull(.Item("BOARDING")), "", .Item("BOARDING")))
-            i.SubItems.Add(IIf(IsDBNull(.Item("CAREKIT")), "", .Item("CAREKIT")))
-            i.SubItems.Add(IIf(IsDBNull(.Item("TRANSPORTATION")), "", .Item("TRANSPORTATION")))
+            Dim i As ListViewItem = LV.Items.Add(.Item("LASTNAME") & ", " & .Item("FIRSTNAME") & " " & .Item("MIDDLENAME"))
+            i.SubItems.Add(.Item("CATEGORY")).Tag = .Item("BIOMETRIC_NO")
+            i.SubItems.Add(.Item("AMOUNT")).Tag = .Item("BRANCH_ID")
+            i.SubItems.Add(.Item("FIX"))
         End With
     End Sub
 
@@ -1313,8 +1310,23 @@ Module SelectFromDatabase
         If dss.Tables(0).Rows.Count > 0 Then
             RunCommand($"DELETE FROM {table};")  'THIS IS TO DELETE EXISTING DATA 
         End If
-
     End Sub
+
+    Public Sub Load_Category_LIST(LIST As ListView, table As String, coulumn As String)
+
+        LIST.Items.Clear()
+        Dim mysql As String = $"Select * From {table}"
+        Using ds As DataSet = LoadSQL(mysql, table)
+
+            For Each dr As DataRow In ds.Tables(0).Rows
+                With dr
+                    Dim lvitem As ListViewItem = LIST.Items.Add(.Item(coulumn))
+                End With
+            Next
+
+        End Using
+    End Sub
+
 
 
 End Module

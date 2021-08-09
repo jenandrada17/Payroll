@@ -16,9 +16,13 @@ Public Class frmSettings
 
         PopulateComboBox(Rate_Branch_ComboB, "tbl_branch", "BRANCHNAME")
         PopulateComboBox(Rate_Pos_ComboB, "tbl_employee", "EMP_POSITION")
+        PopulateComboBox(Allow_Category_Combo, "CATEGORY_ALLOWANCE", "ALLOWANCE_NAME")
+        PopulateComboBox(DE_Category_Combo, "CATEGORY_DEDUCTION", "DEDUCTION_NAME")
         Lists_Rate(Rate_list)
         Lists_Allowance(Allowance_LV)
         Lists_deduction(Deduction_List)
+        Load_Category_LIST(Allowance_List, "CATEGORY_ALLOWANCE", "ALLOWANCE_NAME")
+        Load_Category_LIST(Cat_Deduc_List, "CATEGORY_DEDUCTION", "DEDUCTION_NAME")
 
 
     End Sub
@@ -245,22 +249,14 @@ Public Class frmSettings
 
     End Sub
 
-    Private Sub Allow_Category_Combo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Allow_Category_Combo.SelectedIndexChanged
-        If Allow_Category_Combo.SelectedIndex = 3 Then
-            Allow_Fix_group.Visible = True
-        Else
-            Allow_Fix_group.Visible = False
-        End If
-    End Sub
-
     Private Sub Allow_Save_BTN_Click(sender As Object, e As EventArgs) Handles Allow_Save_BTN.Click
 
         If Allow_Category_Combo.SelectedIndex >= 0 And Not Allow_Name_TXT.Text = "" Then
 
             If FixYes_RadioB.Checked Then
-                SaveAllowance(Allow_Name_TXT.Tag, Allow_SearchEmp_BTN.Tag, Allow_Category_Combo.SelectedItem, Allow_Amount_TXT.Text, True)
+                SaveAllowance(Allow_Name_TXT.Tag, Allow_SearchEmp_BTN.Tag, Allow_Category_Combo.SelectedItem, Allow_Amount_TXT.Text, "YES")
             Else
-                SaveAllowance(Allow_Name_TXT.Tag, Allow_SearchEmp_BTN.Tag, Allow_Category_Combo.SelectedItem, Allow_Amount_TXT.Text, False)
+                SaveAllowance(Allow_Name_TXT.Tag, Allow_SearchEmp_BTN.Tag, Allow_Category_Combo.SelectedItem, Allow_Amount_TXT.Text, "NO")
             End If
 
             Lists_Allowance(Allowance_LV)
@@ -274,7 +270,6 @@ Public Class frmSettings
         Allow_Name_TXT.Text = ""
         Allow_Amount_TXT.Text = ""
         FixNo_RadioB.Checked = False
-        Allow_Fix_group.Visible = False
     End Sub
 
     Private Sub Allow_Remove_Click(sender As Object, e As EventArgs) Handles Allow_Remove.Click
@@ -367,5 +362,29 @@ Public Class frmSettings
 
     Private Sub DE_Search_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles DE_Search_TXT.KeyPress
         If IsEnter(e) Then DE_Search_BTN.PerformClick()
+    End Sub
+
+    Private Sub Cat_Allow_Save_BTN_Click(sender As Object, e As EventArgs) Handles Cat_Allow_Save_BTN.Click
+        If Not AllowCat_TXT.Text = "" Then
+            SaveCATEGORY(AllowCat_TXT.Text, "CATEGORY_ALLOWANCE", "ALLOWANCE_NAME")
+            Load_Category_LIST(Allowance_List, "CATEGORY_ALLOWANCE", "ALLOWANCE_NAME")
+            AllowCat_TXT.Text = ""
+        End If
+    End Sub
+
+    Private Sub AllowCat_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles AllowCat_TXT.KeyPress
+        If IsEnter(e) Then Cat_Allow_Save_BTN.PerformClick()
+    End Sub
+
+    Private Sub DeducSave_BTN_Click(sender As Object, e As EventArgs) Handles DeducSave_BTN.Click
+        If Not Deduct_TXT.Text = "" Then
+            SaveCATEGORY(Deduct_TXT.Text, "CATEGORY_DEDUCTION", "DEDUCTION_NAME")
+            Load_Category_LIST(Cat_Deduc_List, "CATEGORY_DEDUCTION", "DEDUCTION_NAME")
+            Deduct_TXT.Text = ""
+        End If
+    End Sub
+
+    Private Sub Deduct_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Deduct_TXT.KeyPress
+        If IsEnter(e) Then DeducSave_BTN.PerformClick()
     End Sub
 End Class

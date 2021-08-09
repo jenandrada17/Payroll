@@ -297,51 +297,50 @@
         End If
     End Sub
 
-    Friend Sub SaveAllowance(bioNo As String, branchID As String, categoryColumn As String, amount As String, fix As Boolean)
-        Dim mysql As String
+    'Friend Sub SaveAllowance(bioNo As String, branchID As String, categoryColumn As String, amount As String, fix As Boolean)
+    '    Dim mysql As String
 
-        mysql = $"Select * FROM PAYROLL_ALLOWANCE where BIOMETRIC_NO = '{bioNo}' and BRANCH_ID = '{branchID}'"
-        Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_ALLOWANCE")
-        If ds.Tables(0).Rows.Count > 0 Then
+    '    mysql = $"Select * FROM PAYROLL_ALLOWANCE where BIOMETRIC_NO = '{bioNo}' and BRANCH_ID = '{branchID}'"
+    '    Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_ALLOWANCE")
+    '    If ds.Tables(0).Rows.Count > 0 Then
 
-            With ds.Tables(0).Rows(0)
+    '        With ds.Tables(0).Rows(0)
 
-                .Item(categoryColumn) = amount
-                .Item("ALLOWED") = DBNull.Value
+    '            .Item(categoryColumn) = amount
+    '            .Item("ALLOWED") = DBNull.Value
 
-                If fix Then
-                    .Item("fix") = "FIX"
-                End If
+    '            If fix Then
+    '                .Item("fix") = "FIX"
+    '            End If
 
-            End With
-            SaveEntry(ds, False)
+    '        End With
+    '        SaveEntry(ds, False)
 
-            MsgBox("Successfully Updated!", MsgBoxStyle.Information, "Information")
+    '        MsgBox("Successfully Updated!", MsgBoxStyle.Information, "Information")
 
-        Else
-            mysql = "Select * From PAYROLL_ALLOWANCE Rows 1"
-            Using dss As DataSet = LoadSQL(mysql, "PAYROLL_ALLOWANCE")
+    '    Else
+    '        mysql = "Select * From PAYROLL_ALLOWANCE Rows 1"
+    '        Using dss As DataSet = LoadSQL(mysql, "PAYROLL_ALLOWANCE")
 
-                Dim dsNewRow As DataRow = dss.Tables(0).NewRow
-                With dsNewRow
+    '            Dim dsNewRow As DataRow = dss.Tables(0).NewRow
+    '            With dsNewRow
 
-                    .Item("BIOMETRIC_NO") = bioNo
-                    .Item("BRANCH_ID") = branchID
-                    .Item(categoryColumn) = amount
+    '                .Item("BIOMETRIC_NO") = bioNo
+    '                .Item("BRANCH_ID") = branchID
+    '                .Item(categoryColumn) = amount
 
-                    If fix Then
-                        .Item("fix") = "FIX"
-                    End If
+    '                If fix Then
+    '                    .Item("fix") = "FIX"
+    '                End If
 
-                End With
-                dss.Tables(0).Rows.Add(dsNewRow)
-                SaveEntry(dss)
+    '            End With
+    '            dss.Tables(0).Rows.Add(dsNewRow)
+    '            SaveEntry(dss)
 
-                MsgBox("Successfully Saved!", MsgBoxStyle.Information, "Information")
-            End Using
-        End If
-
-    End Sub
+    '            MsgBox("Successfully Saved!", MsgBoxStyle.Information, "Information")
+    '        End Using
+    '    End If
+    'End Sub
 
     Friend Sub AllowanceRemove(bioNo As String, branchID As String, category As String)
         Dim mysql As String
@@ -960,5 +959,65 @@
         RunCommand("DELETE FROM PAYROLL_WHOLDING WHERE COMP_RANGE is null")
 
     End Sub
+
+    Friend Sub SaveAllowance(bioNo As String, branchID As String, category As String, amount As String, fix As String)
+        Dim mysql As String
+
+        mysql = $"Select * FROM PAYROLL_ALLOWANCES where BIOMETRIC_NO = '{bioNo}' and BRANCH_ID = '{branchID}' and category = '{category}'"
+        Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_ALLOWANCES")
+        If ds.Tables(0).Rows.Count > 0 Then
+
+            With ds.Tables(0).Rows(0)
+
+                .Item("category") = amount
+                .Item("AMOUNT") = amount
+                .Item("fix") = "FIX"
+                .Item("ALLOWED") = DBNull.Value
+
+            End With
+
+            SaveEntry(ds, False)
+            MsgBox("Successfully Updated!", MsgBoxStyle.Information, "Information")
+
+        Else
+            mysql = "Select * From PAYROLL_ALLOWANCES Rows 1"
+            Using dss As DataSet = LoadSQL(mysql, "PAYROLL_ALLOWANCES")
+
+                Dim dsNewRow As DataRow = dss.Tables(0).NewRow
+                With dsNewRow
+
+
+                    .Item("BIOMETRIC_NO") = bioNo
+                    .Item("BRANCH_ID") = branchID
+                    .Item("category") = category
+                    .Item("AMOUNT") = amount
+                    .Item("fix") = "FIX"
+
+                End With
+                dss.Tables(0).Rows.Add(dsNewRow)
+                SaveEntry(dss)
+
+                MsgBox("Successfully Saved!", MsgBoxStyle.Information, "Information")
+            End Using
+        End If
+
+    End Sub
+
+    Friend Sub SaveCATEGORY(category As String, table As String, coulumn As String)
+
+        Dim mysql As String = $"Select * From {table} Rows 1"
+        Using dss As DataSet = LoadSQL(mysql, table)
+            Dim dsNewRow As DataRow = dss.Tables(0).NewRow
+            With dsNewRow
+
+                .Item(coulumn) = category
+
+            End With
+            dss.Tables(0).Rows.Add(dsNewRow)
+            SaveEntry(dss)
+        End Using
+
+    End Sub
+
 
 End Module
