@@ -332,7 +332,6 @@ Public Class frmSettings
 
             Lists_deduction(Deduction_List)
             DE_Cancel_BTN.PerformClick()
-
         End If
 
     End Sub

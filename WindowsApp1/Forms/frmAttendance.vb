@@ -1,4 +1,7 @@
-﻿Imports FirebirdSql.Data.FirebirdClient
+﻿Imports System.IO
+Imports System.Security.Cryptography
+Imports System.Text
+Imports FirebirdSql.Data.FirebirdClient
 Imports Microsoft.Office.Interop
 
 Public Class frmAttendance
@@ -532,6 +535,27 @@ Public Class frmAttendance
         Else
             PopulateAttendanceRECORD(Records_grid, Paydate)
         End If
+    End Sub
+
+    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
+
+        Try
+            Dim myDESProvider As DESCryptoServiceProvider = New DESCryptoServiceProvider()
+            myDESProvider.Key = ASCIIEncoding.ASCII.GetBytes("12345678")
+            myDESProvider.IV = ASCIIEncoding.ASCII.GetBytes("12345678")
+            Dim DecryptedFile As FileStream = New FileStream("Encrypted.txt", FileMode.Open, FileAccess.Read)
+            Dim myICryptoTransform As ICryptoTransform = myDESProvider.CreateDecryptor(myDESProvider.Key, myDESProvider.IV)
+            Dim myCryptoStream As CryptoStream = New CryptoStream(DecryptedFile, myICryptoTransform, CryptoStreamMode.Read)
+            Dim myDecStreamReader As New StreamReader(myCryptoStream)
+            Dim myDecStreamWriter As New StreamWriter("Decrypted.txt")
+            myDecStreamWriter.Write(myDecStreamReader.ReadToEnd())
+            myCryptoStream.Close()
+            myDecStreamReader.Close()
+            myDecStreamWriter.Close()
+        Catch ex As Exception
+            Console.WriteLine(ex.ToString())
+        End Try
+
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click

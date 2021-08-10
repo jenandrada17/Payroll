@@ -130,6 +130,10 @@ Public Class frmMainForm
         OpenWindowsForm("frmPayslip")
     End Sub
 
+    Private Sub Loan_BTN_Click(sender As Object, e As EventArgs) Handles Loan_BTN.Click
+        OpenWindowsForm("frmDecrypt")
+    End Sub
+
     Private Sub Calculator_BTN_MouseLeave(sender As Object, e As EventArgs) Handles Contribution_BTN.MouseLeave
         Contribution_BTN.BackColor = Color.Black
     End Sub
