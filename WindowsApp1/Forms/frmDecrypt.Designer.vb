@@ -24,19 +24,22 @@ Partial Class frmDecrypt
     Private Sub InitializeComponent()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.encrypt = New System.Windows.Forms.Button()
         Me.Decrypt = New System.Windows.Forms.Button()
         Me.pass2 = New System.Windows.Forms.TextBox()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.txtPassDecrypt = New System.Windows.Forms.TextBox()
         Me.Label4 = New System.Windows.Forms.Label()
-        Me.Button2 = New System.Windows.Forms.Button()
+        Me.Buttonn = New System.Windows.Forms.Button()
         Me.txtDestinationDecrypt = New System.Windows.Forms.TextBox()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.browse = New System.Windows.Forms.Button()
         Me.txtFileToDecrypt = New System.Windows.Forms.TextBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.RichTextBox2 = New System.Windows.Forms.RichTextBox()
         Me.RichTextBox1 = New System.Windows.Forms.RichTextBox()
+        Me.RichTextBox3 = New System.Windows.Forms.RichTextBox()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.SuspendLayout()
@@ -53,12 +56,13 @@ Partial Class frmDecrypt
         '
         'TabPage1
         '
+        Me.TabPage1.Controls.Add(Me.encrypt)
         Me.TabPage1.Controls.Add(Me.Decrypt)
         Me.TabPage1.Controls.Add(Me.pass2)
         Me.TabPage1.Controls.Add(Me.Label3)
         Me.TabPage1.Controls.Add(Me.txtPassDecrypt)
         Me.TabPage1.Controls.Add(Me.Label4)
-        Me.TabPage1.Controls.Add(Me.Button2)
+        Me.TabPage1.Controls.Add(Me.Buttonn)
         Me.TabPage1.Controls.Add(Me.txtDestinationDecrypt)
         Me.TabPage1.Controls.Add(Me.Label2)
         Me.TabPage1.Controls.Add(Me.browse)
@@ -71,6 +75,15 @@ Partial Class frmDecrypt
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "Decrypt"
         Me.TabPage1.UseVisualStyleBackColor = True
+        '
+        'encrypt
+        '
+        Me.encrypt.Location = New System.Drawing.Point(371, 205)
+        Me.encrypt.Name = "encrypt"
+        Me.encrypt.Size = New System.Drawing.Size(75, 56)
+        Me.encrypt.TabIndex = 11
+        Me.encrypt.Text = "Encrypt"
+        Me.encrypt.UseVisualStyleBackColor = True
         '
         'Decrypt
         '
@@ -114,14 +127,14 @@ Partial Class frmDecrypt
         Me.Label4.TabIndex = 6
         Me.Label4.Text = "Pass"
         '
-        'Button2
+        'Buttonn
         '
-        Me.Button2.Location = New System.Drawing.Point(371, 69)
-        Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(75, 23)
-        Me.Button2.TabIndex = 5
-        Me.Button2.Text = "Change"
-        Me.Button2.UseVisualStyleBackColor = True
+        Me.Buttonn.Location = New System.Drawing.Point(371, 69)
+        Me.Buttonn.Name = "Buttonn"
+        Me.Buttonn.Size = New System.Drawing.Size(75, 23)
+        Me.Buttonn.TabIndex = 5
+        Me.Buttonn.Text = "Change"
+        Me.Buttonn.UseVisualStyleBackColor = True
         '
         'txtDestinationDecrypt
         '
@@ -175,20 +188,38 @@ Partial Class frmDecrypt
         Me.TabPage2.Text = "Encrypt"
         Me.TabPage2.UseVisualStyleBackColor = True
         '
+        'RichTextBox2
+        '
+        Me.RichTextBox2.Location = New System.Drawing.Point(604, 192)
+        Me.RichTextBox2.Name = "RichTextBox2"
+        Me.RichTextBox2.Size = New System.Drawing.Size(529, 134)
+        Me.RichTextBox2.TabIndex = 1
+        Me.RichTextBox2.Text = ""
+        '
         'RichTextBox1
         '
-        Me.RichTextBox1.Location = New System.Drawing.Point(597, 43)
+        Me.RichTextBox1.Location = New System.Drawing.Point(604, 32)
         Me.RichTextBox1.Name = "RichTextBox1"
-        Me.RichTextBox1.Size = New System.Drawing.Size(529, 470)
-        Me.RichTextBox1.TabIndex = 1
+        Me.RichTextBox1.Size = New System.Drawing.Size(529, 134)
+        Me.RichTextBox1.TabIndex = 17
         Me.RichTextBox1.Text = ""
+        '
+        'RichTextBox3
+        '
+        Me.RichTextBox3.Location = New System.Drawing.Point(604, 359)
+        Me.RichTextBox3.Name = "RichTextBox3"
+        Me.RichTextBox3.Size = New System.Drawing.Size(529, 134)
+        Me.RichTextBox3.TabIndex = 18
+        Me.RichTextBox3.Text = ""
         '
         'frmDecrypt
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1169, 665)
+        Me.Controls.Add(Me.RichTextBox3)
         Me.Controls.Add(Me.RichTextBox1)
+        Me.Controls.Add(Me.RichTextBox2)
         Me.Controls.Add(Me.TabControl1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Name = "frmDecrypt"
@@ -202,7 +233,7 @@ Partial Class frmDecrypt
 
     Friend WithEvents TabControl1 As TabControl
     Friend WithEvents TabPage1 As TabPage
-    Friend WithEvents Button2 As Button
+    Friend WithEvents Buttonn As Button
     Friend WithEvents txtDestinationDecrypt As TextBox
     Friend WithEvents Label2 As Label
     Friend WithEvents browse As Button
@@ -214,5 +245,8 @@ Partial Class frmDecrypt
     Friend WithEvents txtPassDecrypt As TextBox
     Friend WithEvents Label4 As Label
     Friend WithEvents Decrypt As Button
+    Friend WithEvents RichTextBox2 As RichTextBox
+    Friend WithEvents encrypt As Button
     Friend WithEvents RichTextBox1 As RichTextBox
+    Friend WithEvents RichTextBox3 As RichTextBox
 End Class

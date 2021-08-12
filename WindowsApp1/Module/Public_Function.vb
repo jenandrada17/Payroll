@@ -75,7 +75,35 @@ Module Public_Function
         Return False
     End Function
 
+    Friend Function ToPDF(report As Microsoft.Reporting.WinForms.ReportViewer) As String
 
+        Dim DirFolderToCreate As String = Application.StartupPath & "\Payslip"
+        Dim folderName As DirectoryInfo = New DirectoryInfo(DirFolderToCreate)
+
+        Dim byteViewer As Byte() = report.LocalReport.Render("PDF")
+        Dim saveFileDialog1 As New SaveFileDialog()
+        saveFileDialog1.Filter = "*PDF files (*.pdf)|*.pdf"
+        saveFileDialog1.FilterIndex = 2
+        saveFileDialog1.RestoreDirectory = True
+
+        If folderName.Exists Then
+
+            Dim newFile As New FileStream(Application.StartupPath & "\Payslip.pdf", FileMode.Create)
+            newFile.Write(byteViewer, 0, byteViewer.Length)
+            newFile.Close()
+
+        Else
+            folderName.Create()
+            Dim newFile As New FileStream(Application.StartupPath & "\Payslip.pdf", FileMode.Create)
+            newFile.Write(byteViewer, 0, byteViewer.Length)
+            newFile.Close()
+
+        End If
+
+        Dim FolderPath = Application.StartupPath & "\Payslip.pdf"
+
+        Return FolderPath
+    End Function
 
 #Region "Log Module"
 

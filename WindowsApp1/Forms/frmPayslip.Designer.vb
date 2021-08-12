@@ -36,6 +36,7 @@ Partial Class frmPayslip
         Me.Close_LBL = New System.Windows.Forms.Label()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.ReportViewer_payslip = New Microsoft.Reporting.WinForms.ReportViewer()
+        Me.Button2 = New System.Windows.Forms.Button()
         Me.Branch_group.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
         Me.SuspendLayout()
@@ -171,7 +172,7 @@ Partial Class frmPayslip
         '
         'Button1
         '
-        Me.Button1.Location = New System.Drawing.Point(174, 504)
+        Me.Button1.Location = New System.Drawing.Point(499, 264)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(93, 50)
         Me.Button1.TabIndex = 91
@@ -187,11 +188,21 @@ Partial Class frmPayslip
         Me.ReportViewer_payslip.Size = New System.Drawing.Size(481, 624)
         Me.ReportViewer_payslip.TabIndex = 92
         '
+        'Button2
+        '
+        Me.Button2.Location = New System.Drawing.Point(499, 383)
+        Me.Button2.Name = "Button2"
+        Me.Button2.Size = New System.Drawing.Size(93, 50)
+        Me.Button2.TabIndex = 93
+        Me.Button2.Text = "Send"
+        Me.Button2.UseVisualStyleBackColor = True
+        '
         'frmPayslip
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1169, 665)
+        Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.ReportViewer_payslip)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.Close_LBL)
@@ -204,7 +215,7 @@ Partial Class frmPayslip
         Me.Controls.Add(Me.Paydate_Combo)
         Me.Controls.Add(Me.Label1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
-        Me.name = "frmPayslip"
+        Me.Name = "frmPayslip"
         Me.Text = "frmPayslip"
         Me.Branch_group.ResumeLayout(False)
         Me.GroupBox5.ResumeLayout(False)
@@ -228,4 +239,5 @@ Partial Class frmPayslip
     Friend WithEvents Close_LBL As Label
     Friend WithEvents Button1 As Button
     Friend WithEvents ReportViewer_payslip As Microsoft.Reporting.WinForms.ReportViewer
+    Friend WithEvents Button2 As Button
 End Class

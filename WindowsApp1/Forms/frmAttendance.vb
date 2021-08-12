@@ -535,9 +535,10 @@ Public Class frmAttendance
         Else
             PopulateAttendanceRECORD(Records_grid, Paydate)
         End If
+
     End Sub
 
-    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
+    Private Sub Button3_Click(sender As Object, e As EventArgs)
 
         Try
             Dim myDESProvider As DESCryptoServiceProvider = New DESCryptoServiceProvider()
