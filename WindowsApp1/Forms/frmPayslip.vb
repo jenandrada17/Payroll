@@ -66,7 +66,7 @@ Public Class frmPayslip
 
         'Dim paydatee As String = Paydate_Combo.SelectedItem.ToString("MMMM dd, yyyy") 
 
-        Dim paydatee As String = "7/31/2021"
+        Dim paydatee As String = "7/15/2021"
 
         ReportViewer_payslip.LocalReport.DataSources.Clear()
 
@@ -118,9 +118,10 @@ Public Class frmPayslip
                 .Columns.Add("NET_PAY")
                 .Columns.Add("SBU")
                 .Columns.Add("TOTAL_DEDUCTION")
+                .Columns.Add("present_hours")
             End With
 
-            Dim mysqll As String = "select * from payroll_payout A left join payroll_attendance B on B.BIOMETRICID = A.BIOMETRIC_ID  where A.BIOMETRIC_ID = '3946' and A.paydate = '7/31/2021';"
+            Dim mysqll As String = "select * from payroll_payout A inner join payroll_attendance B on B.BIOMETRICID = A.BIOMETRIC_ID  where A.BIOMETRIC_ID = '3946' and A.paydate = '7/15/2021';"
             Using ds As DataSet = LoadSQL(mysqll, "payroll_payout")
                 If ds.Tables(0).Rows.Count > 0 Then
                     Dim data As DataRow = ds.Tables(0).Rows(0)
@@ -128,11 +129,16 @@ Public Class frmPayslip
 
                         Dim TOTAL_COMP As Double = .Item("SSS_COMP") + .Item("PAGIBIG_COMP") + .Item("PHILHEALTH_COMP") + .Item("TAX_WHELD") + .Item("SSS_LOAN") + .Item("PAGIBIG_LOAN")
 
-                        dt_attendance.Rows.Add(.Item("PRESENT_DAYS"), .Item("OVERTIME"), .Item("REGHOLIDAY"), .Item("SPECHOLIDAY"), .Item("TOTAL_LATE_UT"),
-                                        CDbl(.Item("TOTAL_BASIC")).ToString("N"), CDbl(.Item("TOTAL_OVERTIME")).ToString("N"), .Item("LATE"),
+                        Dim index = .Item("LATE").LastIndexOf(":") 'CUT LATE string to HH:mm   
+                        Dim present_hours = (.Item("PRESENT_DAYS") / 0.5) * 4 'CALCULATE PRESENT DAYS TO HOURS
+
+                        dt_attendance.Rows.Add(.Item("PRESENT_DAYS"), .Item("OVERTIME") & ":00", .Item("REGHOLIDAY"), .Item("SPECHOLIDAY"), CDbl(.Item("TOTAL_LATE_UT")).ToString("N"),
+                                        CDbl(.Item("TOTAL_BASIC")).ToString("N"), CDbl(.Item("TOTAL_OVERTIME")).ToString("N"), .Item("LATE").Substring(0, index),
                                         CDbl(.Item("GROSS_AMOUNT")).ToString("N"), CDbl(.Item("SSS_COMP")).ToString("N"), CDbl(.Item("PAGIBIG_COMP")).ToString("N"),
                                         CDbl(.Item("PHILHEALTH_COMP")).ToString("N"), CDbl(.Item("TAX_WHELD")).ToString("N"), CDbl(.Item("SSS_LOAN")).ToString("N"),
-                                        CDbl(.Item("PAGIBIG_LOAN")).ToString("N"), CDbl(.Item("NET_PAY")).ToString("N"), CDbl(.Item("SBU")).ToString("N"), TOTAL_COMP.ToString("N"))
+                                        CDbl(.Item("PAGIBIG_LOAN")).ToString("N"), CDbl(.Item("NET_PAY")).ToString("N"), CDbl(.Item("SBU")).ToString("N"), TOTAL_COMP.ToString("N"),
+                                        present_hours)
+
                     End With
                 End If
             End Using

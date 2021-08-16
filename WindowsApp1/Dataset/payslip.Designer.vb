@@ -728,6 +728,8 @@ Partial Public Class payslip
         
         Private columnTOTAL_DEDUCTION As Global.System.Data.DataColumn
         
+        Private columnpresent_hours As Global.System.Data.DataColumn
+        
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Sub New()
@@ -908,6 +910,14 @@ Partial Public Class payslip
         End Property
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property present_hoursColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnpresent_hours
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0"),  _
          Global.System.ComponentModel.Browsable(false)>  _
         Public ReadOnly Property Count() As Integer
@@ -962,9 +972,10 @@ Partial Public Class payslip
                     ByVal PAGIBIG_LOAN As String,  _
                     ByVal NET_PAY As String,  _
                     ByVal SBU As String,  _
-                    ByVal TOTAL_DEDUCTION As String) As attendanceRow
+                    ByVal TOTAL_DEDUCTION As String,  _
+                    ByVal present_hours As String) As attendanceRow
             Dim rowattendanceRow As attendanceRow = CType(Me.NewRow,attendanceRow)
-            Dim columnValuesArray() As Object = New Object() {PRESENT_DAYS, OVERTIME, REGHOLIDAY, SPECHOLIDAY, TOTAL_LATE_UT, TOTAL_BASIC, TOTAL_OVERTIME, LATE, GROSS_AMOUNT, SSS_COMP, PAGIBIG_COMP, PHILHEALTH_COMP, TAX_WHELD, SSS_LOAN, PAGIBIG_LOAN, NET_PAY, SBU, TOTAL_DEDUCTION}
+            Dim columnValuesArray() As Object = New Object() {PRESENT_DAYS, OVERTIME, REGHOLIDAY, SPECHOLIDAY, TOTAL_LATE_UT, TOTAL_BASIC, TOTAL_OVERTIME, LATE, GROSS_AMOUNT, SSS_COMP, PAGIBIG_COMP, PHILHEALTH_COMP, TAX_WHELD, SSS_LOAN, PAGIBIG_LOAN, NET_PAY, SBU, TOTAL_DEDUCTION, present_hours}
             rowattendanceRow.ItemArray = columnValuesArray
             Me.Rows.Add(rowattendanceRow)
             Return rowattendanceRow
@@ -1005,6 +1016,7 @@ Partial Public Class payslip
             Me.columnNET_PAY = MyBase.Columns("NET_PAY")
             Me.columnSBU = MyBase.Columns("SBU")
             Me.columnTOTAL_DEDUCTION = MyBase.Columns("TOTAL_DEDUCTION")
+            Me.columnpresent_hours = MyBase.Columns("present_hours")
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -1046,6 +1058,8 @@ Partial Public Class payslip
             MyBase.Columns.Add(Me.columnSBU)
             Me.columnTOTAL_DEDUCTION = New Global.System.Data.DataColumn("TOTAL_DEDUCTION", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnTOTAL_DEDUCTION)
+            Me.columnpresent_hours = New Global.System.Data.DataColumn("present_hours", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnpresent_hours)
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -2170,6 +2184,21 @@ Partial Public Class payslip
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property present_hours() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableattendance.present_hoursColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'present_hours' in table 'attendance' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableattendance.present_hoursColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Function IsPRESENT_DAYSNull() As Boolean
             Return Me.IsNull(Me.tableattendance.PRESENT_DAYSColumn)
         End Function
@@ -2382,6 +2411,18 @@ Partial Public Class payslip
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Sub SetTOTAL_DEDUCTIONNull()
             Me(Me.tableattendance.TOTAL_DEDUCTIONColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function Ispresent_hoursNull() As Boolean
+            Return Me.IsNull(Me.tableattendance.present_hoursColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub Setpresent_hoursNull()
+            Me(Me.tableattendance.present_hoursColumn) = Global.System.Convert.DBNull
         End Sub
     End Class
     
