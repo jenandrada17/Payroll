@@ -24,21 +24,26 @@ Partial Class frmPayslip
     Private Sub InitializeComponent()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Label21 = New System.Windows.Forms.Label()
-        Me.Paydate_Combo = New System.Windows.Forms.ComboBox()
-        Me.RadioButton1 = New System.Windows.Forms.RadioButton()
-        Me.RadioButton2 = New System.Windows.Forms.RadioButton()
-        Me.RadioButton3 = New System.Windows.Forms.RadioButton()
+        Me.Paydate_ComboB = New System.Windows.Forms.ComboBox()
+        Me.All_RadioB = New System.Windows.Forms.RadioButton()
+        Me.Branch_RadioB = New System.Windows.Forms.RadioButton()
+        Me.Employee_RadioB = New System.Windows.Forms.RadioButton()
         Me.Branch_group = New System.Windows.Forms.GroupBox()
         Me.Branch_ComboB = New System.Windows.Forms.ComboBox()
-        Me.GroupBox5 = New System.Windows.Forms.GroupBox()
-        Me.Rate_Employee_TXT = New System.Windows.Forms.TextBox()
-        Me.Rate_EmpSelect_BTN = New System.Windows.Forms.Button()
+        Me.Employee_GroupB = New System.Windows.Forms.GroupBox()
+        Me.Email_TXT = New System.Windows.Forms.TextBox()
+        Me.Employee_TXT = New System.Windows.Forms.TextBox()
+        Me.EmpSelect_BTN = New System.Windows.Forms.Button()
         Me.Close_LBL = New System.Windows.Forms.Label()
-        Me.Button1 = New System.Windows.Forms.Button()
         Me.ReportViewer_payslip = New Microsoft.Reporting.WinForms.ReportViewer()
-        Me.Button2 = New System.Windows.Forms.Button()
+        Me.Send_BTN = New System.Windows.Forms.Button()
+        Me.BodyText_RichB = New System.Windows.Forms.RichTextBox()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.Preview_BTN = New System.Windows.Forms.Button()
+        Me.FlowLayoutPanel1 = New System.Windows.Forms.FlowLayoutPanel()
         Me.Branch_group.SuspendLayout()
-        Me.GroupBox5.SuspendLayout()
+        Me.Employee_GroupB.SuspendLayout()
+        Me.FlowLayoutPanel1.SuspendLayout()
         Me.SuspendLayout()
         '
         'Label1
@@ -55,68 +60,70 @@ Partial Class frmPayslip
         '
         Me.Label21.AutoSize = True
         Me.Label21.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label21.Location = New System.Drawing.Point(23, 182)
+        Me.Label21.Location = New System.Drawing.Point(20, 183)
         Me.Label21.Name = "Label21"
         Me.Label21.Size = New System.Drawing.Size(53, 25)
         Me.Label21.TabIndex = 69
         Me.Label21.Text = "Payroll"
         '
-        'Paydate_Combo
+        'Paydate_ComboB
         '
-        Me.Paydate_Combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Paydate_Combo.FormattingEnabled = True
-        Me.Paydate_Combo.Location = New System.Drawing.Point(28, 210)
-        Me.Paydate_Combo.Name = "Paydate_Combo"
-        Me.Paydate_Combo.Size = New System.Drawing.Size(319, 33)
-        Me.Paydate_Combo.TabIndex = 68
-        Me.Paydate_Combo.Text = "   Select Date"
+        Me.Paydate_ComboB.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Paydate_ComboB.FormattingEnabled = True
+        Me.Paydate_ComboB.Location = New System.Drawing.Point(25, 211)
+        Me.Paydate_ComboB.Name = "Paydate_ComboB"
+        Me.Paydate_ComboB.Size = New System.Drawing.Size(319, 33)
+        Me.Paydate_ComboB.TabIndex = 68
+        Me.Paydate_ComboB.Text = "   Select Date"
         '
-        'RadioButton1
+        'All_RadioB
         '
-        Me.RadioButton1.AutoSize = True
-        Me.RadioButton1.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.RadioButton1.Location = New System.Drawing.Point(28, 55)
-        Me.RadioButton1.Name = "RadioButton1"
-        Me.RadioButton1.Size = New System.Drawing.Size(45, 29)
-        Me.RadioButton1.TabIndex = 70
-        Me.RadioButton1.TabStop = True
-        Me.RadioButton1.Text = "All"
-        Me.RadioButton1.UseVisualStyleBackColor = True
+        Me.All_RadioB.AutoSize = True
+        Me.All_RadioB.Checked = True
+        Me.All_RadioB.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.All_RadioB.Location = New System.Drawing.Point(28, 55)
+        Me.All_RadioB.Name = "All_RadioB"
+        Me.All_RadioB.Size = New System.Drawing.Size(45, 29)
+        Me.All_RadioB.TabIndex = 70
+        Me.All_RadioB.TabStop = True
+        Me.All_RadioB.Text = "All"
+        Me.All_RadioB.UseVisualStyleBackColor = True
         '
-        'RadioButton2
+        'Branch_RadioB
         '
-        Me.RadioButton2.AutoSize = True
-        Me.RadioButton2.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.RadioButton2.Location = New System.Drawing.Point(28, 90)
-        Me.RadioButton2.Name = "RadioButton2"
-        Me.RadioButton2.Size = New System.Drawing.Size(97, 29)
-        Me.RadioButton2.TabIndex = 71
-        Me.RadioButton2.TabStop = True
-        Me.RadioButton2.Text = "Per Branch"
-        Me.RadioButton2.UseVisualStyleBackColor = True
+        Me.Branch_RadioB.AutoSize = True
+        Me.Branch_RadioB.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Branch_RadioB.Location = New System.Drawing.Point(28, 90)
+        Me.Branch_RadioB.Name = "Branch_RadioB"
+        Me.Branch_RadioB.Size = New System.Drawing.Size(97, 29)
+        Me.Branch_RadioB.TabIndex = 71
+        Me.Branch_RadioB.TabStop = True
+        Me.Branch_RadioB.Text = "Per Branch"
+        Me.Branch_RadioB.UseVisualStyleBackColor = True
         '
-        'RadioButton3
+        'Employee_RadioB
         '
-        Me.RadioButton3.AutoSize = True
-        Me.RadioButton3.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.RadioButton3.Location = New System.Drawing.Point(28, 125)
-        Me.RadioButton3.Name = "RadioButton3"
-        Me.RadioButton3.Size = New System.Drawing.Size(114, 29)
-        Me.RadioButton3.TabIndex = 72
-        Me.RadioButton3.TabStop = True
-        Me.RadioButton3.Text = "Per Employee"
-        Me.RadioButton3.UseVisualStyleBackColor = True
+        Me.Employee_RadioB.AutoSize = True
+        Me.Employee_RadioB.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Employee_RadioB.Location = New System.Drawing.Point(28, 125)
+        Me.Employee_RadioB.Name = "Employee_RadioB"
+        Me.Employee_RadioB.Size = New System.Drawing.Size(114, 29)
+        Me.Employee_RadioB.TabIndex = 72
+        Me.Employee_RadioB.TabStop = True
+        Me.Employee_RadioB.Text = "Per Employee"
+        Me.Employee_RadioB.UseVisualStyleBackColor = True
         '
         'Branch_group
         '
         Me.Branch_group.Controls.Add(Me.Branch_ComboB)
         Me.Branch_group.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Branch_group.Location = New System.Drawing.Point(17, 264)
+        Me.Branch_group.Location = New System.Drawing.Point(3, 3)
         Me.Branch_group.Name = "Branch_group"
-        Me.Branch_group.Size = New System.Drawing.Size(402, 74)
+        Me.Branch_group.Size = New System.Drawing.Size(416, 74)
         Me.Branch_group.TabIndex = 75
         Me.Branch_group.TabStop = False
         Me.Branch_group.Text = "Per Branch"
+        Me.Branch_group.Visible = False
         '
         'Branch_ComboB
         '
@@ -128,37 +135,49 @@ Partial Class frmPayslip
         Me.Branch_ComboB.TabIndex = 8
         Me.Branch_ComboB.Text = "   Select Branch"
         '
-        'GroupBox5
+        'Employee_GroupB
         '
-        Me.GroupBox5.Controls.Add(Me.Rate_Employee_TXT)
-        Me.GroupBox5.Controls.Add(Me.Rate_EmpSelect_BTN)
-        Me.GroupBox5.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GroupBox5.Location = New System.Drawing.Point(17, 361)
-        Me.GroupBox5.Name = "GroupBox5"
-        Me.GroupBox5.Size = New System.Drawing.Size(402, 72)
-        Me.GroupBox5.TabIndex = 88
-        Me.GroupBox5.TabStop = False
-        Me.GroupBox5.Text = "Per Employee"
+        Me.Employee_GroupB.Controls.Add(Me.Preview_BTN)
+        Me.Employee_GroupB.Controls.Add(Me.Email_TXT)
+        Me.Employee_GroupB.Controls.Add(Me.Employee_TXT)
+        Me.Employee_GroupB.Controls.Add(Me.EmpSelect_BTN)
+        Me.Employee_GroupB.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Employee_GroupB.Location = New System.Drawing.Point(3, 83)
+        Me.Employee_GroupB.Name = "Employee_GroupB"
+        Me.Employee_GroupB.Size = New System.Drawing.Size(416, 119)
+        Me.Employee_GroupB.TabIndex = 88
+        Me.Employee_GroupB.TabStop = False
+        Me.Employee_GroupB.Text = "Per Employee"
+        Me.Employee_GroupB.Visible = False
         '
-        'Rate_Employee_TXT
+        'Email_TXT
         '
-        Me.Rate_Employee_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Rate_Employee_TXT.Location = New System.Drawing.Point(11, 25)
-        Me.Rate_Employee_TXT.Name = "Rate_Employee_TXT"
-        Me.Rate_Employee_TXT.ReadOnly = True
-        Me.Rate_Employee_TXT.Size = New System.Drawing.Size(319, 33)
-        Me.Rate_Employee_TXT.TabIndex = 90
+        Me.Email_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Email_TXT.Location = New System.Drawing.Point(11, 75)
+        Me.Email_TXT.Name = "Email_TXT"
+        Me.Email_TXT.ReadOnly = True
+        Me.Email_TXT.Size = New System.Drawing.Size(319, 33)
+        Me.Email_TXT.TabIndex = 91
         '
-        'Rate_EmpSelect_BTN
+        'Employee_TXT
         '
-        Me.Rate_EmpSelect_BTN.AutoSize = True
-        Me.Rate_EmpSelect_BTN.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Rate_EmpSelect_BTN.Location = New System.Drawing.Point(336, 28)
-        Me.Rate_EmpSelect_BTN.Name = "Rate_EmpSelect_BTN"
-        Me.Rate_EmpSelect_BTN.Size = New System.Drawing.Size(57, 30)
-        Me.Rate_EmpSelect_BTN.TabIndex = 89
-        Me.Rate_EmpSelect_BTN.Text = "Select"
-        Me.Rate_EmpSelect_BTN.UseVisualStyleBackColor = True
+        Me.Employee_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Employee_TXT.Location = New System.Drawing.Point(11, 25)
+        Me.Employee_TXT.Name = "Employee_TXT"
+        Me.Employee_TXT.ReadOnly = True
+        Me.Employee_TXT.Size = New System.Drawing.Size(319, 33)
+        Me.Employee_TXT.TabIndex = 90
+        '
+        'EmpSelect_BTN
+        '
+        Me.EmpSelect_BTN.AutoSize = True
+        Me.EmpSelect_BTN.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.EmpSelect_BTN.Location = New System.Drawing.Point(336, 26)
+        Me.EmpSelect_BTN.Name = "EmpSelect_BTN"
+        Me.EmpSelect_BTN.Size = New System.Drawing.Size(62, 37)
+        Me.EmpSelect_BTN.TabIndex = 89
+        Me.EmpSelect_BTN.Text = "Select"
+        Me.EmpSelect_BTN.UseVisualStyleBackColor = True
         '
         'Close_LBL
         '
@@ -170,15 +189,6 @@ Partial Class frmPayslip
         Me.Close_LBL.TabIndex = 90
         Me.Close_LBL.Text = "Close"
         '
-        'Button1
-        '
-        Me.Button1.Location = New System.Drawing.Point(499, 264)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(93, 50)
-        Me.Button1.TabIndex = 91
-        Me.Button1.Text = "Button1"
-        Me.Button1.UseVisualStyleBackColor = True
-        '
         'ReportViewer_payslip
         '
         Me.ReportViewer_payslip.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_payslip.rdlc"
@@ -188,38 +198,74 @@ Partial Class frmPayslip
         Me.ReportViewer_payslip.Size = New System.Drawing.Size(481, 624)
         Me.ReportViewer_payslip.TabIndex = 92
         '
-        'Button2
+        'Send_BTN
         '
-        Me.Button2.Location = New System.Drawing.Point(499, 383)
-        Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(93, 50)
-        Me.Button2.TabIndex = 93
-        Me.Button2.Text = "Send"
-        Me.Button2.UseVisualStyleBackColor = True
+        Me.Send_BTN.Location = New System.Drawing.Point(487, 580)
+        Me.Send_BTN.Name = "Send_BTN"
+        Me.Send_BTN.Size = New System.Drawing.Size(93, 50)
+        Me.Send_BTN.TabIndex = 93
+        Me.Send_BTN.Text = "Send"
+        Me.Send_BTN.UseVisualStyleBackColor = True
+        '
+        'BodyText_RichB
+        '
+        Me.BodyText_RichB.Location = New System.Drawing.Point(28, 576)
+        Me.BodyText_RichB.Name = "BodyText_RichB"
+        Me.BodyText_RichB.Size = New System.Drawing.Size(391, 58)
+        Me.BodyText_RichB.TabIndex = 94
+        Me.BodyText_RichB.Text = """Please reply ""received"" for confirmation with this emailed payslip. Thank you."""
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(26, 560)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(55, 13)
+        Me.Label2.TabIndex = 95
+        Me.Label2.Text = "Body Text"
+        '
+        'Preview_BTN
+        '
+        Me.Preview_BTN.Location = New System.Drawing.Point(336, 73)
+        Me.Preview_BTN.Name = "Preview_BTN"
+        Me.Preview_BTN.Size = New System.Drawing.Size(62, 35)
+        Me.Preview_BTN.TabIndex = 96
+        Me.Preview_BTN.Text = "Preview"
+        Me.Preview_BTN.UseVisualStyleBackColor = True
+        '
+        'FlowLayoutPanel1
+        '
+        Me.FlowLayoutPanel1.Controls.Add(Me.Branch_group)
+        Me.FlowLayoutPanel1.Controls.Add(Me.Employee_GroupB)
+        Me.FlowLayoutPanel1.Location = New System.Drawing.Point(12, 264)
+        Me.FlowLayoutPanel1.Name = "FlowLayoutPanel1"
+        Me.FlowLayoutPanel1.Size = New System.Drawing.Size(430, 224)
+        Me.FlowLayoutPanel1.TabIndex = 96
         '
         'frmPayslip
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1169, 665)
-        Me.Controls.Add(Me.Button2)
+        Me.Controls.Add(Me.FlowLayoutPanel1)
+        Me.Controls.Add(Me.Label2)
+        Me.Controls.Add(Me.BodyText_RichB)
+        Me.Controls.Add(Me.Send_BTN)
         Me.Controls.Add(Me.ReportViewer_payslip)
-        Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.Close_LBL)
-        Me.Controls.Add(Me.GroupBox5)
-        Me.Controls.Add(Me.Branch_group)
-        Me.Controls.Add(Me.RadioButton3)
-        Me.Controls.Add(Me.RadioButton2)
-        Me.Controls.Add(Me.RadioButton1)
+        Me.Controls.Add(Me.Employee_RadioB)
+        Me.Controls.Add(Me.Branch_RadioB)
+        Me.Controls.Add(Me.All_RadioB)
         Me.Controls.Add(Me.Label21)
-        Me.Controls.Add(Me.Paydate_Combo)
+        Me.Controls.Add(Me.Paydate_ComboB)
         Me.Controls.Add(Me.Label1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Name = "frmPayslip"
         Me.Text = "frmPayslip"
         Me.Branch_group.ResumeLayout(False)
-        Me.GroupBox5.ResumeLayout(False)
-        Me.GroupBox5.PerformLayout()
+        Me.Employee_GroupB.ResumeLayout(False)
+        Me.Employee_GroupB.PerformLayout()
+        Me.FlowLayoutPanel1.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -227,17 +273,21 @@ Partial Class frmPayslip
 
     Friend WithEvents Label1 As Label
     Friend WithEvents Label21 As Label
-    Friend WithEvents Paydate_Combo As ComboBox
-    Friend WithEvents RadioButton1 As RadioButton
-    Friend WithEvents RadioButton2 As RadioButton
-    Friend WithEvents RadioButton3 As RadioButton
+    Friend WithEvents Paydate_ComboB As ComboBox
+    Friend WithEvents All_RadioB As RadioButton
+    Friend WithEvents Branch_RadioB As RadioButton
+    Friend WithEvents Employee_RadioB As RadioButton
     Friend WithEvents Branch_group As GroupBox
     Friend WithEvents Branch_ComboB As ComboBox
-    Friend WithEvents GroupBox5 As GroupBox
-    Friend WithEvents Rate_Employee_TXT As TextBox
-    Friend WithEvents Rate_EmpSelect_BTN As Button
+    Friend WithEvents Employee_GroupB As GroupBox
+    Friend WithEvents Employee_TXT As TextBox
+    Friend WithEvents EmpSelect_BTN As Button
     Friend WithEvents Close_LBL As Label
-    Friend WithEvents Button1 As Button
     Friend WithEvents ReportViewer_payslip As Microsoft.Reporting.WinForms.ReportViewer
-    Friend WithEvents Button2 As Button
+    Friend WithEvents Send_BTN As Button
+    Friend WithEvents Email_TXT As TextBox
+    Friend WithEvents BodyText_RichB As RichTextBox
+    Friend WithEvents Label2 As Label
+    Friend WithEvents Preview_BTN As Button
+    Friend WithEvents FlowLayoutPanel1 As FlowLayoutPanel
 End Class

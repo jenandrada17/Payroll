@@ -66,10 +66,12 @@ Public Class frmEmployee
                 frm.BiometricID_TXT.Text = lvEmployee.FocusedItem.SubItems(0).Text
                 frm.Name_TXT.Text = lvEmployee.FocusedItem.SubItems(1).Text
                 frm.Name_TXT.Tag = lvEmployee.FocusedItem.SubItems(1).Tag
+                frm.paydate_ = btnSearch.Tag
                 frm.TabControl1.SelectedIndex = 1
                 frm.Show()
                 frm.Dock = DockStyle.Fill
                 frm.BringToFront()
+                frm.DETAILS()
 
             Else
                 frmEmployeeInfo.BringToFront()
@@ -125,10 +127,91 @@ Public Class frmEmployee
                 frmMainForm.pNavigate.Controls.Add(frm)
                 frmMainForm.pNavigate.Tag = frm
                 frm.DE_Name_TXT.Text = lvEmployee.FocusedItem.SubItems(1).Text
+                frm.DE_Category_Combo.Tag = lvEmployee.FocusedItem.SubItems(1).Tag '==== EMP_ID ===  
                 frm.DE_Name_TXT.Tag = lvEmployee.FocusedItem.SubItems(0).Text
-                frm.DE_SearchEmp_BTN.Tag = lvEmployee.FocusedItem.SubItems(9).Tag '==== Branch_id ===  
+                frm.DE_SearchEmp_BTN.Tag = lvEmployee.FocusedItem.SubItems(9).Tag '==== BRANCH_ID ===  
                 frm.Settings_Tab.SelectedIndex = 3
                 frm.DE_Category_Combo.SelectedItem = btnSearch.Tag
+                frm.Show()
+                frm.Dock = DockStyle.Fill
+                frm.BringToFront()
+            Else
+                frmEmployeeInfo.BringToFront()
+            End If
+
+        ElseIf txtSearch.Tag = "Payslip-Employee" Then
+
+            If frmPayout Is Nothing Then
+                Dim frm As New frmPayout With {
+                    .MdiParent = frmMainForm
+                }
+                frmMainForm.pNavigate.Controls.Add(frm)
+                frmMainForm.pNavigate.Tag = frm
+                frm.Payslip_paydate_Combo.Text = btnSearch.Tag '==== Paydate ===   
+                frm.Employee_TXT.Text = lvEmployee.FocusedItem.SubItems(1).Text
+                frm.Preview_BTN.Tag = lvEmployee.FocusedItem.SubItems(1).Tag '==== Employee_id ===   
+                frm.Employee_TXT.Tag = lvEmployee.FocusedItem.SubItems(0).Text
+                frm.Email_TXT.Text = lvEmployee.FocusedItem.SubItems(5).Text
+                frm.Email_TXT.Tag = lvEmployee.FocusedItem.SubItems(9).Text '==== Branch_name ===   
+                frm.EmpSelect_BTN.Tag = lvEmployee.FocusedItem.SubItems(9).Tag '==== Branch_id ===   
+                frm.Employee_RadioB.Checked = True
+                frm.TabControl1.SelectedIndex = 2
+                frm.Show()
+                frm.Dock = DockStyle.Fill
+                frm.BringToFront()
+            Else
+                frmEmployeeInfo.BringToFront()
+            End If
+
+            'If frmPayslip Is Nothing Then
+            '    Dim frm As New frmPayslip With {
+            '        .MdiParent = frmMainForm
+            '    }
+            '    frmMainForm.pNavigate.Controls.Add(frm)
+            '    frmMainForm.pNavigate.Tag = frm
+            '    frm.Paydate_ComboB.Text = btnSearch.Tag '==== Paydate ===   
+            '    frm.Employee_TXT.Text = lvEmployee.FocusedItem.SubItems(1).Text
+            '    frm.Employee_TXT.Tag = lvEmployee.FocusedItem.SubItems(0).Text
+            '    frm.Email_TXT.Text = lvEmployee.FocusedItem.SubItems(5).Text
+            '    frm.Email_TXT.Tag = lvEmployee.FocusedItem.SubItems(9).Text '==== Branch_name ===   
+            '    frm.EmpSelect_BTN.Tag = lvEmployee.FocusedItem.SubItems(9).Tag '==== Branch_id ===   
+            '    frm.Employee_RadioB.Checked = True
+            '    frm.Show()
+            '    frm.Dock = DockStyle.Fill
+            '    frm.BringToFront()
+            'Else
+            '    frmEmployeeInfo.BringToFront()
+            'End If
+
+        ElseIf txtSearch.Tag = "SSS Loan" Then
+
+            If frmContribution Is Nothing Then
+                Dim frm As New frmContribution With {
+                    .MdiParent = frmMainForm
+                }
+                frmMainForm.pNavigate.Controls.Add(frm)
+                frmMainForm.pNavigate.Tag = frm
+                frm.Contribution_Tab.SelectedIndex = 4
+                frm.SSS_Name_TXT.Text = lvEmployee.FocusedItem.SubItems(1).Text
+                frm.SSS_Name_TXT.Tag = lvEmployee.FocusedItem.SubItems(1).Tag
+                frm.Show()
+                frm.Dock = DockStyle.Fill
+                frm.BringToFront()
+            Else
+
+                frmEmployeeInfo.BringToFront()
+            End If
+        ElseIf txtSearch.Tag = "Pagibig Loan" Then
+
+            If frmContribution Is Nothing Then
+                Dim frm As New frmContribution With {
+                            .MdiParent = frmMainForm
+                        }
+                frmMainForm.pNavigate.Controls.Add(frm)
+                frmMainForm.pNavigate.Tag = frm
+                frm.Contribution_Tab.SelectedIndex = 5
+                frm.Pag_Name_TXT.Text = lvEmployee.FocusedItem.SubItems(1).Text
+                frm.Pag_Name_TXT.Tag = lvEmployee.FocusedItem.SubItems(1).Tag
                 frm.Show()
                 frm.Dock = DockStyle.Fill
                 frm.BringToFront()

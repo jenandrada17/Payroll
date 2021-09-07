@@ -2,7 +2,6 @@
 
 Public Class frmSettings
 
-
     Private Sub frmSettings_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Date_DTP.CustomFormat = "MM/yyyy"
 
@@ -14,6 +13,10 @@ Public Class frmSettings
             GetSBU(SBU_Label)
         End If
 
+        If ThisHasRow("PAYROLL_EMAIL") Then
+            GetEmail(Email_TXT, Password_TXT)
+        End If
+
         PopulateComboBox(Rate_Branch_ComboB, "tbl_branch", "BRANCHNAME")
         PopulateComboBox(Rate_Pos_ComboB, "tbl_employee", "EMP_POSITION")
         PopulateComboBox(Allow_Category_Combo, "CATEGORY_ALLOWANCE", "ALLOWANCE_NAME")
@@ -23,7 +26,6 @@ Public Class frmSettings
         Lists_deduction(Deduction_List)
         Load_Category_LIST(Allowance_List, "CATEGORY_ALLOWANCE", "ALLOWANCE_NAME")
         Load_Category_LIST(Cat_Deduc_List, "CATEGORY_DEDUCTION", "DEDUCTION_NAME")
-
 
     End Sub
 
@@ -251,13 +253,16 @@ Public Class frmSettings
 
     Private Sub Allow_Save_BTN_Click(sender As Object, e As EventArgs) Handles Allow_Save_BTN.Click
 
+        Dim fix As String = "No"
+        Dim everyThisDate As String = ""
+
         If Allow_Category_Combo.SelectedIndex >= 0 And Not Allow_Name_TXT.Text = "" Then
 
-            If FixYes_RadioB.Checked Then
-                SaveAllowance(Allow_Name_TXT.Tag, Allow_SearchEmp_BTN.Tag, Allow_Category_Combo.SelectedItem, Allow_Amount_TXT.Text, "YES")
-            Else
-                SaveAllowance(Allow_Name_TXT.Tag, Allow_SearchEmp_BTN.Tag, Allow_Category_Combo.SelectedItem, Allow_Amount_TXT.Text, "NO")
-            End If
+            If Not A_EveryDate_Combo.Text = "Select date of the month" Then everyThisDate = A_EveryDate_Combo.SelectedItem
+
+            If FixYes_RadioB.Checked Then fix = "YES"
+
+            SaveAllowance(Allow_Name_TXT.Tag, Allow_SearchEmp_BTN.Tag, Allow_Category_Combo.SelectedItem, Allow_Amount_TXT.Text, fix, Allow_Schedule_Combo.SelectedItem, everyThisDate, A_EffectiveDate_DTP.Value)
 
             Lists_Allowance(Allowance_LV)
             Allow_Cancel_BTN.PerformClick()
@@ -270,6 +275,9 @@ Public Class frmSettings
         Allow_Name_TXT.Text = ""
         Allow_Amount_TXT.Text = ""
         FixNo_RadioB.Checked = False
+        Allow_Schedule_Combo.Text = "Select"
+        A_EveryDate_Combo.Text = "Select"
+        A_EffectiveDate_DTP.Value = Today
     End Sub
 
     Private Sub Allow_Remove_Click(sender As Object, e As EventArgs) Handles Allow_Remove.Click
@@ -324,14 +332,23 @@ Public Class frmSettings
         DE_Total_TXT.Clear()
         DE_NoOfGives_TXT.Clear()
         DE_AmountGive_TXT.Clear()
+        DE_Schedule_Combo.Text = "Select"
     End Sub
     Private Sub DE_Save_BTN_Click(sender As Object, e As EventArgs) Handles DE_Save_BTN.Click
 
-        If DE_Category_Combo.SelectedIndex >= 0 And Not DE_Name_TXT.Text = "" Then
-            SaveDeductionS(DE_Name_TXT.Tag, DE_SearchEmp_BTN.Tag, DE_Category_Combo.SelectedItem, DE_Total_TXT.Text, DE_NoOfGives_TXT.Text, DE_AmountGive_TXT.Text)
+        If DE_Category_Combo.SelectedIndex >= 0 And DE_Schedule_Combo.SelectedIndex >= 0 And Not DE_Name_TXT.Text = "" And Not DE_Total_TXT.Text = "" And Not DE_NoOfGives_TXT.Text = "" Then
+
+            '======================================== CHECK IF CONTEXT EDIT CLICK =======================================
+            If Deduction_List.Tag = 0 Then
+                SaveDeductionS(DE_Category_Combo.Tag, DE_Category_Combo.SelectedItem, DE_Total_TXT.Text, DE_NoOfGives_TXT.Text, DE_AmountGive_TXT.Text, DE_Schedule_Combo.Text) 'DE_Category_Combo.Tag (EMP_ID)
+            Else
+                updateDeductionS(Deduction_List.Tag, DE_Category_Combo.SelectedItem, DE_Total_TXT.Text, DE_NoOfGives_TXT.Text, DE_AmountGive_TXT.Text, DE_Schedule_Combo.Text) 'DE_Category_Combo.Tag (EMP_ID)
+            End If
 
             Lists_deduction(Deduction_List)
             DE_Cancel_BTN.PerformClick()
+        Else
+            MsgBox("Please check CATEGORY, SCHEDULE or NAME details.")
         End If
 
     End Sub
@@ -385,5 +402,76 @@ Public Class frmSettings
 
     Private Sub Deduct_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Deduct_TXT.KeyPress
         If IsEnter(e) Then DeducSave_BTN.PerformClick()
+    End Sub
+
+    Private Sub Email_Save_BTN_Click(sender As Object, e As EventArgs) Handles Email_Save_BTN.Click
+        If Email_Save_BTN.Text = "Change" Then
+            Email_Save_BTN.Text = "Save"
+            Email_TXT.ReadOnly = False
+            Password_TXT.ReadOnly = False
+        Else
+            If Not Email_TXT.Text = String.Empty Or Not Password_TXT.Text = String.Empty Then
+                SaveEmail(Email_TXT.Text, Password_TXT.Text)
+                Email_TXT.Clear()
+                Password_TXT.Clear()
+                Email_TXT.ReadOnly = True
+                Password_TXT.ReadOnly = True
+                GetEmail(Email_TXT, Password_TXT)
+                Email_Save_BTN.Text = "Change"
+            Else
+                MsgBox("Please Complete the information!", MsgBoxStyle.Information, "Information")
+            End If
+        End If
+
+    End Sub
+
+    Private Sub Allow_Schedule_Combo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Allow_Schedule_Combo.SelectedIndexChanged
+        If Allow_Schedule_Combo.SelectedIndex = 3 Or Allow_Schedule_Combo.SelectedIndex = 4 Then
+            Label32.Visible = True
+            A_EveryDate_Combo.Visible = True
+        Else
+            Label32.Visible = False
+            A_EveryDate_Combo.Visible = False
+        End If
+    End Sub
+
+    Private Sub menu_subtotal_Click(sender As Object, e As EventArgs) Handles menu_subtotal.Click
+        Dim emp_id, total_amount, open_amount, close_amount, every_amount, balance As String
+
+        If Deduction_List.SelectedItems.Count > 0 Then
+            emp_id = Deduction_List.Items(Deduction_List.FocusedItem.Index).SubItems(1).Tag
+            total_amount = GetDeduction_TotalAmount(emp_id)
+
+            every_amount = GetDeduction_EVERY(emp_id) / 2
+
+            open_amount = GetDeduction_OPEN(emp_id) + every_amount
+            close_amount = GetDeduction_CLOSE(emp_id) + every_amount
+            balance = GetDeduction_OverAll_Balance(emp_id)
+
+            MsgBox("Total Amount     :  " & total_amount & vbCrLf &
+                   "Open Payroll      :  " & open_amount & vbCrLf &
+                   "Close Payroll      :  " & close_amount & vbCrLf &
+                   "Balance               :  " & balance, MsgBoxStyle.Information, "TOTAL")
+        End If
+
+    End Sub
+
+    Private Sub Deduction_List_MouseClick(sender As Object, e As MouseEventArgs) Handles Deduction_List.MouseClick
+        If e.Button = MouseButtons.Right Then
+            If Deduction_List.Items.Count > 0 Then
+                Context_deduct.Show(Deduction_List, New Point(e.X, e.Y))
+            End If
+        End If
+    End Sub
+
+    Private Sub menu_edit_Click(sender As Object, e As EventArgs) Handles menu_edit.Click
+        DE_Name_TXT.Text = Deduction_List.Items(Deduction_List.FocusedItem.Index).SubItems(0).Text
+        DE_Name_TXT.Tag = Deduction_List.Items(Deduction_List.FocusedItem.Index).SubItems(1).Tag
+        DE_Category_Combo.Text = Deduction_List.Items(Deduction_List.FocusedItem.Index).SubItems(1).Text
+        DE_Schedule_Combo.Text = Deduction_List.Items(Deduction_List.FocusedItem.Index).SubItems(5).Text
+        DE_Total_TXT.Text = Deduction_List.Items(Deduction_List.FocusedItem.Index).SubItems(2).Text
+        DE_NoOfGives_TXT.Text = Deduction_List.Items(Deduction_List.FocusedItem.Index).SubItems(3).Text
+        DE_AmountGive_TXT.Text = Deduction_List.Items(Deduction_List.FocusedItem.Index).SubItems(4).Text
+        Deduction_List.Tag = Deduction_List.Items(Deduction_List.FocusedItem.Index).SubItems(2).Tag
     End Sub
 End Class

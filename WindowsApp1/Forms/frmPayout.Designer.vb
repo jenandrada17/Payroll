@@ -22,11 +22,11 @@ Partial Class frmPayout
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle11 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle14 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle15 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle12 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle13 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.GroupBox6 = New System.Windows.Forms.GroupBox()
         Me.Label15 = New System.Windows.Forms.Label()
         Me.Select_BTN = New System.Windows.Forms.Button()
@@ -36,6 +36,8 @@ Partial Class frmPayout
         Me.BiometricID_TXT = New System.Windows.Forms.TextBox()
         Me.Label16 = New System.Windows.Forms.Label()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.Label2 = New System.Windows.Forms.Label()
         Me.Label34 = New System.Windows.Forms.Label()
         Me.Label9 = New System.Windows.Forms.Label()
         Me.Label7 = New System.Windows.Forms.Label()
@@ -52,34 +54,6 @@ Partial Class frmPayout
         Me.SpecialHol_TXT = New System.Windows.Forms.TextBox()
         Me.Label5 = New System.Windows.Forms.Label()
         Me.NoOfDays_TXT = New System.Windows.Forms.TextBox()
-        Me.GroupBox2 = New System.Windows.Forms.GroupBox()
-        Me.Positional_TXT = New System.Windows.Forms.TextBox()
-        Me.Label2 = New System.Windows.Forms.Label()
-        Me.Incentive_TXT = New System.Windows.Forms.TextBox()
-        Me.Label18 = New System.Windows.Forms.Label()
-        Me.OtherAllowance_TXT = New System.Windows.Forms.TextBox()
-        Me.Label20 = New System.Windows.Forms.Label()
-        Me.Label21 = New System.Windows.Forms.Label()
-        Me.Transport_TXT = New System.Windows.Forms.TextBox()
-        Me.Carekit_TXT = New System.Windows.Forms.TextBox()
-        Me.Label22 = New System.Windows.Forms.Label()
-        Me.Label23 = New System.Windows.Forms.Label()
-        Me.Boarding_TXT = New System.Windows.Forms.TextBox()
-        Me.GroupBox3 = New System.Windows.Forms.GroupBox()
-        Me.Off_Charges_BTN = New System.Windows.Forms.Button()
-        Me.Off_Loan_BTN = New System.Windows.Forms.Button()
-        Me.Off_SBU_BTN = New System.Windows.Forms.Button()
-        Me.Off_Cash_BTN = New System.Windows.Forms.Button()
-        Me.Label27 = New System.Windows.Forms.Label()
-        Me.OtherDeduction_TXT = New System.Windows.Forms.TextBox()
-        Me.Charges_TXT = New System.Windows.Forms.TextBox()
-        Me.Label14 = New System.Windows.Forms.Label()
-        Me.Loan_TXT = New System.Windows.Forms.TextBox()
-        Me.Label24 = New System.Windows.Forms.Label()
-        Me.Label25 = New System.Windows.Forms.Label()
-        Me.Savings_TXT = New System.Windows.Forms.TextBox()
-        Me.Label26 = New System.Windows.Forms.Label()
-        Me.CashAdvance_TXT = New System.Windows.Forms.TextBox()
         Me.GroupBox4 = New System.Windows.Forms.GroupBox()
         Me.NetPay_LBL = New System.Windows.Forms.Label()
         Me.Label63 = New System.Windows.Forms.Label()
@@ -141,6 +115,8 @@ Partial Class frmPayout
         Me.P_NetPay_LBL = New System.Windows.Forms.Label()
         Me.P_PagibigLoan_LBL = New System.Windows.Forms.Label()
         Me.Label30 = New System.Windows.Forms.Label()
+        Me.Label13 = New System.Windows.Forms.Label()
+        Me.P_GrossAmount_LBL = New System.Windows.Forms.Label()
         Me.P_PhilHComp_LBL = New System.Windows.Forms.Label()
         Me.P_PagibigComp_LBL = New System.Windows.Forms.Label()
         Me.Label35 = New System.Windows.Forms.Label()
@@ -152,10 +128,8 @@ Partial Class frmPayout
         Me.Label29 = New System.Windows.Forms.Label()
         Me.P_SSSLoan_LBL = New System.Windows.Forms.Label()
         Me.P_SSSComp_LBL = New System.Windows.Forms.Label()
-        Me.P_GrossAmount_LBL = New System.Windows.Forms.Label()
         Me.labelee = New System.Windows.Forms.Label()
         Me.labell = New System.Windows.Forms.Label()
-        Me.Label13 = New System.Windows.Forms.Label()
         Me.Paydate_ComboB = New System.Windows.Forms.ComboBox()
         Me.Search_TXT = New System.Windows.Forms.TextBox()
         Me.Search_BTN = New System.Windows.Forms.Button()
@@ -173,21 +147,54 @@ Partial Class frmPayout
         Me.ColumnHeader12 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader13 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.Deduction_Group = New System.Windows.Forms.GroupBox()
+        Me.Deduction_grid = New System.Windows.Forms.DataGridView()
+        Me.DataGridViewTextBoxColumn1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.DataGridViewTextBoxColumn2 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Deduc_BTN = New System.Windows.Forms.DataGridViewButtonColumn()
+        Me.GroupBox7 = New System.Windows.Forms.GroupBox()
+        Me.Allowance_grid = New System.Windows.Forms.DataGridView()
+        Me.grid_1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.grid_2 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Previous_groupB = New System.Windows.Forms.GroupBox()
         Me.Prev_lbl = New System.Windows.Forms.Label()
         Me.Prev_Amount_lbl = New System.Windows.Forms.Label()
         Me.Details_Save_BTN = New System.Windows.Forms.Button()
+        Me.TabPage4 = New System.Windows.Forms.TabPage()
+        Me.FlowLayoutPanel1 = New System.Windows.Forms.FlowLayoutPanel()
+        Me.Branch_group = New System.Windows.Forms.GroupBox()
+        Me.Branch_ComboB = New System.Windows.Forms.ComboBox()
+        Me.Employee_GroupB = New System.Windows.Forms.GroupBox()
+        Me.Preview_BTN = New System.Windows.Forms.Button()
+        Me.Email_TXT = New System.Windows.Forms.TextBox()
+        Me.Employee_TXT = New System.Windows.Forms.TextBox()
+        Me.EmpSelect_BTN = New System.Windows.Forms.Button()
+        Me.Label14 = New System.Windows.Forms.Label()
+        Me.BodyText_RichB = New System.Windows.Forms.RichTextBox()
+        Me.Send_BTN = New System.Windows.Forms.Button()
+        Me.ReportViewer_payslip = New Microsoft.Reporting.WinForms.ReportViewer()
+        Me.Employee_RadioB = New System.Windows.Forms.RadioButton()
+        Me.Branch_RadioB = New System.Windows.Forms.RadioButton()
+        Me.All_RadioB = New System.Windows.Forms.RadioButton()
+        Me.Label21 = New System.Windows.Forms.Label()
+        Me.Payslip_paydate_Combo = New System.Windows.Forms.ComboBox()
         Me.GroupBox6.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
-        Me.GroupBox2.SuspendLayout()
-        Me.GroupBox3.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.TabControl1.SuspendLayout()
         Me.TabPage2.SuspendLayout()
         CType(Me.Payout_grid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox5.SuspendLayout()
         Me.TabPage1.SuspendLayout()
+        Me.Deduction_Group.SuspendLayout()
+        CType(Me.Deduction_grid, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.GroupBox7.SuspendLayout()
+        CType(Me.Allowance_grid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Previous_groupB.SuspendLayout()
+        Me.TabPage4.SuspendLayout()
+        Me.FlowLayoutPanel1.SuspendLayout()
+        Me.Branch_group.SuspendLayout()
+        Me.Employee_GroupB.SuspendLayout()
         Me.SuspendLayout()
         '
         'GroupBox6
@@ -276,6 +283,8 @@ Partial Class frmPayout
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.Label3)
+        Me.GroupBox1.Controls.Add(Me.Label2)
         Me.GroupBox1.Controls.Add(Me.Label34)
         Me.GroupBox1.Controls.Add(Me.Label9)
         Me.GroupBox1.Controls.Add(Me.Label7)
@@ -293,50 +302,70 @@ Partial Class frmPayout
         Me.GroupBox1.Controls.Add(Me.Label5)
         Me.GroupBox1.Controls.Add(Me.NoOfDays_TXT)
         Me.GroupBox1.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GroupBox1.Location = New System.Drawing.Point(6, 204)
+        Me.GroupBox1.Location = New System.Drawing.Point(443, 13)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(417, 266)
+        Me.GroupBox1.Size = New System.Drawing.Size(323, 266)
         Me.GroupBox1.TabIndex = 19
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Input"
         '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Font = New System.Drawing.Font("Dubai", 8.999999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label3.Location = New System.Drawing.Point(261, 208)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(42, 21)
+        Me.Label3.TabIndex = 34
+        Me.Label3.Text = "hh:mm"
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Font = New System.Drawing.Font("Dubai", 8.999999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label2.Location = New System.Drawing.Point(261, 175)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(42, 21)
+        Me.Label2.TabIndex = 33
+        Me.Label2.Text = "hh:mm"
+        '
         'Label34
         '
         Me.Label34.AutoSize = True
-        Me.Label34.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label34.Location = New System.Drawing.Point(359, 104)
+        Me.Label34.Font = New System.Drawing.Font("Dubai", 8.999999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label34.Location = New System.Drawing.Point(260, 104)
         Me.Label34.Name = "Label34"
-        Me.Label34.Size = New System.Drawing.Size(47, 25)
+        Me.Label34.Size = New System.Drawing.Size(38, 21)
         Me.Label34.TabIndex = 32
         Me.Label34.Text = "day/s"
         '
         'Label9
         '
         Me.Label9.AutoSize = True
-        Me.Label9.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label9.Location = New System.Drawing.Point(359, 67)
+        Me.Label9.Font = New System.Drawing.Font("Dubai", 8.999999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label9.Location = New System.Drawing.Point(260, 67)
         Me.Label9.Name = "Label9"
-        Me.Label9.Size = New System.Drawing.Size(47, 25)
+        Me.Label9.Size = New System.Drawing.Size(38, 21)
         Me.Label9.TabIndex = 31
         Me.Label9.Text = "day/s"
         '
         'Label7
         '
         Me.Label7.AutoSize = True
-        Me.Label7.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label7.Location = New System.Drawing.Point(359, 140)
+        Me.Label7.Font = New System.Drawing.Font("Dubai", 8.999999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label7.Location = New System.Drawing.Point(260, 140)
         Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(41, 25)
+        Me.Label7.Size = New System.Drawing.Size(42, 21)
         Me.Label7.TabIndex = 30
-        Me.Label7.Text = "hour"
+        Me.Label7.Text = "hh:mm"
         '
         'TotalHours_LBL
         '
         Me.TotalHours_LBL.AutoSize = True
-        Me.TotalHours_LBL.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TotalHours_LBL.Location = New System.Drawing.Point(359, 33)
+        Me.TotalHours_LBL.Font = New System.Drawing.Font("Dubai", 8.999999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TotalHours_LBL.Location = New System.Drawing.Point(260, 33)
         Me.TotalHours_LBL.Name = "TotalHours_LBL"
-        Me.TotalHours_LBL.Size = New System.Drawing.Size(47, 25)
+        Me.TotalHours_LBL.Size = New System.Drawing.Size(38, 21)
         Me.TotalHours_LBL.TabIndex = 29
         Me.TotalHours_LBL.Text = "day/s"
         '
@@ -344,7 +373,7 @@ Partial Class frmPayout
         '
         Me.Label11.AutoSize = True
         Me.Label11.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label11.Location = New System.Drawing.Point(33, 211)
+        Me.Label11.Location = New System.Drawing.Point(24, 211)
         Me.Label11.Name = "Label11"
         Me.Label11.Size = New System.Drawing.Size(85, 25)
         Me.Label11.TabIndex = 26
@@ -353,26 +382,26 @@ Partial Class frmPayout
         'UnderTime_TXT
         '
         Me.UnderTime_TXT.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.UnderTime_TXT.Location = New System.Drawing.Point(156, 207)
+        Me.UnderTime_TXT.Location = New System.Drawing.Point(147, 207)
         Me.UnderTime_TXT.Name = "UnderTime_TXT"
         Me.UnderTime_TXT.ReadOnly = True
-        Me.UnderTime_TXT.Size = New System.Drawing.Size(197, 29)
+        Me.UnderTime_TXT.Size = New System.Drawing.Size(108, 29)
         Me.UnderTime_TXT.TabIndex = 28
         '
         'Late_TXT
         '
         Me.Late_TXT.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Late_TXT.Location = New System.Drawing.Point(156, 171)
+        Me.Late_TXT.Location = New System.Drawing.Point(147, 171)
         Me.Late_TXT.Name = "Late_TXT"
         Me.Late_TXT.ReadOnly = True
-        Me.Late_TXT.Size = New System.Drawing.Size(197, 29)
+        Me.Late_TXT.Size = New System.Drawing.Size(108, 29)
         Me.Late_TXT.TabIndex = 27
         '
         'Label12
         '
         Me.Label12.AutoSize = True
         Me.Label12.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label12.Location = New System.Drawing.Point(33, 178)
+        Me.Label12.Location = New System.Drawing.Point(24, 178)
         Me.Label12.Name = "Label12"
         Me.Label12.Size = New System.Drawing.Size(39, 25)
         Me.Label12.TabIndex = 25
@@ -381,17 +410,17 @@ Partial Class frmPayout
         'RegularHol_TXT
         '
         Me.RegularHol_TXT.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.RegularHol_TXT.Location = New System.Drawing.Point(156, 100)
+        Me.RegularHol_TXT.Location = New System.Drawing.Point(147, 100)
         Me.RegularHol_TXT.Name = "RegularHol_TXT"
         Me.RegularHol_TXT.ReadOnly = True
-        Me.RegularHol_TXT.Size = New System.Drawing.Size(197, 29)
+        Me.RegularHol_TXT.Size = New System.Drawing.Size(108, 29)
         Me.RegularHol_TXT.TabIndex = 23
         '
         'Label10
         '
         Me.Label10.AutoSize = True
         Me.Label10.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label10.Location = New System.Drawing.Point(33, 105)
+        Me.Label10.Location = New System.Drawing.Point(24, 105)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(109, 25)
         Me.Label10.TabIndex = 20
@@ -400,17 +429,17 @@ Partial Class frmPayout
         'RegularOT_TXT
         '
         Me.RegularOT_TXT.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.RegularOT_TXT.Location = New System.Drawing.Point(156, 136)
+        Me.RegularOT_TXT.Location = New System.Drawing.Point(147, 136)
         Me.RegularOT_TXT.Name = "RegularOT_TXT"
         Me.RegularOT_TXT.ReadOnly = True
-        Me.RegularOT_TXT.Size = New System.Drawing.Size(197, 29)
+        Me.RegularOT_TXT.Size = New System.Drawing.Size(108, 29)
         Me.RegularOT_TXT.TabIndex = 17
         '
         'Label6
         '
         Me.Label6.AutoSize = True
         Me.Label6.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label6.Location = New System.Drawing.Point(33, 141)
+        Me.Label6.Location = New System.Drawing.Point(24, 141)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(69, 25)
         Me.Label6.TabIndex = 9
@@ -420,7 +449,7 @@ Partial Class frmPayout
         '
         Me.Label4.AutoSize = True
         Me.Label4.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label4.Location = New System.Drawing.Point(33, 69)
+        Me.Label4.Location = New System.Drawing.Point(24, 69)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(105, 25)
         Me.Label4.TabIndex = 10
@@ -429,17 +458,17 @@ Partial Class frmPayout
         'SpecialHol_TXT
         '
         Me.SpecialHol_TXT.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.SpecialHol_TXT.Location = New System.Drawing.Point(156, 65)
+        Me.SpecialHol_TXT.Location = New System.Drawing.Point(147, 65)
         Me.SpecialHol_TXT.Name = "SpecialHol_TXT"
         Me.SpecialHol_TXT.ReadOnly = True
-        Me.SpecialHol_TXT.Size = New System.Drawing.Size(197, 29)
+        Me.SpecialHol_TXT.Size = New System.Drawing.Size(108, 29)
         Me.SpecialHol_TXT.TabIndex = 18
         '
         'Label5
         '
         Me.Label5.AutoSize = True
         Me.Label5.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label5.Location = New System.Drawing.Point(33, 33)
+        Me.Label5.Location = New System.Drawing.Point(24, 33)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(84, 25)
         Me.Label5.TabIndex = 8
@@ -448,304 +477,11 @@ Partial Class frmPayout
         'NoOfDays_TXT
         '
         Me.NoOfDays_TXT.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.NoOfDays_TXT.Location = New System.Drawing.Point(156, 29)
+        Me.NoOfDays_TXT.Location = New System.Drawing.Point(147, 29)
         Me.NoOfDays_TXT.Name = "NoOfDays_TXT"
         Me.NoOfDays_TXT.ReadOnly = True
-        Me.NoOfDays_TXT.Size = New System.Drawing.Size(197, 29)
+        Me.NoOfDays_TXT.Size = New System.Drawing.Size(108, 29)
         Me.NoOfDays_TXT.TabIndex = 16
-        '
-        'GroupBox2
-        '
-        Me.GroupBox2.Controls.Add(Me.Positional_TXT)
-        Me.GroupBox2.Controls.Add(Me.Label2)
-        Me.GroupBox2.Controls.Add(Me.Incentive_TXT)
-        Me.GroupBox2.Controls.Add(Me.Label18)
-        Me.GroupBox2.Controls.Add(Me.OtherAllowance_TXT)
-        Me.GroupBox2.Controls.Add(Me.Label20)
-        Me.GroupBox2.Controls.Add(Me.Label21)
-        Me.GroupBox2.Controls.Add(Me.Transport_TXT)
-        Me.GroupBox2.Controls.Add(Me.Carekit_TXT)
-        Me.GroupBox2.Controls.Add(Me.Label22)
-        Me.GroupBox2.Controls.Add(Me.Label23)
-        Me.GroupBox2.Controls.Add(Me.Boarding_TXT)
-        Me.GroupBox2.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GroupBox2.Location = New System.Drawing.Point(439, 10)
-        Me.GroupBox2.Name = "GroupBox2"
-        Me.GroupBox2.Size = New System.Drawing.Size(344, 254)
-        Me.GroupBox2.TabIndex = 29
-        Me.GroupBox2.TabStop = False
-        Me.GroupBox2.Text = "Allowances"
-        '
-        'Positional_TXT
-        '
-        Me.Positional_TXT.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Positional_TXT.Location = New System.Drawing.Point(141, 31)
-        Me.Positional_TXT.Name = "Positional_TXT"
-        Me.Positional_TXT.ReadOnly = True
-        Me.Positional_TXT.Size = New System.Drawing.Size(151, 29)
-        Me.Positional_TXT.TabIndex = 23
-        '
-        'Label2
-        '
-        Me.Label2.AutoSize = True
-        Me.Label2.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.Location = New System.Drawing.Point(33, 71)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(73, 25)
-        Me.Label2.TabIndex = 26
-        Me.Label2.Text = "Incentives"
-        '
-        'Incentive_TXT
-        '
-        Me.Incentive_TXT.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Incentive_TXT.Location = New System.Drawing.Point(141, 66)
-        Me.Incentive_TXT.Name = "Incentive_TXT"
-        Me.Incentive_TXT.ReadOnly = True
-        Me.Incentive_TXT.Size = New System.Drawing.Size(151, 29)
-        Me.Incentive_TXT.TabIndex = 27
-        '
-        'Label18
-        '
-        Me.Label18.AutoSize = True
-        Me.Label18.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label18.Location = New System.Drawing.Point(33, 216)
-        Me.Label18.Name = "Label18"
-        Me.Label18.Size = New System.Drawing.Size(48, 25)
-        Me.Label18.TabIndex = 21
-        Me.Label18.Text = "Other"
-        '
-        'OtherAllowance_TXT
-        '
-        Me.OtherAllowance_TXT.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.OtherAllowance_TXT.Location = New System.Drawing.Point(141, 211)
-        Me.OtherAllowance_TXT.Name = "OtherAllowance_TXT"
-        Me.OtherAllowance_TXT.Size = New System.Drawing.Size(151, 29)
-        Me.OtherAllowance_TXT.TabIndex = 24
-        '
-        'Label20
-        '
-        Me.Label20.AutoSize = True
-        Me.Label20.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label20.Location = New System.Drawing.Point(34, 31)
-        Me.Label20.Name = "Label20"
-        Me.Label20.Size = New System.Drawing.Size(71, 25)
-        Me.Label20.TabIndex = 20
-        Me.Label20.Text = "Positional"
-        '
-        'Label21
-        '
-        Me.Label21.AutoSize = True
-        Me.Label21.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label21.Location = New System.Drawing.Point(33, 180)
-        Me.Label21.Name = "Label21"
-        Me.Label21.Size = New System.Drawing.Size(104, 25)
-        Me.Label21.TabIndex = 10
-        Me.Label21.Text = "Transportation"
-        '
-        'Transport_TXT
-        '
-        Me.Transport_TXT.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Transport_TXT.Location = New System.Drawing.Point(141, 175)
-        Me.Transport_TXT.Name = "Transport_TXT"
-        Me.Transport_TXT.ReadOnly = True
-        Me.Transport_TXT.Size = New System.Drawing.Size(151, 29)
-        Me.Transport_TXT.TabIndex = 18
-        '
-        'Carekit_TXT
-        '
-        Me.Carekit_TXT.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Carekit_TXT.Location = New System.Drawing.Point(141, 138)
-        Me.Carekit_TXT.Name = "Carekit_TXT"
-        Me.Carekit_TXT.ReadOnly = True
-        Me.Carekit_TXT.Size = New System.Drawing.Size(151, 29)
-        Me.Carekit_TXT.TabIndex = 17
-        '
-        'Label22
-        '
-        Me.Label22.AutoSize = True
-        Me.Label22.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label22.Location = New System.Drawing.Point(33, 107)
-        Me.Label22.Name = "Label22"
-        Me.Label22.Size = New System.Drawing.Size(67, 25)
-        Me.Label22.TabIndex = 8
-        Me.Label22.Text = "Boarding"
-        '
-        'Label23
-        '
-        Me.Label23.AutoSize = True
-        Me.Label23.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label23.Location = New System.Drawing.Point(33, 144)
-        Me.Label23.Name = "Label23"
-        Me.Label23.Size = New System.Drawing.Size(63, 25)
-        Me.Label23.TabIndex = 9
-        Me.Label23.Text = "Care-Kit"
-        '
-        'Boarding_TXT
-        '
-        Me.Boarding_TXT.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Boarding_TXT.Location = New System.Drawing.Point(141, 102)
-        Me.Boarding_TXT.Name = "Boarding_TXT"
-        Me.Boarding_TXT.ReadOnly = True
-        Me.Boarding_TXT.Size = New System.Drawing.Size(151, 29)
-        Me.Boarding_TXT.TabIndex = 16
-        '
-        'GroupBox3
-        '
-        Me.GroupBox3.Controls.Add(Me.Off_Charges_BTN)
-        Me.GroupBox3.Controls.Add(Me.Off_Loan_BTN)
-        Me.GroupBox3.Controls.Add(Me.Off_SBU_BTN)
-        Me.GroupBox3.Controls.Add(Me.Off_Cash_BTN)
-        Me.GroupBox3.Controls.Add(Me.Label27)
-        Me.GroupBox3.Controls.Add(Me.OtherDeduction_TXT)
-        Me.GroupBox3.Controls.Add(Me.Charges_TXT)
-        Me.GroupBox3.Controls.Add(Me.Label14)
-        Me.GroupBox3.Controls.Add(Me.Loan_TXT)
-        Me.GroupBox3.Controls.Add(Me.Label24)
-        Me.GroupBox3.Controls.Add(Me.Label25)
-        Me.GroupBox3.Controls.Add(Me.Savings_TXT)
-        Me.GroupBox3.Controls.Add(Me.Label26)
-        Me.GroupBox3.Controls.Add(Me.CashAdvance_TXT)
-        Me.GroupBox3.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GroupBox3.Location = New System.Drawing.Point(439, 309)
-        Me.GroupBox3.Name = "GroupBox3"
-        Me.GroupBox3.Size = New System.Drawing.Size(344, 208)
-        Me.GroupBox3.TabIndex = 30
-        Me.GroupBox3.TabStop = False
-        Me.GroupBox3.Text = "Deductions"
-        '
-        'Off_Charges_BTN
-        '
-        Me.Off_Charges_BTN.Font = New System.Drawing.Font("Dubai", 8.999999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Off_Charges_BTN.Location = New System.Drawing.Point(298, 133)
-        Me.Off_Charges_BTN.Name = "Off_Charges_BTN"
-        Me.Off_Charges_BTN.Size = New System.Drawing.Size(40, 27)
-        Me.Off_Charges_BTN.TabIndex = 82
-        Me.Off_Charges_BTN.Text = "OFF"
-        Me.Off_Charges_BTN.UseVisualStyleBackColor = True
-        '
-        'Off_Loan_BTN
-        '
-        Me.Off_Loan_BTN.Font = New System.Drawing.Font("Dubai", 8.999999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Off_Loan_BTN.Location = New System.Drawing.Point(298, 96)
-        Me.Off_Loan_BTN.Name = "Off_Loan_BTN"
-        Me.Off_Loan_BTN.Size = New System.Drawing.Size(40, 27)
-        Me.Off_Loan_BTN.TabIndex = 81
-        Me.Off_Loan_BTN.Text = "OFF"
-        Me.Off_Loan_BTN.UseVisualStyleBackColor = True
-        '
-        'Off_SBU_BTN
-        '
-        Me.Off_SBU_BTN.Font = New System.Drawing.Font("Dubai", 8.999999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Off_SBU_BTN.Location = New System.Drawing.Point(298, 63)
-        Me.Off_SBU_BTN.Name = "Off_SBU_BTN"
-        Me.Off_SBU_BTN.Size = New System.Drawing.Size(40, 27)
-        Me.Off_SBU_BTN.TabIndex = 80
-        Me.Off_SBU_BTN.Text = "OFF"
-        Me.Off_SBU_BTN.UseVisualStyleBackColor = True
-        '
-        'Off_Cash_BTN
-        '
-        Me.Off_Cash_BTN.Font = New System.Drawing.Font("Dubai", 8.999999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Off_Cash_BTN.Location = New System.Drawing.Point(298, 28)
-        Me.Off_Cash_BTN.Name = "Off_Cash_BTN"
-        Me.Off_Cash_BTN.Size = New System.Drawing.Size(40, 27)
-        Me.Off_Cash_BTN.TabIndex = 79
-        Me.Off_Cash_BTN.Text = "OFF"
-        Me.Off_Cash_BTN.UseVisualStyleBackColor = True
-        '
-        'Label27
-        '
-        Me.Label27.AutoSize = True
-        Me.Label27.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label27.Location = New System.Drawing.Point(33, 172)
-        Me.Label27.Name = "Label27"
-        Me.Label27.Size = New System.Drawing.Size(48, 25)
-        Me.Label27.TabIndex = 25
-        Me.Label27.Text = "Other"
-        '
-        'OtherDeduction_TXT
-        '
-        Me.OtherDeduction_TXT.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.OtherDeduction_TXT.Location = New System.Drawing.Point(141, 167)
-        Me.OtherDeduction_TXT.Name = "OtherDeduction_TXT"
-        Me.OtherDeduction_TXT.Size = New System.Drawing.Size(151, 29)
-        Me.OtherDeduction_TXT.TabIndex = 26
-        '
-        'Charges_TXT
-        '
-        Me.Charges_TXT.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Charges_TXT.Location = New System.Drawing.Point(141, 132)
-        Me.Charges_TXT.Name = "Charges_TXT"
-        Me.Charges_TXT.ReadOnly = True
-        Me.Charges_TXT.Size = New System.Drawing.Size(151, 29)
-        Me.Charges_TXT.TabIndex = 23
-        '
-        'Label14
-        '
-        Me.Label14.AutoSize = True
-        Me.Label14.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label14.Location = New System.Drawing.Point(33, 103)
-        Me.Label14.Name = "Label14"
-        Me.Label14.Size = New System.Drawing.Size(43, 25)
-        Me.Label14.TabIndex = 19
-        Me.Label14.Text = "Loan"
-        '
-        'Loan_TXT
-        '
-        Me.Loan_TXT.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Loan_TXT.Location = New System.Drawing.Point(141, 98)
-        Me.Loan_TXT.Name = "Loan_TXT"
-        Me.Loan_TXT.ReadOnly = True
-        Me.Loan_TXT.Size = New System.Drawing.Size(151, 29)
-        Me.Loan_TXT.TabIndex = 22
-        '
-        'Label24
-        '
-        Me.Label24.AutoSize = True
-        Me.Label24.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label24.Location = New System.Drawing.Point(33, 138)
-        Me.Label24.Name = "Label24"
-        Me.Label24.Size = New System.Drawing.Size(61, 25)
-        Me.Label24.TabIndex = 20
-        Me.Label24.Text = "Charges"
-        '
-        'Label25
-        '
-        Me.Label25.AutoSize = True
-        Me.Label25.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label25.Location = New System.Drawing.Point(33, 68)
-        Me.Label25.Name = "Label25"
-        Me.Label25.Size = New System.Drawing.Size(39, 25)
-        Me.Label25.TabIndex = 10
-        Me.Label25.Text = "SBU"
-        '
-        'Savings_TXT
-        '
-        Me.Savings_TXT.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Savings_TXT.Location = New System.Drawing.Point(141, 63)
-        Me.Savings_TXT.Name = "Savings_TXT"
-        Me.Savings_TXT.ReadOnly = True
-        Me.Savings_TXT.Size = New System.Drawing.Size(151, 29)
-        Me.Savings_TXT.TabIndex = 18
-        '
-        'Label26
-        '
-        Me.Label26.AutoSize = True
-        Me.Label26.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label26.Location = New System.Drawing.Point(33, 33)
-        Me.Label26.Name = "Label26"
-        Me.Label26.Size = New System.Drawing.Size(98, 25)
-        Me.Label26.TabIndex = 8
-        Me.Label26.Text = "Cash Advance"
-        '
-        'CashAdvance_TXT
-        '
-        Me.CashAdvance_TXT.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.CashAdvance_TXT.Location = New System.Drawing.Point(141, 28)
-        Me.CashAdvance_TXT.Name = "CashAdvance_TXT"
-        Me.CashAdvance_TXT.ReadOnly = True
-        Me.CashAdvance_TXT.Size = New System.Drawing.Size(151, 29)
-        Me.CashAdvance_TXT.TabIndex = 16
         '
         'GroupBox4
         '
@@ -1119,6 +855,7 @@ Partial Class frmPayout
         '
         Me.TabControl1.Controls.Add(Me.TabPage2)
         Me.TabControl1.Controls.Add(Me.TabPage1)
+        Me.TabControl1.Controls.Add(Me.TabPage4)
         Me.TabControl1.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.TabControl1.Location = New System.Drawing.Point(7, 8)
         Me.TabControl1.Name = "TabControl1"
@@ -1135,12 +872,13 @@ Partial Class frmPayout
         Me.TabPage2.Controls.Add(Me.Search_TXT)
         Me.TabPage2.Controls.Add(Me.Search_BTN)
         Me.TabPage2.Controls.Add(Me.Payout_list)
+        Me.TabPage2.Font = New System.Drawing.Font("Dubai Medium", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.TabPage2.Location = New System.Drawing.Point(4, 41)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
         Me.TabPage2.Size = New System.Drawing.Size(1142, 605)
         Me.TabPage2.TabIndex = 1
-        Me.TabPage2.Text = "  Payout  "
+        Me.TabPage2.Text = "    Payout    "
         Me.TabPage2.UseVisualStyleBackColor = True
         '
         'Pay_Refresh_BTN
@@ -1158,35 +896,35 @@ Partial Class frmPayout
         Me.Payout_grid.AllowUserToAddRows = False
         Me.Payout_grid.AllowUserToResizeColumns = False
         Me.Payout_grid.AllowUserToResizeRows = False
-        DataGridViewCellStyle1.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Payout_grid.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle11.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Payout_grid.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle11
         Me.Payout_grid.BackgroundColor = System.Drawing.Color.White
         Me.Payout_grid.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.Payout_grid.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText
         Me.Payout_grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.Payout_grid.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Name_dgv, Me.basic_dgv, Me.overtime_dgv, Me.late_dgv, Me.gross_dgv, Me.sssDis_dgv, Me.PagibigDis_dgv, Me.philH_dgv, Me.taxable_dgv, Me.taxWH_dgv, Me.netTax_dgv, Me.sssLoan_dgv, Me.pagibigLoan_dgv, Me.allowance_dgv, Me.deduction_dgv, Me.netPay_dgv})
-        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.InactiveCaption
-        DataGridViewCellStyle4.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.Payout_grid.DefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle14.BackColor = System.Drawing.SystemColors.InactiveCaption
+        DataGridViewCellStyle14.Font = New System.Drawing.Font("Dubai Medium", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle14.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle14.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle14.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.Payout_grid.DefaultCellStyle = DataGridViewCellStyle14
         Me.Payout_grid.Location = New System.Drawing.Point(6, 573)
         Me.Payout_grid.Name = "Payout_grid"
         Me.Payout_grid.RowHeadersVisible = False
-        DataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.Transparent
-        DataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.Transparent
-        Me.Payout_grid.RowsDefaultCellStyle = DataGridViewCellStyle5
+        DataGridViewCellStyle15.SelectionBackColor = System.Drawing.Color.Transparent
+        DataGridViewCellStyle15.SelectionForeColor = System.Drawing.Color.Transparent
+        Me.Payout_grid.RowsDefaultCellStyle = DataGridViewCellStyle15
         Me.Payout_grid.Size = New System.Drawing.Size(1130, 26)
         Me.Payout_grid.TabIndex = 105
         Me.Payout_grid.Visible = False
         '
         'Name_dgv
         '
-        DataGridViewCellStyle2.NullValue = Nothing
-        Me.Name_dgv.DefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle12.NullValue = Nothing
+        Me.Name_dgv.DefaultCellStyle = DataGridViewCellStyle12
         Me.Name_dgv.Frozen = True
         Me.Name_dgv.HeaderText = "Name"
         Me.Name_dgv.Name = "Name_dgv"
@@ -1196,8 +934,8 @@ Partial Class frmPayout
         '
         'basic_dgv
         '
-        DataGridViewCellStyle3.NullValue = Nothing
-        Me.basic_dgv.DefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle13.NullValue = Nothing
+        Me.basic_dgv.DefaultCellStyle = DataGridViewCellStyle13
         Me.basic_dgv.HeaderText = "Basic"
         Me.basic_dgv.Name = "basic_dgv"
         Me.basic_dgv.ReadOnly = True
@@ -1410,6 +1148,28 @@ Partial Class frmPayout
         Me.Label30.TabIndex = 107
         Me.Label30.Text = "Pagibig Loan"
         '
+        'Label13
+        '
+        Me.Label13.AutoSize = True
+        Me.Label13.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label13.Location = New System.Drawing.Point(460, 23)
+        Me.Label13.Name = "Label13"
+        Me.Label13.Size = New System.Drawing.Size(87, 22)
+        Me.Label13.TabIndex = 81
+        Me.Label13.Text = "Gross Amount"
+        Me.Label13.Visible = False
+        '
+        'P_GrossAmount_LBL
+        '
+        Me.P_GrossAmount_LBL.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.P_GrossAmount_LBL.Location = New System.Drawing.Point(567, 23)
+        Me.P_GrossAmount_LBL.Name = "P_GrossAmount_LBL"
+        Me.P_GrossAmount_LBL.Size = New System.Drawing.Size(80, 22)
+        Me.P_GrossAmount_LBL.TabIndex = 85
+        Me.P_GrossAmount_LBL.Text = "0"
+        Me.P_GrossAmount_LBL.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        Me.P_GrossAmount_LBL.Visible = False
+        '
         'P_PhilHComp_LBL
         '
         Me.P_PhilHComp_LBL.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -1521,17 +1281,6 @@ Partial Class frmPayout
         Me.P_SSSComp_LBL.Text = "0"
         Me.P_SSSComp_LBL.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
-        'P_GrossAmount_LBL
-        '
-        Me.P_GrossAmount_LBL.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.P_GrossAmount_LBL.Location = New System.Drawing.Point(567, 23)
-        Me.P_GrossAmount_LBL.Name = "P_GrossAmount_LBL"
-        Me.P_GrossAmount_LBL.Size = New System.Drawing.Size(80, 22)
-        Me.P_GrossAmount_LBL.TabIndex = 85
-        Me.P_GrossAmount_LBL.Text = "0"
-        Me.P_GrossAmount_LBL.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        Me.P_GrossAmount_LBL.Visible = False
-        '
         'labelee
         '
         Me.labelee.AutoSize = True
@@ -1551,17 +1300,6 @@ Partial Class frmPayout
         Me.labell.Size = New System.Drawing.Size(82, 22)
         Me.labell.TabIndex = 82
         Me.labell.Text = "EE SSS Cont. "
-        '
-        'Label13
-        '
-        Me.Label13.AutoSize = True
-        Me.Label13.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label13.Location = New System.Drawing.Point(460, 23)
-        Me.Label13.Name = "Label13"
-        Me.Label13.Size = New System.Drawing.Size(87, 22)
-        Me.Label13.TabIndex = 81
-        Me.Label13.Text = "Gross Amount"
-        Me.Label13.Visible = False
         '
         'Paydate_ComboB
         '
@@ -1682,27 +1420,125 @@ Partial Class frmPayout
         '
         'TabPage1
         '
+        Me.TabPage1.Controls.Add(Me.Deduction_Group)
+        Me.TabPage1.Controls.Add(Me.GroupBox7)
         Me.TabPage1.Controls.Add(Me.Previous_groupB)
         Me.TabPage1.Controls.Add(Me.Details_Save_BTN)
         Me.TabPage1.Controls.Add(Me.GroupBox6)
         Me.TabPage1.Controls.Add(Me.Cancel_BTN)
         Me.TabPage1.Controls.Add(Me.GroupBox1)
-        Me.TabPage1.Controls.Add(Me.GroupBox2)
-        Me.TabPage1.Controls.Add(Me.GroupBox3)
         Me.TabPage1.Controls.Add(Me.GroupBox4)
         Me.TabPage1.Location = New System.Drawing.Point(4, 41)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
         Me.TabPage1.Size = New System.Drawing.Size(1142, 605)
         Me.TabPage1.TabIndex = 0
-        Me.TabPage1.Text = "  Details  "
+        Me.TabPage1.Text = "    Details    "
         Me.TabPage1.UseVisualStyleBackColor = True
+        '
+        'Deduction_Group
+        '
+        Me.Deduction_Group.Controls.Add(Me.Deduction_grid)
+        Me.Deduction_Group.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Deduction_Group.Location = New System.Drawing.Point(375, 297)
+        Me.Deduction_Group.Name = "Deduction_Group"
+        Me.Deduction_Group.Size = New System.Drawing.Size(401, 209)
+        Me.Deduction_Group.TabIndex = 83
+        Me.Deduction_Group.TabStop = False
+        Me.Deduction_Group.Text = "Deductions"
+        '
+        'Deduction_grid
+        '
+        Me.Deduction_grid.AllowUserToAddRows = False
+        Me.Deduction_grid.AllowUserToDeleteRows = False
+        Me.Deduction_grid.AllowUserToResizeColumns = False
+        Me.Deduction_grid.AllowUserToResizeRows = False
+        Me.Deduction_grid.BackgroundColor = System.Drawing.SystemColors.HighlightText
+        Me.Deduction_grid.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.Deduction_grid.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None
+        Me.Deduction_grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.Deduction_grid.ColumnHeadersVisible = False
+        Me.Deduction_grid.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.DataGridViewTextBoxColumn1, Me.DataGridViewTextBoxColumn2, Me.Deduc_BTN})
+        Me.Deduction_grid.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Deduction_grid.Location = New System.Drawing.Point(3, 25)
+        Me.Deduction_grid.Name = "Deduction_grid"
+        Me.Deduction_grid.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None
+        Me.Deduction_grid.RowHeadersVisible = False
+        Me.Deduction_grid.Size = New System.Drawing.Size(395, 181)
+        Me.Deduction_grid.TabIndex = 1
+        '
+        'DataGridViewTextBoxColumn1
+        '
+        Me.DataGridViewTextBoxColumn1.HeaderText = ""
+        Me.DataGridViewTextBoxColumn1.Name = "DataGridViewTextBoxColumn1"
+        Me.DataGridViewTextBoxColumn1.ReadOnly = True
+        Me.DataGridViewTextBoxColumn1.Width = 170
+        '
+        'DataGridViewTextBoxColumn2
+        '
+        Me.DataGridViewTextBoxColumn2.HeaderText = ""
+        Me.DataGridViewTextBoxColumn2.Name = "DataGridViewTextBoxColumn2"
+        Me.DataGridViewTextBoxColumn2.ReadOnly = True
+        Me.DataGridViewTextBoxColumn2.Width = 130
+        '
+        'Deduc_BTN
+        '
+        Me.Deduc_BTN.HeaderText = ""
+        Me.Deduc_BTN.Name = "Deduc_BTN"
+        Me.Deduc_BTN.ReadOnly = True
+        Me.Deduc_BTN.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.Deduc_BTN.Width = 60
+        '
+        'GroupBox7
+        '
+        Me.GroupBox7.Controls.Add(Me.Allowance_grid)
+        Me.GroupBox7.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GroupBox7.Location = New System.Drawing.Point(6, 297)
+        Me.GroupBox7.Name = "GroupBox7"
+        Me.GroupBox7.Size = New System.Drawing.Size(344, 209)
+        Me.GroupBox7.TabIndex = 86
+        Me.GroupBox7.TabStop = False
+        Me.GroupBox7.Text = "Allowances"
+        '
+        'Allowance_grid
+        '
+        Me.Allowance_grid.AllowUserToAddRows = False
+        Me.Allowance_grid.AllowUserToDeleteRows = False
+        Me.Allowance_grid.AllowUserToResizeColumns = False
+        Me.Allowance_grid.AllowUserToResizeRows = False
+        Me.Allowance_grid.BackgroundColor = System.Drawing.SystemColors.HighlightText
+        Me.Allowance_grid.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.Allowance_grid.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None
+        Me.Allowance_grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.Allowance_grid.ColumnHeadersVisible = False
+        Me.Allowance_grid.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.grid_1, Me.grid_2})
+        Me.Allowance_grid.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.Allowance_grid.Location = New System.Drawing.Point(3, 25)
+        Me.Allowance_grid.Name = "Allowance_grid"
+        Me.Allowance_grid.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None
+        Me.Allowance_grid.RowHeadersVisible = False
+        Me.Allowance_grid.Size = New System.Drawing.Size(338, 181)
+        Me.Allowance_grid.TabIndex = 0
+        '
+        'grid_1
+        '
+        Me.grid_1.HeaderText = ""
+        Me.grid_1.Name = "grid_1"
+        Me.grid_1.ReadOnly = True
+        Me.grid_1.Width = 180
+        '
+        'grid_2
+        '
+        Me.grid_2.HeaderText = ""
+        Me.grid_2.Name = "grid_2"
+        Me.grid_2.ReadOnly = True
+        Me.grid_2.Width = 130
         '
         'Previous_groupB
         '
         Me.Previous_groupB.Controls.Add(Me.Prev_lbl)
         Me.Previous_groupB.Controls.Add(Me.Prev_Amount_lbl)
-        Me.Previous_groupB.Location = New System.Drawing.Point(6, 472)
+        Me.Previous_groupB.Location = New System.Drawing.Point(6, 157)
         Me.Previous_groupB.Name = "Previous_groupB"
         Me.Previous_groupB.Size = New System.Drawing.Size(417, 48)
         Me.Previous_groupB.TabIndex = 85
@@ -1734,12 +1570,210 @@ Partial Class frmPayout
         Me.Details_Save_BTN.BackColor = System.Drawing.Color.Coral
         Me.Details_Save_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.Details_Save_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Details_Save_BTN.Location = New System.Drawing.Point(114, 562)
+        Me.Details_Save_BTN.Location = New System.Drawing.Point(151, 562)
         Me.Details_Save_BTN.Name = "Details_Save_BTN"
         Me.Details_Save_BTN.Size = New System.Drawing.Size(102, 37)
         Me.Details_Save_BTN.TabIndex = 79
         Me.Details_Save_BTN.Text = "Save"
         Me.Details_Save_BTN.UseVisualStyleBackColor = False
+        '
+        'TabPage4
+        '
+        Me.TabPage4.Controls.Add(Me.FlowLayoutPanel1)
+        Me.TabPage4.Controls.Add(Me.Label14)
+        Me.TabPage4.Controls.Add(Me.BodyText_RichB)
+        Me.TabPage4.Controls.Add(Me.Send_BTN)
+        Me.TabPage4.Controls.Add(Me.ReportViewer_payslip)
+        Me.TabPage4.Controls.Add(Me.Employee_RadioB)
+        Me.TabPage4.Controls.Add(Me.Branch_RadioB)
+        Me.TabPage4.Controls.Add(Me.All_RadioB)
+        Me.TabPage4.Controls.Add(Me.Label21)
+        Me.TabPage4.Controls.Add(Me.Payslip_paydate_Combo)
+        Me.TabPage4.Location = New System.Drawing.Point(4, 41)
+        Me.TabPage4.Name = "TabPage4"
+        Me.TabPage4.Size = New System.Drawing.Size(1142, 605)
+        Me.TabPage4.TabIndex = 3
+        Me.TabPage4.Text = "    Payslip    "
+        Me.TabPage4.UseVisualStyleBackColor = True
+        '
+        'FlowLayoutPanel1
+        '
+        Me.FlowLayoutPanel1.Controls.Add(Me.Branch_group)
+        Me.FlowLayoutPanel1.Controls.Add(Me.Employee_GroupB)
+        Me.FlowLayoutPanel1.Location = New System.Drawing.Point(12, 221)
+        Me.FlowLayoutPanel1.Name = "FlowLayoutPanel1"
+        Me.FlowLayoutPanel1.Size = New System.Drawing.Size(430, 224)
+        Me.FlowLayoutPanel1.TabIndex = 106
+        '
+        'Branch_group
+        '
+        Me.Branch_group.Controls.Add(Me.Branch_ComboB)
+        Me.Branch_group.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Branch_group.Location = New System.Drawing.Point(3, 3)
+        Me.Branch_group.Name = "Branch_group"
+        Me.Branch_group.Size = New System.Drawing.Size(416, 74)
+        Me.Branch_group.TabIndex = 75
+        Me.Branch_group.TabStop = False
+        Me.Branch_group.Text = "Per Branch"
+        Me.Branch_group.Visible = False
+        '
+        'Branch_ComboB
+        '
+        Me.Branch_ComboB.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Branch_ComboB.FormattingEnabled = True
+        Me.Branch_ComboB.Location = New System.Drawing.Point(11, 28)
+        Me.Branch_ComboB.Name = "Branch_ComboB"
+        Me.Branch_ComboB.Size = New System.Drawing.Size(319, 33)
+        Me.Branch_ComboB.TabIndex = 8
+        Me.Branch_ComboB.Text = "   Select Branch"
+        '
+        'Employee_GroupB
+        '
+        Me.Employee_GroupB.Controls.Add(Me.Preview_BTN)
+        Me.Employee_GroupB.Controls.Add(Me.Email_TXT)
+        Me.Employee_GroupB.Controls.Add(Me.Employee_TXT)
+        Me.Employee_GroupB.Controls.Add(Me.EmpSelect_BTN)
+        Me.Employee_GroupB.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Employee_GroupB.Location = New System.Drawing.Point(3, 83)
+        Me.Employee_GroupB.Name = "Employee_GroupB"
+        Me.Employee_GroupB.Size = New System.Drawing.Size(416, 119)
+        Me.Employee_GroupB.TabIndex = 88
+        Me.Employee_GroupB.TabStop = False
+        Me.Employee_GroupB.Text = "Per Employee"
+        Me.Employee_GroupB.Visible = False
+        '
+        'Preview_BTN
+        '
+        Me.Preview_BTN.Location = New System.Drawing.Point(336, 73)
+        Me.Preview_BTN.Name = "Preview_BTN"
+        Me.Preview_BTN.Size = New System.Drawing.Size(62, 35)
+        Me.Preview_BTN.TabIndex = 96
+        Me.Preview_BTN.Text = "Preview"
+        Me.Preview_BTN.UseVisualStyleBackColor = True
+        '
+        'Email_TXT
+        '
+        Me.Email_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Email_TXT.Location = New System.Drawing.Point(11, 75)
+        Me.Email_TXT.Name = "Email_TXT"
+        Me.Email_TXT.ReadOnly = True
+        Me.Email_TXT.Size = New System.Drawing.Size(319, 33)
+        Me.Email_TXT.TabIndex = 91
+        '
+        'Employee_TXT
+        '
+        Me.Employee_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Employee_TXT.Location = New System.Drawing.Point(11, 25)
+        Me.Employee_TXT.Name = "Employee_TXT"
+        Me.Employee_TXT.ReadOnly = True
+        Me.Employee_TXT.Size = New System.Drawing.Size(319, 33)
+        Me.Employee_TXT.TabIndex = 90
+        '
+        'EmpSelect_BTN
+        '
+        Me.EmpSelect_BTN.AutoSize = True
+        Me.EmpSelect_BTN.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.EmpSelect_BTN.Location = New System.Drawing.Point(336, 26)
+        Me.EmpSelect_BTN.Name = "EmpSelect_BTN"
+        Me.EmpSelect_BTN.Size = New System.Drawing.Size(62, 37)
+        Me.EmpSelect_BTN.TabIndex = 89
+        Me.EmpSelect_BTN.Text = "Select"
+        Me.EmpSelect_BTN.UseVisualStyleBackColor = True
+        '
+        'Label14
+        '
+        Me.Label14.AutoSize = True
+        Me.Label14.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label14.Location = New System.Drawing.Point(12, 510)
+        Me.Label14.Name = "Label14"
+        Me.Label14.Size = New System.Drawing.Size(66, 22)
+        Me.Label14.TabIndex = 105
+        Me.Label14.Text = "Body Text"
+        '
+        'BodyText_RichB
+        '
+        Me.BodyText_RichB.Font = New System.Drawing.Font("Dubai", 9.7!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BodyText_RichB.Location = New System.Drawing.Point(15, 533)
+        Me.BodyText_RichB.Name = "BodyText_RichB"
+        Me.BodyText_RichB.Size = New System.Drawing.Size(427, 58)
+        Me.BodyText_RichB.TabIndex = 104
+        Me.BodyText_RichB.Text = "Please reply ""received"" for confirmation with this emailed payslip. Thank you."
+        '
+        'Send_BTN
+        '
+        Me.Send_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Send_BTN.Location = New System.Drawing.Point(487, 537)
+        Me.Send_BTN.Name = "Send_BTN"
+        Me.Send_BTN.Size = New System.Drawing.Size(93, 50)
+        Me.Send_BTN.TabIndex = 103
+        Me.Send_BTN.Text = "Send"
+        Me.Send_BTN.UseVisualStyleBackColor = True
+        '
+        'ReportViewer_payslip
+        '
+        Me.ReportViewer_payslip.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_payslip.rdlc"
+        Me.ReportViewer_payslip.Location = New System.Drawing.Point(647, 14)
+        Me.ReportViewer_payslip.Name = "ReportViewer_payslip"
+        Me.ReportViewer_payslip.ServerReport.BearerToken = Nothing
+        Me.ReportViewer_payslip.Size = New System.Drawing.Size(481, 582)
+        Me.ReportViewer_payslip.TabIndex = 102
+        '
+        'Employee_RadioB
+        '
+        Me.Employee_RadioB.AutoSize = True
+        Me.Employee_RadioB.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Employee_RadioB.Location = New System.Drawing.Point(28, 82)
+        Me.Employee_RadioB.Name = "Employee_RadioB"
+        Me.Employee_RadioB.Size = New System.Drawing.Size(114, 29)
+        Me.Employee_RadioB.TabIndex = 101
+        Me.Employee_RadioB.TabStop = True
+        Me.Employee_RadioB.Text = "Per Employee"
+        Me.Employee_RadioB.UseVisualStyleBackColor = True
+        '
+        'Branch_RadioB
+        '
+        Me.Branch_RadioB.AutoSize = True
+        Me.Branch_RadioB.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Branch_RadioB.Location = New System.Drawing.Point(28, 47)
+        Me.Branch_RadioB.Name = "Branch_RadioB"
+        Me.Branch_RadioB.Size = New System.Drawing.Size(97, 29)
+        Me.Branch_RadioB.TabIndex = 100
+        Me.Branch_RadioB.TabStop = True
+        Me.Branch_RadioB.Text = "Per Branch"
+        Me.Branch_RadioB.UseVisualStyleBackColor = True
+        '
+        'All_RadioB
+        '
+        Me.All_RadioB.AutoSize = True
+        Me.All_RadioB.Checked = True
+        Me.All_RadioB.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.All_RadioB.Location = New System.Drawing.Point(28, 12)
+        Me.All_RadioB.Name = "All_RadioB"
+        Me.All_RadioB.Size = New System.Drawing.Size(45, 29)
+        Me.All_RadioB.TabIndex = 99
+        Me.All_RadioB.TabStop = True
+        Me.All_RadioB.Text = "All"
+        Me.All_RadioB.UseVisualStyleBackColor = True
+        '
+        'Label21
+        '
+        Me.Label21.AutoSize = True
+        Me.Label21.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label21.Location = New System.Drawing.Point(20, 140)
+        Me.Label21.Name = "Label21"
+        Me.Label21.Size = New System.Drawing.Size(53, 25)
+        Me.Label21.TabIndex = 98
+        Me.Label21.Text = "Payroll"
+        '
+        'Payslip_paydate_Combo
+        '
+        Me.Payslip_paydate_Combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Payslip_paydate_Combo.FormattingEnabled = True
+        Me.Payslip_paydate_Combo.Location = New System.Drawing.Point(25, 168)
+        Me.Payslip_paydate_Combo.Name = "Payslip_paydate_Combo"
+        Me.Payslip_paydate_Combo.Size = New System.Drawing.Size(319, 33)
+        Me.Payslip_paydate_Combo.TabIndex = 97
+        Me.Payslip_paydate_Combo.Text = "   Select Date"
         '
         'frmPayout
         '
@@ -1755,10 +1789,6 @@ Partial Class frmPayout
         Me.GroupBox6.PerformLayout()
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
-        Me.GroupBox2.ResumeLayout(False)
-        Me.GroupBox2.PerformLayout()
-        Me.GroupBox3.ResumeLayout(False)
-        Me.GroupBox3.PerformLayout()
         Me.GroupBox4.ResumeLayout(False)
         Me.GroupBox4.PerformLayout()
         Me.TabControl1.ResumeLayout(False)
@@ -1768,8 +1798,18 @@ Partial Class frmPayout
         Me.GroupBox5.ResumeLayout(False)
         Me.GroupBox5.PerformLayout()
         Me.TabPage1.ResumeLayout(False)
+        Me.Deduction_Group.ResumeLayout(False)
+        CType(Me.Deduction_grid, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.GroupBox7.ResumeLayout(False)
+        CType(Me.Allowance_grid, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Previous_groupB.ResumeLayout(False)
         Me.Previous_groupB.PerformLayout()
+        Me.TabPage4.ResumeLayout(False)
+        Me.TabPage4.PerformLayout()
+        Me.FlowLayoutPanel1.ResumeLayout(False)
+        Me.Branch_group.ResumeLayout(False)
+        Me.Employee_GroupB.ResumeLayout(False)
+        Me.Employee_GroupB.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1795,26 +1835,6 @@ Partial Class frmPayout
     Friend WithEvents Label12 As Label
     Friend WithEvents RegularHol_TXT As TextBox
     Friend WithEvents Label10 As Label
-    Friend WithEvents GroupBox2 As GroupBox
-    Friend WithEvents Label18 As Label
-    Friend WithEvents OtherAllowance_TXT As TextBox
-    Friend WithEvents Positional_TXT As TextBox
-    Friend WithEvents Label20 As Label
-    Friend WithEvents Label21 As Label
-    Friend WithEvents Transport_TXT As TextBox
-    Friend WithEvents Carekit_TXT As TextBox
-    Friend WithEvents Label22 As Label
-    Friend WithEvents Boarding_TXT As TextBox
-    Friend WithEvents Label23 As Label
-    Friend WithEvents GroupBox3 As GroupBox
-    Friend WithEvents Charges_TXT As TextBox
-    Friend WithEvents Label14 As Label
-    Friend WithEvents Loan_TXT As TextBox
-    Friend WithEvents Label24 As Label
-    Friend WithEvents Label25 As Label
-    Friend WithEvents Savings_TXT As TextBox
-    Friend WithEvents Label26 As Label
-    Friend WithEvents CashAdvance_TXT As TextBox
     Friend WithEvents GroupBox4 As GroupBox
     Friend WithEvents Label39 As Label
     Friend WithEvents Label28 As Label
@@ -1846,20 +1866,12 @@ Partial Class frmPayout
     Friend WithEvents Label52 As Label
     Friend WithEvents Label54 As Label
     Friend WithEvents Label55 As Label
-    Friend WithEvents Label27 As Label
-    Friend WithEvents OtherDeduction_TXT As TextBox
     Friend WithEvents Close_LBL As Label
     Friend WithEvents Cancel_BTN As Button
     Friend WithEvents TotalHours_LBL As Label
     Friend WithEvents Label34 As Label
     Friend WithEvents Label9 As Label
     Friend WithEvents Label7 As Label
-    Friend WithEvents Label2 As Label
-    Friend WithEvents Incentive_TXT As TextBox
-    Friend WithEvents Off_Charges_BTN As Button
-    Friend WithEvents Off_Loan_BTN As Button
-    Friend WithEvents Off_SBU_BTN As Button
-    Friend WithEvents Off_Cash_BTN As Button
     Friend WithEvents TabControl1 As TabControl
     Friend WithEvents TabPage2 As TabPage
     Friend WithEvents TabPage1 As TabPage
@@ -1924,4 +1936,33 @@ Partial Class frmPayout
     Friend WithEvents Previous_groupB As GroupBox
     Friend WithEvents ER_SSS As Label
     Friend WithEvents Label46 As Label
+    Friend WithEvents GroupBox7 As GroupBox
+    Friend WithEvents Allowance_grid As DataGridView
+    Friend WithEvents grid_1 As DataGridViewTextBoxColumn
+    Friend WithEvents grid_2 As DataGridViewTextBoxColumn
+    Friend WithEvents Deduction_Group As GroupBox
+    Friend WithEvents Deduction_grid As DataGridView
+    Friend WithEvents DataGridViewTextBoxColumn1 As DataGridViewTextBoxColumn
+    Friend WithEvents DataGridViewTextBoxColumn2 As DataGridViewTextBoxColumn
+    Friend WithEvents Deduc_BTN As DataGridViewButtonColumn
+    Friend WithEvents Label3 As Label
+    Friend WithEvents Label2 As Label
+    Friend WithEvents TabPage4 As TabPage
+    Friend WithEvents FlowLayoutPanel1 As FlowLayoutPanel
+    Friend WithEvents Label14 As Label
+    Friend WithEvents BodyText_RichB As RichTextBox
+    Friend WithEvents Send_BTN As Button
+    Friend WithEvents ReportViewer_payslip As Microsoft.Reporting.WinForms.ReportViewer
+    Friend WithEvents Employee_RadioB As RadioButton
+    Friend WithEvents Branch_RadioB As RadioButton
+    Friend WithEvents All_RadioB As RadioButton
+    Friend WithEvents Label21 As Label
+    Friend WithEvents Payslip_paydate_Combo As ComboBox
+    Friend WithEvents Branch_group As GroupBox
+    Friend WithEvents Branch_ComboB As ComboBox
+    Friend WithEvents Employee_GroupB As GroupBox
+    Friend WithEvents Preview_BTN As Button
+    Friend WithEvents Email_TXT As TextBox
+    Friend WithEvents Employee_TXT As TextBox
+    Friend WithEvents EmpSelect_BTN As Button
 End Class

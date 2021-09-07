@@ -518,7 +518,6 @@ Public Class frmAttendance
     End Sub
 
     Private Sub Records_grid_CellFormatting(sender As Object, e As DataGridViewCellFormattingEventArgs) Handles Records_grid.CellFormatting
-
         If e.RowIndex > 0 And e.ColumnIndex = 0 Then
             If Records_grid.Item(0, e.RowIndex - 1).Value = e.Value Then
                 e.Value = ""
@@ -538,26 +537,26 @@ Public Class frmAttendance
 
     End Sub
 
-    Private Sub Button3_Click(sender As Object, e As EventArgs)
+    'Private Sub Button3_Click(sender As Object, e As EventArgs)
 
-        Try
-            Dim myDESProvider As DESCryptoServiceProvider = New DESCryptoServiceProvider()
-            myDESProvider.Key = ASCIIEncoding.ASCII.GetBytes("12345678")
-            myDESProvider.IV = ASCIIEncoding.ASCII.GetBytes("12345678")
-            Dim DecryptedFile As FileStream = New FileStream("Encrypted.txt", FileMode.Open, FileAccess.Read)
-            Dim myICryptoTransform As ICryptoTransform = myDESProvider.CreateDecryptor(myDESProvider.Key, myDESProvider.IV)
-            Dim myCryptoStream As CryptoStream = New CryptoStream(DecryptedFile, myICryptoTransform, CryptoStreamMode.Read)
-            Dim myDecStreamReader As New StreamReader(myCryptoStream)
-            Dim myDecStreamWriter As New StreamWriter("Decrypted.txt")
-            myDecStreamWriter.Write(myDecStreamReader.ReadToEnd())
-            myCryptoStream.Close()
-            myDecStreamReader.Close()
-            myDecStreamWriter.Close()
-        Catch ex As Exception
-            Console.WriteLine(ex.ToString())
-        End Try
+    '    Try
+    '        Dim myDESProvider As DESCryptoServiceProvider = New DESCryptoServiceProvider()
+    '        myDESProvider.Key = ASCIIEncoding.ASCII.GetBytes("12345678")
+    '        myDESProvider.IV = ASCIIEncoding.ASCII.GetBytes("12345678")
+    '        Dim DecryptedFile As FileStream = New FileStream("Encrypted.txt", FileMode.Open, FileAccess.Read)
+    '        Dim myICryptoTransform As ICryptoTransform = myDESProvider.CreateDecryptor(myDESProvider.Key, myDESProvider.IV)
+    '        Dim myCryptoStream As CryptoStream = New CryptoStream(DecryptedFile, myICryptoTransform, CryptoStreamMode.Read)
+    '        Dim myDecStreamReader As New StreamReader(myCryptoStream)
+    '        Dim myDecStreamWriter As New StreamWriter("Decrypted.txt")
+    '        myDecStreamWriter.Write(myDecStreamReader.ReadToEnd())
+    '        myCryptoStream.Close()
+    '        myDecStreamReader.Close()
+    '        myDecStreamWriter.Close()
+    '    Catch ex As Exception
+    '        Console.WriteLine(ex.ToString())
+    '    End Try
 
-    End Sub
+    'End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         If Paydate_ComboB.SelectedIndex > 0 Then
@@ -796,7 +795,6 @@ Public Class frmAttendance
                 SAVE_DIRECT_Attendance() ' ===== DIRECT SAVE TO ATTENDANCE ====
                 PopulateBiometricSHEET(Bio_grid, Paydate, Branch_ComboB.SelectedItem) ' ===== POPULATE DATAGRIDVIEW FROM SHEET ====
                 SavePayout_ALL(Paydate)
-                Console.WriteLine("Paydate " & Paydate)
 
                 Cursor = Cursors.Default
 
@@ -927,7 +925,6 @@ Public Class frmAttendance
                 SAVE_DIRECT_Attendance() ' ===== DIRECT SAVE TO ATTENDANCE ====
                 PopulateBiometricSHEET(Bio_grid, Paydate, Branch_ComboB.SelectedItem) ' ===== POPULATE DATAGRIDVIEW FROM SHEET ==== 
                 SavePayout_ALL(Paydate)
-                Console.WriteLine("Paydattttte " & Paydate)
 
                 Cursor = Cursors.Default
             End Try

@@ -8,11 +8,15 @@ Public Class frmContribution
     Dim eCell As Excel.Range
 
     Private Sub frmContribution_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
         SSS_grid.ClearSelection()
         Populate_SSS(SSS_grid)
         Populate_Pagibig(HMDF_EE_TXT, HMDF_ER_TXT)
         Populate_PhilHeath(PhilH_Rate_TXT)
         Populate_WHOLDING_TAX(WH_grid)
+        Load_Loans(SSSLoan_LV, "PAYROLL_SSSLOAN")
+        Load_Loans(Pag_grid, "PAYROLL_PAGIBIGLOAN")
+
     End Sub
 
     Private Sub OpenFile_BTN_Click(sender As Object, e As EventArgs) Handles OpenFile_BTN.Click
@@ -125,5 +129,56 @@ Public Class frmContribution
 
     Private Sub Close_LBL_Click(sender As Object, e As EventArgs) Handles Close_LBL.Click
         Close()
+    End Sub
+
+    Private Sub SSS_SearchEmp_BTN_Click(sender As Object, e As EventArgs) Handles SSS_SearchEmp_BTN.Click
+
+        If frmEmployee Is Nothing Then
+            Dim frm As New frmEmployee With {
+                .MdiParent = frmMainForm
+            }
+            frmMainForm.pNavigate.Controls.Add(frm)
+            frmMainForm.pNavigate.Tag = frm
+            frm.txtSearch.Tag = "SSS Loan"
+            frm.Show()
+            frm.Dock = DockStyle.Fill
+            frm.BringToFront()
+        Else
+            frmEmployeeInfo.BringToFront()
+        End If
+
+    End Sub
+
+    Private Sub Allow_Cancel_BTN_Click(sender As Object, e As EventArgs) Handles Allow_Cancel_BTN.Click
+        SSS_Name_TXT.Clear()
+        SSS_Amount_TXT.Clear()
+        SSS_FirstAmort_DTP.Value = Today
+        SSS_MaturityAmort_DTP.Value = Today
+    End Sub
+
+    Private Sub Allow_Save_BTN_Click(sender As Object, e As EventArgs) Handles Allow_Save_BTN.Click
+        Save_SSSLoan(SSS_Name_TXT.Tag, SSS_Amount_TXT.Text, SSS_FirstAmort_DTP.Value, SSS_MaturityAmort_DTP.Value)
+    End Sub
+
+    Private Sub Emp_BTN_Click(sender As Object, e As EventArgs) Handles Emp_BTN.Click
+
+        If frmEmployee Is Nothing Then
+            Dim frm As New frmEmployee With {
+                .MdiParent = frmMainForm
+            }
+            frmMainForm.pNavigate.Controls.Add(frm)
+            frmMainForm.pNavigate.Tag = frm
+            frm.txtSearch.Tag = "Pagibig Loan"
+            frm.Show()
+            frm.Dock = DockStyle.Fill
+            frm.BringToFront()
+        Else
+            frmEmployeeInfo.BringToFront()
+        End If
+
+    End Sub
+
+    Private Sub Pag_Save_BTN_Click(sender As Object, e As EventArgs) Handles Pag_Save_BTN.Click
+        Save_PAGIBIGLoan(Pag_Name_TXT.Tag, Pag_Amount_TXT.Text, Pag_Start_DTP.Value, Pag_End_DTP.Value)
     End Sub
 End Class
