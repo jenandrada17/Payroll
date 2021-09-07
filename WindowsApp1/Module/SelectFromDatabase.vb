@@ -486,7 +486,7 @@ Module SelectFromDatabase
                         Dim row As DataGridViewRow = datagrid.Rows(rowId)
                         row.Cells(0).Value = toProper
                         row.Cells(1).Value = amountt.ToString(”N”)
-                        row.Height = 30
+                        row.Height = 25
 
                     End With
                 Next
@@ -496,10 +496,10 @@ Module SelectFromDatabase
         End Using
     End Sub
 
-    Friend Sub DeductioneDetails_ORIG(emp_id As String, datagrid As DataGridView)
+    Friend Sub DeductioneDetails_ORIG(emp_id As String, datagrid As DataGridView, sched As String)
 
         datagrid.Rows.Clear()
-        Dim mysql_1 As String = $"Select * From PAYROLL_DEDUCTIONS WHERE emp_id = '{emp_id}' and STATUS is null"
+        Dim mysql_1 As String = $"Select * From PAYROLL_DEDUCTIONS WHERE emp_id = '{emp_id}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
         Using ds As DataSet = LoadSQL(mysql_1, "PAYROLL_DEDUCTIONS")
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
@@ -518,7 +518,7 @@ Module SelectFromDatabase
                         row.Cells(1).Value = amountt.ToString(”N”)
                         row.Cells(2).Value = "OFF"
                         row.Cells(2).Tag = .item("ID")
-                        row.Height = 30
+                        row.Height = 25
 
                     End With
                 Next
@@ -533,7 +533,7 @@ Module SelectFromDatabase
     Friend Sub DeductioneDetails_MODIFIED(EMP_ID As String, PAYDATE As String, datagrid As DataGridView, sched As String)
 
         datagrid.Rows.Clear()
-        Dim mysql_1 As String = $"Select * From MODIFIED_DEDUCTION A inner join PAYROLL_DEDUCTIONS B on A.m_deduc_id = B.id and STATUS is null and SCHEDULE = '{sched}'
+        Dim mysql_1 As String = $"Select * From MODIFIED_DEDUCTION A inner join PAYROLL_DEDUCTIONS B on A.m_deduc_id = B.id and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')
                                             WHERE A.EMP_ID = '{EMP_ID}' and PAYDATE = '{PAYDATE}'"
 
         Using ds As DataSet = LoadSQL(mysql_1, "MODIFIED_DEDUCTION")
@@ -564,7 +564,7 @@ Module SelectFromDatabase
                             row.Cells(2).Value = "OFF"
                         End If
 
-                        row.Height = 30
+                        row.Height = 25
                     End With
                 Next
                 Dim rowIdd As Integer = datagrid.Rows.Add()
@@ -574,7 +574,7 @@ Module SelectFromDatabase
 
                 roww.Cells(0).Value = "SBU"
                 roww.Cells(1).Value = sbu.ToString(”N”)
-                roww.Height = 30
+                roww.Height = 25
 
                 AdjustHeightOfGridBasedOnRows(datagrid)
             End If

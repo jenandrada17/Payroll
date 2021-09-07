@@ -86,7 +86,7 @@ Public Class frmPayout
                 SSSLoan_LBL.Text = (Get_LOAN_SSS(Name_TXT.Tag)).ToString("N")
                 PagibigLoan_LBL.Text = (Get_LOAN_Pagibig(Name_TXT.Tag)).ToString("N")
 
-                sched_deduc = ""
+                sched_deduc = "CLOSE PAYROLL"
             Else
                 SSSComp_LBL.Text = 0.00
                 HDMF_LBL.Text = 0.00
@@ -95,15 +95,17 @@ Public Class frmPayout
                 SSSLoan_LBL.Text = 0.00
                 PagibigLoan_LBL.Text = 0.00
                 Previous_groupB.Visible = False
+
+                sched_deduc = "OPEN PAYROLL"
             End If
 
 
             '========================== CHECK IF THERE IS/ARE EXISTING MODIFIED DEDUCTION ===================== 
 
             If isExist_single("MODIFIED_DEDUCTION", "EMP_ID", Name_TXT.Tag) Then
-                DeductioneDetails_MODIFIED(Name_TXT.Tag, paydate_, Deduction_grid)
+                DeductioneDetails_MODIFIED(Name_TXT.Tag, paydate_, Deduction_grid, sched_deduc)
             Else
-                DeductioneDetails_ORIG(Name_TXT.Tag, Deduction_grid)
+                DeductioneDetails_ORIG(Name_TXT.Tag, Deduction_grid, sched_deduc)
             End If
 
             '==========================  CHECK PAYDATE IF VALID FOR EDITING (DEDUCTION) =========================  
