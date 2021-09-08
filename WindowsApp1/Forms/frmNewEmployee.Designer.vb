@@ -22,6 +22,7 @@ Partial Class frmNewEmployee
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Me.lvEmployee = New System.Windows.Forms.ListView()
         Me.ColumnHeader2 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader3 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -86,16 +87,19 @@ Partial Class frmNewEmployee
         Me.PHILH_TXT = New System.Windows.Forms.TextBox()
         Me.Label17 = New System.Windows.Forms.Label()
         Me.HDMF_TXT = New System.Windows.Forms.TextBox()
+        Me.Label21 = New System.Windows.Forms.Label()
         Me.Active_RB = New System.Windows.Forms.RadioButton()
         Me.InActive_RB = New System.Windows.Forms.RadioButton()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.Label10 = New System.Windows.Forms.Label()
         Me.Label9 = New System.Windows.Forms.Label()
         Me.Add_Panel = New System.Windows.Forms.Panel()
-        Me.Label21 = New System.Windows.Forms.Label()
+        Me.Context_Details = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.View_Menu = New System.Windows.Forms.ToolStripMenuItem()
         Me.Excel_Panel.SuspendLayout()
         Me.FlowLayoutPanel1.SuspendLayout()
         Me.Add_Panel.SuspendLayout()
+        Me.Context_Details.SuspendLayout()
         Me.SuspendLayout()
         '
         'lvEmployee
@@ -467,7 +471,7 @@ Partial Class frmNewEmployee
         '
         Me.ComCategory_Combo.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ComCategory_Combo.FormattingEnabled = True
-        Me.ComCategory_Combo.Items.AddRange(New Object() {"PERFECOM/LEASING/7ELEVEN", "PHOTO/PERFECOM", "PHOTO/GHS/3G", "MARKETING", "EMPLOYEE", "BRANCH", "LEASING", "DYU", "DTR"})
+        Me.ComCategory_Combo.Items.AddRange(New Object() {"PERFECOM/LEASING/7ELEVEN", "PHOTO/PERFECOM", "PHOTO/GHS/3G", "MARKETING", "EMPLOYEE", "BRANCH", "LEASING", "DYU", "LYU", "DTR"})
         Me.ComCategory_Combo.Location = New System.Drawing.Point(129, 103)
         Me.ComCategory_Combo.Name = "ComCategory_Combo"
         Me.ComCategory_Combo.Size = New System.Drawing.Size(259, 28)
@@ -749,6 +753,17 @@ Partial Class frmNewEmployee
         Me.HDMF_TXT.Size = New System.Drawing.Size(261, 26)
         Me.HDMF_TXT.TabIndex = 100
         '
+        'Label21
+        '
+        Me.Label21.AutoSize = True
+        Me.Label21.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label21.ForeColor = System.Drawing.Color.Black
+        Me.Label21.Location = New System.Drawing.Point(3, 542)
+        Me.Label21.Name = "Label21"
+        Me.Label21.Size = New System.Drawing.Size(122, 16)
+        Me.Label21.TabIndex = 138
+        Me.Label21.Text = "                                      "
+        '
         'Active_RB
         '
         Me.Active_RB.AutoSize = True
@@ -823,16 +838,17 @@ Partial Class frmNewEmployee
         Me.Add_Panel.TabIndex = 95
         Me.Add_Panel.Visible = False
         '
-        'Label21
+        'Context_Details
         '
-        Me.Label21.AutoSize = True
-        Me.Label21.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label21.ForeColor = System.Drawing.Color.Black
-        Me.Label21.Location = New System.Drawing.Point(3, 542)
-        Me.Label21.Name = "Label21"
-        Me.Label21.Size = New System.Drawing.Size(122, 16)
-        Me.Label21.TabIndex = 138
-        Me.Label21.Text = "                                      "
+        Me.Context_Details.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.View_Menu})
+        Me.Context_Details.Name = "Context_Details"
+        Me.Context_Details.Size = New System.Drawing.Size(138, 26)
+        '
+        'View_Menu
+        '
+        Me.View_Menu.Name = "View_Menu"
+        Me.View_Menu.Size = New System.Drawing.Size(180, 22)
+        Me.View_Menu.Text = "View Details"
         '
         'frmNewEmployee
         '
@@ -857,6 +873,7 @@ Partial Class frmNewEmployee
         Me.FlowLayoutPanel1.PerformLayout()
         Me.Add_Panel.ResumeLayout(False)
         Me.Add_Panel.PerformLayout()
+        Me.Context_Details.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -933,4 +950,6 @@ Partial Class frmNewEmployee
     Friend WithEvents Label23 As Label
     Friend WithEvents ComCompany_Cmbo As ComboBox
     Friend WithEvents Label21 As Label
+    Friend WithEvents Context_Details As ContextMenuStrip
+    Friend WithEvents View_Menu As ToolStripMenuItem
 End Class

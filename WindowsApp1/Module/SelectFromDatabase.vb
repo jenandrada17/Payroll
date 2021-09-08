@@ -1075,9 +1075,15 @@ Module SelectFromDatabase
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
             If ds.Tables(0).Rows.Count > 0 Then
 
+                progressBarStart(ds.Tables(0).Rows.Count)
+
                 For Each dr In ds.Tables(0).Rows
                     AddRowBiometric(dr, datagrid)
+
+                    frmMainForm.AppProgressBar.Value += 1
                 Next
+
+                progressBarEnd()
             Else
                 datagrid.Rows.Clear()
             End If
@@ -1086,38 +1092,38 @@ Module SelectFromDatabase
     End Sub
 
     Public Sub AddRowBiometric(ByVal dr As DataRow, datagrid As DataGridView)
+        If datagrid.Rows.Count <= 12 Then
+            With dr
 
-        With dr
+                Dim rowId As Integer = datagrid.Rows.Add()
+                Dim row As DataGridViewRow = datagrid.Rows(rowId)
+                row.Cells("BIOID_DGVV").Value = .Item("BIOMETRICID")
+                row.Cells("Name_DGVV").Value = .Item("FULLNAME")
+                row.Cells("Name_DGVV").Tag = .Item("ID")
+                row.Cells("PRESENT_DGVV").Value = .Item("PRESENT_DAYS")
 
-            Dim rowId As Integer = datagrid.Rows.Add()
-            Dim row As DataGridViewRow = datagrid.Rows(rowId)
-            row.Cells("BIOID_DGVV").Value = .Item("BIOMETRICID")
-            row.Cells("Name_DGVV").Value = .Item("FULLNAME")
-            row.Cells("Name_DGVV").Tag = .Item("ID")
-            row.Cells("PRESENT_DGVV").Value = .Item("PRESENT_DAYS")
+                If .Item("OVERTIME") = 0 Then
+                    row.Cells("Overtime_DGVV").Value = ""
+                Else
+                    row.Cells("Overtime_DGVV").Value = .Item("OVERTIME")
+                End If
 
-            If .Item("OVERTIME") = 0 Then
-                row.Cells("Overtime_DGVV").Value = ""
-            Else
-                row.Cells("Overtime_DGVV").Value = .Item("OVERTIME")
-            End If
+                If .Item("LATE").Equals("00:00:00") Then
+                    row.Cells("Late_DGVV").Value = ""
+                Else
+                    row.Cells("Late_DGVV").Value = IIf(IsDBNull(.Item("LATE")), "", .Item("LATE"))
+                End If
 
-            If .Item("LATE").Equals("00:00:00") Then
-                row.Cells("Late_DGVV").Value = ""
-            Else
-                row.Cells("Late_DGVV").Value = IIf(IsDBNull(.Item("LATE")), "", .Item("LATE"))
-            End If
+                If .Item("UNDERTIME").Equals("00:00:00") Then
+                    row.Cells("Undertime_DGVV").Value = ""
+                Else
+                    row.Cells("Undertime_DGVV").Value = IIf(IsDBNull(.Item("UNDERTIME")), "", .Item("UNDERTIME"))
+                End If
 
-            If .Item("UNDERTIME").Equals("00:00:00") Then
-                row.Cells("Undertime_DGVV").Value = ""
-            Else
-                row.Cells("Undertime_DGVV").Value = IIf(IsDBNull(.Item("UNDERTIME")), "", .Item("UNDERTIME"))
-            End If
+                row.Height = 30
 
-            row.Height = 30
-
-        End With
-
+            End With
+        End If
     End Sub
 
     Friend Sub Populate_S7ELVEN(datagrid As DataGridView, Paydate As String, Optional searchName As String = "")
@@ -2040,6 +2046,7 @@ Module SelectFromDatabase
     End Sub
 
     Private Sub AddRow_Payroll_Employee(ByVal dr As DataRow, LV As ListView)
+
         With dr
 
             Dim datee As DateTime
@@ -2401,6 +2408,7 @@ Module SelectFromDatabase
 
     Public Sub GetModify_Report(M_DaltonP_TXT As TextBox, M_Photo_TXT As TextBox, M_DavaoP_TXT As TextBox, M_Perfecom_TXT As TextBox,
                                 D_DaltonP_TXT As TextBox, D_Photo_TXT As TextBox, D_DavaoP_TXT As TextBox, D_Perfecom_TXT As TextBox,
+                                L_Dalton As TextBox, L_PG711 As TextBox,
                                 DR_Dalton_TXT As TextBox, DR_Photo_TXT As TextBox, DR_House_TXT As TextBox, ConDalton_TXT As TextBox,
                                 ConPhoto_TXT As TextBox, ConHouse_TXT As TextBox, LeasingBR_TXT As TextBox, DTR_Dalton As TextBox,
                                 DTR_Photo As TextBox, LeasingP_TXT As TextBox)
@@ -2419,6 +2427,8 @@ Module SelectFromDatabase
                 D_Photo_TXT.Text = IIf(IsDBNull(.Item("D_PHOTO")), Nothing, .Item("D_PHOTO"))
                 D_DavaoP_TXT.Text = IIf(IsDBNull(.Item("D_DAVAOP")), Nothing, .Item("D_DAVAOP"))
                 D_Perfecom_TXT.Text = IIf(IsDBNull(.Item("D_PERFECOM")), Nothing, .Item("D_PERFECOM"))
+                L_Dalton.Text = IIf(IsDBNull(.Item("L_DALTON")), Nothing, .Item("L_DALTON"))
+                L_PG711.Text = IIf(IsDBNull(.Item("L_PG711")), Nothing, .Item("L_PG711"))
                 DR_Dalton_TXT.Text = IIf(IsDBNull(.Item("DR_DALTON")), Nothing, .Item("DR_DALTON"))
                 DR_Photo_TXT.Text = IIf(IsDBNull(.Item("DR_PHOTO")), Nothing, .Item("DR_PHOTO"))
                 DR_House_TXT.Text = IIf(IsDBNull(.Item("DR_HOUSE")), Nothing, .Item("DR_HOUSE"))

@@ -23,9 +23,9 @@ Partial Class frmReport
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim ReportDataSource1 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Dim ReportDataSource2 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Dim ReportDataSource3 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource13 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource14 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource15 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
         Me.NetPayBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.reports = New WindowsApp1.reports()
         Me.CommonDistributionBindingSource = New System.Windows.Forms.BindingSource(Me.components)
@@ -112,6 +112,12 @@ Partial Class frmReport
         Me.ColumnHeader28 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Close_LBL = New System.Windows.Forms.Label()
+        Me.Label32 = New System.Windows.Forms.Label()
+        Me.Label33 = New System.Windows.Forms.Label()
+        Me.Label34 = New System.Windows.Forms.Label()
+        Me.L_PG711_TXT = New System.Windows.Forms.TextBox()
+        Me.L_Dalton_TXT = New System.Windows.Forms.TextBox()
+        Me.Label35 = New System.Windows.Forms.Label()
         CType(Me.NetPayBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.reports, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CommonDistributionBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -231,9 +237,9 @@ Partial Class frmReport
         '
         'ReportV_NetPay
         '
-        ReportDataSource1.Name = "DataSet1"
-        ReportDataSource1.Value = Me.NetPayBindingSource
-        Me.ReportV_NetPay.LocalReport.DataSources.Add(ReportDataSource1)
+        ReportDataSource13.Name = "DataSet1"
+        ReportDataSource13.Value = Me.NetPayBindingSource
+        Me.ReportV_NetPay.LocalReport.DataSources.Add(ReportDataSource13)
         Me.ReportV_NetPay.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_NetPay.rdlc"
         Me.ReportV_NetPay.Location = New System.Drawing.Point(4, 67)
         Me.ReportV_NetPay.Name = "ReportV_NetPay"
@@ -309,9 +315,9 @@ Partial Class frmReport
         '
         'RptViewer_Common
         '
-        ReportDataSource2.Name = "DataSet1"
-        ReportDataSource2.Value = Me.CommonDistributionBindingSource
-        Me.RptViewer_Common.LocalReport.DataSources.Add(ReportDataSource2)
+        ReportDataSource14.Name = "DataSet1"
+        ReportDataSource14.Value = Me.CommonDistributionBindingSource
+        Me.RptViewer_Common.LocalReport.DataSources.Add(ReportDataSource14)
         Me.RptViewer_Common.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_CommonEmp.rdlc"
         Me.RptViewer_Common.Location = New System.Drawing.Point(6, 48)
         Me.RptViewer_Common.Name = "RptViewer_Common"
@@ -329,7 +335,7 @@ Partial Class frmReport
         Me.d.Name = "d"
         Me.d.Size = New System.Drawing.Size(1151, 591)
         Me.d.TabIndex = 2
-        Me.d.Text = "    Employee Count   "
+        Me.d.Text = "    Percentage   "
         Me.d.UseVisualStyleBackColor = True
         '
         'Modify_Panel
@@ -342,16 +348,16 @@ Partial Class frmReport
         Me.Modify_Panel.Controls.Add(Me.GroupBox1)
         Me.Modify_Panel.Controls.Add(Me.Clear_BTN)
         Me.Modify_Panel.Controls.Add(Me.Save_BTN)
-        Me.Modify_Panel.Location = New System.Drawing.Point(106, 108)
+        Me.Modify_Panel.Location = New System.Drawing.Point(60, 108)
         Me.Modify_Panel.Name = "Modify_Panel"
-        Me.Modify_Panel.Size = New System.Drawing.Size(893, 204)
+        Me.Modify_Panel.Size = New System.Drawing.Size(999, 229)
         Me.Modify_Panel.TabIndex = 106
         Me.Modify_Panel.Visible = False
         '
         'LeasingBR_TXT
         '
         Me.LeasingBR_TXT.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.LeasingBR_TXT.Location = New System.Drawing.Point(668, 165)
+        Me.LeasingBR_TXT.Location = New System.Drawing.Point(764, 165)
         Me.LeasingBR_TXT.Name = "LeasingBR_TXT"
         Me.LeasingBR_TXT.Size = New System.Drawing.Size(62, 29)
         Me.LeasingBR_TXT.TabIndex = 17
@@ -371,7 +377,7 @@ Partial Class frmReport
         Me.GroupBox2.Controls.Add(Me.DR_House_TXT)
         Me.GroupBox2.Controls.Add(Me.Label25)
         Me.GroupBox2.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GroupBox2.Location = New System.Drawing.Point(525, 3)
+        Me.GroupBox2.Location = New System.Drawing.Point(621, 3)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(271, 152)
         Me.GroupBox2.TabIndex = 122
@@ -479,7 +485,7 @@ Partial Class frmReport
         '
         Me.Label26.AutoSize = True
         Me.Label26.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label26.Location = New System.Drawing.Point(558, 169)
+        Me.Label26.Location = New System.Drawing.Point(654, 169)
         Me.Label26.Name = "Label26"
         Me.Label26.Size = New System.Drawing.Size(105, 25)
         Me.Label26.TabIndex = 122
@@ -489,7 +495,7 @@ Partial Class frmReport
         '
         Me.Label14.AutoSize = True
         Me.Label14.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label14.Location = New System.Drawing.Point(870, 0)
+        Me.Label14.Location = New System.Drawing.Point(980, 3)
         Me.Label14.Name = "Label14"
         Me.Label14.Size = New System.Drawing.Size(21, 27)
         Me.Label14.TabIndex = 20
@@ -497,6 +503,12 @@ Partial Class frmReport
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.Label35)
+        Me.GroupBox1.Controls.Add(Me.Label32)
+        Me.GroupBox1.Controls.Add(Me.Label33)
+        Me.GroupBox1.Controls.Add(Me.Label34)
+        Me.GroupBox1.Controls.Add(Me.L_PG711_TXT)
+        Me.GroupBox1.Controls.Add(Me.L_Dalton_TXT)
         Me.GroupBox1.Controls.Add(Me.Label28)
         Me.GroupBox1.Controls.Add(Me.Label30)
         Me.GroupBox1.Controls.Add(Me.LeasingP_TXT)
@@ -530,7 +542,7 @@ Partial Class frmReport
         Me.GroupBox1.Font = New System.Drawing.Font("Dubai", 8.999999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GroupBox1.Location = New System.Drawing.Point(14, 3)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(471, 191)
+        Me.GroupBox1.Size = New System.Drawing.Size(590, 213)
         Me.GroupBox1.TabIndex = 107
         Me.GroupBox1.TabStop = False
         '
@@ -806,7 +818,7 @@ Partial Class frmReport
         Me.Clear_BTN.BackColor = System.Drawing.Color.PeachPuff
         Me.Clear_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.Clear_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Clear_BTN.Location = New System.Drawing.Point(824, 97)
+        Me.Clear_BTN.Location = New System.Drawing.Point(920, 97)
         Me.Clear_BTN.Name = "Clear_BTN"
         Me.Clear_BTN.Size = New System.Drawing.Size(57, 36)
         Me.Clear_BTN.TabIndex = 19
@@ -818,7 +830,7 @@ Partial Class frmReport
         Me.Save_BTN.BackColor = System.Drawing.Color.DarkSalmon
         Me.Save_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.Save_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Save_BTN.Location = New System.Drawing.Point(824, 143)
+        Me.Save_BTN.Location = New System.Drawing.Point(920, 143)
         Me.Save_BTN.Name = "Save_BTN"
         Me.Save_BTN.Size = New System.Drawing.Size(57, 36)
         Me.Save_BTN.TabIndex = 18
@@ -849,9 +861,9 @@ Partial Class frmReport
         '
         'RptViewer_Count
         '
-        ReportDataSource3.Name = "DataSet1"
-        ReportDataSource3.Value = Me.CommonBindingSource
-        Me.RptViewer_Count.LocalReport.DataSources.Add(ReportDataSource3)
+        ReportDataSource15.Name = "DataSet1"
+        ReportDataSource15.Value = Me.CommonBindingSource
+        Me.RptViewer_Count.LocalReport.DataSources.Add(ReportDataSource15)
         Me.RptViewer_Count.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_Common.rdlc"
         Me.RptViewer_Count.Location = New System.Drawing.Point(4, 61)
         Me.RptViewer_Count.Name = "RptViewer_Count"
@@ -866,7 +878,7 @@ Partial Class frmReport
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
         Me.TabPage2.Size = New System.Drawing.Size(1151, 591)
         Me.TabPage2.TabIndex = 5
-        Me.TabPage2.Text = "    Totals    "
+        Me.TabPage2.Text = "    Payroll Summary    "
         Me.TabPage2.UseVisualStyleBackColor = True
         '
         'TabPage4
@@ -972,6 +984,60 @@ Partial Class frmReport
         Me.Close_LBL.Size = New System.Drawing.Size(57, 32)
         Me.Close_LBL.TabIndex = 75
         Me.Close_LBL.Text = "Close"
+        '
+        'Label32
+        '
+        Me.Label32.AutoSize = True
+        Me.Label32.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label32.Location = New System.Drawing.Point(490, 16)
+        Me.Label32.Name = "Label32"
+        Me.Label32.Size = New System.Drawing.Size(34, 22)
+        Me.Label32.TabIndex = 122
+        Me.Label32.Text = "LYU"
+        '
+        'Label33
+        '
+        Me.Label33.AutoSize = True
+        Me.Label33.Font = New System.Drawing.Font("Dubai", 8.999999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label33.Location = New System.Drawing.Point(542, 183)
+        Me.Label33.Name = "Label33"
+        Me.Label33.Size = New System.Drawing.Size(22, 21)
+        Me.Label33.TabIndex = 121
+        Me.Label33.Text = "%"
+        '
+        'Label34
+        '
+        Me.Label34.AutoSize = True
+        Me.Label34.Font = New System.Drawing.Font("Dubai", 8.999999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label34.Location = New System.Drawing.Point(541, 46)
+        Me.Label34.Name = "Label34"
+        Me.Label34.Size = New System.Drawing.Size(22, 21)
+        Me.Label34.TabIndex = 120
+        Me.Label34.Text = "%"
+        '
+        'L_PG711_TXT
+        '
+        Me.L_PG711_TXT.Location = New System.Drawing.Point(479, 179)
+        Me.L_PG711_TXT.Name = "L_PG711_TXT"
+        Me.L_PG711_TXT.Size = New System.Drawing.Size(62, 28)
+        Me.L_PG711_TXT.TabIndex = 119
+        '
+        'L_Dalton_TXT
+        '
+        Me.L_Dalton_TXT.Location = New System.Drawing.Point(479, 41)
+        Me.L_Dalton_TXT.Name = "L_Dalton_TXT"
+        Me.L_Dalton_TXT.Size = New System.Drawing.Size(62, 28)
+        Me.L_Dalton_TXT.TabIndex = 118
+        '
+        'Label35
+        '
+        Me.Label35.AutoSize = True
+        Me.Label35.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label35.Location = New System.Drawing.Point(15, 179)
+        Me.Label35.Name = "Label35"
+        Me.Label35.Size = New System.Drawing.Size(106, 25)
+        Me.Label35.TabIndex = 123
+        Me.Label35.Text = "P&&G  (7Eleven)"
         '
         'frmReport
         '
@@ -1093,4 +1159,10 @@ Partial Class frmReport
     Friend WithEvents TabPage2 As TabPage
     Friend WithEvents Label31 As Label
     Friend WithEvents NetBranch_Combo As ComboBox
+    Friend WithEvents Label32 As Label
+    Friend WithEvents Label33 As Label
+    Friend WithEvents Label34 As Label
+    Friend WithEvents L_PG711_TXT As TextBox
+    Friend WithEvents L_Dalton_TXT As TextBox
+    Friend WithEvents Label35 As Label
 End Class

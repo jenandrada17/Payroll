@@ -307,6 +307,12 @@ Partial Public Class dtr_all
         
         Private columnSPECHOLIDAY As Global.System.Data.DataColumn
         
+        Private columnUNDERTIME As Global.System.Data.DataColumn
+        
+        Private columnTIME_IN As Global.System.Data.DataColumn
+        
+        Private columnTIME_OUT As Global.System.Data.DataColumn
+        
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Sub New()
@@ -439,6 +445,30 @@ Partial Public Class dtr_all
         End Property
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property UNDERTIMEColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnUNDERTIME
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property TIME_INColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnTIME_IN
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property TIME_OUTColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnTIME_OUT
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0"),  _
          Global.System.ComponentModel.Browsable(false)>  _
         Public ReadOnly Property Count() As Integer
@@ -475,9 +505,9 @@ Partial Public Class dtr_all
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Overloads Function AddoverAllRow(ByVal BIOMETRICID As String, ByVal PRESENT_DAYS As String, ByVal OVERTIME As String, ByVal LATE As String, ByVal DATE_ONLY As String, ByVal AM_IN As String, ByVal AM_OUT As String, ByVal PM_IN As String, ByVal PM_OUT As String, ByVal FULLNAME As String, ByVal REGHOLIDAY As String, ByVal SPECHOLIDAY As String) As overAllRow
+        Public Overloads Function AddoverAllRow(ByVal BIOMETRICID As String, ByVal PRESENT_DAYS As String, ByVal OVERTIME As String, ByVal LATE As String, ByVal DATE_ONLY As String, ByVal AM_IN As String, ByVal AM_OUT As String, ByVal PM_IN As String, ByVal PM_OUT As String, ByVal FULLNAME As String, ByVal REGHOLIDAY As String, ByVal SPECHOLIDAY As String, ByVal UNDERTIME As String, ByVal TIME_IN As String, ByVal TIME_OUT As String) As overAllRow
             Dim rowoverAllRow As overAllRow = CType(Me.NewRow,overAllRow)
-            Dim columnValuesArray() As Object = New Object() {BIOMETRICID, PRESENT_DAYS, OVERTIME, LATE, DATE_ONLY, AM_IN, AM_OUT, PM_IN, PM_OUT, FULLNAME, REGHOLIDAY, SPECHOLIDAY}
+            Dim columnValuesArray() As Object = New Object() {BIOMETRICID, PRESENT_DAYS, OVERTIME, LATE, DATE_ONLY, AM_IN, AM_OUT, PM_IN, PM_OUT, FULLNAME, REGHOLIDAY, SPECHOLIDAY, UNDERTIME, TIME_IN, TIME_OUT}
             rowoverAllRow.ItemArray = columnValuesArray
             Me.Rows.Add(rowoverAllRow)
             Return rowoverAllRow
@@ -512,6 +542,9 @@ Partial Public Class dtr_all
             Me.columnFULLNAME = MyBase.Columns("FULLNAME")
             Me.columnREGHOLIDAY = MyBase.Columns("REGHOLIDAY")
             Me.columnSPECHOLIDAY = MyBase.Columns("SPECHOLIDAY")
+            Me.columnUNDERTIME = MyBase.Columns("UNDERTIME")
+            Me.columnTIME_IN = MyBase.Columns("TIME_IN")
+            Me.columnTIME_OUT = MyBase.Columns("TIME_OUT")
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -541,6 +574,12 @@ Partial Public Class dtr_all
             MyBase.Columns.Add(Me.columnREGHOLIDAY)
             Me.columnSPECHOLIDAY = New Global.System.Data.DataColumn("SPECHOLIDAY", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnSPECHOLIDAY)
+            Me.columnUNDERTIME = New Global.System.Data.DataColumn("UNDERTIME", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnUNDERTIME)
+            Me.columnTIME_IN = New Global.System.Data.DataColumn("TIME_IN", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnTIME_IN)
+            Me.columnTIME_OUT = New Global.System.Data.DataColumn("TIME_OUT", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnTIME_OUT)
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -867,6 +906,51 @@ Partial Public Class dtr_all
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property UNDERTIME() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableoverAll.UNDERTIMEColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'UNDERTIME' in table 'overAll' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableoverAll.UNDERTIMEColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property TIME_IN() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableoverAll.TIME_INColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'TIME_IN' in table 'overAll' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableoverAll.TIME_INColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property TIME_OUT() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableoverAll.TIME_OUTColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'TIME_OUT' in table 'overAll' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableoverAll.TIME_OUTColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Function IsBIOMETRICIDNull() As Boolean
             Return Me.IsNull(Me.tableoverAll.BIOMETRICIDColumn)
         End Function
@@ -1007,6 +1091,42 @@ Partial Public Class dtr_all
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Sub SetSPECHOLIDAYNull()
             Me(Me.tableoverAll.SPECHOLIDAYColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsUNDERTIMENull() As Boolean
+            Return Me.IsNull(Me.tableoverAll.UNDERTIMEColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetUNDERTIMENull()
+            Me(Me.tableoverAll.UNDERTIMEColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsTIME_INNull() As Boolean
+            Return Me.IsNull(Me.tableoverAll.TIME_INColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetTIME_INNull()
+            Me(Me.tableoverAll.TIME_INColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsTIME_OUTNull() As Boolean
+            Return Me.IsNull(Me.tableoverAll.TIME_OUTColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetTIME_OUTNull()
+            Me(Me.tableoverAll.TIME_OUTColumn) = Global.System.Convert.DBNull
         End Sub
     End Class
     

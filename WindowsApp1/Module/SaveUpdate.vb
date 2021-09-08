@@ -308,8 +308,11 @@
         End Using
     End Sub
 
-    'Public Sub SaveDTR(bioID As String, payDate As String, DATE_ONLY As String, BRANCH As String, AM_IN As String, AM_OUT As String, PM_IN As String, PM_OUT As String)
-    Public Sub SaveDTR(bioID As String, payDate As String, DATE_ONLY As String, AM_IN As String, AM_OUT As String, PM_IN As String, PM_OUT As String)
+    Public Sub SaveDTR(bioID As String, payDate As String, DATE_ONLY As String, AM_IN As String, AM_OUT As String, PM_IN As String, PM_OUT As String, Optional dtr As Boolean = False)
+
+        If dtr = False Then
+            RunCommand($"DELETE FROM BIOMETRIC_DTR WHERE BIO_ID = '{bioID}' AND  PAYDATE = '{payDate}' AND DATE_ONLY = '{DATE_ONLY}'")
+        End If
 
         Dim mysql As String = "Select * From BIOMETRIC_DTR Rows 1"
         Using dss As DataSet = LoadSQL(mysql, "BIOMETRIC_DTR")
@@ -952,12 +955,14 @@
                     '============================================= DELETE ALLOWANCE AND DEDUCTION TO REPLACE =================================================
                     Replacing($"RECORDED_ALLOW_DEDUC where BIO_NO = '{bioNo}' and PAYDATE = '{paydate_}';")
                     '============================================= ALLOWANCE ========================================================= 
-                    '==================== FOR SIL ADDITIONAL ================================
-                    Dim SIL_Total As Double = SIL * rate
-                    Allowances = SIL_Total
-                    Save_Recorded_Allow_Deduc(bioNo, paydate_, "SIL", SIL_Total, "ALLOWANCE")
 
-                    If Ecola <> 0 Then
+                    If SIL <> 0 Then ' FOR SIL ADDITIONAL ================================
+                        Dim SIL_Total As Double = SIL * rate
+                        Allowances = SIL_Total
+                        Save_Recorded_Allow_Deduc(bioNo, paydate_, "SIL", SIL_Total, "ALLOWANCE")
+                    End If
+
+                    If Ecola <> 0 Then ' FOR ECOLA ADDITIONAL ================================
                         Allowances = Allowances + Ecola
                         Save_Recorded_Allow_Deduc(bioNo, paydate_, "ECOLA", Ecola, "ALLOWANCE")
                     End If
@@ -1975,6 +1980,7 @@
 
     Friend Sub Save_Marketing_DYU(M_DaltonP As String, M_Photo As String, M_DavaoP As String, M_Perfecom As String,
                                   D_DaltonP As String, D_Photo As String, D_DavaoP As String, D_Perfecom As String,
+                                  L_DaLTON As String, L_PG711 As String,
                                   DR_Dalton As String, DR_Photo As String, DR_House As String, ConDalton As String,
                                   ConPhoto As String, ConHouse As String, LeasingBR As String,
                                   DTR_Dalton As String, DTR_Photo As String, LeasingP As String)
@@ -1995,6 +2001,8 @@
                 .Item("D_Photo") = IIf(D_Photo = Nothing, 0, D_Photo)
                 .Item("D_DavaoP") = IIf(D_DavaoP = Nothing, 0, D_DavaoP)
                 .Item("D_Perfecom") = IIf(D_Perfecom = Nothing, 0, D_Perfecom)
+                .Item("L_Dalton") = IIf(L_DaLTON = Nothing, 0, L_DaLTON)
+                .Item("L_PG711") = IIf(L_PG711 = Nothing, 0, L_PG711)
                 .Item("DR_Dalton") = IIf(DR_Dalton = Nothing, 0, DR_Dalton)
                 .Item("DR_Photo") = IIf(DR_Photo = Nothing, 0, DR_Photo)
                 .Item("DR_House") = IIf(DR_House = Nothing, 0, DR_House)

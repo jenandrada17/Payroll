@@ -373,6 +373,7 @@ Public Class frmNewEmployee
 
     Private Sub Label9_Click(sender As Object, e As EventArgs) Handles Label9.Click
         Add_Panel.Visible = False
+        clearAdd()
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
@@ -396,6 +397,7 @@ Public Class frmNewEmployee
         SSS_TXT.Clear()
         PHILH_TXT.Clear()
         HDMF_TXT.Clear()
+        Active_RB.Checked = True
         Add_Panel.Visible = False
     End Sub
 
@@ -551,15 +553,6 @@ Public Class frmNewEmployee
             SwitchForm_Loans(FormName.Loans, tmpEmp, "PAGIBIG")
             Close()
 
-        ElseIf txtSearch.Tag = Nothing Then
-
-            Bio_TXT.Text = bio_No
-            GetFullname(bio_No, Add_Company_CB, Branch_ComboB, Fullname_TXT, Email_TXT, InActive_RB, Started_DTP,
-                        TimeIn_Combo, TimeOut_Combo, EmpNo_TXT, TIN_TXT, SSS_TXT, PHILH_TXT, HDMF_TXT, HO_Category,
-                        ComCategory_Combo, Position_Combo, ComCompany_Cmbo)
-
-            Add_Panel.Location = New Point(ClientSize.Width / 2 - Add_Panel.Size.Width / 2, ClientSize.Height / 2 - Add_Panel.Size.Height / 2)
-            Add_Panel.Visible = True
         End If
 
     End Sub
@@ -715,4 +708,25 @@ Public Class frmNewEmployee
 
     End Sub
 
+    Private Sub lvEmployee_MouseClick(sender As Object, e As MouseEventArgs) Handles lvEmployee.MouseClick
+        If e.Button = MouseButtons.Right Then
+            If lvEmployee.Items.Count > 0 Then
+                Context_Details.Show(lvEmployee, New Point(e.X, e.Y))
+            End If
+        End If
+    End Sub
+
+    Private Sub View_Menu_Click(sender As Object, e As EventArgs) Handles View_Menu.Click
+
+        Dim bio_No As Integer = lvEmployee.Items(lvEmployee.FocusedItem.Index).SubItems(3).Text
+
+        Bio_TXT.Text = bio_No
+        GetFullname(bio_No, Add_Company_CB, Branch_ComboB, Fullname_TXT, Email_TXT, InActive_RB, Started_DTP,
+                    TimeIn_Combo, TimeOut_Combo, EmpNo_TXT, TIN_TXT, SSS_TXT, PHILH_TXT, HDMF_TXT, HO_Category,
+                    ComCategory_Combo, Position_Combo, ComCompany_Cmbo)
+
+        Add_Panel.Location = New Point(ClientSize.Width / 2 - Add_Panel.Size.Width / 2, ClientSize.Height / 2 - Add_Panel.Size.Height / 2)
+        Add_Panel.Visible = True
+
+    End Sub
 End Class

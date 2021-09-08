@@ -473,7 +473,11 @@ Public Class frmAttendance
                 PAYROLL = DataGridView1.Tag
             End If
 
-            Replacing($"BIOMETRIC_DTR where BIO_ID = '{BiometricID_TXT.Text}' and PAYDATE = '{PAYROLL}';")
+
+            If ThisHasRow($"BIOMETRIC_DTR where BIO_ID = '{BiometricID_TXT.Text}' and PAYDATE = '{PAYROLL}'") Then
+                Replacing($"BIOMETRIC_DTR where BIO_ID = '{BiometricID_TXT.Text}' and PAYDATE = '{PAYROLL}';")
+            End If
+
 
             For Each row As DataGridViewRow In DataGridView1.Rows
 
@@ -638,6 +642,9 @@ Public Class frmAttendance
                 .Columns.Add("PRESENT_DAYS")
                 .Columns.Add("OVERTIME")
                 .Columns.Add("LATE")
+                .Columns.Add("UNDERTIME")
+                .Columns.Add("TIME_IN")
+                .Columns.Add("TIME_OUT")
                 .Columns.Add("DATE_ONLY")
                 .Columns.Add("AM_IN")
                 .Columns.Add("AM_OUT")
@@ -651,7 +658,7 @@ Public Class frmAttendance
 
                 If Bio1_DTR_TXT.Text <> Nothing And Bio2_DTR_TXT.Text <> Nothing Then  '============ DOUBLE EMPLOYEE
 
-                    mysqll = $"Select A.*, B.FULLNAME, B.BIO_NO as bioNo, C.* From PAYROLL_ATTENDANCE A 
+                    mysqll = $"Select A.*, B.FULLNAME, B.BIO_NO as bioNo, B.TIME_IN, B.TIME_OUT, C.* From PAYROLL_ATTENDANCE A 
                                         inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRICID 
                                         inner join BIOMETRIC_DTR C ON C.BIO_ID = A.BIOMETRICID AND C.PAYDATE  = A.PAYDATE where A.PAYDATE  = '{paydatee}' and A.BIOMETRICID IN ('{Bio1_DTR_TXT.Text}','{Bio2_DTR_TXT.Text}') ORDER BY DATE_ONLY"
 
@@ -661,7 +668,7 @@ Public Class frmAttendance
                 Else
                     If Bio1_DTR_TXT.Text <> Nothing And Bio2_DTR_TXT.Text = Nothing Then  '============ 1ST EMPLOYEE
 
-                        mysqll = $"Select A.*, B.FULLNAME, B.BIO_NO as bioNo, C.* From PAYROLL_ATTENDANCE A 
+                        mysqll = $"Select A.*, B.FULLNAME, B.BIO_NO as bioNo, B.TIME_IN, B.TIME_OUT, C.* From PAYROLL_ATTENDANCE A 
                                         inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRICID 
                                         inner join BIOMETRIC_DTR C ON C.BIO_ID = A.BIOMETRICID AND C.PAYDATE  = A.PAYDATE where A.PAYDATE  = '{paydatee}' and A.BIOMETRICID = '{Bio1_DTR_TXT.Text}'  ORDER BY DATE_ONLY  ASC"
 
@@ -669,7 +676,7 @@ Public Class frmAttendance
                         LIST_BIOO.Add(Bio1_DTR_TXT.Text)
                     ElseIf Bio2_DTR_TXT.Text <> Nothing And Bio1_DTR_TXT.Text = Nothing Then '============ 2ND EMPLOYEE
 
-                        mysqll = $"Select A.*, B.FULLNAME, B.BIO_NO as bioNo, C.* From PAYROLL_ATTENDANCE A 
+                        mysqll = $"Select A.*, B.FULLNAME, B.BIO_NO as bioNo,  B.TIME_IN, B.TIME_OUT, C.* From PAYROLL_ATTENDANCE A 
                                         inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRICID 
                                         inner join BIOMETRIC_DTR C ON C.BIO_ID = A.BIOMETRICID  AND C.PAYDATE  = A.PAYDATE where A.PAYDATE  = '{paydatee}' and A.BIOMETRICID = '{Bio2_DTR_TXT.Text}'  ORDER BY DATE_ONLY  ASC"
 
@@ -683,7 +690,7 @@ Public Class frmAttendance
 
             ElseIf HO_RadioB.Checked Then    '=========================== HEAD OFFICE ==================================
 
-                mysqll = $"Select A.*, B.FULLNAME, B.BIO_NO as bioNo, C.* From PAYROLL_ATTENDANCE A 
+                mysqll = $"Select A.*, B.FULLNAME, B.BIO_NO as bioNo, B.TIME_IN, B.TIME_OUT, C.* From PAYROLL_ATTENDANCE A 
                                         inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRICID 
                                         inner join BIOMETRIC_DTR C ON C.BIO_ID = A.BIOMETRICID AND C.PAYDATE  = A.PAYDATE 
                                         where A.PAYDATE  = '{paydatee}' and COMPANY = 'HEAD OFFICE'  ORDER BY DATE_ONLY ASC"
@@ -701,7 +708,7 @@ Public Class frmAttendance
                 Dim NEW_LIST_DATE As IEnumerable(Of String) = LIST_DATE.Except(EXIST_DATE)
 
                 For Each OtherD As String In NEW_LIST_DATE
-                    SaveDTR(VALUE_BIO, paydatee, OtherD, Nothing, Nothing, Nothing, Nothing)
+                    SaveDTR(VALUE_BIO, paydatee, OtherD, Nothing, Nothing, Nothing, Nothing, True)
                 Next
 
             Next
@@ -719,8 +726,14 @@ Public Class frmAttendance
                             Dim DAYS = .Item("PRESENT_DAYS")
                             Dim OT = IIf(.Item("OVERTIME") = 0, 0, .Item("OVERTIME"))
                             Dim LATE = IIf(.Item("LATE").Equals("00:00:00"), "00:00:00", .Item("LATE").Substring(0, 5))
+                            Dim UNDERTIME As String = IIf(.Item("UNDERTIME").Equals("00:00:00"), "00:00:00", .Item("UNDERTIME").Substring(0, 5))
                             Dim REGHOLIDAY = .Item("REGHOLIDAY")
                             Dim SPECHOLIDAY = .Item("SPECHOLIDAY")
+                            Dim INN As DateTime = IIf(IsDBNull(.Item("TIME_IN")), Nothing, .Item("TIME_IN"))
+                            Dim OUTT As DateTime = IIf(IsDBNull(.Item("TIME_OUT")), Nothing, .Item("TIME_OUT"))
+
+                            Dim TIME_IN As String = IIf(INN = Nothing, "", INN.ToShortTimeString)
+                            Dim TIME_OUT As String = IIf(OUTT = Nothing, "", OUTT.ToShortTimeString)
 
                             '============================= BIOMETRIC_DTR ============================
                             Dim dateE As DateTime = Convert.ToDateTime(.Item("DATE_ONLY"))
@@ -729,7 +742,7 @@ Public Class frmAttendance
                             Dim PM_IN = IIf(IsDBNull(.Item("PM_IN")), "", .Item("PM_IN"))
                             Dim PM_OUT = IIf(IsDBNull(.Item("PM_OUT")), "", .Item("PM_OUT"))
 
-                            dt_DTR.Rows.Add(bioNo, namee, DAYS, OT, LATE, dateE.ToString("MMM dd, yyyy"), AM_IN, AM_OUT, PM_IN, PM_OUT, REGHOLIDAY, SPECHOLIDAY)
+                            dt_DTR.Rows.Add(bioNo, namee, DAYS, OT, LATE, UNDERTIME, TIME_IN, TIME_OUT, dateE.ToString("MMM dd, yyyy"), AM_IN, AM_OUT, PM_IN, PM_OUT, REGHOLIDAY, SPECHOLIDAY)
 
                             If AM_IN = "" And AM_OUT = "" And PM_IN = "" And PM_OUT = "" Then
                                 Replacing($"BIOMETRIC_DTR WHERE BIO_ID = '{bioNo}' AND  PAYDATE = '{paydatee}' AND DATE_ONLY = '{dateE.ToString("d")}'")
@@ -792,6 +805,9 @@ Public Class frmAttendance
                 .Columns.Add("PRESENT_DAYS")
                 .Columns.Add("OVERTIME")
                 .Columns.Add("LATE")
+                .Columns.Add("UNDERTIME")
+                .Columns.Add("TIME_IN")
+                .Columns.Add("TIME_OUT")
                 .Columns.Add("DATE_ONLY")
                 .Columns.Add("AM_IN")
                 .Columns.Add("AM_OUT")
@@ -823,7 +839,7 @@ Public Class frmAttendance
             Next
             '==================================================================================
 
-            Using ds As DataSet = LoadSQL(mysqll, "PAYROLL_EMPLOYEE")
+            Using ds As DataSet = LoadSQL(mysqll, "PAYROLL_ATTENDANCE")
 
                 If ds.Tables(0).Rows.Count > 0 Then
 
@@ -835,6 +851,12 @@ Public Class frmAttendance
                             Dim DAYS As String = .Item("PRESENT_DAYS")
                             Dim OT As String = IIf(.Item("OVERTIME") = 0, 0, .Item("OVERTIME"))
                             Dim LATE As String = IIf(.Item("LATE").Equals("00:00:00"), "00:00:00", .Item("LATE").Substring(0, 5))
+                            Dim UNDERTIME As String = IIf(.Item("UNDERTIME").Equals("00:00:00"), "00:00:00", .Item("UNDERTIME").Substring(0, 5))
+                            Dim INN As DateTime = IIf(IsDBNull(.Item("TIME_IN")), Nothing, .Item("TIME_IN"))
+                            Dim OUTT As DateTime = IIf(IsDBNull(.Item("TIME_OUT")), Nothing, .Item("TIME_OUT"))
+
+                            Dim TIME_IN As String = IIf(INN = Nothing, "", INN.ToShortTimeString)
+                            Dim TIME_OUT As String = IIf(OUTT = Nothing, "", OUTT.ToShortTimeString)
 
                             '============================= BIOMETRIC_DTR ============================
                             Dim dateE As DateTime = Convert.ToDateTime(.Item("DATE_ONLY"))
@@ -843,13 +865,12 @@ Public Class frmAttendance
                             Dim PM_IN = IIf(IsDBNull(.Item("PM_IN")), "", .Item("PM_IN"))
                             Dim PM_OUT = IIf(IsDBNull(.Item("PM_OUT")), "", .Item("PM_OUT"))
 
-                            dt_DTR.Rows.Add(namee, DAYS, OT, LATE, dateE.ToString("MMM dd, yyyy"), AM_IN, AM_OUT, PM_IN, PM_OUT)
+                            dt_DTR.Rows.Add(namee, DAYS, OT, LATE, UNDERTIME, TIME_IN, TIME_OUT, dateE.ToString("MMM dd, yyyy"), AM_IN, AM_OUT, PM_IN, PM_OUT)
 
                         End With
                     Next
                 End If
             End Using
-
 
             Dim rds_DTR As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt_DTR)
             RptViewer_DTR.LocalReport.DataSources.Add(rds_DTR)
@@ -917,6 +938,9 @@ Public Class frmAttendance
 
         Dim paydate_ As String = Paydate.ToString("d")
         distinct_bio = distinct_bio.Distinct().ToList
+
+
+        progressBarStart(distinct_bio.Count)
 
         For Each biometric_No As String In distinct_bio
             list_inOut.Clear()
@@ -1040,7 +1064,11 @@ Public Class frmAttendance
                 End If
 
             Next
+
+            frmMainForm.AppProgressBar.Value += 1
         Next
+
+        progressBarEnd()
     End Sub
 
     Private Sub Search_BTN_Click(sender As Object, e As EventArgs) Handles Search_BTN.Click
@@ -1393,7 +1421,6 @@ Public Class frmAttendance
         End If
 
         PopulateComboBox(Paydate_ComboB, "BIOMETRIC_DTR", "PAYDATE")
-        RunCommand("DELETE FROM BIOMETRIC_DTR WHERE ID NOT IN  ( SELECT MAX(ID) FROM BIOMETRIC_DTR GROUP BY BIO_ID, DATE_ONLY )")
         Has_Rows_Delete("IMPORT_DTR")
     End Sub
 
@@ -1447,14 +1474,10 @@ Public Class frmAttendance
 
         progressBarEnd()
 
-        Cursor = Cursors.WaitCursor
-
         forLoop_ALL_IMPORTED()   ' ===== SAVE AM_IN, AM_OUT, PM_IN, PM_OUT ====
         SAVE_DIRECT_Attendance() ' ===== DIRECT SAVE TO ATTENDANCE ==== 
         PopulateBiometricSHEET(Bio_grid, Paydate) ' ===== POPULATE DATAGRIDVIEW FROM SHEET ==== 
         SavePayout_ALL(Paydate, starting_date, ending_date)
-
-        Cursor = Cursors.Default
 
         Import_BTN.Enabled = False
         Path_TXT.Clear()
@@ -1652,14 +1675,10 @@ Public Class frmAttendance
 
             progressBarEnd()
 
-            Cursor = Cursors.WaitCursor
-
             forLoop_ALL_IMPORTED()   ' ===== SAVE AM_IN, AM_OUT, PM_IN, PM_OUT ====
             SAVE_DIRECT_Attendance() ' ===== DIRECT SAVE TO ATTENDANCE ====
             PopulateBiometricSHEET(Bio_grid, Paydate) ' ===== POPULATE DATAGRIDVIEW FROM SHEET ====
             SavePayout_ALL(Paydate, starting_date, ending_date)
-
-            Cursor = Cursors.Default
 
             Path_TXT.Clear()
             MyConnection.Close()
@@ -1680,6 +1699,7 @@ Public Class frmAttendance
 
         Dim paydate_ As String = Paydate.ToString("d")
 
+        progressBarStart(distinct_bio.Count)
         For Each biometric_No As String In distinct_bio
 
             Dim all_date, exist_date, add_date As New List(Of String)()
@@ -1805,7 +1825,10 @@ Public Class frmAttendance
             InsertTempAttendance(biometric_No, paydate_, TotalDays_LBL.Text, TotalOTHr_LBL.Text,
                                     Late_Total.ToString, Under_Total.ToString, TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text)
 
+            frmMainForm.AppProgressBar.Value += 1
         Next
+
+        progressBarEnd()
     End Sub
 
     Private Sub Bio_grid_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles Bio_grid.MouseDoubleClick
