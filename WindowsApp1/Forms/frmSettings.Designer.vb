@@ -103,6 +103,8 @@ Partial Class frmSettings
         Me.Allow_Save_BTN = New System.Windows.Forms.Button()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.GroupBox6 = New System.Windows.Forms.GroupBox()
+        Me.DE_Effectivity_DTP = New System.Windows.Forms.DateTimePicker()
+        Me.Label31 = New System.Windows.Forms.Label()
         Me.DE_Schedule_Combo = New System.Windows.Forms.ComboBox()
         Me.Label28 = New System.Windows.Forms.Label()
         Me.DE_Category_Combo = New System.Windows.Forms.ComboBox()
@@ -164,8 +166,6 @@ Partial Class frmSettings
         Me.Context_deduct = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.menu_subtotal = New System.Windows.Forms.ToolStripMenuItem()
         Me.menu_edit = New System.Windows.Forms.ToolStripMenuItem()
-        Me.Label31 = New System.Windows.Forms.Label()
-        Me.DE_Effectivity_DTP = New System.Windows.Forms.DateTimePicker()
         Me.Settings_Tab.SuspendLayout()
         Me.TabPage5.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
@@ -1045,6 +1045,24 @@ Partial Class frmSettings
         Me.GroupBox6.TabStop = False
         Me.GroupBox6.Text = "Information"
         '
+        'DE_Effectivity_DTP
+        '
+        Me.DE_Effectivity_DTP.Location = New System.Drawing.Point(693, 137)
+        Me.DE_Effectivity_DTP.Name = "DE_Effectivity_DTP"
+        Me.DE_Effectivity_DTP.Size = New System.Drawing.Size(223, 29)
+        Me.DE_Effectivity_DTP.TabIndex = 125
+        Me.DE_Effectivity_DTP.Value = New Date(2021, 9, 7, 15, 53, 50, 0)
+        '
+        'Label31
+        '
+        Me.Label31.AutoSize = True
+        Me.Label31.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label31.Location = New System.Drawing.Point(548, 139)
+        Me.Label31.Name = "Label31"
+        Me.Label31.Size = New System.Drawing.Size(73, 25)
+        Me.Label31.TabIndex = 124
+        Me.Label31.Text = "Effectivity"
+        '
         'DE_Schedule_Combo
         '
         Me.DE_Schedule_Combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -1616,24 +1634,6 @@ Partial Class frmSettings
         Me.menu_edit.Name = "menu_edit"
         Me.menu_edit.Size = New System.Drawing.Size(146, 22)
         Me.menu_edit.Text = "Edit"
-        '
-        'Label31
-        '
-        Me.Label31.AutoSize = True
-        Me.Label31.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label31.Location = New System.Drawing.Point(548, 139)
-        Me.Label31.Name = "Label31"
-        Me.Label31.Size = New System.Drawing.Size(73, 25)
-        Me.Label31.TabIndex = 124
-        Me.Label31.Text = "Effectivity"
-        '
-        'DE_Effectivity_DTP
-        '
-        Me.DE_Effectivity_DTP.Location = New System.Drawing.Point(693, 137)
-        Me.DE_Effectivity_DTP.Name = "DE_Effectivity_DTP"
-        Me.DE_Effectivity_DTP.Size = New System.Drawing.Size(223, 29)
-        Me.DE_Effectivity_DTP.TabIndex = 125
-        Me.DE_Effectivity_DTP.Value = New Date(2021, 9, 7, 15, 53, 50, 0)
         '
         'frmSettings
         '

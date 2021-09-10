@@ -470,7 +470,7 @@ Module SelectFromDatabase
     Friend Sub AllowanceDetails(emp_id As String, datagrid As DataGridView, sched As String)
 
         datagrid.Rows.Clear()
-        Dim mysql_1 As String = $"select * from payroll_allowances  where emp_id = '{emp_id}' and ALLOWED is null and SCHEDULE = '{sched}'"
+        Dim mysql_1 As String = $"select * from payroll_allowances  where emp_id = '{emp_id}' and ALLOWED = 'YES' and SCHEDULE = '{sched}'"
         Using ds As DataSet = LoadSQL(mysql_1, "payroll_allowances")
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
@@ -524,17 +524,18 @@ Module SelectFromDatabase
                             row.Cells(1).Value = amountt.ToString(”N”)
                             row.Cells(2).Value = "OFF"
                             row.Cells(2).Tag = .item("ID")
-                            row.Height = 30
+                            'row.Height = 30
 
                         End If
                     End With
                 Next
-                Dim sbu As Double = SBU_Amount()
-                datagrid.Rows.Add(New String() {"SBU", sbu.ToString(”N”)})
-
-                AdjustHeightOfGridBasedOnRows(datagrid)
             End If
         End Using
+
+        'Dim sbu As Double = SBU_Amount()
+        'datagrid.Rows.Add(New String() {"SBU", sbu.ToString(”N”)})
+
+        'AdjustHeightOfGridBasedOnRows(datagrid)
     End Sub
 
     Friend Sub DeductioneDetails_MODIFIED(EMP_ID As String, PAYDATE As String, datagrid As DataGridView, sched As String)
@@ -571,21 +572,23 @@ Module SelectFromDatabase
                             row.Cells(2).Value = "OFF"
                         End If
 
-                        row.Height = 30
+                        'row.Height = 30
                     End With
                 Next
-                Dim rowIdd As Integer = datagrid.Rows.Add()
-                Dim roww As DataGridViewRow = datagrid.Rows(rowIdd)
 
-                Dim sbu As Double = SBU_Amount()
-
-                roww.Cells(0).Value = "SBU"
-                roww.Cells(1).Value = sbu.ToString(”N”)
-                roww.Height = 25
-
-                AdjustHeightOfGridBasedOnRows(datagrid)
             End If
         End Using
+
+        'Dim rowIdd As Integer = datagrid.Rows.Add()
+        'Dim roww As DataGridViewRow = datagrid.Rows(rowIdd)
+
+        'Dim sbu As Double = SBU_Amount()
+
+        'roww.Cells(0).Value = "SBU"
+        'roww.Cells(1).Value = sbu.ToString(”N”)
+        'roww.Height = 25
+
+        'AdjustHeightOfGridBasedOnRows(datagrid)
     End Sub
 
     Friend Sub OtherDetails(biometric As String, branchID As String, PAYDATE As String, Savings_TXT As TextBox, OtherAllowance_TXT As TextBox, OtherDeduction_TXT As TextBox)
@@ -1040,8 +1043,6 @@ Module SelectFromDatabase
                 AAA = AAA.ToString("t")
                 HourGroup.Add(AAA)
             End If
-
-            Console.WriteLine("SortCountedDATE " & c & "val " & datee)
         Next
 
         Return HourGroup
@@ -1053,6 +1054,7 @@ Module SelectFromDatabase
             Dim totalRowHeight As Integer = dataGrid.ColumnHeadersHeight
             For Each row As DataGridViewRow In dataGrid.Rows
                 totalRowHeight += row.Height
+                row.Height = 28
             Next
             dataGrid.Height = totalRowHeight
         End If
@@ -1266,7 +1268,7 @@ Module SelectFromDatabase
 
         If searchName.Length <> 0 Then
 
-            mysql = "select * from PAYROLL_ALLOWANCES A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRIC_NO and B.BRANCH_ID = A.BRANCH_ID where ALLOWED is null  and "
+            mysql = "select * from PAYROLL_ALLOWANCES A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRIC_NO and B.BRANCH_ID = A.BRANCH_ID where ALLOWED = 'YES'  and "
 
             For Each name In strWords
                 mysql &= $"{vbCr}UPPER(BIOMETRIC_NO) LIKE UPPER('%{name}%') OR "
@@ -1277,7 +1279,7 @@ Module SelectFromDatabase
             Next
 
         Else
-            mysql = "select * from PAYROLL_ALLOWANCES A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRIC_NO where ALLOWED is null  ORDER BY LASTNAME ASC "
+            mysql = "select * from PAYROLL_ALLOWANCES A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRIC_NO where ALLOWED = 'YES'  ORDER BY LASTNAME ASC "
         End If
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ALLOWANCES")

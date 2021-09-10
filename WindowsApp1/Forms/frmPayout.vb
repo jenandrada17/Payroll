@@ -20,6 +20,9 @@ Public Class frmPayout
         '========================== PAYSLIP ===========================
         PopulateComboBox(Payslip_paydate_Combo, "PAYROLL_PAYOUT", "PAYDATE")
         PopulateComboBox(Branch_ComboB, "TBL_BRANCH", "BRANCHNAME")
+
+        'Deduction_grid.DefaultCellStyle.SelectionBackColor = Color.Transparent
+        'Allowance_grid.DefaultCellStyle.SelectionBackColor = Color.Transparent
     End Sub
 
     Private Sub Select_BTN_Click(sender As Object, e As EventArgs) Handles Select_BTN.Click
@@ -98,6 +101,7 @@ Public Class frmPayout
             End If
 
             AllowanceDetails(Name_TXT.Tag, Allowance_grid, sched_deduc)
+            Allowance_grid.Enabled = True
 
             '========================== CHECK IF THERE IS/ARE EXISTING MODIFIED DEDUCTION ===================== 
             If isExist_single("MODIFIED_DEDUCTION", "EMP_ID", Name_TXT.Tag) Then
@@ -105,6 +109,18 @@ Public Class frmPayout
             Else
                 DeductioneDetails_ORIG(Name_TXT.Tag, Deduction_grid, sched_deduc)
             End If
+
+            '========================== SBU DEDUCTION ===================== 
+
+            Dim rowIdd As Integer = Deduction_grid.Rows.Add()
+            Dim roww As DataGridViewRow = Deduction_grid.Rows(rowIdd)
+
+            Dim sbu As Double = SBU_Amount()
+
+            roww.Cells(0).Value = "SBU"
+            roww.Cells(1).Value = sbu.ToString(”N”)
+
+            AdjustHeightOfGridBasedOnRows(Deduction_grid)
 
             '==========================  CHECK PAYDATE IF VALID FOR EDITING (DEDUCTION) =========================  
 
@@ -114,7 +130,6 @@ Public Class frmPayout
                 Deduction_grid.Enabled = False
             End If
 
-
             Calculate_Gross()
 
             Calculate_Allowance()
@@ -123,8 +138,32 @@ Public Class frmPayout
 
             Calculate_NetPay()
 
-
+            Checkgrid_Visible()
         End If
+    End Sub
+
+    Private Sub Checkgrid_Visible() ' ============== Allowance and Deduction
+
+        '========================== Check if allowance grid has rows ===================== 
+
+        If Allowance_grid.RowCount > 0 Then
+            Label18.Visible = True
+            Allowance_grid.Visible = True
+        Else
+            Label18.Visible = False
+            Allowance_grid.Visible = False
+        End If
+
+        '========================== Check if deduction grid has rows ===================== 
+
+        If Deduction_grid.RowCount > 0 Then
+            Label22.Visible = True
+            Deduction_grid.Visible = True
+        Else
+            Label22.Visible = False
+            Deduction_grid.Visible = False
+        End If
+
     End Sub
 
     Private Sub Deduction_grid_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles Deduction_grid.CellContentClick
@@ -543,6 +582,16 @@ Public Class frmPayout
 
         ReportViewer_payslip.LocalReport.DataSources.Clear()
 
+        Dim sched As String
+        Dim date_pay As DateTime = Convert.ToDateTime(paydatee)
+        date_pay = date_pay.ToString("d")
+
+        If IsLastDay(date_pay) Then
+            sched = "CLOSE PAYROLL"
+        Else
+            sched = "OPEN PAYROLL"
+        End If
+
         Try
             '============================================ EMPLOYEE DETAILS ================================================
             Dim dt_employee As New DataTable()
@@ -651,33 +700,54 @@ Public Class frmPayout
                 .Columns.Add("TOTALS")
             End With
 
+            'Allowances = 0
+
+            'Dim sql_2 As String = $"Select * From PAYROLL_ALLOWANCES WHERE BIOMETRIC_NO = '{biometricID}' and BRANCH_ID = '{branchID}'  and ALLOWED is null and SCHEDULE = '{sched}'"
+            'Using ds_2 As DataSet = LoadSQL(sql_2, "PAYROLL_ALLOWANCES")
+            '    If ds_2.Tables(0).Rows.Count > 0 Then
+            '        For Each dr_2 In ds_2.Tables(0).Rows
+            '            With dr_2
+            '                If .item("EFFECTIVE_DATE") <= Today Then
+            '                    Allowances = Allowances + .Item("AMOUNT")
+            '                End If
+            '            End With
+            '        Next
+            '    End If
+            'End Using
+
+
             Dim total_Allowance As Double = 0
             If isExist_single("payroll_allowances", "BIOMETRIC_NO", biometricID) Then
 
-                Dim mysql_allow As String = $"select SUM(AMOUNT) as totals from payroll_allowances where BIOMETRIC_NO = '{biometricID}';"
+                Dim mysql_allow As String = $"select * from PAYROLL_ALLOWANCES WHERE BIOMETRIC_NO = '{biometricID}' and BRANCH_ID = '{branchID}'  and ALLOWED is null and SCHEDULE = '{sched}'"
                 Using ds As DataSet = LoadSQL(mysql_allow, "payroll_allowances")
                     If ds.Tables(0).Rows.Count > 0 Then
-                        Dim data As DataRow = ds.Tables(0).Rows(0)
-                        With data
-                            total_Allowance = .Item("totals")
-                        End With
+                        For Each drr In ds.Tables(0).Rows
+                            With drr
+                                If .item("EFFECTIVE_DATE") <= Today Then
+                                    total_Allowance = total_Allowance + .Item("AMOUNT")
+                                End If
+                            End With
+                        Next
                     End If
                 End Using
 
-                Dim mysql_1 As String = $"select * from payroll_allowances  where BIOMETRIC_NO = '{biometricID}';"
+                Dim mysql_1 As String = $"select * from payroll_allowances  where BIOMETRIC_NO = '{biometricID}' and BRANCH_ID = '{branchID}'  and ALLOWED is null and SCHEDULE = '{sched}'"
                 Using ds As DataSet = LoadSQL(mysql_1, "payroll_allowances")
                     If ds.Tables(0).Rows.Count > 0 Then
                         For Each dr In ds.Tables(0).Rows
                             With dr
+                                If .item("EFFECTIVE_DATE") <= Today Then
 
-                                Dim amountt As Double = .item("AMOUNT")
+                                    Dim amountt As Double = .item("AMOUNT")
 
-                                Dim toLower = .item("CATEGORY").ToLower()
-                                Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
-                                Dim toProper As String = info.ToTitleCase(toLower)
+                                    Dim toLower = .item("CATEGORY").ToLower()
+                                    Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
+                                    Dim toProper As String = info.ToTitleCase(toLower)
 
-                                dt_allowance.Rows.Add(toProper, amountt.ToString(”N”), total_Allowance.ToString(”N”))
+                                    dt_allowance.Rows.Add(toProper, amountt.ToString(”N”), total_Allowance.ToString(”N”))
 
+                                End If
                             End With
                         Next
                     End If
@@ -699,31 +769,36 @@ Public Class frmPayout
             Dim total_deduction As Double = 0
             If isExist_single("payroll_deductions", "BIOMETRIC_NO", biometricID) Then
 
-                Dim mysql_de As String = $"select SUM(AMOUNT_PER_GIVE) as totals from payroll_deductions  where BIOMETRIC_NO = '{biometricID}';"
+                Dim mysql_de As String = $"Select * From payroll_deductions WHERE BIOMETRIC_NO = '{biometricID}' and BRANCHID = '{branchID}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
                 Using ds As DataSet = LoadSQL(mysql_de, "payroll_deductions")
                     If ds.Tables(0).Rows.Count > 0 Then
-                        Dim data As DataRow = ds.Tables(0).Rows(0)
-                        With data
-                            total_deduction = .Item("totals")
-                        End With
+                        For Each drr In ds.Tables(0).Rows
+                            With drr
+                                If .item("EFFECTIVE_DATE") <= Today Then
+                                    total_deduction = total_deduction + .Item("AMOUNT_PER_GIVE")
+                                End If
+                            End With
+                        Next
                     End If
 
                 End Using
 
-                Dim mysql_2 As String = $"select * from payroll_deductions  where BIOMETRIC_NO = '{biometricID}';"
+                Dim mysql_2 As String = $"select * from payroll_deductions  where BIOMETRIC_NO = '{biometricID}'  and BRANCHID = '{branchID}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
                 Using ds As DataSet = LoadSQL(mysql_2, "payroll_deductions")
                     If ds.Tables(0).Rows.Count > 0 Then
                         For Each dr In ds.Tables(0).Rows
                             With dr
+                                If .Item("EFFECTIVE_DATE") <= Today Then
 
-                                Dim amountt As Double = .item("AMOUNT_PER_GIVE")
+                                    Dim amountt As Double = .item("AMOUNT_PER_GIVE")
 
-                                Dim toLower = .item("CATEGORY").ToLower()
-                                Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
-                                Dim toProper As String = info.ToTitleCase(toLower)
+                                    Dim toLower = .item("CATEGORY").ToLower()
+                                    Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
+                                    Dim toProper As String = info.ToTitleCase(toLower)
 
-                                dt_deduction.Rows.Add(toProper, amountt.ToString(”N”), total_deduction.ToString(”N”))
+                                    dt_deduction.Rows.Add(toProper, amountt.ToString(”N”), total_deduction.ToString(”N”))
 
+                                End If
                             End With
 
                         Next
