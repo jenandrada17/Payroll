@@ -423,8 +423,6 @@
             Dim dsNewRow As DataRow = dss.Tables(0).NewRow
             With dsNewRow
 
-                .Item("BIOMETRIC_NO") = bioNo
-                .Item("BRANCHID") = branchID
                 .Item("EMP_ID") = EMP_ID
                 .Item("CATEGORY") = category
                 .Item("TOTAL_AMOUNT") = TOTAL_AMOUNT
@@ -598,7 +596,9 @@
         End Using
     End Sub
 
-    Friend Sub SavePayout_ALL(paydate_ As String) '========== AUTO SAVE TO PAYOUT ============ 
+    Friend Sub SavePayout_ALL(paydate_ As String, branch As String) '========== AUTO SAVE TO PAYOUT ============  
+        Replacing($"RECORDED_ALLOWANCE WHERE BRANCH = '{branch}' and PAYDATE = '{paydate_}'")
+        Replacing($"RECORDED_DEDUCTION WHERE BRANCH = '{branch}' and PAYDATE = '{paydate_}'")
 
         Dim regHoliday = Holiday_Rate("REGULAR")
         Dim specHoliday = Holiday_Rate("SPECIAL")
@@ -680,13 +680,14 @@
                         '============================================= ALLOWANCE =========================================================
                         Allowances = 0
 
-                        Dim sql_2 As String = $"Select * From PAYROLL_ALLOWANCES WHERE BIOMETRIC_NO = '{BiometricID}' and BRANCH_ID = '{branchID}'  and ALLOWED = 'YES' and SCHEDULE = '{sched}'"
+                        Dim sql_2 As String = $"Select * From PAYROLL_ALLOWANCES WHERE EMP_ID = '{emp_id}' and ALLOWED = 'YES' and SCHEDULE = '{sched}'"
                         Using ds_2 As DataSet = LoadSQL(sql_2, "PAYROLL_ALLOWANCES")
                             If ds_2.Tables(0).Rows.Count > 0 Then
                                 For Each dr_2 In ds_2.Tables(0).Rows
                                     With dr_2
                                         If .item("EFFECTIVE_DATE") <= Today Then
                                             Allowances = Allowances + .Item("AMOUNT")
+                                            Save_Recorded_Allow_Deduc(emp_id, branch, paydate_, .Item("CATEGORY"), .Item("AMOUNT"), "ALLOWANCE")
                                         End If
                                     End With
                                 Next
@@ -696,13 +697,14 @@
                         '============================================= DEDUCTION =========================================================  
                         Deduction = 0
 
-                        Dim sql_3 As String = $"Select * From PAYROLL_DEDUCTIONS WHERE BIOMETRIC_NO = '{BiometricID}' and BRANCHID = '{branchID}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
+                        Dim sql_3 As String = $"Select * From PAYROLL_DEDUCTIONS WHERE EMP_ID = '{emp_id}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
                         Using ds_3 As DataSet = LoadSQL(sql_3, "PAYROLL_DEDUCTIONS")
                             If ds_3.Tables(0).Rows.Count > 0 Then
                                 For Each dr_3 In ds_3.Tables(0).Rows
                                     With dr_3
                                         If .item("EFFECTIVE_DATE") <= Today Then
                                             Deduction = Deduction + .Item("AMOUNT_PER_GIVE")
+                                            Save_Recorded_Allow_Deduc(emp_id, branch, paydate_, .Item("CATEGORY"), .Item("AMOUNT_PER_GIVE"), "DEDUCTION")
                                         End If
                                     End With
                                 Next
@@ -765,14 +767,58 @@
         progressBarEnd()
     End Sub
 
+    Friend Sub Save_Recorded_Allow_Deduc(emp_id As String, BRANCH As String, PAYDATE As String, CATEGORY As String, AMOUNT As String, TRANSAC_NAME As String)
+
+        Dim sql As String = "Select * From RECORDED_ALLOW_DEDUC Rows 1"
+        Using ds As DataSet = LoadSQL(sql, "RECORDED_ALLOW_DEDUC")
+
+            Dim dsNewRow As DataRow = ds.Tables(0).NewRow
+            With dsNewRow
+
+                .Item("EMP_ID") = emp_id
+                .Item("BRANCH") = BRANCH
+                .Item("PAYDATE") = PAYDATE
+                .Item("CATEGORY") = CATEGORY
+                .Item("AMOUNT") = AMOUNT
+                .Item("TRANSAC_NAME") = TRANSAC_NAME
+
+            End With
+            ds.Tables(0).Rows.Add(dsNewRow)
+            SaveEntry(ds)
+        End Using
+
+    End Sub
+
+    Friend Sub Save_Recorded_Deduction(emp_id As String, BRANCH As String, PAYDATE As String, CATEGORY As String, AMOUNT As String)
+
+        Dim sql As String = "Select * From RECORDED_DEDUCTION Rows 1"
+        Using ds As DataSet = LoadSQL(sql, "RECORDED_DEDUCTION")
+
+            Dim dsNewRow As DataRow = ds.Tables(0).NewRow
+            With dsNewRow
+
+                .Item("EMP_ID") = emp_id
+                .Item("BRANCH") = BRANCH
+                .Item("PAYDATE") = PAYDATE
+                .Item("CATEGORY") = CATEGORY
+                .Item("AMOUNT") = AMOUNT
+
+            End With
+            ds.Tables(0).Rows.Add(dsNewRow)
+            SaveEntry(ds)
+        End Using
+    End Sub
 
     Friend Sub SavePayout_IndividualL(bioNo As String, branch As String, paydate_ As String) '========== AUTO SAVE TO PAYOUT ============ 
+
+        Replacing($"RECORDED_ALLOWANCE WHERE BRANCH = '{branch}' and PAYDATE = '{paydate_}'")
+        Replacing($"RECORDED_DEDUCTION WHERE BRANCH = '{branch}' and PAYDATE = '{paydate_}'")
 
         Dim regHoliday = Holiday_Rate("REGULAR")
         Dim specHoliday = Holiday_Rate("SPECIAL")
         Dim SBU = SBU_Amount()
 
-        Dim mysql As String = $"Select * From payroll_attendance A 
+        Dim mysql As String = $"Select Select A.*, B.*, B.id as emp_idd, C.* From payroll_attendance A 
                                 inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRICID 
                                 left join TBL_BRANCH C on C.BRANCHNAME = A.BRANCH and B.BRANCH_ID = C.ID 
                                     WHERE A.BIOMETRICID = '{bioNo}' and A.BRANCH = '{branch}' and A.PAYDATE = '{paydate_}'"
@@ -789,6 +835,8 @@
                     Dim Positional, Incentive, Boarding, Carekit, Transport, CashAdvance, Loan, Charges, Allowances, Deduction As Double
 
                     rate = IIf(IsDBNull(.Item("RATE")), 0, .Item("RATE"))
+                    Dim emp_id As String = .Item("emp_idd")
+                    Dim sched As String
 
                     '============================================= ATTENDANCE (TOTAL DAYS) =========================================================
                     Dim sql_1 As String = $"Select * From PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{bioNo}' and paydate = '{paydate_}'"
@@ -804,34 +852,6 @@
                                 Late = .Item("LATE")
                                 UnderTime = .Item("UNDERTIME")
                             End With
-                        End If
-                    End Using
-
-                    '============================================= ALLOWANCE =========================================================
-                    Allowances = 0
-
-                    Dim sql_2 As String = $"Select * From PAYROLL_ALLOWANCES WHERE BIOMETRIC_NO = '{bioNo}' and BRANCH_ID = '{branchID}'"
-                    Using ds_2 As DataSet = LoadSQL(sql_2, "PAYROLL_ALLOWANCES")
-                        If ds_2.Tables(0).Rows.Count > 0 Then
-                            For Each dr_2 In ds_2.Tables(0).Rows
-                                With dr_2
-                                    Allowances = Allowances + .Item("AMOUNT")
-                                End With
-                            Next
-                        End If
-                    End Using
-
-                    '============================================= DEDUCTION =========================================================  
-                    Deduction = 0
-
-                    Dim sql_3 As String = $"Select * From PAYROLL_DEDUCTIONS WHERE BIOMETRIC_NO = '{bioNo}' and BRANCHID = '{branchID}'"
-                    Using ds_3 As DataSet = LoadSQL(sql_3, "PAYROLL_DEDUCTIONS")
-                        If ds_3.Tables(0).Rows.Count > 0 Then
-                            For Each dr_3 In ds_3.Tables(0).Rows
-                                With dr_3
-                                    Deduction = Deduction + .Item("AMOUNT_PER_GIVE")
-                                End With
-                            Next
                         End If
                     End Using
 
@@ -857,9 +877,51 @@
                         'SSS_ER = Get_SSS_ER(monthly_Basic)
 
                         netTax = monthly_Basic - (SSSComp + PagibigComp + PhilhealthComp + Tax_Wheld)
+
+                        sssLoan = Get_LOAN_SSS(emp_id)
+                        pagibigLoan = Get_LOAN_Pagibig(emp_id)
+
+                        sched = "CLOSE PAYROLL"
                     Else
                         netTax = 0
+                        sched = "OPEN PAYROLL"
                     End If
+
+
+                    '============================================= ALLOWANCE =========================================================
+                    Allowances = 0
+
+                    Dim sql_2 As String = $"Select * From PAYROLL_ALLOWANCES WHERE EMP_ID = '{emp_id}' and ALLOWED = 'YES' and SCHEDULE = '{sched}'"
+                    Using ds_2 As DataSet = LoadSQL(sql_2, "PAYROLL_ALLOWANCES")
+                        If ds_2.Tables(0).Rows.Count > 0 Then
+                            For Each dr_2 In ds_2.Tables(0).Rows
+                                With dr_2
+                                    If .item("EFFECTIVE_DATE") <= Today Then
+                                        Allowances = Allowances + .Item("AMOUNT")
+                                        Save_Recorded_Allow_Deduc(emp_id, branch, paydate_, .Item("CATEGORY"), .Item("AMOUNT"), "ALLOWANCE")
+                                    End If
+                                End With
+                            Next
+                        End If
+                    End Using
+
+                    '============================================= DEDUCTION =========================================================  
+                    Deduction = 0
+
+                    Dim sql_3 As String = $"Select * From PAYROLL_DEDUCTIONS WHERE EMP_ID = '{emp_id}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
+                    Using ds_3 As DataSet = LoadSQL(sql_3, "PAYROLL_DEDUCTIONS")
+                        If ds_3.Tables(0).Rows.Count > 0 Then
+                            For Each dr_3 In ds_3.Tables(0).Rows
+                                With dr_3
+                                    If .item("EFFECTIVE_DATE") <= Today Then
+                                        Deduction = Deduction + .Item("AMOUNT_PER_GIVE")
+                                        Save_Recorded_Allow_Deduc(emp_id, branch, paydate_, .Item("CATEGORY"), .Item("AMOUNT_PER_GIVE"), "DEDUCTION")
+                                    End If
+                                End With
+                            Next
+                        End If
+                    End Using
+                    Deduction = Deduction + SBU
 
                     '============================================= Calculate_Gross() ========================================================= 
                     Dim TotalHol, TotalOT, TotalLateUnder, GrossAmount As Double

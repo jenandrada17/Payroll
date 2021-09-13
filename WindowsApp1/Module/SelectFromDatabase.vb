@@ -441,11 +441,9 @@ Module SelectFromDatabase
         End Using
     End Sub
 
-
     Friend Sub AttendanceDetails(biometric As String, paydate As String, NoOfDays_TXT As TextBox, RegularOT_TXT As TextBox,
                              SpecialHol_TXT As TextBox, RegularHol_TXT As TextBox, Late_TXT As TextBox,
                              UnderTime_TXT As TextBox)
-
 
         Dim mysql As String = $"Select * From PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{biometric}' and paydate = '{paydate}'"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
@@ -466,6 +464,46 @@ Module SelectFromDatabase
             End If
         End Using
     End Sub
+
+    Friend Function hasRecord_RECORDED(emp_id As String, paydate As String, table As String, transac_name As String)
+        Dim mysql As String = $"SELECT * FROM {table} Where emp_id = '{emp_id}'  and PAYDATE = '{paydate}'  and TRANSAC_NAME = '{transac_name}'"
+        Dim ds As DataSet = LoadSQL(mysql, table)
+        If ds.Tables(0).Rows.Count > 0 Then
+            Return False
+        End If
+
+        Return True
+    End Function
+
+
+    Friend Sub Recorded_Details(emp_id As String, datagrid As DataGridView, paydate As String, transac_name As String)
+
+        datagrid.Rows.Clear()
+
+        Dim mysql_ As String = $"select * from RECORDED_ALLOW_DEDUC  where emp_id = '{emp_id}' and PAYDATE = '{paydate}' and TRANSAC_NAME = '{transac_name}'"
+        Using ds As DataSet = LoadSQL(mysql_, "RECORDED_ALLOW_DEDUC")
+            If ds.Tables(0).Rows.Count > 0 Then
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+
+                        Dim amountt As Double = .item("AMOUNT")
+
+                        Dim toLower = .item("CATEGORY").ToLower()
+                        Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
+                        Dim toProper As String = info.ToTitleCase(toLower)
+                        Dim rowId As Integer = datagrid.Rows.Add()
+                        Dim row As DataGridViewRow = datagrid.Rows(rowId)
+                        row.Cells(0).Value = toProper
+                        row.Cells(1).Value = amountt.ToString(”N”)
+                        row.Height = 30
+                    End With
+                Next
+
+                AdjustHeightOfGridBasedOnRows(datagrid)
+            End If
+        End Using
+    End Sub
+
 
     Friend Sub AllowanceDetails(emp_id As String, datagrid As DataGridView, sched As String)
 
@@ -508,7 +546,6 @@ Module SelectFromDatabase
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
                     With dr
-
                         Dim amountt As Double = .item("AMOUNT_PER_GIVE")
 
                         Dim toLower = .item("CATEGORY").ToLower()
@@ -522,20 +559,13 @@ Module SelectFromDatabase
                             row.Cells(0).Value = toProper
                             row.Cells(0).Tag = amountt.ToString(”N”)
                             row.Cells(1).Value = amountt.ToString(”N”)
-                            row.Cells(2).Value = "OFF"
+                            row.Cells(3).Value = "OFF"
                             row.Cells(2).Tag = .item("ID")
-                            'row.Height = 30
-
                         End If
                     End With
                 Next
             End If
         End Using
-
-        'Dim sbu As Double = SBU_Amount()
-        'datagrid.Rows.Add(New String() {"SBU", sbu.ToString(”N”)})
-
-        'AdjustHeightOfGridBasedOnRows(datagrid)
     End Sub
 
     Friend Sub DeductioneDetails_MODIFIED(EMP_ID As String, PAYDATE As String, datagrid As DataGridView, sched As String)
@@ -567,28 +597,15 @@ Module SelectFromDatabase
                         row.Cells(2).Tag = .item("M_DEDUC_ID")
 
                         If .item("M_AMOUNT") = 0.00 Or .item("M_AMOUNT") = 0 Then
-                            row.Cells(2).Value = "ON"
+                            row.Cells(3).Value = "ON"
                         Else
-                            row.Cells(2).Value = "OFF"
+                            row.Cells(3).Value = "OFF"
                         End If
-
-                        'row.Height = 30
                     End With
                 Next
 
             End If
         End Using
-
-        'Dim rowIdd As Integer = datagrid.Rows.Add()
-        'Dim roww As DataGridViewRow = datagrid.Rows(rowIdd)
-
-        'Dim sbu As Double = SBU_Amount()
-
-        'roww.Cells(0).Value = "SBU"
-        'roww.Cells(1).Value = sbu.ToString(”N”)
-        'roww.Height = 25
-
-        'AdjustHeightOfGridBasedOnRows(datagrid)
     End Sub
 
     Friend Sub OtherDetails(biometric As String, branchID As String, PAYDATE As String, Savings_TXT As TextBox, OtherAllowance_TXT As TextBox, OtherDeduction_TXT As TextBox)
@@ -653,7 +670,6 @@ Module SelectFromDatabase
         End Using
 
         monthly_Basic = first_basic + second_basic
-
         Return monthly_Basic
     End Function
 
@@ -953,19 +969,19 @@ Module SelectFromDatabase
     End Function
 
 
-    Public Function File_Exist_f200(branch As String, PAYDATE As String)
-        Dim mysql As String = $"Select * FROM BIOMETRIC_DTR where BRANCH = '{branch}' and PAYDATE = '{PAYDATE}'"
-        Dim ds As DataSet = LoadSQL(mysql, "BIOMETRIC_DTR")
-        If ds.Tables(0).Rows.Count > 0 Then
-            Dim result As DialogResult = MessageBox.Show("File already imported, Do you want to modify?", "Warning", MessageBoxButtons.YesNo)
-            If result = DialogResult.Yes Then
-                RunCommand("DELETE FROM IMPORT_DTR WHERE BRANCH = '" & branch & "' and PAYDATE = '" & PAYDATE & "';")  'THIS IS TO DELETE EXISTING SHEETS IN IMPORT_DTR
-                RunCommand("DELETE FROM BIOMETRIC_DTR WHERE BRANCH = '" & branch & "' and PAYDATE = '" & PAYDATE & "';")  'THIS IS TO DELETE EXISTING ATTENDANCE IN BIOMETRIC_DTR
-                Return True
-            End If
-        End If
-        Return False
-    End Function
+    'Public Function File_Exist_f200(branch As String, PAYDATE As String)
+    '    Dim mysql As String = $"Select * FROM BIOMETRIC_DTR where BRANCH = '{branch}' and PAYDATE = '{PAYDATE}'"
+    '    Dim ds As DataSet = LoadSQL(mysql, "BIOMETRIC_DTR")
+    '    If ds.Tables(0).Rows.Count > 0 Then
+    '        Dim result As DialogResult = MessageBox.Show("File already imported, Do you want to modify?", "Warning", MessageBoxButtons.YesNo)
+    '        If result = DialogResult.Yes Then
+    '            RunCommand("DELETE FROM IMPORT_DTR WHERE BRANCH = '" & branch & "' and PAYDATE = '" & PAYDATE & "';")  'THIS IS TO DELETE EXISTING SHEETS IN IMPORT_DTR
+    '            RunCommand("DELETE FROM BIOMETRIC_DTR WHERE BRANCH = '" & branch & "' and PAYDATE = '" & PAYDATE & "';")  'THIS IS TO DELETE EXISTING ATTENDANCE IN BIOMETRIC_DTR
+    '            Return True
+    '        End If
+    '    End If
+    '    Return False
+    'End Function
 
 
     Friend Sub PopulateBiometricSHEET(datagrid As DataGridView, Paydate As String, BRANCHNAME As String)
@@ -1719,6 +1735,9 @@ Module SelectFromDatabase
         End Using
     End Sub
 
+    Public Sub Replacing(str As String)
+        RunCommand($"DELETE FROM {str};")  'THIS IS TO DELETE EXISTING DATA TO REPLACE ESPECIALLY FROM DATAGRID
+    End Sub
 
 
 End Module

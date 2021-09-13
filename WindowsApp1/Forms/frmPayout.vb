@@ -10,7 +10,7 @@ Public Class frmPayout
     Dim SBU, Charges, Loan, CashAdvance, other As Double
     Dim SBUUU, Chargesss, Loannn, CashAdvanceee, otherrr As Double
     Dim gross, netTax, sssLoan, pagibigLoan, allowance, deduction As Double
-    Dim emp_id As String
+    Dim emp_id, sched_deduc As String
 
     Private Sub frmPayout_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         regHoliday = Holiday_Rate("REGULAR")
@@ -63,7 +63,6 @@ Public Class frmPayout
     End Sub
 
     Public Sub DETAILS()
-        Dim sched_deduc As String
         If Bio_Exist_Attendance(BiometricID_TXT.Text, paydate_) Then
 
             AttendanceDetails(BiometricID_TXT.Text, paydate_, NoOfDays_TXT, RegularOT_TXT, SpecialHol_TXT, RegularHol_TXT,
@@ -100,27 +99,25 @@ Public Class frmPayout
                 sched_deduc = "OPEN PAYROLL"
             End If
 
-            AllowanceDetails(Name_TXT.Tag, Allowance_grid, sched_deduc)
-            Allowance_grid.Enabled = True
-
-            '========================== CHECK IF THERE IS/ARE EXISTING MODIFIED DEDUCTION ===================== 
-            If isExist_single("MODIFIED_DEDUCTION", "EMP_ID", Name_TXT.Tag) Then
-                DeductioneDetails_MODIFIED(Name_TXT.Tag, paydate_, Deduction_grid, sched_deduc)
+            '================ FETCHING ALLOWANCE RECORDED WHEN ATTENDANCE BIOMETRIC IMPORTED ==================
+            If hasRecord_RECORDED(Name_TXT.Tag, paydate_, "RECORDED_ALLOW_DEDUC", "ALLOWANCE") Then
+                Recorded_Details(Name_TXT.Tag, Allowance_grid, paydate_, "ALLOWANCE")
             Else
+                AllowanceDetails(Name_TXT.Tag, Allowance_grid, sched_deduc)
+            End If
+
+            Allowance_grid.Visible = True
+
+            '================ FETCHING ALLOWANCE RECORDED WHEN ATTENDANCE BIOMETRIC IMPORTED ==================
+            If isExist_single("MODIFIED_DEDUCTION", "EMP_ID", Name_TXT.Tag) Then                                '=========m MDIFIED DEDUCTION (ON/OFF)
+                DeductioneDetails_MODIFIED(Name_TXT.Tag, paydate_, Deduction_grid, sched_deduc)
+            ElseIf hasRecord_RECORDED(Name_TXT.Tag, paydate_, "RECORDED_ALLOW_DEDUC", "DEDUCTION") Then         '=========m RECORDED DEDUCTION IMPORTING ATTENDANCE
+                Recorded_Details(Name_TXT.Tag, Deduction_grid, paydate_, "DEDUCTION")
+            Else                                                                                                '=========m ORIGINAL DEDUCTION INCLUDING NEW ADDED DEDUCTION                                                                                               
                 DeductioneDetails_ORIG(Name_TXT.Tag, Deduction_grid, sched_deduc)
             End If
 
-            '========================== SBU DEDUCTION ===================== 
-
-            Dim rowIdd As Integer = Deduction_grid.Rows.Add()
-            Dim roww As DataGridViewRow = Deduction_grid.Rows(rowIdd)
-
-            Dim sbu As Double = SBU_Amount()
-
-            roww.Cells(0).Value = "SBU"
-            roww.Cells(1).Value = sbu.ToString(”N”)
-
-            AdjustHeightOfGridBasedOnRows(Deduction_grid)
+            ADD_SBU_GRID() ' =========== SBU DEDUCTION 
 
             '==========================  CHECK PAYDATE IF VALID FOR EDITING (DEDUCTION) =========================  
 
@@ -222,38 +219,69 @@ Public Class frmPayout
 
         Deduction_grid.Rows.Clear()
         Allowance_grid.Rows.Clear()
-    End Sub
 
-    'Private Sub OtherAllowance_TXT_TextChanged(sender As Object, e As EventArgs)
-    '    If Not Name_TXT.Text = String.Empty Then
-    '        Calculate_Allowance()
-    '        Calculate_NetPay()
-    '    End If
-    'End Sub
+        Details_Save_BTN.Text = "Edit"
+    End Sub
 
     Private Sub Details_Save_BTN_Click(sender As Object, e As EventArgs) Handles Details_Save_BTN.Click
         If Not Name_TXT.Text = String.Empty Then
 
-            SavePayout(BiometricID_TXT.Text, Rate_TXT.Tag, paydate_, TotalBasic_LBL.Text, TotalOT_LBL.Text,
+            If Details_Save_BTN.Text = "Save" Then
+                SavePayout(BiometricID_TXT.Text, Rate_TXT.Tag, paydate_, TotalBasic_LBL.Text, TotalOT_LBL.Text,
                           TotalLateUnder_LBL.Text, GrossAmount_LBL.Text, SSSComp_LBL.Text, HDMF_LBL.Text, Philhealth_LBL.Text,
                           Tax_Wheld_LBL.Text, NetTax_LBL.Text, SSSLoan_LBL.Text, PagibigLoan_LBL.Text,
                           Allowances_LBL.Text, Deduction_LBL.Text, NetPay_LBL.Text)
 
-            If Deduction_grid.Rows.Count > 0 Then
+                If Deduction_grid.Rows.Count > 0 Then
 
-                If isExist_single("MODIFIED_DEDUCTION", "EMP_ID", Name_TXT.Tag) Then 'DELETE RECORD IF EXIST TO REPLACE NEW FROM GRID
-                    RunCommand($"DELETE FROM MODIFIED_DEDUCTION WHERE EMP_ID = '{Name_TXT.Tag}' and PAYDATE = '{paydate_}';")
+                    If isExist_single("MODIFIED_DEDUCTION", "EMP_ID", Name_TXT.Tag) Then 'DELETE RECORD IF EXIST TO REPLACE NEW FROM GRID
+                        RunCommand($"DELETE FROM MODIFIED_DEDUCTION WHERE EMP_ID = '{Name_TXT.Tag}' and PAYDATE = '{paydate_}';")
+                    End If
+
+                    For Each row As DataGridViewRow In Deduction_grid.Rows
+                        If Not row.Cells(2).Value = String.Empty Then
+                            SavePayout_MODIFIED_DEDUCTION(Name_TXT.Tag, paydate_, row.Cells(0).Value, row.Cells(1).Value, row.Cells(0).Tag, Today, row.Cells(2).Tag)
+                        End If
+                    Next
                 End If
 
-                For Each row As DataGridViewRow In Deduction_grid.Rows
-                    If Not row.Cells(2).Value = String.Empty Then
-                        SavePayout_MODIFIED_DEDUCTION(Name_TXT.Tag, paydate_, row.Cells(0).Value, row.Cells(1).Value, row.Cells(0).Tag, Today, row.Cells(2).Tag)
-                    End If
-                Next
-            End If
+                Cancel_BTN.PerformClick()
+                Details_Save_BTN.Text = "Edit"
 
-            Cancel_BTN.PerformClick()
+            Else
+                AllowanceDetails(Name_TXT.Tag, Allowance_grid, sched_deduc)
+                DeductioneDetails_ORIG(Name_TXT.Tag, Deduction_grid, sched_deduc)
+
+                ADD_SBU_GRID() ' =========== SBU DEDUCTION 
+
+                Calculate_Gross()
+
+                Calculate_Allowance()
+
+                Calculate_Deduction()
+
+                Calculate_NetPay()
+
+                Checkgrid_Visible()
+
+                Details_Save_BTN.Text = "Save"
+            End If
         End If
+
+
+    End Sub
+
+    Public Sub ADD_SBU_GRID()
+
+        Dim rowIdd As Integer = Deduction_grid.Rows.Add()
+        Dim roww As DataGridViewRow = Deduction_grid.Rows(rowIdd)
+
+        Dim sbu As Double = SBU_Amount()
+
+        roww.Cells(0).Value = "SBU"
+        roww.Cells(1).Value = sbu.ToString(”N”)
+
+        AdjustHeightOfGridBasedOnRows(Deduction_grid)
 
     End Sub
 

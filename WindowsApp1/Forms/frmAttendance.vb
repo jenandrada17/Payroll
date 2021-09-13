@@ -791,7 +791,7 @@ Public Class frmAttendance
                 forLoop_ALL_IMPORTED()   ' ===== SAVE AM_IN, AM_OUT, PM_IN, PM_OUT ====
                 SAVE_DIRECT_Attendance() ' ===== DIRECT SAVE TO ATTENDANCE ====
                 PopulateBiometricSHEET(Bio_grid, Paydate, Branch_ComboB.SelectedItem) ' ===== POPULATE DATAGRIDVIEW FROM SHEET ====
-                SavePayout_ALL(Paydate)
+                SavePayout_ALL(Paydate, Branch_ComboB.SelectedItem)
 
                 Cursor = Cursors.Default
 
@@ -921,7 +921,7 @@ Public Class frmAttendance
 
                 SAVE_DIRECT_Attendance() ' ===== DIRECT SAVE TO ATTENDANCE ====
                 PopulateBiometricSHEET(Bio_grid, Paydate, Branch_ComboB.SelectedItem) ' ===== POPULATE DATAGRIDVIEW FROM SHEET ==== 
-                SavePayout_ALL(Paydate)
+                SavePayout_ALL(Paydate, Branch_ComboB.SelectedItem)
 
                 Cursor = Cursors.Default
             End Try
