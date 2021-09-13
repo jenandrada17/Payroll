@@ -228,7 +228,7 @@ Partial Class frmReport
         Me.Company_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.Company_Combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Company_Combo.FormattingEnabled = True
-        Me.Company_Combo.Items.AddRange(New Object() {"PHOTO", "P&G UY", "DALTON", "PERFECOM"})
+        Me.Company_Combo.Items.AddRange(New Object() {"PHOTO", "P&G UY", "DALTON", "PERFECOM", "PGC HEAD OFFICE"})
         Me.Company_Combo.Location = New System.Drawing.Point(366, 14)
         Me.Company_Combo.Name = "Company_Combo"
         Me.Company_Combo.Size = New System.Drawing.Size(221, 33)

@@ -1778,96 +1778,7 @@ Fields!COMPANY.Value = "PERFECOM" oR Fields!PLUS.Value = "PERFECOM" , "PERFECOM"
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Switch(Fields!BRANCH_CODE.Value = "ACM", "Ace Centerpoint", 
-Fields!BRANCH_CODE.Value = "3G", "3G Hotel", 
-Fields!BRANCH_CODE.Value = "COMI", "Commissary", 
-Fields!BRANCH_CODE.Value = "KTV", "Music Play &amp; KTV Bar", 
-Fields!BRANCH_CODE.Value = "PBA", "PBA", 
-Fields!BRANCH_CODE.Value = "WAVE", "WAVE", 
-Fields!BRANCH_CODE.Value = "711-POL", "7 Eleven Polomolok", 
-Fields!BRANCH_CODE.Value = "711-ROX", "7 Eleven Roxas", 
-Fields!BRANCH_CODE.Value = "CAG", "Cagampang", 
-Fields!BRANCH_CODE.Value = "JCAT 2", "Jcat 2", 
-Fields!BRANCH_CODE.Value = "LAG", "Lagao", 
-Fields!BRANCH_CODE.Value = "PMA", "Malakas", 
-Fields!BRANCH_CODE.Value = "NUN", "Nuñez", 
-Fields!BRANCH_CODE.Value = "PEN", "Pendatun", 
-Fields!BRANCH_CODE.Value = "AL1", "Alunan 1", 
-Fields!BRANCH_CODE.Value = "AL2", "Alunan 2", 
-Fields!BRANCH_CODE.Value = "ARC", "Ace Centerpoint/Realme", 
-Fields!BRANCH_CODE.Value = "AWANG", "Awang", 
-Fields!BRANCH_CODE.Value = "BANG", "Banga", 
-Fields!BRANCH_CODE.Value = "BUT", "Butuan", 
-Fields!BRANCH_CODE.Value = "COT", "Cotabato", 
-Fields!BRANCH_CODE.Value = "COT 1", "Cotabato 1", 
-Fields!BRANCH_CODE.Value = "COT 2", "Cotabato 2", 
-Fields!BRANCH_CODE.Value = "COT 3", "Cotabato 3", 
-Fields!BRANCH_CODE.Value = "COT 4", "Cotabato 4", 
-Fields!BRANCH_CODE.Value = "DAL", "Dalican", 
-Fields!BRANCH_CODE.Value = "DIG", "Digos", 
-Fields!BRANCH_CODE.Value = "DIG 1", "Digos 1",  
-Fields!BRANCH_CODE.Value = "DIG 2", "Digos 2",  
-Fields!BRANCH_CODE.Value = "ESPE", "Esperanza",  
-Fields!BRANCH_CODE.Value = "GAK", "Gaisano Kidapawan", 
-Fields!BRANCH_CODE.Value = "GAD", "Gaisano Digos", 
-Fields!BRANCH_CODE.Value = "GAM", "Gaisano Mabel", 
-Fields!BRANCH_CODE.Value = "GAP", "Gaisano Polomolok", 
-Fields!BRANCH_CODE.Value = "GCA", "Cagayan", 
-Fields!BRANCH_CODE.Value = "GCS", "Gaisano Surigao", 
-Fields!BRANCH_CODE.Value = "GGP", "Gaisano Panabo", 
-Fields!BRANCH_CODE.Value = "GLAN", "Glan", 
-Fields!BRANCH_CODE.Value = "GMA", "G-MALL DAVAO", 
-Fields!BRANCH_CODE.Value = "ISU", "Isulan", 
-Fields!BRANCH_CODE.Value = "ISU 1", "Isulan 1", 
-Fields!BRANCH_CODE.Value = "ISU 2", "Isulan 2", 
-Fields!BRANCH_CODE.Value = "ISU 3", "Isulan 3", 
-Fields!BRANCH_CODE.Value = "KAB", "Kabacan", 
-Fields!BRANCH_CODE.Value = "KAB 2", "Kabacan 2", 
-Fields!BRANCH_CODE.Value = "KAB3", "Kabacan 3", 
-Fields!BRANCH_CODE.Value = "KAL", "Kalamansig", 
-Fields!BRANCH_CODE.Value = "KCG", "KCC Gensan", 
-Fields!BRANCH_CODE.Value = "KCM", "KCC Marbel", 
-Fields!BRANCH_CODE.Value = "KIA", "Kiamba", 
-Fields!BRANCH_CODE.Value = "KID", "Kidapawan", 
-Fields!BRANCH_CODE.Value = "KID2", "Kidapawan 2", 
-Fields!BRANCH_CODE.Value = "LAM", "Lambayong", 
-Fields!BRANCH_CODE.Value = "LEBAK", "Lebak", 
-Fields!BRANCH_CODE.Value = "M1", "Marbel", 
-Fields!BRANCH_CODE.Value = "MLANG", "Mlang", 
-Fields!BRANCH_CODE.Value = "MAA", "Maasim", 
-Fields!BRANCH_CODE.Value = "MAITUM", "Maitum", 
-Fields!BRANCH_CODE.Value = "MID", "Midsayap", 
-Fields!BRANCH_CODE.Value = "OPK", "OPPO-KCC Gensan", 
-Fields!BRANCH_CODE.Value = "PGN", "PG Building", 
-Fields!BRANCH_CODE.Value = "PIKIT", "Pikit", 
-Fields!BRANCH_CODE.Value = "PIO", "Pioneer", 
-Fields!BRANCH_CODE.Value = "POL", "Polomolok", 
-Fields!BRANCH_CODE.Value = "POL2", "Polomolok 2", 
-Fields!BRANCH_CODE.Value = "POL3", "Polomolok 3", 
-Fields!BRANCH_CODE.Value = "PQO", "President Quirino",
-Fields!BRANCH_CODE.Value = "ROG", "Robinson Gensan",
-Fields!BRANCH_CODE.Value = "ROX", "Roxas Gensan",
-Fields!BRANCH_CODE.Value = "SAN", "Santiago", 
-Fields!BRANCH_CODE.Value = "SHARIFF", "Shariff Aguak", 
-Fields!BRANCH_CODE.Value = "SNP", "San Pedro", 
-Fields!BRANCH_CODE.Value = "SMD", "SM Davao", 
-Fields!BRANCH_CODE.Value = "SMG", "SM Gensan", 
-Fields!BRANCH_CODE.Value = "SML", "SM Lazaro", 
-Fields!BRANCH_CODE.Value = "SRA", "Surallah", 
-Fields!BRANCH_CODE.Value = "SURI 2", "Surigao 2", 
-Fields!BRANCH_CODE.Value = "SURI 3", "Surigao 3", 
-Fields!BRANCH_CODE.Value = "TAC", "Tacurong ",
-Fields!BRANCH_CODE.Value = "TAC 1", "Tacurong 1",
-Fields!BRANCH_CODE.Value = "TAC 2", "Tacurong 2", 
-Fields!BRANCH_CODE.Value = "TAG", "Gaisano Tagum", 
-Fields!BRANCH_CODE.Value = "TBOLI", "TBOLI", 
-Fields!BRANCH_CODE.Value = "TUL", "Tulunan", 
-Fields!BRANCH_CODE.Value = "UHA", "Uhaw", 
-Fields!BRANCH_CODE.Value = "UPI", "UPI", 
-Fields!BRANCH_CODE.Value = "ZAM", "Zamboanga", 
-Fields!BRANCH_CODE.Value = "ZUL", "Zulueta", 
-Fields!BRANCH_CODE.Value = "FINEPIX", "Finepixel",
-1,Fields!HO_CATEGORY.Value)</Value>
+                              <Value rd:LocID="Imports System.Globalization">=Fields!BRANCH_CODE.Value</Value>
                               <Style>
                                 <FontFamily>Berlin Sans FB</FontFamily>
                                 <FontSize>8pt</FontSize>
@@ -2725,6 +2636,7 @@ Fields!BRANCH_CODE.Value = "FINEPIX", "Finepixel",
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
+                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
                 <TablixCell>
@@ -8302,22 +8214,32 @@ Fields!BRANCH_CODE.Value = "FINEPIX", "Finepixel",
         </TablixColumnHierarchy>
         <TablixRowHierarchy>
           <TablixMembers>
-            <TablixMember />
-            <TablixMember />
-            <TablixMember />
-            <TablixMember />
-            <TablixMember />
+            <TablixMember>
+              <KeepWithGroup>After</KeepWithGroup>
+              <RepeatOnNewPage>true</RepeatOnNewPage>
+            </TablixMember>
+            <TablixMember>
+              <KeepWithGroup>After</KeepWithGroup>
+              <RepeatOnNewPage>true</RepeatOnNewPage>
+            </TablixMember>
+            <TablixMember>
+              <KeepWithGroup>After</KeepWithGroup>
+              <RepeatOnNewPage>true</RepeatOnNewPage>
+            </TablixMember>
+            <TablixMember>
+              <KeepWithGroup>After</KeepWithGroup>
+              <RepeatOnNewPage>true</RepeatOnNewPage>
+            </TablixMember>
+            <TablixMember>
+              <KeepWithGroup>After</KeepWithGroup>
+              <RepeatOnNewPage>true</RepeatOnNewPage>
+            </TablixMember>
             <TablixMember>
               <Group Name="BRANCH_CODE">
                 <GroupExpressions>
                   <GroupExpression>=Fields!BRANCH_CODE.Value</GroupExpression>
                 </GroupExpressions>
               </Group>
-              <SortExpressions>
-                <SortExpression>
-                  <Value>=Fields!BRANCH_CODE.Value</Value>
-                </SortExpression>
-              </SortExpressions>
               <TablixMembers>
                 <TablixMember />
                 <TablixMember>
@@ -8542,6 +8464,16 @@ Fields!BRANCH_CODE.Value = "FINEPIX", "Finepixel",
       </rd:DataSetInfo>
     </DataSet>
   </DataSets>
+  <Code>Function TitleCase(str as String) as String
+
+		Dim toLower, toProper as String
+		toLower = str.ToLower()
+
+		Dim cultureInfo As New System.Globalization.CultureInfo("en-US")
+		toProper = cultureInfo.TextInfo.ToTitleCase(toLower)
+
+	 Return toProper 
+End Function</Code>
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
   <rd:ReportID>14d2fada-4b15-49b1-98a4-f0744b8c5950</rd:ReportID>

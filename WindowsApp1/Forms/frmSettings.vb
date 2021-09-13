@@ -1,6 +1,4 @@
-﻿
-
-Public Class frmSettings
+﻿Public Class frmSettings
 
     Private Sub frmSettings_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
@@ -795,6 +793,7 @@ Public Class frmSettings
 
         If City_Combo.Text <> Nothing And CityBName_Combo.Text <> Nothing And CityCode_Combo.Text <> Nothing Then
             SaveCityBranch(CityCode_Combo.Text, CityBName_Combo.Text, City_Combo.Text)
+            Lists_City_Branch(CityBranch_List)
         Else
             MsgBox("Please Complete the Details", MsgBoxStyle.Exclamation, "Error")
         End If
@@ -815,7 +814,7 @@ Public Class frmSettings
 
     End Sub
 
-    Private Sub City_Combo_TextChanged(sender As Object, e As EventArgs) Handles CityCode_Combo.TextChanged, CityBName_Combo.TextChanged, City_Combo.TextChanged
+    Private Sub City_Combo_TextChanged(sender As Object, e As EventArgs) Handles CityCode_Combo.TextChanged, City_Combo.TextChanged
         Dim selectionStart As Integer = sender.SelectionStart
 
         sender.Text = sender.Text.ToUpper()

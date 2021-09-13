@@ -96,7 +96,7 @@
                             Dim PAGIBIG As Double = .Item("PAGIBIG_COMP")
                             Dim SBU_CHARGES As Double = .Item("TOTAL_DEDUCTION")
                             Dim NET_PAY As Double = .Item("NET_PAY")
-                            Dim BRANCH_CODE As String = IIf(.Item("BRANCH_CODE") = "", .Item("HO_CATEGORY"), .Item("BRANCH_CODE"))
+                            Dim BRANCH_CODE As String = IIf(.Item("BRANCH_CODE") = "", .Item("HO_CATEGORY"), TitleCase(.Item("COMPANY")) & "-" & .Item("BRANCHNAME"))
                             Dim COMPANY As String = .Item("COMPANY")
                             Dim HO_CATEGORY As String = IIf(IsDBNull(.Item("HO_CATEGORY")), "", .Item("HO_CATEGORY"))
 
@@ -107,14 +107,22 @@
                             ElseIf HO_CATEGORY.Contains("Dalton") Then
                                 COMPANY = "DALTON"
                                 BRANCH_CODE = HO_CATEGORY
+
+                            ElseIf HO_CATEGORY.Contains("Photo") Or HO_CATEGORY.Contains("PGC") Then
+                                COMPANY = "PHOTO"
+                                BRANCH_CODE = HO_CATEGORY
                             End If
 
-                            If COMPANY = "PHOTO" Then Plus = $"{COMPANY}({Plus})"
+                            Dim tempPlus As String = Plus
+
+                            If Plus = "DAVAO PERFECT" Or Plus = "GENSAN PERFECT" And HO_CATEGORY = "" Then BRANCH_CODE = "Perfect" & "-" & .Item("BRANCHNAME")
+                            If Plus = "JR PHOTO" Then BRANCH_CODE = "JR Photo" & "-" & .Item("BRANCHNAME")
+                            If COMPANY = "PHOTO" Then tempPlus = $"{COMPANY}({Plus})"
 
                             dt_NetPay.Rows.Add(EMP_NO, namee, BASIC.ToString("n"), OVERTIME.ToString("n"), HOLIDAY.ToString("n"), N_DIFF.ToString("n"),
                                                PI_ECOLA_SIL.ToString("n"), TARDINESS.ToString("n"), SSS.ToString("n"), PHIC.ToString("n"), PAGIBIG.ToString("n"),
                                                SBU_CHARGES.ToString("n"), NET_PAY.ToString("n"), BRANCH_CODE, payroll.ToString("MMMM dd, yyyy"), period, COMPANY,
-                                               HO_CATEGORY, Plus)
+                                               HO_CATEGORY, tempPlus)
 
                         End With
                     Next
@@ -430,167 +438,6 @@
     End Sub
 
 
-    'Public Sub SavePercentage_Common()
-
-    '    Dim DALTON_BB, DALTON_HO, GENSANPERFECT_BB, GENSANPERFECT_HO, JRPHOTO_BB, JRPHOTO_HO, DAVAOP_BB, DAVAOP_HO, PERFECOM_BB,
-    '        PERFECOM_HO, G3_BB, G3_HO, Seven11_ROX_BB, Seven11_ROX_HO, Seven11_POL_BB, Seven11_POL_HO, COMI_BB, COMI_HO, PBA_BB,
-    '        PBA_HO, KTV_BB, KTV_HO, WAVE_BB, WAVE_HO, PGC, LEASING, LEASING_BR, DALTON_BR, GENSANPERFECT_BR, DAVAOP_BR, PERFECOM_BR, G3_BR,
-    '        Seven11_BR, COMI_TO_FUJI_BR, M_DALTONP, M_PHOTO, M_DAVAOP, M_PERFECOM, D_DALTONP, D_PHOTO, D_DAVAOP, D_PERFECOM, L_DALTON, L_PG711,
-    '        DR_Dalton, DR_Photo, DR_House, ConDalton, ConPhoto, LEASING_P As Integer
-
-    '    DALTON_BB = GetCount_Common("where company = 'DALTON'")
-    '    DALTON_HO = GetCount_Common("where UPPER(HO_CATEGORY) LIKE UPPER('%Dalton%')")
-    '    GENSANPERFECT_BB = GetCount_Common("where branch_code IN ('ROG','ROX','FINEPIX','GMA','DIG','SNP','SMD')")
-    '    GENSANPERFECT_HO = Nothing
-    '    JRPHOTO_BB = Nothing
-    '    JRPHOTO_HO = Nothing
-    '    DAVAOP_BB = GetCount_Common("where branch_code IN ('SMG','KCG','ACM','TAC')")
-    '    DAVAOP_HO = Nothing
-    '    PERFECOM_BB = GetCount_Common("where company = 'PERFECOM'")
-    '    PERFECOM_HO = GetCount_Common("where company = 'HEAD OFFICE' AND UPPER(HO_CATEGORY) LIKE UPPER('%Perfecom%')")
-    '    G3_BB = GetCount_Common("where branch_code = '3G'")
-    '    G3_HO = Nothing
-    '    Seven11_ROX_BB = GetCount_Common("where branch_code = '711-ROX'")
-    '    Seven11_ROX_HO = Nothing
-    '    Seven11_POL_BB = GetCount_Common("where branch_code = '711-POL'")
-    '    Seven11_POL_HO = Nothing
-    '    COMI_BB = GetCount_Common("where branch_code = 'COMI'")
-    '    COMI_HO = Nothing
-    '    PBA_BB = GetCount_Common("where branch_code = 'PBA'")
-    '    PBA_HO = Nothing
-    '    KTV_BB = GetCount_Common("where branch_code = 'KTV'")
-    '    KTV_HO = Nothing
-    '    WAVE_BB = GetCount_Common("where branch_code = 'WAVE'")
-    '    WAVE_HO = Nothing
-    '    PGC = GetCount_Common("where ho_category = 'PGC Head Office'")
-    '    LEASING = GetCount_Common("where ho_category IN ('Leasing Admin Office','Construction')")
-    '    DALTON_BR = GetDistinctCount("branch_code", "where company = 'DALTON'")
-    '    GENSANPERFECT_BR = GetDistinctCount("branch_code", "where company = 'PHOTO'")
-    '    DAVAOP_BR = GetDistinctCount("branch_code", "where branch_code IN ('SMG','KCG','ACM','TAC')")
-    '    PERFECOM_BR = GetDistinctCount("branch_code", "where company = 'PERFECOM'")
-    '    G3_BR = GetDistinctCount("branch_code", "where branch_code = '3G'")
-    '    Seven11_BR = GetDistinctCount("branch_code", "where branch_code IN ('711-ROX','711-POL')")
-    '    COMI_TO_FUJI_BR = GetDistinctCount("branch_code", "where branch_code IN ('COMI','PBA','KTV','WAVE')")
-
-    '    LEASING_BR = GetModify_Reports("LEASINGBR")
-    '    LEASING_P = GetModify_Reports("LEASINGP")
-
-    '    Dim DALTON_EMP = DALTON_BB + DALTON_HO
-    '    Dim GENSANP_EMP = GENSANPERFECT_BB + GENSANPERFECT_HO
-    '    Dim PHOTO_EMP = JRPHOTO_BB + JRPHOTO_HO
-    '    Dim DAVAOP_EMP = DAVAOP_BB + DAVAOP_HO
-    '    Dim PERFECOM_EMP = PERFECOM_BB + PERFECOM_HO
-    '    Dim G3_EMP = G3_BB + G3_HO
-    '    Dim SEVENROX_EMP = Seven11_ROX_BB + Seven11_ROX_HO
-    '    Dim SEVENPOL_EMP = Seven11_POL_BB + Seven11_POL_HO
-    '    Dim COMI_EMP = COMI_BB + COMI_HO
-    '    Dim PBA_EMP = PBA_BB + PBA_HO
-    '    Dim KTV_EMP = KTV_BB + KTV_HO
-    '    Dim WAVE_EMP = WAVE_BB + WAVE_HO
-
-    '    Dim TOTAL_EE = DALTON_EMP + GENSANP_EMP + PHOTO_EMP + DAVAOP_EMP + PERFECOM_EMP + G3_EMP +
-    '                SEVENROX_EMP + SEVENPOL_EMP + COMI_EMP + PBA_EMP + KTV_EMP + WAVE_EMP
-
-    '    Dim TOTAL_BB = DALTON_BR + GENSANPERFECT_BR + DAVAOP_BR + PERFECOM_BR + G3_BR + Seven11_BR +
-    '                COMI_TO_FUJI_BR + LEASING_BR
-
-    '    '============================ EMPLOYEE PERCENTAGE ==========================
-    '    Dim DALTON_EMP_P As String = FormatPercent(DALTON_EMP / TOTAL_EE, 2, TriState.False) '(DALTON_EMP / TOTAL_EE) * 100
-    '    Dim GENSAN_PHOTO_EMP_P As String = FormatPercent((GENSANP_EMP + PHOTO_EMP) / TOTAL_EE, 2, TriState.False) '((GENSANP_EMP + PHOTO_EMP) / TOTAL_EE) * 100
-    '    Dim DAVAOP_EMP_P As String = FormatPercent(DAVAOP_EMP / TOTAL_EE, 2, TriState.False) '(DAVAOP_EMP / TOTAL_EE) * 100
-    '    Dim PERFECOM_EMP_P As String = FormatPercent(PERFECOM_EMP / TOTAL_EE, 2, TriState.False) '(PERFECOM_EMP / TOTAL_EE) * 100
-    '    Dim G3_EMP_P As String = FormatPercent(G3_EMP / TOTAL_EE, 2, TriState.False) '(G3_EMP / TOTAL_EE) * 100
-    '    Dim SEVEN11_EMP_P As String = FormatPercent((SEVENROX_EMP + SEVENPOL_EMP) / TOTAL_EE, 2, TriState.False) '((SEVENROX_EMP + SEVENPOL_EMP) / TOTAL_EE) * 100
-    '    Dim COMI_TO_FUJI_EMP_P As String = FormatPercent((COMI_EMP + PBA_EMP + KTV_EMP + WAVE_EMP) / TOTAL_EE, 2, TriState.False) '((COMI_EMP + PBA_EMP + KTV_EMP + WAVE_EMP) / TOTAL_EE) * 100
-
-    '    '============================ BRANCH PERCENTAGE ==========================
-    '    Dim DALTON_BR_P As String = FormatPercent(DALTON_BR / TOTAL_BB, 2, TriState.False) '(DALTON_BR / TOTAL_BB) * 100
-    '    Dim GENSAN_BR_P As String = FormatPercent(GENSANPERFECT_BR / TOTAL_BB, 2, TriState.False) '(GENSANPERFECT_BR / TOTAL_BB) * 100
-    '    Dim DAVAOP_BR_P As String = FormatPercent(DAVAOP_BR / TOTAL_BB, 2, TriState.False) '(DAVAOP_BR / TOTAL_BB) * 100
-    '    Dim PERFECOM_BR_P As String = FormatPercent(PERFECOM_BR / TOTAL_BB, 2, TriState.False) '(PERFECOM_BR / TOTAL_BB) * 100
-    '    Dim G3_BR_P As String = FormatPercent(G3_BR / TOTAL_BB, 2, TriState.False) '(G3_BR / TOTAL_BB) * 100
-    '    Dim Seven11_BR_P As String = FormatPercent(Seven11_BR / TOTAL_BB, 2, TriState.False) '(Seven11_BR / TOTAL_BB) * 100
-    '    Dim COMI_TO_FUJI_BR_P As String = FormatPercent(COMI_TO_FUJI_BR / TOTAL_BB, 2, TriState.False) '(COMI_TO_FUJI_BR / TOTAL_BB) * 100
-    '    Dim LEASING_BR_P As String = FormatPercent(LEASING_BR / TOTAL_BB, 2, TriState.False) '(LEASING_BR / TOTAL_BB) * 100
-
-    '    '============================ MARKETING PERCENTAGE ==========================
-    '    M_DALTONP = GetModify_Reports("M_DALTONP")
-    '    M_PHOTO = GetModify_Reports("M_PHOTO")
-    '    M_DAVAOP = GetModify_Reports("M_DAVAOP")
-    '    M_PERFECOM = GetModify_Reports("M_PERFECOM")
-
-    '    '============================ DYU PERCENTAGE ==========================
-    '    D_DALTONP = GetModify_Reports("D_DALTONP")
-    '    D_PHOTO = GetModify_Reports("D_PHOTO")
-    '    D_DAVAOP = GetModify_Reports("D_DAVAOP")
-    '    D_PERFECOM = GetModify_Reports("D_PERFECOM")
-
-    '    '============================ LYU PERCENTAGE ==========================
-    '    L_DALTON = GetModify_Reports("L_DALTON")
-    '    L_PG711 = GetModify_Reports("L_PG711")
-
-    '    '============================ PHOTO_PERFECT PERCENTAGE ==========================
-    '    Dim sum_3 As Integer = GENSANPERFECT_BR + DAVAOP_BR + PERFECOM_BR
-
-    '    Dim GENSAN_PHOTO_PERFECT_P As String = FormatPercent(GENSANPERFECT_BR / sum_3, 2, TriState.False) '(GENSANPERFECT_BR / sum_3) * 100
-    '    Dim DAVAOP_PHOTO_PERFECT_P As String = FormatPercent(DAVAOP_BR / sum_3, 2, TriState.False) '(DAVAOP_BR / sum_3) * 100
-    '    Dim PERFECOM_PHOTO_PERFECT_P As String = FormatPercent(PERFECOM_BR / sum_3, 2, TriState.False) '(PERFECOM_BR / sum_3) * 100
-
-    '    '============================ PHOTO_GHS_3G PERCENTAGE ==========================
-    '    Dim sum_4 As Integer = GENSANPERFECT_BR + DAVAOP_BR + G3_BR + COMI_TO_FUJI_BR
-
-    '    Dim GENSAN_PHOTO_GHS_3G_P As String = (GENSANPERFECT_BR / sum_4) * 100
-    '    Dim DAVAOP_PHOTO_GHS_3GT_P As String = (DAVAOP_BR / sum_4) * 100
-    '    Dim G3_PHOTO_GHS_3G_P As String = (G3_BR / sum_4) * 100
-    '    Dim COMI_TO_FUJI_PHOTO_GHS_3G_P As String = (COMI_TO_FUJI_BR / sum_4) * 100
-
-    '    '============================ PERFECOM_LEASING_711 PERCENTAGE ==========================
-    '    Dim sum_5 As Integer = PERFECOM_BR + Seven11_BR + LEASING_BR
-
-    '    Dim PERFECOM_PL7_P As String = FormatPercent(PERFECOM_BR / sum_5, 2, TriState.False) '(PERFECOM_BR / sum_5) * 100
-    '    Dim SEVEN11_PL7_P As String = FormatPercent(Seven11_BR / sum_5, 2, TriState.False) '(Seven11_BR / sum_5) * 100
-    '    Dim LEASING_PL7_P As String = FormatPercent(LEASING_BR / sum_5, 2, TriState.False) '(LEASING_BR / sum_5) * 100
-
-    '    '============================ DRIVER PERCENTAGE ========================== 
-    '    DR_Dalton = GetModify_Reports("DR_Dalton")
-    '    DR_Photo = GetModify_Reports("DR_Photo")
-    '    DR_House = GetModify_Reports("DR_House")
-
-    '    Dim sum_driver As Integer = DR_Dalton + DR_Photo + DR_House
-
-    '    Dim DR_Dalton_P As String = FormatPercent(DR_Dalton / sum_driver, 2, TriState.False) '(DR_Dalton / sum_driver) * 100
-    '    Dim DR_Photo_P As String = FormatPercent(DR_Photo / sum_driver, 2, TriState.False) '(DR_Photo / sum_driver) * 100
-    '    Dim DR_House_P As String = FormatPercent(DR_House / sum_driver, 2, TriState.False) '(DR_House / sum_driver) * 100
-
-    '    '============================ CONSTRUCTION PERCENTAGE ==========================  
-    '    ConDalton = GetModify_Reports("ConDalton")
-    '    ConPhoto = GetModify_Reports("ConPhoto")
-
-    '    Dim ConDalton_P As String = FormatPercent(ConDalton / sum_driver, 2, TriState.False) '(ConDalton / sum_driver) * 100
-    '    Dim ConPhoto_P As String = FormatPercent(ConPhoto / sum_driver, 2, TriState.False) '(ConPhoto / sum_driver) * 100
-
-    '    Dim DTR_DATON_P As String = GetModify_Reports("DTR_Dalton")
-    '    Dim DTR_PHOTO_P As String = GetModify_Reports("DTR_Photo")
-
-    '    Replacing("PAYROLL_PERCENTAGEE")
-
-    '    Save_PERCENTAGE(DALTON_EMP_P, GENSAN_PHOTO_EMP_P, DAVAOP_EMP_P, PERFECOM_EMP_P, G3_EMP_P, SEVEN11_EMP_P, COMI_TO_FUJI_EMP_P, 0, 0, "EMPLOYEE")
-    '    Save_PERCENTAGE(DALTON_BR_P, GENSAN_BR_P, DAVAOP_BR_P, PERFECOM_BR_P, G3_BR_P, Seven11_BR_P, COMI_TO_FUJI_BR_P, 0, LEASING_BR_P, "BRANCH")
-    '    Save_PERCENTAGE(M_DALTONP, M_PHOTO, M_DAVAOP, M_PERFECOM, 0, 0, 0, 0, 0, "MARKETING")
-    '    Save_PERCENTAGE(0, GENSAN_PHOTO_PERFECT_P, DAVAOP_PHOTO_PERFECT_P, PERFECOM_PHOTO_PERFECT_P, 0, 0, 0, 0, 0, "PHOTO/PERFECOM")
-    '    Save_PERCENTAGE(0, GENSAN_PHOTO_GHS_3G_P, DAVAOP_PHOTO_GHS_3GT_P, 0, G3_PHOTO_GHS_3G_P, 0, COMI_TO_FUJI_PHOTO_GHS_3G_P, 0, 0, "PHOTO/GHS/3G")
-    '    Save_PERCENTAGE(0, 0, 0, PERFECOM_PL7_P, 0, SEVEN11_PL7_P, 0, 0, LEASING_PL7_P, "PERFECOM/LEASING/7ELEVEN")
-    '    Save_PERCENTAGE(D_DALTONP, D_PHOTO, D_DAVAOP, D_PERFECOM, 0, 0, 0, 0, 0, "DYU")
-    '    Save_PERCENTAGE(L_DALTON, 0, 0, 0, 0, L_PG711, 0, 0, 0, "LYU")
-    '    Save_PERCENTAGE(DR_Dalton_P, DR_Photo_P, 0, 0, 0, 0, 0, DR_House_P, 0, "DRIVER")
-    '    Save_PERCENTAGE(ConDalton_P, ConPhoto_P, 0, 0, 0, 0, 0, 0, 0, "CONSTRUCTION")
-    '    Save_PERCENTAGE(DTR_DATON_P, DTR_PHOTO_P, 0, 0, 0, 0, 0, 0, 0, "DTR")
-    '    Save_PERCENTAGE(0, 0, 0, 0, 0, 0, 0, 0, LEASING_P, "LEASING")
-
-    'End Sub
-
-
-
     Public Sub LoadCommonPercentage_Print()
 
         RptViewer_Common.LocalReport.DataSources.Clear()
@@ -797,27 +644,47 @@
             NetBranch_Combo.Items.Insert(0, "Davao Perfect")
             NetBranch_Combo.Items.Insert(1, "JR Photo")
             NetBranch_Combo.Items.Insert(2, "Gensan Perfect")
-            NetBranch_Combo.Items.Insert(3, "Photo PGC")
 
         ElseIf Company_Combo.SelectedIndex = 1 Then '=== P&G UY
             NetBranch_Combo.Items.Clear()
             NetBranch_Combo.Items.Insert(0, "3G")
             NetBranch_Combo.Items.Insert(1, "7Eleven")
             NetBranch_Combo.Items.Insert(2, "COMI-GHS Admin Operation")
-            NetBranch_Combo.Items.Insert(3, "P&G UY PGC")
 
         ElseIf Company_Combo.SelectedIndex = 2 Then '=== DALTON
             NetBranch_Combo.Items.Clear()
             NetBranch_Combo.Items.Insert(0, "Dalton Head Office")
             NetBranch_Combo.Items.Insert(1, "Dalton Branch")
-            NetBranch_Combo.Items.Insert(2, "Dalton PGC")
 
         ElseIf Company_Combo.SelectedIndex = 3 Then '=== PERFECOM 
 
             NetBranch_Combo.Items.Clear()
-            NetBranch_Combo.Items.Insert(0, "Perfecom Admin and Branches")
-            NetBranch_Combo.Items.Insert(1, "Perfecom PGC")
+            Dim mysql = $"Select * From PAYROLL_PAYOUT A 
+                                        inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
+                                        left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCH_CODE
+                                        where A.PAYDATE  = '{PaydateNet_ComboB.Text}' 
+                                        and  B.COMPANY  = 'PERFECOM' OR B.HO_CATEGORY In ('Perfecom Admin Office','Perfecom Admin Operation')
+                                        ORDER BY CASE WHEN B.BRANCH_CODE = 'SMG' THEN 1
+                                                      WHEN B.BRANCH_CODE = 'KCG' THEN 2
+                                                      WHEN B.BRANCH_CODE = 'OPK' THEN 3
+                                                      WHEN B.BRANCH_CODE = 'ARC' THEN 4
+                                                      WHEN B.BRANCH_CODE = 'ARC' THEN 5
+                                                      WHEN B.BRANCH_CODE = 'KCM' THEN 6
+                                                      WHEN B.BRANCH_CODE = 'ZAM' THEN 7
+                                                      else 0 end, B.HO_CATEGORY asc, B.BRANCH_CODE asc"
+            Plus = "PERFECOM"
 
+            LoadNet_Print(mysql)
+        ElseIf Company_Combo.SelectedIndex = 4 Then '=== PGC HEAD OFFICE
+
+            NetBranch_Combo.Items.Clear()
+
+            Dim mysql = $"Select * From PAYROLL_PAYOUT A 
+                                        inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
+                                        left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCH_CODE
+                                        where A.PAYDATE  = '{PaydateNet_ComboB.Text}' AND B.HO_CATEGORY = 'PGC Head Office' "
+
+            LoadNet_Print(mysql)
         End If
     End Sub
 
@@ -834,7 +701,12 @@
 
                         mysql = $"Select * From PAYROLL_PAYOUT A 
                                         inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
-                                        where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' and B.BRANCH_CODE IN ('SMG','KCG','ACM','TAC')"
+                                        left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCH_CODE
+                                        where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' and B.BRANCH_CODE IN ('SMG','KCG','ACM','TAC') 
+                                        Order by case when B.BRANCH_CODE = 'KCG' then 0
+                                                      when B.BRANCH_CODE = 'SMG' then 1
+                                                      when B.BRANCH_CODE = 'TAC' then 2
+                                                      when B.BRANCH_CODE = 'ACM' then 3 end"
 
                         Plus = "DAVAO PERFECT"
 
@@ -842,26 +714,36 @@
 
                         mysql = $"Select * From PAYROLL_PAYOUT A 
                                         inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
-                                        where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' and B.BRANCH_CODE IN ('DIG','ISU','M1','POL')"
+                                        left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCH_CODE
+                                        where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' and B.BRANCH_CODE IN ('DIG','ISU','M1','POL')
+                                        Order by case when B.BRANCH_CODE = 'DIG' then 0
+                                                      when B.BRANCH_CODE = 'ISU' then 1
+                                                      when B.BRANCH_CODE = 'M1' then 2
+                                                      when B.BRANCH_CODE = 'POL' then 3 end"
 
                         Plus = "JR PHOTO"
                     ElseIf NetBranch_Combo.SelectedIndex = 2 Then '=== Gensan Perfect
 
                         mysql = $"Select * From PAYROLL_PAYOUT A 
                                         inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
+                                        left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCH_CODE
                                         where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' 
-                                        and B.BRANCH_CODE IN ('ROG','ROX','FINEPIX','COT','MID','KID','SNP','GMA','SML','ZAM','SMD')"
+                                        and B.BRANCH_CODE IN ('ROG','ROX','FINEPIX','COT','MID','KID','SNP','GMA','SML','ZAM','SMD')
+                                        or B.HO_CATEGORY IN ('Photo Admin Office', 'Photo Admin Operation')
+                                        Order by case when B.BRANCH_CODE = 'ROG' then 1
+                                                      when B.BRANCH_CODE = 'ROX' then 2
+                                                      when B.BRANCH_CODE = 'FINEPIX' then 3
+                                                      when B.BRANCH_CODE = 'COT' then 4 
+                                                      when B.BRANCH_CODE = 'KID' then 5 
+                                                      when B.BRANCH_CODE = 'MID' then 6 
+                                                      when B.BRANCH_CODE = 'GMA' then 7 
+                                                      when B.BRANCH_CODE = 'SNP' then 8 
+                                                      when B.BRANCH_CODE = 'SMD' then 9 
+                                                      when B.BRANCH_CODE = 'SML' then 10 
+                                                      when B.BRANCH_CODE = 'ZAM' then 11 
+                                                      else 0 end"
 
                         Plus = "GENSAN PERFECT"
-
-                    ElseIf NetBranch_Combo.SelectedIndex = 3 Then '=== PGC
-
-                        mysql = $"Select * From PAYROLL_PAYOUT A 
-                                        inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
-                                        where A.PAYDATE  = '{paydatee}' AND B.COMMON_COMPANY  = 'PHOTO'"
-
-
-                        Plus = "PHOTO"
 
                     End If
                 Else
@@ -886,17 +768,10 @@
                     ElseIf NetBranch_Combo.SelectedIndex = 2 Then '=== COMI-GHS Admin Operation
 
                         mysql = $"Select * From PAYROLL_PAYOUT A 
-                                        inner Join PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
+                                        inner Join PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID  
                                         where A.PAYDATE = '{paydatee}' and B.COMPANY  = 'P&G UY' 
-                                        And B.BRANCH_CODE IN ('COMI','KTV','PBA','WAVE') Or B.HO_CATEGORY In ('GHS/P&G UY Admin Office','GHS/P&G UY Admin Operation')"
-
-                    ElseIf NetBranch_Combo.SelectedIndex = 3 Then '=== PGC
-
-                        mysql = $"Select * From PAYROLL_PAYOUT A 
-                                        inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
-                                        where A.PAYDATE  = '{paydatee}' AND B.COMMON_COMPANY  = 'P&G UY'"
-
-                        Plus = "P&G UY"
+                                        And B.BRANCH_CODE IN ('COMI','KTV','PBA','WAVE') Or B.HO_CATEGORY In ('GHS/P&G UY Admin Office','GHS/P&G UY Admin Operation','GHS/P&G UY Maintenance')
+                                        Order by case when B.HO_CATEGORY LIKE UPPER('%GHS%') then 1 else 0  end, B.HO_CATEGORY asc, B.BRANCH_CODE asc"
 
                     End If
                 Else
@@ -910,48 +785,92 @@
 
                         mysql = $"Select * From PAYROLL_PAYOUT A 
                                         inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
-                                        where A.PAYDATE  = '{paydatee}' and B.HO_CATEGORY IN ('Dalton Admin Office','Dalton Retail','Dalton Admin Operation')"
+                                        where A.PAYDATE  = '{paydatee}' and B.HO_CATEGORY IN ('Dalton Admin Office','Dalton Retail','Dalton Admin Operation') 
+                                        Order by case when B.HO_CATEGORY LIKE '%Operation%' then 1 else 0  end, B.HO_CATEGORY asc"
 
-                    ElseIf NetBranch_Combo.SelectedIndex = 1 Then '=== All Dalton Except Head Office
-
-                        mysql = $"Select * From PAYROLL_PAYOUT A 
-                                        inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
-                                        where A.PAYDATE  = '{paydatee}' AND B.COMPANY  = 'DALTON'"
-
-                    ElseIf NetBranch_Combo.SelectedIndex = 2 Then '=== PGC
+                    ElseIf NetBranch_Combo.SelectedIndex = 1 Then '=== All Dalton Branches Maually Order
 
                         mysql = $"Select * From PAYROLL_PAYOUT A 
                                         inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
-                                        where A.PAYDATE  = '{paydatee}' AND B.COMMON_COMPANY  = 'DALTON'"
-
-
-                        Plus = "DALTON"
+                                        left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCH_CODE
+                                        where A.PAYDATE  = '{paydatee}' AND B.COMPANY  = 'DALTON'
+                                         Order by case when B.BRANCH_CODE = 'CAG' then 0 
+                                                       when B.BRANCH_CODE = 'JCAT 2' then 1 
+                                                       when B.BRANCH_CODE = 'KCG' then 2 
+                                                       when B.BRANCH_CODE = 'LAG' then 3 
+                                                       when B.BRANCH_CODE = 'PMA' then 4  
+                                                       when B.BRANCH_CODE = 'NUN' then 5  
+                                                       when B.BRANCH_CODE = 'PEN' then 6  
+                                                       when B.BRANCH_CODE = 'PGN' then 7  
+                                                       when B.BRANCH_CODE = 'PIO' then 8  
+                                                       when B.BRANCH_CODE = 'ROG' then 9  
+                                                       when B.BRANCH_CODE = 'ROX' then 10  
+                                                       when B.BRANCH_CODE = 'SAN' then 11  
+                                                       when B.BRANCH_CODE = 'UHA' then 12  
+                                                       when B.BRANCH_CODE = 'POL' then 13  
+                                                       when B.BRANCH_CODE = 'POL2' then 14  
+                                                       when B.BRANCH_CODE = 'POL3' then 15  
+                                                       when B.BRANCH_CODE = 'GAP' then 16  
+                                                       when B.BRANCH_CODE = 'ACM' then 17  
+                                                       when B.BRANCH_CODE = 'GAM' then 18  
+                                                       when B.BRANCH_CODE = 'AL1' then 19  
+                                                       when B.BRANCH_CODE = 'AL2' then 20  
+                                                       when B.BRANCH_CODE = 'ZUL' then 21   
+                                                       when B.BRANCH_CODE = 'ISU 1' then 22  
+                                                       when B.BRANCH_CODE = 'ISU 2' then 23  
+                                                       when B.BRANCH_CODE = 'ISU 3' then 24   
+                                                       when B.BRANCH_CODE = 'TAC 1' then 25  
+                                                       when B.BRANCH_CODE = 'TAC 2' then 26  
+                                                       when B.BRANCH_CODE = 'PQO' then 27   
+                                                       when B.BRANCH_CODE = 'SRA' then 28  
+                                                       when B.BRANCH_CODE = 'TBOLI' then 29  
+                                                       when B.BRANCH_CODE = 'BANG' then 30   
+                                                       when B.BRANCH_CODE = 'ESPE' then 31  
+                                                       when B.BRANCH_CODE = 'KAL' then 32  
+                                                       when B.BRANCH_CODE = 'LAM' then 33  
+                                                       when B.BRANCH_CODE = 'LEBAK' then 34   
+                                                       when B.BRANCH_CODE = 'AWANG' then 35  
+                                                       when B.BRANCH_CODE = 'DAL' then 36  
+                                                       when B.BRANCH_CODE = 'COT 1' then 37  
+                                                       when B.BRANCH_CODE = 'COT 2' then 38   
+                                                       when B.BRANCH_CODE = 'COT 3' then 39   
+                                                       when B.BRANCH_CODE = 'COT 4' then 40   
+                                                       when B.BRANCH_CODE = 'KID' then 41  
+                                                       when B.BRANCH_CODE = 'KID2' then 42  
+                                                       when B.BRANCH_CODE = 'GAK' then 43   
+                                                       when B.BRANCH_CODE = 'MID' then 44  
+                                                       when B.BRANCH_CODE = 'KAB' then 45  
+                                                       when B.BRANCH_CODE = 'KAB 2' then 46  
+                                                       when B.BRANCH_CODE = 'KAB3' then 47   
+                                                       when B.BRANCH_CODE = 'PIKIT' then 48    
+                                                       when B.BRANCH_CODE = 'MLANG' then 49 
+                                                       when B.BRANCH_CODE = 'TUL' then 50 
+                                                       when B.BRANCH_CODE = 'SHARIFF' then 51 
+                                                       when B.BRANCH_CODE = 'SHARIFF 2' then 52 
+                                                       when B.BRANCH_CODE = 'UPI' then 53 
+                                                       when B.BRANCH_CODE = 'PAR' then 54 
+                                                       when B.BRANCH_CODE = 'BUL' then 55  
+                                                       when B.BRANCH_CODE = 'DIG 1' then 56 
+                                                       when B.BRANCH_CODE = 'DIG 2' then 57 
+                                                       when B.BRANCH_CODE = 'GAD' then 58  
+                                                       when B.BRANCH_CODE = 'GGP' then 59 
+                                                       when B.BRANCH_CODE = 'SNP' then 60 
+                                                       when B.BRANCH_CODE = 'TAG' then 61  
+                                                       when B.BRANCH_CODE = 'ALA' then 62  
+                                                       when B.BRANCH_CODE = 'GLAN' then 63 
+                                                       when B.BRANCH_CODE = 'KIA' then 64 
+                                                       when B.BRANCH_CODE = 'MAA' then 65 
+                                                       when B.BRANCH_CODE = 'MAITUM' then 66 
+                                                       when B.BRANCH_CODE = 'ABREA' then 67 
+                                                       when B.BRANCH_CODE = 'SURI 2' then 68  
+                                                       when B.BRANCH_CODE = 'SURI 3' then 69 
+                                                       when B.BRANCH_CODE = 'GCS' then 70  
+                                                       when B.BRANCH_CODE = 'BUT' then 71 
+                                                       when B.BRANCH_CODE = 'GCA' then 72  
+                                                       end, B.BRANCH_CODE asc"
 
                     End If
 
-                Else
-                    MsgBox("Please select date of payroll.", MsgBoxStyle.Exclamation, "Error")
-                End If
-            ElseIf Company_Combo.SelectedIndex = 3 Then '=== PERFECOM
-
-                If PaydateNet_ComboB.SelectedIndex >= 0 Then
-
-                    If NetBranch_Combo.SelectedIndex = 0 Then '=== PERFECOM Admin
-
-                        mysql = $"Select * From PAYROLL_PAYOUT A 
-                                        inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
-                                        where A.PAYDATE  = '{PaydateNet_ComboB.Text}' 
-                                        and B.COMPANY  = 'PERFECOM' OR B.HO_CATEGORY In ('Perfecom Admin Office','Perfecom Admin Operation')"
-
-                    ElseIf NetBranch_Combo.SelectedIndex = 1 Then
-
-                        mysql = $"Select * From PAYROLL_PAYOUT A 
-                                        inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
-                                        where A.PAYDATE  = '{paydatee}' AND B.COMMON_COMPANY  = 'PERFECOM'"
-
-                        Plus = "PERFECOM"
-
-                    End If ' and B.BRANCH_CODE IN ('OPK','SMG','KCG','ARC','KCM','ZAM')
                 Else
                     MsgBox("Please select date of payroll.", MsgBoxStyle.Exclamation, "Error")
                 End If
@@ -971,4 +890,5 @@
             LoadCommonPercentage_Print()
         End If
     End Sub
+
 End Class

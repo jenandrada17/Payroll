@@ -52,6 +52,8 @@ Public Class frmNewEmployee
     End Sub
 
     Private Sub Save_BTN_Click(sender As Object, e As EventArgs) Handles Save_BTN.Click
+        'Import_BranchesName()
+
         'Import_Employee_Fullname_biometric_ActiveOnly()
 
         'Import_Employee_DateStarted_Position()
@@ -317,6 +319,40 @@ Public Class frmNewEmployee
         Else
             MsgBox("Please Select Company.", MsgBoxStyle.Exclamation, "Error")
         End If
+
+    End Sub
+
+    Private Sub Import_BranchesName()
+
+        eApp = New Excel.Application
+        eBook = eApp.Workbooks.Open(Path_TXT.Text)
+        eSheet = eBook.Worksheets(1)
+        eCell = eSheet.UsedRange
+        Dim row As Integer
+
+        MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path_TXT.Text}';Extended Properties=Excel 8.0;")
+        MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
+        MyCommand.TableMappings.Add("Table", "Net-informations.com")
+        DtSet = New System.Data.DataSet
+        MyCommand.Fill(DtSet)
+
+
+        progressBarStart(DtSet.Tables(0).Rows.Count)
+
+        For row = 1 To DtSet.Tables(0).Rows.Count
+
+            Save_BranchesName(eCell(row, 1).Value, eCell(row, 2).Value)
+
+            frmMainForm.AppProgressBar.Value += 1
+
+        Next
+
+        progressBarEnd()
+
+        Path_TXT.Clear()
+        MyConnection.Close()
+
+        Excel_Panel.Visible = False
 
     End Sub
 

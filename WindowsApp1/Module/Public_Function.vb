@@ -1,4 +1,5 @@
-﻿Imports System.IO
+﻿Imports System.Globalization
+Imports System.IO
 Imports System.Net.Mail
 Imports System.Reflection
 
@@ -260,5 +261,16 @@ Module Public_Function
             SaveEntry(ds)
         End Using
     End Sub
+
+    Friend Function TitleCase(str As String)
+
+        Dim toLower, toProper As String
+
+        toLower = str.ToLower()
+        Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
+        toProper = info.ToTitleCase(toLower)
+
+        Return toProper
+    End Function
 
 End Module

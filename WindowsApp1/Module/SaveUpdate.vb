@@ -1784,6 +1784,40 @@ Module SaveUpdate
 
     End Sub
 
+    Public Sub Save_BranchesName(code As String, name As String)
+
+        Dim mysql As String
+
+        mysql = $"Select * From PAYROLL_CITY_BRANCH  where BRANCHCODE = '{code}'"
+        Using dss As DataSet = LoadSQL(mysql, "PAYROLL_CITY_BRANCH")
+            If dss.Tables(0).Rows.Count > 0 Then
+
+                With dss.Tables(0).Rows(0)
+                    .Item("BRANCHNAME") = name
+                End With
+                SaveEntry(dss)
+
+                'Else
+                '    mysql = "Select * From PAYROLL_CITY_BRANCH "
+                '    Using ds As DataSet = LoadSQL(mysql, "PAYROLL_CITY_BRANCH")
+                '        Dim dsNewRow As DataRow = ds.Tables(0).NewRow
+                '        With dsNewRow
+
+                '            .Item("BRANCHCODE") = code
+                '            .Item("BRANCHNAME") = name
+
+                '        End With
+
+                '        ds.Tables(0).Rows.Add(dsNewRow)
+                '        SaveEntry(ds)
+                '    End Using
+
+            End If
+
+        End Using
+
+    End Sub
+
     Public Sub Update_Emp_DateHired_Position(FULLNAME As String, DATE_STARTED As String, EMP_POSITION As String, EMP_NO As String, empNo As String)
 
         Dim mysql As String = $"Select * FROM PAYROLL_EMPLOYEE  where FULLNAME = '{FULLNAME}'"

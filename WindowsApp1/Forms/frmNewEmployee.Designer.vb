@@ -246,7 +246,7 @@ Partial Class frmNewEmployee
         Me.Excel_Panel.Controls.Add(Me.Path_TXT)
         Me.Excel_Panel.Controls.Add(Me.Browse_BTN)
         Me.Excel_Panel.Controls.Add(Me.Save_BTN)
-        Me.Excel_Panel.Location = New System.Drawing.Point(20, 575)
+        Me.Excel_Panel.Location = New System.Drawing.Point(391, 575)
         Me.Excel_Panel.Name = "Excel_Panel"
         Me.Excel_Panel.Size = New System.Drawing.Size(756, 78)
         Me.Excel_Panel.TabIndex = 93
@@ -449,7 +449,7 @@ Partial Class frmNewEmployee
         '
         Me.HO_Category.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.HO_Category.FormattingEnabled = True
-        Me.HO_Category.Items.AddRange(New Object() {"GHS/P&G UY Admin Office", "GHS/P&G UY Admin Operation", "Dalton Admin Office", "Dalton Retail", "Dalton Admin Operation", "Perfecom Admin Office", "Perfecom Admin Operation", "Photo Admin Operation", "Photo Admin Office ", "Construction", "Leasing Admin Office", "PGC Head Office"})
+        Me.HO_Category.Items.AddRange(New Object() {"GHS/P&G UY Maintenance", "GHS/P&G UY Admin Office", "GHS/P&G UY Admin Operation", "Dalton Admin Office", "Dalton Retail", "Dalton Admin Operation", "Perfecom Admin Office", "Perfecom Admin Operation", "Photo Admin Operation", "Photo Admin Office ", "Construction", "Leasing Admin Office", "PGC Head Office"})
         Me.HO_Category.Location = New System.Drawing.Point(128, 69)
         Me.HO_Category.Name = "HO_Category"
         Me.HO_Category.Size = New System.Drawing.Size(260, 28)
@@ -847,7 +847,7 @@ Partial Class frmNewEmployee
         'View_Menu
         '
         Me.View_Menu.Name = "View_Menu"
-        Me.View_Menu.Size = New System.Drawing.Size(180, 22)
+        Me.View_Menu.Size = New System.Drawing.Size(137, 22)
         Me.View_Menu.Text = "View Details"
         '
         'frmNewEmployee

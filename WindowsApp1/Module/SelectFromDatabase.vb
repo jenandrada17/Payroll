@@ -1749,9 +1749,9 @@ Module SelectFromDatabase
 
                 For Each dr In ds.Tables(0).Rows
                     With dr
-                        Dim i As ListViewItem = listview.Items.Add(.Item("CITY"))
-                        i.SubItems.Add(.Item("BRANCHNAME"))
-                        i.SubItems.Add(.Item("BRANCHCODE"))
+                        Dim i As ListViewItem = listview.Items.Add(IIf(IsDBNull(.Item("CITY")), "", .Item("CITY")))
+                        i.SubItems.Add(IIf(IsDBNull(.Item("BRANCHNAME")), "", .Item("BRANCHNAME")))
+                        i.SubItems.Add(IIf(IsDBNull(.Item("BRANCHCODE")), "", .Item("BRANCHCODE")))
                     End With
                     frmMainForm.AppProgressBar.Value += 1
                 Next
@@ -2479,19 +2479,17 @@ Module SelectFromDatabase
         Return LIST_BIOO
     End Function
 
-    'Public Function GetMInimumRate(branch As String)
-    '    Dim min_rate As Double = 0
-
-    '    Dim mysql As String = $"Select MINIMUM_RATE FROM  PAYROLL_MINIMUM_RATE WHERE BRANCH_CODE = '{branch}'"
-    '    Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_MINIMUM_RATE")
-    '    If ds.Tables(0).Rows.Count > 0 Then
-    '        Dim dr As DataRow = ds.Tables(0).Rows(0)
-    '        With dr
-    '            min_rate = IIf(IsDBNull(.Item("MINIMUM_RATE")), 0, .Item("MINIMUM_RATE"))
-    '        End With
-    '    End If
-
-    '    Return min_rate
-    'End Function
+    Friend Function GetData(column As String, str As String)
+        Dim dataa As String = ""
+        Dim mysql As String = $"Select {column} from {str}"
+        Using ds As DataSet = LoadSQL(mysql)
+            If ds.Tables(0).Rows.Count > 0 Then
+                With ds.Tables(0).Rows(0)
+                    dataa = IIf(IsDBNull(.Item(column)), "", .Item(column))
+                End With
+            End If
+        End Using
+        Return dataa
+    End Function
 
 End Module

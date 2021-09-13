@@ -15573,7 +15573,6 @@ ReportItems!G3_BR.Value)</Value>
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
@@ -23277,7 +23276,7 @@ CInt(ReportItems!DR_House.Value)</Value>
             <Top>0.16542in</Top>
             <Left>0.16542in</Left>
             <Height>7.25in</Height>
-            <Width>12.22708in</Width>
+            <Width>12.22709in</Width>
             <Style>
               <Border>
                 <Style>None</Style>
