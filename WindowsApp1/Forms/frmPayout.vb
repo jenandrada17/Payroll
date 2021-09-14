@@ -21,8 +21,6 @@ Public Class frmPayout
         PopulateComboBox(Payslip_paydate_Combo, "PAYROLL_PAYOUT", "PAYDATE")
         PopulateComboBox(Branch_ComboB, "TBL_BRANCH", "BRANCHNAME")
 
-        'Deduction_grid.DefaultCellStyle.SelectionBackColor = Color.Transparent
-        'Allowance_grid.DefaultCellStyle.SelectionBackColor = Color.Transparent
     End Sub
 
     Private Sub Select_BTN_Click(sender As Object, e As EventArgs) Handles Select_BTN.Click
@@ -136,6 +134,7 @@ Public Class frmPayout
             Calculate_NetPay()
 
             Checkgrid_Visible()
+
         End If
     End Sub
 
@@ -170,12 +169,12 @@ Public Class frmPayout
 
         If TypeOf grid.Columns(e.ColumnIndex) Is DataGridViewButtonColumn Then
 
-            If row.Cells(2).Value = "OFF" Then
-                row.Cells(2).Value = "ON"
+            If row.Cells(3).Value = "OFF" Then
+                row.Cells(3).Value = "ON"
                 row.Cells(1).Value = "0.00"
 
-            ElseIf row.Cells(2).Value = "ON" Then
-                row.Cells(2).Value = "OFF"
+            ElseIf row.Cells(3).Value = "ON" Then
+                row.Cells(3).Value = "OFF"
                 row.Cells(1).Value = row.Cells(0).Tag
             End If
 
@@ -220,7 +219,6 @@ Public Class frmPayout
         Deduction_grid.Rows.Clear()
         Allowance_grid.Rows.Clear()
 
-        Details_Save_BTN.Text = "Edit"
     End Sub
 
     Private Sub Details_Save_BTN_Click(sender As Object, e As EventArgs) Handles Details_Save_BTN.Click
@@ -228,9 +226,9 @@ Public Class frmPayout
 
             If Details_Save_BTN.Text = "Save" Then
                 SavePayout(BiometricID_TXT.Text, Rate_TXT.Tag, paydate_, TotalBasic_LBL.Text, TotalOT_LBL.Text,
-                          TotalLateUnder_LBL.Text, GrossAmount_LBL.Text, SSSComp_LBL.Text, HDMF_LBL.Text, Philhealth_LBL.Text,
-                          Tax_Wheld_LBL.Text, NetTax_LBL.Text, SSSLoan_LBL.Text, PagibigLoan_LBL.Text,
-                          Allowances_LBL.Text, Deduction_LBL.Text, NetPay_LBL.Text)
+                      TotalLateUnder_LBL.Text, GrossAmount_LBL.Text, SSSComp_LBL.Text, HDMF_LBL.Text, Philhealth_LBL.Text,
+                      Tax_Wheld_LBL.Text, NetTax_LBL.Text, SSSLoan_LBL.Text, PagibigLoan_LBL.Text,
+                      Allowances_LBL.Text, Deduction_LBL.Text, NetPay_LBL.Text)
 
                 If Deduction_grid.Rows.Count > 0 Then
 
@@ -239,7 +237,7 @@ Public Class frmPayout
                     End If
 
                     For Each row As DataGridViewRow In Deduction_grid.Rows
-                        If Not row.Cells(2).Value = String.Empty Then
+                        If Not row.Cells(3).Value = String.Empty Then
                             SavePayout_MODIFIED_DEDUCTION(Name_TXT.Tag, paydate_, row.Cells(0).Value, row.Cells(1).Value, row.Cells(0).Tag, Today, row.Cells(2).Tag)
                         End If
                     Next
@@ -249,6 +247,7 @@ Public Class frmPayout
                 Details_Save_BTN.Text = "Edit"
 
             Else
+
                 AllowanceDetails(Name_TXT.Tag, Allowance_grid, sched_deduc)
                 DeductioneDetails_ORIG(Name_TXT.Tag, Deduction_grid, sched_deduc)
 
@@ -265,6 +264,12 @@ Public Class frmPayout
                 Checkgrid_Visible()
 
                 Details_Save_BTN.Text = "Save"
+                If paydate_ = frmMainForm.Paydate.ToString("d") Then     '======== CHECK IF VALID FOR EDITING IF NOT DISABLE SAVING
+                    Details_Save_BTN.Enabled = True
+                Else
+                    Details_Save_BTN.Enabled = False
+                End If
+
             End If
         End If
 
@@ -280,6 +285,7 @@ Public Class frmPayout
 
         roww.Cells(0).Value = "SBU"
         roww.Cells(1).Value = sbu.ToString(”N”)
+        roww.Cells(3) = New DataGridViewTextBoxCell()
 
         AdjustHeightOfGridBasedOnRows(Deduction_grid)
 
@@ -312,6 +318,9 @@ Public Class frmPayout
             BiometricID_TXT.Text = Payout_list.FocusedItem.SubItems(1).Tag
             emp_id = Payout_list.FocusedItem.SubItems(11).Tag
             TabControl1.SelectedIndex = 1
+
+            Details_Save_BTN.Text = "Edit"
+            Details_Save_BTN.Enabled = True
         End If
     End Sub
 
