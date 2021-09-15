@@ -728,6 +728,14 @@ Public Class frmAttendance
                                 list_hour(1) = list1.ToString("t")
 
                                 list_Group.Clear()
+
+                            Else   ' =========== PRINT SINGLE 12:00 TO 12:59 ==========
+                                If list_hour(2) = "" Then
+
+                                    list_hour(2) = time.ToString("t")
+                                Else
+                                    list_hour(3) = time.ToString("t")
+                                End If
                             End If
 
                         End If
@@ -750,18 +758,72 @@ Public Class frmAttendance
         If Branch_ComboB.SelectedItem = "" Then
             MsgBox("Please Select Branch", MsgBoxStyle.Critical, "Error")
         Else
-            DataGridView1.Rows.Clear()
+            eApp = New Excel.Application
+            eBook = eApp.Workbooks.Open(Path_TXT.Text)
+            eSheet = eBook.Worksheets(1)
+            eCell = eSheet.UsedRange
 
-            Try
+            MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path_TXT.Text}';Extended Properties=Excel 8.0;")
+            MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
+            MyCommand.TableMappings.Add("Table", "Net-informations.com")
+            DtSet = New System.Data.DataSet
+            MyCommand.Fill(DtSet)
+
+            Dim FirstColumn As String = eCell(2, 1).Value
+
+            If Integer.TryParse(FirstColumn, vbNull) Then
                 bio_White()
-                MsgBox("bio_White")
-            Catch
-                bio_InSys()
-                MsgBox("bio_InSys")
-            Catch
-                bio_OURCOMPANY()
-                MsgBox("bio_OURCOMPANY")
-            End Try
+            Else
+                If FirstColumn = "OUR COMPANY" Then
+                    bio_OURCOMPANY()
+                Else
+                    bio_InSys()
+                End If
+            End If
+
+
+            'Try
+
+            '    eApp = New Excel.Application
+            '    eBook = eApp.Workbooks.Open(Path_TXT.Text)
+            '    eSheet = eBook.Worksheets(1)
+            '    eCell = eSheet.UsedRange
+
+            '    MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path_TXT.Text}';Extended Properties=Excel 8.0;")
+            '    MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
+            '    MyCommand.TableMappings.Add("Table", "Net-informations.com")
+            '    DtSet = New System.Data.DataSet
+            '    MyCommand.Fill(DtSet)
+
+            '    Dim FirstColumn As String = eCell(2, 1).Value
+
+            '    'If eCell(1, 1).Value = "OUR COMPANY" Then
+            '    '    MsgBox("OUR COMPANY  " & eCell(1, 1).Value)
+            '    'ElseIf eCell(1, 1).Value = "InSys" Or eCell(2, 1).Value = "Detailed Time Report (Sequence Order)" Then
+            '    '    MsgBox("InSys  " & eCell(1, 1).Value)
+            '    'Else
+            '    '    MsgBox("White")
+            '    'End If
+
+            '    If Integer.TryParse(FirstColumn, vbNull) Then
+            '        MsgBox("White Dapat " & eCell(1, 1).Value)
+            '    Else
+            '        Try
+            '            bio_InSys()
+            '        Catch ex As Exception
+            '            bio_OURCOMPANY()
+            '        End Try
+            '    End If
+
+            '    '    bio_White()
+            '    '    MsgBox("bio_White")
+            '    'Catch
+            '    '    bio_OURCOMPANY()
+            '    '    MsgBox("bio_OURCOMPANY")
+            'Catch
+            '    'bio_InSys()
+            '    MsgBox("Not valid")
+            'End Try
 
             PopulateComboBox(Paydate_ComboB, "BIOMETRIC_DTR", "PAYDATE")
         End If
@@ -866,7 +928,6 @@ Public Class frmAttendance
         Dim bio_no As String = "" ' ======================================== GIMOVE SA GAWAS BASI DILI MAGANA =======================
         progressBarStart(DtSet.Tables(0).Rows.Count)
         For row = 7 To DtSet.Tables(0).Rows.Count
-
             If eCell(row, 5).Value = Nothing Then
                 Continue For
             End If
@@ -887,7 +948,6 @@ Public Class frmAttendance
 
             '=============== CHECK PER CELL IN A ROW ============= 
             For column = 7 To 11
-
                 Dim time As DateTime = (New DateTime()).AddDays(eCell(row, column).Value)
 
                 '============================== WORKED FINE ========================
@@ -904,9 +964,13 @@ Public Class frmAttendance
 
                     list_hour(3) = time.ToString("t")
 
-                ElseIf time >= "1:00 PM" And time <= "3:00 PM" Then
+                ElseIf time >= "1:00 PM" And time <= "3:59 PM" Then
+                    If list_hour(2) = "" Then
 
-                    list_hour(2) = time.ToString("t")
+                        list_hour(2) = time.ToString("t")
+                    Else
+                        list_hour(3) = time.ToString("t")
+                    End If
 
                 ElseIf time >= "12:00 PM" And time <= "12:59 PM" Then
 
@@ -937,6 +1001,13 @@ Public Class frmAttendance
                             list_hour(1) = list1.ToString("t")
 
                             list_Group.Clear()
+                        Else
+                            If list_hour(2) = "" Then
+
+                                list_hour(2) = time.ToString("t")
+                            Else
+                                list_hour(3) = time.ToString("t")
+                            End If
                         End If
 
                     End If

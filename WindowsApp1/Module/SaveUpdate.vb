@@ -239,7 +239,7 @@
             SaveEntry(ds)
         End Using
     End Sub
-
+    '          SaveBiometricSheet(Paydate, eCell(row, 3).Value, eCell(row, 4).Value, Branch_ComboB.SelectedItem)
     Public Sub SaveBiometricSheet(payDate As String, bioID As String, dateTime As String, BRANCHNAME As String)
 
         Dim mysql As String = "Select * From IMPORT_DTR Rows 1"
@@ -648,7 +648,7 @@
 
                         BiometricID = .Item("BIOMETRICID")
                         rate = IIf(IsDBNull(.Item("RATE")), 0, .Item("RATE"))
-                        branchID = .Item("BRANCH_ID")
+                        branchID = IIf(IsDBNull(.Item("BRANCH_ID")), 0, .Item("BRANCH_ID"))
                         emp_id = .Item("emp_idd")
 
                         '============================================= ATTENDANCE (TOTAL DAYS) =========================================================

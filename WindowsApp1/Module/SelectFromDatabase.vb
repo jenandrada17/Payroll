@@ -1054,7 +1054,7 @@ Module SelectFromDatabase
                 cnt = cnt + 1
             End If
 
-            Console.WriteLine("CountDate list_value- " & c & "val " & datee)
+            Console.WriteLine("Count 12 " & cnt)
         Next
 
         Return cnt
