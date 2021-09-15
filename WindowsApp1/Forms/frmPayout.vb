@@ -556,7 +556,7 @@ Public Class frmPayout
 
             LoadPayslip(Employee_TXT.Tag, Payslip_paydate_Combo.Text)
 
-            Deduct_ifExist(Preview_BTN.Tag, Payslip_paydate_Combo.Text)             '======= REFLECT DEDUCTION IF EXIST  (Preview_BTN.Tag = EMP_ID)
+            Deduct_ifExist(Employee_TXT.Tag, Payslip_paydate_Combo.Text)
 
 
             '================================ CHECK IF VALID EMAIL ADDRESS ============================
@@ -696,7 +696,7 @@ Public Class frmPayout
 
                         rate = .Item("RATE_DAILY")
                         Dim namee As String = .Item("FULLNAME")
-                        dt_employee.Rows.Add(namee, .Item("SSSNO"), .Item("PHILHEALTHNO"), .Item("TINNO"), .Item("PAGIBIG"))
+                        dt_employee.Rows.Add(namee, .Item("SSSNO"), .Item("PHILHEALTHNO"), .Item("TINNO"), .Item("PAGIBIGNO"))
 
                     End With
                 End If
@@ -898,6 +898,10 @@ Public Class frmPayout
                                 Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
                                 Dim toProper As String = info.ToTitleCase(toLower)
 
+                                If .item("CATEGORY") = "SBU" Then
+                                    toProper = "SBU"
+                                End If
+
                                 dt_deduction.Rows.Add(toProper, amountt.ToString(”N”))
 
                             End With
@@ -906,48 +910,44 @@ Public Class frmPayout
                 End Using
 
 
-                '================================================== DEDUCTIONS -  ORIGINAL ================================================ 
-            Else
-                mysql_ = $"Select * From payroll_deductions WHERE BIO_NO = '{biometricID}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
-                Using ds As DataSet = LoadSQL(mysql_, "payroll_deductions")
-                    If ds.Tables(0).Rows.Count > 0 Then
-                        For Each drr In ds.Tables(0).Rows
-                            With drr
-                                If .item("EFFECTIVE_DATE") <= Today Then
-                                    total_deduction = total_deduction + .Item("AMOUNT_PER_GIVE")
-                                End If
-                            End With
-                        Next
-                    End If
+                ''================================================== DEDUCTIONS -  ORIGINAL ================================================ 
+                'Else
+                '    mysql_ = $"Select * From payroll_deductions WHERE BIO_NO = '{biometricID}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
+                '    Using ds As DataSet = LoadSQL(mysql_, "payroll_deductions")
+                '        If ds.Tables(0).Rows.Count > 0 Then
+                '            For Each drr In ds.Tables(0).Rows
+                '                With drr
+                '                    If .item("EFFECTIVE_DATE") <= Today Then
+                '                        total_deduction = total_deduction + .Item("AMOUNT_PER_GIVE")
+                '                    End If
+                '                End With
+                '            Next
+                '        End If
 
-                End Using
+                '    End Using
 
-                mysql_ = $"select * from payroll_deductions  where BIO_NO = '{biometricID}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
-                Using ds As DataSet = LoadSQL(mysql_, "payroll_deductions")
-                    If ds.Tables(0).Rows.Count > 0 Then
-                        For Each dr In ds.Tables(0).Rows
-                            With dr
-                                If .Item("EFFECTIVE_DATE") <= Today Then
+                '    mysql_ = $"select * from payroll_deductions  where BIO_NO = '{biometricID}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
+                '    Using ds As DataSet = LoadSQL(mysql_, "payroll_deductions")
+                '        If ds.Tables(0).Rows.Count > 0 Then
+                '            For Each dr In ds.Tables(0).Rows
+                '                With dr
+                '                    If .Item("EFFECTIVE_DATE") <= Today Then
 
-                                    Dim amountt As Double = .item("AMOUNT_PER_GIVE")
+                '                        Dim amountt As Double = .item("AMOUNT_PER_GIVE")
 
-                                    Dim toLower = .item("CATEGORY").ToLower()
-                                    Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
-                                    Dim toProper As String = info.ToTitleCase(toLower)
+                '                        Dim toLower = .item("CATEGORY").ToLower()
+                '                        Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
+                '                        Dim toProper As String = info.ToTitleCase(toLower)
 
-                                    dt_deduction.Rows.Add(toProper, amountt.ToString(”N”))
+                '                        dt_deduction.Rows.Add(toProper, amountt.ToString(”N”))
 
-                                End If
-                            End With
+                '                    End If
+                '                End With
 
-                        Next
-                    End If
-                End Using
+                '            Next
+                '        End If
+                '    End Using
             End If
-
-            total_deduction = total_deduction + SBU_Amount()
-
-            dt_deduction.Rows.Add("SBU", SBU_Amount().ToString(”N”))
 
             Dim rds_deduction As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet4", dt_deduction)
             ReportViewer_payslip.LocalReport.DataSources.Add(rds_deduction)

@@ -117,33 +117,55 @@
     End Sub
 
     Friend Sub Deduct_ifExist(BIO_NO As String, PAYDATE As String)
-        Dim mysql_1 As String = $"Select A.*, A.id as deduc_id, B.* From PAYROLL_DEDUCTIONS A 
-                                        left join MODIFIED_DEDUCTION B on B.BIO_NO = A.BIO_NO  and B.PAYDATE = '{PAYDATE}'  and B.M_CATEGORY = A.CATEGORY
-                                        WHERE A.BIO_NO = '{BIO_NO}'  and STATUS IS NULL"
 
-        Using ds As DataSet = LoadSQL(mysql_1, "PAYROLL_DEDUCTIONS")
+        If isExist_String("HISTORY_DEDUCTION", $"WHERE BIO_NO = '{BIO_NO}' AND PAYDATE = '{PAYDATE}'") Then 'DELETE RECORD (HISTORY_DEDUCTION) IF EXIST TO REPLACE NEW FROM GRID (IMPORTANT)
+            RunCommand($"DELETE FROM HISTORY_DEDUCTION WHERE BIO_NO = '{BIO_NO}' and PAYDATE = '{PAYDATE}';")
+        End If
+
+        If isExist_String("MODIFIED_DEDUCTION", $"WHERE BIO_NO = '{BIO_NO}' AND PAYDATE = '{PAYDATE}'") Then '========= REFER TO MODIFIED_DEDUCTION IF EXIST (IMPORTANT)
+
+            GetFrom_MOdified_Deduction(BIO_NO, PAYDATE)
+
+        Else
+
+            GetFrom_Recorded_Allow_Deduc(BIO_NO, PAYDATE)
+
+        End If
+
+    End Sub
+
+    Private Sub GetFrom_Recorded_Allow_Deduc(BIO_NO As String, PAYDATE As String)
+        Dim mysql_1 As String = $"Select * From RECORDED_ALLOW_DEDUC WHERE BIO_NO = '{BIO_NO}' and PAYDATE = '{PAYDATE}' AND TRANSAC_NAME = 'DEDUCTION'"
+        Using ds As DataSet = LoadSQL(mysql_1, "RECORDED_ALLOW_DEDUC")
             If ds.Tables(0).Rows.Count > 0 Then
-
-                'If isExist_Double("HISTORY_DEDUCTION", "EMP_ID", EMP_ID, "PAYDATE", PAYDATE) Then 'DELETE RECORD (HISTORY_DEDUCTION) IF EXIST TO REPLACE NEW FROM GRID (IMPORTANT)
-                If isExist_String("HISTORY_DEDUCTION", $"WHERE BIO_NO = '{BIO_NO}' AND PAYDATE = '{PAYDATE}'") Then 'DELETE RECORD (HISTORY_DEDUCTION) IF EXIST TO REPLACE NEW FROM GRID (IMPORTANT)
-                    RunCommand($"DELETE FROM HISTORY_DEDUCTION WHERE BIO_NO = '{BIO_NO}' and PAYDATE = '{PAYDATE}';")
-                End If
-
                 For Each dr In ds.Tables(0).Rows
                     With dr
 
-                        'If isExist_Triple("MODIFIED_DEDUCTION", "EMP_ID", EMP_ID, "PAYDATE", PAYDATE, "M_CATEGORY", .item("CATEGORY")) Then '========= REFER TO MODIFIED_DEDUCTION IF EXIST (IMPORTANT)
-                        If isExist_String("MODIFIED_DEDUCTION", $"WHERE BIO_NO = '{BIO_NO}' AND PAYDATE = '{PAYDATE}' AND M_CATEGORY = '{ .item("CATEGORY")}'") Then '========= REFER TO MODIFIED_DEDUCTION IF EXIST (IMPORTANT)
+                        Dim decut_id As String = IIf(IsDBNull(.Item("R_DEDUC_ID")), "", .Item("R_DEDUC_ID"))
 
-                            If Not .item("M_AMOUNT") = 0.00 Or Not .item("M_AMOUNT") = 0 Then
-                                SaveDEDUCTION_HISTORY(BIO_NO, .item("CATEGORY"), .item("M_AMOUNT"), Today, PAYDATE, .item("deduc_id"))
-                            End If
+                        SaveDEDUCTION_HISTORY(BIO_NO, .item("CATEGORY"), .item("AMOUNT"), Today, PAYDATE, decut_id)
 
-                        Else '========= REFER TO THE ORGINAL DATA IF NOT EXIST  
-                            SaveDEDUCTION_HISTORY(BIO_NO, .item("CATEGORY"), .item("AMOUNT_PER_GIVE"), Today, PAYDATE, .item("deduc_id"))
+                        If decut_id <> "" Then Calculate_Balance(.item("R_DEDUC_ID")) '========= CALCULATE DEDUCTION BALANCE ========= 
+
+                    End With
+                Next
+            End If
+        End Using
+
+    End Sub
+
+
+    Private Sub GetFrom_MOdified_Deduction(BIO_NO As String, PAYDATE As String)
+        Dim mysql_1 As String = $"Select * From MODIFIED_DEDUCTION WHERE A.BIO_NO = '{BIO_NO}' and PAYDATE = '{PAYDATE}'"
+        Using ds As DataSet = LoadSQL(mysql_1, "MODIFIED_DEDUCTION")
+            If ds.Tables(0).Rows.Count > 0 Then
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+                        If Not .item("M_AMOUNT") = 0.00 Or Not .item("M_AMOUNT") = 0 Then
+                            SaveDEDUCTION_HISTORY(BIO_NO, .item("CATEGORY"), .item("M_AMOUNT"), Today, PAYDATE, .item("deduc_id"))
                         End If
 
-                        Calculate_Balance(.item("deduc_id")) '========= CALCULATE DEDUCTION BALANCE =========
+                        Calculate_Balance(.item("deduc_id")) '========= CALCULATE DEDUCTION BALANCE ========= 
                     End With
                 Next
 
@@ -166,8 +188,7 @@
             End If
         End Using
 
-        '================================== SUM UP ALL IN HISTORY_DEDUCTION ================================ 
-        'If isExist_single("HISTORY_DEDUCTION", "H_DEDUC_ID", deduc_id) Then
+        '================================== SUM UP ALL IN HISTORY_DEDUCTION ================================  
         If isExist_String("HISTORY_DEDUCTION", $"WHERE H_DEDUC_ID = '{deduc_id}'") Then
             Dim mysql_ As String = $"Select SUM(H_AMOUNT) as tots From HISTORY_DEDUCTION where H_DEDUC_ID = '{deduc_id}' "
             Using ds As DataSet = LoadSQL(mysql_, "HISTORY_DEDUCTION")
@@ -182,8 +203,48 @@
                 End If
             End Using
         End If
-
     End Sub
+
+
+    Public Function SBU_notFull(BIO_NO As String)
+
+        Dim total_amount As Double = 0
+
+        '================================== GET TOTAL_AMOUNT ================================ 
+        Dim mysql As String = $"Select COMPANY From PAYROLL_EMPLOYEE where BIO_NO = '{BIO_NO}' "
+        Using dss As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+            If dss.Tables(0).Rows.Count > 0 Then
+                Dim data As DataRow = dss.Tables(0).Rows(0)
+                With data
+                    If .Item("COMPANY") = "DALTON" Then
+                        total_amount = 50000
+                    ElseIf .Item("COMPANY") = "PHOTO" Then
+                        total_amount = 30000
+                    Else
+                        total_amount = 15000
+                    End If
+                End With
+            End If
+        End Using
+
+        '================================== SUM UP ALL IN HISTORY_DEDUCTION ================================  
+        If isExist_String("HISTORY_DEDUCTION", $"WHERE H_DEDUC_ID IS NULL") Then
+            Dim mysql_ As String = $"Select SUM(H_AMOUNT) as tots From HISTORY_DEDUCTION where H_DEDUC_ID IS NULL "
+            Using ds As DataSet = LoadSQL(mysql_, "HISTORY_DEDUCTION")
+                If ds.Tables(0).Rows.Count > 0 Then
+                    For Each drR In ds.Tables(0).Rows
+                        With drR
+                            If .item("tots") < total_amount Then    '====== IF GREATER OR EQUAL TO TOTAL AMOUNT OF DEDUCTION ====== 
+                                Return True
+                            End If
+                        End With
+                    Next
+                End If
+            End Using
+        End If
+
+        Return False
+    End Function
 
     Public Sub Update_DEDUCTION_STATUS(deduc_id As String)
 
@@ -211,7 +272,10 @@
                 .Item("H_CATEGORY") = H_CATEGORY
                 .Item("H_AMOUNT") = H_AMOUNT
                 .Item("PAID_DATE") = PAID_DATE
-                .Item("H_DEDUC_ID") = H_DEDUC_ID
+
+                If H_DEDUC_ID <> Nothing Then
+                    .Item("H_DEDUC_ID") = H_DEDUC_ID
+                End If
 
             End With
             ds.Tables(0).Rows.Add(dsNewRow)
@@ -728,13 +792,17 @@
                                 With dr_3
                                     If .item("EFFECTIVE_DATE") <= Today Then
                                         Deduction = Deduction + .Item("AMOUNT_PER_GIVE")
-                                        Save_Recorded_Allow_Deduc(bioNo, paydate_, .Item("CATEGORY"), .Item("AMOUNT_PER_GIVE"), "DEDUCTION")
+                                        Save_Recorded_Allow_Deduc(bioNo, paydate_, .Item("CATEGORY"), .Item("AMOUNT_PER_GIVE"), "DEDUCTION", .Item("ID"))
                                     End If
                                 End With
                             Next
                         End If
 
-                        Save_Recorded_Allow_Deduc(bioNo, paydate_, "SBU", SBU_Amount(), "DEDUCTION")
+                        '============================================= CHECK SBU TOTAL DISTRIBUTION IF ALREADY REACH THE LIMIT ========================================================= 
+                        If SBU_notFull(bioNo) Then
+                            Save_Recorded_Allow_Deduc(bioNo, paydate_, "SBU", SBU_Amount(), "DEDUCTION")
+                        End If
+
                     End Using
                     Deduction = Deduction + SBU
 
@@ -911,13 +979,17 @@
                                     With dr_3
                                         If .item("EFFECTIVE_DATE") <= Today Then
                                             Deduction = Deduction + .Item("AMOUNT_PER_GIVE")
-                                            Save_Recorded_Allow_Deduc(BiometricID, paydate_, .Item("CATEGORY"), .Item("AMOUNT_PER_GIVE"), "DEDUCTION")
+                                            Save_Recorded_Allow_Deduc(BiometricID, paydate_, .Item("CATEGORY"), .Item("AMOUNT_PER_GIVE"), "DEDUCTION", .Item("ID"))
                                         End If
                                     End With
                                 Next
                             End If
 
-                            Save_Recorded_Allow_Deduc(BiometricID, paydate_, "SBU", SBU_Amount(), "DEDUCTION")
+
+                            If SBU_notFull(bioNo) Then '================ CHECK SBU TOTAL DISTRIB IF ALREADY REACH THE LIMIT ==============
+                                Save_Recorded_Allow_Deduc(BiometricID, paydate_, "SBU", SBU_Amount(), "DEDUCTION")
+                            End If
+
                         End Using
                         Deduction = Deduction + SBU
 
@@ -975,7 +1047,7 @@
         progressBarEnd()
     End Sub
 
-    Friend Sub Save_Recorded_Allow_Deduc(bio_no As String, PAYDATE As String, CATEGORY As String, AMOUNT As String, TRANSAC_NAME As String)
+    Friend Sub Save_Recorded_Allow_Deduc(bio_no As String, PAYDATE As String, CATEGORY As String, AMOUNT As String, TRANSAC_NAME As String, Optional R_DEDUC_ID As String = "")
 
         Dim sql As String = "Select * From RECORDED_ALLOW_DEDUC Rows 1"
         Using ds As DataSet = LoadSQL(sql, "RECORDED_ALLOW_DEDUC")
@@ -988,6 +1060,7 @@
                 .Item("CATEGORY") = CATEGORY
                 .Item("AMOUNT") = AMOUNT
                 .Item("TRANSAC_NAME") = TRANSAC_NAME
+                .Item("R_DEDUC_ID") = R_DEDUC_ID
 
             End With
             ds.Tables(0).Rows.Add(dsNewRow)
@@ -1349,9 +1422,10 @@
 
     End Sub
 
-    Public Sub Update_Emp_Benefits_Details(BIO_NO As String, TINNO As String, SSSNO As String, PHILHEALTHNO As String, PAGIBIGNO As String, empNo As String)
+    Public Sub Update_Emp_Benefits_Details(BIO_NO As String, TINNO As String, SSSNO As String, PHILHEALTHNO As String, PAGIBIGNO As String, DATE_STARTED As String, EMP_POSITION As String, empNo As String)
 
         Dim id_no As String() = BIO_NO.Split(New Char() {"-"c})
+
 
         Console.WriteLine("empNo " & empNo)
 
@@ -1363,6 +1437,8 @@
 
                 With ds.Tables(0).Rows(0)
 
+                    .Item("DATE_STARTED") = DATE_STARTED
+                    .Item("EMP_POSITION") = EMP_POSITION
                     .Item("TINNO") = TINNO
                     .Item("SSSNO") = SSSNO
                     .Item("PHILHEALTHNO") = PHILHEALTHNO
@@ -1377,6 +1453,35 @@
 
             MsgBox(empNo)
 
+        End If
+
+    End Sub
+
+    'Update_Emp_Benefits_DetailS_BY_NAME(fullname, eCell(row, 9).Value, eCell(row, 10).Value, eCell(row, 11).Value, eCell(row, 12).Value, eCell(row, 6).Value, eCell(row, 8).Value, eCell(row, 1).Value)
+
+    Public Sub Update_Emp_Benefits_DetailS_BY_NAME(FULLNAME As String, TINNO As String, SSSNO As String, PHILHEALTHNO As String, PAGIBIGNO As String, DATE_STARTED As String, EMP_POSITION As String, empNo As String)
+
+        Console.WriteLine("empNo " & empNo)
+
+        Dim mysql As String = $"Select * FROM PAYROLL_EMPLOYEE  where FULLNAME = '{FULLNAME}'"
+        Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE ")
+        If ds.Tables(0).Rows.Count > 0 Then
+
+            With ds.Tables(0).Rows(0)
+
+                If DATE_STARTED <> Nothing Then
+                    .Item("DATE_STARTED") = DATE_STARTED
+                End If
+
+                .Item("EMP_POSITION") = EMP_POSITION
+                .Item("TINNO") = TINNO
+                .Item("SSSNO") = SSSNO
+                .Item("PHILHEALTHNO") = PHILHEALTHNO
+                .Item("PAGIBIGNO") = PAGIBIGNO
+
+            End With
+
+            SaveEntry(ds, False)
         End If
 
     End Sub

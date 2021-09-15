@@ -46,10 +46,13 @@ Public Class frmNewEmployee
 
         'Import_Employee_DateStarted_Position()
 
-        Import_Employee_Benifits_Details()
+        'Import_Employee_Benifits_Details_BY_BIO()
+
+        Import_Employee_Benifits_Details_BY_NAME()
+
     End Sub
 
-    Private Sub Import_Employee_Benifits_Details()
+    Private Sub Import_Employee_Benifits_Details_BY_NAME()
 
         eApp = New Excel.Application
         eBook = eApp.Workbooks.Open(Path_TXT.Text)
@@ -65,9 +68,19 @@ Public Class frmNewEmployee
 
         progressBarStart(DtSet.Tables(0).Rows.Count + 1)
 
-        For row = 1 To DtSet.Tables(0).Rows.Count + 1
+        For row = 2 To DtSet.Tables(0).Rows.Count + 1
 
-            Update_Emp_Benefits_Details(eCell(row, 5).Value, eCell(row, 9).Value, eCell(row, 10).Value, eCell(row, 11).Value, eCell(row, 12).Value, eCell(row, 1).Value)
+            Dim MI As String
+
+            If String.IsNullOrEmpty(eCell(row, 4).Value) Then
+                MI = ""
+            Else
+                MI = eCell(row, 4).Value.Substring(0, 1) & "."
+            End If
+
+            Dim fullname As String = eCell(row, 2).Value & ", " & eCell(row, 3).Value & " " & MI
+
+            Update_Emp_Benefits_DetailS_BY_NAME(fullname, eCell(row, 9).Value, eCell(row, 10).Value, eCell(row, 11).Value, eCell(row, 12).Value, eCell(row, 6).Value, eCell(row, 8).Value, eCell(row, 1).Value)
 
             frmMainForm.AppProgressBar.Value += 1
 
@@ -84,6 +97,42 @@ Public Class frmNewEmployee
         Excel_Panel.Visible = False
 
     End Sub
+
+    'Private Sub Import_Employee_Benifits_Details_BY_BIO()
+
+    '    eApp = New Excel.Application
+    '    eBook = eApp.Workbooks.Open(Path_TXT.Text)
+    '    eSheet = eBook.Worksheets(1)
+    '    eCell = eSheet.UsedRange
+
+    '    MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path_TXT.Text}';Extended Properties=Excel 8.0;")
+    '    MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
+    '    MyCommand.TableMappings.Add("Table", "Net-informations.com")
+    '    DtSet = New System.Data.DataSet
+    '    MyCommand.Fill(DtSet)
+
+
+    '    progressBarStart(DtSet.Tables(0).Rows.Count + 1)
+
+    '    For row = 1 To DtSet.Tables(0).Rows.Count + 1
+
+    '        Update_Emp_Benefits_Details(eCell(row, 5).Value, eCell(row, 9).Value, eCell(row, 10).Value, eCell(row, 11).Value, eCell(row, 12).Value, eCell(row, 6).Value, eCell(row, 8).Value, eCell(row, 1).Value)
+
+    '        frmMainForm.AppProgressBar.Value += 1
+
+    '    Next
+
+    '    progressBarEnd()
+
+
+    '    Lists_Employees(lvEmployee)
+
+    '    Path_TXT.Clear()
+    '    MyConnection.Close()
+
+    '    Excel_Panel.Visible = False
+
+    'End Sub
 
     Private Sub Import_Employee_DateStarted_Position()
         eApp = New Excel.Application

@@ -104,7 +104,7 @@ Partial Class frmNewEmployee
         'ColumnHeader6
         '
         Me.ColumnHeader6.Text = "Employee's Name"
-        Me.ColumnHeader6.Width = 420
+        Me.ColumnHeader6.Width = 380
         '
         'ColumnHeader7
         '
@@ -522,23 +522,23 @@ Partial Class frmNewEmployee
         '
         'ColumnHeader5
         '
-        Me.ColumnHeader5.Text = "SSS No."
-        Me.ColumnHeader5.Width = 100
+        Me.ColumnHeader5.Text = "TIN No."
+        Me.ColumnHeader5.Width = 150
         '
         'ColumnHeader9
         '
-        Me.ColumnHeader9.Text = "Pagibig No."
-        Me.ColumnHeader9.Width = 100
+        Me.ColumnHeader9.Text = "SSS No."
+        Me.ColumnHeader9.Width = 150
         '
         'ColumnHeader10
         '
         Me.ColumnHeader10.Text = "PhilHealth No."
-        Me.ColumnHeader10.Width = 100
+        Me.ColumnHeader10.Width = 150
         '
         'ColumnHeader11
         '
-        Me.ColumnHeader11.Text = "TIN No."
-        Me.ColumnHeader11.Width = 100
+        Me.ColumnHeader11.Text = "Pagibig No. "
+        Me.ColumnHeader11.Width = 150
         '
         'frmNewEmployee
         '

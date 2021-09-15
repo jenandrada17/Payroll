@@ -1708,6 +1708,10 @@ Module SelectFromDatabase
                 mysql &= $"{vbCr}UPPER(BIO_NO) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(EMP_STATUS) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(EMP_POSITION) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(SSSNO) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(PHILHEALTHNO) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(TINNO) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(PAGIBIGNO) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(EMAIL_ADD) LIKE UPPER('%{name}%')) ORDER BY COMPANY, BRANCH_CODE ASC "
             Next
 
@@ -1746,9 +1750,9 @@ Module SelectFromDatabase
             i.SubItems.Add(IIf(IsDBNull(.Item("EMAIL_ADD")), "", .Item("EMAIL_ADD")))
             i.SubItems.Add(IIf(datee = Nothing, "", datee.ToString("MMM dd, yyyy")))
             i.SubItems.Add(IIf(IsDBNull(.Item("EMP_POSITION")), "", .Item("EMP_POSITION")))
+            i.SubItems.Add(IIf(IsDBNull(.Item("TINNO")), "", .Item("TINNO")))
             i.SubItems.Add(IIf(IsDBNull(.Item("SSSNO")), "", .Item("SSSNO")))
             i.SubItems.Add(IIf(IsDBNull(.Item("PHILHEALTHNO")), "", .Item("PHILHEALTHNO")))
-            i.SubItems.Add(IIf(IsDBNull(.Item("TINNO")), "", .Item("TINNO")))
             i.SubItems.Add(IIf(IsDBNull(.Item("PAGIBIGNO")), "", .Item("PAGIBIGNO")))
 
         End With
