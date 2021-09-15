@@ -23,12 +23,14 @@ Partial Class frmAttendance
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim DataGridViewCellStyle16 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle19 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle20 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle17 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle18 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim ReportDataSource4 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim ReportDataSource1 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Me.overAllBindingSource = New System.Windows.Forms.BindingSource(Me.components)
+        Me.dtr_all = New WindowsApp1.dtr_all()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Attendance_Tab = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
@@ -93,9 +95,12 @@ Partial Class frmAttendance
         Me.Label2 = New System.Windows.Forms.Label()
         Me.BiometricID_TXT = New System.Windows.Forms.TextBox()
         Me.TabPage3 = New System.Windows.Forms.TabPage()
+        Me.GroupBranch_RadioB = New System.Windows.Forms.RadioButton()
+        Me.Employee_RadioB = New System.Windows.Forms.RadioButton()
+        Me.HO_RadioB = New System.Windows.Forms.RadioButton()
         Me.Preview_BTN = New System.Windows.Forms.Button()
         Me.CancelDTR_BTN = New System.Windows.Forms.Button()
-        Me.Print_BTN = New System.Windows.Forms.Button()
+        Me.Email_BTN = New System.Windows.Forms.Button()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.RptViewer_DTR = New Microsoft.Reporting.WinForms.ReportViewer()
         Me.FlowLayoutPanel1 = New System.Windows.Forms.FlowLayoutPanel()
@@ -103,12 +108,11 @@ Partial Class frmAttendance
         Me.DTR_Emp1_TXT = New System.Windows.Forms.TextBox()
         Me.Bio1_DTR_TXT = New System.Windows.Forms.TextBox()
         Me.EmpSelect1_BTN = New System.Windows.Forms.Button()
-        Me.Employee_RadioB = New System.Windows.Forms.RadioButton()
-        Me.All_RadioB = New System.Windows.Forms.RadioButton()
+        Me.Branch_group = New System.Windows.Forms.GroupBox()
+        Me.DTR_Branch_Combo = New System.Windows.Forms.ComboBox()
         Me.Label22 = New System.Windows.Forms.Label()
         Me.Payslip_DTR_Combo = New System.Windows.Forms.ComboBox()
         Me.Close_LBL = New System.Windows.Forms.Label()
-        Me.dtr = New WindowsApp1.dtr()
         Me.printDTRBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.Context_Records = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.Menu_Remove = New System.Windows.Forms.ToolStripMenuItem()
@@ -119,8 +123,8 @@ Partial Class frmAttendance
         Me.RE_NAME_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.RE_BIO_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.RE_BRANCH_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.overAllBindingSource = New System.Windows.Forms.BindingSource(Me.components)
-        Me.dtr_all = New WindowsApp1.dtr_all()
+        CType(Me.overAllBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.dtr_all, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Attendance_Tab.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         CType(Me.Bio_grid, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -132,12 +136,20 @@ Partial Class frmAttendance
         Me.Panel1.SuspendLayout()
         Me.FlowLayoutPanel1.SuspendLayout()
         Me.Employee_GroupB.SuspendLayout()
-        CType(Me.dtr, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.Branch_group.SuspendLayout()
         CType(Me.printDTRBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Context_Records.SuspendLayout()
-        CType(Me.overAllBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.dtr_all, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
+        '
+        'overAllBindingSource
+        '
+        Me.overAllBindingSource.DataMember = "overAll"
+        Me.overAllBindingSource.DataSource = Me.dtr_all
+        '
+        'dtr_all
+        '
+        Me.dtr_all.DataSetName = "dtr_all"
+        Me.dtr_all.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema
         '
         'Label1
         '
@@ -680,34 +692,34 @@ Partial Class frmAttendance
         Me.DataGridView1.AllowUserToAddRows = False
         Me.DataGridView1.AllowUserToResizeColumns = False
         Me.DataGridView1.AllowUserToResizeRows = False
-        DataGridViewCellStyle16.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.DataGridView1.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle16
+        DataGridViewCellStyle1.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DataGridView1.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
         Me.DataGridView1.BackgroundColor = System.Drawing.Color.White
         Me.DataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.DataGridView1.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText
         Me.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.DataGridView1.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Date_DataGrid, Me.AM_In_DataGrid, Me.AM_Out_DataGrid, Me.PM_IN_DataGrid, Me.PM_Out_DataGrid, Me.Select_Datagrid})
-        DataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle19.BackColor = System.Drawing.SystemColors.InactiveCaption
-        DataGridViewCellStyle19.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle19.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle19.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle19.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle19.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.DataGridView1.DefaultCellStyle = DataGridViewCellStyle19
+        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.InactiveCaption
+        DataGridViewCellStyle4.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.DataGridView1.DefaultCellStyle = DataGridViewCellStyle4
         Me.DataGridView1.Location = New System.Drawing.Point(6, 44)
         Me.DataGridView1.Name = "DataGridView1"
         Me.DataGridView1.RowHeadersVisible = False
-        DataGridViewCellStyle20.SelectionBackColor = System.Drawing.Color.Transparent
-        DataGridViewCellStyle20.SelectionForeColor = System.Drawing.Color.Transparent
-        Me.DataGridView1.RowsDefaultCellStyle = DataGridViewCellStyle20
+        DataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.Transparent
+        DataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.Transparent
+        Me.DataGridView1.RowsDefaultCellStyle = DataGridViewCellStyle5
         Me.DataGridView1.Size = New System.Drawing.Size(684, 487)
         Me.DataGridView1.TabIndex = 65
         '
         'Date_DataGrid
         '
-        DataGridViewCellStyle17.NullValue = Nothing
-        Me.Date_DataGrid.DefaultCellStyle = DataGridViewCellStyle17
+        DataGridViewCellStyle2.NullValue = Nothing
+        Me.Date_DataGrid.DefaultCellStyle = DataGridViewCellStyle2
         Me.Date_DataGrid.HeaderText = "Date"
         Me.Date_DataGrid.Name = "Date_DataGrid"
         Me.Date_DataGrid.ReadOnly = True
@@ -717,9 +729,9 @@ Partial Class frmAttendance
         '
         'AM_In_DataGrid
         '
-        DataGridViewCellStyle18.Format = "t"
-        DataGridViewCellStyle18.NullValue = Nothing
-        Me.AM_In_DataGrid.DefaultCellStyle = DataGridViewCellStyle18
+        DataGridViewCellStyle3.Format = "t"
+        DataGridViewCellStyle3.NullValue = Nothing
+        Me.AM_In_DataGrid.DefaultCellStyle = DataGridViewCellStyle3
         Me.AM_In_DataGrid.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.[Nothing]
         Me.AM_In_DataGrid.HeaderText = "In"
         Me.AM_In_DataGrid.Name = "AM_In_DataGrid"
@@ -820,13 +832,14 @@ Partial Class frmAttendance
         '
         'TabPage3
         '
+        Me.TabPage3.Controls.Add(Me.GroupBranch_RadioB)
+        Me.TabPage3.Controls.Add(Me.Employee_RadioB)
+        Me.TabPage3.Controls.Add(Me.HO_RadioB)
         Me.TabPage3.Controls.Add(Me.Preview_BTN)
         Me.TabPage3.Controls.Add(Me.CancelDTR_BTN)
-        Me.TabPage3.Controls.Add(Me.Print_BTN)
+        Me.TabPage3.Controls.Add(Me.Email_BTN)
         Me.TabPage3.Controls.Add(Me.Panel1)
         Me.TabPage3.Controls.Add(Me.FlowLayoutPanel1)
-        Me.TabPage3.Controls.Add(Me.Employee_RadioB)
-        Me.TabPage3.Controls.Add(Me.All_RadioB)
         Me.TabPage3.Controls.Add(Me.Label22)
         Me.TabPage3.Controls.Add(Me.Payslip_DTR_Combo)
         Me.TabPage3.Location = New System.Drawing.Point(4, 41)
@@ -836,6 +849,41 @@ Partial Class frmAttendance
         Me.TabPage3.TabIndex = 3
         Me.TabPage3.Text = "    Print DTR    "
         Me.TabPage3.UseVisualStyleBackColor = True
+        '
+        'GroupBranch_RadioB
+        '
+        Me.GroupBranch_RadioB.AutoSize = True
+        Me.GroupBranch_RadioB.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GroupBranch_RadioB.Location = New System.Drawing.Point(157, 23)
+        Me.GroupBranch_RadioB.Name = "GroupBranch_RadioB"
+        Me.GroupBranch_RadioB.Size = New System.Drawing.Size(135, 29)
+        Me.GroupBranch_RadioB.TabIndex = 119
+        Me.GroupBranch_RadioB.Text = "Group by Branch"
+        Me.GroupBranch_RadioB.UseVisualStyleBackColor = True
+        '
+        'Employee_RadioB
+        '
+        Me.Employee_RadioB.AutoSize = True
+        Me.Employee_RadioB.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Employee_RadioB.Location = New System.Drawing.Point(320, 23)
+        Me.Employee_RadioB.Name = "Employee_RadioB"
+        Me.Employee_RadioB.Size = New System.Drawing.Size(114, 29)
+        Me.Employee_RadioB.TabIndex = 111
+        Me.Employee_RadioB.Text = "Per Employee"
+        Me.Employee_RadioB.UseVisualStyleBackColor = True
+        '
+        'HO_RadioB
+        '
+        Me.HO_RadioB.AutoSize = True
+        Me.HO_RadioB.Checked = True
+        Me.HO_RadioB.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.HO_RadioB.Location = New System.Drawing.Point(18, 23)
+        Me.HO_RadioB.Name = "HO_RadioB"
+        Me.HO_RadioB.Size = New System.Drawing.Size(104, 29)
+        Me.HO_RadioB.TabIndex = 118
+        Me.HO_RadioB.TabStop = True
+        Me.HO_RadioB.Text = "Head Office"
+        Me.HO_RadioB.UseVisualStyleBackColor = True
         '
         'Preview_BTN
         '
@@ -857,15 +905,15 @@ Partial Class frmAttendance
         Me.CancelDTR_BTN.Text = "Cancel"
         Me.CancelDTR_BTN.UseVisualStyleBackColor = True
         '
-        'Print_BTN
+        'Email_BTN
         '
-        Me.Print_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Print_BTN.Location = New System.Drawing.Point(333, 530)
-        Me.Print_BTN.Name = "Print_BTN"
-        Me.Print_BTN.Size = New System.Drawing.Size(103, 45)
-        Me.Print_BTN.TabIndex = 115
-        Me.Print_BTN.Text = "Print"
-        Me.Print_BTN.UseVisualStyleBackColor = True
+        Me.Email_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Email_BTN.Location = New System.Drawing.Point(333, 530)
+        Me.Email_BTN.Name = "Email_BTN"
+        Me.Email_BTN.Size = New System.Drawing.Size(103, 45)
+        Me.Email_BTN.TabIndex = 115
+        Me.Email_BTN.Text = "Send"
+        Me.Email_BTN.UseVisualStyleBackColor = True
         '
         'Panel1
         '
@@ -879,9 +927,9 @@ Partial Class frmAttendance
         'RptViewer_DTR
         '
         Me.RptViewer_DTR.Dock = System.Windows.Forms.DockStyle.Fill
-        ReportDataSource4.Name = "DataSet1"
-        ReportDataSource4.Value = Me.overAllBindingSource
-        Me.RptViewer_DTR.LocalReport.DataSources.Add(ReportDataSource4)
+        ReportDataSource1.Name = "DataSet1"
+        ReportDataSource1.Value = Me.overAllBindingSource
+        Me.RptViewer_DTR.LocalReport.DataSources.Add(ReportDataSource1)
         Me.RptViewer_DTR.LocalReport.ReportEmbeddedResource = "WindowsApp1.rptDTR_All.rdlc"
         Me.RptViewer_DTR.Location = New System.Drawing.Point(0, 0)
         Me.RptViewer_DTR.Name = "RptViewer_DTR"
@@ -892,9 +940,10 @@ Partial Class frmAttendance
         'FlowLayoutPanel1
         '
         Me.FlowLayoutPanel1.Controls.Add(Me.Employee_GroupB)
-        Me.FlowLayoutPanel1.Location = New System.Drawing.Point(9, 163)
+        Me.FlowLayoutPanel1.Controls.Add(Me.Branch_group)
+        Me.FlowLayoutPanel1.Location = New System.Drawing.Point(5, 161)
         Me.FlowLayoutPanel1.Name = "FlowLayoutPanel1"
-        Me.FlowLayoutPanel1.Size = New System.Drawing.Size(430, 129)
+        Me.FlowLayoutPanel1.Size = New System.Drawing.Size(430, 200)
         Me.FlowLayoutPanel1.TabIndex = 113
         '
         'Employee_GroupB
@@ -939,36 +988,33 @@ Partial Class frmAttendance
         Me.EmpSelect1_BTN.Text = "Select"
         Me.EmpSelect1_BTN.UseVisualStyleBackColor = True
         '
-        'Employee_RadioB
+        'Branch_group
         '
-        Me.Employee_RadioB.AutoSize = True
-        Me.Employee_RadioB.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Employee_RadioB.Location = New System.Drawing.Point(95, 19)
-        Me.Employee_RadioB.Name = "Employee_RadioB"
-        Me.Employee_RadioB.Size = New System.Drawing.Size(114, 29)
-        Me.Employee_RadioB.TabIndex = 111
-        Me.Employee_RadioB.TabStop = True
-        Me.Employee_RadioB.Text = "Per Employee"
-        Me.Employee_RadioB.UseVisualStyleBackColor = True
+        Me.Branch_group.Controls.Add(Me.DTR_Branch_Combo)
+        Me.Branch_group.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Branch_group.Location = New System.Drawing.Point(3, 125)
+        Me.Branch_group.Name = "Branch_group"
+        Me.Branch_group.Size = New System.Drawing.Size(416, 74)
+        Me.Branch_group.TabIndex = 89
+        Me.Branch_group.TabStop = False
+        Me.Branch_group.Text = "Branch"
+        Me.Branch_group.Visible = False
         '
-        'All_RadioB
+        'DTR_Branch_Combo
         '
-        Me.All_RadioB.AutoSize = True
-        Me.All_RadioB.Checked = True
-        Me.All_RadioB.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.All_RadioB.Location = New System.Drawing.Point(22, 19)
-        Me.All_RadioB.Name = "All_RadioB"
-        Me.All_RadioB.Size = New System.Drawing.Size(45, 29)
-        Me.All_RadioB.TabIndex = 109
-        Me.All_RadioB.TabStop = True
-        Me.All_RadioB.Text = "All"
-        Me.All_RadioB.UseVisualStyleBackColor = True
+        Me.DTR_Branch_Combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DTR_Branch_Combo.FormattingEnabled = True
+        Me.DTR_Branch_Combo.Location = New System.Drawing.Point(11, 28)
+        Me.DTR_Branch_Combo.Name = "DTR_Branch_Combo"
+        Me.DTR_Branch_Combo.Size = New System.Drawing.Size(319, 33)
+        Me.DTR_Branch_Combo.TabIndex = 8
+        Me.DTR_Branch_Combo.Text = "   Select Branch"
         '
         'Label22
         '
         Me.Label22.AutoSize = True
         Me.Label22.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label22.Location = New System.Drawing.Point(17, 82)
+        Me.Label22.Location = New System.Drawing.Point(13, 80)
         Me.Label22.Name = "Label22"
         Me.Label22.Size = New System.Drawing.Size(53, 25)
         Me.Label22.TabIndex = 108
@@ -978,7 +1024,7 @@ Partial Class frmAttendance
         '
         Me.Payslip_DTR_Combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Payslip_DTR_Combo.FormattingEnabled = True
-        Me.Payslip_DTR_Combo.Location = New System.Drawing.Point(22, 110)
+        Me.Payslip_DTR_Combo.Location = New System.Drawing.Point(18, 108)
         Me.Payslip_DTR_Combo.Name = "Payslip_DTR_Combo"
         Me.Payslip_DTR_Combo.Size = New System.Drawing.Size(319, 33)
         Me.Payslip_DTR_Combo.TabIndex = 107
@@ -993,16 +1039,6 @@ Partial Class frmAttendance
         Me.Close_LBL.Size = New System.Drawing.Size(57, 32)
         Me.Close_LBL.TabIndex = 74
         Me.Close_LBL.Text = "Close"
-        '
-        'dtr
-        '
-        Me.dtr.DataSetName = "dtr"
-        Me.dtr.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema
-        '
-        'printDTRBindingSource
-        '
-        Me.printDTRBindingSource.DataMember = "printDTR"
-        Me.printDTRBindingSource.DataSource = Me.dtr
         '
         'Context_Records
         '
@@ -1065,16 +1101,6 @@ Partial Class frmAttendance
         Me.RE_BRANCH_DGV.ReadOnly = True
         Me.RE_BRANCH_DGV.Width = 140
         '
-        'overAllBindingSource
-        '
-        Me.overAllBindingSource.DataMember = "overAll"
-        Me.overAllBindingSource.DataSource = Me.dtr_all
-        '
-        'dtr_all
-        '
-        Me.dtr_all.DataSetName = "dtr_all"
-        Me.dtr_all.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema
-        '
         'frmAttendance
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1086,6 +1112,8 @@ Partial Class frmAttendance
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Name = "frmAttendance"
         Me.Text = "frmAttendance"
+        CType(Me.overAllBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.dtr_all, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Attendance_Tab.ResumeLayout(False)
         Me.TabPage1.ResumeLayout(False)
         Me.TabPage1.PerformLayout()
@@ -1103,11 +1131,9 @@ Partial Class frmAttendance
         Me.FlowLayoutPanel1.ResumeLayout(False)
         Me.Employee_GroupB.ResumeLayout(False)
         Me.Employee_GroupB.PerformLayout()
-        CType(Me.dtr, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.Branch_group.ResumeLayout(False)
         CType(Me.printDTRBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Context_Records.ResumeLayout(False)
-        CType(Me.overAllBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.dtr_all, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1184,13 +1210,11 @@ Partial Class frmAttendance
     Friend WithEvents EmpSelect1_BTN As Button
     Friend WithEvents RptViewer_DTR As Microsoft.Reporting.WinForms.ReportViewer
     Friend WithEvents Employee_RadioB As RadioButton
-    Friend WithEvents All_RadioB As RadioButton
     Friend WithEvents Label22 As Label
     Friend WithEvents Payslip_DTR_Combo As ComboBox
     Friend WithEvents Panel1 As Panel
     Friend WithEvents CancelDTR_BTN As Button
-    Friend WithEvents Print_BTN As Button
-    Friend WithEvents dtr As dtr
+    Friend WithEvents Email_BTN As Button
     Friend WithEvents printDTRBindingSource As BindingSource
     Friend WithEvents Context_Records As ContextMenuStrip
     Friend WithEvents Menu_Remove As ToolStripMenuItem
@@ -1205,4 +1229,8 @@ Partial Class frmAttendance
     Friend WithEvents RE_BRANCH_DGV As DataGridViewTextBoxColumn
     Friend WithEvents overAllBindingSource As BindingSource
     Friend WithEvents dtr_all As dtr_all
+    Friend WithEvents Branch_group As GroupBox
+    Friend WithEvents DTR_Branch_Combo As ComboBox
+    Friend WithEvents HO_RadioB As RadioButton
+    Friend WithEvents GroupBranch_RadioB As RadioButton
 End Class

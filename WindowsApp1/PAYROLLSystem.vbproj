@@ -107,14 +107,6 @@
   <ItemGroup>
     <Compile Include="Class\Employee.vb" />
     <Compile Include="CryptoStuff.vb" />
-    <Compile Include="Dataset\dtr.Designer.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>dtr.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="Dataset\dtr.vb">
-      <DependentUpon>dtr.xsd</DependentUpon>
-    </Compile>
     <Compile Include="Dataset\dtr_all.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -171,12 +163,6 @@
     <Compile Include="Forms\frmPayout.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\frmPayslip.Designer.vb">
-      <DependentUpon>frmPayslip.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\frmPayslip.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Forms\frmSettings.Designer.vb">
       <DependentUpon>frmSettings.vb</DependentUpon>
     </Compile>
@@ -227,9 +213,6 @@
     <EmbeddedResource Include="Forms\frmPayout.resx">
       <DependentUpon>frmPayout.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmPayslip.resx">
-      <DependentUpon>frmPayslip.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmSettings.resx">
       <DependentUpon>frmSettings.vb</DependentUpon>
     </EmbeddedResource>
@@ -240,22 +223,9 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\rptDTR_All.rdlc" />
-    <EmbeddedResource Include="Reports\rpt_DTR.rdlc" />
-    <EmbeddedResource Include="Reports\rpt_DTR_Branch.rdlc" />
     <EmbeddedResource Include="Reports\rpt_payslip.rdlc" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Dataset\dtr.xsc">
-      <DependentUpon>dtr.xsd</DependentUpon>
-    </None>
-    <None Include="Dataset\dtr.xsd">
-      <SubType>Designer</SubType>
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>dtr.Designer.vb</LastGenOutput>
-    </None>
-    <None Include="Dataset\dtr.xss">
-      <DependentUpon>dtr.xsd</DependentUpon>
-    </None>
     <None Include="Dataset\dtr_all.xsc">
       <DependentUpon>dtr_all.xsd</DependentUpon>
     </None>

@@ -41,11 +41,6 @@ Public Class frmAttendance
 
         Dim array() As String = {".HO ACCOUNTING", ".HO ADMIN", ".HO HR", ".HO MAIN", ".HO REMATADO", ".HO WAREHOUSE"}
 
-        'For i = 0 To 5
-        '    Branch_ComboB.Items.Insert(i, array(i))
-        '    DTR_Branch_Combo.Items.Insert(i, array(i))
-        'Next
-
     End Sub
 
     Private Sub Close_LBL_Click(sender As Object, e As EventArgs) Handles Close_LBL.Click
@@ -602,18 +597,23 @@ Public Class frmAttendance
     End Sub
 
     Private Sub Preview_BTN_Click(sender As Object, e As EventArgs) Handles Preview_BTN.Click
-        LoadDTR_All()
+
+        If Payslip_DTR_Combo.SelectedIndex >= 0 Then
+            LoadDTR_All()
+        Else
+            MsgBox("Please select date of payroll.", MsgBoxStyle.Exclamation, "Error")
+        End If
+
     End Sub
 
     Public Sub LoadDTR_All()
 
         RptViewer_DTR.LocalReport.DataSources.Clear()
-        Dim paydatee = Payslip_DTR_Combo.SelectedItem
+        Dim paydatee As String = Payslip_DTR_Combo.SelectedItem
         Dim mysqll As String
 
         Try
             Dim all_in As New dtr_all.overAllDataTable
-
 
             Dim dt_DTR As New DataTable()
             With dt_DTR
@@ -637,12 +637,17 @@ Public Class frmAttendance
                                         inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRICID 
                                         left join BIOMETRIC_DTR C ON C.BIO_ID = A.BIOMETRICID where A.PAYDATE  = '{paydatee}' and A.BIOMETRICID = '{Bio1_DTR_TXT.Text}'"
 
-            Else                             '=========================== ALL RECORDED PAYDATE EMPLOYEE ==================================
+            ElseIf HO_RadioB.Checked Then    '=========================== HEAD OFFICE ==================================
 
                 mysqll = $"Select A.*, B.FirstName, B.LastName, B.MIDDLENAME, B.BIOMETRICID as bioNo, C.* From PAYROLL_ATTENDANCE A 
                                         inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRICID 
-                                        left join BIOMETRIC_DTR C ON C.BIO_ID = A.BIOMETRICID where A.PAYDATE  = '{paydatee}'"
-
+                                        left join BIOMETRIC_DTR C ON C.BIO_ID = A.BIOMETRICID 
+                                        inner join TBL_BRANCH D ON D.ID = B.BRANCH_ID
+                                        where A.PAYDATE  = '{paydatee}' and 
+                                                (BRANCHNAME = 'HEAD OFFICE.' OR BRANCHNAME = 'HEAD OFFICE' OR BRANCHNAME = '.HEAD OFFICE' OR BRANCHNAME = 'HEAD' 
+                                                OR BRANCHNAME = 'HO' OR BRANCHNAME = 'H.O.' 
+                                                OR BRANCHNAME = 'H.O' OR BRANCHNAME = 'H.D.O' 
+                                                OR BRANCHNAME = 'GENSAN HDO' OR BRANCHNAME = 'HDO' OR BRANCHNAME = 'HDO TECHNICAL')"
             End If
 
             Using ds As DataSet = LoadSQL(mysqll, "PAYROLL_ATTENDANCE")
@@ -954,6 +959,14 @@ Public Class frmAttendance
         If IsEnter(e) Then Search_BTN.PerformClick()
     End Sub
 
+    Private Sub GroupBranch_RadioB_CheckedChanged(sender As Object, e As EventArgs) Handles GroupBranch_RadioB.CheckedChanged
+        If GroupBranch_RadioB.Checked = True Then
+            Branch_group.Visible = True
+        Else
+            Branch_group.Visible = False
+        End If
+    End Sub
+
     Private Sub Bio_grid_MouseClick(sender As Object, e As MouseEventArgs) Handles Bio_grid.MouseClick
         If e.Button = MouseButtons.Right Then
             If Bio_grid.Rows.Count >= 0 Then
@@ -1006,8 +1019,6 @@ Public Class frmAttendance
 
         PopulateComboBox(Paydate_ComboB, "BIOMETRIC_DTR", "PAYDATE")
         RunCommand("DELETE FROM BIOMETRIC_DTR WHERE ID NOT IN  ( SELECT MAX(ID) FROM BIOMETRIC_DTR GROUP BY BIO_ID, DATE_ONLY )")
-
-        'End If
 
     End Sub
 
@@ -1529,10 +1540,14 @@ Public Class frmAttendance
     End Sub
 
     Public Sub Attendance_Per_Employee(bioNo As String)
+        Dim payroll As String
+        If Paydate_ComboB.SelectedIndex >= 0 Then
+            payroll = Paydate_ComboB.SelectedItem
+        Else
+            payroll = Paydate.ToString("d")
+        End If
 
-        Dim paydate_ As String = Paydate.ToString("d")
-
-        Dim mysql As String = $"Select * From BIOMETRIC_DTR A inner join PAYROLL_ATTENDANCE B on B.BIOMETRICID = A.BIO_ID where A.BIO_ID = '{bioNo}' and A.PAYDATE = '{paydate_}'"
+        Dim mysql As String = $"Select * From BIOMETRIC_DTR A inner join PAYROLL_ATTENDANCE B on B.BIOMETRICID = A.BIO_ID where A.BIO_ID = '{bioNo}' and A.PAYDATE = '{payroll}'"
         Using ds As DataSet = LoadSQL(mysql, "BIOMETRIC_DTR")
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows

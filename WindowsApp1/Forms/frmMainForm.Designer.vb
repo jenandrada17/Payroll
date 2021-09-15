@@ -79,11 +79,12 @@ Partial Class frmMainForm
         'NavagationPanel
         '
         Me.NavagationPanel.BackColor = System.Drawing.Color.White
+        Me.NavagationPanel.Controls.Add(Me.PictureBox7)
+        Me.NavagationPanel.Controls.Add(Me.Paysilp_BTN)
         Me.NavagationPanel.Controls.Add(Me.PictureBox10)
         Me.NavagationPanel.Controls.Add(Me.PictureBox8)
         Me.NavagationPanel.Controls.Add(Me.Loan_BTN)
         Me.NavagationPanel.Controls.Add(Me.PictureBox9)
-        Me.NavagationPanel.Controls.Add(Me.PictureBox7)
         Me.NavagationPanel.Controls.Add(Me.PictureBox3)
         Me.NavagationPanel.Controls.Add(Me.PictureBox2)
         Me.NavagationPanel.Controls.Add(Me.Employee_BTN)
@@ -93,7 +94,6 @@ Partial Class frmMainForm
         Me.NavagationPanel.Controls.Add(Me.Dashboard_BTN)
         Me.NavagationPanel.Controls.Add(Me.Attendance_BTN)
         Me.NavagationPanel.Controls.Add(Me.Payout_BTN)
-        Me.NavagationPanel.Controls.Add(Me.Paysilp_BTN)
         Me.NavagationPanel.Controls.Add(Me.Settings_BTN)
         Me.NavagationPanel.Controls.Add(Me.Contribution_BTN)
         Me.NavagationPanel.Location = New System.Drawing.Point(1, 1)
@@ -116,7 +116,7 @@ Partial Class frmMainForm
         '
         Me.PictureBox8.BackColor = System.Drawing.Color.Black
         Me.PictureBox8.Image = Global.WindowsApp1.My.Resources.Resources.loans
-        Me.PictureBox8.Location = New System.Drawing.Point(11, 659)
+        Me.PictureBox8.Location = New System.Drawing.Point(11, 431)
         Me.PictureBox8.Name = "PictureBox8"
         Me.PictureBox8.Size = New System.Drawing.Size(42, 38)
         Me.PictureBox8.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
@@ -132,7 +132,7 @@ Partial Class frmMainForm
         Me.Loan_BTN.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Loan_BTN.ForeColor = System.Drawing.Color.White
         Me.Loan_BTN.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Loan_BTN.Location = New System.Drawing.Point(-1, 640)
+        Me.Loan_BTN.Location = New System.Drawing.Point(-1, 412)
         Me.Loan_BTN.Name = "Loan_BTN"
         Me.Loan_BTN.Size = New System.Drawing.Size(197, 75)
         Me.Loan_BTN.TabIndex = 7
@@ -154,7 +154,7 @@ Partial Class frmMainForm
         '
         Me.PictureBox7.BackColor = System.Drawing.Color.Black
         Me.PictureBox7.Image = Global.WindowsApp1.My.Resources.Resources.dtr
-        Me.PictureBox7.Location = New System.Drawing.Point(11, 429)
+        Me.PictureBox7.Location = New System.Drawing.Point(10, 657)
         Me.PictureBox7.Name = "PictureBox7"
         Me.PictureBox7.Size = New System.Drawing.Size(42, 38)
         Me.PictureBox7.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
@@ -384,11 +384,11 @@ Partial Class frmMainForm
         Me.Paysilp_BTN.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Paysilp_BTN.ForeColor = System.Drawing.Color.White
         Me.Paysilp_BTN.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Paysilp_BTN.Location = New System.Drawing.Point(0, 412)
+        Me.Paysilp_BTN.Location = New System.Drawing.Point(-1, 640)
         Me.Paysilp_BTN.Name = "Paysilp_BTN"
         Me.Paysilp_BTN.Size = New System.Drawing.Size(197, 75)
         Me.Paysilp_BTN.TabIndex = 8
-        Me.Paysilp_BTN.Text = "      &Payslip"
+        Me.Paysilp_BTN.Text = "      &Reports"
         Me.Paysilp_BTN.UseVisualStyleBackColor = False
         '
         'Settings_BTN
