@@ -159,7 +159,9 @@ Public Class frmSettings
     Private Sub Rate_EmpSave_BTN_Click(sender As Object, e As EventArgs) Handles Rate_EmpSave_BTN.Click
         If Not Rate_BioNo_TXT.Text = "" Then
 
-            SaveRATE(Rate_BioNo_TXT.Text, "BIOMETRICID", Rate_EmpAmount_TXT.Text, False, Rate_EmpAmount_TXT.Tag) ' === Rate_BioNo_TXT.Tag is BRANCHid ==== 
+            'SaveRATE(Rate_BioNo_TXT.Text, "BIOMETRICID", Rate_EmpAmount_TXT.Text, False, Rate_EmpAmount_TXT.Tag) ' === Rate_BioNo_TXT.Tag is BRANCHid ==== 
+
+            SaveRATE(Rate_Employee_TXT.Tag, "ID", Rate_EmpAmount_TXT.Text, False) ' === Rate_Employee_TXT.Tag is EMP_ID ==== 
 
             Rate_EmpClear_BTN.PerformClick()
         End If
@@ -220,6 +222,7 @@ Public Class frmSettings
                 e.Handled = True
             End If
         End If
+
     End Sub
 
     Private Sub Rate_Search_BTN_Click(sender As Object, e As EventArgs) Handles Rate_Search_BTN.Click

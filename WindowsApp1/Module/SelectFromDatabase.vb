@@ -1403,7 +1403,7 @@ Module SelectFromDatabase
         End If
 
         'If isExist_single("HISTORY_DEDUCTION", "H_DEDUC_ID", deduc_id) Then
-        If isExist_String("HISTORY_DEDUCTION", $"WEHRE H_DEDUC_ID = '{deduc_id}'") Then
+        If isExist_String("HISTORY_DEDUCTION", $"WHERE H_DEDUC_ID = '{deduc_id}'") Then
             Dim mysql_ As String = $"Select SUM(H_AMOUNT) as tots From HISTORY_DEDUCTION where H_DEDUC_ID = '{deduc_id}'"
             Dim dSs As DataSet = LoadSQL(mysql_, "HISTORY_DEDUCTION")
             If dSs.Tables(0).Rows.Count > 0 Then

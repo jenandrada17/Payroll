@@ -19,7 +19,6 @@ Public Class frmAttendance
     Dim DATE_ONLY, am_in, am_out, pm_in, pm_out As String
     Public Branch_Name, paydate_ As String
 
-
     Dim MyConnection As System.Data.OleDb.OleDbConnection
     Dim DtSet As System.Data.DataSet
     Dim MyCommand As System.Data.OleDb.OleDbDataAdapter
@@ -37,11 +36,18 @@ Public Class frmAttendance
 
         CheckALL_CheckBox.Checked = True
         PopulateComboBox(Branch_ComboB, "tbl_branch", "BRANCHNAME")
+
         PopulateComboBox(Paydate_ComboB, "BIOMETRIC_DTR", "PAYDATE")
         PopulateComboBox(RE_Paydate_Combo, "BIOMETRIC_DTR", "PAYDATE")
         'Paydate_ComboB.Items.Insert(0, "Current")
-        'RE_Paydate_Combo.Items.Insert(0, "Current") 
+        'RE_Paydate_Combo.Items.Insert(0, "Current")  
 
+        Branch_ComboB.Items.Insert(0, ".HO ACCOUNTING")
+        Branch_ComboB.Items.Insert(1, ".HO ADMIN")
+        Branch_ComboB.Items.Insert(2, ".HO HR")
+        Branch_ComboB.Items.Insert(3, ".HO MAIN")
+        Branch_ComboB.Items.Insert(4, ".HO REMATADO")
+        Branch_ComboB.Items.Insert(5, ".HO WAREHOUSE ")
     End Sub
 
     Private Sub Close_LBL_Click(sender As Object, e As EventArgs) Handles Close_LBL.Click
@@ -781,50 +787,6 @@ Public Class frmAttendance
                 End If
             End If
 
-
-            'Try
-
-            '    eApp = New Excel.Application
-            '    eBook = eApp.Workbooks.Open(Path_TXT.Text)
-            '    eSheet = eBook.Worksheets(1)
-            '    eCell = eSheet.UsedRange
-
-            '    MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path_TXT.Text}';Extended Properties=Excel 8.0;")
-            '    MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
-            '    MyCommand.TableMappings.Add("Table", "Net-informations.com")
-            '    DtSet = New System.Data.DataSet
-            '    MyCommand.Fill(DtSet)
-
-            '    Dim FirstColumn As String = eCell(2, 1).Value
-
-            '    'If eCell(1, 1).Value = "OUR COMPANY" Then
-            '    '    MsgBox("OUR COMPANY  " & eCell(1, 1).Value)
-            '    'ElseIf eCell(1, 1).Value = "InSys" Or eCell(2, 1).Value = "Detailed Time Report (Sequence Order)" Then
-            '    '    MsgBox("InSys  " & eCell(1, 1).Value)
-            '    'Else
-            '    '    MsgBox("White")
-            '    'End If
-
-            '    If Integer.TryParse(FirstColumn, vbNull) Then
-            '        MsgBox("White Dapat " & eCell(1, 1).Value)
-            '    Else
-            '        Try
-            '            bio_InSys()
-            '        Catch ex As Exception
-            '            bio_OURCOMPANY()
-            '        End Try
-            '    End If
-
-            '    '    bio_White()
-            '    '    MsgBox("bio_White")
-            '    'Catch
-            '    '    bio_OURCOMPANY()
-            '    '    MsgBox("bio_OURCOMPANY")
-            'Catch
-            '    'bio_InSys()
-            '    MsgBox("Not valid")
-            'End Try
-
             PopulateComboBox(Paydate_ComboB, "BIOMETRIC_DTR", "PAYDATE")
         End If
 
@@ -867,7 +829,7 @@ Public Class frmAttendance
 
             progressBarStart(DtSet.Tables(0).Rows.Count)
 
-            For row = 2 To DtSet.Tables(0).Rows.Count
+            For row = 2 To DtSet.Tables(0).Rows.Count + 1
                 SaveBiometricSheet(Paydate, eCell(row, 1).Value, eCell(row, 2).Value, Branch_ComboB.SelectedItem)
                 distinct_bio.Add(eCell(row, 1).Value)
 
@@ -881,7 +843,7 @@ Public Class frmAttendance
 
             progressBarStart(DtSet.Tables(0).Rows.Count)
 
-            For row = 2 To DtSet.Tables(0).Rows.Count
+            For row = 2 To DtSet.Tables(0).Rows.Count + 1
                 SaveBiometricSheet(Paydate, eCell(row, 1).Value, eCell(row, 2).Value, Branch_ComboB.SelectedItem)
                 distinct_bio.Add(eCell(row, 1).Value)
 

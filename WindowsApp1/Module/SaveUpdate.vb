@@ -361,7 +361,7 @@
 
     End Sub
 
-    Friend Sub SaveRATE(value As String, column As String, amount As String, moreThan As Boolean, Optional branchID As String = "") '=========== BOOLEAN IF MORE THAN 1 ==========
+    Friend Sub SaveRATE(value As String, column As String, amount As String, moreThan As Boolean) '=========== BOOLEAN IF MORE THAN 1 ========== 
 
         Dim mysql As String
 
@@ -384,7 +384,9 @@
 
         Else  '============ PER EMPLOYEE (FOR THERE ARE SAME BIOMETRIC NUMBER BUT DIFFERENT NAME/EMPLOYEE) ===========
 
-            mysql = $"Select * FROM TBL_EMPLOYEE where {column} = '{value}' and BRANCH_ID = '{branchID}'"
+            'mysql = $"Select * FROM TBL_EMPLOYEE where {column} = '{value}' and BRANCH_ID = '{branchID}'"
+
+            mysql = $"Select * FROM TBL_EMPLOYEE where {column} = '{value}'"
             Dim dss As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
             If dss.Tables(0).Rows.Count > 0 Then
                 With dss.Tables(0).Rows(0)
