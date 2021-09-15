@@ -107,6 +107,11 @@
   <ItemGroup>
     <Compile Include="Class\Employee.vb" />
     <Compile Include="CryptoStuff.vb" />
+    <Compile Include="Dataset\dtr.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dtr.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Dataset\payslip.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -226,10 +231,22 @@
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reports\rpt_DTR.rdlc" />
     <EmbeddedResource Include="Reports\rpt_payslip.rdlc" />
     <EmbeddedResource Include="Reports\sample.rdlc" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Dataset\dtr.xsc">
+      <DependentUpon>dtr.xsd</DependentUpon>
+    </None>
+    <None Include="Dataset\dtr.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dtr.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Dataset\dtr.xss">
+      <DependentUpon>dtr.xsd</DependentUpon>
+    </None>
     <None Include="Dataset\payslip.xsc">
       <DependentUpon>payslip.xsd</DependentUpon>
     </None>

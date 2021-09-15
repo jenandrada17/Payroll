@@ -633,6 +633,101 @@ Public Class frmAttendance
         'End Using
     End Sub
 
+    Private Sub Preview_BTN_Click(sender As Object, e As EventArgs) Handles Preview_BTN.Click
+        'LoadPayslip(biometricID As String, Branch_Name As String)
+    End Sub
+
+
+    Public Sub LoadPayslip(biometricID As String, branch_name As String)
+
+        RptViewer_DTR.LocalReport.DataSources.Clear()
+
+        Try
+            '============================================ EMPLOYEE DETAILS ================================================
+            Dim dt_DTR As New DataTable()
+            With dt_DTR
+                .Columns.Add("DATE_ONLY")
+                .Columns.Add("AM_IN")
+                .Columns.Add("AM_OUT")
+                .Columns.Add("PM_IN")
+                .Columns.Add("PM_OUT")
+            End With
+
+            Dim mysql As String = $"Select * From BIOMETRIC_DTR where BIO_ID = '{biometricID}' and BRANCH = '{branch_name}' and PAYDATE = '{Paydate}'"
+            Using ds As DataSet = LoadSQL(mysql, "BIOMETRIC_DTR")
+                If ds.Tables(0).Rows.Count > 0 Then
+                    Dim data As DataRow = ds.Tables(0).Rows(0)
+                    With data
+
+                        Dim dateE As DateTime = .Item("DATE_ONLY")
+                        dateE = dateE.ToString("MMM dd, yy")
+
+                        Dim AM_IN = IIf(IsDBNull(.Item("AM_IN")), "", .Item("AM_IN"))
+                        Dim AM_OUT = IIf(IsDBNull(.Item("AM_OUT")), "", .Item("AM_OUT"))
+                        Dim PM_IN = IIf(IsDBNull(.Item("PM_IN")), "", .Item("PM_IN"))
+                        Dim PM_OUT = IIf(IsDBNull(.Item("PM_OUT")), "", .Item("PM_OUT"))
+
+                        dt_DTR.Rows.Add(dateE, AM_IN, AM_OUT, PM_IN, PM_OUT)
+
+                    End With
+                End If
+            End Using
+
+            Dim rds_DTR As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt_DTR)
+            RptViewer_DTR.LocalReport.DataSources.Add(rds_DTR)
+
+            '============================================ PAYDATE ================================================ 
+            Dim paramList As New List(Of Microsoft.Reporting.WinForms.ReportParameter) From {
+            New Microsoft.Reporting.WinForms.ReportParameter("paramName", Bio_DTR_TXT.Text),
+            New Microsoft.Reporting.WinForms.ReportParameter("paramBio", DTR_Emp_TXT.Text),
+            New Microsoft.Reporting.WinForms.ReportParameter("paramDays", Bio_DTR_TXT.Text),
+            New Microsoft.Reporting.WinForms.ReportParameter("paramLate", Bio_DTR_TXT.Text)
+            }
+
+            RptViewer_DTR.LocalReport.SetParameters(paramList)
+            RptViewer_DTR.RefreshReport()
+
+        Catch ex As Exception
+            Log_Report(ex.ToString)
+            MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+
+    End Sub
+
+    Private Sub EmpSelect_BTN_Click(sender As Object, e As EventArgs) Handles EmpSelect_BTN.Click
+
+        If frmEmployee Is Nothing Then
+            Dim frm As New frmEmployee With {
+                .MdiParent = frmMainForm
+            }
+            frmMainForm.pNavigate.Controls.Add(frm)
+            frmMainForm.pNavigate.Tag = frm
+            frm.txtSearch.Tag = "Attendance-PrintDTR"
+            frm.Show()
+            frm.Dock = DockStyle.Fill
+            frm.BringToFront()
+        Else
+            frmEmployeeInfo.BringToFront()
+        End If
+
+    End Sub
+
+    Private Sub Branch_RadioB_CheckedChanged(sender As Object, e As EventArgs) Handles Branch_RadioB.CheckedChanged
+        If Branch_RadioB.Checked = True Then
+            Branch_group.Visible = True
+        Else
+            Branch_group.Visible = False
+        End If
+    End Sub
+
+    Private Sub Employee_RadioB_CheckedChanged(sender As Object, e As EventArgs) Handles Employee_RadioB.CheckedChanged
+        If Employee_RadioB.Checked = True Then
+            Employee_GroupB.Visible = True
+        Else
+            Employee_GroupB.Visible = False
+        End If
+    End Sub
+
     Private Sub forLoop_ALL_IMPORTED()   '================================ WORKS WELL- FOR ALL RECORDS ONLY (PARTNER WITH SAVE_DIRECT_Attendance()()) =============================   
         LoadDateTime()
         AM_In_DataGrid.Items.Insert(0, "")
@@ -1295,6 +1390,8 @@ Public Class frmAttendance
         If Attendance_Tab.SelectedIndex = 1 Then
             DataGridView1.ClearSelection()
         ElseIf Attendance_Tab.SelectedIndex = 2 Then
+
+        ElseIf Attendance_Tab.SelectedIndex = 3 Then
             PopulateAttendanceRECORD(Records_grid, Paydate)
         End If
     End Sub

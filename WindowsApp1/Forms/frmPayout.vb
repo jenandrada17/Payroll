@@ -21,6 +21,7 @@ Public Class frmPayout
         PopulateComboBox(Payslip_paydate_Combo, "PAYROLL_PAYOUT", "PAYDATE")
         PopulateComboBox(Branch_ComboB, "TBL_BRANCH", "BRANCHNAME")
 
+        Paydate_ComboB.Text = "--Select Payroll--"
     End Sub
 
     Private Sub Select_BTN_Click(sender As Object, e As EventArgs) Handles Select_BTN.Click

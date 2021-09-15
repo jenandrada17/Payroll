@@ -1590,7 +1590,9 @@ Module SelectFromDatabase
 
         If searchName.Length <> 0 Then
 
-            mysql = $"Select A.*, B.*, B.id as emp_id, C.* From PAYROLL_PAYOUT A inner join tbl_employee B on B.BIOMETRICID = A.BIOMETRIC_ID  inner join tbl_branch C on C.ID = B.BRANCH_ID  where paydate = '{paydate}' and ( "
+            'mysql = $"Select A.*, B.*, B.id as emp_id, C.* From PAYROLL_PAYOUT A inner join tbl_employee B on B.BIOMETRICID = A.BIOMETRIC_ID  inner join tbl_branch C on C.ID = B.BRANCH_ID  where paydate = '{paydate}' and ( "
+
+            mysql = $"Select A.*, B.*, B.id as emp_id From PAYROLL_PAYOUT A inner join tbl_employee B on B.ID = A.EMP_ID where paydate = '{paydate}' and ( "
 
             For Each name In strWords
                 mysql &= $"{vbCr}UPPER(BIOMETRIC_ID) LIKE UPPER('%{name}%') OR "
@@ -1601,7 +1603,9 @@ Module SelectFromDatabase
             Next
 
         Else
-            mysql = $"Select A.*, B.*, B.id as emp_id, C.* From PAYROLL_PAYOUT A inner join tbl_employee B on B.BIOMETRICID = A.BIOMETRIC_ID  inner join tbl_branch C on C.ID = B.BRANCH_ID  where paydate ='{paydate}'"
+            'mysql = $"Select A.*, B.*, B.id as emp_id, C.* From PAYROLL_PAYOUT A inner join tbl_employee B on B.BIOMETRICID = A.BIOMETRIC_ID  inner join tbl_branch C on C.ID = B.BRANCH_ID  where paydate ='{paydate}'"
+
+            mysql = $"Select A.*, B.*, B.id as emp_id From PAYROLL_PAYOUT A inner join tbl_employee B on B.ID = A.EMP_ID where paydate ='{paydate}'"
         End If
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
