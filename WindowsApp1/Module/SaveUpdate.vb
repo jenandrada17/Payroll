@@ -143,9 +143,7 @@
                 ds.Tables(0).Rows.Add(dsNewRow)
                 SaveEntry(ds)
             End Using
-
         End If
-
     End Sub
 
     Friend Sub Deduct_ifExist(BIO_NO As String, PAYDATE As String)
@@ -164,6 +162,20 @@
 
         End If
 
+    End Sub
+
+    Public Sub Update_SBU_BALANCE(BIO_NO As String, AMOUNTT As String)
+        If AMOUNTT <> 0 Then
+            Dim mysql As String = $"Select * From PAYROLL_EMPLOYEE where BIO_NO = '{BIO_NO}'"
+            Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+                If ds.Tables(0).Rows.Count > 0 Then
+                    With ds.Tables(0).Rows(0)
+                        MsgBox(.Item("SBU_BALANCE"))
+                    End With
+                    SaveEntry(ds, False)
+                End If
+            End Using
+        End If
     End Sub
 
     Private Sub GetFrom_Recorded_Allow_Deduc(BIO_NO As String, PAYDATE As String)
@@ -186,24 +198,30 @@
 
     End Sub
 
-
     Private Sub GetFrom_MOdified_Deduction(BIO_NO As String, PAYDATE As String)
-        Dim mysql_1 As String = $"Select * From MODIFIED_DEDUCTION WHERE A.BIO_NO = '{BIO_NO}' and PAYDATE = '{PAYDATE}'"
+        Dim mysql_1 As String = $"Select * From MODIFIED_DEDUCTION WHERE BIO_NO = '{BIO_NO}' and PAYDATE = '{PAYDATE}'"
         Using ds As DataSet = LoadSQL(mysql_1, "MODIFIED_DEDUCTION")
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
                     With dr
+
+                        Dim decut_id As String = IIf(IsDBNull(.Item("M_DEDUC_ID")), "", .Item("M_DEDUC_ID"))
+
                         If Not .item("M_AMOUNT") = 0.00 Or Not .item("M_AMOUNT") = 0 Then
-                            SaveDEDUCTION_HISTORY(BIO_NO, .item("CATEGORY"), .item("M_AMOUNT"), Today, PAYDATE, .item("deduc_id"))
+
+                            If .item("M_CATEGORY") = "SBU" Then
+                                Update_SBU_BALANCE(BIO_NO, .item("M_AMOUNT"))
+                            Else
+                                SaveDEDUCTION_HISTORY(BIO_NO, .item("M_CATEGORY"), .item("M_AMOUNT"), Today, PAYDATE, decut_id)
+                            End If
+
                         End If
 
-                        Calculate_Balance(.item("deduc_id")) '========= CALCULATE DEDUCTION BALANCE ========= 
+                        Calculate_Balance(decut_id) '========= CALCULATE DEDUCTION BALANCE ========= 
                     End With
                 Next
-
             End If
         End Using
-
     End Sub
 
     Friend Sub Calculate_Balance(deduc_id As String)
@@ -235,29 +253,23 @@
                 End If
             End Using
         End If
+
+        '================================== SUM UP ALL IN HISTORY_DEDUCTION ================================  
+        If deduc_id = "" Then
+
+        End If
     End Sub
 
-
     Public Function SBU_notFull(BIO_NO As String)
-
-        Dim total_amount As Double = 0
-        Dim training_days As Integer = 0
-
-        '================================== GET TOTAL_AMOUNT ================================ 
         Dim mysql As String = $"Select COMPANY, DATE_STARTED From PAYROLL_EMPLOYEE where BIO_NO = '{BIO_NO}' "
         Using dss As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
             If dss.Tables(0).Rows.Count > 0 Then
                 Dim data As DataRow = dss.Tables(0).Rows(0)
                 With data
 
-                    '=============== SBU MAXIMUM LIMIT ================
-                    If .Item("COMPANY") = "DALTON" Then
-                        total_amount = 50000
-                    ElseIf .Item("COMPANY") = "PHOTO" Then
-                        total_amount = 30000
-                    Else
-                        total_amount = 15000
-                    End If
+                    Dim training_days As Integer = 0
+                    Dim Started As DateTime = .Item("DATE_STARTED")
+                    Dim sbu_bal As Double = IIf(IsDBNull(.Item("SBU_BALANCE")), 0, .Item("SBU_BALANCE"))
 
                     '=============== TRAINING DAYS ================
                     If .Item("COMPANY") = "DALTON" Or .Item("COMPANY") = "PHOTO" Or .Item("COMPANY") = "HEAD OFFICE" Then
@@ -266,36 +278,84 @@
                         training_days = 30
                     End If
 
-                    '=============== CALCULATE SBU ================ 
-                    Dim Started As DateTime = .Item("DATE_STARTED")
-                    Dim noOf_SBU As Integer = 0
-
+                    '=============== CALCULATE SBU ================  
                     Dim count_days = New DateTime(Started.Year, Started.Month, Started.Day)
                     count_days = count_days.AddDays(training_days)
 
                     If Today >= count_days Then
 
-                        While (count_days < Today)
-                            count_days = count_days.AddDays(1)
-
-                            If count_days.Day = 15 Or count_days.Day = System.DateTime.DaysInMonth(count_days.Year, count_days.Month) Then
-                                noOf_SBU += 1
-                            End If
-                        End While
-
-                        Dim total_SBU As Double = noOf_SBU * SBU_Amount()
-
-                        '=============== IF NOT YET PAID INCLUDE SBU ================ 
-                        If total_SBU < total_amount Then
+                        If sbu_bal > 0 Then
                             Return True
                         End If
+
                     End If
+
                 End With
             End If
         End Using
 
         Return False
     End Function
+
+    'Public Function SBU_notFull(BIO_NO As String)
+
+    '    Dim total_amount As Double = 0
+    '    Dim training_days As Integer = 0
+
+    '    '================================== GET TOTAL_AMOUNT ================================ 
+    '    Dim mysql As String = $"Select COMPANY, DATE_STARTED From PAYROLL_EMPLOYEE where BIO_NO = '{BIO_NO}' "
+    '    Using dss As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+    '        If dss.Tables(0).Rows.Count > 0 Then
+    '            Dim data As DataRow = dss.Tables(0).Rows(0)
+    '            With data
+
+    '                '=============== SBU MAXIMUM LIMIT ================
+    '                If .Item("COMPANY") = "DALTON" Then
+    '                    total_amount = 50000
+    '                ElseIf .Item("COMPANY") = "PHOTO" Then
+    '                    total_amount = 30000
+    '                Else
+    '                    total_amount = 15000
+    '                End If
+
+    '                '=============== TRAINING DAYS ================
+    '                If .Item("COMPANY") = "DALTON" Or .Item("COMPANY") = "PHOTO" Or .Item("COMPANY") = "HEAD OFFICE" Then
+    '                    training_days = 15
+    '                Else
+    '                    training_days = 30
+    '                End If
+
+    '                '=============== CALCULATE SBU ================ 
+    '                Dim Started As DateTime = .Item("DATE_STARTED")
+    '                Dim noOf_SBU As Integer = 0
+
+    '                Dim count_days = New DateTime(Started.Year, Started.Month, Started.Day)
+    '                count_days = count_days.AddDays(training_days)
+
+    '                If Today >= count_days Then
+
+    '                    While (count_days < Today)
+    '                        count_days = count_days.AddDays(1)
+
+    '                        If count_days.Day = 15 Or count_days.Day = System.DateTime.DaysInMonth(count_days.Year, count_days.Month) Then
+    '                            noOf_SBU += 1
+    '                        End If
+    '                    End While
+
+    '                    Dim total_SBU As Double = noOf_SBU * SBU_Amount()
+
+    '                    '=============== IF NOT YET PAID INCLUDE SBU ================ 
+    '                    If total_SBU < total_amount Then
+    '                        Return True
+    '                    End If
+    '                End If
+
+    '            End With
+    '        End If
+    '    End Using
+
+    '    Return False
+    'End Function
 
     Public Sub Update_DEDUCTION_STATUS(deduc_id As String)
 

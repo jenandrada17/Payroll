@@ -431,7 +431,7 @@ Module SelectFromDatabase
                         If datagrid.Name = "Deduction_grid" Then
 
                             If .item("CATEGORY") = "SBU" Then
-                                row.Cells(0).Value = .item("CATEGORY")
+                                row.Cells(0).Value = "SBU"
                             End If
 
                             row.Cells(3).Value = "OFF"
@@ -1676,71 +1676,19 @@ Module SelectFromDatabase
             LV.Items.Clear()
             progressBarStart(ds.Tables(0).Rows.Count)
             For Each dr In ds.Tables(0).Rows
-                AddRow_SBU(dr, LV)
+                With dr
+                    Dim Last_update As DateTime = IIf(IsDBNull(.Item("LAST_SBU")), Nothing, .Item("LAST_SBU"))
+                    Dim i As ListViewItem = LV.Items.Add(.Item("FULLNAME"))
+                    i.SubItems.Add(.Item("SBU_BALANCE"))
+                    i.SubItems.Add(IIf(Last_update = Nothing, "", Last_update.ToString("MMM dd, yyyy")))
+
+                End With
                 frmMainForm.AppProgressBar.Value += 1
             Next
             progressBarEnd()
         End Using
 
     End Sub
-
-
-    Private Sub AddRow_SBU(ByVal dr As DataRow, LV As ListView)
-        With dr
-
-            Dim total_amount As Double = 0
-            Dim training_days As Double = 0
-            Dim total_SBU As String = ""
-
-            '=============== SBU MAXIMUM LIMIT ================
-            If .Item("COMPANY") = "DALTON" Then
-                total_amount = 50000
-            ElseIf .Item("COMPANY") = "PHOTO" Then
-                total_amount = 30000
-            Else
-                total_amount = 15000
-            End If
-
-            '=============== TRAINING DAYS ================
-            If .Item("COMPANY") = "DALTON" Or .Item("COMPANY") = "PHOTO" Or .Item("COMPANY") = "HEAD OFFICE" Then
-                training_days = 15
-            Else
-                training_days = 30
-            End If
-
-            '=============== CALCULATE SBU ================ 
-            Dim datee As String = IIf(IsDBNull(.Item("DATE_STARTED")), "", .Item("DATE_STARTED"))
-
-            If datee <> "" Then
-
-                Dim Started As DateTime = datee
-                Dim noOf_SBU As Integer = 0
-
-                Dim count_days = New DateTime(Started.Year, Started.Month, Started.Day)
-                count_days = count_days.AddDays(training_days)
-
-                If Today >= count_days Then
-
-                    While (count_days < Today)
-                        count_days = count_days.AddDays(1)
-
-                        If count_days.Day = 15 Or count_days.Day = System.DateTime.DaysInMonth(count_days.Year, count_days.Month) Then
-                            noOf_SBU += 1
-                        End If
-                    End While
-
-                    total_SBU = noOf_SBU * SBU_Amount()
-                End If
-            Else
-                total_SBU = "NO DATA (DATE STARTED)"
-            End If
-
-            Dim i As ListViewItem = LV.Items.Add(.Item("FULLNAME"))
-            i.SubItems.Add(total_SBU)
-
-        End With
-    End Sub
-
 
     Friend Sub Lists_Payout(LV As ListView, paydate As String, Optional searchName As String = "")
 

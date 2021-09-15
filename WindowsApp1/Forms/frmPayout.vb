@@ -125,10 +125,7 @@ Public Class frmPayout
             End If
 
             '================ FETCHING ALLOWANCE RECORDED WHEN ATTENDANCE BIOMETRIC IMPORTED ==================
-            If isExist_String("MODIFIED_DEDUCTION", $"WHERE BIO_NO = '{BIO_NO}' AND PAYDATE = '{paydate_}'") Then     '=========m MDIFIED DEDUCTION (ON/OFF)
-                DeductioneDetails_MODIFIED(BIO_NO, paydate_, Deduction_grid, sched_deduc)
-
-            ElseIf isExist_String("RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{BIO_NO}' AND PAYDATE = '{paydate_}' AND TRANSAC_NAME = 'DEDUCTION'") Then         '=========m RECORDED DEDUCTION IMPORTING ATTENDANCE
+            If isExist_String("RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{BIO_NO}' AND PAYDATE = '{paydate_}' AND TRANSAC_NAME = 'DEDUCTION'") Then         '=========m RECORDED DEDUCTION IMPORTING ATTENDANCE
                 Recorded_Details(BIO_NO, Deduction_grid, paydate_, "DEDUCTION")
             End If
 
@@ -148,7 +145,6 @@ Public Class frmPayout
             Calculate_NetPay()
 
             Checkgrid_Visible()
-
         End If
     End Sub
 
@@ -159,9 +155,8 @@ Public Class frmPayout
         If Allowance_grid.RowCount > 0 Then
             Label18.Visible = True
             Allowance_grid.Visible = True
-            Refresh_BTN.Visible = True
+            Undo_BTN.Visible = True
         Else
-            Label18.Visible = False
             Allowance_grid.Visible = False
         End If
 
@@ -170,7 +165,7 @@ Public Class frmPayout
         If Deduction_grid.RowCount > 0 Then
             Label22.Visible = True
             Deduction_grid.Visible = True
-            Refresh_BTN.Visible = True
+            Undo_BTN.Visible = True
         Else
             Label22.Visible = False
             Deduction_grid.Visible = False
@@ -260,16 +255,35 @@ Public Class frmPayout
                 '====================================== SAVE NEW DEDUCTION ===================================================
                 If Deduction_grid.Rows.Count > 0 Then
 
-                    If isExist_String("MODIFIED_DEDUCTION", $"WHERE BIO_NO = '{BIO_NO}'") Then
-                        RunCommand($"DELETE FROM MODIFIED_DEDUCTION WHERE BIO_NO = '{BIO_NO}' and PAYDATE = '{paydate_}';")
+                    If isExist_String("RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{BIO_NO}' AND PAYDATE = '{paydate_}' AND TRANSAC_NAME = 'DEDUCTION'") Then
+                        RunCommand($"DELETE FROM RECORDED_ALLOW_DEDUC WHERE BIO_NO = '{BIO_NO}' and PAYDATE = '{paydate_}';")
                     End If
 
                     For Each row As DataGridViewRow In Deduction_grid.Rows
+
                         Dim deduct_id As String = IIf(IsDBNull(row.Cells(2).Tag), Nothing, row.Cells(2).Tag)
-                        SavePayout_MODIFIED_DEDUCTION(BiometricID_TXT.Text, paydate_, row.Cells(0).Value, row.Cells(1).Value, row.Cells(0).Tag, Today, deduct_id)
+
+                        If row.Cells(1).Value <> 0 Then
+                            Save_Recorded_Allow_Deduc(BiometricID_TXT.Text, paydate_, row.Cells(0).Value, row.Cells(1).Value, "DEDUCTION", deduct_id)
+                        End If
+
                     Next
 
                 End If
+
+                ''====================================== SAVE NEW DEDUCTION ===================================================
+                'If Deduction_grid.Rows.Count > 0 Then
+
+                '    If isExist_String("MODIFIED_DEDUCTION", $"WHERE BIO_NO = '{BIO_NO}'") Then
+                '        RunCommand($"DELETE FROM MODIFIED_DEDUCTION WHERE BIO_NO = '{BIO_NO}' and PAYDATE = '{paydate_}';")
+                '    End If
+
+                '    For Each row As DataGridViewRow In Deduction_grid.Rows
+                '        Dim deduct_id As String = IIf(IsDBNull(row.Cells(2).Tag), Nothing, row.Cells(2).Tag)
+                '        SavePayout_MODIFIED_DEDUCTION(BiometricID_TXT.Text, paydate_, row.Cells(0).Value, row.Cells(1).Value, row.Cells(0).Tag, Today, deduct_id)
+                '    Next
+
+                'End If
 
                 Cancel_BTN.PerformClick()
 
@@ -398,7 +412,7 @@ Public Class frmPayout
 
     Private Sub SaveAdd_BTN_Click(sender As Object, e As EventArgs) Handles SaveAdd_BTN.Click
         If CategoryAdd_TXT.Text <> String.Empty And AmountAdd_TXT.Text <> String.Empty Then
-
+            Allowance_grid.Visible = True
             Dim rowId As Integer = Allowance_grid.Rows.Add()
             Dim row As DataGridViewRow = Allowance_grid.Rows(rowId)
 
@@ -432,7 +446,7 @@ Public Class frmPayout
         If IsEnter(e) Then SaveAdd_BTN.PerformClick()
     End Sub
 
-    Private Sub Refresh_BTN_Click(sender As Object, e As EventArgs) Handles Refresh_BTN.Click
+    Private Sub Refresh_BTN_Click(sender As Object, e As EventArgs) Handles Undo_BTN.Click
 
         AllowanceDetails(BiometricID_TXT.Text, Allowance_grid, sched_deduc)
         DeductioneDetails_ORIG(BiometricID_TXT.Text, Deduction_grid, sched_deduc)
@@ -684,7 +698,10 @@ Public Class frmPayout
 
         Else
 
+            MsgBox(Employee_TXT.Tag)
+
             LoadPayslip(Employee_TXT.Tag, Payslip_paydate_Combo.Text)
+
 
             Deduct_ifExist(Employee_TXT.Tag, Payslip_paydate_Combo.Text)
 
@@ -697,7 +714,7 @@ Public Class frmPayout
                 Exit Sub
             Else
                 '================================ SEND TO EMAIL ADDRESS IF VALID ============================
-                Send_Email(ReportViewer_payslip.LocalReport.Render("PDF"), Email_TXT.Text, Employee_TXT.Text, Payslip_paydate_Combo.Text, BodyText_RichB.Text, datee.ToString("MMMM dd, yyyy") & " PAYROLL")
+                'Send_Email(ReportViewer_payslip.LocalReport.Render("PDF"), Email_TXT.Text, Employee_TXT.Text, Payslip_paydate_Combo.Text, BodyText_RichB.Text, datee.ToString("MMMM dd, yyyy") & " PAYROLL")
 
                 MsgBox("Email sent to " & Employee_TXT.Text, MsgBoxStyle.Information, "Information")
             End If
@@ -1127,7 +1144,6 @@ Public Class frmPayout
             Else
                 Payslip_paydate_Combo.Text = paydatee
                 Employee_TXT.Text = .Fullname
-                Preview_BTN.Tag = .EMP_ID
                 Employee_TXT.Tag = .BiometricID
                 Email_TXT.Text = .EmailAdd
                 Email_TXT.Tag = .Rate

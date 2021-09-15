@@ -159,6 +159,7 @@ Partial Class frmSettings
         Me.SearchTime_TXT = New System.Windows.Forms.TextBox()
         Me.SearchTime_BTN = New System.Windows.Forms.Button()
         Me.TimeInOut_LV = New System.Windows.Forms.ListView()
+        Me.ColumnHeader27 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader24 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader25 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader26 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -199,7 +200,7 @@ Partial Class frmSettings
         Me.Context_deduct = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.menu_subtotal = New System.Windows.Forms.ToolStripMenuItem()
         Me.menu_edit = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ColumnHeader27 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader28 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.Settings_Tab.SuspendLayout()
         Me.TabPage5.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
@@ -1346,7 +1347,7 @@ Partial Class frmSettings
         Me.SBU_LV.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.SBU_LV.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader10, Me.ColumnHeader23})
+        Me.SBU_LV.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader10, Me.ColumnHeader23, Me.ColumnHeader28})
         Me.SBU_LV.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.SBU_LV.FullRowSelect = True
         Me.SBU_LV.GridLines = True
@@ -1354,7 +1355,7 @@ Partial Class frmSettings
         Me.SBU_LV.Location = New System.Drawing.Point(519, 62)
         Me.SBU_LV.MultiSelect = False
         Me.SBU_LV.Name = "SBU_LV"
-        Me.SBU_LV.Size = New System.Drawing.Size(622, 536)
+        Me.SBU_LV.Size = New System.Drawing.Size(625, 536)
         Me.SBU_LV.TabIndex = 118
         Me.SBU_LV.UseCompatibleStateImageBehavior = False
         Me.SBU_LV.View = System.Windows.Forms.View.Details
@@ -1362,12 +1363,12 @@ Partial Class frmSettings
         'ColumnHeader10
         '
         Me.ColumnHeader10.Text = "Name"
-        Me.ColumnHeader10.Width = 350
+        Me.ColumnHeader10.Width = 300
         '
         'ColumnHeader23
         '
-        Me.ColumnHeader23.Text = "Total Distribution"
-        Me.ColumnHeader23.Width = 250
+        Me.ColumnHeader23.Text = "Balance"
+        Me.ColumnHeader23.Width = 130
         '
         'SBU_Change_BTN
         '
@@ -1633,6 +1634,11 @@ Partial Class frmSettings
         Me.TimeInOut_LV.TabIndex = 121
         Me.TimeInOut_LV.UseCompatibleStateImageBehavior = False
         Me.TimeInOut_LV.View = System.Windows.Forms.View.Details
+        '
+        'ColumnHeader27
+        '
+        Me.ColumnHeader27.Text = "Branch"
+        Me.ColumnHeader27.Width = 90
         '
         'ColumnHeader24
         '
@@ -2000,10 +2006,10 @@ Partial Class frmSettings
         Me.menu_edit.Size = New System.Drawing.Size(146, 22)
         Me.menu_edit.Text = "Edit"
         '
-        'ColumnHeader27
+        'ColumnHeader28
         '
-        Me.ColumnHeader27.Text = "Branch"
-        Me.ColumnHeader27.Width = 90
+        Me.ColumnHeader28.Text = "Last Update"
+        Me.ColumnHeader28.Width = 170
         '
         'frmSettings
         '
@@ -2239,4 +2245,5 @@ Partial Class frmSettings
     Friend WithEvents ClockEmp_OUT_CB As ComboBox
     Friend WithEvents ClearlBranch_BTN As Button
     Friend WithEvents ColumnHeader27 As ColumnHeader
+    Friend WithEvents ColumnHeader28 As ColumnHeader
 End Class

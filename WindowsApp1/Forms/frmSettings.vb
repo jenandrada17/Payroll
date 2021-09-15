@@ -25,7 +25,7 @@ Public Class frmSettings
         Lists_Rate(Rate_list)
         Lists_Allowance(Allowance_LV)
         Lists_deduction(Deduction_List)
-        'Lists_SBU(SBU_LV)
+        Lists_SBU(SBU_LV)
         Lists_TimeInOut(TimeInOut_LV)
         Load_Category_LIST(Allowance_List, "CATEGORY_ALLOWANCE", "ALLOWANCE_NAME")
         Load_Category_LIST(Cat_Deduc_List, "CATEGORY_DEDUCTION", "DEDUCTION_NAME")
@@ -673,12 +673,6 @@ Public Class frmSettings
             Lists_Allowance(Allowance_LV)
         End If
     End Sub
-
-    'Private Sub Settings_Tab_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Settings_Tab.SelectedIndexChanged
-    '    If Settings_Tab.SelectedIndex = 4 Then
-    '        Lists_SBU(SBU_LV)
-    '    End If
-    'End Sub
 
     Private Sub SearchSBU_BTN_Click(sender As Object, e As EventArgs) Handles SearchSBU_BTN.Click
         Lists_SBU(SBU_LV, SearchSBU_TXT.Text)
