@@ -425,28 +425,45 @@
     '            SaveEntry(dss, False)
 
     '            MsgBox("Successfully Updated!", MsgBoxStyle.Information, "Information")
-    '        End If
-
+    '        End If 
     '    End If
     'End Sub 
 
-    Friend Sub SaveRATE(column As String, value As String, daily_rate As String, Optional group As Boolean = False) '=========== BOOLEAN IF MORE THAN 1 ========== 
-
-        Dim mysql As String = $"Select * FROM PAYROLL_EMPLOYEE where {column} = '{value}'"
-        Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+    Friend Sub SaveRATE_City(column As String, value As String, daily_rate As String, Optional group As Boolean = False) '=========== BOOLEAN IF MORE THAN 1 ========== 
+        Dim mysql As String = $"Select * FROM PAYROLL_CITY_BRANCH  WHERE {column} = '{value}'"
+        Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_CITY_BRANCH")
         If dss.Tables(0).Rows.Count > 0 Then
+
             For Each dr In dss.Tables(0).Rows
                 With dr
+                    SaveRATE("BRANCH_CODE", .Item("BRANCHCODE"), daily_rate, True)
 
-                    Dim existing_rate As Double = IIf(IsDBNull(.Item("RATE_DAILY")), 0, .Item("RATE_DAILY"))
+                End With
+            Next
+
+        End If
+    End Sub
+
+
+    Friend Sub SaveRATE(column As String, value As String, daily_rate As String, Optional group As Boolean = False) '=========== BOOLEAN IF MORE THAN 1 ========== 
+
+        Dim mysql As String = $"Select * FROM  PAYROLL_EMPLOYEE WHERE {column} = '{value}'"
+        Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+        If dss.Tables(0).Rows.Count > 0 Then
+
+            progressBarStart(dss.Tables(0).Rows.Count)
+            For Each dr In dss.Tables(0).Rows
+                With dr
+                    Dim existing_rate As Double = .Item("RATE_DAILY")
 
                     If existing_rate < daily_rate Then
                         .Item("RATE_DAILY") = daily_rate
                     End If
-
                 End With
                 SaveEntry(dss, False)
+                frmMainForm.AppProgressBar.Value += 1
             Next
+            progressBarEnd()
 
             If group = False Then
                 MsgBox("Successfully Updated!", MsgBoxStyle.Information, "Information")
@@ -454,7 +471,52 @@
         End If
     End Sub
 
-    Friend Sub SaveMinimum_RATE(value As String, MINIMUM_RATE As String) '=========== BOOLEAN IF MORE THAN 1 ========== 
+    'Friend Sub SaveRATE(column As String, value As String, daily_rate As String, Optional group As Boolean = False) '=========== BOOLEAN IF MORE THAN 1 ========== 
+
+    '    'Dim mysql As String
+
+    '    If group <> False Then
+
+    '        Dim mysql As String = $"Select * FROM PAYROLL_EMPLOYEE A LEFT join PAYROLL_CITY_BRANCH B on BRANCH_CODE = BRANCHCODE AND {column} = '{value}'"
+    '        Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+
+    '        'Dim mysql As String = $"Select * FROM PAYROLL_CITY_BRANCH A inner join PAYROLL_EMPLOYEE B on BRANCH_CODE = A.BRANCHCODE where {column} = '{value}'"
+    '        'Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_CITY_BRANCH")
+    '        If dss.Tables(0).Rows.Count > 0 Then
+    '            For Each dr In dss.Tables(0).Rows
+    '                With dr
+
+    '                    Dim existing_rate As Double = IIf(IsDBNull(.Item("RATE_DAILY")), 0, .Item("RATE_DAILY"))
+
+    '                    If existing_rate < daily_rate Then
+    '                        .Item("RATE_DAILY") = daily_rate
+    '                    End If
+
+    '                End With
+    '                SaveEntry(dss, False)
+    '            Next
+
+    '        End If
+    '    Else
+
+    '        Dim mysqll As String = $"Select * FROM PAYROLL_EMPLOYEE where {column} = '{value}'"
+    '        Dim ds As DataSet = LoadSQL(mysqll, "PAYROLL_EMPLOYEE")
+    '        If ds.Tables(0).Rows.Count > 0 Then
+
+    '            With ds.Tables(0).Rows(0)
+    '                Dim existing_rate As Double = IIf(IsDBNull(.Item("RATE_DAILY")), 0, .Item("RATE_DAILY"))
+
+    '                If existing_rate < daily_rate Then
+    '                    .Item("RATE_DAILY") = daily_rate
+    '                End If
+    '            End With
+    '            SaveEntry(ds, False)
+    '        End If
+
+    '    End If
+    'End Sub
+
+    Friend Sub SaveMinimum_RATE(value As String, MINIMUM_RATE As String, Optional ECOLA As String = Nothing) '=========== BOOLEAN IF MORE THAN 1 ========== 
         Dim mysql As String
 
         mysql = $"Select * FROM PAYROLL_MINIMUM_RATE where BRANCH_CODE = '{value}'"
@@ -463,6 +525,11 @@
             For Each dr In dss.Tables(0).Rows
                 With dr
                     .Item("MINIMUM_RATE") = MINIMUM_RATE
+
+                    If ECOLA <> Nothing Then
+                        .Item("ECOLA") = ECOLA
+                    End If
+
                 End With
                 SaveEntry(dss, False)
             Next
@@ -473,8 +540,14 @@
 
                 Dim dsNewRow As DataRow = ds.Tables(0).NewRow
                 With dsNewRow
+
                     .Item("BRANCH_CODE") = value
                     .Item("MINIMUM_RATE") = MINIMUM_RATE
+
+                    If ECOLA <> Nothing Then
+                        .Item("ECOLA") = ECOLA
+                    End If
+
                 End With
                 ds.Tables(0).Rows.Add(dsNewRow)
                 SaveEntry(ds)

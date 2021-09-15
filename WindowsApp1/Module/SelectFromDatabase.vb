@@ -135,16 +135,18 @@ Module SelectFromDatabase
         Return False
     End Function
 
-    'Public Sub GetSBU(label As Label)
-    '    Dim mysql As String = "Select * FROM  PAYROLL_SBU WHERE ID = 1"
-    '    Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_SBU")
-    '    If ds.Tables(0).Rows.Count > 0 Then
-    '        Dim dr As DataRow = ds.Tables(0).Rows(0)
-    '        With dr
-    '            label.Text = .Item("SBU_AMOUNT")
-    '        End With
-    '    End If
-    'End Sub
+    Public Function GetSingle_column(table As String, column As String, value As String, getColumn As String)
+        Dim Daily_rate As Double
+        Dim mysql As String = $"Select * FROM  {table} WHERE {column} = {value}"
+        Dim ds As DataSet = LoadSQL(mysql, table)
+        If ds.Tables(0).Rows.Count > 0 Then
+            Dim dr As DataRow = ds.Tables(0).Rows(0)
+            With dr
+                Daily_rate = IIf(IsDBNull(.Item(getColumn)), Nothing, .Item(getColumn))
+            End With
+        End If
+        Return Daily_rate
+    End Function
 
     Public Sub GetEmail(email As TextBox, pass As TextBox)
         Dim mysql As String = "Select * FROM  PAYROLL_EMAIL WHERE ID = '1'"

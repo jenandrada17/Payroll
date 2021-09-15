@@ -14,7 +14,7 @@ Public Class frmSettings
             GetEmail(Email_TXT, Password_TXT)
         End If
 
-        PopulateComboBox_Any(Rate_City_ComboB, "PAYROLL_EMPLOYEE", "BRANCH_CITY")
+        PopulateComboBox_Any(Rate_City_ComboB, "PAYROLL_CITY_BRANCH", "CITY")
         PopulateComboBox_Any(ClockBranch_CB, "PAYROLL_EMPLOYEE", "BRANCH_CODE")
         PopulateComboBox(Allow_Category_Combo, "CATEGORY_ALLOWANCE", "ALLOWANCE_NAME")
         PopulateComboBox(DE_Category_Combo, "CATEGORY_DEDUCTION", "DEDUCTION_NAME")
@@ -175,6 +175,7 @@ Public Class frmSettings
             SaveRATE("BIO_NO", Rate_BioNo_TXT.Text, Rate_EmpAmount_TXT.Text)
 
             Rate_EmpClear_BTN.PerformClick()
+            Lists_Rate(Rate_list)
         End If
     End Sub
 
@@ -200,12 +201,11 @@ Public Class frmSettings
     Private Sub Rate_Branch_BTN_Click(sender As Object, e As EventArgs) Handles Rate_Branch_BTN.Click
         If Rate_City_ComboB.SelectedIndex >= 0 And Not Rate_CityAmount_TXT.Text = "" Then
 
-            SaveRATE("BRANCH_CITY", Rate_City_ComboB.Text, Rate_CityAmount_TXT.Text, True)
+            SaveRATE_City("CITY", Rate_City_ComboB.Text, Rate_CityAmount_TXT.Text, True)
 
             SaveMinimum_RATE(Rate_City_ComboB.Text, Rate_CityAmount_TXT.Text)
 
-            Rate_City_ComboB.Text = "   Select Branch"
-            Rate_CityAmount_TXT.Clear()
+            CityClear_BTN.PerformClick()
 
             MsgBox("Successfully updated!", MsgBoxStyle.Information, "Information")
 
@@ -827,6 +827,17 @@ Public Class frmSettings
         If e.KeyChar = ChrW(Keys.Enter) Then
             SearchCity_BTN.PerformClick()
         End If
+    End Sub
+
+    Private Sub Rate_list_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles Rate_list.MouseDoubleClick
+        If Rate_list.Items.Count = 0 Then Exit Sub
+        Rate_BioNo_TXT.Text = Rate_list.Items(Rate_list.FocusedItem.Index).SubItems(2).Text
+    End Sub
+
+    Private Sub CityClear_BTN_Click(sender As Object, e As EventArgs) Handles CityClear_BTN.Click
+        Rate_City_ComboB.Text = ""
+        Rate_CityAmount_TXT.Clear()
+        Ecola_TXT.Clear()
     End Sub
 
 End Class
