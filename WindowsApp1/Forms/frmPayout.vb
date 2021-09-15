@@ -757,26 +757,10 @@ Public Class frmPayout
                 .Columns.Add("TOTALS")
             End With
 
-            'Allowances = 0
-
-            'Dim sql_2 As String = $"Select * From PAYROLL_ALLOWANCES WHERE BIOMETRIC_NO = '{biometricID}' and BRANCH_ID = '{branchID}'  and ALLOWED is null and SCHEDULE = '{sched}'"
-            'Using ds_2 As DataSet = LoadSQL(sql_2, "PAYROLL_ALLOWANCES")
-            '    If ds_2.Tables(0).Rows.Count > 0 Then
-            '        For Each dr_2 In ds_2.Tables(0).Rows
-            '            With dr_2
-            '                If .item("EFFECTIVE_DATE") <= Today Then
-            '                    Allowances = Allowances + .Item("AMOUNT")
-            '                End If
-            '            End With
-            '        Next
-            '    End If
-            'End Using
-
-
             Dim total_Allowance As Double = 0
             If isExist_String("payroll_allowances", $" where emp_id = '{emp_id}'") Then
 
-                Dim mysql_allow As String = $"select * from PAYROLL_ALLOWANCES WHERE emp_id = '{emp_id}' and ALLOWED = 'YES' and SCHEDULE = '{sched}'"
+                Dim mysql_allow As String = $"select * from PAYROLL_ALLOWANCES WHERE emp_id = '{emp_id}' and ALLOWED = 'YES' and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
                 Using ds As DataSet = LoadSQL(mysql_allow, "payroll_allowances")
                     If ds.Tables(0).Rows.Count > 0 Then
                         For Each drr In ds.Tables(0).Rows
@@ -789,7 +773,7 @@ Public Class frmPayout
                     End If
                 End Using
 
-                Dim mysql_1 As String = $"select * from payroll_allowances  where emp_id = '{emp_id}' and ALLOWED = 'YES' and SCHEDULE = '{sched}'"
+                Dim mysql_1 As String = $"select * from payroll_allowances  where emp_id = '{emp_id}' and ALLOWED = 'YES' and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
                 Using ds As DataSet = LoadSQL(mysql_1, "payroll_allowances")
                     If ds.Tables(0).Rows.Count > 0 Then
                         For Each dr In ds.Tables(0).Rows

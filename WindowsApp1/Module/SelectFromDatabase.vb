@@ -1777,19 +1777,19 @@ Module SelectFromDatabase
         End Using
     End Sub
 
-    Public Sub Trial()
-        Dim mysql As String = $"Select * From tbl_employee_copy where id <> (Select id from tbl_employee)"
-        Using ds As DataSet = LoadSQL(mysql, "tbl_employee_copy")
+    'Public Sub Trial()
+    '    Dim mysql As String = $"Select * From tbl_employee_copy where id <> (Select id from tbl_employee)"
+    '    Using ds As DataSet = LoadSQL(mysql, "tbl_employee_copy")
 
-            For Each dr As DataRow In ds.Tables(0).Rows
-                With dr
+    '        For Each dr As DataRow In ds.Tables(0).Rows
+    '            With dr
 
-                End With
+    '            End With
 
-            Next
+    '        Next
 
-        End Using
-    End Sub
+    '    End Using
+    'End Sub
 
     Public Sub Replacing(str As String)
         RunCommand($"DELETE FROM {str};")  'THIS IS TO DELETE EXISTING DATA TO REPLACE ESPECIALLY FROM DATAGRID

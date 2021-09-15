@@ -259,19 +259,48 @@ Public Class frmSettings
         Dim fix As String = "No"
         Dim everyThisDate As Integer = 0
 
-        If Allow_Category_Combo.SelectedIndex >= 0 And Not Allow_Name_TXT.Text = "" Then
+        If Not isNotValidSave() Then Exit Sub
 
-            If Not A_EveryDate_Combo.Text = "Select date of the month" Then everyThisDate = A_EveryDate_Combo.SelectedItem
+        If Not A_EveryDate_Combo.Text = "Select date of the month" Then everyThisDate = A_EveryDate_Combo.SelectedItem
 
-            If FixYes_RadioB.Checked Then fix = "YES"
+        If FixYes_RadioB.Checked Then fix = "YES"
 
-            SaveAllowance(Label14.Tag, Allow_Name_TXT.Tag, Allow_SearchEmp_BTN.Tag, Allow_Category_Combo.SelectedItem, Allow_Amount_TXT.Text, fix, Allow_Schedule_Combo.SelectedItem, everyThisDate, A_EffectiveDate_DTP.Value) ' Label14 is EMP_ID
+        SaveAllowance(Label14.Tag, Allow_Name_TXT.Tag, Allow_SearchEmp_BTN.Tag, Allow_Category_Combo.SelectedItem, Allow_Amount_TXT.Text, fix, Allow_Schedule_Combo.SelectedItem, everyThisDate, A_EffectiveDate_DTP.Value) ' Label14 is EMP_ID
 
-            Lists_Allowance(Allowance_LV)
-            Allow_Cancel_BTN.PerformClick()
-        End If
+        Lists_Allowance(Allowance_LV)
+        Allow_Cancel_BTN.PerformClick()
 
     End Sub
+
+    Private Function isNotValidSave()
+
+        If String.IsNullOrEmpty(Allow_Name_TXT.Text) Then
+            MsgBox("Please select a name.", MsgBoxStyle.Critical, "Error")
+            Return False
+
+        ElseIf Allow_Category_Combo.SelectedIndex >= 0 Then
+            Allow_Category_Combo.Region = New Region(New Rectangle(2, 2, Allow_Category_Combo.Width - 4, Allow_Category_Combo.Height - 4))
+            Return False
+
+        ElseIf Allow_Schedule_Combo.SelectedIndex >= 0 Then
+            Allow_Schedule_Combo.Region = New Region(New Rectangle(2, 2, Allow_Schedule_Combo.Width - 4, Allow_Schedule_Combo.Height - 4))
+            Return False
+
+        ElseIf A_EveryDate_Combo.SelectedIndex >= 0 Then
+
+            If Allow_Schedule_Combo.SelectedIndex = 3 Or Allow_Schedule_Combo.SelectedIndex = 4 Then
+                A_EveryDate_Combo.Region = New Region(New Rectangle(2, 2, A_EveryDate_Combo.Width - 4, A_EveryDate_Combo.Height - 4))
+                Return False
+            End If
+
+        ElseIf String.IsNullOrEmpty(Allow_Amount_TXT.Text) Then
+            Allow_Amount_TXT.Region = New Region(New Rectangle(2, 2, Allow_Amount_TXT.Width - 4, Allow_Amount_TXT.Height - 4))
+            Return False
+        End If
+
+        Return True
+    End Function
+
 
     Private Sub Allow_Cancel_BTN_Click(sender As Object, e As EventArgs) Handles Allow_Cancel_BTN.Click
         Allow_Category_Combo.Text = "Select"
@@ -476,5 +505,23 @@ Public Class frmSettings
         DE_NoOfGives_TXT.Text = Deduction_List.Items(Deduction_List.FocusedItem.Index).SubItems(3).Text
         DE_AmountGive_TXT.Text = Deduction_List.Items(Deduction_List.FocusedItem.Index).SubItems(4).Text
         Deduction_List.Tag = Deduction_List.Items(Deduction_List.FocusedItem.Index).SubItems(2).Tag
+    End Sub
+
+    Private Sub FlowLayoutPanel1_Paint(sender As Object, e As PaintEventArgs) Handles FlowLayoutPanel1.Paint
+
+        Dim txtbox As TextBox = Nothing
+        Dim comboB As ComboBox = Nothing
+        Dim dateTime As DateTimePicker = Nothing
+        For Each xObject As Object In FlowLayoutPanel1.Controls
+            Dim p As New Pen(Color.Red, 2)
+            If TypeOf xObject Is TextBox Then
+                txtbox = xObject
+                e.Graphics.DrawRectangle(p, New Rectangle(txtbox.Location + New Size(1, 1), txtbox.Size - New Size(2, 2)))
+            ElseIf TypeOf xObject Is ComboBox Then
+                comboB = xObject
+                e.Graphics.DrawRectangle(p, New Rectangle(comboB.Location + New Size(1, 1), comboB.Size - New Size(2, 2)))
+            End If
+            p.Dispose()
+        Next
     End Sub
 End Class
