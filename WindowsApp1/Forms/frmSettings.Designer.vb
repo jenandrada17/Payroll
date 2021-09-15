@@ -57,8 +57,6 @@ Partial Class frmSettings
         Me.Rate_CityAmount_TXT = New System.Windows.Forms.TextBox()
         Me.Holiday_Tab = New System.Windows.Forms.TabPage()
         Me.GroupBox2 = New System.Windows.Forms.GroupBox()
-        Me.Label7 = New System.Windows.Forms.Label()
-        Me.Label5 = New System.Windows.Forms.Label()
         Me.SpecialRate_TXT = New System.Windows.Forms.TextBox()
         Me.RegularRate_TXT = New System.Windows.Forms.TextBox()
         Me.Label6 = New System.Windows.Forms.Label()
@@ -587,8 +585,6 @@ Partial Class frmSettings
         '
         'GroupBox2
         '
-        Me.GroupBox2.Controls.Add(Me.Label7)
-        Me.GroupBox2.Controls.Add(Me.Label5)
         Me.GroupBox2.Controls.Add(Me.SpecialRate_TXT)
         Me.GroupBox2.Controls.Add(Me.RegularRate_TXT)
         Me.GroupBox2.Controls.Add(Me.Label6)
@@ -602,24 +598,6 @@ Partial Class frmSettings
         Me.GroupBox2.TabStop = False
         Me.GroupBox2.Text = "Holiday Rate"
         '
-        'Label7
-        '
-        Me.Label7.AutoSize = True
-        Me.Label7.Location = New System.Drawing.Point(262, 88)
-        Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(22, 22)
-        Me.Label7.TabIndex = 90
-        Me.Label7.Text = "%"
-        '
-        'Label5
-        '
-        Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(262, 39)
-        Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(22, 22)
-        Me.Label5.TabIndex = 89
-        Me.Label5.Text = "%"
-        '
         'SpecialRate_TXT
         '
         Me.SpecialRate_TXT.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper
@@ -627,7 +605,7 @@ Partial Class frmSettings
         Me.SpecialRate_TXT.Location = New System.Drawing.Point(135, 88)
         Me.SpecialRate_TXT.Name = "SpecialRate_TXT"
         Me.SpecialRate_TXT.ReadOnly = True
-        Me.SpecialRate_TXT.Size = New System.Drawing.Size(125, 29)
+        Me.SpecialRate_TXT.Size = New System.Drawing.Size(94, 29)
         Me.SpecialRate_TXT.TabIndex = 31
         '
         'RegularRate_TXT
@@ -637,7 +615,7 @@ Partial Class frmSettings
         Me.RegularRate_TXT.Location = New System.Drawing.Point(135, 38)
         Me.RegularRate_TXT.Name = "RegularRate_TXT"
         Me.RegularRate_TXT.ReadOnly = True
-        Me.RegularRate_TXT.Size = New System.Drawing.Size(125, 29)
+        Me.RegularRate_TXT.Size = New System.Drawing.Size(94, 29)
         Me.RegularRate_TXT.TabIndex = 30
         '
         'Label6
@@ -663,7 +641,7 @@ Partial Class frmSettings
         'HolidayRate_BTN
         '
         Me.HolidayRate_BTN.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.HolidayRate_BTN.Location = New System.Drawing.Point(334, 63)
+        Me.HolidayRate_BTN.Location = New System.Drawing.Point(275, 56)
         Me.HolidayRate_BTN.Name = "HolidayRate_BTN"
         Me.HolidayRate_BTN.Size = New System.Drawing.Size(72, 31)
         Me.HolidayRate_BTN.TabIndex = 29
@@ -2222,8 +2200,6 @@ Partial Class frmSettings
     Friend WithEvents SpecialRate_TXT As TextBox
     Friend WithEvents RegularRate_TXT As TextBox
     Friend WithEvents Label6 As Label
-    Friend WithEvents Label7 As Label
-    Friend WithEvents Label5 As Label
     Friend WithEvents TabPage1 As TabPage
     Friend WithEvents TabPage2 As TabPage
     Friend WithEvents TabPage5 As TabPage

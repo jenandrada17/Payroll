@@ -80,7 +80,7 @@
                                   <Style>
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>9pt</FontSize>
-                                    <FontWeight>Medium</FontWeight>
+                                    <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -121,7 +121,7 @@
                                   <Style>
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>9pt</FontSize>
-                                    <FontWeight>Medium</FontWeight>
+                                    <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
                                 <TextRun>
@@ -129,7 +129,7 @@
                                   <Style>
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>9pt</FontSize>
-                                    <FontWeight>Medium</FontWeight>
+                                    <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -982,7 +982,7 @@
                 <Value>=Fields!NAME.Value</Value>
               </SortExpression>
             </SortExpressions>
-            <Height>2.04795in</Height>
+            <Height>2.04796in</Height>
             <Width>3.39272in</Width>
             <Style>
               <Border>
@@ -991,7 +991,7 @@
             </Style>
           </Tablix>
         </ReportItems>
-        <Height>2.04795in</Height>
+        <Height>2.04796in</Height>
         <Style />
       </Body>
       <Width>3.39272in</Width>

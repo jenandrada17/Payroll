@@ -758,50 +758,50 @@ Module Report_function
         Return dt_Remittance
     End Function
 
-    Friend Function Load_Cost_ALLOW_DEDUC(paydate As String) As DataTable
+    'Friend Function Load_Cost_ALLOW_DEDUC(paydate As String) As DataTable
 
-        Dim mysql As String
-        Dim PAYROLL As DateTime = paydate
+    '    Dim mysql As String
+    '    Dim PAYROLL As DateTime = paydate
 
-        'Dim regHoliday = Holiday_Rate("REGULAR")
-        'Dim specHoliday = Holiday_Rate("SPECIAL")
+    '    'Dim regHoliday = Holiday_Rate("REGULAR")
+    '    'Dim specHoliday = Holiday_Rate("SPECIAL")
 
-        Dim FORMNAME As String = "2nd PERIOD"
+    '    Dim FORMNAME As String = "2nd PERIOD"
 
-        If PAYROLL.Day = 15 Then
-            FORMNAME = "1st PERIOD"
-        End If
+    '    If PAYROLL.Day = 15 Then
+    '        FORMNAME = "1st PERIOD"
+    '    End If
 
-        FORMNAME = $"{PAYROLL.ToString("MMMM dd, yyyy")} - {FORMNAME}"
+    '    FORMNAME = $"{PAYROLL.ToString("MMMM dd, yyyy")} - {FORMNAME}"
 
-        Dim dt_Cost As New DataTable()
-        With dt_Cost
-            .Columns.Add("PAYDATE")
-            .Columns.Add("BRANCH")
-            .Columns.Add("NAME")
-            .Columns.Add("AMOUNT")
-            .Columns.Add("CATEGORY")
-        End With
+    '    Dim dt_Cost As New DataTable()
+    '    With dt_Cost
+    '        .Columns.Add("PAYDATE")
+    '        .Columns.Add("BRANCH")
+    '        .Columns.Add("NAME")
+    '        .Columns.Add("AMOUNT")
+    '        .Columns.Add("CATEGORY")
+    '    End With
 
-        mysql = $"Select  C.CATEGORY, TRANSAC_NAME, SUM(AMOUNT) AS TOTS From PAYROLL_EMPLOYEE B  
-                                        INNER JOIN RECORDED_ALLOW_DEDUC C ON C.BIO_NO = B.BIO_NO 
-                                        WHERE C.PAYDATE = '{paydate}'  GROUP BY C.CATEGORY,  TRANSAC_NAME"
+    '    mysql = $"Select  C.CATEGORY, TRANSAC_NAME, SUM(AMOUNT) AS TOTS From PAYROLL_EMPLOYEE B  
+    '                                    INNER JOIN RECORDED_ALLOW_DEDUC C ON C.BIO_NO = B.BIO_NO 
+    '                                    WHERE C.PAYDATE = '{paydate}'  GROUP BY C.CATEGORY,  TRANSAC_NAME"
 
-        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
-            If ds.Tables(0).Rows.Count > 0 Then
-                For Each dr In ds.Tables(0).Rows
-                    With dr
+    '    Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+    '        If ds.Tables(0).Rows.Count > 0 Then
+    '            For Each dr In ds.Tables(0).Rows
+    '                With dr
 
-                        dt_Cost.Rows.Add(FORMNAME, "SAMPLE", .Item("CATEGORY"), .Item("TOTS"), .Item("TRANSAC_NAME"))
+    '                    dt_Cost.Rows.Add(FORMNAME, "SAMPLE", .Item("CATEGORY"), .Item("TOTS"), .Item("TRANSAC_NAME"))
 
-                    End With
+    '                End With
 
-                Next
-            End If
-        End Using
+    '            Next
+    '        End If
+    '    End Using
 
-        Return dt_Cost
-    End Function
+    '    Return dt_Cost
+    'End Function
 
 
     Public Function GetList_Branch(address As String, str As String) As String
@@ -828,6 +828,8 @@ Module Report_function
     End Function
 
     Public Sub Check_This()
+        'Dim mysql As String = $"Select * From PAYROLL_PAYOUT where PAYDATE = '9/15/2021'"
+
         Dim mysql As String = $"Select Sum(NET_PAY) as tots From PAYROLL_PAYOUT 
                             inner join PAYROLL_EMPLOYEE ON BIO_NO = BIOMETRIC_ID 
                             LEFT JOIN PAYROLL_CITY_BRANCH ON BRANCHCODE = BRANCH_CODE  
@@ -837,12 +839,31 @@ Module Report_function
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
                     With dr
+
                         MsgBox(FormatNumber(.item("tots")))
+                        'SAVEE(.item("BIOMETRIC_ID"), .item("TOTAL_LATE_UT"))
                     End With
                 Next
             End If
         End Using
     End Sub
+
+    'Public Sub SAVEE(BIO As String, LASTE As String)
+
+    '    Dim mysqlL As String = $"Select * FROM PAYROLL_PAYOUT where BIOMETRIC_ID = '{BIO}' and PAYDATE = '9/15/2021'"
+    '    Dim dss As DataSet = LoadSQL(mysqlL, "PAYROLL_PAYOUT")
+    '    If dss.Tables(0).Rows.Count > 0 Then
+    '        For Each dr In dss.Tables(0).Rows
+    '            With dr
+
+    '                .Item("TOTAL_LATE_UTT") = LASTE
+
+    '            End With
+    '            SaveEntry(dss, False)
+    '        Next
+    '    End If
+
+    'End Sub
 
     Friend Function GET_STRING(TABLE As String, column As String, STR As String)
         Dim VALUEE As String = ""

@@ -143,6 +143,7 @@
             HolidayRate_BTN.Text = "Change"
 
             MsgBox("Holiday Rate Saved!", MsgBoxStyle.Information, "Information")
+            HolidayRate(RegularRate_TXT, SpecialRate_TXT)
         End If
 
     End Sub
@@ -897,4 +898,11 @@
         DE_Save_BTN.Tag = "ADDED"
     End Sub
 
+    Private Sub RegularRate_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles SpecialRate_TXT.KeyPress, RegularRate_TXT.KeyPress
+        If e.KeyChar <> ChrW(Keys.Back) Then
+            If Not Char.IsNumber(e.KeyChar) AndAlso Not Char.IsControl(e.KeyChar) Then
+                e.Handled = True
+            End If
+        End If
+    End Sub
 End Class

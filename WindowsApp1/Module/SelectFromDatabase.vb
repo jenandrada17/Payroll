@@ -951,9 +951,9 @@ Module SelectFromDatabase
                 For Each dr In ds.Tables(0).Rows
                     With dr
                         If .Item("HOLIDAY") = "REGULAR" Then
-                            regularRate.Text = .Item("RATE")
+                            regularRate.Text = FormatPercent(.Item("RATE"), 0)
                         Else
-                            SpecialRate.Text = .Item("RATE")
+                            SpecialRate.Text = FormatPercent(.Item("RATE"), 0)
                         End If
                     End With
                 Next
@@ -1311,8 +1311,8 @@ Module SelectFromDatabase
         End Using
     End Sub
 
-    Public Function Holiday_Rate(holiday As String) As Integer
-        Dim rate As Integer = 0
+    Public Function Holiday_Rate(holiday As String) As Double
+        Dim rate As Double = 0
         Dim mysql As String = "Select * From payroll_holiday_rate WHERE HOLIDAY= '" & holiday & "'"
         Using ds As DataSet = LoadSQL(mysql, "payroll_holiday_rate")
             If ds.Tables(0).Rows.Count > 0 Then

@@ -91,35 +91,9 @@ Module SaveUpdate
         End If
     End Sub
 
-    'Friend Sub updateHoliday_Attendance(biometric As String, paydate As String)
-    '    Dim REGHOLIDAY As Integer = 0
-    '    Dim SPECHOLIDAY As Integer = 0
-
-    '    Dim mysql As String = $"Select * From PAYROLL_ATTENDANCE WHERE PAYDATE = '{paydate}' and BIOMETRICID <> '{biometric}'"
-    '    Using dss As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
-    '        If dss.Tables(0).Rows.Count > 0 Then
-    '            Dim data As DataRow = dss.Tables(0).Rows(0)
-    '            With data
-    '                REGHOLIDAY = .Item("REGHOLIDAY")
-    '                SPECHOLIDAY = .Item("SPECHOLIDAY")
-    '            End With
-    '        End If
-    '    End Using
-
-    '    Dim mysqll As String = $"Select * FROM PAYROLL_ATTENDANCE where BIOMETRICID = '{biometric}' and PAYDATE = '{paydate}'"
-    '    Dim ds As DataSet = LoadSQL(mysqll, "PAYROLL_ATTENDANCE")
-    '    If ds.Tables(0).Rows.Count > 0 Then
-    '        With ds.Tables(0).Rows(0)
-    '            .Item("REGHOLIDAY") = REGHOLIDAY
-    '            .Item("SPECHOLIDAY") = SPECHOLIDAY
-    '        End With
-    '        SaveEntry(ds, False)
-    '    End If
-    'End Sub
-
-
     Friend Sub SaveHOLIDAY_RATE(HOLIDAY As String, RATE As String)
         Dim mysql As String
+        RATE = CDbl(RATE) / 100
 
         mysql = "Select * FROM PAYROLL_HOLIDAY_RATE where HOLIDAY = '" & HOLIDAY & "'"
         Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_HOLIDAY_RATE")
@@ -607,45 +581,10 @@ Module SaveUpdate
         End If
     End Sub
 
-    'Friend Sub SaveSBU(amount As String)
-    '    Dim mysql As String
-
-    '    mysql = $"Select * FROM PAYROLL_SBU WHERE id = 1 "
-    '    Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_SBU")
-    '    If ds.Tables(0).Rows.Count > 0 Then
-
-    '        With ds.Tables(0).Rows(0)
-
-    '            .Item("SBU_AMOUNT") = amount
-
-    '        End With
-    '        SaveEntry(ds, False)
-
-    '        MsgBox("Successfully Updated!", MsgBoxStyle.Information, "Information")
-
-    '    Else
-    '        mysql = "Select * From PAYROLL_SBU Rows 1"
-    '        Using dss As DataSet = LoadSQL(mysql, "PAYROLL_SBU")
-
-    '            Dim dsNewRow As DataRow = dss.Tables(0).NewRow
-    '            With dsNewRow
-
-    '                .Item("SBU_AMOUNT") = amount
-
-    '            End With
-    '            dss.Tables(0).Rows.Add(dsNewRow)
-    '            SaveEntry(dss)
-
-    '            MsgBox("Successfully Saved!", MsgBoxStyle.Information, "Information")
-    '        End Using
-    '    End If
-
-    'End Sub
-
     Friend Sub SavePayout(BIOMETRIC_ID As String, PAYDATE As String, TOTAL_BASIC As String, TOTAL_OVERTIME As String, TOTAL_LATE_UT As String,
                           GROSS_AMOUNT As String, SSS_COMP As String, SSS_ER As String, SSS_EC As String, PAGIBIG_COMP As String, PHILHEALTH_COMP As String, TAX_WHELD As String,
                           NET_TAX_COMP As String, SSS_LOAN As String, PAGIBIG_LOAN As String, TOTAL_ALLOWANCE As String,
-                          TOTAL_DEDUCTION As String, NET_PAY As String, HOLIDAY As String, TOTAL_NIGHT_RATE As String, Optional all As String = "")
+                          TOTAL_DEDUCTION As String, NET_PAY As String, REGHOLIDAY As String, SPECHOLIDAY As String, TOTAL_NIGHT_RATE As String, Optional all As String = "")
 
         Dim mysql As String = $"Select * FROM PAYROLL_PAYOUT where BIOMETRIC_ID = '{BIOMETRIC_ID}' and PAYDATE = '{PAYDATE}'"
         Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
@@ -671,7 +610,8 @@ Module SaveUpdate
                     .Item("TOTAL_DEDUCTION") = TOTAL_DEDUCTION
                     .Item("NET_PAY") = NET_PAY
                     .Item("TOTAL_NIGHT_RATE") = TOTAL_NIGHT_RATE
-                    .Item("TOTAL_HOLIDAY") = HOLIDAY
+                    .Item("TOTAL_REGHOLIDAY") = REGHOLIDAY
+                    .Item("TOTAL_SPECHOLIDAY") = SPECHOLIDAY
 
                 End With
                 SaveEntry(dss, False)
@@ -707,7 +647,8 @@ Module SaveUpdate
                     .Item("PAYDATE") = PAYDATE
                     .Item("NET_PAY") = NET_PAY
                     .Item("TOTAL_NIGHT_RATE") = TOTAL_NIGHT_RATE
-                    .Item("TOTAL_HOLIDAY") = HOLIDAY
+                    .Item("TOTAL_REGHOLIDAY") = REGHOLIDAY
+                    .Item("TOTAL_SPECHOLIDAY") = SPECHOLIDAY
 
                 End With
 
@@ -992,9 +933,10 @@ Module SaveUpdate
                     End If
 
                     '============================================= Calculate_Gross() ========================================================= 
-                    Dim TotalHol, TotalOT, TotalLateUnder, TotalNight, GrossAmount As Double
+                    Dim TotalREGHol, TotalSPECHol, TotalOT, TotalLateUnder, TotalNight, GrossAmount As Decimal
 
-                    TotalHol = (((SpecialHol * rate) * specHoliday) / specHoliday) + (((RegularHol * rate) * regHoliday) / regHoliday) ' =========== CALCULATE hOLIDAY TO PESO ===========
+                    TotalREGHol = (RegularHol * rate) * regHoliday
+                    TotalSPECHol = (SpecialHol * rate) * specHoliday
 
                     TotalOT = ((rate / 8) * 1.25) * RegularOT ' =========== CALCULATE OVERTIME TO PESO ===========
 
@@ -1009,13 +951,13 @@ Module SaveUpdate
                     underToMinute = (CDbl(under_split(0)) * 60 + CDbl(under_split(1)) + CDbl(under_split(2)) / 60) / 60
 
                     Dim LATEE, UNDERTIMEE As Double
-                    LATEE = ((rate / 8) / 60) * lateTOMinute
-                    UNDERTIMEE = (rate / 8) * underToMinute
+                    LATEE = ((CDbl(rate) / 8) / 60) * lateTOMinute
+                    UNDERTIMEE = (CDbl(rate) / 8) * underToMinute
 
                     TotalLateUnder = LATEE + UNDERTIMEE
 
-                    GrossAmount = (TotalBasic + TotalHol + TotalOT + TotalNight) - TotalLateUnder
-
+                    GrossAmount = (TotalBasic + TotalREGHol + TotalSPECHol + TotalOT + TotalNight) - TotalLateUnder
+                    'GrossAmount = (TotalBasic + TotalHol + TotalOT + TotalNight) - TotalLateUnder 
 
                     '============================================= Calculate =========================================================  
                     Dim NetPay As Double
@@ -1034,10 +976,13 @@ Module SaveUpdate
 
                     NetPay = positive - negative
 
-                    SavePayout(bioNo, paydate_, TotalBasic, TotalOT,
-                                  TotalLateUnder, GrossAmount, SSSComp, SSS_ER, SSS_EC,
-                                  PagibigComp, PhilhealthComp, Tax_Wheld, netTax, sssLoan,
-                                  pagibigLoan, Allowances, Deduction, NetPay, TotalHol, TotalNight)
+                    SavePayout(bioNo, paydate_, (TotalBasic).ToString("N"), (TotalOT).ToString("N"),
+                                  (TotalLateUnder).ToString("N"), (GrossAmount).ToString("N"),
+                                  (SSSComp).ToString("N"), (SSS_ER).ToString("N"), (SSS_EC).ToString("N"),
+                                  (PagibigComp).ToString("N"), (PhilhealthComp).ToString("N"), (Tax_Wheld).ToString("N"),
+                                  (netTax).ToString("N"), (sssLoan).ToString("N"), (pagibigLoan).ToString("N"),
+                                  (Allowances).ToString("N"), (Deduction).ToString("N"), (NetPay).ToString("N"),
+                                  (TotalREGHol).ToString("N"), (TotalSPECHol).ToString("N"), (TotalNight).ToString("N"))
                 End With
             End If
         End Using
@@ -1260,9 +1205,10 @@ Module SaveUpdate
                         End If
 
                         '============================================= Calculate_Gross() ========================================================= 
-                        Dim TotalHol, TotalOT, TotalLateUnder, GrossAmount As Double
+                        Dim TotalREGHol, TotalSPECHol, TotalOT, TotalLateUnder, GrossAmount As Double
 
-                        TotalHol = (((SpecialHol * rate) * specHoliday) / specHoliday) + (((RegularHol * rate) * regHoliday) / regHoliday) ' =========== CALCULATE hOLIDAY TO PESO ===========
+                        TotalREGHol = (RegularHol * rate) * regHoliday
+                        TotalSPECHol = (SpecialHol * rate) * specHoliday
 
                         TotalOT = ((rate / 8) * 1.25) * RegularOT ' =========== CALCULATE OVERTIME TO PESO ===========
 
@@ -1280,7 +1226,7 @@ Module SaveUpdate
 
                         TotalLateUnder = LATEE + UNDERTIMEE
 
-                        GrossAmount = (TotalBasic + TotalHol + TotalOT) - TotalLateUnder
+                        GrossAmount = (TotalBasic + TotalREGHol + TotalSPECHol + TotalOT) - TotalLateUnder
 
                         '============================================= Calculate =========================================================  
                         Dim NetPay As Double
@@ -1292,17 +1238,19 @@ Module SaveUpdate
                             positive = GrossAmount + Allowances
                             negative = CONTRIB + sssLoan + pagibigLoan + Deduction
                         Else
-                            'netTax = 0
                             positive = GrossAmount + Allowances
                             negative = Deduction
                         End If
 
                         NetPay = positive - negative
 
-                        SavePayout(BiometricID, paydate_, TotalBasic, TotalOT,
-                                      TotalLateUnder, GrossAmount, SSSComp, SSS_ER, SSS_EC,
-                                      PagibigComp, PhilhealthComp, Tax_Wheld, netTax, sssLoan,
-                                      pagibigLoan, Allowances, Deduction, NetPay, TotalHol, 0, "Group")
+                        SavePayout(BiometricID, paydate_, (TotalBasic).ToString("N"), (TotalOT).ToString("N"),
+                                      (TotalLateUnder).ToString("N"), (GrossAmount).ToString("N"),
+                                      (SSSComp).ToString("N"), (SSS_ER).ToString("N"), (SSS_EC).ToString("N"),
+                                      (PagibigComp).ToString("N"), (PhilhealthComp).ToString("N"), (Tax_Wheld).ToString("N"),
+                                      (netTax).ToString("N"), (sssLoan).ToString("N"), (pagibigLoan).ToString("N"),
+                                      (Allowances).ToString("N"), (Deduction).ToString("N"), (NetPay).ToString("N"),
+                                      (TotalREGHol).ToString("N"), (TotalSPECHol).ToString("N"), 0, "Group")
 
                         frmMainForm.AppProgressBar.Value += 1
                     End With

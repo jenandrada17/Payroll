@@ -84,7 +84,7 @@ Public Class frmReport
                                 Dim namee As String = .Item("FULLNAME")
                                 Dim BASIC As Double = .Item("TOTAL_BASIC")
                                 Dim OVERTIME As Double = .Item("TOTAL_OVERTIME")
-                                Dim HOLIDAY As Double = .Item("TOTAL_HOLIDAY")
+                                Dim HOLIDAY As Double = .Item("TOTAL_REGHOLIDAY") + .Item("TOTAL_SPECHOLIDAY")
                                 Dim N_DIFF As Double = .Item("TOTAL_NIGHT_RATE")
                                 Dim PI_ECOLA_SIL As Double = .Item("TOTAL_ALLOWANCE")
                                 Dim TARDINESS As Double = .Item("TOTAL_LATE_UT")
@@ -143,7 +143,11 @@ Public Class frmReport
                         Dim TOTAL_EMP As Integer = GetOVERALL_COUNT("ID", paydatee)
                         Dim TOTAL_BASIC As Double = GetOVERALL_SUM("TOTAL_BASIC", paydatee)
                         Dim TOTAL_OT As Double = GetOVERALL_SUM("TOTAL_OVERTIME", paydatee)
-                        Dim TOTAL_HOLIDAY As Double = GetOVERALL_SUM("TOTAL_HOLIDAY", paydatee)
+
+                        Dim TOTAL_REGHOLIDAY As Double = GetOVERALL_SUM("TOTAL_REGHOLIDAY", paydatee)
+                        Dim TOTAL_SPECHOLIDAY As Double = GetOVERALL_SUM("TOTAL_SPECHOLIDAY", paydatee)
+                        Dim TOTAL_HOLIDAY As Double = TOTAL_REGHOLIDAY + TOTAL_SPECHOLIDAY
+
                         Dim TOTAL_NDIFF As Double = GetOVERALL_SUM("TOTAL_NIGHT_RATE", paydatee)
                         Dim TOTAL_PI_ECOLA_SIL As Double = GetOVERALL_SUM("TOTAL_ALLOWANCE", paydatee)
                         Dim TOTAL_TARDINESS As Double = GetOVERALL_SUM("TOTAL_LATE_UT", paydatee)
@@ -737,14 +741,14 @@ Public Class frmReport
                             Dim BRANCHCODE As String = .Item("BRANCH_CODE")
                             Dim BRANCHNAME As String = GET_STRING("PAYROLL_CITY_BRANCH", "BRANCHNAME", $"BRANCHCODE = '{BRANCHCODE}'")
                             Dim CATEGORY As String = IIf(IsDBNull(.Item("CATEGORY")), "", .Item("CATEGORY"))
-                            Dim DC_Amount As Double = IIf(IsDBNull(.Item("TOTS")), 0, .Item("TOTS"))
+                            Dim DC_Amount As String = IIf(IsDBNull(.Item("TOTS")), Nothing, .Item("TOTS"))
                             Dim Debit_Credit As String = IIf(IsDBNull(.Item("TRANSAC_NAME")), "", .Item("TRANSAC_NAME"))
 
                             If BRANCHCODE = Nothing Then
                                 BRANCHNAME = .Item("HO_CATEGORY")
                             End If
 
-                            dt_Cost.Rows.Add(BRANCHNAME, CATEGORY, DC_Amount.ToString("N"), Debit_Credit)
+                            dt_Cost.Rows.Add(BRANCHNAME, CATEGORY, DC_Amount, Debit_Credit)
 
                         End With
 
@@ -757,7 +761,8 @@ Public Class frmReport
             '========================================= PAYROLL_COSTDISTRIBUTION ================================================
             mysql = $"Select  BRANCH_CODE, HO_CATEGORY, NAMEE, NAME_CATEGORY, SUM(TOTAL_BASIC) AS BASIC, SUM(TOTAL_OVERTIME) AS OT,
                                         SUM(TOTAL_LATE_UT) AS LATE_UT, SUM(SSS_COMP) AS SSS_EE , SUM(SSS_ER) AS SSS_ER , SUM(SSS_EC) AS SSS_EC , SUM(NET_PAY) AS NETPAY, 
-                                        SUM(PAGIBIG_COMP) AS HDMF, SUM(PHILHEALTH_COMP) AS PHILH , SUM(SSS_LOAN) AS LOAN_SSS , SUM(PAGIBIG_LOAN) AS LOAN_HDMF 
+                                        SUM(PAGIBIG_COMP) AS HDMF, SUM(PHILHEALTH_COMP) AS PHILH , SUM(SSS_LOAN) AS LOAN_SSS , SUM(PAGIBIG_LOAN) AS LOAN_HDMF, 
+                                        SUM(TOTAL_REGHOLIDAY) AS REGHOLIDAY , SUM(TOTAL_SPECHOLIDAY) AS SPECHOLIDAY  
                                         From PAYROLL_PAYOUT B 
                                         INNER JOIN PAYROLL_EMPLOYEE A ON A.BIO_NO = B.BIOMETRIC_ID 
                                         LEFT JOIN PAYROLL_COSTDISTRIB ON 1 = 1 
@@ -775,7 +780,7 @@ Public Class frmReport
                             Dim Debit_Credit As String = Nothing
                             Dim NAMEE As String = Nothing
                             Dim NAME_CATEGORY As String = Nothing
-                            Dim DC_Amount As Double = 0
+                            Dim DC_Amount As String = Nothing
 
                             If BRANCHCODE = Nothing Then
                                 BRANCHNAME = .Item("HO_CATEGORY")
@@ -799,6 +804,10 @@ Public Class frmReport
                                     DC_Amount = .Item("HDMF")
                                 ElseIf NAMEE = "Phil Health Employer Share" Then
                                     DC_Amount = .Item("PHILH")
+                                ElseIf NAMEE = "Regular Holiday" Then
+                                    DC_Amount = .Item("REGHOLIDAY")
+                                ElseIf NAMEE = "Special Holiday" Then
+                                    DC_Amount = .Item("SPECHOLIDAY")
                                 End If
 
                                 Debit_Credit = "DEBIT"
@@ -810,11 +819,11 @@ Public Class frmReport
                                 ElseIf NAMEE = "LATE" Then
                                     DC_Amount = .Item("LATE_UT")
                                 ElseIf NAMEE = "SSS PAYABLE" Then
-                                    DC_Amount = CDbl(.Item("SSS_EE")) + CDbl(.Item("SSS_ER"))
+                                    DC_Amount = .Item("SSS_EE") + .Item("SSS_ER")
                                 ElseIf NAMEE = "HDMF PAYABLE" Then
-                                    DC_Amount = CDbl(.Item("HDMF")) * 2
+                                    DC_Amount = .Item("HDMF") * 2
                                 ElseIf NAMEE = "PHIL HEALTH PAYABLE" Then
-                                    DC_Amount = CDbl(.Item("PHILH")) * 2
+                                    DC_Amount = .Item("PHILH") * 2
                                 ElseIf NAMEE = "SSS LOAN" Then
                                     DC_Amount = .Item("LOAN_SSS")
                                 ElseIf NAMEE = "PAGIBIG LOAN" Then
@@ -826,7 +835,7 @@ Public Class frmReport
                                 Debit_Credit = "CREDIT"
                             End If
 
-                            dt_Cost.Rows.Add(BRANCHNAME, NAMEE, DC_Amount.ToString("N"), Debit_Credit)
+                            dt_Cost.Rows.Add(BRANCHNAME, NAMEE, DC_Amount, Debit_Credit)
                         End With
 
                         frmMainForm.AppProgressBar.Value += 1

@@ -24,6 +24,7 @@ Public Class frmAttendance
     Dim MyCommand As System.Data.OleDb.OleDbDataAdapter
 
     Private Sub frmAttendance_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        'Check_This()
 
         LoadDateTime()
 
