@@ -472,7 +472,6 @@ Public Class frmAttendance
         TotalLateHR_LBL.Text = 0
         TotalUTHR_LBL.Text = 0
         TotalOTHr_LBL.Text = 0
-
     End Sub
 
     Private Sub SearchEMP_BTN_Click(sender As Object, e As EventArgs) Handles SearchEMP_BTN.Click
@@ -498,6 +497,9 @@ Public Class frmAttendance
 
         If Not BiometricID_TXT.Text = "" Then
 
+            RunCommand("DELETE FROM BIOMETRIC_DTR WHERE BIO_ID = '" & BiometricID_TXT.Text & "' and PAYDATE = '" & DataGridView1.Tag & "';")  'TO PREVENT DUPLICATION
+            RunCommand("DELETE FROM RECORDED_ALLOW_DEDUC WHERE EMP_ID = '" & Name_TXT.Tag & "' and PAYDATE = '" & DataGridView1.Tag & "';")  'TO PREVENT DUPLICATION
+
             For Each row As DataGridViewRow In DataGridView1.Rows
 
                 Dim dateOnly As DateTime = DataGridView1.Rows(row.Index).Tag
@@ -513,7 +515,7 @@ Public Class frmAttendance
             SaveAttendanceEE(BiometricID_TXT.Text, DataGridView1.Tag, TotalDays_LBL.Text, TotalOTHr_LBL.Text, TotalLateHR_LBL.Text, TotalUTHR_LBL.Text,
                              TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text, Branch_Name)
 
-            SavePayout_IndividualL(BiometricID_TXT.Text, Branch_Name, Paydate)
+            SavePayout_IndividualL(BiometricID_TXT.Text, Branch_Name, DataGridView1.Tag)
 
             Cancel_BTN.PerformClick()
         Else
@@ -1199,6 +1201,7 @@ Public Class frmAttendance
             End If
 
             PopulateComboBox(Paydate_ComboB, "BIOMETRIC_DTR", "PAYDATE")
+            Replacing($"IMPORT_DTR WHERE BRANCH = '{Branch_ComboB.SelectedItem}' and PAYDATE = '{Paydate}'") 'THIS IS TO DELETE EXISTING SHEETS IN IMPORT_DTR 
         End If
 
     End Sub
@@ -1297,9 +1300,34 @@ Public Class frmAttendance
 
         distinct_bio.Clear()
 
+        If File_Exist(Branch_ComboB.SelectedItem, Paydate) Then
+            Saving_InSys()
+        ElseIf File_NOT_Exist(Branch_ComboB.SelectedItem, Paydate) Then
+            Saving_InSys()
+        Else
+            Path_TXT.Text = ""
+        End If
+
+        Import_BTN.Enabled = False
+        Path_TXT.Clear()
+        MyConnection.Close()
+
+        Cursor = Cursors.WaitCursor
+
+        SAVE_DIRECT_Attendance() ' ===== DIRECT SAVE TO ATTENDANCE ====
+        PopulateBiometricSHEET(Bio_grid, Paydate, Branch_ComboB.SelectedItem) ' ===== POPULATE DATAGRIDVIEW FROM SHEET ==== 
+        SavePayout_ALL(Paydate, Branch_ComboB.SelectedItem)
+
+        Cursor = Cursors.Default
+    End Sub
+
+    Private Sub Saving_InSys()
+
         Dim groups_time As New List(Of String)()
         Dim bio_no As String = "" ' ======================================== GIMOVE SA GAWAS BASI DILI MAGANA =======================
+
         progressBarStart(DtSet.Tables(0).Rows.Count)
+
         For row = 7 To DtSet.Tables(0).Rows.Count
             If eCell(row, 5).Value = Nothing Then
                 Continue For
@@ -1404,18 +1432,8 @@ Public Class frmAttendance
         Next
         progressBarEnd()
 
-        Import_BTN.Enabled = False
-        Path_TXT.Clear()
-        MyConnection.Close()
-
-        Cursor = Cursors.WaitCursor
-
-        SAVE_DIRECT_Attendance() ' ===== DIRECT SAVE TO ATTENDANCE ====
-        PopulateBiometricSHEET(Bio_grid, Paydate, Branch_ComboB.SelectedItem) ' ===== POPULATE DATAGRIDVIEW FROM SHEET ==== 
-        SavePayout_ALL(Paydate, Branch_ComboB.SelectedItem)
-
-        Cursor = Cursors.Default
     End Sub
+
 
     Private Sub bio_OURCOMPANY()
 
@@ -1625,7 +1643,7 @@ Public Class frmAttendance
             TotalDays_LBL.Text = product
 
             SaveAttendanceEE(biometric_No, paydate_, TotalDays_LBL.Text, TotalOTHr_LBL.Text, Late_Total.ToString, Under_Total.ToString,
-                             TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text, Branch_ComboB.SelectedItem, "GROUP")
+                             TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text, Branch_ComboB.SelectedItem)
         Next
     End Sub
 
@@ -1643,6 +1661,7 @@ Public Class frmAttendance
         Attendance_Tab.SelectedIndex = 1
         BiometricID_TXT.Text = Bio_grid.Item(0, i).Value
         Name_TXT.Text = Bio_grid.Item(1, i).Value
+        Name_TXT.Tag = Bio_grid.Item(1, i).Tag
 
         Branch_Name = Branch_ComboB.SelectedItem
 

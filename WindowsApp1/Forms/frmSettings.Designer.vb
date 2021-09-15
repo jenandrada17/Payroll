@@ -1051,7 +1051,7 @@ Partial Class frmSettings
         Me.DE_Effectivity_DTP.Name = "DE_Effectivity_DTP"
         Me.DE_Effectivity_DTP.Size = New System.Drawing.Size(223, 29)
         Me.DE_Effectivity_DTP.TabIndex = 125
-        Me.DE_Effectivity_DTP.Value = New Date(2021, 9, 7, 15, 53, 50, 0)
+        Me.DE_Effectivity_DTP.Value = New Date(2021, 9, 15, 0, 0, 0, 0)
         '
         'Label31
         '

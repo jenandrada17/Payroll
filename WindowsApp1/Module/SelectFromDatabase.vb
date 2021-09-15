@@ -250,10 +250,12 @@ Module SelectFromDatabase
         Return email
     End Function
 
-    Public Function GetEmail_recipient(biometric As String, branchID As String) As String
+    'Public Function GetEmail_recipient(biometric As String, branchID As String) As String
+    Public Function GetEmail_recipient(biometric As String) As String
 
         Dim email As String = ""
-        Dim mysql As String = $"Select * FROM  tbl_Employee WHERE BIOMETRICID = '{biometric}' and BRANCH_ID= '{branchID}'"
+        'Dim mysql As String = $"Select * FROM  tbl_Employee WHERE BIOMETRICID = '{biometric}' and BRANCH_ID= '{branchID}'"
+        Dim mysql As String = $"Select * FROM  tbl_Employee WHERE BIOMETRICID = '{biometric}'"
         Dim ds As DataSet = LoadSQL(mysql, "tbl_Employee")
         If ds.Tables(0).Rows.Count > 0 Then
             Dim dr As DataRow = ds.Tables(0).Rows(0)
@@ -509,7 +511,7 @@ Module SelectFromDatabase
     Friend Sub AllowanceDetails(emp_id As String, datagrid As DataGridView, sched As String)
 
         datagrid.Rows.Clear()
-        Dim mysql_1 As String = $"select * from payroll_allowances  where emp_id = '{emp_id}' and ALLOWED = 'YES' and SCHEDULE = '{sched}'"
+        Dim mysql_1 As String = $"select * from payroll_allowances  where emp_id = '{emp_id}' and ALLOWED = 'YES' and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
         Using ds As DataSet = LoadSQL(mysql_1, "payroll_allowances")
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
@@ -954,13 +956,13 @@ Module SelectFromDatabase
     End Sub
 
     Public Function File_Exist(branch As String, PAYDATE As String)
-        Dim mysql As String = $"Select * FROM IMPORT_DTR where BRANCH = '{branch}' and PAYDATE = '{PAYDATE}'"
-        Dim ds As DataSet = LoadSQL(mysql, "IMPORT_DTR")
+        Dim mysql As String = $"Select * FROM BIOMETRIC_DTR where BRANCH = '{branch}' and PAYDATE = '{PAYDATE}'"
+        Dim ds As DataSet = LoadSQL(mysql, "BIOMETRIC_DTR")
         If ds.Tables(0).Rows.Count > 0 Then
-            Dim result As DialogResult = MessageBox.Show("File already imported, Do you want to modify?", "Warning", MessageBoxButtons.YesNo)
+            Dim result As DialogResult = MessageBox.Show("You have already imported biometric data for this branch, do you want to modify?", "Warning", MessageBoxButtons.YesNo)
             If result = DialogResult.Yes Then
-                RunCommand("DELETE FROM IMPORT_DTR WHERE BRANCH = '" & branch & "' and PAYDATE = '" & PAYDATE & "';")  'THIS IS TO DELETE EXISTING SHEETS IN IMPORT_DTR
                 RunCommand("DELETE FROM BIOMETRIC_DTR WHERE BRANCH = '" & branch & "' and PAYDATE = '" & PAYDATE & "';")  'THIS IS TO DELETE EXISTING ATTENDANCE IN BIOMETRIC_DTR 
+                RunCommand("DELETE FROM RECORDED_ALLOW_DEDUC WHERE BRANCH = '" & branch & "' and PAYDATE = '" & PAYDATE & "';")  'THIS IS TO DELETE EXISTING ATTENDANCE IN BIOMETRIC_DTR 
                 Return True
             End If
         End If
@@ -977,6 +979,31 @@ Module SelectFromDatabase
         End If
         Return False
     End Function
+
+    'Public Function File_Exist_BiometricDTR(branch As String, PAYDATE As String)
+    '    Dim mysql As String = $"Select * FROM IMPORT_DTR where BRANCH = '{branch}' and PAYDATE = '{PAYDATE}'"
+    '    Dim ds As DataSet = LoadSQL(mysql, "IMPORT_DTR")
+    '    If ds.Tables(0).Rows.Count > 0 Then
+    '        Dim result As DialogResult = MessageBox.Show("File already imported, Do you want to modify?", "Warning", MessageBoxButtons.YesNo)
+    '        If result = DialogResult.Yes Then
+    '            RunCommand("DELETE FROM IMPORT_DTR WHERE BRANCH = '" & branch & "' and PAYDATE = '" & PAYDATE & "';")  'THIS IS TO DELETE EXISTING SHEETS IN IMPORT_DTR
+    '            RunCommand("DELETE FROM BIOMETRIC_DTR WHERE BRANCH = '" & branch & "' and PAYDATE = '" & PAYDATE & "';")  'THIS IS TO DELETE EXISTING ATTENDANCE IN BIOMETRIC_DTR 
+    '            Return True
+    '        End If
+    '    End If
+    '    Return False
+    'End Function
+
+    'Public Function File_NOT_Exist_BiometricDTR(branch As String, PAYDATE As String)
+    '    Dim mysql As String = $"Select * FROM IMPORT_DTR where BRANCH = '{branch}' and PAYDATE = '{PAYDATE}'"
+    '    Dim ds As DataSet = LoadSQL(mysql, "IMPORT_DTR")
+    '    If ds.Tables(0).Rows.Count > 0 Then
+    '        Return False
+    '    Else
+    '        Return True
+    '    End If
+    '    Return False
+    'End Function
 
 
     'Public Function File_Exist_f200(branch As String, PAYDATE As String)
@@ -1294,7 +1321,7 @@ Module SelectFromDatabase
 
         If searchName.Length <> 0 Then
 
-            mysql = "select * from PAYROLL_ALLOWANCES A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRIC_NO and B.BRANCH_ID = A.BRANCH_ID where ALLOWED = 'YES'  and "
+            mysql = "select * from PAYROLL_ALLOWANCES A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRIC_NO and B.BRANCH_ID = A.BRANCH_ID where ALLOWED = 'YES' and "
 
             For Each name In strWords
                 mysql &= $"{vbCr}UPPER(BIOMETRIC_NO) LIKE UPPER('%{name}%') OR "

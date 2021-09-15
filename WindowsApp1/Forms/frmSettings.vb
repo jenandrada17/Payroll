@@ -257,7 +257,7 @@ Public Class frmSettings
     Private Sub Allow_Save_BTN_Click(sender As Object, e As EventArgs) Handles Allow_Save_BTN.Click
 
         Dim fix As String = "No"
-        Dim everyThisDate As String = ""
+        Dim everyThisDate As Integer = 0
 
         If Allow_Category_Combo.SelectedIndex >= 0 And Not Allow_Name_TXT.Text = "" Then
 

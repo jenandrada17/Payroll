@@ -39,7 +39,7 @@
     End Sub
 
     Friend Sub SaveAttendanceEE(biometric As Integer, paydate As String, days As String, overTime As String, late_total As String,
-                              under_total As String, regHoliday As String, specHoliday As String, branch As String, Optional group As String = "")
+                              under_total As String, regHoliday As String, specHoliday As String, branch As String)
         Dim mysql As String
 
         mysql = $"Select * FROM PAYROLL_ATTENDANCE where BIOMETRICID = '{biometric}' and PAYDATE = '{paydate}'"
@@ -63,9 +63,9 @@
             End With
             SaveEntry(dss, False)
 
-            If group = "" Then
-                MsgBox("Succesfully Updated!", MsgBoxStyle.Information, "Information")
-            End If
+            'If group = "" Then
+            '    MsgBox("Succesfully Updated!", MsgBoxStyle.Information, "Information")
+            'End If
         Else
 
             mysql = "Select * From PAYROLL_ATTENDANCE Rows 1"
@@ -94,9 +94,9 @@
                 ds.Tables(0).Rows.Add(dsNewRow)
                 SaveEntry(ds)
 
-                If group = "" Then
-                    MsgBox("Succesfully Saved!", MsgBoxStyle.Information, "Information")
-                End If
+                'If group = "" Then
+                '    MsgBox("Succesfully Saved!", MsgBoxStyle.Information, "Information")
+                'End If
 
             End Using
         End If
@@ -610,24 +610,173 @@
         End Using
     End Sub
 
-    Friend Sub SavePayout_ALL(paydate_ As String, branch As String) '========== AUTO SAVE TO PAYOUT ============  
-        'Replacing($"RECORDED_ALLOW_DEDUC WHERE BRANCH = '{branch}' and PAYDATE = '{paydate_}'")
-
+    Friend Sub SavePayout_IndividualL(bioNo As String, branch As String, paydate_ As String) '========== AUTO SAVE TO PAYOUT ============  
         Dim regHoliday = Holiday_Rate("REGULAR")
         Dim specHoliday = Holiday_Rate("SPECIAL")
         Dim SBU = SBU_Amount()
 
-        'Dim mysql As String = $"Select A.*, B.*, B.id as emp_idd From payroll_attendance A 
-        '                        inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRICID WHERE A.PAYDATE = '{paydate_}'"
+        Dim mysql As String = $"Select A.*, B.*, B.id as emp_idd, C.* From payroll_attendance A 
+                                inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRICID 
+                                left join TBL_BRANCH C on B.BRANCH_ID = C.ID WHERE A.BIOMETRICID = '{bioNo}' and A.PAYDATE = '{paydate_}'"
 
-        'Dim mysql As String = $"Select A.*, B.*, B.id as emp_idd, C.* From payroll_attendance A 
-        '                        inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRICID 
-        '                        left join TBL_BRANCH C on C.BRANCHNAME = A.BRANCH and B.BRANCH_ID = C.ID WHERE A.PAYDATE = '{paydate_}'"
+        Using ds As DataSet = LoadSQL(mysql, "payroll_attendance")
+            If ds.Tables(0).Rows.Count > 0 Then
 
-        'Dim mysql As String = $"Select A.*, B.*, B.id as emp_idd, C.id as branchID From payroll_attendance A 
-        '                        inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRICID 
-        '                        left join TBL_BRANCH C on C.ID = B.BRANCH_ID WHERE A.BRANCH = '{branch}' and A.PAYDATE = '{paydate_}'"
+                Dim dr As DataRow = ds.Tables(0).Rows(0)
+                With dr
 
+                    Dim branchID As String = IIf(IsDBNull(.Item("BRANCH_ID")), 0, .Item("BRANCH_ID"))
+                    Dim Late As String = ""
+                    Dim UnderTime As String = ""
+                    Dim rate, NoOfDays, RegularOT, SpecialHol, RegularHol As Double
+                    'Dim Positional, Incentive, Boarding, Carekit, Transport, CashAdvance, Loan, Charges, Allowances, Deduction As Double
+                    Dim Allowances, Deduction As Double
+
+                    rate = IIf(IsDBNull(.Item("RATE")), 0, .Item("RATE"))
+                    Dim emp_id As String = .Item("emp_idd")
+                    Dim sched As String
+
+                    '============================================= ATTENDANCE (TOTAL DAYS) =========================================================
+                    Dim sql_1 As String = $"Select * From PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{bioNo}' and paydate = '{paydate_}'"
+                    Using ds_1 As DataSet = LoadSQL(sql_1, "PAYROLL_ATTENDANCE")
+                        If ds_1.Tables(0).Rows.Count > 0 Then
+
+                            Dim dr_11 As DataRow = ds_1.Tables(0).Rows(0)
+                            With dr_11
+                                NoOfDays = .Item("PRESENT_DAYS")
+                                RegularOT = .Item("OVERTIME")
+                                SpecialHol = .Item("SPECHOLIDAY")
+                                RegularHol = .Item("REGHOLIDAY")
+                                Late = .Item("LATE")
+                                UnderTime = .Item("UNDERTIME")
+                            End With
+                        End If
+                    End Using
+
+                    '============================================= BENIFITS CONTRIBUTION ========================================================= 
+                    Dim TotalBasic, SSSComp, PagibigComp, PhilhealthComp, Tax_Wheld, netTax, sssLoan, pagibigLoan As Double
+
+                    TotalBasic = NoOfDays * rate
+
+                    Dim date_pay As DateTime = Convert.ToDateTime(paydate_)
+                    date_pay = date_pay.ToString("d")
+
+                    If IsLastDay(date_pay) Then
+
+                        Dim first_Basic As Double = GetFirst_Basic(emp_id, paydate_)
+                        Dim monthly_Basic As Double = TotalBasic + first_Basic
+
+                        SSSComp = Get_SSS(monthly_Basic)
+                        PagibigComp = Get_Pagibig(monthly_Basic)
+                        PhilhealthComp = Get_PhilHealth(monthly_Basic)
+                        Tax_Wheld = Get_WHolding(monthly_Basic)
+
+                        'TaxComp = Get_Taxable(monthly_Basic)
+                        'SSS_ER = Get_SSS_ER(monthly_Basic)
+
+                        netTax = monthly_Basic - (SSSComp + PagibigComp + PhilhealthComp + Tax_Wheld)
+
+                        sssLoan = Get_LOAN_SSS(emp_id)
+                        pagibigLoan = Get_LOAN_Pagibig(emp_id)
+
+                        sched = "CLOSE PAYROLL"
+                    Else
+                        netTax = 0
+                        sched = "OPEN PAYROLL"
+                    End If
+
+
+                    '============================================= ALLOWANCE =========================================================
+                    Allowances = 0
+
+                    Dim sql_2 As String = $"Select * From PAYROLL_ALLOWANCES WHERE EMP_ID = '{emp_id}' and ALLOWED = 'YES' and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
+                    Using ds_2 As DataSet = LoadSQL(sql_2, "PAYROLL_ALLOWANCES")
+                        If ds_2.Tables(0).Rows.Count > 0 Then
+                            For Each dr_2 In ds_2.Tables(0).Rows
+                                With dr_2
+                                    If .item("EFFECTIVE_DATE") <= Today Then
+                                        Allowances = Allowances + .Item("AMOUNT")
+                                        Save_Recorded_Allow_Deduc(emp_id, branch, paydate_, .Item("CATEGORY"), .Item("AMOUNT"), "ALLOWANCE")
+                                    End If
+                                End With
+                            Next
+                        End If
+                    End Using
+
+                    '============================================= DEDUCTION =========================================================  
+                    Deduction = 0
+
+                    Dim sql_3 As String = $"Select * From PAYROLL_DEDUCTIONS WHERE EMP_ID = '{emp_id}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
+                    Using ds_3 As DataSet = LoadSQL(sql_3, "PAYROLL_DEDUCTIONS")
+                        If ds_3.Tables(0).Rows.Count > 0 Then
+                            For Each dr_3 In ds_3.Tables(0).Rows
+                                With dr_3
+                                    If .item("EFFECTIVE_DATE") <= Today Then
+                                        Deduction = Deduction + .Item("AMOUNT_PER_GIVE")
+                                        Save_Recorded_Allow_Deduc(emp_id, branch, paydate_, .Item("CATEGORY"), .Item("AMOUNT_PER_GIVE"), "DEDUCTION")
+                                    End If
+                                End With
+                            Next
+                        End If
+                    End Using
+                    Deduction = Deduction + SBU
+
+                    '============================================= Calculate_Gross() ========================================================= 
+                    Dim TotalHol, TotalOT, TotalLateUnder, GrossAmount As Double
+
+                    TotalHol = (((SpecialHol * rate) * specHoliday) / specHoliday) + (((RegularHol * rate) * regHoliday) / regHoliday) ' =========== CALCULATE hOLIDAY TO PESO ===========
+
+                    TotalOT = ((rate / 8) * 1.25) * RegularOT ' =========== CALCULATE OVERTIME TO PESO ===========
+
+                    Dim late_split() As String, under_split() As String, lateTOMinute, underToMinute As Double
+
+                    late_split = Split(Late, ":")
+                    under_split = Split(UnderTime, ":")
+
+                    lateTOMinute = CDbl(late_split(0)) * 60 + CDbl(late_split(1)) + CDbl(late_split(2)) / 60
+                    underToMinute = (CDbl(under_split(0)) * 60 + CDbl(under_split(1)) + CDbl(under_split(2)) / 60) / 60
+
+                    Dim LATEE, UNDERTIMEE As Double
+                    LATEE = ((rate / 8) / 60) * lateTOMinute
+                    UNDERTIMEE = (rate / 8) * underToMinute
+
+                    TotalLateUnder = LATEE + UNDERTIMEE
+
+                    GrossAmount = (TotalBasic + TotalHol + TotalOT) - TotalLateUnder
+
+
+                    '============================================= Calculate =========================================================  
+                    Dim NetPay As Double
+
+                    Dim CONTRIB As Double = SSSComp + PagibigComp + PhilhealthComp + Tax_Wheld
+
+                    Dim positive, negative As Double
+                    If IsLastDay(paydate_) Then
+                        positive = GrossAmount + Allowances
+                        negative = CONTRIB + sssLoan + pagibigLoan + Deduction
+                    Else
+                        'netTax = 0
+                        positive = GrossAmount + Allowances
+                        negative = Deduction
+                    End If
+
+                    NetPay = positive - negative
+
+                    SavePayout(bioNo, branchID, paydate_, TotalBasic, TotalOT,
+                                  TotalLateUnder, GrossAmount, SSSComp, PagibigComp, PhilhealthComp,
+                                  Tax_Wheld, netTax, sssLoan, pagibigLoan,
+                                  Allowances, Deduction, NetPay, emp_id)
+                End With
+            End If
+        End Using
+    End Sub
+
+
+    Friend Sub SavePayout_ALL(paydate_ As String, branch As String) '========== AUTO SAVE TO PAYOUT ============   
+
+        Dim regHoliday = Holiday_Rate("REGULAR")
+        Dim specHoliday = Holiday_Rate("SPECIAL")
+        Dim SBU = SBU_Amount()
 
         Dim mysql As String = $"Select A.*, B.*, B.id as emp_idd, C.* From payroll_attendance A 
                                 inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRICID 
@@ -706,7 +855,7 @@
                         '============================================= ALLOWANCE =========================================================
                         Allowances = 0
 
-                        Dim sql_2 As String = $"Select * From PAYROLL_ALLOWANCES WHERE EMP_ID = '{emp_id}' and ALLOWED = 'YES' and SCHEDULE = '{sched}'"
+                        Dim sql_2 As String = $"Select * From PAYROLL_ALLOWANCES WHERE EMP_ID = '{emp_id}' and ALLOWED = 'YES' and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
                         Using ds_2 As DataSet = LoadSQL(sql_2, "PAYROLL_ALLOWANCES")
                             If ds_2.Tables(0).Rows.Count > 0 Then
                                 For Each dr_2 In ds_2.Tables(0).Rows
@@ -835,172 +984,6 @@
         End Using
     End Sub
 
-    Friend Sub SavePayout_IndividualL(bioNo As String, branch As String, paydate_ As String) '========== AUTO SAVE TO PAYOUT ============ 
-
-        Replacing($"RECORDED_ALLOWANCE WHERE BRANCH = '{branch}' and PAYDATE = '{paydate_}'")
-        Replacing($"RECORDED_DEDUCTION WHERE BRANCH = '{branch}' and PAYDATE = '{paydate_}'")
-
-        Dim regHoliday = Holiday_Rate("REGULAR")
-        Dim specHoliday = Holiday_Rate("SPECIAL")
-        Dim SBU = SBU_Amount()
-
-        Dim mysql As String = $"Select Select A.*, B.*, B.id as emp_idd, C.* From payroll_attendance A 
-                                inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRICID 
-                                left join TBL_BRANCH C on C.BRANCHNAME = A.BRANCH and B.BRANCH_ID = C.ID 
-                                    WHERE A.BIOMETRICID = '{bioNo}' and A.BRANCH = '{branch}' and A.PAYDATE = '{paydate_}'"
-        Using ds As DataSet = LoadSQL(mysql, "payroll_attendance")
-            If ds.Tables(0).Rows.Count > 0 Then
-
-                Dim dr As DataRow = ds.Tables(0).Rows(0)
-                With dr
-
-                    Dim branchID As String = .Item("BRANCH_ID")
-                    Dim Late As String = ""
-                    Dim UnderTime As String = ""
-                    Dim rate, NoOfDays, RegularOT, SpecialHol, RegularHol As Double
-                    Dim Positional, Incentive, Boarding, Carekit, Transport, CashAdvance, Loan, Charges, Allowances, Deduction As Double
-
-                    rate = IIf(IsDBNull(.Item("RATE")), 0, .Item("RATE"))
-                    Dim emp_id As String = .Item("emp_idd")
-                    Dim sched As String
-
-                    '============================================= ATTENDANCE (TOTAL DAYS) =========================================================
-                    Dim sql_1 As String = $"Select * From PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{bioNo}' and paydate = '{paydate_}'"
-                    Using ds_1 As DataSet = LoadSQL(sql_1, "PAYROLL_ATTENDANCE")
-                        If ds_1.Tables(0).Rows.Count > 0 Then
-
-                            Dim dr_11 As DataRow = ds_1.Tables(0).Rows(0)
-                            With dr_11
-                                NoOfDays = .Item("PRESENT_DAYS")
-                                RegularOT = .Item("OVERTIME")
-                                SpecialHol = .Item("SPECHOLIDAY")
-                                RegularHol = .Item("REGHOLIDAY")
-                                Late = .Item("LATE")
-                                UnderTime = .Item("UNDERTIME")
-                            End With
-                        End If
-                    End Using
-
-                    '============================================= BENIFITS CONTRIBUTION ========================================================= 
-                    Dim TotalBasic, SSSComp, PagibigComp, PhilhealthComp, Tax_Wheld, netTax, sssLoan, pagibigLoan As Double
-
-                    TotalBasic = NoOfDays * rate
-
-                    Dim date_pay As DateTime = Convert.ToDateTime(paydate_)
-                    date_pay = date_pay.ToString("d")
-
-                    If IsLastDay(date_pay) Then
-
-                        Dim first_Basic As Double = GetFirst_Basic(emp_id, paydate_)
-                        Dim monthly_Basic As Double = TotalBasic + first_Basic
-
-                        SSSComp = Get_SSS(monthly_Basic)
-                        PagibigComp = Get_Pagibig(monthly_Basic)
-                        PhilhealthComp = Get_PhilHealth(monthly_Basic)
-                        Tax_Wheld = Get_WHolding(monthly_Basic)
-
-                        'TaxComp = Get_Taxable(monthly_Basic)
-                        'SSS_ER = Get_SSS_ER(monthly_Basic)
-
-                        netTax = monthly_Basic - (SSSComp + PagibigComp + PhilhealthComp + Tax_Wheld)
-
-                        sssLoan = Get_LOAN_SSS(emp_id)
-                        pagibigLoan = Get_LOAN_Pagibig(emp_id)
-
-                        sched = "CLOSE PAYROLL"
-                    Else
-                        netTax = 0
-                        sched = "OPEN PAYROLL"
-                    End If
-
-
-                    '============================================= ALLOWANCE =========================================================
-                    Allowances = 0
-
-                    Dim sql_2 As String = $"Select * From PAYROLL_ALLOWANCES WHERE EMP_ID = '{emp_id}' and ALLOWED = 'YES' and SCHEDULE = '{sched}'"
-                    Using ds_2 As DataSet = LoadSQL(sql_2, "PAYROLL_ALLOWANCES")
-                        If ds_2.Tables(0).Rows.Count > 0 Then
-                            For Each dr_2 In ds_2.Tables(0).Rows
-                                With dr_2
-                                    If .item("EFFECTIVE_DATE") <= Today Then
-                                        Allowances = Allowances + .Item("AMOUNT")
-                                        Save_Recorded_Allow_Deduc(emp_id, branch, paydate_, .Item("CATEGORY"), .Item("AMOUNT"), "ALLOWANCE")
-                                    End If
-                                End With
-                            Next
-                        End If
-                    End Using
-
-                    '============================================= DEDUCTION =========================================================  
-                    Deduction = 0
-
-                    Dim sql_3 As String = $"Select * From PAYROLL_DEDUCTIONS WHERE EMP_ID = '{emp_id}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
-                    Using ds_3 As DataSet = LoadSQL(sql_3, "PAYROLL_DEDUCTIONS")
-                        If ds_3.Tables(0).Rows.Count > 0 Then
-                            For Each dr_3 In ds_3.Tables(0).Rows
-                                With dr_3
-                                    If .item("EFFECTIVE_DATE") <= Today Then
-                                        Deduction = Deduction + .Item("AMOUNT_PER_GIVE")
-                                        Save_Recorded_Allow_Deduc(emp_id, branch, paydate_, .Item("CATEGORY"), .Item("AMOUNT_PER_GIVE"), "DEDUCTION")
-                                    End If
-                                End With
-                            Next
-                        End If
-                    End Using
-                    Deduction = Deduction + SBU
-
-                    '============================================= Calculate_Gross() ========================================================= 
-                    Dim TotalHol, TotalOT, TotalLateUnder, GrossAmount As Double
-
-                    TotalHol = (((SpecialHol * rate) * specHoliday) / specHoliday) + (((RegularHol * rate) * regHoliday) / regHoliday) ' =========== CALCULATE hOLIDAY TO PESO ===========
-
-                    TotalOT = ((rate / 8) * 1.25) * RegularOT ' =========== CALCULATE OVERTIME TO PESO ===========
-
-                    Dim late_split() As String, under_split() As String, lateTOMinute, underToMinute As Double
-
-                    late_split = Split(Late, ":")
-                    under_split = Split(UnderTime, ":")
-
-                    lateTOMinute = CDbl(late_split(0)) * 60 + CDbl(late_split(1)) + CDbl(late_split(2)) / 60
-                    underToMinute = (CDbl(under_split(0)) * 60 + CDbl(under_split(1)) + CDbl(under_split(2)) / 60) / 60
-
-                    Dim LATEE, UNDERTIMEE As Double
-                    LATEE = ((rate / 8) / 60) * lateTOMinute
-                    UNDERTIMEE = (rate / 8) * underToMinute
-
-                    TotalLateUnder = LATEE + UNDERTIMEE
-
-                    GrossAmount = (TotalBasic + TotalHol + TotalOT) - TotalLateUnder
-
-
-                    '============================================= Calculate =========================================================  
-                    Dim NetPay As Double
-
-                    Allowances = Carekit + Boarding + Incentive + Positional + Transport
-                    Deduction = SBU + Charges + Loan + CashAdvance
-
-                    Dim positive, negative As Double
-                    If IsLastDay(paydate_) Then
-                        positive = netTax + Allowances
-                        negative = sssLoan + pagibigLoan + Deduction
-                    Else
-                        'netTax = 0
-                        positive = GrossAmount + Allowances
-                        negative = Deduction
-                    End If
-
-                    NetPay = positive - negative
-
-                    SavePayout(bioNo, branchID, paydate_, TotalBasic, TotalOT,
-                                  TotalLateUnder, GrossAmount, SSSComp, PagibigComp, PhilhealthComp,
-                                  Tax_Wheld, netTax, sssLoan, pagibigLoan,
-                                  Allowances, Deduction, NetPay, emp_id)
-                End With
-            End If
-        End Using
-    End Sub
-
-
     Public Sub SaveSSS_Contribution(one As String, two As String, three As String, four As String, five As String, six As String, seven As String,
                                     eight As String, nine As String, ten As String, eleven As String, twelve As String, thirteen As String, fourteen As String,
                                     fifteen As String, sixteen As String)
@@ -1110,6 +1093,7 @@
                 .Item("DAY_DATE") = DAY_DATE
                 .Item("EFFECTIVE_DATE") = EFFECTIVE_DATE
                 .Item("emp_id") = emp_id
+                .Item("ALLOWED") = "YES"
 
             End With
             dss.Tables(0).Rows.Add(dsNewRow)

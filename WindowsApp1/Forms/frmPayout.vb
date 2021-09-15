@@ -22,6 +22,12 @@ Public Class frmPayout
         PopulateComboBox(Branch_ComboB, "TBL_BRANCH", "BRANCHNAME")
 
         Paydate_ComboB.Text = "--Select Payroll--"
+
+        If paydate_ <= Today Then
+            Details_Save_BTN.Text = "Save"
+        Else
+            Details_Save_BTN.Text = "Edit"
+        End If
     End Sub
 
     Private Sub Select_BTN_Click(sender As Object, e As EventArgs) Handles Select_BTN.Click
@@ -436,6 +442,7 @@ Public Class frmPayout
     Dim branchID As String
 
     Private Sub Preview_BTN_Click(sender As Object, e As EventArgs) Handles Preview_BTN.Click
+        'LoadPayslip(Employee_TXT.Tag, EmpSelect_BTN.Tag, Payslip_paydate_Combo.Text, Email_TXT.Tag)
         LoadPayslip(Employee_TXT.Tag, EmpSelect_BTN.Tag, Payslip_paydate_Combo.Text, Email_TXT.Tag)
     End Sub
 
@@ -564,7 +571,8 @@ Public Class frmPayout
                             Dim branch_name As String = .item("BRANCHNAME")
                             LoadPayslip(.item("BIOMETRIC_ID"), .item("BRANCH_ID"), Payslip_paydate_Combo.Text, branch_name)
 
-                            recipient = GetEmail_recipient(.item("BIOMETRIC_ID"), .item("BRANCH_ID"))
+                            'recipient = GetEmail_recipient(.item("BIOMETRIC_ID"), .item("BRANCH_ID"))
+                            recipient = GetEmail_recipient(.item("BIOMETRIC_ID"))
 
                             Deduct_ifExist(.Item("emp_id"), Payslip_paydate_Combo.Text)             '======= REFLECT DEDUCTION IF EXIST
 
@@ -603,7 +611,8 @@ Public Class frmPayout
                             Dim branch_name As String = .item("BRANCHNAME")
                             LoadPayslip(.item("BIOMETRIC_ID"), branchID, Payslip_paydate_Combo.Text, branch_name)
 
-                            recipient = GetEmail_recipient(.item("BIOMETRIC_ID"), branchID)
+                            'recipient = GetEmail_recipient(.item("BIOMETRIC_ID"), branchID)
+                            recipient = GetEmail_recipient(.item("BIOMETRIC_ID"))
 
                             Deduct_ifExist(.Item("emp_id"), Payslip_paydate_Combo.Text)             '======= REFLECT DEDUCTION IF EXIST
 
@@ -618,7 +627,8 @@ Public Class frmPayout
             End Using
         Else
             LoadPayslip(Employee_TXT.Tag, EmpSelect_BTN.Tag, Payslip_paydate_Combo.Text, Email_TXT.Tag)
-            recipient = GetEmail_recipient(Employee_TXT.Tag, EmpSelect_BTN.Tag)
+            'recipient = GetEmail_recipient(Employee_TXT.Tag, EmpSelect_BTN.Tag)  '=========== EmpSelect_BTN.Tag is branchID
+            recipient = GetEmail_recipient(Employee_TXT.Tag)
 
             Deduct_ifExist(Preview_BTN.Tag, Payslip_paydate_Combo.Text)             '======= REFLECT DEDUCTION IF EXIST  (Preview_BTN.Tag = EMP_ID)
             Send_Email(ReportViewer_payslip.LocalReport.Render("PDF"), recipient, Employee_TXT.Text, "single")
@@ -631,6 +641,7 @@ Public Class frmPayout
         ReportViewer_payslip.LocalReport.DataSources.Clear()
 
         Dim sched As String
+        Dim emp_id As String = ""
         Dim date_pay As DateTime = Convert.ToDateTime(paydatee)
         date_pay = date_pay.ToString("d")
 
@@ -657,9 +668,9 @@ Public Class frmPayout
                     Dim data As DataRow = ds.Tables(0).Rows(0)
                     With data
 
+                        emp_id = .Item("ID")
                         Dim namee As String = String.Format("{0}, {1} {2}", .Item("LastName"), .Item("FirstName"), .Item("MiddleName"))
                         dt_employee.Rows.Add(namee, .Item("SSSNO"), .Item("PHILHEALTHNO"), .Item("TINNO"), .Item("PAGIBIG"))
-
                     End With
                 End If
             End Using
@@ -699,7 +710,7 @@ Public Class frmPayout
             Dim LATE As String = ""
             Dim present_hours As Double = 0
 
-            Dim _mysql As String = $"select * from payroll_attendance where BIOMETRICID = '{biometricID}' and paydate = '{paydatee}' and BRANCH = '{branch_name}';"
+            Dim _mysql As String = $"select * from payroll_attendance where BIOMETRICID = '{biometricID}' and paydate = '{paydatee}';"
             Using ds As DataSet = LoadSQL(_mysql, "payroll_attendance")
                 If ds.Tables(0).Rows.Count > 0 Then
                     Dim data As DataRow = ds.Tables(0).Rows(0)
@@ -708,16 +719,16 @@ Public Class frmPayout
                         present_hours = (.Item("PRESENT_DAYS") / 0.5) * 4 'CALCULATE PRESENT DAYS TO HOURS
 
                         PRESENT_DAYS = .Item("PRESENT_DAYS")
-                        OVERTIME = .Item("OVERTIME") & ":00"
                         REGHOLIDAY = .Item("REGHOLIDAY")
                         SPECHOLIDAY = .Item("SPECHOLIDAY")
-                        LATE = .Item("LATE").Substring(0, 5)
+                        OVERTIME = IIf(.Item("OVERTIME") = 0, 0, .Item("OVERTIME") & ":00")
+                        LATE = IIf(.Item("LATE").Equals("00:00:00"), "00:00:00", .Item("LATE").Substring(0, 5))
 
                     End With
                 End If
             End Using
 
-            Dim mysqll As String = $"select * from payroll_payout where BIOMETRIC_ID = '{biometricID}' and paydate = '{paydatee}' and BRANCH_ID = '{branchID}';"
+            Dim mysqll As String = $"select * from payroll_payout where emp_id = '{emp_id}' and paydate = '{paydatee}';"
             Using ds As DataSet = LoadSQL(mysqll, "payroll_payout")
                 If ds.Tables(0).Rows.Count > 0 Then
                     Dim data As DataRow = ds.Tables(0).Rows(0)
@@ -731,8 +742,6 @@ Public Class frmPayout
                                         CDbl(.Item("PHILHEALTH_COMP")).ToString("N"), CDbl(.Item("TAX_WHELD")).ToString("N"), CDbl(.Item("SSS_LOAN")).ToString("N"),
                                         CDbl(.Item("PAGIBIG_LOAN")).ToString("N"), CDbl(.Item("NET_PAY")).ToString("N"), CDbl(SBU_Amount()).ToString("N"), TOTAL_COMP.ToString("N"),
                                         present_hours)
-
-                        Console.WriteLine("payouttt innn")
                     End With
                 End If
             End Using
@@ -765,10 +774,9 @@ Public Class frmPayout
 
 
             Dim total_Allowance As Double = 0
-            'If isExist_single("payroll_allowances", "BIOMETRIC_NO", biometricID) Then
-            If isExist_String("payroll_allowances", $" where BIOMETRIC_NO = '{biometricID}'") Then
+            If isExist_String("payroll_allowances", $" where emp_id = '{emp_id}'") Then
 
-                Dim mysql_allow As String = $"select * from PAYROLL_ALLOWANCES WHERE BIOMETRIC_NO = '{biometricID}' and BRANCH_ID = '{branchID}'  and ALLOWED is null and SCHEDULE = '{sched}'"
+                Dim mysql_allow As String = $"select * from PAYROLL_ALLOWANCES WHERE emp_id = '{emp_id}' and ALLOWED = 'YES' and SCHEDULE = '{sched}'"
                 Using ds As DataSet = LoadSQL(mysql_allow, "payroll_allowances")
                     If ds.Tables(0).Rows.Count > 0 Then
                         For Each drr In ds.Tables(0).Rows
@@ -781,7 +789,7 @@ Public Class frmPayout
                     End If
                 End Using
 
-                Dim mysql_1 As String = $"select * from payroll_allowances  where BIOMETRIC_NO = '{biometricID}' and BRANCH_ID = '{branchID}'  and ALLOWED is null and SCHEDULE = '{sched}'"
+                Dim mysql_1 As String = $"select * from payroll_allowances  where emp_id = '{emp_id}' and ALLOWED = 'YES' and SCHEDULE = '{sched}'"
                 Using ds As DataSet = LoadSQL(mysql_1, "payroll_allowances")
                     If ds.Tables(0).Rows.Count > 0 Then
                         For Each dr In ds.Tables(0).Rows
@@ -816,12 +824,9 @@ Public Class frmPayout
             End With
 
             Dim total_deduction As Double = 0
-            'If isExist_single("payroll_deductions", "BIOMETRIC_NO", biometricID) Then
-            'If isExist_String("payroll_deductions", $" where BIOMETRIC_NO = '{biometricID}'") Then
-            If isExist_String("payroll_deductions", $" where EMP_ID = '{biometricID}'") Then
+            If isExist_String("payroll_deductions", $" where EMP_ID = '{emp_id}'") Then
 
-                'Dim mysql_de As String = $"Select * From payroll_deductions WHERE BIOMETRIC_NO = '{biometricID}' and BRANCHID = '{branchID}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
-                Dim mysql_de As String = $"Select * From payroll_deductions WHERE EMP_ID = '{biometricID}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
+                Dim mysql_de As String = $"Select * From payroll_deductions WHERE EMP_ID = '{emp_id}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
                 Using ds As DataSet = LoadSQL(mysql_de, "payroll_deductions")
                     If ds.Tables(0).Rows.Count > 0 Then
                         For Each drr In ds.Tables(0).Rows
@@ -835,8 +840,7 @@ Public Class frmPayout
 
                 End Using
 
-                'Dim mysql_2 As String = $"select * from payroll_deductions  where BIOMETRIC_NO = '{biometricID}'  and BRANCHID = '{branchID}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
-                Dim mysql_2 As String = $"select * from payroll_deductions  where EMP_ID = '{biometricID}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
+                Dim mysql_2 As String = $"select * from payroll_deductions  where EMP_ID = '{emp_id}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
                 Using ds As DataSet = LoadSQL(mysql_2, "payroll_deductions")
                     If ds.Tables(0).Rows.Count > 0 Then
                         For Each dr In ds.Tables(0).Rows
@@ -858,6 +862,8 @@ Public Class frmPayout
                     End If
                 End Using
             End If
+
+            dt_deduction.Rows.Add("SBU", SBU_Amount().ToString(”N”), (total_deduction + SBU_Amount()).ToString("N"))
 
             Dim rds_deduction As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet4", dt_deduction)
             ReportViewer_payslip.LocalReport.DataSources.Add(rds_deduction)

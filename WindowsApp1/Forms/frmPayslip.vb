@@ -132,7 +132,8 @@ Public Class frmPayslip
                                 Dim branch_name As String = .item("BRANCHNAME")
                                 LoadPayslip(.item("BIOMETRIC_ID"), .item("BRANCH_ID"), Paydate_ComboB.SelectedItem, branch_name)
 
-                                recipient = GetEmail_recipient(.item("BIOMETRIC_ID"), .item("BRANCH_ID"))
+                                'recipient = GetEmail_recipient(.item("BIOMETRIC_ID"), .item("BRANCH_ID"))
+                                recipient = GetEmail_recipient(.item("BIOMETRIC_ID"))
 
                                 Send_Email(ReportViewer_payslip.LocalReport.Render("PDF"), recipient, namee)
                             End With
@@ -165,7 +166,8 @@ Public Class frmPayslip
                                 Dim branch_name As String = .item("BRANCHNAME")
                                 LoadPayslip(.item("BIOMETRIC_ID"), branchID, Paydate_ComboB.SelectedItem, branch_name)
 
-                                recipient = GetEmail_recipient(.item("BIOMETRIC_ID"), branchID)
+                                'recipient = GetEmail_recipient(.item("BIOMETRIC_ID"), branchID)
+                                recipient = GetEmail_recipient(.item("BIOMETRIC_ID"))
 
                                 Send_Email(ReportViewer_payslip.LocalReport.Render("PDF"), recipient, namee)
                             End With
@@ -174,7 +176,8 @@ Public Class frmPayslip
                     End If
                 End Using
             Else
-                recipient = GetEmail_recipient(Employee_TXT.Tag, EmpSelect_BTN.Tag)
+                'recipient = GetEmail_recipient(Employee_TXT.Tag, EmpSelect_BTN.Tag)
+                recipient = GetEmail_recipient(Employee_TXT.Tag)
                 Send_Email(ReportViewer_payslip.LocalReport.Render("PDF"), recipient, Employee_TXT.Text)
             End If
 

@@ -1186,7 +1186,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>Reg. Holiday @</Value>
+                                      <Value>Reg. Holiday </Value>
                                       <Style />
                                     </TextRun>
                                     <TextRun>
@@ -1288,14 +1288,14 @@
                       <TablixCells>
                         <TablixCell>
                           <CellContents>
-                            <Textbox Name="SPECHOLIDAY2">
+                            <Textbox Name="SPECHOLIDAY1">
                               <CanGrow>true</CanGrow>
                               <KeepTogether>true</KeepTogether>
                               <Paragraphs>
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>Spec. Holiday @</Value>
+                                      <Value>Spec. Holiday </Value>
                                       <Style />
                                     </TextRun>
                                     <TextRun>
@@ -1312,7 +1312,7 @@
                                   </Style>
                                 </Paragraph>
                               </Paragraphs>
-                              <rd:DefaultName>SPECHOLIDAY2</rd:DefaultName>
+                              <rd:DefaultName>SPECHOLIDAY1</rd:DefaultName>
                               <Style>
                                 <Border>
                                   <Color>LightGrey</Color>
@@ -1360,7 +1360,7 @@
                         </TablixCell>
                         <TablixCell>
                           <CellContents>
-                            <Textbox Name="Textbox67">
+                            <Textbox Name="SPECHOLIDAY">
                               <CanGrow>true</CanGrow>
                               <KeepTogether>true</KeepTogether>
                               <Paragraphs>
@@ -1376,7 +1376,7 @@
                                   </Style>
                                 </Paragraph>
                               </Paragraphs>
-                              <rd:DefaultName>Textbox67</rd:DefaultName>
+                              <rd:DefaultName>SPECHOLIDAY</rd:DefaultName>
                               <Style>
                                 <Border>
                                   <Color>LightGrey</Color>
@@ -1715,22 +1715,22 @@
                     </TablixMember>
                     <TablixMember>
                       <Visibility>
-                        <Hidden>true</Hidden>
+                        <Hidden>=iif(fields!REGHOLIDAY.Value = 0, True, False)</Hidden>
                       </Visibility>
                     </TablixMember>
                     <TablixMember>
                       <Visibility>
-                        <Hidden>true</Hidden>
+                        <Hidden>=iif(fields!SPECHOLIDAY.Value = 0, True, False)</Hidden>
                       </Visibility>
                     </TablixMember>
                     <TablixMember>
                       <Visibility>
-                        <Hidden>true</Hidden>
+                        <Hidden>=iif(fields!LATE.Value = "00:00:00", True, False)</Hidden>
                       </Visibility>
                     </TablixMember>
                     <TablixMember>
                       <Visibility>
-                        <Hidden>true</Hidden>
+                        <Hidden>=iif(fields!OVERTIME.Value = 0, True, False)</Hidden>
                       </Visibility>
                     </TablixMember>
                     <TablixMember />
@@ -1738,7 +1738,7 @@
                 </TablixRowHierarchy>
                 <DataSetName>DataSet2</DataSetName>
                 <Top>1.79028in</Top>
-                <Left>0.03347in</Left>
+                <Left>0.0335in</Left>
                 <Height>1.84376in</Height>
                 <Width>3.80728in</Width>
                 <ZIndex>2</ZIndex>
