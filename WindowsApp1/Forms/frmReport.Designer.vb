@@ -50,6 +50,8 @@ Partial Class frmReport
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Close_LBL = New System.Windows.Forms.Label()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.Company_Combo = New System.Windows.Forms.ComboBox()
         CType(Me.NetPayBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.reports, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Attendance_Tab.SuspendLayout()
@@ -79,6 +81,8 @@ Partial Class frmReport
         '
         'TabPage1
         '
+        Me.TabPage1.Controls.Add(Me.Label2)
+        Me.TabPage1.Controls.Add(Me.Company_Combo)
         Me.TabPage1.Controls.Add(Me.PrintNet_BTN)
         Me.TabPage1.Controls.Add(Me.ReportV_NetPay)
         Me.TabPage1.Controls.Add(Me.Rate_list)
@@ -256,6 +260,26 @@ Partial Class frmReport
         Me.Close_LBL.TabIndex = 75
         Me.Close_LBL.Text = "Close"
         '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label2.Location = New System.Drawing.Point(384, 17)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(71, 25)
+        Me.Label2.TabIndex = 104
+        Me.Label2.Text = "Company"
+        '
+        'Company_Combo
+        '
+        Me.Company_Combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Company_Combo.FormattingEnabled = True
+        Me.Company_Combo.Items.AddRange(New Object() {"PHOTO", "P&G UY", "DALTON", "PERFECOM", "HEAD OFFICE"})
+        Me.Company_Combo.Location = New System.Drawing.Point(461, 14)
+        Me.Company_Combo.Name = "Company_Combo"
+        Me.Company_Combo.Size = New System.Drawing.Size(197, 33)
+        Me.Company_Combo.TabIndex = 103
+        '
         'frmReport
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -303,4 +327,6 @@ Partial Class frmReport
     Friend WithEvents NetPayBindingSource As BindingSource
     Friend WithEvents reports As reports
     Friend WithEvents PrintNet_BTN As Button
+    Friend WithEvents Label2 As Label
+    Friend WithEvents Company_Combo As ComboBox
 End Class

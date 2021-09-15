@@ -6,14 +6,13 @@
 
     Private Sub PreviewNet_BTN_Click(sender As Object, e As EventArgs) Handles PreviewNet_BTN.Click
 
-        If PaydateNet_ComboB.SelectedIndex >= 0 Then
+        If PaydateNet_ComboB.SelectedIndex >= 0 And Company_Combo.SelectedIndex >= 0 Then
             LoadNet_Print()
         Else
-            MsgBox("Please select date of payroll.", MsgBoxStyle.Exclamation, "Error")
+            MsgBox("Please select date of payroll and company.", MsgBoxStyle.Exclamation, "Error")
         End If
 
     End Sub
-
 
     Public Sub LoadNet_Print()
 
@@ -25,6 +24,7 @@
         Dim GROUP As String = ""
         Dim period As String
 
+        Dim COMPANY As String = Company_Combo.Text
         Dim date_pay As DateTime = Convert.ToDateTime(PaydateNet_ComboB.Text)
         date_pay = date_pay.ToString("d")
 
@@ -61,7 +61,7 @@
 
             mysqll = $"Select * From PAYROLL_PAYOUT A 
                                         inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
-                                        where A.PAYDATE  = '{paydatee}' ORDER BY COMPANY, BRANCH_CODE, FULLNAME ASC"
+                                        where A.PAYDATE  = '{paydatee}' and B.COMPANY  = '{COMPANY}' ORDER BY BRANCH_CODE, FULLNAME ASC"
 
             Using ds As DataSet = LoadSQL(mysqll, "PAYROLL_PAYOUT")
 
@@ -93,23 +93,6 @@
                             Dim SBU_CHARGES As Double = .Item("TOTAL_DEDUCTION")
                             Dim NET_PAY As Double = .Item("NET_PAY")
                             Dim BRANCH_CODE As String = .Item("BRANCH_CODE")
-                            Dim COMPANY As String = .Item("COMPANY")
-
-                            ''============================= NAME AND ATTENDANCE ============================  
-                            'Dim namee As String = .Item("FULLNAME")
-                            'Dim BASIC As Double = .Item("TOTAL_BASIC")
-                            'Dim OVERTIME As Double = IIf(.Item("TOTAL_OVERTIME") = 0, "", .Item("TOTAL_OVERTIME"))
-                            'Dim HOLIDAY As Double = IIf(.Item("TOTAL_HOLIDAY") = 0, "", .Item("TOTAL_HOLIDAY"))
-                            'Dim N_DIFF As Double = IIf(.Item("TOTAL_NIGHT_RATE") = 0, "", .Item("TOTAL_NIGHT_RATE"))
-                            'Dim PI_ECOLA_SIL As Double = IIf(.Item("TOTAL_ALLOWANCE") = 0, "", .Item("TOTAL_ALLOWANCE"))
-                            'Dim TARDINESS As Double = IIf(.Item("TOTAL_LATE_UT") = 0, "", .Item("TOTAL_LATE_UT"))
-                            'Dim SSS As Double = IIf(.Item("SSS_COMP") = 0, "", .Item("SSS_COMP"))
-                            'Dim PHIC As Double = IIf(.Item("PHILHEALTH_COMP") = 0, "", .Item("PHILHEALTH_COMP"))
-                            'Dim PAGIBIG As Double = IIf(.Item("PAGIBIG_COMP") = 0, "", .Item("PAGIBIG_COMP"))
-                            'Dim SBU_CHARGES As Double = IIf(.Item("TOTAL_DEDUCTION") = 0, "", .Item("TOTAL_DEDUCTION"))
-                            'Dim NET_PAY As Double = IIf(.Item("NET_PAY") = 0, "", .Item("NET_PAY"))
-                            'Dim BRANCH_CODE As String = .Item("BRANCH_CODE")
-                            'Dim COMPANY As String = .Item("COMPANY")
 
                             dt_NetPay.Rows.Add(EMP_NO, namee, BASIC.ToString("n"), OVERTIME.ToString("n"), HOLIDAY.ToString("n"), N_DIFF.ToString("n"),
                                                PI_ECOLA_SIL.ToString("n"), TARDINESS.ToString("n"), SSS.ToString("n"), PHIC.ToString("n"), PAGIBIG.ToString("n"),

@@ -19,8 +19,7 @@ Public Class frmNewEmployee
 
     Private Sub frmNewEmployee_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Lists_Employees(lvEmployee)
-        'ListViewGrouping(lvEmployee, 0)
-
+        'ListViewGrouping(lvEmployee, 0) 
 
         For x = 0 To 23
             Dim tm As New Date(1, 1, 1, x, 0, 0)
