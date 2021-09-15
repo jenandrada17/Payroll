@@ -320,7 +320,6 @@
                 .Item("BIO_ID") = bioID
                 .Item("PAYDATE") = payDate
                 .Item("DATE_ONLY") = DATE_ONLY
-                '.Item("BRANCH") = BRANCH
                 .Item("AM_IN") = AM_IN
                 .Item("AM_OUT") = AM_OUT
                 .Item("PM_IN") = PM_IN

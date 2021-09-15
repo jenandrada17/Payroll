@@ -69,8 +69,8 @@
                     'FIX = IIf(IsDBNull(.Item("FIX")), "NO", .Item("FIX"))
                     DAILY_RATE = IIf(IsDBNull(.Item("RATE_DAILY")), "", .Item("RATE_DAILY"))
                     MONTHLY_RATE = IIf(IsDBNull(.Item("RATE_MONTHLY")), "", .Item("RATE_MONTHLY"))
-                    TIME_IN = IIf(IsDBNull(.Item("TIME_IN")), "", .Item("TIME_IN"))
-                    TIME_OUT = IIf(IsDBNull(.Item("TIME_OUT")), "", .Item("TIME_OUT"))
+                    TIME_IN = IIf(IsDBNull(.Item("TIME_IN")), "", .Item("TIME_IN").ToShortTimeString)
+                    TIME_OUT = IIf(IsDBNull(.Item("TIME_OUT")), "", .Item("TIME_OUT").ToShortTimeString)
 
                 End With
             End If

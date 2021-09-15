@@ -714,7 +714,11 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Switch(Fields!COMPANY.Value = "PHOTO", "NO NAME", Fields!COMPANY.Value = "P&amp;G UY", "P&amp;G UY SONS, INC.", Fields!COMPANY.Value = "DALTON", "DALTON PAWNSHOP &amp; JEWELRY INC.", Fields!COMPANY.Value = "PERFECOM", "NO NAME", Fields!COMPANY.Value = "PBA", "PBA", Fields!COMPANY.Value = "HEAD OFFICE", "NO NAME")</Value>
+                              <Value>=Switch(Fields!COMPANY.Value = "PHOTO", "NO NAME", 
+Fields!COMPANY.Value = "P&amp;G UY", "P&amp;G UY SONS, INC.", 
+Fields!COMPANY.Value = "DALTON", "DALTON PAWNSHOP &amp; JEWELRY INC.", 
+Fields!COMPANY.Value = "PERFECOM", "NO NAME",  
+Fields!COMPANY.Value = "HEAD OFFICE", Fields!HO_CATEGORY.Value)</Value>
                               <Style>
                                 <FontFamily>Berlin Sans FB Demi</FontFamily>
                                 <FontSize>8pt</FontSize>

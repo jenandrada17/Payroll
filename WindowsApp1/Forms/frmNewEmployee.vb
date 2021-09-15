@@ -420,50 +420,47 @@ Public Class frmNewEmployee
         Dim FoundMatch As Boolean = Regex.IsMatch(Email_TXT.Text, "\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase)
 
         If String.IsNullOrEmpty(Bio_TXT.Text) Then
-            Bio_TXT.Region = New Region(New Rectangle(2, 2, Bio_TXT.Width - 4, Bio_TXT.Height - 4))
+            MsgBox("Biometric ID must not be empty!", MsgBoxStyle.Exclamation, "Error")
             Return False
 
         ElseIf String.IsNullOrEmpty(Add_Company_CB.Text) Then
-            Add_Company_CB.Region = New Region(New Rectangle(2, 2, Add_Company_CB.Width - 4, Add_Company_CB.Height - 4))
+            MsgBox("Please Select Company!", MsgBoxStyle.Exclamation, "Error")
             Return False
 
         ElseIf HO_Category.Visible = True And String.IsNullOrEmpty(HO_Category.Text) Then
-            HO_Category.Region = New Region(New Rectangle(2, 2, HO_Category.Width - 4, HO_Category.Height - 4))
+            MsgBox("Please Select HO Category!", MsgBoxStyle.Exclamation, "Error")
             Return False
 
         ElseIf ComCategory_Combo.Visible = True And String.IsNullOrEmpty(ComCategory_Combo.Text) Then
-            ComCategory_Combo.Region = New Region(New Rectangle(2, 2, ComCategory_Combo.Width - 4, ComCategory_Combo.Height - 4))
+            MsgBox("Please Select Common Category!", MsgBoxStyle.Exclamation, "Error")
             Return False
 
         ElseIf String.IsNullOrEmpty(Branch_ComboB.Text) And Add_Company_CB.Text <> "HEAD OFFICE" Then
-            Branch_ComboB.Region = New Region(New Rectangle(2, 2, Branch_ComboB.Width - 4, Branch_ComboB.Height - 4))
             MsgBox("Please Select Branch!", MsgBoxStyle.Exclamation, "Error")
             Return False
 
+        ElseIf Started_DTP.Value = "1/1/2000" Then
+            MsgBox("Please Indicate Date Started!", MsgBoxStyle.Exclamation, "Error")
+            Return False
+
+        ElseIf String.IsNullOrEmpty(EmpNo_TXT.Text) Then
+            MsgBox("Please Indicate Employee Number!", MsgBoxStyle.Exclamation, "Error")
+            Return False
+
         ElseIf String.IsNullOrEmpty(TimeIn_Combo.Text) Then
-            TimeIn_Combo.Region = New Region(New Rectangle(2, 2, TimeIn_Combo.Width - 4, TimeIn_Combo.Height - 4))
             MsgBox("Please Select Time In!", MsgBoxStyle.Exclamation, "Error")
             Return False
 
         ElseIf String.IsNullOrEmpty(TimeOut_Combo.Text) Then
-            TimeOut_Combo.Region = New Region(New Rectangle(2, 2, TimeOut_Combo.Width - 4, TimeOut_Combo.Height - 4))
             MsgBox("Please Select Time Out!", MsgBoxStyle.Exclamation, "Error")
             Return False
 
-        ElseIf Started_DTP.Value = "1/1/2000" Then
-            Started_DTP.Region = New Region(New Rectangle(2, 2, Started_DTP.Width - 4, Started_DTP.Height - 4))
-            Return False
-
-        ElseIf String.IsNullOrEmpty(EmpNo_TXT.Text) Then
-            EmpNo_TXT.Region = New Region(New Rectangle(2, 2, EmpNo_TXT.Width - 4, EmpNo_TXT.Height - 4))
-            Return False
-
         ElseIf String.IsNullOrEmpty(Fullname_TXT.Text) Then
-            Fullname_TXT.Region = New Region(New Rectangle(2, 2, Fullname_TXT.Width - 4, Fullname_TXT.Height - 4))
+            MsgBox("Please Indicate Employee's Fullname!", MsgBoxStyle.Exclamation, "Error")
             Return False
 
         ElseIf String.IsNullOrEmpty(Email_TXT.Text) Then
-            Email_TXT.Region = New Region(New Rectangle(2, 2, Email_TXT.Width - 4, Email_TXT.Height - 4))
+            MsgBox("Please Indicate Employee's Email!", MsgBoxStyle.Exclamation, "Error")
             Return False
 
         ElseIf Not FoundMatch Then
@@ -652,33 +649,33 @@ Public Class frmNewEmployee
         End If
     End Sub
 
-    Private Sub FlowLayoutPanel1_Paint(sender As Object, e As PaintEventArgs) Handles FlowLayoutPanel1.Paint
-        If Bio_TXT.Text = Nothing Then
-            Dim textbox As TextBox = Nothing
-            Dim combo As ComboBox = Nothing
-            Dim datepicker As DateTimePicker = Nothing
-            For Each xObject As Object In FlowLayoutPanel1.Controls
-                If TypeOf xObject Is TextBox Then
-                    textbox = xObject
-                    Dim p As New Pen(Color.Red, 2)
-                    e.Graphics.DrawRectangle(p, New Rectangle(textbox.Location + New Size(1, 1), textbox.Size - New Size(2, 2)))
-                    p.Dispose()
-                ElseIf TypeOf xObject Is ComboBox Then
-                    If xObject.visible = True Then
-                        combo = xObject
-                        Dim p As New Pen(Color.Red, 2)
-                        e.Graphics.DrawRectangle(p, New Rectangle(combo.Location + New Size(1, 1), combo.Size - New Size(2, 2)))
-                        p.Dispose()
-                    End If
-                ElseIf TypeOf xObject Is DateTimePicker Then
-                    datepicker = xObject
-                    Dim p As New Pen(Color.Red, 2)
-                    e.Graphics.DrawRectangle(p, New Rectangle(datepicker.Location + New Size(1, 1), datepicker.Size - New Size(2, 2)))
-                    p.Dispose()
-                End If
-            Next
-        End If
-    End Sub
+    'Private Sub FlowLayoutPanel1_Paint(sender As Object, e As PaintEventArgs) Handles FlowLayoutPanel1.Paint
+    '    If Bio_TXT.Text = Nothing Then
+    '        Dim textbox As TextBox = Nothing
+    '        Dim combo As ComboBox = Nothing
+    '        Dim datepicker As DateTimePicker = Nothing
+    '        For Each xObject As Object In FlowLayoutPanel1.Controls
+    '            If TypeOf xObject Is TextBox Then
+    '                textbox = xObject
+    '                Dim p As New Pen(Color.Red, 2)
+    '                e.Graphics.DrawRectangle(p, New Rectangle(textbox.Location + New Size(1, 1), textbox.Size - New Size(2, 2)))
+    '                p.Dispose()
+    '            ElseIf TypeOf xObject Is ComboBox Then
+    '                If xObject.visible = True Then
+    '                    combo = xObject
+    '                    Dim p As New Pen(Color.Red, 2)
+    '                    e.Graphics.DrawRectangle(p, New Rectangle(combo.Location + New Size(1, 1), combo.Size - New Size(2, 2)))
+    '                    p.Dispose()
+    '                End If
+    '            ElseIf TypeOf xObject Is DateTimePicker Then
+    '                datepicker = xObject
+    '                Dim p As New Pen(Color.Red, 2)
+    '                e.Graphics.DrawRectangle(p, New Rectangle(datepicker.Location + New Size(1, 1), datepicker.Size - New Size(2, 2)))
+    '                p.Dispose()
+    '            End If
+    '        Next
+    '    End If
+    'End Sub
 
 
     Private Sub Branch_ComboB_TextChanged(sender As Object, e As EventArgs) Handles Branch_ComboB.TextChanged

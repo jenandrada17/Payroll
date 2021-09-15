@@ -82,7 +82,7 @@
 
                 mysqll = $"Select * From PAYROLL_PAYOUT A 
                                         inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
-                                        where A.PAYDATE  = '{paydatee}' ORDER BY COMPANY, BRANCH_CODE, FULLNAME ASC"
+                                        where HO_CATEGORY <> 'PGC Head Office' and A.PAYDATE  = '{paydatee}' ORDER BY COMPANY, BRANCH_CODE, FULLNAME ASC"
 
             End If
             Using ds As DataSet = LoadSQL(mysqll, "PAYROLL_PAYOUT")
@@ -93,11 +93,7 @@
                         With dr
 
                             Dim dateStarted As DateTime = .Item("DATE_STARTED")
-
-                            Dim year As String = dateStarted.ToString("yy")
-                            Dim month As String = dateStarted.ToString("MM")
-
-                            Dim EMP_NO As String = year & "-0" & month & "-" & .Item("BIOMETRIC_ID")
+                            Dim EMP_NO As String = .Item("EMP_NO")
 
                             Dim payroll As DateTime = paydatee
 

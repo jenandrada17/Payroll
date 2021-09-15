@@ -271,11 +271,16 @@ Public Class frmAttendance
         TotalUTHR_LBL.Text = 0
         TotalOTHr_LBL.Text = 0
 
+        Dim bioNum = BiometricID_TXT.Text
+        Dim branchCode = GetBranchCode(bioNum)
+        Dim timeIn = GetTime_In(bioNum)
+        Dim timeOut = GetTime_Out(bioNum)
+
         For Each row As DataGridViewRow In DataGridView1.Rows
 
             If Not row.DefaultCellStyle.ForeColor = Color.Red Then
 
-                '========================================================================= CALCULATE HOLIDAYS  ===========================================================
+                '================================= CALCULATE HOLIDAYS  ===============================
                 If row.DefaultCellStyle.BackColor = Color.MediumOrchid Then
 
 
@@ -287,35 +292,33 @@ Public Class frmAttendance
                     TotalSHoliday_LBL.Text = TotalSHoliday_LBL.Text + 1
 
                 End If
-
-
-                CalculateLATE(row)
-
-                CalculateuNDERTIME(row)
-
-                CalculateuOVERTIME(row)
-
             End If
+
+
+            CalculateLATE(row, timeIn, bioNum, branchCode)
+
+            CalculateuNDERTIME(row, timeIn, timeOut, bioNum, branchCode)
+
+            CalculateuOVERTIME(row, timeOut)
+
         Next
 
         '===================================== SUM UP LATE ==================================== 
-        Dim Late_Total As New TimeSpan
+        Dim Late_Total As TimeSpan = New TimeSpan(0, 0, 0, 0, 0)
         For Each valueE As TimeSpan In late_count
             Late_Total = Late_Total + valueE
         Next
 
         TotalLateHR_LBL.Text = Late_Total.ToString
-
         late_count.Clear()
 
         '===================================== SUM UP UNDERTIME ==================================== 
-        Dim Under_Total As New TimeSpan
+        Dim Under_Total As TimeSpan = New TimeSpan(0, 0, 0, 0, 0)
         For Each value As TimeSpan In under_count
             Under_Total = Under_Total + value
         Next
 
         TotalUTHR_LBL.Text = Under_Total.ToString
-
         under_count.Clear()
 
         '===================================== SUM UP PRESENT AND ABSENT ==================================== 
@@ -344,15 +347,15 @@ Public Class frmAttendance
         TotalDays_LBL.Text = product
     End Sub
 
-    Private Sub CalculateLATE(row As DataGridViewRow)
+    Private Sub CalculateLATE(row As DataGridViewRow, timeIn As DateTime, bioNo As String, branchCode As String)
 
         '========================================================================= CELL NUMBER AM IN ===========================================================
         If Not row.Cells(1).Value = Nothing Then
 
-            Dim lateHour As TimeSpan = DateTime.Parse(row.Cells(1).Value).Subtract(DateTime.Parse(TIME_IN.ToShortTimeString))
+            Dim lateHour As TimeSpan = DateTime.Parse(row.Cells(1).Value).Subtract(DateTime.Parse(timeIn.ToShortTimeString))
 
             Dim cellValue As DateTime = row.Cells(1).Value
-            Dim limit As DateTime = (TIME_IN.AddMinutes(-1)).ToShortTimeString
+            Dim limit As DateTime = (timeIn.AddMinutes(-1)).ToShortTimeString
 
             If cellValue > limit Then
                 late_count.Add(lateHour)
@@ -360,45 +363,47 @@ Public Class frmAttendance
         End If
 
         '========================================================================= CELL NUMBER PM IN ===========================================================
-        If Not row.Cells(3).Value = Nothing Then
+        If branchCode = "" Then
+            If Not row.Cells(3).Value = Nothing Then
 
-            TIME_IN = TIME_IN.AddHours(5)
-            Dim lateHourr As TimeSpan = DateTime.Parse(row.Cells(3).Value).Subtract(DateTime.Parse(TIME_IN.ToShortTimeString))
+                Dim lateHourr As TimeSpan = DateTime.Parse(row.Cells(3).Value).Subtract(DateTime.Parse(timeIn.AddHours(5).ToShortTimeString))
 
-            Dim cellValue As DateTime = row.Cells(3).Value
-            Dim limit As DateTime = TIME_IN.AddMinutes(-1).ToShortTimeString
+                Dim cellValue As DateTime = row.Cells(3).Value
+                Dim limit As DateTime = timeIn.AddHours(5).AddMinutes(-1).ToShortTimeString
 
-            If cellValue > limit Then
-                late_count.Add(lateHourr)
+                If cellValue > limit Then
+                    late_count.Add(lateHourr)
+                End If
             End If
         End If
 
     End Sub
 
-    Private Sub CalculateuNDERTIME(row As DataGridViewRow)
+    Private Sub CalculateuNDERTIME(row As DataGridViewRow, timeIn As DateTime, timeOut As DateTime, bioNo As String, branchCode As String)
 
         '========================================================================= CELL NUMBER AM OUT ===========================================================
-        If Not row.Cells(2).Value = Nothing Then
+        If branchCode = Nothing Then
+            If Not row.Cells(2).Value = Nothing Then
 
-            TIME_IN = TIME_IN.AddHours(4)
-            Dim underHour As TimeSpan = DateTime.Parse(TIME_IN.ToShortTimeString).Subtract(DateTime.Parse(row.Cells(2).Value))
+                Dim underHour As TimeSpan = DateTime.Parse(timeIn.AddHours(4).ToShortTimeString).Subtract(DateTime.Parse(row.Cells(2).Value))
 
-            Dim cellValue As DateTime = row.Cells(2).Value
-            Dim limit As DateTime = TIME_IN.ToShortTimeString
+                Dim cellValue As DateTime = row.Cells(2).Value
+                Dim limit As DateTime = timeIn.AddHours(4).ToShortTimeString
 
-            If cellValue < limit Then
-                under_count.Add(underHour)
+                If cellValue < limit Then
+                    under_count.Add(underHour)
+                End If
+
             End If
-
         End If
 
         '========================================================================= CELL NUMBER PM OUT ===========================================================
         If Not row.Cells(4).Value = Nothing Then
 
-            Dim underHour As TimeSpan = DateTime.Parse(TIME_OUT.ToShortTimeString).Subtract(DateTime.Parse(row.Cells(4).Value))
+            Dim underHour As TimeSpan = DateTime.Parse(timeOut.ToShortTimeString).Subtract(DateTime.Parse(row.Cells(4).Value))
 
             Dim cellValue As DateTime = row.Cells(4).Value
-            Dim limit As DateTime = TIME_OUT.ToShortTimeString
+            Dim limit As DateTime = timeOut.ToShortTimeString
 
             If cellValue < limit Then
                 under_count.Add(underHour)
@@ -408,11 +413,11 @@ Public Class frmAttendance
 
     End Sub
 
-    Private Sub CalculateuOVERTIME(row As DataGridViewRow)
+    Private Sub CalculateuOVERTIME(row As DataGridViewRow, timeOut As DateTime)
         '========================================================================= CELL NUMBER PM OUT ===========================================================
         If Not row.Cells(4).Value = Nothing Then
 
-            Dim OTHour As TimeSpan = DateTime.Parse(row.Cells(4).Value).Subtract(DateTime.Parse(TIME_OUT.ToShortTimeString))
+            Dim OTHour As TimeSpan = DateTime.Parse(row.Cells(4).Value).Subtract(DateTime.Parse(timeOut.ToShortTimeString))
 
             If OTHour.Hours > 0 Then
                 TotalOTHr_LBL.Text = Convert.ToInt32(TotalOTHr_LBL.Text) + OTHour.Hours
@@ -601,6 +606,27 @@ Public Class frmAttendance
         Dim paydatee As String = Payslip_DTR_Combo.SelectedItem
         Dim mysqll As String = ""
         Dim GROUP As String = ""
+        Dim StartDate, EndDate As DateTime
+        Dim LIST_BIOO As New List(Of String)
+        Dim LIST_DATE, EXIST_DATE As New HashSet(Of String)
+
+        Dim date_pay As DateTime = Convert.ToDateTime(paydatee)
+        date_pay = date_pay.ToString("d")
+
+        '=========================== COMPLETE DATE LIST ==================================
+        If IsLastDay(date_pay) Then
+            StartDate = New DateTime(date_pay.Year, date_pay.Month, 4)
+            EndDate = New DateTime(date_pay.Year, date_pay.Month, 18)
+        Else
+            StartDate = New DateTime(date_pay.Year, date_pay.Month, 19).AddMonths(-1)
+            EndDate = New DateTime(date_pay.Year, date_pay.Month, 3)
+        End If
+
+        While (StartDate <= EndDate)
+            LIST_DATE.Add(StartDate.ToString("d"))
+            StartDate = StartDate.AddDays(1)
+        End While
+        '========================================================================
 
         Try
             Dim all_in As New dtr_all.overAllDataTable
@@ -628,18 +654,27 @@ Public Class frmAttendance
                     mysqll = $"Select A.*, B.FULLNAME, B.BIO_NO as bioNo, C.* From PAYROLL_ATTENDANCE A 
                                         inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRICID 
                                         inner join BIOMETRIC_DTR C ON C.BIO_ID = A.BIOMETRICID AND C.PAYDATE  = A.PAYDATE where A.PAYDATE  = '{paydatee}' and A.BIOMETRICID IN ('{Bio1_DTR_TXT.Text}','{Bio2_DTR_TXT.Text}') ORDER BY DATE_ONLY"
+
+                    LIST_BIOO.Clear()
+                    LIST_BIOO.Add(Bio1_DTR_TXT.Text)
+                    LIST_BIOO.Add(Bio2_DTR_TXT.Text)
                 Else
                     If Bio1_DTR_TXT.Text <> Nothing And Bio2_DTR_TXT.Text = Nothing Then  '============ 1ST EMPLOYEE
 
                         mysqll = $"Select A.*, B.FULLNAME, B.BIO_NO as bioNo, C.* From PAYROLL_ATTENDANCE A 
                                         inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRICID 
-                                        inner join BIOMETRIC_DTR C ON C.BIO_ID = A.BIOMETRICID AND C.PAYDATE  = A.PAYDATE where A.PAYDATE  = '{paydatee}' and A.BIOMETRICID = '{Bio1_DTR_TXT.Text}'  ORDER BY DATE_ONLY"
+                                        inner join BIOMETRIC_DTR C ON C.BIO_ID = A.BIOMETRICID AND C.PAYDATE  = A.PAYDATE where A.PAYDATE  = '{paydatee}' and A.BIOMETRICID = '{Bio1_DTR_TXT.Text}'  ORDER BY DATE_ONLY  ASC"
 
+                        LIST_BIOO.Clear()
+                        LIST_BIOO.Add(Bio1_DTR_TXT.Text)
                     ElseIf Bio2_DTR_TXT.Text <> Nothing And Bio1_DTR_TXT.Text = Nothing Then '============ 2ND EMPLOYEE
 
                         mysqll = $"Select A.*, B.FULLNAME, B.BIO_NO as bioNo, C.* From PAYROLL_ATTENDANCE A 
                                         inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRICID 
-                                        inner join BIOMETRIC_DTR C ON C.BIO_ID = A.BIOMETRICID  AND C.PAYDATE  = A.PAYDATE where A.PAYDATE  = '{paydatee}' and A.BIOMETRICID = '{Bio2_DTR_TXT.Text}'  ORDER BY DATE_ONLY"
+                                        inner join BIOMETRIC_DTR C ON C.BIO_ID = A.BIOMETRICID  AND C.PAYDATE  = A.PAYDATE where A.PAYDATE  = '{paydatee}' and A.BIOMETRICID = '{Bio2_DTR_TXT.Text}'  ORDER BY DATE_ONLY  ASC"
+
+                        LIST_BIOO.Clear()
+                        LIST_BIOO.Add(Bio2_DTR_TXT.Text)
 
                     Else
                         MsgBox("Please Select Employee Name!")
@@ -651,26 +686,41 @@ Public Class frmAttendance
                 mysqll = $"Select A.*, B.FULLNAME, B.BIO_NO as bioNo, C.* From PAYROLL_ATTENDANCE A 
                                         inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRICID 
                                         inner join BIOMETRIC_DTR C ON C.BIO_ID = A.BIOMETRICID AND C.PAYDATE  = A.PAYDATE 
-                                        where A.PAYDATE  = '{paydatee}' and COMPANY = 'HEAD OFFICE'  ORDER BY DATE_ONLY"
-
+                                        where A.PAYDATE  = '{paydatee}' and COMPANY = 'HEAD OFFICE'  ORDER BY DATE_ONLY ASC"
+                LIST_BIOO.Clear()
+                LIST_BIOO = ListOfBio(LIST_BIOO, mysqll)
+                LIST_BIOO = LIST_BIOO.Distinct().ToList
             End If
+
+            '============================= SAVING ALL DATE ============================  
+            For Each VALUE_BIO As String In LIST_BIOO
+
+                EXIST_DATE.Clear()
+                EXIST_DATE = ListOfDate(EXIST_DATE, VALUE_BIO, paydatee)
+
+                Dim NEW_LIST_DATE As IEnumerable(Of String) = LIST_DATE.Except(EXIST_DATE)
+
+                For Each OtherD As String In NEW_LIST_DATE
+                    SaveDTR(VALUE_BIO, paydatee, OtherD, Nothing, Nothing, Nothing, Nothing)
+                Next
+
+            Next
+            '==============================================================================  
 
             Using ds As DataSet = LoadSQL(mysqll, "PAYROLL_ATTENDANCE")
 
                 If ds.Tables(0).Rows.Count > 0 Then
-
                     For Each dr In ds.Tables(0).Rows
                         With dr
 
                             '============================= NAME AND ATTENDANCE ============================  
-                            Dim namee As String = .Item("FULLNAME")
-                            Dim bioNo As String = .Item("bioNo")
-                            Dim DAYS As String = .Item("PRESENT_DAYS")
-                            Dim OT As String = IIf(.Item("OVERTIME") = 0, 0, .Item("OVERTIME"))
-                            Dim LATE As String = IIf(.Item("LATE").Equals("00:00:00"), "00:00:00", .Item("LATE").Substring(0, 5))
-                            Dim REGHOLIDAY As String = .Item("REGHOLIDAY")
-                            Dim SPECHOLIDAY As String = .Item("SPECHOLIDAY")
-
+                            Dim namee = .Item("FULLNAME")
+                            Dim bioNo = .Item("bioNo")
+                            Dim DAYS = .Item("PRESENT_DAYS")
+                            Dim OT = IIf(.Item("OVERTIME") = 0, 0, .Item("OVERTIME"))
+                            Dim LATE = IIf(.Item("LATE").Equals("00:00:00"), "00:00:00", .Item("LATE").Substring(0, 5))
+                            Dim REGHOLIDAY = .Item("REGHOLIDAY")
+                            Dim SPECHOLIDAY = .Item("SPECHOLIDAY")
 
                             '============================= BIOMETRIC_DTR ============================
                             Dim dateE As DateTime = Convert.ToDateTime(.Item("DATE_ONLY"))
@@ -681,8 +731,13 @@ Public Class frmAttendance
 
                             dt_DTR.Rows.Add(bioNo, namee, DAYS, OT, LATE, dateE.ToString("MMM dd, yyyy"), AM_IN, AM_OUT, PM_IN, PM_OUT, REGHOLIDAY, SPECHOLIDAY)
 
+                            If AM_IN = "" And AM_OUT = "" And PM_IN = "" And PM_OUT = "" Then
+                                Replacing($"BIOMETRIC_DTR WHERE BIO_ID = '{bioNo}' AND  PAYDATE = '{paydatee}' AND DATE_ONLY = '{dateE.ToString("d")}'")
+                            End If
+
                         End With
                     Next
+
 
                 End If
             End Using
@@ -816,6 +871,8 @@ Public Class frmAttendance
         PM_IN_DataGrid.Items.Insert(0, "")
         PM_Out_DataGrid.Items.Insert(0, "")
 
+        Dim group_Empty, group_Save As New List(Of String)()
+
         Dim paydate_ As String = Paydate.ToString("d")
         distinct_bio = distinct_bio.Distinct().ToList
 
@@ -823,8 +880,8 @@ Public Class frmAttendance
             list_inOut.Clear()
 
             '======================== GET TIME IN/OUT TO CALCULATE LATE UNDERTIME OVERTIME ============================
-            TIME_IN = GetTimeInOut(biometric_No).Time_in
-            TIME_OUT = GetTimeInOut(biometric_No).Time_out
+            TIME_IN = GetTime_In(biometric_No)
+            TIME_OUT = GetTime_Out(biometric_No)
 
             Dim mysql As String = $"Select * From IMPORT_DTR where BIO_ID = '{biometric_No}' and PAYDATE = '{paydate_}'"
             Using ds As DataSet = LoadSQL(mysql, "IMPORT_DTR")
@@ -853,7 +910,6 @@ Public Class frmAttendance
                 For Each timme As String In timee
                     If timme.StartsWith(asss.ToString("d")) Then
                         groups_timee.Add(timme)
-
                     End If
                 Next
 
@@ -864,7 +920,7 @@ Public Class frmAttendance
                     DATE_ONLY = dateTime.ToString("d")
                     '============================== WORKED FINE ========================
 
-                    If time >= TIME_IN.AddHours(-3) And time <= TIME_IN.AddHours(4).AddMinutes(-1) Then
+                    If time >= TIME_IN.AddHours(-3).ToShortTimeString And time <= TIME_IN.AddHours(4).AddMinutes(-1).ToShortTimeString And Not time.Hour = 12 Then
                         If list_hour(0) = "" Then
 
                             list_hour(0) = time.ToString("t")
@@ -872,11 +928,10 @@ Public Class frmAttendance
                             list_hour(1) = time.ToString("t")
                         End If
 
-                    ElseIf time >= TIME_OUT.AddHours(-1) And time <= TIME_OUT.AddHours(6) Then
-
+                    ElseIf time >= TIME_OUT.AddHours(-1).ToShortTimeString Then
                         list_hour(3) = time.ToString("t")
 
-                    ElseIf time >= TIME_IN.AddHours(5) And time <= TIME_IN.AddHours(7).AddMinutes(-1) Then
+                    ElseIf time >= TIME_IN.AddHours(5).ToShortTimeString And time <= TIME_IN.AddHours(7).AddMinutes(-1).ToShortTimeString Then
                         If list_hour(2) = "" Then
 
                             list_hour(2) = time.ToString("t")
@@ -884,11 +939,17 @@ Public Class frmAttendance
                             list_hour(3) = time.ToString("t")
                         End If
 
-                    ElseIf time >= TIME_IN.AddHours(4) And time <= TIME_IN.AddHours(5).AddMinutes(-1) Then
+                    ElseIf (time >= "12:00 PM" Or time >= TIME_IN.AddHours(4).ToShortTimeString) And (time <= "12:59 PM" Or time <= TIME_IN.AddHours(5).AddMinutes(-1).ToShortTimeString) Then
 
+                        Dim breaktime As DateTime = TIME_IN.AddHours(4)
                         Dim oldValuee As DateTime = dateTime
                         Dim newValuee As String = oldValuee.ToString("d") & " " & oldValuee.TimeOfDay.Hours
-                        Dim val As String = oldValuee.ToString("d") & " " & "12"
+                        Dim val As String = oldValuee.ToString("d") & " " & breaktime.TimeOfDay.Hours
+
+                        If time >= "12:00 PM" And time <= "12:59 PM" Then
+                            newValuee = oldValuee.ToString("d") & " " & oldValuee.TimeOfDay.Hours
+                            val = oldValuee.ToString("d") & " " & "12"
+                        End If
 
                         If newValuee = val Then
 
@@ -935,6 +996,7 @@ Public Class frmAttendance
                 Else
                     SaveDTR(biometric_No, Paydate, DATE_ONLY, list_hour(0), list_hour(1), list_hour(2), list_hour(3))
                 End If
+
             Next
         Next
     End Sub
@@ -1218,6 +1280,14 @@ Public Class frmAttendance
         SIL_Panel.Visible = False
     End Sub
 
+    Private Sub Bio2_DTR_TXT_TextChanged(sender As Object, e As EventArgs) Handles Bio2_DTR_TXT.TextChanged
+        If Bio2_DTR_TXT.Text = "" Then
+            DTR_Emp2_TXT.Text = ""
+        Else
+            GetName(Bio2_DTR_TXT.Text, DTR_Emp2_TXT)
+        End If
+    End Sub
+
     Private Sub Paydate7_CB_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Paydate7_CB.SelectedIndexChanged
 
         If Paydate7_CB.SelectedIndex >= 0 Then
@@ -1282,7 +1352,7 @@ Public Class frmAttendance
 
         PopulateComboBox(Paydate_ComboB, "BIOMETRIC_DTR", "PAYDATE")
         RunCommand("DELETE FROM BIOMETRIC_DTR WHERE ID NOT IN  ( SELECT MAX(ID) FROM BIOMETRIC_DTR GROUP BY BIO_ID, DATE_ONLY )")
-
+        Has_Rows_Delete("IMPORT_DTR")
     End Sub
 
 
@@ -1348,7 +1418,6 @@ Public Class frmAttendance
         Path_TXT.Clear()
         MyConnection.Close()
 
-        Has_Rows_Delete("IMPORT_DTR")
     End Sub
 
     Private Sub bio_InSys()
@@ -1384,11 +1453,13 @@ Public Class frmAttendance
     Private Sub Saving_InSys()
 
         Dim groups_time As New List(Of String)()
+        'Dim group_Empty As New List(Of String)()
+
         Dim bio_no As String = "" ' ======================================== GIMOVE SA GAWAS BASI DILI MAGANA =======================
 
         progressBarStart(DtSet.Tables(0).Rows.Count)
 
-        For row = 7 To DtSet.Tables(0).Rows.Count
+        For row = 7 To DtSet.Tables(0).Rows.Count + 1
             If eCell(row, 5).Value = Nothing Then
                 Continue For
             End If
@@ -1399,6 +1470,10 @@ Public Class frmAttendance
             If eCell(row, 2).Value <> Nothing Then
                 bio_no = eCell(row, 2).Value
             End If
+
+            '======================== GET TIME IN/OUT TO CALCULATE LATE UNDERTIME OVERTIME ============================
+            TIME_IN = GetTimeInOut(bio_no).Time_in
+            TIME_OUT = GetTimeInOut(bio_no).Time_out
 
             '=============== GROUP 4 TIME IN ============= 
             For column = 7 To 11
@@ -1411,78 +1486,90 @@ Public Class frmAttendance
             For column = 7 To 11
                 Dim time As DateTime = (New DateTime()).AddDays(eCell(row, column).Value)
 
-                '============================== WORKED FINE ========================
+                '============================== WORKED FINE ========================  
 
-                If time >= "5:00 AM" And time <= "11:59 AM" Then
-                    If list_hour(0) = "" Then
+                If time = "1/1/0001 12:00:00 AM" Then
+                    Continue For
+                Else
 
-                        list_hour(0) = time.ToString("t")
+                    If time >= TIME_IN.AddHours(-3).ToShortTimeString And time <= TIME_IN.AddHours(4).AddMinutes(-1).ToShortTimeString Then
+                        If list_hour(0) = "" Then
+
+                            list_hour(0) = time.ToString("t")
+                        Else
+                            list_hour(1) = time.ToString("t")
+                        End If
+
+                    ElseIf time >= TIME_OUT.AddHours(-1).ToShortTimeString Then
+
+                        list_hour(3) = time.ToString("t")
+
+                    ElseIf time >= TIME_IN.AddHours(5).ToShortTimeString And time <= TIME_OUT.AddHours(7).AddMinutes(-1).ToShortTimeString Then
+                        If list_hour(2) = "" Then
+
+                            list_hour(2) = time.ToString("t")
+                        Else
+                            list_hour(3) = time.ToString("t")
+                        End If
+
+                    ElseIf (time >= "12:00 PM" And time <= "12:59 PM") OrElse (time >= TIME_IN.AddHours(4).ToShortTimeString And time <= TIME_IN.AddHours(5).AddMinutes(-1).ToShortTimeString) Then
+
+                        Dim newValuee As String = time.TimeOfDay.Hours
+                        Dim breaktime As DateTime = TIME_IN.AddHours(4)
+                        Dim break = breaktime.TimeOfDay.Hours
+
+                        If time >= "12:00 PM" And time <= "12:59 PM" Then
+                            break = "12"
+                        End If
+
+                        If newValuee = break Then
+
+                            If CountDate(groups_time, break) >= 2 Then
+                                list_Group = SortCountedDATE(groups_time, break)
+                            ElseIf CountDate(groups_time, break) = 1 Then
+                                list_Group = SortCountedDATE(groups_time, break)
+                            End If
+
+                            '======================== PRINT 12 NOON ================ WORKED FINE
+                            If list_Group.Count >= 2 Then
+
+                                Dim list1 As DateTime = list_Group.Item(0)
+                                Dim list2 As DateTime = list_Group.Item(list_Group.Count - 1)
+
+                                list_hour(1) = list1.ToString("t")
+                                list_hour(2) = list2.ToString("t")
+
+                                list_Group.Clear()
+                            ElseIf list_Group.Count = 1 Then
+
+                                Dim list1 As DateTime = list_Group.Item(0)
+
+                                list_hour(1) = list1.ToString("t")
+
+                                list_Group.Clear()
+                            Else
+                                If list_hour(2) = "" Then
+
+                                    list_hour(2) = time.ToString("t")
+                                Else
+                                    list_hour(3) = time.ToString("t")
+                                End If
+                            End If
+
+                        End If
                     Else
                         list_hour(1) = time.ToString("t")
                     End If
-
-                ElseIf time >= "4:00 PM" And time <= "11:00 PM" Then
-
-                    list_hour(3) = time.ToString("t")
-
-                ElseIf time >= "1:00 PM" And time <= "3:59 PM" Then
-                    If list_hour(2) = "" Then
-
-                        list_hour(2) = time.ToString("t")
-                    Else
-                        list_hour(3) = time.ToString("t")
-                    End If
-
-                ElseIf time >= "12:00 PM" And time <= "12:59 PM" Then
-
-                    Dim newValuee As String = time.TimeOfDay.Hours
-
-                    If newValuee = "12" Then
-
-                        If CountDate(groups_time, "12") >= 2 Then
-                            list_Group = SortCountedDATE(groups_time, "12")
-                        ElseIf CountDate(groups_time, "12") = 1 Then
-                            list_Group = SortCountedDATE(groups_time, "12")
-                        End If
-
-                        '======================== PRINT 12 NOON ================ WORKED FINE
-                        If list_Group.Count >= 2 Then
-
-                            Dim list1 As DateTime = list_Group.Item(0)
-                            Dim list2 As DateTime = list_Group.Item(list_Group.Count - 1)
-
-                            list_hour(1) = list1.ToString("t")
-                            list_hour(2) = list2.ToString("t")
-
-                            list_Group.Clear()
-                        ElseIf list_Group.Count = 1 Then
-
-                            Dim list1 As DateTime = list_Group.Item(0)
-
-                            list_hour(1) = list1.ToString("t")
-
-                            list_Group.Clear()
-                        Else
-                            If list_hour(2) = "" Then
-
-                                list_hour(2) = time.ToString("t")
-                            Else
-                                list_hour(3) = time.ToString("t")
-                            End If
-                        End If
-
-                    End If
-                Else
-                    list_hour(1) = time.ToString("t")
                 End If
             Next
 
-            If list_hour(1) = "12:00 AM" Then
-                list_hour(1) = ""
-            End If
+            'If list_hour(1) = "12:00 AM" Then
+            '    list_hour(1) = ""
+            'End If
 
             If list_hour(0) = "" And list_hour(1) = "" And list_hour(2) = "" And list_hour(3) = "" Then
             Else
+
                 distinct_bio.Add(bio_no)
                 SaveDTR(bio_no, Paydate, eCell(row, 5).Value, list_hour(0), list_hour(1), list_hour(2), list_hour(3))
 
@@ -1491,7 +1578,6 @@ Public Class frmAttendance
 
         Next
         progressBarEnd()
-
     End Sub
 
 
@@ -1534,8 +1620,6 @@ Public Class frmAttendance
 
         Path_TXT.Clear()
         MyConnection.Close()
-
-        Has_Rows_Delete("IMPORT_DTR")
     End Sub
 
     Public Sub SAVE_DIRECT_Attendance()
@@ -1549,6 +1633,13 @@ Public Class frmAttendance
         Dim paydate_ As String = Paydate.ToString("d")
 
         For Each biometric_No As String In distinct_bio
+
+            Dim all_date, exist_date, add_date As New List(Of String)()
+            '======================== GET TIME IN/OUT TO CALCULATE LATE UNDERTIME OVERTIME ============================ 
+            TIME_IN = GetTimeInOut(biometric_No).Time_in
+            TIME_OUT = GetTimeInOut(biometric_No).Time_out
+            Dim branchCode As String = GetBranchCode(biometric_No)
+            '=========================================================================================================
 
             For Each oRow As DataGridViewRow In DataGridView1.Rows
                 oRow.Cells(5).Value = False
@@ -1576,6 +1667,7 @@ Public Class frmAttendance
                                     row.Cells(3).Value = IIf(IsDBNull(.Item("PM_IN")), "", .Item("PM_IN"))
                                     row.Cells(4).Value = IIf(IsDBNull(.Item("PM_OUT")), "", .Item("PM_OUT"))
                                     row.Cells(5) = New DataGridViewCheckBoxCell With {.Value = True}
+
                                 End If
                             Next
 
@@ -1584,11 +1676,6 @@ Public Class frmAttendance
                 End If
             End Using
 
-
-            '======================== GET TIME IN/OUT TO CALCULATE LATE UNDERTIME OVERTIME ============================
-            TIME_IN = GetTimeInOut(biometric_No).Time_in
-            TIME_OUT = GetTimeInOut(biometric_No).Time_out
-            '=========================================================================================================
 
             SIL_LBL.Text = 0
             TotalDays_LBL.Text = 0
@@ -1605,7 +1692,6 @@ Public Class frmAttendance
                     '========================================================================= CALCULATE HOLIDAYS  ===========================================================
                     If row.DefaultCellStyle.BackColor = Color.MediumOrchid Then
 
-
                         TotalRHoliday_LBL.Text = TotalRHoliday_LBL.Text + 1
 
                     ElseIf row.DefaultCellStyle.BackColor = Color.Plum Then
@@ -1614,17 +1700,18 @@ Public Class frmAttendance
 
                     End If
 
-                    CalculateLATE(row)
-
-                    CalculateuNDERTIME(row)
-
-                    CalculateuOVERTIME(row)
-
                 End If
+
+                CalculateLATE(row, TIME_IN, biometric_No, branchCode)
+
+                CalculateuNDERTIME(row, TIME_IN, TIME_OUT, biometric_No, branchCode)
+
+                CalculateuOVERTIME(row, TIME_OUT)
+
             Next
 
             '===================================== SUM UP LATE ==================================== 
-            Dim Late_Total As New TimeSpan
+            Dim Late_Total As TimeSpan = New TimeSpan(0, 0, 0, 0, 0)
             For Each valueE As TimeSpan In late_count
                 Late_Total = Late_Total + valueE
             Next
@@ -1632,7 +1719,7 @@ Public Class frmAttendance
             late_count.Clear()
 
             '===================================== SUM UP UNDERTIME ==================================== 
-            Dim Under_Total As New TimeSpan
+            Dim Under_Total As TimeSpan = New TimeSpan(0, 0, 0, 0, 0)
             For Each value As TimeSpan In under_count
                 Under_Total = Under_Total + value
             Next
@@ -1650,7 +1737,6 @@ Public Class frmAttendance
 
             TotalDays_LBL.Text = Present
 
-
             '===================================== SUM UP HALF DAY ====================================  
             Dim halfday_Hour As Integer = 0
             For Each oRow As DataGridViewRow In DataGridView1.Rows
@@ -1667,6 +1753,14 @@ Public Class frmAttendance
 
             SaveAttendanceEE(biometric_No, paydate_, TotalDays_LBL.Text, TotalOTHr_LBL.Text, Late_Total.ToString, Under_Total.ToString,
                              TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text)
+
+            'exist_date = exist_date.Distinct().ToList
+
+            'For Each allDate As DateTime In all_date
+            '    If Not exist_date.Contains(allDate) Then
+            '        SaveDTR(biometric_No, paydate_, allDate.ToString("d"), Nothing, Nothing, Nothing, Nothing)
+            '    End If
+            'Next
         Next
     End Sub
 
@@ -1766,8 +1860,11 @@ Public Class frmAttendance
             Get_SIL(BiometricID_TXT.Text, SIL_LBL)
 
             If Not Name_TXT.Text = String.Empty Then
-                TIME_IN = GetTimeInOut(BiometricID_TXT.Text).Time_in
-                TIME_OUT = GetTimeInOut(BiometricID_TXT.Text).Time_out
+                TIME_IN = GetTime_In(BiometricID_TXT.Text)
+                TIME_OUT = GetTime_Out(BiometricID_TXT.Text)
+
+                TimeIn_TXT.Text = TIME_IN.ToShortTimeString
+                TimeOut_TXT.Text = TIME_OUT.ToShortTimeString
             End If
 
 

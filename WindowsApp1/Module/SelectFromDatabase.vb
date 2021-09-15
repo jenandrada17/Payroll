@@ -1292,16 +1292,19 @@ Module SelectFromDatabase
 
         Dim mysql As String = "Select * From PAYROLL_EMPLOYEE WHERE BIO_NO = '" & bioNo & "'"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
-
             If ds.Tables(0).Rows.Count > 0 Then
 
                 Dim data As DataRow = ds.Tables(0).Rows(0)
                 With data
                     name.Text = .Item("FULLNAME")
+                    ClockEmp_IN_CB.Text = IIf(IsDBNull(.Item("TIME_IN")), "", .Item("TIME_IN").ToShortTimeString)
+                    ClockEmp_OUT_CB.Text = IIf(IsDBNull(.Item("TIME_OUT")), "", .Item("TIME_OUT").ToShortTimeString)
                 End With
 
             Else
                 name.Text = ""
+                ClockEmp_IN_CB.Text = ""
+                ClockEmp_OUT_CB.Text = ""
             End If
         End Using
     End Sub
@@ -2145,8 +2148,8 @@ Module SelectFromDatabase
     End Sub
 
     Public Function GetTimeInOut(BIO_NO As String) As (Time_in As DateTime, Time_out As DateTime)
-        Dim inn As DateTime
-        Dim outt As DateTime
+        Dim inn As DateTime = "9/15/2021 8:00:00 AM"
+        Dim outt As DateTime = "9/15/2021 5:00:00 PM"
 
         Dim mysql As String = $"Select TIME_IN, TIME_OUT FROM  PAYROLL_EMPLOYEE WHERE BIO_NO = '{BIO_NO}'"
         Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
@@ -2165,7 +2168,6 @@ Module SelectFromDatabase
                 Else
                     outt = .Item("TIME_OUT")
                 End If
-
             End With
         End If
 
@@ -2173,47 +2175,45 @@ Module SelectFromDatabase
     End Function
 
     Public Function GetTime_In(BIO_NO As String)
-        Dim inn As DateTime
+        Dim inn As DateTime = "9/15/2021 8:00:00 AM"
 
         Dim mysql As String = $"Select TIME_IN FROM  PAYROLL_EMPLOYEE WHERE BIO_NO = '{BIO_NO}'"
         Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
         If ds.Tables(0).Rows.Count > 0 Then
             Dim dr As DataRow = ds.Tables(0).Rows(0)
             With dr
-
-                If IsDBNull(.Item("TIME_IN")) Then
-                    inn = "9/15/2021 8:00:00 AM"
-                Else
-                    inn = .Item("TIME_IN")
-                End If
-
+                inn = IIf(IsDBNull(.Item("TIME_IN")), "9/15/2021 8:00:00 AM", .Item("TIME_IN"))
             End With
-        Else
-            inn = "9/15/2021 8:00:00 AM"
         End If
         Return inn
     End Function
 
     Public Function GetTime_Out(BIO_NO As String)
-        Dim outt As DateTime
+        Dim outt As DateTime = "9/15/2021 5:00:00 PM"
 
         Dim mysql As String = $"Select TIME_OUT FROM  PAYROLL_EMPLOYEE WHERE BIO_NO = '{BIO_NO}'"
         Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
         If ds.Tables(0).Rows.Count > 0 Then
             Dim dr As DataRow = ds.Tables(0).Rows(0)
             With dr
-
-                If IsDBNull(.Item("TIME_OUT")) Then
-                    outt = "9/15/2021 5:00:00 PM"
-                Else
-                    outt = .Item("TIME_OUT")
-                End If
-
+                outt = IIf(IsDBNull(.Item("TIME_OUT")), "9/15/2021 5:00:00 PM", .Item("TIME_OUT"))
             End With
-        Else
-            outt = "9/15/2021 5:00:00 PM"
         End If
         Return outt
+    End Function
+
+    Public Function GetBranchCode(BIO_NO As String)
+        Dim BRANCH_CODE As String = ""
+
+        Dim mysql As String = $"Select BRANCH_CODE FROM  PAYROLL_EMPLOYEE WHERE BIO_NO = '{BIO_NO}'"
+        Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+        If ds.Tables(0).Rows.Count > 0 Then
+            Dim dr As DataRow = ds.Tables(0).Rows(0)
+            With dr
+                BRANCH_CODE = .Item("BRANCH_CODE")
+            End With
+        End If
+        Return BRANCH_CODE
     End Function
 
     Public Function SBU_notFull(BIO_NO As String)
@@ -2361,5 +2361,35 @@ Module SelectFromDatabase
     Public Sub Replacing(str As String)
         RunCommand($"DELETE FROM {str}")  'THIS IS TO DELETE EXISTING DATA TO REPLACE ESPECIALLY FROM DATAGRID
     End Sub
+
+    Public Function ListOfDate(EXIST_DATE As HashSet(Of String), BIO_NO As String, paydatee As String) As HashSet(Of String)
+
+        Dim mysql As String = $"Select * From BIOMETRIC_DTR where BIO_ID = '{BIO_NO}' and PAYDATE = '{paydatee}' ORDER BY DATE_ONLY"
+        Using ds As DataSet = LoadSQL(mysql, "BIOMETRIC_DTR")
+            If ds.Tables(0).Rows.Count > 0 Then
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+                        EXIST_DATE.Add(.Item("DATE_ONLY"))
+                    End With
+                Next
+            End If
+        End Using
+
+        Return EXIST_DATE
+    End Function
+
+    Public Function ListOfBio(LIST_BIOO As List(Of String), mysql As String) As List(Of String)
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
+            If ds.Tables(0).Rows.Count > 0 Then
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+                        LIST_BIOO.Add(.Item("BIOMETRICID"))
+                    End With
+                Next
+            End If
+        End Using
+
+        Return LIST_BIOO
+    End Function
 
 End Module

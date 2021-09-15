@@ -890,7 +890,7 @@
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="DATE_ONLY2">
+                        <Textbox Name="DATE_ONLY">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -900,13 +900,14 @@
                                   <Value>=Fields!DATE_ONLY.Value</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
+                                    <Color>=iif(CDate(Fields!DATE_ONLY.Value).DayOfWeek = DayOfWeek.Sunday, "Red", "Black")</Color>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>DATE_ONLY2</rd:DefaultName>
+                          <rd:DefaultName>DATE_ONLY</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Silver</Color>
