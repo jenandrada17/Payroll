@@ -913,37 +913,32 @@ Public Class frmPayout
             End With
 
             Dim total_Allowance As Double = 0
-            If isExist_String("payroll_allowances", $" where BIOMETRIC_NO = '{biometricID}'") Then
+            'If isExist_String("payroll_allowances", $" where BIOMETRIC_NO = '{biometricID}'") Then
+            If isExist_String("RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{biometricID}' AND PAYDATE = '{paydatee}' AND TRANSAC_NAME = 'ALLOWANCE'") Then
 
-                Dim mysql_allow As String = $"select * from PAYROLL_ALLOWANCES WHERE BIOMETRIC_NO = '{biometricID}' and ALLOWED = 'YES' and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
-                Using ds As DataSet = LoadSQL(mysql_allow, "payroll_allowances")
+                Dim mysql_allow As String = $"select * from RECORDED_ALLOW_DEDUC WHERE BIO_NO = '{biometricID}' AND PAYDATE = '{paydatee}' AND TRANSAC_NAME = 'ALLOWANCE'"
+                Using ds As DataSet = LoadSQL(mysql_allow, "RECORDED_ALLOW_DEDUC")
                     If ds.Tables(0).Rows.Count > 0 Then
                         For Each drr In ds.Tables(0).Rows
                             With drr
-                                If .item("EFFECTIVE_DATE") <= Today Then
-                                    total_Allowance = total_Allowance + .Item("AMOUNT")
-                                End If
+                                total_Allowance = total_Allowance + .Item("AMOUNT")
                             End With
                         Next
                     End If
                 End Using
 
-                Dim mysql_1 As String = $"select * from payroll_allowances  where BIOMETRIC_NO = '{biometricID}' and ALLOWED = 'YES' and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
+                Dim mysql_1 As String = $"select * from RECORDED_ALLOW_DEDUC WHERE BIO_NO = '{biometricID}' AND PAYDATE = '{paydatee}' AND TRANSAC_NAME = 'ALLOWANCE'"
                 Using ds As DataSet = LoadSQL(mysql_1, "payroll_allowances")
                     If ds.Tables(0).Rows.Count > 0 Then
                         For Each dr In ds.Tables(0).Rows
                             With dr
-                                If .item("EFFECTIVE_DATE") <= Today Then
+                                Dim amountt As Double = .item("AMOUNT")
 
-                                    Dim amountt As Double = .item("AMOUNT")
+                                Dim toLower = .item("CATEGORY").ToLower()
+                                Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
+                                Dim toProper As String = info.ToTitleCase(toLower)
 
-                                    Dim toLower = .item("CATEGORY").ToLower()
-                                    Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
-                                    Dim toProper As String = info.ToTitleCase(toLower)
-
-                                    dt_allowance.Rows.Add(toProper, amountt.ToString(”N”))
-
-                                End If
+                                dt_allowance.Rows.Add(toProper, amountt.ToString(”N”))
                             End With
                         Next
                     End If
