@@ -45,7 +45,7 @@
                 .Columns.Add("BRANCH_CODE")
                 .Columns.Add("PAYDATE")
                 .Columns.Add("PERIOD")
-                .Columns.Add("RANGE")
+                '.Columns.Add("RANGE")
                 .Columns.Add("COMPANY")
             End With
 
@@ -71,24 +71,39 @@
 
                             '============================= NAME AND ATTENDANCE ============================  
                             Dim namee As String = .Item("FULLNAME")
-                            Dim BASIC As String = .Item("TOTAL_BASIC")
-                            Dim OVERTIME As String = IIf(.Item("TOTAL_OVERTIME") = 0, "", .Item("TOTAL_OVERTIME"))
-                            Dim HOLIDAY As String = IIf(.Item("TOTAL_HOLIDAY") = 0, "", .Item("TOTAL_HOLIDAY"))
-                            Dim N_DIFF As String = IIf(.Item("TOTAL_NIGHT_RATE") = 0, "", .Item("TOTAL_NIGHT_RATE"))
-                            Dim PI_ECOLA_SIL As String = IIf(.Item("TOTAL_ALLOWANCE") = 0, "", .Item("TOTAL_ALLOWANCE"))
-                            Dim TARDINESS As String = IIf(.Item("TOTAL_LATE_UT") = 0, "", .Item("TOTAL_LATE_UT"))
-                            Dim SSS As String = IIf(.Item("SSS_COMP") = 0, "", .Item("SSS_COMP"))
-                            Dim PHIC As String = IIf(.Item("PHILHEALTH_COMP") = 0, "", .Item("PHILHEALTH_COMP"))
-                            Dim PAGIBIG As String = IIf(.Item("PAGIBIG_COMP") = 0, "", .Item("PAGIBIG_COMP"))
-                            Dim SBU_CHARGES As String = IIf(.Item("TOTAL_DEDUCTION") = 0, "", .Item("TOTAL_DEDUCTION"))
-                            Dim NET_PAY As String = IIf(.Item("NET_PAY") = 0, "", .Item("NET_PAY"))
+                            Dim BASIC As Double = .Item("TOTAL_BASIC")
+                            Dim OVERTIME As Double = .Item("TOTAL_OVERTIME")
+                            Dim HOLIDAY As Double = .Item("TOTAL_HOLIDAY")
+                            Dim N_DIFF As Double = .Item("TOTAL_NIGHT_RATE")
+                            Dim PI_ECOLA_SIL As Double = .Item("TOTAL_ALLOWANCE")
+                            Dim TARDINESS As Double = .Item("TOTAL_LATE_UT")
+                            Dim SSS As Double = .Item("SSS_COMP")
+                            Dim PHIC As Double = .Item("PHILHEALTH_COMP")
+                            Dim PAGIBIG As Double = .Item("PAGIBIG_COMP")
+                            Dim SBU_CHARGES As Double = .Item("TOTAL_DEDUCTION")
+                            Dim NET_PAY As Double = .Item("NET_PAY")
                             Dim BRANCH_CODE As String = .Item("BRANCH_CODE")
-                            Dim RANGE As String = ""
                             Dim COMPANY As String = .Item("COMPANY")
 
-                            dt_NetPay.Rows.Add(EMP_NO, namee, BASIC, OVERTIME, HOLIDAY, N_DIFF,
-                                               PI_ECOLA_SIL, TARDINESS, SSS, PHIC, PAGIBIG, SBU_CHARGES,
-                                               NET_PAY, BRANCH_CODE, payroll.ToString("MMMM dd, yyyy"), RANGE, COMPANY)
+                            ''============================= NAME AND ATTENDANCE ============================  
+                            'Dim namee As String = .Item("FULLNAME")
+                            'Dim BASIC As Double = .Item("TOTAL_BASIC")
+                            'Dim OVERTIME As Double = IIf(.Item("TOTAL_OVERTIME") = 0, "", .Item("TOTAL_OVERTIME"))
+                            'Dim HOLIDAY As Double = IIf(.Item("TOTAL_HOLIDAY") = 0, "", .Item("TOTAL_HOLIDAY"))
+                            'Dim N_DIFF As Double = IIf(.Item("TOTAL_NIGHT_RATE") = 0, "", .Item("TOTAL_NIGHT_RATE"))
+                            'Dim PI_ECOLA_SIL As Double = IIf(.Item("TOTAL_ALLOWANCE") = 0, "", .Item("TOTAL_ALLOWANCE"))
+                            'Dim TARDINESS As Double = IIf(.Item("TOTAL_LATE_UT") = 0, "", .Item("TOTAL_LATE_UT"))
+                            'Dim SSS As Double = IIf(.Item("SSS_COMP") = 0, "", .Item("SSS_COMP"))
+                            'Dim PHIC As Double = IIf(.Item("PHILHEALTH_COMP") = 0, "", .Item("PHILHEALTH_COMP"))
+                            'Dim PAGIBIG As Double = IIf(.Item("PAGIBIG_COMP") = 0, "", .Item("PAGIBIG_COMP"))
+                            'Dim SBU_CHARGES As Double = IIf(.Item("TOTAL_DEDUCTION") = 0, "", .Item("TOTAL_DEDUCTION"))
+                            'Dim NET_PAY As Double = IIf(.Item("NET_PAY") = 0, "", .Item("NET_PAY"))
+                            'Dim BRANCH_CODE As String = .Item("BRANCH_CODE")
+                            'Dim COMPANY As String = .Item("COMPANY")
+
+                            dt_NetPay.Rows.Add(EMP_NO, namee, BASIC.ToString("n"), OVERTIME.ToString("n"), HOLIDAY.ToString("n"), N_DIFF.ToString("n"),
+                                               PI_ECOLA_SIL.ToString("n"), TARDINESS.ToString("n"), SSS.ToString("n"), PHIC.ToString("n"), PAGIBIG.ToString("n"),
+                                               SBU_CHARGES.ToString("n"), NET_PAY.ToString("n"), BRANCH_CODE, payroll.ToString("MMMM dd, yyyy"), COMPANY)
 
                         End With
                     Next

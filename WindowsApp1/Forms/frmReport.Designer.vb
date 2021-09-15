@@ -24,19 +24,17 @@ Partial Class frmReport
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim ReportDataSource1 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Me.NetPayBindingSource = New System.Windows.Forms.BindingSource(Me.components)
+        Me.reports = New WindowsApp1.reports()
         Me.Attendance_Tab = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
-        Me.Label20 = New System.Windows.Forms.Label()
-        Me.PaydateNet_ComboB = New System.Windows.Forms.ComboBox()
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.Close_LBL = New System.Windows.Forms.Label()
-        Me.PreviewNet_BTN = New System.Windows.Forms.Button()
+        Me.PrintNet_BTN = New System.Windows.Forms.Button()
+        Me.ReportV_NetPay = New Microsoft.Reporting.WinForms.ReportViewer()
         Me.Rate_list = New System.Windows.Forms.ListView()
         Me.ColumnHeader17 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader18 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader19 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader20 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader2 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader3 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -46,15 +44,27 @@ Partial Class frmReport
         Me.ColumnHeader7 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader8 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader9 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ReportV_NetPay = New Microsoft.Reporting.WinForms.ReportViewer()
-        Me.reports = New WindowsApp1.reports()
-        Me.NetPayBindingSource = New System.Windows.Forms.BindingSource(Me.components)
-        Me.PrintNet_BTN = New System.Windows.Forms.Button()
+        Me.Label20 = New System.Windows.Forms.Label()
+        Me.PreviewNet_BTN = New System.Windows.Forms.Button()
+        Me.PaydateNet_ComboB = New System.Windows.Forms.ComboBox()
+        Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.Close_LBL = New System.Windows.Forms.Label()
+        CType(Me.NetPayBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.reports, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Attendance_Tab.SuspendLayout()
         Me.TabPage1.SuspendLayout()
-        CType(Me.reports, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.NetPayBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
+        '
+        'NetPayBindingSource
+        '
+        Me.NetPayBindingSource.DataMember = "NetPay"
+        Me.NetPayBindingSource.DataSource = Me.reports
+        '
+        'reports
+        '
+        Me.reports.DataSetName = "reports"
+        Me.reports.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema
         '
         'Attendance_Tab
         '
@@ -83,54 +93,27 @@ Partial Class frmReport
         Me.TabPage1.Text = "    Net Pay   "
         Me.TabPage1.UseVisualStyleBackColor = True
         '
-        'Label20
+        'PrintNet_BTN
         '
-        Me.Label20.AutoSize = True
-        Me.Label20.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label20.Location = New System.Drawing.Point(6, 17)
-        Me.Label20.Name = "Label20"
-        Me.Label20.Size = New System.Drawing.Size(98, 25)
-        Me.Label20.TabIndex = 11
-        Me.Label20.Text = "Search Payroll"
+        Me.PrintNet_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.PrintNet_BTN.Location = New System.Drawing.Point(949, 10)
+        Me.PrintNet_BTN.Name = "PrintNet_BTN"
+        Me.PrintNet_BTN.Size = New System.Drawing.Size(87, 36)
+        Me.PrintNet_BTN.TabIndex = 102
+        Me.PrintNet_BTN.Text = "Print"
+        Me.PrintNet_BTN.UseVisualStyleBackColor = True
         '
-        'PaydateNet_ComboB
+        'ReportV_NetPay
         '
-        Me.PaydateNet_ComboB.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.PaydateNet_ComboB.FormattingEnabled = True
-        Me.PaydateNet_ComboB.Location = New System.Drawing.Point(111, 13)
-        Me.PaydateNet_ComboB.Name = "PaydateNet_ComboB"
-        Me.PaydateNet_ComboB.Size = New System.Drawing.Size(197, 33)
-        Me.PaydateNet_ComboB.TabIndex = 8
-        '
-        'Label1
-        '
-        Me.Label1.AutoSize = True
-        Me.Label1.Font = New System.Drawing.Font("Dubai", 15.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.Location = New System.Drawing.Point(4, -2)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(85, 36)
-        Me.Label1.TabIndex = 68
-        Me.Label1.Text = "Reports"
-        '
-        'Close_LBL
-        '
-        Me.Close_LBL.AutoSize = True
-        Me.Close_LBL.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Close_LBL.Location = New System.Drawing.Point(1116, -2)
-        Me.Close_LBL.Name = "Close_LBL"
-        Me.Close_LBL.Size = New System.Drawing.Size(57, 32)
-        Me.Close_LBL.TabIndex = 75
-        Me.Close_LBL.Text = "Close"
-        '
-        'PreviewNet_BTN
-        '
-        Me.PreviewNet_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.PreviewNet_BTN.Location = New System.Drawing.Point(1058, 10)
-        Me.PreviewNet_BTN.Name = "PreviewNet_BTN"
-        Me.PreviewNet_BTN.Size = New System.Drawing.Size(87, 36)
-        Me.PreviewNet_BTN.TabIndex = 9
-        Me.PreviewNet_BTN.Text = "Preview"
-        Me.PreviewNet_BTN.UseVisualStyleBackColor = True
+        ReportDataSource1.Name = "DataSet1"
+        ReportDataSource1.Value = Me.NetPayBindingSource
+        Me.ReportV_NetPay.LocalReport.DataSources.Add(ReportDataSource1)
+        Me.ReportV_NetPay.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_NetPay.rdlc"
+        Me.ReportV_NetPay.Location = New System.Drawing.Point(3, 67)
+        Me.ReportV_NetPay.Name = "ReportV_NetPay"
+        Me.ReportV_NetPay.ServerReport.BearerToken = Nothing
+        Me.ReportV_NetPay.Size = New System.Drawing.Size(1142, 488)
+        Me.ReportV_NetPay.TabIndex = 101
         '
         'Rate_list
         '
@@ -142,10 +125,10 @@ Partial Class frmReport
         Me.Rate_list.FullRowSelect = True
         Me.Rate_list.GridLines = True
         Me.Rate_list.HideSelection = False
-        Me.Rate_list.Location = New System.Drawing.Point(3, 465)
+        Me.Rate_list.Location = New System.Drawing.Point(3, 561)
         Me.Rate_list.MultiSelect = False
         Me.Rate_list.Name = "Rate_list"
-        Me.Rate_list.Size = New System.Drawing.Size(1145, 123)
+        Me.Rate_list.Size = New System.Drawing.Size(1145, 27)
         Me.Rate_list.TabIndex = 100
         Me.Rate_list.UseCompatibleStateImageBehavior = False
         Me.Rate_list.View = System.Windows.Forms.View.Details
@@ -169,15 +152,6 @@ Partial Class frmReport
         '
         Me.ColumnHeader20.Text = "OVERTIME"
         Me.ColumnHeader20.Width = 70
-        '
-        'TabPage2
-        '
-        Me.TabPage2.Location = New System.Drawing.Point(4, 41)
-        Me.TabPage2.Name = "TabPage2"
-        Me.TabPage2.Size = New System.Drawing.Size(1151, 591)
-        Me.TabPage2.TabIndex = 2
-        Me.TabPage2.Text = "    Common   "
-        Me.TabPage2.UseVisualStyleBackColor = True
         '
         'ColumnHeader1
         '
@@ -224,37 +198,63 @@ Partial Class frmReport
         Me.ColumnHeader9.Text = "NET PAY"
         Me.ColumnHeader9.Width = 80
         '
-        'ReportV_NetPay
+        'Label20
         '
-        ReportDataSource1.Name = "DataSet1"
-        ReportDataSource1.Value = Me.NetPayBindingSource
-        Me.ReportV_NetPay.LocalReport.DataSources.Add(ReportDataSource1)
-        Me.ReportV_NetPay.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_NetPay.rdlc"
-        Me.ReportV_NetPay.Location = New System.Drawing.Point(3, 106)
-        Me.ReportV_NetPay.Name = "ReportV_NetPay"
-        Me.ReportV_NetPay.ServerReport.BearerToken = Nothing
-        Me.ReportV_NetPay.Size = New System.Drawing.Size(1142, 353)
-        Me.ReportV_NetPay.TabIndex = 101
+        Me.Label20.AutoSize = True
+        Me.Label20.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label20.Location = New System.Drawing.Point(6, 17)
+        Me.Label20.Name = "Label20"
+        Me.Label20.Size = New System.Drawing.Size(98, 25)
+        Me.Label20.TabIndex = 11
+        Me.Label20.Text = "Search Payroll"
         '
-        'reports
+        'PreviewNet_BTN
         '
-        Me.reports.DataSetName = "reports"
-        Me.reports.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema
+        Me.PreviewNet_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.PreviewNet_BTN.Location = New System.Drawing.Point(1058, 10)
+        Me.PreviewNet_BTN.Name = "PreviewNet_BTN"
+        Me.PreviewNet_BTN.Size = New System.Drawing.Size(87, 36)
+        Me.PreviewNet_BTN.TabIndex = 9
+        Me.PreviewNet_BTN.Text = "Preview"
+        Me.PreviewNet_BTN.UseVisualStyleBackColor = True
         '
-        'NetPayBindingSource
+        'PaydateNet_ComboB
         '
-        Me.NetPayBindingSource.DataMember = "NetPay"
-        Me.NetPayBindingSource.DataSource = Me.reports
+        Me.PaydateNet_ComboB.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.PaydateNet_ComboB.FormattingEnabled = True
+        Me.PaydateNet_ComboB.Location = New System.Drawing.Point(111, 13)
+        Me.PaydateNet_ComboB.Name = "PaydateNet_ComboB"
+        Me.PaydateNet_ComboB.Size = New System.Drawing.Size(197, 33)
+        Me.PaydateNet_ComboB.TabIndex = 8
         '
-        'PrintNet_BTN
+        'TabPage2
         '
-        Me.PrintNet_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.PrintNet_BTN.Location = New System.Drawing.Point(1058, 67)
-        Me.PrintNet_BTN.Name = "PrintNet_BTN"
-        Me.PrintNet_BTN.Size = New System.Drawing.Size(87, 33)
-        Me.PrintNet_BTN.TabIndex = 102
-        Me.PrintNet_BTN.Text = "Print"
-        Me.PrintNet_BTN.UseVisualStyleBackColor = True
+        Me.TabPage2.Location = New System.Drawing.Point(4, 41)
+        Me.TabPage2.Name = "TabPage2"
+        Me.TabPage2.Size = New System.Drawing.Size(1151, 591)
+        Me.TabPage2.TabIndex = 2
+        Me.TabPage2.Text = "    Common   "
+        Me.TabPage2.UseVisualStyleBackColor = True
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Font = New System.Drawing.Font("Dubai", 15.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Location = New System.Drawing.Point(4, -2)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(85, 36)
+        Me.Label1.TabIndex = 68
+        Me.Label1.Text = "Reports"
+        '
+        'Close_LBL
+        '
+        Me.Close_LBL.AutoSize = True
+        Me.Close_LBL.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Close_LBL.Location = New System.Drawing.Point(1116, -2)
+        Me.Close_LBL.Name = "Close_LBL"
+        Me.Close_LBL.Size = New System.Drawing.Size(57, 32)
+        Me.Close_LBL.TabIndex = 75
+        Me.Close_LBL.Text = "Close"
         '
         'frmReport
         '
@@ -267,11 +267,11 @@ Partial Class frmReport
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Name = "frmReport"
         Me.Text = "frmReport"
+        CType(Me.NetPayBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.reports, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Attendance_Tab.ResumeLayout(False)
         Me.TabPage1.ResumeLayout(False)
         Me.TabPage1.PerformLayout()
-        CType(Me.reports, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.NetPayBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

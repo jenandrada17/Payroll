@@ -2156,13 +2156,13 @@ Module SelectFromDatabase
             With dr
 
                 If IsDBNull(.Item("TIME_IN")) Then
-                    inn = New DateTime(Now.Year, Now.Month, Now.Day, 8, 0, 0, 0)
+                    inn = "9/15/2021 8:00:00 AM"
                 Else
                     inn = .Item("TIME_IN")
                 End If
 
                 If IsDBNull(.Item("TIME_OUT")) Then
-                    outt = New DateTime(Now.Year, Now.Month, Now.Day, 17, 0, 0, 0)
+                    outt = "9/15/2021 5:00:00 PM"
                 Else
                     outt = .Item("TIME_OUT")
                 End If
@@ -2183,12 +2183,14 @@ Module SelectFromDatabase
             With dr
 
                 If IsDBNull(.Item("TIME_IN")) Then
-                    inn = New DateTime(Now.Year, Now.Month, Now.Day, 8, 0, 0, 0)
+                    inn = "9/15/2021 8:00:00 AM"
                 Else
                     inn = .Item("TIME_IN")
                 End If
 
             End With
+        Else
+            inn = "9/15/2021 8:00:00 AM"
         End If
         Return inn
     End Function
@@ -2203,12 +2205,14 @@ Module SelectFromDatabase
             With dr
 
                 If IsDBNull(.Item("TIME_OUT")) Then
-                    outt = New DateTime(Now.Year, Now.Month, Now.Day, 17, 0, 0, 0)
+                    outt = "9/15/2021 5:00:00 PM"
                 Else
                     outt = .Item("TIME_OUT")
                 End If
 
             End With
+        Else
+            outt = "9/15/2021 5:00:00 PM"
         End If
         Return outt
     End Function

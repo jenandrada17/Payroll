@@ -15,7 +15,7 @@ Public Class frmAttendance
     Dim late_count, under_count, over_count As New List(Of TimeSpan)()
     Dim list_dateHour, list_inOut, list_hourMin, list_Group, list_count, list_bio, distinct_bio As New List(Of String)()
     Dim hourMinn, timee, bio_list As List(Of String)
-    Dim dateee, starting_date, ending_date As DateTime
+    Dim dateee, starting_date, ending_date, TIME_IN, TIME_OUT As DateTime
     Dim DATE_ONLY, am_in, am_out, pm_in, pm_out As String
     Public branchID, Branch_Name, paydate_, paydate_Records As String
 
@@ -289,11 +289,11 @@ Public Class frmAttendance
                 End If
 
 
-                CalculateLATE(row, BiometricID_TXT.Text)
+                CalculateLATE(row)
 
-                CalculateuNDERTIME(row, BiometricID_TXT.Text)
+                CalculateuNDERTIME(row)
 
-                CalculateuOVERTIME(row, BiometricID_TXT.Text)
+                CalculateuOVERTIME(row)
 
             End If
         Next
@@ -344,9 +344,7 @@ Public Class frmAttendance
         TotalDays_LBL.Text = product
     End Sub
 
-    Private Sub CalculateLATE(row As DataGridViewRow, bio_No As String)
-
-        Dim TIME_IN As DateTime = GetTime_In(bio_No)
+    Private Sub CalculateLATE(row As DataGridViewRow)
 
         '========================================================================= CELL NUMBER AM IN ===========================================================
         If Not row.Cells(1).Value = Nothing Then
@@ -377,10 +375,7 @@ Public Class frmAttendance
 
     End Sub
 
-    Private Sub CalculateuNDERTIME(row As DataGridViewRow, bio_No As String)
-
-        Dim TIME_IN As DateTime = GetTime_In(bio_No)
-        Dim TIME_OUT As DateTime = GetTime_Out(bio_No)
+    Private Sub CalculateuNDERTIME(row As DataGridViewRow)
 
         '========================================================================= CELL NUMBER AM OUT ===========================================================
         If Not row.Cells(2).Value = Nothing Then
@@ -402,7 +397,6 @@ Public Class frmAttendance
 
             Dim underHour As TimeSpan = DateTime.Parse(TIME_OUT.ToShortTimeString).Subtract(DateTime.Parse(row.Cells(4).Value))
 
-
             Dim cellValue As DateTime = row.Cells(4).Value
             Dim limit As DateTime = TIME_OUT.ToShortTimeString
 
@@ -414,16 +408,13 @@ Public Class frmAttendance
 
     End Sub
 
-    Private Sub CalculateuOVERTIME(row As DataGridViewRow, bio_No As String)
-
-        Dim TIME_OUT As DateTime = GetTime_Out(bio_No)
+    Private Sub CalculateuOVERTIME(row As DataGridViewRow)
         '========================================================================= CELL NUMBER PM OUT ===========================================================
         If Not row.Cells(4).Value = Nothing Then
 
             Dim OTHour As TimeSpan = DateTime.Parse(row.Cells(4).Value).Subtract(DateTime.Parse(TIME_OUT.ToShortTimeString))
 
             If OTHour.Hours > 0 Then
-
                 TotalOTHr_LBL.Text = Convert.ToInt32(TotalOTHr_LBL.Text) + OTHour.Hours
             End If
 
@@ -1529,7 +1520,6 @@ Public Class frmAttendance
                 If ds.Tables(0).Rows.Count > 0 Then
                     For Each dr In ds.Tables(0).Rows
                         With dr
-
                             Dim date_ As Date = .Item("DATE_ONLY")
 
                             For Each row As DataGridViewRow In DataGridView1.Rows
@@ -1551,6 +1541,12 @@ Public Class frmAttendance
                     Next
                 End If
             End Using
+
+
+            '======================== GET TIME IN/OUT TO CALCULATE LATE UNDERTIME OVERTIME ============================
+            TIME_IN = GetTimeInOut(biometric_No).Time_in
+            TIME_OUT = GetTimeInOut(biometric_No).Time_out
+            '=========================================================================================================
 
             TotalAbsent_LBL.Text = 0
             TotalDays_LBL.Text = 0
@@ -1576,11 +1572,11 @@ Public Class frmAttendance
 
                     End If
 
-                    CalculateLATE(row, biometric_No)
+                    CalculateLATE(row)
 
-                    CalculateuNDERTIME(row, biometric_No)
+                    CalculateuNDERTIME(row)
 
-                    CalculateuOVERTIME(row, biometric_No)
+                    CalculateuOVERTIME(row)
 
                 End If
             Next
@@ -1733,6 +1729,12 @@ Public Class frmAttendance
             Name_TXT.Text = ""
         Else
             GetName(BiometricID_TXT.Text, Name_TXT)
+
+            If Not Name_TXT.Text = String.Empty Then
+                TIME_IN = GetTimeInOut(BiometricID_TXT.Text).Time_in
+                TIME_OUT = GetTimeInOut(BiometricID_TXT.Text).Time_out
+            End If
+
 
             If Not Name_TXT.Text = "" Then
 
