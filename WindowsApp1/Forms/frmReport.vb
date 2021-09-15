@@ -2,7 +2,7 @@
 
     Private allowCoolMove As Boolean = False
     Private myCoolPoint As New Point
-    Dim PhotoPlus As String = ""
+    Dim Plus As String = ""
 
     Private Sub frmReport_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         PopulateComboBox(PaydateNet_ComboB, "PAYROLL_PAYOUT", "PAYDATE")
@@ -69,7 +69,7 @@
                 '.Columns.Add("RANGE")
                 .Columns.Add("COMPANY")
                 .Columns.Add("HO_CATEGORY")
-                .Columns.Add("PHOTO")
+                .Columns.Add("PLUS")
             End With
 
             Using ds As DataSet = LoadSQL(mysqll, "PAYROLL_PAYOUT")
@@ -109,12 +109,12 @@
                                 BRANCH_CODE = HO_CATEGORY
                             End If
 
-                            If COMPANY = "PHOTO" Then PhotoPlus = $"{COMPANY}({PhotoPlus})"
+                            If COMPANY = "PHOTO" Then Plus = $"{COMPANY}({Plus})"
 
                             dt_NetPay.Rows.Add(EMP_NO, namee, BASIC.ToString("n"), OVERTIME.ToString("n"), HOLIDAY.ToString("n"), N_DIFF.ToString("n"),
                                                PI_ECOLA_SIL.ToString("n"), TARDINESS.ToString("n"), SSS.ToString("n"), PHIC.ToString("n"), PAGIBIG.ToString("n"),
                                                SBU_CHARGES.ToString("n"), NET_PAY.ToString("n"), BRANCH_CODE, payroll.ToString("MMMM dd, yyyy"), period, COMPANY,
-                                               HO_CATEGORY, PhotoPlus)
+                                               HO_CATEGORY, Plus)
 
                         End With
                     Next
@@ -648,7 +648,8 @@
         ElseIf Company_Combo.SelectedIndex = 2 Then '=== DALTON
             NetBranch_Combo.Items.Clear()
             NetBranch_Combo.Items.Insert(0, "Dalton Head Office")
-            NetBranch_Combo.Items.Insert(1, "All Dalton Branch")
+            NetBranch_Combo.Items.Insert(1, "Dalton PGC")
+            NetBranch_Combo.Items.Insert(2, "Dalton Branch")
 
         ElseIf Company_Combo.SelectedIndex = 3 Then '=== PERFECOM 
 
@@ -682,7 +683,7 @@
                                         inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
                                         where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' and B.BRANCH_CODE IN ('SMG','KCG','ACM','TAC')"
 
-                        PhotoPlus = "DAVAO PERFECT"
+                        Plus = "DAVAO PERFECT"
 
                     ElseIf NetBranch_Combo.SelectedIndex = 1 Then '=== JR Photo
 
@@ -690,7 +691,7 @@
                                         inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
                                         where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' and B.BRANCH_CODE IN ('DIG','ISU','M1','POL')"
 
-                        PhotoPlus = "JR PHOTO"
+                        Plus = "JR PHOTO"
                     ElseIf NetBranch_Combo.SelectedIndex = 2 Then '=== Gensan Perfect
 
                         mysql = $"Select * From PAYROLL_PAYOUT A 
@@ -698,7 +699,7 @@
                                         where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' 
                                         and B.BRANCH_CODE IN ('ROG','ROX','FINEPIX','COT','MID','KID','SNP','GMA','SML','ZAM','SMD')"
 
-                        PhotoPlus = "GENSAN PERFECT"
+                        Plus = "GENSAN PERFECT"
                     End If
                 Else
                     MsgBox("Please select date of payroll.", MsgBoxStyle.Exclamation, "Error")
@@ -744,7 +745,17 @@
 
                         mysql = $"Select * From PAYROLL_PAYOUT A 
                                         inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
+                                        where A.PAYDATE  = '{paydatee}' AND B.COMMON_COMPANY  = 'DALTON'"
+
+
+                        Plus = "DALTON"
+
+                    ElseIf NetBranch_Combo.SelectedIndex = 2 Then '=== All Dalton Except Head Office
+
+                        mysql = $"Select * From PAYROLL_PAYOUT A 
+                                        inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
                                         where A.PAYDATE  = '{paydatee}' AND B.COMPANY  = 'DALTON'"
+
                     End If
 
                 Else

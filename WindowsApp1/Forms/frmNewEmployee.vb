@@ -676,12 +676,12 @@ Public Class frmNewEmployee
     'End Sub
 
 
-
     Private Sub Add_Company_CB_TextChanged_1(sender As Object, e As EventArgs) Handles Position_Combo.TextChanged, HO_Category.TextChanged, ComCategory_Combo.TextChanged, Branch_ComboB.TextChanged, Add_Company_CB.TextChanged
         Dim selectionStart As Integer = sender.SelectionStart
 
         sender.Text = sender.Text.ToUpper()
         sender.SelectionStart = selectionStart
+
 
         If Add_Company_CB.SelectedItem <> "HEAD OFFICE" Then
             Label4.Visible = True

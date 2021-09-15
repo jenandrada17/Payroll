@@ -1,4 +1,6 @@
-﻿Module SaveUpdate
+﻿Imports System.Globalization
+
+Module SaveUpdate
 
     Friend Sub SaveHoliday(datee As String, namee As String, kinds As String)
         Dim mysql As String = "Select * From PAYROLL_HOLIDAY Rows 1"
@@ -1674,6 +1676,16 @@
                 .Item("EMP_STATUS") = EMP_STATUS
                 .Item("RATE_DAILY") = IIf(.Item("BRANCH_CODE") = Nothing, GetMinimumRate("CITY", "GENSAN"), GetMinimumRate("BRANCHCODE", .Item("BRANCH_CODE")))
 
+
+                Dim toLower As String = ""
+                Dim toProper As String = ""
+
+                If HO_CATEGORY <> "" Then
+                    toLower = HO_CATEGORY.ToLower()
+                    Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
+                    toProper = info.ToTitleCase(toLower)
+                End If
+
                 If DATE_STARTED <> "" Then .Item("DATE_STARTED") = DATE_STARTED
                 If TIME_IN <> "" Then .Item("TIME_IN") = TIME_IN
                 If TIME_OUT <> "" Then .Item("TIME_OUT") = TIME_OUT
@@ -1682,7 +1694,7 @@
                 If SSS <> "" Then .Item("SSSNO") = SSS
                 If PHILH <> "" Then .Item("PHILHEALTHNO") = PHILH
                 If HDMF <> "" Then .Item("PAGIBIGNO") = HDMF
-                If HO_CATEGORY <> "" Then .Item("HO_CATEGORY") = HO_CATEGORY
+                If HO_CATEGORY <> "" Then .Item("HO_CATEGORY") = toProper
                 If COMMON_CATEGORY <> "" Then .Item("COMMON_CATEGORY") = COMMON_CATEGORY
                 If EMP_POSITION <> "" Then .Item("EMP_POSITION") = EMP_POSITION
                 If COMMON_COMPANY <> "" Then .Item("COMMON_COMPANY") = COMMON_COMPANY

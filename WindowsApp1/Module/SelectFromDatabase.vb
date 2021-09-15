@@ -1092,38 +1092,38 @@ Module SelectFromDatabase
     End Sub
 
     Public Sub AddRowBiometric(ByVal dr As DataRow, datagrid As DataGridView)
-        If datagrid.Rows.Count <= 12 Then
-            With dr
+        'If datagrid.Rows.Count <= 12 Then
+        With dr
 
-                Dim rowId As Integer = datagrid.Rows.Add()
-                Dim row As DataGridViewRow = datagrid.Rows(rowId)
-                row.Cells("BIOID_DGVV").Value = .Item("BIOMETRICID")
-                row.Cells("Name_DGVV").Value = .Item("FULLNAME")
-                row.Cells("Name_DGVV").Tag = .Item("ID")
-                row.Cells("PRESENT_DGVV").Value = .Item("PRESENT_DAYS")
+            Dim rowId As Integer = datagrid.Rows.Add()
+            Dim row As DataGridViewRow = datagrid.Rows(rowId)
+            row.Cells("BIOID_DGVV").Value = .Item("BIOMETRICID")
+            row.Cells("Name_DGVV").Value = .Item("FULLNAME")
+            row.Cells("Name_DGVV").Tag = .Item("ID")
+            row.Cells("PRESENT_DGVV").Value = .Item("PRESENT_DAYS")
 
-                If .Item("OVERTIME") = 0 Then
-                    row.Cells("Overtime_DGVV").Value = ""
-                Else
-                    row.Cells("Overtime_DGVV").Value = .Item("OVERTIME")
-                End If
+            If .Item("OVERTIME") = 0 Then
+                row.Cells("Overtime_DGVV").Value = ""
+            Else
+                row.Cells("Overtime_DGVV").Value = .Item("OVERTIME")
+            End If
 
-                If .Item("LATE").Equals("00:00:00") Then
-                    row.Cells("Late_DGVV").Value = ""
-                Else
-                    row.Cells("Late_DGVV").Value = IIf(IsDBNull(.Item("LATE")), "", .Item("LATE"))
-                End If
+            If .Item("LATE").Equals("00:00:00") Then
+                row.Cells("Late_DGVV").Value = ""
+            Else
+                row.Cells("Late_DGVV").Value = IIf(IsDBNull(.Item("LATE")), "", .Item("LATE"))
+            End If
 
-                If .Item("UNDERTIME").Equals("00:00:00") Then
-                    row.Cells("Undertime_DGVV").Value = ""
-                Else
-                    row.Cells("Undertime_DGVV").Value = IIf(IsDBNull(.Item("UNDERTIME")), "", .Item("UNDERTIME"))
-                End If
+            If .Item("UNDERTIME").Equals("00:00:00") Then
+                row.Cells("Undertime_DGVV").Value = ""
+            Else
+                row.Cells("Undertime_DGVV").Value = IIf(IsDBNull(.Item("UNDERTIME")), "", .Item("UNDERTIME"))
+            End If
 
-                row.Height = 30
+            row.Height = 30
 
-            End With
-        End If
+        End With
+        'End If
     End Sub
 
     Friend Sub Populate_S7ELVEN(datagrid As DataGridView, Paydate As String, Optional searchName As String = "")

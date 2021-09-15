@@ -714,9 +714,9 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Switch(Fields!COMPANY.Value = "PHOTO", Fields!PHOTO.Value, 
+                              <Value>=Switch(Fields!COMPANY.Value = "PHOTO", Fields!PLUS.Value, 
 Fields!COMPANY.Value = "P&amp;G UY", "P&amp;G UY SONS, INC.", 
-Fields!COMPANY.Value = "DALTON", "DALTON PAWNSHOP &amp; JEWELRY INC.", 
+Fields!COMPANY.Value = "DALTON" oR Fields!PLUS.Value = "DALTON" , "DALTON PAWNSHOP &amp; JEWELRY INC.", 
 Fields!COMPANY.Value = "PERFECOM", "PERFECOM")</Value>
                               <Style>
                                 <FontFamily>Berlin Sans FB Demi</FontFamily>
@@ -8517,8 +8517,8 @@ Fields!BRANCH_CODE.Value = "FINEPIX", "Finepixel",
           <DataField>HO_CATEGORY</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="PHOTO">
-          <DataField>PHOTO</DataField>
+        <Field Name="PLUS">
+          <DataField>PLUS</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>
