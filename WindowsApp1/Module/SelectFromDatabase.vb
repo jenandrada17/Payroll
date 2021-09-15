@@ -5,72 +5,6 @@ Module SelectFromDatabase
 
     Dim rowCount As Integer
 
-    'Friend Sub Grid_Payout(dataGrid As DataGridView, paydate As String, Optional searchName As String = "")
-
-    '    Dim secured_str As String = searchName
-    '    secured_str = DreadKnight(secured_str)
-    '    Dim strWords As String() = secured_str.Split(New Char() {" "c})
-    '    Dim name As String
-    '    Dim mysql As String
-
-    '    If searchName.Length <> 0 Then
-
-    '        mysql = $"Select * From PAYROLL_PAYOUT A inner join tbl_employee B on B.BIOMETRICID = A.BIOMETRIC_ID  inner join tbl_branch C on C.ID = B.BRANCH_ID  where paydate =' {paydate}' and "
-
-    '        For Each name In strWords
-    '            mysql &= $"{vbCr}UPPER(BIOMETRIC_ID) LIKE UPPER('%{name}%') OR "
-    '            mysql &= $"{vbCr}UPPER(firstname) LIKE UPPER('%{name}%') OR "
-    '            mysql &= $"{vbCr}UPPER(lastname) LIKE UPPER('%{name}%') OR "
-    '            mysql &= $"{vbCr}UPPER(EMP_POSITION) LIKE UPPER('%{name}%') OR "
-    '            mysql &= $"{vbCr}UPPER(rate) LIKE UPPER('%{name}%') "
-    '        Next
-
-    '    Else
-    '        mysql = $"Select * From PAYROLL_PAYOUT A inner join tbl_employee B on B.BIOMETRICID = A.BIOMETRIC_ID  inner join tbl_branch C on C.ID = B.BRANCH_ID  where paydate =' {paydate}'"
-    '    End If
-
-    '    Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
-    '        dataGrid.Rows.Clear()
-    '        progressBarStart(ds)
-    '        For Each dr In ds.Tables(0).Rows
-    '            AddRow_PAYOUT_GRID(dr, dataGrid)
-
-    '            frmMainForm.AppProgressBar.Value += 1
-    '        Next
-    '        progressBarEnd()
-    '    End Using
-
-    'End Sub
-
-
-    'Private Sub AddRow_PAYOUT_GRID(ByVal dr As DataRow, dataGrid As DataGridView)
-
-    '    With dr
-    '        Dim rowId As Integer = dataGrid.Rows.Add()
-    '        Dim row As DataGridViewRow = dataGrid.Rows(rowId)
-    '        row.Cells("Name_dgv").Value = .Item("LASTNAME") & ", " & .Item("FIRSTNAME") & " " & .Item("MIDDLENAME")
-    '        row.Cells("Name_dgv").Tag = .Item("BIOMETRICID")
-    '        row.Cells("basic_dgv").Value = .Item("TOTAL_BASIC")
-    '        row.Cells("basic_dgv").Tag = .Item("BRANCH_ID")
-    '        row.Cells("overtime_dgv").Value = .Item("TOTAL_OVERTIME")
-    '        row.Cells("late_dgv").Value = .Item("TOTAL_LATE_UT")
-    '        row.Cells("gross_dgv").Value = .Item("GROSS_AMOUNT")
-    '        row.Cells("sssDis_dgv").Value = .Item("SSS_COMP")
-    '        row.Cells("PagibigDis_dgv").Value = .Item("PAGIBIG_COMP")
-    '        row.Cells("philH_dgv").Value = .Item("PHILHEALTH_COMP")
-    '        row.Cells("taxable_dgv").Value = .Item("TAXABLE")
-    '        row.Cells("taxWH_dgv").Value = .Item("TAX_WHELD")
-    '        row.Cells("netTax_dgv").Value = .Item("NET_TAX_COMP")
-    '        row.Cells("sssLoan_dgv").Value = .Item("SSS_LOAN")
-    '        row.Cells("pagibigLoan_dgv").Value = .Item("PAGIBIG_LOAN")
-    '        row.Cells("allowance_dgv").Value = .Item("TOTAL_ALLOWANCE")
-    '        row.Cells("deduction_dgv").Value = .Item("TOTAL_DEDUCTION")
-    '        row.Cells("netPay_dgv").Value = .Item("NET_PAY")
-    '        row.Height = 35
-    '    End With
-
-    'End Sub
-
     Public Function IsLastDay(ByVal myDate As Date) As Boolean
         Return myDate.Day = Date.DaysInMonth(myDate.Year, myDate.Month)
     End Function
@@ -251,17 +185,15 @@ Module SelectFromDatabase
         Return email
     End Function
 
-    'Public Function GetEmail_recipient(biometric As String, branchID As String) As String
     Public Function GetEmail_recipient(biometric As String) As String
 
         Dim email As String = ""
-        'Dim mysql As String = $"Select * FROM  tbl_Employee WHERE BIOMETRICID = '{biometric}' and BRANCH_ID= '{branchID}'"
-        Dim mysql As String = $"Select * FROM  tbl_Employee WHERE BIOMETRICID = '{biometric}'"
-        Dim ds As DataSet = LoadSQL(mysql, "tbl_Employee")
+        Dim mysql As String = $"Select * FROM  PAYROLL_EMPLOYEE WHERE BIO_NO = '{biometric}'"
+        Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
         If ds.Tables(0).Rows.Count > 0 Then
             Dim dr As DataRow = ds.Tables(0).Rows(0)
             With dr
-                email = IIf(IsDBNull(.Item("EMAILADD")) Or String.IsNullOrWhiteSpace(.Item("EMAILADD")), "noData", .Item("EMAILADD"))
+                email = IIf(IsDBNull(.Item("EMAIL_ADD")), "noData", .Item("EMAIL_ADD"))
             End With
         End If
         Return email
@@ -365,17 +297,18 @@ Module SelectFromDatabase
             Dim mysql As String
             If str.Length <> 0 Then
 
-                mysql = $"Select * from {tablee} A inner join tbl_employee B On B.ID = A.emp_id Where "
+                mysql = $"Select * from {tablee} A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIO_NO Where "
 
                 For Each name In strWords
-                    mysql &= $"{vbCr}UPPER(BIOMETRICID) Like UPPER('%{name}%') OR "
-                    mysql &= $"{vbCr}UPPER(firstname) Like UPPER('%{name}%') OR "
-                    mysql &= $"{vbCr}UPPER(lastname) Like UPPER('%{name}%') OR "
-                    mysql &= $"{vbCr}UPPER(A.STATUS) Like UPPER('%{name}%') OR "
+                    mysql &= $"{vbCr}UPPER(BIO_NO) Like UPPER('%{name}%') OR "
+                    mysql &= $"{vbCr}UPPER(FULLNAME) Like UPPER('%{name}%') OR "
+                    mysql &= $"{vbCr}UPPER(COMPANY) Like UPPER('%{name}%') OR "
+                    mysql &= $"{vbCr}UPPER(BRANCH_CODE) LIKE UPPER('%{name}%') OR "
+                    mysql &= $"{vbCr}UPPER(A.STATUS) Like UPPER('%{name}%') ORDER BY FULLNAME ASC "
                 Next
 
             Else
-                mysql = $"Select * from {tablee} A inner join tbl_employee B On B.ID = A.emp_id"
+                mysql = $"Select * from {tablee} A inner join PAYROLL_EMPLOYEE B On B.BIO_NO = A.BIO_NO"
             End If
 
             Using ds As DataSet = LoadSQL(mysql, tablee)
@@ -401,18 +334,9 @@ Module SelectFromDatabase
     Private Sub AddItem_Loan(ByVal dr As DataRow, listview As ListView)
 
         With dr
-            Dim MI As String
-
-            If String.IsNullOrEmpty(.Item("MIDDLENAME")) Then
-                MI = ""
-            Else
-                MI = .Item("MIDDLENAME").Substring(0, 1) & "."
-            End If
-
-            Dim lv As ListViewItem = listview.Items.Add(String.Format("{0}, {1} {2}", .Item("LastName"), .Item("FirstName"), MI))
-            lv.SubItems.Add(String.Format("{0}, {1} {2}", .Item("LastName"), .Item("FirstName"), MI)).Tag = .Item("ID")
+            Dim lv As ListViewItem = listview.Items.Add(.Item("FULLNAME"))
             lv.SubItems.Add(.Item("monthly_amort"))
-            lv.SubItems.Add(.Item("first_date	"))
+            lv.SubItems.Add(.Item("first_date"))
             lv.SubItems.Add(.Item("maturity_date"))
         End With
     End Sub
@@ -475,10 +399,10 @@ Module SelectFromDatabase
         End Using
     End Sub
 
-    Friend Sub Recorded_Details(emp_id As String, datagrid As DataGridView, paydate As String, transac_name As String)
+    Friend Sub Recorded_Details(BIO_NO As String, datagrid As DataGridView, paydate As String, transac_name As String)
 
         datagrid.Rows.Clear()
-        Dim mysql_ As String = $"select * from RECORDED_ALLOW_DEDUC  where emp_id = '{emp_id}' and PAYDATE = '{paydate}' and TRANSAC_NAME = '{transac_name}'"
+        Dim mysql_ As String = $"select * from RECORDED_ALLOW_DEDUC  where BIO_NO = '{BIO_NO}' and PAYDATE = '{paydate}' and TRANSAC_NAME = '{transac_name}'"
         Using ds As DataSet = LoadSQL(mysql_, "RECORDED_ALLOW_DEDUC")
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
@@ -507,10 +431,10 @@ Module SelectFromDatabase
     End Sub
 
 
-    Friend Sub AllowanceDetails(emp_id As String, datagrid As DataGridView, sched As String)
+    Friend Sub AllowanceDetails(BIO_NO As String, datagrid As DataGridView, sched As String)
 
         datagrid.Rows.Clear()
-        Dim mysql_1 As String = $"select * from payroll_allowances  where emp_id = '{emp_id}' and ALLOWED = 'YES' and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
+        Dim mysql_1 As String = $"select * from payroll_allowances  where BIOMETRIC_NO = '{BIO_NO}' and ALLOWED = 'YES' and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
         Using ds As DataSet = LoadSQL(mysql_1, "payroll_allowances")
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
@@ -541,13 +465,13 @@ Module SelectFromDatabase
         End Using
     End Sub
 
-    Friend Sub DeductioneDetails_ORIG(emp_id As String, datagrid As DataGridView, sched As String)
+    Friend Sub DeductioneDetails_ORIG(BIO_NO As String, datagrid As DataGridView, sched As String)
 
         datagrid.Rows.Clear()
 
         'Dim sql_3 As String = $"Select * From PAYROLL_DEDUCTIONS WHERE EMP_ID = '{emp_id}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
 
-        Dim mysql_1 As String = $"Select * From PAYROLL_DEDUCTIONS WHERE EMP_ID = '{emp_id}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
+        Dim mysql_1 As String = $"Select * From PAYROLL_DEDUCTIONS WHERE BIO_NO = '{BIO_NO}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
         Using ds As DataSet = LoadSQL(mysql_1, "PAYROLL_DEDUCTIONS")
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
@@ -574,11 +498,11 @@ Module SelectFromDatabase
         End Using
     End Sub
 
-    Friend Sub DeductioneDetails_MODIFIED(EMP_ID As String, PAYDATE As String, datagrid As DataGridView, sched As String)
+    Friend Sub DeductioneDetails_MODIFIED(BIO_NO As String, PAYDATE As String, datagrid As DataGridView, sched As String)
 
         datagrid.Rows.Clear()
         Dim mysql_1 As String = $"Select * From MODIFIED_DEDUCTION A inner join PAYROLL_DEDUCTIONS B on A.m_deduc_id = B.id and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')
-                                            WHERE A.EMP_ID = '{EMP_ID}' and PAYDATE = '{PAYDATE}'"
+                                            WHERE A.BIO_NO = '{BIO_NO}' and PAYDATE = '{PAYDATE}'"
 
         Using ds As DataSet = LoadSQL(mysql_1, "MODIFIED_DEDUCTION")
             If ds.Tables(0).Rows.Count > 0 Then
@@ -637,7 +561,7 @@ Module SelectFromDatabase
     End Sub
 
     'Public Function GetFirst_Basic(biono As String, branchID As String, paydate As String) As Double 
-    Public Function GetFirst_Basic(EMP_ID As String, paydate As String) As Double
+    Public Function GetFirst_Basic(BIO_NO As String, paydate As String) As Double
         Dim first_Basic As Double
 
         Dim paydate_ As DateTime = Convert.ToDateTime(paydate)
@@ -646,7 +570,7 @@ Module SelectFromDatabase
         Dim first_payroll = New DateTime(paydate_.Year, paydate_.Month, 1)
         first_payroll = first_payroll.AddDays(14)
 
-        Dim sql As String = $"Select * FROM PAYROLL_PAYOUT where EMP_ID = '{EMP_ID}' and PAYDATE = '{first_payroll.ToString("d")}'"
+        Dim sql As String = $"Select * FROM PAYROLL_PAYOUT where BIO_NO = '{BIO_NO}' and PAYDATE = '{first_payroll.ToString("d")}'"
         Using ds As DataSet = LoadSQL(sql, "PAYROLL_PAYOUT")
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
@@ -661,12 +585,36 @@ Module SelectFromDatabase
         Return first_Basic
     End Function
 
-    Public Function GetMonthly_Basic(EMP_ID As String, paydate As String) As Double
-        Dim first_basic As Double = GetFirst_Basic(EMP_ID, paydate)
+    Public Function GetFirst_NoOfDays(bio_no As String, paydate As String) As Double
+        Dim first_Basic As Double
+
+        Dim paydate_ As DateTime = Convert.ToDateTime(paydate)
+        paydate_ = paydate_.ToString("d")
+
+        Dim first_payroll = New DateTime(paydate_.Year, paydate_.Month, 1)
+        first_payroll = first_payroll.AddDays(14)
+
+        Dim sql As String = $"Select * FROM PAYROLL_PAYOUT where EMP_ID = '{bio_no}' and PAYDATE = '{first_payroll.ToString("d")}'"
+        Using ds As DataSet = LoadSQL(sql, "PAYROLL_PAYOUT")
+            If ds.Tables(0).Rows.Count > 0 Then
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+                        first_Basic = .Item("TOTAL_BASIC")
+                    End With
+                Next
+            Else
+                first_Basic = 0
+            End If
+        End Using
+        Return first_Basic
+    End Function
+
+    Public Function GetMonthly_Basic(BIOMETRIC_ID As String, paydate As String) As Double
+        Dim first_basic As Double = GetFirst_Basic(BIOMETRIC_ID, paydate)
         Dim second_basic As Double = 0
         Dim monthly_Basic As Double = 0
 
-        Dim sqll As String = $"Select * FROM PAYROLL_PAYOUT where EMP_ID = '{EMP_ID}' and PAYDATE = '{paydate}'"
+        Dim sqll As String = $"Select * FROM PAYROLL_PAYOUT where BIOMETRIC_ID = '{BIOMETRIC_ID}' and PAYDATE = '{paydate}'"
         Using ds As DataSet = LoadSQL(sqll, "PAYROLL_PAYOUT")
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
@@ -709,10 +657,10 @@ Module SelectFromDatabase
         Return sss
     End Function
 
-    Public Function Get_LOAN_SSS(emp_id As String) As Double
+    Public Function Get_LOAN_SSS(bio_no As String) As Double
         Dim sssLoan As Double = 0
 
-        Dim mysql As String = $"Select * From PAYROLL_SSSLOAN WHERE emp_id = '{emp_id}' and STATUS is null"
+        Dim mysql As String = $"Select * From PAYROLL_SSSLOAN WHERE bio_no = '{bio_no}' and STATUS is null"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_SSSLOAN")
             If ds.Tables(0).Rows.Count > 0 Then
 
@@ -727,10 +675,10 @@ Module SelectFromDatabase
         Return sssLoan
     End Function
 
-    Public Function Get_LOAN_Pagibig(emp_id As String) As Double
+    Public Function Get_LOAN_Pagibig(bio_no As String) As Double
         Dim pagibigLoan As Double = 0
 
-        Dim mysql As String = $"Select * From PAYROLL_PAGIBIGLOAN WHERE EMP_ID = '{emp_id}' and STATUS is null"
+        Dim mysql As String = $"Select * From PAYROLL_PAGIBIGLOAN WHERE bio_no = '{bio_no}' and STATUS is null"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAGIBIGLOAN")
             If ds.Tables(0).Rows.Count > 0 Then
                 Dim dr As DataRow = ds.Tables(0).Rows(0)
@@ -988,19 +936,16 @@ Module SelectFromDatabase
 
         If searchName.Length <> 0 Then
 
-            mysql = $"Select * From PAYROLL_ATTENDANCE A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRICID 
-                                inner join TBL_BRANCH C on C.ID = B.BRANCH_ID where A.PAYDATE = '{Paydate}' and ("
+            mysql = $"Select * From PAYROLL_ATTENDANCE A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIOMETRICID 
+                                 where A.PAYDATE = '{Paydate}' and ("
 
             For Each name In strWords
-                mysql &= $"{vbCr}UPPER(A.BIOMETRICID) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(firstname) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(lastname) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(EMP_POSITION) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(BRANCHNAME) LIKE UPPER('%{name}%') )"
+                mysql &= $"{vbCr}UPPER(BIOMETRICID) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(FULLNAME) LIKE UPPER('%{name}%')) ORDER BY FULLNAME ASC "
             Next
 
         Else
-            mysql = $"Select * From PAYROLL_ATTENDANCE A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRICID where A.PAYDATE = '{Paydate}'"
+            mysql = $"Select * From PAYROLL_ATTENDANCE A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIOMETRICID where A.PAYDATE = '{Paydate}'ORDER BY FULLNAME ASC "
         End If
 
 
@@ -1024,7 +969,7 @@ Module SelectFromDatabase
             Dim rowId As Integer = datagrid.Rows.Add()
             Dim row As DataGridViewRow = datagrid.Rows(rowId)
             row.Cells("BIOID_DGVV").Value = .Item("BIOMETRICID")
-            row.Cells("Name_DGVV").Value = .Item("LASTNAME") & ", " & .Item("FIRSTNAME") & " " & .Item("MIDDLENAME")
+            row.Cells("Name_DGVV").Value = .Item("FULLNAME")
             row.Cells("Name_DGVV").Tag = .Item("ID")
             row.Cells("PRESENT_DGVV").Value = .Item("PRESENT_DAYS")
 
@@ -1152,20 +1097,19 @@ Module SelectFromDatabase
 
     Public Sub Payout_Details(bioNo As String, name As TextBox, ratee As TextBox)
 
-        Dim mysql As String = "Select * From PAYROLL_EMPLOYEE WHERE BIO_NO= '" & bioNo & "'"
+        Dim mysql As String = "Select * From PAYROLL_EMPLOYEE WHERE BIO_NO = '" & bioNo & "'"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
 
             If ds.Tables(0).Rows.Count > 0 Then
 
                 Dim data As DataRow = ds.Tables(0).Rows(0)
-
                 With data
-
                     ratee.Text = IIf(IsDBNull(.Item("RATE_DAILY")), 0, .Item("RATE_DAILY"))
                     ratee.Tag = .Item("BRANCH_CODE")
                     name.Text = .Item("FULLNAME")
                     name.Tag = .Item("ID")
                 End With
+
             Else
                 name.Text = ""
             End If
@@ -1213,21 +1157,13 @@ Module SelectFromDatabase
 
     Public Sub GetName(BiometricID_TXT As String, name As TextBox)
 
-        Dim mysql As String = "Select * From tbl_Employee WHERE BIOMETRICID= '" & BiometricID_TXT & "'"
-        Using ds As DataSet = LoadSQL(mysql, "tbl_Employee")
+        Dim mysql As String = "Select * From PAYROLL_EMPLOYEE WHERE BIO_NO= '" & BiometricID_TXT & "'"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
             If ds.Tables(0).Rows.Count > 0 Then
                 Dim data As DataRow = ds.Tables(0).Rows(0)
                 With data
 
-                    Dim MI As String
-
-                    If String.IsNullOrEmpty(.Item("MIDDLENAME")) Then
-                        MI = ""
-                    Else
-                        MI = .Item("MIDDLENAME").Substring(0, 1) & "."
-                    End If
-
-                    name.Text = .Item("FIRSTNAME") & " " & MI & " " & .Item("LASTNAME") & " " & .Item("SUFFIX")
+                    name.Text = .Item("FULLNAME")
                     name.Tag = .Item("ID")
 
                 End With
@@ -1237,17 +1173,17 @@ Module SelectFromDatabase
         End Using
     End Sub
 
-    Public Sub Get_Branch_ID(BranchName As String, combo As ComboBox)
-        Dim mysql As String = "Select * FROM tbl_Branch where BRANCHNAME = '" & BranchName & "'"
-        Using ds As DataSet = LoadSQL(mysql)
-            If ds.Tables(0).Rows.Count > 0 Then
-                Dim dr As DataRow = ds.Tables(0).Rows(0)
-                With dr
-                    combo.Tag = .Item("ID")
-                End With
-            End If
-        End Using
-    End Sub
+    'Public Sub Get_Branch_ID(BranchName As String, combo As ComboBox)
+    '    Dim mysql As String = "Select * FROM tbl_Branch where BRANCHNAME = '" & BranchName & "'"
+    '    Using ds As DataSet = LoadSQL(mysql)
+    '        If ds.Tables(0).Rows.Count > 0 Then
+    '            Dim dr As DataRow = ds.Tables(0).Rows(0)
+    '            With dr
+    '                combo.Tag = .Item("ID")
+    '            End With
+    '        End If
+    '    End Using
+    'End Sub
 
     Friend Sub Lists_Allowance(LV As ListView, Optional searchName As String = "")
 
@@ -1259,18 +1195,17 @@ Module SelectFromDatabase
 
         If searchName.Length <> 0 Then
 
-            mysql = "select A.*, A.id as allow_id, B.* from PAYROLL_ALLOWANCES A inner join TBL_EMPLOYEE B on B.ID = A.EMP_ID where ALLOWED = 'YES' and "
+            mysql = "select A.*, A.id as allow_id, B.* from PAYROLL_ALLOWANCES A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIOMETRIC_NO where ALLOWED = 'YES' and ("
 
             For Each name In strWords
                 mysql &= $"{vbCr}UPPER(BIOMETRIC_NO) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(firstname) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(lastname) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(AMOUNT) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(FIX) LIKE UPPER('%{name}%') ORDER BY LASTNAME ASC "
+                mysql &= $"{vbCr}UPPER(FULLNAME) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(BRANCH_CODE) LIKE UPPER('%{name}%')) ORDER BY FULLNAME ASC "
             Next
 
         Else
-            mysql = "select A.*, A.id as allow_id, B.* from PAYROLL_ALLOWANCES A inner join TBL_EMPLOYEE B on B.ID = A.EMP_ID where ALLOWED = 'YES' ORDER BY LASTNAME ASC "
+            mysql = "select A.*, A.id as allow_id, B.* from PAYROLL_ALLOWANCES A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIOMETRIC_NO where ALLOWED = 'YES' ORDER BY FULLNAME ASC "
         End If
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ALLOWANCES")
@@ -1295,18 +1230,8 @@ Module SelectFromDatabase
                 sched = .Item("SCHEDULE")
             End If
 
-
-            Dim MI As String
-
-            If String.IsNullOrEmpty(.Item("MIDDLENAME")) Then
-                MI = ""
-            Else
-                MI = .Item("MIDDLENAME").Substring(0, 1) & "."
-            End If
-
             Dim effectivity As DateTime = .Item("EFFECTIVE_DATE")
-            Dim i As ListViewItem = LV.Items.Add(.Item("LASTNAME") & ", " & .Item("FIRSTNAME") & " " & MI)
-            i.Tag = .Item("EMP_ID")
+            Dim i As ListViewItem = LV.Items.Add(.Item("FULLNAME"))
             i.SubItems.Add(.Item("CATEGORY")).Tag = .Item("allow_id")
             i.SubItems.Add(sched)
             i.SubItems.Add(effectivity.ToString("MMM dd, yyyy"))
@@ -1324,18 +1249,17 @@ Module SelectFromDatabase
 
         If searchName.Length <> 0 Then
 
-            'mysql = "select * from PAYROLL_DEDUCTIONS A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRIC_NO and B.BRANCH_ID = A.BRANCHID where ALLOWED is null  and "
-            mysql = "select A.*, B.*, B.id as emp_id from PAYROLL_DEDUCTIONS A inner join TBL_EMPLOYEE B on B.id = A.emp_id where A.STATUS is null  and "
+            mysql = "select A.* A.id as deduc_id, B.* from PAYROLL_DEDUCTIONS A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIO_NO where A.STATUS is null  and "
 
             For Each name In strWords
-                mysql &= $"{vbCr}UPPER(BIOMETRIC_NO) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(CATEGORY) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(firstname) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(lastname) LIKE UPPER('%{name}%') ORDER BY LASTNAME ASC"
+                mysql &= $"{vbCr}UPPER(BIO_NO) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(FULLNAME) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(BRANCH_CODE) LIKE UPPER('%{name}%')) ORDER BY FULLNAME ASC "
             Next
 
         Else
-            mysql = "select A.*,B.*, B.id as emp_id from PAYROLL_DEDUCTIONS A inner join TBL_EMPLOYEE B on B.id = A.emp_id where A.STATUS is null  ORDER BY LASTNAME ASC"
+            mysql = "select A.*,B.* from PAYROLL_DEDUCTIONS A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIO_NO where A.STATUS is null  ORDER BY FULLNAME ASC"
         End If
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_DEDUCTIONS")
@@ -1353,9 +1277,9 @@ Module SelectFromDatabase
     Private Sub AddRow_Deduction(ByVal dr As DataRow, LV As ListView)
 
         With dr
-            Dim i As ListViewItem = LV.Items.Add(.Item("LASTNAME") & ", " & .Item("FIRSTNAME") & " " & .Item("MIDDLENAME"))
-            i.SubItems.Add(.Item("CATEGORY")).Tag = .Item("emp_id")
-            i.SubItems.Add(.Item("TOTAL_AMOUNT")).Tag = .Item("id")
+            Dim i As ListViewItem = LV.Items.Add(.Item("FULLNAME"))
+            i.SubItems.Add(.Item("CATEGORY"))
+            i.SubItems.Add(.Item("TOTAL_AMOUNT")).Tag = .Item("deduc_id")
             i.SubItems.Add(.Item("NO_OF_GIVES"))
             i.SubItems.Add(.Item("AMOUNT_PER_GIVE"))
             i.SubItems.Add(.Item("SCHEDULE"))
@@ -1497,7 +1421,7 @@ Module SelectFromDatabase
                 mysql &= $"{vbCr}UPPER(BRANCH_CODE) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(FULLNAME) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(BIO_NO) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(EMP_STATUS) LIKE UPPER('%{name}%') ORDER BY COMPANY, BRANCH_CODE ASC "
+                mysql &= $"{vbCr}UPPER(EMP_STATUS) LIKE UPPER('%{name}%')) ORDER BY COMPANY, BRANCH_CODE ASC "
             Next
 
         Else
@@ -1529,37 +1453,6 @@ Module SelectFromDatabase
             i.SubItems.Add(IIf(IsDBNull(.Item("RATE_DAILY")), "", .Item("RATE_DAILY")))
         End With
 
-        'With dr
-        '    Dim i As ListViewItem = listview.Items.Add(.Item("BRANCHNAME"))
-        '    i.SubItems.Add(.Item("LASTNAME") & ", " & .Item("FIRSTNAME") & " " & .Item("MIDDLENAME")).tag = .Item("BIOMETRICID")
-        '    i.SubItems.Add(IIf(IsDBNull(.Item("EMP_POSITION")), "", .Item("EMP_POSITION")))
-        '    i.SubItems.Add(IIf(IsDBNull(.Item("RATE")), "", .Item("RATE")))
-        'End With
-
-    End Sub
-
-    Private Sub AddRow_PAYOUT(ByVal dr As DataRow, listview As ListView)
-
-        With dr
-            Dim i As ListViewItem = listview.Items.Add(.Item("LASTNAME") & ", " & .Item("FIRSTNAME") & " " & .Item("MIDDLENAME"))
-            'i.SubItems.Add(.Item("TOTAL_BASIC")).Tag = .Item("BIOMETRIC_ID")
-            'i.SubItems.Add(.Item("TOTAL_OVERTIME")).Tag = .Item("BRANCH_ID")
-            'i.SubItems.Add(.Item("TOTAL_LATE_UT"))
-            i.SubItems.Add(CDbl(.Item("GROSS_AMOUNT")).ToString("N")).Tag = .Item("BIOMETRIC_ID")
-            i.SubItems.Add(CDbl(.Item("SSS_COMP")).ToString("N")).Tag = .Item("BRANCH_ID")
-            i.SubItems.Add(CDbl(.Item("PAGIBIG_COMP")).ToString("N"))
-            i.SubItems.Add(CDbl(.Item("PHILHEALTH_COMP")).ToString("N"))
-            'i.SubItems.Add(CDbl(.Item("TAXABLE")).ToString("N"))
-            i.SubItems.Add(CDbl(.Item("TAX_WHELD")).ToString("N"))
-            i.SubItems.Add(CDbl(.Item("NET_TAX_COMP")).ToString("N"))
-            i.SubItems.Add(CDbl(.Item("SSS_LOAN")).ToString("N"))
-            i.SubItems.Add(CDbl(.Item("PAGIBIG_LOAN")).ToString("N"))
-            i.SubItems.Add(CDbl(.Item("TOTAL_ALLOWANCE")).ToString("N"))
-            i.SubItems.Add(CDbl(.Item("TOTAL_DEDUCTION")).ToString("N"))
-            i.SubItems.Add(CDbl(.Item("NET_PAY")).ToString("N")).Tag = .Item("emp_id")
-
-        End With
-
     End Sub
 
     Friend Sub Lists_Payout(LV As ListView, paydate As String, Optional searchName As String = "")
@@ -1572,18 +1465,19 @@ Module SelectFromDatabase
 
         If searchName.Length <> 0 Then
 
-            mysql = $"Select A.*, B.*, B.id as emp_id From PAYROLL_PAYOUT A inner join tbl_employee B on B.ID = A.EMP_ID where paydate = '{paydate}' and ( "
+            mysql = $"Select * From PAYROLL_PAYOUT A 
+                                        inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIOMETRIC_ID 
+                                        where paydate = '{paydate}' and ( "
 
             For Each name In strWords
                 mysql &= $"{vbCr}UPPER(BIOMETRIC_ID) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(firstname) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(lastname) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(EMP_POSITION) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(rate) LIKE UPPER('%{name}%') )"
+                mysql &= $"{vbCr}UPPER(FULLNAME) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(BRANCH_CODE) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%')) ORDER BY FULLNAME"
             Next
 
         Else
-            mysql = $"Select A.*, B.*, B.id as emp_id From PAYROLL_PAYOUT A inner join tbl_employee B on B.ID = A.EMP_ID where paydate ='{paydate}'"
+            mysql = $"Select * From PAYROLL_PAYOUT A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIOMETRIC_ID where paydate ='{paydate}'  ORDER BY FULLNAME"
         End If
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
@@ -1598,6 +1492,31 @@ Module SelectFromDatabase
         End Using
 
     End Sub
+
+    Private Sub AddRow_PAYOUT(ByVal dr As DataRow, listview As ListView)
+
+        With dr
+            Dim i As ListViewItem = listview.Items.Add(.Item("FULLNAME"))
+            'i.SubItems.Add(.Item("TOTAL_BASIC")).Tag = .Item("BIOMETRIC_ID")
+            'i.SubItems.Add(.Item("TOTAL_OVERTIME")).Tag = .Item("BRANCH_ID")
+            'i.SubItems.Add(.Item("TOTAL_LATE_UT"))
+            i.SubItems.Add(CDbl(.Item("GROSS_AMOUNT")).ToString("N")).Tag = .Item("BIOMETRIC_ID")
+            i.SubItems.Add(CDbl(.Item("SSS_COMP")).ToString("N"))
+            i.SubItems.Add(CDbl(.Item("PAGIBIG_COMP")).ToString("N"))
+            i.SubItems.Add(CDbl(.Item("PHILHEALTH_COMP")).ToString("N"))
+            'i.SubItems.Add(CDbl(.Item("TAXABLE")).ToString("N"))
+            i.SubItems.Add(CDbl(.Item("TAX_WHELD")).ToString("N"))
+            i.SubItems.Add(CDbl(.Item("NET_TAX_COMP")).ToString("N"))
+            i.SubItems.Add(CDbl(.Item("SSS_LOAN")).ToString("N"))
+            i.SubItems.Add(CDbl(.Item("PAGIBIG_LOAN")).ToString("N"))
+            i.SubItems.Add(CDbl(.Item("TOTAL_ALLOWANCE")).ToString("N"))
+            i.SubItems.Add(CDbl(.Item("TOTAL_DEDUCTION")).ToString("N"))
+            i.SubItems.Add(CDbl(.Item("NET_PAY")).ToString("N"))
+
+        End With
+
+    End Sub
+
 
     Friend Sub progressBarStart(ByVal objectt As Integer)
         frmMainForm.AppProgressBar.Maximum = objectt
@@ -1738,7 +1657,7 @@ Module SelectFromDatabase
 
         If searchName.Length <> 0 Then
 
-            mysql = "select * from PAYROLL_EMPLOYEE where EMP_STATUS = 'ACTIVE' and "
+            mysql = "select * from PAYROLL_EMPLOYEE where EMP_STATUS = 'ACTIVE' and ("
 
             For Each name In strWords
                 mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%') OR "
@@ -1746,7 +1665,7 @@ Module SelectFromDatabase
                 mysql &= $"{vbCr}UPPER(FULLNAME) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(BIO_NO) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(EMP_STATUS) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(EMAIL_ADD) LIKE UPPER('%{name}%') ORDER BY COMPANY, BRANCH_CODE ASC "
+                mysql &= $"{vbCr}UPPER(EMAIL_ADD) LIKE UPPER('%{name}%')) ORDER BY COMPANY, BRANCH_CODE ASC "
             Next
 
         Else

@@ -86,7 +86,6 @@ Public Class frmNewEmployee
 
             Lists_Employees(lvEmployee)
 
-            Import_BTN.Enabled = False
             Path_TXT.Clear()
             MyConnection.Close()
 

@@ -859,6 +859,7 @@
                 </TablixMember>
                 <TablixMember>
                   <Group Name="Details1" />
+                  <KeepTogether>true</KeepTogether>
                 </TablixMember>
                 <TablixMember>
                   <KeepWithGroup>Before</KeepWithGroup>
@@ -891,6 +892,7 @@
   </Body>
   <Width>4.25in</Width>
   <Page>
+    <PageHeight>13in</PageHeight>
     <TopMargin>0.3in</TopMargin>
     <BottomMargin>0.3in</BottomMargin>
     <Columns>2</Columns>

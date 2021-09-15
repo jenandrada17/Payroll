@@ -39,13 +39,13 @@
 #Region "NEW Employee Details"
     Public Property BRANCH_CODE() As String
 
-    Public Property BIO_NO() As String
-
-    Public Property EMAIL_ADD() As String
-
     Public Property DAILY_RATE() As String
-#End Region
 
+    Public Property MONTHLY_RATE() As String
+
+    Public Property FIX() As String
+
+#End Region
 
     Friend Sub LoadEmployee_New(ByVal bioNo As Integer)
         Dim mysql As String = "Select * From PAYROLL_EMPLOYEE where BIO_NO = '" & bioNo & "'"
@@ -60,10 +60,11 @@
                     Company = .Item("Company")
                     BRANCH_CODE = IIf(IsDBNull(.Item("BRANCH_CODE")), "", .Item("BRANCH_CODE"))
                     Fullname = .Item("Fullname")
-                    BIO_NO = .Item("BIO_NO")
-                    EMAIL_ADD = IIf(IsDBNull(.Item("EMAIL_ADD")), "", .Item("EMAIL_ADD"))
-                    'DAILY_RATE = IIf(IsDBNull(.Item("DAILY_RATE")), "", .Item("DAILY_RATE"))
+                    BiometricID = .Item("BIO_NO")
+                    EmailAdd = IIf(IsDBNull(.Item("EMAIL_ADD")), "", .Item("EMAIL_ADD"))
+                    'FIX = IIf(IsDBNull(.Item("FIX")), "NO", .Item("FIX"))
                     DAILY_RATE = IIf(IsDBNull(.Item("RATE_DAILY")), "", .Item("RATE_DAILY"))
+                    MONTHLY_RATE = IIf(IsDBNull(.Item("RATE_MONTHLY")), "", .Item("RATE_MONTHLY"))
 
                 End With
             End If

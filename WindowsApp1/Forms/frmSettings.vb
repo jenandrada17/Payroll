@@ -170,6 +170,7 @@ Public Class frmSettings
         Rate_BioNo_TXT.Text = ""
         Rate_Employee_TXT.Text = ""
         Rate_EmpAmount_TXT.Text = ""
+        MonthlyRate_TXT.Text = ""
     End Sub
 
     Private Sub Rate_BioNo_TXT_TextChanged(sender As Object, e As EventArgs) Handles Rate_BioNo_TXT.TextChanged
@@ -182,9 +183,9 @@ Public Class frmSettings
 
     End Sub
 
-    Private Sub Rate_Branch_ComboB_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Rate_Branch_ComboB.SelectedIndexChanged
-        Get_Branch_ID(Rate_Branch_ComboB.SelectedItem, Rate_Branch_ComboB)
-    End Sub
+    'Private Sub Rate_Branch_ComboB_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Rate_Branch_ComboB.SelectedIndexChanged
+    'Get_Branch_ID(Rate_Branch_ComboB.SelectedItem, Rate_Branch_ComboB)
+    'End Sub
 
     Private Sub Rate_Branch_BTN_Click(sender As Object, e As EventArgs) Handles Rate_Branch_BTN.Click
         If Rate_Branch_ComboB.SelectedIndex >= 0 And Not Rate_BranchAmount_TXT.Text = "" Then
@@ -199,8 +200,8 @@ Public Class frmSettings
         End If
     End Sub
 
-    Private Sub Rate_BranchAmount_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Rate_EmpAmount_TXT.KeyPress,
-                                                Rate_BranchAmount_TXT.KeyPress, Rate_BioNo_TXT.KeyPress, Allow_Amount_TXT.KeyPress, DE_NoOfGives_TXT.KeyPress,
+    Private Sub Rate_BranchAmount_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Rate_BranchAmount_TXT.KeyPress,
+                                                Rate_BioNo_TXT.KeyPress, Allow_Amount_TXT.KeyPress, DE_NoOfGives_TXT.KeyPress,
                                                 DE_AmountGive_TXT.KeyPress, DE_Total_TXT.KeyPress
 
         If e.KeyChar <> ChrW(Keys.Back) Then
@@ -609,15 +610,16 @@ Public Class frmSettings
 
             If tabName = "RATE" Then
 
-                Rate_BioNo_TXT.Text = .BIO_NO
+                Rate_BioNo_TXT.Text = .BiometricID
                 Rate_BioNo_TXT.Tag = .BRANCH_CODE
                 Rate_Employee_TXT.Text = .Fullname
                 Rate_Employee_TXT.Tag = .EMP_ID
+                MonthlyRate_TXT.Text = .MONTHLY_RATE
 
             ElseIf tabName = "ALLOWANCE" Then
 
                 Allow_Name_TXT.Text = .Fullname
-                Allow_Name_TXT.Tag = .BIO_NO
+                Allow_Name_TXT.Tag = .BiometricID
                 Allow_SearchEmp_BTN.Tag = .BRANCH_CODE
                 Label14.Tag = .EMP_ID
                 Settings_Tab.SelectedIndex = 2
@@ -627,7 +629,7 @@ Public Class frmSettings
 
                 DE_Name_TXT.Text = .Fullname
                 DE_Category_Combo.Tag = .EMP_ID
-                DE_Name_TXT.Tag = .BIO_NO
+                DE_Name_TXT.Tag = .BiometricID
                 DE_SearchEmp_BTN.Tag = .BRANCH_CODE
                 Settings_Tab.SelectedIndex = 3
                 DE_Category_Combo.SelectedItem = category
@@ -637,4 +639,48 @@ Public Class frmSettings
         End With
     End Sub
 
+    Private Sub Daily_BTN_Click(sender As Object, e As EventArgs) Handles Daily_BTN.Click
+        Rate_EmpAmount_TXT.ReadOnly = False
+        MonthlyRate_TXT.ReadOnly = True
+        Rate_EmpAmount_TXT.Text = ""
+        MonthlyRate_TXT.Text = ""
+    End Sub
+
+    Private Sub Monthly_BTN_Click(sender As Object, e As EventArgs) Handles Monthly_BTN.Click
+        MonthlyRate_TXT.ReadOnly = False
+        Rate_EmpAmount_TXT.ReadOnly = True
+        Rate_EmpAmount_TXT.Text = ""
+        MonthlyRate_TXT.Text = ""
+    End Sub
+
+    Private Sub Rate_EmpAmount_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Rate_EmpAmount_TXT.KeyPress
+
+        If e.KeyChar <> ChrW(Keys.Back) Then
+
+            If Not Char.IsNumber(e.KeyChar) AndAlso Not Char.IsControl(e.KeyChar) AndAlso Not e.KeyChar = "." Then
+                e.Handled = True
+            End If
+        End If
+
+    End Sub
+
+    Private Sub Rate_EmpAmount_TXT_TextChanged(sender As Object, e As EventArgs) Handles Rate_EmpAmount_TXT.TextChanged
+        If Rate_EmpAmount_TXT.ReadOnly = False Then
+            If Rate_EmpAmount_TXT.Text <> Nothing Then
+                MonthlyRate_TXT.Text = Convert.ToDouble(Rate_EmpAmount_TXT.Text) * 26
+            Else
+                MonthlyRate_TXT.Text = ""
+            End If
+        End If
+    End Sub
+
+    Private Sub MonthlyRate_TXT_TextChanged(sender As Object, e As EventArgs) Handles MonthlyRate_TXT.TextChanged
+        If MonthlyRate_TXT.ReadOnly = False Then
+            If MonthlyRate_TXT.Text <> Nothing Then
+                Rate_EmpAmount_TXT.Text = Convert.ToDouble(MonthlyRate_TXT.Text) / 26
+            Else
+                Rate_EmpAmount_TXT.Text = ""
+            End If
+        End If
+    End Sub
 End Class

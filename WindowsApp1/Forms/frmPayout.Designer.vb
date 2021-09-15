@@ -149,9 +149,12 @@ Partial Class frmPayout
         Me.Prev_Amount_lbl = New System.Windows.Forms.Label()
         Me.Details_Save_BTN = New System.Windows.Forms.Button()
         Me.TabPage4 = New System.Windows.Forms.TabPage()
+        Me.Company_RadioB = New System.Windows.Forms.RadioButton()
         Me.FlowLayoutPanel1 = New System.Windows.Forms.FlowLayoutPanel()
         Me.Branch_group = New System.Windows.Forms.GroupBox()
         Me.Branch_ComboB = New System.Windows.Forms.ComboBox()
+        Me.Company_group = New System.Windows.Forms.GroupBox()
+        Me.Company_ComboB = New System.Windows.Forms.ComboBox()
         Me.Employee_GroupB = New System.Windows.Forms.GroupBox()
         Me.Preview_BTN = New System.Windows.Forms.Button()
         Me.Email_TXT = New System.Windows.Forms.TextBox()
@@ -180,6 +183,7 @@ Partial Class frmPayout
         Me.TabPage4.SuspendLayout()
         Me.FlowLayoutPanel1.SuspendLayout()
         Me.Branch_group.SuspendLayout()
+        Me.Company_group.SuspendLayout()
         Me.Employee_GroupB.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -1314,7 +1318,7 @@ Partial Class frmPayout
         Me.Allowance_grid.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None
         DataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
         DataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle7.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle7.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         DataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText
         DataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight
         DataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText
@@ -1325,7 +1329,7 @@ Partial Class frmPayout
         Me.Allowance_grid.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.grid_1, Me.grid_2})
         DataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
         DataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle9.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle9.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         DataGridViewCellStyle9.ForeColor = System.Drawing.Color.Black
         DataGridViewCellStyle9.SelectionBackColor = System.Drawing.Color.White
         DataGridViewCellStyle9.SelectionForeColor = System.Drawing.Color.Black
@@ -1391,7 +1395,7 @@ Partial Class frmPayout
         Me.Deduction_grid.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None
         DataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
         DataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle10.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle10.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         DataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.WindowText
         DataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight
         DataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText
@@ -1402,7 +1406,7 @@ Partial Class frmPayout
         Me.Deduction_grid.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.DataGridViewTextBoxColumn1, Me.DataGridViewTextBoxColumn2, Me.Column1, Me.Deduc_BTN})
         DataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
         DataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle12.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle12.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         DataGridViewCellStyle12.ForeColor = System.Drawing.Color.Black
         DataGridViewCellStyle12.SelectionBackColor = System.Drawing.Color.White
         DataGridViewCellStyle12.SelectionForeColor = System.Drawing.Color.Black
@@ -1494,6 +1498,7 @@ Partial Class frmPayout
         '
         'TabPage4
         '
+        Me.TabPage4.Controls.Add(Me.Company_RadioB)
         Me.TabPage4.Controls.Add(Me.FlowLayoutPanel1)
         Me.TabPage4.Controls.Add(Me.Label14)
         Me.TabPage4.Controls.Add(Me.BodyText_RichB)
@@ -1511,13 +1516,26 @@ Partial Class frmPayout
         Me.TabPage4.Text = "    Payslip    "
         Me.TabPage4.UseVisualStyleBackColor = True
         '
+        'Company_RadioB
+        '
+        Me.Company_RadioB.AutoSize = True
+        Me.Company_RadioB.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Company_RadioB.Location = New System.Drawing.Point(28, 57)
+        Me.Company_RadioB.Name = "Company_RadioB"
+        Me.Company_RadioB.Size = New System.Drawing.Size(113, 29)
+        Me.Company_RadioB.TabIndex = 107
+        Me.Company_RadioB.TabStop = True
+        Me.Company_RadioB.Text = "Per Company"
+        Me.Company_RadioB.UseVisualStyleBackColor = True
+        '
         'FlowLayoutPanel1
         '
         Me.FlowLayoutPanel1.Controls.Add(Me.Branch_group)
+        Me.FlowLayoutPanel1.Controls.Add(Me.Company_group)
         Me.FlowLayoutPanel1.Controls.Add(Me.Employee_GroupB)
-        Me.FlowLayoutPanel1.Location = New System.Drawing.Point(12, 221)
+        Me.FlowLayoutPanel1.Location = New System.Drawing.Point(12, 213)
         Me.FlowLayoutPanel1.Name = "FlowLayoutPanel1"
-        Me.FlowLayoutPanel1.Size = New System.Drawing.Size(430, 224)
+        Me.FlowLayoutPanel1.Size = New System.Drawing.Size(430, 295)
         Me.FlowLayoutPanel1.TabIndex = 106
         '
         'Branch_group
@@ -1542,6 +1560,29 @@ Partial Class frmPayout
         Me.Branch_ComboB.TabIndex = 8
         Me.Branch_ComboB.Text = "   Select Branch"
         '
+        'Company_group
+        '
+        Me.Company_group.Controls.Add(Me.Company_ComboB)
+        Me.Company_group.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Company_group.Location = New System.Drawing.Point(3, 83)
+        Me.Company_group.Name = "Company_group"
+        Me.Company_group.Size = New System.Drawing.Size(416, 74)
+        Me.Company_group.TabIndex = 76
+        Me.Company_group.TabStop = False
+        Me.Company_group.Text = "Per Company"
+        Me.Company_group.Visible = False
+        '
+        'Company_ComboB
+        '
+        Me.Company_ComboB.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Company_ComboB.FormattingEnabled = True
+        Me.Company_ComboB.Items.AddRange(New Object() {"PHOTO", "P&G UY", "DALTON", "PERFECOM", "HEAD OFFICE"})
+        Me.Company_ComboB.Location = New System.Drawing.Point(11, 28)
+        Me.Company_ComboB.Name = "Company_ComboB"
+        Me.Company_ComboB.Size = New System.Drawing.Size(319, 33)
+        Me.Company_ComboB.TabIndex = 8
+        Me.Company_ComboB.Text = "   Select Company"
+        '
         'Employee_GroupB
         '
         Me.Employee_GroupB.Controls.Add(Me.Preview_BTN)
@@ -1549,7 +1590,7 @@ Partial Class frmPayout
         Me.Employee_GroupB.Controls.Add(Me.Employee_TXT)
         Me.Employee_GroupB.Controls.Add(Me.EmpSelect_BTN)
         Me.Employee_GroupB.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Employee_GroupB.Location = New System.Drawing.Point(3, 83)
+        Me.Employee_GroupB.Location = New System.Drawing.Point(3, 163)
         Me.Employee_GroupB.Name = "Employee_GroupB"
         Me.Employee_GroupB.Size = New System.Drawing.Size(416, 119)
         Me.Employee_GroupB.TabIndex = 88
@@ -1636,7 +1677,7 @@ Partial Class frmPayout
         '
         Me.Employee_RadioB.AutoSize = True
         Me.Employee_RadioB.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Employee_RadioB.Location = New System.Drawing.Point(28, 82)
+        Me.Employee_RadioB.Location = New System.Drawing.Point(213, 57)
         Me.Employee_RadioB.Name = "Employee_RadioB"
         Me.Employee_RadioB.Size = New System.Drawing.Size(114, 29)
         Me.Employee_RadioB.TabIndex = 101
@@ -1648,7 +1689,7 @@ Partial Class frmPayout
         '
         Me.Branch_RadioB.AutoSize = True
         Me.Branch_RadioB.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Branch_RadioB.Location = New System.Drawing.Point(28, 47)
+        Me.Branch_RadioB.Location = New System.Drawing.Point(213, 22)
         Me.Branch_RadioB.Name = "Branch_RadioB"
         Me.Branch_RadioB.Size = New System.Drawing.Size(97, 29)
         Me.Branch_RadioB.TabIndex = 100
@@ -1661,7 +1702,7 @@ Partial Class frmPayout
         Me.All_RadioB.AutoSize = True
         Me.All_RadioB.Checked = True
         Me.All_RadioB.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.All_RadioB.Location = New System.Drawing.Point(28, 12)
+        Me.All_RadioB.Location = New System.Drawing.Point(28, 22)
         Me.All_RadioB.Name = "All_RadioB"
         Me.All_RadioB.Size = New System.Drawing.Size(45, 29)
         Me.All_RadioB.TabIndex = 99
@@ -1673,7 +1714,7 @@ Partial Class frmPayout
         '
         Me.Label21.AutoSize = True
         Me.Label21.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label21.Location = New System.Drawing.Point(20, 140)
+        Me.Label21.Location = New System.Drawing.Point(14, 148)
         Me.Label21.Name = "Label21"
         Me.Label21.Size = New System.Drawing.Size(53, 25)
         Me.Label21.TabIndex = 98
@@ -1683,9 +1724,9 @@ Partial Class frmPayout
         '
         Me.Payslip_paydate_Combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Payslip_paydate_Combo.FormattingEnabled = True
-        Me.Payslip_paydate_Combo.Location = New System.Drawing.Point(25, 168)
+        Me.Payslip_paydate_Combo.Location = New System.Drawing.Point(73, 148)
         Me.Payslip_paydate_Combo.Name = "Payslip_paydate_Combo"
-        Me.Payslip_paydate_Combo.Size = New System.Drawing.Size(319, 33)
+        Me.Payslip_paydate_Combo.Size = New System.Drawing.Size(272, 33)
         Me.Payslip_paydate_Combo.TabIndex = 97
         Me.Payslip_paydate_Combo.Text = "   Select Date"
         '
@@ -1721,6 +1762,7 @@ Partial Class frmPayout
         Me.TabPage4.PerformLayout()
         Me.FlowLayoutPanel1.ResumeLayout(False)
         Me.Branch_group.ResumeLayout(False)
+        Me.Company_group.ResumeLayout(False)
         Me.Employee_GroupB.ResumeLayout(False)
         Me.Employee_GroupB.PerformLayout()
         Me.ResumeLayout(False)
@@ -1865,4 +1907,7 @@ Partial Class frmPayout
     Friend WithEvents Column1 As DataGridViewTextBoxColumn
     Friend WithEvents Deduc_BTN As DataGridViewButtonColumn
     Friend WithEvents Label23 As Label
+    Friend WithEvents Company_RadioB As RadioButton
+    Friend WithEvents Company_group As GroupBox
+    Friend WithEvents Company_ComboB As ComboBox
 End Class

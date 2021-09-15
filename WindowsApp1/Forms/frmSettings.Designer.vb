@@ -34,8 +34,11 @@ Partial Class frmSettings
         Me.Rate_Search_TXT = New System.Windows.Forms.TextBox()
         Me.Rate_Search_BTN = New System.Windows.Forms.Button()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
+        Me.Monthly_BTN = New System.Windows.Forms.Button()
+        Me.Daily_BTN = New System.Windows.Forms.Button()
+        Me.Label12 = New System.Windows.Forms.Label()
+        Me.MonthlyRate_TXT = New System.Windows.Forms.TextBox()
         Me.Rate_EmpClear_BTN = New System.Windows.Forms.Button()
-        Me.Label10 = New System.Windows.Forms.Label()
         Me.Label9 = New System.Windows.Forms.Label()
         Me.Label8 = New System.Windows.Forms.Label()
         Me.Rate_BioNo_TXT = New System.Windows.Forms.TextBox()
@@ -260,7 +263,7 @@ Partial Class frmSettings
         '
         'ColumnHeader20
         '
-        Me.ColumnHeader20.Text = "Rate"
+        Me.ColumnHeader20.Text = "Daily Rate"
         Me.ColumnHeader20.Width = 80
         '
         'Rate_Search_TXT
@@ -283,8 +286,11 @@ Partial Class frmSettings
         '
         'GroupBox5
         '
+        Me.GroupBox5.Controls.Add(Me.Monthly_BTN)
+        Me.GroupBox5.Controls.Add(Me.Daily_BTN)
+        Me.GroupBox5.Controls.Add(Me.Label12)
+        Me.GroupBox5.Controls.Add(Me.MonthlyRate_TXT)
         Me.GroupBox5.Controls.Add(Me.Rate_EmpClear_BTN)
-        Me.GroupBox5.Controls.Add(Me.Label10)
         Me.GroupBox5.Controls.Add(Me.Label9)
         Me.GroupBox5.Controls.Add(Me.Label8)
         Me.GroupBox5.Controls.Add(Me.Rate_BioNo_TXT)
@@ -295,36 +301,64 @@ Partial Class frmSettings
         Me.GroupBox5.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GroupBox5.Location = New System.Drawing.Point(13, 164)
         Me.GroupBox5.Name = "GroupBox5"
-        Me.GroupBox5.Size = New System.Drawing.Size(486, 248)
+        Me.GroupBox5.Size = New System.Drawing.Size(486, 262)
         Me.GroupBox5.TabIndex = 87
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "Per Employee"
+        '
+        'Monthly_BTN
+        '
+        Me.Monthly_BTN.Location = New System.Drawing.Point(84, 189)
+        Me.Monthly_BTN.Name = "Monthly_BTN"
+        Me.Monthly_BTN.Size = New System.Drawing.Size(68, 26)
+        Me.Monthly_BTN.TabIndex = 99
+        Me.Monthly_BTN.Text = "Monthly"
+        Me.Monthly_BTN.UseVisualStyleBackColor = True
+        '
+        'Daily_BTN
+        '
+        Me.Daily_BTN.Location = New System.Drawing.Point(84, 141)
+        Me.Daily_BTN.Name = "Daily_BTN"
+        Me.Daily_BTN.Size = New System.Drawing.Size(68, 26)
+        Me.Daily_BTN.TabIndex = 98
+        Me.Daily_BTN.Text = "Daily"
+        Me.Daily_BTN.UseVisualStyleBackColor = True
+        '
+        'Label12
+        '
+        Me.Label12.AutoSize = True
+        Me.Label12.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label12.Location = New System.Drawing.Point(15, 137)
+        Me.Label12.Name = "Label12"
+        Me.Label12.Size = New System.Drawing.Size(40, 25)
+        Me.Label12.TabIndex = 97
+        Me.Label12.Text = "Rate"
+        '
+        'MonthlyRate_TXT
+        '
+        Me.MonthlyRate_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MonthlyRate_TXT.Location = New System.Drawing.Point(173, 186)
+        Me.MonthlyRate_TXT.Name = "MonthlyRate_TXT"
+        Me.MonthlyRate_TXT.ReadOnly = True
+        Me.MonthlyRate_TXT.Size = New System.Drawing.Size(230, 33)
+        Me.MonthlyRate_TXT.TabIndex = 96
         '
         'Rate_EmpClear_BTN
         '
         Me.Rate_EmpClear_BTN.BackColor = System.Drawing.Color.PeachPuff
         Me.Rate_EmpClear_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.Rate_EmpClear_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Rate_EmpClear_BTN.Location = New System.Drawing.Point(418, 80)
+        Me.Rate_EmpClear_BTN.Location = New System.Drawing.Point(418, 135)
         Me.Rate_EmpClear_BTN.Name = "Rate_EmpClear_BTN"
         Me.Rate_EmpClear_BTN.Size = New System.Drawing.Size(57, 36)
         Me.Rate_EmpClear_BTN.TabIndex = 95
         Me.Rate_EmpClear_BTN.Text = "Clear"
         Me.Rate_EmpClear_BTN.UseVisualStyleBackColor = False
         '
-        'Label10
-        '
-        Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(16, 142)
-        Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(35, 22)
-        Me.Label10.TabIndex = 94
-        Me.Label10.Text = "Rate"
-        '
         'Label9
         '
         Me.Label9.AutoSize = True
-        Me.Label9.Location = New System.Drawing.Point(15, 88)
+        Me.Label9.Location = New System.Drawing.Point(15, 90)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(41, 22)
         Me.Label9.TabIndex = 93
@@ -372,7 +406,7 @@ Partial Class frmSettings
         Me.Rate_EmpSave_BTN.BackColor = System.Drawing.Color.DarkSalmon
         Me.Rate_EmpSave_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.Rate_EmpSave_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Rate_EmpSave_BTN.Location = New System.Drawing.Point(418, 128)
+        Me.Rate_EmpSave_BTN.Location = New System.Drawing.Point(418, 189)
         Me.Rate_EmpSave_BTN.Name = "Rate_EmpSave_BTN"
         Me.Rate_EmpSave_BTN.Size = New System.Drawing.Size(57, 36)
         Me.Rate_EmpSave_BTN.TabIndex = 85
@@ -382,9 +416,10 @@ Partial Class frmSettings
         'Rate_EmpAmount_TXT
         '
         Me.Rate_EmpAmount_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Rate_EmpAmount_TXT.Location = New System.Drawing.Point(84, 131)
+        Me.Rate_EmpAmount_TXT.Location = New System.Drawing.Point(173, 138)
         Me.Rate_EmpAmount_TXT.Name = "Rate_EmpAmount_TXT"
-        Me.Rate_EmpAmount_TXT.Size = New System.Drawing.Size(319, 33)
+        Me.Rate_EmpAmount_TXT.ReadOnly = True
+        Me.Rate_EmpAmount_TXT.Size = New System.Drawing.Size(230, 33)
         Me.Rate_EmpAmount_TXT.TabIndex = 9
         '
         'GroupBox3
@@ -425,11 +460,11 @@ Partial Class frmSettings
         '
         'Rate_Branch_ComboB
         '
-        Me.Rate_Branch_ComboB.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Rate_Branch_ComboB.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Rate_Branch_ComboB.FormattingEnabled = True
         Me.Rate_Branch_ComboB.Location = New System.Drawing.Point(11, 42)
         Me.Rate_Branch_ComboB.Name = "Rate_Branch_ComboB"
-        Me.Rate_Branch_ComboB.Size = New System.Drawing.Size(205, 33)
+        Me.Rate_Branch_ComboB.Size = New System.Drawing.Size(205, 30)
         Me.Rate_Branch_ComboB.TabIndex = 8
         Me.Rate_Branch_ComboB.Text = "   Select Branch"
         '
@@ -695,7 +730,7 @@ Partial Class frmSettings
         Me.FlowLayoutPanel1.Location = New System.Drawing.Point(13, 116)
         Me.FlowLayoutPanel1.Margin = New System.Windows.Forms.Padding(20)
         Me.FlowLayoutPanel1.Name = "FlowLayoutPanel1"
-        Me.FlowLayoutPanel1.Size = New System.Drawing.Size(390, 234)
+        Me.FlowLayoutPanel1.Size = New System.Drawing.Size(390, 243)
         Me.FlowLayoutPanel1.TabIndex = 126
         '
         'Label13
@@ -812,10 +847,10 @@ Partial Class frmSettings
         'FixYes_RadioB
         '
         Me.FixYes_RadioB.AutoSize = True
-        Me.FixYes_RadioB.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.FixYes_RadioB.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FixYes_RadioB.Location = New System.Drawing.Point(84, 198)
         Me.FixYes_RadioB.Name = "FixYes_RadioB"
-        Me.FixYes_RadioB.Size = New System.Drawing.Size(86, 31)
+        Me.FixYes_RadioB.Size = New System.Drawing.Size(101, 36)
         Me.FixYes_RadioB.TabIndex = 96
         Me.FixYes_RadioB.Text = "Yes        "
         Me.FixYes_RadioB.UseVisualStyleBackColor = True
@@ -824,10 +859,10 @@ Partial Class frmSettings
         '
         Me.FixNo_RadioB.AutoSize = True
         Me.FixNo_RadioB.Checked = True
-        Me.FixNo_RadioB.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.FixNo_RadioB.Location = New System.Drawing.Point(176, 198)
+        Me.FixNo_RadioB.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.FixNo_RadioB.Location = New System.Drawing.Point(191, 198)
         Me.FixNo_RadioB.Name = "FixNo_RadioB"
-        Me.FixNo_RadioB.Size = New System.Drawing.Size(49, 31)
+        Me.FixNo_RadioB.Size = New System.Drawing.Size(56, 36)
         Me.FixNo_RadioB.TabIndex = 97
         Me.FixNo_RadioB.TabStop = True
         Me.FixNo_RadioB.Text = "No"
@@ -1663,7 +1698,6 @@ Partial Class frmSettings
     Friend WithEvents Rate_EmpAmount_TXT As TextBox
     Friend WithEvents Rate_Employee_TXT As TextBox
     Friend WithEvents Rate_EmpSelect_BTN As Button
-    Friend WithEvents Label10 As Label
     Friend WithEvents Label9 As Label
     Friend WithEvents Label8 As Label
     Friend WithEvents Rate_BioNo_TXT As TextBox
@@ -1763,4 +1797,8 @@ Partial Class frmSettings
     Friend WithEvents menu_edit As ToolStripMenuItem
     Friend WithEvents DE_Effectivity_DTP As DateTimePicker
     Friend WithEvents Label31 As Label
+    Friend WithEvents Monthly_BTN As Button
+    Friend WithEvents Daily_BTN As Button
+    Friend WithEvents Label12 As Label
+    Friend WithEvents MonthlyRate_TXT As TextBox
 End Class

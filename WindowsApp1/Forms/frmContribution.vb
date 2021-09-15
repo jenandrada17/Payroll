@@ -134,10 +134,10 @@ Public Class frmContribution
     Private Sub SSS_SearchEmp_BTN_Click(sender As Object, e As EventArgs) Handles SSS_SearchEmp_BTN.Click
 
         Try
-            Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmEmployee").SingleOrDefault()
+            Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmNewEmployee").SingleOrDefault()
             If instForm Is Nothing Then
-                Dim frm As frmEmployee
-                frm = DirectCast(CreateObjectInstance("frmEmployee"), Form)
+                Dim frm As frmNewEmployee
+                frm = DirectCast(CreateObjectInstance("frmNewEmployee"), Form)
                 frm.MdiParent = frmMainForm
                 frmMainForm.pNavigate.Controls.Add(frm)
                 frmMainForm.pNavigate.Tag = frm
@@ -163,15 +163,16 @@ Public Class frmContribution
 
     Private Sub Allow_Save_BTN_Click(sender As Object, e As EventArgs) Handles Allow_Save_BTN.Click
         Save_SSSLoan(SSS_Name_TXT.Tag, SSS_Amount_TXT.Text, SSS_FirstAmort_DTP.Value, SSS_MaturityAmort_DTP.Value)
+        Load_Loans(SSSLoan_LV, "PAYROLL_SSSLOAN")
     End Sub
 
     Private Sub Emp_BTN_Click(sender As Object, e As EventArgs) Handles Emp_BTN.Click
 
         Try
-            Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmEmployee").SingleOrDefault()
+            Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmNewEmployee").SingleOrDefault()
             If instForm Is Nothing Then
-                Dim frm As frmEmployee
-                frm = DirectCast(CreateObjectInstance("frmEmployee"), Form)
+                Dim frm As frmNewEmployee
+                frm = DirectCast(CreateObjectInstance("frmNewEmployee"), Form)
                 frm.MdiParent = frmMainForm
                 frmMainForm.pNavigate.Controls.Add(frm)
                 frmMainForm.pNavigate.Tag = frm
@@ -191,6 +192,7 @@ Public Class frmContribution
 
     Private Sub Pag_Save_BTN_Click(sender As Object, e As EventArgs) Handles Pag_Save_BTN.Click
         Save_PAGIBIGLoan(Pag_Name_TXT.Tag, Pag_Amount_TXT.Text, Pag_Start_DTP.Value, Pag_End_DTP.Value)
+        Load_Loans(Pag_grid, "PAYROLL_PAGIBIGLOAN")
     End Sub
 
     Public Sub Load_Contrib_Loan(emp As Employee, tabName As String)
@@ -199,12 +201,12 @@ Public Class frmContribution
 
                 Contribution_Tab.SelectedIndex = 4
                 SSS_Name_TXT.Text = .Fullname
-                SSS_Name_TXT.Tag = .EMP_ID
+                SSS_Name_TXT.Tag = .BiometricID
 
             Else
                 Contribution_Tab.SelectedIndex = 5
                 Pag_Name_TXT.Text = .Fullname
-                Pag_Name_TXT.Tag = .EMP_ID
+                Pag_Name_TXT.Tag = .BiometricID
             End If
         End With
     End Sub

@@ -38,7 +38,7 @@ Public Class frmAttendance
 
         PopulateComboBox(Paydate_ComboB, "BIOMETRIC_DTR", "PAYDATE")
         PopulateComboBox(Payslip_DTR_Combo, "BIOMETRIC_DTR", "PAYDATE")
-        PopulateComboBox(DTR_Branch_Combo, "tbl_branch", "BRANCHNAME")
+        PopulateComboBox(DTR_Branch_Combo, "PAYROLL_EMPLOYEE", "BRANCH_CODE")
 
         Dim array() As String = {".HO ACCOUNTING", ".HO ADMIN", ".HO HR", ".HO MAIN", ".HO REMATADO", ".HO WAREHOUSE"}
 
@@ -463,10 +463,10 @@ Public Class frmAttendance
 
         Try
 
-            Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmEmployee").SingleOrDefault()
+            Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmNewEmployee").SingleOrDefault()
             If instForm Is Nothing Then
-                Dim frm As frmEmployee
-                frm = DirectCast(CreateObjectInstance("frmEmployee"), Form)
+                Dim frm As frmNewEmployee
+                frm = DirectCast(CreateObjectInstance("frmNewEmployee"), Form)
                 frm.MdiParent = frmMainForm
                 frmMainForm.pNavigate.Controls.Add(frm)
                 frmMainForm.pNavigate.Tag = frm
@@ -492,10 +492,6 @@ Public Class frmAttendance
             Else
                 PAYROLL = DataGridView1.Tag
             End If
-
-            'Dim i As Integer = Bio_grid.CurrentRow.Index
-            'Dim BIO As String = Bio_grid.Item(0, i).Value
-            'Dim EMP_ID As String = Bio_grid.Item(1, i).Tag
 
             Replacing($"BIOMETRIC_DTR where BIO_ID = '{BiometricID_TXT.Text}' and PAYDATE = '{PAYROLL}';")
 
@@ -607,7 +603,11 @@ Public Class frmAttendance
         If Payslip_DTR_Combo.SelectedIndex >= 0 Then
 
             If GroupBranch_RadioB.Checked Then
-                LoadDTR_Print_Group()
+                If DTR_Branch_Combo.SelectedIndex >= 0 Then
+                    LoadDTR_Print_Group()
+                Else
+                    MsgBox("Please select branch.", MsgBoxStyle.Exclamation, "Error")
+                End If
             Else
                 LoadDTR_Print()
             End If
@@ -650,21 +650,21 @@ Public Class frmAttendance
 
                 If Bio1_DTR_TXT.Text <> Nothing And Bio2_DTR_TXT.Text <> Nothing Then  '============ DOUBLE EMPLOYEE
 
-                    mysqll = $"Select A.*, B.FirstName, B.LastName, B.MIDDLENAME, B.BIOMETRICID as bioNo, C.* From PAYROLL_ATTENDANCE A 
-                                        inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRICID 
-                                        inner join BIOMETRIC_DTR C ON C.BIO_ID = A.BIOMETRICID where A.PAYDATE  = '{paydatee}' and A.BIOMETRICID IN ('{Bio1_DTR_TXT.Text}','{Bio2_DTR_TXT.Text}')"
+                    mysqll = $"Select A.*, B.FULLNAME, B.BIO_NO as bioNo, C.* From PAYROLL_ATTENDANCE A 
+                                        inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRICID 
+                                        inner join BIOMETRIC_DTR C ON C.BIO_ID = A.BIOMETRICID where A.PAYDATE  = '{paydatee}' and A.BIOMETRICID IN ('{Bio1_DTR_TXT.Text}','{Bio2_DTR_TXT.Text}') ORDER BY DATE_ONLY"
                 Else
                     If Bio1_DTR_TXT.Text <> Nothing And Bio2_DTR_TXT.Text = Nothing Then  '============ 1ST EMPLOYEE
 
-                        mysqll = $"Select A.*, B.FirstName, B.LastName, B.MIDDLENAME, B.BIOMETRICID as bioNo, C.* From PAYROLL_ATTENDANCE A 
-                                        inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRICID 
-                                        inner join BIOMETRIC_DTR C ON C.BIO_ID = A.BIOMETRICID where A.PAYDATE  = '{paydatee}' and A.BIOMETRICID = '{Bio1_DTR_TXT.Text}'"
+                        mysqll = $"Select A.*, B.FULLNAME, B.BIO_NO as bioNo, C.* From PAYROLL_ATTENDANCE A 
+                                        inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRICID 
+                                        inner join BIOMETRIC_DTR C ON C.BIO_ID = A.BIOMETRICID where A.PAYDATE  = '{paydatee}' and A.BIOMETRICID = '{Bio1_DTR_TXT.Text}'  ORDER BY DATE_ONLY"
 
                     ElseIf Bio2_DTR_TXT.Text <> Nothing And Bio1_DTR_TXT.Text = Nothing Then '============ 2ND EMPLOYEE
 
-                        mysqll = $"Select A.*, B.FirstName, B.LastName, B.MIDDLENAME, B.BIOMETRICID as bioNo, C.* From PAYROLL_ATTENDANCE A 
-                                        inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRICID 
-                                        inner join BIOMETRIC_DTR C ON C.BIO_ID = A.BIOMETRICID where A.PAYDATE  = '{paydatee}' and A.BIOMETRICID = '{Bio2_DTR_TXT.Text}'"
+                        mysqll = $"Select A.*, B.FULLNAME, B.BIO_NO as bioNo, C.* From PAYROLL_ATTENDANCE A 
+                                        inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRICID 
+                                        inner join BIOMETRIC_DTR C ON C.BIO_ID = A.BIOMETRICID where A.PAYDATE  = '{paydatee}' and A.BIOMETRICID = '{Bio2_DTR_TXT.Text}'  ORDER BY DATE_ONLY"
 
                     Else
                         MsgBox("Please Select Employee Name!")
@@ -673,15 +673,10 @@ Public Class frmAttendance
 
             ElseIf HO_RadioB.Checked Then    '=========================== HEAD OFFICE ==================================
 
-                mysqll = $"Select A.*, B.FirstName, B.LastName, B.MIDDLENAME, B.BIOMETRICID as bioNo, C.* From PAYROLL_ATTENDANCE A 
-                                        inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRICID 
-                                        inner join BIOMETRIC_DTR C ON C.BIO_ID = A.BIOMETRICID 
-                                        inner join TBL_BRANCH D ON D.ID = B.BRANCH_ID
-                                        where A.PAYDATE  = '{paydatee}' and 
-                                                (BRANCHNAME = 'HEAD OFFICE.' OR BRANCHNAME = 'HEAD OFFICE' OR BRANCHNAME = '.HEAD OFFICE' OR BRANCHNAME = 'HEAD' 
-                                                OR BRANCHNAME = 'HO' OR BRANCHNAME = 'H.O.' 
-                                                OR BRANCHNAME = 'H.O' OR BRANCHNAME = 'H.D.O' 
-                                                OR BRANCHNAME = 'GENSAN HDO' OR BRANCHNAME = 'HDO' OR BRANCHNAME = 'HDO TECHNICAL')"
+                mysqll = $"Select A.*, B.FULLNAME, B.BIO_NO as bioNo, C.* From PAYROLL_ATTENDANCE A 
+                                        inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRICID 
+                                        inner join BIOMETRIC_DTR C ON C.BIO_ID = A.BIOMETRICID  
+                                        where A.PAYDATE  = '{paydatee}' and COMPANY = 'HEAD OFFICE'  ORDER BY DATE_ONLY"
 
             End If
 
@@ -692,14 +687,8 @@ Public Class frmAttendance
                     For Each dr In ds.Tables(0).Rows
                         With dr
 
-                            '============================= NAME AND ATTENDANCE ============================
-                            Dim MI As String = IIf(IsDBNull(.Item("MIDDLENAME")), "", .Item("MIDDLENAME"))
-
-                            If Not String.IsNullOrEmpty(.Item("MIDDLENAME")) Then
-                                MI = .Item("MIDDLENAME").Substring(0, 1) & "."
-                            End If
-
-                            Dim namee As String = String.Format("{0}, {1} {2}", .Item("LastName"), .Item("Firstname"), MI)
+                            '============================= NAME AND ATTENDANCE ============================  
+                            Dim namee As String = .Item("FULLNAME")
                             Dim bioNo As String = .Item("bioNo")
                             Dim DAYS As String = .Item("PRESENT_DAYS")
                             Dim OT As String = IIf(.Item("OVERTIME") = 0, 0, .Item("OVERTIME"))
@@ -758,25 +747,20 @@ Public Class frmAttendance
                 .Columns.Add("PM_OUT")
             End With
 
-            mysqll = $"Select A.*, B.FirstName, B.LastName, B.MIDDLENAME, B.BIOMETRICID as bioNo, C.* From PAYROLL_ATTENDANCE A 
-                                        inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRICID 
-                                        inner join BIOMETRIC_DTR C ON C.BIO_ID = B.BIOMETRICID where A.PAYDATE  = '{paydatee}' and B.BRANCH_ID = '{branchID}'"
+            mysqll = $"Select * From PAYROLL_ATTENDANCE A 
+                                        inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRICID 
+                                        inner join BIOMETRIC_DTR C ON C.BIO_ID = B.BIO_NO 
+                                        where A.PAYDATE  = '{paydatee}' and B.BRANCH_CODE = '{DTR_Branch_Combo.Text}'  ORDER BY DATE_ONLY"
 
-            Using ds As DataSet = LoadSQL(mysqll, "TBL_EMPLOYEE")
+            Using ds As DataSet = LoadSQL(mysqll, "PAYROLL_EMPLOYEE")
 
                 If ds.Tables(0).Rows.Count > 0 Then
 
                     For Each dr In ds.Tables(0).Rows
                         With dr
 
-                            '============================= NAME AND ATTENDANCE ============================
-                            Dim MI As String = IIf(IsDBNull(.Item("MIDDLENAME")), "", .Item("MIDDLENAME"))
-
-                            If Not String.IsNullOrEmpty(.Item("MIDDLENAME")) Then
-                                MI = .Item("MIDDLENAME").Substring(0, 1) & "."
-                            End If
-
-                            Dim namee As String = String.Format("{0}, {1} {2}", .Item("LastName"), .Item("Firstname"), MI)
+                            '============================= NAME AND ATTENDANCE ============================ 
+                            Dim namee As String = .Item("FULLNAME")
                             Dim DAYS As String = .Item("PRESENT_DAYS")
                             Dim OT As String = IIf(.Item("OVERTIME") = 0, 0, .Item("OVERTIME"))
                             Dim LATE As String = IIf(.Item("LATE").Equals("00:00:00"), "00:00:00", .Item("LATE").Substring(0, 5))
@@ -812,10 +796,10 @@ Public Class frmAttendance
 
         Try
 
-            Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmEmployee").SingleOrDefault()
+            Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmNewEmployee").SingleOrDefault()
             If instForm Is Nothing Then
-                Dim frm As frmEmployee
-                frm = DirectCast(CreateObjectInstance("frmEmployee"), Form)
+                Dim frm As frmNewEmployee
+                frm = DirectCast(CreateObjectInstance("frmNewEmployee"), Form)
                 frm.MdiParent = frmMainForm
                 frmMainForm.pNavigate.Controls.Add(frm)
                 frmMainForm.pNavigate.Tag = frm
@@ -862,7 +846,7 @@ Public Class frmAttendance
 
         For Each biometric_No As String In distinct_bio
             list_inOut.Clear()
-            'Dim mysql As String = $"Select * From IMPORT_DTR where BIO_ID = '{biometric_No}' and BRANCH = '{Branch_ComboB.SelectedItem}' and PAYDATE = '{paydate_}'"
+
             Dim mysql As String = $"Select * From IMPORT_DTR where BIO_ID = '{biometric_No}' and PAYDATE = '{paydate_}'"
             Using ds As DataSet = LoadSQL(mysql, "IMPORT_DTR")
                 If ds.Tables(0).Rows.Count > 0 Then
@@ -970,7 +954,6 @@ Public Class frmAttendance
 
                 If list_hour(0) = "" And list_hour(1) = "" And list_hour(2) = "" And list_hour(3) = "" Then
                 Else
-                    'SaveDTR(biometric_No, Paydate, DATE_ONLY, Branch_ComboB.SelectedItem, list_hour(0), list_hour(1), list_hour(2), list_hour(3))
                     SaveDTR(biometric_No, Paydate, DATE_ONLY, list_hour(0), list_hour(1), list_hour(2), list_hour(3))
                 End If
             Next
@@ -996,10 +979,10 @@ Public Class frmAttendance
     Private Sub EmpSelect2_BTN_Click(sender As Object, e As EventArgs) Handles EmpSelect2_BTN.Click
 
         Try
-            Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmEmployee").SingleOrDefault()
+            Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmNewEmployee").SingleOrDefault()
             If instForm Is Nothing Then
-                Dim frm As frmEmployee
-                frm = DirectCast(CreateObjectInstance("frmEmployee"), Form)
+                Dim frm As frmNewEmployee
+                frm = DirectCast(CreateObjectInstance("frmNewEmployee"), Form)
                 frm.MdiParent = frmMainForm
                 frmMainForm.pNavigate.Controls.Add(frm)
                 frmMainForm.pNavigate.Tag = frm
@@ -1153,8 +1136,7 @@ Public Class frmAttendance
         Path_TXT.Clear()
         MyConnection.Close()
 
-        Replacing($"IMPORT_DTR WHERE and PAYDATE = '{Paydate}'") 'THIS IS TO DELETE EXISTING SHEETS IN IMPORT_DTR 
-
+        Has_Rows_Delete("IMPORT_DTR")
     End Sub
 
     Private Sub bio_InSys()
@@ -1339,11 +1321,10 @@ Public Class frmAttendance
 
         Cursor = Cursors.Default
 
-        Import_BTN.Enabled = False
         Path_TXT.Clear()
         MyConnection.Close()
 
-        Replacing($"IMPORT_DTR WHERE and PAYDATE = '{Paydate}'") 'THIS IS TO DELETE EXISTING SHEETS IN IMPORT_DTR 
+        Has_Rows_Delete("IMPORT_DTR")
     End Sub
 
     Public Sub SAVE_DIRECT_Attendance()
@@ -1445,23 +1426,14 @@ Public Class frmAttendance
 
             '===================================== SUM UP PRESENT AND ABSENT ==================================== 
             Dim Present As Integer = 0
-            'Dim Absent As Integer = 0
             For Each oRow As DataGridViewRow In DataGridView1.Rows
 
                 If oRow.Cells(5).Value = True Then
                     Present += 1
                 End If
-                'If Not oRow.DefaultCellStyle.ForeColor = Color.Red And oRow.Cells(5).Value = True Then
-                '    Present += 1
-                'ElseIf Not oRow.DefaultCellStyle.ForeColor = Color.Red And oRow.Cells(5).Value = False Then
-                '    If Not oRow.DefaultCellStyle.BackColor = Color.MediumOrchid Or Not oRow.DefaultCellStyle.BackColor = Color.Plum Then
-                '        Absent += 1
-                '    End If
-                'End If
             Next
 
             TotalDays_LBL.Text = Present
-            'TotalAbsent_LBL.Text = Absent
 
 
             '===================================== SUM UP HALF DAY ====================================  
@@ -1472,18 +1444,6 @@ Public Class frmAttendance
                     halfday_Hour += 4
                 End If
             Next
-
-            'If halfday_Hour = 4 Then
-
-            '    TotalAbsent_LBL.Text = Convert.ToInt32(TotalAbsent_LBL.Text) + 0.5
-
-            'ElseIf halfday_Hour > 4 Then
-
-            '    Dim result As Integer
-            '    result = halfday_Hour / 8
-
-            '    TotalAbsent_LBL.Text = result + Convert.ToInt32(TotalAbsent_LBL.Text)
-            'End If
 
             Dim product As Double
             product = ((Convert.ToInt32(TotalDays_LBL.Text) * 8)) - halfday_Hour

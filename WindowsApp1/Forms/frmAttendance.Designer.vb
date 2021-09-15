@@ -30,6 +30,7 @@ Partial Class frmAttendance
         Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim ReportDataSource1 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
         Me.overAllBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.dtr_all = New WindowsApp1.dtr_all()
         Me.Label1 = New System.Windows.Forms.Label()
@@ -39,12 +40,6 @@ Partial Class frmAttendance
         Me.Search_BTN = New System.Windows.Forms.Button()
         Me.Label20 = New System.Windows.Forms.Label()
         Me.Bio_grid = New System.Windows.Forms.DataGridView()
-        Me.BIOID_DGVV = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Name_DGVV = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.PRESENT_DGVV = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Overtime_DGVV = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Late_DGVV = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Undertime_DGVV = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.Paydate_ComboB = New System.Windows.Forms.ComboBox()
         Me.Import_BTN = New System.Windows.Forms.Button()
@@ -129,6 +124,12 @@ Partial Class frmAttendance
         Me.RE_NAME_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.RE_BIO_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.RE_BRANCH_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.BIOID_DGVV = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Name_DGVV = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.PRESENT_DGVV = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Overtime_DGVV = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Late_DGVV = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Undertime_DGVV = New System.Windows.Forms.DataGridViewTextBoxColumn()
         CType(Me.overAllBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.dtr_all, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Attendance_Tab.SuspendLayout()
@@ -262,48 +263,6 @@ Partial Class frmAttendance
         Me.Bio_grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.Bio_grid.Size = New System.Drawing.Size(1127, 449)
         Me.Bio_grid.TabIndex = 1
-        '
-        'BIOID_DGVV
-        '
-        Me.BIOID_DGVV.HeaderText = "Biometric No."
-        Me.BIOID_DGVV.Name = "BIOID_DGVV"
-        Me.BIOID_DGVV.ReadOnly = True
-        Me.BIOID_DGVV.Width = 150
-        '
-        'Name_DGVV
-        '
-        Me.Name_DGVV.HeaderText = "Name"
-        Me.Name_DGVV.Name = "Name_DGVV"
-        Me.Name_DGVV.ReadOnly = True
-        Me.Name_DGVV.Width = 430
-        '
-        'PRESENT_DGVV
-        '
-        Me.PRESENT_DGVV.HeaderText = "Total Days"
-        Me.PRESENT_DGVV.Name = "PRESENT_DGVV"
-        Me.PRESENT_DGVV.ReadOnly = True
-        Me.PRESENT_DGVV.Width = 135
-        '
-        'Overtime_DGVV
-        '
-        Me.Overtime_DGVV.HeaderText = "Overtime"
-        Me.Overtime_DGVV.Name = "Overtime_DGVV"
-        Me.Overtime_DGVV.ReadOnly = True
-        Me.Overtime_DGVV.Width = 135
-        '
-        'Late_DGVV
-        '
-        Me.Late_DGVV.HeaderText = "Late"
-        Me.Late_DGVV.Name = "Late_DGVV"
-        Me.Late_DGVV.ReadOnly = True
-        Me.Late_DGVV.Width = 130
-        '
-        'Undertime_DGVV
-        '
-        Me.Undertime_DGVV.HeaderText = "Undertime"
-        Me.Undertime_DGVV.Name = "Undertime_DGVV"
-        Me.Undertime_DGVV.ReadOnly = True
-        Me.Undertime_DGVV.Width = 130
         '
         'Button1
         '
@@ -939,7 +898,10 @@ Partial Class frmAttendance
         'RptViewer_DTR
         '
         Me.RptViewer_DTR.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.RptViewer_DTR.LocalReport.ReportEmbeddedResource = "WindowsApp1.rptDTR_All.rdlc"
+        ReportDataSource1.Name = "DataSet1"
+        ReportDataSource1.Value = Me.overAllBindingSource
+        Me.RptViewer_DTR.LocalReport.DataSources.Add(ReportDataSource1)
+        Me.RptViewer_DTR.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_DTR_ByGroup.rdlc"
         Me.RptViewer_DTR.Location = New System.Drawing.Point(0, 0)
         Me.RptViewer_DTR.Name = "RptViewer_DTR"
         Me.RptViewer_DTR.ServerReport.BearerToken = Nothing
@@ -1173,6 +1135,48 @@ Partial Class frmAttendance
         Me.RE_BRANCH_DGV.ReadOnly = True
         Me.RE_BRANCH_DGV.Width = 140
         '
+        'BIOID_DGVV
+        '
+        Me.BIOID_DGVV.HeaderText = "Biometric No."
+        Me.BIOID_DGVV.Name = "BIOID_DGVV"
+        Me.BIOID_DGVV.ReadOnly = True
+        Me.BIOID_DGVV.Width = 150
+        '
+        'Name_DGVV
+        '
+        Me.Name_DGVV.HeaderText = "Name"
+        Me.Name_DGVV.Name = "Name_DGVV"
+        Me.Name_DGVV.ReadOnly = True
+        Me.Name_DGVV.Width = 420
+        '
+        'PRESENT_DGVV
+        '
+        Me.PRESENT_DGVV.HeaderText = "Total Days"
+        Me.PRESENT_DGVV.Name = "PRESENT_DGVV"
+        Me.PRESENT_DGVV.ReadOnly = True
+        Me.PRESENT_DGVV.Width = 135
+        '
+        'Overtime_DGVV
+        '
+        Me.Overtime_DGVV.HeaderText = "Overtime"
+        Me.Overtime_DGVV.Name = "Overtime_DGVV"
+        Me.Overtime_DGVV.ReadOnly = True
+        Me.Overtime_DGVV.Width = 135
+        '
+        'Late_DGVV
+        '
+        Me.Late_DGVV.HeaderText = "Late"
+        Me.Late_DGVV.Name = "Late_DGVV"
+        Me.Late_DGVV.ReadOnly = True
+        Me.Late_DGVV.Width = 130
+        '
+        'Undertime_DGVV
+        '
+        Me.Undertime_DGVV.HeaderText = "Undertime"
+        Me.Undertime_DGVV.Name = "Undertime_DGVV"
+        Me.Undertime_DGVV.ReadOnly = True
+        Me.Undertime_DGVV.Width = 130
+        '
         'frmAttendance
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1269,12 +1273,6 @@ Partial Class frmAttendance
     Friend WithEvents Late_BTN As Button
     Friend WithEvents OT_BTN As Button
     Friend WithEvents Button1 As Button
-    Friend WithEvents BIOID_DGVV As DataGridViewTextBoxColumn
-    Friend WithEvents Name_DGVV As DataGridViewTextBoxColumn
-    Friend WithEvents PRESENT_DGVV As DataGridViewTextBoxColumn
-    Friend WithEvents Overtime_DGVV As DataGridViewTextBoxColumn
-    Friend WithEvents Late_DGVV As DataGridViewTextBoxColumn
-    Friend WithEvents Undertime_DGVV As DataGridViewTextBoxColumn
     Friend WithEvents Label20 As Label
     Friend WithEvents TabPage3 As TabPage
     Friend WithEvents FlowLayoutPanel1 As FlowLayoutPanel
@@ -1313,4 +1311,10 @@ Partial Class frmAttendance
     Friend WithEvents Bio2_DTR_TXT As TextBox
     Friend WithEvents EmpSelect2_BTN As Button
     Friend WithEvents Branch_DTR_TXT As TextBox
+    Friend WithEvents BIOID_DGVV As DataGridViewTextBoxColumn
+    Friend WithEvents Name_DGVV As DataGridViewTextBoxColumn
+    Friend WithEvents PRESENT_DGVV As DataGridViewTextBoxColumn
+    Friend WithEvents Overtime_DGVV As DataGridViewTextBoxColumn
+    Friend WithEvents Late_DGVV As DataGridViewTextBoxColumn
+    Friend WithEvents Undertime_DGVV As DataGridViewTextBoxColumn
 End Class
