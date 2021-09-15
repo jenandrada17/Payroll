@@ -448,7 +448,10 @@ Public Class frmPayout
 
     Private Sub Refresh_BTN_Click(sender As Object, e As EventArgs) Handles Undo_BTN.Click
 
-        AllowanceDetails(BiometricID_TXT.Text, Allowance_grid, sched_deduc)
+        Recorded_Details(BiometricID_TXT.Text, Allowance_grid, paydate_, "ALLOWANCE")
+
+        'AllowanceDetails(BiometricID_TXT.Text, Allowance_grid, sched_deduc)
+
         DeductioneDetails_ORIG(BiometricID_TXT.Text, Deduction_grid, sched_deduc)
 
         Calculate_Gross()
@@ -698,13 +701,9 @@ Public Class frmPayout
 
         Else
 
-            MsgBox(Employee_TXT.Tag)
-
             LoadPayslip(Employee_TXT.Tag, Payslip_paydate_Combo.Text)
 
-
             Deduct_ifExist(Employee_TXT.Tag, Payslip_paydate_Combo.Text)
-
 
             '================================ CHECK IF VALID EMAIL ADDRESS ============================
             Dim FoundMatch As Boolean = Regex.IsMatch(Email_TXT.Text, "\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase)

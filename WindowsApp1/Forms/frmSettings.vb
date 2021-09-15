@@ -271,7 +271,7 @@ Public Class frmSettings
 
         If FixYes_RadioB.Checked Then fix = "YES"
 
-        SaveAllowance(Allow_Name_TXT.Tag, Allow_Category_Combo.SelectedItem, Allow_Amount_TXT.Text, fix, Allow_Schedule_Combo.SelectedItem, everyThisDate, A_EffectiveDate_DTP.Value) ' Label14 is EMP_ID
+        SaveAllowance(Allow_Name_TXT.Tag, Allow_Category_Combo.Text, Allow_Amount_TXT.Text, fix, Allow_Schedule_Combo.SelectedItem, everyThisDate, A_EffectiveDate_DTP.Value) ' Label14 is EMP_ID
 
         Lists_Allowance(Allowance_LV)
         Allow_Cancel_BTN.PerformClick()
@@ -415,6 +415,7 @@ Public Class frmSettings
         DE_AmountGive_TXT.Clear()
         DE_Schedule_Combo.Text = "Select"
     End Sub
+
     Private Sub DE_Save_BTN_Click(sender As Object, e As EventArgs) Handles DE_Save_BTN.Click
 
         If Not isValidSave_DEDUC() Then Exit Sub
@@ -422,7 +423,7 @@ Public Class frmSettings
         If Deduction_List.Tag = 0 Then
             SaveDeductionS(DE_Category_Combo.SelectedItem, DE_Total_TXT.Text, DE_NoOfGives_TXT.Text, DE_AmountGive_TXT.Text, DE_Schedule_Combo.Text, DE_Name_TXT.Tag, DE_Effectivity_DTP.Value) 'DE_Category_Combo.Tag (EMP_ID) | DE_Name_TXT.Tag(Biometric) |  DE_SearchEmp_BTN.Tag.Tag(Branch_id) | 
         Else
-            updateDeductionS(Deduction_List.Tag, DE_Category_Combo.SelectedItem, DE_Total_TXT.Text, DE_NoOfGives_TXT.Text, DE_AmountGive_TXT.Text, DE_Schedule_Combo.Text, DE_Effectivity_DTP.Value) 'DE_Category_Combo.Tag (EMP_ID)
+            updateDeductionS(Deduction_List.Tag, DE_Category_Combo.Text, DE_Total_TXT.Text, DE_NoOfGives_TXT.Text, DE_AmountGive_TXT.Text, DE_Schedule_Combo.Text, DE_Effectivity_DTP.Value) 'DE_Category_Combo.Tag (EMP_ID)
         End If
 
         Lists_deduction(Deduction_List)

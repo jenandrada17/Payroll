@@ -428,14 +428,16 @@ Module SelectFromDatabase
                         row.Cells(1).Value = amountt.ToString(”N”)
 
 
+                        If .item("CATEGORY") = "SBU" Then
+                            row.Cells(0).Value = "SBU"
+                        End If
+
+                        If .item("CATEGORY") = "SIL" Then
+                            row.Cells(0).Value = "SIL"
+                        End If
+
                         If datagrid.Name = "Deduction_grid" Then
-
-                            If .item("CATEGORY") = "SBU" Then
-                                row.Cells(0).Value = "SBU"
-                            End If
-
                             row.Cells(3).Value = "OFF"
-
                         End If
 
                     End With
@@ -446,7 +448,6 @@ Module SelectFromDatabase
             AdjustHeightOfGridBasedOnRows(datagrid, 25)
         End Using
     End Sub
-
 
     Friend Sub AllowanceDetails(BIO_NO As String, datagrid As DataGridView, sched As String)
 
@@ -1362,6 +1363,21 @@ Module SelectFromDatabase
                 End With
             Else
                 name.Text = ""
+            End If
+        End Using
+    End Sub
+
+    Public Sub Get_SIL(BiometricID_TXT As String, SIL As Label)
+
+        Dim mysql As String = $"Select * From PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{BiometricID_TXT}'"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
+            If ds.Tables(0).Rows.Count > 0 Then
+                Dim data As DataRow = ds.Tables(0).Rows(0)
+                With data
+                    SIL.Text = IIf(IsDBNull(.Item("SIL")), 0, .Item("SIL"))
+                End With
+            Else
+                SIL.Text = 0
             End If
         End Using
     End Sub

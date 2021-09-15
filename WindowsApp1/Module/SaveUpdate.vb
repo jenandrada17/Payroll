@@ -39,7 +39,7 @@
     End Sub
 
     Friend Sub SaveAttendanceEE(biometric As Integer, paydate As String, days As String, overTime As String, late_total As String,
-                                  under_total As String, regHoliday As String, specHoliday As String, Optional NIGHT_RATE As String = "")
+                                  under_total As String, regHoliday As String, specHoliday As String, Optional SIL As Double = 0, Optional NIGHT_RATE As String = "")
 
         Dim mysql As String
 
@@ -54,6 +54,7 @@
                     .Item("UNDERTIME") = under_total
                     .Item("REGHOLIDAY") = regHoliday
                     .Item("SPECHOLIDAY") = specHoliday
+                    .Item("SIL") = SIL
 
                     If NIGHT_RATE <> Nothing Then
                         .Item("NIGHT_RATE") = NIGHT_RATE
@@ -77,6 +78,7 @@
                     .Item("UNDERTIME") = under_total
                     .Item("REGHOLIDAY") = regHoliday
                     .Item("SPECHOLIDAY") = specHoliday
+                    .Item("SIL") = SIL
 
                     If NIGHT_RATE <> Nothing Then
                         .Item("NIGHT_RATE") = NIGHT_RATE
@@ -261,7 +263,7 @@
     End Sub
 
     Public Function SBU_notFull(BIO_NO As String)
-        Dim mysql As String = $"Select COMPANY, DATE_STARTED From PAYROLL_EMPLOYEE where BIO_NO = '{BIO_NO}' "
+        Dim mysql As String = $"Select COMPANY, DATE_STARTED, SBU_BALANCE From PAYROLL_EMPLOYEE where BIO_NO = '{BIO_NO}' "
         Using dss As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
             If dss.Tables(0).Rows.Count > 0 Then
                 Dim data As DataRow = dss.Tables(0).Rows(0)
@@ -269,7 +271,7 @@
 
                     Dim training_days As Integer = 0
                     Dim Started As DateTime = .Item("DATE_STARTED")
-                    Dim sbu_bal As Double = IIf(IsDBNull(.Item("SBU_BALANCE")), 0, .Item("SBU_BALANCE"))
+                    Dim sbu_bal As Double = .Item("SBU_BALANCE")
 
                     '=============== TRAINING DAYS ================
                     If .Item("COMPANY") = "DALTON" Or .Item("COMPANY") = "PHOTO" Or .Item("COMPANY") = "HEAD OFFICE" Then
@@ -851,7 +853,7 @@
                     Dim UnderTime As String = ""
                     Dim nightRate As Double = 0
                     Dim NoOfDays, RegularOT, SpecialHol, RegularHol As Double
-                    Dim Allowances, Deduction, SBU As Double
+                    Dim Deduction, SBU As Double
                     Dim Company As String
                     Dim sched As String = ""
                     Dim noOf_days_training As Double = 0
@@ -864,6 +866,8 @@
                     Dim sssLoan As Double = 0
                     Dim pagibigLoan As Double = 0
                     Dim rate As Double = 0
+                    Dim SIL As Double = 0
+                    Dim Allowances As Double = 0
 
                     rate = IIf(IsDBNull(.Item("RATE_DAILY")), 0, .Item("RATE_DAILY"))
                     Company = IIf(IsDBNull(.Item("COMPANY")), "", .Item("COMPANY"))
@@ -916,7 +920,8 @@
                                 RegularHol = .Item("REGHOLIDAY")
                                 Late = .Item("LATE")
                                 UnderTime = .Item("UNDERTIME")
-                                nightRate = .Item("NIGHT_RATE")
+                                nightRate = IIf(IsDBNull(.Item("NIGHT_RATE")), 0, .Item("NIGHT_RATE"))
+                                SIL = IIf(IsDBNull(.Item("SIL")), 0, .Item("SIL"))
                             End With
                         End If
                     End Using
@@ -934,7 +939,7 @@
                         TotalBasic = (NoOfDays * rate) - total_train
                         rate = rate * 0.75
                     Else
-                        TotalBasic = NoOfDays * rate
+                        TotalBasic = (NoOfDays * rate)
                     End If
 
                     '============================ CHECK WITH TRAINING DAYS COVERED ==================================   
@@ -970,12 +975,15 @@
                         MsgBox("TRAINEE")
                     End If
 
-
-                    '============================================= DELETE TO REPLACE =================================================
+                    '============================================= DELETE ALLOWANCE AND DEDUCTION TO REPLACE =================================================
                     Replacing($"RECORDED_ALLOW_DEDUC where BIO_NO = '{bioNo}' and PAYDATE = '{paydate_}';")
-                    '============================================= ALLOWANCE =========================================================
-                    Allowances = 0
+                    '============================================= ALLOWANCE ========================================================= 
+                    '==================== FOR SIL ADDITIONAL ================================
+                    Dim SIL_Total As Double = SIL * rate
+                    Allowances = SIL_Total
+                    Save_Recorded_Allow_Deduc(bioNo, paydate_, "SIL", SIL_Total, "ALLOWANCE")
 
+                    '============================================= OTHER ALLOWANCES =========================================================
                     Dim sql_2 As String = $"Select * From PAYROLL_ALLOWANCES WHERE BIOMETRIC_NO = '{bioNo}' and ALLOWED = 'YES' and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
                     Using ds_2 As DataSet = LoadSQL(sql_2, "PAYROLL_ALLOWANCES")
                         If ds_2.Tables(0).Rows.Count > 0 Then
@@ -990,7 +998,7 @@
                                         If sched = "CLOSE PAYROLL" Then
                                             If .item("CATEGORY") = "PERFORMANCE INCENTIVES" Then
 
-                                                Dim PI_totalDays As Double = GetFirst_NoOfDays(bioNo, paydate_) + NoOfDays + RegularHol + SpecialHol
+                                                Dim PI_totalDays As Double = GetFirst_NoOfDays(bioNo, paydate_) + NoOfDays + RegularHol + SpecialHol + SIL
                                                 Dim absent As Double = 26 - PI_totalDays
                                                 deduc_to_PI = (.Item("AMOUNT") / 26) * absent
 
@@ -1000,6 +1008,7 @@
                                                 Continue For  '========= EXIT FOR (PARA DILI MAGDOUBLE SAVING ========
                                             End If
                                         End If
+
                                         Allowances = Allowances + .Item("AMOUNT")
                                         Save_Recorded_Allow_Deduc(bioNo, paydate_, .Item("CATEGORY"), .Item("AMOUNT"), "ALLOWANCE")
                                     End If

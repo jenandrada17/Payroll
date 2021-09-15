@@ -49,7 +49,7 @@ Public Class frmAttendance
 
     Public Sub LoadDateTime(Optional datee As DateTime = Nothing)
 
-        TotalAbsent_LBL.Text = 0
+        SIL_LBL.Text = 0
         TotalDays_LBL.Text = 0
         TotalLateHR_LBL.Text = 0
         TotalUTHR_LBL.Text = 0
@@ -263,7 +263,7 @@ Public Class frmAttendance
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Calculate_BTN.Click
 
-        TotalAbsent_LBL.Text = 0
+        SIL_LBL.Text = 0
         TotalDays_LBL.Text = 0
         TotalRHoliday_LBL.Text = 0
         TotalSHoliday_LBL.Text = 0
@@ -425,7 +425,7 @@ Public Class frmAttendance
         BiometricID_TXT.Clear()
         Name_TXT.Clear()
         CheckALL_CheckBox.Checked = False
-        TotalAbsent_LBL.Text = 0
+        SIL_LBL.Text = 0
         TotalDays_LBL.Text = 0
         TotalRHoliday_LBL.Text = 0
         TotalSHoliday_LBL.Text = 0
@@ -483,7 +483,7 @@ Public Class frmAttendance
             Next
 
             SaveAttendanceEE(BiometricID_TXT.Text, PAYROLL, TotalDays_LBL.Text, TotalOTHr_LBL.Text, TotalLateHR_LBL.Text, TotalUTHR_LBL.Text,
-                             TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text)
+                             TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text, SIL_LBL.Text)
 
             SavePayout_IndividualL(BiometricID_TXT.Text, PAYROLL, starting_date, ending_date)
 
@@ -1142,7 +1142,7 @@ Public Class frmAttendance
             End If
 
             SaveAttendanceEE(Bio7_TXT.Text, PAYROLL, Days7_TXT.Text, IIf(Overtime7_TXT.Text = "", "0", Overtime7_TXT.Text), Late_TS.ToString, UT_TS.ToString,
-                             "0", "0", Night7_TXT.Text)
+                             "0", "0", Night7_TXT.Text, SIL7_NUP.Text)
 
             updateHoliday_Attendance(Bio7_TXT.Text, PAYROLL)
 
@@ -1174,6 +1174,32 @@ Public Class frmAttendance
         Late7_TXT.Clear()
         Undertime7_TXT.Clear()
         Night7_TXT.Clear()
+    End Sub
+
+    Private Sub SIL_BTN_Click(sender As Object, e As EventArgs) Handles SIL_BTN.Click
+        If SIL_BTN.Text = "Add" Then
+            SIL_Panel.Visible = True
+            SIL_Panel.Location = New Point(SIL_BTN.Location.X - 160, SIL_BTN.Location.Y - 10)
+        Else
+            SIL_BTN.Text = "Add"
+            SIL_LBL.Text = 0
+            SIL_NUP.Text = 1
+        End If
+    End Sub
+
+    Private Sub Label37_Click(sender As Object, e As EventArgs)
+        SIL_Panel.Visible = False
+    End Sub
+
+    Private Sub AddSIL_BTN_Click(sender As Object, e As EventArgs) Handles AddSIL_BTN.Click
+        SIL_LBL.Text = SIL_NUP.Text
+        SIL_BTN.Text = "Clear"
+        SIL_Panel.Visible = False
+    End Sub
+
+    Private Sub CancelSIL_BTN_Click(sender As Object, e As EventArgs) Handles CancelSIL_BTN.Click
+        SIL_NUP.Text = 1
+        SIL_Panel.Visible = False
     End Sub
 
     Private Sub Paydate7_CB_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Paydate7_CB.SelectedIndexChanged
@@ -1548,7 +1574,7 @@ Public Class frmAttendance
             TIME_OUT = GetTimeInOut(biometric_No).Time_out
             '=========================================================================================================
 
-            TotalAbsent_LBL.Text = 0
+            SIL_LBL.Text = 0
             TotalDays_LBL.Text = 0
             TotalRHoliday_LBL.Text = 0
             TotalSHoliday_LBL.Text = 0
@@ -1730,6 +1756,8 @@ Public Class frmAttendance
         Else
             GetName(BiometricID_TXT.Text, Name_TXT)
 
+            Get_SIL(BiometricID_TXT.Text, SIL_LBL)
+
             If Not Name_TXT.Text = String.Empty Then
                 TIME_IN = GetTimeInOut(BiometricID_TXT.Text).Time_in
                 TIME_OUT = GetTimeInOut(BiometricID_TXT.Text).Time_out
@@ -1747,6 +1775,15 @@ Public Class frmAttendance
 
                 Attendance_Per_Employee(BiometricID_TXT.Text)
             End If
+
+            '==========================  CHECK PAYDATE IF VALID FOR EDITING =========================   
+            If paydate_ = frmMainForm.Paydate.ToString("d") Then
+                Save_BTN.Enabled = True
+            Else
+                Save_BTN.Enabled = False
+            End If
+
+
         End If
 
     End Sub
@@ -1799,7 +1836,7 @@ Public Class frmAttendance
 
     Private Sub ClearAfter()
         CheckALL_CheckBox.Checked = False
-        TotalAbsent_LBL.Text = 0
+        SIL_LBL.Text = 0
         TotalDays_LBL.Text = 0
         TotalRHoliday_LBL.Text = 0
         TotalSHoliday_LBL.Text = 0
@@ -1810,7 +1847,7 @@ Public Class frmAttendance
 
     Private Sub LoadDTR()
 
-        TotalAbsent_LBL.Text = 0
+        SIL_LBL.Text = 0
         TotalDays_LBL.Text = 0
         TotalLateHR_LBL.Text = 0
         TotalUTHR_LBL.Text = 0
