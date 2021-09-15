@@ -91,31 +91,31 @@ Module SaveUpdate
         End If
     End Sub
 
-    Friend Sub updateHoliday_Attendance(biometric As String, paydate As String)
-        Dim REGHOLIDAY As Integer = 0
-        Dim SPECHOLIDAY As Integer = 0
+    'Friend Sub updateHoliday_Attendance(biometric As String, paydate As String)
+    '    Dim REGHOLIDAY As Integer = 0
+    '    Dim SPECHOLIDAY As Integer = 0
 
-        Dim mysql As String = $"Select * From PAYROLL_ATTENDANCE WHERE PAYDATE = '{paydate}' and BIOMETRICID <> '{biometric}'"
-        Using dss As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
-            If dss.Tables(0).Rows.Count > 0 Then
-                Dim data As DataRow = dss.Tables(0).Rows(0)
-                With data
-                    REGHOLIDAY = .Item("REGHOLIDAY")
-                    SPECHOLIDAY = .Item("SPECHOLIDAY")
-                End With
-            End If
-        End Using
+    '    Dim mysql As String = $"Select * From PAYROLL_ATTENDANCE WHERE PAYDATE = '{paydate}' and BIOMETRICID <> '{biometric}'"
+    '    Using dss As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
+    '        If dss.Tables(0).Rows.Count > 0 Then
+    '            Dim data As DataRow = dss.Tables(0).Rows(0)
+    '            With data
+    '                REGHOLIDAY = .Item("REGHOLIDAY")
+    '                SPECHOLIDAY = .Item("SPECHOLIDAY")
+    '            End With
+    '        End If
+    '    End Using
 
-        Dim mysqll As String = $"Select * FROM PAYROLL_ATTENDANCE where BIOMETRICID = '{biometric}' and PAYDATE = '{paydate}'"
-        Dim ds As DataSet = LoadSQL(mysqll, "PAYROLL_ATTENDANCE")
-        If ds.Tables(0).Rows.Count > 0 Then
-            With ds.Tables(0).Rows(0)
-                .Item("REGHOLIDAY") = REGHOLIDAY
-                .Item("SPECHOLIDAY") = SPECHOLIDAY
-            End With
-            SaveEntry(ds, False)
-        End If
-    End Sub
+    '    Dim mysqll As String = $"Select * FROM PAYROLL_ATTENDANCE where BIOMETRICID = '{biometric}' and PAYDATE = '{paydate}'"
+    '    Dim ds As DataSet = LoadSQL(mysqll, "PAYROLL_ATTENDANCE")
+    '    If ds.Tables(0).Rows.Count > 0 Then
+    '        With ds.Tables(0).Rows(0)
+    '            .Item("REGHOLIDAY") = REGHOLIDAY
+    '            .Item("SPECHOLIDAY") = SPECHOLIDAY
+    '        End With
+    '        SaveEntry(ds, False)
+    '    End If
+    'End Sub
 
 
     Friend Sub SaveHOLIDAY_RATE(HOLIDAY As String, RATE As String)
@@ -747,70 +747,17 @@ Module SaveUpdate
     End Sub
 
     Friend Sub SaveTraining_days(BIO_NO As String, PAYDATE As String, TRAINING_DAYS As String)
-
-        Dim mysql As String
-
-        mysql = $"Select * FROM PAYROLL_ATTENDANCE where BIOMETRICID = '{BIO_NO}' and PAYDATE = '{PAYDATE}'"
+        Dim mysql As String = $"Select * FROM PAYROLL_ATTENDANCE where BIOMETRICID = '{BIO_NO}' and PAYDATE = '{PAYDATE}'"
         Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
         If dss.Tables(0).Rows.Count > 0 Then
             Dim dr As DataRow = dss.Tables(0).Rows(0)
             With dr
-
                 .Item("TRAINING_DAYS") = TRAINING_DAYS
-
             End With
             SaveEntry(dss, False)
         End If
-
-        ''==================== TEMPORARY ATTENDANCE ===============
-        'mysql = $"Select * FROM PAYROLL_ATTENDANCE where BIOMETRICID = '{BIO_NO}' and PAYDATE = '{PAYDATE}'"
-        'Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
-        'If ds.Tables(0).Rows.Count > 0 Then
-        '    Dim dr As DataRow = ds.Tables(0).Rows(0)
-        '    With dr
-
-        '        .Item("TRAINING_DAYS") = TRAINING_DAYS
-
-        '    End With
-        '    SaveEntry(ds, False)
-        'End If
     End Sub
 
-    'Private Sub check_if_trainee(COMPANY As String, DATE_STARTED As String, EndingDate As DateTime, bioNo As String, paydate_ As String)
-    '    Dim training_days As Integer
-
-    '    If COMPANY = "DALTON" Or COMPANY = "PHOTO" Or COMPANY = "HEAD OFFICE" Then
-    '        training_days = 15
-    '    Else
-    '        training_days = 30
-    '    End If
-
-    '    Dim Started As DateTime = DATE_STARTED
-    '    Dim noOf_days_training As Double = 0
-
-    '    Dim days As Long = DateDiff(DateInterval.Day, Started, EndingDate)
-
-    '    If days <= training_days Then
-
-    '        While (Started.Day < EndingDate.Day)
-
-    '            If PRESENT_Date(bioNo, paydate_, Started) Then
-
-    '                noOf_days_training += 1
-
-    '                If Halfday_Training(bioNo, paydate_, Started) Then
-    '                    noOf_days_training -= 0.5
-    '                End If
-
-    '            End If
-
-    '            Started = Started.AddDays(1)
-    '        End While
-
-    '        MsgBox(noOf_days_training)
-    '        SaveTraining_days(bioNo, paydate_, noOf_days_training)
-    '    End If
-    'End Sub
 
     Friend Sub SavePayout_IndividualL(bioNo As String, paydate_ As String, startingDate As DateTime, EndingDate As DateTime) '========== AUTO SAVE TO PAYOUT ============  
         Dim regHoliday = Holiday_Rate("REGULAR")
@@ -1105,7 +1052,6 @@ Module SaveUpdate
 
                 For Each dr In ds.Tables(0).Rows
                     With dr
-
                         Dim BiometricID, Company As String
                         Dim sched As String = ""
                         Dim Late As String = ""
@@ -2198,13 +2144,12 @@ Module SaveUpdate
         End If
     End Sub
 
-    Friend Sub SaveLogs(TRANSACTIONN As String, EMPLOYEE As String, USER As String)
+    Friend Sub SaveLogs(TRANSACTIONN As String, USER As String)
         Dim mysql As String = $"Select * from PAYROLL_LOGS"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_LOGS")
             Dim dsNew As DataRow = ds.Tables(0).NewRow
             With dsNew
                 .Item("TRANSACTIONN") = TRANSACTIONN
-                .Item("EMPLOYEE") = EMPLOYEE
                 .Item("USER") = USER
                 .Item("DATEE") = Date.Now
             End With

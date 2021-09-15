@@ -106,6 +106,7 @@ Partial Class frmSettings
         Me.Allow_Save_BTN = New System.Windows.Forms.Button()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.GroupBox6 = New System.Windows.Forms.GroupBox()
+        Me.lblAdd = New System.Windows.Forms.Label()
         Me.DE_Effectivity_DTP = New System.Windows.Forms.DateTimePicker()
         Me.Label31 = New System.Windows.Forms.Label()
         Me.DE_Schedule_Combo = New System.Windows.Forms.ComboBox()
@@ -200,6 +201,7 @@ Partial Class frmSettings
         Me.ColumnHeader23 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader28 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader29 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader30 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.SaveCity_BTN = New System.Windows.Forms.Button()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Holiday_Remove = New System.Windows.Forms.ContextMenuStrip(Me.components)
@@ -211,7 +213,6 @@ Partial Class frmSettings
         Me.Context_deduct = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.menu_subtotal = New System.Windows.Forms.ToolStripMenuItem()
         Me.menu_edit = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ColumnHeader30 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.Settings_Tab.SuspendLayout()
         Me.TabPage5.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
@@ -1094,6 +1095,7 @@ Partial Class frmSettings
         '
         'GroupBox6
         '
+        Me.GroupBox6.Controls.Add(Me.lblAdd)
         Me.GroupBox6.Controls.Add(Me.DE_Effectivity_DTP)
         Me.GroupBox6.Controls.Add(Me.Label31)
         Me.GroupBox6.Controls.Add(Me.DE_Schedule_Combo)
@@ -1118,6 +1120,17 @@ Partial Class frmSettings
         Me.GroupBox6.TabIndex = 122
         Me.GroupBox6.TabStop = False
         Me.GroupBox6.Text = "Information"
+        '
+        'lblAdd
+        '
+        Me.lblAdd.AutoSize = True
+        Me.lblAdd.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblAdd.ForeColor = System.Drawing.Color.RoyalBlue
+        Me.lblAdd.Location = New System.Drawing.Point(429, 82)
+        Me.lblAdd.Name = "lblAdd"
+        Me.lblAdd.Size = New System.Drawing.Size(32, 22)
+        Me.lblAdd.TabIndex = 125
+        Me.lblAdd.Text = "Add"
         '
         'DE_Effectivity_DTP
         '
@@ -2051,6 +2064,11 @@ Partial Class frmSettings
         Me.ColumnHeader29.Text = "Address"
         Me.ColumnHeader29.Width = 130
         '
+        'ColumnHeader30
+        '
+        Me.ColumnHeader30.Text = "Photo Category"
+        Me.ColumnHeader30.Width = 120
+        '
         'SaveCity_BTN
         '
         Me.SaveCity_BTN.BackColor = System.Drawing.Color.DarkSalmon
@@ -2125,11 +2143,6 @@ Partial Class frmSettings
         Me.menu_edit.Name = "menu_edit"
         Me.menu_edit.Size = New System.Drawing.Size(146, 22)
         Me.menu_edit.Text = "Edit"
-        '
-        'ColumnHeader30
-        '
-        Me.ColumnHeader30.Text = "Photo Category"
-        Me.ColumnHeader30.Width = 120
         '
         'frmSettings
         '
@@ -2375,4 +2388,5 @@ Partial Class frmSettings
     Friend WithEvents Label43 As Label
     Friend WithEvents Address_Combo As ComboBox
     Friend WithEvents ColumnHeader30 As ColumnHeader
+    Friend WithEvents lblAdd As Label
 End Class

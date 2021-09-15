@@ -850,4 +850,16 @@
         Ecola_TXT.Text = IIf(ecola = 0, Nothing, ecola)
     End Sub
 
+    Private Sub lblAdd_MouseEnter(sender As Object, e As EventArgs) Handles lblAdd.MouseEnter
+        lblAdd.ForeColor = Color.Red
+    End Sub
+
+    Private Sub lblAdd_MouseLeave(sender As Object, e As EventArgs) Handles lblAdd.MouseLeave
+        lblAdd.ForeColor = Color.RoyalBlue
+    End Sub
+
+    Private Sub lblAdd_Click(sender As Object, e As EventArgs) Handles lblAdd.Click
+        Settings_Tab.SelectedIndex = 4
+        Deduct_TXT.Select()
+    End Sub
 End Class

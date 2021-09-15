@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class frmUserLogs
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,15 +20,14 @@ Partial Class frmUserLogs
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.lvLogs = New System.Windows.Forms.ListView()
         Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader2 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader3 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Close_LBL = New System.Windows.Forms.Label()
-        Me.ColumnHeader3 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader4 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.SuspendLayout()
         '
         'lvLogs
@@ -36,7 +35,7 @@ Partial Class frmUserLogs
         Me.lvLogs.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.lvLogs.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader4, Me.ColumnHeader3})
+        Me.lvLogs.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader3})
         Me.lvLogs.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lvLogs.FullRowSelect = True
         Me.lvLogs.GridLines = True
@@ -52,12 +51,17 @@ Partial Class frmUserLogs
         'ColumnHeader1
         '
         Me.ColumnHeader1.Text = "Date"
-        Me.ColumnHeader1.Width = 200
+        Me.ColumnHeader1.Width = 230
         '
         'ColumnHeader2
         '
         Me.ColumnHeader2.Text = "User"
-        Me.ColumnHeader2.Width = 220
+        Me.ColumnHeader2.Width = 250
+        '
+        'ColumnHeader3
+        '
+        Me.ColumnHeader3.Text = "Transaction"
+        Me.ColumnHeader3.Width = 1800
         '
         'Label1
         '
@@ -78,16 +82,6 @@ Partial Class frmUserLogs
         Me.Close_LBL.Size = New System.Drawing.Size(57, 32)
         Me.Close_LBL.TabIndex = 78
         Me.Close_LBL.Text = "Close"
-        '
-        'ColumnHeader3
-        '
-        Me.ColumnHeader3.Text = "Transaction"
-        Me.ColumnHeader3.Width = 2000
-        '
-        'ColumnHeader4
-        '
-        Me.ColumnHeader4.Text = "Employee"
-        Me.ColumnHeader4.Width = 230
         '
         'frmUserLogs
         '
@@ -111,5 +105,4 @@ Partial Class frmUserLogs
     Friend WithEvents Label1 As Label
     Friend WithEvents Close_LBL As Label
     Friend WithEvents ColumnHeader3 As ColumnHeader
-    Friend WithEvents ColumnHeader4 As ColumnHeader
 End Class

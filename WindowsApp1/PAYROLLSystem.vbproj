@@ -232,10 +232,10 @@
     <Compile Include="Forms\frmSettings.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="frmUserLogs.Designer.vb">
+    <Compile Include="Forms\frmUserLogs.Designer.vb">
       <DependentUpon>frmUserLogs.vb</DependentUpon>
     </Compile>
-    <Compile Include="frmUserLogs.vb">
+    <Compile Include="Forms\frmUserLogs.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Login_Form.Designer.vb">
@@ -300,7 +300,7 @@
     <EmbeddedResource Include="Forms\frmSettings.resx">
       <DependentUpon>frmSettings.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="frmUserLogs.resx">
+    <EmbeddedResource Include="Forms\frmUserLogs.resx">
       <DependentUpon>frmUserLogs.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Login_Form.resx">

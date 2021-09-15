@@ -499,6 +499,12 @@ Public Class frmAttendance
 
             SavePayout_IndividualL(BiometricID_TXT.Text, PAYROLL, starting_date, ending_date)
 
+            If Save_BTN.Tag = "UPDATE" Then
+                SaveLogs($"UPDATED ATTENDANCE ({Name_TXT.Text} ({BiometricID_TXT.Text})) - Days({TotalDays_LBL.Text}), OT({TotalOTHr_LBL.Text}), Late({TotalLateHR_LBL.Text}), Undertime({TotalUTHR_LBL.Text}), R/S Holiday({TotalRHoliday_LBL.Text}/{TotalSHoliday_LBL.Text}), SIL({SIL_LBL.Text})", frmMainForm.UserName_LBL.Text)
+            Else
+                SaveLogs($"ADDED ATTENDANCE ({Name_TXT.Text} ({BiometricID_TXT.Text})) - Days({TotalDays_LBL.Text}), OT({TotalOTHr_LBL.Text}), Late({TotalLateHR_LBL.Text}), Undertime({TotalUTHR_LBL.Text}), R/S Holiday({TotalRHoliday_LBL.Text}/{TotalSHoliday_LBL.Text}), SIL({SIL_LBL.Text})", frmMainForm.UserName_LBL.Text)
+            End If
+
             Cancel_BTN.PerformClick()
         Else
             MsgBox("Please Choose Employee's Name!", MsgBoxStyle.Critical, "Error")
@@ -1249,13 +1255,81 @@ Public Class frmAttendance
     End Sub
 
     Private Sub Bio7_TXT_TextChanged(sender As Object, e As EventArgs) Handles Bio7_TXT.TextChanged
+
+        Dim PAYROLL As String
+        If Paydate_ComboB.SelectedIndex >= 0 Then
+            PAYROLL = Paydate_ComboB.SelectedItem
+        Else
+            PAYROLL = DataGridView1.Tag
+        End If
+
         If Not String.IsNullOrEmpty(Bio7_TXT.Text) Then
+
             GetName(Bio7_TXT.Text, Emp7_TXT)
+            GetAttendance_Shifting(Bio7_TXT.Text, PAYROLL)
+
+
+            '==========================  CHECK PAYDATE IF VALID FOR EDITING =========================   
+            If Paydate_ComboB.SelectedIndex >= 0 Then
+                If Paydate_ComboB.Text = frmMainForm.Paydate.ToString("d") Then
+                    Save7_BTN.Enabled = True
+                Else
+                    Save7_BTN.Enabled = False
+                End If
+            Else
+                Save7_BTN.Enabled = True
+            End If
+
         Else
             Emp7_TXT.Clear()
         End If
 
     End Sub
+
+    Public Sub GetAttendance_Shifting(bioNo As String, PAYROLL As String)
+
+        Dim mysql As String = $"Select * From  PAYROLL_ATTENDANCE where BIOMETRICID = '{bioNo}' and PAYDATE = '{PAYROLL}'"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
+            If ds.Tables(0).Rows.Count > 0 Then
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+
+                        Days7_TXT.Text = .Item("PRESENT_DAYS")
+                        Overtime7_TXT.Text = .Item("OVERTIME")
+                        'Dim Latee As String = IIf(IsDBNull(.Item("LATE")), "", .Item("LATE"))
+                        'Dim Undertime As String = IIf(IsDBNull(.Item("UNDERTIME")), "", .Item("UNDERTIME"))
+                        Late7_TXT.Text = IIf(IsDBNull(.Item("LATE")), "00:00:00", .Item("LATE"))
+                        Undertime7_TXT.Text = IIf(IsDBNull(.Item("UNDERTIME")), "00:00:00", .Item("UNDERTIME"))
+                        Night7_TXT.Text = IIf(IsDBNull(.Item("NIGHT_RATE")), "", .Item("NIGHT_RATE"))
+                        SIL7_NUP.Text = IIf(IsDBNull(.Item("SIL")), "", .Item("SIL"))
+
+                        'If Latee.Length > 5 Then
+                        '    Late7_TXT.Text = Latee.Substring(0, Latee.Length - 3)
+                        'End If
+
+                        'If Undertime.Length > 5 Then
+                        '    Undertime7_TXT.Text = Undertime.Substring(0, Undertime.Length - 3)
+                        'End If
+
+                        Save7_BTN.Tag = "UPDATE"
+
+                    End With
+                Next
+            Else
+
+                Days7_TXT.Clear()
+                Overtime7_TXT.Clear()
+                Late7_TXT.Clear()
+                Undertime7_TXT.Clear()
+                Night7_TXT.Clear()
+                SIL7_NUP.TextAlign = 0
+
+                Save7_BTN.Tag = "NEW"
+            End If
+        End Using
+
+    End Sub
+
 
     Private Sub Save7_BTN_Click(sender As Object, e As EventArgs) Handles Save7_BTN.Click
 
@@ -1281,11 +1355,17 @@ Public Class frmAttendance
             End If
 
             SaveAttendanceEE(Bio7_TXT.Text, PAYROLL, Days7_TXT.Text, IIf(Overtime7_TXT.Text = "", "0", Overtime7_TXT.Text), Late_TS.ToString, UT_TS.ToString,
-                             "0", "0", Night7_TXT.Text, SIL7_NUP.Text)
+                             TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text, Night7_TXT.Text, SIL7_NUP.Text)
 
-            updateHoliday_Attendance(Bio7_TXT.Text, PAYROLL)
+            'updateHoliday_Attendance(Bio7_TXT.Text, PAYROLL)
 
             SavePayout_IndividualL(Bio7_TXT.Text, PAYROLL, starting_date, ending_date)
+
+            If Save_BTN.Tag = "UPDATE" Then
+                SaveLogs($"UPDATED ATTENDANCE ({Emp7_TXT.Text} ({Bio7_TXT.Text})) - Days({Days7_TXT.Text}), OT({Overtime7_TXT.Text}), Late({Late_TS.ToString}), Undertime({UT_TS.ToString}), R/S Holiday({TotalRHoliday_LBL.Text}/{TotalSHoliday_LBL.Text}), Night Rate({Night7_TXT.Text}), SIL({SIL7_NUP.Text})", frmMainForm.UserName_LBL.Text)
+            Else
+                SaveLogs($"ADDED ATTENDANCE ({Emp7_TXT.Text} ({Bio7_TXT.Text})) - Days({Days7_TXT.Text}), OT({Overtime7_TXT.Text}), Late({Late_TS.ToString}), Undertime({UT_TS.ToString}), R/S Holiday({TotalRHoliday_LBL.Text}/{TotalSHoliday_LBL.Text}), Night Rate({Night7_TXT.Text}), SIL({SIL7_NUP.Text})", frmMainForm.UserName_LBL.Text)
+            End If
 
             Cancel7_BTN.PerformClick()
         Else
@@ -1423,26 +1503,24 @@ Public Class frmAttendance
             End If
         End If
 
+        '====================== TRANSACTION ==========================
+        Dim listt As String = Nothing
+        For Each bio As String In distinct_bio
+            If listt = Nothing Then
+                listt = bio
+            Else
+                listt = listt & ", " & bio
+            End If
+        Next
+
+        SaveLogs($"IMPORTED BIOMETRIC ({listt})", frmMainForm.UserName_LBL.Text)
+
+        '=============================================================
         PopulateComboBox(Paydate_ComboB, "BIOMETRIC_DTR", "PAYDATE")
         Has_Rows_Delete("IMPORT_DTR")
+
     End Sub
 
-
-    Private Sub bio_TextFile()
-
-        Dim Excel_FilePath = "C:\Biometric.xlsx"
-
-        Dim oExcel = CreateObject("Excel.Application")
-
-        oExcel.Workbooks.OpenText(FileName:=Path_TXT.Text, Origin:=65001)
-
-        oExcel.Worksheets(1).Name = "Worksheet"
-
-        oExcel.Worksheets(1).SaveAs(Excel_FilePath, FileFormat:=51)
-
-        'oExcel.Quit()
-        'oExcel = Nothing
-    End Sub
 
     Private Sub bio_White()
         eApp = New Excel.Application
@@ -1463,7 +1541,6 @@ Public Class frmAttendance
         progressBarStart(DtSet.Tables(0).Rows.Count)
 
         For row = 2 To DtSet.Tables(0).Rows.Count + 1
-
             If eCell(row, 1).Value <> Nothing And eCell(row, 2).Value <> Nothing Then
 
                 SaveBiometricSheet(Paydate, eCell(row, 1).Value, eCell(row, 2).Value)
@@ -1521,9 +1598,8 @@ Public Class frmAttendance
     Private Sub Saving_InSys()
 
         Dim groups_time As New List(Of String)()
-        'Dim group_Empty As New List(Of String)()
 
-        Dim bio_no As String = "" ' ======================================== GIMOVE SA GAWAS BASI DILI MAGANA =======================
+        Dim bio_no As String = ""
 
         progressBarStart(DtSet.Tables(0).Rows.Count)
 
@@ -2009,10 +2085,12 @@ Public Class frmAttendance
                         TotalUTHR_LBL.Text = IIf(IsDBNull(.Item("UNDERTIME")), "00:00:00", .Item("UNDERTIME"))
                         TotalOTHr_LBL.Text = .Item("OVERTIME")
 
+                        Save_BTN.Tag = "UPDATE"
                     End With
                 Next
             Else
                 ClearAfter()
+                Save_BTN.Tag = "NEW"
             End If
         End Using
 

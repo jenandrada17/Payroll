@@ -2457,7 +2457,6 @@ Module SelectFromDatabase
                     Dim datee As DateTime = .Item("DATEE")
                     Dim list As ListViewItem = lv.Items.Add(datee.ToString("MMM dd, yyyy hh:mm tt"))
                     list.SubItems.Add(.Item("USER"))
-                    list.SubItems.Add(.Item("EMPLOYEE"))
                     list.SubItems.Add(.Item("TRANSACTIONN"))
                 End With
             Next
