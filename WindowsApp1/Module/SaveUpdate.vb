@@ -506,16 +506,6 @@
 
     End Sub
 
-    'Friend Sub SavePayout(BIOMETRIC_ID As String, BRANCH_ID As String, PAYDATE As String, TOTAL_BASIC As String, TOTAL_OVERTIME As String, TOTAL_LATE_UT As String,
-    '                      GROSS_AMOUNT As String, SSS_COMP As String, PAGIBIG_COMP As String, PHILHEALTH_COMP As String, TAX_WHELD As String,
-    '                      NET_TAX_COMP As String, SSS_LOAN As String, PAGIBIG_LOAN As String, TOTAL_ALLOWANCE As String,
-    '                      TOTAL_DEDUCTION As String, NET_PAY As String, emp_id As String, Optional BRANCH_IMPORT As String = "", Optional all As String = "")
-
-    'Friend Sub SavePayout(BIOMETRIC_ID As String, BRANCH_ID As String, PAYDATE As String, TOTAL_BASIC As String, TOTAL_OVERTIME As String, TOTAL_LATE_UT As String,
-    '                      GROSS_AMOUNT As String, SSS_COMP As String, PAGIBIG_COMP As String, PHILHEALTH_COMP As String, TAX_WHELD As String,
-    '                      NET_TAX_COMP As String, SSS_LOAN As String, PAGIBIG_LOAN As String, TOTAL_ALLOWANCE As String,
-    '                      TOTAL_DEDUCTION As String, NET_PAY As String, emp_id As String, Optional all As String = "")
-
     Friend Sub SavePayout(BIOMETRIC_ID As String, PAYDATE As String, TOTAL_BASIC As String, TOTAL_OVERTIME As String, TOTAL_LATE_UT As String,
                           GROSS_AMOUNT As String, SSS_COMP As String, PAGIBIG_COMP As String, PHILHEALTH_COMP As String, TAX_WHELD As String,
                           NET_TAX_COMP As String, SSS_LOAN As String, PAGIBIG_LOAN As String, TOTAL_ALLOWANCE As String,
@@ -561,8 +551,6 @@
                 Dim dsNewRow As DataRow = ds.Tables(0).NewRow
                 With dsNewRow
                     .Item("BIOMETRIC_ID") = BIOMETRIC_ID
-                    '.Item("BRANCH_ID") = BRANCH_ID
-                    '.Item("EMP_ID") = emp_id
                     .Item("TOTAL_BASIC") = TOTAL_BASIC
                     .Item("TOTAL_OVERTIME") = TOTAL_OVERTIME
                     .Item("TOTAL_LATE_UT") = TOTAL_LATE_UT
@@ -579,7 +567,6 @@
                     .Item("TOTAL_DEDUCTION") = TOTAL_DEDUCTION
                     .Item("NET_PAY") = NET_PAY
                     .Item("PAYDATE") = PAYDATE
-                    '.Item("BRANCH_IMPORT") = BRANCH_IMPORT
 
                 End With
 
@@ -593,22 +580,29 @@
         End If
     End Sub
 
-    Friend Sub SavePayout_MODIFIED_DEDUCTION(EMP_ID As String, PAYDATE As String, CATEGORY As String, M_Amount As String, AMOUNT_PER_GIVE As String, DATE_CREATED As String, M_DEDUC_ID As String)
+    Friend Sub SavePayout_MODIFIED_DEDUCTION(BIO_NO As String, PAYDATE As String, CATEGORY As String, M_Amount As String, AMOUNT_PER_GIVE As String, DATE_CREATED As String, M_DEDUC_ID As String)
 
         Dim mysql As String = "Select * From MODIFIED_DEDUCTION Rows 1"
         Using ds As DataSet = LoadSQL(mysql, "MODIFIED_DEDUCTION")
             Dim dsNewRow As DataRow = ds.Tables(0).NewRow
             With dsNewRow
 
+                MsgBox(M_Amount)
+                MsgBox(AMOUNT_PER_GIVE)
                 Dim toUpper = CATEGORY.ToUpper()
 
-                .Item("EMP_ID") = EMP_ID
+                .Item("BIO_NO") = BIO_NO
                 .Item("PAYDATE") = PAYDATE
                 .Item("M_CATEGORY") = toUpper
                 .Item("M_Amount") = M_Amount
                 .Item("AMOUNT_PER_GIVE") = AMOUNT_PER_GIVE
                 .Item("DATE_CREATED") = DATE_CREATED
-                .Item("M_DEDUC_ID") = M_DEDUC_ID
+
+                If M_DEDUC_ID = Nothing Then
+                    .Item("M_DEDUC_ID") = DBNull.Value
+                Else
+                    .Item("M_DEDUC_ID") = M_DEDUC_ID
+                End If
 
             End With
 
@@ -631,7 +625,6 @@
                 Dim dr As DataRow = ds.Tables(0).Rows(0)
                 With dr
 
-                    'Dim branchID As String = IIf(IsDBNull(.Item("BRANCH_ID")), 0, .Item("BRANCH_ID"))
                     Dim Late As String = ""
                     Dim UnderTime As String = ""
                     Dim rate, NoOfDays, RegularOT, SpecialHol, RegularHol As Double
@@ -724,6 +717,8 @@
                                 End With
                             Next
                         End If
+
+                        Save_Recorded_Allow_Deduc(bioNo, paydate_, "SBU", SBU_Amount(), "DEDUCTION")
                     End Using
                     Deduction = Deduction + SBU
 
@@ -778,7 +773,6 @@
     End Sub
 
 
-    'Friend Sub SavePayout_ALL(paydate_ As String, branch As String) '========== AUTO SAVE TO PAYOUT ============   
     Friend Sub SavePayout_ALL(paydate_ As String) '========== AUTO SAVE TO PAYOUT ============   
 
         Dim regHoliday = Holiday_Rate("REGULAR")
@@ -856,6 +850,7 @@
 
                         '============================================= DELETE TO REPLACE =================================================
                         Replacing($"RECORDED_ALLOW_DEDUC where BIO_NO = '{BiometricID}' and PAYDATE = '{paydate_}';")
+                        Replacing($"MODIFIED_DEDUCTION where BIO_NO = '{BiometricID}' and PAYDATE = '{paydate_}';")
                         '============================================= ALLOWANCE =========================================================
                         Allowances = 0
 
@@ -897,6 +892,8 @@
                                     End With
                                 Next
                             End If
+
+                            Save_Recorded_Allow_Deduc(BiometricID, paydate_, "SBU", SBU_Amount(), "DEDUCTION")
                         End Using
                         Deduction = Deduction + SBU
 

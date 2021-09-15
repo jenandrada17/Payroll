@@ -404,17 +404,26 @@ Module SelectFromDatabase
         datagrid.Rows.Clear()
         Dim mysql_ As String = $"select * from RECORDED_ALLOW_DEDUC  where BIO_NO = '{BIO_NO}' and PAYDATE = '{paydate}' and TRANSAC_NAME = '{transac_name}'"
         Using ds As DataSet = LoadSQL(mysql_, "RECORDED_ALLOW_DEDUC")
+
+            Dim rowId As Integer = datagrid.Rows.Add()
+            Dim row As DataGridViewRow = datagrid.Rows(rowId)
+
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
                     With dr
 
+                        Dim toLower, toProper As String
+
+                        If .item("CATEGORY") <> "SBU" Then
+                            toLower = .item("CATEGORY").ToLower()
+                            Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
+                            toProper = info.ToTitleCase(toLower)
+                        Else
+                            toProper = .item("CATEGORY")
+                        End If
+
                         Dim amountt As Double = .item("AMOUNT")
 
-                        Dim toLower = .item("CATEGORY").ToLower()
-                        Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
-                        Dim toProper As String = info.ToTitleCase(toLower)
-                        Dim rowId As Integer = datagrid.Rows.Add()
-                        Dim row As DataGridViewRow = datagrid.Rows(rowId)
                         row.Cells(0).Value = toProper
                         row.Cells(0).Tag = amountt.ToString(”N”)
                         row.Cells(1).Value = amountt.ToString(”N”)
@@ -427,6 +436,8 @@ Module SelectFromDatabase
 
                 Next
             End If
+
+            AdjustHeightOfGridBasedOnRows(datagrid, 25)
         End Using
     End Sub
 
@@ -458,10 +469,9 @@ Module SelectFromDatabase
                     End With
                 Next
 
-                datagrid.Visible = True
-            Else
-                datagrid.Visible = False
             End If
+
+            AdjustHeightOfGridBasedOnRows(datagrid, 25)
         End Using
     End Sub
 
@@ -469,10 +479,12 @@ Module SelectFromDatabase
 
         datagrid.Rows.Clear()
 
-        'Dim sql_3 As String = $"Select * From PAYROLL_DEDUCTIONS WHERE EMP_ID = '{emp_id}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
-
         Dim mysql_1 As String = $"Select * From PAYROLL_DEDUCTIONS WHERE BIO_NO = '{BIO_NO}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
         Using ds As DataSet = LoadSQL(mysql_1, "PAYROLL_DEDUCTIONS")
+
+            Dim rowId As Integer = datagrid.Rows.Add()
+            Dim row As DataGridViewRow = datagrid.Rows(rowId)
+
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
                     With dr
@@ -484,8 +496,6 @@ Module SelectFromDatabase
 
                         If .item("EFFECTIVE_DATE") <= Today Then
 
-                            Dim rowId As Integer = datagrid.Rows.Add()
-                            Dim row As DataGridViewRow = datagrid.Rows(rowId)
                             row.Cells(0).Value = toProper
                             row.Cells(0).Tag = amountt.ToString(”N”)
                             row.Cells(1).Value = amountt.ToString(”N”)
@@ -494,32 +504,50 @@ Module SelectFromDatabase
                         End If
                     End With
                 Next
+
             End If
+
+            ' ================ SBU DEDUCTION  ================  
+            Dim sbu As Double = SBU_Amount()
+
+            row.Cells(0).Value = "SBU"
+            row.Cells(0).Tag = sbu.ToString(”N”)
+            row.Cells(1).Value = sbu.ToString(”N”)
+            row.Cells(3).Value = "OFF"
+
+            AdjustHeightOfGridBasedOnRows(datagrid, 25)
         End Using
     End Sub
 
     Friend Sub DeductioneDetails_MODIFIED(BIO_NO As String, PAYDATE As String, datagrid As DataGridView, sched As String)
 
         datagrid.Rows.Clear()
-        Dim mysql_1 As String = $"Select * From MODIFIED_DEDUCTION A inner join PAYROLL_DEDUCTIONS B on A.m_deduc_id = B.id and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')
+        Dim mysql_1 As String = $"Select * From MODIFIED_DEDUCTION A inner join PAYROLL_DEDUCTIONS B on (A.m_deduc_id = B.id or A.m_deduc_id is null ) 
+                                            and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')
                                             WHERE A.BIO_NO = '{BIO_NO}' and PAYDATE = '{PAYDATE}'"
 
         Using ds As DataSet = LoadSQL(mysql_1, "MODIFIED_DEDUCTION")
+
+            Dim rowId As Integer = datagrid.Rows.Add()
+            Dim row As DataGridViewRow = datagrid.Rows(rowId)
+
             If ds.Tables(0).Rows.Count > 0 Then
 
                 For Each dr In ds.Tables(0).Rows
 
                     With dr
-
-                        Dim rowId As Integer = datagrid.Rows.Add()
-                        Dim row As DataGridViewRow = datagrid.Rows(rowId)
+                        Dim toLower, toProper As String
 
                         Dim amountt_modif As Double = .item("M_AMOUNT")
                         Dim amountt_orig As Double = .item("AMOUNT_PER_GIVE")
 
-                        Dim toLower = .item("M_CATEGORY").ToLower()
-                        Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
-                        Dim toProper As String = info.ToTitleCase(toLower)
+                        If .item("M_CATEGORY") <> "SBU" Then
+                            toLower = .item("M_CATEGORY").ToLower()
+                            Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
+                            toProper = info.ToTitleCase(toLower)
+                        Else
+                            toProper = .item("M_CATEGORY")
+                        End If
 
                         row.Cells(0).Value = toProper
                         row.Cells(0).Tag = amountt_orig.ToString(”N”)
@@ -535,6 +563,7 @@ Module SelectFromDatabase
                 Next
 
             End If
+            AdjustHeightOfGridBasedOnRows(datagrid, 25)
         End Using
 
 

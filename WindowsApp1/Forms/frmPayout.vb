@@ -22,11 +22,6 @@ Public Class frmPayout
 
         Paydate_ComboB.Text = "--Select Payroll--"
 
-        If paydate_ <= Today Then
-            Details_Save_BTN.Text = "Save"
-        Else
-            Details_Save_BTN.Text = "Edit"
-        End If
     End Sub
 
     Private Sub Select_BTN_Click(sender As Object, e As EventArgs) Handles Select_BTN.Click
@@ -76,6 +71,9 @@ Public Class frmPayout
 
         Dim BIO_NO As String = BiometricID_TXT.Text
 
+        Allowance_grid.Rows.Clear()
+        Deduction_grid.Rows.Clear()
+
         If Bio_Exist_Attendance(BIO_NO, paydate_) Then
 
             AttendanceDetails(BIO_NO, paydate_, NoOfDays_TXT, RegularOT_TXT, SpecialHol_TXT, RegularHol_TXT,
@@ -115,12 +113,7 @@ Public Class frmPayout
             '================ FETCHING ALLOWANCE RECORDED WHEN ATTENDANCE BIOMETRIC IMPORTED ================== 
             If isExist_String("RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{BIO_NO}' AND PAYDATE = '{paydate_}' AND TRANSAC_NAME = 'ALLOWANCE'") Then
                 Recorded_Details(BIO_NO, Allowance_grid, paydate_, "ALLOWANCE")
-            Else
-                AllowanceDetails(BIO_NO, Allowance_grid, sched_deduc)
             End If
-
-            Label18.Visible = True
-            Allowance_grid.Visible = True
 
             '================ FETCHING ALLOWANCE RECORDED WHEN ATTENDANCE BIOMETRIC IMPORTED ==================
             If isExist_String("MODIFIED_DEDUCTION", $"WHERE BIO_NO = '{BIO_NO}' AND PAYDATE = '{paydate_}'") Then     '=========m MDIFIED DEDUCTION (ON/OFF)
@@ -128,15 +121,7 @@ Public Class frmPayout
 
             ElseIf isExist_String("RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{BIO_NO}' AND PAYDATE = '{paydate_}' AND TRANSAC_NAME = 'DEDUCTION'") Then         '=========m RECORDED DEDUCTION IMPORTING ATTENDANCE
                 Recorded_Details(BIO_NO, Deduction_grid, paydate_, "DEDUCTION")
-            Else                                                                                                '=========m ORIGINAL DEDUCTION INCLUDING NEW ADDED DEDUCTION                                                                                               
-                DeductioneDetails_ORIG(BIO_NO, Deduction_grid, sched_deduc)
             End If
-
-            ADD_SBU_GRID() ' =========== SBU DEDUCTION 
-
-            '==========================  GRID SIZE ===================================================
-            AdjustHeightOfGridBasedOnRows(Allowance_grid, 25)
-            AdjustHeightOfGridBasedOnRows(Deduction_grid, 25)
 
             '==========================  CHECK PAYDATE IF VALID FOR EDITING (DEDUCTION) =========================   
             If paydate_ = frmMainForm.Paydate.ToString("d") Then
@@ -165,6 +150,7 @@ Public Class frmPayout
         If Allowance_grid.RowCount > 0 Then
             Label18.Visible = True
             Allowance_grid.Visible = True
+            Edit_BTN.Visible = True
         Else
             Label18.Visible = False
             Allowance_grid.Visible = False
@@ -175,6 +161,7 @@ Public Class frmPayout
         If Deduction_grid.RowCount > 0 Then
             Label22.Visible = True
             Deduction_grid.Visible = True
+            Edit_BTN.Visible = True
         Else
             Label22.Visible = False
             Deduction_grid.Visible = False
@@ -228,6 +215,8 @@ Public Class frmPayout
             End If
         Next
 
+        Label18.Visible = False
+        Label22.Visible = False
         Deduction_grid.Rows.Clear()
         Allowance_grid.Rows.Clear()
         Prev_Amount_lbl.Text = "-"
@@ -237,11 +226,14 @@ Public Class frmPayout
     Private Sub Details_Save_BTN_Click(sender As Object, e As EventArgs) Handles Details_Save_BTN.Click
         If Not Name_TXT.Text = String.Empty Then
             Dim BIO_NO As String = BiometricID_TXT.Text
-            If Details_Save_BTN.Text = "Save" Then
+
+            Dim result As DialogResult = MessageBox.Show($"The record will be edited, do you want to proceed?", "Warning", MessageBoxButtons.YesNo)
+            If result = DialogResult.Yes Then
+
                 SavePayout(BIO_NO, paydate_, TotalBasic_LBL.Text, TotalOT_LBL.Text,
-                      TotalLateUnder_LBL.Text, GrossAmount_LBL.Text, SSSComp_LBL.Text, HDMF_LBL.Text, Philhealth_LBL.Text,
-                      Tax_Wheld_LBL.Text, NetTax_LBL.Text, SSSLoan_LBL.Text, PagibigLoan_LBL.Text,
-                      Allowances_LBL.Text, Deduction_LBL.Text, NetPay_LBL.Text)
+                  TotalLateUnder_LBL.Text, GrossAmount_LBL.Text, SSSComp_LBL.Text, HDMF_LBL.Text, Philhealth_LBL.Text,
+                  Tax_Wheld_LBL.Text, NetTax_LBL.Text, SSSLoan_LBL.Text, PagibigLoan_LBL.Text,
+                  Allowances_LBL.Text, Deduction_LBL.Text, NetPay_LBL.Text)
 
                 If Deduction_grid.Rows.Count > 0 Then
 
@@ -250,64 +242,22 @@ Public Class frmPayout
                     End If
 
                     For Each row As DataGridViewRow In Deduction_grid.Rows
-                        If Not row.Cells(3).Value = String.Empty Then
-                            SavePayout_MODIFIED_DEDUCTION(Name_TXT.Tag, paydate_, row.Cells(0).Value, row.Cells(1).Value, row.Cells(0).Tag, Today, row.Cells(2).Tag)
-                        End If
+                        Dim deduct_id As String = IIf(IsDBNull(row.Cells(2).Tag), Nothing, row.Cells(2).Tag)
+                        SavePayout_MODIFIED_DEDUCTION(BiometricID_TXT.Text, paydate_, row.Cells(0).Value, row.Cells(1).Value, row.Cells(0).Tag, Today, deduct_id)
+                    Next
+
+                    For Each row As DataGridViewRow In Allowance_grid.Rows
+                        Save_Recorded_Allow_Deduc(BiometricID_TXT.Text, paydate_, row.Cells(0).Value, row.Cells(1).Value, "ALLOWANCE")
                     Next
                 End If
 
                 Cancel_BTN.PerformClick()
-                Details_Save_BTN.Text = "Edit"
-
-            Else
-
-                AllowanceDetails(BIO_NO, Allowance_grid, sched_deduc)
-                DeductioneDetails_ORIG(BIO_NO, Deduction_grid, sched_deduc)
-
-                ADD_SBU_GRID() ' =========== SBU DEDUCTION  
-
-                AdjustHeightOfGridBasedOnRows(Allowance_grid, 25)
-                AdjustHeightOfGridBasedOnRows(Deduction_grid, 25)
-
-                Calculate_Gross()
-
-                Calculate_Allowance()
-
-                Calculate_Deduction()
-
-                Calculate_NetPay()
-
-                Checkgrid_Visible()
-
-                Details_Save_BTN.Text = "Save"
-                If paydate_ = frmMainForm.Paydate.ToString("d") Then     '======== CHECK IF VALID FOR EDITING IF NOT DISABLE SAVING
-                    Details_Save_BTN.Enabled = True
-                Else
-                    Details_Save_BTN.Enabled = False
-                End If
 
             End If
         End If
-
-
-    End Sub
-
-    Public Sub ADD_SBU_GRID()
-
-        Dim rowIdd As Integer = Deduction_grid.Rows.Add()
-        Dim roww As DataGridViewRow = Deduction_grid.Rows(rowIdd)
-
-        Dim sbu As Double = SBU_Amount()
-
-        roww.Cells(0).Value = "SBU"
-        roww.Cells(1).Value = sbu.ToString(”N”)
-        roww.Cells(3).Value = "OFF"
-        'roww.Cells(3) = New DataGridViewTextBoxCell()
     End Sub
 
     Private Sub Pay_Refresh_BTN_Click(sender As Object, e As EventArgs) Handles Pay_Refresh_BTN.Click
-        'SavePayout_ALL(paydate_)
-
         Lists_Payout(Payout_list, paydate_)
 
         GetPayout_TOTALS(paydate_, P_GrossAmount_LBL, P_SSSComp_LBL, P_PagibigComp_LBL, P_PhilHComp_LBL, P_TaxWH_LBL,
@@ -332,14 +282,10 @@ Public Class frmPayout
             BiometricID_TXT.Text = Payout_list.FocusedItem.SubItems(1).Tag
             emp_id = Payout_list.FocusedItem.SubItems(11).Tag
             TabControl1.SelectedIndex = 1
-
-            Details_Save_BTN.Text = "Edit"
-            Details_Save_BTN.Enabled = True
         End If
     End Sub
 
     Private Sub Search_BTN_Click(sender As Object, e As EventArgs) Handles Search_BTN.Click
-        'Grid_Payout(Payout_grid, paydate_, Search_TXT.Text)  
         Lists_Payout(Payout_list, paydate_, Search_TXT.Text)
     End Sub
 
@@ -379,6 +325,29 @@ Public Class frmPayout
         Else
             Company_group.Visible = False
         End If
+    End Sub
+
+    Private Sub Edit_BTN_Click(sender As Object, e As EventArgs) Handles Edit_BTN.Click
+
+        AllowanceDetails(BiometricID_TXT.Text, Allowance_grid, sched_deduc)
+        DeductioneDetails_ORIG(BiometricID_TXT.Text, Deduction_grid, sched_deduc)
+
+        Calculate_Gross()
+
+        Calculate_Allowance()
+
+        Calculate_Deduction()
+
+        Calculate_NetPay()
+
+        Checkgrid_Visible()
+
+        If paydate_ = frmMainForm.Paydate.ToString("d") Then     '======== CHECK IF VALID FOR EDITING IF NOT DISABLE SAVING
+            Details_Save_BTN.Enabled = True
+        Else
+            Details_Save_BTN.Enabled = False
+        End If
+
     End Sub
 
     Private Sub Calculate_Allowance()
