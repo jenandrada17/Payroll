@@ -435,7 +435,8 @@
         If dss.Tables(0).Rows.Count > 0 Then
             For Each dr In dss.Tables(0).Rows
                 With dr
-                    SaveRATE("BRANCH_CODE", .Item("BRANCHCODE"), daily_rate, True)
+                    Dim branchCode As String = IIf(.Item("CITY") = "GENSAN", "", .Item("BRANCHCODE"))
+                    SaveRATE("BRANCH_CODE", branchCode, daily_rate, True)
                 End With
             Next
         End If
@@ -743,7 +744,9 @@
 
     Friend Sub SaveTraining_days(BIO_NO As String, PAYDATE As String, TRAINING_DAYS As String)
 
-        Dim mysql As String = $"Select * FROM PAYROLL_ATTENDANCE where BIOMETRICID = '{BIO_NO}' and PAYDATE = '{PAYDATE}'"
+        Dim mysql As String
+
+        mysql = $"Select * FROM PAYROLL_ATTENDANCE where BIOMETRICID = '{BIO_NO}' and PAYDATE = '{PAYDATE}'"
         Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
         If dss.Tables(0).Rows.Count > 0 Then
             Dim dr As DataRow = dss.Tables(0).Rows(0)
@@ -754,6 +757,19 @@
             End With
             SaveEntry(dss, False)
         End If
+
+        ''==================== TEMPORARY ATTENDANCE ===============
+        'mysql = $"Select * FROM PAYROLL_ATTENDANCE where BIOMETRICID = '{BIO_NO}' and PAYDATE = '{PAYDATE}'"
+        'Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
+        'If ds.Tables(0).Rows.Count > 0 Then
+        '    Dim dr As DataRow = ds.Tables(0).Rows(0)
+        '    With dr
+
+        '        .Item("TRAINING_DAYS") = TRAINING_DAYS
+
+        '    End With
+        '    SaveEntry(ds, False)
+        'End If
     End Sub
 
     'Private Sub check_if_trainee(COMPANY As String, DATE_STARTED As String, EndingDate As DateTime, bioNo As String, paydate_ As String)
@@ -824,7 +840,7 @@
                     Dim rate As Double = 0
                     Dim SIL As Double = 0
                     Dim Allowances As Double = 0
-                    Dim Minimum_rate As Double = GetMinimumRate("BRANCHCODE", .Item("BRANCH_CODE"))
+                    Dim Minimum_rate As Double = IIf(.Item("BRANCH_CODE") = Nothing, GetMinimumRate("CITY", "GENSAN"), GetMinimumRate("BRANCHCODE", .Item("BRANCH_CODE")))
                     Dim Ecola As Double = GetEcola("BRANCHCODE", .Item("BRANCH_CODE"))
 
                     rate = IIf(IsDBNull(.Item("RATE_DAILY")) Or .Item("RATE_DAILY") = 0, Minimum_rate, .Item("RATE_DAILY"))
@@ -941,9 +957,10 @@
                     Allowances = SIL_Total
                     Save_Recorded_Allow_Deduc(bioNo, paydate_, "SIL", SIL_Total, "ALLOWANCE")
 
-                    Allowances = Allowances + Ecola
-                    Save_Recorded_Allow_Deduc(bioNo, paydate_, "ECOLA", Ecola, "ALLOWANCE")
-
+                    If Ecola <> 0 Then
+                        Allowances = Allowances + Ecola
+                        Save_Recorded_Allow_Deduc(bioNo, paydate_, "ECOLA", Ecola, "ALLOWANCE")
+                    End If
                     '============================================= OTHER ALLOWANCES =========================================================
                     Dim sql_2 As String = $"Select * From PAYROLL_ALLOWANCES WHERE BIOMETRIC_NO = '{bioNo}' and ALLOWED = 'YES' and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
                     Using ds_2 As DataSet = LoadSQL(sql_2, "PAYROLL_ALLOWANCES")
@@ -1072,10 +1089,10 @@
         Dim regHoliday = Holiday_Rate("REGULAR")
         Dim specHoliday = Holiday_Rate("SPECIAL")
 
-        Dim mysql As String = $"Select * From payroll_attendance A 
-                                inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIOMETRICID WHERE A.PAYDATE = '{paydate_}'"
+        Dim mysql As String = $"Select * From TEMP_ATTENDANCE A 
+                                inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIOMETRICID"
 
-        Using ds As DataSet = LoadSQL(mysql, "payroll_attendance")
+        Using ds As DataSet = LoadSQL(mysql, "TEMP_ATTENDANCE")
             If ds.Tables(0).Rows.Count > 0 Then
 
                 progressBarStart(ds.Tables(0).Rows.Count)
@@ -1102,7 +1119,7 @@
                         Dim nightRate As Double = 0
                         Dim Allowances As Double = 0
                         Dim Deduction As Double = 0
-                        Dim Minimum_rate As Double = GetMinimumRate("BRANCHCODE", .Item("BRANCH_CODE"))
+                        Dim Minimum_rate As Double = IIf(.Item("BRANCH_CODE") = Nothing, GetMinimumRate("CITY", "GENSAN"), GetMinimumRate("BRANCHCODE", .Item("BRANCH_CODE")))
                         Dim Ecola As Double = GetEcola("BRANCHCODE", .Item("BRANCH_CODE"))
 
                         BiometricID = .Item("BIOMETRICID")
@@ -1208,9 +1225,10 @@
                         '============================================= DELETE TO REPLACE =================================================
                         Replacing($"RECORDED_ALLOW_DEDUC where BIO_NO = '{BiometricID}' and PAYDATE = '{paydate_}';")
                         '============================================= ALLOWANCE ========================================================= 
-                        '==================== FOR ECOLA 
-                        Allowances = Allowances + Ecola
-                        Save_Recorded_Allow_Deduc(BiometricID, paydate_, "ECOLA", Ecola, "ALLOWANCE")
+                        If Ecola <> 0 Then '==================== FOR ECOLA 
+                            Allowances = Ecola
+                            Save_Recorded_Allow_Deduc(BiometricID, paydate_, "ECOLA", Ecola, "ALLOWANCE")
+                        End If
                         '================================================================
 
                         Dim sql_2 As String = $"Select * From PAYROLL_ALLOWANCES WHERE BIOMETRIC_NO = '{BiometricID}' and ALLOWED = 'YES' and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
@@ -1322,9 +1340,9 @@
                         NetPay = positive - negative
 
                         SavePayout(BiometricID, paydate_, TotalBasic, TotalOT,
-                                  TotalLateUnder, GrossAmount, SSSComp, PagibigComp, PhilhealthComp,
-                                  Tax_Wheld, netTax, sssLoan, pagibigLoan,
-                                  Allowances, Deduction, NetPay, TotalHol, 0, "Group")
+                                      TotalLateUnder, GrossAmount, SSSComp, PagibigComp, PhilhealthComp,
+                                      Tax_Wheld, netTax, sssLoan, pagibigLoan,
+                                      Allowances, Deduction, NetPay, TotalHol, 0, "Group")
 
                         frmMainForm.AppProgressBar.Value += 1
                     End With
@@ -1649,7 +1667,7 @@
                 .Item("FULLNAME") = FULLNAME
                 .Item("EMAIL_ADD") = EMAIL_ADD
                 .Item("EMP_STATUS") = EMP_STATUS
-                .Item("RATE_DAILY") = GetMinimumRate("BRANCHCODE", .Item("BRANCH_CODE"))
+                .Item("RATE_DAILY") = IIf(.Item("BRANCH_CODE") = Nothing, GetMinimumRate("CITY", "GENSAN"), GetMinimumRate("BRANCHCODE", .Item("BRANCH_CODE")))
 
                 If DATE_STARTED <> "" Then .Item("DATE_STARTED") = DATE_STARTED
                 If TIME_IN <> "" Then .Item("TIME_IN") = TIME_IN
@@ -1685,7 +1703,7 @@
                     .Item("FULLNAME") = FULLNAME
                     .Item("EMAIL_ADD") = EMAIL_ADD
                     .Item("EMP_STATUS") = EMP_STATUS
-                    .Item("RATE_DAILY") = GetMinimumRate("BRANCHCODE", .Item("BRANCH_CODE"))
+                    .Item("RATE_DAILY") = IIf(.Item("BRANCH_CODE") = Nothing, GetMinimumRate("CITY", "GENSAN"), GetMinimumRate("BRANCHCODE", .Item("BRANCH_CODE")))
 
                     If DATE_STARTED <> "" Then .Item("DATE_STARTED") = DATE_STARTED
                     If TIME_IN <> "" Then .Item("TIME_IN") = TIME_IN

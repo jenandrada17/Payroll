@@ -1314,7 +1314,11 @@ Module SelectFromDatabase
 
                 Dim data As DataRow = ds.Tables(0).Rows(0)
                 With data
-                    ratee.Text = IIf(IsDBNull(.Item("RATE_DAILY")), 0, .Item("RATE_DAILY"))
+
+                    Dim rate As Double = IIf(IsDBNull(.Item("RATE_DAILY")), 0, .Item("RATE_DAILY"))
+                    Dim minimum As Double = IIf(.Item("BRANCH_CODE") = Nothing, GetMinimumRate("CITY", "GENSAN"), GetMinimumRate("BRANCHCODE", .Item("BRANCH_CODE")))
+
+                    ratee.Text = IIf(rate = 0, minimum, rate)
                     ratee.Tag = .Item("BRANCH_CODE")
                     name.Text = .Item("FULLNAME")
 

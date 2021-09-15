@@ -647,8 +647,18 @@
 
         ElseIf Company_Combo.SelectedIndex = 3 Then '=== PERFECOM 
 
-        End If
+            If PaydateNet_ComboB.SelectedIndex >= 0 Then
+                Dim mysql As String = $"Select * From PAYROLL_PAYOUT A 
+                                        inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
+                                        where A.PAYDATE  = '{PaydateNet_ComboB.Text}' 
+                                        and B.COMPANY  = 'PERFECOM' OR B.HO_CATEGORY In ('Perfecom Admin Office','Perfecom Admin Operation')"
 
+                LoadNet_Print(mysql) ' and B.BRANCH_CODE IN ('OPK','SMG','KCG','ARC','KCM','ZAM')
+            Else
+                MsgBox("Please select date of payroll.", MsgBoxStyle.Exclamation, "Error")
+            End If
+
+        End If
     End Sub
 
     Private Sub NetBranch_Combo_SelectedValueChanged(sender As Object, e As EventArgs) Handles NetBranch_Combo.SelectedValueChanged
@@ -659,69 +669,81 @@
 
             If Company_Combo.SelectedIndex = 0 Then '=== PHOTO
 
-                If NetBranch_Combo.SelectedIndex = 0 Then '=== Davao Perfect
+                If PaydateNet_ComboB.SelectedIndex >= 0 Then
+                    If NetBranch_Combo.SelectedIndex = 0 Then '=== Davao Perfect
 
-                    mysql = $"Select * From PAYROLL_PAYOUT A 
+                        mysql = $"Select * From PAYROLL_PAYOUT A 
                                         inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
                                         where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' and B.BRANCH_CODE IN ('SMG','KCG','ACM','TAC')"
 
-                    PhotoPlus = "DAVAO PERFECT"
+                        PhotoPlus = "DAVAO PERFECT"
 
-                ElseIf NetBranch_Combo.SelectedIndex = 1 Then '=== JR Photo
+                    ElseIf NetBranch_Combo.SelectedIndex = 1 Then '=== JR Photo
 
-                    mysql = $"Select * From PAYROLL_PAYOUT A 
+                        mysql = $"Select * From PAYROLL_PAYOUT A 
                                         inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
                                         where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' and B.BRANCH_CODE IN ('DIG','ISU','M1','POL')"
 
-                    PhotoPlus = "JR PHOTO"
-                ElseIf NetBranch_Combo.SelectedIndex = 2 Then '=== Gensan Perfect
+                        PhotoPlus = "JR PHOTO"
+                    ElseIf NetBranch_Combo.SelectedIndex = 2 Then '=== Gensan Perfect
 
-                    mysql = $"Select * From PAYROLL_PAYOUT A 
+                        mysql = $"Select * From PAYROLL_PAYOUT A 
                                         inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
                                         where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' 
                                         and B.BRANCH_CODE IN ('ROG','ROX','FINEPIX','COT','MID','KID','SNP','GMA','SML','ZAM','SMD')"
 
-                    PhotoPlus = "GENSAN PERFECT"
+                        PhotoPlus = "GENSAN PERFECT"
+                    End If
+                Else
+                    MsgBox("Please select date of payroll.", MsgBoxStyle.Exclamation, "Error")
                 End If
 
             ElseIf Company_Combo.SelectedIndex = 1 Then '=== P&G UY 
 
-                If NetBranch_Combo.SelectedIndex = 0 Then '=== 3G
+                If PaydateNet_ComboB.SelectedIndex >= 0 Then
+                    If NetBranch_Combo.SelectedIndex = 0 Then '=== 3G
 
-                    mysql = $"Select * From PAYROLL_PAYOUT A 
+                        mysql = $"Select * From PAYROLL_PAYOUT A 
                                         inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
                                         where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'P&G UY' and B.BRANCH_CODE = '3G'"
 
-                ElseIf NetBranch_Combo.SelectedIndex = 1 Then '=== 7Eleven
+                    ElseIf NetBranch_Combo.SelectedIndex = 1 Then '=== 7Eleven
 
-                    mysql = $"Select * From PAYROLL_PAYOUT A 
+                        mysql = $"Select * From PAYROLL_PAYOUT A 
                                         inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
                                         where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'P&G UY' and B.BRANCH_CODE IN ('711-POL','711-ROX')"
 
-                ElseIf NetBranch_Combo.SelectedIndex = 2 Then '=== COMI-GHS Admin Operation
+                    ElseIf NetBranch_Combo.SelectedIndex = 2 Then '=== COMI-GHS Admin Operation
 
-                    mysql = $"Select * From PAYROLL_PAYOUT A 
+                        mysql = $"Select * From PAYROLL_PAYOUT A 
                                         inner Join PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
                                         where A.PAYDATE = '{paydatee}' and B.COMPANY  = 'P&G UY' 
                                         And B.BRANCH_CODE IN ('COMI','KTV','PBA','WAVE') Or B.HO_CATEGORY In ('GHS/P&G UY Admin Office','GHS/P&G UY Admin Operation')"
 
+                    End If
+                Else
+                    MsgBox("Please select date of payroll.", MsgBoxStyle.Exclamation, "Error")
                 End If
 
             ElseIf Company_Combo.SelectedIndex = 2 Then '=== DALTON
 
-                If NetBranch_Combo.SelectedIndex = 0 Then '=== Dalton Office-Operation
+                If PaydateNet_ComboB.SelectedIndex >= 0 Then
+                    If NetBranch_Combo.SelectedIndex = 0 Then '=== Dalton Office-Operation
 
-                    mysql = $"Select * From PAYROLL_PAYOUT A 
+                        mysql = $"Select * From PAYROLL_PAYOUT A 
                                         inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
                                         where A.PAYDATE  = '{paydatee}' and B.HO_CATEGORY IN ('Dalton Admin Office','Dalton Retail','Dalton Admin Operation')"
 
-                ElseIf NetBranch_Combo.SelectedIndex = 1 Then '=== All Dalton Except Head Office
+                    ElseIf NetBranch_Combo.SelectedIndex = 1 Then '=== All Dalton Except Head Office
 
-                    mysql = $"Select * From PAYROLL_PAYOUT A 
+                        mysql = $"Select * From PAYROLL_PAYOUT A 
                                         inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
                                         where A.PAYDATE  = '{paydatee}' AND B.COMPANY  = 'DALTON'"
-                End If
+                    End If
 
+                Else
+                    MsgBox("Please select date of payroll.", MsgBoxStyle.Exclamation, "Error")
+                End If
             End If
 
             LoadNet_Print(mysql)

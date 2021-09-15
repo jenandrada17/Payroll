@@ -236,20 +236,29 @@ Module Public_Function
     End Sub
 
     Friend Sub TempAttendance()
-
-        RunCommand("DROP TABLE IF EXISTS #TEMP_ATTENDANCE;")
-
-        RunCommand("CREATE TABLE #TEMP_ATTENDANCE (BIOMETRICID BIGINT NOT NULL, PAYDATE DATE, PRESENT_DAYS VARCHAR(20) CHARACTER SET NONE,
-                    OVERTIME SMALLINT DEFAULT 0, LATE VARCHAR(20), UNDERTIME VARCHAR(20), REGHOLIDAY SMALLINT DEFAULT 0, 
-                    SPECHOLIDAY SMALLINT DEFAULT 0;")
+        RunCommand("DELETE FROM TEMP_ATTENDANCE")
     End Sub
 
     Friend Sub InsertTempAttendance(BIOMETRICID As String, paydate_ As String, TotalDays As String, TotalOTHr As String,
                                     Late_Total As String, Under_Total As String, TotalRHoliday As String, TotalSHoliday As String)
 
-        RunCommand($"INSERT INTO #TEMP_ATTENDANCE VALUES ('{BIOMETRICID}', '{paydate_}', '{TotalDays}', '{TotalOTHr}'
-                    '{Late_Total}', '{Under_Total}', '{TotalRHoliday}', '{TotalSHoliday}';")
+        Dim mysql As String = "Select * From TEMP_ATTENDANCE Rows 1"
+        Using ds As DataSet = LoadSQL(mysql, "TEMP_ATTENDANCE")
 
+            Dim dsNewRow As DataRow = ds.Tables(0).NewRow
+            With dsNewRow
+                .Item("BIOMETRICID") = BIOMETRICID
+                .Item("PAYDATE") = paydate_
+                .Item("PRESENT_DAYS") = TotalDays
+                .Item("OVERTIME") = TotalOTHr
+                .Item("LATE") = Late_Total
+                .Item("UNDERTIME") = Under_Total
+                .Item("REGHOLIDAY") = TotalRHoliday
+                .Item("SPECHOLIDAY") = TotalSHoliday
+            End With
+            ds.Tables(0).Rows.Add(dsNewRow)
+            SaveEntry(ds)
+        End Using
     End Sub
 
 End Module
