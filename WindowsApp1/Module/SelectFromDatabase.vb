@@ -2497,8 +2497,9 @@ Module SelectFromDatabase
     Public Function GetSummary_Email(PAYDATE As String, str As String)
         Dim TOTALS As String = 0
         Dim mysql_ As String = $"Select COALESCE(sum(NET_PAY), 0) as tots From PAYROLL_PAYOUT A 
-                                    INNER JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID AND {str}
-                                    where  PAYDATE = '{PAYDATE}'"
+                                    INNER JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID
+                                    LEFT JOIN PAYROLL_CITY_BRANCH ON BRANCHCODE = BRANCH_CODE  
+                                    where  PAYDATE = '{PAYDATE}' AND {str}"
 
         Dim dSs As DataSet = LoadSQL(mysql_, "PAYROLL_PAYOUT")
         If dSs.Tables(0).Rows.Count > 0 Then

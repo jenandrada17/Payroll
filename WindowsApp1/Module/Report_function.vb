@@ -5,7 +5,6 @@ Module Report_function
 
     Friend Function LoadDataTable_GensanJR(paydate As String) As DataTable
 
-        Dim toatl As Double
         Dim mysql As String
         Dim PAYROLL As DateTime = paydate
         Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo ' === TITLE CASE ADDRESS
@@ -25,21 +24,20 @@ Module Report_function
         mysql = $"Select * From PAYROLL_PAYOUT A  
                                         INNER JOIN PAYROLL_EMPLOYEE C ON BIO_NO = BIOMETRIC_ID    
                                         LEFT JOIN PAYROLL_CITY_BRANCH B ON BRANCHCODE = BRANCH_CODE    
-                                        WHERE PAYDATE = '{paydate}' 
+                                        WHERE PAYDATE = '{paydate}' AND COMPANY = 'PHOTO'
                                             AND BRANCHCODE IN ('DIG','ISU','M1','POL', 'ROG','ROX','FINEPIX','COT','MID','KID','SNP','GMA','SML','ZAM','SMD')
                                             OR HO_CATEGORY LIKE 'Photo%' 
-                                        ORDER BY CASE WHEN UPPER(HO_CATEGORY) LIKE UPPER('%Admin%') THEN 0 
-                                                WHEN UPPER(HO_CATEGORY) LIKE UPPER('%Retail%') THEN 1 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('GENSAN') THEN 2 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('POLOMOLOK') THEN 3 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('MARBEL') THEN 4 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('ISULAN') THEN 5 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('COTABATO') THEN 6 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('KIDAPAWAN') THEN 7 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('MIDSAYAP') THEN 8 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('DAVAO') THEN 9 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('SM SAN LAZARO') THEN 10 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('ZAMBOANGA') THEN 11  
+                                        ORDER BY CASE WHEN UPPER(HO_CATEGORY) LIKE UPPER('%Admin%') THEN 0  
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('GENSAN') THEN 1 
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('POLOMOLOK') THEN 2 
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('MARBEL') THEN 3 
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('ISULAN') THEN 4 
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('COTABATO') THEN 5 
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('KIDAPAWAN') THEN 6 
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('MIDSAYAP') THEN 7 
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('DAVAO') THEN 8 
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('SM SAN LAZARO') THEN 9 
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('ZAMBOANGA') THEN 10  
                                                 END"
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
@@ -48,12 +46,22 @@ Module Report_function
                     With dr
 
                         '============================= NAME AND ATTENDANCE ============================  
-                        Dim COMPANY As String
+                        Dim COMPANY As String = "PHOTO"
                         Dim ADDRESS As String = IIf(IsDBNull(.Item("ADDRESS")), "", .Item("ADDRESS"))
                         Dim CATEGORY As String = IIf(IsDBNull(.Item("CATEGORY")), "", .Item("CATEGORY"))
                         Dim BRANCHCODE As String = IIf(IsDBNull(.Item("BRANCHCODE")), "", .Item("BRANCHCODE"))
                         Dim HO_CATEGORY As String = IIf(IsDBNull(.Item("HO_CATEGORY")), "", .Item("HO_CATEGORY"))
-                        Dim EMAIL As Double = GetSummary_Email(PAYROLL, $"BRANCH_CODE = '{BRANCHCODE}'")
+                        Dim EMAIL As Double
+
+                        Dim BRANCH_LIST As String = GetList_Branch(ADDRESS, "CATEGORY In ('GENSAN PERFECT', 'JR PHOTO')")
+
+                        If BRANCH_LIST <> Nothing Then
+                            EMAIL = GetSummary_Email(PAYROLL, $" BRANCH_CODE In ({BRANCH_LIST}) AND COMPANY = '{COMPANY}'")
+                            'EMAIL = GetSummary_Email(PAYROLL, $" CATEGORY In ('GENSAN PERFECT', 'JR PHOTO') AND ADDRESS = '{ADDRESS}'")
+                        Else
+                            EMAIL = GetSummary_Email(PAYROLL, $"BRANCH_CODE = '{BRANCHCODE}'")
+                        End If
+
                         Dim HO_array As String() = HO_CATEGORY.Split(New Char() {" "c}) '=== ADMIN   
                         ADDRESS = ADDRESS.ToLower()
 
@@ -67,7 +75,6 @@ Module Report_function
                         dt_PhotoGensanJR.Rows.Add(PAYROLL.ToString("MMMM dd, yyyy").ToUpper(), COMPANY,
                                                   info.ToTitleCase(ADDRESS), EMAIL.ToString("n"), 0, 0, 0)
 
-                        AddGrand(EMAIL)
                     End With
                 Next
             End If
@@ -97,7 +104,7 @@ Module Report_function
         mysql = $"Select * From PAYROLL_PAYOUT A  
                                         INNER JOIN PAYROLL_EMPLOYEE C ON BIO_NO = BIOMETRIC_ID    
                                         LEFT JOIN PAYROLL_CITY_BRANCH B ON BRANCHCODE = BRANCH_CODE    
-                                        WHERE PAYDATE = '{paydate}' 
+                                        WHERE PAYDATE = '{paydate}'  AND COMPANY = 'PHOTO'
                                             AND BRANCHCODE IN ('SMG','KCG','ACM','TAC')  
                                         ORDER BY CASE WHEN ADDRESS = 'GENSAN' THEN 0  
                                                 WHEN ADDRESS = 'MARBEL' THEN 1    
@@ -109,12 +116,21 @@ Module Report_function
                     With dr
 
                         '============================= NAME AND ATTENDANCE ============================  
-                        Dim COMPANY As String
+                        Dim COMPANY As String = "PHOTO"
                         Dim ADDRESS As String = IIf(IsDBNull(.Item("ADDRESS")), "", .Item("ADDRESS"))
                         Dim CATEGORY As String = IIf(IsDBNull(.Item("CATEGORY")), "", .Item("CATEGORY"))
                         Dim BRANCHCODE As String = IIf(IsDBNull(.Item("BRANCHCODE")), "", .Item("BRANCHCODE"))
                         Dim HO_CATEGORY As String = IIf(IsDBNull(.Item("HO_CATEGORY")), "", .Item("HO_CATEGORY"))
-                        Dim EMAIL As Double = GetSummary_Email(PAYROLL, $"BRANCH_CODE = '{BRANCHCODE}'")
+                        Dim EMAIL As Double
+
+                        Dim BRANCH_LIST As String = GetList_Branch(ADDRESS, "CATEGORY = 'DAVAO PERFECT'")
+
+                        If BRANCH_LIST <> Nothing Then
+                            EMAIL = GetSummary_Email(PAYROLL, $" BRANCH_CODE In ({BRANCH_LIST}) AND COMPANY = '{COMPANY}'")
+                        Else
+                            EMAIL = GetSummary_Email(PAYROLL, $"BRANCH_CODE = '{BRANCHCODE}'")
+                        End If
+
                         Dim HO_array As String() = HO_CATEGORY.Split(New Char() {" "c}) '=== ADMIN   
                         ADDRESS = ADDRESS.ToLower()
 
@@ -123,7 +139,6 @@ Module Report_function
                         dt_PhotoDavao.Rows.Add(PAYROLL.ToString("MMMM dd, yyyy").ToUpper(), COMPANY,
                                                info.ToTitleCase(ADDRESS), EMAIL.ToString("n"), 0, 0, 0)
 
-                        AddGrand(EMAIL)
                     End With
                 Next
             End If
@@ -196,12 +211,21 @@ Module Report_function
                     With dr
 
                         '============================= NAME AND ATTENDANCE ============================  
-                        Dim COMPANY As String
+                        Dim COMPANY As String = "DALTON"
                         Dim ADDRESS As String = IIf(IsDBNull(.Item("ADDRESS")), "", .Item("ADDRESS"))
                         Dim CATEGORY As String = IIf(IsDBNull(.Item("CATEGORY")), "", .Item("CATEGORY"))
                         Dim BRANCHCODE As String = IIf(IsDBNull(.Item("BRANCHCODE")), "", .Item("BRANCHCODE"))
                         Dim HO_CATEGORY As String = IIf(IsDBNull(.Item("HO_CATEGORY")), "", .Item("HO_CATEGORY"))
-                        Dim EMAIL As Double = GetSummary_Email(PAYROLL, $"BRANCH_CODE = '{BRANCHCODE}'")
+                        Dim EMAIL As Double
+
+                        Dim BRANCH_LIST As String = GetList_Branch(ADDRESS, $"COMPANY = '{COMPANY}'")
+
+                        If BRANCH_LIST <> Nothing Then
+                            EMAIL = GetSummary_Email(PAYROLL, $"BRANCH_CODE In ({BRANCH_LIST}) AND COMPANY = '{COMPANY}' AND ADDRESS = '{ADDRESS}'")
+                        Else
+                            EMAIL = GetSummary_Email(PAYROLL, $"BRANCH_CODE = '{BRANCHCODE}'")
+                        End If
+
                         Dim HO_array As String() = HO_CATEGORY.Split(New Char() {" "c}) '=== ADMIN   
                         ADDRESS = ADDRESS.ToLower()
 
@@ -215,7 +239,6 @@ Module Report_function
                         dt_Dalton.Rows.Add(PAYROLL.ToString("MMMM dd, yyyy").ToUpper(), COMPANY,
                                                info.ToTitleCase(ADDRESS), EMAIL.ToString("n"), 0, 0, 0)
 
-                        AddGrand(EMAIL)
                     End With
                 Next
             End If
@@ -258,12 +281,21 @@ Module Report_function
                     With dr
 
                         '============================= NAME AND ATTENDANCE ============================  
-                        Dim COMPANY As String
+                        Dim COMPANY As String = "PERFECOM"
                         Dim ADDRESS As String = IIf(IsDBNull(.Item("ADDRESS")), "", .Item("ADDRESS"))
                         Dim CATEGORY As String = IIf(IsDBNull(.Item("CATEGORY")), "", .Item("CATEGORY"))
                         Dim BRANCHCODE As String = IIf(IsDBNull(.Item("BRANCHCODE")), "", .Item("BRANCHCODE"))
                         Dim HO_CATEGORY As String = IIf(IsDBNull(.Item("HO_CATEGORY")), "", .Item("HO_CATEGORY"))
-                        Dim EMAIL As Double = GetSummary_Email(PAYROLL, $"BRANCH_CODE = '{BRANCHCODE}'")
+                        Dim EMAIL As Double = 0
+
+                        Dim BRANCH_LIST As String = GetList_Branch(ADDRESS, $"COMPANY = '{COMPANY}'")
+
+                        If BRANCH_LIST <> Nothing Then
+                            EMAIL = GetSummary_Email(PAYROLL, $"BRANCH_CODE In ({BRANCH_LIST}) AND COMPANY = '{COMPANY}' AND ADDRESS = '{ADDRESS}'")
+                        Else
+                            EMAIL = GetSummary_Email(PAYROLL, $"BRANCH_CODE = '{BRANCHCODE}'")
+                        End If
+
                         Dim HO_array As String() = HO_CATEGORY.Split(New Char() {" "c}) '=== ADMIN   
                         ADDRESS = ADDRESS.ToLower()
 
@@ -272,13 +304,9 @@ Module Report_function
                             EMAIL = GetSummary_Email(PAYROLL, $"HO_CATEGORY = '{HO_CATEGORY}'")
                         End If
 
-                        COMPANY = "PERFECOM"
-
                         dt_Dalton.Rows.Add(PAYROLL.ToString("MMMM dd, yyyy").ToUpper(), COMPANY,
                                                info.ToTitleCase(ADDRESS), EMAIL.ToString("n"), 0, 0, 0)
 
-
-                        AddGrand(EMAIL)
                     End With
                 Next
             End If
@@ -324,8 +352,8 @@ Module Report_function
                     With dr
 
                         '============================= NAME AND ATTENDANCE ============================  
-                        Dim COMPANY As String
-                        Dim ADDRESS As String
+                        Dim COMPANY As String = "P&G UY"
+                        Dim ADDRESS As String = IIf(IsDBNull(.Item("ADDRESS")), "", .Item("ADDRESS"))
                         Dim BRANCHCODE As String = IIf(IsDBNull(.Item("BRANCH_CODE")), "", .Item("BRANCH_CODE"))
                         Dim HO_CATEGORY As String = IIf(IsDBNull(.Item("HO_CATEGORY")), "", .Item("HO_CATEGORY"))
                         Dim EMAIL As Double = GetSummary_Email(PAYROLL, $"BRANCH_CODE = '{BRANCHCODE}'")
@@ -352,7 +380,6 @@ Module Report_function
                         dt_Dalton.Rows.Add(PAYROLL.ToString("MMMM dd, yyyy").ToUpper(), COMPANY,
                                                info.ToTitleCase(ADDRESS), EMAIL.ToString("n"), 0, 0, 0)
 
-                        AddGrand(EMAIL)
                     End With
                 Next
             End If
@@ -404,7 +431,6 @@ Module Report_function
                 dt_Dalton.Rows.Add(PAYROLL.ToString("MMMM dd, yyyy").ToUpper(), COMPANY,
                                                        info.ToTitleCase(ADDRESS), TOTALS.ToString("n"), 0, 0, 0)
 
-                AddGrand(TOTALS)
             End If
         End Using
 
@@ -433,7 +459,8 @@ Module Report_function
         Dim mysqll As String = $"Select * From PAYROLL_EMPLOYEE A 
                                         INNER JOIN PAYROLL_PERCENTAGEE B ON B.CATEGORY = A.COMMON_CATEGORY
                                         INNER JOIN PAYROLL_PAYOUT C ON A.BIO_NO = C.BIOMETRIC_ID
-                                        where HO_CATEGORY = 'PGC Head Office' AND PAYDATE = '{paydate}' ORDER BY FULLNAME ASC"
+                                        where HO_CATEGORY = 'PGC Head Office' OR HO_CATEGORY IN ('Construction', 'Leasing Admin Office') 
+                                        AND PAYDATE = '{paydate}' ORDER BY FULLNAME ASC"
 
         Using ds As DataSet = LoadSQL(mysqll, "PAYROLL_EMPLOYEE")
             If ds.Tables(0).Rows.Count > 0 Then
@@ -456,20 +483,19 @@ Module Report_function
                 dt_Dalton.Rows.Add(PAYROLL.ToString("MMMM dd, yyyy").ToUpper(), COMPANY,
                                                        info.ToTitleCase(ADDRESS), TOTALS.ToString("n"), 0, 0, 0)
 
-                AddGrand(TOTALS)
             End If
         End Using
 
         Return dt_Dalton
     End Function
 
-    Public Function AddGrand(Amount As Double) As Double
-        GRAND_TOTAL = GRAND_TOTAL + Amount
-    End Function
+    'Public Function AddGrand(Amount As Double) As Double
+    '    GRAND_TOTAL = GRAND_TOTAL + Amount
+    'End Function
 
-    Public Function GetGrandTotal() As Double
-        Return GRAND_TOTAL
-    End Function
+    'Public Function GetGrandTotal() As Double
+    '    Return GRAND_TOTAL
+    'End Function
 
     Public Function GetOVERALL_COUNT(COLUMN As String, PAYDATE As String)
         Dim VALUEE As Double
@@ -506,6 +532,7 @@ Module Report_function
         Dim G3_tot As Double = 0
         Dim Seven11_tot As Double = 0
         Dim COMI_TO_FUJI_tot As Double = 0
+        Dim LEASING_tot As Double = 0
 
         Dim mysqll As String = $"Select * From PAYROLL_EMPLOYEE A 
                                         INNER JOIN PAYROLL_PERCENTAGEE B ON B.CATEGORY = A.COMMON_CATEGORY
@@ -525,6 +552,7 @@ Module Report_function
                         Dim G3 As String = .Item("G3")
                         Dim Seven11 As String = .Item("Seven11")
                         Dim COMI_TO_FUJI As String = .Item("COMI_TO_FUJI")
+                        Dim LEASING As String = .Item("LEASING")
                         Dim VALUEE As String = .Item(column)
 
                         If .ITEM("BIO_NO") = "2788" Then ' MADERA 
@@ -537,6 +565,7 @@ Module Report_function
                                 G3_tot += NET_PAY * ((50 * G3) / 100)
                                 Seven11_tot += NET_PAY * ((50 * Seven11) / 100)
                                 COMI_TO_FUJI_tot += NET_PAY * ((50 * COMI_TO_FUJI) / 100)
+                                'LEASING_tot = NET_PAY * ((50 * LEASING) / 100)
                             Else
                                 G3_tot += NET_PAY * G3
                                 Seven11_tot += NET_PAY * Seven11
@@ -552,13 +581,50 @@ Module Report_function
         End Using
 
         If column = "COMI_TO_FUJI" Then
-            TOTALS = G3_tot + Seven11_tot + COMI_TO_FUJI_tot
+            TOTALS = G3_tot + Seven11_tot + COMI_TO_FUJI_tot + LEASING_tot
         End If
-
-        AddGrand(TOTALS)
 
         Return TOTALS
     End Function
 
+    Public Function GetList_Branch(address As String, str As String) As String
+
+        Dim branch_group As New List(Of String)()
+        Dim mysql As String = $"Select BRANCHCODE from PAYROLL_CITY_BRANCH 
+                                inner join PAYROLL_EMPLOYEE ON BRANCHCODE = BRANCH_CODE 
+                                where address = '{address}' and {str}"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_CITY_BRANCH")
+            If ds.Tables(0).Rows.Count > 0 Then
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+                        branch_group.Add($"'{ .item("BRANCHCODE")}'")
+                    End With
+                Next
+            End If
+        End Using
+
+        branch_group = branch_group.Distinct().ToList
+
+        Dim list_String As String = String.Join(",", branch_group)
+
+        Return list_String
+    End Function
+
+    Public Sub Check_This()
+        Dim mysql As String = $"Select Sum(NET_PAY) as tots From PAYROLL_PAYOUT 
+                            inner join PAYROLL_EMPLOYEE ON BIO_NO = BIOMETRIC_ID 
+                            LEFT JOIN PAYROLL_CITY_BRANCH ON BRANCHCODE = BRANCH_CODE  
+                            WHERE PAYDATE = '9/15/2021' AND CATEGORY In ('GENSAN PERFECT', 'JR PHOTO') AND ADDRESS = 'POLOMOLOK'"
+
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
+            If ds.Tables(0).Rows.Count > 0 Then
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+                        MsgBox(FormatNumber(.item("tots")))
+                    End With
+                Next
+            End If
+        End Using
+    End Sub
 
 End Module
