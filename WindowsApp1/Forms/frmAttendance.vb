@@ -41,22 +41,13 @@ Public Class frmAttendance
         PopulateComboBox(Paydate_ComboB, "BIOMETRIC_DTR", "PAYDATE")
         PopulateComboBox(RE_Paydate_Combo, "BIOMETRIC_DTR", "PAYDATE")
         PopulateComboBox(Payslip_DTR_Combo, "BIOMETRIC_DTR", "PAYDATE")
-        'Paydate_ComboB.Items.Insert(0, "Current")
-        'RE_Paydate_Combo.Items.Insert(0, "Current")  
 
-        Branch_ComboB.Items.Insert(0, ".HO ACCOUNTING")
-        Branch_ComboB.Items.Insert(1, ".HO ADMIN")
-        Branch_ComboB.Items.Insert(2, ".HO HR")
-        Branch_ComboB.Items.Insert(3, ".HO MAIN")
-        Branch_ComboB.Items.Insert(4, ".HO REMATADO")
-        Branch_ComboB.Items.Insert(5, ".HO WAREHOUSE ")
+        Dim array() As String = {".HO ACCOUNTING", ".HO ADMIN", ".HO HR", ".HO MAIN", ".HO REMATADO", ".HO WAREHOUSE"}
 
-        DTR_Branch_Combo.Items.Insert(0, ".HO ACCOUNTING")
-        DTR_Branch_Combo.Items.Insert(1, ".HO ADMIN")
-        DTR_Branch_Combo.Items.Insert(2, ".HO HR")
-        DTR_Branch_Combo.Items.Insert(3, ".HO MAIN")
-        DTR_Branch_Combo.Items.Insert(4, ".HO REMATADO")
-        DTR_Branch_Combo.Items.Insert(5, ".HO WAREHOUSE ")
+        For i = 0 To 5
+            Branch_ComboB.Items.Insert(i, array(i))
+            DTR_Branch_Combo.Items.Insert(i, array(i))
+        Next
     End Sub
 
     Private Sub Close_LBL_Click(sender As Object, e As EventArgs) Handles Close_LBL.Click
@@ -536,12 +527,12 @@ Public Class frmAttendance
         TotalUTHR_LBL.Text = "00:00:00"
     End Sub
 
-    Private Sub Records_grid_CellFormatting(sender As Object, e As DataGridViewCellFormattingEventArgs) Handles Records_grid.CellFormatting
+    Private Sub Records_grid_CellFormatting(sender As Object, e As DataGridViewCellFormattingEventArgs) Handles List_Records_grid.CellFormatting
         If e.RowIndex > 0 And e.ColumnIndex = 0 Then
-            If Records_grid.Item(0, e.RowIndex - 1).Value = e.Value Then
+            If List_Records_grid.Item(0, e.RowIndex - 1).Value = e.Value Then
                 e.Value = ""
-            ElseIf e.RowIndex < Records_grid.Rows.Count - 1 Then
-                Records_grid.Rows(e.RowIndex).DefaultCellStyle.BackColor = Color.White
+            ElseIf e.RowIndex < List_Records_grid.Rows.Count - 1 Then
+                List_Records_grid.Rows(e.RowIndex).DefaultCellStyle.BackColor = Color.White
             End If
         End If
     End Sub
@@ -549,9 +540,9 @@ Public Class frmAttendance
     Private Sub RE_Paydate_Combo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles RE_Paydate_Combo.SelectedIndexChanged
 
         If RE_Paydate_Combo.SelectedIndex >= 0 Then
-            PopulateAttendanceRECORD(Records_grid, RE_Paydate_Combo.SelectedItem)
+            PopulateAttendanceRECORD(List_Records_grid, RE_Paydate_Combo.SelectedItem)
         Else
-            PopulateAttendanceRECORD(Records_grid, Paydate)
+            PopulateAttendanceRECORD(List_Records_grid, Paydate)
         End If
 
     End Sub
@@ -1171,6 +1162,28 @@ Public Class frmAttendance
         Next
     End Sub
 
+    Private Sub Records_grid_MouseClick(sender As Object, e As MouseEventArgs) Handles List_Records_grid.MouseClick
+        If e.Button = MouseButtons.Right Then
+            If List_Records_grid.Rows.Count >= 0 Then
+                Context_Records.Show(List_Records_grid, New Point(e.X, e.Y))
+            End If
+        End If
+    End Sub
+
+    Private Sub Menu_Remove_Click(sender As Object, e As EventArgs) Handles Menu_Remove.Click
+        Dim i As Integer = List_Records_grid.CurrentRow.Index
+        Dim branch As String = List_Records_grid.Item(0, i).Value
+        MsgBox(branch)
+        Dim result As DialogResult = MessageBox.Show($"{branch} record will be removed from the list, do you want to proceed?", "Warning", MessageBoxButtons.YesNo)
+        If result = DialogResult.Yes Then
+            Replacing($"BIOMETRIC_DTR where BRANCH = '{branch}' and PAYDATE = '{RE_Paydate_Combo.SelectedItem}';") 'THIS IS TO REMOVE BRANCH RECORD 
+            Replacing($"PAYROLL_ATTENDANCE where BRANCH = '{branch}' and PAYDATE = '{RE_Paydate_Combo.SelectedItem}';") 'THIS IS TO REMOVE BRANCH RECORD 
+            Replacing($"PAYROLL_PAYOUT where BRANCH_IMPORT = '{branch}' and PAYDATE = '{RE_Paydate_Combo.SelectedItem}';") 'THIS IS TO REMOVE BRANCH RECORD 
+            Replacing($"RECORDED_ALLOW_DEDUC where BRANCH = '{branch}' and PAYDATE = '{RE_Paydate_Combo.SelectedItem}';") 'THIS IS TO REMOVE BRANCH RECORD 
+            MsgBox("Succesfully removed!")
+        End If
+    End Sub
+
     Private Sub Import_BTN_Click(sender As Object, e As EventArgs) Handles Import_BTN.Click
 
         '====================================================== ORIGIINAL ======================================
@@ -1496,7 +1509,6 @@ Public Class frmAttendance
 
     End Sub
 
-
     Public Sub SAVE_DIRECT_Attendance()
         LoadDateTime()
 
@@ -1726,7 +1738,7 @@ Public Class frmAttendance
         ElseIf Attendance_Tab.SelectedIndex = 2 Then
 
         ElseIf Attendance_Tab.SelectedIndex = 3 Then
-            PopulateAttendanceRECORD(Records_grid, Paydate)
+            PopulateAttendanceRECORD(List_Records_grid, Paydate)
         End If
     End Sub
 

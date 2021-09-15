@@ -1804,7 +1804,7 @@ Module SelectFromDatabase
     'End Sub
 
     Public Sub Replacing(str As String)
-        RunCommand($"DELETE FROM {str};")  'THIS IS TO DELETE EXISTING DATA TO REPLACE ESPECIALLY FROM DATAGRID
+        RunCommand($"DELETE FROM {str}")  'THIS IS TO DELETE EXISTING DATA TO REPLACE ESPECIALLY FROM DATAGRID
     End Sub
 
 
