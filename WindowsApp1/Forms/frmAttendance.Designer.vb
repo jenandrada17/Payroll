@@ -22,13 +22,11 @@ Partial Class frmAttendance
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Attendance_Tab = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
@@ -269,7 +267,6 @@ Partial Class frmAttendance
         '
         'Import_BTN
         '
-        Me.Import_BTN.Enabled = False
         Me.Import_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Import_BTN.Location = New System.Drawing.Point(623, 71)
         Me.Import_BTN.Name = "Import_BTN"
@@ -658,34 +655,34 @@ Partial Class frmAttendance
         Me.DataGridView1.AllowUserToAddRows = False
         Me.DataGridView1.AllowUserToResizeColumns = False
         Me.DataGridView1.AllowUserToResizeRows = False
-        DataGridViewCellStyle1.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.DataGridView1.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle6.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DataGridView1.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle6
         Me.DataGridView1.BackgroundColor = System.Drawing.Color.White
         Me.DataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.DataGridView1.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText
         Me.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.DataGridView1.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Date_DataGrid, Me.AM_In_DataGrid, Me.AM_Out_DataGrid, Me.PM_IN_DataGrid, Me.PM_Out_DataGrid, Me.Select_Datagrid})
-        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.InactiveCaption
-        DataGridViewCellStyle4.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.DataGridView1.DefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.InactiveCaption
+        DataGridViewCellStyle9.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.DataGridView1.DefaultCellStyle = DataGridViewCellStyle9
         Me.DataGridView1.Location = New System.Drawing.Point(6, 44)
         Me.DataGridView1.Name = "DataGridView1"
         Me.DataGridView1.RowHeadersVisible = False
-        DataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.Transparent
-        DataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.Transparent
-        Me.DataGridView1.RowsDefaultCellStyle = DataGridViewCellStyle5
+        DataGridViewCellStyle10.SelectionBackColor = System.Drawing.Color.Transparent
+        DataGridViewCellStyle10.SelectionForeColor = System.Drawing.Color.Transparent
+        Me.DataGridView1.RowsDefaultCellStyle = DataGridViewCellStyle10
         Me.DataGridView1.Size = New System.Drawing.Size(684, 487)
         Me.DataGridView1.TabIndex = 65
         '
         'Date_DataGrid
         '
-        DataGridViewCellStyle2.NullValue = Nothing
-        Me.Date_DataGrid.DefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle7.NullValue = Nothing
+        Me.Date_DataGrid.DefaultCellStyle = DataGridViewCellStyle7
         Me.Date_DataGrid.HeaderText = "Date"
         Me.Date_DataGrid.Name = "Date_DataGrid"
         Me.Date_DataGrid.ReadOnly = True
@@ -695,9 +692,9 @@ Partial Class frmAttendance
         '
         'AM_In_DataGrid
         '
-        DataGridViewCellStyle3.Format = "t"
-        DataGridViewCellStyle3.NullValue = Nothing
-        Me.AM_In_DataGrid.DefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle8.Format = "t"
+        DataGridViewCellStyle8.NullValue = Nothing
+        Me.AM_In_DataGrid.DefaultCellStyle = DataGridViewCellStyle8
         Me.AM_In_DataGrid.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.[Nothing]
         Me.AM_In_DataGrid.HeaderText = "In"
         Me.AM_In_DataGrid.Name = "AM_In_DataGrid"
@@ -828,24 +825,8 @@ Partial Class frmAttendance
         Me.Records_grid.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.Records_grid.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText
         Me.Records_grid.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
-        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle6.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.Records_grid.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle6
         Me.Records_grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.Records_grid.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.RE_BRANCH_DGV, Me.RE_BIO_DGV, Me.RE_NAME_DGV, Me.RE_DAYS_DGV, Me.RE_OT_DGV, Me.RE_LATE_DGV, Me.RE_UT_DGV})
-        DataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle7.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.Records_grid.DefaultCellStyle = DataGridViewCellStyle7
         Me.Records_grid.Location = New System.Drawing.Point(9, 115)
         Me.Records_grid.Name = "Records_grid"
         Me.Records_grid.ReadOnly = True

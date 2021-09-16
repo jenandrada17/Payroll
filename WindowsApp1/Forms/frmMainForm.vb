@@ -6,7 +6,6 @@ Public Class frmMainForm
     Public Paydate As DateTime
 
     Private Sub frmMainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
         AppDateTime.Text = Date.Now.ToString("dddd, MMMM dd, yyyy hh:mm:ss tt", CultureInfo.CurrentCulture)
 
         StartFour = New DateTime(DateNow.Year, DateNow.Month, 4).AddDays(-1)

@@ -602,14 +602,20 @@ Public Class frmAttendance
     End Sub
 
     Private Sub OpenFile_BTN_Click(sender As Object, e As EventArgs) Handles OpenFile_BTN.Click
-        Using f As New OpenFileDialog
-            f.Filter = "Excel 2003|*.xls|Excel 2007|*.xlsx"
-            If DialogResult.OK = f.ShowDialog() Then
-                Path_TXT.Text = f.FileName
-                ExcelFilePath(Path_TXT.Text)
-                Import_BTN.Enabled = True
-            End If
-        End Using
+
+        Dim dialog = New OpenFileDialog
+        If dialog.ShowDialog() = DialogResult.OK Then
+            Path_TXT.Text = dialog.FileName
+        End If
+
+        'Using f As New OpenFileDialog
+        '    f.Filter = "Excel 2003|*.xls|Excel 2007|*.xlsx"
+        '    If DialogResult.OK = f.ShowDialog() Then
+        '        Path_TXT.Text = f.FileName
+        'ExcelFilePath(Path_TXT.Text)
+        '        Import_BTN.Enabled = True
+        '    End If
+        'End Using
     End Sub
 
     Private Sub forLoop_ALL_IMPORTED()   '================================ WORKS WELL- FOR ALL RECORDS ONLY (PARTNER WITH SAVE_DIRECT_Attendance()()) =============================   
@@ -727,205 +733,258 @@ Public Class frmAttendance
 
     End Sub
 
+    Private Sub Test_this()
+
+        'Dim Filename = "C:\file\text.txt"
+        Dim Excel_FilePath = "C:\test.xlsx"
+
+        ' Create the excel object
+        Dim oExcel = CreateObject("Excel.Application")
+
+        ' Open the text file that was generated
+        oExcel.Workbooks.OpenText(FileName:=Path_TXT.Text, Origin:=65001)
+
+        ' Name the worksheet
+        oExcel.Worksheets(1).Name = "Worksheet"
+
+        ' Save as .XLSX
+        oExcel.Worksheets(1).SaveAs(Excel_FilePath, FileFormat:=51)
+
+        oExcel.Quit()
+        oExcel = Nothing
+
+        'Dim objUser, strExcelPath, objExcel, objSheet, objFSO, objFile, aline, aLines, irow, icol
+
+        'Const ForReading = 1
+
+        'objFSO = CreateObject("Scripting.FileSystemObject")
+        'objFile = objFSO.OpenTextFile(Path_TXT.Text, ForReading)
+
+        'objExcel = CreateObject("Excel.Application")
+        'If (Err.Number <> 0) Then
+        '    On Error GoTo 0
+        '    '  Wscript.Echo("Excel application not found.")
+        '    '   Wscript.Quit()
+        'End If
+        'On Error GoTo 0
+
+        'With objExcel
+        '    .visible = True
+        '    .Workbooks.Add()
+        '    .Workbooks.Open("C:\testing.xlsx")
+        '    .Application.ScreenUpdating = False
+
+        '    objSheet = objExcel.ActiveWorkbook.Worksheets(1)
+        '    objSheet.Name = "test"
+        'End With
+
+        'aLines = Split(objFile.ReadAll, vbNewLine)
+        'For irow = 1 To UBound(aLines) + 1
+        '    aline = Split(aLines(irow - 1), "|")
+        '    For icol = 1 To UBound(aline) + 1
+        '        objSheet.Cells(irow + 3, icol).value = aline(icol - 1)
+        '    Next ' icol
+        'Next ' irow
+    End Sub
 
     Private Sub Import_BTN_Click(sender As Object, e As EventArgs) Handles Import_BTN.Click
-
+        Test_this()
         '====================================================== ORIGIINAL ======================================
-        If Branch_ComboB.SelectedItem = "" Then
-            MsgBox("Please Select Branch", MsgBoxStyle.Critical, "Error")
-        Else
+        'If Branch_ComboB.SelectedItem = "" Then
+        '    MsgBox("Please Select Branch", MsgBoxStyle.Critical, "Error")
+        'Else
 
-            DataGridView1.Rows.Clear()
-            Dim MyConnection As System.Data.OleDb.OleDbConnection
-            Dim DtSet As System.Data.DataSet
-            Dim MyCommand As System.Data.OleDb.OleDbDataAdapter
+        '    DataGridView1.Rows.Clear()
+        '    Dim MyConnection As System.Data.OleDb.OleDbConnection
+        '    Dim DtSet As System.Data.DataSet
+        '    Dim MyCommand As System.Data.OleDb.OleDbDataAdapter
 
-            Try
-                eApp = New Excel.Application
-                eBook = eApp.Workbooks.Open(Path_TXT.Text)
-                eSheet = eBook.Worksheets(1)
-                eCell = eSheet.UsedRange
-                Dim row As Integer
+        '    Try
+        '        eApp = New Excel.Application
+        '        eBook = eApp.Workbooks.Open(Path_TXT.Text)
+        '        eSheet = eBook.Worksheets(1)
+        '        eCell = eSheet.UsedRange
+        '        Dim row As Integer
 
-                MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path_TXT.Text}';Extended Properties=Excel 8.0;")
-                MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
-                MyCommand.TableMappings.Add("Table", "Net-informations.com")
-                DtSet = New System.Data.DataSet
-                MyCommand.Fill(DtSet)
+        '        MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path_TXT.Text}';Extended Properties=Excel 8.0;")
+        '        MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
+        '        MyCommand.TableMappings.Add("Table", "Net-informations.com")
+        '        DtSet = New System.Data.DataSet
+        '        MyCommand.Fill(DtSet)
 
-                distinct_bio.Clear()
-                list_inOut.Clear()
+        '        distinct_bio.Clear()
+        '        list_inOut.Clear()
 
-                If File_Exist(Branch_ComboB.SelectedItem, Paydate) Then
+        '        If File_Exist(Branch_ComboB.SelectedItem, Paydate) Then
 
-                    progressBarStart(DtSet.Tables(0).Rows.Count)
+        '            progressBarStart(DtSet.Tables(0).Rows.Count)
 
-                    For row = 2 To DtSet.Tables(0).Rows.Count
-                        SaveBiometricSheet(Paydate, eCell(row, 1).Value, eCell(row, 2).Value, Branch_ComboB.SelectedItem)
-                        distinct_bio.Add(eCell(row, 1).Value)
+        '            For row = 2 To DtSet.Tables(0).Rows.Count
+        '                SaveBiometricSheet(Paydate, eCell(row, 1).Value, eCell(row, 2).Value, Branch_ComboB.SelectedItem)
+        '                distinct_bio.Add(eCell(row, 1).Value)
 
-                        frmMainForm.AppProgressBar.Value += 1
+        '                frmMainForm.AppProgressBar.Value += 1
 
-                    Next
+        '            Next
 
-                    progressBarEnd()
+        '            progressBarEnd()
 
-                ElseIf File_NOT_Exist(Branch_ComboB.SelectedItem, Paydate) Then
+        '        ElseIf File_NOT_Exist(Branch_ComboB.SelectedItem, Paydate) Then
 
-                    progressBarStart(DtSet.Tables(0).Rows.Count)
+        '            progressBarStart(DtSet.Tables(0).Rows.Count)
 
-                    For row = 2 To DtSet.Tables(0).Rows.Count
-                        SaveBiometricSheet(Paydate, eCell(row, 1).Value, eCell(row, 2).Value, Branch_ComboB.SelectedItem)
-                        distinct_bio.Add(eCell(row, 1).Value)
+        '            For row = 2 To DtSet.Tables(0).Rows.Count
+        '                SaveBiometricSheet(Paydate, eCell(row, 1).Value, eCell(row, 2).Value, Branch_ComboB.SelectedItem)
+        '                distinct_bio.Add(eCell(row, 1).Value)
 
-                        frmMainForm.AppProgressBar.Value += 1
-                    Next
+        '                frmMainForm.AppProgressBar.Value += 1
+        '            Next
 
-                    progressBarEnd()
-                Else
-                    Path_TXT.Text = ""
-                End If
+        '            progressBarEnd()
+        '        Else
+        '            Path_TXT.Text = ""
+        '        End If
 
-                Cursor = Cursors.WaitCursor
+        '        Cursor = Cursors.WaitCursor
 
-                forLoop_ALL_IMPORTED()   ' ===== SAVE AM_IN, AM_OUT, PM_IN, PM_OUT ====
-                SAVE_DIRECT_Attendance() ' ===== DIRECT SAVE TO ATTENDANCE ====
-                PopulateBiometricSHEET(Bio_grid, Paydate, Branch_ComboB.SelectedItem) ' ===== POPULATE DATAGRIDVIEW FROM SHEET ====
-                SavePayout_ALL(Paydate, Branch_ComboB.SelectedItem)
+        '        forLoop_ALL_IMPORTED()   ' ===== SAVE AM_IN, AM_OUT, PM_IN, PM_OUT ====
+        '        SAVE_DIRECT_Attendance() ' ===== DIRECT SAVE TO ATTENDANCE ====
+        '        PopulateBiometricSHEET(Bio_grid, Paydate, Branch_ComboB.SelectedItem) ' ===== POPULATE DATAGRIDVIEW FROM SHEET ====
+        '        SavePayout_ALL(Paydate, Branch_ComboB.SelectedItem)
 
-                Cursor = Cursors.Default
+        '        Cursor = Cursors.Default
 
-                Import_BTN.Enabled = False
-                Path_TXT.Clear()
-                MyConnection.Close()
+        '        Import_BTN.Enabled = False
+        '        Path_TXT.Clear()
+        '        MyConnection.Close()
 
-            Catch
+        '    Catch
 
-                eApp = New Excel.Application
-                eBook = eApp.Workbooks.Open(Path_TXT.Text)
-                eSheet = eBook.Worksheets(1)
-                eCell = eSheet.UsedRange
-                Dim row As Integer
+        '        eApp = New Excel.Application
+        '        eBook = eApp.Workbooks.Open(Path_TXT.Text)
+        '        eSheet = eBook.Worksheets(1)
+        '        eCell = eSheet.UsedRange
+        '        Dim row As Integer
 
-                MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path_TXT.Text}';Extended Properties=Excel 8.0;")
-                MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
-                MyCommand.TableMappings.Add("Table", "Net-informations.com")
-                DtSet = New System.Data.DataSet
-                MyCommand.Fill(DtSet)
+        '        MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path_TXT.Text}';Extended Properties=Excel 8.0;")
+        '        MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
+        '        MyCommand.TableMappings.Add("Table", "Net-informations.com")
+        '        DtSet = New System.Data.DataSet
+        '        MyCommand.Fill(DtSet)
 
-                distinct_bio.Clear()
+        '        distinct_bio.Clear()
 
-                Dim groups_time As New List(Of String)()
-                Dim bio_no As String = "" ' ======================================== GIMOVE SA GAWAS BASI DILI MAGANA =======================
-                progressBarStart(DtSet.Tables(0).Rows.Count)
-                For row = 7 To DtSet.Tables(0).Rows.Count
+        '        Dim groups_time As New List(Of String)()
+        '        Dim bio_no As String = "" ' ======================================== GIMOVE SA GAWAS BASI DILI MAGANA =======================
+        '        progressBarStart(DtSet.Tables(0).Rows.Count)
+        '        For row = 7 To DtSet.Tables(0).Rows.Count
 
-                    If eCell(row, 5).Value = Nothing Then
-                        Continue For
-                    End If
+        '            If eCell(row, 5).Value = Nothing Then
+        '                Continue For
+        '            End If
 
-                    Dim list_hour(3) As String
+        '            Dim list_hour(3) As String
 
-                    '=============== BIO NUMBER ================
-                    If eCell(row, 2).Value <> Nothing Then
-                        bio_no = eCell(row, 2).Value
-                    End If
+        '            '=============== BIO NUMBER ================
+        '            If eCell(row, 2).Value <> Nothing Then
+        '                bio_no = eCell(row, 2).Value
+        '            End If
 
-                    '=============== GROUP 4 TIME IN ============= 
-                    For column = 7 To 11
-                        If eCell(row, column).Value <> Nothing Then
-                            groups_time.Add(eCell(row, column).Value)
-                        End If
-                    Next
+        '            '=============== GROUP 4 TIME IN ============= 
+        '            For column = 7 To 11
+        '                If eCell(row, column).Value <> Nothing Then
+        '                    groups_time.Add(eCell(row, column).Value)
+        '                End If
+        '            Next
 
-                    '=============== CHECK PER CELL IN A ROW ============= 
-                    For column = 7 To 11
+        '            '=============== CHECK PER CELL IN A ROW ============= 
+        '            For column = 7 To 11
 
-                        Dim time As DateTime = (New DateTime()).AddDays(eCell(row, column).Value)
+        '                Dim time As DateTime = (New DateTime()).AddDays(eCell(row, column).Value)
 
-                        '============================== WORKED FINE ========================
+        '                '============================== WORKED FINE ========================
 
-                        If time >= "5:00 AM" And time <= "11:59 AM" Then
-                            If list_hour(0) = "" Then
+        '                If time >= "5:00 AM" And time <= "11:59 AM" Then
+        '                    If list_hour(0) = "" Then
 
-                                list_hour(0) = time.ToString("t")
-                            Else
-                                list_hour(1) = time.ToString("t")
-                            End If
+        '                        list_hour(0) = time.ToString("t")
+        '                    Else
+        '                        list_hour(1) = time.ToString("t")
+        '                    End If
 
-                        ElseIf time >= "4:00 PM" And time <= "11:00 PM" Then
+        '                ElseIf time >= "4:00 PM" And time <= "11:00 PM" Then
 
-                            list_hour(3) = time.ToString("t")
+        '                    list_hour(3) = time.ToString("t")
 
-                        ElseIf time >= "1:00 PM" And time <= "3:00 PM" Then
+        '                ElseIf time >= "1:00 PM" And time <= "3:00 PM" Then
 
-                            list_hour(2) = time.ToString("t")
+        '                    list_hour(2) = time.ToString("t")
 
-                        ElseIf time >= "12:00 PM" And time <= "12:59 PM" Then
+        '                ElseIf time >= "12:00 PM" And time <= "12:59 PM" Then
 
-                            Dim newValuee As String = time.TimeOfDay.Hours
+        '                    Dim newValuee As String = time.TimeOfDay.Hours
 
-                            If newValuee = "12" Then
+        '                    If newValuee = "12" Then
 
-                                If CountDate(groups_time, "12") >= 2 Then
-                                    list_Group = SortCountedDATE(groups_time, "12")
-                                ElseIf CountDate(groups_time, "12") = 1 Then
-                                    list_Group = SortCountedDATE(groups_time, "12")
-                                End If
+        '                        If CountDate(groups_time, "12") >= 2 Then
+        '                            list_Group = SortCountedDATE(groups_time, "12")
+        '                        ElseIf CountDate(groups_time, "12") = 1 Then
+        '                            list_Group = SortCountedDATE(groups_time, "12")
+        '                        End If
 
-                                '======================== PRINT 12 NOON ================ WORKED FINE
-                                If list_Group.Count >= 2 Then
+        '                        '======================== PRINT 12 NOON ================ WORKED FINE
+        '                        If list_Group.Count >= 2 Then
 
-                                    Dim list1 As DateTime = list_Group.Item(0)
-                                    Dim list2 As DateTime = list_Group.Item(list_Group.Count - 1)
+        '                            Dim list1 As DateTime = list_Group.Item(0)
+        '                            Dim list2 As DateTime = list_Group.Item(list_Group.Count - 1)
 
-                                    list_hour(1) = list1.ToString("t")
-                                    list_hour(2) = list2.ToString("t")
+        '                            list_hour(1) = list1.ToString("t")
+        '                            list_hour(2) = list2.ToString("t")
 
-                                    list_Group.Clear()
-                                ElseIf list_Group.Count = 1 Then
+        '                            list_Group.Clear()
+        '                        ElseIf list_Group.Count = 1 Then
 
-                                    Dim list1 As DateTime = list_Group.Item(0)
+        '                            Dim list1 As DateTime = list_Group.Item(0)
 
-                                    list_hour(1) = list1.ToString("t")
+        '                            list_hour(1) = list1.ToString("t")
 
-                                    list_Group.Clear()
-                                End If
+        '                            list_Group.Clear()
+        '                        End If
 
-                            End If
-                        Else
-                            list_hour(1) = time.ToString("t")
-                        End If
-                    Next
+        '                    End If
+        '                Else
+        '                    list_hour(1) = time.ToString("t")
+        '                End If
+        '            Next
 
-                    If list_hour(1) = "12:00 AM" Then
-                        list_hour(1) = ""
-                    End If
+        '            If list_hour(1) = "12:00 AM" Then
+        '                list_hour(1) = ""
+        '            End If
 
-                    If list_hour(0) = "" And list_hour(1) = "" And list_hour(2) = "" And list_hour(3) = "" Then
-                    Else
-                        distinct_bio.Add(bio_no)
-                        SaveDTR(bio_no, Paydate, eCell(row, 5).Value, Branch_ComboB.SelectedItem, list_hour(0), list_hour(1), list_hour(2), list_hour(3))
+        '            If list_hour(0) = "" And list_hour(1) = "" And list_hour(2) = "" And list_hour(3) = "" Then
+        '            Else
+        '                distinct_bio.Add(bio_no)
+        '                SaveDTR(bio_no, Paydate, eCell(row, 5).Value, Branch_ComboB.SelectedItem, list_hour(0), list_hour(1), list_hour(2), list_hour(3))
 
-                        frmMainForm.AppProgressBar.Value += 1
-                    End If
+        '                frmMainForm.AppProgressBar.Value += 1
+        '            End If
 
-                Next
-                progressBarEnd()
+        '        Next
+        '        progressBarEnd()
 
-                Import_BTN.Enabled = False
-                Path_TXT.Clear()
-                MyConnection.Close()
+        '        Import_BTN.Enabled = False
+        '        Path_TXT.Clear()
+        '        MyConnection.Close()
 
-                Cursor = Cursors.WaitCursor
+        '        Cursor = Cursors.WaitCursor
 
-                SAVE_DIRECT_Attendance() ' ===== DIRECT SAVE TO ATTENDANCE ====
-                PopulateBiometricSHEET(Bio_grid, Paydate, Branch_ComboB.SelectedItem) ' ===== POPULATE DATAGRIDVIEW FROM SHEET ==== 
-                SavePayout_ALL(Paydate, Branch_ComboB.SelectedItem)
+        '        SAVE_DIRECT_Attendance() ' ===== DIRECT SAVE TO ATTENDANCE ====
+        '        PopulateBiometricSHEET(Bio_grid, Paydate, Branch_ComboB.SelectedItem) ' ===== POPULATE DATAGRIDVIEW FROM SHEET ==== 
+        '        SavePayout_ALL(Paydate, Branch_ComboB.SelectedItem)
 
-                Cursor = Cursors.Default
-            End Try
-        End If
+        '        Cursor = Cursors.Default
+        '    End Try
+        'End If
 
     End Sub
 
