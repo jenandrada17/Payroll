@@ -628,7 +628,8 @@ Module SelectFromDatabase
         End Using
     End Sub
 
-    Public Function GetFirst_Basic(biono As String, branchID As String, paydate As String) As Double
+    'Public Function GetFirst_Basic(biono As String, branchID As String, paydate As String) As Double
+    Public Function GetFirst_Basic(EMP_ID As String, paydate As String) As Double
         Dim first_Basic As Double
 
         Dim paydate_ As DateTime = Convert.ToDateTime(paydate)
@@ -637,7 +638,7 @@ Module SelectFromDatabase
         Dim first_payroll = New DateTime(paydate_.Year, paydate_.Month, 1)
         first_payroll = first_payroll.AddDays(14)
 
-        Dim sql As String = $"Select * FROM PAYROLL_PAYOUT where BIOMETRIC_ID = '{biono}' and BRANCH_ID = '{branchID}' and PAYDATE = '{first_payroll.ToString("d")}'"
+        Dim sql As String = $"Select * FROM PAYROLL_PAYOUT where EMP_ID = '{EMP_ID}' and PAYDATE = '{first_payroll.ToString("d")}'"
         Using ds As DataSet = LoadSQL(sql, "PAYROLL_PAYOUT")
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
@@ -653,12 +654,12 @@ Module SelectFromDatabase
         Return first_Basic
     End Function
 
-    Public Function GetMonthly_Basic(biono As String, branchID As String, paydate As String) As Double
-        Dim first_basic As Double = GetFirst_Basic(biono, branchID, paydate)
+    Public Function GetMonthly_Basic(EMP_ID As String, paydate As String) As Double
+        Dim first_basic As Double = GetFirst_Basic(EMP_ID, paydate)
         Dim second_basic As Double = 0
         Dim monthly_Basic As Double = 0
 
-        Dim sqll As String = $"Select * FROM PAYROLL_PAYOUT where BIOMETRIC_ID = '{biono}' and BRANCH_ID = '{branchID}' and PAYDATE = '{paydate}'"
+        Dim sqll As String = $"Select * FROM PAYROLL_PAYOUT where EMP_ID = '{EMP_ID}' and PAYDATE = '{paydate}'"
         Using ds As DataSet = LoadSQL(sqll, "PAYROLL_PAYOUT")
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows

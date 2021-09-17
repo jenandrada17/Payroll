@@ -61,6 +61,8 @@ Public Class frmPayout
     End Sub
 
     Public Sub DETAILS()
+
+        Dim EMP_ID As String = Name_TXT.Tag
         If Bio_Exist_Attendance(BiometricID_TXT.Text, paydate_) Then
 
             AttendanceDetails(BiometricID_TXT.Text, paydate_, NoOfDays_TXT, RegularOT_TXT, SpecialHol_TXT, RegularHol_TXT,
@@ -69,8 +71,8 @@ Public Class frmPayout
             '============================ CHECK IF CLOSE PAYROLL ================================== 
             If IsLastDay(paydate_) Then
 
-                Dim monthly_Basic As Double = GetMonthly_Basic(BiometricID_TXT.Text, Rate_TXT.Tag, paydate_)
-                Prev_Amount_lbl.Text = (GetFirst_Basic(BiometricID_TXT.Text, Rate_TXT.Tag, paydate_)).ToString("N")
+                Dim monthly_Basic As Double = GetMonthly_Basic(EMP_ID, paydate_)
+                Prev_Amount_lbl.Text = (GetFirst_Basic(EMP_ID, paydate_)).ToString("N")
 
                 SSSComp_LBL.Text = (Get_SSS(monthly_Basic)).ToString("N")
                 HDMF_LBL.Text = (Get_Pagibig(monthly_Basic)).ToString("N")
@@ -81,8 +83,8 @@ Public Class frmPayout
 
                 Previous_groupB.Visible = True
 
-                SSSLoan_LBL.Text = (Get_LOAN_SSS(Name_TXT.Tag)).ToString("N")
-                PagibigLoan_LBL.Text = (Get_LOAN_Pagibig(Name_TXT.Tag)).ToString("N")
+                SSSLoan_LBL.Text = (Get_LOAN_SSS(EMP_ID)).ToString("N")
+                PagibigLoan_LBL.Text = (Get_LOAN_Pagibig(EMP_ID)).ToString("N")
 
                 sched_deduc = "CLOSE PAYROLL"
             Else
@@ -98,21 +100,21 @@ Public Class frmPayout
             End If
 
             '================ FETCHING ALLOWANCE RECORDED WHEN ATTENDANCE BIOMETRIC IMPORTED ==================
-            If hasRecord_RECORDED(Name_TXT.Tag, paydate_, "RECORDED_ALLOW_DEDUC", "ALLOWANCE") Then
-                Recorded_Details(Name_TXT.Tag, Allowance_grid, paydate_, "ALLOWANCE")
+            If hasRecord_RECORDED(EMP_ID, paydate_, "RECORDED_ALLOW_DEDUC", "ALLOWANCE") Then
+                Recorded_Details(EMP_ID, Allowance_grid, paydate_, "ALLOWANCE")
             Else
-                AllowanceDetails(Name_TXT.Tag, Allowance_grid, sched_deduc)
+                AllowanceDetails(EMP_ID, Allowance_grid, sched_deduc)
             End If
 
             Allowance_grid.Visible = True
 
             '================ FETCHING ALLOWANCE RECORDED WHEN ATTENDANCE BIOMETRIC IMPORTED ==================
-            If isExist_single("MODIFIED_DEDUCTION", "EMP_ID", Name_TXT.Tag) Then                                '=========m MDIFIED DEDUCTION (ON/OFF)
-                DeductioneDetails_MODIFIED(Name_TXT.Tag, paydate_, Deduction_grid, sched_deduc)
-            ElseIf hasRecord_RECORDED(Name_TXT.Tag, paydate_, "RECORDED_ALLOW_DEDUC", "DEDUCTION") Then         '=========m RECORDED DEDUCTION IMPORTING ATTENDANCE
-                Recorded_Details(Name_TXT.Tag, Deduction_grid, paydate_, "DEDUCTION")
+            If isExist_single("MODIFIED_DEDUCTION", "EMP_ID", EMP_ID) Then                                '=========m MDIFIED DEDUCTION (ON/OFF)
+                DeductioneDetails_MODIFIED(EMP_ID, paydate_, Deduction_grid, sched_deduc)
+            ElseIf hasRecord_RECORDED(EMP_ID, paydate_, "RECORDED_ALLOW_DEDUC", "DEDUCTION") Then         '=========m RECORDED DEDUCTION IMPORTING ATTENDANCE
+                Recorded_Details(EMP_ID, Deduction_grid, paydate_, "DEDUCTION")
             Else                                                                                                '=========m ORIGINAL DEDUCTION INCLUDING NEW ADDED DEDUCTION                                                                                               
-                DeductioneDetails_ORIG(Name_TXT.Tag, Deduction_grid, sched_deduc)
+                DeductioneDetails_ORIG(EMP_ID, Deduction_grid, sched_deduc)
             End If
 
             ADD_SBU_GRID() ' =========== SBU DEDUCTION 
@@ -225,7 +227,7 @@ Public Class frmPayout
         If Not Name_TXT.Text = String.Empty Then
 
             If Details_Save_BTN.Text = "Save" Then
-                SavePayout(BiometricID_TXT.Text, Rate_TXT.Tag, paydate_, TotalBasic_LBL.Text, TotalOT_LBL.Text,
+                SavePayout(Name_TXT.Tag, paydate_, TotalBasic_LBL.Text, TotalOT_LBL.Text,
                       TotalLateUnder_LBL.Text, GrossAmount_LBL.Text, SSSComp_LBL.Text, HDMF_LBL.Text, Philhealth_LBL.Text,
                       Tax_Wheld_LBL.Text, NetTax_LBL.Text, SSSLoan_LBL.Text, PagibigLoan_LBL.Text,
                       Allowances_LBL.Text, Deduction_LBL.Text, NetPay_LBL.Text)

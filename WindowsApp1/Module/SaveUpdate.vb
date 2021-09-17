@@ -498,14 +498,18 @@
 
     End Sub
 
-    Friend Sub SavePayout(BIOMETRIC_ID As String, BRANCH_ID As String, PAYDATE As String, TOTAL_BASIC As String, TOTAL_OVERTIME As String, TOTAL_LATE_UT As String,
+    'Friend Sub SavePayout(BIOMETRIC_ID As String, BRANCH_ID As String, PAYDATE As String, TOTAL_BASIC As String, TOTAL_OVERTIME As String, TOTAL_LATE_UT As String,
+    '                      GROSS_AMOUNT As String, SSS_COMP As String, PAGIBIG_COMP As String, PHILHEALTH_COMP As String, TAX_WHELD As String,
+    '                      NET_TAX_COMP As String, SSS_LOAN As String, PAGIBIG_LOAN As String, TOTAL_ALLOWANCE As String,
+    '                      TOTAL_DEDUCTION As String, NET_PAY As String, Optional all As String = "")
+    Friend Sub SavePayout(EMP_ID As String, PAYDATE As String, TOTAL_BASIC As String, TOTAL_OVERTIME As String, TOTAL_LATE_UT As String,
                           GROSS_AMOUNT As String, SSS_COMP As String, PAGIBIG_COMP As String, PHILHEALTH_COMP As String, TAX_WHELD As String,
                           NET_TAX_COMP As String, SSS_LOAN As String, PAGIBIG_LOAN As String, TOTAL_ALLOWANCE As String,
                           TOTAL_DEDUCTION As String, NET_PAY As String, Optional all As String = "")
 
         Dim mysql As String
 
-        mysql = $"Select * FROM PAYROLL_PAYOUT where BIOMETRIC_ID = '{BIOMETRIC_ID}' and BRANCH_ID = '{BRANCH_ID}' and PAYDATE = '{PAYDATE}'"
+        mysql = $"Select * FROM PAYROLL_PAYOUT where EMP_ID = '{EMP_ID}' and PAYDATE = '{PAYDATE}'"
         Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
         If dss.Tables(0).Rows.Count > 0 Then
             For Each dr In dss.Tables(0).Rows
@@ -541,8 +545,9 @@
             Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
                 Dim dsNewRow As DataRow = ds.Tables(0).NewRow
                 With dsNewRow
-                    .Item("BIOMETRIC_ID") = BIOMETRIC_ID
-                    .Item("BRANCH_ID") = BRANCH_ID
+                    '.Item("BIOMETRIC_ID") = BIOMETRIC_ID
+                    '.Item("BRANCH_ID") = BRANCH_ID
+                    .Item("EMP_ID") = EMP_ID
                     .Item("TOTAL_BASIC") = TOTAL_BASIC
                     .Item("TOTAL_OVERTIME") = TOTAL_OVERTIME
                     .Item("TOTAL_LATE_UT") = TOTAL_LATE_UT
@@ -597,16 +602,18 @@
     End Sub
 
     Friend Sub SavePayout_ALL(paydate_ As String, branch As String) '========== AUTO SAVE TO PAYOUT ============  
-        Replacing($"RECORDED_ALLOWANCE WHERE BRANCH = '{branch}' and PAYDATE = '{paydate_}'")
-        Replacing($"RECORDED_DEDUCTION WHERE BRANCH = '{branch}' and PAYDATE = '{paydate_}'")
+        Replacing($"RECORDED_ALLOW_DEDUC WHERE BRANCH = '{branch}' and PAYDATE = '{paydate_}'")
 
         Dim regHoliday = Holiday_Rate("REGULAR")
         Dim specHoliday = Holiday_Rate("SPECIAL")
         Dim SBU = SBU_Amount()
 
-        Dim mysql As String = $"Select A.*, B.*, B.id as emp_idd, C.* From payroll_attendance A 
-                                inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRICID 
-                                left join TBL_BRANCH C on C.BRANCHNAME = A.BRANCH and B.BRANCH_ID = C.ID WHERE A.PAYDATE = '{paydate_}'"
+        Dim mysql As String = $"Select A.*, B.*, B.id as emp_idd From payroll_attendance A 
+                                inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRICID WHERE A.PAYDATE = '{paydate_}'"
+
+        'Dim mysql As String = $"Select A.*, B.*, B.id as emp_idd, C.* From payroll_attendance A 
+        '                        inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRICID 
+        '                        left join TBL_BRANCH C on C.BRANCHNAME = A.BRANCH and B.BRANCH_ID = C.ID WHERE A.PAYDATE = '{paydate_}'"
 
         Using ds As DataSet = LoadSQL(mysql, "payroll_attendance")
             If ds.Tables(0).Rows.Count > 0 Then
@@ -616,7 +623,7 @@
                 For Each dr In ds.Tables(0).Rows
                     With dr
 
-                        Dim emp_id, BiometricID, branchID, sched As String
+                        Dim emp_id, BiometricID, sched As String
                         Dim Late As String = ""
                         Dim UnderTime As String = ""
                         Dim rate, NoOfDays, RegularOT, SpecialHol, RegularHol As Double
@@ -624,7 +631,6 @@
 
                         BiometricID = .Item("BIOMETRICID")
                         rate = IIf(IsDBNull(.Item("RATE")), 0, .Item("RATE"))
-                        branchID = .Item("BRANCH_ID")
                         emp_id = .Item("emp_idd")
 
                         '============================================= ATTENDANCE (TOTAL DAYS) =========================================================
@@ -654,7 +660,7 @@
 
                         If IsLastDay(date_pay) Then
 
-                            Dim first_Basic As Double = GetFirst_Basic(BiometricID, branchID, paydate_)
+                            Dim first_Basic As Double = GetFirst_Basic(emp_id, paydate_)
                             Dim monthly_Basic As Double = TotalBasic + first_Basic
 
                             SSSComp = Get_SSS(monthly_Basic)
@@ -753,10 +759,15 @@
 
                         NetPay = positive - negative
 
-                        SavePayout(BiometricID, branchID, paydate_, TotalBasic, TotalOT,
+                        SavePayout(emp_id, paydate_, TotalBasic, TotalOT,
                                   TotalLateUnder, GrossAmount, SSSComp, PagibigComp, PhilhealthComp,
                                   Tax_Wheld, netTax, sssLoan, pagibigLoan,
                                   Allowances, Deduction, NetPay, "Group")
+
+                        'SavePayout(BiometricID, branchID, paydate_, TotalBasic, TotalOT,
+                        '          TotalLateUnder, GrossAmount, SSSComp, PagibigComp, PhilhealthComp,
+                        '          Tax_Wheld, netTax, sssLoan, pagibigLoan,
+                        '          Allowances, Deduction, NetPay, "Group")
 
                         frmMainForm.AppProgressBar.Value += 1
                     End With
@@ -865,7 +876,7 @@
 
                     If IsLastDay(date_pay) Then
 
-                        Dim first_Basic As Double = GetFirst_Basic(bioNo, branchID, paydate_)
+                        Dim first_Basic As Double = GetFirst_Basic(emp_id, paydate_)
                         Dim monthly_Basic As Double = TotalBasic + first_Basic
 
                         SSSComp = Get_SSS(monthly_Basic)
