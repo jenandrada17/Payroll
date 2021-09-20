@@ -164,33 +164,41 @@ Module SelectFromDatabase
         Return False
     End Function
 
-    Public Function isExist_single(table As String, column As String, value As String)
-        Dim mysql As String = $"Select * FROM {table} where {column} = '{value}'"
+    'Public Function isExist_single(table As String, column As String, value As String)
+    '    Dim mysql As String = $"Select * FROM {table} where {column} = '{value}'"
+    '    Dim ds As DataSet = LoadSQL(mysql, table)
+    '    If ds.Tables(0).Rows.Count > 0 Then
+    '        Return True
+    '    End If
+    '    Return False
+    'End Function
+
+    'Public Function isExist_Double(table As String, column1 As String, value1 As String, column2 As String, value2 As String)
+    '    Dim mysql As String = $"Select * FROM {table} where {column1} = '{value1}' and {column2} = '{value2}'"
+    '    Dim ds As DataSet = LoadSQL(mysql, table)
+    '    If ds.Tables(0).Rows.Count > 0 Then
+    '        Return True
+    '    End If
+    '    Return False
+    'End Function
+
+    'Public Function isExist_Triple(table As String, column1 As String, value1 As String, column2 As String, value2 As String, column3 As String, value3 As String)
+    '    Dim mysql As String = $"Select * FROM {table} where {column1} = '{value1}' and {column2} = '{value2}' and {column3} = '{value3}'"
+    '    Dim ds As DataSet = LoadSQL(mysql, table)
+    '    If ds.Tables(0).Rows.Count > 0 Then
+    '        Return True
+    '    End If
+    '    Return False
+    'End Function
+
+    Public Function isExist_String(table As String, str As String)
+        Dim mysql As String = $"Select * FROM {table} {str}"
         Dim ds As DataSet = LoadSQL(mysql, table)
         If ds.Tables(0).Rows.Count > 0 Then
             Return True
         End If
         Return False
     End Function
-
-    Public Function isExist_Double(table As String, column1 As String, value1 As String, column2 As String, value2 As String)
-        Dim mysql As String = $"Select * FROM {table} where {column1} = '{value1}' and {column2} = '{value2}'"
-        Dim ds As DataSet = LoadSQL(mysql, table)
-        If ds.Tables(0).Rows.Count > 0 Then
-            Return True
-        End If
-        Return False
-    End Function
-
-    Public Function isExist_Triple(table As String, column1 As String, value1 As String, column2 As String, value2 As String, column3 As String, value3 As String)
-        Dim mysql As String = $"Select * FROM {table} where {column1} = '{value1}' and {column2} = '{value2}' and {column3} = '{value3}'"
-        Dim ds As DataSet = LoadSQL(mysql, table)
-        If ds.Tables(0).Rows.Count > 0 Then
-            Return True
-        End If
-        Return False
-    End Function
-
 
     Public Sub GetSBU(label As Label)
         Dim mysql As String = "Select * FROM  PAYROLL_SBU WHERE ID = 1"
@@ -216,7 +224,6 @@ Module SelectFromDatabase
     End Sub
 
     Public Function GetEmail() As String
-
         Dim email As String = ""
         Dim mysql As String = "Select * FROM  PAYROLL_EMAIL WHERE ID = 1"
         Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_EMAIL")
@@ -465,21 +472,9 @@ Module SelectFromDatabase
         End Using
     End Sub
 
-    Friend Function hasRecord_RECORDED(emp_id As String, paydate As String, table As String, transac_name As String)
-        Dim mysql As String = $"SELECT * FROM {table} Where emp_id = '{emp_id}'  and PAYDATE = '{paydate}'  and TRANSAC_NAME = '{transac_name}'"
-        Dim ds As DataSet = LoadSQL(mysql, table)
-        If ds.Tables(0).Rows.Count > 0 Then
-            Return False
-        End If
-
-        Return True
-    End Function
-
-
     Friend Sub Recorded_Details(emp_id As String, datagrid As DataGridView, paydate As String, transac_name As String)
 
         datagrid.Rows.Clear()
-
         Dim mysql_ As String = $"select * from RECORDED_ALLOW_DEDUC  where emp_id = '{emp_id}' and PAYDATE = '{paydate}' and TRANSAC_NAME = '{transac_name}'"
         Using ds As DataSet = LoadSQL(mysql_, "RECORDED_ALLOW_DEDUC")
             If ds.Tables(0).Rows.Count > 0 Then
@@ -494,11 +489,17 @@ Module SelectFromDatabase
                         Dim rowId As Integer = datagrid.Rows.Add()
                         Dim row As DataGridViewRow = datagrid.Rows(rowId)
                         row.Cells(0).Value = toProper
+                        row.Cells(0).Tag = amountt.ToString(”N”)
                         row.Cells(1).Value = amountt.ToString(”N”)
                         row.Height = 30
-                    End With
-                Next
 
+                        If datagrid.Name = "Deduction_grid" Then
+                            row.Cells(3).Value = "OFF"
+                        End If
+
+                    End With
+
+                Next
                 AdjustHeightOfGridBasedOnRows(datagrid)
             End If
         End Using
@@ -533,7 +534,10 @@ Module SelectFromDatabase
                     End With
                 Next
 
+                datagrid.Visible = True
                 AdjustHeightOfGridBasedOnRows(datagrid)
+            Else
+                datagrid.Visible = False
             End If
         End Using
     End Sub
@@ -541,7 +545,10 @@ Module SelectFromDatabase
     Friend Sub DeductioneDetails_ORIG(emp_id As String, datagrid As DataGridView, sched As String)
 
         datagrid.Rows.Clear()
-        Dim mysql_1 As String = $"Select * From PAYROLL_DEDUCTIONS WHERE emp_id = '{emp_id}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
+
+        'Dim sql_3 As String = $"Select * From PAYROLL_DEDUCTIONS WHERE EMP_ID = '{emp_id}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
+
+        Dim mysql_1 As String = $"Select * From PAYROLL_DEDUCTIONS WHERE EMP_ID = '{emp_id}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
         Using ds As DataSet = LoadSQL(mysql_1, "PAYROLL_DEDUCTIONS")
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
@@ -606,6 +613,8 @@ Module SelectFromDatabase
 
             End If
         End Using
+
+
     End Sub
 
     Friend Sub OtherDetails(biometric As String, branchID As String, PAYDATE As String, Savings_TXT As TextBox, OtherAllowance_TXT As TextBox, OtherDeduction_TXT As TextBox)
@@ -951,7 +960,7 @@ Module SelectFromDatabase
             Dim result As DialogResult = MessageBox.Show("File already imported, Do you want to modify?", "Warning", MessageBoxButtons.YesNo)
             If result = DialogResult.Yes Then
                 RunCommand("DELETE FROM IMPORT_DTR WHERE BRANCH = '" & branch & "' and PAYDATE = '" & PAYDATE & "';")  'THIS IS TO DELETE EXISTING SHEETS IN IMPORT_DTR
-                RunCommand("DELETE FROM BIOMETRIC_DTR WHERE BRANCH = '" & branch & "' and PAYDATE = '" & PAYDATE & "';")  'THIS IS TO DELETE EXISTING ATTENDANCE IN BIOMETRIC_DTR
+                RunCommand("DELETE FROM BIOMETRIC_DTR WHERE BRANCH = '" & branch & "' and PAYDATE = '" & PAYDATE & "';")  'THIS IS TO DELETE EXISTING ATTENDANCE IN BIOMETRIC_DTR 
                 Return True
             End If
         End If
@@ -1393,7 +1402,8 @@ Module SelectFromDatabase
             End With
         End If
 
-        If isExist_single("HISTORY_DEDUCTION", "H_DEDUC_ID", deduc_id) Then
+        'If isExist_single("HISTORY_DEDUCTION", "H_DEDUC_ID", deduc_id) Then
+        If isExist_String("HISTORY_DEDUCTION", $"WEHRE H_DEDUC_ID = '{deduc_id}'") Then
             Dim mysql_ As String = $"Select SUM(H_AMOUNT) as tots From HISTORY_DEDUCTION where H_DEDUC_ID = '{deduc_id}'"
             Dim dSs As DataSet = LoadSQL(mysql_, "HISTORY_DEDUCTION")
             If dSs.Tables(0).Rows.Count > 0 Then
@@ -1414,7 +1424,7 @@ Module SelectFromDatabase
         Dim total_amount = GetDeduction_TotalAmount(emp_id)
         Dim balance As Double
 
-        If isExist_single("HISTORY_DEDUCTION", "EMP_ID", emp_id) Then
+        If isExist_String("HISTORY_DEDUCTION", $"WHERE EMP_ID = '{emp_id}'") Then
             Dim mysql_ As String = $"Select SUM(H_AMOUNT) as tots From HISTORY_DEDUCTION A inner join PAYROLL_DEDUCTIONS B on B.EMP_ID = A.EMP_ID where B.EMP_ID = '{emp_id}' and B.STATUS is null"
             Dim dSs As DataSet = LoadSQL(mysql_, "HISTORY_DEDUCTION")
             If dSs.Tables(0).Rows.Count > 0 Then
@@ -1731,6 +1741,20 @@ Module SelectFromDatabase
                 With dr
                     Dim lvitem As ListViewItem = LIST.Items.Add(.Item(coulumn))
                 End With
+            Next
+
+        End Using
+    End Sub
+
+    Public Sub Trial()
+        Dim mysql As String = $"Select * From tbl_employee_copy where id <> (Select id from tbl_employee)"
+        Using ds As DataSet = LoadSQL(mysql, "tbl_employee_copy")
+
+            For Each dr As DataRow In ds.Tables(0).Rows
+                With dr
+
+                End With
+
             Next
 
         End Using

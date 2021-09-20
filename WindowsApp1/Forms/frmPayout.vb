@@ -99,19 +99,21 @@ Public Class frmPayout
                 sched_deduc = "OPEN PAYROLL"
             End If
 
-            '================ FETCHING ALLOWANCE RECORDED WHEN ATTENDANCE BIOMETRIC IMPORTED ==================
-            If hasRecord_RECORDED(EMP_ID, paydate_, "RECORDED_ALLOW_DEDUC", "ALLOWANCE") Then
+            '================ FETCHING ALLOWANCE RECORDED WHEN ATTENDANCE BIOMETRIC IMPORTED ================== 
+            If isExist_String("RECORDED_ALLOW_DEDUC", $"WHERE EMP_ID = '{EMP_ID}' AND PAYDATE = '{paydate_}' AND TRANSAC_NAME = 'ALLOWANCE'") Then
                 Recorded_Details(EMP_ID, Allowance_grid, paydate_, "ALLOWANCE")
             Else
                 AllowanceDetails(EMP_ID, Allowance_grid, sched_deduc)
             End If
 
+            Label18.Visible = True
             Allowance_grid.Visible = True
 
             '================ FETCHING ALLOWANCE RECORDED WHEN ATTENDANCE BIOMETRIC IMPORTED ==================
-            If isExist_single("MODIFIED_DEDUCTION", "EMP_ID", EMP_ID) Then                                '=========m MDIFIED DEDUCTION (ON/OFF)
+            If isExist_String("MODIFIED_DEDUCTION", $"WHERE EMP_ID = '{EMP_ID}' AND PAYDATE = '{paydate_}'") Then     '=========m MDIFIED DEDUCTION (ON/OFF)
                 DeductioneDetails_MODIFIED(EMP_ID, paydate_, Deduction_grid, sched_deduc)
-            ElseIf hasRecord_RECORDED(EMP_ID, paydate_, "RECORDED_ALLOW_DEDUC", "DEDUCTION") Then         '=========m RECORDED DEDUCTION IMPORTING ATTENDANCE
+
+            ElseIf isExist_String("RECORDED_ALLOW_DEDUC", $"WHERE EMP_ID = '{EMP_ID}' AND PAYDATE = '{paydate_}' AND TRANSAC_NAME = 'DEDUCTION'") Then         '=========m RECORDED DEDUCTION IMPORTING ATTENDANCE
                 Recorded_Details(EMP_ID, Deduction_grid, paydate_, "DEDUCTION")
             Else                                                                                                '=========m ORIGINAL DEDUCTION INCLUDING NEW ADDED DEDUCTION                                                                                               
                 DeductioneDetails_ORIG(EMP_ID, Deduction_grid, sched_deduc)
@@ -119,8 +121,7 @@ Public Class frmPayout
 
             ADD_SBU_GRID() ' =========== SBU DEDUCTION 
 
-            '==========================  CHECK PAYDATE IF VALID FOR EDITING (DEDUCTION) =========================  
-
+            '==========================  CHECK PAYDATE IF VALID FOR EDITING (DEDUCTION) =========================   
             If paydate_ = frmMainForm.Paydate.ToString("d") Then
                 Deduction_grid.Enabled = True
             Else
@@ -227,14 +228,21 @@ Public Class frmPayout
         If Not Name_TXT.Text = String.Empty Then
 
             If Details_Save_BTN.Text = "Save" Then
-                SavePayout(Name_TXT.Tag, paydate_, TotalBasic_LBL.Text, TotalOT_LBL.Text,
+                SavePayout(BiometricID_TXT.Text, Rate_TXT.Tag, paydate_, TotalBasic_LBL.Text, TotalOT_LBL.Text,
                       TotalLateUnder_LBL.Text, GrossAmount_LBL.Text, SSSComp_LBL.Text, HDMF_LBL.Text, Philhealth_LBL.Text,
                       Tax_Wheld_LBL.Text, NetTax_LBL.Text, SSSLoan_LBL.Text, PagibigLoan_LBL.Text,
-                      Allowances_LBL.Text, Deduction_LBL.Text, NetPay_LBL.Text)
+                      Allowances_LBL.Text, Deduction_LBL.Text, NetPay_LBL.Text, Name_TXT.Tag)
+
+
+                'SavePayout(Name_TXT.Tag, paydate_, TotalBasic_LBL.Text, TotalOT_LBL.Text,
+                '      TotalLateUnder_LBL.Text, GrossAmount_LBL.Text, SSSComp_LBL.Text, HDMF_LBL.Text, Philhealth_LBL.Text,
+                '      Tax_Wheld_LBL.Text, NetTax_LBL.Text, SSSLoan_LBL.Text, PagibigLoan_LBL.Text,
+                '      Allowances_LBL.Text, Deduction_LBL.Text, NetPay_LBL.Text)
 
                 If Deduction_grid.Rows.Count > 0 Then
 
-                    If isExist_single("MODIFIED_DEDUCTION", "EMP_ID", Name_TXT.Tag) Then 'DELETE RECORD IF EXIST TO REPLACE NEW FROM GRID
+                    'If isExist_single("MODIFIED_DEDUCTION", "EMP_ID", Name_TXT.Tag) Then 'DELETE RECORD IF EXIST TO REPLACE NEW FROM GRID
+                    If isExist_String("MODIFIED_DEDUCTION", $"WHERE EMP_ID = '{Name_TXT.Tag}'") Then 'DELETE RECORD IF EXIST TO REPLACE NEW FROM GRID
                         RunCommand($"DELETE FROM MODIFIED_DEDUCTION WHERE EMP_ID = '{Name_TXT.Tag}' and PAYDATE = '{paydate_}';")
                     End If
 
@@ -756,7 +764,8 @@ Public Class frmPayout
 
 
             Dim total_Allowance As Double = 0
-            If isExist_single("payroll_allowances", "BIOMETRIC_NO", biometricID) Then
+            'If isExist_single("payroll_allowances", "BIOMETRIC_NO", biometricID) Then
+            If isExist_String("payroll_allowances", $"WHERE BIOMETRIC_NO = '{biometricID}'") Then
 
                 Dim mysql_allow As String = $"select * from PAYROLL_ALLOWANCES WHERE BIOMETRIC_NO = '{biometricID}' and BRANCH_ID = '{branchID}'  and ALLOWED is null and SCHEDULE = '{sched}'"
                 Using ds As DataSet = LoadSQL(mysql_allow, "payroll_allowances")
@@ -806,7 +815,8 @@ Public Class frmPayout
             End With
 
             Dim total_deduction As Double = 0
-            If isExist_single("payroll_deductions", "BIOMETRIC_NO", biometricID) Then
+            'If isExist_single("payroll_deductions", "BIOMETRIC_NO", biometricID) Then
+            If isExist_String("payroll_deductions", $"WHERE BIOMETRIC_NO = '{biometricID}'") Then
 
                 Dim mysql_de As String = $"Select * From payroll_deductions WHERE BIOMETRIC_NO = '{biometricID}' and BRANCHID = '{branchID}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
                 Using ds As DataSet = LoadSQL(mysql_de, "payroll_deductions")

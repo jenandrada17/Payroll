@@ -1,4 +1,5 @@
 ﻿Imports System.Globalization
+
 Public Class frmMainForm
 
     Dim DateNow As DateTime = DateTime.Now
@@ -6,6 +7,19 @@ Public Class frmMainForm
     Public Paydate As DateTime
 
     Private Sub frmMainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+        'RunCommand("INSERT INTO TBL_EMPLOYEE (ID, FIRSTNAME, MIDDLENAME, LASTNAME, SUFFIX, DATEOFBIRTH, GENDER, CIVILSTATUS, PERMANENT_ADDID, PERMANENT_STREET, PRESENT_ADDID, PRESENT_STREET, EMAILADD,
+        '                        DATEHIRED, BIOMETRICID, CONTACTNO, BIRATE, BI_REMARKS, SSSNO, PHILHEALTHNO, TINNO, STATUS, REMARKS, ASSIGN_STATUS, PAGIBIG, EMP_POSITION, BRANCH_ID, NO_OF_DAYS, RATE) 
+        '                    SELECT ID, FIRSTNAME, MIDDLENAME, LASTNAME, SUFFIX, DATEOFBIRTH, GENDER, CIVILSTATUS, PERMANENT_ADDID, PERMANENT_STREET, PRESENT_ADDID, PRESENT_STREET, EMAILADD, 
+        '                        DATEHIRED, BIOMETRICID, CONTACTNO, BIRATE, BI_REMARKS, SSSNO, PHILHEALTHNO, TINNO, STATUS, REMARKS, ASSIGN_STATUS, PAGIBIG, EMP_POSITION, BRANCH_ID, NO_OF_DAYS, RATE 
+        '                    FROM TBL_EMPLOYEE_COPY where id <> ;")
+
+        'RunCommand("INSERT INTO TBL_EMPLOYEE SELECT * FROM TBL_EMPLOYEE_COPY where NOT EXISTS(SELECT id FROM TBL_EMPLOYEE) ;")
+
+        'RunCommand("INSERT INTO TBL_EMPLOYEE (ID, FIRSTNAME, MIDDLENAME, LASTNAME, SUFFIX, DATEOFBIRTH, GENDER, CIVILSTATUS, PERMANENT_ADDID, PERMANENT_STREET, PRESENT_ADDID, PRESENT_STREET, EMAILADD,
+        ''                        DATEHIRED, BIOMETRICID, CONTACTNO, BIRATE, BI_REMARKS, SSSNO, PHILHEALTHNO, TINNO, STATUS, REMARKS, ASSIGN_STATUS, PAGIBIG, EMP_POSITION, BRANCH_ID, NO_OF_DAYS, RATE) 
+        '            SELECT MAX(id) FROM TBL_EMPLOYEE_COPY where NOT EXISTS(SELECT id FROM TBL_EMPLOYEE where id <> (SELECT id FROM TBL_EMPLOYEE_COPY) ) ;")
+
         AppDateTime.Text = Date.Now.ToString("dddd, MMMM dd, yyyy hh:mm:ss tt", CultureInfo.CurrentCulture)
 
         StartFour = New DateTime(DateNow.Year, DateNow.Month, 4).AddDays(-1)
@@ -21,6 +35,7 @@ Public Class frmMainForm
             Paydate = New DateTime(EndFour.Year, EndFour.Month, DateTime.DaysInMonth(EndFour.Year, EndFour.Month))
         End If
 
+        'MsgBox("Padyasdas " & Paydate)
     End Sub
 
     '======================================Buttons================================================== 

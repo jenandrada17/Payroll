@@ -145,14 +145,16 @@
         Using ds As DataSet = LoadSQL(mysql_1, "PAYROLL_DEDUCTIONS")
             If ds.Tables(0).Rows.Count > 0 Then
 
-                If isExist_Double("HISTORY_DEDUCTION", "EMP_ID", EMP_ID, "PAYDATE", PAYDATE) Then 'DELETE RECORD (HISTORY_DEDUCTION) IF EXIST TO REPLACE NEW FROM GRID (IMPORTANT)
+                'If isExist_Double("HISTORY_DEDUCTION", "EMP_ID", EMP_ID, "PAYDATE", PAYDATE) Then 'DELETE RECORD (HISTORY_DEDUCTION) IF EXIST TO REPLACE NEW FROM GRID (IMPORTANT)
+                If isExist_String("HISTORY_DEDUCTION", $"WHERE EMP_ID = '{EMP_ID}' AND PAYDATE = '{PAYDATE}'") Then 'DELETE RECORD (HISTORY_DEDUCTION) IF EXIST TO REPLACE NEW FROM GRID (IMPORTANT)
                     RunCommand($"DELETE FROM HISTORY_DEDUCTION WHERE EMP_ID = '{EMP_ID}' and PAYDATE = '{PAYDATE}';")
                 End If
 
                 For Each dr In ds.Tables(0).Rows
                     With dr
 
-                        If isExist_Triple("MODIFIED_DEDUCTION", "EMP_ID", EMP_ID, "PAYDATE", PAYDATE, "M_CATEGORY", .item("CATEGORY")) Then '========= REFER TO MODIFIED_DEDUCTION IF EXIST (IMPORTANT)
+                        'If isExist_Triple("MODIFIED_DEDUCTION", "EMP_ID", EMP_ID, "PAYDATE", PAYDATE, "M_CATEGORY", .item("CATEGORY")) Then '========= REFER TO MODIFIED_DEDUCTION IF EXIST (IMPORTANT)
+                        If isExist_String("MODIFIED_DEDUCTION", $"WHERE EMP_ID = '{EMP_ID}' AND PAYDATE = '{PAYDATE}' AND M_CATEGORY = '{ .item("CATEGORY")}'") Then '========= REFER TO MODIFIED_DEDUCTION IF EXIST (IMPORTANT)
 
                             If Not .item("M_AMOUNT") = 0.00 Or Not .item("M_AMOUNT") = 0 Then
                                 SaveDEDUCTION_HISTORY(EMP_ID, .item("CATEGORY"), .item("M_AMOUNT"), Today, PAYDATE, .item("deduc_id"))
@@ -186,7 +188,8 @@
         End Using
 
         '================================== SUM UP ALL IN HISTORY_DEDUCTION ================================ 
-        If isExist_single("HISTORY_DEDUCTION", "H_DEDUC_ID", deduc_id) Then
+        'If isExist_single("HISTORY_DEDUCTION", "H_DEDUC_ID", deduc_id) Then
+        If isExist_String("HISTORY_DEDUCTION", $"WHERE H_DEDUC_ID = '{deduc_id}'") Then
             Dim mysql_ As String = $"Select SUM(H_AMOUNT) as tots From HISTORY_DEDUCTION where H_DEDUC_ID = '{deduc_id}' "
             Using ds As DataSet = LoadSQL(mysql_, "HISTORY_DEDUCTION")
                 If ds.Tables(0).Rows.Count > 0 Then
@@ -498,18 +501,22 @@
 
     End Sub
 
-    'Friend Sub SavePayout(BIOMETRIC_ID As String, BRANCH_ID As String, PAYDATE As String, TOTAL_BASIC As String, TOTAL_OVERTIME As String, TOTAL_LATE_UT As String,
-    '                      GROSS_AMOUNT As String, SSS_COMP As String, PAGIBIG_COMP As String, PHILHEALTH_COMP As String, TAX_WHELD As String,
-    '                      NET_TAX_COMP As String, SSS_LOAN As String, PAGIBIG_LOAN As String, TOTAL_ALLOWANCE As String,
-    '                      TOTAL_DEDUCTION As String, NET_PAY As String, Optional all As String = "")
-    Friend Sub SavePayout(EMP_ID As String, PAYDATE As String, TOTAL_BASIC As String, TOTAL_OVERTIME As String, TOTAL_LATE_UT As String,
+    Friend Sub SavePayout(BIOMETRIC_ID As String, BRANCH_ID As String, PAYDATE As String, TOTAL_BASIC As String, TOTAL_OVERTIME As String, TOTAL_LATE_UT As String,
                           GROSS_AMOUNT As String, SSS_COMP As String, PAGIBIG_COMP As String, PHILHEALTH_COMP As String, TAX_WHELD As String,
                           NET_TAX_COMP As String, SSS_LOAN As String, PAGIBIG_LOAN As String, TOTAL_ALLOWANCE As String,
-                          TOTAL_DEDUCTION As String, NET_PAY As String, Optional all As String = "")
+                          TOTAL_DEDUCTION As String, NET_PAY As String, emp_id As String, Optional all As String = "")
+
+        'Friend Sub SavePayout(EMP_ID As String, PAYDATE As String, TOTAL_BASIC As String, TOTAL_OVERTIME As String, TOTAL_LATE_UT As String,
+        '                      GROSS_AMOUNT As String, SSS_COMP As String, PAGIBIG_COMP As String, PHILHEALTH_COMP As String, TAX_WHELD As String,
+        '                      NET_TAX_COMP As String, SSS_LOAN As String, PAGIBIG_LOAN As String, TOTAL_ALLOWANCE As String,
+        '                      TOTAL_DEDUCTION As String, NET_PAY As String, Optional all As String = "")
 
         Dim mysql As String
 
-        mysql = $"Select * FROM PAYROLL_PAYOUT where EMP_ID = '{EMP_ID}' and PAYDATE = '{PAYDATE}'"
+        mysql = $"Select * FROM PAYROLL_PAYOUT where EMP_ID = '{emp_id}' and PAYDATE = '{PAYDATE}'"
+
+        'mysql = $"Select * FROM PAYROLL_PAYOUT where BIOMETRIC_ID = '{BIOMETRIC_ID}' and BRANCH_ID = '{BRANCH_ID}' and PAYDATE = '{PAYDATE}'"
+
         Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
         If dss.Tables(0).Rows.Count > 0 Then
             For Each dr In dss.Tables(0).Rows
@@ -545,9 +552,9 @@
             Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
                 Dim dsNewRow As DataRow = ds.Tables(0).NewRow
                 With dsNewRow
-                    '.Item("BIOMETRIC_ID") = BIOMETRIC_ID
-                    '.Item("BRANCH_ID") = BRANCH_ID
-                    .Item("EMP_ID") = EMP_ID
+                    .Item("BIOMETRIC_ID") = BIOMETRIC_ID
+                    .Item("BRANCH_ID") = BRANCH_ID
+                    .Item("EMP_ID") = emp_id
                     .Item("TOTAL_BASIC") = TOTAL_BASIC
                     .Item("TOTAL_OVERTIME") = TOTAL_OVERTIME
                     .Item("TOTAL_LATE_UT") = TOTAL_LATE_UT
@@ -602,18 +609,28 @@
     End Sub
 
     Friend Sub SavePayout_ALL(paydate_ As String, branch As String) '========== AUTO SAVE TO PAYOUT ============  
-        Replacing($"RECORDED_ALLOW_DEDUC WHERE BRANCH = '{branch}' and PAYDATE = '{paydate_}'")
+        'Replacing($"RECORDED_ALLOW_DEDUC WHERE BRANCH = '{branch}' and PAYDATE = '{paydate_}'")
 
         Dim regHoliday = Holiday_Rate("REGULAR")
         Dim specHoliday = Holiday_Rate("SPECIAL")
         Dim SBU = SBU_Amount()
 
-        Dim mysql As String = $"Select A.*, B.*, B.id as emp_idd From payroll_attendance A 
-                                inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRICID WHERE A.PAYDATE = '{paydate_}'"
+        'Dim mysql As String = $"Select A.*, B.*, B.id as emp_idd From payroll_attendance A 
+        '                        inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRICID WHERE A.PAYDATE = '{paydate_}'"
 
         'Dim mysql As String = $"Select A.*, B.*, B.id as emp_idd, C.* From payroll_attendance A 
         '                        inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRICID 
         '                        left join TBL_BRANCH C on C.BRANCHNAME = A.BRANCH and B.BRANCH_ID = C.ID WHERE A.PAYDATE = '{paydate_}'"
+
+        'Dim mysql As String = $"Select A.*, B.*, B.id as emp_idd, C.id as branchID From payroll_attendance A 
+        '                        inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRICID 
+        '                        left join TBL_BRANCH C on C.ID = B.BRANCH_ID WHERE A.BRANCH = '{branch}' and A.PAYDATE = '{paydate_}'"
+
+
+        Dim mysql As String = $"Select A.*, B.*, B.id as emp_idd, C.* From payroll_attendance A 
+                                inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRICID 
+                                left join TBL_BRANCH C on B.BRANCH_ID = C.ID WHERE A.PAYDATE = '{paydate_}'"
+
 
         Using ds As DataSet = LoadSQL(mysql, "payroll_attendance")
             If ds.Tables(0).Rows.Count > 0 Then
@@ -623,7 +640,7 @@
                 For Each dr In ds.Tables(0).Rows
                     With dr
 
-                        Dim emp_id, BiometricID, sched As String
+                        Dim emp_id, BiometricID, branchID, sched As String
                         Dim Late As String = ""
                         Dim UnderTime As String = ""
                         Dim rate, NoOfDays, RegularOT, SpecialHol, RegularHol As Double
@@ -631,6 +648,7 @@
 
                         BiometricID = .Item("BIOMETRICID")
                         rate = IIf(IsDBNull(.Item("RATE")), 0, .Item("RATE"))
+                        branchID = .Item("BRANCH_ID")
                         emp_id = .Item("emp_idd")
 
                         '============================================= ATTENDANCE (TOTAL DAYS) =========================================================
@@ -759,15 +777,10 @@
 
                         NetPay = positive - negative
 
-                        SavePayout(emp_id, paydate_, TotalBasic, TotalOT,
+                        SavePayout(BiometricID, branchID, paydate_, TotalBasic, TotalOT,
                                   TotalLateUnder, GrossAmount, SSSComp, PagibigComp, PhilhealthComp,
                                   Tax_Wheld, netTax, sssLoan, pagibigLoan,
-                                  Allowances, Deduction, NetPay, "Group")
-
-                        'SavePayout(BiometricID, branchID, paydate_, TotalBasic, TotalOT,
-                        '          TotalLateUnder, GrossAmount, SSSComp, PagibigComp, PhilhealthComp,
-                        '          Tax_Wheld, netTax, sssLoan, pagibigLoan,
-                        '          Allowances, Deduction, NetPay, "Group")
+                                  Allowances, Deduction, NetPay, emp_id, "Group")
 
                         frmMainForm.AppProgressBar.Value += 1
                     End With
@@ -979,7 +992,7 @@
                     SavePayout(bioNo, branchID, paydate_, TotalBasic, TotalOT,
                                   TotalLateUnder, GrossAmount, SSSComp, PagibigComp, PhilhealthComp,
                                   Tax_Wheld, netTax, sssLoan, pagibigLoan,
-                                  Allowances, Deduction, NetPay)
+                                  Allowances, Deduction, NetPay, emp_id)
                 End With
             End If
         End Using

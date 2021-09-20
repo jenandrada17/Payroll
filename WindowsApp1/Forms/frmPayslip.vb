@@ -297,7 +297,8 @@ Public Class frmPayslip
             End With
 
             Dim total_Allowance As Double = 0
-            If isExist_single("payroll_allowances", "BIOMETRIC_NO", biometricID) Then
+            'If isExist_single("payroll_allowances", "BIOMETRIC_NO", biometricID) Then
+            If isExist_String("payroll_allowances", $"WHERE BIOMETRIC_NO = '{biometricID}'") Then
 
                 Dim mysql_allow As String = $"select SUM(AMOUNT) as totals from payroll_allowances where BIOMETRIC_NO = '{biometricID}';"
                 Using ds As DataSet = LoadSQL(mysql_allow, "payroll_allowances")
@@ -343,7 +344,8 @@ Public Class frmPayslip
             End With
 
             Dim total_deduction As Double = 0
-            If isExist_single("payroll_deductions", "BIOMETRIC_NO", biometricID) Then
+            'If isExist_single("payroll_deductions", "BIOMETRIC_NO", biometricID) Then
+            If isExist_String("payroll_deductions", $" WHERE BIOMETRIC_NO = '{biometricID}'") Then
 
                 Dim mysql_de As String = $"select SUM(AMOUNT_PER_GIVE) as totals from payroll_deductions  where BIOMETRIC_NO = '{biometricID}';"
                 Using ds As DataSet = LoadSQL(mysql_de, "payroll_deductions")

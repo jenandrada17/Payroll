@@ -603,7 +603,11 @@ Public Class frmAttendance
     End Sub
 
     Private Sub Path_TXT_TextChanged(sender As Object, e As EventArgs) Handles Path_TXT.TextChanged
-
+        If Not Path_TXT.Text = Nothing Then
+            Import_BTN.Enabled = True
+        Else
+            Import_BTN.Enabled = False
+        End If
     End Sub
 
     Private Sub OpenFile_BTN_Click(sender As Object, e As EventArgs) Handles OpenFile_BTN.Click
@@ -660,7 +664,7 @@ Public Class frmAttendance
                 Dim groups_timee As New List(Of String)()
 
                 For Each timme As String In timee
-                    If timme.StartsWith(asss.ToString("M/d/yyyy")) Then
+                    If timme.StartsWith(asss.ToString("d")) Then
                         groups_timee.Add(timme)
 
                     End If
@@ -669,7 +673,6 @@ Public Class frmAttendance
                 For Each dateTime As DateTime In groups_timee
 
                     Dim time As DateTime = dateTime.ToString("t")
-
 
                     DATE_ONLY = dateTime.ToString("d")
                     '============================== WORKED FINE ========================
@@ -686,9 +689,13 @@ Public Class frmAttendance
 
                         list_hour(3) = time.ToString("t")
 
-                    ElseIf time >= "1:00 PM" And time <= "3:00 PM" Then
+                    ElseIf time >= "1:00 PM" And time <= "3:59 PM" Then
+                        If list_hour(2) = "" Then
 
-                        list_hour(2) = time.ToString("t")
+                            list_hour(2) = time.ToString("t")
+                        Else
+                            list_hour(3) = time.ToString("t")
+                        End If
 
                     ElseIf time >= "12:00 PM" And time <= "12:59 PM" Then
 
@@ -735,28 +742,32 @@ Public Class frmAttendance
                 End If
             Next
         Next
-
     End Sub
 
     Private Sub Import_BTN_Click(sender As Object, e As EventArgs) Handles Import_BTN.Click
 
         '====================================================== ORIGIINAL ======================================
-        'If Branch_ComboB.SelectedItem = "" Then
-        '    MsgBox("Please Select Branch", MsgBoxStyle.Critical, "Error")
-        'Else
-        'End If
+        If Branch_ComboB.SelectedItem = "" Then
+            MsgBox("Please Select Branch", MsgBoxStyle.Critical, "Error")
+        Else
+            DataGridView1.Rows.Clear()
 
-        DataGridView1.Rows.Clear()
+            Try
+                bio_White()
+                MsgBox("bio_White")
+            Catch
+                bio_InSys()
+                MsgBox("bio_InSys")
+            Catch
+                bio_OURCOMPANY()
+                MsgBox("bio_OURCOMPANY")
+            End Try
 
-        Try
-            bio_NOTEPAD()
-        Catch
-            bio_InSys()
-            'Catch
-            '    bio_TextFile()
-        End Try
+            PopulateComboBox(Paydate_ComboB, "BIOMETRIC_DTR", "PAYDATE")
+        End If
 
     End Sub
+
 
     Private Sub bio_TextFile()
 
@@ -774,8 +785,7 @@ Public Class frmAttendance
         'oExcel = Nothing
     End Sub
 
-
-    Private Sub bio_NOTEPAD()
+    Private Sub bio_White()
         eApp = New Excel.Application
         eBook = eApp.Workbooks.Open(Path_TXT.Text)
         eSheet = eBook.Worksheets(1)
@@ -826,7 +836,7 @@ Public Class frmAttendance
         forLoop_ALL_IMPORTED()   ' ===== SAVE AM_IN, AM_OUT, PM_IN, PM_OUT ====
         SAVE_DIRECT_Attendance() ' ===== DIRECT SAVE TO ATTENDANCE ====
         PopulateBiometricSHEET(Bio_grid, Paydate, Branch_ComboB.SelectedItem) ' ===== POPULATE DATAGRIDVIEW FROM SHEET ====
-        SavePayout_ALL(Paydate, Branch_ComboB.SelectedItem)
+        SavePayout_ALL(Paydate, Branch_ComboB.Text)
 
         Cursor = Cursors.Default
 
@@ -962,6 +972,69 @@ Public Class frmAttendance
 
         Cursor = Cursors.Default
     End Sub
+
+    Private Sub bio_OURCOMPANY()
+
+        eApp = New Excel.Application
+        eBook = eApp.Workbooks.Open(Path_TXT.Text)
+        eSheet = eBook.Worksheets(1)
+        eCell = eSheet.UsedRange
+        Dim row As Integer
+
+        MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path_TXT.Text}';Extended Properties=Excel 8.0;")
+        MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
+        MyCommand.TableMappings.Add("Table", "Net-informations.com")
+        DtSet = New System.Data.DataSet
+        MyCommand.Fill(DtSet)
+
+        distinct_bio.Clear()
+        list_inOut.Clear()
+
+        If File_Exist(Branch_ComboB.SelectedItem, Paydate) Then
+
+            progressBarStart(DtSet.Tables(0).Rows.Count)
+
+            For row = 2 To DtSet.Tables(0).Rows.Count
+                SaveBiometricSheet(Paydate, eCell(row, 3).Value, eCell(row, 4).Value, Branch_ComboB.SelectedItem)
+                distinct_bio.Add(eCell(row, 3).Value)
+
+                frmMainForm.AppProgressBar.Value += 1
+
+            Next
+
+            progressBarEnd()
+
+        ElseIf File_NOT_Exist(Branch_ComboB.SelectedItem, Paydate) Then
+
+            progressBarStart(DtSet.Tables(0).Rows.Count)
+
+            For row = 2 To DtSet.Tables(0).Rows.Count
+                SaveBiometricSheet(Paydate, eCell(row, 3).Value, eCell(row, 4).Value, Branch_ComboB.SelectedItem)
+                distinct_bio.Add(eCell(row, 3).Value)
+
+                frmMainForm.AppProgressBar.Value += 1
+            Next
+
+            progressBarEnd()
+        Else
+            Path_TXT.Text = ""
+        End If
+
+        Cursor = Cursors.WaitCursor
+
+        forLoop_ALL_IMPORTED()   ' ===== SAVE AM_IN, AM_OUT, PM_IN, PM_OUT ====
+        SAVE_DIRECT_Attendance() ' ===== DIRECT SAVE TO ATTENDANCE ====
+        PopulateBiometricSHEET(Bio_grid, Paydate, Branch_ComboB.SelectedItem) ' ===== POPULATE DATAGRIDVIEW FROM SHEET ====
+        SavePayout_ALL(Paydate, Branch_ComboB.Text)
+
+        Cursor = Cursors.Default
+
+        Import_BTN.Enabled = False
+        Path_TXT.Clear()
+        MyConnection.Close()
+
+    End Sub
+
 
     Public Sub SAVE_DIRECT_Attendance()
         LoadDateTime()
