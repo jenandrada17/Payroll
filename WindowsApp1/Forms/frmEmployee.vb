@@ -66,9 +66,9 @@ Public Class frmEmployee
                 frm.Bio_DTR_TXT.Text = lvEmployee.FocusedItem.SubItems(0).Text
                 frm.Bio_DTR_TXT.Tag = lvEmployee.FocusedItem.SubItems(9).Text '==== Branch ===  
                 frm.DTR_Emp_TXT.Text = lvEmployee.FocusedItem.SubItems(1).Text
-                frm.DTR_Emp_TXT.Tag = lvEmployee.FocusedItem.SubItems(1).Tag
+                frm.DTR_Emp_TXT.Tag = lvEmployee.FocusedItem.SubItems(1).Tag  '==== Emp_id ===  
                 frm.Attendance_Tab.SelectedIndex = 2
-                frm.
+                frm.Employee_RadioB.Checked = True
                 frm.Show()
                 frm.Dock = DockStyle.Fill
                 frm.BringToFront()

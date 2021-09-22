@@ -42,7 +42,7 @@
                               under_total As String, regHoliday As String, specHoliday As String, branch As String, Optional group As String = "")
         Dim mysql As String
 
-        mysql = $"Select * FROM PAYROLL_ATTENDANCE where BIOMETRICID = '{biometric}' and PAYDATE = '{paydate}' and BRANCH = '{branch}'"
+        mysql = $"Select * FROM PAYROLL_ATTENDANCE where BIOMETRICID = '{biometric}' and PAYDATE = '{paydate}'"
         Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
         If dss.Tables(0).Rows.Count > 0 Then
             With dss.Tables(0).Rows(0)

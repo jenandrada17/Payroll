@@ -12,7 +12,7 @@
   <xs:element name="dtr" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="dtr" msprop:Generator_UserDSName="dtr">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element name="printDTR" msprop:Generator_TableClassName="printDTRDataTable" msprop:Generator_TableVarName="tableprintDTR" msprop:Generator_TablePropName="printDTR" msprop:Generator_RowDeletingName="printDTRRowDeleting" msprop:Generator_RowChangingName="printDTRRowChanging" msprop:Generator_RowEvHandlerName="printDTRRowChangeEventHandler" msprop:Generator_RowDeletedName="printDTRRowDeleted" msprop:Generator_UserTableName="printDTR" msprop:Generator_RowChangedName="printDTRRowChanged" msprop:Generator_RowEvArgName="printDTRRowChangeEvent" msprop:Generator_RowClassName="printDTRRow">
+        <xs:element name="printDTR" msprop:Generator_TableClassName="printDTRDataTable" msprop:Generator_TableVarName="tableprintDTR" msprop:Generator_RowChangedName="printDTRRowChanged" msprop:Generator_TablePropName="printDTR" msprop:Generator_RowDeletingName="printDTRRowDeleting" msprop:Generator_RowChangingName="printDTRRowChanging" msprop:Generator_RowEvHandlerName="printDTRRowChangeEventHandler" msprop:Generator_RowDeletedName="printDTRRowDeleted" msprop:Generator_RowClassName="printDTRRow" msprop:Generator_UserTableName="printDTR" msprop:Generator_RowEvArgName="printDTRRowChangeEvent">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="DATE_ONLY" msprop:Generator_ColumnVarNameInTable="columnDATE_ONLY" msprop:Generator_ColumnPropNameInRow="DATE_ONLY" msprop:Generator_ColumnPropNameInTable="DATE_ONLYColumn" msprop:Generator_UserColumnName="DATE_ONLY" type="xs:string" minOccurs="0" />
@@ -20,6 +20,17 @@
               <xs:element name="AM_OUT" msprop:Generator_ColumnVarNameInTable="columnAM_OUT" msprop:Generator_ColumnPropNameInRow="AM_OUT" msprop:Generator_ColumnPropNameInTable="AM_OUTColumn" msprop:Generator_UserColumnName="AM_OUT" type="xs:string" minOccurs="0" />
               <xs:element name="PM_IN" msprop:Generator_ColumnVarNameInTable="columnPM_IN" msprop:Generator_ColumnPropNameInRow="PM_IN" msprop:Generator_ColumnPropNameInTable="PM_INColumn" msprop:Generator_UserColumnName="PM_IN" type="xs:string" minOccurs="0" />
               <xs:element name="PM_OUT" msprop:Generator_ColumnVarNameInTable="columnPM_OUT" msprop:Generator_ColumnPropNameInRow="PM_OUT" msprop:Generator_ColumnPropNameInTable="PM_OUTColumn" msprop:Generator_UserColumnName="PM_OUT" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Attendance" msprop:Generator_TableClassName="AttendanceDataTable" msprop:Generator_TableVarName="tableAttendance" msprop:Generator_TablePropName="Attendance" msprop:Generator_RowDeletingName="AttendanceRowDeleting" msprop:Generator_RowChangingName="AttendanceRowChanging" msprop:Generator_RowEvHandlerName="AttendanceRowChangeEventHandler" msprop:Generator_RowDeletedName="AttendanceRowDeleted" msprop:Generator_UserTableName="Attendance" msprop:Generator_RowChangedName="AttendanceRowChanged" msprop:Generator_RowEvArgName="AttendanceRowChangeEvent" msprop:Generator_RowClassName="AttendanceRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="BIOMETRICID" msprop:Generator_ColumnVarNameInTable="columnBIOMETRICID" msprop:Generator_ColumnPropNameInRow="BIOMETRICID" msprop:Generator_ColumnPropNameInTable="BIOMETRICIDColumn" msprop:Generator_UserColumnName="BIOMETRICID" type="xs:string" minOccurs="0" />
+              <xs:element name="FULLNAME" msprop:Generator_ColumnVarNameInTable="columnFULLNAME" msprop:Generator_ColumnPropNameInRow="FULLNAME" msprop:Generator_ColumnPropNameInTable="FULLNAMEColumn" msprop:Generator_UserColumnName="FULLNAME" type="xs:string" minOccurs="0" />
+              <xs:element name="PRESENT_DAYS" msprop:Generator_ColumnVarNameInTable="columnPRESENT_DAYS" msprop:Generator_ColumnPropNameInRow="PRESENT_DAYS" msprop:Generator_ColumnPropNameInTable="PRESENT_DAYSColumn" msprop:Generator_UserColumnName="PRESENT_DAYS" type="xs:string" minOccurs="0" />
+              <xs:element name="OVERTIME" msprop:Generator_ColumnVarNameInTable="columnOVERTIME" msprop:Generator_ColumnPropNameInRow="OVERTIME" msprop:Generator_ColumnPropNameInTable="OVERTIMEColumn" msprop:Generator_UserColumnName="OVERTIME" type="xs:string" minOccurs="0" />
+              <xs:element name="LATE" msprop:Generator_ColumnVarNameInTable="columnLATE" msprop:Generator_ColumnPropNameInRow="LATE" msprop:Generator_ColumnPropNameInTable="LATEColumn" msprop:Generator_UserColumnName="LATE" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

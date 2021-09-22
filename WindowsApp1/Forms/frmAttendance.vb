@@ -39,6 +39,7 @@ Public Class frmAttendance
 
         PopulateComboBox(Paydate_ComboB, "BIOMETRIC_DTR", "PAYDATE")
         PopulateComboBox(RE_Paydate_Combo, "BIOMETRIC_DTR", "PAYDATE")
+        PopulateComboBox(Payslip_DTR_Combo, "BIOMETRIC_DTR", "PAYDATE")
         'Paydate_ComboB.Items.Insert(0, "Current")
         'RE_Paydate_Combo.Items.Insert(0, "Current")  
 
@@ -634,16 +635,17 @@ Public Class frmAttendance
     End Sub
 
     Private Sub Preview_BTN_Click(sender As Object, e As EventArgs) Handles Preview_BTN.Click
-        'LoadPayslip(biometricID As String, Branch_Name As String)
+        'LoadDTR(Bio_DTR_TXT.Text, Bio_DTR_TXT.Tag)
+        LoadDTR(Bio_DTR_TXT.Text)
     End Sub
 
 
-    Public Sub LoadPayslip(biometricID As String, branch_name As String)
+    Public Sub LoadDTR(biometricID As String, Optional branch_name As String = "")
 
         RptViewer_DTR.LocalReport.DataSources.Clear()
 
         Try
-            '============================================ EMPLOYEE DETAILS ================================================
+            '============================================ BIOMETRIC DETAILS ================================================
             Dim dt_DTR As New DataTable()
             With dt_DTR
                 .Columns.Add("DATE_ONLY")
@@ -653,35 +655,69 @@ Public Class frmAttendance
                 .Columns.Add("PM_OUT")
             End With
 
-            Dim mysql As String = $"Select * From BIOMETRIC_DTR where BIO_ID = '{biometricID}' and BRANCH = '{branch_name}' and PAYDATE = '{Paydate}'"
+            Dim mysql As String = $"Select * From BIOMETRIC_DTR where BIO_ID = '{biometricID}' and PAYDATE = '{Payslip_DTR_Combo.SelectedItem}'"
             Using ds As DataSet = LoadSQL(mysql, "BIOMETRIC_DTR")
                 If ds.Tables(0).Rows.Count > 0 Then
-                    Dim data As DataRow = ds.Tables(0).Rows(0)
-                    With data
+                    For Each dr In ds.Tables(0).Rows
+                        With dr
+                            Dim dateE As DateTime = Convert.ToDateTime(.Item("DATE_ONLY"))
 
-                        Dim dateE As DateTime = .Item("DATE_ONLY")
-                        dateE = dateE.ToString("MMM dd, yy")
+                            Dim AM_IN = IIf(IsDBNull(.Item("AM_IN")), "", .Item("AM_IN"))
+                            Dim AM_OUT = IIf(IsDBNull(.Item("AM_OUT")), "", .Item("AM_OUT"))
+                            Dim PM_IN = IIf(IsDBNull(.Item("PM_IN")), "", .Item("PM_IN"))
+                            Dim PM_OUT = IIf(IsDBNull(.Item("PM_OUT")), "", .Item("PM_OUT"))
 
-                        Dim AM_IN = IIf(IsDBNull(.Item("AM_IN")), "", .Item("AM_IN"))
-                        Dim AM_OUT = IIf(IsDBNull(.Item("AM_OUT")), "", .Item("AM_OUT"))
-                        Dim PM_IN = IIf(IsDBNull(.Item("PM_IN")), "", .Item("PM_IN"))
-                        Dim PM_OUT = IIf(IsDBNull(.Item("PM_OUT")), "", .Item("PM_OUT"))
+                            dt_DTR.Rows.Add(dateE.ToString("MMM dd, yyyy"), AM_IN, AM_OUT, PM_IN, PM_OUT)
 
-                        dt_DTR.Rows.Add(dateE, AM_IN, AM_OUT, PM_IN, PM_OUT)
-
-                    End With
+                        End With
+                    Next
                 End If
             End Using
 
             Dim rds_DTR As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt_DTR)
             RptViewer_DTR.LocalReport.DataSources.Add(rds_DTR)
 
+            '============================================ ATTENDANCE DETAILS ================================================   
+            Dim dt_attendance As New DataTable()
+            With dt_attendance
+                .Columns.Add("BIOMETRICID")
+                .Columns.Add("FULLNAME")
+                .Columns.Add("PRESENT_DAYS")
+                .Columns.Add("OVERTIME")
+                .Columns.Add("LATE")
+            End With
+
+            Dim sqll As String = $"Select * From PAYROLL_ATTENDANCE A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRICID where A.BIOMETRICID = '{biometricID}' and PAYDATE = '{Payslip_DTR_Combo.SelectedItem}'"
+            Using ds As DataSet = LoadSQL(sqll, "PAYROLL_ATTENDANCE")
+                If ds.Tables(0).Rows.Count > 0 Then
+                    Dim data As DataRow = ds.Tables(0).Rows(0)
+                    With data
+
+                        Dim MI As String
+
+                        If String.IsNullOrEmpty(.Item("MIDDLENAME")) Then
+                            MI = ""
+                        Else
+                            MI = .Item("MIDDLENAME").Substring(0, 1) & "."
+                        End If
+
+                        Dim namee As String = String.Format("{0}, {1} {2}", .Item("FirstName"), MI, .Item("LastName"))
+                        Dim DAYS As String = .Item("PRESENT_DAYS")
+                        Dim OT As String = IIf(.Item("OVERTIME") = 0, 0, .Item("OVERTIME"))
+                        Dim LATE As String = IIf(.Item("LATE").Equals("00:00:00"), "00:00:00", .Item("LATE").Substring(0, 5))
+
+                        dt_attendance.Rows.Add(biometricID, namee, DAYS, OT, LATE)
+                    End With
+                End If
+            End Using
+
+            Dim rds_attendance As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet2", dt_attendance)
+            RptViewer_DTR.LocalReport.DataSources.Add(rds_attendance)
+
+
             '============================================ PAYDATE ================================================ 
             Dim paramList As New List(Of Microsoft.Reporting.WinForms.ReportParameter) From {
-            New Microsoft.Reporting.WinForms.ReportParameter("paramName", Bio_DTR_TXT.Text),
-            New Microsoft.Reporting.WinForms.ReportParameter("paramBio", DTR_Emp_TXT.Text),
-            New Microsoft.Reporting.WinForms.ReportParameter("paramDays", Bio_DTR_TXT.Text),
-            New Microsoft.Reporting.WinForms.ReportParameter("paramLate", Bio_DTR_TXT.Text)
+            New Microsoft.Reporting.WinForms.ReportParameter("paramNo", paydatee)
             }
 
             RptViewer_DTR.LocalReport.SetParameters(paramList)
@@ -725,6 +761,14 @@ Public Class frmAttendance
             Employee_GroupB.Visible = True
         Else
             Employee_GroupB.Visible = False
+        End If
+    End Sub
+
+    Private Sub Bio_DTR_TXT_TextChanged(sender As Object, e As EventArgs) Handles Bio_DTR_TXT.TextChanged
+        If Bio_DTR_TXT.Text = "" Then
+            DTR_Emp_TXT.Text = ""
+        Else
+            GetName(Bio_DTR_TXT.Text, DTR_Emp_TXT)
         End If
     End Sub
 

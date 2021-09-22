@@ -112,6 +112,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>dtr.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Dataset\dtr.vb">
+      <DependentUpon>dtr.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Dataset\payslip.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
