@@ -617,11 +617,11 @@ Public Class frmPayout
                 End If
             End Using
         Else
-            'LoadPayslip(Employee_TXT.Tag, EmpSelect_BTN.Tag, Payslip_paydate_Combo.Text, Email_TXT.Tag)
-            'recipient = GetEmail_recipient(Employee_TXT.Tag, EmpSelect_BTN.Tag)
+            LoadPayslip(Employee_TXT.Tag, EmpSelect_BTN.Tag, Payslip_paydate_Combo.Text, Email_TXT.Tag)
+            recipient = GetEmail_recipient(Employee_TXT.Tag, EmpSelect_BTN.Tag)
 
             Deduct_ifExist(Preview_BTN.Tag, Payslip_paydate_Combo.Text)             '======= REFLECT DEDUCTION IF EXIST  (Preview_BTN.Tag = EMP_ID)
-            'Send_Email(ReportViewer_payslip.LocalReport.Render("PDF"), recipient, Employee_TXT.Text, "single")
+            Send_Email(ReportViewer_payslip.LocalReport.Render("PDF"), recipient, Employee_TXT.Text, "single")
         End If
 
     End Sub
@@ -766,7 +766,7 @@ Public Class frmPayout
 
             Dim total_Allowance As Double = 0
             'If isExist_single("payroll_allowances", "BIOMETRIC_NO", biometricID) Then
-            If isExist_String("payroll_allowances", $"WHERE BIOMETRIC_NO = '{biometricID}'") Then
+            If isExist_String("payroll_allowances", $" where BIOMETRIC_NO = '{biometricID}'") Then
 
                 Dim mysql_allow As String = $"select * from PAYROLL_ALLOWANCES WHERE BIOMETRIC_NO = '{biometricID}' and BRANCH_ID = '{branchID}'  and ALLOWED is null and SCHEDULE = '{sched}'"
                 Using ds As DataSet = LoadSQL(mysql_allow, "payroll_allowances")
@@ -817,9 +817,11 @@ Public Class frmPayout
 
             Dim total_deduction As Double = 0
             'If isExist_single("payroll_deductions", "BIOMETRIC_NO", biometricID) Then
-            If isExist_String("payroll_deductions", $"WHERE BIOMETRIC_NO = '{biometricID}'") Then
+            'If isExist_String("payroll_deductions", $" where BIOMETRIC_NO = '{biometricID}'") Then
+            If isExist_String("payroll_deductions", $" where EMP_ID = '{biometricID}'") Then
 
-                Dim mysql_de As String = $"Select * From payroll_deductions WHERE BIOMETRIC_NO = '{biometricID}' and BRANCHID = '{branchID}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
+                'Dim mysql_de As String = $"Select * From payroll_deductions WHERE BIOMETRIC_NO = '{biometricID}' and BRANCHID = '{branchID}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
+                Dim mysql_de As String = $"Select * From payroll_deductions WHERE EMP_ID = '{biometricID}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
                 Using ds As DataSet = LoadSQL(mysql_de, "payroll_deductions")
                     If ds.Tables(0).Rows.Count > 0 Then
                         For Each drr In ds.Tables(0).Rows
@@ -833,7 +835,8 @@ Public Class frmPayout
 
                 End Using
 
-                Dim mysql_2 As String = $"select * from payroll_deductions  where BIOMETRIC_NO = '{biometricID}'  and BRANCHID = '{branchID}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
+                'Dim mysql_2 As String = $"select * from payroll_deductions  where BIOMETRIC_NO = '{biometricID}'  and BRANCHID = '{branchID}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
+                Dim mysql_2 As String = $"select * from payroll_deductions  where EMP_ID = '{biometricID}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
                 Using ds As DataSet = LoadSQL(mysql_2, "payroll_deductions")
                     If ds.Tables(0).Rows.Count > 0 Then
                         For Each dr In ds.Tables(0).Rows

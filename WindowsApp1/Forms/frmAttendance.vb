@@ -36,6 +36,7 @@ Public Class frmAttendance
 
         CheckALL_CheckBox.Checked = True
         PopulateComboBox(Branch_ComboB, "tbl_branch", "BRANCHNAME")
+        'PopulateComboBox(DTR_Branch_Combo, "tbl_branch", "BRANCHNAME")
 
         PopulateComboBox(Paydate_ComboB, "BIOMETRIC_DTR", "PAYDATE")
         PopulateComboBox(RE_Paydate_Combo, "BIOMETRIC_DTR", "PAYDATE")
@@ -49,6 +50,13 @@ Public Class frmAttendance
         Branch_ComboB.Items.Insert(3, ".HO MAIN")
         Branch_ComboB.Items.Insert(4, ".HO REMATADO")
         Branch_ComboB.Items.Insert(5, ".HO WAREHOUSE ")
+
+        DTR_Branch_Combo.Items.Insert(0, ".HO ACCOUNTING")
+        DTR_Branch_Combo.Items.Insert(1, ".HO ADMIN")
+        DTR_Branch_Combo.Items.Insert(2, ".HO HR")
+        DTR_Branch_Combo.Items.Insert(3, ".HO MAIN")
+        DTR_Branch_Combo.Items.Insert(4, ".HO REMATADO")
+        DTR_Branch_Combo.Items.Insert(5, ".HO WAREHOUSE ")
     End Sub
 
     Private Sub Close_LBL_Click(sender As Object, e As EventArgs) Handles Close_LBL.Click
@@ -635,14 +643,171 @@ Public Class frmAttendance
     End Sub
 
     Private Sub Preview_BTN_Click(sender As Object, e As EventArgs) Handles Preview_BTN.Click
-        'LoadDTR(Bio_DTR_TXT.Text, Bio_DTR_TXT.Tag)
-        LoadDTR(Bio_DTR_TXT.Text)
+
+        If Employee_RadioB.Checked Then
+            LoadDTR(Bio_DTR_TXT.Text, 2)
+        ElseIf Branch_RadioB.Checked Then
+            'LoadDTR_Branch(DTR_Branch_Combo.Text, 2)
+
+            'LoadDTR_Branchhhhh(DTR_Branch_Combo.Text)
+
+            Load_sAMPLE()
+        End If
+
+    End Sub
+
+    Public Sub LoadDTR_Branchhhhh(branch_name As String)
+
+        RptViewer_DTR.LocalReport.DataSources.Clear()
+        Dim paydatee As String = Payslip_DTR_Combo.SelectedItem
+
+        Try
+            Dim mysqll As String = $"Select * From PAYROLL_ATTENDANCE A 
+                                        inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRICID 
+                                        left join BIOMETRIC_DTR C ON C.BIO_ID = A.BIOMETRICID AND C.BRANCH = A.BRANCH AND C.PAYDATE = A.PAYDATE
+                                        where A.BRANCH = '{DTR_Branch_Combo.Text}'"
+
+            'Dim mysqll As String = $"Select * From BIOMETRIC_DTR where BRANCH = '{branch_name}' and PAYDATE = '{paydatee}'"
+            Using ds As DataSet = LoadSQL(mysqll, "PAYROLL_ATTENDANCE")
+                If ds.Tables(0).Rows.Count > 0 Then
+                    For Each dr In ds.Tables(0).Rows
+                        With dr
+                            Dim biometricID = .Item("BIO_ID")
+                            '============================================ BIOMETRIC DETAILS ================================================ 
+                            Dim dt_DTR As New DataTable()
+                            With dt_DTR
+                                .Columns.Add("DATE_ONLY")
+                                .Columns.Add("AM_IN")
+                                .Columns.Add("AM_OUT")
+                                .Columns.Add("PM_IN")
+                                .Columns.Add("PM_OUT")
+                            End With
+
+                            Dim mysql As String = $"Select * From BIOMETRIC_DTR where BIO_ID = '{biometricID}' and PAYDATE = '{paydatee}'"
+                            Using dsS As DataSet = LoadSQL(mysql, "BIOMETRIC_DTR")
+                                If dsS.Tables(0).Rows.Count > 0 Then
+                                    For Each drR In dsS.Tables(0).Rows
+                                        With drR
+                                            Dim dateE As DateTime = Convert.ToDateTime(.Item("DATE_ONLY"))
+
+                                            Dim AM_IN = IIf(IsDBNull(.Item("AM_IN")), "", .Item("AM_IN"))
+                                            Dim AM_OUT = IIf(IsDBNull(.Item("AM_OUT")), "", .Item("AM_OUT"))
+                                            Dim PM_IN = IIf(IsDBNull(.Item("PM_IN")), "", .Item("PM_IN"))
+                                            Dim PM_OUT = IIf(IsDBNull(.Item("PM_OUT")), "", .Item("PM_OUT"))
+
+                                            dt_DTR.Rows.Add(dateE.ToString("MMM dd, yyyy"), AM_IN, AM_OUT, PM_IN, PM_OUT)
+
+                                        End With
+                                    Next
+                                End If
+                            End Using
+
+                            Dim rds_DTR As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt_DTR)
+                            RptViewer_DTR.LocalReport.DataSources.Add(rds_DTR)
+                            '============================================ ATTENDANCE DETAILS ================================================    
+                            Dim dt_attendance As New DataTable()
+                            With dt_attendance
+                                .Columns.Add("BIOMETRICID")
+                                .Columns.Add("FULLNAME")
+                                .Columns.Add("PRESENT_DAYS")
+                                .Columns.Add("OVERTIME")
+                                .Columns.Add("LATE")
+                            End With
+
+                            Dim sqll As String = $"Select * From PAYROLL_ATTENDANCE A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRICID where A.BIOMETRICID = '{biometricID}' and PAYDATE = '{Payslip_DTR_Combo.SelectedItem}'"
+                            Using dsss As DataSet = LoadSQL(sqll, "PAYROLL_ATTENDANCE")
+                                If dsss.Tables(0).Rows.Count > 0 Then
+                                    Dim data As DataRow = dsss.Tables(0).Rows(0)
+                                    With data
+
+                                        Dim MI As String
+
+                                        If String.IsNullOrEmpty(.Item("MIDDLENAME")) Then
+                                            MI = ""
+                                        Else
+                                            MI = .Item("MIDDLENAME").Substring(0, 1) & "."
+                                        End If
+
+                                        Dim namee As String = String.Format("{0}, {1} {2}", .Item("FirstName"), MI, .Item("LastName"))
+                                        Dim DAYS As String = .Item("PRESENT_DAYS")
+                                        Dim OT As String = IIf(.Item("OVERTIME") = 0, 0, .Item("OVERTIME"))
+                                        Dim LATE As String = IIf(.Item("LATE").Equals("00:00:00"), "00:00:00", .Item("LATE").Substring(0, 5))
+
+                                        dt_attendance.Rows.Add(biometricID, namee, DAYS, OT, LATE)
+                                    End With
+                                End If
+                            End Using
+
+                            Dim rds_attendance As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet2", dt_attendance)
+                            RptViewer_DTR.LocalReport.DataSources.Add(rds_attendance)
+                        End With
+
+                    Next
+                End If
+            End Using
+
+
+            '============================================ PAYDATE ================================================ 
+            'Dim paramList As New List(Of Microsoft.Reporting.WinForms.ReportParameter) From {
+            '                New Microsoft.Reporting.WinForms.ReportParameter("paramNo", noOf_copies)
+            '                }
+
+            'RptViewer_DTR.LocalReport.SetParameters(paramList)
+            RptViewer_DTR.RefreshReport()
+
+        Catch ex As Exception
+            Log_Report(ex.ToString)
+            MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+
     End Sub
 
 
-    Public Sub LoadDTR(biometricID As String, Optional branch_name As String = "")
+    Public Sub Load_sAMPLE()
 
         RptViewer_DTR.LocalReport.DataSources.Clear()
+        Dim paydatee = Payslip_DTR_Combo.SelectedItem
+
+        Try
+            Dim all_in As New dtr.overAllDataTable
+
+            Dim Sql As String = $"Select * From PAYROLL_ATTENDANCE A 
+                                        inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRICID 
+                                        left join BIOMETRIC_DTR C ON C.BIO_ID = A.BIOMETRICID AND C.BRANCH = A.BRANCH AND C.PAYDATE = A.PAYDATE
+                                        where A.BRANCH = '{DTR_Branch_Combo.Text}'"
+
+            Using adapter As New FbDataAdapter(Sql, con)
+                adapter.Fill(all_in)
+
+                Dim datasource As New Microsoft.Reporting.WinForms.ReportDataSource With
+            {
+                .Name = "DataSet1",
+                .Value = all_in
+            }
+
+                RptViewer_DTR.LocalReport.DataSources.Add(datasource)
+
+            End Using
+
+            '============================================ PAYDATE ================================================ 
+            Dim paramList As New List(Of Microsoft.Reporting.WinForms.ReportParameter) From {
+            New Microsoft.Reporting.WinForms.ReportParameter("paramName", "NAME PLEASE")
+            }
+
+            RptViewer_DTR.LocalReport.SetParameters(paramList)
+            RptViewer_DTR.RefreshReport()
+
+        Catch ex As Exception
+            Log_Report(ex.ToString)
+            MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+
+    End Sub
+
+    Public Sub LoadDTR(biometricID As String, noOf_copies As Integer, Optional branch_name As String = "")
+
+        RptViewer_DTR.LocalReport.DataSources.Clear()
+        Dim paydatee = Payslip_DTR_Combo.SelectedItem
 
         Try
             '============================================ BIOMETRIC DETAILS ================================================
@@ -655,7 +820,7 @@ Public Class frmAttendance
                 .Columns.Add("PM_OUT")
             End With
 
-            Dim mysql As String = $"Select * From BIOMETRIC_DTR where BIO_ID = '{biometricID}' and PAYDATE = '{Payslip_DTR_Combo.SelectedItem}'"
+            Dim mysql As String = $"Select * From BIOMETRIC_DTR where BIO_ID = '{biometricID}' and PAYDATE = '{paydatee}'"
             Using ds As DataSet = LoadSQL(mysql, "BIOMETRIC_DTR")
                 If ds.Tables(0).Rows.Count > 0 Then
                     For Each dr In ds.Tables(0).Rows
@@ -717,11 +882,118 @@ Public Class frmAttendance
 
             '============================================ PAYDATE ================================================ 
             Dim paramList As New List(Of Microsoft.Reporting.WinForms.ReportParameter) From {
-            New Microsoft.Reporting.WinForms.ReportParameter("paramNo", paydatee)
+            New Microsoft.Reporting.WinForms.ReportParameter("paramNo", noOf_copies)
             }
 
             RptViewer_DTR.LocalReport.SetParameters(paramList)
             RptViewer_DTR.RefreshReport()
+
+        Catch ex As Exception
+            Log_Report(ex.ToString)
+            MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+
+    End Sub
+
+    Public Sub LoadDTR_Branch(branch_name As String, noOf_copies As Integer)
+
+        RptViewer_DTR.LocalReport.DataSources.Clear()
+        Dim paydatee As String = Payslip_DTR_Combo.SelectedItem
+
+        Try
+            Dim mysqll As String = $"Select * From PAYROLL_ATTENDANCE A 
+                                        inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRICID 
+                                        left join BIOMETRIC_DTR C ON C.BIO_ID = A.BIOMETRICID AND C.BRANCH = A.BRANCH AND C.PAYDATE = A.PAYDATE
+                                        where A.BRANCH = '{DTR_Branch_Combo.Text}'"
+
+            'Dim mysqll As String = $"Select * From BIOMETRIC_DTR where BRANCH = '{branch_name}' and PAYDATE = '{paydatee}'"
+            Using ds As DataSet = LoadSQL(mysqll, "BIOMETRIC_DTR")
+                If ds.Tables(0).Rows.Count > 0 Then
+                    For Each dr In ds.Tables(0).Rows
+                        With dr
+                            Dim biometricID = .Item("BIO_ID")
+                            '============================================ BIOMETRIC DETAILS ================================================ 
+                            Dim dt_DTR As New DataTable()
+                            With dt_DTR
+                                .Columns.Add("DATE_ONLY")
+                                .Columns.Add("AM_IN")
+                                .Columns.Add("AM_OUT")
+                                .Columns.Add("PM_IN")
+                                .Columns.Add("PM_OUT")
+                            End With
+
+                            Dim mysql As String = $"Select * From BIOMETRIC_DTR where BIO_ID = '{biometricID}' and PAYDATE = '{paydatee}'"
+                            Using dsS As DataSet = LoadSQL(mysql, "BIOMETRIC_DTR")
+                                If dsS.Tables(0).Rows.Count > 0 Then
+                                    For Each drR In dsS.Tables(0).Rows
+                                        With drR
+                                            Dim dateE As DateTime = Convert.ToDateTime(.Item("DATE_ONLY"))
+
+                                            Dim AM_IN = IIf(IsDBNull(.Item("AM_IN")), "", .Item("AM_IN"))
+                                            Dim AM_OUT = IIf(IsDBNull(.Item("AM_OUT")), "", .Item("AM_OUT"))
+                                            Dim PM_IN = IIf(IsDBNull(.Item("PM_IN")), "", .Item("PM_IN"))
+                                            Dim PM_OUT = IIf(IsDBNull(.Item("PM_OUT")), "", .Item("PM_OUT"))
+
+                                            dt_DTR.Rows.Add(dateE.ToString("MMM dd, yyyy"), AM_IN, AM_OUT, PM_IN, PM_OUT)
+
+                                        End With
+                                    Next
+                                End If
+                            End Using
+
+                            Dim rds_DTR As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt_DTR)
+                            RptViewer_DTR.LocalReport.DataSources.Add(rds_DTR)
+                            '============================================ ATTENDANCE DETAILS ================================================    
+                            Dim dt_attendance As New DataTable()
+                            With dt_attendance
+                                .Columns.Add("BIOMETRICID")
+                                .Columns.Add("FULLNAME")
+                                .Columns.Add("PRESENT_DAYS")
+                                .Columns.Add("OVERTIME")
+                                .Columns.Add("LATE")
+                            End With
+
+                            Dim sqll As String = $"Select * From PAYROLL_ATTENDANCE A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRICID where A.BIOMETRICID = '{biometricID}' and PAYDATE = '{Payslip_DTR_Combo.SelectedItem}'"
+                            Using dsss As DataSet = LoadSQL(sqll, "PAYROLL_ATTENDANCE")
+                                If dsss.Tables(0).Rows.Count > 0 Then
+                                    Dim data As DataRow = dsss.Tables(0).Rows(0)
+                                    With data
+
+                                        Dim MI As String
+
+                                        If String.IsNullOrEmpty(.Item("MIDDLENAME")) Then
+                                            MI = ""
+                                        Else
+                                            MI = .Item("MIDDLENAME").Substring(0, 1) & "."
+                                        End If
+
+                                        Dim namee As String = String.Format("{0}, {1} {2}", .Item("FirstName"), MI, .Item("LastName"))
+                                        Dim DAYS As String = .Item("PRESENT_DAYS")
+                                        Dim OT As String = IIf(.Item("OVERTIME") = 0, 0, .Item("OVERTIME"))
+                                        Dim LATE As String = IIf(.Item("LATE").Equals("00:00:00"), "00:00:00", .Item("LATE").Substring(0, 5))
+
+                                        dt_attendance.Rows.Add(biometricID, namee, DAYS, OT, LATE)
+                                    End With
+                                End If
+                            End Using
+
+                            Dim rds_attendance As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet2", dt_attendance)
+                            RptViewer_DTR.LocalReport.DataSources.Add(rds_attendance)
+                        End With
+
+                    Next
+                End If
+            End Using
+
+
+            '============================================ PAYDATE ================================================ 
+            'Dim paramList As New List(Of Microsoft.Reporting.WinForms.ReportParameter) From {
+            '                New Microsoft.Reporting.WinForms.ReportParameter("paramNo", noOf_copies)
+            '                }
+
+            'RptViewer_DTR.LocalReport.SetParameters(paramList)
+            RptViewer_DTR.RefreshReport()
+
 
         Catch ex As Exception
             Log_Report(ex.ToString)

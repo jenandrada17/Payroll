@@ -1715,22 +1715,22 @@
                     </TablixMember>
                     <TablixMember>
                       <Visibility>
-                        <Hidden>=iif(fields!REGHOLIDAY.Value &lt;&gt; 0 or fields!REGHOLIDAY.Value &lt;&gt; nothing, true, false)</Hidden>
+                        <Hidden>true</Hidden>
                       </Visibility>
                     </TablixMember>
                     <TablixMember>
                       <Visibility>
-                        <Hidden>=iif(fields!SPECHOLIDAY.Value &lt;&gt; 0 or fields!SPECHOLIDAY.Value &lt;&gt; nothing, true, false)</Hidden>
+                        <Hidden>true</Hidden>
                       </Visibility>
                     </TablixMember>
                     <TablixMember>
                       <Visibility>
-                        <Hidden>=iif(fields!TOTAL_LATE_UT.Value &gt; 0, false, true)</Hidden>
+                        <Hidden>true</Hidden>
                       </Visibility>
                     </TablixMember>
                     <TablixMember>
                       <Visibility>
-                        <Hidden>=iif(fields!TOTAL_OVERTIME.Value &gt; 0, false, true)</Hidden>
+                        <Hidden>true</Hidden>
                       </Visibility>
                     </TablixMember>
                     <TablixMember />

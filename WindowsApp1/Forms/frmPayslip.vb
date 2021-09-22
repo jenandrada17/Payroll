@@ -79,6 +79,8 @@ Public Class frmPayslip
             e_mail.Body = BodyText_RichB.Text
             Smtp_Server.Send(e_mail)
 
+            MsgBox("Email Sent")
+
         Catch error_t As Exception
             MsgBox(error_t.ToString)
         End Try
@@ -255,6 +257,10 @@ Public Class frmPayslip
                         present_hours = (.Item("PRESENT_DAYS") / 0.5) * 4 'CALCULATE PRESENT DAYS TO HOURS
 
                         PRESENT_DAYS = .Item("PRESENT_DAYS")
+                        'OVERTIME = .Item("OVERTIME") & ":00"
+                        'REGHOLIDAY = .Item("REGHOLIDAY")
+                        'SPECHOLIDAY = .Item("SPECHOLIDAY")
+                        'LATE = .Item("LATE").Substring(0, 5)
                         OVERTIME = .Item("OVERTIME") & ":00"
                         REGHOLIDAY = .Item("REGHOLIDAY")
                         SPECHOLIDAY = .Item("SPECHOLIDAY")

@@ -235,8 +235,8 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\rpt_DTR.rdlc" />
+    <EmbeddedResource Include="Reports\rpt_DTR_Branch.rdlc" />
     <EmbeddedResource Include="Reports\rpt_payslip.rdlc" />
-    <EmbeddedResource Include="Reports\sample.rdlc" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Dataset\dtr.xsc">
