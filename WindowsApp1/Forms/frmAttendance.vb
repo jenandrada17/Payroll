@@ -647,7 +647,7 @@ Public Class frmAttendance
     Private Sub Preview_BTN_Click(sender As Object, e As EventArgs) Handles Preview_BTN.Click
 
         If Employee_RadioB.Checked Then
-            LoadDTR(Bio_DTR_TXT.Text, 2)
+            LoadDTR(Bio_DTR_TXT.Text, 1)
         ElseIf Branch_RadioB.Checked Then
             'LoadDTR_Branch(DTR_Branch_Combo.Text, 2)
 
@@ -1290,7 +1290,6 @@ Public Class frmAttendance
         eBook = eApp.Workbooks.Open(Path_TXT.Text)
         eSheet = eBook.Worksheets(1)
         eCell = eSheet.UsedRange
-        Dim row As Integer
 
         MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path_TXT.Text}';Extended Properties=Excel 8.0;")
         MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)

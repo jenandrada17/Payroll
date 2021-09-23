@@ -573,6 +573,7 @@ Module SelectFromDatabase
                         End If
                     End With
                 Next
+                AdjustHeightOfGridBasedOnRows(datagrid)
             End If
         End Using
     End Sub
@@ -1321,7 +1322,7 @@ Module SelectFromDatabase
 
         If searchName.Length <> 0 Then
 
-            mysql = "select * from PAYROLL_ALLOWANCES A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRIC_NO and B.BRANCH_ID = A.BRANCH_ID where ALLOWED = 'YES' and "
+            mysql = "select A.*, A.id as allow_id, B.* from PAYROLL_ALLOWANCES A inner join TBL_EMPLOYEE B on B.ID = A.EMP_ID where ALLOWED = 'YES' and "
 
             For Each name In strWords
                 mysql &= $"{vbCr}UPPER(BIOMETRIC_NO) LIKE UPPER('%{name}%') OR "
@@ -1332,7 +1333,7 @@ Module SelectFromDatabase
             Next
 
         Else
-            mysql = "select * from PAYROLL_ALLOWANCES A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRIC_NO where ALLOWED = 'YES'  ORDER BY LASTNAME ASC "
+            mysql = "select A.*, A.id as allow_id, B.* from PAYROLL_ALLOWANCES A inner join TBL_EMPLOYEE B on B.ID = A.EMP_ID where ALLOWED = 'YES' ORDER BY LASTNAME ASC "
         End If
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ALLOWANCES")
@@ -1349,19 +1350,30 @@ Module SelectFromDatabase
 
     Private Sub AddRow_Allowance(ByVal dr As DataRow, LV As ListView)
         With dr
+            Dim sched As String
 
-            Dim effectivity As DateTime = .Item("EFFECTIVE_DATE")
-            Dim i As ListViewItem = LV.Items.Add(.Item("LASTNAME") & ", " & .Item("FIRSTNAME") & " " & .Item("MIDDLENAME"))
-            i.SubItems.Add(.Item("CATEGORY")).Tag = .Item("BIOMETRIC_NO")
-
-            If .Item("SCHEDULE").Equals("ONCE A MONTH") Then
-                i.SubItems.Add(.Item("SCHEDULE") & " - Every " & .Item("DAY_DATE"))
+            If .Item("SCHEDULE") = "ONCE A MONTH" Then
+                sched = .Item("SCHEDULE") & " - Every " & .Item("DAY_DATE")
             Else
-                i.SubItems.Add(.Item("SCHEDULE"))
+                sched = .Item("SCHEDULE")
             End If
 
-            i.SubItems.Add(effectivity.ToString("MMMM dd, yyyy"))
-            i.SubItems.Add(.Item("AMOUNT")).Tag = .Item("BRANCH_ID")
+
+            Dim MI As String
+
+            If String.IsNullOrEmpty(.Item("MIDDLENAME")) Then
+                MI = ""
+            Else
+                MI = .Item("MIDDLENAME").Substring(0, 1) & "."
+            End If
+
+            Dim effectivity As DateTime = .Item("EFFECTIVE_DATE")
+            Dim i As ListViewItem = LV.Items.Add(.Item("LASTNAME") & ", " & .Item("FIRSTNAME") & " " & MI)
+            i.Tag = .Item("EMP_ID")
+            i.SubItems.Add(.Item("CATEGORY")).Tag = .Item("allow_id")
+            i.SubItems.Add(sched)
+            i.SubItems.Add(effectivity.ToString("MMM dd, yyyy"))
+            i.SubItems.Add(.Item("AMOUNT"))
         End With
     End Sub
 

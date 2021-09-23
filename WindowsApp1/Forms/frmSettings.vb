@@ -259,7 +259,7 @@ Public Class frmSettings
         Dim fix As String = "No"
         Dim everyThisDate As Integer = 0
 
-        If Not isNotValidSave() Then Exit Sub
+        If Not isValidSave_ALLOW() Then Exit Sub
 
         If Not A_EveryDate_Combo.Text = "Select date of the month" Then everyThisDate = A_EveryDate_Combo.SelectedItem
 
@@ -272,29 +272,61 @@ Public Class frmSettings
 
     End Sub
 
-    Private Function isNotValidSave()
+    Private Function isValidSave_ALLOW()
+
+        Dim num2 = Val(Allow_Amount_TXT.Text)
 
         If String.IsNullOrEmpty(Allow_Name_TXT.Text) Then
             MsgBox("Please select a name.", MsgBoxStyle.Critical, "Error")
             Return False
 
-        ElseIf Allow_Category_Combo.SelectedIndex >= 0 Then
+        ElseIf Allow_Category_Combo.SelectedIndex < 0 Then
             Allow_Category_Combo.Region = New Region(New Rectangle(2, 2, Allow_Category_Combo.Width - 4, Allow_Category_Combo.Height - 4))
             Return False
 
-        ElseIf Allow_Schedule_Combo.SelectedIndex >= 0 Then
+        ElseIf Allow_Schedule_Combo.SelectedIndex < 0 Then
             Allow_Schedule_Combo.Region = New Region(New Rectangle(2, 2, Allow_Schedule_Combo.Width - 4, Allow_Schedule_Combo.Height - 4))
             Return False
 
-        ElseIf A_EveryDate_Combo.SelectedIndex >= 0 Then
+        ElseIf Allow_Schedule_Combo.SelectedIndex = 3 Or Allow_Schedule_Combo.SelectedIndex = 4 Then
 
-            If Allow_Schedule_Combo.SelectedIndex = 3 Or Allow_Schedule_Combo.SelectedIndex = 4 Then
+            If A_EveryDate_Combo.SelectedIndex < 0 Then
                 A_EveryDate_Combo.Region = New Region(New Rectangle(2, 2, A_EveryDate_Combo.Width - 4, A_EveryDate_Combo.Height - 4))
                 Return False
             End If
 
         ElseIf String.IsNullOrEmpty(Allow_Amount_TXT.Text) Then
             Allow_Amount_TXT.Region = New Region(New Rectangle(2, 2, Allow_Amount_TXT.Width - 4, Allow_Amount_TXT.Height - 4))
+            Return False
+
+        End If
+
+        Return True
+    End Function
+
+
+    Private Function isValidSave_DEDUC()
+
+        Dim num2 = Val(Allow_Amount_TXT.Text)
+
+        If String.IsNullOrEmpty(DE_Name_TXT.Text) Then
+            MsgBox("Please select a name.", MsgBoxStyle.Critical, "Error")
+            Return False
+
+        ElseIf DE_Category_Combo.SelectedIndex < 0 Then
+            DE_Category_Combo.Region = New Region(New Rectangle(2, 2, DE_Category_Combo.Width - 4, DE_Category_Combo.Height - 4))
+            Return False
+
+        ElseIf DE_Schedule_Combo.SelectedIndex < 0 Then
+            DE_Schedule_Combo.Region = New Region(New Rectangle(2, 2, DE_Schedule_Combo.Width - 4, DE_Schedule_Combo.Height - 4))
+            Return False
+
+        ElseIf String.IsNullOrEmpty(DE_Total_TXT.Text) Then
+            DE_Total_TXT.Region = New Region(New Rectangle(2, 2, DE_Total_TXT.Width - 4, DE_Total_TXT.Height - 4))
+            Return False
+
+        ElseIf String.IsNullOrEmpty(DE_NoOfGives_TXT.Text) Then
+            DE_NoOfGives_TXT.Region = New Region(New Rectangle(2, 2, DE_NoOfGives_TXT.Width - 4, DE_NoOfGives_TXT.Height - 4))
             Return False
         End If
 
@@ -315,7 +347,7 @@ Public Class frmSettings
     Private Sub Allow_Remove_Click(sender As Object, e As EventArgs) Handles Allow_Remove.Click
         If Allowance_LV.SelectedItems.Count > 0 Then
             For Each item As ListViewItem In Allowance_LV.SelectedItems
-                AllowanceRemove(item.Tag, item.SubItems(1).Tag, item.SubItems(0).Text)
+                AllowanceRemove(item.SubItems(1).Tag) ' ===== ALLOWANCE ID =====
                 Lists_Allowance(Allowance_LV)
             Next
         End If
@@ -368,20 +400,16 @@ Public Class frmSettings
     End Sub
     Private Sub DE_Save_BTN_Click(sender As Object, e As EventArgs) Handles DE_Save_BTN.Click
 
-        If DE_Category_Combo.SelectedIndex >= 0 And DE_Schedule_Combo.SelectedIndex >= 0 And Not DE_Name_TXT.Text = "" And Not DE_Total_TXT.Text = "" And Not DE_NoOfGives_TXT.Text = "" Then
-
-            '======================================== CHECK IF CONTEXT EDIT CLICK =======================================
-            If Deduction_List.Tag = 0 Then
-                SaveDeductionS(DE_Category_Combo.Tag, DE_Category_Combo.SelectedItem, DE_Total_TXT.Text, DE_NoOfGives_TXT.Text, DE_AmountGive_TXT.Text, DE_Schedule_Combo.Text, DE_Name_TXT.Tag, DE_SearchEmp_BTN.Tag, DE_Effectivity_DTP.Value) 'DE_Category_Combo.Tag (EMP_ID) | DE_Name_TXT.Tag(Biometric) |  DE_SearchEmp_BTN.Tag.Tag(Branch_id) | 
-            Else
-                updateDeductionS(Deduction_List.Tag, DE_Category_Combo.SelectedItem, DE_Total_TXT.Text, DE_NoOfGives_TXT.Text, DE_AmountGive_TXT.Text, DE_Schedule_Combo.Text, DE_Effectivity_DTP.Value) 'DE_Category_Combo.Tag (EMP_ID)
-            End If
-
-            Lists_deduction(Deduction_List)
-            DE_Cancel_BTN.PerformClick()
+        If Not isValidSave_DEDUC() Then Exit Sub
+        '======================================== CHECK IF CONTEXT EDIT CLICK =======================================
+        If Deduction_List.Tag = 0 Then
+            SaveDeductionS(DE_Category_Combo.Tag, DE_Category_Combo.SelectedItem, DE_Total_TXT.Text, DE_NoOfGives_TXT.Text, DE_AmountGive_TXT.Text, DE_Schedule_Combo.Text, DE_Name_TXT.Tag, DE_SearchEmp_BTN.Tag, DE_Effectivity_DTP.Value) 'DE_Category_Combo.Tag (EMP_ID) | DE_Name_TXT.Tag(Biometric) |  DE_SearchEmp_BTN.Tag.Tag(Branch_id) | 
         Else
-            MsgBox("Please check CATEGORY, SCHEDULE or NAME details.")
+            updateDeductionS(Deduction_List.Tag, DE_Category_Combo.SelectedItem, DE_Total_TXT.Text, DE_NoOfGives_TXT.Text, DE_AmountGive_TXT.Text, DE_Schedule_Combo.Text, DE_Effectivity_DTP.Value) 'DE_Category_Combo.Tag (EMP_ID)
         End If
+
+        Lists_deduction(Deduction_List)
+        DE_Cancel_BTN.PerformClick()
 
     End Sub
 
@@ -394,14 +422,6 @@ Public Class frmSettings
 
     Private Sub SBU_Change_BTN_Click(sender As Object, e As EventArgs) Handles SBU_Change_BTN.Click
         SBU_group.Visible = True
-    End Sub
-
-    Private Sub DE_NoOfGives_TXT_TextChanged(sender As Object, e As EventArgs) Handles DE_NoOfGives_TXT.TextChanged
-        If Not DE_Total_TXT.Text = String.Empty And Not DE_NoOfGives_TXT.Text = String.Empty And IsNumeric(DE_NoOfGives_TXT.Text) Then
-            DE_AmountGive_TXT.Text = Math.Ceiling(Convert.ToDouble(DE_Total_TXT.Text) / Convert.ToDouble(DE_NoOfGives_TXT.Text))
-        Else
-            DE_AmountGive_TXT.Clear()
-        End If
     End Sub
 
     Private Sub DE_Search_BTN_Click(sender As Object, e As EventArgs) Handles DE_Search_BTN.Click
@@ -457,7 +477,7 @@ Public Class frmSettings
 
     End Sub
 
-    Private Sub Allow_Schedule_Combo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Allow_Schedule_Combo.SelectedIndexChanged
+    Private Sub Allow_Schedule_Combo_SelectedIndexChanged(sender As Object, e As EventArgs)
         If Allow_Schedule_Combo.SelectedIndex = 3 Or Allow_Schedule_Combo.SelectedIndex = 4 Then
             Label32.Visible = True
             A_EveryDate_Combo.Visible = True
@@ -474,7 +494,7 @@ Public Class frmSettings
             emp_id = Deduction_List.Items(Deduction_List.FocusedItem.Index).SubItems(1).Tag
             total_amount = GetDeduction_TotalAmount(emp_id)
 
-            every_amount = GetDeduction_EVERY(emp_id) / 2
+            every_amount = GetDeduction_EVERY(emp_id)
 
             open_amount = GetDeduction_OPEN(emp_id) + every_amount
             close_amount = GetDeduction_CLOSE(emp_id) + every_amount
@@ -508,10 +528,8 @@ Public Class frmSettings
     End Sub
 
     Private Sub FlowLayoutPanel1_Paint(sender As Object, e As PaintEventArgs) Handles FlowLayoutPanel1.Paint
-
         Dim txtbox As TextBox = Nothing
         Dim comboB As ComboBox = Nothing
-        Dim dateTime As DateTimePicker = Nothing
         For Each xObject As Object In FlowLayoutPanel1.Controls
             Dim p As New Pen(Color.Red, 2)
             If TypeOf xObject Is TextBox Then
@@ -523,5 +541,50 @@ Public Class frmSettings
             End If
             p.Dispose()
         Next
+    End Sub
+
+    Private Sub Allow_Category_Combo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Allow_Schedule_Combo.SelectedIndexChanged, Allow_Category_Combo.SelectedIndexChanged, A_EveryDate_Combo.SelectedIndexChanged
+        Dim cmb As ComboBox = DirectCast(sender, ComboBox)
+        If cmb.SelectedIndex >= 0 Then
+            cmb.Region = Nothing
+        End If
+    End Sub
+
+    Private Sub Allow_Amount_TXT_TextChanged(sender As Object, e As EventArgs) Handles Allow_Amount_TXT.TextChanged
+        If Allow_Amount_TXT.Text <> Nothing Then
+            Allow_Amount_TXT.Region = Nothing
+        End If
+    End Sub
+
+    Private Sub GroupBox6_Paint(sender As Object, e As PaintEventArgs) Handles GroupBox6.Paint
+        Dim txtbox As TextBox = Nothing
+        Dim comboB As ComboBox = Nothing
+        For Each xObject As Object In GroupBox6.Controls
+            Dim p As New Pen(Color.Red, 2)
+            If TypeOf xObject Is TextBox Then
+                txtbox = xObject
+                e.Graphics.DrawRectangle(p, New Rectangle(txtbox.Location + New Size(1, 1), txtbox.Size - New Size(2, 2)))
+            ElseIf TypeOf xObject Is ComboBox Then
+                comboB = xObject
+                e.Graphics.DrawRectangle(p, New Rectangle(comboB.Location + New Size(1, 1), comboB.Size - New Size(2, 2)))
+            End If
+            p.Dispose()
+        Next
+    End Sub
+
+    Private Sub DE_Category_Combo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles DE_Schedule_Combo.SelectedIndexChanged, DE_Category_Combo.SelectedIndexChanged
+        Dim cmb As ComboBox = DirectCast(sender, ComboBox)
+        If cmb.SelectedIndex >= 0 Then
+            cmb.Region = Nothing
+        End If
+    End Sub
+
+    Private Sub DE_NoOfGives_TXT_TextChanged(sender As Object, e As EventArgs) Handles DE_NoOfGives_TXT.TextChanged
+        If Not DE_Total_TXT.Text = String.Empty And Not DE_NoOfGives_TXT.Text = String.Empty And IsNumeric(DE_NoOfGives_TXT.Text) Then
+            DE_AmountGive_TXT.Text = Math.Ceiling(Convert.ToDouble(DE_Total_TXT.Text) / Convert.ToDouble(DE_NoOfGives_TXT.Text))
+            DE_NoOfGives_TXT.Region = Nothing
+        Else
+            DE_AmountGive_TXT.Clear()
+        End If
     End Sub
 End Class

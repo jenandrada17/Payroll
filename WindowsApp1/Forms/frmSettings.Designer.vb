@@ -943,7 +943,7 @@ Partial Class frmSettings
         'ColumnHeader4
         '
         Me.ColumnHeader4.Text = "Fullname"
-        Me.ColumnHeader4.Width = 230
+        Me.ColumnHeader4.Width = 215
         '
         'ColumnHeader5
         '
@@ -953,7 +953,7 @@ Partial Class frmSettings
         'ColumnHeader3
         '
         Me.ColumnHeader3.Text = "Schedule"
-        Me.ColumnHeader3.Width = 100
+        Me.ColumnHeader3.Width = 115
         '
         'ColumnHeader9
         '

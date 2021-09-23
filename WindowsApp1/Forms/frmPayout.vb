@@ -442,7 +442,6 @@ Public Class frmPayout
     Dim branchID As String
 
     Private Sub Preview_BTN_Click(sender As Object, e As EventArgs) Handles Preview_BTN.Click
-        'LoadPayslip(Employee_TXT.Tag, EmpSelect_BTN.Tag, Payslip_paydate_Combo.Text, Email_TXT.Tag)
         LoadPayslip(Employee_TXT.Tag, EmpSelect_BTN.Tag, Payslip_paydate_Combo.Text, Email_TXT.Tag)
     End Sub
 
@@ -477,7 +476,7 @@ Public Class frmPayout
         Close()
     End Sub
 
-    Public Sub Send_Email(byteViewer As Byte(), recipient_Email As String, recipient_Name As String, Optional FOR_single As String = "")
+    Public Sub Send_Email(byteViewer As Byte(), recipient_Email As String, recipient_Name As String, Optional FOR_single As Boolean = False)
         Try
             Dim FoundMatch As Boolean = Regex.IsMatch(recipient_Email, "\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase)
 
@@ -513,7 +512,7 @@ Public Class frmPayout
             e_mail.Body = BodyText_RichB.Text
             Smtp_Server.Send(e_mail)
 
-            If Not FOR_single = String.Empty Then
+            If FOR_single Then
                 MsgBox("Email Sent!")
             End If
 
@@ -628,10 +627,12 @@ Public Class frmPayout
         Else
             LoadPayslip(Employee_TXT.Tag, EmpSelect_BTN.Tag, Payslip_paydate_Combo.Text, Email_TXT.Tag)
             'recipient = GetEmail_recipient(Employee_TXT.Tag, EmpSelect_BTN.Tag)  '=========== EmpSelect_BTN.Tag is branchID
-            recipient = GetEmail_recipient(Employee_TXT.Tag)
+            'recipient = GetEmail_recipient(Employee_TXT.Tag)
 
             Deduct_ifExist(Preview_BTN.Tag, Payslip_paydate_Combo.Text)             '======= REFLECT DEDUCTION IF EXIST  (Preview_BTN.Tag = EMP_ID)
-            Send_Email(ReportViewer_payslip.LocalReport.Render("PDF"), recipient, Employee_TXT.Text, "single")
+            'Send_Email(ReportViewer_payslip.LocalReport.Render("PDF"), recipient, Employee_TXT.Text, "single")
+
+            Send_Email(ReportViewer_payslip.LocalReport.Render("PDF"), Email_TXT.Text, Employee_TXT.Text, True)
         End If
 
     End Sub
@@ -808,10 +809,84 @@ Public Class frmPayout
             End With
 
             Dim total_deduction As Double = 0
-            If isExist_String("payroll_deductions", $" where EMP_ID = '{emp_id}'") Then
+            Dim mysql_ As String
 
-                Dim mysql_de As String = $"Select * From payroll_deductions WHERE EMP_ID = '{emp_id}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
-                Using ds As DataSet = LoadSQL(mysql_de, "payroll_deductions")
+            '================================================ DEDUCTIONS -  MODIFIED_DEDUCTION================================================ 
+            If isExist_String("MODIFIED_DEDUCTION", $"WHERE EMP_ID = '{emp_id}' AND PAYDATE = '{paydate_}'") Then  '=======m MDIFIED DEDUCTION (ON/OFF) 
+
+                mysql_ = $"Select * From MODIFIED_DEDUCTION A inner join PAYROLL_DEDUCTIONS B on A.m_deduc_id = B.id and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')
+                                            WHERE A.EMP_ID = '{emp_id}' and PAYDATE = '{paydatee}'"
+
+                Using ds As DataSet = LoadSQL(mysql_, "MODIFIED_DEDUCTION")
+                    If ds.Tables(0).Rows.Count > 0 Then
+                        For Each dr In ds.Tables(0).Rows
+                            With dr
+                                total_deduction = total_deduction + .Item("M_AMOUNT")
+                            End With
+                        Next
+                    End If
+                End Using
+
+                mysql_ = $"Select * From MODIFIED_DEDUCTION A inner join PAYROLL_DEDUCTIONS B on A.m_deduc_id = B.id and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')
+                                            WHERE A.EMP_ID = '{emp_id}' and PAYDATE = '{paydatee}'"
+
+                Using ds As DataSet = LoadSQL(mysql_, "MODIFIED_DEDUCTION")
+                    If ds.Tables(0).Rows.Count > 0 Then
+                        For Each dr In ds.Tables(0).Rows
+                            With dr
+
+                                Dim amountt As Double = .item("AMOUNT_PER_GIVE")
+
+                                Dim toLower = .item("CATEGORY").ToLower()
+                                Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
+                                Dim toProper As String = info.ToTitleCase(toLower)
+
+                                dt_deduction.Rows.Add(toProper, amountt.ToString(”N”), total_deduction.ToString(”N”))
+
+                            End With
+                        Next
+                    End If
+                End Using
+
+
+                '============================================== DEDUCTIONS -  RECORDED_ALLOW_DEDUC ================================================ 
+            ElseIf isExist_String("RECORDED_ALLOW_DEDUC", $"WHERE EMP_ID = '{emp_id}' AND PAYDATE = '{paydate_}' AND TRANSAC_NAME = 'DEDUCTION'") Then  '====== RECORDED DEDUCTION IMPORTING ATTENDANCE
+
+                mysql_ = $"select * from RECORDED_ALLOW_DEDUC  where emp_id = '{emp_id}' and PAYDATE = '{paydate_}' and TRANSAC_NAME = 'DEDUCTION'"
+                Using ds As DataSet = LoadSQL(mysql_, "RECORDED_ALLOW_DEDUC")
+                    If ds.Tables(0).Rows.Count > 0 Then
+                        For Each dr In ds.Tables(0).Rows
+                            With dr
+                                total_deduction = total_deduction + .Item("AMOUNT")
+                            End With
+                        Next
+                    End If
+                End Using
+
+                mysql_ = $"select * from RECORDED_ALLOW_DEDUC  where emp_id = '{emp_id}' and PAYDATE = '{paydate_}' and TRANSAC_NAME = 'DEDUCTION'"
+                Using ds As DataSet = LoadSQL(mysql_, "RECORDED_ALLOW_DEDUC")
+                    If ds.Tables(0).Rows.Count > 0 Then
+                        For Each dr In ds.Tables(0).Rows
+                            With dr
+
+                                Dim amountt As Double = .item("AMOUNT")
+
+                                Dim toLower = .item("CATEGORY").ToLower()
+                                Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
+                                Dim toProper As String = info.ToTitleCase(toLower)
+
+                                dt_deduction.Rows.Add(toProper, amountt.ToString(”N”), total_deduction.ToString(”N”))
+
+                            End With
+                        Next
+                    End If
+                End Using
+
+
+                '================================================== DEDUCTIONS -  ORIGINAL ================================================ 
+            Else
+                mysql_ = $"Select * From payroll_deductions WHERE EMP_ID = '{emp_id}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
+                Using ds As DataSet = LoadSQL(mysql_, "payroll_deductions")
                     If ds.Tables(0).Rows.Count > 0 Then
                         For Each drr In ds.Tables(0).Rows
                             With drr
@@ -824,8 +899,8 @@ Public Class frmPayout
 
                 End Using
 
-                Dim mysql_2 As String = $"select * from payroll_deductions  where EMP_ID = '{emp_id}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
-                Using ds As DataSet = LoadSQL(mysql_2, "payroll_deductions")
+                mysql_ = $"select * from payroll_deductions  where EMP_ID = '{emp_id}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
+                Using ds As DataSet = LoadSQL(mysql_, "payroll_deductions")
                     If ds.Tables(0).Rows.Count > 0 Then
                         For Each dr In ds.Tables(0).Rows
                             With dr
@@ -847,14 +922,16 @@ Public Class frmPayout
                 End Using
             End If
 
+
             dt_deduction.Rows.Add("SBU", SBU_Amount().ToString(”N”), (total_deduction + SBU_Amount()).ToString("N"))
 
             Dim rds_deduction As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet4", dt_deduction)
             ReportViewer_payslip.LocalReport.DataSources.Add(rds_deduction)
 
             '============================================ PAYDATE ================================================ 
+            date_pay = date_pay.ToString("MMMM dd, yyyy")
             Dim paramList As New List(Of Microsoft.Reporting.WinForms.ReportParameter) From {
-            New Microsoft.Reporting.WinForms.ReportParameter("paramDate", paydatee)
+            New Microsoft.Reporting.WinForms.ReportParameter("paramDate", date_pay)
             }
 
             ReportViewer_payslip.LocalReport.SetParameters(paramList)

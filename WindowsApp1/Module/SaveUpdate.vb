@@ -401,19 +401,21 @@
 
         End If
     End Sub
-    Friend Sub AllowanceRemove(bioNo As String, branchID As String, category As String)
+
+    Friend Sub AllowanceRemove(id As String)
         Dim mysql As String
 
-        mysql = $"Select * FROM PAYROLL_ALLOWANCES where BIOMETRIC_NO = '{bioNo}' and BRANCH_ID = '{branchID}'"
+        mysql = $"Select * FROM PAYROLL_ALLOWANCES where id = '{id}'"
         Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_ALLOWANCES")
         If ds.Tables(0).Rows.Count > 0 Then
+            For Each dr In ds.Tables(0).Rows
+                With dr
 
-            With ds.Tables(0).Rows(0)
+                    .Item("ALLOWED") = "NO"
 
-                .Item("ALLOWED") = "NO"
-
-            End With
-            SaveEntry(ds, False)
+                End With
+                SaveEntry(ds, False)
+            Next
 
             MsgBox("Successfully Removed from the list!", MsgBoxStyle.Information, "Information")
         End If

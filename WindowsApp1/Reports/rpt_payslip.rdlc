@@ -230,7 +230,7 @@
                                     <TextRun>
                                       <Value>Payslip</Value>
                                       <Style>
-                                        <FontFamily />
+                                        <FontFamily>Berlin Sans FB</FontFamily>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -272,13 +272,13 @@
                                     <TextRun>
                                       <Value>Period Ending </Value>
                                       <Style>
-                                        <FontFamily />
+                                        <FontFamily>Berlin Sans FB</FontFamily>
                                       </Style>
                                     </TextRun>
                                     <TextRun>
                                       <Value>=Parameters!paramDate.Value</Value>
                                       <Style>
-                                        <FontFamily />
+                                        <FontFamily>Berlin Sans FB</FontFamily>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -361,7 +361,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>No.:</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -393,7 +395,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value />
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -425,7 +429,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>Rate Typre:</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -457,7 +463,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value />
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -494,7 +502,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>Name:</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -526,7 +536,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!COMPLETE_NAME.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -566,7 +578,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>TIN#:</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -598,7 +612,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!TINNO.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -630,7 +646,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>HDMF#:</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -662,7 +680,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!PAGIBIG.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -699,7 +719,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>SSS#:</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -731,7 +753,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!SSSNO.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -763,7 +787,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>PHIC#:</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -795,7 +821,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!PHILHEALTHNO.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -876,7 +904,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>Gross Income</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -908,7 +938,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>Hours</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -940,7 +972,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>Amount</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -977,15 +1011,21 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>Basic Pay @</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                     <TextRun>
                                       <Value>=Fields!PRESENT_DAYS.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                     <TextRun>
                                       <Value> day/s</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -1017,7 +1057,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!present_hours.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -1049,7 +1091,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!TOTAL_BASIC.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -1085,8 +1129,10 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>13 month Pay </Value>
-                                      <Style />
+                                      <Value>13th Month Pay </Value>
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -1118,7 +1164,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value />
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -1150,7 +1198,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value />
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -1187,15 +1237,21 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>Reg. Holiday </Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                     <TextRun>
                                       <Value>=Fields!REGHOLIDAY.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                     <TextRun>
                                       <Value> day/s</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -1227,7 +1283,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value />
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -1259,7 +1317,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value />
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -1296,15 +1356,21 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>Spec. Holiday </Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                     <TextRun>
                                       <Value>=Fields!SPECHOLIDAY.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                     <TextRun>
                                       <Value> day/s</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -1336,7 +1402,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value />
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -1368,7 +1436,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value />
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -1405,7 +1475,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>Late</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -1437,7 +1509,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!LATE.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -1469,7 +1543,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!TOTAL_LATE_UT.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -1506,7 +1582,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>Overtime</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -1538,7 +1616,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!OVERTIME.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -1570,7 +1650,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!TOTAL_OVERTIME.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -1607,7 +1689,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value />
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -1639,7 +1723,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>Total</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -1671,7 +1757,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!GROSS_AMOUNT.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -1737,7 +1825,7 @@
                   </TablixMembers>
                 </TablixRowHierarchy>
                 <DataSetName>DataSet2</DataSetName>
-                <Top>1.79028in</Top>
+                <Top>1.66528in</Top>
                 <Left>0.0335in</Left>
                 <Height>1.84376in</Height>
                 <Width>3.80728in</Width>
@@ -1775,7 +1863,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>Deduction</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -1807,7 +1897,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value />
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -1839,7 +1931,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value />
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -1876,7 +1970,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>SSS Distribution</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -1908,7 +2004,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value />
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -1940,7 +2038,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!SSS_COMP.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -1977,7 +2077,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>HDMF Distribution</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -2009,7 +2111,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value />
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -2041,7 +2145,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!PAGIBIG_COMP.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -2078,7 +2184,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>PHIC Distribution</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -2110,7 +2218,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value />
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -2142,7 +2252,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!PHILHEALTH_COMP.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -2179,7 +2291,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>TAX Withheld</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -2211,7 +2325,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value />
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -2243,7 +2359,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!TAX_WHELD.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -2280,7 +2398,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>SSS Loan</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -2312,7 +2432,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value />
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -2344,7 +2466,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!SSS_LOAN.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -2381,7 +2505,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>PAGIBIG Loan</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -2413,7 +2539,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value />
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -2445,7 +2573,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!PAGIBIG_LOAN.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -2482,7 +2612,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value />
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -2514,7 +2646,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>Total</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -2546,7 +2680,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!TOTAL_DEDUCTION.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -2600,7 +2736,7 @@
                   </TablixMembers>
                 </TablixRowHierarchy>
                 <DataSetName>DataSet2</DataSetName>
-                <Top>4.29376in</Top>
+                <Top>4.23in</Top>
                 <Left>0.03348in</Left>
                 <Height>1.65624in</Height>
                 <Width>3.80727in</Width>
@@ -2641,7 +2777,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>Additional</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -2673,7 +2811,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value />
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style />
@@ -2703,7 +2843,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value />
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style />
@@ -2738,7 +2880,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!CATEGORY.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style />
@@ -2768,7 +2912,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value />
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style />
@@ -2798,7 +2944,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!AMOUNT.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -2835,7 +2983,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value />
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style />
@@ -2865,7 +3015,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>Total</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style />
@@ -2895,7 +3047,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!TOTALS.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -2942,7 +3096,7 @@
                   </TablixMembers>
                 </TablixRowHierarchy>
                 <DataSetName>DataSet3</DataSetName>
-                <Top>3.63403in</Top>
+                <Top>3.55in</Top>
                 <Left>0.03348in</Left>
                 <Height>0.64584in</Height>
                 <Width>3.80727in</Width>
@@ -2983,7 +3137,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>Other Deduction</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -3080,7 +3236,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!CATEGORY.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style />
@@ -3110,7 +3268,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value />
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style />
@@ -3140,7 +3300,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!AMOUNT_PER_GIVE.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -3177,7 +3339,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value />
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style />
@@ -3207,7 +3371,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>Total</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style />
@@ -3237,7 +3403,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!TOTALS.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -3284,7 +3452,7 @@
                   </TablixMembers>
                 </TablixRowHierarchy>
                 <DataSetName>DataSet4</DataSetName>
-                <Top>5.95001in</Top>
+                <Top>5.92in</Top>
                 <Left>0.03348in</Left>
                 <Height>0.62499in</Height>
                 <Width>3.80727in</Width>
@@ -3325,7 +3493,10 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>Net Pay</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                        <FontSize>11pt</FontSize>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style />
@@ -3385,7 +3556,10 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!NET_PAY.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                        <FontSize>11pt</FontSize>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -3487,7 +3661,7 @@
                                     <TextRun>
                                       <Value>=Fields!COMPLETE_NAME.Value</Value>
                                       <Style>
-                                        <TextDecoration>Underline</TextDecoration>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -3528,7 +3702,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>SIGNATURE OVER PRINTED NAME</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style>
@@ -3542,6 +3718,9 @@
                                   <Color>LightGrey</Color>
                                   <Style>None</Style>
                                 </Border>
+                                <TopBorder>
+                                  <Style>Solid</Style>
+                                </TopBorder>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
                                 <PaddingTop>2pt</PaddingTop>
@@ -3583,7 +3762,7 @@
                 </Style>
               </Tablix>
               <Line Name="Line4">
-                <Top>1.72084in</Top>
+                <Top>1.63in</Top>
                 <Height>0in</Height>
                 <Width>3.77905in</Width>
                 <ZIndex>10</ZIndex>
