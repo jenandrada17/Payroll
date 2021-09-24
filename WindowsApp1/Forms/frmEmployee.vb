@@ -175,7 +175,7 @@ Public Class frmEmployee
                 frm.Preview_BTN.Tag = lvEmployee.FocusedItem.SubItems(1).Tag '==== Employee_id ===   
                 frm.Employee_TXT.Tag = lvEmployee.FocusedItem.SubItems(0).Text
                 frm.Email_TXT.Text = lvEmployee.FocusedItem.SubItems(5).Text
-                frm.Email_TXT.Tag = lvEmployee.FocusedItem.SubItems(9).Text '==== Branch_name ===   
+                frm.Email_TXT.Tag = lvEmployee.FocusedItem.SubItems(2).Tag '==== RATE ===   
                 frm.EmpSelect_BTN.Tag = lvEmployee.FocusedItem.SubItems(9).Tag '==== Branch_id ===   
                 frm.Employee_RadioB.Checked = True
                 frm.TabControl1.SelectedIndex = 2

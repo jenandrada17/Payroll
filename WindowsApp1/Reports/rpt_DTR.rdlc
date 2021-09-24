@@ -328,7 +328,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.25in</Height>
+                  <Height>0.28in</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -524,7 +524,7 @@
             <DataSetName>DataSet1</DataSetName>
             <Top>1.53124in</Top>
             <Left>0.31084in</Left>
-            <Height>0.46875in</Height>
+            <Height>0.49875in</Height>
             <Width>3.64in</Width>
             <ZIndex>2</ZIndex>
             <Style>
@@ -723,7 +723,9 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!FULLNAME.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <FontFamily>Berlin Sans FB</FontFamily>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -791,7 +793,9 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!BIOMETRICID.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <FontFamily>Berlin Sans FB</FontFamily>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -859,7 +863,9 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!PRESENT_DAYS.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <FontFamily>Berlin Sans FB</FontFamily>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -927,7 +933,9 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!LATE.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <FontFamily>Berlin Sans FB</FontFamily>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -995,7 +1003,9 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!OVERTIME.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <FontFamily>Berlin Sans FB</FontFamily>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
                               <Style />
@@ -1713,7 +1723,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!FULLNAME.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style />
@@ -1781,7 +1793,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!BIOMETRICID.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style />
@@ -1849,7 +1863,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!PRESENT_DAYS.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style />
@@ -1917,7 +1933,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!LATE.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style />
@@ -1985,7 +2003,9 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Fields!OVERTIME.Value</Value>
-                                      <Style />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
                                     </TextRun>
                                   </TextRuns>
                                   <Style />

@@ -38,34 +38,34 @@
         RunCommand("DELETE FROM PAYROLL_HOLIDAY WHERE DATEE = '" & datee & "'")
     End Sub
 
+    'Friend Sub SaveAttendanceEE(biometric As Integer, paydate As String, days As String, overTime As String, late_total As String,
+    '                          under_total As String, regHoliday As String, specHoliday As String, branch As String)
     Friend Sub SaveAttendanceEE(biometric As Integer, paydate As String, days As String, overTime As String, late_total As String,
-                              under_total As String, regHoliday As String, specHoliday As String, branch As String)
+                              under_total As String, regHoliday As String, specHoliday As String)
         Dim mysql As String
 
-        mysql = $"Select * FROM PAYROLL_ATTENDANCE where BIOMETRICID = '{biometric}' and PAYDATE = '{paydate}' and branch = '{branch}'"
+        'mysql = $"Select * FROM PAYROLL_ATTENDANCE where BIOMETRICID = '{biometric}' and PAYDATE = '{paydate}' and branch = '{branch}'"
+        mysql = $"Select * FROM PAYROLL_ATTENDANCE where BIOMETRICID = '{biometric}' and PAYDATE = '{paydate}'"
         Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
         If dss.Tables(0).Rows.Count > 0 Then
-            With dss.Tables(0).Rows(0)
+            For Each dr In dss.Tables(0).Rows
+                With dr
+                    .Item("PRESENT_DAYS") = days
 
-                .Item("PRESENT_DAYS") = days
+                    .Item("OVERTIME") = overTime
+                    .Item("LATE") = late_total
+                    .Item("UNDERTIME") = under_total
 
-                .Item("OVERTIME") = overTime
-                .Item("LATE") = late_total
-                .Item("UNDERTIME") = under_total
+                    '.Item("ABSENT_DAYS") = absentDays
 
-                '.Item("ABSENT_DAYS") = absentDays
+                    .Item("REGHOLIDAY") = regHoliday
+                    .Item("SPECHOLIDAY") = specHoliday
 
-                .Item("REGHOLIDAY") = regHoliday
-                .Item("SPECHOLIDAY") = specHoliday
+                    '.Item("BRANCH") = branch
 
-                .Item("BRANCH") = branch
-
-            End With
-            SaveEntry(dss, False)
-
-            'If group = "" Then
-            '    MsgBox("Succesfully Updated!", MsgBoxStyle.Information, "Information")
-            'End If
+                End With
+                SaveEntry(dss, False)
+            Next
         Else
 
             mysql = "Select * From PAYROLL_ATTENDANCE Rows 1"
@@ -88,16 +88,11 @@
                     .Item("REGHOLIDAY") = regHoliday
                     .Item("SPECHOLIDAY") = specHoliday
 
-                    .Item("BRANCH") = branch
+                    '.Item("BRANCH") = branch
 
                 End With
                 ds.Tables(0).Rows.Add(dsNewRow)
                 SaveEntry(ds)
-
-                'If group = "" Then
-                '    MsgBox("Succesfully Saved!", MsgBoxStyle.Information, "Information")
-                'End If
-
             End Using
         End If
 
@@ -239,8 +234,9 @@
             SaveEntry(ds)
         End Using
     End Sub
-    '          SaveBiometricSheet(Paydate, eCell(row, 3).Value, eCell(row, 4).Value, Branch_ComboB.SelectedItem)
-    Public Sub SaveBiometricSheet(payDate As String, bioID As String, dateTime As String, BRANCHNAME As String)
+
+    'Public Sub SaveBiometricSheet(payDate As String, bioID As String, dateTime As String, BRANCHNAME As String)
+    Public Sub SaveBiometricSheet(payDate As String, bioID As String, dateTime As String)
 
         Dim mysql As String = "Select * From IMPORT_DTR Rows 1"
         Using ds As DataSet = LoadSQL(mysql, "IMPORT_DTR")
@@ -251,7 +247,7 @@
                 .Item("BIO_ID") = bioID
                 .Item("DATEANDTIME") = dateTime
                 .Item("PAYDATE") = payDate
-                .Item("BRANCH") = BRANCHNAME
+                '.Item("BRANCH") = BRANCHNAME
 
             End With
             ds.Tables(0).Rows.Add(dsNewRow)
@@ -280,7 +276,8 @@
         End Using
     End Sub
 
-    Public Sub SaveDTR(bioID As String, payDate As String, DATE_ONLY As String, BRANCH As String, AM_IN As String, AM_OUT As String, PM_IN As String, PM_OUT As String)
+    'Public Sub SaveDTR(bioID As String, payDate As String, DATE_ONLY As String, BRANCH As String, AM_IN As String, AM_OUT As String, PM_IN As String, PM_OUT As String)
+    Public Sub SaveDTR(bioID As String, payDate As String, DATE_ONLY As String, AM_IN As String, AM_OUT As String, PM_IN As String, PM_OUT As String)
 
         Dim mysql As String = "Select * From BIOMETRIC_DTR Rows 1"
         Using dss As DataSet = LoadSQL(mysql, "BIOMETRIC_DTR")
@@ -291,7 +288,7 @@
                 .Item("BIO_ID") = bioID
                 .Item("PAYDATE") = payDate
                 .Item("DATE_ONLY") = DATE_ONLY
-                .Item("BRANCH") = BRANCH
+                '.Item("BRANCH") = BRANCH
                 .Item("AM_IN") = AM_IN
                 .Item("AM_OUT") = AM_OUT
                 .Item("PM_IN") = PM_IN
@@ -505,124 +502,92 @@
 
     End Sub
 
+    'Friend Sub SavePayout(BIOMETRIC_ID As String, BRANCH_ID As String, PAYDATE As String, TOTAL_BASIC As String, TOTAL_OVERTIME As String, TOTAL_LATE_UT As String,
+    '                      GROSS_AMOUNT As String, SSS_COMP As String, PAGIBIG_COMP As String, PHILHEALTH_COMP As String, TAX_WHELD As String,
+    '                      NET_TAX_COMP As String, SSS_LOAN As String, PAGIBIG_LOAN As String, TOTAL_ALLOWANCE As String,
+    '                      TOTAL_DEDUCTION As String, NET_PAY As String, emp_id As String, Optional BRANCH_IMPORT As String = "", Optional all As String = "")
     Friend Sub SavePayout(BIOMETRIC_ID As String, BRANCH_ID As String, PAYDATE As String, TOTAL_BASIC As String, TOTAL_OVERTIME As String, TOTAL_LATE_UT As String,
                           GROSS_AMOUNT As String, SSS_COMP As String, PAGIBIG_COMP As String, PHILHEALTH_COMP As String, TAX_WHELD As String,
                           NET_TAX_COMP As String, SSS_LOAN As String, PAGIBIG_LOAN As String, TOTAL_ALLOWANCE As String,
-                          TOTAL_DEDUCTION As String, NET_PAY As String, emp_id As String, Optional BRANCH_IMPORT As String = "", Optional all As String = "")
-
-        'Friend Sub SavePayout(EMP_ID As String, PAYDATE As String, TOTAL_BASIC As String, TOTAL_OVERTIME As String, TOTAL_LATE_UT As String,
-        '                      GROSS_AMOUNT As String, SSS_COMP As String, PAGIBIG_COMP As String, PHILHEALTH_COMP As String, TAX_WHELD As String,
-        '                      NET_TAX_COMP As String, SSS_LOAN As String, PAGIBIG_LOAN As String, TOTAL_ALLOWANCE As String,
-        '                      TOTAL_DEDUCTION As String, NET_PAY As String, Optional all As String = "")
+                          TOTAL_DEDUCTION As String, NET_PAY As String, emp_id As String, Optional all As String = "")
 
         Dim mysql As String
 
-        'mysql = $"Select * FROM PAYROLL_PAYOUT where EMP_ID = '{emp_id}' and PAYDATE = '{PAYDATE}'"
-
-        'mysql = $"Select * FROM PAYROLL_PAYOUT where BIOMETRIC_ID = '{BIOMETRIC_ID}' and BRANCH_ID = '{BRANCH_ID}' and PAYDATE = '{PAYDATE}'"
-
-        mysql = "Select * From PAYROLL_PAYOUT Rows 1"
-        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
-            Dim dsNewRow As DataRow = ds.Tables(0).NewRow
-            With dsNewRow
-                .Item("BIOMETRIC_ID") = BIOMETRIC_ID
-                .Item("BRANCH_ID") = BRANCH_ID
-                .Item("EMP_ID") = emp_id
-                .Item("TOTAL_BASIC") = TOTAL_BASIC
-                .Item("TOTAL_OVERTIME") = TOTAL_OVERTIME
-                .Item("TOTAL_LATE_UT") = TOTAL_LATE_UT
-                .Item("GROSS_AMOUNT") = GROSS_AMOUNT
-                .Item("SSS_COMP") = SSS_COMP
-                .Item("PAGIBIG_COMP") = PAGIBIG_COMP
-                .Item("PHILHEALTH_COMP") = PHILHEALTH_COMP
-                '.Item("TAXABLE") = TAXABLE
-                .Item("TAX_WHELD") = TAX_WHELD
-                .Item("NET_TAX_COMP") = NET_TAX_COMP
-                .Item("SSS_LOAN") = SSS_LOAN
-                .Item("PAGIBIG_LOAN") = PAGIBIG_LOAN
-                .Item("TOTAL_ALLOWANCE") = TOTAL_ALLOWANCE
-                .Item("TOTAL_DEDUCTION") = TOTAL_DEDUCTION
-                .Item("NET_PAY") = NET_PAY
-                .Item("PAYDATE") = PAYDATE
-                .Item("BRANCH_IMPORT") = BRANCH_IMPORT
-
-            End With
-
-            ds.Tables(0).Rows.Add(dsNewRow)
-            SaveEntry(ds)
-        End Using
-
-        If all = "" Then
-            MsgBox("Successfully Saved!", MsgBoxStyle.Information, "Information")
-        End If
-
-        'Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
-        'If dss.Tables(0).Rows.Count > 0 Then
-        '    For Each dr In dss.Tables(0).Rows
-        '        With dr
-
-        '            .Item("TOTAL_BASIC") = TOTAL_BASIC
-        '            .Item("TOTAL_OVERTIME") = TOTAL_OVERTIME
-        '            .Item("TOTAL_LATE_UT") = TOTAL_LATE_UT
-        '            .Item("GROSS_AMOUNT") = GROSS_AMOUNT
-        '            .Item("SSS_COMP") = SSS_COMP
-        '            .Item("PAGIBIG_COMP") = PAGIBIG_COMP
-        '            .Item("PHILHEALTH_COMP") = PHILHEALTH_COMP
-        '            '.Item("TAXABLE") = TAXABLE
-        '            .Item("TAX_WHELD") = TAX_WHELD
-        '            .Item("NET_TAX_COMP") = NET_TAX_COMP
-        '            .Item("SSS_LOAN") = SSS_LOAN
-        '            .Item("PAGIBIG_LOAN") = PAGIBIG_LOAN
-        '            .Item("TOTAL_ALLOWANCE") = TOTAL_ALLOWANCE
-        '            .Item("TOTAL_DEDUCTION") = TOTAL_DEDUCTION
-        '            .Item("NET_PAY") = NET_PAY
-        '            .Item("BRANCH_IMPORT") = BRANCH_IMPORT
-
-        '        End With
-        '        SaveEntry(dss, False)
-        '    Next
-
-        '    If all = "" Then
-        '        MsgBox("Successfully Updated!", MsgBoxStyle.Information, "Information")
-        '    End If
-
-
+        'If all = "" Then
+        '    mysql = $"Select * FROM PAYROLL_PAYOUT where EMP_ID = '{emp_id}' and PAYDATE = '{PAYDATE}'"
         'Else
-        '    mysql = "Select * From PAYROLL_PAYOUT Rows 1"
-        '    Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
-        '        Dim dsNewRow As DataRow = ds.Tables(0).NewRow
-        '        With dsNewRow
-        '            .Item("BIOMETRIC_ID") = BIOMETRIC_ID
-        '            .Item("BRANCH_ID") = BRANCH_ID
-        '            .Item("EMP_ID") = emp_id
-        '            .Item("TOTAL_BASIC") = TOTAL_BASIC
-        '            .Item("TOTAL_OVERTIME") = TOTAL_OVERTIME
-        '            .Item("TOTAL_LATE_UT") = TOTAL_LATE_UT
-        '            .Item("GROSS_AMOUNT") = GROSS_AMOUNT
-        '            .Item("SSS_COMP") = SSS_COMP
-        '            .Item("PAGIBIG_COMP") = PAGIBIG_COMP
-        '            .Item("PHILHEALTH_COMP") = PHILHEALTH_COMP
-        '            '.Item("TAXABLE") = TAXABLE
-        '            .Item("TAX_WHELD") = TAX_WHELD
-        '            .Item("NET_TAX_COMP") = NET_TAX_COMP
-        '            .Item("SSS_LOAN") = SSS_LOAN
-        '            .Item("PAGIBIG_LOAN") = PAGIBIG_LOAN
-        '            .Item("TOTAL_ALLOWANCE") = TOTAL_ALLOWANCE
-        '            .Item("TOTAL_DEDUCTION") = TOTAL_DEDUCTION
-        '            .Item("NET_PAY") = NET_PAY
-        '            .Item("PAYDATE") = PAYDATE
-        '            .Item("BRANCH_IMPORT") = BRANCH_IMPORT
 
-        '        End With
-
-        '        ds.Tables(0).Rows.Add(dsNewRow)
-        '        SaveEntry(ds)
-        '    End Using
-
-        '    If all = "" Then
-        '        MsgBox("Successfully Saved!", MsgBoxStyle.Information, "Information")
-        '    End If
+        '    mysql = $"Select * FROM PAYROLL_PAYOUT where EMP_ID = '{emp_id}' and PAYDATE = '{PAYDATE}' and BRANCH_IMPORT = '{BRANCH_IMPORT}'"
         'End If
+
+        mysql = $"Select * FROM PAYROLL_PAYOUT where EMP_ID = '{emp_id}' and PAYDATE = '{PAYDATE}'"
+        Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
+        If dss.Tables(0).Rows.Count > 0 Then
+            For Each dr In dss.Tables(0).Rows
+                With dr
+
+                    .Item("TOTAL_BASIC") = TOTAL_BASIC
+                    .Item("TOTAL_OVERTIME") = TOTAL_OVERTIME
+                    .Item("TOTAL_LATE_UT") = TOTAL_LATE_UT
+                    .Item("GROSS_AMOUNT") = GROSS_AMOUNT
+                    .Item("SSS_COMP") = SSS_COMP
+                    .Item("PAGIBIG_COMP") = PAGIBIG_COMP
+                    .Item("PHILHEALTH_COMP") = PHILHEALTH_COMP
+                    '.Item("TAXABLE") = TAXABLE
+                    .Item("TAX_WHELD") = TAX_WHELD
+                    .Item("NET_TAX_COMP") = NET_TAX_COMP
+                    .Item("SSS_LOAN") = SSS_LOAN
+                    .Item("PAGIBIG_LOAN") = PAGIBIG_LOAN
+                    .Item("TOTAL_ALLOWANCE") = TOTAL_ALLOWANCE
+                    .Item("TOTAL_DEDUCTION") = TOTAL_DEDUCTION
+                    .Item("NET_PAY") = NET_PAY
+                    '.Item("BRANCH_IMPORT") = BRANCH_IMPORT
+
+                End With
+                SaveEntry(dss, False)
+            Next
+
+            If all = "" Then
+                MsgBox("Successfully Updated!", MsgBoxStyle.Information, "Information")
+            End If
+
+
+        Else
+            mysql = "Select * From PAYROLL_PAYOUT Rows 1"
+            Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
+                Dim dsNewRow As DataRow = ds.Tables(0).NewRow
+                With dsNewRow
+                    .Item("BIOMETRIC_ID") = BIOMETRIC_ID
+                    .Item("BRANCH_ID") = BRANCH_ID
+                    .Item("EMP_ID") = emp_id
+                    .Item("TOTAL_BASIC") = TOTAL_BASIC
+                    .Item("TOTAL_OVERTIME") = TOTAL_OVERTIME
+                    .Item("TOTAL_LATE_UT") = TOTAL_LATE_UT
+                    .Item("GROSS_AMOUNT") = GROSS_AMOUNT
+                    .Item("SSS_COMP") = SSS_COMP
+                    .Item("PAGIBIG_COMP") = PAGIBIG_COMP
+                    .Item("PHILHEALTH_COMP") = PHILHEALTH_COMP
+                    '.Item("TAXABLE") = TAXABLE
+                    .Item("TAX_WHELD") = TAX_WHELD
+                    .Item("NET_TAX_COMP") = NET_TAX_COMP
+                    .Item("SSS_LOAN") = SSS_LOAN
+                    .Item("PAGIBIG_LOAN") = PAGIBIG_LOAN
+                    .Item("TOTAL_ALLOWANCE") = TOTAL_ALLOWANCE
+                    .Item("TOTAL_DEDUCTION") = TOTAL_DEDUCTION
+                    .Item("NET_PAY") = NET_PAY
+                    .Item("PAYDATE") = PAYDATE
+                    '.Item("BRANCH_IMPORT") = BRANCH_IMPORT
+
+                End With
+
+                ds.Tables(0).Rows.Add(dsNewRow)
+                SaveEntry(ds)
+            End Using
+
+            If all = "" Then
+                MsgBox("Successfully Saved!", MsgBoxStyle.Information, "Information")
+            End If
+        End If
     End Sub
 
     Friend Sub SavePayout_MODIFIED_DEDUCTION(EMP_ID As String, PAYDATE As String, CATEGORY As String, M_Amount As String, AMOUNT_PER_GIVE As String, DATE_CREATED As String, M_DEDUC_ID As String)
@@ -649,7 +614,8 @@
         End Using
     End Sub
 
-    Friend Sub SavePayout_IndividualL(bioNo As String, branch As String, paydate_ As String) '========== AUTO SAVE TO PAYOUT ============  
+    'Friend Sub SavePayout_IndividualL(bioNo As String, branch As String, paydate_ As String) '========== AUTO SAVE TO PAYOUT ============  
+    Friend Sub SavePayout_IndividualL(bioNo As String, paydate_ As String) '========== AUTO SAVE TO PAYOUT ============  
         Dim regHoliday = Holiday_Rate("REGULAR")
         Dim specHoliday = Holiday_Rate("SPECIAL")
         Dim SBU = SBU_Amount()
@@ -668,7 +634,6 @@
                     Dim Late As String = ""
                     Dim UnderTime As String = ""
                     Dim rate, NoOfDays, RegularOT, SpecialHol, RegularHol As Double
-                    'Dim Positional, Incentive, Boarding, Carekit, Transport, CashAdvance, Loan, Charges, Allowances, Deduction As Double
                     Dim Allowances, Deduction As Double
 
                     rate = IIf(IsDBNull(.Item("RATE")), 0, .Item("RATE"))
@@ -725,6 +690,8 @@
                     End If
 
 
+                    '============================================= DELETE TO REPLACE =================================================
+                    Replacing($"RECORDED_ALLOW_DEDUC where EMP_ID = '{emp_id}' and PAYDATE = '{paydate_}';")
                     '============================================= ALLOWANCE =========================================================
                     Allowances = 0
 
@@ -735,7 +702,8 @@
                                 With dr_2
                                     If .item("EFFECTIVE_DATE") <= Today Then
                                         Allowances = Allowances + .Item("AMOUNT")
-                                        Save_Recorded_Allow_Deduc(emp_id, branch, paydate_, .Item("CATEGORY"), .Item("AMOUNT"), "ALLOWANCE")
+                                        'Save_Recorded_Allow_Deduc(emp_id, branch, paydate_, .Item("CATEGORY"), .Item("AMOUNT"), "ALLOWANCE")
+                                        Save_Recorded_Allow_Deduc(emp_id, paydate_, .Item("CATEGORY"), .Item("AMOUNT"), "ALLOWANCE")
                                     End If
                                 End With
                             Next
@@ -752,7 +720,8 @@
                                 With dr_3
                                     If .item("EFFECTIVE_DATE") <= Today Then
                                         Deduction = Deduction + .Item("AMOUNT_PER_GIVE")
-                                        Save_Recorded_Allow_Deduc(emp_id, branch, paydate_, .Item("CATEGORY"), .Item("AMOUNT_PER_GIVE"), "DEDUCTION")
+                                        'Save_Recorded_Allow_Deduc(emp_id, branch, paydate_, .Item("CATEGORY"), .Item("AMOUNT_PER_GIVE"), "DEDUCTION")
+                                        Save_Recorded_Allow_Deduc(emp_id, paydate_, .Item("CATEGORY"), .Item("AMOUNT_PER_GIVE"), "DEDUCTION")
                                     End If
                                 End With
                             Next
@@ -811,7 +780,8 @@
     End Sub
 
 
-    Friend Sub SavePayout_ALL(paydate_ As String, branch As String) '========== AUTO SAVE TO PAYOUT ============   
+    'Friend Sub SavePayout_ALL(paydate_ As String, branch As String) '========== AUTO SAVE TO PAYOUT ============   
+    Friend Sub SavePayout_ALL(paydate_ As String) '========== AUTO SAVE TO PAYOUT ============   
 
         Dim regHoliday = Holiday_Rate("REGULAR")
         Dim specHoliday = Holiday_Rate("SPECIAL")
@@ -891,6 +861,8 @@
                         End If
 
 
+                        '============================================= DELETE TO REPLACE =================================================
+                        Replacing($"RECORDED_ALLOW_DEDUC where EMP_ID = '{emp_id}' and PAYDATE = '{paydate_}';")
                         '============================================= ALLOWANCE =========================================================
                         Allowances = 0
 
@@ -901,7 +873,7 @@
                                     With dr_2
                                         If .item("EFFECTIVE_DATE") <= Today Then
                                             Allowances = Allowances + .Item("AMOUNT")
-                                            Save_Recorded_Allow_Deduc(emp_id, branch, paydate_, .Item("CATEGORY"), .Item("AMOUNT"), "ALLOWANCE")
+                                            Save_Recorded_Allow_Deduc(emp_id, paydate_, .Item("CATEGORY"), .Item("AMOUNT"), "ALLOWANCE")
                                         End If
                                     End With
                                 Next
@@ -918,7 +890,7 @@
                                     With dr_3
                                         If .item("EFFECTIVE_DATE") <= Today Then
                                             Deduction = Deduction + .Item("AMOUNT_PER_GIVE")
-                                            Save_Recorded_Allow_Deduc(emp_id, branch, paydate_, .Item("CATEGORY"), .Item("AMOUNT_PER_GIVE"), "DEDUCTION")
+                                            Save_Recorded_Allow_Deduc(emp_id, paydate_, .Item("CATEGORY"), .Item("AMOUNT_PER_GIVE"), "DEDUCTION")
                                         End If
                                     End With
                                 Next
@@ -949,7 +921,6 @@
 
                         GrossAmount = (TotalBasic + TotalHol + TotalOT) - TotalLateUnder
 
-
                         '============================================= Calculate =========================================================  
                         Dim NetPay As Double
 
@@ -970,7 +941,7 @@
                         SavePayout(BiometricID, branchID, paydate_, TotalBasic, TotalOT,
                                   TotalLateUnder, GrossAmount, SSSComp, PagibigComp, PhilhealthComp,
                                   Tax_Wheld, netTax, sssLoan, pagibigLoan,
-                                  Allowances, Deduction, NetPay, emp_id, branch, "Group")
+                                  Allowances, Deduction, NetPay, emp_id, "Group")
 
                         frmMainForm.AppProgressBar.Value += 1
                     End With
@@ -981,7 +952,8 @@
         progressBarEnd()
     End Sub
 
-    Friend Sub Save_Recorded_Allow_Deduc(emp_id As String, BRANCH As String, PAYDATE As String, CATEGORY As String, AMOUNT As String, TRANSAC_NAME As String)
+    'Friend Sub Save_Recorded_Allow_Deduc(emp_id As String, BRANCH As String, PAYDATE As String, CATEGORY As String, AMOUNT As String, TRANSAC_NAME As String)
+    Friend Sub Save_Recorded_Allow_Deduc(emp_id As String, PAYDATE As String, CATEGORY As String, AMOUNT As String, TRANSAC_NAME As String)
 
         Dim sql As String = "Select * From RECORDED_ALLOW_DEDUC Rows 1"
         Using ds As DataSet = LoadSQL(sql, "RECORDED_ALLOW_DEDUC")
@@ -990,7 +962,7 @@
             With dsNewRow
 
                 .Item("EMP_ID") = emp_id
-                .Item("BRANCH") = BRANCH
+                '.Item("BRANCH") = BRANCH
                 .Item("PAYDATE") = PAYDATE
                 .Item("CATEGORY") = CATEGORY
                 .Item("AMOUNT") = AMOUNT

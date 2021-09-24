@@ -75,11 +75,12 @@ Module SelectFromDatabase
         Return myDate.Day = Date.DaysInMonth(myDate.Year, myDate.Month)
     End Function
 
-    Public Sub GetAttendance_Manual(bioNo As String, branch As String, paydate As String, datagrid As DataGridView,
+    Public Sub GetAttendance_Manual(bioNo As String, paydate As String, datagrid As DataGridView,
                                     TotalDays_LBL As Label, TotalRHoliday_LBL As Label, TotalSHoliday_LBL As Label,
                                     TotalLateHR_LBL As Label, TotalUTHR_LBL As Label, TotalOTHr_LBL As Label)
 
-        Dim mysql As String = $"Select * From BIOMETRIC_DTR where BIO_ID = '{bioNo}' and BRANCH = '{branch}' and PAYDATE = '{paydate}'"
+        'Dim mysql As String = $"Select * From BIOMETRIC_DTR where BIO_ID = '{bioNo}' and BRANCH = '{branch}' and PAYDATE = '{paydate}'"
+        Dim mysql As String = $"Select * From BIOMETRIC_DTR where BIO_ID = '{bioNo}' and PAYDATE = '{paydate}'"
         Using ds As DataSet = LoadSQL(mysql, "BIOMETRIC_DTR")
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
@@ -106,7 +107,7 @@ Module SelectFromDatabase
         End Using
 
 
-        Dim sql As String = $"Select * From PAYROLL_ATTENDANCE where BIOMETRICID = '{bioNo}' and BRANCH = '{branch}' and PAYDATE = '{paydate}'"
+        Dim sql As String = $"Select * From PAYROLL_ATTENDANCE where BIOMETRICID = '{bioNo}' and PAYDATE = '{paydate}'"
         Using ds As DataSet = LoadSQL(sql, "PAYROLL_ATTENDANCE")
             If ds.Tables(0).Rows.Count > 0 Then
                 Dim data As DataRow = ds.Tables(0).Rows(0)
@@ -342,7 +343,7 @@ Module SelectFromDatabase
 
             Dim lv As ListViewItem = listview.Items.Add(.Item("BIOMETRICID"))
             lv.SubItems.Add(String.Format("{0}, {1} {2}", .Item("LastName"), .Item("FirstName"), MI)).Tag = .Item("ID")
-            lv.SubItems.Add(datee)
+            lv.SubItems.Add(datee).Tag = .Item("RATE")
             lv.SubItems.Add(.Item("NO_OF_DAYS"))
             lv.SubItems.Add(.Item("CONTACTNO"))
             lv.SubItems.Add(.Item("EmailAdd"))
@@ -493,7 +494,6 @@ Module SelectFromDatabase
                         row.Cells(0).Value = toProper
                         row.Cells(0).Tag = amountt.ToString(”N”)
                         row.Cells(1).Value = amountt.ToString(”N”)
-                        row.Height = 30
 
                         If datagrid.Name = "Deduction_grid" Then
                             row.Cells(3).Value = "OFF"
@@ -502,7 +502,6 @@ Module SelectFromDatabase
                     End With
 
                 Next
-                AdjustHeightOfGridBasedOnRows(datagrid)
             End If
         End Using
     End Sub
@@ -529,7 +528,6 @@ Module SelectFromDatabase
                             Dim row As DataGridViewRow = datagrid.Rows(rowId)
                             row.Cells(0).Value = toProper
                             row.Cells(1).Value = amountt.ToString(”N”)
-                            row.Height = 30
 
                         End If
 
@@ -537,7 +535,6 @@ Module SelectFromDatabase
                 Next
 
                 datagrid.Visible = True
-                AdjustHeightOfGridBasedOnRows(datagrid)
             Else
                 datagrid.Visible = False
             End If
@@ -573,7 +570,6 @@ Module SelectFromDatabase
                         End If
                     End With
                 Next
-                AdjustHeightOfGridBasedOnRows(datagrid)
             End If
         End Using
     End Sub
@@ -981,51 +977,33 @@ Module SelectFromDatabase
         Return False
     End Function
 
-    'Public Function File_Exist_BiometricDTR(branch As String, PAYDATE As String)
-    '    Dim mysql As String = $"Select * FROM IMPORT_DTR where BRANCH = '{branch}' and PAYDATE = '{PAYDATE}'"
-    '    Dim ds As DataSet = LoadSQL(mysql, "IMPORT_DTR")
-    '    If ds.Tables(0).Rows.Count > 0 Then
-    '        Dim result As DialogResult = MessageBox.Show("File already imported, Do you want to modify?", "Warning", MessageBoxButtons.YesNo)
-    '        If result = DialogResult.Yes Then
-    '            RunCommand("DELETE FROM IMPORT_DTR WHERE BRANCH = '" & branch & "' and PAYDATE = '" & PAYDATE & "';")  'THIS IS TO DELETE EXISTING SHEETS IN IMPORT_DTR
-    '            RunCommand("DELETE FROM BIOMETRIC_DTR WHERE BRANCH = '" & branch & "' and PAYDATE = '" & PAYDATE & "';")  'THIS IS TO DELETE EXISTING ATTENDANCE IN BIOMETRIC_DTR 
-    '            Return True
-    '        End If
-    '    End If
-    '    Return False
-    'End Function
-
-    'Public Function File_NOT_Exist_BiometricDTR(branch As String, PAYDATE As String)
-    '    Dim mysql As String = $"Select * FROM IMPORT_DTR where BRANCH = '{branch}' and PAYDATE = '{PAYDATE}'"
-    '    Dim ds As DataSet = LoadSQL(mysql, "IMPORT_DTR")
-    '    If ds.Tables(0).Rows.Count > 0 Then
-    '        Return False
-    '    Else
-    '        Return True
-    '    End If
-    '    Return False
-    'End Function
-
-
-    'Public Function File_Exist_f200(branch As String, PAYDATE As String)
-    '    Dim mysql As String = $"Select * FROM BIOMETRIC_DTR where BRANCH = '{branch}' and PAYDATE = '{PAYDATE}'"
-    '    Dim ds As DataSet = LoadSQL(mysql, "BIOMETRIC_DTR")
-    '    If ds.Tables(0).Rows.Count > 0 Then
-    '        Dim result As DialogResult = MessageBox.Show("File already imported, Do you want to modify?", "Warning", MessageBoxButtons.YesNo)
-    '        If result = DialogResult.Yes Then
-    '            RunCommand("DELETE FROM IMPORT_DTR WHERE BRANCH = '" & branch & "' and PAYDATE = '" & PAYDATE & "';")  'THIS IS TO DELETE EXISTING SHEETS IN IMPORT_DTR
-    '            RunCommand("DELETE FROM BIOMETRIC_DTR WHERE BRANCH = '" & branch & "' and PAYDATE = '" & PAYDATE & "';")  'THIS IS TO DELETE EXISTING ATTENDANCE IN BIOMETRIC_DTR
-    '            Return True
-    '        End If
-    '    End If
-    '    Return False
-    'End Function
-
-
-    Friend Sub PopulateBiometricSHEET(datagrid As DataGridView, Paydate As String, BRANCHNAME As String)
+    Friend Sub PopulateBiometricSHEET(datagrid As DataGridView, Paydate As String, Optional searchName As String = "")
 
         datagrid.Rows.Clear()
-        Dim mysql As String = $"Select * From PAYROLL_ATTENDANCE A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRICID where A.PAYDATE = '{Paydate}' and A.BRANCH = '{BRANCHNAME}'"
+
+        Dim secured_str As String = searchName
+        secured_str = DreadKnight(secured_str)
+        Dim strWords As String() = secured_str.Split(New Char() {" "c})
+        Dim name As String
+        Dim mysql As String
+
+        If searchName.Length <> 0 Then
+
+            mysql = $"Select * From PAYROLL_ATTENDANCE A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRICID 
+                                inner join TBL_BRANCH C on C.ID = B.BRANCH_ID where A.PAYDATE = '{Paydate}' and ("
+
+            For Each name In strWords
+                mysql &= $"{vbCr}UPPER(A.BIOMETRICID) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(firstname) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(lastname) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(EMP_POSITION) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(BRANCHNAME) LIKE UPPER('%{name}%') )"
+            Next
+
+        Else
+            mysql = $"Select * From PAYROLL_ATTENDANCE A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRICID where A.PAYDATE = '{Paydate}'"
+        End If
+
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
             If ds.Tables(0).Rows.Count > 0 Then
@@ -1069,7 +1047,7 @@ Module SelectFromDatabase
                 row.Cells("Undertime_DGVV").Value = IIf(IsDBNull(.Item("UNDERTIME")), "", .Item("UNDERTIME"))
             End If
 
-            row.Height = 35
+            row.Height = 30
 
         End With
 
@@ -1102,13 +1080,17 @@ Module SelectFromDatabase
         Return HourGroup
     End Function
 
-    Public Sub AdjustHeightOfGridBasedOnRows(ByVal dataGrid As DataGridView)
+    Public Sub AdjustHeightOfGridBasedOnRows(ByVal dataGrid As DataGridView, Optional size As Integer = 0)
 
-        If dataGrid.Rows.Count > 0 Then
+        If dataGrid.Rows.Count >= 0 Then
             Dim totalRowHeight As Integer = dataGrid.ColumnHeadersHeight
             For Each row As DataGridViewRow In dataGrid.Rows
                 totalRowHeight += row.Height
-                row.Height = 28
+                If size = 0 Then
+                    row.Height = 28
+                Else
+                    row.Height = size
+                End If
             Next
             dataGrid.Height = totalRowHeight
         End If
@@ -1200,7 +1182,8 @@ Module SelectFromDatabase
             row.Cells("RE_UT_DGV").Value = .Item("UNDERTIME")
             row.Cells("RE_DAYS_DGV").Value = .Item("PRESENT_DAYS")
             row.Cells("RE_BRANCH_DGV").Value = .Item("BRANCH")
-            row.Height = 35
+            row.Cells("RE_BRANCH_DGV").Tag = .Item("BRANCH")
+            row.Height = 30
         End With
 
     End Sub
@@ -1629,8 +1612,6 @@ Module SelectFromDatabase
 
         If searchName.Length <> 0 Then
 
-            'mysql = $"Select A.*, B.*, B.id as emp_id, C.* From PAYROLL_PAYOUT A inner join tbl_employee B on B.BIOMETRICID = A.BIOMETRIC_ID  inner join tbl_branch C on C.ID = B.BRANCH_ID  where paydate = '{paydate}' and ( "
-
             mysql = $"Select A.*, B.*, B.id as emp_id From PAYROLL_PAYOUT A inner join tbl_employee B on B.ID = A.EMP_ID where paydate = '{paydate}' and ( "
 
             For Each name In strWords
@@ -1642,8 +1623,6 @@ Module SelectFromDatabase
             Next
 
         Else
-            'mysql = $"Select A.*, B.*, B.id as emp_id, C.* From PAYROLL_PAYOUT A inner join tbl_employee B on B.BIOMETRICID = A.BIOMETRIC_ID  inner join tbl_branch C on C.ID = B.BRANCH_ID  where paydate ='{paydate}'"
-
             mysql = $"Select A.*, B.*, B.id as emp_id From PAYROLL_PAYOUT A inner join tbl_employee B on B.ID = A.EMP_ID where paydate ='{paydate}'"
         End If
 
@@ -1755,7 +1734,7 @@ Module SelectFromDatabase
                         Dim row As DataGridViewRow = datagrid.Rows(rowId)
                         row.Cells("range_dgv").Value = .Item("COMP_RANGE")
                         row.Cells("wh_dgv").Value = .Item("PRESCRIBE_WH_TAX")
-                        row.Height = 40
+                        row.Height = 30
                     End With
                 Next
             Else

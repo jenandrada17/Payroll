@@ -23,20 +23,19 @@ Partial Class frmAttendance
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle11 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle12 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle15 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle16 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle13 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle14 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle17 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle18 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle118 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle119 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle120 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle123 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle124 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle121 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle122 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle125 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle126 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Attendance_Tab = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
         Me.Label20 = New System.Windows.Forms.Label()
-        Me.Label13 = New System.Windows.Forms.Label()
         Me.Bio_grid = New System.Windows.Forms.DataGridView()
         Me.BIOID_DGVV = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Name_DGVV = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -46,7 +45,6 @@ Partial Class frmAttendance
         Me.Undertime_DGVV = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.Paydate_ComboB = New System.Windows.Forms.ComboBox()
-        Me.Branch_ComboB = New System.Windows.Forms.ComboBox()
         Me.Import_BTN = New System.Windows.Forms.Button()
         Me.Path_TXT = New System.Windows.Forms.TextBox()
         Me.OpenFile_BTN = New System.Windows.Forms.Button()
@@ -129,6 +127,8 @@ Partial Class frmAttendance
         Me.printDTRBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.Context_Records = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.Menu_Remove = New System.Windows.Forms.ToolStripMenuItem()
+        Me.Search_TXT = New System.Windows.Forms.TextBox()
+        Me.Search_BTN = New System.Windows.Forms.Button()
         Me.Attendance_Tab.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         CType(Me.Bio_grid, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -173,12 +173,12 @@ Partial Class frmAttendance
         '
         'TabPage1
         '
+        Me.TabPage1.Controls.Add(Me.Search_TXT)
+        Me.TabPage1.Controls.Add(Me.Search_BTN)
         Me.TabPage1.Controls.Add(Me.Label20)
-        Me.TabPage1.Controls.Add(Me.Label13)
         Me.TabPage1.Controls.Add(Me.Bio_grid)
         Me.TabPage1.Controls.Add(Me.Button1)
         Me.TabPage1.Controls.Add(Me.Paydate_ComboB)
-        Me.TabPage1.Controls.Add(Me.Branch_ComboB)
         Me.TabPage1.Controls.Add(Me.Import_BTN)
         Me.TabPage1.Controls.Add(Me.Path_TXT)
         Me.TabPage1.Controls.Add(Me.OpenFile_BTN)
@@ -194,21 +194,11 @@ Partial Class frmAttendance
         '
         Me.Label20.AutoSize = True
         Me.Label20.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label20.Location = New System.Drawing.Point(215, 13)
+        Me.Label20.Location = New System.Drawing.Point(6, 91)
         Me.Label20.Name = "Label20"
-        Me.Label20.Size = New System.Drawing.Size(53, 25)
+        Me.Label20.Size = New System.Drawing.Size(98, 25)
         Me.Label20.TabIndex = 11
-        Me.Label20.Text = "Payroll"
-        '
-        'Label13
-        '
-        Me.Label13.AutoSize = True
-        Me.Label13.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label13.Location = New System.Drawing.Point(6, 12)
-        Me.Label13.Name = "Label13"
-        Me.Label13.Size = New System.Drawing.Size(55, 25)
-        Me.Label13.TabIndex = 10
-        Me.Label13.Text = "Branch"
+        Me.Label20.Text = "Search Payroll"
         '
         'Bio_grid
         '
@@ -219,24 +209,24 @@ Partial Class frmAttendance
         Me.Bio_grid.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.Bio_grid.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText
         Me.Bio_grid.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
-        DataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle10.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.Bio_grid.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle10
+        DataGridViewCellStyle118.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle118.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle118.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle118.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle118.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle118.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle118.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.Bio_grid.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle118
         Me.Bio_grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.Bio_grid.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.BIOID_DGVV, Me.Name_DGVV, Me.PRESENT_DGVV, Me.Overtime_DGVV, Me.Late_DGVV, Me.Undertime_DGVV})
-        DataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle11.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.Bio_grid.DefaultCellStyle = DataGridViewCellStyle11
+        DataGridViewCellStyle119.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle119.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle119.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle119.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle119.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle119.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle119.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.Bio_grid.DefaultCellStyle = DataGridViewCellStyle119
         Me.Bio_grid.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically
         Me.Bio_grid.Location = New System.Drawing.Point(6, 136)
         Me.Bio_grid.Name = "Bio_grid"
@@ -291,9 +281,9 @@ Partial Class frmAttendance
         'Button1
         '
         Me.Button1.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button1.Location = New System.Drawing.Point(423, 41)
+        Me.Button1.Location = New System.Drawing.Point(1046, 96)
         Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(110, 31)
+        Me.Button1.Size = New System.Drawing.Size(87, 33)
         Me.Button1.TabIndex = 9
         Me.Button1.Text = "Refresh"
         Me.Button1.UseVisualStyleBackColor = True
@@ -302,27 +292,16 @@ Partial Class frmAttendance
         '
         Me.Paydate_ComboB.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Paydate_ComboB.FormattingEnabled = True
-        Me.Paydate_ComboB.Location = New System.Drawing.Point(220, 41)
+        Me.Paydate_ComboB.Location = New System.Drawing.Point(111, 87)
         Me.Paydate_ComboB.Name = "Paydate_ComboB"
         Me.Paydate_ComboB.Size = New System.Drawing.Size(197, 33)
         Me.Paydate_ComboB.TabIndex = 8
-        Me.Paydate_ComboB.Text = "   Select Date"
-        '
-        'Branch_ComboB
-        '
-        Me.Branch_ComboB.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Branch_ComboB.FormattingEnabled = True
-        Me.Branch_ComboB.Location = New System.Drawing.Point(6, 41)
-        Me.Branch_ComboB.Name = "Branch_ComboB"
-        Me.Branch_ComboB.Size = New System.Drawing.Size(197, 33)
-        Me.Branch_ComboB.TabIndex = 7
-        Me.Branch_ComboB.Text = "   Select Branch"
         '
         'Import_BTN
         '
         Me.Import_BTN.Enabled = False
         Me.Import_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Import_BTN.Location = New System.Drawing.Point(623, 80)
+        Me.Import_BTN.Location = New System.Drawing.Point(467, 17)
         Me.Import_BTN.Name = "Import_BTN"
         Me.Import_BTN.Size = New System.Drawing.Size(82, 31)
         Me.Import_BTN.TabIndex = 5
@@ -332,16 +311,16 @@ Partial Class frmAttendance
         'Path_TXT
         '
         Me.Path_TXT.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Path_TXT.Location = New System.Drawing.Point(6, 82)
+        Me.Path_TXT.Location = New System.Drawing.Point(7, 19)
         Me.Path_TXT.Name = "Path_TXT"
         Me.Path_TXT.ReadOnly = True
-        Me.Path_TXT.Size = New System.Drawing.Size(527, 29)
+        Me.Path_TXT.Size = New System.Drawing.Size(368, 29)
         Me.Path_TXT.TabIndex = 4
         '
         'OpenFile_BTN
         '
         Me.OpenFile_BTN.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.OpenFile_BTN.Location = New System.Drawing.Point(539, 80)
+        Me.OpenFile_BTN.Location = New System.Drawing.Point(383, 17)
         Me.OpenFile_BTN.Name = "OpenFile_BTN"
         Me.OpenFile_BTN.Size = New System.Drawing.Size(78, 31)
         Me.OpenFile_BTN.TabIndex = 3
@@ -709,34 +688,34 @@ Partial Class frmAttendance
         Me.DataGridView1.AllowUserToAddRows = False
         Me.DataGridView1.AllowUserToResizeColumns = False
         Me.DataGridView1.AllowUserToResizeRows = False
-        DataGridViewCellStyle12.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.DataGridView1.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle12
+        DataGridViewCellStyle120.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DataGridView1.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle120
         Me.DataGridView1.BackgroundColor = System.Drawing.Color.White
         Me.DataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.DataGridView1.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText
         Me.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.DataGridView1.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Date_DataGrid, Me.AM_In_DataGrid, Me.AM_Out_DataGrid, Me.PM_IN_DataGrid, Me.PM_Out_DataGrid, Me.Select_Datagrid})
-        DataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle15.BackColor = System.Drawing.SystemColors.InactiveCaption
-        DataGridViewCellStyle15.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle15.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle15.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle15.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.DataGridView1.DefaultCellStyle = DataGridViewCellStyle15
+        DataGridViewCellStyle123.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle123.BackColor = System.Drawing.SystemColors.InactiveCaption
+        DataGridViewCellStyle123.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle123.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle123.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle123.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle123.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.DataGridView1.DefaultCellStyle = DataGridViewCellStyle123
         Me.DataGridView1.Location = New System.Drawing.Point(6, 44)
         Me.DataGridView1.Name = "DataGridView1"
         Me.DataGridView1.RowHeadersVisible = False
-        DataGridViewCellStyle16.SelectionBackColor = System.Drawing.Color.Transparent
-        DataGridViewCellStyle16.SelectionForeColor = System.Drawing.Color.Transparent
-        Me.DataGridView1.RowsDefaultCellStyle = DataGridViewCellStyle16
+        DataGridViewCellStyle124.SelectionBackColor = System.Drawing.Color.Transparent
+        DataGridViewCellStyle124.SelectionForeColor = System.Drawing.Color.Transparent
+        Me.DataGridView1.RowsDefaultCellStyle = DataGridViewCellStyle124
         Me.DataGridView1.Size = New System.Drawing.Size(684, 487)
         Me.DataGridView1.TabIndex = 65
         '
         'Date_DataGrid
         '
-        DataGridViewCellStyle13.NullValue = Nothing
-        Me.Date_DataGrid.DefaultCellStyle = DataGridViewCellStyle13
+        DataGridViewCellStyle121.NullValue = Nothing
+        Me.Date_DataGrid.DefaultCellStyle = DataGridViewCellStyle121
         Me.Date_DataGrid.HeaderText = "Date"
         Me.Date_DataGrid.Name = "Date_DataGrid"
         Me.Date_DataGrid.ReadOnly = True
@@ -746,9 +725,9 @@ Partial Class frmAttendance
         '
         'AM_In_DataGrid
         '
-        DataGridViewCellStyle14.Format = "t"
-        DataGridViewCellStyle14.NullValue = Nothing
-        Me.AM_In_DataGrid.DefaultCellStyle = DataGridViewCellStyle14
+        DataGridViewCellStyle122.Format = "t"
+        DataGridViewCellStyle122.NullValue = Nothing
+        Me.AM_In_DataGrid.DefaultCellStyle = DataGridViewCellStyle122
         Me.AM_In_DataGrid.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.[Nothing]
         Me.AM_In_DataGrid.HeaderText = "In"
         Me.AM_In_DataGrid.Name = "AM_In_DataGrid"
@@ -1078,24 +1057,24 @@ Partial Class frmAttendance
         Me.List_Records_grid.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.List_Records_grid.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText
         Me.List_Records_grid.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
-        DataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle17.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle17.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle17.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle17.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle17.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle17.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.List_Records_grid.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle17
+        DataGridViewCellStyle125.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle125.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle125.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle125.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle125.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle125.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle125.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.List_Records_grid.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle125
         Me.List_Records_grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.List_Records_grid.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.RE_BRANCH_DGV, Me.RE_BIO_DGV, Me.RE_NAME_DGV, Me.RE_DAYS_DGV, Me.RE_OT_DGV, Me.RE_LATE_DGV, Me.RE_UT_DGV})
-        DataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle18.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle18.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle18.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle18.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle18.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle18.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.List_Records_grid.DefaultCellStyle = DataGridViewCellStyle18
+        DataGridViewCellStyle126.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle126.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle126.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle126.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle126.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle126.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle126.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.List_Records_grid.DefaultCellStyle = DataGridViewCellStyle126
         Me.List_Records_grid.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically
         Me.List_Records_grid.Location = New System.Drawing.Point(9, 115)
         Me.List_Records_grid.Name = "List_Records_grid"
@@ -1196,6 +1175,24 @@ Partial Class frmAttendance
         Me.Menu_Remove.Size = New System.Drawing.Size(179, 22)
         Me.Menu_Remove.Text = "Remove this branch"
         '
+        'Search_TXT
+        '
+        Me.Search_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Search_TXT.Location = New System.Drawing.Point(383, 87)
+        Me.Search_TXT.Name = "Search_TXT"
+        Me.Search_TXT.Size = New System.Drawing.Size(368, 33)
+        Me.Search_TXT.TabIndex = 103
+        '
+        'Search_BTN
+        '
+        Me.Search_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Search_BTN.Location = New System.Drawing.Point(759, 87)
+        Me.Search_BTN.Name = "Search_BTN"
+        Me.Search_BTN.Size = New System.Drawing.Size(82, 33)
+        Me.Search_BTN.TabIndex = 104
+        Me.Search_BTN.Text = "Search"
+        Me.Search_BTN.UseVisualStyleBackColor = True
+        '
         'frmAttendance
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1286,7 +1283,6 @@ Partial Class frmAttendance
     Friend WithEvents Import_BTN As Button
     Friend WithEvents Path_TXT As TextBox
     Friend WithEvents OpenFile_BTN As Button
-    Friend WithEvents Branch_ComboB As ComboBox
     Friend WithEvents Paydate_ComboB As ComboBox
     Friend WithEvents UT_BTN As Button
     Friend WithEvents Late_BTN As Button
@@ -1309,7 +1305,6 @@ Partial Class frmAttendance
     Friend WithEvents Late_DGVV As DataGridViewTextBoxColumn
     Friend WithEvents Undertime_DGVV As DataGridViewTextBoxColumn
     Friend WithEvents Label20 As Label
-    Friend WithEvents Label13 As Label
     Friend WithEvents Label21 As Label
     Friend WithEvents TabPage3 As TabPage
     Friend WithEvents FlowLayoutPanel1 As FlowLayoutPanel
@@ -1333,4 +1328,6 @@ Partial Class frmAttendance
     Friend WithEvents printDTRBindingSource As BindingSource
     Friend WithEvents Context_Records As ContextMenuStrip
     Friend WithEvents Menu_Remove As ToolStripMenuItem
+    Friend WithEvents Search_TXT As TextBox
+    Friend WithEvents Search_BTN As Button
 End Class

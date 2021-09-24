@@ -5,7 +5,7 @@ Imports System.Text.RegularExpressions
 
 Public Class frmPayout
 
-    Dim rowCount, regHoliday, specHoliday As Integer
+    Dim rowCount, regHoliday_, specHoliday_ As Integer
     Public paydate_ As String = frmMainForm.Paydate.ToString("d")
     Dim SBU, Charges, Loan, CashAdvance, other As Double
     Dim SBUUU, Chargesss, Loannn, CashAdvanceee, otherrr As Double
@@ -13,8 +13,8 @@ Public Class frmPayout
     Dim emp_id, sched_deduc As String
 
     Private Sub frmPayout_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        regHoliday = Holiday_Rate("REGULAR")
-        specHoliday = Holiday_Rate("SPECIAL")
+        regHoliday_ = Holiday_Rate("REGULAR")
+        specHoliday_ = Holiday_Rate("SPECIAL")
         PopulateComboBox(Paydate_ComboB, "PAYROLL_PAYOUT", "PAYDATE")
 
         '========================== PAYSLIP ===========================
@@ -128,6 +128,10 @@ Public Class frmPayout
 
             ADD_SBU_GRID() ' =========== SBU DEDUCTION 
 
+            '==========================  GRID SIZE ===================================================
+            AdjustHeightOfGridBasedOnRows(Allowance_grid, 25)
+            AdjustHeightOfGridBasedOnRows(Deduction_grid, 25)
+
             '==========================  CHECK PAYDATE IF VALID FOR EDITING (DEDUCTION) =========================   
             If paydate_ = frmMainForm.Paydate.ToString("d") Then
                 Deduction_grid.Enabled = True
@@ -240,15 +244,8 @@ Public Class frmPayout
                       Tax_Wheld_LBL.Text, NetTax_LBL.Text, SSSLoan_LBL.Text, PagibigLoan_LBL.Text,
                       Allowances_LBL.Text, Deduction_LBL.Text, NetPay_LBL.Text, Name_TXT.Tag)
 
-
-                'SavePayout(Name_TXT.Tag, paydate_, TotalBasic_LBL.Text, TotalOT_LBL.Text,
-                '      TotalLateUnder_LBL.Text, GrossAmount_LBL.Text, SSSComp_LBL.Text, HDMF_LBL.Text, Philhealth_LBL.Text,
-                '      Tax_Wheld_LBL.Text, NetTax_LBL.Text, SSSLoan_LBL.Text, PagibigLoan_LBL.Text,
-                '      Allowances_LBL.Text, Deduction_LBL.Text, NetPay_LBL.Text)
-
                 If Deduction_grid.Rows.Count > 0 Then
 
-                    'If isExist_single("MODIFIED_DEDUCTION", "EMP_ID", Name_TXT.Tag) Then 'DELETE RECORD IF EXIST TO REPLACE NEW FROM GRID
                     If isExist_String("MODIFIED_DEDUCTION", $"WHERE EMP_ID = '{Name_TXT.Tag}'") Then 'DELETE RECORD IF EXIST TO REPLACE NEW FROM GRID
                         RunCommand($"DELETE FROM MODIFIED_DEDUCTION WHERE EMP_ID = '{Name_TXT.Tag}' and PAYDATE = '{paydate_}';")
                     End If
@@ -268,7 +265,10 @@ Public Class frmPayout
                 AllowanceDetails(Name_TXT.Tag, Allowance_grid, sched_deduc)
                 DeductioneDetails_ORIG(Name_TXT.Tag, Deduction_grid, sched_deduc)
 
-                ADD_SBU_GRID() ' =========== SBU DEDUCTION 
+                ADD_SBU_GRID() ' =========== SBU DEDUCTION  
+
+                AdjustHeightOfGridBasedOnRows(Allowance_grid, 25)
+                AdjustHeightOfGridBasedOnRows(Deduction_grid, 25)
 
                 Calculate_Gross()
 
@@ -303,9 +303,6 @@ Public Class frmPayout
         roww.Cells(0).Value = "SBU"
         roww.Cells(1).Value = sbu.ToString(”N”)
         roww.Cells(3) = New DataGridViewTextBoxCell()
-
-        AdjustHeightOfGridBasedOnRows(Deduction_grid)
-
     End Sub
 
     Private Sub Pay_Refresh_BTN_Click(sender As Object, e As EventArgs) Handles Pay_Refresh_BTN.Click
@@ -354,7 +351,7 @@ Public Class frmPayout
 
         TotalBasic_LBL.Text = (NoOfDays_TXT.Text * Rate_TXT.Text).ToString("N")
 
-        TotalHol_LBL.Text = ((((Convert.ToInt32(SpecialHol_TXT.Text) * Convert.ToInt32(Rate_TXT.Text)) * specHoliday) / specHoliday) + (((Convert.ToInt32(RegularHol_TXT.Text) * Convert.ToInt32(Rate_TXT.Text)) * regHoliday) / regHoliday)).ToString("N") ' =========== CALCULATE hOLIDAY TO PESO ===========
+        TotalHol_LBL.Text = ((((Convert.ToInt32(SpecialHol_TXT.Text) * Convert.ToInt32(Rate_TXT.Text)) * specHoliday_) / specHoliday_) + (((Convert.ToInt32(RegularHol_TXT.Text) * Convert.ToInt32(Rate_TXT.Text)) * regHoliday_) / regHoliday_)).ToString("N") ' =========== CALCULATE hOLIDAY TO PESO ===========
 
         TotalOT_LBL.Text = (((Convert.ToInt32(Rate_TXT.Text) / 8) * 1.25) * Convert.ToInt32(RegularOT_TXT.Tag)).ToString("N") ' =========== CALCULATE OVERTIME TO PESO ===========
 
@@ -626,19 +623,15 @@ Public Class frmPayout
             End Using
         Else
             LoadPayslip(Employee_TXT.Tag, EmpSelect_BTN.Tag, Payslip_paydate_Combo.Text, Email_TXT.Tag)
-            'recipient = GetEmail_recipient(Employee_TXT.Tag, EmpSelect_BTN.Tag)  '=========== EmpSelect_BTN.Tag is branchID
-            'recipient = GetEmail_recipient(Employee_TXT.Tag)
 
             Deduct_ifExist(Preview_BTN.Tag, Payslip_paydate_Combo.Text)             '======= REFLECT DEDUCTION IF EXIST  (Preview_BTN.Tag = EMP_ID)
-            'Send_Email(ReportViewer_payslip.LocalReport.Render("PDF"), recipient, Employee_TXT.Text, "single")
 
             Send_Email(ReportViewer_payslip.LocalReport.Render("PDF"), Email_TXT.Text, Employee_TXT.Text, True)
         End If
 
     End Sub
 
-    Public Sub LoadPayslip(biometricID As String, branchID As String, paydatee As String, branch_name As String)
-
+    Public Sub LoadPayslip(biometricID As String, branchID As String, paydatee As String, rate As String)
         ReportViewer_payslip.LocalReport.DataSources.Clear()
 
         Dim sched As String
@@ -928,9 +921,29 @@ Public Class frmPayout
             Dim rds_deduction As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet4", dt_deduction)
             ReportViewer_payslip.LocalReport.DataSources.Add(rds_deduction)
 
-            '============================================ PAYDATE ================================================ 
+            '============================================ PAYDATE, REGHOLIDAY AND SPECHOLIDAY ================================
+            Dim reg_rate As Double = 0
+            Dim spec_rate As Double = 0
+            Dim reg_hrs As Double = 0
+            Dim spec_hrs As Double = 0
+
+            If REGHOLIDAY <> 0 Then
+                reg_rate = ((Convert.ToInt32(REGHOLIDAY) * Convert.ToInt32(rate)) * regHoliday_) / regHoliday_
+                reg_hrs = Convert.ToInt32(REGHOLIDAY) * 8
+            End If
+
+            If SPECHOLIDAY <> 0 Then
+                spec_rate = ((Convert.ToInt32(SPECHOLIDAY) * Convert.ToInt32(rate)) * specHoliday_) / specHoliday_
+                spec_hrs = Convert.ToInt32(SPECHOLIDAY) * 8
+            End If
+
             date_pay = date_pay.ToString("MMMM dd, yyyy")
+
             Dim paramList As New List(Of Microsoft.Reporting.WinForms.ReportParameter) From {
+            New Microsoft.Reporting.WinForms.ReportParameter("paramRegRate", reg_rate),
+            New Microsoft.Reporting.WinForms.ReportParameter("paramSpecRate", spec_rate),
+            New Microsoft.Reporting.WinForms.ReportParameter("paramRegHours", reg_hrs),
+            New Microsoft.Reporting.WinForms.ReportParameter("paramSpecHours", spec_hrs),
             New Microsoft.Reporting.WinForms.ReportParameter("paramDate", date_pay)
             }
 

@@ -1282,7 +1282,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value />
+                                      <Value>=Parameters!paramRegHours.Value</Value>
                                       <Style>
                                         <FontFamily>Berlin Sans FB</FontFamily>
                                       </Style>
@@ -1316,7 +1316,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value />
+                                      <Value>=Parameters!paramRegRate.Value</Value>
                                       <Style>
                                         <FontFamily>Berlin Sans FB</FontFamily>
                                       </Style>
@@ -1401,7 +1401,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value />
+                                      <Value>=Parameters!paramSpecHours.Value</Value>
                                       <Style>
                                         <FontFamily>Berlin Sans FB</FontFamily>
                                       </Style>
@@ -1435,7 +1435,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value />
+                                      <Value>=Parameters!paramSpecRate.Value</Value>
                                       <Style>
                                         <FontFamily>Berlin Sans FB</FontFamily>
                                       </Style>
@@ -3776,7 +3776,7 @@
             <KeepTogether>true</KeepTogether>
             <Top>0.07167in</Top>
             <Left>0.19445in</Left>
-            <Height>8.72556in</Height>
+            <Height>8.28806in</Height>
             <Width>3.85637in</Width>
             <Style>
               <Border>
@@ -3837,6 +3837,30 @@
       <AllowBlank>true</AllowBlank>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
+    <ReportParameter Name="paramRegRate">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="paramSpecRate">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="paramRegHours">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
+    <ReportParameter Name="paramSpecHours">
+      <DataType>String</DataType>
+      <Nullable>true</Nullable>
+      <AllowBlank>true</AllowBlank>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
@@ -3877,6 +3901,26 @@
           <ColumnIndex>0</ColumnIndex>
           <RowIndex>3</RowIndex>
           <ParameterName>paramNo</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>2</ColumnIndex>
+          <RowIndex>3</RowIndex>
+          <ParameterName>paramRegRate</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>3</ColumnIndex>
+          <RowIndex>3</RowIndex>
+          <ParameterName>paramSpecRate</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>0</ColumnIndex>
+          <RowIndex>4</RowIndex>
+          <ParameterName>paramRegHours</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>1</ColumnIndex>
+          <RowIndex>4</RowIndex>
+          <ParameterName>paramSpecHours</ParameterName>
         </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>
