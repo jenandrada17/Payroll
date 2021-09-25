@@ -638,6 +638,8 @@ Public Class frmAttendance
                 .Columns.Add("AM_OUT")
                 .Columns.Add("PM_IN")
                 .Columns.Add("PM_OUT")
+                .Columns.Add("REGHOLIDAY")
+                .Columns.Add("SPECHOLIDAY")
             End With
 
             Dim mysqll As String = $"Select A.*, B.FirstName, B.LastName, B.MIDDLENAME, B.BIOMETRICID as bioNo, C.* From PAYROLL_ATTENDANCE A 
@@ -663,6 +665,8 @@ Public Class frmAttendance
                             Dim DAYS As String = .Item("PRESENT_DAYS")
                             Dim OT As String = IIf(.Item("OVERTIME") = 0, 0, .Item("OVERTIME"))
                             Dim LATE As String = IIf(.Item("LATE").Equals("00:00:00"), "00:00:00", .Item("LATE").Substring(0, 5))
+                            Dim REGHOLIDAY As String = .Item("REGHOLIDAY")
+                            Dim SPECHOLIDAY As String = .Item("SPECHOLIDAY")
 
 
                             '============================= BIOMETRIC_DTR ============================
@@ -672,9 +676,7 @@ Public Class frmAttendance
                             Dim PM_IN = IIf(IsDBNull(.Item("PM_IN")), "", .Item("PM_IN"))
                             Dim PM_OUT = IIf(IsDBNull(.Item("PM_OUT")), "", .Item("PM_OUT"))
 
-                            Console.WriteLine($" {bioNo} {namee} {DAYS} {OT} {LATE} {dateE.ToString("MMM dd, yyyy")} {AM_IN} {AM_OUT} {PM_IN} {PM_OUT}")
-
-                            dt_DTR.Rows.Add(bioNo, namee, DAYS, OT, LATE, dateE.ToString("MMM dd, yyyy"), AM_IN, AM_OUT, PM_IN, PM_OUT)
+                            dt_DTR.Rows.Add(bioNo, namee, DAYS, OT, LATE, dateE.ToString("MMM dd, yyyy"), AM_IN, AM_OUT, PM_IN, PM_OUT, REGHOLIDAY, SPECHOLIDAY)
 
                         End With
                     Next

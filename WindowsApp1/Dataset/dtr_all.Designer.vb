@@ -303,6 +303,10 @@ Partial Public Class dtr_all
         
         Private columnFULLNAME As Global.System.Data.DataColumn
         
+        Private columnREGHOLIDAY As Global.System.Data.DataColumn
+        
+        Private columnSPECHOLIDAY As Global.System.Data.DataColumn
+        
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Sub New()
@@ -419,6 +423,22 @@ Partial Public Class dtr_all
         End Property
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property REGHOLIDAYColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnREGHOLIDAY
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property SPECHOLIDAYColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnSPECHOLIDAY
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0"),  _
          Global.System.ComponentModel.Browsable(false)>  _
         Public ReadOnly Property Count() As Integer
@@ -455,9 +475,9 @@ Partial Public Class dtr_all
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Overloads Function AddoverAllRow(ByVal BIOMETRICID As String, ByVal PRESENT_DAYS As String, ByVal OVERTIME As String, ByVal LATE As String, ByVal DATE_ONLY As String, ByVal AM_IN As String, ByVal AM_OUT As String, ByVal PM_IN As String, ByVal PM_OUT As String, ByVal FULLNAME As String) As overAllRow
+        Public Overloads Function AddoverAllRow(ByVal BIOMETRICID As String, ByVal PRESENT_DAYS As String, ByVal OVERTIME As String, ByVal LATE As String, ByVal DATE_ONLY As String, ByVal AM_IN As String, ByVal AM_OUT As String, ByVal PM_IN As String, ByVal PM_OUT As String, ByVal FULLNAME As String, ByVal REGHOLIDAY As String, ByVal SPECHOLIDAY As String) As overAllRow
             Dim rowoverAllRow As overAllRow = CType(Me.NewRow,overAllRow)
-            Dim columnValuesArray() As Object = New Object() {BIOMETRICID, PRESENT_DAYS, OVERTIME, LATE, DATE_ONLY, AM_IN, AM_OUT, PM_IN, PM_OUT, FULLNAME}
+            Dim columnValuesArray() As Object = New Object() {BIOMETRICID, PRESENT_DAYS, OVERTIME, LATE, DATE_ONLY, AM_IN, AM_OUT, PM_IN, PM_OUT, FULLNAME, REGHOLIDAY, SPECHOLIDAY}
             rowoverAllRow.ItemArray = columnValuesArray
             Me.Rows.Add(rowoverAllRow)
             Return rowoverAllRow
@@ -490,6 +510,8 @@ Partial Public Class dtr_all
             Me.columnPM_IN = MyBase.Columns("PM_IN")
             Me.columnPM_OUT = MyBase.Columns("PM_OUT")
             Me.columnFULLNAME = MyBase.Columns("FULLNAME")
+            Me.columnREGHOLIDAY = MyBase.Columns("REGHOLIDAY")
+            Me.columnSPECHOLIDAY = MyBase.Columns("SPECHOLIDAY")
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -515,6 +537,10 @@ Partial Public Class dtr_all
             MyBase.Columns.Add(Me.columnPM_OUT)
             Me.columnFULLNAME = New Global.System.Data.DataColumn("FULLNAME", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnFULLNAME)
+            Me.columnREGHOLIDAY = New Global.System.Data.DataColumn("REGHOLIDAY", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnREGHOLIDAY)
+            Me.columnSPECHOLIDAY = New Global.System.Data.DataColumn("SPECHOLIDAY", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnSPECHOLIDAY)
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -811,6 +837,36 @@ Partial Public Class dtr_all
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property REGHOLIDAY() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableoverAll.REGHOLIDAYColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'REGHOLIDAY' in table 'overAll' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableoverAll.REGHOLIDAYColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property SPECHOLIDAY() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableoverAll.SPECHOLIDAYColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'SPECHOLIDAY' in table 'overAll' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableoverAll.SPECHOLIDAYColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Function IsBIOMETRICIDNull() As Boolean
             Return Me.IsNull(Me.tableoverAll.BIOMETRICIDColumn)
         End Function
@@ -927,6 +983,30 @@ Partial Public Class dtr_all
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Sub SetFULLNAMENull()
             Me(Me.tableoverAll.FULLNAMEColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsREGHOLIDAYNull() As Boolean
+            Return Me.IsNull(Me.tableoverAll.REGHOLIDAYColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetREGHOLIDAYNull()
+            Me(Me.tableoverAll.REGHOLIDAYColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsSPECHOLIDAYNull() As Boolean
+            Return Me.IsNull(Me.tableoverAll.SPECHOLIDAYColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetSPECHOLIDAYNull()
+            Me(Me.tableoverAll.SPECHOLIDAYColumn) = Global.System.Convert.DBNull
         End Sub
     End Class
     

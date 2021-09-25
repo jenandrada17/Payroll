@@ -25,6 +25,8 @@
               <xs:element name="PM_IN" msprop:Generator_ColumnVarNameInTable="columnPM_IN" msprop:Generator_ColumnPropNameInRow="PM_IN" msprop:Generator_ColumnPropNameInTable="PM_INColumn" msprop:Generator_UserColumnName="PM_IN" type="xs:string" minOccurs="0" />
               <xs:element name="PM_OUT" msprop:Generator_ColumnVarNameInTable="columnPM_OUT" msprop:Generator_ColumnPropNameInRow="PM_OUT" msprop:Generator_ColumnPropNameInTable="PM_OUTColumn" msprop:Generator_UserColumnName="PM_OUT" type="xs:string" minOccurs="0" />
               <xs:element name="FULLNAME" msprop:Generator_ColumnVarNameInTable="columnFULLNAME" msprop:Generator_ColumnPropNameInRow="FULLNAME" msprop:Generator_ColumnPropNameInTable="FULLNAMEColumn" msprop:Generator_UserColumnName="FULLNAME" type="xs:string" minOccurs="0" />
+              <xs:element name="REGHOLIDAY" msprop:Generator_ColumnVarNameInTable="columnREGHOLIDAY" msprop:Generator_ColumnPropNameInRow="REGHOLIDAY" msprop:Generator_ColumnPropNameInTable="REGHOLIDAYColumn" msprop:Generator_UserColumnName="REGHOLIDAY" type="xs:string" minOccurs="0" />
+              <xs:element name="SPECHOLIDAY" msprop:Generator_ColumnVarNameInTable="columnSPECHOLIDAY" msprop:Generator_ColumnPropNameInRow="SPECHOLIDAY" msprop:Generator_ColumnPropNameInTable="SPECHOLIDAYColumn" msprop:Generator_UserColumnName="SPECHOLIDAY" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>
