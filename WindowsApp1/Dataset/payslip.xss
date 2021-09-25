@@ -8,8 +8,8 @@
   <Shapes>
     <Shape ID="DesignTable:employee" ZOrder="4" X="189" Y="8" Height="124" Width="150" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="120" />
     <Shape ID="DesignTable:attendance" ZOrder="3" X="8" Y="4" Height="391" Width="150" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="387" />
-    <Shape ID="DesignTable:additional" ZOrder="2" X="356" Y="12" Height="90" Width="150" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="86" />
-    <Shape ID="DesignTable:other_deduction" ZOrder="1" X="541" Y="14" Height="86" Width="161" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="82" />
+    <Shape ID="DesignTable:additional" ZOrder="1" X="356" Y="12" Height="67" Width="150" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="63" />
+    <Shape ID="DesignTable:other_deduction" ZOrder="2" X="541" Y="14" Height="67" Width="161" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="63" />
   </Shapes>
   <Connectors />
 </DiagramLayout>

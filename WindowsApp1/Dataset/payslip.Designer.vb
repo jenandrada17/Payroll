@@ -1201,8 +1201,6 @@ Partial Public Class payslip
         
         Private columnAMOUNT As Global.System.Data.DataColumn
         
-        Private columnTOTALS As Global.System.Data.DataColumn
-        
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Sub New()
@@ -1255,14 +1253,6 @@ Partial Public Class payslip
         End Property
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public ReadOnly Property TOTALSColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnTOTALS
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0"),  _
          Global.System.ComponentModel.Browsable(false)>  _
         Public ReadOnly Property Count() As Integer
@@ -1299,9 +1289,9 @@ Partial Public Class payslip
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Overloads Function AddadditionalRow(ByVal CATEGORY As String, ByVal AMOUNT As String, ByVal TOTALS As String) As additionalRow
+        Public Overloads Function AddadditionalRow(ByVal CATEGORY As String, ByVal AMOUNT As String) As additionalRow
             Dim rowadditionalRow As additionalRow = CType(Me.NewRow,additionalRow)
-            Dim columnValuesArray() As Object = New Object() {CATEGORY, AMOUNT, TOTALS}
+            Dim columnValuesArray() As Object = New Object() {CATEGORY, AMOUNT}
             rowadditionalRow.ItemArray = columnValuesArray
             Me.Rows.Add(rowadditionalRow)
             Return rowadditionalRow
@@ -1326,7 +1316,6 @@ Partial Public Class payslip
         Friend Sub InitVars()
             Me.columnCATEGORY = MyBase.Columns("CATEGORY")
             Me.columnAMOUNT = MyBase.Columns("AMOUNT")
-            Me.columnTOTALS = MyBase.Columns("TOTALS")
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -1336,8 +1325,6 @@ Partial Public Class payslip
             MyBase.Columns.Add(Me.columnCATEGORY)
             Me.columnAMOUNT = New Global.System.Data.DataColumn("AMOUNT", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnAMOUNT)
-            Me.columnTOTALS = New Global.System.Data.DataColumn("TOTALS", GetType(String), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnTOTALS)
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -1479,8 +1466,6 @@ Partial Public Class payslip
         
         Private columnAMOUNT_PER_GIVE As Global.System.Data.DataColumn
         
-        Private columnTOTALS As Global.System.Data.DataColumn
-        
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Sub New()
@@ -1533,14 +1518,6 @@ Partial Public Class payslip
         End Property
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public ReadOnly Property TOTALSColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnTOTALS
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0"),  _
          Global.System.ComponentModel.Browsable(false)>  _
         Public ReadOnly Property Count() As Integer
@@ -1577,9 +1554,9 @@ Partial Public Class payslip
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Overloads Function Addother_deductionRow(ByVal CATEGORY As String, ByVal AMOUNT_PER_GIVE As String, ByVal TOTALS As String) As other_deductionRow
+        Public Overloads Function Addother_deductionRow(ByVal CATEGORY As String, ByVal AMOUNT_PER_GIVE As String) As other_deductionRow
             Dim rowother_deductionRow As other_deductionRow = CType(Me.NewRow,other_deductionRow)
-            Dim columnValuesArray() As Object = New Object() {CATEGORY, AMOUNT_PER_GIVE, TOTALS}
+            Dim columnValuesArray() As Object = New Object() {CATEGORY, AMOUNT_PER_GIVE}
             rowother_deductionRow.ItemArray = columnValuesArray
             Me.Rows.Add(rowother_deductionRow)
             Return rowother_deductionRow
@@ -1604,7 +1581,6 @@ Partial Public Class payslip
         Friend Sub InitVars()
             Me.columnCATEGORY = MyBase.Columns("CATEGORY")
             Me.columnAMOUNT_PER_GIVE = MyBase.Columns("AMOUNT_PER_GIVE")
-            Me.columnTOTALS = MyBase.Columns("TOTALS")
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -1614,8 +1590,6 @@ Partial Public Class payslip
             MyBase.Columns.Add(Me.columnCATEGORY)
             Me.columnAMOUNT_PER_GIVE = New Global.System.Data.DataColumn("AMOUNT_PER_GIVE", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnAMOUNT_PER_GIVE)
-            Me.columnTOTALS = New Global.System.Data.DataColumn("TOTALS", GetType(String), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnTOTALS)
             Me.columnAMOUNT_PER_GIVE.Caption = "AMOUNT"
         End Sub
         
@@ -2473,21 +2447,6 @@ Partial Public Class payslip
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Property TOTALS() As String
-            Get
-                Try 
-                    Return CType(Me(Me.tableadditional.TOTALSColumn),String)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'TOTALS' in table 'additional' is DBNull.", e)
-                End Try
-            End Get
-            Set
-                Me(Me.tableadditional.TOTALSColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Function IsCATEGORYNull() As Boolean
             Return Me.IsNull(Me.tableadditional.CATEGORYColumn)
         End Function
@@ -2508,18 +2467,6 @@ Partial Public Class payslip
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Sub SetAMOUNTNull()
             Me(Me.tableadditional.AMOUNTColumn) = Global.System.Convert.DBNull
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Function IsTOTALSNull() As Boolean
-            Return Me.IsNull(Me.tableadditional.TOTALSColumn)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Sub SetTOTALSNull()
-            Me(Me.tableadditional.TOTALSColumn) = Global.System.Convert.DBNull
         End Sub
     End Class
     
@@ -2570,21 +2517,6 @@ Partial Public Class payslip
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Property TOTALS() As String
-            Get
-                Try 
-                    Return CType(Me(Me.tableother_deduction.TOTALSColumn),String)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'TOTALS' in table 'other_deduction' is DBNull.", e)
-                End Try
-            End Get
-            Set
-                Me(Me.tableother_deduction.TOTALSColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Function IsCATEGORYNull() As Boolean
             Return Me.IsNull(Me.tableother_deduction.CATEGORYColumn)
         End Function
@@ -2605,18 +2537,6 @@ Partial Public Class payslip
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Sub SetAMOUNT_PER_GIVENull()
             Me(Me.tableother_deduction.AMOUNT_PER_GIVEColumn) = Global.System.Convert.DBNull
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Function IsTOTALSNull() As Boolean
-            Return Me.IsNull(Me.tableother_deduction.TOTALSColumn)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Sub SetTOTALSNull()
-            Me(Me.tableother_deduction.TOTALSColumn) = Global.System.Convert.DBNull
         End Sub
     End Class
     

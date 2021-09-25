@@ -12,7 +12,7 @@
   <xs:element name="payslip" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="payslip" msprop:Generator_UserDSName="payslip">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element name="employee" msprop:Generator_TableClassName="employeeDataTable" msprop:Generator_TableVarName="tableemployee" msprop:Generator_TablePropName="employee" msprop:Generator_RowDeletingName="employeeRowDeleting" msprop:Generator_RowChangingName="employeeRowChanging" msprop:Generator_RowEvHandlerName="employeeRowChangeEventHandler" msprop:Generator_RowDeletedName="employeeRowDeleted" msprop:Generator_UserTableName="employee" msprop:Generator_RowChangedName="employeeRowChanged" msprop:Generator_RowEvArgName="employeeRowChangeEvent" msprop:Generator_RowClassName="employeeRow">
+        <xs:element name="employee" msprop:Generator_TableClassName="employeeDataTable" msprop:Generator_TableVarName="tableemployee" msprop:Generator_RowChangedName="employeeRowChanged" msprop:Generator_TablePropName="employee" msprop:Generator_RowDeletingName="employeeRowDeleting" msprop:Generator_RowChangingName="employeeRowChanging" msprop:Generator_RowEvHandlerName="employeeRowChangeEventHandler" msprop:Generator_RowDeletedName="employeeRowDeleted" msprop:Generator_RowClassName="employeeRow" msprop:Generator_UserTableName="employee" msprop:Generator_RowEvArgName="employeeRowChangeEvent">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="COMPLETE_NAME" msprop:Generator_ColumnVarNameInTable="columnCOMPLETE_NAME" msprop:Generator_ColumnPropNameInRow="COMPLETE_NAME" msprop:Generator_ColumnPropNameInTable="COMPLETE_NAMEColumn" msprop:Generator_UserColumnName="COMPLETE_NAME" type="xs:string" minOccurs="0" />
@@ -23,7 +23,7 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="attendance" msprop:Generator_TableClassName="attendanceDataTable" msprop:Generator_TableVarName="tableattendance" msprop:Generator_TablePropName="attendance" msprop:Generator_RowDeletingName="attendanceRowDeleting" msprop:Generator_RowChangingName="attendanceRowChanging" msprop:Generator_RowEvHandlerName="attendanceRowChangeEventHandler" msprop:Generator_RowDeletedName="attendanceRowDeleted" msprop:Generator_UserTableName="attendance" msprop:Generator_RowChangedName="attendanceRowChanged" msprop:Generator_RowEvArgName="attendanceRowChangeEvent" msprop:Generator_RowClassName="attendanceRow">
+        <xs:element name="attendance" msprop:Generator_TableClassName="attendanceDataTable" msprop:Generator_TableVarName="tableattendance" msprop:Generator_RowChangedName="attendanceRowChanged" msprop:Generator_TablePropName="attendance" msprop:Generator_RowDeletingName="attendanceRowDeleting" msprop:Generator_RowChangingName="attendanceRowChanging" msprop:Generator_RowEvHandlerName="attendanceRowChangeEventHandler" msprop:Generator_RowDeletedName="attendanceRowDeleted" msprop:Generator_RowClassName="attendanceRow" msprop:Generator_UserTableName="attendance" msprop:Generator_RowEvArgName="attendanceRowChangeEvent">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="PRESENT_DAYS" msprop:Generator_ColumnVarNameInTable="columnPRESENT_DAYS" msprop:Generator_ColumnPropNameInRow="PRESENT_DAYS" msprop:Generator_ColumnPropNameInTable="PRESENT_DAYSColumn" msprop:Generator_UserColumnName="PRESENT_DAYS" type="xs:string" minOccurs="0" />
@@ -48,21 +48,19 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="additional" msprop:Generator_TableClassName="additionalDataTable" msprop:Generator_TableVarName="tableadditional" msprop:Generator_TablePropName="additional" msprop:Generator_RowDeletingName="additionalRowDeleting" msprop:Generator_RowChangingName="additionalRowChanging" msprop:Generator_RowEvHandlerName="additionalRowChangeEventHandler" msprop:Generator_RowDeletedName="additionalRowDeleted" msprop:Generator_UserTableName="additional" msprop:Generator_RowChangedName="additionalRowChanged" msprop:Generator_RowEvArgName="additionalRowChangeEvent" msprop:Generator_RowClassName="additionalRow">
+        <xs:element name="additional" msprop:Generator_TableClassName="additionalDataTable" msprop:Generator_TableVarName="tableadditional" msprop:Generator_RowChangedName="additionalRowChanged" msprop:Generator_TablePropName="additional" msprop:Generator_RowDeletingName="additionalRowDeleting" msprop:Generator_RowChangingName="additionalRowChanging" msprop:Generator_RowEvHandlerName="additionalRowChangeEventHandler" msprop:Generator_RowDeletedName="additionalRowDeleted" msprop:Generator_RowClassName="additionalRow" msprop:Generator_UserTableName="additional" msprop:Generator_RowEvArgName="additionalRowChangeEvent">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="CATEGORY" msprop:Generator_ColumnVarNameInTable="columnCATEGORY" msprop:Generator_ColumnPropNameInRow="CATEGORY" msprop:Generator_ColumnPropNameInTable="CATEGORYColumn" msprop:Generator_UserColumnName="CATEGORY" type="xs:string" minOccurs="0" />
               <xs:element name="AMOUNT" msprop:Generator_ColumnVarNameInTable="columnAMOUNT" msprop:Generator_ColumnPropNameInRow="AMOUNT" msprop:Generator_ColumnPropNameInTable="AMOUNTColumn" msprop:Generator_UserColumnName="AMOUNT" type="xs:string" minOccurs="0" />
-              <xs:element name="TOTALS" msprop:Generator_ColumnVarNameInTable="columnTOTALS" msprop:Generator_ColumnPropNameInRow="TOTALS" msprop:Generator_ColumnPropNameInTable="TOTALSColumn" msprop:Generator_UserColumnName="TOTALS" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="other_deduction" msprop:Generator_TableClassName="other_deductionDataTable" msprop:Generator_TableVarName="tableother_deduction" msprop:Generator_TablePropName="other_deduction" msprop:Generator_RowDeletingName="other_deductionRowDeleting" msprop:Generator_RowChangingName="other_deductionRowChanging" msprop:Generator_RowEvHandlerName="other_deductionRowChangeEventHandler" msprop:Generator_RowDeletedName="other_deductionRowDeleted" msprop:Generator_UserTableName="other_deduction" msprop:Generator_RowChangedName="other_deductionRowChanged" msprop:Generator_RowEvArgName="other_deductionRowChangeEvent" msprop:Generator_RowClassName="other_deductionRow">
+        <xs:element name="other_deduction" msprop:Generator_TableClassName="other_deductionDataTable" msprop:Generator_TableVarName="tableother_deduction" msprop:Generator_RowChangedName="other_deductionRowChanged" msprop:Generator_TablePropName="other_deduction" msprop:Generator_RowDeletingName="other_deductionRowDeleting" msprop:Generator_RowChangingName="other_deductionRowChanging" msprop:Generator_RowEvHandlerName="other_deductionRowChangeEventHandler" msprop:Generator_RowDeletedName="other_deductionRowDeleted" msprop:Generator_RowClassName="other_deductionRow" msprop:Generator_UserTableName="other_deduction" msprop:Generator_RowEvArgName="other_deductionRowChangeEvent">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="CATEGORY" msprop:Generator_ColumnVarNameInTable="columnCATEGORY" msprop:Generator_ColumnPropNameInRow="CATEGORY" msprop:Generator_ColumnPropNameInTable="CATEGORYColumn" msprop:Generator_UserColumnName="CATEGORY" type="xs:string" minOccurs="0" />
               <xs:element name="AMOUNT_PER_GIVE" msdata:Caption="AMOUNT" msprop:Generator_ColumnVarNameInTable="columnAMOUNT_PER_GIVE" msprop:Generator_ColumnPropNameInRow="AMOUNT_PER_GIVE" msprop:Generator_ColumnPropNameInTable="AMOUNT_PER_GIVEColumn" msprop:Generator_UserColumnName="AMOUNT_PER_GIVE" type="xs:string" minOccurs="0" />
-              <xs:element name="TOTALS" msprop:Generator_ColumnVarNameInTable="columnTOTALS" msprop:Generator_ColumnPropNameInRow="TOTALS" msprop:Generator_ColumnPropNameInTable="TOTALSColumn" msprop:Generator_UserColumnName="TOTALS" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

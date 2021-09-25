@@ -115,6 +115,11 @@
     <Compile Include="Dataset\dtr.vb">
       <DependentUpon>dtr.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Dataset\dtr_all.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>dtr_all.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Dataset\payslip.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -234,6 +239,7 @@
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reports\rptDTR_All.rdlc" />
     <EmbeddedResource Include="Reports\rpt_DTR.rdlc" />
     <EmbeddedResource Include="Reports\rpt_DTR_Branch.rdlc" />
     <EmbeddedResource Include="Reports\rpt_payslip.rdlc" />
@@ -249,6 +255,17 @@
     </None>
     <None Include="Dataset\dtr.xss">
       <DependentUpon>dtr.xsd</DependentUpon>
+    </None>
+    <None Include="Dataset\dtr_all.xsc">
+      <DependentUpon>dtr_all.xsd</DependentUpon>
+    </None>
+    <None Include="Dataset\dtr_all.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>dtr_all.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Dataset\dtr_all.xss">
+      <DependentUpon>dtr_all.xsd</DependentUpon>
     </None>
     <None Include="Dataset\payslip.xsc">
       <DependentUpon>payslip.xsd</DependentUpon>

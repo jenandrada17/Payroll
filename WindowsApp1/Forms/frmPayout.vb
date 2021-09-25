@@ -748,7 +748,6 @@ Public Class frmPayout
             With dt_allowance
                 .Columns.Add("CATEGORY")
                 .Columns.Add("AMOUNT")
-                .Columns.Add("TOTALS")
             End With
 
             Dim total_Allowance As Double = 0
@@ -780,7 +779,7 @@ Public Class frmPayout
                                     Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
                                     Dim toProper As String = info.ToTitleCase(toLower)
 
-                                    dt_allowance.Rows.Add(toProper, amountt.ToString(”N”), total_Allowance.ToString(”N”))
+                                    dt_allowance.Rows.Add(toProper, amountt.ToString(”N”))
 
                                 End If
                             End With
@@ -798,7 +797,6 @@ Public Class frmPayout
             With dt_deduction
                 .Columns.Add("CATEGORY")
                 .Columns.Add("AMOUNT_PER_GIVE")
-                .Columns.Add("TOTALS")
             End With
 
             Dim total_deduction As Double = 0
@@ -834,7 +832,7 @@ Public Class frmPayout
                                 Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
                                 Dim toProper As String = info.ToTitleCase(toLower)
 
-                                dt_deduction.Rows.Add(toProper, amountt.ToString(”N”), total_deduction.ToString(”N”))
+                                dt_deduction.Rows.Add(toProper, amountt.ToString(”N”))
 
                             End With
                         Next
@@ -868,7 +866,7 @@ Public Class frmPayout
                                 Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
                                 Dim toProper As String = info.ToTitleCase(toLower)
 
-                                dt_deduction.Rows.Add(toProper, amountt.ToString(”N”), total_deduction.ToString(”N”))
+                                dt_deduction.Rows.Add(toProper, amountt.ToString(”N”))
 
                             End With
                         Next
@@ -905,7 +903,7 @@ Public Class frmPayout
                                     Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
                                     Dim toProper As String = info.ToTitleCase(toLower)
 
-                                    dt_deduction.Rows.Add(toProper, amountt.ToString(”N”), total_deduction.ToString(”N”))
+                                    dt_deduction.Rows.Add(toProper, amountt.ToString(”N”))
 
                                 End If
                             End With
@@ -915,8 +913,9 @@ Public Class frmPayout
                 End Using
             End If
 
+            total_deduction = total_deduction + SBU_Amount()
 
-            dt_deduction.Rows.Add("SBU", SBU_Amount().ToString(”N”), (total_deduction + SBU_Amount()).ToString("N"))
+            dt_deduction.Rows.Add("SBU", SBU_Amount().ToString(”N”))
 
             Dim rds_deduction As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet4", dt_deduction)
             ReportViewer_payslip.LocalReport.DataSources.Add(rds_deduction)
@@ -928,20 +927,22 @@ Public Class frmPayout
             Dim spec_hrs As Double = 0
 
             If REGHOLIDAY <> 0 Then
-                reg_rate = ((Convert.ToInt32(REGHOLIDAY) * Convert.ToInt32(rate)) * regHoliday_) / regHoliday_
+                reg_rate = (((Convert.ToInt32(REGHOLIDAY) * Convert.ToInt32(rate)) * regHoliday_) / regHoliday_).ToString(”N”)
                 reg_hrs = Convert.ToInt32(REGHOLIDAY) * 8
             End If
 
             If SPECHOLIDAY <> 0 Then
-                spec_rate = ((Convert.ToInt32(SPECHOLIDAY) * Convert.ToInt32(rate)) * specHoliday_) / specHoliday_
+                spec_rate = (((Convert.ToInt32(SPECHOLIDAY) * Convert.ToInt32(rate)) * specHoliday_) / specHoliday_).ToString("N")
                 spec_hrs = Convert.ToInt32(SPECHOLIDAY) * 8
             End If
 
             date_pay = date_pay.ToString("MMMM dd, yyyy")
 
             Dim paramList As New List(Of Microsoft.Reporting.WinForms.ReportParameter) From {
-            New Microsoft.Reporting.WinForms.ReportParameter("paramRegRate", reg_rate),
-            New Microsoft.Reporting.WinForms.ReportParameter("paramSpecRate", spec_rate),
+            New Microsoft.Reporting.WinForms.ReportParameter("paramDeducTotal", total_deduction.ToString(”N”)),
+            New Microsoft.Reporting.WinForms.ReportParameter("paramAllowTotal", total_Allowance.ToString(”N”)),
+            New Microsoft.Reporting.WinForms.ReportParameter("paramRegRate", reg_rate.ToString(”N”)),
+            New Microsoft.Reporting.WinForms.ReportParameter("paramSpecRate", spec_rate.ToString(”N”)),
             New Microsoft.Reporting.WinForms.ReportParameter("paramRegHours", reg_hrs),
             New Microsoft.Reporting.WinForms.ReportParameter("paramSpecHours", spec_hrs),
             New Microsoft.Reporting.WinForms.ReportParameter("paramDate", date_pay)

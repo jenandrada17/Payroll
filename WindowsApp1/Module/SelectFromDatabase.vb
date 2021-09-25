@@ -1151,42 +1151,42 @@ Module SelectFromDatabase
         Return status
     End Function
 
-    Friend Sub PopulateAttendanceRECORD(datagrid As DataGridView, Paydate As String)
+    'Friend Sub PopulateAttendanceRECORD(datagrid As DataGridView, Paydate As String)
 
-        datagrid.Rows.Clear()
-        Dim mysql As String = $"Select * From PAYROLL_ATTENDANCE A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRICID where A.PAYDATE = '{Paydate}' ORDER BY BRANCH"
+    '    datagrid.Rows.Clear()
+    '    Dim mysql As String = $"Select * From PAYROLL_ATTENDANCE A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRICID where A.PAYDATE = '{Paydate}' ORDER BY BRANCH"
 
-        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
-            If ds.Tables(0).Rows.Count > 0 Then
-                For Each dr In ds.Tables(0).Rows
-                    AddRowRECORDS(dr, datagrid)
-                Next
-                'AdjustHeightOfGridBasedOnRows(datagrid)
-            Else
-                datagrid.Rows.Clear()
-            End If
-        End Using
+    '    Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
+    '        If ds.Tables(0).Rows.Count > 0 Then
+    '            For Each dr In ds.Tables(0).Rows
+    '                AddRowRECORDS(dr, datagrid)
+    '            Next
+    '            'AdjustHeightOfGridBasedOnRows(datagrid)
+    '        Else
+    '            datagrid.Rows.Clear()
+    '        End If
+    '    End Using
 
-    End Sub
+    'End Sub
 
-    Public Sub AddRowRECORDS(ByVal dr As DataRow, datagrid As DataGridView)
+    'Public Sub AddRowRECORDS(ByVal dr As DataRow, datagrid As DataGridView)
 
-        With dr
-            Dim rowId As Integer = datagrid.Rows.Add()
-            Dim row As DataGridViewRow = datagrid.Rows(rowId)
-            row.Cells("RE_BIO_DGV").Value = .Item("BIOMETRICID")
-            row.Cells("RE_NAME_DGV").Value = .Item("LASTNAME") & ", " & .Item("FIRSTNAME") & " " & .Item("MIDDLENAME")
-            row.Cells("RE_NAME_DGV").Tag = .Item("ID")
-            row.Cells("RE_OT_DGV").Value = .Item("OVERTIME")
-            row.Cells("RE_LATE_DGV").Value = .Item("LATE")
-            row.Cells("RE_UT_DGV").Value = .Item("UNDERTIME")
-            row.Cells("RE_DAYS_DGV").Value = .Item("PRESENT_DAYS")
-            row.Cells("RE_BRANCH_DGV").Value = .Item("BRANCH")
-            row.Cells("RE_BRANCH_DGV").Tag = .Item("BRANCH")
-            row.Height = 30
-        End With
+    '    With dr
+    '        Dim rowId As Integer = datagrid.Rows.Add()
+    '        Dim row As DataGridViewRow = datagrid.Rows(rowId)
+    '        row.Cells("RE_BIO_DGV").Value = .Item("BIOMETRICID")
+    '        row.Cells("RE_NAME_DGV").Value = .Item("LASTNAME") & ", " & .Item("FIRSTNAME") & " " & .Item("MIDDLENAME")
+    '        row.Cells("RE_NAME_DGV").Tag = .Item("ID")
+    '        row.Cells("RE_OT_DGV").Value = .Item("OVERTIME")
+    '        row.Cells("RE_LATE_DGV").Value = .Item("LATE")
+    '        row.Cells("RE_UT_DGV").Value = .Item("UNDERTIME")
+    '        row.Cells("RE_DAYS_DGV").Value = .Item("PRESENT_DAYS")
+    '        row.Cells("RE_BRANCH_DGV").Value = .Item("BRANCH")
+    '        row.Cells("RE_BRANCH_DGV").Tag = .Item("BRANCH")
+    '        row.Height = 30
+    '    End With
 
-    End Sub
+    'End Sub
 
     Public Sub Payout_Details(bioNo As String, name As TextBox, ratee As TextBox)
 
