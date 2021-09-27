@@ -144,7 +144,7 @@ Public Class frmContribution
             frm.Dock = DockStyle.Fill
             frm.BringToFront()
         Else
-            frmEmployeeInfo.BringToFront()
+            frmEmployee.BringToFront()
         End If
 
     End Sub
@@ -173,7 +173,7 @@ Public Class frmContribution
             frm.Dock = DockStyle.Fill
             frm.BringToFront()
         Else
-            frmEmployeeInfo.BringToFront()
+            frmEmployee.BringToFront()
         End If
 
     End Sub

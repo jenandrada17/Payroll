@@ -159,11 +159,11 @@ Public Class frmAttendance
 
                 r.DefaultCellStyle.ForeColor = Color.Red
 
-                DataGridView1.Rows(i).Cells(5) = New DataGridViewTextBoxCell()
-                DataGridView1.Rows(i).Cells(1).Value = ""
-                DataGridView1.Rows(i).Cells(2).Value = ""
-                DataGridView1.Rows(i).Cells(3).Value = ""
-                DataGridView1.Rows(i).Cells(4).Value = ""
+                'DataGridView1.Rows(i).Cells(5) = New DataGridViewTextBoxCell()
+                'DataGridView1.Rows(i).Cells(1).Value = ""
+                'DataGridView1.Rows(i).Cells(2).Value = ""
+                'DataGridView1.Rows(i).Cells(3).Value = ""
+                'DataGridView1.Rows(i).Cells(4).Value = ""
 
             ElseIf HolidayExist(customizeDate) Then
 
@@ -196,16 +196,16 @@ Public Class frmAttendance
             For i = 0 To DataGridView1.RowCount - 1
                 Dim row As DataGridViewRow = DataGridView1.Rows(i)
                 If row.DefaultCellStyle.ForeColor = Color.Red Then
-                    DataGridView1.Rows(i).Cells(5) = New DataGridViewTextBoxCell()
-                    DataGridView1.Rows(i).Cells(5).ReadOnly = True
-                    DataGridView1.Rows(i).Cells(1).Value = ""
-                    DataGridView1.Rows(i).Cells(1).ReadOnly = True
-                    DataGridView1.Rows(i).Cells(2).Value = ""
-                    DataGridView1.Rows(i).Cells(1).ReadOnly = True
-                    DataGridView1.Rows(i).Cells(3).Value = ""
-                    DataGridView1.Rows(i).Cells(1).ReadOnly = True
-                    DataGridView1.Rows(i).Cells(4).Value = ""
-                    DataGridView1.Rows(i).Cells(1).ReadOnly = True
+                    'DataGridView1.Rows(i).Cells(5) = New DataGridViewTextBoxCell()
+                    'DataGridView1.Rows(i).Cells(5).ReadOnly = True
+                    'DataGridView1.Rows(i).Cells(1).Value = ""
+                    'DataGridView1.Rows(i).Cells(1).ReadOnly = True
+                    'DataGridView1.Rows(i).Cells(2).Value = ""
+                    'DataGridView1.Rows(i).Cells(1).ReadOnly = True
+                    'DataGridView1.Rows(i).Cells(3).Value = ""
+                    'DataGridView1.Rows(i).Cells(1).ReadOnly = True
+                    'DataGridView1.Rows(i).Cells(4).Value = ""
+                    'DataGridView1.Rows(i).Cells(1).ReadOnly = True
 
                 ElseIf row.DefaultCellStyle.BackColor = Color.MediumOrchid Or row.DefaultCellStyle.BackColor = Color.Plum Then
                     DataGridView1.Rows(i).Cells(5).Value = False
@@ -460,21 +460,26 @@ Public Class frmAttendance
 
     Private Sub SearchEMP_BTN_Click(sender As Object, e As EventArgs) Handles SearchEMP_BTN.Click
 
-        If frmEmployee Is Nothing Then
-            Dim frm As New frmEmployee With {
-                .MdiParent = frmMainForm
-            }
-            frmMainForm.pNavigate.Controls.Add(frm)
-            frmMainForm.pNavigate.Tag = frm
-            frm.txtSearch.Tag = "Attendance1"
-            frm.Show()
-            frm.Dock = DockStyle.Fill
-            frm.BringToFront()
+        Try
 
-        Else
-            frmEmployeeInfo.BringToFront()
-        End If
+            Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmEmployee").SingleOrDefault()
+            If instForm Is Nothing Then
+                Dim frm As frmEmployee
+                frm = DirectCast(CreateObjectInstance("frmEmployee"), Form)
+                frm.MdiParent = frmMainForm
+                frmMainForm.pNavigate.Controls.Add(frm)
+                frmMainForm.pNavigate.Tag = frm
+                frm.txtSearch.Tag = "Attendance1"
+                frm.Dock = DockStyle.Fill
+                frm.BringToFront()
+                frm.Show()
+            Else
+                instForm.BringToFront()
+            End If
 
+        Catch ex As Exception
+
+        End Try
     End Sub
 
     Private Sub Save_BTN_Click(sender As Object, e As EventArgs) Handles Save_BTN.Click
@@ -610,7 +615,7 @@ Public Class frmAttendance
 
         RptViewer_DTR.LocalReport.DataSources.Clear()
         Dim paydatee As String = Payslip_DTR_Combo.SelectedItem
-        Dim mysqll As String
+        Dim mysqll As String = ""
 
         Try
             Dim all_in As New dtr_all.overAllDataTable
@@ -792,27 +797,35 @@ Public Class frmAttendance
 
     Private Sub EmpSelect_BTN_Click(sender As Object, e As EventArgs) Handles EmpSelect1_BTN.Click
 
-        If frmEmployee Is Nothing Then
-            Dim frm As New frmEmployee With {
-                .MdiParent = frmMainForm
-            }
-            frmMainForm.pNavigate.Controls.Add(frm)
-            frmMainForm.pNavigate.Tag = frm
-            frm.txtSearch.Tag = "Attendance-PrintDTR"
-            frm.Show()
-            frm.Dock = DockStyle.Fill
-            frm.BringToFront()
-        Else
-            frmEmployeeInfo.BringToFront()
-        End If
+        Try
 
+            Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmEmployee").SingleOrDefault()
+            If instForm Is Nothing Then
+                Dim frm As frmEmployee
+                frm = DirectCast(CreateObjectInstance("frmEmployee"), Form)
+                frm.MdiParent = frmMainForm
+                frmMainForm.pNavigate.Controls.Add(frm)
+                frmMainForm.pNavigate.Tag = frm
+                frm.txtSearch.Tag = "Attendance-PrintDTR_1"
+                frm.Dock = DockStyle.Fill
+                frm.BringToFront()
+                frm.Show()
+            Else
+                instForm.BringToFront()
+            End If
+
+        Catch ex As Exception
+
+        End Try
     End Sub
 
     Private Sub Employee_RadioB_CheckedChanged(sender As Object, e As EventArgs) Handles Employee_RadioB.CheckedChanged
         If Employee_RadioB.Checked = True Then
-            Employee_GroupB.Visible = True
+            Employee1_GroupB.Visible = True
+            Employee2_GroupB.Visible = True
         Else
-            Employee_GroupB.Visible = False
+            Employee1_GroupB.Visible = False
+            Employee2_GroupB.Visible = False
         End If
     End Sub
 
@@ -965,6 +978,29 @@ Public Class frmAttendance
         Else
             Branch_group.Visible = False
         End If
+    End Sub
+
+    Private Sub EmpSelect2_BTN_Click(sender As Object, e As EventArgs) Handles EmpSelect2_BTN.Click
+
+        Try
+            Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmEmployee").SingleOrDefault()
+            If instForm Is Nothing Then
+                Dim frm As frmEmployee
+                frm = DirectCast(CreateObjectInstance("frmEmployee"), Form)
+                frm.MdiParent = frmMainForm
+                frmMainForm.pNavigate.Controls.Add(frm)
+                frmMainForm.pNavigate.Tag = frm
+                frm.txtSearch.Tag = "Attendance-PrintDTR_2"
+                frm.Dock = DockStyle.Fill
+                frm.BringToFront()
+                frm.Show()
+            Else
+                instForm.BringToFront()
+            End If
+
+        Catch ex As Exception
+
+        End Try
     End Sub
 
     Private Sub Bio_grid_MouseClick(sender As Object, e As MouseEventArgs) Handles Bio_grid.MouseClick
@@ -1705,5 +1741,32 @@ Public Class frmAttendance
         Next
 
     End Sub
+
+    Public Sub Load_Attendance(emp As Employee, empNo As Integer)
+        With emp
+            If empNo = 1 Then
+                Bio1_DTR_TXT.Text = .BiometricID
+                Bio1_DTR_TXT.Tag = .BranchID
+                DTR_Emp1_TXT.Text = .Fullname
+                DTR_Emp1_TXT.Tag = .EMP_ID
+                Attendance_Tab.SelectedIndex = 2
+                Employee_RadioB.Checked = True
+            ElseIf empNo = 2 Then
+                Bio2_DTR_TXT.Text = .BiometricID
+                Bio2_DTR_TXT.Tag = .BranchID
+                DTR_Emp2_TXT.Text = .Fullname
+                DTR_Emp2_TXT.Tag = .EMP_ID
+                Attendance_Tab.SelectedIndex = 2
+                Employee_RadioB.Checked = True
+            ElseIf empNo = 3 Then
+                BiometricID_TXT.Text = .BiometricID
+                Branch_Name = .BranchID
+                Name_TXT.Text = .Fullname
+                Name_TXT.Tag = .EMP_ID
+                Attendance_Tab.SelectedIndex = 1
+            End If
+        End With
+    End Sub
+
 
 End Class

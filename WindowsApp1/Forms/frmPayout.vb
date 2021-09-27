@@ -32,28 +32,34 @@ Public Class frmPayout
 
     Private Sub Select_BTN_Click(sender As Object, e As EventArgs) Handles Select_BTN.Click
 
-        If frmEmployee Is Nothing Then
-            Dim frm As New frmEmployee With {
-                .MdiParent = frmMainForm
-            }
-            frmMainForm.pNavigate.Controls.Add(frm)
-            frmMainForm.pNavigate.Tag = frm
-            frm.txtSearch.Tag = "Payout"
+        Try
 
-            If Paydate_ComboB.SelectedIndex >= 0 Then
-                frm.btnSearch.Tag = Paydate_ComboB.SelectedItem
+            Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmEmployee").SingleOrDefault()
+            If instForm Is Nothing Then
+                Dim frm As frmEmployee
+                frm = DirectCast(CreateObjectInstance("frmEmployee"), Form)
+                frm.MdiParent = frmMainForm
+                frmMainForm.pNavigate.Controls.Add(frm)
+                frmMainForm.pNavigate.Tag = frm
+
+                frm.txtSearch.Tag = "Payout"
+
+                If Paydate_ComboB.SelectedIndex >= 0 Then
+                    frm.btnSearch.Tag = Paydate_ComboB.SelectedItem
+                Else
+                    frm.btnSearch.Tag = paydate_
+                End If
+
+                frm.Dock = DockStyle.Fill
+                frm.BringToFront()
+                frm.Show()
             Else
-                frm.btnSearch.Tag = paydate_
+                instForm.BringToFront()
             End If
 
-            frm.Show()
-            frm.Dock = DockStyle.Fill
-            frm.BringToFront()
-        Else
-            frmEmployeeInfo.BringToFront()
-        End If
+        Catch ex As Exception
 
-        Close()
+        End Try
     End Sub
 
     Private Sub BiometricID_TXT_TextChanged(sender As Object, e As EventArgs) Handles BiometricID_TXT.TextChanged
@@ -522,20 +528,43 @@ Public Class frmPayout
         If Payslip_paydate_Combo.SelectedIndex < 0 Then
             MsgBox("Please Select payroll date!", MsgBoxStyle.Exclamation, "Error")
         Else
-            If frmEmployee Is Nothing Then
-                Dim frm As New frmEmployee With {
-                    .MdiParent = frmMainForm
-                }
-                frmMainForm.pNavigate.Controls.Add(frm)
-                frmMainForm.pNavigate.Tag = frm
-                frm.txtSearch.Tag = "Payslip-Employee"
-                frm.btnSearch.Tag = Payslip_paydate_Combo.Text
-                frm.Show()
-                frm.Dock = DockStyle.Fill
-                frm.BringToFront()
-            Else
-                frmEmployeeInfo.BringToFront()
-            End If
+
+            Try
+
+                Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmEmployee").SingleOrDefault()
+                If instForm Is Nothing Then
+                    Dim frm As frmEmployee
+                    frm = DirectCast(CreateObjectInstance("frmEmployee"), Form)
+                    frm.MdiParent = frmMainForm
+                    frmMainForm.pNavigate.Controls.Add(frm)
+                    frmMainForm.pNavigate.Tag = frm
+                    frm.txtSearch.Tag = "Payslip-Employee"
+                    frm.btnSearch.Tag = Payslip_paydate_Combo.Text
+                    frm.Dock = DockStyle.Fill
+                    frm.BringToFront()
+                    frm.Show()
+                Else
+                    instForm.BringToFront()
+                End If
+
+            Catch ex As Exception
+
+            End Try
+
+            'If frmEmployee Is Nothing Then
+            '    Dim frm As New frmEmployee With {
+            '        .MdiParent = frmMainForm
+            '    }
+            '    frmMainForm.pNavigate.Controls.Add(frm)
+            '    frmMainForm.pNavigate.Tag = frm
+            '    frm.txtSearch.Tag = "Payslip-Employee"
+            '    frm.btnSearch.Tag = Payslip_paydate_Combo.Text
+            '    frm.Show()
+            '    frm.Dock = DockStyle.Fill
+            '    frm.BringToFront()
+            'Else
+            '    frmEmployee.BringToFront()
+            'End If
         End If
     End Sub
 
@@ -956,6 +985,28 @@ Public Class frmPayout
             MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
 
+    End Sub
+
+    Public Sub Load_Payout(emp As Employee, paydatee As String, empNo As String)
+        With emp
+            If empNo = "DETAILS" Then
+                BiometricID_TXT.Text = .BiometricID
+                Name_TXT.Text = .Fullname
+                Name_TXT.Tag = .EMP_ID
+                paydate_ = paydatee
+                TabControl1.SelectedIndex = 1
+            Else
+                Payslip_paydate_Combo.Text = paydatee
+                Employee_TXT.Text = .Fullname
+                Preview_BTN.Tag = .EMP_ID
+                Employee_TXT.Tag = .BiometricID
+                Email_TXT.Text = .EmailAdd
+                Email_TXT.Tag = .Rate
+                EmpSelect_BTN.Tag = .BranchID
+                Employee_RadioB.Checked = True
+                TabControl1.SelectedIndex = 2
+            End If
+        End With
     End Sub
 
 

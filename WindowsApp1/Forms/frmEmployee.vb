@@ -1,5 +1,4 @@
-﻿
-Public Class frmEmployee
+﻿Public Class frmEmployee
 
     Dim rowCount As Integer
 
@@ -32,72 +31,60 @@ Public Class frmEmployee
     End Sub
 
     Private Sub lvEmployee_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles lvEmployee.MouseDoubleClick
+
+        If lvEmployee.Items.Count = 0 Then Exit Sub
+
+        Dim idx As Integer = lvEmployee.Items(lvEmployee.FocusedItem.Index).SubItems(1).Tag
+        Dim tmpEmp As Employee
+        tmpEmp = New Employee
+        tmpEmp.LoadEmployee(idx)
+
         If txtSearch.Tag = "Attendance1" Then
 
-            If frmAttendance Is Nothing Then
-                Dim frm As New frmAttendance With {
-                    .MdiParent = frmMainForm
-                }
-                frmMainForm.pNavigate.Controls.Add(frm)
-                frmMainForm.pNavigate.Tag = frm
-                frm.BiometricID_TXT.Text = lvEmployee.FocusedItem.SubItems(0).Text
-                frm.Branch_Name = lvEmployee.FocusedItem.SubItems(9).Text
-                frm.Name_TXT.Text = lvEmployee.FocusedItem.SubItems(1).Text
-                frm.Name_TXT.Tag = lvEmployee.FocusedItem.SubItems(1).Tag
-                frm.Attendance_Tab.SelectedIndex = 1
-                frm.Show()
-                frm.Dock = DockStyle.Fill
-                frm.BringToFront()
-                frm.Attendance_Per_Employee(lvEmployee.FocusedItem.SubItems(0).Text)
+            SwitchForm_Attendance(FormName.Attendance_Mannual, tmpEmp, 3)
+            Close()
 
-            Else
-                frmEmployeeInfo.BringToFront()
+        ElseIf txtSearch.Tag = "Attendance-PrintDTR_1" Then
 
-            End If
+            SwitchForm_Attendance(FormName.Attendance_DTR, tmpEmp, 1)
+            Close()
 
-        ElseIf txtSearch.Tag = "Attendance-PrintDTR" Then
+        ElseIf txtSearch.Tag = "Attendance-PrintDTR_2" Then
 
-            If frmAttendance Is Nothing Then
-                Dim frm As New frmAttendance With {
-                    .MdiParent = frmMainForm
-                }
-                frmMainForm.pNavigate.Controls.Add(frm)
-                frmMainForm.pNavigate.Tag = frm
-                frm.Bio1_DTR_TXT.Text = lvEmployee.FocusedItem.SubItems(0).Text
-                frm.Bio1_DTR_TXT.Tag = lvEmployee.FocusedItem.SubItems(9).Text '==== Branch ===  
-                frm.DTR_Emp1_TXT.Text = lvEmployee.FocusedItem.SubItems(1).Text
-                frm.DTR_Emp1_TXT.Tag = lvEmployee.FocusedItem.SubItems(1).Tag  '==== Emp_id ===  
-                frm.Attendance_Tab.SelectedIndex = 2
-                frm.Employee_RadioB.Checked = True
-                frm.Show()
-                frm.Dock = DockStyle.Fill
-                frm.BringToFront()
-
-            Else
-                frmEmployeeInfo.BringToFront()
-            End If
+            SwitchForm_Attendance(FormName.Attendance_DTR, tmpEmp, 2)
+            Close()
 
         ElseIf txtSearch.Tag = "Payout" Then
 
-            If frmPayout Is Nothing Then
-                Dim frm As New frmPayout With {
-                    .MdiParent = frmMainForm
-                }
-                frmMainForm.pNavigate.Controls.Add(frm)
-                frmMainForm.pNavigate.Tag = frm
-                frm.BiometricID_TXT.Text = lvEmployee.FocusedItem.SubItems(0).Text
-                frm.Name_TXT.Text = lvEmployee.FocusedItem.SubItems(1).Text
-                frm.Name_TXT.Tag = lvEmployee.FocusedItem.SubItems(1).Tag
-                frm.paydate_ = btnSearch.Tag
-                frm.TabControl1.SelectedIndex = 1
-                frm.Show()
-                frm.Dock = DockStyle.Fill
-                frm.BringToFront()
-                frm.DETAILS()
+            SwitchForm_Payout(FormName.Payout_Details, tmpEmp, btnSearch.Tag, "DETAILS")
+            Close()
 
-            Else
-                frmEmployeeInfo.BringToFront()
-            End If
+        ElseIf txtSearch.Tag = "Payslip-Employee" Then
+
+            SwitchForm_Payout(FormName.Payout_Details, tmpEmp, btnSearch.Tag, "PAYSLIP")
+            Close()
+
+            'If frmPayout Is Nothing Then
+            '    Dim frm As New frmPayout With {
+            '        .MdiParent = frmMainForm
+            '    }
+            '    frmMainForm.pNavigate.Controls.Add(frm)
+            '    frmMainForm.pNavigate.Tag = frm
+            '    frm.Payslip_paydate_Combo.Text = btnSearch.Tag '==== Paydate ===   
+            '    frm.Employee_TXT.Text = lvEmployee.FocusedItem.SubItems(1).Text
+            '    frm.Preview_BTN.Tag = lvEmployee.FocusedItem.SubItems(1).Tag '==== Employee_id ===   
+            '    frm.Employee_TXT.Tag = lvEmployee.FocusedItem.SubItems(0).Text
+            '    frm.Email_TXT.Text = lvEmployee.FocusedItem.SubItems(5).Text
+            '    frm.Email_TXT.Tag = lvEmployee.FocusedItem.SubItems(2).Tag '==== RATE ===   
+            '    frm.EmpSelect_BTN.Tag = lvEmployee.FocusedItem.SubItems(9).Tag '==== Branch_id ===   
+            '    frm.Employee_RadioB.Checked = True
+            '    frm.TabControl1.SelectedIndex = 2
+            '    frm.Show()
+            '    frm.Dock = DockStyle.Fill
+            '    frm.BringToFront()
+            'Else
+            '    frmPayout.BringToFront()
+            'End If
 
         ElseIf txtSearch.Tag = "Settings-Rate" Then
 
@@ -116,7 +103,7 @@ Public Class frmEmployee
                 frm.BringToFront()
 
             Else
-                frmEmployeeInfo.BringToFront()
+                frmSettings.BringToFront()
             End If
 
         ElseIf txtSearch.Tag = "Settings-Allowance" Then
@@ -138,7 +125,7 @@ Public Class frmEmployee
                 frm.BringToFront()
 
             Else
-                frmEmployeeInfo.BringToFront()
+                frmSettings.BringToFront()
             End If
 
         ElseIf txtSearch.Tag = "Settings-Deduction" Then
@@ -159,52 +146,8 @@ Public Class frmEmployee
                 frm.Dock = DockStyle.Fill
                 frm.BringToFront()
             Else
-                frmEmployeeInfo.BringToFront()
+                frmSettings.BringToFront()
             End If
-
-        ElseIf txtSearch.Tag = "Payslip-Employee" Then
-
-            If frmPayout Is Nothing Then
-                Dim frm As New frmPayout With {
-                    .MdiParent = frmMainForm
-                }
-                frmMainForm.pNavigate.Controls.Add(frm)
-                frmMainForm.pNavigate.Tag = frm
-                frm.Payslip_paydate_Combo.Text = btnSearch.Tag '==== Paydate ===   
-                frm.Employee_TXT.Text = lvEmployee.FocusedItem.SubItems(1).Text
-                frm.Preview_BTN.Tag = lvEmployee.FocusedItem.SubItems(1).Tag '==== Employee_id ===   
-                frm.Employee_TXT.Tag = lvEmployee.FocusedItem.SubItems(0).Text
-                frm.Email_TXT.Text = lvEmployee.FocusedItem.SubItems(5).Text
-                frm.Email_TXT.Tag = lvEmployee.FocusedItem.SubItems(2).Tag '==== RATE ===   
-                frm.EmpSelect_BTN.Tag = lvEmployee.FocusedItem.SubItems(9).Tag '==== Branch_id ===   
-                frm.Employee_RadioB.Checked = True
-                frm.TabControl1.SelectedIndex = 2
-                frm.Show()
-                frm.Dock = DockStyle.Fill
-                frm.BringToFront()
-            Else
-                frmEmployeeInfo.BringToFront()
-            End If
-
-            'If frmPayslip Is Nothing Then
-            '    Dim frm As New frmPayslip With {
-            '        .MdiParent = frmMainForm
-            '    }
-            '    frmMainForm.pNavigate.Controls.Add(frm)
-            '    frmMainForm.pNavigate.Tag = frm
-            '    frm.Paydate_ComboB.Text = btnSearch.Tag '==== Paydate ===   
-            '    frm.Employee_TXT.Text = lvEmployee.FocusedItem.SubItems(1).Text
-            '    frm.Employee_TXT.Tag = lvEmployee.FocusedItem.SubItems(0).Text
-            '    frm.Email_TXT.Text = lvEmployee.FocusedItem.SubItems(5).Text
-            '    frm.Email_TXT.Tag = lvEmployee.FocusedItem.SubItems(9).Text '==== Branch_name ===   
-            '    frm.EmpSelect_BTN.Tag = lvEmployee.FocusedItem.SubItems(9).Tag '==== Branch_id ===   
-            '    frm.Employee_RadioB.Checked = True
-            '    frm.Show()
-            '    frm.Dock = DockStyle.Fill
-            '    frm.BringToFront()
-            'Else
-            '    frmEmployeeInfo.BringToFront()
-            'End If
 
         ElseIf txtSearch.Tag = "SSS Loan" Then
 
@@ -222,7 +165,7 @@ Public Class frmEmployee
                 frm.BringToFront()
             Else
 
-                frmEmployeeInfo.BringToFront()
+                frmContribution.BringToFront()
             End If
         ElseIf txtSearch.Tag = "Pagibig Loan" Then
 
@@ -239,7 +182,7 @@ Public Class frmEmployee
                 frm.Dock = DockStyle.Fill
                 frm.BringToFront()
             Else
-                frmEmployeeInfo.BringToFront()
+                frmContribution.BringToFront()
             End If
         End If
 
@@ -301,19 +244,19 @@ Public Class frmEmployee
     End Sub
 
     Private Sub View_Context_Click(sender As Object, e As EventArgs) Handles View_Context.Click
-        If frmEmployeeInfo Is Nothing Then
-            Dim frm As New frmEmployeeInfo With {
-                .MdiParent = frmMainForm
-            }
-            frmMainForm.pNavigate.Controls.Add(frm)
-            frmMainForm.pNavigate.Tag = frm
-            frm.Biometric_TXT.Text = lvEmployee.FocusedItem.SubItems(0).Text
-            frm.Show()
-            frm.Dock = DockStyle.Fill
-            frm.BringToFront()
-        Else
-            frmEmployeeInfo.BringToFront()
-        End If
+        'If frmEmployeeInfo Is Nothing Then
+        '    Dim frm As New frmEmployeeInfo With {
+        '        .MdiParent = frmMainForm
+        '    }
+        '    frmMainForm.pNavigate.Controls.Add(frm)
+        '    frmMainForm.pNavigate.Tag = frm
+        '    frm.Biometric_TXT.Text = lvEmployee.FocusedItem.SubItems(0).Text
+        '    frm.Show()
+        '    frm.Dock = DockStyle.Fill
+        '    frm.BringToFront()
+        'Else
+        '    frmEmployeeInfo.BringToFront()
+        'End If
     End Sub
 
     Private Sub txtSearch_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtSearch.KeyPress

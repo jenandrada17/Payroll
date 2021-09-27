@@ -17,15 +17,15 @@ Public Class frmSettings
             GetEmail(Email_TXT, Password_TXT)
         End If
 
-        PopulateComboBox(Rate_Branch_ComboB, "tbl_branch", "BRANCHNAME")
-        PopulateComboBox(Rate_Pos_ComboB, "tbl_employee", "EMP_POSITION")
-        PopulateComboBox(Allow_Category_Combo, "CATEGORY_ALLOWANCE", "ALLOWANCE_NAME")
-        PopulateComboBox(DE_Category_Combo, "CATEGORY_DEDUCTION", "DEDUCTION_NAME")
+        'PopulateComboBox(Rate_Branch_ComboB, "tbl_branch", "BRANCHNAME")
+        'PopulateComboBox(Rate_Pos_ComboB, "tbl_employee", "EMP_POSITION")
+        'PopulateComboBox(Allow_Category_Combo, "CATEGORY_ALLOWANCE", "ALLOWANCE_NAME")
+        'PopulateComboBox(DE_Category_Combo, "CATEGORY_DEDUCTION", "DEDUCTION_NAME")
         Lists_Rate(Rate_list)
-        Lists_Allowance(Allowance_LV)
-        Lists_deduction(Deduction_List)
-        Load_Category_LIST(Allowance_List, "CATEGORY_ALLOWANCE", "ALLOWANCE_NAME")
-        Load_Category_LIST(Cat_Deduc_List, "CATEGORY_DEDUCTION", "DEDUCTION_NAME")
+        'Lists_Allowance(Allowance_LV)
+        'Lists_deduction(Deduction_List)
+        'Load_Category_LIST(Allowance_List, "CATEGORY_ALLOWANCE", "ALLOWANCE_NAME")
+        'Load_Category_LIST(Cat_Deduc_List, "CATEGORY_DEDUCTION", "DEDUCTION_NAME")
 
     End Sub
 
@@ -149,7 +149,7 @@ Public Class frmSettings
             frm.Dock = DockStyle.Fill
             frm.BringToFront()
         Else
-            frmEmployeeInfo.BringToFront()
+            frmEmployee.BringToFront()
         End If
 
         Close()
@@ -247,7 +247,7 @@ Public Class frmSettings
             frm.Dock = DockStyle.Fill
             frm.BringToFront()
         Else
-            frmEmployeeInfo.BringToFront()
+            frmEmployee.BringToFront()
         End If
 
         Close()
@@ -383,7 +383,7 @@ Public Class frmSettings
             frm.Dock = DockStyle.Fill
             frm.BringToFront()
         Else
-            frmEmployeeInfo.BringToFront()
+            frmEmployee.BringToFront()
         End If
 
         Close()

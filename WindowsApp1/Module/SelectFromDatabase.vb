@@ -299,31 +299,31 @@ Module SelectFromDatabase
                     mysql &= $"{vbCr}UPPER(lastname) Like UPPER('%{name}%') OR "
                     mysql &= $"{vbCr}UPPER(branchname) Like UPPER('%{name}%') OR "
                     mysql &= $"{vbCr}UPPER(A.STATUS) Like UPPER('%{name}%') OR "
-                    mysql &= $"{vbCr}UPPER(COMPANYNAME) Like UPPER('%{name}%')"
+                    mysql &= $"{vbCr}UPPER(COMPANYNAME) Like UPPER('%{name}%') order by BIOMETRICID ASC"
                 Next
 
             Else
-                mysql = "Select * From tbl_Employee A inner join tbl_branch B on B.ID = A.BRANCH_ID"
+                mysql = "Select * From tbl_Employee A inner join tbl_branch B on B.ID = A.BRANCH_ID  order by BIOMETRICID ASC"
             End If
 
             Using ds As DataSet = LoadSQL(mysql, "tbl_Employee")
-                rowCount = ds.Tables(0).Rows.Count
-                Dim maxEntries As Integer = ds.Tables(0).Rows.Count
-                frmMainForm.AppProgressBar.Maximum = maxEntries
-                frmMainForm.AppProgressBar.Visible = True
-                listview.Items.Clear()
-                For Each dr In ds.Tables(0).Rows
-                    AddItem(dr, listview)
-                    frmMainForm.AppProgressBar.Value += 1
-                Next
+                If ds.Tables(0).Rows.Count > 0 Then
+                    listview.Items.Clear()
+                    progressBarStart(ds.Tables(0).Rows.Count)
+
+                    For Each dr In ds.Tables(0).Rows
+                        AddItem(dr, listview)
+                        frmMainForm.AppProgressBar.Value += 1
+                    Next
+                End If
             End Using
 
-            frmMainForm.AppProgressBar.Value = 0
-            frmMainForm.AppProgressBar.Maximum = 1000
-            frmMainForm.AppProgressBar.Visible = False
+            progressBarEnd()
+
         Catch ex As Exception
             Log_Report(ex.ToString())
         End Try
+
     End Sub
 
     Private Sub AddItem(ByVal dr As DataRow, listview As ListView)
@@ -343,14 +343,14 @@ Module SelectFromDatabase
 
             Dim lv As ListViewItem = listview.Items.Add(.Item("BIOMETRICID"))
             lv.SubItems.Add(String.Format("{0}, {1} {2}", .Item("LastName"), .Item("FirstName"), MI)).Tag = .Item("ID")
-            lv.SubItems.Add(datee).Tag = .Item("RATE")
-            lv.SubItems.Add(.Item("NO_OF_DAYS"))
-            lv.SubItems.Add(.Item("CONTACTNO"))
-            lv.SubItems.Add(.Item("EmailAdd"))
-            lv.SubItems.Add(.Item("STATUS"))
-            lv.SubItems.Add(.Item("EMP_POSITION"))
-            lv.SubItems.Add(.Item("COMPANYNAME"))
-            lv.SubItems.Add(.Item("BRANCHNAME")).Tag = .Item("BRANCH_ID")
+            lv.SubItems.Add(datee).Tag = IIf(IsDBNull(.Item("RATE")), "", .Item("RATE"))
+            lv.SubItems.Add(IIf(IsDBNull(.Item("NO_OF_DAYS")), "", .Item("NO_OF_DAYS")))
+            lv.SubItems.Add(IIf(IsDBNull(.Item("CONTACTNO")), "", .Item("CONTACTNO")))
+            lv.SubItems.Add(IIf(IsDBNull(.Item("EmailAdd")), "", .Item("EmailAdd")))
+            lv.SubItems.Add(IIf(IsDBNull(.Item("STATUS")), "", .Item("STATUS")))
+            lv.SubItems.Add(IIf(IsDBNull(.Item("EMP_POSITION")), "", .Item("EMP_POSITION")))
+            lv.SubItems.Add(IIf(IsDBNull(.Item("COMPANYNAME")), "", .Item("COMPANYNAME")))
+            lv.SubItems.Add(IIf(IsDBNull(.Item("BRANCHNAME")), "", .Item("BRANCHNAME"))).Tag = IIf(IsDBNull(.Item("BRANCH_ID")), "", .Item("BRANCH_ID"))
         End With
     End Sub
 
@@ -1572,7 +1572,7 @@ Module SelectFromDatabase
         With dr
             Dim i As ListViewItem = listview.Items.Add(.Item("BRANCHNAME"))
             i.SubItems.Add(.Item("LASTNAME") & ", " & .Item("FIRSTNAME") & " " & .Item("MIDDLENAME")).tag = .Item("BIOMETRICID")
-            i.SubItems.Add(.Item("EMP_POSITION"))
+            i.SubItems.Add(IIf(IsDBNull(.Item("EMP_POSITION")), "", .Item("EMP_POSITION")))
             i.SubItems.Add(IIf(IsDBNull(.Item("RATE")), "", .Item("RATE")))
         End With
 

@@ -144,12 +144,6 @@
     <Compile Include="Forms\frmEmployee.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\frmEmployeeInfo.Designer.vb">
-      <DependentUpon>frmEmployeeInfo.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\frmEmployeeInfo.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Forms\frmMainForm.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -203,9 +197,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmEmployee.resx">
       <DependentUpon>frmEmployee.vb</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmEmployeeInfo.resx">
-      <DependentUpon>frmEmployeeInfo.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmMainForm.resx">
       <DependentUpon>frmMainForm.vb</DependentUpon>
