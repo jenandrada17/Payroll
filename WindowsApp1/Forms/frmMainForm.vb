@@ -1,5 +1,42 @@
 ﻿Imports System.Globalization
+
 Public Class frmMainForm
+
+    Dim DateNow As DateTime = DateTime.Now
+    Dim StartFour, EndFour, StartNineteen, EndNineteen As DateTime
+    Public Paydate As DateTime
+
+    Private Sub frmMainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+        'RunCommand("INSERT INTO TBL_EMPLOYEE (ID, FIRSTNAME, MIDDLENAME, LASTNAME, SUFFIX, DATEOFBIRTH, GENDER, CIVILSTATUS, PERMANENT_ADDID, PERMANENT_STREET, PRESENT_ADDID, PRESENT_STREET, EMAILADD,
+        '                        DATEHIRED, BIOMETRICID, CONTACTNO, BIRATE, BI_REMARKS, SSSNO, PHILHEALTHNO, TINNO, STATUS, REMARKS, ASSIGN_STATUS, PAGIBIG, EMP_POSITION, BRANCH_ID, NO_OF_DAYS, RATE) 
+        '                    SELECT ID, FIRSTNAME, MIDDLENAME, LASTNAME, SUFFIX, DATEOFBIRTH, GENDER, CIVILSTATUS, PERMANENT_ADDID, PERMANENT_STREET, PRESENT_ADDID, PRESENT_STREET, EMAILADD, 
+        '                        DATEHIRED, BIOMETRICID, CONTACTNO, BIRATE, BI_REMARKS, SSSNO, PHILHEALTHNO, TINNO, STATUS, REMARKS, ASSIGN_STATUS, PAGIBIG, EMP_POSITION, BRANCH_ID, NO_OF_DAYS, RATE 
+        '                    FROM TBL_EMPLOYEE_COPY where id <> ;")
+
+        'RunCommand("INSERT INTO TBL_EMPLOYEE SELECT * FROM TBL_EMPLOYEE_COPY where NOT EXISTS(SELECT id FROM TBL_EMPLOYEE) ;")
+
+        'RunCommand("INSERT INTO TBL_EMPLOYEE (ID, FIRSTNAME, MIDDLENAME, LASTNAME, SUFFIX, DATEOFBIRTH, GENDER, CIVILSTATUS, PERMANENT_ADDID, PERMANENT_STREET, PRESENT_ADDID, PRESENT_STREET, EMAILADD,
+        ''                        DATEHIRED, BIOMETRICID, CONTACTNO, BIRATE, BI_REMARKS, SSSNO, PHILHEALTHNO, TINNO, STATUS, REMARKS, ASSIGN_STATUS, PAGIBIG, EMP_POSITION, BRANCH_ID, NO_OF_DAYS, RATE) 
+        '            SELECT MAX(id) FROM TBL_EMPLOYEE_COPY where NOT EXISTS(SELECT id FROM TBL_EMPLOYEE where id <> (SELECT id FROM TBL_EMPLOYEE_COPY) ) ;")
+
+        AppDateTime.Text = Date.Now.ToString("dddd, MMMM dd, yyyy hh:mm:ss tt", CultureInfo.CurrentCulture)
+
+        StartFour = New DateTime(DateNow.Year, DateNow.Month, 4).AddDays(-1)
+        EndFour = New DateTime(DateNow.Year, DateNow.Month, 18)
+
+        StartNineteen = New DateTime(DateNow.Year, DateNow.Month, 19).AddMonths(-1).AddDays(-1)
+        EndNineteen = New DateTime(StartNineteen.Year, StartNineteen.Month, 3).AddMonths(1)
+
+
+        If DateNow.Day - 16 <= 2 And DateNow.Day - 16 >= -12 Then
+            Paydate = EndNineteen.AddDays(12)
+        Else
+            Paydate = New DateTime(EndFour.Year, EndFour.Month, DateTime.DaysInMonth(EndFour.Year, EndFour.Month))
+        End If
+
+        'MsgBox("Padyasdas " & Paydate)
+    End Sub
 
     '======================================Buttons================================================== 
 
@@ -45,11 +82,6 @@ Public Class frmMainForm
     Private Sub Minimize_LBL_MouseLeave(sender As Object, e As EventArgs) Handles Minimize_LBL.MouseLeave
         Minimize_LBL.ForeColor = Color.Black
     End Sub
-
-    Private Sub frmMainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        AppDateTime.Text = Date.Now.ToString("dddd, MMMM dd, yyyy hh:mm:ss tt", CultureInfo.CurrentCulture)
-    End Sub
-
 
     '========================================MOUSEENTER MOUSELEAVE=======================
     Private Sub BTN_Dashboard_MouseEnter(sender As Object, e As EventArgs) Handles Dashboard_BTN.MouseEnter
@@ -100,12 +132,24 @@ Public Class frmMainForm
         Loan_BTN.BackColor = Color.Black
     End Sub
 
-    Private Sub Calculator_BTN_MouseEnter(sender As Object, e As EventArgs) Handles Calculator_BTN.MouseEnter
-        Calculator_BTN.BackColor = Color.DimGray
+    Private Sub Calculator_BTN_MouseEnter(sender As Object, e As EventArgs) Handles Contribution_BTN.MouseEnter
+        Contribution_BTN.BackColor = Color.DimGray
     End Sub
 
-    Private Sub Calculator_BTN_MouseLeave(sender As Object, e As EventArgs) Handles Calculator_BTN.MouseLeave
-        Calculator_BTN.BackColor = Color.Black
+    Private Sub Contribution_BTN_Click(sender As Object, e As EventArgs) Handles Contribution_BTN.Click
+        OpenWindowsForm("frmContribution")
+    End Sub
+
+    Private Sub Paysilp_BTN_Click(sender As Object, e As EventArgs) Handles Paysilp_BTN.Click
+        'OpenWindowsForm("frmPayslip")
+    End Sub
+
+    Private Sub Loan_BTN_Click(sender As Object, e As EventArgs) Handles Loan_BTN.Click
+        OpenWindowsForm("frmDecrypt")
+    End Sub
+
+    Private Sub Calculator_BTN_MouseLeave(sender As Object, e As EventArgs) Handles Contribution_BTN.MouseLeave
+        Contribution_BTN.BackColor = Color.Black
     End Sub
 
     Private Sub Settings_BTN_MouseEnter(sender As Object, e As EventArgs) Handles Settings_BTN.MouseEnter

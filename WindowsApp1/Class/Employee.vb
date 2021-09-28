@@ -1,103 +1,91 @@
 ﻿Public Class Employee
 
 
-#Region "Salary and Allowance"
+#Region "Employee Details"
+    Public Property EMP_ID() As String
 
-    Public Property ID() As String
+    Public Property BiometricID() As String
 
-    Public Property Monthly() As String
+    Public Property Fullname() As String
 
-    Public Property Daily() As String
+    Public Property FirstName() As String
 
-    Public Property Boarding() As String
+    Public Property MiddleName() As String
 
-    Public Property Carekit() As String
+    Public Property LastName() As String
 
-    Public Property Transportation() As String
+    Public Property Suffix() As String
 
-    Public Property Medical() As String
+    Public Property DateStarted() As String
 
-    Public Property Positional() As String
+    Public Property NoOfDays() As String
 
-    Public Property OtherAllowance() As String
+    Public Property EmailAdd() As String
 
-    Public Property IDExist() As String
+    Public Property Status() As String
 
-    Public Property Fix() As String
+    Public Property Position() As String
 
+    Public Property Company() As String
+
+    Public Property BranchName() As String
+
+    Public Property BranchID() As String
+
+    Public Property Rate() As String
 #End Region
 
-#Region "Deduction"
 
-    Public Property CashAdvance() As String
+    Friend Sub LoadEmployee(ByVal idx As Integer)
+        Dim mysql As String = "Select * From tbl_Employee where id = '" & idx & "'"
+        Using ds As DataSet = LoadSQL(mysql, "tbl_Employee")
 
-    Public Property Savings() As String
+            If ds.Tables(0).Rows.Count > 0 Then
 
-    Public Property Loans() As String
+                Dim dr As DataRow = ds.Tables(0).Rows(0)
+                With dr
 
-    Public Property Charges() As String
+                    Dim MI As String
 
-    Public Property Meal() As String
+                    If String.IsNullOrEmpty(.Item("MIDDLENAME")) Then
+                        MI = ""
+                    Else
+                        MI = .Item("MIDDLENAME").Substring(0, 1) & "."
+                    End If
 
-    Public Property OtherDeduction() As String
 
-#End Region
+                    EMP_ID = .Item("id")
+                    BiometricID = .Item("BIOMETRICID")
+                    Fullname = $"{ .Item("LastName")}, { .Item("FirstName")} {MI}"
+                    FirstName = .Item("FIRSTNAME")
+                    MiddleName = .Item("MIDDLENAME")
+                    LastName = .Item("LASTNAME")
+                    Suffix = .Item("SUFFIX")
+                    EmailAdd = IIf(IsDBNull(.Item("EMAILADD")), "", .Item("EMAILADD"))
+                    Rate = IIf(IsDBNull(.Item("Rate")), "", .Item("Rate"))
+                    Status = IIf(IsDBNull(.Item("STATUS")), "", .Item("STATUS"))
+                    Position = IIf(IsDBNull(.Item("Emp_Position")), "", .Item("Emp_Position"))
+                    BranchID = IIf(IsDBNull(.Item("BRANCH_ID")), "", .Item("BRANCH_ID"))
 
-    Friend Sub UpdateAllowDeduc()
-        Dim mysql As String = "Select * From PAYROLL_ALLOW_DEDUC Where EMP_ID = '" & ID & "'"
-        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ALLOW_DEDUC")
-
-            With ds.Tables(0).Rows(0)
-                .Item("MONTHLY_SALARY") = Monthly
-                .Item("DAILY_SALARY") = Daily
-                .Item("BOARDING_ALLOWANCE") = Boarding
-                .Item("CAREKIT_ALLOWANCE") = Carekit
-                .Item("TRANSPO_ALLOWANCE") = Transportation
-                .Item("MEDICAL_ALLOWANCE") = Medical
-                .Item("POSITIONAL_ALLOWANCE") = Positional
-                .Item("OTHER_ALLOWANCE") = OtherAllowance
-                .Item("FIX_RATE") = Fix()
-
-                .Item("CASH_ADVANCE") = CashAdvance
-                .Item("SAVINGS_DEDUCTION") = Savings
-                .Item("LOANS_DEDUCTION") = Loans
-                .Item("CHARGES_DEDUCTION") = Charges
-                .Item("MEAL_DEDUCTION") = Meal
-                .Item("OTHER_DEDUCTION") = OtherDeduction
-            End With
-            SaveEntry(ds, False)
+                End With
+            End If
         End Using
 
-    End Sub
+        If Not BranchID = Nothing Then
+            Dim sql As String = "Select * From TBL_BRANCH  where id = '" & BranchID & "'"
+            Using dss As DataSet = LoadSQL(sql, "TBL_BRANCH")
 
-    Friend Sub SaveAllowDeduc()
-        Dim mysql As String = "Select * From PAYROLL_ALLOW_DEDUC Rows 1"
-        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ALLOW_DEDUC")
+                If dss.Tables(0).Rows.Count > 0 Then
+                    Dim drr As DataRow = dss.Tables(0).Rows(0)
+                    With drr
+                        Company = .Item("COMPANYNAME")
+                        BranchName = .Item("BRANCHNAME")
+                    End With
+                End If
 
-            Dim dsNewRow As DataRow
-            dsNewRow = ds.Tables(0).NewRow
-            With dsNewRow
-                .Item("EMP_ID") = ID
-                .Item("MONTHLY_SALARY") = Monthly
-                .Item("DAILY_SALARY") = Daily
-                .Item("BOARDING_ALLOWANCE") = Boarding
-                .Item("CAREKIT_ALLOWANCE") = Carekit
-                .Item("TRANSPO_ALLOWANCE") = Transportation
-                .Item("MEDICAL_ALLOWANCE") = Medical
-                .Item("POSITIONAL_ALLOWANCE") = Positional
-                .Item("OTHER_ALLOWANCE") = OtherAllowance
-                .Item("FIX_RATE") = Fix
+            End Using
+        End If
 
-                .Item("CASH_ADVANCE") = CashAdvance
-                .Item("SAVINGS_DEDUCTION") = Savings
-                .Item("LOANS_DEDUCTION") = Loans
-                .Item("CHARGES_DEDUCTION") = Charges
-                .Item("MEAL_DEDUCTION") = Meal
-                .Item("OTHER_DEDUCTION") = OtherDeduction
-            End With
-            ds.Tables(0).Rows.Add(dsNewRow)
-            SaveEntry(ds)
-        End Using
     End Sub
 
 End Class
