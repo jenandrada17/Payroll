@@ -238,6 +238,7 @@ Public Class frmPayout
 
         Deduction_grid.Rows.Clear()
         Allowance_grid.Rows.Clear()
+        Prev_Amount_lbl.Text = "-"
 
     End Sub
 
@@ -530,7 +531,6 @@ Public Class frmPayout
         Else
 
             Try
-
                 Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmEmployee").SingleOrDefault()
                 If instForm Is Nothing Then
                     Dim frm As frmEmployee
@@ -550,21 +550,6 @@ Public Class frmPayout
             Catch ex As Exception
 
             End Try
-
-            'If frmEmployee Is Nothing Then
-            '    Dim frm As New frmEmployee With {
-            '        .MdiParent = frmMainForm
-            '    }
-            '    frmMainForm.pNavigate.Controls.Add(frm)
-            '    frmMainForm.pNavigate.Tag = frm
-            '    frm.txtSearch.Tag = "Payslip-Employee"
-            '    frm.btnSearch.Tag = Payslip_paydate_Combo.Text
-            '    frm.Show()
-            '    frm.Dock = DockStyle.Fill
-            '    frm.BringToFront()
-            'Else
-            '    frmEmployee.BringToFront()
-            'End If
         End If
     End Sub
 
@@ -987,9 +972,10 @@ Public Class frmPayout
 
     End Sub
 
-    Public Sub Load_Payout(emp As Employee, paydatee As String, empNo As String)
+    Public Sub Load_Payout(emp As Employee, paydatee As String, tabName As String)
         With emp
-            If empNo = "DETAILS" Then
+            If tabName = "DETAILS" Then
+                Cancel_BTN.PerformClick()
                 BiometricID_TXT.Text = .BiometricID
                 Name_TXT.Text = .Fullname
                 Name_TXT.Tag = .EMP_ID

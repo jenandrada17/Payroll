@@ -32,15 +32,15 @@ Module Public_Function
     End Sub
 
     Friend Enum FormName As Integer
-        Attendance_DTR
-        Attendance_Mannual
-        Payout_Details
-        Payout_Payslip
+        Attendance
+        Payout
+        Loans
+        Settings
     End Enum
 
     Friend Sub SwitchForm_Attendance(ByVal gotoForm As FormName, emp As Employee, empNo As Integer, Optional btnSearch_tag As String = "")
         Select Case gotoForm
-            Case FormName.Attendance_DTR
+            Case FormName.Attendance
                 Try
                     Dim instForm As frmAttendance = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmAttendance").SingleOrDefault()
                     instForm.Load_Attendance(emp, empNo)
@@ -60,34 +60,12 @@ Module Public_Function
                 Catch ex As Exception
 
                 End Try
-
-            Case FormName.Attendance_Mannual
-                Try
-                    Dim instForm_ As frmAttendance = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmAttendance").SingleOrDefault()
-                    instForm_.Load_Attendance(emp, empNo)
-
-                    If instForm_ Is Nothing Then
-                        instForm_ = DirectCast(CreateObjectInstance("frmAttendance"), Form)
-                        instForm_.MdiParent = frmMainForm
-                        frmMainForm.pNavigate.Controls.Add(instForm_)
-                        frmMainForm.pNavigate.Tag = instForm_
-                        instForm_.Show()
-                        instForm_.Dock = DockStyle.Fill
-                        instForm_.BringToFront()
-                    Else
-                        instForm_.BringToFront()
-                    End If
-
-                Catch ex As Exception
-
-                End Try
-
         End Select
     End Sub
 
     Friend Sub SwitchForm_Payout(ByVal gotoForm As FormName, emp As Employee, paydate As String, empNo As String)
         Select Case gotoForm
-            Case FormName.Payout_Details
+            Case FormName.Payout
                 Try
                     Dim instForm_ As frmPayout = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmPayout").SingleOrDefault()
                     instForm_.Load_Payout(emp, paydate, empNo)
@@ -110,15 +88,40 @@ Module Public_Function
         End Select
     End Sub
 
-    Friend Sub SwitchForm_Settings(ByVal gotoForm As FormName, emp As Employee)
+    Friend Sub SwitchForm_Settings(ByVal gotoForm As FormName, emp As Employee, tabName As String)
         Select Case gotoForm
-            Case FormName.Payout_Details
+            Case FormName.Settings
                 Try
-                    Dim instForm_ As frmPayout = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmPayout").SingleOrDefault()
-                    'instForm_.Load_Payout(emp, paydate)
+                    Dim instForm_ As frmSettings = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmSettings").SingleOrDefault()
+                    instForm_.Load_Settings(emp, tabName)
 
                     If instForm_ Is Nothing Then
-                        instForm_ = DirectCast(CreateObjectInstance("frmPayout"), Form)
+                        instForm_ = DirectCast(CreateObjectInstance("frmSettings"), Form)
+                        instForm_.MdiParent = frmMainForm
+                        frmMainForm.pNavigate.Controls.Add(instForm_)
+                        frmMainForm.pNavigate.Tag = instForm_
+                        instForm_.Show()
+                        instForm_.Dock = DockStyle.Fill
+                        instForm_.BringToFront()
+                    Else
+                        instForm_.BringToFront()
+                    End If
+
+                Catch ex As Exception
+
+                End Try
+        End Select
+    End Sub
+
+    Friend Sub SwitchForm_Loans(ByVal gotoForm As FormName, emp As Employee, tabName As String)
+        Select Case gotoForm
+            Case FormName.Loans
+                Try
+                    Dim instForm_ As frmContribution = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmContribution").SingleOrDefault()
+                    instForm_.Load_Contrib_Loan(emp, tabName)
+
+                    If instForm_ Is Nothing Then
+                        instForm_ = DirectCast(CreateObjectInstance("frmContribution"), Form)
                         instForm_.MdiParent = frmMainForm
                         frmMainForm.pNavigate.Controls.Add(instForm_)
                         frmMainForm.pNavigate.Tag = instForm_

@@ -17,15 +17,15 @@ Public Class frmSettings
             GetEmail(Email_TXT, Password_TXT)
         End If
 
-        'PopulateComboBox(Rate_Branch_ComboB, "tbl_branch", "BRANCHNAME")
-        'PopulateComboBox(Rate_Pos_ComboB, "tbl_employee", "EMP_POSITION")
-        'PopulateComboBox(Allow_Category_Combo, "CATEGORY_ALLOWANCE", "ALLOWANCE_NAME")
-        'PopulateComboBox(DE_Category_Combo, "CATEGORY_DEDUCTION", "DEDUCTION_NAME")
+        PopulateComboBox(Rate_Branch_ComboB, "tbl_branch", "BRANCHNAME")
+        PopulateComboBox(Rate_Pos_ComboB, "tbl_employee", "EMP_POSITION")
+        PopulateComboBox(Allow_Category_Combo, "CATEGORY_ALLOWANCE", "ALLOWANCE_NAME")
+        PopulateComboBox(DE_Category_Combo, "CATEGORY_DEDUCTION", "DEDUCTION_NAME")
         Lists_Rate(Rate_list)
-        'Lists_Allowance(Allowance_LV)
-        'Lists_deduction(Deduction_List)
-        'Load_Category_LIST(Allowance_List, "CATEGORY_ALLOWANCE", "ALLOWANCE_NAME")
-        'Load_Category_LIST(Cat_Deduc_List, "CATEGORY_DEDUCTION", "DEDUCTION_NAME")
+        Lists_Allowance(Allowance_LV)
+        Lists_deduction(Deduction_List)
+        Load_Category_LIST(Allowance_List, "CATEGORY_ALLOWANCE", "ALLOWANCE_NAME")
+        Load_Category_LIST(Cat_Deduc_List, "CATEGORY_DEDUCTION", "DEDUCTION_NAME")
 
     End Sub
 
@@ -137,23 +137,25 @@ Public Class frmSettings
     End Sub
 
     Private Sub Rate_EmpSelect_BTN_Click(sender As Object, e As EventArgs) Handles Rate_EmpSelect_BTN.Click
+        Try
+            Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmEmployee").SingleOrDefault()
+            If instForm Is Nothing Then
+                Dim frm As frmEmployee
+                frm = DirectCast(CreateObjectInstance("frmEmployee"), Form)
+                frm.MdiParent = frmMainForm
+                frmMainForm.pNavigate.Controls.Add(frm)
+                frmMainForm.pNavigate.Tag = frm
+                frm.txtSearch.Tag = "Settings-Rate"
+                frm.Dock = DockStyle.Fill
+                frm.BringToFront()
+                frm.Show()
+            Else
+                instForm.BringToFront()
+            End If
 
-        If frmEmployee Is Nothing Then
-            Dim frm As New frmEmployee With {
-                .MdiParent = frmMainForm
-            }
-            frmMainForm.pNavigate.Controls.Add(frm)
-            frmMainForm.pNavigate.Tag = frm
-            frm.txtSearch.Tag = "Settings-Rate"
-            frm.Show()
-            frm.Dock = DockStyle.Fill
-            frm.BringToFront()
-        Else
-            frmEmployee.BringToFront()
-        End If
+        Catch ex As Exception
 
-        Close()
-
+        End Try
     End Sub
 
     Private Sub Rate_EmpSave_BTN_Click(sender As Object, e As EventArgs) Handles Rate_EmpSave_BTN.Click
@@ -234,24 +236,26 @@ Public Class frmSettings
     End Sub
 
     Private Sub Allow_Search_BTN_Click(sender As Object, e As EventArgs) Handles Allow_SearchEmp_BTN.Click
+        Try
+            Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmEmployee").SingleOrDefault()
+            If instForm Is Nothing Then
+                Dim frm As frmEmployee
+                frm = DirectCast(CreateObjectInstance("frmEmployee"), Form)
+                frm.MdiParent = frmMainForm
+                frmMainForm.pNavigate.Controls.Add(frm)
+                frmMainForm.pNavigate.Tag = frm
+                frm.txtSearch.Tag = "Settings-Allowance"
+                frm.btnSearch.Tag = Allow_Category_Combo.SelectedItem
+                frm.Dock = DockStyle.Fill
+                frm.BringToFront()
+                frm.Show()
+            Else
+                instForm.BringToFront()
+            End If
 
-        If frmEmployee Is Nothing Then
-            Dim frm As New frmEmployee With {
-                .MdiParent = frmMainForm
-            }
-            frmMainForm.pNavigate.Controls.Add(frm)
-            frmMainForm.pNavigate.Tag = frm
-            frm.txtSearch.Tag = "Settings-Allowance"
-            frm.btnSearch.Tag = Allow_Category_Combo.SelectedItem
-            frm.Show()
-            frm.Dock = DockStyle.Fill
-            frm.BringToFront()
-        Else
-            frmEmployee.BringToFront()
-        End If
+        Catch ex As Exception
 
-        Close()
-
+        End Try
     End Sub
 
     Private Sub Allow_Save_BTN_Click(sender As Object, e As EventArgs) Handles Allow_Save_BTN.Click
@@ -370,23 +374,43 @@ Public Class frmSettings
     End Sub
 
     Private Sub DE_SearchEmp_BTN_Click(sender As Object, e As EventArgs) Handles DE_SearchEmp_BTN.Click
+        Try
+            Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmEmployee").SingleOrDefault()
+            If instForm Is Nothing Then
+                Dim frm As frmEmployee
+                frm = DirectCast(CreateObjectInstance("frmEmployee"), Form)
+                frm.MdiParent = frmMainForm
+                frmMainForm.pNavigate.Controls.Add(frm)
+                frmMainForm.pNavigate.Tag = frm
+                frm.txtSearch.Tag = "Settings-Deduction"
+                frm.btnSearch.Tag = DE_Category_Combo.SelectedItem
+                frm.Dock = DockStyle.Fill
+                frm.BringToFront()
+                frm.Show()
+            Else
+                instForm.BringToFront()
+            End If
 
-        If frmEmployee Is Nothing Then
-            Dim frm As New frmEmployee With {
-                .MdiParent = frmMainForm
-            }
-            frmMainForm.pNavigate.Controls.Add(frm)
-            frmMainForm.pNavigate.Tag = frm
-            frm.txtSearch.Tag = "Settings-Deduction"
-            frm.btnSearch.Tag = DE_Category_Combo.SelectedItem
-            frm.Show()
-            frm.Dock = DockStyle.Fill
-            frm.BringToFront()
-        Else
-            frmEmployee.BringToFront()
-        End If
+        Catch ex As Exception
 
-        Close()
+        End Try
+
+        'If frmEmployee Is Nothing Then
+        '    Dim frm As New frmEmployee With {
+        '        .MdiParent = frmMainForm
+        '    }
+        '    frmMainForm.pNavigate.Controls.Add(frm)
+        '    frmMainForm.pNavigate.Tag = frm
+        '    frm.txtSearch.Tag = "Settings-Deduction"
+        '    frm.btnSearch.Tag = DE_Category_Combo.SelectedItem
+        '    frm.Show()
+        '    frm.Dock = DockStyle.Fill
+        '    frm.BringToFront()
+        'Else
+        '    frmEmployee.BringToFront()
+        'End If
+
+        'Close()
 
     End Sub
 
@@ -587,4 +611,38 @@ Public Class frmSettings
             DE_AmountGive_TXT.Clear()
         End If
     End Sub
+
+    Public Sub Load_Settings(emp As Employee, tabName As String, Optional category As String = "")
+        With emp
+
+            If tabName = "RATE" Then
+
+                Rate_BioNo_TXT.Text = .BiometricID
+                Rate_BioNo_TXT.Tag = .BranchID
+                Rate_Employee_TXT.Text = .Fullname
+                Rate_Employee_TXT.Tag = .EMP_ID
+
+            ElseIf tabName = "ALLOWANCE" Then
+
+                Allow_Name_TXT.Text = .Fullname
+                Allow_Name_TXT.Tag = .BiometricID
+                Allow_SearchEmp_BTN.Tag = .BranchID
+                Label14.Tag = .EMP_ID
+                Settings_Tab.SelectedIndex = 2
+                Allow_Category_Combo.SelectedItem = category
+
+            ElseIf tabName = "DEDUCTION" Then
+
+                DE_Name_TXT.Text = .Fullname
+                DE_Category_Combo.Tag = .EMP_ID
+                DE_Name_TXT.Tag = .BiometricID
+                DE_SearchEmp_BTN.Tag = .BranchID
+                Settings_Tab.SelectedIndex = 3
+                DE_Category_Combo.SelectedItem = category
+
+            End If
+
+        End With
+    End Sub
+
 End Class

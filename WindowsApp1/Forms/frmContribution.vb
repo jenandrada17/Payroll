@@ -133,20 +133,25 @@ Public Class frmContribution
 
     Private Sub SSS_SearchEmp_BTN_Click(sender As Object, e As EventArgs) Handles SSS_SearchEmp_BTN.Click
 
-        If frmEmployee Is Nothing Then
-            Dim frm As New frmEmployee With {
-                .MdiParent = frmMainForm
-            }
-            frmMainForm.pNavigate.Controls.Add(frm)
-            frmMainForm.pNavigate.Tag = frm
-            frm.txtSearch.Tag = "SSS Loan"
-            frm.Show()
-            frm.Dock = DockStyle.Fill
-            frm.BringToFront()
-        Else
-            frmEmployee.BringToFront()
-        End If
+        Try
+            Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmEmployee").SingleOrDefault()
+            If instForm Is Nothing Then
+                Dim frm As frmEmployee
+                frm = DirectCast(CreateObjectInstance("frmEmployee"), Form)
+                frm.MdiParent = frmMainForm
+                frmMainForm.pNavigate.Controls.Add(frm)
+                frmMainForm.pNavigate.Tag = frm
+                frm.txtSearch.Tag = "SSS Loan"
+                frm.Dock = DockStyle.Fill
+                frm.BringToFront()
+                frm.Show()
+            Else
+                instForm.BringToFront()
+            End If
 
+        Catch ex As Exception
+
+        End Try
     End Sub
 
     Private Sub Allow_Cancel_BTN_Click(sender As Object, e As EventArgs) Handles Allow_Cancel_BTN.Click
@@ -162,23 +167,46 @@ Public Class frmContribution
 
     Private Sub Emp_BTN_Click(sender As Object, e As EventArgs) Handles Emp_BTN.Click
 
-        If frmEmployee Is Nothing Then
-            Dim frm As New frmEmployee With {
-                .MdiParent = frmMainForm
-            }
-            frmMainForm.pNavigate.Controls.Add(frm)
-            frmMainForm.pNavigate.Tag = frm
-            frm.txtSearch.Tag = "Pagibig Loan"
-            frm.Show()
-            frm.Dock = DockStyle.Fill
-            frm.BringToFront()
-        Else
-            frmEmployee.BringToFront()
-        End If
+        Try
+            Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmEmployee").SingleOrDefault()
+            If instForm Is Nothing Then
+                Dim frm As frmEmployee
+                frm = DirectCast(CreateObjectInstance("frmEmployee"), Form)
+                frm.MdiParent = frmMainForm
+                frmMainForm.pNavigate.Controls.Add(frm)
+                frmMainForm.pNavigate.Tag = frm
+                frm.txtSearch.Tag = "Pagibig Loan"
+                frm.Dock = DockStyle.Fill
+                frm.BringToFront()
+                frm.Show()
+            Else
+                instForm.BringToFront()
+            End If
+
+        Catch ex As Exception
+
+        End Try
 
     End Sub
 
     Private Sub Pag_Save_BTN_Click(sender As Object, e As EventArgs) Handles Pag_Save_BTN.Click
         Save_PAGIBIGLoan(Pag_Name_TXT.Tag, Pag_Amount_TXT.Text, Pag_Start_DTP.Value, Pag_End_DTP.Value)
     End Sub
+
+    Public Sub Load_Contrib_Loan(emp As Employee, tabName As String)
+        With emp
+            If tabName = "SSS" Then
+
+                Contribution_Tab.SelectedIndex = 4
+                SSS_Name_TXT.Text = .Fullname
+                SSS_Name_TXT.Tag = .EMP_ID
+
+            Else
+                Contribution_Tab.SelectedIndex = 5
+                Pag_Name_TXT.Text = .Fullname
+                Pag_Name_TXT.Tag = .EMP_ID
+            End If
+        End With
+    End Sub
+
 End Class

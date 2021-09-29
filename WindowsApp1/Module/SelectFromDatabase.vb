@@ -1105,7 +1105,7 @@ Module SelectFromDatabase
             If rdr.HasRows Then
                 With rdr
 
-                    If combo.Name = "Branch_ComboB" Or combo.Name = "Rate_Branch_ComboB" Or combo.Name = "Rate_Pos_ComboB" Or combo.Name = "Allow_Category_Combo" Or combo.Name = "DE_Category_Combo" Then
+                    If combo.Name = "Branch_ComboB" Or combo.Name = "DTR_Branch_Combo" Or combo.Name = "Rate_Branch_ComboB" Or combo.Name = "Rate_Pos_ComboB" Or combo.Name = "Allow_Category_Combo" Or combo.Name = "DE_Category_Combo" Then
                         combo.Items.Add(rdr.Item(0).ToString)
                         combo.Items.Remove("")
                     Else
