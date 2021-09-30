@@ -1,6 +1,4 @@
 ﻿Imports System.Globalization
-Imports System.IO
-Imports System.Net.Mail
 Imports System.Text.RegularExpressions
 
 Public Class frmPayout
@@ -439,14 +437,15 @@ Public Class frmPayout
     End Sub
 
     '====================================================== PAYSLIP ==========================================================
-    'Dim paydate As String = "August 15, 2021"
-    'Dim namee, sss, philH, tin, hdmf, payslip_no, rate_type As String
-    'Dim incentives, positional, total_Additional As Double
-    'Dim total_basic, present_days, gross_amount As String
     Dim branchID As String
 
     Private Sub Preview_BTN_Click(sender As Object, e As EventArgs) Handles Preview_BTN.Click
-        LoadPayslip(Employee_TXT.Tag, EmpSelect_BTN.Tag, Payslip_paydate_Combo.Text, Email_TXT.Tag)
+        If Employee_TXT.Text <> Nothing Then
+            LoadPayslip(Employee_TXT.Tag, EmpSelect_BTN.Tag, Payslip_paydate_Combo.Text, Email_TXT.Tag)
+        Else
+            MsgBox("Please Select Employee.", MsgBoxStyle.Exclamation, "INVALID")
+        End If
+
     End Sub
 
     Private Sub Branch_ComboB_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Branch_ComboB.SelectedIndexChanged
@@ -480,50 +479,50 @@ Public Class frmPayout
         Close()
     End Sub
 
-    Public Sub Send_Email(byteViewer As Byte(), recipient_Email As String, recipient_Name As String, Optional FOR_single As Boolean = False)
-        Try
-            Dim FoundMatch As Boolean = Regex.IsMatch(recipient_Email, "\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase)
+    'Public Sub Send_Email(byteViewer As Byte(), recipient_Email As String, recipient_Name As String, Optional FOR_single As Boolean = False)
+    '    Try
+    '        Dim FoundMatch As Boolean = Regex.IsMatch(recipient_Email, "\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase)
 
-            If Not FoundMatch Then
-                MsgBox(recipient_Name & " has an INVALID EMAIL ADDRESS.", MsgBoxStyle.Exclamation, "INVALID")
-                Exit Sub
-            End If
+    '        If Not FoundMatch Then
+    '            MsgBox(recipient_Name & " has an INVALID EMAIL ADDRESS.", MsgBoxStyle.Exclamation, "INVALID")
+    '            Exit Sub
+    '        End If
 
-            Dim email As String = GetEmail()
-            Dim password As String = GetPassword()
-            Dim datee As DateTime = Payslip_paydate_Combo.Text
+    '        Dim email As String = GetEmail()
+    '        Dim password As String = GetPassword()
+    '        Dim datee As DateTime = Payslip_paydate_Combo.Text
 
-            Dim Smtp_Server As New SmtpClient
-            Dim e_mail As New MailMessage()
-            Smtp_Server.UseDefaultCredentials = False
-            Smtp_Server.Credentials = New Net.NetworkCredential(email, password)
-            Smtp_Server.Port = 587
-            Smtp_Server.EnableSsl = True
-            Smtp_Server.Host = "smtp.gmail.com"
+    '        Dim Smtp_Server As New SmtpClient
+    '        Dim e_mail As New MailMessage()
+    '        Smtp_Server.UseDefaultCredentials = False
+    '        Smtp_Server.Credentials = New Net.NetworkCredential(email, password)
+    '        Smtp_Server.Port = 587
+    '        Smtp_Server.EnableSsl = True
+    '        Smtp_Server.Host = "smtp.gmail.com"
 
-            e_mail = New MailMessage()
-            e_mail.From = New MailAddress(email)
-            e_mail.To.Add(recipient_Email)
-            e_mail.Subject = datee.ToString("MMMM dd, yyyy") & " PAYROLL"
-            e_mail.IsBodyHtml = False
+    '        e_mail = New MailMessage()
+    '        e_mail.From = New MailAddress(email)
+    '        e_mail.To.Add(recipient_Email)
+    '        e_mail.Subject = datee.ToString("MMMM dd, yyyy") & " PAYROLL"
+    '        e_mail.IsBodyHtml = False
 
-            Dim memoryStream = New MemoryStream(byteViewer)
-            memoryStream.Seek(0, SeekOrigin.Begin)
+    '        Dim memoryStream = New MemoryStream(byteViewer)
+    '        memoryStream.Seek(0, SeekOrigin.Begin)
 
-            Dim attachment = New Attachment(memoryStream, recipient_Name & ".pdf")
-            e_mail.Attachments.Add(attachment)
+    '        Dim attachment = New Attachment(memoryStream, recipient_Name & ".pdf")
+    '        e_mail.Attachments.Add(attachment)
 
-            e_mail.Body = BodyText_RichB.Text
-            Smtp_Server.Send(e_mail)
+    '        e_mail.Body = BodyText_RichB.Text
+    '        Smtp_Server.Send(e_mail)
 
-            If FOR_single Then
-                MsgBox("Email Sent!")
-            End If
+    '        If FOR_single Then
+    '            MsgBox("Email Sent!")
+    '        End If
 
-        Catch error_t As Exception
-            MsgBox(error_t.ToString)
-        End Try
-    End Sub
+    '    Catch error_t As Exception
+    '        MsgBox(error_t.ToString)
+    '    End Try
+    'End Sub
 
     Private Sub Rate_EmpSelect_BTN_Click(sender As Object, e As EventArgs) Handles EmpSelect_BTN.Click
         If Payslip_paydate_Combo.SelectedIndex < 0 Then
@@ -555,94 +554,140 @@ Public Class frmPayout
 
     Private Sub Send_BTN_Click(sender As Object, e As EventArgs) Handles Send_BTN.Click
 
-        Dim recipient As String
+        Dim datee As DateTime
+
+        If Payslip_paydate_Combo.SelectedIndex >= 0 Then
+            datee = Payslip_paydate_Combo.Text
+        Else
+            MsgBox("Please Select Payroll.", MsgBoxStyle.Exclamation, "INVALID")
+            Exit Sub
+        End If
+
         If All_RadioB.Checked = True Then
-            Dim mysqll As String = $"select A.*, B.*, C.*, C.id as emp_id from payroll_payout A 
-                                                inner join tbl_employee C on C.BIOMETRICID = A.BIOMETRIC_ID 
-                                                inner join tbl_branch B on B.ID = A.BRANCH_ID  
-                                                where paydate = '{Payslip_paydate_Combo.Text}';"
 
-            Using ds As DataSet = LoadSQL(mysqll, "payroll_payout")
-                If ds.Tables(0).Rows.Count > 0 Then
-                    progressBarStart(ds.Tables(0).Rows.Count)
-                    For Each dr In ds.Tables(0).Rows
-                        With dr
-
-                            Dim MI As String
-
-                            If String.IsNullOrEmpty(.Item("MIDDLENAME")) Then
-                                MI = ""
-                            Else
-                                MI = .Item("MIDDLENAME").Substring(0, 1) & "."
-                            End If
-
-                            Dim namee = String.Format("{0}, {1} {2}", .Item("LastName"), .Item("FirstName"), MI)
-
-                            Dim branch_name As String = .item("BRANCHNAME")
-                            LoadPayslip(.item("BIOMETRIC_ID"), .item("BRANCH_ID"), Payslip_paydate_Combo.Text, branch_name)
-
-                            'recipient = GetEmail_recipient(.item("BIOMETRIC_ID"), .item("BRANCH_ID"))
-                            recipient = GetEmail_recipient(.item("BIOMETRIC_ID"))
-
-                            Deduct_ifExist(.Item("emp_id"), Payslip_paydate_Combo.Text)             '======= REFLECT DEDUCTION IF EXIST
-
-                            Send_Email(ReportViewer_payslip.LocalReport.Render("PDF"), recipient, namee)
-
-                            frmMainForm.AppProgressBar.Value += 1
-                        End With
-                    Next
-                    progressBarEnd()
-                End If
-            End Using
+            Payslip_All()
+            MsgBox("Email Sent to those who have a valid email address.", MsgBoxStyle.Information, "")
 
         ElseIf Branch_RadioB.Checked = True Then
 
-            Dim mysqll As String = $"select A.*, B.*, C.*, C.id as emp_id from payroll_payout A 
-                                                inner join tbl_employee C on C.BIOMETRICID = A.BIOMETRIC_ID 
-                                                inner join tbl_branch B on B.ID = A.BRANCH_ID  
-                                                where paydate = '{Payslip_paydate_Combo.Text}' and A.BRANCH_ID = '{branchID}';"
+            If Branch_ComboB.SelectedIndex >= 0 Then
+                Payslip_Branch()
+                MsgBox("Email Sent to those who have a valid email address.", MsgBoxStyle.Information, "")
+            Else
+                MsgBox("Please Select Branch.", MsgBoxStyle.Exclamation, "INVALID")
+            End If
 
-            Using ds As DataSet = LoadSQL(mysqll, "payroll_payout")
-                If ds.Tables(0).Rows.Count > 0 Then
-                    progressBarStart(ds.Tables(0).Rows.Count)
-                    For Each dr In ds.Tables(0).Rows
-                        With dr
-
-                            Dim MI As String
-
-                            If String.IsNullOrEmpty(.Item("MIDDLENAME")) Then
-                                MI = ""
-                            Else
-                                MI = .Item("MIDDLENAME").Substring(0, 1) & "."
-                            End If
-
-                            Dim namee = String.Format("{0}, {1} {2}", .Item("LastName"), .Item("FirstName"), MI)
-
-                            Dim branch_name As String = .item("BRANCHNAME")
-                            LoadPayslip(.item("BIOMETRIC_ID"), branchID, Payslip_paydate_Combo.Text, branch_name)
-
-                            'recipient = GetEmail_recipient(.item("BIOMETRIC_ID"), branchID)
-                            recipient = GetEmail_recipient(.item("BIOMETRIC_ID"))
-
-                            Deduct_ifExist(.Item("emp_id"), Payslip_paydate_Combo.Text)             '======= REFLECT DEDUCTION IF EXIST
-
-                            Send_Email(ReportViewer_payslip.LocalReport.Render("PDF"), recipient, namee)
-
-                            frmMainForm.AppProgressBar.Value += 1
-                        End With
-                    Next
-
-                    progressBarEnd()
-                End If
-            End Using
         Else
             LoadPayslip(Employee_TXT.Tag, EmpSelect_BTN.Tag, Payslip_paydate_Combo.Text, Email_TXT.Tag)
 
             Deduct_ifExist(Preview_BTN.Tag, Payslip_paydate_Combo.Text)             '======= REFLECT DEDUCTION IF EXIST  (Preview_BTN.Tag = EMP_ID)
 
-            Send_Email(ReportViewer_payslip.LocalReport.Render("PDF"), Email_TXT.Text, Employee_TXT.Text, True)
+            Send_Email(ReportViewer_payslip.LocalReport.Render("PDF"), Email_TXT.Text, Employee_TXT.Text, Payslip_paydate_Combo.Text, BodyText_RichB.Text, datee.ToString("MMMM dd, yyyy") & " PAYROLL")
         End If
 
+    End Sub
+
+    Private Sub Payslip_All()
+        Dim recipient As String
+        Dim datee As DateTime = Payslip_paydate_Combo.Text
+        Dim mysqll As String = $"select A.*, B.*, C.*, C.id as emp_id from payroll_payout A 
+                                                inner join tbl_employee C on C.BIOMETRICID = A.BIOMETRIC_ID 
+                                                inner join tbl_branch B on B.ID = A.BRANCH_ID  
+                                                where paydate = '{Payslip_paydate_Combo.Text}';"
+
+        Using ds As DataSet = LoadSQL(mysqll, "payroll_payout")
+            If ds.Tables(0).Rows.Count > 0 Then
+                progressBarStart(ds.Tables(0).Rows.Count)
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+
+                        Dim MI As String
+
+                        If String.IsNullOrEmpty(.Item("MIDDLENAME")) Then
+                            MI = ""
+                        Else
+                            MI = .Item("MIDDLENAME").Substring(0, 1) & "."
+                        End If
+
+                        Dim namee = String.Format("{0}, {1} {2}", .Item("LastName"), .Item("FirstName"), MI)
+
+                        Dim branch_name As String = .item("BRANCHNAME")
+                        LoadPayslip(.item("BIOMETRIC_ID"), .item("BRANCH_ID"), Payslip_paydate_Combo.Text, branch_name)
+
+                        recipient = GetEmail_recipient(.item("BIOMETRIC_ID"))
+
+                        Deduct_ifExist(.Item("emp_id"), Payslip_paydate_Combo.Text)             '======= REFLECT DEDUCTION IF EXIST
+
+                        '================================ CHECK IF VALID EMAIL ADDRESS ============================
+                        Dim FoundMatch As Boolean = Regex.IsMatch(recipient, "\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase)
+
+                        If Not FoundMatch Then
+                            MsgBox(namee & " has an INVALID EMAIL ADDRESS.", MsgBoxStyle.Exclamation, "INVALID")
+                            Continue For
+                        End If
+
+                        '================================ SEND TO EMAIL ADDRESS IF VALID ============================
+                        Send_Email(ReportViewer_payslip.LocalReport.Render("PDF"), recipient, namee, Payslip_paydate_Combo.Text, BodyText_RichB.Text, datee.ToString("MMMM dd, yyyy") & " PAYROLL")
+
+                        frmMainForm.AppProgressBar.Value += 1
+                    End With
+                Next
+                progressBarEnd()
+            End If
+        End Using
+    End Sub
+
+    Private Sub Payslip_Branch()
+
+        Dim recipient As String
+        Dim datee As DateTime = Payslip_paydate_Combo.Text
+
+        Dim mysqll As String = $"select A.*, B.*, B.id as emp_id, C.BRANCHNAME from payroll_payout A 
+                                                inner join tbl_employee B on B.BIOMETRICID = A.BIOMETRIC_ID  
+                                                inner join tbl_branch C on C.ID = B.BRANCH_ID  
+                                                where paydate = '{Payslip_paydate_Combo.Text}' and B.BRANCH_ID = '{branchID}';"
+
+        Using ds As DataSet = LoadSQL(mysqll, "payroll_payout")
+            If ds.Tables(0).Rows.Count > 0 Then
+                progressBarStart(ds.Tables(0).Rows.Count)
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+
+                        Dim MI As String
+
+                        If String.IsNullOrEmpty(.Item("MIDDLENAME")) Then
+                            MI = ""
+                        Else
+                            MI = .Item("MIDDLENAME").Substring(0, 1) & "."
+                        End If
+
+                        Dim namee = String.Format("{0}, {1} {2}", .Item("LastName"), .Item("FirstName"), MI)
+
+                        Dim branch_name As String = .item("BRANCHNAME")
+                        LoadPayslip(.item("BIOMETRIC_ID"), branchID, Payslip_paydate_Combo.Text, branch_name)
+
+                        recipient = GetEmail_recipient(.item("BIOMETRIC_ID"))
+
+                        Deduct_ifExist(.Item("emp_id"), Payslip_paydate_Combo.Text)             '======= REFLECT DEDUCTION IF EXIST
+
+                        '================================ CHECK IF VALID EMAIL ADDRESS ============================
+                        Dim FoundMatch As Boolean = Regex.IsMatch(recipient, "\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase)
+
+                        If Not FoundMatch Then
+                            MsgBox(namee & " has an INVALID EMAIL ADDRESS.", MsgBoxStyle.Exclamation, "INVALID")
+                            Continue For
+                        End If
+
+                        '================================ SEND TO EMAIL ADDRESS IF VALID ============================
+                        Send_Email(ReportViewer_payslip.LocalReport.Render("PDF"), recipient, namee, Payslip_paydate_Combo.Text, BodyText_RichB.Text, datee.ToString("MMMM dd, yyyy") & " PAYROLL")
+
+                        frmMainForm.AppProgressBar.Value += 1
+                    End With
+                Next
+
+                progressBarEnd()
+            End If
+        End Using
     End Sub
 
     Public Sub LoadPayslip(biometricID As String, branchID As String, paydatee As String, rate As String)

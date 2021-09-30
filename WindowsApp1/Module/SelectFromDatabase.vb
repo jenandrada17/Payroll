@@ -261,7 +261,7 @@ Module SelectFromDatabase
         If ds.Tables(0).Rows.Count > 0 Then
             Dim dr As DataRow = ds.Tables(0).Rows(0)
             With dr
-                email = .Item("EMAILADD")
+                email = IIf(IsDBNull(.Item("EMAILADD")) Or String.IsNullOrWhiteSpace(.Item("EMAILADD")), "noData", .Item("EMAILADD"))
             End With
         End If
         Return email

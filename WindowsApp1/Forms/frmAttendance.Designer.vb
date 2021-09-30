@@ -23,12 +23,13 @@ Partial Class frmAttendance
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim ReportDataSource1 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle13 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle14 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle11 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle12 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.overAllBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.dtr_all = New WindowsApp1.dtr_all()
         Me.Label1 = New System.Windows.Forms.Label()
@@ -127,6 +128,7 @@ Partial Class frmAttendance
         Me.RE_NAME_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.RE_BIO_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.RE_BRANCH_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Branch_DTR_TXT = New System.Windows.Forms.TextBox()
         CType(Me.overAllBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.dtr_all, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Attendance_Tab.SuspendLayout()
@@ -234,8 +236,24 @@ Partial Class frmAttendance
         Me.Bio_grid.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.Bio_grid.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText
         Me.Bio_grid.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
+        DataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle8.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.Bio_grid.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle8
         Me.Bio_grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.Bio_grid.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.BIOID_DGVV, Me.Name_DGVV, Me.PRESENT_DGVV, Me.Overtime_DGVV, Me.Late_DGVV, Me.Undertime_DGVV})
+        DataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle9.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.Bio_grid.DefaultCellStyle = DataGridViewCellStyle9
         Me.Bio_grid.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically
         Me.Bio_grid.Location = New System.Drawing.Point(6, 136)
         Me.Bio_grid.Name = "Bio_grid"
@@ -697,34 +715,34 @@ Partial Class frmAttendance
         Me.DataGridView1.AllowUserToAddRows = False
         Me.DataGridView1.AllowUserToResizeColumns = False
         Me.DataGridView1.AllowUserToResizeRows = False
-        DataGridViewCellStyle1.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.DataGridView1.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle10.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DataGridView1.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle10
         Me.DataGridView1.BackgroundColor = System.Drawing.Color.White
         Me.DataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.DataGridView1.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText
         Me.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.DataGridView1.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Date_DataGrid, Me.AM_In_DataGrid, Me.AM_Out_DataGrid, Me.PM_IN_DataGrid, Me.PM_Out_DataGrid, Me.Select_Datagrid})
-        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.InactiveCaption
-        DataGridViewCellStyle4.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.DataGridView1.DefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle13.BackColor = System.Drawing.SystemColors.InactiveCaption
+        DataGridViewCellStyle13.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle13.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle13.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle13.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.DataGridView1.DefaultCellStyle = DataGridViewCellStyle13
         Me.DataGridView1.Location = New System.Drawing.Point(6, 44)
         Me.DataGridView1.Name = "DataGridView1"
         Me.DataGridView1.RowHeadersVisible = False
-        DataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.Transparent
-        DataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.Transparent
-        Me.DataGridView1.RowsDefaultCellStyle = DataGridViewCellStyle5
+        DataGridViewCellStyle14.SelectionBackColor = System.Drawing.Color.Transparent
+        DataGridViewCellStyle14.SelectionForeColor = System.Drawing.Color.Transparent
+        Me.DataGridView1.RowsDefaultCellStyle = DataGridViewCellStyle14
         Me.DataGridView1.Size = New System.Drawing.Size(684, 487)
         Me.DataGridView1.TabIndex = 65
         '
         'Date_DataGrid
         '
-        DataGridViewCellStyle2.NullValue = Nothing
-        Me.Date_DataGrid.DefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle11.NullValue = Nothing
+        Me.Date_DataGrid.DefaultCellStyle = DataGridViewCellStyle11
         Me.Date_DataGrid.HeaderText = "Date"
         Me.Date_DataGrid.Name = "Date_DataGrid"
         Me.Date_DataGrid.ReadOnly = True
@@ -734,9 +752,9 @@ Partial Class frmAttendance
         '
         'AM_In_DataGrid
         '
-        DataGridViewCellStyle3.Format = "t"
-        DataGridViewCellStyle3.NullValue = Nothing
-        Me.AM_In_DataGrid.DefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle12.Format = "t"
+        DataGridViewCellStyle12.NullValue = Nothing
+        Me.AM_In_DataGrid.DefaultCellStyle = DataGridViewCellStyle12
         Me.AM_In_DataGrid.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.[Nothing]
         Me.AM_In_DataGrid.HeaderText = "In"
         Me.AM_In_DataGrid.Name = "AM_In_DataGrid"
@@ -842,7 +860,6 @@ Partial Class frmAttendance
         Me.TabPage3.Controls.Add(Me.HO_RadioB)
         Me.TabPage3.Controls.Add(Me.Preview_BTN)
         Me.TabPage3.Controls.Add(Me.CancelDTR_BTN)
-        Me.TabPage3.Controls.Add(Me.Email_BTN)
         Me.TabPage3.Controls.Add(Me.Panel1)
         Me.TabPage3.Controls.Add(Me.FlowLayoutPanel1)
         Me.TabPage3.Controls.Add(Me.Label22)
@@ -893,7 +910,7 @@ Partial Class frmAttendance
         'Preview_BTN
         '
         Me.Preview_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Preview_BTN.Location = New System.Drawing.Point(181, 530)
+        Me.Preview_BTN.Location = New System.Drawing.Point(332, 530)
         Me.Preview_BTN.Name = "Preview_BTN"
         Me.Preview_BTN.Size = New System.Drawing.Size(103, 45)
         Me.Preview_BTN.TabIndex = 96
@@ -912,10 +929,10 @@ Partial Class frmAttendance
         '
         'Email_BTN
         '
-        Me.Email_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Email_BTN.Location = New System.Drawing.Point(333, 530)
+        Me.Email_BTN.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Email_BTN.Location = New System.Drawing.Point(335, 64)
         Me.Email_BTN.Name = "Email_BTN"
-        Me.Email_BTN.Size = New System.Drawing.Size(103, 45)
+        Me.Email_BTN.Size = New System.Drawing.Size(62, 37)
         Me.Email_BTN.TabIndex = 115
         Me.Email_BTN.Text = "Send"
         Me.Email_BTN.UseVisualStyleBackColor = True
@@ -932,10 +949,7 @@ Partial Class frmAttendance
         'RptViewer_DTR
         '
         Me.RptViewer_DTR.Dock = System.Windows.Forms.DockStyle.Fill
-        ReportDataSource1.Name = "DataSet1"
-        ReportDataSource1.Value = Me.overAllBindingSource
-        Me.RptViewer_DTR.LocalReport.DataSources.Add(ReportDataSource1)
-        Me.RptViewer_DTR.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_GroupDTR.rdlc"
+        Me.RptViewer_DTR.LocalReport.ReportEmbeddedResource = "WindowsApp1.rptDTR_All.rdlc"
         Me.RptViewer_DTR.Location = New System.Drawing.Point(0, 0)
         Me.RptViewer_DTR.Name = "RptViewer_DTR"
         Me.RptViewer_DTR.ServerReport.BearerToken = Nothing
@@ -947,9 +961,9 @@ Partial Class frmAttendance
         Me.FlowLayoutPanel1.Controls.Add(Me.Employee1_GroupB)
         Me.FlowLayoutPanel1.Controls.Add(Me.Employee2_GroupB)
         Me.FlowLayoutPanel1.Controls.Add(Me.Branch_group)
-        Me.FlowLayoutPanel1.Location = New System.Drawing.Point(5, 161)
+        Me.FlowLayoutPanel1.Location = New System.Drawing.Point(5, 157)
         Me.FlowLayoutPanel1.Name = "FlowLayoutPanel1"
-        Me.FlowLayoutPanel1.Size = New System.Drawing.Size(430, 335)
+        Me.FlowLayoutPanel1.Size = New System.Drawing.Size(430, 352)
         Me.FlowLayoutPanel1.TabIndex = 113
         '
         'Employee1_GroupB
@@ -960,7 +974,7 @@ Partial Class frmAttendance
         Me.Employee1_GroupB.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Employee1_GroupB.Location = New System.Drawing.Point(3, 3)
         Me.Employee1_GroupB.Name = "Employee1_GroupB"
-        Me.Employee1_GroupB.Size = New System.Drawing.Size(416, 116)
+        Me.Employee1_GroupB.Size = New System.Drawing.Size(416, 104)
         Me.Employee1_GroupB.TabIndex = 88
         Me.Employee1_GroupB.TabStop = False
         Me.Employee1_GroupB.Text = "Employee 1"
@@ -969,7 +983,7 @@ Partial Class frmAttendance
         'DTR_Emp1_TXT
         '
         Me.DTR_Emp1_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.DTR_Emp1_TXT.Location = New System.Drawing.Point(11, 75)
+        Me.DTR_Emp1_TXT.Location = New System.Drawing.Point(11, 63)
         Me.DTR_Emp1_TXT.Name = "DTR_Emp1_TXT"
         Me.DTR_Emp1_TXT.ReadOnly = True
         Me.DTR_Emp1_TXT.Size = New System.Drawing.Size(319, 33)
@@ -1000,9 +1014,9 @@ Partial Class frmAttendance
         Me.Employee2_GroupB.Controls.Add(Me.Bio2_DTR_TXT)
         Me.Employee2_GroupB.Controls.Add(Me.EmpSelect2_BTN)
         Me.Employee2_GroupB.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Employee2_GroupB.Location = New System.Drawing.Point(3, 125)
+        Me.Employee2_GroupB.Location = New System.Drawing.Point(3, 113)
         Me.Employee2_GroupB.Name = "Employee2_GroupB"
-        Me.Employee2_GroupB.Size = New System.Drawing.Size(416, 116)
+        Me.Employee2_GroupB.Size = New System.Drawing.Size(416, 106)
         Me.Employee2_GroupB.TabIndex = 92
         Me.Employee2_GroupB.TabStop = False
         Me.Employee2_GroupB.Text = "Employee 2"
@@ -1011,7 +1025,7 @@ Partial Class frmAttendance
         'DTR_Emp2_TXT
         '
         Me.DTR_Emp2_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.DTR_Emp2_TXT.Location = New System.Drawing.Point(11, 75)
+        Me.DTR_Emp2_TXT.Location = New System.Drawing.Point(11, 65)
         Me.DTR_Emp2_TXT.Name = "DTR_Emp2_TXT"
         Me.DTR_Emp2_TXT.ReadOnly = True
         Me.DTR_Emp2_TXT.Size = New System.Drawing.Size(319, 33)
@@ -1038,11 +1052,13 @@ Partial Class frmAttendance
         '
         'Branch_group
         '
+        Me.Branch_group.Controls.Add(Me.Branch_DTR_TXT)
         Me.Branch_group.Controls.Add(Me.DTR_Branch_Combo)
+        Me.Branch_group.Controls.Add(Me.Email_BTN)
         Me.Branch_group.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Branch_group.Location = New System.Drawing.Point(3, 247)
+        Me.Branch_group.Location = New System.Drawing.Point(3, 225)
         Me.Branch_group.Name = "Branch_group"
-        Me.Branch_group.Size = New System.Drawing.Size(416, 74)
+        Me.Branch_group.Size = New System.Drawing.Size(416, 114)
         Me.Branch_group.TabIndex = 89
         Me.Branch_group.TabStop = False
         Me.Branch_group.Text = "Branch"
@@ -1149,6 +1165,14 @@ Partial Class frmAttendance
         Me.RE_BRANCH_DGV.ReadOnly = True
         Me.RE_BRANCH_DGV.Width = 140
         '
+        'Branch_DTR_TXT
+        '
+        Me.Branch_DTR_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Branch_DTR_TXT.Location = New System.Drawing.Point(10, 67)
+        Me.Branch_DTR_TXT.Name = "Branch_DTR_TXT"
+        Me.Branch_DTR_TXT.Size = New System.Drawing.Size(319, 33)
+        Me.Branch_DTR_TXT.TabIndex = 92
+        '
         'frmAttendance
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1182,6 +1206,7 @@ Partial Class frmAttendance
         Me.Employee2_GroupB.ResumeLayout(False)
         Me.Employee2_GroupB.PerformLayout()
         Me.Branch_group.ResumeLayout(False)
+        Me.Branch_group.PerformLayout()
         CType(Me.printDTRBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Context_Records.ResumeLayout(False)
         Me.ResumeLayout(False)
@@ -1287,4 +1312,5 @@ Partial Class frmAttendance
     Friend WithEvents DTR_Emp2_TXT As TextBox
     Friend WithEvents Bio2_DTR_TXT As TextBox
     Friend WithEvents EmpSelect2_BTN As Button
+    Friend WithEvents Branch_DTR_TXT As TextBox
 End Class

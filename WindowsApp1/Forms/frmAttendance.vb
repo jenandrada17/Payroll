@@ -605,11 +605,13 @@ Public Class frmAttendance
     Private Sub Preview_BTN_Click(sender As Object, e As EventArgs) Handles Preview_BTN.Click
 
         If Payslip_DTR_Combo.SelectedIndex >= 0 Then
+
             If GroupBranch_RadioB.Checked Then
                 LoadDTR_Print_Group()
             Else
                 LoadDTR_Print()
             End If
+
         Else
             MsgBox("Please select date of payroll.", MsgBoxStyle.Exclamation, "Error")
         End If
@@ -619,8 +621,11 @@ Public Class frmAttendance
     Public Sub LoadDTR_Print()
 
         RptViewer_DTR.LocalReport.DataSources.Clear()
+        RptViewer_DTR.LocalReport.ReportEmbeddedResource = "WindowsApp1.rptDTR_All.rdlc"
+
         Dim paydatee As String = Payslip_DTR_Combo.SelectedItem
         Dim mysqll As String = ""
+        Dim GROUP As String = ""
 
         Try
             Dim all_in As New dtr_all.overAllDataTable
@@ -641,23 +646,43 @@ Public Class frmAttendance
                 .Columns.Add("SPECHOLIDAY")
             End With
 
-            If Employee_RadioB.Checked Then  '=========================== SINGLE EMPLOYEE ==================================
+            If Employee_RadioB.Checked Then  '=========================== EMPLOYEE ==================================
 
-                mysqll = $"Select A.*, B.FirstName, B.LastName, B.MIDDLENAME, B.BIOMETRICID as bioNo, C.* From PAYROLL_ATTENDANCE A 
+                If Bio1_DTR_TXT.Text <> Nothing And Bio2_DTR_TXT.Text <> Nothing Then  '============ DOUBLE EMPLOYEE
+
+                    mysqll = $"Select A.*, B.FirstName, B.LastName, B.MIDDLENAME, B.BIOMETRICID as bioNo, C.* From PAYROLL_ATTENDANCE A 
                                         inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRICID 
-                                        left join BIOMETRIC_DTR C ON C.BIO_ID = A.BIOMETRICID where A.PAYDATE  = '{paydatee}' and A.BIOMETRICID IN ('{Bio1_DTR_TXT.Text}','{Bio2_DTR_TXT.Text}')"
+                                        inner join BIOMETRIC_DTR C ON C.BIO_ID = A.BIOMETRICID where A.PAYDATE  = '{paydatee}' and A.BIOMETRICID IN ('{Bio1_DTR_TXT.Text}','{Bio2_DTR_TXT.Text}')"
+                Else
+                    If Bio1_DTR_TXT.Text <> Nothing And Bio2_DTR_TXT.Text = Nothing Then  '============ 1ST EMPLOYEE
+
+                        mysqll = $"Select A.*, B.FirstName, B.LastName, B.MIDDLENAME, B.BIOMETRICID as bioNo, C.* From PAYROLL_ATTENDANCE A 
+                                        inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRICID 
+                                        inner join BIOMETRIC_DTR C ON C.BIO_ID = A.BIOMETRICID where A.PAYDATE  = '{paydatee}' and A.BIOMETRICID = '{Bio1_DTR_TXT.Text}'"
+
+                    ElseIf Bio2_DTR_TXT.Text <> Nothing And Bio1_DTR_TXT.Text = Nothing Then '============ 2ND EMPLOYEE
+
+                        mysqll = $"Select A.*, B.FirstName, B.LastName, B.MIDDLENAME, B.BIOMETRICID as bioNo, C.* From PAYROLL_ATTENDANCE A 
+                                        inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRICID 
+                                        inner join BIOMETRIC_DTR C ON C.BIO_ID = A.BIOMETRICID where A.PAYDATE  = '{paydatee}' and A.BIOMETRICID = '{Bio2_DTR_TXT.Text}'"
+
+                    Else
+                        MsgBox("Please Select Employee Name!")
+                    End If
+                End If
 
             ElseIf HO_RadioB.Checked Then    '=========================== HEAD OFFICE ==================================
 
                 mysqll = $"Select A.*, B.FirstName, B.LastName, B.MIDDLENAME, B.BIOMETRICID as bioNo, C.* From PAYROLL_ATTENDANCE A 
                                         inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRICID 
-                                        left join BIOMETRIC_DTR C ON C.BIO_ID = A.BIOMETRICID 
+                                        inner join BIOMETRIC_DTR C ON C.BIO_ID = A.BIOMETRICID 
                                         inner join TBL_BRANCH D ON D.ID = B.BRANCH_ID
                                         where A.PAYDATE  = '{paydatee}' and 
                                                 (BRANCHNAME = 'HEAD OFFICE.' OR BRANCHNAME = 'HEAD OFFICE' OR BRANCHNAME = '.HEAD OFFICE' OR BRANCHNAME = 'HEAD' 
                                                 OR BRANCHNAME = 'HO' OR BRANCHNAME = 'H.O.' 
                                                 OR BRANCHNAME = 'H.O' OR BRANCHNAME = 'H.D.O' 
                                                 OR BRANCHNAME = 'GENSAN HDO' OR BRANCHNAME = 'HDO' OR BRANCHNAME = 'HDO TECHNICAL')"
+
             End If
 
             Using ds As DataSet = LoadSQL(mysqll, "PAYROLL_ATTENDANCE")
@@ -698,7 +723,6 @@ Public Class frmAttendance
                 End If
             End Using
 
-
             Dim rds_DTR As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt_DTR)
             RptViewer_DTR.LocalReport.DataSources.Add(rds_DTR)
             RptViewer_DTR.RefreshReport()
@@ -712,16 +736,8 @@ Public Class frmAttendance
 
     Public Sub LoadDTR_Print_Group()
 
-        'If GroupBranch_RadioB.Checked Then
-        '    RptViewer_DTR.LocalReport.ReportEmbeddedResource = "rpt_GroupDTR.rdlc"
-        'Else
-        '    RptViewer_DTR.LocalReport.ReportEmbeddedResource = "rptDTR_All.rdlc"
-        'End If
-
-
         RptViewer_DTR.LocalReport.DataSources.Clear()
-
-        RptViewer_DTR.LocalReport.ReportEmbeddedResource = "rpt_GroupDTR.rdlc"
+        RptViewer_DTR.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_DTR_ByGroup.rdlc"
 
         Dim paydatee As String = Payslip_DTR_Combo.SelectedItem
         Dim mysqll As String = ""
@@ -731,7 +747,6 @@ Public Class frmAttendance
 
             Dim dt_DTR As New DataTable()
             With dt_DTR
-                .Columns.Add("BIOMETRICID")
                 .Columns.Add("FULLNAME")
                 .Columns.Add("PRESENT_DAYS")
                 .Columns.Add("OVERTIME")
@@ -741,20 +756,13 @@ Public Class frmAttendance
                 .Columns.Add("AM_OUT")
                 .Columns.Add("PM_IN")
                 .Columns.Add("PM_OUT")
-                .Columns.Add("REGHOLIDAY")
-                .Columns.Add("SPECHOLIDAY")
             End With
 
-            'mysqll = $"Select A.*, B.FirstName, B.LastName, B.MIDDLENAME, B.BIOMETRICID as bioNo, C.ID, D.* From PAYROLL_ATTENDANCE A 
-            '                            inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRICID 
-            '                            inner JOIN TBL_BRANCH C ON C.ID = B.BRANCH_ID
-            '                            left join BIOMETRIC_DTR D ON D.BIO_ID = A.BIOMETRICID where A.PAYDATE  = '{paydatee}' and A.BIOMETRICID = '4279'"
+            mysqll = $"Select A.*, B.FirstName, B.LastName, B.MIDDLENAME, B.BIOMETRICID as bioNo, C.* From PAYROLL_ATTENDANCE A 
+                                        inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRICID 
+                                        inner join BIOMETRIC_DTR C ON C.BIO_ID = B.BIOMETRICID where A.PAYDATE  = '{paydatee}' and B.BRANCH_ID = '{branchID}'"
 
-            mysqll = $"Select A.*, B.FirstName, B.LastName, B.MIDDLENAME, B.BIOMETRICID as bioNo, D.* From PAYROLL_ATTENDANCE A 
-                                        inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRICID  
-                                        left join BIOMETRIC_DTR D ON D.BIO_ID = A.BIOMETRICID where A.PAYDATE  = '{paydatee}' and A.BIOMETRICID = '4279'"
-
-            Using ds As DataSet = LoadSQL(mysqll, "PAYROLL_ATTENDANCE")
+            Using ds As DataSet = LoadSQL(mysqll, "TBL_EMPLOYEE")
 
                 If ds.Tables(0).Rows.Count > 0 Then
 
@@ -769,13 +777,9 @@ Public Class frmAttendance
                             End If
 
                             Dim namee As String = String.Format("{0}, {1} {2}", .Item("LastName"), .Item("Firstname"), MI)
-                            Dim bioNo As String = .Item("bioNo")
                             Dim DAYS As String = .Item("PRESENT_DAYS")
                             Dim OT As String = IIf(.Item("OVERTIME") = 0, 0, .Item("OVERTIME"))
                             Dim LATE As String = IIf(.Item("LATE").Equals("00:00:00"), "00:00:00", .Item("LATE").Substring(0, 5))
-                            Dim REGHOLIDAY As String = .Item("REGHOLIDAY")
-                            Dim SPECHOLIDAY As String = .Item("SPECHOLIDAY")
-
 
                             '============================= BIOMETRIC_DTR ============================
                             Dim dateE As DateTime = Convert.ToDateTime(.Item("DATE_ONLY"))
@@ -784,7 +788,7 @@ Public Class frmAttendance
                             Dim PM_IN = IIf(IsDBNull(.Item("PM_IN")), "", .Item("PM_IN"))
                             Dim PM_OUT = IIf(IsDBNull(.Item("PM_OUT")), "", .Item("PM_OUT"))
 
-                            dt_DTR.Rows.Add(bioNo, namee, DAYS, OT, LATE, dateE.ToString("MMM dd, yyyy"), AM_IN, AM_OUT, PM_IN, PM_OUT, REGHOLIDAY, SPECHOLIDAY)
+                            dt_DTR.Rows.Add(namee, DAYS, OT, LATE, dateE.ToString("MMM dd, yyyy"), AM_IN, AM_OUT, PM_IN, PM_OUT)
 
                         End With
                     Next
@@ -1017,6 +1021,24 @@ Public Class frmAttendance
             If Bio_grid.Rows.Count >= 0 Then
                 Context_Records.Show(Bio_grid, New Point(e.X, e.Y))
             End If
+        End If
+    End Sub
+
+    Private Sub CancelDTR_BTN_Click(sender As Object, e As EventArgs) Handles CancelDTR_BTN.Click
+        RptViewer_DTR.Clear()
+        Bio1_DTR_TXT.Clear()
+        DTR_Emp1_TXT.Clear()
+        Bio2_DTR_TXT.Clear()
+        DTR_Emp2_TXT.Clear()
+        DTR_Branch_Combo.Text = "   Select Branch"
+        Branch_DTR_TXT.Clear()
+    End Sub
+
+    Private Sub Email_BTN_Click(sender As Object, e As EventArgs) Handles Email_BTN.Click
+        If RptViewer_DTR.LocalReport.DataSources.Count <> 0 Then
+            Send_Email(RptViewer_DTR.LocalReport.Render("PDF"), Branch_DTR_TXT.Text, DTR_Branch_Combo.Text, Payslip_DTR_Combo.Text, "", "DAILY TIME RECORD")
+        Else
+            MsgBox("Please Click Preview before Sending", MsgBoxStyle.Exclamation, "INVALID")
         End If
     End Sub
 
