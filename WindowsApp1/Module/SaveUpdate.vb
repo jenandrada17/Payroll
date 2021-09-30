@@ -587,8 +587,6 @@
             Dim dsNewRow As DataRow = ds.Tables(0).NewRow
             With dsNewRow
 
-                MsgBox(M_Amount)
-                MsgBox(AMOUNT_PER_GIVE)
                 Dim toUpper = CATEGORY.ToUpper()
 
                 .Item("BIO_NO") = BIO_NO
@@ -694,6 +692,24 @@
                             For Each dr_2 In ds_2.Tables(0).Rows
                                 With dr_2
                                     If .item("EFFECTIVE_DATE") <= Today Then
+
+                                        '============== PERFORMANCE INCENTIVES DEDUCTION IF EVER MAY ABSENT ===================
+                                        Dim PI As Double = 0
+                                        Dim deduc_to_PI As Double = 0
+
+                                        If sched = "CLOSE PAYROLL" Then
+                                            If .item("CATEGORY") = "PERFORMANCE INCENTIVES" Then
+
+                                                Dim PI_totalDays As Double = GetFirst_NoOfDays(bioNo, paydate_) + NoOfDays + RegularHol + SpecialHol
+                                                Dim absent As Double = 26 - PI_totalDays
+                                                deduc_to_PI = (.Item("AMOUNT") / 26) * absent
+
+
+                                                Allowances = (Allowances + .Item("AMOUNT")) - deduc_to_PI
+                                                Save_Recorded_Allow_Deduc(bioNo, paydate_, .Item("CATEGORY"), .Item("AMOUNT") - deduc_to_PI, "ALLOWANCE")
+                                                Continue For  '========= EXIT FOR (PARA DILI MAGDOUBLE SAVING ========
+                                            End If
+                                        End If
                                         Allowances = Allowances + .Item("AMOUNT")
                                         Save_Recorded_Allow_Deduc(bioNo, paydate_, .Item("CATEGORY"), .Item("AMOUNT"), "ALLOWANCE")
                                     End If
@@ -861,12 +877,21 @@
                                     With dr_2
                                         If .item("EFFECTIVE_DATE") <= Today Then
 
+                                            '============== PERFORMANCE INCENTIVES DEDUCTION IF EVER MAY ABSENT ===================
+                                            Dim PI As Double = 0
+
                                             If sched = "CLOSE PAYROLL" Then
+                                                If .item("CATEGORY") = "PERFORMANCE INCENTIVES" Then
 
-                                                If .item("CATEGORY") = "PERFORMANCE INCENTIVES" And .item("FIX") = "NO" Then
+                                                    Dim PI_totalDays As Double = GetFirst_NoOfDays(BiometricID, paydate_) + NoOfDays + RegularHol + SpecialHol
+                                                    Dim absent As Double = 26 - PI_totalDays
+                                                    Dim deduc_to_PI As Double = (.Item("AMOUNT") / 26) * absent
 
+
+                                                    Allowances = (Allowances + .Item("AMOUNT")) - deduc_to_PI
+                                                    Save_Recorded_Allow_Deduc(BiometricID, paydate_, .Item("CATEGORY"), .Item("AMOUNT") - deduc_to_PI, "ALLOWANCE")
+                                                    Continue For  '========= EXIT FOR (PARA DILI MAGDOUBLE SAVING ========
                                                 End If
-
                                             End If
 
                                             Allowances = Allowances + .Item("AMOUNT")
@@ -951,8 +976,6 @@
         progressBarEnd()
     End Sub
 
-    'Friend Sub Save_Recorded_Allow_Deduc(emp_id As String, BRANCH As String, PAYDATE As String, CATEGORY As String, AMOUNT As String, TRANSAC_NAME As String)
-    'Friend Sub Save_Recorded_Allow_Deduc(emp_id As String, PAYDATE As String, CATEGORY As String, AMOUNT As String, TRANSAC_NAME As String)
     Friend Sub Save_Recorded_Allow_Deduc(bio_no As String, PAYDATE As String, CATEGORY As String, AMOUNT As String, TRANSAC_NAME As String)
 
         Dim sql As String = "Select * From RECORDED_ALLOW_DEDUC Rows 1"
@@ -962,8 +985,6 @@
             With dsNewRow
 
                 .Item("BIO_NO") = bio_no
-                '.Item("EMP_ID") = emp_id
-                '.Item("BRANCH") = BRANCH
                 .Item("PAYDATE") = PAYDATE
                 .Item("CATEGORY") = CATEGORY
                 .Item("AMOUNT") = AMOUNT

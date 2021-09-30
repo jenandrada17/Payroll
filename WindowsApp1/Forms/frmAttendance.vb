@@ -1055,12 +1055,6 @@ Public Class frmAttendance
         eSheet = eBook.Worksheets(1)
         eCell = eSheet.UsedRange
 
-        'MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path_TXT.Text}';Extended Properties=Excel 8.0;")
-        'MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
-        'MyCommand.TableMappings.Add("Table", "Net-informations.com")
-        'DtSet = New System.Data.DataSet
-        'MyCommand.Fill(DtSet)
-
         Dim FirstColumn As String = eCell(2, 1).Value
 
         If Integer.TryParse(FirstColumn, vbNull) Then

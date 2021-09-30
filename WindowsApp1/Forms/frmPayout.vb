@@ -246,9 +246,6 @@ Public Class frmPayout
                         SavePayout_MODIFIED_DEDUCTION(BiometricID_TXT.Text, paydate_, row.Cells(0).Value, row.Cells(1).Value, row.Cells(0).Tag, Today, deduct_id)
                     Next
 
-                    For Each row As DataGridViewRow In Allowance_grid.Rows
-                        Save_Recorded_Allow_Deduc(BiometricID_TXT.Text, paydate_, row.Cells(0).Value, row.Cells(1).Value, "ALLOWANCE")
-                    Next
                 End If
 
                 Cancel_BTN.PerformClick()

@@ -405,31 +405,34 @@ Module SelectFromDatabase
         Dim mysql_ As String = $"select * from RECORDED_ALLOW_DEDUC  where BIO_NO = '{BIO_NO}' and PAYDATE = '{paydate}' and TRANSAC_NAME = '{transac_name}'"
         Using ds As DataSet = LoadSQL(mysql_, "RECORDED_ALLOW_DEDUC")
 
-            Dim rowId As Integer = datagrid.Rows.Add()
-            Dim row As DataGridViewRow = datagrid.Rows(rowId)
-
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
                     With dr
 
                         Dim toLower, toProper As String
 
-                        If .item("CATEGORY") <> "SBU" Then
-                            toLower = .item("CATEGORY").ToLower()
-                            Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
-                            toProper = info.ToTitleCase(toLower)
-                        Else
-                            toProper = .item("CATEGORY")
-                        End If
+                        toLower = .item("CATEGORY").ToLower()
+                        Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
+                        toProper = info.ToTitleCase(toLower)
 
                         Dim amountt As Double = .item("AMOUNT")
+
+                        Dim rowId As Integer = datagrid.Rows.Add()
+                        Dim row As DataGridViewRow = datagrid.Rows(rowId)
 
                         row.Cells(0).Value = toProper
                         row.Cells(0).Tag = amountt.ToString(”N”)
                         row.Cells(1).Value = amountt.ToString(”N”)
 
+
                         If datagrid.Name = "Deduction_grid" Then
+
+                            If .item("CATEGORY") = "SBU" Then
+                                row.Cells(0).Value = .item("CATEGORY")
+                            End If
+
                             row.Cells(3).Value = "OFF"
+
                         End If
 
                     End With
@@ -482,9 +485,6 @@ Module SelectFromDatabase
         Dim mysql_1 As String = $"Select * From PAYROLL_DEDUCTIONS WHERE BIO_NO = '{BIO_NO}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
         Using ds As DataSet = LoadSQL(mysql_1, "PAYROLL_DEDUCTIONS")
 
-            Dim rowId As Integer = datagrid.Rows.Add()
-            Dim row As DataGridViewRow = datagrid.Rows(rowId)
-
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
                     With dr
@@ -495,6 +495,9 @@ Module SelectFromDatabase
                         Dim toProper As String = info.ToTitleCase(toLower)
 
                         If .item("EFFECTIVE_DATE") <= Today Then
+
+                            Dim rowId As Integer = datagrid.Rows.Add()
+                            Dim row As DataGridViewRow = datagrid.Rows(rowId)
 
                             row.Cells(0).Value = toProper
                             row.Cells(0).Tag = amountt.ToString(”N”)
@@ -510,10 +513,13 @@ Module SelectFromDatabase
             ' ================ SBU DEDUCTION  ================  
             Dim sbu As Double = SBU_Amount()
 
-            row.Cells(0).Value = "SBU"
-            row.Cells(0).Tag = sbu.ToString(”N”)
-            row.Cells(1).Value = sbu.ToString(”N”)
-            row.Cells(3).Value = "OFF"
+            Dim rowIdd As Integer = datagrid.Rows.Add()
+            Dim roww As DataGridViewRow = datagrid.Rows(rowIdd)
+
+            roww.Cells(0).Value = "SBU"
+            roww.Cells(0).Tag = sbu.ToString(”N”)
+            roww.Cells(1).Value = sbu.ToString(”N”)
+            roww.Cells(3).Value = "OFF"
 
             AdjustHeightOfGridBasedOnRows(datagrid, 25)
         End Using
@@ -527,9 +533,6 @@ Module SelectFromDatabase
                                             WHERE A.BIO_NO = '{BIO_NO}' and PAYDATE = '{PAYDATE}'"
 
         Using ds As DataSet = LoadSQL(mysql_1, "MODIFIED_DEDUCTION")
-
-            Dim rowId As Integer = datagrid.Rows.Add()
-            Dim row As DataGridViewRow = datagrid.Rows(rowId)
 
             If ds.Tables(0).Rows.Count > 0 Then
 
@@ -548,6 +551,9 @@ Module SelectFromDatabase
                         Else
                             toProper = .item("M_CATEGORY")
                         End If
+
+                        Dim rowId As Integer = datagrid.Rows.Add()
+                        Dim row As DataGridViewRow = datagrid.Rows(rowId)
 
                         row.Cells(0).Value = toProper
                         row.Cells(0).Tag = amountt_orig.ToString(”N”)
@@ -589,7 +595,6 @@ Module SelectFromDatabase
         End Using
     End Sub
 
-    'Public Function GetFirst_Basic(biono As String, branchID As String, paydate As String) As Double 
     Public Function GetFirst_Basic(BIO_NO As String, paydate As String) As Double
         Dim first_Basic As Double
 
@@ -599,7 +604,7 @@ Module SelectFromDatabase
         Dim first_payroll = New DateTime(paydate_.Year, paydate_.Month, 1)
         first_payroll = first_payroll.AddDays(14)
 
-        Dim sql As String = $"Select * FROM PAYROLL_PAYOUT where BIO_NO = '{BIO_NO}' and PAYDATE = '{first_payroll.ToString("d")}'"
+        Dim sql As String = $"Select * FROM PAYROLL_PAYOUT where BIOMETRIC_ID = '{BIO_NO}' and PAYDATE = '{first_payroll.ToString("d")}'"
         Using ds As DataSet = LoadSQL(sql, "PAYROLL_PAYOUT")
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
@@ -615,7 +620,7 @@ Module SelectFromDatabase
     End Function
 
     Public Function GetFirst_NoOfDays(bio_no As String, paydate As String) As Double
-        Dim first_Basic As Double
+        Dim first_NoOfDays As Double
 
         Dim paydate_ As DateTime = Convert.ToDateTime(paydate)
         paydate_ = paydate_.ToString("d")
@@ -623,19 +628,22 @@ Module SelectFromDatabase
         Dim first_payroll = New DateTime(paydate_.Year, paydate_.Month, 1)
         first_payroll = first_payroll.AddDays(14)
 
-        Dim sql As String = $"Select * FROM PAYROLL_PAYOUT where EMP_ID = '{bio_no}' and PAYDATE = '{first_payroll.ToString("d")}'"
-        Using ds As DataSet = LoadSQL(sql, "PAYROLL_PAYOUT")
+        Dim sql As String = $"Select * FROM PAYROLL_ATTENDANCE where BIOMETRICID = '{bio_no}' and PAYDATE = '{first_payroll.ToString("d")}'"
+        Using ds As DataSet = LoadSQL(sql, "PAYROLL_ATTENDANCE")
+
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
                     With dr
-                        first_Basic = .Item("TOTAL_BASIC")
+                        first_NoOfDays = .Item("PRESENT_DAYS") + .Item("REGHOLIDAY") + .Item("SPECHOLIDAY")
                     End With
                 Next
             Else
-                first_Basic = 0
+                first_NoOfDays = 0
             End If
+
         End Using
-        Return first_Basic
+
+        Return first_NoOfDays
     End Function
 
     Public Function GetMonthly_Basic(BIOMETRIC_ID As String, paydate As String) As Double
@@ -856,6 +864,7 @@ Module SelectFromDatabase
 
         Return Tax_Wheld
     End Function
+
 
     Friend Function isNotExistHoliday(datee As String)
         Dim mysql As String = "SELECT * FROM PAYROLL_HOLIDAY Where DATEE = '" & datee & "'"
