@@ -1785,9 +1785,61 @@ Module SelectFromDatabase
                 Email_TXT.Text = ""
             End If
         End Using
-
     End Sub
 
+
+    Public Function Halfday_Training(BIO_NO As String, PAYDATE As String, datee As String)
+
+        Dim count As Double = 0
+        Dim status As String = ""
+
+        Dim mysql As String = $"select * from BIOMETRIC_DTR where BIO_ID = '{BIO_NO}' AND PAYDATE = '{PAYDATE}' and DATE_ONLY = '{datee}'"
+        Using ds As DataSet = LoadSQL(mysql, "BIOMETRIC_DTR")
+            If ds.Tables(0).Rows.Count > 0 Then
+                Dim dr As DataRow = ds.Tables(0).Rows(0)
+                With dr
+
+                    '===================== COUNT HALFDAY ==========================
+                    Dim IN_OUT() As String = {"AM_IN", "AM_OUT", "PM_IN", "PM_OUT"}
+
+                    For column As Integer = 0 To 3
+
+                        If IsDBNull(.Item(IN_OUT(column))) Or .Item(IN_OUT(column)) = Nothing Then
+                            count += 1
+                        End If
+                    Next
+
+
+                    If .Item("AM_IN") = Nothing And .Item("AM_OUT") = Nothing Then
+                        status = "HALFDAY"
+                    ElseIf .Item("PM_IN") = Nothing And .Item("PM_OUT") = Nothing Then
+                        status = "HALFDAY"
+                    End If
+
+                    If count = 3 Or status = "HALFDAY" Then
+                        Return True
+                    End If
+
+                End With
+            End If
+        End Using
+
+        Return False
+    End Function
+
+    Public Function PRESENT_Date(BIO_NO As String, PAYDATE As String, datee As String)
+        Dim mysql As String = $"Select DATE_ONLY From BIOMETRIC_DTR where BIO_ID = '{BIO_NO}' AND PAYDATE = '{PAYDATE}' and DATE_ONLY = '{datee}'"
+        Using dss As DataSet = LoadSQL(mysql, "BIOMETRIC_DTR")
+            If dss.Tables(0).Rows.Count > 0 Then
+                Dim data As DataRow = dss.Tables(0).Rows(0)
+                With data
+                    Return True
+                End With
+            End If
+        End Using
+
+        Return False
+    End Function
 
     Public Sub Replacing(str As String)
         RunCommand($"DELETE FROM {str}")  'THIS IS TO DELETE EXISTING DATA TO REPLACE ESPECIALLY FROM DATAGRID

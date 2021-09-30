@@ -692,7 +692,7 @@
         End Using
     End Sub
 
-    Friend Sub SavePayout_IndividualL(bioNo As String, paydate_ As String, EndingDate As DateTime) '========== AUTO SAVE TO PAYOUT ============  
+    Friend Sub SavePayout_IndividualL(bioNo As String, paydate_ As String, startingDate As DateTime, EndingDate As DateTime) '========== AUTO SAVE TO PAYOUT ============  
         Dim regHoliday = Holiday_Rate("REGULAR")
         Dim specHoliday = Holiday_Rate("SPECIAL")
         Dim SBU = SBU_Amount()
@@ -723,19 +723,28 @@
                     End If
 
                     Dim Started As DateTime = .Item("DATE_STARTED")
-                    Dim noOf_SBU As Integer = 0
-
-                    Dim count_days = New DateTime(Started.Year, Started.Month, Started.Day)
-
-                    count_days = count_days.AddDays(Today.Day)
+                    Dim noOf_days_training As Double = 0
 
                     Dim days As Long = DateDiff(DateInterval.Day, Started, EndingDate)
 
-                    MsgBox(EndingDate)
-                    MsgBox((days).ToString)
+                    If days <= training_days Then
 
-                    If days < training_days Then
+                        While (Started.Day < EndingDate.Day)
 
+                            If PRESENT_Date(bioNo, paydate_, Started) Then
+
+                                noOf_days_training += 1
+
+                                If Halfday_Training(bioNo, paydate_, Started) Then
+                                    noOf_days_training -= 0.5
+                                End If
+
+                            End If
+
+                            Started = Started.AddDays(1)
+                        End While
+
+                        MsgBox(noOf_days_training)
                     End If
 
                     '============================================= ATTENDANCE (TOTAL DAYS) =========================================================

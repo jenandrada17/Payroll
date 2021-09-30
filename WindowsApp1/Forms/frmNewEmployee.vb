@@ -293,7 +293,7 @@ Public Class frmNewEmployee
     End Sub
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
-        If Add_Company_CB.Text <> "" And Branch_ComboB.Text <> "" And Branch_ComboB.Text <> "" And Bio_TXT.Text <> "" And Fullname_TXT.Text <> "" And Email_TXT.Text <> "" Then
+        If Add_Company_CB.Text <> "" And Bio_TXT.Text <> "" And Fullname_TXT.Text <> "" Then
 
             If Active_RB.Checked = True Then
                 emp_status = Active_RB.Text
