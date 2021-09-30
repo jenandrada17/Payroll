@@ -50,7 +50,7 @@ Public Class frmNewEmployee
     Private Sub Save_BTN_Click(sender As Object, e As EventArgs) Handles Save_BTN.Click
         'Import_Employee_Fullname_biometric_ActiveOnly()
 
-        'Import_Employee_DateStarted_Position() 
+        'Import_Employee_DateStarted_Position()
 
         'Import_Employee_Benifits_Details_BY_NAME()
 
@@ -79,35 +79,48 @@ Public Class frmNewEmployee
 
         For row = 7 To DtSet.Tables(0).Rows.Count Step 3
 
-            Dim FULLNAME As String
-            FULLNAME = eCell(row, 1).Value
+            Dim EMP_NO As String = ""
+            Dim CATEGORY As String = ""
+            Dim AMOUNT As String = ""
+            Dim PRINCIPAL As String = ""
+            Dim CREDIT As String = ""
+            Dim BALANCE As String = ""
 
-            Dim CATEGORY As String = eCell(row + 1, 4).Value
-            Dim AMOUNT As String = eCell(row + 1, 5).Value
-            Dim PRINCIPAL As String = eCell(row + 1, 6).Value
-            Dim CREDIT As String = eCell(row + 1, 8).Value
-            Dim BALANCE As String = eCell(row + 1, 9).Value
+            If String.IsNullOrEmpty(eCell(row, 4).Value) Then
 
-            If FULLNAME = "1" Or FULLNAME = "2" Then
+                If eCell(row - 2, 4).Value.Contains("cash") Or eCell(row - 2, 4).Value.Contains("Cashbond") Or eCell(row - 2, 4).Value.Contains("CASH") Then
+                    EMP_NO = eCell(row - 3, 4).Value
+                Else
+                    EMP_NO = eCell(row - 2, 4).Value
+                End If
 
-                FULLNAME = eCell(row - 2, 1).Value
                 CATEGORY = eCell(row - 1, 4).Value
                 AMOUNT = eCell(row - 1, 5).Value
                 PRINCIPAL = eCell(row - 1, 6).Value
                 CREDIT = eCell(row - 1, 8).Value
                 BALANCE = eCell(row - 1, 9).Value
 
+                Console.WriteLine("EMPTY - ROWWW -" & EMP_NO & "- " & row - 1)
+            Else
+
+                EMP_NO = eCell(row, 4).Value
+                CATEGORY = eCell(row + 1, 4).Value
+                AMOUNT = eCell(row + 1, 5).Value
+                PRINCIPAL = eCell(row + 1, 6).Value
+                CREDIT = eCell(row + 1, 8).Value
+                BALANCE = eCell(row + 1, 9).Value
+
+                Console.WriteLine("NOT EMPTY - ROWWW -" & EMP_NO & "- " & row - 1)
             End If
 
-            Console.WriteLine("ROWWW -" & FULLNAME & "- " & row - 1)
 
-            If CATEGORY.TrimEnd = "CASH BOND" Or CATEGORY.TrimEnd = "Cash Bond" Or CATEGORY.TrimEnd = "cash bond" Then
+            If CATEGORY.Contains("CASH") Or CATEGORY.Contains("Cashbond") Or CATEGORY.Contains("cash") Then
                 CATEGORY = "CASH BOND"
-            ElseIf CATEGORY.TrimEnd = "SBU(Savings Build Up)" Then
+            ElseIf CATEGORY.Contains("Build") Then
                 CATEGORY = "SBU"
             End If
 
-            SAVE_Emp_SBU_AMOUNT_PRINCIPAL_CREDIT_NAME(FULLNAME, CATEGORY, AMOUNT, PRINCIPAL, CREDIT, BALANCE, row)
+            SAVE_Emp_SBU_AMOUNT_PRINCIPAL_CREDIT_NAME(EMP_NO, CATEGORY, AMOUNT, PRINCIPAL, CREDIT, BALANCE, row)
 
             frmMainForm.AppProgressBar.Value += 1
         Next row
@@ -116,6 +129,8 @@ Public Class frmNewEmployee
 
         Path_TXT.Clear()
         MyConnection.Close()
+        eApp.Quit()
+        eApp.Application.DisplayAlerts = False
 
         Excel_Panel.Visible = False
 
@@ -226,7 +241,7 @@ Public Class frmNewEmployee
 
         For row = 1 To DtSet.Tables(0).Rows.Count + 1
 
-            Update_Emp_DateHired_Position(eCell(row, 3).Value, eCell(row, 4).Value, eCell(row, 5).Value, eCell(row, 3).Value, eCell(row, 1).Value)
+            Update_Emp_DateHired_Position(eCell(row, 2).Value, eCell(row, 4).Value, eCell(row, 5).Value, eCell(row, 3).Value, eCell(row, 1).Value)
 
             frmMainForm.AppProgressBar.Value += 1
 
@@ -380,6 +395,8 @@ Public Class frmNewEmployee
 
             SaveNew_Employee(Add_Company_CB.Text, Branch_ComboB.Text, Fullname_TXT.Text, Bio_TXT.Text, Email_TXT.Text, emp_status, Started_DTP.Value,
                                                     False, TimeIn_Combo.Text, TimeOut_Combo.Text, EmpNo_TXT.Text)
+
+            SaveNew_SBU(Bio_TXT.Text, Add_Company_CB.Text)
 
             Lists_Employees(lvEmployee)
 

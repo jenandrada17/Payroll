@@ -2,6 +2,15 @@
 
     Private Sub frmReport_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         PopulateComboBox(PaydateNet_ComboB, "PAYROLL_PAYOUT", "PAYDATE")
+        Lists_SBU(SBU_LV)
+    End Sub
+
+    Private Sub SearchSBU_BTN_Click(sender As Object, e As EventArgs) Handles SearchSBU_BTN.Click
+        Lists_SBU(SBU_LV, SearchSBU_TXT.Text)
+    End Sub
+
+    Private Sub SearchSBU_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles SearchSBU_TXT.KeyPress
+        If IsEnter(e) Then SearchSBU_BTN.PerformClick()
     End Sub
 
     Private Sub PreviewNet_BTN_Click(sender As Object, e As EventArgs) Handles PreviewNet_BTN.Click

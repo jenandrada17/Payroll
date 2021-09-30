@@ -872,7 +872,6 @@ Public Class frmPayout
                 .Columns.Add("SSS_LOAN")
                 .Columns.Add("PAGIBIG_LOAN")
                 .Columns.Add("NET_PAY")
-                .Columns.Add("SBU")
                 .Columns.Add("TOTAL_DEDUCTION")
                 .Columns.Add("present_hours")
             End With
@@ -914,7 +913,7 @@ Public Class frmPayout
                                         CDbl(.Item("TOTAL_BASIC")).ToString("N"), CDbl(.Item("TOTAL_OVERTIME")).ToString("N"), LATE,
                                         CDbl(.Item("GROSS_AMOUNT")).ToString("N"), CDbl(.Item("SSS_COMP")).ToString("N"), CDbl(.Item("PAGIBIG_COMP")).ToString("N"),
                                         CDbl(.Item("PHILHEALTH_COMP")).ToString("N"), CDbl(.Item("TAX_WHELD")).ToString("N"), CDbl(.Item("SSS_LOAN")).ToString("N"),
-                                        CDbl(.Item("PAGIBIG_LOAN")).ToString("N"), CDbl(.Item("NET_PAY")).ToString("N"), CDbl(SBU_Amount(biometricID)).ToString("N"), TOTAL_COMP.ToString("N"),
+                                        CDbl(.Item("PAGIBIG_LOAN")).ToString("N"), CDbl(.Item("NET_PAY")).ToString("N"), TOTAL_COMP.ToString("N"),
                                         present_hours)
                     End With
                 End If
@@ -931,7 +930,6 @@ Public Class frmPayout
             End With
 
             Dim total_Allowance As Double = 0
-            'If isExist_String("payroll_allowances", $" where BIOMETRIC_NO = '{biometricID}'") Then
             If isExist_String("RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{biometricID}' AND PAYDATE = '{paydatee}' AND TRANSAC_NAME = 'ALLOWANCE'") Then
 
                 Dim mysql_allow As String = $"select * from RECORDED_ALLOW_DEDUC WHERE BIO_NO = '{biometricID}' AND PAYDATE = '{paydatee}' AND TRANSAC_NAME = 'ALLOWANCE'"

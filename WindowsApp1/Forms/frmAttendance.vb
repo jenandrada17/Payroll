@@ -1697,16 +1697,6 @@ Public Class frmAttendance
 
     End Sub
 
-    'Private Sub Branch_ComboB_SelectedIndexChanged(sender As Object, e As EventArgs)
-    '    If Paydate_ComboB.SelectedIndex >= 0 Then
-    '        'PopulateBiometricSHEET(Bio_grid, Paydate_ComboB.SelectedItem, Branch_ComboB.SelectedItem)
-    '        PopulateBiometricSHEET(Bio_grid, Paydate_ComboB.SelectedItem)
-    '    Else
-    '        'PopulateBiometricSHEET(Bio_grid, Paydate, Branch_ComboB.SelectedItem)
-    '        PopulateBiometricSHEET(Bio_grid, Paydate)
-    '    End If
-    'End Sub
-
     Private Sub Paydate_ComboB_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Paydate_ComboB.SelectedIndexChanged
 
         If Paydate_ComboB.SelectedIndex >= 0 Then
@@ -1777,12 +1767,15 @@ Public Class frmAttendance
             End If
 
             '==========================  CHECK PAYDATE IF VALID FOR EDITING =========================   
-            If paydate_ = frmMainForm.Paydate.ToString("d") Then
-                Save_BTN.Enabled = True
+            If Paydate_ComboB.SelectedIndex >= 0 Then
+                If Paydate_ComboB.Text = frmMainForm.Paydate.ToString("d") Then
+                    Save_BTN.Enabled = True
+                Else
+                    Save_BTN.Enabled = False
+                End If
             Else
-                Save_BTN.Enabled = False
+                Save_BTN.Enabled = True
             End If
-
 
         End If
 

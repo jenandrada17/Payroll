@@ -369,7 +369,6 @@ Partial Class frmNewEmployee
         '
         Me.TimeOut_Combo.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.TimeOut_Combo.FormattingEnabled = True
-        Me.TimeOut_Combo.Items.AddRange(New Object() {"PHOTO", "P&G UY", "DALTON", "PERFECOM", "HEAD OFFICE"})
         Me.TimeOut_Combo.Location = New System.Drawing.Point(384, 133)
         Me.TimeOut_Combo.Name = "TimeOut_Combo"
         Me.TimeOut_Combo.Size = New System.Drawing.Size(169, 28)
@@ -379,7 +378,6 @@ Partial Class frmNewEmployee
         '
         Me.TimeIn_Combo.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.TimeIn_Combo.FormattingEnabled = True
-        Me.TimeIn_Combo.Items.AddRange(New Object() {"PHOTO", "P&G UY", "DALTON", "PERFECOM", "HEAD OFFICE"})
         Me.TimeIn_Combo.Location = New System.Drawing.Point(384, 89)
         Me.TimeIn_Combo.Name = "TimeIn_Combo"
         Me.TimeIn_Combo.Size = New System.Drawing.Size(169, 28)
@@ -482,9 +480,9 @@ Partial Class frmNewEmployee
         Me.Label8.ForeColor = System.Drawing.Color.LightSalmon
         Me.Label8.Location = New System.Drawing.Point(116, 228)
         Me.Label8.Name = "Label8"
-        Me.Label8.Size = New System.Drawing.Size(172, 16)
+        Me.Label8.Size = New System.Drawing.Size(166, 16)
         Me.Label8.TabIndex = 104
-        Me.Label8.Text = "(Last Name, First Name MI.)"
+        Me.Label8.Text = "(Last name, First name MI.)"
         '
         'Button2
         '

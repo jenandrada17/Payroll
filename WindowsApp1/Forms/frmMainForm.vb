@@ -6,6 +6,7 @@ Public Class frmMainForm
     Dim DateNow As DateTime = DateTime.Now
     Dim StartFour, EndFour, StartNineteen, EndNineteen As DateTime
     Public Paydate As DateTime
+    Public CommandLine As String
 
     Private Sub frmMainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
@@ -17,13 +18,21 @@ Public Class frmMainForm
         StartNineteen = New DateTime(DateNow.Year, DateNow.Month, 19).AddMonths(-1).AddDays(-1)
         EndNineteen = New DateTime(StartNineteen.Year, StartNineteen.Month, 3).AddMonths(1)
 
-
         If DateNow.Day - 16 <= 2 And DateNow.Day - 16 >= -12 Then
             Paydate = EndNineteen.AddDays(12)
         Else
             Paydate = New DateTime(EndFour.Year, EndFour.Month, DateTime.DaysInMonth(EndFour.Year, EndFour.Month))
         End If
 
+        If GetVersion() > Application.ProductVersion Then
+            Dim result As DialogResult = MessageBox.Show($"New {GetVersion()} version of the program is available, do you want to upgrade?", "Question", MessageBoxButtons.YesNo)
+            If result = DialogResult.Yes Then
+                Dim MyAutoUpdate As New Updater
+                If MyAutoUpdate.AutoUpdate(CommandLine) Then
+                    Close()
+                End If
+            End If
+        End If
     End Sub
 
     '======================================Buttons================================================== 

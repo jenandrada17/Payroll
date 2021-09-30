@@ -129,19 +129,6 @@ Partial Class frmSettings
         Me.ColumnHeader14 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader8 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader16 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.TabPage3 = New System.Windows.Forms.TabPage()
-        Me.SearchSBU_TXT = New System.Windows.Forms.TextBox()
-        Me.SearchSBU_BTN = New System.Windows.Forms.Button()
-        Me.SBU_LV = New System.Windows.Forms.ListView()
-        Me.ColumnHeader10 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader23 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.SBU_Change_BTN = New System.Windows.Forms.Button()
-        Me.SBU_group = New System.Windows.Forms.GroupBox()
-        Me.SBU_Amount_TXT = New System.Windows.Forms.TextBox()
-        Me.Label19 = New System.Windows.Forms.Label()
-        Me.SBU_Save_BTN = New System.Windows.Forms.Button()
-        Me.Label21 = New System.Windows.Forms.Label()
-        Me.SBU_Label = New System.Windows.Forms.Label()
         Me.TabPage4 = New System.Windows.Forms.TabPage()
         Me.GroupBox8 = New System.Windows.Forms.GroupBox()
         Me.Cat_Deduc_List = New System.Windows.Forms.ListView()
@@ -200,7 +187,6 @@ Partial Class frmSettings
         Me.Context_deduct = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.menu_subtotal = New System.Windows.Forms.ToolStripMenuItem()
         Me.menu_edit = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ColumnHeader28 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.Settings_Tab.SuspendLayout()
         Me.TabPage5.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
@@ -212,8 +198,6 @@ Partial Class frmSettings
         Me.FlowLayoutPanel1.SuspendLayout()
         Me.TabPage2.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
-        Me.TabPage3.SuspendLayout()
-        Me.SBU_group.SuspendLayout()
         Me.TabPage4.SuspendLayout()
         Me.GroupBox8.SuspendLayout()
         Me.GroupBox7.SuspendLayout()
@@ -243,7 +227,6 @@ Partial Class frmSettings
         Me.Settings_Tab.Controls.Add(Me.Holiday_Tab)
         Me.Settings_Tab.Controls.Add(Me.TabPage1)
         Me.Settings_Tab.Controls.Add(Me.TabPage2)
-        Me.Settings_Tab.Controls.Add(Me.TabPage3)
         Me.Settings_Tab.Controls.Add(Me.TabPage4)
         Me.Settings_Tab.Controls.Add(Me.TabPage7)
         Me.Settings_Tab.Controls.Add(Me.TabPage6)
@@ -1307,139 +1290,6 @@ Partial Class frmSettings
         Me.ColumnHeader16.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.ColumnHeader16.Width = 100
         '
-        'TabPage3
-        '
-        Me.TabPage3.Controls.Add(Me.SearchSBU_TXT)
-        Me.TabPage3.Controls.Add(Me.SearchSBU_BTN)
-        Me.TabPage3.Controls.Add(Me.SBU_LV)
-        Me.TabPage3.Controls.Add(Me.SBU_Change_BTN)
-        Me.TabPage3.Controls.Add(Me.SBU_group)
-        Me.TabPage3.Controls.Add(Me.Label21)
-        Me.TabPage3.Controls.Add(Me.SBU_Label)
-        Me.TabPage3.Location = New System.Drawing.Point(4, 38)
-        Me.TabPage3.Name = "TabPage3"
-        Me.TabPage3.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage3.Size = New System.Drawing.Size(1147, 604)
-        Me.TabPage3.TabIndex = 6
-        Me.TabPage3.Text = "  SBU  "
-        Me.TabPage3.UseVisualStyleBackColor = True
-        '
-        'SearchSBU_TXT
-        '
-        Me.SearchSBU_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.SearchSBU_TXT.Location = New System.Drawing.Point(519, 23)
-        Me.SearchSBU_TXT.Name = "SearchSBU_TXT"
-        Me.SearchSBU_TXT.Size = New System.Drawing.Size(523, 33)
-        Me.SearchSBU_TXT.TabIndex = 119
-        '
-        'SearchSBU_BTN
-        '
-        Me.SearchSBU_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.SearchSBU_BTN.Location = New System.Drawing.Point(1048, 23)
-        Me.SearchSBU_BTN.Name = "SearchSBU_BTN"
-        Me.SearchSBU_BTN.Size = New System.Drawing.Size(82, 33)
-        Me.SearchSBU_BTN.TabIndex = 120
-        Me.SearchSBU_BTN.Text = "Search"
-        Me.SearchSBU_BTN.UseVisualStyleBackColor = True
-        '
-        'SBU_LV
-        '
-        Me.SBU_LV.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.SBU_LV.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader10, Me.ColumnHeader23, Me.ColumnHeader28})
-        Me.SBU_LV.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.SBU_LV.FullRowSelect = True
-        Me.SBU_LV.GridLines = True
-        Me.SBU_LV.HideSelection = False
-        Me.SBU_LV.Location = New System.Drawing.Point(519, 62)
-        Me.SBU_LV.MultiSelect = False
-        Me.SBU_LV.Name = "SBU_LV"
-        Me.SBU_LV.Size = New System.Drawing.Size(625, 536)
-        Me.SBU_LV.TabIndex = 118
-        Me.SBU_LV.UseCompatibleStateImageBehavior = False
-        Me.SBU_LV.View = System.Windows.Forms.View.Details
-        '
-        'ColumnHeader10
-        '
-        Me.ColumnHeader10.Text = "Name"
-        Me.ColumnHeader10.Width = 300
-        '
-        'ColumnHeader23
-        '
-        Me.ColumnHeader23.Text = "Balance"
-        Me.ColumnHeader23.Width = 130
-        '
-        'SBU_Change_BTN
-        '
-        Me.SBU_Change_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.SBU_Change_BTN.Location = New System.Drawing.Point(328, 50)
-        Me.SBU_Change_BTN.Name = "SBU_Change_BTN"
-        Me.SBU_Change_BTN.Size = New System.Drawing.Size(79, 30)
-        Me.SBU_Change_BTN.TabIndex = 115
-        Me.SBU_Change_BTN.Text = "Change"
-        Me.SBU_Change_BTN.UseVisualStyleBackColor = True
-        '
-        'SBU_group
-        '
-        Me.SBU_group.Controls.Add(Me.SBU_Amount_TXT)
-        Me.SBU_group.Controls.Add(Me.Label19)
-        Me.SBU_group.Controls.Add(Me.SBU_Save_BTN)
-        Me.SBU_group.Location = New System.Drawing.Point(18, 96)
-        Me.SBU_group.Name = "SBU_group"
-        Me.SBU_group.Size = New System.Drawing.Size(403, 100)
-        Me.SBU_group.TabIndex = 117
-        Me.SBU_group.TabStop = False
-        Me.SBU_group.Visible = False
-        '
-        'SBU_Amount_TXT
-        '
-        Me.SBU_Amount_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.SBU_Amount_TXT.Location = New System.Drawing.Point(81, 42)
-        Me.SBU_Amount_TXT.Name = "SBU_Amount_TXT"
-        Me.SBU_Amount_TXT.Size = New System.Drawing.Size(214, 33)
-        Me.SBU_Amount_TXT.TabIndex = 109
-        '
-        'Label19
-        '
-        Me.Label19.AutoSize = True
-        Me.Label19.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label19.Location = New System.Drawing.Point(5, 42)
-        Me.Label19.Name = "Label19"
-        Me.Label19.Size = New System.Drawing.Size(64, 27)
-        Me.Label19.TabIndex = 110
-        Me.Label19.Text = "Amount"
-        '
-        'SBU_Save_BTN
-        '
-        Me.SBU_Save_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.SBU_Save_BTN.Location = New System.Drawing.Point(310, 42)
-        Me.SBU_Save_BTN.Name = "SBU_Save_BTN"
-        Me.SBU_Save_BTN.Size = New System.Drawing.Size(79, 33)
-        Me.SBU_Save_BTN.TabIndex = 114
-        Me.SBU_Save_BTN.Text = "Save"
-        Me.SBU_Save_BTN.UseVisualStyleBackColor = True
-        '
-        'Label21
-        '
-        Me.Label21.AutoSize = True
-        Me.Label21.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label21.Location = New System.Drawing.Point(23, 53)
-        Me.Label21.Name = "Label21"
-        Me.Label21.Size = New System.Drawing.Size(93, 32)
-        Me.Label21.TabIndex = 116
-        Me.Label21.Text = "Current  -"
-        '
-        'SBU_Label
-        '
-        Me.SBU_Label.AutoSize = True
-        Me.SBU_Label.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.SBU_Label.Location = New System.Drawing.Point(136, 53)
-        Me.SBU_Label.Name = "SBU_Label"
-        Me.SBU_Label.Size = New System.Drawing.Size(22, 32)
-        Me.SBU_Label.TabIndex = 115
-        Me.SBU_Label.Text = "-"
-        '
         'TabPage4
         '
         Me.TabPage4.Controls.Add(Me.GroupBox8)
@@ -2006,11 +1856,6 @@ Partial Class frmSettings
         Me.menu_edit.Size = New System.Drawing.Size(146, 22)
         Me.menu_edit.Text = "Edit"
         '
-        'ColumnHeader28
-        '
-        Me.ColumnHeader28.Text = "Last Update"
-        Me.ColumnHeader28.Width = 170
-        '
         'frmSettings
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -2042,10 +1887,6 @@ Partial Class frmSettings
         Me.TabPage2.PerformLayout()
         Me.GroupBox6.ResumeLayout(False)
         Me.GroupBox6.PerformLayout()
-        Me.TabPage3.ResumeLayout(False)
-        Me.TabPage3.PerformLayout()
-        Me.SBU_group.ResumeLayout(False)
-        Me.SBU_group.PerformLayout()
         Me.TabPage4.ResumeLayout(False)
         Me.GroupBox8.ResumeLayout(False)
         Me.GroupBox8.PerformLayout()
@@ -2148,14 +1989,6 @@ Partial Class frmSettings
     Friend WithEvents ColumnHeader12 As ColumnHeader
     Friend WithEvents ColumnHeader13 As ColumnHeader
     Friend WithEvents ColumnHeader15 As ColumnHeader
-    Friend WithEvents TabPage3 As TabPage
-    Friend WithEvents Label19 As Label
-    Friend WithEvents SBU_Amount_TXT As TextBox
-    Friend WithEvents SBU_Save_BTN As Button
-    Friend WithEvents Label21 As Label
-    Friend WithEvents SBU_Label As Label
-    Friend WithEvents SBU_group As GroupBox
-    Friend WithEvents SBU_Change_BTN As Button
     Friend WithEvents ColumnHeader14 As ColumnHeader
     Friend WithEvents ColumnHeader16 As ColumnHeader
     Friend WithEvents Label22 As Label
@@ -2211,11 +2044,6 @@ Partial Class frmSettings
     Friend WithEvents MonthlyRate_TXT As TextBox
     Friend WithEvents ColumnHeader7 As ColumnHeader
     Friend WithEvents ApproveToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents SBU_LV As ListView
-    Friend WithEvents ColumnHeader10 As ColumnHeader
-    Friend WithEvents ColumnHeader23 As ColumnHeader
-    Friend WithEvents SearchSBU_TXT As TextBox
-    Friend WithEvents SearchSBU_BTN As Button
     Friend WithEvents TabPage7 As TabPage
     Friend WithEvents GroupBox4 As GroupBox
     Friend WithEvents ClockClear_BTN As Button
@@ -2245,5 +2073,4 @@ Partial Class frmSettings
     Friend WithEvents ClockEmp_OUT_CB As ComboBox
     Friend WithEvents ClearlBranch_BTN As Button
     Friend WithEvents ColumnHeader27 As ColumnHeader
-    Friend WithEvents ColumnHeader28 As ColumnHeader
 End Class

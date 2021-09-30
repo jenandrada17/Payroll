@@ -23,7 +23,7 @@ Partial Class frmReport
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim ReportDataSource1 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource3 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
         Me.NetPayBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.reports = New WindowsApp1.reports()
         Me.Attendance_Tab = New System.Windows.Forms.TabControl()
@@ -36,12 +36,25 @@ Partial Class frmReport
         Me.PreviewNet_BTN = New System.Windows.Forms.Button()
         Me.PaydateNet_ComboB = New System.Windows.Forms.ComboBox()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.TabPage3 = New System.Windows.Forms.TabPage()
+        Me.TabPage4 = New System.Windows.Forms.TabPage()
+        Me.SearchSBU_TXT = New System.Windows.Forms.TextBox()
+        Me.SearchSBU_BTN = New System.Windows.Forms.Button()
+        Me.SBU_LV = New System.Windows.Forms.ListView()
+        Me.ColumnHeader10 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader29 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader30 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader23 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader28 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Close_LBL = New System.Windows.Forms.Label()
+        Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader2 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         CType(Me.NetPayBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.reports, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Attendance_Tab.SuspendLayout()
         Me.TabPage1.SuspendLayout()
+        Me.TabPage4.SuspendLayout()
         Me.SuspendLayout()
         '
         'NetPayBindingSource
@@ -58,6 +71,8 @@ Partial Class frmReport
         '
         Me.Attendance_Tab.Controls.Add(Me.TabPage1)
         Me.Attendance_Tab.Controls.Add(Me.TabPage2)
+        Me.Attendance_Tab.Controls.Add(Me.TabPage3)
+        Me.Attendance_Tab.Controls.Add(Me.TabPage4)
         Me.Attendance_Tab.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Attendance_Tab.Location = New System.Drawing.Point(5, 30)
         Me.Attendance_Tab.Name = "Attendance_Tab"
@@ -114,9 +129,9 @@ Partial Class frmReport
         '
         'ReportV_NetPay
         '
-        ReportDataSource1.Name = "DataSet1"
-        ReportDataSource1.Value = Me.NetPayBindingSource
-        Me.ReportV_NetPay.LocalReport.DataSources.Add(ReportDataSource1)
+        ReportDataSource3.Name = "DataSet1"
+        ReportDataSource3.Value = Me.NetPayBindingSource
+        Me.ReportV_NetPay.LocalReport.DataSources.Add(ReportDataSource3)
         Me.ReportV_NetPay.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_NetPay.rdlc"
         Me.ReportV_NetPay.Location = New System.Drawing.Point(4, 67)
         Me.ReportV_NetPay.Name = "ReportV_NetPay"
@@ -162,6 +177,90 @@ Partial Class frmReport
         Me.TabPage2.Text = "    Common   "
         Me.TabPage2.UseVisualStyleBackColor = True
         '
+        'TabPage3
+        '
+        Me.TabPage3.Location = New System.Drawing.Point(4, 41)
+        Me.TabPage3.Name = "TabPage3"
+        Me.TabPage3.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage3.Size = New System.Drawing.Size(1151, 591)
+        Me.TabPage3.TabIndex = 3
+        Me.TabPage3.Text = "    Employee Count   "
+        Me.TabPage3.UseVisualStyleBackColor = True
+        '
+        'TabPage4
+        '
+        Me.TabPage4.Controls.Add(Me.SearchSBU_TXT)
+        Me.TabPage4.Controls.Add(Me.SearchSBU_BTN)
+        Me.TabPage4.Controls.Add(Me.SBU_LV)
+        Me.TabPage4.Location = New System.Drawing.Point(4, 41)
+        Me.TabPage4.Name = "TabPage4"
+        Me.TabPage4.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage4.Size = New System.Drawing.Size(1151, 591)
+        Me.TabPage4.TabIndex = 4
+        Me.TabPage4.Text = "    SBU    "
+        Me.TabPage4.UseVisualStyleBackColor = True
+        '
+        'SearchSBU_TXT
+        '
+        Me.SearchSBU_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SearchSBU_TXT.Location = New System.Drawing.Point(6, 30)
+        Me.SearchSBU_TXT.Name = "SearchSBU_TXT"
+        Me.SearchSBU_TXT.Size = New System.Drawing.Size(395, 33)
+        Me.SearchSBU_TXT.TabIndex = 122
+        '
+        'SearchSBU_BTN
+        '
+        Me.SearchSBU_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SearchSBU_BTN.Location = New System.Drawing.Point(407, 30)
+        Me.SearchSBU_BTN.Name = "SearchSBU_BTN"
+        Me.SearchSBU_BTN.Size = New System.Drawing.Size(82, 33)
+        Me.SearchSBU_BTN.TabIndex = 123
+        Me.SearchSBU_BTN.Text = "Search"
+        Me.SearchSBU_BTN.UseVisualStyleBackColor = True
+        '
+        'SBU_LV
+        '
+        Me.SBU_LV.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.SBU_LV.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader10, Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader29, Me.ColumnHeader30, Me.ColumnHeader23, Me.ColumnHeader28})
+        Me.SBU_LV.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SBU_LV.FullRowSelect = True
+        Me.SBU_LV.GridLines = True
+        Me.SBU_LV.HideSelection = False
+        Me.SBU_LV.Location = New System.Drawing.Point(6, 69)
+        Me.SBU_LV.MultiSelect = False
+        Me.SBU_LV.Name = "SBU_LV"
+        Me.SBU_LV.Size = New System.Drawing.Size(1139, 519)
+        Me.SBU_LV.TabIndex = 121
+        Me.SBU_LV.UseCompatibleStateImageBehavior = False
+        Me.SBU_LV.View = System.Windows.Forms.View.Details
+        '
+        'ColumnHeader10
+        '
+        Me.ColumnHeader10.Text = "Name"
+        Me.ColumnHeader10.Width = 400
+        '
+        'ColumnHeader29
+        '
+        Me.ColumnHeader29.Text = "Principal"
+        Me.ColumnHeader29.Width = 110
+        '
+        'ColumnHeader30
+        '
+        Me.ColumnHeader30.Text = "Credit"
+        Me.ColumnHeader30.Width = 110
+        '
+        'ColumnHeader23
+        '
+        Me.ColumnHeader23.Text = "Balance"
+        Me.ColumnHeader23.Width = 110
+        '
+        'ColumnHeader28
+        '
+        Me.ColumnHeader28.Text = "Last Update"
+        Me.ColumnHeader28.Width = 155
+        '
         'Label1
         '
         Me.Label1.AutoSize = True
@@ -182,6 +281,16 @@ Partial Class frmReport
         Me.Close_LBL.TabIndex = 75
         Me.Close_LBL.Text = "Close"
         '
+        'ColumnHeader1
+        '
+        Me.ColumnHeader1.Text = "Category"
+        Me.ColumnHeader1.Width = 130
+        '
+        'ColumnHeader2
+        '
+        Me.ColumnHeader2.Text = "Amount"
+        Me.ColumnHeader2.Width = 100
+        '
         'frmReport
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -198,6 +307,8 @@ Partial Class frmReport
         Me.Attendance_Tab.ResumeLayout(False)
         Me.TabPage1.ResumeLayout(False)
         Me.TabPage1.PerformLayout()
+        Me.TabPage4.ResumeLayout(False)
+        Me.TabPage4.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -217,4 +328,16 @@ Partial Class frmReport
     Friend WithEvents PrintNet_BTN As Button
     Friend WithEvents Label2 As Label
     Friend WithEvents Company_Combo As ComboBox
+    Friend WithEvents TabPage3 As TabPage
+    Friend WithEvents TabPage4 As TabPage
+    Friend WithEvents SearchSBU_TXT As TextBox
+    Friend WithEvents SearchSBU_BTN As Button
+    Friend WithEvents SBU_LV As ListView
+    Friend WithEvents ColumnHeader10 As ColumnHeader
+    Friend WithEvents ColumnHeader29 As ColumnHeader
+    Friend WithEvents ColumnHeader30 As ColumnHeader
+    Friend WithEvents ColumnHeader23 As ColumnHeader
+    Friend WithEvents ColumnHeader28 As ColumnHeader
+    Friend WithEvents ColumnHeader1 As ColumnHeader
+    Friend WithEvents ColumnHeader2 As ColumnHeader
 End Class

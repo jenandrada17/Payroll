@@ -135,16 +135,16 @@ Module SelectFromDatabase
         Return False
     End Function
 
-    Public Sub GetSBU(label As Label)
-        Dim mysql As String = "Select * FROM  PAYROLL_SBU WHERE ID = 1"
-        Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_SBU")
-        If ds.Tables(0).Rows.Count > 0 Then
-            Dim dr As DataRow = ds.Tables(0).Rows(0)
-            With dr
-                label.Text = .Item("SBU_AMOUNT")
-            End With
-        End If
-    End Sub
+    'Public Sub GetSBU(label As Label)
+    '    Dim mysql As String = "Select * FROM  PAYROLL_SBU WHERE ID = 1"
+    '    Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_SBU")
+    '    If ds.Tables(0).Rows.Count > 0 Then
+    '        Dim dr As DataRow = ds.Tables(0).Rows(0)
+    '        With dr
+    '            label.Text = .Item("SBU_AMOUNT")
+    '        End With
+    '    End If
+    'End Sub
 
     Public Sub GetEmail(email As TextBox, pass As TextBox)
         Dim mysql As String = "Select * FROM  PAYROLL_EMAIL WHERE ID = '1'"
@@ -1323,12 +1323,12 @@ Module SelectFromDatabase
 
     Public Function SBU_Amount(bio_no As String) As Double
         Dim Amount As Integer = 0
-        Dim mysql As String = $"Select * From payroll_sbu WHERE BIO_NO = '{bio_no}'"
+        Dim mysql As String = $"Select * From payroll_sbu WHERE BIO_NO = '{bio_no}' and CATEGORY = 'SBU'"
         Using ds As DataSet = LoadSQL(mysql, "payroll_sbu")
             If ds.Tables(0).Rows.Count > 0 Then
                 Dim data As DataRow = ds.Tables(0).Rows(0)
                 With data
-                    Amount = .Item("SBU_AMOUNT")
+                    Amount = .Item("AMOUNT")
                 End With
             End If
         End Using
@@ -1660,14 +1660,12 @@ Module SelectFromDatabase
     End Sub
 
     Private Sub AddRow_RATE(ByVal dr As DataRow, listview As ListView)
-
         With dr
             Dim i As ListViewItem = listview.Items.Add(.Item("BRANCH_CODE"))
             i.SubItems.Add(.Item("FULLNAME"))
             i.SubItems.Add(.Item("BIO_NO"))
             i.SubItems.Add(IIf(IsDBNull(.Item("RATE_DAILY")), "", .Item("RATE_DAILY")))
         End With
-
     End Sub
 
     Friend Sub Lists_SBU(LV As ListView, Optional searchName As String = "")
@@ -1680,17 +1678,17 @@ Module SelectFromDatabase
 
         If searchName.Length <> 0 Then
 
-            mysql = "select * from PAYROLL_EMPLOYEE WHERE "
+            mysql = "select * from PAYROLL_EMPLOYEE A inner join PAYROLL_SBU B on B.BIO_NO = A.BIO_NO WHERE "
 
             For Each name In strWords
-                mysql &= $"{vbCr}UPPER(BIO_NO) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(B.BIO_NO) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(FULLNAME) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(BRANCH_CODE) LIKE UPPER('%{name}%') ORDER BY FULLNAME ASC "
             Next
 
         Else
-            mysql = "select * from PAYROLL_EMPLOYEE ORDER BY FULLNAME ASC "
+            mysql = "select * from PAYROLL_EMPLOYEE A inner join PAYROLL_SBU B on B.BIO_NO = A.BIO_NO ORDER BY FULLNAME ASC "
         End If
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
@@ -1698,9 +1696,15 @@ Module SelectFromDatabase
             progressBarStart(ds.Tables(0).Rows.Count)
             For Each dr In ds.Tables(0).Rows
                 With dr
+
                     Dim Last_update As DateTime = IIf(IsDBNull(.Item("LAST_SBU")), Nothing, .Item("LAST_SBU"))
+
                     Dim i As ListViewItem = LV.Items.Add(.Item("FULLNAME"))
-                    i.SubItems.Add(.Item("SBU_BALANCE"))
+                    i.SubItems.Add(.Item("CATEGORY"))
+                    i.SubItems.Add(.Item("AMOUNT"))
+                    i.SubItems.Add(IIf(IsDBNull(.Item("PRINCIPAL")), "", .Item("PRINCIPAL")))
+                    i.SubItems.Add(IIf(IsDBNull(.Item("CREDIT")), "", .Item("CREDIT")))
+                    i.SubItems.Add(IIf(IsDBNull(.Item("BALANCE")), "", .Item("BALANCE")))
                     i.SubItems.Add(IIf(Last_update = Nothing, "", Last_update.ToString("MMM dd, yyyy")))
 
                 End With
@@ -2197,7 +2201,7 @@ Module SelectFromDatabase
     End Function
 
     Public Function SBU_notFull(BIO_NO As String)
-        Dim mysql As String = $"Select COMPANY, DATE_STARTED, SBU_BALANCE From PAYROLL_EMPLOYEE where BIO_NO = '{BIO_NO}' "
+        Dim mysql As String = $"Select COMPANY, DATE_STARTED, BALANCE From PAYROLL_EMPLOYEE A inner join PAYROLL_SBU B ON A.BIO_NO = B.BIO_NO where A.BIO_NO = '{BIO_NO}' "
         Using dss As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
             If dss.Tables(0).Rows.Count > 0 Then
                 Dim data As DataRow = dss.Tables(0).Rows(0)
@@ -2205,7 +2209,7 @@ Module SelectFromDatabase
 
                     Dim training_days As Integer = 0
                     Dim Started As DateTime = .Item("DATE_STARTED")
-                    Dim sbu_bal As Double = .Item("SBU_BALANCE")
+                    Dim sbu_bal As Double = IIf(IsDBNull(.Item("BALANCE")), 0, .Item("BALANCE"))
 
                     '=============== TRAINING DAYS ================
                     If .Item("COMPANY") = "DALTON" Or .Item("COMPANY") = "PHOTO" Or .Item("COMPANY") = "HEAD OFFICE" Then

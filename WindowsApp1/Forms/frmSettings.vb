@@ -10,10 +10,6 @@ Public Class frmSettings
             HolidayRate(RegularRate_TXT, SpecialRate_TXT)
         End If
 
-        If ThisHasRow("PAYROLL_SBU") Then
-            GetSBU(SBU_Label)
-        End If
-
         If ThisHasRow("PAYROLL_EMAIL") Then
             GetEmail(Email_TXT, Password_TXT)
         End If
@@ -25,7 +21,6 @@ Public Class frmSettings
         Lists_Rate(Rate_list)
         Lists_Allowance(Allowance_LV)
         Lists_deduction(Deduction_List)
-        Lists_SBU(SBU_LV)
         Lists_TimeInOut(TimeInOut_LV)
         Load_Category_LIST(Allowance_List, "CATEGORY_ALLOWANCE", "ALLOWANCE_NAME")
         Load_Category_LIST(Cat_Deduc_List, "CATEGORY_DEDUCTION", "DEDUCTION_NAME")
@@ -431,16 +426,6 @@ Public Class frmSettings
 
     End Sub
 
-    Private Sub SBU_Save_BTN_Click(sender As Object, e As EventArgs) Handles SBU_Save_BTN.Click
-        SaveSBU(SBU_Amount_TXT.Text)
-        SBU_Amount_TXT.Text = ""
-        SBU_group.Visible = False
-        GetSBU(SBU_Label)
-    End Sub
-
-    Private Sub SBU_Change_BTN_Click(sender As Object, e As EventArgs) Handles SBU_Change_BTN.Click
-        SBU_group.Visible = True
-    End Sub
 
     Private Sub DE_Search_BTN_Click(sender As Object, e As EventArgs) Handles DE_Search_BTN.Click
         Lists_deduction(Deduction_List, DE_Search_TXT.Text)
@@ -675,14 +660,6 @@ Public Class frmSettings
         End If
     End Sub
 
-    Private Sub SearchSBU_BTN_Click(sender As Object, e As EventArgs) Handles SearchSBU_BTN.Click
-        Lists_SBU(SBU_LV, SearchSBU_TXT.Text)
-    End Sub
-
-    Private Sub SearchSBU_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles SearchSBU_TXT.KeyPress
-        If IsEnter(e) Then SearchSBU_BTN.PerformClick()
-    End Sub
-
     Private Sub ClockBio_TXT_TextChanged(sender As Object, e As EventArgs) Handles ClockBio_TXT.TextChanged
 
         If ClockBio_TXT.Text = "" Then
@@ -797,4 +774,5 @@ Public Class frmSettings
     Private Sub SearchTime_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles SearchTime_TXT.KeyPress
         If IsEnter(e) Then SearchTime_BTN.PerformClick()
     End Sub
+
 End Class

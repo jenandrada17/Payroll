@@ -124,6 +124,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class\Employee.vb" />
+    <Compile Include="Class\Updater.vb" />
     <Compile Include="CryptoStuff.vb" />
     <Compile Include="Dataset\dtr_all.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -204,6 +205,7 @@
     <Compile Include="Module\Database.vb" />
     <Compile Include="Module\FileDirectory.vb" />
     <Compile Include="Module\GroupingListview.vb" />
+    <Compile Include="Module\Others.vb" />
     <Compile Include="Module\Public_Function.vb" />
     <Compile Include="Module\SaveUpdate.vb" />
     <Compile Include="Module\SelectFromDatabase.vb" />
