@@ -77,37 +77,41 @@ Public Class frmPayout
         If Bio_Exist_Attendance(BIO_NO, paydate_) Then
 
             AttendanceDetails(BIO_NO, paydate_, NoOfDays_TXT, RegularOT_TXT, SpecialHol_TXT, RegularHol_TXT,
-                                        Late_TXT, UnderTime_TXT)
+                                        Late_TXT, UnderTime_TXT, TrainingDays_LBL)
 
-            '============================ CHECK IF CLOSE PAYROLL ================================== 
-            If IsLastDay(paydate_) Then
+            '============================ CHECK IF NOT TRAINEE ==================================  
+            If TrainingDays_LBL.Text = 0 Or TrainingDays_LBL.Text = Nothing Then
+                Training_GB.Visible = False
+                '============================ CHECK IF CLOSE PAYROLL ==================================  
+                If IsLastDay(paydate_) Then
 
-                Dim monthly_Basic As Double = GetMonthly_Basic(BIO_NO, paydate_)
-                Prev_Amount_lbl.Text = (GetFirst_Basic(BIO_NO, paydate_)).ToString("N")
+                    Dim monthly_Basic As Double = GetMonthly_Basic(BIO_NO, paydate_)
+                    Prev_Amount_lbl.Text = (GetFirst_Basic(BIO_NO, paydate_)).ToString("N")
 
-                SSSComp_LBL.Text = (Get_SSS(monthly_Basic)).ToString("N")
-                HDMF_LBL.Text = (Get_Pagibig(monthly_Basic)).ToString("N")
-                Philhealth_LBL.Text = (Get_PhilHealth(monthly_Basic)).ToString("N")
-                Tax_Wheld_LBL.Text = (Get_WHolding(monthly_Basic)).ToString("N")
+                    SSSComp_LBL.Text = (Get_SSS(monthly_Basic)).ToString("N")
+                    HDMF_LBL.Text = (Get_Pagibig(monthly_Basic)).ToString("N")
+                    Philhealth_LBL.Text = (Get_PhilHealth(monthly_Basic)).ToString("N")
+                    Tax_Wheld_LBL.Text = (Get_WHolding(monthly_Basic)).ToString("N")
 
-                NetTax_LBL.Text = (monthly_Basic - (CDbl(SSSComp_LBL.Text) + CDbl(HDMF_LBL.Text) + CDbl(Philhealth_LBL.Text) + CDbl(Tax_Wheld_LBL.Text))).ToString(”N”)
+                    NetTax_LBL.Text = (monthly_Basic - (CDbl(SSSComp_LBL.Text) + CDbl(HDMF_LBL.Text) + CDbl(Philhealth_LBL.Text) + CDbl(Tax_Wheld_LBL.Text))).ToString(”N”)
 
-                Previous_groupB.Visible = True
+                    Previous_groupB.Visible = True
 
-                SSSLoan_LBL.Text = (Get_LOAN_SSS(BIO_NO)).ToString("N")
-                PagibigLoan_LBL.Text = (Get_LOAN_Pagibig(BIO_NO)).ToString("N")
+                    SSSLoan_LBL.Text = (Get_LOAN_SSS(BIO_NO)).ToString("N")
+                    PagibigLoan_LBL.Text = (Get_LOAN_Pagibig(BIO_NO)).ToString("N")
 
-                sched_deduc = "CLOSE PAYROLL"
-            Else
-                SSSComp_LBL.Text = 0.00
-                HDMF_LBL.Text = 0.00
-                Philhealth_LBL.Text = 0.00
-                Tax_Wheld_LBL.Text = 0.00
-                SSSLoan_LBL.Text = 0.00
-                PagibigLoan_LBL.Text = 0.00
-                Previous_groupB.Visible = False
+                    sched_deduc = "CLOSE PAYROLL"
+                Else
+                    SSSComp_LBL.Text = 0.00
+                    HDMF_LBL.Text = 0.00
+                    Philhealth_LBL.Text = 0.00
+                    Tax_Wheld_LBL.Text = 0.00
+                    SSSLoan_LBL.Text = 0.00
+                    PagibigLoan_LBL.Text = 0.00
+                    Previous_groupB.Visible = False
 
-                sched_deduc = "OPEN PAYROLL"
+                    sched_deduc = "OPEN PAYROLL"
+                End If
             End If
 
             '================ FETCHING ALLOWANCE RECORDED WHEN ATTENDANCE BIOMETRIC IMPORTED ================== 
@@ -292,27 +296,63 @@ Public Class frmPayout
 
     Private Sub Calculate_Gross()
 
-        TotalBasic_LBL.Text = (Convert.ToDouble(NoOfDays_TXT.Text) * Convert.ToDouble(Rate_TXT.Text)).ToString("N")
+        If TrainingDays_LBL.Text <> 0 Then '================ BASE ON TRAINING DAYS COVERED =================
 
-        TotalHol_LBL.Text = ((((Convert.ToInt32(SpecialHol_TXT.Text) * Convert.ToInt32(Rate_TXT.Text)) * specHoliday_) / specHoliday_) + (((Convert.ToInt32(RegularHol_TXT.Text) * Convert.ToInt32(Rate_TXT.Text)) * regHoliday_) / regHoliday_)).ToString("N") ' =========== CALCULATE hOLIDAY TO PESO ===========
+            Dim rate As Double = Rate_TXT.Text
+            Dim deduct_per_day As Double = 0
+            Dim total_train As Double = 0
 
-        TotalOT_LBL.Text = (((Convert.ToInt32(Rate_TXT.Text) / 8) * 1.25) * Convert.ToInt32(RegularOT_TXT.Tag)).ToString("N") ' =========== CALCULATE OVERTIME TO PESO ===========
+            rate = rate * 0.75
+            deduct_per_day = Convert.ToDouble(Rate_TXT.Text) - rate
+            total_train = (Convert.ToDouble(Rate_TXT.Text) - rate) * Convert.ToDouble(TrainingDays_LBL.Text)
 
-        Dim late_split() As String, under_split() As String, lateTOMinute, underToMinute As Double
+            TotalBasic_LBL.Text = ((Convert.ToDouble(NoOfDays_TXT.Text) * Convert.ToDouble(Rate_TXT.Text)) - total_train).ToString("N")
 
-        late_split = Split(Late_TXT.Tag, ":")
-        under_split = Split(UnderTime_TXT.Tag, ":")
+            TotalHol_LBL.Text = ((((Convert.ToInt32(SpecialHol_TXT.Text) * Convert.ToInt32(Rate_TXT.Text)) * specHoliday_) / specHoliday_) + (((Convert.ToInt32(RegularHol_TXT.Text) * Convert.ToInt32(Rate_TXT.Text)) * regHoliday_) / regHoliday_)).ToString("N") ' =========== CALCULATE hOLIDAY TO PESO ===========
 
-        lateTOMinute = CDbl(late_split(0)) * 60 + CDbl(late_split(1)) + CDbl(late_split(2)) / 60
-        underToMinute = (CDbl(under_split(0)) * 60 + CDbl(under_split(1)) + CDbl(under_split(2)) / 60) / 60
+            TotalOT_LBL.Text = (((Convert.ToInt32(Rate_TXT.Text) / 8) * 1.25) * Convert.ToInt32(RegularOT_TXT.Tag)).ToString("N") ' =========== CALCULATE OVERTIME TO PESO ===========
 
-        Dim LATEE, UNDERTIMEE As Double
-        LATEE = ((Convert.ToInt32(Rate_TXT.Text) / 8) / 60) * lateTOMinute
-        UNDERTIMEE = (Convert.ToInt32(Rate_TXT.Text) / 8) * underToMinute
+            Dim late_split() As String, under_split() As String, lateTOMinute, underToMinute As Double
 
-        TotalLateUnder_LBL.Text = (LATEE + UNDERTIMEE).ToString("N")
+            late_split = Split(Late_TXT.Tag, ":")
+            under_split = Split(UnderTime_TXT.Tag, ":")
 
-        GrossAmount_LBL.Text = ((Convert.ToDouble(TotalBasic_LBL.Text) + Convert.ToDouble(TotalHol_LBL.Text) + Convert.ToDouble(TotalOT_LBL.Text)) - Convert.ToDouble(TotalLateUnder_LBL.Text)).ToString("N")
+            lateTOMinute = CDbl(late_split(0)) * 60 + CDbl(late_split(1)) + CDbl(late_split(2)) / 60
+            underToMinute = (CDbl(under_split(0)) * 60 + CDbl(under_split(1)) + CDbl(under_split(2)) / 60) / 60
+
+            Dim LATEE, UNDERTIMEE As Double
+            LATEE = ((Convert.ToInt32(Rate_TXT.Text) / 8) / 60) * lateTOMinute
+            UNDERTIMEE = (Convert.ToInt32(Rate_TXT.Text) / 8) * underToMinute
+
+            TotalLateUnder_LBL.Text = (LATEE + UNDERTIMEE).ToString("N")
+
+            GrossAmount_LBL.Text = ((Convert.ToDouble(TotalBasic_LBL.Text) + Convert.ToDouble(TotalHol_LBL.Text) + Convert.ToDouble(TotalOT_LBL.Text)) - Convert.ToDouble(TotalLateUnder_LBL.Text)).ToString("N")
+
+        Else '========================================= NOT A TRAINEE ===========================================
+
+            TotalBasic_LBL.Text = (Convert.ToDouble(NoOfDays_TXT.Text) * Convert.ToDouble(Rate_TXT.Text)).ToString("N")
+
+            TotalHol_LBL.Text = ((((Convert.ToInt32(SpecialHol_TXT.Text) * Convert.ToInt32(Rate_TXT.Text)) * specHoliday_) / specHoliday_) + (((Convert.ToInt32(RegularHol_TXT.Text) * Convert.ToInt32(Rate_TXT.Text)) * regHoliday_) / regHoliday_)).ToString("N") ' =========== CALCULATE hOLIDAY TO PESO ===========
+
+            TotalOT_LBL.Text = (((Convert.ToInt32(Rate_TXT.Text) / 8) * 1.25) * Convert.ToInt32(RegularOT_TXT.Tag)).ToString("N") ' =========== CALCULATE OVERTIME TO PESO ===========
+
+            Dim late_split() As String, under_split() As String, lateTOMinute, underToMinute As Double
+
+            late_split = Split(Late_TXT.Tag, ":")
+            under_split = Split(UnderTime_TXT.Tag, ":")
+
+            lateTOMinute = CDbl(late_split(0)) * 60 + CDbl(late_split(1)) + CDbl(late_split(2)) / 60
+            underToMinute = (CDbl(under_split(0)) * 60 + CDbl(under_split(1)) + CDbl(under_split(2)) / 60) / 60
+
+            Dim LATEE, UNDERTIMEE As Double
+            LATEE = ((Convert.ToInt32(Rate_TXT.Text) / 8) / 60) * lateTOMinute
+            UNDERTIMEE = (Convert.ToInt32(Rate_TXT.Text) / 8) * underToMinute
+
+            TotalLateUnder_LBL.Text = (LATEE + UNDERTIMEE).ToString("N")
+
+            GrossAmount_LBL.Text = ((Convert.ToDouble(TotalBasic_LBL.Text) + Convert.ToDouble(TotalHol_LBL.Text) + Convert.ToDouble(TotalOT_LBL.Text)) - Convert.ToDouble(TotalLateUnder_LBL.Text)).ToString("N")
+
+        End If
 
     End Sub
 

@@ -592,7 +592,7 @@
     Friend Sub SavePayout(BIOMETRIC_ID As String, PAYDATE As String, TOTAL_BASIC As String, TOTAL_OVERTIME As String, TOTAL_LATE_UT As String,
                           GROSS_AMOUNT As String, SSS_COMP As String, PAGIBIG_COMP As String, PHILHEALTH_COMP As String, TAX_WHELD As String,
                           NET_TAX_COMP As String, SSS_LOAN As String, PAGIBIG_LOAN As String, TOTAL_ALLOWANCE As String,
-                          TOTAL_DEDUCTION As String, NET_PAY As String, Optional TRAINING_DAYS As Integer = 0, Optional all As String = "")
+                          TOTAL_DEDUCTION As String, NET_PAY As String, Optional all As String = "")
 
         Dim mysql As String = $"Select * FROM PAYROLL_PAYOUT where BIOMETRIC_ID = '{BIOMETRIC_ID}' and PAYDATE = '{PAYDATE}'"
         Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
@@ -615,7 +615,6 @@
                     .Item("TOTAL_ALLOWANCE") = TOTAL_ALLOWANCE
                     .Item("TOTAL_DEDUCTION") = TOTAL_DEDUCTION
                     .Item("NET_PAY") = NET_PAY
-                    .Item("TRAINING_DAYS") = TRAINING_DAYS
 
                 End With
                 SaveEntry(dss, False)
@@ -648,7 +647,6 @@
                     .Item("TOTAL_DEDUCTION") = TOTAL_DEDUCTION
                     .Item("NET_PAY") = NET_PAY
                     .Item("PAYDATE") = PAYDATE
-                    .Item("TRAINING_DAYS") = TRAINING_DAYS
 
                 End With
 
@@ -691,20 +689,20 @@
         End Using
     End Sub
 
-    'Friend Sub SaveTraining_days(BIO_NO As String, PAYDATE As String, TRAINING_DAYS As String)
+    Friend Sub SaveTraining_days(BIO_NO As String, PAYDATE As String, TRAINING_DAYS As String)
 
-    '    Dim mysql As String = $"Select * FROM PAYROLL_PAYOUT where BIOMETRIC_ID = '{BIO_NO}' and PAYDATE = '{PAYDATE}'"
-    '    Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
-    '    If dss.Tables(0).Rows.Count > 0 Then
-    '        Dim dr As DataRow = dss.Tables(0).Rows(0)
-    '        With dr
+        Dim mysql As String = $"Select * FROM PAYROLL_ATTENDANCE where BIOMETRICID = '{BIO_NO}' and PAYDATE = '{PAYDATE}'"
+        Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
+        If dss.Tables(0).Rows.Count > 0 Then
+            Dim dr As DataRow = dss.Tables(0).Rows(0)
+            With dr
 
-    '            .Item("TRAINING_DAYS") = TRAINING_DAYS
+                .Item("TRAINING_DAYS") = TRAINING_DAYS
 
-    '        End With
-    '        SaveEntry(dss, False)
-    '    End If
-    'End Sub
+            End With
+            SaveEntry(dss, False)
+        End If
+    End Sub
 
     'Private Sub check_if_trainee(COMPANY As String, DATE_STARTED As String, EndingDate As DateTime, bioNo As String, paydate_ As String)
     '    Dim training_days As Integer
@@ -766,7 +764,7 @@
                     rate = IIf(IsDBNull(.Item("RATE_DAILY")), 0, .Item("RATE_DAILY"))
                     Company = IIf(IsDBNull(.Item("COMPANY")), "", .Item("COMPANY"))
 
-                    '====================================== GET TRAINING DAYS TO CALCULATE TRAINING FEE ===============================================
+                    '====================================== IF TRAINEE GET TRAINING DAYS TO CALCULATE TRAINING FEE ===============================================
                     If Not IsDBNull(.Item("DATE_STARTED")) Then
                         Dim training_days As Integer
 
@@ -797,7 +795,7 @@
                                 Started = Started.AddDays(1)
                             End While
 
-                            MsgBox(noOf_days_training)
+                            SaveTraining_days(bioNo, paydate_, noOf_days_training)
                         End If
                     End If
 
@@ -956,7 +954,7 @@
                     SavePayout(bioNo, paydate_, TotalBasic, TotalOT,
                                   TotalLateUnder, GrossAmount, SSSComp, PagibigComp, PhilhealthComp,
                                   Tax_Wheld, netTax, sssLoan, pagibigLoan,
-                                  Allowances, Deduction, NetPay, noOf_days_training)
+                                  Allowances, Deduction, NetPay)
                 End With
             End If
         End Using
@@ -1021,7 +1019,7 @@
                                     Started = Started.AddDays(1)
                                 End While
 
-                                MsgBox(noOf_days_training)
+                                SaveTraining_days(BiometricID, paydate_, noOf_days_training)
                             End If
 
                         End If
@@ -1179,7 +1177,7 @@
                         SavePayout(BiometricID, paydate_, TotalBasic, TotalOT,
                                   TotalLateUnder, GrossAmount, SSSComp, PagibigComp, PhilhealthComp,
                                   Tax_Wheld, netTax, sssLoan, pagibigLoan,
-                                  Allowances, Deduction, NetPay, noOf_days_training, "Group")
+                                  Allowances, Deduction, NetPay, "Group")
 
                         frmMainForm.AppProgressBar.Value += 1
                     End With

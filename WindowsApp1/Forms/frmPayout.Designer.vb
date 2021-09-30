@@ -171,6 +171,9 @@ Partial Class frmPayout
         Me.All_RadioB = New System.Windows.Forms.RadioButton()
         Me.Label21 = New System.Windows.Forms.Label()
         Me.Payslip_paydate_Combo = New System.Windows.Forms.ComboBox()
+        Me.Training_GB = New System.Windows.Forms.GroupBox()
+        Me.Label25 = New System.Windows.Forms.Label()
+        Me.TrainingDays_LBL = New System.Windows.Forms.Label()
         Me.GroupBox6.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
@@ -187,6 +190,7 @@ Partial Class frmPayout
         Me.Branch_group.SuspendLayout()
         Me.Company_group.SuspendLayout()
         Me.Employee_GroupB.SuspendLayout()
+        Me.Training_GB.SuspendLayout()
         Me.SuspendLayout()
         '
         'GroupBox6
@@ -1270,6 +1274,7 @@ Partial Class frmPayout
         '
         'TabPage1
         '
+        Me.TabPage1.Controls.Add(Me.Training_GB)
         Me.TabPage1.Controls.Add(Me.FlowLayoutPanel2)
         Me.TabPage1.Controls.Add(Me.Previous_groupB)
         Me.TabPage1.Controls.Add(Me.Details_Save_BTN)
@@ -1484,7 +1489,7 @@ Partial Class frmPayout
         '
         Me.Previous_groupB.Controls.Add(Me.Prev_lbl)
         Me.Previous_groupB.Controls.Add(Me.Prev_Amount_lbl)
-        Me.Previous_groupB.Location = New System.Drawing.Point(443, 301)
+        Me.Previous_groupB.Location = New System.Drawing.Point(443, 314)
         Me.Previous_groupB.Name = "Previous_groupB"
         Me.Previous_groupB.Size = New System.Drawing.Size(323, 48)
         Me.Previous_groupB.TabIndex = 85
@@ -1495,7 +1500,7 @@ Partial Class frmPayout
         '
         Me.Prev_lbl.AutoSize = True
         Me.Prev_lbl.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Prev_lbl.Location = New System.Drawing.Point(33, 21)
+        Me.Prev_lbl.Location = New System.Drawing.Point(22, 21)
         Me.Prev_lbl.Name = "Prev_lbl"
         Me.Prev_lbl.Size = New System.Drawing.Size(106, 25)
         Me.Prev_lbl.TabIndex = 83
@@ -1505,7 +1510,7 @@ Partial Class frmPayout
         '
         Me.Prev_Amount_lbl.AutoSize = True
         Me.Prev_Amount_lbl.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Prev_Amount_lbl.Location = New System.Drawing.Point(151, 22)
+        Me.Prev_Amount_lbl.Location = New System.Drawing.Point(197, 21)
         Me.Prev_Amount_lbl.Name = "Prev_Amount_lbl"
         Me.Prev_Amount_lbl.Size = New System.Drawing.Size(18, 25)
         Me.Prev_Amount_lbl.TabIndex = 84
@@ -1757,6 +1762,36 @@ Partial Class frmPayout
         Me.Payslip_paydate_Combo.TabIndex = 97
         Me.Payslip_paydate_Combo.Text = "   Select Date"
         '
+        'Training_GB
+        '
+        Me.Training_GB.Controls.Add(Me.Label25)
+        Me.Training_GB.Controls.Add(Me.TrainingDays_LBL)
+        Me.Training_GB.Location = New System.Drawing.Point(443, 278)
+        Me.Training_GB.Name = "Training_GB"
+        Me.Training_GB.Size = New System.Drawing.Size(323, 48)
+        Me.Training_GB.TabIndex = 86
+        Me.Training_GB.TabStop = False
+        '
+        'Label25
+        '
+        Me.Label25.AutoSize = True
+        Me.Label25.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label25.Location = New System.Drawing.Point(24, 20)
+        Me.Label25.Name = "Label25"
+        Me.Label25.Size = New System.Drawing.Size(158, 25)
+        Me.Label25.TabIndex = 83
+        Me.Label25.Text = "Training Days Covered :"
+        '
+        'TrainingDays_LBL
+        '
+        Me.TrainingDays_LBL.AutoSize = True
+        Me.TrainingDays_LBL.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TrainingDays_LBL.Location = New System.Drawing.Point(197, 22)
+        Me.TrainingDays_LBL.Name = "TrainingDays_LBL"
+        Me.TrainingDays_LBL.Size = New System.Drawing.Size(18, 25)
+        Me.TrainingDays_LBL.TabIndex = 84
+        Me.TrainingDays_LBL.Text = "-"
+        '
         'frmPayout
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1792,6 +1827,8 @@ Partial Class frmPayout
         Me.Company_group.ResumeLayout(False)
         Me.Employee_GroupB.ResumeLayout(False)
         Me.Employee_GroupB.PerformLayout()
+        Me.Training_GB.ResumeLayout(False)
+        Me.Training_GB.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1939,4 +1976,7 @@ Partial Class frmPayout
     Friend WithEvents Deduc_BTN As DataGridViewButtonColumn
     Friend WithEvents Edit_BTN As Button
     Friend WithEvents Label24 As Label
+    Friend WithEvents Training_GB As GroupBox
+    Friend WithEvents Label25 As Label
+    Friend WithEvents TrainingDays_LBL As Label
 End Class

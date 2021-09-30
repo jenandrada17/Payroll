@@ -377,7 +377,7 @@ Module SelectFromDatabase
 
     Friend Sub AttendanceDetails(biometric As String, paydate As String, NoOfDays_TXT As TextBox, RegularOT_TXT As TextBox,
                              SpecialHol_TXT As TextBox, RegularHol_TXT As TextBox, Late_TXT As TextBox,
-                             UnderTime_TXT As TextBox)
+                             UnderTime_TXT As TextBox, TrainingDays_LBL As Label)
 
         Dim mysql As String = $"Select * From PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{biometric}' and paydate = '{paydate}'"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
@@ -394,6 +394,7 @@ Module SelectFromDatabase
                     Late_TXT.Tag = .Item("LATE")
                     UnderTime_TXT.Text = .Item("UNDERTIME").Substring(0, 5)
                     UnderTime_TXT.Tag = .Item("UNDERTIME")
+                    TrainingDays_LBL.Text = IIf(IsDBNull(.Item("TRAINING_DAYS")), 0, .Item("TRAINING_DAYS"))
                 End With
             End If
         End Using
