@@ -788,7 +788,6 @@
         End Using
     End Sub
 
-
     Friend Sub SavePayout_ALL(paydate_ As String) '========== AUTO SAVE TO PAYOUT ============   
 
         Dim regHoliday = Holiday_Rate("REGULAR")
@@ -890,7 +889,7 @@
 
                                                     Allowances = (Allowances + .Item("AMOUNT")) - deduc_to_PI
                                                     Save_Recorded_Allow_Deduc(BiometricID, paydate_, .Item("CATEGORY"), .Item("AMOUNT") - deduc_to_PI, "ALLOWANCE")
-                                                    Continue For  '========= EXIT FOR (PARA DILI MAGDOUBLE SAVING ========
+                                                    Continue For  '========= NEXT LOOP (PARA DILI MAGDOUBLE SAVING ========
                                                 End If
                                             End If
 
@@ -1315,6 +1314,69 @@
                 End If
 
             End Using
+        End If
+
+    End Sub
+
+    Public Sub Update_Emp_DateHired_Position(BIO_NO As String, DATE_STARTED As String, EMP_POSITION As String, empNo As String)
+
+        Dim id_no As String() = BIO_NO.Split(New Char() {"-"c})
+
+        If id_no.Length >= 3 Then
+
+            Dim mysql As String = $"Select * FROM PAYROLL_EMPLOYEE  where BIO_NO = '{id_no(2)}'"
+            Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE ")
+            If ds.Tables(0).Rows.Count > 0 Then
+
+                With ds.Tables(0).Rows(0)
+
+                    If DATE_STARTED <> Nothing Then
+                        .Item("DATE_STARTED") = DATE_STARTED
+                    End If
+
+                    .Item("EMP_POSITION") = EMP_POSITION.ToUpper
+
+                End With
+
+                SaveEntry(ds, False)
+            End If
+
+        Else
+
+            MsgBox(empNo & "BAÑEZ")
+
+        End If
+
+    End Sub
+
+    Public Sub Update_Emp_Benefits_Details(BIO_NO As String, TINNO As String, SSSNO As String, PHILHEALTHNO As String, PAGIBIGNO As String, empNo As String)
+
+        Dim id_no As String() = BIO_NO.Split(New Char() {"-"c})
+
+        Console.WriteLine("empNo " & empNo)
+
+        If id_no.Length >= 3 Then
+
+            Dim mysql As String = $"Select * FROM PAYROLL_EMPLOYEE  where BIO_NO = '{id_no(2)}'"
+            Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE ")
+            If ds.Tables(0).Rows.Count > 0 Then
+
+                With ds.Tables(0).Rows(0)
+
+                    .Item("TINNO") = TINNO
+                    .Item("SSSNO") = SSSNO
+                    .Item("PHILHEALTHNO") = PHILHEALTHNO
+                    .Item("PAGIBIGNO") = PAGIBIGNO
+
+                End With
+
+                SaveEntry(ds, False)
+            End If
+
+        Else
+
+            MsgBox(empNo)
+
         End If
 
     End Sub

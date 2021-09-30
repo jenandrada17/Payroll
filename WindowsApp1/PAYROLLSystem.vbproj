@@ -150,16 +150,16 @@
     <Compile Include="Forms\frmContribution.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\frmDecrypt.Designer.vb">
-      <DependentUpon>frmDecrypt.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\frmDecrypt.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Forms\frmEmployee.Designer.vb">
       <DependentUpon>frmEmployee.vb</DependentUpon>
     </Compile>
     <Compile Include="Forms\frmEmployee.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmImport.Designer.vb">
+      <DependentUpon>frmImport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmImport.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\frmMainForm.vb">
@@ -217,11 +217,11 @@
     <EmbeddedResource Include="Forms\frmContribution.resx">
       <DependentUpon>frmContribution.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmDecrypt.resx">
-      <DependentUpon>frmDecrypt.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmEmployee.resx">
       <DependentUpon>frmEmployee.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmImport.resx">
+      <DependentUpon>frmImport.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmMainForm.resx">
       <DependentUpon>frmMainForm.vb</DependentUpon>

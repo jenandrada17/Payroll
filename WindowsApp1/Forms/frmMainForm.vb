@@ -134,7 +134,7 @@ Public Class frmMainForm
     End Sub
 
     Private Sub Loan_BTN_Click(sender As Object, e As EventArgs) Handles Loan_BTN.Click
-        OpenWindowsForm("frmDecrypt")
+        OpenWindowsForm("frmImport")
     End Sub
 
     Private Sub ConnectToDatabaseToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ConnectToDatabaseToolStripMenuItem.Click

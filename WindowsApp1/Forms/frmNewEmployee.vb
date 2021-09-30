@@ -2,6 +2,8 @@
 
 Public Class frmNewEmployee
 
+    Dim emp_status As String
+
     Dim MyConnection As System.Data.OleDb.OleDbConnection
     Dim DtSet As System.Data.DataSet
     Dim MyCommand As System.Data.OleDb.OleDbDataAdapter
@@ -40,6 +42,85 @@ Public Class frmNewEmployee
     End Sub
 
     Private Sub Save_BTN_Click(sender As Object, e As EventArgs) Handles Save_BTN.Click
+        'Import_Employee_Fullname_biometric_ActiveOnly()
+
+        'Import_Employee_DateStarted_Position()
+
+        Import_Employee_Benifits_Details()
+    End Sub
+
+    Private Sub Import_Employee_Benifits_Details()
+
+        eApp = New Excel.Application
+        eBook = eApp.Workbooks.Open(Path_TXT.Text)
+        eSheet = eBook.Worksheets(1)
+        eCell = eSheet.UsedRange
+
+        MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path_TXT.Text}';Extended Properties=Excel 8.0;")
+        MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
+        MyCommand.TableMappings.Add("Table", "Net-informations.com")
+        DtSet = New System.Data.DataSet
+        MyCommand.Fill(DtSet)
+
+
+        progressBarStart(DtSet.Tables(0).Rows.Count + 1)
+
+        For row = 1 To DtSet.Tables(0).Rows.Count + 1
+
+            Update_Emp_Benefits_Details(eCell(row, 5).Value, eCell(row, 9).Value, eCell(row, 10).Value, eCell(row, 11).Value, eCell(row, 12).Value, eCell(row, 1).Value)
+
+            frmMainForm.AppProgressBar.Value += 1
+
+        Next
+
+        progressBarEnd()
+
+
+        Lists_Employees(lvEmployee)
+
+        Path_TXT.Clear()
+        MyConnection.Close()
+
+        Excel_Panel.Visible = False
+
+    End Sub
+
+    Private Sub Import_Employee_DateStarted_Position()
+        eApp = New Excel.Application
+        eBook = eApp.Workbooks.Open(Path_TXT.Text)
+        eSheet = eBook.Worksheets(1)
+        eCell = eSheet.UsedRange
+
+        MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path_TXT.Text}';Extended Properties=Excel 8.0;")
+        MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
+        MyCommand.TableMappings.Add("Table", "Net-informations.com")
+        DtSet = New System.Data.DataSet
+        MyCommand.Fill(DtSet)
+
+
+        progressBarStart(DtSet.Tables(0).Rows.Count + 1)
+
+        For row = 1 To DtSet.Tables(0).Rows.Count + 1
+
+            Update_Emp_DateHired_Position(eCell(row, 3).Value, eCell(row, 4).Value, eCell(row, 5).Value, eCell(row, 1).Value)
+
+            frmMainForm.AppProgressBar.Value += 1
+
+        Next
+
+        progressBarEnd()
+
+
+        Lists_Employees(lvEmployee)
+
+        Path_TXT.Clear()
+        MyConnection.Close()
+
+        Excel_Panel.Visible = False
+
+    End Sub
+
+    Private Sub Import_Employee_Fullname_biometric_ActiveOnly()
         If Company_ComboB.SelectedIndex >= 0 Then
 
             eApp = New Excel.Application
@@ -164,7 +245,7 @@ Public Class frmNewEmployee
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
         If Add_Company_CB.Text <> "" And Branch_ComboB.Text <> "" And Branch_ComboB.Text <> "" And Bio_TXT.Text <> "" And Fullname_TXT.Text <> "" And Email_TXT.Text <> "" Then
-            SaveNew_Employee(Add_Company_CB.Text, Branch_ComboB.Text, Fullname_TXT.Text, Bio_TXT.Text, Email_TXT.Text, "ACTIVE")
+            SaveNew_Employee(Add_Company_CB.Text, Branch_ComboB.Text, Fullname_TXT.Text, Bio_TXT.Text, Email_TXT.Text, emp_status)
             clearAdd()
         Else
             MsgBox("Incomplete information.", MsgBoxStyle.Exclamation, "Error")
@@ -174,7 +255,7 @@ Public Class frmNewEmployee
 
     Private Sub Bio_TXT_TextChanged(sender As Object, e As EventArgs) Handles Bio_TXT.TextChanged
         If Bio_TXT.Text <> Nothing Then
-            GetFullname(Bio_TXT.Text, Add_Company_CB, Branch_ComboB, Fullname_TXT, Email_TXT, Active_RB, InActive_RB)
+            GetFullname(Bio_TXT.Text, Add_Company_CB, Branch_ComboB, Fullname_TXT, Email_TXT, Active_RB, InActive_RB, Started_DTP)
         Else
             Add_Company_CB.Text = ""
             Branch_ComboB.Text = ""
@@ -244,5 +325,23 @@ Public Class frmNewEmployee
 
         End If
 
+    End Sub
+
+    Private Sub Trainee_RadioB_CheckedChanged(sender As Object, e As EventArgs) Handles Trainee_RB.CheckedChanged
+        If Trainee_RB.Checked Then
+            emp_status = Trainee_RB.Text
+        End If
+    End Sub
+
+    Private Sub InActive_RB_CheckedChanged(sender As Object, e As EventArgs) Handles InActive_RB.CheckedChanged
+        If InActive_RB.Checked Then
+            emp_status = InActive_RB.Text
+        End If
+    End Sub
+
+    Private Sub Active_RB_CheckedChanged(sender As Object, e As EventArgs) Handles Active_RB.CheckedChanged
+        If Active_RB.Checked Then
+            emp_status = Active_RB.Text
+        End If
     End Sub
 End Class

@@ -1707,6 +1707,7 @@ Module SelectFromDatabase
                 mysql &= $"{vbCr}UPPER(FULLNAME) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(BIO_NO) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(EMP_STATUS) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(EMP_POSITION) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(EMAIL_ADD) LIKE UPPER('%{name}%')) ORDER BY COMPANY, BRANCH_CODE ASC "
             Next
 
@@ -1728,16 +1729,33 @@ Module SelectFromDatabase
 
     Private Sub AddRow_Payroll_Employee(ByVal dr As DataRow, LV As ListView)
         With dr
+
+            Dim datee As DateTime
+
+            If Not IsDBNull(.Item("DATE_STARTED")) Then
+                datee = CDate(.Item("DATE_STARTED"))
+            Else
+                datee = Nothing
+            End If
+
             Dim i As ListViewItem = LV.Items.Add(.Item("COMPANY"))
             i.Tag = .Item("ID")
             i.SubItems.Add(.Item("BRANCH_CODE"))
             i.SubItems.Add(.Item("FULLNAME"))
             i.SubItems.Add(.Item("BIO_NO"))
             i.SubItems.Add(IIf(IsDBNull(.Item("EMAIL_ADD")), "", .Item("EMAIL_ADD")))
+            i.SubItems.Add(IIf(datee = Nothing, "", datee.ToString("MMM dd, yyyy")))
+            i.SubItems.Add(IIf(IsDBNull(.Item("EMP_POSITION")), "", .Item("EMP_POSITION")))
+            i.SubItems.Add(IIf(IsDBNull(.Item("SSSNO")), "", .Item("SSSNO")))
+            i.SubItems.Add(IIf(IsDBNull(.Item("PHILHEALTHNO")), "", .Item("PHILHEALTHNO")))
+            i.SubItems.Add(IIf(IsDBNull(.Item("TINNO")), "", .Item("TINNO")))
+            i.SubItems.Add(IIf(IsDBNull(.Item("PAGIBIGNO")), "", .Item("PAGIBIGNO")))
+
         End With
     End Sub
 
-    Public Sub GetFullname(bio_no As String, Add_Company_CB As ComboBox, Branch_ComboB As ComboBox, Fullname_TXT As TextBox, Email_TXT As TextBox, Active_RB As RadioButton, InActive_RB As RadioButton)
+    Public Sub GetFullname(bio_no As String, Add_Company_CB As ComboBox, Branch_ComboB As ComboBox, Fullname_TXT As TextBox,
+                           Email_TXT As TextBox, Active_RB As RadioButton, InActive_RB As RadioButton, Started_DTP As DateTimePicker)
 
         Dim mysql As String = $"select * from PAYROLL_EMPLOYEE where BIO_NO = '{bio_no}'"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
@@ -1747,14 +1765,14 @@ Module SelectFromDatabase
                     Add_Company_CB.SelectedItem = .Item("COMPANY")
                     Branch_ComboB.SelectedItem = .Item("BRANCH_CODE")
                     Fullname_TXT.Text = .Item("FULLNAME")
-                    Email_TXT.Text = .Item("EMAIL_ADD")
+                    Email_TXT.Text = IIf(IsDBNull(.Item("EMAIL_ADD")), "", .Item("EMAIL_ADD"))
+                    Started_DTP.Text = IIf(IsDBNull(.Item("DATE_STARTED")), Today, .Item("DATE_STARTED"))
 
                     If .Item("EMP_STATUS") = "ACTIVE" Then
                         Active_RB.Checked = True
                     Else
                         InActive_RB.Checked = True
                     End If
-
                 End With
             Else
                 Add_Company_CB.Text = ""
