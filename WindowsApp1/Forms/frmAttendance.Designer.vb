@@ -31,6 +31,8 @@ Partial Class frmAttendance
         Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim ReportDataSource1 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.overAllBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.dtr_all = New WindowsApp1.dtr_all()
         Me.Label1 = New System.Windows.Forms.Label()
@@ -40,6 +42,12 @@ Partial Class frmAttendance
         Me.Search_BTN = New System.Windows.Forms.Button()
         Me.Label20 = New System.Windows.Forms.Label()
         Me.Bio_grid = New System.Windows.Forms.DataGridView()
+        Me.BIOID_DGVV = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Name_DGVV = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.PRESENT_DGVV = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Overtime_DGVV = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Late_DGVV = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Undertime_DGVV = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.Paydate_ComboB = New System.Windows.Forms.ComboBox()
         Me.Import_BTN = New System.Windows.Forms.Button()
@@ -113,6 +121,37 @@ Partial Class frmAttendance
         Me.Email_BTN = New System.Windows.Forms.Button()
         Me.Label22 = New System.Windows.Forms.Label()
         Me.Payslip_DTR_Combo = New System.Windows.Forms.ComboBox()
+        Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.Label30 = New System.Windows.Forms.Label()
+        Me.Paydate7_CB = New System.Windows.Forms.ComboBox()
+        Me.Panel2 = New System.Windows.Forms.Panel()
+        Me.Undertime7_TXT = New System.Windows.Forms.TextBox()
+        Me.Label29 = New System.Windows.Forms.Label()
+        Me.Cancel7_BTN = New System.Windows.Forms.Button()
+        Me.Save7_BTN = New System.Windows.Forms.Button()
+        Me.Days7_TXT = New System.Windows.Forms.TextBox()
+        Me.Label21 = New System.Windows.Forms.Label()
+        Me.Overtime7_TXT = New System.Windows.Forms.TextBox()
+        Me.Label23 = New System.Windows.Forms.Label()
+        Me.Night7_TXT = New System.Windows.Forms.TextBox()
+        Me.Label26 = New System.Windows.Forms.Label()
+        Me.Late7_TXT = New System.Windows.Forms.TextBox()
+        Me.Label25 = New System.Windows.Forms.Label()
+        Me.Search7_TXT = New System.Windows.Forms.TextBox()
+        Me.Search7_BTN = New System.Windows.Forms.Button()
+        Me.SearchEmp7_BTN = New System.Windows.Forms.Button()
+        Me.Label28 = New System.Windows.Forms.Label()
+        Me.Emp7_TXT = New System.Windows.Forms.TextBox()
+        Me.Label27 = New System.Windows.Forms.Label()
+        Me.Bio7_TXT = New System.Windows.Forms.TextBox()
+        Me.Seven_Grid = New System.Windows.Forms.DataGridView()
+        Me.DataGridViewTextBoxColumn1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.DataGridViewTextBoxColumn2 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.DataGridViewTextBoxColumn3 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.DataGridViewTextBoxColumn4 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.DataGridViewTextBoxColumn5 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.DataGridViewTextBoxColumn6 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Column1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Close_LBL = New System.Windows.Forms.Label()
         Me.printDTRBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.Context_Records = New System.Windows.Forms.ContextMenuStrip(Me.components)
@@ -124,12 +163,6 @@ Partial Class frmAttendance
         Me.RE_NAME_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.RE_BIO_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.RE_BRANCH_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.BIOID_DGVV = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Name_DGVV = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.PRESENT_DGVV = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Overtime_DGVV = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Late_DGVV = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Undertime_DGVV = New System.Windows.Forms.DataGridViewTextBoxColumn()
         CType(Me.overAllBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.dtr_all, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Attendance_Tab.SuspendLayout()
@@ -145,6 +178,9 @@ Partial Class frmAttendance
         Me.Employee1_GroupB.SuspendLayout()
         Me.Employee2_GroupB.SuspendLayout()
         Me.Branch_group.SuspendLayout()
+        Me.TabPage2.SuspendLayout()
+        Me.Panel2.SuspendLayout()
+        CType(Me.Seven_Grid, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.printDTRBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Context_Records.SuspendLayout()
         Me.SuspendLayout()
@@ -173,6 +209,7 @@ Partial Class frmAttendance
         '
         Me.Attendance_Tab.Controls.Add(Me.TabPage1)
         Me.Attendance_Tab.Controls.Add(Me.Manual_Tab)
+        Me.Attendance_Tab.Controls.Add(Me.TabPage2)
         Me.Attendance_Tab.Controls.Add(Me.TabPage3)
         Me.Attendance_Tab.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Attendance_Tab.Location = New System.Drawing.Point(4, 28)
@@ -263,6 +300,48 @@ Partial Class frmAttendance
         Me.Bio_grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.Bio_grid.Size = New System.Drawing.Size(1127, 449)
         Me.Bio_grid.TabIndex = 1
+        '
+        'BIOID_DGVV
+        '
+        Me.BIOID_DGVV.HeaderText = "Biometric No."
+        Me.BIOID_DGVV.Name = "BIOID_DGVV"
+        Me.BIOID_DGVV.ReadOnly = True
+        Me.BIOID_DGVV.Width = 150
+        '
+        'Name_DGVV
+        '
+        Me.Name_DGVV.HeaderText = "Name"
+        Me.Name_DGVV.Name = "Name_DGVV"
+        Me.Name_DGVV.ReadOnly = True
+        Me.Name_DGVV.Width = 420
+        '
+        'PRESENT_DGVV
+        '
+        Me.PRESENT_DGVV.HeaderText = "Total Days"
+        Me.PRESENT_DGVV.Name = "PRESENT_DGVV"
+        Me.PRESENT_DGVV.ReadOnly = True
+        Me.PRESENT_DGVV.Width = 135
+        '
+        'Overtime_DGVV
+        '
+        Me.Overtime_DGVV.HeaderText = "Overtime"
+        Me.Overtime_DGVV.Name = "Overtime_DGVV"
+        Me.Overtime_DGVV.ReadOnly = True
+        Me.Overtime_DGVV.Width = 135
+        '
+        'Late_DGVV
+        '
+        Me.Late_DGVV.HeaderText = "Late"
+        Me.Late_DGVV.Name = "Late_DGVV"
+        Me.Late_DGVV.ReadOnly = True
+        Me.Late_DGVV.Width = 130
+        '
+        'Undertime_DGVV
+        '
+        Me.Undertime_DGVV.HeaderText = "Undertime"
+        Me.Undertime_DGVV.Name = "Undertime_DGVV"
+        Me.Undertime_DGVV.ReadOnly = True
+        Me.Undertime_DGVV.Width = 130
         '
         'Button1
         '
@@ -1064,6 +1143,328 @@ Partial Class frmAttendance
         Me.Payslip_DTR_Combo.TabIndex = 107
         Me.Payslip_DTR_Combo.Text = "   Select Date"
         '
+        'TabPage2
+        '
+        Me.TabPage2.Controls.Add(Me.Label30)
+        Me.TabPage2.Controls.Add(Me.Paydate7_CB)
+        Me.TabPage2.Controls.Add(Me.Panel2)
+        Me.TabPage2.Controls.Add(Me.Search7_TXT)
+        Me.TabPage2.Controls.Add(Me.Search7_BTN)
+        Me.TabPage2.Controls.Add(Me.SearchEmp7_BTN)
+        Me.TabPage2.Controls.Add(Me.Label28)
+        Me.TabPage2.Controls.Add(Me.Emp7_TXT)
+        Me.TabPage2.Controls.Add(Me.Label27)
+        Me.TabPage2.Controls.Add(Me.Bio7_TXT)
+        Me.TabPage2.Controls.Add(Me.Seven_Grid)
+        Me.TabPage2.Location = New System.Drawing.Point(4, 41)
+        Me.TabPage2.Name = "TabPage2"
+        Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage2.Size = New System.Drawing.Size(1151, 591)
+        Me.TabPage2.TabIndex = 4
+        Me.TabPage2.Text = "    7Eleven    "
+        Me.TabPage2.UseVisualStyleBackColor = True
+        '
+        'Label30
+        '
+        Me.Label30.AutoSize = True
+        Me.Label30.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label30.Location = New System.Drawing.Point(9, 195)
+        Me.Label30.Name = "Label30"
+        Me.Label30.Size = New System.Drawing.Size(53, 25)
+        Me.Label30.TabIndex = 111
+        Me.Label30.Text = "Payroll"
+        '
+        'Paydate7_CB
+        '
+        Me.Paydate7_CB.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Paydate7_CB.FormattingEnabled = True
+        Me.Paydate7_CB.Location = New System.Drawing.Point(89, 192)
+        Me.Paydate7_CB.Name = "Paydate7_CB"
+        Me.Paydate7_CB.Size = New System.Drawing.Size(151, 33)
+        Me.Paydate7_CB.TabIndex = 110
+        '
+        'Panel2
+        '
+        Me.Panel2.Controls.Add(Me.Undertime7_TXT)
+        Me.Panel2.Controls.Add(Me.Label29)
+        Me.Panel2.Controls.Add(Me.Cancel7_BTN)
+        Me.Panel2.Controls.Add(Me.Save7_BTN)
+        Me.Panel2.Controls.Add(Me.Days7_TXT)
+        Me.Panel2.Controls.Add(Me.Label21)
+        Me.Panel2.Controls.Add(Me.Overtime7_TXT)
+        Me.Panel2.Controls.Add(Me.Label23)
+        Me.Panel2.Controls.Add(Me.Night7_TXT)
+        Me.Panel2.Controls.Add(Me.Label26)
+        Me.Panel2.Controls.Add(Me.Late7_TXT)
+        Me.Panel2.Controls.Add(Me.Label25)
+        Me.Panel2.Location = New System.Drawing.Point(516, 3)
+        Me.Panel2.Name = "Panel2"
+        Me.Panel2.Size = New System.Drawing.Size(629, 155)
+        Me.Panel2.TabIndex = 109
+        '
+        'Undertime7_TXT
+        '
+        Me.Undertime7_TXT.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Undertime7_TXT.Location = New System.Drawing.Point(482, 59)
+        Me.Undertime7_TXT.Name = "Undertime7_TXT"
+        Me.Undertime7_TXT.Size = New System.Drawing.Size(135, 35)
+        Me.Undertime7_TXT.TabIndex = 109
+        '
+        'Label29
+        '
+        Me.Label29.AutoSize = True
+        Me.Label29.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label29.Location = New System.Drawing.Point(351, 62)
+        Me.Label29.Name = "Label29"
+        Me.Label29.Size = New System.Drawing.Size(125, 27)
+        Me.Label29.TabIndex = 110
+        Me.Label29.Text = "Undertime  (mm)"
+        '
+        'Cancel7_BTN
+        '
+        Me.Cancel7_BTN.BackColor = System.Drawing.Color.RosyBrown
+        Me.Cancel7_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Cancel7_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Cancel7_BTN.Location = New System.Drawing.Point(425, 109)
+        Me.Cancel7_BTN.Name = "Cancel7_BTN"
+        Me.Cancel7_BTN.Size = New System.Drawing.Size(87, 37)
+        Me.Cancel7_BTN.TabIndex = 108
+        Me.Cancel7_BTN.Text = "Cancel"
+        Me.Cancel7_BTN.UseVisualStyleBackColor = False
+        '
+        'Save7_BTN
+        '
+        Me.Save7_BTN.BackColor = System.Drawing.Color.LightSalmon
+        Me.Save7_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Save7_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Save7_BTN.Location = New System.Drawing.Point(536, 109)
+        Me.Save7_BTN.Name = "Save7_BTN"
+        Me.Save7_BTN.Size = New System.Drawing.Size(81, 37)
+        Me.Save7_BTN.TabIndex = 107
+        Me.Save7_BTN.Text = "Save"
+        Me.Save7_BTN.UseVisualStyleBackColor = False
+        '
+        'Days7_TXT
+        '
+        Me.Days7_TXT.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Days7_TXT.Location = New System.Drawing.Point(137, 16)
+        Me.Days7_TXT.Name = "Days7_TXT"
+        Me.Days7_TXT.Size = New System.Drawing.Size(140, 35)
+        Me.Days7_TXT.TabIndex = 74
+        '
+        'Label21
+        '
+        Me.Label21.AutoSize = True
+        Me.Label21.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label21.Location = New System.Drawing.Point(22, 19)
+        Me.Label21.Name = "Label21"
+        Me.Label21.Size = New System.Drawing.Size(87, 27)
+        Me.Label21.TabIndex = 75
+        Me.Label21.Text = "No. of Days"
+        '
+        'Overtime7_TXT
+        '
+        Me.Overtime7_TXT.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Overtime7_TXT.Location = New System.Drawing.Point(137, 59)
+        Me.Overtime7_TXT.Name = "Overtime7_TXT"
+        Me.Overtime7_TXT.Size = New System.Drawing.Size(140, 35)
+        Me.Overtime7_TXT.TabIndex = 76
+        '
+        'Label23
+        '
+        Me.Label23.AutoSize = True
+        Me.Label23.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label23.Location = New System.Drawing.Point(22, 62)
+        Me.Label23.Name = "Label23"
+        Me.Label23.Size = New System.Drawing.Size(72, 27)
+        Me.Label23.TabIndex = 77
+        Me.Label23.Text = "Overtime"
+        '
+        'Night7_TXT
+        '
+        Me.Night7_TXT.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Night7_TXT.Location = New System.Drawing.Point(482, 10)
+        Me.Night7_TXT.Name = "Night7_TXT"
+        Me.Night7_TXT.Size = New System.Drawing.Size(135, 35)
+        Me.Night7_TXT.TabIndex = 78
+        '
+        'Label26
+        '
+        Me.Label26.AutoSize = True
+        Me.Label26.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label26.Location = New System.Drawing.Point(351, 13)
+        Me.Label26.Name = "Label26"
+        Me.Label26.Size = New System.Drawing.Size(82, 27)
+        Me.Label26.TabIndex = 79
+        Me.Label26.Text = "Night Rate"
+        '
+        'Late7_TXT
+        '
+        Me.Late7_TXT.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Late7_TXT.Location = New System.Drawing.Point(137, 100)
+        Me.Late7_TXT.Name = "Late7_TXT"
+        Me.Late7_TXT.Size = New System.Drawing.Size(140, 35)
+        Me.Late7_TXT.TabIndex = 80
+        '
+        'Label25
+        '
+        Me.Label25.AutoSize = True
+        Me.Label25.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label25.Location = New System.Drawing.Point(22, 100)
+        Me.Label25.Name = "Label25"
+        Me.Label25.Size = New System.Drawing.Size(88, 27)
+        Me.Label25.TabIndex = 81
+        Me.Label25.Text = "Late   (mm)"
+        '
+        'Search7_TXT
+        '
+        Me.Search7_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Search7_TXT.Location = New System.Drawing.Point(246, 192)
+        Me.Search7_TXT.Name = "Search7_TXT"
+        Me.Search7_TXT.Size = New System.Drawing.Size(368, 33)
+        Me.Search7_TXT.TabIndex = 105
+        '
+        'Search7_BTN
+        '
+        Me.Search7_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Search7_BTN.Location = New System.Drawing.Point(630, 192)
+        Me.Search7_BTN.Name = "Search7_BTN"
+        Me.Search7_BTN.Size = New System.Drawing.Size(82, 33)
+        Me.Search7_BTN.TabIndex = 106
+        Me.Search7_BTN.Text = "Search"
+        Me.Search7_BTN.UseVisualStyleBackColor = True
+        '
+        'SearchEmp7_BTN
+        '
+        Me.SearchEmp7_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SearchEmp7_BTN.Location = New System.Drawing.Point(379, 57)
+        Me.SearchEmp7_BTN.Name = "SearchEmp7_BTN"
+        Me.SearchEmp7_BTN.Size = New System.Drawing.Size(38, 30)
+        Me.SearchEmp7_BTN.TabIndex = 87
+        Me.SearchEmp7_BTN.Text = "..."
+        Me.SearchEmp7_BTN.UseVisualStyleBackColor = True
+        '
+        'Label28
+        '
+        Me.Label28.AutoSize = True
+        Me.Label28.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label28.Location = New System.Drawing.Point(9, 58)
+        Me.Label28.Name = "Label28"
+        Me.Label28.Size = New System.Drawing.Size(48, 25)
+        Me.Label28.TabIndex = 85
+        Me.Label28.Text = "Name"
+        '
+        'Emp7_TXT
+        '
+        Me.Emp7_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Emp7_TXT.Location = New System.Drawing.Point(89, 56)
+        Me.Emp7_TXT.Name = "Emp7_TXT"
+        Me.Emp7_TXT.Size = New System.Drawing.Size(278, 33)
+        Me.Emp7_TXT.TabIndex = 86
+        '
+        'Label27
+        '
+        Me.Label27.AutoSize = True
+        Me.Label27.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label27.Location = New System.Drawing.Point(9, 19)
+        Me.Label27.Name = "Label27"
+        Me.Label27.Size = New System.Drawing.Size(60, 27)
+        Me.Label27.TabIndex = 84
+        Me.Label27.Text = "Bio No."
+        '
+        'Bio7_TXT
+        '
+        Me.Bio7_TXT.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Bio7_TXT.Location = New System.Drawing.Point(89, 14)
+        Me.Bio7_TXT.Name = "Bio7_TXT"
+        Me.Bio7_TXT.Size = New System.Drawing.Size(151, 29)
+        Me.Bio7_TXT.TabIndex = 83
+        '
+        'Seven_Grid
+        '
+        Me.Seven_Grid.AllowUserToAddRows = False
+        Me.Seven_Grid.AllowUserToDeleteRows = False
+        Me.Seven_Grid.AllowUserToResizeRows = False
+        Me.Seven_Grid.BackgroundColor = System.Drawing.Color.White
+        Me.Seven_Grid.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.Seven_Grid.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText
+        Me.Seven_Grid.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
+        DataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle8.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.Seven_Grid.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle8
+        Me.Seven_Grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.Seven_Grid.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.DataGridViewTextBoxColumn1, Me.DataGridViewTextBoxColumn2, Me.DataGridViewTextBoxColumn3, Me.DataGridViewTextBoxColumn4, Me.DataGridViewTextBoxColumn5, Me.DataGridViewTextBoxColumn6, Me.Column1})
+        DataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle9.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.Seven_Grid.DefaultCellStyle = DataGridViewCellStyle9
+        Me.Seven_Grid.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically
+        Me.Seven_Grid.Location = New System.Drawing.Point(3, 231)
+        Me.Seven_Grid.Name = "Seven_Grid"
+        Me.Seven_Grid.ReadOnly = True
+        Me.Seven_Grid.RowHeadersVisible = False
+        Me.Seven_Grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.Seven_Grid.Size = New System.Drawing.Size(1142, 353)
+        Me.Seven_Grid.TabIndex = 82
+        '
+        'DataGridViewTextBoxColumn1
+        '
+        Me.DataGridViewTextBoxColumn1.HeaderText = "Bio No."
+        Me.DataGridViewTextBoxColumn1.Name = "DataGridViewTextBoxColumn1"
+        Me.DataGridViewTextBoxColumn1.ReadOnly = True
+        Me.DataGridViewTextBoxColumn1.Width = 130
+        '
+        'DataGridViewTextBoxColumn2
+        '
+        Me.DataGridViewTextBoxColumn2.HeaderText = "Name"
+        Me.DataGridViewTextBoxColumn2.Name = "DataGridViewTextBoxColumn2"
+        Me.DataGridViewTextBoxColumn2.ReadOnly = True
+        Me.DataGridViewTextBoxColumn2.Width = 390
+        '
+        'DataGridViewTextBoxColumn3
+        '
+        Me.DataGridViewTextBoxColumn3.HeaderText = "Total Days"
+        Me.DataGridViewTextBoxColumn3.Name = "DataGridViewTextBoxColumn3"
+        Me.DataGridViewTextBoxColumn3.ReadOnly = True
+        Me.DataGridViewTextBoxColumn3.Width = 125
+        '
+        'DataGridViewTextBoxColumn4
+        '
+        Me.DataGridViewTextBoxColumn4.HeaderText = "Overtime"
+        Me.DataGridViewTextBoxColumn4.Name = "DataGridViewTextBoxColumn4"
+        Me.DataGridViewTextBoxColumn4.ReadOnly = True
+        Me.DataGridViewTextBoxColumn4.Width = 125
+        '
+        'DataGridViewTextBoxColumn5
+        '
+        Me.DataGridViewTextBoxColumn5.HeaderText = "Late"
+        Me.DataGridViewTextBoxColumn5.Name = "DataGridViewTextBoxColumn5"
+        Me.DataGridViewTextBoxColumn5.ReadOnly = True
+        Me.DataGridViewTextBoxColumn5.Width = 120
+        '
+        'DataGridViewTextBoxColumn6
+        '
+        Me.DataGridViewTextBoxColumn6.HeaderText = "Undertime"
+        Me.DataGridViewTextBoxColumn6.Name = "DataGridViewTextBoxColumn6"
+        Me.DataGridViewTextBoxColumn6.ReadOnly = True
+        Me.DataGridViewTextBoxColumn6.Width = 120
+        '
+        'Column1
+        '
+        Me.Column1.HeaderText = "Night Rate"
+        Me.Column1.Name = "Column1"
+        Me.Column1.ReadOnly = True
+        Me.Column1.Width = 110
+        '
         'Close_LBL
         '
         Me.Close_LBL.AutoSize = True
@@ -1135,48 +1536,6 @@ Partial Class frmAttendance
         Me.RE_BRANCH_DGV.ReadOnly = True
         Me.RE_BRANCH_DGV.Width = 140
         '
-        'BIOID_DGVV
-        '
-        Me.BIOID_DGVV.HeaderText = "Biometric No."
-        Me.BIOID_DGVV.Name = "BIOID_DGVV"
-        Me.BIOID_DGVV.ReadOnly = True
-        Me.BIOID_DGVV.Width = 150
-        '
-        'Name_DGVV
-        '
-        Me.Name_DGVV.HeaderText = "Name"
-        Me.Name_DGVV.Name = "Name_DGVV"
-        Me.Name_DGVV.ReadOnly = True
-        Me.Name_DGVV.Width = 420
-        '
-        'PRESENT_DGVV
-        '
-        Me.PRESENT_DGVV.HeaderText = "Total Days"
-        Me.PRESENT_DGVV.Name = "PRESENT_DGVV"
-        Me.PRESENT_DGVV.ReadOnly = True
-        Me.PRESENT_DGVV.Width = 135
-        '
-        'Overtime_DGVV
-        '
-        Me.Overtime_DGVV.HeaderText = "Overtime"
-        Me.Overtime_DGVV.Name = "Overtime_DGVV"
-        Me.Overtime_DGVV.ReadOnly = True
-        Me.Overtime_DGVV.Width = 135
-        '
-        'Late_DGVV
-        '
-        Me.Late_DGVV.HeaderText = "Late"
-        Me.Late_DGVV.Name = "Late_DGVV"
-        Me.Late_DGVV.ReadOnly = True
-        Me.Late_DGVV.Width = 130
-        '
-        'Undertime_DGVV
-        '
-        Me.Undertime_DGVV.HeaderText = "Undertime"
-        Me.Undertime_DGVV.Name = "Undertime_DGVV"
-        Me.Undertime_DGVV.ReadOnly = True
-        Me.Undertime_DGVV.Width = 130
-        '
         'frmAttendance
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1211,6 +1570,11 @@ Partial Class frmAttendance
         Me.Employee2_GroupB.PerformLayout()
         Me.Branch_group.ResumeLayout(False)
         Me.Branch_group.PerformLayout()
+        Me.TabPage2.ResumeLayout(False)
+        Me.TabPage2.PerformLayout()
+        Me.Panel2.ResumeLayout(False)
+        Me.Panel2.PerformLayout()
+        CType(Me.Seven_Grid, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.printDTRBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Context_Records.ResumeLayout(False)
         Me.ResumeLayout(False)
@@ -1317,4 +1681,35 @@ Partial Class frmAttendance
     Friend WithEvents Overtime_DGVV As DataGridViewTextBoxColumn
     Friend WithEvents Late_DGVV As DataGridViewTextBoxColumn
     Friend WithEvents Undertime_DGVV As DataGridViewTextBoxColumn
+    Friend WithEvents TabPage2 As TabPage
+    Friend WithEvents Label25 As Label
+    Friend WithEvents Late7_TXT As TextBox
+    Friend WithEvents Label26 As Label
+    Friend WithEvents Night7_TXT As TextBox
+    Friend WithEvents Label23 As Label
+    Friend WithEvents Overtime7_TXT As TextBox
+    Friend WithEvents Label21 As Label
+    Friend WithEvents Days7_TXT As TextBox
+    Friend WithEvents Label27 As Label
+    Friend WithEvents Bio7_TXT As TextBox
+    Friend WithEvents Seven_Grid As DataGridView
+    Friend WithEvents SearchEmp7_BTN As Button
+    Friend WithEvents Label28 As Label
+    Friend WithEvents Emp7_TXT As TextBox
+    Friend WithEvents DataGridViewTextBoxColumn1 As DataGridViewTextBoxColumn
+    Friend WithEvents DataGridViewTextBoxColumn2 As DataGridViewTextBoxColumn
+    Friend WithEvents DataGridViewTextBoxColumn3 As DataGridViewTextBoxColumn
+    Friend WithEvents DataGridViewTextBoxColumn4 As DataGridViewTextBoxColumn
+    Friend WithEvents DataGridViewTextBoxColumn5 As DataGridViewTextBoxColumn
+    Friend WithEvents DataGridViewTextBoxColumn6 As DataGridViewTextBoxColumn
+    Friend WithEvents Column1 As DataGridViewTextBoxColumn
+    Friend WithEvents Search7_TXT As TextBox
+    Friend WithEvents Search7_BTN As Button
+    Friend WithEvents Panel2 As Panel
+    Friend WithEvents Cancel7_BTN As Button
+    Friend WithEvents Save7_BTN As Button
+    Friend WithEvents Undertime7_TXT As TextBox
+    Friend WithEvents Label29 As Label
+    Friend WithEvents Label30 As Label
+    Friend WithEvents Paydate7_CB As ComboBox
 End Class

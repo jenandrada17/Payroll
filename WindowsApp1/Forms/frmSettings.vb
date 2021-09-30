@@ -18,11 +18,13 @@ Public Class frmSettings
         End If
 
         PopulateComboBox(Rate_Branch_ComboB, "PAYROLL_EMPLOYEE", "BRANCH_CODE")
+        PopulateComboBox(ClockBranch_CB, "PAYROLL_EMPLOYEE", "BRANCH_CODE")
         PopulateComboBox(Allow_Category_Combo, "CATEGORY_ALLOWANCE", "ALLOWANCE_NAME")
         PopulateComboBox(DE_Category_Combo, "CATEGORY_DEDUCTION", "DEDUCTION_NAME")
         Lists_Rate(Rate_list)
         Lists_Allowance(Allowance_LV)
         Lists_deduction(Deduction_List)
+        Lists_SBU(SBU_LV)
         Load_Category_LIST(Allowance_List, "CATEGORY_ALLOWANCE", "ALLOWANCE_NAME")
         Load_Category_LIST(Cat_Deduc_List, "CATEGORY_DEDUCTION", "DEDUCTION_NAME")
 
@@ -696,5 +698,32 @@ Public Class frmSettings
             AllowanceRemove(bio_No, "NO") ' ===== ALLOWANCE ID =====
             Lists_Allowance(Allowance_LV)
         End If
+    End Sub
+
+    'Private Sub Settings_Tab_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Settings_Tab.SelectedIndexChanged
+    '    If Settings_Tab.SelectedIndex = 4 Then
+    '        Lists_SBU(SBU_LV)
+    '    End If
+    'End Sub
+
+    Private Sub SearchSBU_BTN_Click(sender As Object, e As EventArgs) Handles SearchSBU_BTN.Click
+        Lists_SBU(SBU_LV, SearchSBU_TXT.Text)
+    End Sub
+
+    Private Sub SearchSBU_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles SearchSBU_TXT.KeyPress
+        If IsEnter(e) Then SearchSBU_BTN.PerformClick()
+    End Sub
+
+    Private Sub ClockBio_TXT_TextChanged(sender As Object, e As EventArgs) Handles ClockBio_TXT.TextChanged
+
+        If ClockBio_TXT.Text = "" Then
+            ClockEmp_TXT.Text = ""
+            Rate_EmpAmount_TXT.Text = ""
+            ClockEmp_IN_CB.Text = ""
+            ClockEmp_OUT_CB.Text = ""
+        Else
+            Clock_IN_Details(ClockBio_TXT.Text, ClockEmp_TXT, ClockEmp_IN_CB, ClockEmp_OUT_CB)
+        End If
+
     End Sub
 End Class

@@ -39,7 +39,8 @@
     End Sub
 
     Friend Sub SaveAttendanceEE(biometric As Integer, paydate As String, days As String, overTime As String, late_total As String,
-                              under_total As String, regHoliday As String, specHoliday As String)
+                                  under_total As String, regHoliday As String, specHoliday As String, Optional NIGHT_RATE As String = "")
+
         Dim mysql As String
 
         mysql = $"Select * FROM PAYROLL_ATTENDANCE where BIOMETRICID = '{biometric}' and PAYDATE = '{paydate}'"
@@ -54,6 +55,9 @@
                     .Item("REGHOLIDAY") = regHoliday
                     .Item("SPECHOLIDAY") = specHoliday
 
+                    If NIGHT_RATE <> Nothing Then
+                        .Item("NIGHT_RATE") = NIGHT_RATE
+                    End If
                 End With
                 SaveEntry(dss, False)
             Next
@@ -74,12 +78,40 @@
                     .Item("REGHOLIDAY") = regHoliday
                     .Item("SPECHOLIDAY") = specHoliday
 
+                    If NIGHT_RATE <> Nothing Then
+                        .Item("NIGHT_RATE") = NIGHT_RATE
+                    End If
                 End With
                 ds.Tables(0).Rows.Add(dsNewRow)
                 SaveEntry(ds)
             End Using
         End If
+    End Sub
 
+    Friend Sub updateHoliday_Attendance(biometric As String, paydate As String)
+        Dim REGHOLIDAY As Integer = 0
+        Dim SPECHOLIDAY As Integer = 0
+
+        Dim mysql As String = $"Select * From PAYROLL_ATTENDANCE WHERE PAYDATE = '{paydate}' and BIOMETRICID <> '{biometric}'"
+        Using dss As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
+            If dss.Tables(0).Rows.Count > 0 Then
+                Dim data As DataRow = dss.Tables(0).Rows(0)
+                With data
+                    REGHOLIDAY = .Item("REGHOLIDAY")
+                    SPECHOLIDAY = .Item("SPECHOLIDAY")
+                End With
+            End If
+        End Using
+
+        Dim mysqll As String = $"Select * FROM PAYROLL_ATTENDANCE where BIOMETRICID = '{biometric}' and PAYDATE = '{paydate}'"
+        Dim ds As DataSet = LoadSQL(mysqll, "PAYROLL_ATTENDANCE")
+        If ds.Tables(0).Rows.Count > 0 Then
+            With ds.Tables(0).Rows(0)
+                .Item("REGHOLIDAY") = REGHOLIDAY
+                .Item("SPECHOLIDAY") = SPECHOLIDAY
+            End With
+            SaveEntry(ds, False)
+        End If
     End Sub
 
 
@@ -303,7 +335,6 @@
     End Sub
 
     Public Sub SaveBiometricSheet(payDate As String, bioID As String, dateTime As String)
-
         Dim mysql As String = "Select * From IMPORT_DTR Rows 1"
         Using ds As DataSet = LoadSQL(mysql, "IMPORT_DTR")
 
@@ -318,7 +349,6 @@
             ds.Tables(0).Rows.Add(dsNewRow)
             SaveEntry(ds)
         End Using
-
     End Sub
 
 
@@ -592,7 +622,7 @@
     Friend Sub SavePayout(BIOMETRIC_ID As String, PAYDATE As String, TOTAL_BASIC As String, TOTAL_OVERTIME As String, TOTAL_LATE_UT As String,
                           GROSS_AMOUNT As String, SSS_COMP As String, PAGIBIG_COMP As String, PHILHEALTH_COMP As String, TAX_WHELD As String,
                           NET_TAX_COMP As String, SSS_LOAN As String, PAGIBIG_LOAN As String, TOTAL_ALLOWANCE As String,
-                          TOTAL_DEDUCTION As String, NET_PAY As String, Optional all As String = "")
+                          TOTAL_DEDUCTION As String, NET_PAY As String, Optional all As String = "", Optional TOTAL_NIGHT_RATE As Double = 0)
 
         Dim mysql As String = $"Select * FROM PAYROLL_PAYOUT where BIOMETRIC_ID = '{BIOMETRIC_ID}' and PAYDATE = '{PAYDATE}'"
         Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
@@ -615,6 +645,10 @@
                     .Item("TOTAL_ALLOWANCE") = TOTAL_ALLOWANCE
                     .Item("TOTAL_DEDUCTION") = TOTAL_DEDUCTION
                     .Item("NET_PAY") = NET_PAY
+
+                    If TOTAL_NIGHT_RATE <> 0 Then
+                        .Item("TOTAL_NIGHT_RATE") = TOTAL_NIGHT_RATE
+                    End If
 
                 End With
                 SaveEntry(dss, False)
@@ -645,8 +679,12 @@
                     .Item("PAGIBIG_LOAN") = PAGIBIG_LOAN
                     .Item("TOTAL_ALLOWANCE") = TOTAL_ALLOWANCE
                     .Item("TOTAL_DEDUCTION") = TOTAL_DEDUCTION
-                    .Item("NET_PAY") = NET_PAY
                     .Item("PAYDATE") = PAYDATE
+                    .Item("NET_PAY") = NET_PAY
+
+                    If TOTAL_NIGHT_RATE <> 0 Then
+                        .Item("TOTAL_NIGHT_RATE") = TOTAL_NIGHT_RATE
+                    End If
 
                 End With
 
@@ -740,10 +778,9 @@
     '    End If
     'End Sub
 
-    Friend Sub SavePayout_IndividualL(bioNo As String, paydate_ As String, EndingDate As DateTime) '========== AUTO SAVE TO PAYOUT ============  
+    Friend Sub SavePayout_IndividualL(bioNo As String, paydate_ As String, startingDate As DateTime, EndingDate As DateTime) '========== AUTO SAVE TO PAYOUT ============  
         Dim regHoliday = Holiday_Rate("REGULAR")
         Dim specHoliday = Holiday_Rate("SPECIAL")
-        Dim SBU = SBU_Amount()
 
         Dim mysql As String = $"Select * From payroll_attendance A 
                                 inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIOMETRICID  WHERE A.BIOMETRICID = '{bioNo}' and A.PAYDATE = '{paydate_}'"
@@ -756,10 +793,21 @@
 
                     Dim Late As String = ""
                     Dim UnderTime As String = ""
-                    Dim rate, NoOfDays, RegularOT, SpecialHol, RegularHol As Double
-                    Dim Allowances, Deduction As Double
-                    Dim sched, Company As String
+                    Dim nightRate As Double = 0
+                    Dim NoOfDays, RegularOT, SpecialHol, RegularHol As Double
+                    Dim Allowances, Deduction, SBU As Double
+                    Dim Company As String
+                    Dim sched As String = ""
                     Dim noOf_days_training As Double = 0
+                    Dim TotalBasic As Double = 0
+                    Dim SSSComp As Double = 0
+                    Dim PagibigComp As Double = 0
+                    Dim PhilhealthComp As Double = 0
+                    Dim Tax_Wheld As Double = 0
+                    Dim netTax As Double = 0
+                    Dim sssLoan As Double = 0
+                    Dim pagibigLoan As Double = 0
+                    Dim rate As Double = 0
 
                     rate = IIf(IsDBNull(.Item("RATE_DAILY")), 0, .Item("RATE_DAILY"))
                     Company = IIf(IsDBNull(.Item("COMPANY")), "", .Item("COMPANY"))
@@ -776,23 +824,23 @@
 
                         Dim Started As DateTime = .Item("DATE_STARTED")
 
-                        Dim days As Long = DateDiff(DateInterval.Day, Started, EndingDate)
+                        Dim days As Long = DateDiff(DateInterval.Day, Started, startingDate)
 
                         If days <= training_days Then
 
-                            While (Started.Day < EndingDate.Day)
+                            While (startingDate < EndingDate)
 
-                                If PRESENT_Date(bioNo, paydate_, Started) Then
+                                If PRESENT_Date(bioNo, paydate_, startingDate) Then
 
                                     noOf_days_training += 1
 
-                                    If Halfday_Training(bioNo, paydate_, Started) Then
+                                    If Halfday_Training(bioNo, paydate_, startingDate) Then
                                         noOf_days_training -= 0.5
                                     End If
 
                                 End If
 
-                                Started = Started.AddDays(1)
+                                startingDate = startingDate.AddDays(1)
                             End While
 
                             SaveTraining_days(bioNo, paydate_, noOf_days_training)
@@ -812,40 +860,58 @@
                                 RegularHol = .Item("REGHOLIDAY")
                                 Late = .Item("LATE")
                                 UnderTime = .Item("UNDERTIME")
+                                nightRate = IIf(IsDBNull(.Item("NIGHT_RATE")), 0, .Item("NIGHT_RATE"))
                             End With
                         End If
                     End Using
 
-                    '============================================= BENIFITS CONTRIBUTION ========================================================= 
-                    Dim TotalBasic, SSSComp, PagibigComp, PhilhealthComp, Tax_Wheld, netTax, sssLoan, pagibigLoan As Double
+                    '============================================= BENIFITS CONTRIBUTION =========================================================  
 
-                    TotalBasic = NoOfDays * rate
+                    If noOf_days_training <> 0 Then '================ IF TRAINEE BASE CALCULATE NEW RATE =================
 
-                    Dim date_pay As DateTime = Convert.ToDateTime(paydate_)
-                    date_pay = date_pay.ToString("d")
+                        Dim trainee_rate As Double = rate
+                        Dim total_train As Double = 0
 
-                    If IsLastDay(date_pay) Then
+                        trainee_rate = rate * 0.75
+                        total_train = (Convert.ToDouble(rate) - trainee_rate) * Convert.ToDouble(noOf_days_training)
 
-                        Dim first_Basic As Double = GetFirst_Basic(bioNo, paydate_)
-                        Dim monthly_Basic As Double = TotalBasic + first_Basic
-
-                        SSSComp = Get_SSS(monthly_Basic)
-                        PagibigComp = Get_Pagibig(monthly_Basic)
-                        PhilhealthComp = Get_PhilHealth(monthly_Basic)
-                        Tax_Wheld = Get_WHolding(monthly_Basic)
-
-                        'TaxComp = Get_Taxable(monthly_Basic)
-                        'SSS_ER = Get_SSS_ER(monthly_Basic)
-
-                        netTax = monthly_Basic - (SSSComp + PagibigComp + PhilhealthComp + Tax_Wheld)
-
-                        sssLoan = Get_LOAN_SSS(bioNo)
-                        pagibigLoan = Get_LOAN_Pagibig(bioNo)
-
-                        sched = "CLOSE PAYROLL"
+                        TotalBasic = (NoOfDays * rate) - total_train
+                        rate = rate * 0.75
                     Else
-                        netTax = 0
-                        sched = "OPEN PAYROLL"
+                        TotalBasic = NoOfDays * rate
+                    End If
+
+                    '============================ CHECK WITH TRAINING DAYS COVERED ==================================   
+                    If noOf_days_training = 0 Then
+                        '============================ CHECK IF CLOSE PAYROLL ==================================   
+                        Dim date_pay As DateTime = Convert.ToDateTime(paydate_)
+                        date_pay = date_pay.ToString("d")
+
+                        If IsLastDay(date_pay) Then
+
+                            Dim first_Basic As Double = GetFirst_Basic(bioNo, paydate_)
+                            Dim monthly_Basic As Double = TotalBasic + first_Basic
+
+                            SSSComp = Get_SSS(monthly_Basic).EE
+                            PagibigComp = Get_Pagibig(monthly_Basic)
+                            PhilhealthComp = Get_PhilHealth(monthly_Basic)
+                            Tax_Wheld = Get_WHolding(monthly_Basic)
+
+                            'TaxComp = Get_Taxable(monthly_Basic)
+                            'SSS_ER = Get_SSS_ER(monthly_Basic)
+
+                            netTax = monthly_Basic - (SSSComp + PagibigComp + PhilhealthComp + Tax_Wheld)
+
+                            sssLoan = Get_LOAN_SSS(bioNo)
+                            pagibigLoan = Get_LOAN_Pagibig(bioNo)
+
+                            sched = "CLOSE PAYROLL"
+                        Else
+                            netTax = 0
+                            sched = "OPEN PAYROLL"
+                        End If
+                    Else
+                        MsgBox("TRAINEE")
                     End If
 
 
@@ -901,21 +967,29 @@
                                 End With
                             Next
                         End If
-
-
-                        If SBU_notFull(bioNo) Then '================ CHECK SBU TOTAL DISTRIB IF ALREADY REACH THE LIMIT ==============
-                            Save_Recorded_Allow_Deduc(bioNo, paydate_, "SBU", SBU_Amount(), "DEDUCTION")
-                        End If
-
                     End Using
+
+                    '============================================= IF NOT TRAINEE CALCULATE SBU ==================================================  
+                    If noOf_days_training = 0 Then
+                        '================ CHECK SBU TOTAL DISTRIB IF ALREADY REACH THE LIMIT ==============
+                        If SBU_notFull(bioNo) Then
+
+                            SBU = SBU_Amount()
+                            Save_Recorded_Allow_Deduc(bioNo, paydate_, "SBU", SBU_Amount(), "DEDUCTION")
+
+                        End If
+                    End If
+
                     Deduction = Deduction + SBU
 
                     '============================================= Calculate_Gross() ========================================================= 
-                    Dim TotalHol, TotalOT, TotalLateUnder, GrossAmount As Double
+                    Dim TotalHol, TotalOT, TotalLateUnder, TotalNight, GrossAmount As Double
 
                     TotalHol = (((SpecialHol * rate) * specHoliday) / specHoliday) + (((RegularHol * rate) * regHoliday) / regHoliday) ' =========== CALCULATE hOLIDAY TO PESO ===========
 
                     TotalOT = ((rate / 8) * 1.25) * RegularOT ' =========== CALCULATE OVERTIME TO PESO ===========
+
+                    TotalNight = (((rate / 8) * 0.1) * nightRate).ToString("N") ' =========== CALCULATE NIGHT RATE TO PESO ===========
 
                     Dim late_split() As String, under_split() As String, lateTOMinute, underToMinute As Double
 
@@ -931,7 +1005,7 @@
 
                     TotalLateUnder = LATEE + UNDERTIMEE
 
-                    GrossAmount = (TotalBasic + TotalHol + TotalOT) - TotalLateUnder
+                    GrossAmount = (TotalBasic + TotalHol + TotalOT + TotalNight) - TotalLateUnder
 
 
                     '============================================= Calculate =========================================================  
@@ -954,17 +1028,16 @@
                     SavePayout(bioNo, paydate_, TotalBasic, TotalOT,
                                   TotalLateUnder, GrossAmount, SSSComp, PagibigComp, PhilhealthComp,
                                   Tax_Wheld, netTax, sssLoan, pagibigLoan,
-                                  Allowances, Deduction, NetPay)
+                                  Allowances, Deduction, NetPay, "", TotalNight)
                 End With
             End If
         End Using
     End Sub
 
-    Friend Sub SavePayout_ALL(paydate_ As String, EndingDate As DateTime) '========== AUTO SAVE TO PAYOUT ============   
+    Friend Sub SavePayout_ALL(paydate_ As String, startingDate As DateTime, EndingDate As DateTime) '========== AUTO SAVE TO PAYOUT ============   
 
         Dim regHoliday = Holiday_Rate("REGULAR")
         Dim specHoliday = Holiday_Rate("SPECIAL")
-        Dim SBU = SBU_Amount()
 
         Dim mysql As String = $"Select * From payroll_attendance A 
                                 inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIOMETRICID WHERE A.PAYDATE = '{paydate_}'"
@@ -977,12 +1050,24 @@
                 For Each dr In ds.Tables(0).Rows
                     With dr
 
-                        Dim BiometricID, sched, Company As String
+                        Dim BiometricID, Company As String
+                        Dim sched As String = ""
                         Dim Late As String = ""
                         Dim UnderTime As String = ""
-                        Dim rate, NoOfDays, RegularOT, SpecialHol, RegularHol As Double
+                        Dim NoOfDays, RegularOT, SpecialHol, RegularHol As Double
                         Dim Allowances, Deduction As Double
                         Dim noOf_days_training As Double = 0
+                        Dim SBU As Double = 0
+                        Dim TotalBasic As Double = 0
+                        Dim SSSComp As Double = 0
+                        Dim PagibigComp As Double = 0
+                        Dim PhilhealthComp As Double = 0
+                        Dim Tax_Wheld As Double = 0
+                        Dim netTax As Double = 0
+                        Dim sssLoan As Double = 0
+                        Dim pagibigLoan As Double = 0
+                        Dim rate As Double = 0
+                        Dim nightRate As Double = 0
 
                         BiometricID = .Item("BIOMETRICID")
                         rate = IIf(IsDBNull(.Item("RATE_DAILY")), 0, .Item("RATE_DAILY"))
@@ -1000,29 +1085,30 @@
 
                             Dim Started As DateTime = .Item("DATE_STARTED")
 
-                            Dim days As Long = DateDiff(DateInterval.Day, Started, EndingDate)
+                            Dim days As Long = DateDiff(DateInterval.Day, Started, startingDate)
 
                             If days <= training_days Then
 
-                                While (Started.Day < EndingDate.Day)
+                                While (startingDate < EndingDate)
 
-                                    If PRESENT_Date(BiometricID, paydate_, Started) Then
+                                    If PRESENT_Date(BiometricID, paydate_, startingDate) Then
 
                                         noOf_days_training += 1
 
-                                        If Halfday_Training(BiometricID, paydate_, Started) Then
+                                        If Halfday_Training(BiometricID, paydate_, startingDate) Then
                                             noOf_days_training -= 0.5
                                         End If
 
                                     End If
 
-                                    Started = Started.AddDays(1)
+                                    startingDate = startingDate.AddDays(1)
                                 End While
 
                                 SaveTraining_days(BiometricID, paydate_, noOf_days_training)
                             End If
 
                         End If
+
                         '============================================= ATTENDANCE (TOTAL DAYS) =========================================================
                         Dim sql_1 As String = $"Select * From PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{BiometricID}' and paydate = '{paydate_}'"
                         Using ds_1 As DataSet = LoadSQL(sql_1, "PAYROLL_ATTENDANCE")
@@ -1036,40 +1122,54 @@
                                     RegularHol = .Item("REGHOLIDAY")
                                     Late = .Item("LATE")
                                     UnderTime = .Item("UNDERTIME")
+                                    '========= NO NIGHT RIGHT SEPARATE IN 7ELEVEN TAB ===========
                                 End With
                             End If
                         End Using
 
                         '============================================= BENIFITS CONTRIBUTION ========================================================= 
-                        Dim TotalBasic, SSSComp, PagibigComp, PhilhealthComp, Tax_Wheld, netTax, sssLoan, pagibigLoan As Double
-
-                        TotalBasic = NoOfDays * rate
-
-                        Dim date_pay As DateTime = Convert.ToDateTime(paydate_)
-                        date_pay = date_pay.ToString("d")
-
-                        If IsLastDay(date_pay) Then
-
-                            Dim first_Basic As Double = GetFirst_Basic(BiometricID, paydate_)
-                            Dim monthly_Basic As Double = TotalBasic + first_Basic
-
-                            SSSComp = Get_SSS(monthly_Basic)
-                            PagibigComp = Get_Pagibig(monthly_Basic)
-                            PhilhealthComp = Get_PhilHealth(monthly_Basic)
-                            Tax_Wheld = Get_WHolding(monthly_Basic)
-
-                            'TaxComp = Get_Taxable(monthly_Basic)
-                            'SSS_ER = Get_SSS_ER(monthly_Basic)
-
-                            netTax = monthly_Basic - (SSSComp + PagibigComp + PhilhealthComp + Tax_Wheld)
-
-                            sssLoan = Get_LOAN_SSS(BiometricID)
-                            pagibigLoan = Get_LOAN_Pagibig(BiometricID)
-
-                            sched = "CLOSE PAYROLL"
+                        If noOf_days_training = 0 Then '================ BASE ON TRAINING DAYS COVERED =================
+                            TotalBasic = NoOfDays * rate
                         Else
-                            netTax = 0
-                            sched = "OPEN PAYROLL"
+                            Dim trainee_rate As Double = 0
+                            Dim total_train As Double = 0
+
+                            trainee_rate = rate * 0.75
+                            total_train = (Convert.ToDouble(rate) - trainee_rate) * Convert.ToDouble(noOf_days_training)
+
+                            TotalBasic = (NoOfDays * rate) - total_train
+                            rate = rate * 0.75
+                        End If
+
+                        '============================= BENEFITS CONTRIBUTION ================================== 
+                        If noOf_days_training = 0 Then
+
+                            '============================ CHECK IF CLOSE PAYROLL ==================================    
+                            Dim date_pay As DateTime = Convert.ToDateTime(paydate_)
+                            date_pay = date_pay.ToString("d")
+
+                            If IsLastDay(date_pay) Then
+                                Dim first_Basic As Double = GetFirst_Basic(BiometricID, paydate_)
+                                Dim monthly_Basic As Double = TotalBasic + first_Basic
+
+                                SSSComp = Get_SSS(monthly_Basic).EE
+                                PagibigComp = Get_Pagibig(monthly_Basic)
+                                PhilhealthComp = Get_PhilHealth(monthly_Basic)
+                                Tax_Wheld = Get_WHolding(monthly_Basic)
+
+                                'TaxComp = Get_Taxable(monthly_Basic)
+                                'SSS_ER = Get_SSS_ER(monthly_Basic)
+
+                                netTax = monthly_Basic - (SSSComp + PagibigComp + PhilhealthComp + Tax_Wheld)
+
+                                sssLoan = Get_LOAN_SSS(BiometricID)
+                                pagibigLoan = Get_LOAN_Pagibig(BiometricID)
+
+                                sched = "CLOSE PAYROLL"
+                            Else
+                                netTax = 0
+                                sched = "OPEN PAYROLL"
+                            End If
                         End If
 
                         '============================================= DELETE TO REPLACE =================================================
@@ -1125,13 +1225,19 @@
                                     End With
                                 Next
                             End If
+                        End Using
 
+                        '============================================= CHECK IF TRAINEE (IF NOT CALCULATE SBU) ==================================================  
+                        If noOf_days_training = 0 Then
 
                             If SBU_notFull(BiometricID) Then '================ CHECK SBU TOTAL DISTRIB IF ALREADY REACH THE LIMIT ==============
-                                Save_Recorded_Allow_Deduc(BiometricID, paydate_, "SBU", SBU_Amount(), "DEDUCTION")
-                            End If
 
-                        End Using
+                                SBU = SBU_Amount()
+                                Save_Recorded_Allow_Deduc(BiometricID, paydate_, "SBU", SBU_Amount(), "DEDUCTION")
+
+                            End If
+                        End If
+
                         Deduction = Deduction + SBU
 
                         '============================================= Calculate_Gross() ========================================================= 

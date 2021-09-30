@@ -130,6 +130,11 @@ Partial Class frmSettings
         Me.ColumnHeader8 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader16 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.TabPage3 = New System.Windows.Forms.TabPage()
+        Me.SearchSBU_TXT = New System.Windows.Forms.TextBox()
+        Me.SearchSBU_BTN = New System.Windows.Forms.Button()
+        Me.SBU_LV = New System.Windows.Forms.ListView()
+        Me.ColumnHeader10 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader23 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.SBU_Change_BTN = New System.Windows.Forms.Button()
         Me.SBU_group = New System.Windows.Forms.GroupBox()
         Me.SBU_Amount_TXT = New System.Windows.Forms.TextBox()
@@ -150,6 +155,28 @@ Partial Class frmSettings
         Me.ColumnHeader21 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.AllowCat_TXT = New System.Windows.Forms.TextBox()
         Me.Cat_Allow_Save_BTN = New System.Windows.Forms.Button()
+        Me.TabPage7 = New System.Windows.Forms.TabPage()
+        Me.TextBox1 = New System.Windows.Forms.TextBox()
+        Me.Button1 = New System.Windows.Forms.Button()
+        Me.ListView1 = New System.Windows.Forms.ListView()
+        Me.ColumnHeader24 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader25 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader26 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.GroupBox4 = New System.Windows.Forms.GroupBox()
+        Me.Label10 = New System.Windows.Forms.Label()
+        Me.ClockEmp_IN_CB = New System.Windows.Forms.ComboBox()
+        Me.ClockClear_BTN = New System.Windows.Forms.Button()
+        Me.Label33 = New System.Windows.Forms.Label()
+        Me.Label34 = New System.Windows.Forms.Label()
+        Me.ClockBio_TXT = New System.Windows.Forms.TextBox()
+        Me.ClockEmp_TXT = New System.Windows.Forms.TextBox()
+        Me.ClockSearch_BTN = New System.Windows.Forms.Button()
+        Me.ClockSave_BTN = New System.Windows.Forms.Button()
+        Me.GroupBox9 = New System.Windows.Forms.GroupBox()
+        Me.ClockBranch_IN_CB = New System.Windows.Forms.ComboBox()
+        Me.Label35 = New System.Windows.Forms.Label()
+        Me.ClockBranch_BTN = New System.Windows.Forms.Button()
+        Me.ClockBranch_CB = New System.Windows.Forms.ComboBox()
         Me.TabPage6 = New System.Windows.Forms.TabPage()
         Me.Password_TXT = New System.Windows.Forms.TextBox()
         Me.Label27 = New System.Windows.Forms.Label()
@@ -166,6 +193,11 @@ Partial Class frmSettings
         Me.Context_deduct = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.menu_subtotal = New System.Windows.Forms.ToolStripMenuItem()
         Me.menu_edit = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ClockBranch_OUT_CB = New System.Windows.Forms.ComboBox()
+        Me.Label36 = New System.Windows.Forms.Label()
+        Me.Label37 = New System.Windows.Forms.Label()
+        Me.Label38 = New System.Windows.Forms.Label()
+        Me.ClockEmp_OUT_CB = New System.Windows.Forms.ComboBox()
         Me.Settings_Tab.SuspendLayout()
         Me.TabPage5.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
@@ -182,6 +214,9 @@ Partial Class frmSettings
         Me.TabPage4.SuspendLayout()
         Me.GroupBox8.SuspendLayout()
         Me.GroupBox7.SuspendLayout()
+        Me.TabPage7.SuspendLayout()
+        Me.GroupBox4.SuspendLayout()
+        Me.GroupBox9.SuspendLayout()
         Me.TabPage6.SuspendLayout()
         Me.Holiday_Remove.SuspendLayout()
         CType(Me.FileSystemWatcher1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -207,6 +242,7 @@ Partial Class frmSettings
         Me.Settings_Tab.Controls.Add(Me.TabPage2)
         Me.Settings_Tab.Controls.Add(Me.TabPage3)
         Me.Settings_Tab.Controls.Add(Me.TabPage4)
+        Me.Settings_Tab.Controls.Add(Me.TabPage7)
         Me.Settings_Tab.Controls.Add(Me.TabPage6)
         Me.Settings_Tab.Font = New System.Drawing.Font("Dubai", 12.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Settings_Tab.Location = New System.Drawing.Point(10, 23)
@@ -1270,6 +1306,9 @@ Partial Class frmSettings
         '
         'TabPage3
         '
+        Me.TabPage3.Controls.Add(Me.SearchSBU_TXT)
+        Me.TabPage3.Controls.Add(Me.SearchSBU_BTN)
+        Me.TabPage3.Controls.Add(Me.SBU_LV)
         Me.TabPage3.Controls.Add(Me.SBU_Change_BTN)
         Me.TabPage3.Controls.Add(Me.SBU_group)
         Me.TabPage3.Controls.Add(Me.Label21)
@@ -1281,6 +1320,52 @@ Partial Class frmSettings
         Me.TabPage3.TabIndex = 6
         Me.TabPage3.Text = "  SBU  "
         Me.TabPage3.UseVisualStyleBackColor = True
+        '
+        'SearchSBU_TXT
+        '
+        Me.SearchSBU_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SearchSBU_TXT.Location = New System.Drawing.Point(519, 23)
+        Me.SearchSBU_TXT.Name = "SearchSBU_TXT"
+        Me.SearchSBU_TXT.Size = New System.Drawing.Size(523, 33)
+        Me.SearchSBU_TXT.TabIndex = 119
+        '
+        'SearchSBU_BTN
+        '
+        Me.SearchSBU_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SearchSBU_BTN.Location = New System.Drawing.Point(1048, 23)
+        Me.SearchSBU_BTN.Name = "SearchSBU_BTN"
+        Me.SearchSBU_BTN.Size = New System.Drawing.Size(82, 33)
+        Me.SearchSBU_BTN.TabIndex = 120
+        Me.SearchSBU_BTN.Text = "Search"
+        Me.SearchSBU_BTN.UseVisualStyleBackColor = True
+        '
+        'SBU_LV
+        '
+        Me.SBU_LV.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.SBU_LV.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader10, Me.ColumnHeader23})
+        Me.SBU_LV.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SBU_LV.FullRowSelect = True
+        Me.SBU_LV.GridLines = True
+        Me.SBU_LV.HideSelection = False
+        Me.SBU_LV.Location = New System.Drawing.Point(519, 62)
+        Me.SBU_LV.MultiSelect = False
+        Me.SBU_LV.Name = "SBU_LV"
+        Me.SBU_LV.Size = New System.Drawing.Size(622, 536)
+        Me.SBU_LV.TabIndex = 118
+        Me.SBU_LV.UseCompatibleStateImageBehavior = False
+        Me.SBU_LV.View = System.Windows.Forms.View.Details
+        '
+        'ColumnHeader10
+        '
+        Me.ColumnHeader10.Text = "Name"
+        Me.ColumnHeader10.Width = 350
+        '
+        'ColumnHeader23
+        '
+        Me.ColumnHeader23.Text = "Total Distribution"
+        Me.ColumnHeader23.Width = 250
         '
         'SBU_Change_BTN
         '
@@ -1335,20 +1420,20 @@ Partial Class frmSettings
         'Label21
         '
         Me.Label21.AutoSize = True
-        Me.Label21.Font = New System.Drawing.Font("Dubai", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label21.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label21.Location = New System.Drawing.Point(23, 53)
         Me.Label21.Name = "Label21"
-        Me.Label21.Size = New System.Drawing.Size(101, 36)
+        Me.Label21.Size = New System.Drawing.Size(93, 32)
         Me.Label21.TabIndex = 116
         Me.Label21.Text = "Current  -"
         '
         'SBU_Label
         '
         Me.SBU_Label.AutoSize = True
-        Me.SBU_Label.Font = New System.Drawing.Font("Dubai", 15.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SBU_Label.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.SBU_Label.Location = New System.Drawing.Point(136, 53)
         Me.SBU_Label.Name = "SBU_Label"
-        Me.SBU_Label.Size = New System.Drawing.Size(23, 36)
+        Me.SBU_Label.Size = New System.Drawing.Size(22, 32)
         Me.SBU_Label.TabIndex = 115
         Me.SBU_Label.Text = "-"
         '
@@ -1496,6 +1581,239 @@ Partial Class frmSettings
         Me.Cat_Allow_Save_BTN.Text = "Save"
         Me.Cat_Allow_Save_BTN.UseVisualStyleBackColor = True
         '
+        'TabPage7
+        '
+        Me.TabPage7.Controls.Add(Me.TextBox1)
+        Me.TabPage7.Controls.Add(Me.Button1)
+        Me.TabPage7.Controls.Add(Me.ListView1)
+        Me.TabPage7.Controls.Add(Me.GroupBox4)
+        Me.TabPage7.Controls.Add(Me.GroupBox9)
+        Me.TabPage7.Location = New System.Drawing.Point(4, 38)
+        Me.TabPage7.Name = "TabPage7"
+        Me.TabPage7.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage7.Size = New System.Drawing.Size(1147, 604)
+        Me.TabPage7.TabIndex = 9
+        Me.TabPage7.Text = "    Clock IN    "
+        Me.TabPage7.UseVisualStyleBackColor = True
+        '
+        'TextBox1
+        '
+        Me.TextBox1.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBox1.Location = New System.Drawing.Point(540, 20)
+        Me.TextBox1.Name = "TextBox1"
+        Me.TextBox1.Size = New System.Drawing.Size(502, 33)
+        Me.TextBox1.TabIndex = 122
+        '
+        'Button1
+        '
+        Me.Button1.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button1.Location = New System.Drawing.Point(1048, 20)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(82, 33)
+        Me.Button1.TabIndex = 123
+        Me.Button1.Text = "Search"
+        Me.Button1.UseVisualStyleBackColor = True
+        '
+        'ListView1
+        '
+        Me.ListView1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.ListView1.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader24, Me.ColumnHeader25, Me.ColumnHeader26})
+        Me.ListView1.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ListView1.FullRowSelect = True
+        Me.ListView1.GridLines = True
+        Me.ListView1.HideSelection = False
+        Me.ListView1.Location = New System.Drawing.Point(540, 59)
+        Me.ListView1.MultiSelect = False
+        Me.ListView1.Name = "ListView1"
+        Me.ListView1.Size = New System.Drawing.Size(601, 536)
+        Me.ListView1.TabIndex = 121
+        Me.ListView1.UseCompatibleStateImageBehavior = False
+        Me.ListView1.View = System.Windows.Forms.View.Details
+        '
+        'ColumnHeader24
+        '
+        Me.ColumnHeader24.Text = "Name"
+        Me.ColumnHeader24.Width = 355
+        '
+        'ColumnHeader25
+        '
+        Me.ColumnHeader25.Text = "Time In"
+        Me.ColumnHeader25.Width = 110
+        '
+        'ColumnHeader26
+        '
+        Me.ColumnHeader26.Text = "Time Out"
+        Me.ColumnHeader26.Width = 110
+        '
+        'GroupBox4
+        '
+        Me.GroupBox4.Controls.Add(Me.Label38)
+        Me.GroupBox4.Controls.Add(Me.ClockEmp_OUT_CB)
+        Me.GroupBox4.Controls.Add(Me.Label10)
+        Me.GroupBox4.Controls.Add(Me.ClockEmp_IN_CB)
+        Me.GroupBox4.Controls.Add(Me.ClockClear_BTN)
+        Me.GroupBox4.Controls.Add(Me.Label33)
+        Me.GroupBox4.Controls.Add(Me.Label34)
+        Me.GroupBox4.Controls.Add(Me.ClockBio_TXT)
+        Me.GroupBox4.Controls.Add(Me.ClockEmp_TXT)
+        Me.GroupBox4.Controls.Add(Me.ClockSearch_BTN)
+        Me.GroupBox4.Controls.Add(Me.ClockSave_BTN)
+        Me.GroupBox4.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GroupBox4.Location = New System.Drawing.Point(6, 252)
+        Me.GroupBox4.Name = "GroupBox4"
+        Me.GroupBox4.Size = New System.Drawing.Size(486, 237)
+        Me.GroupBox4.TabIndex = 89
+        Me.GroupBox4.TabStop = False
+        Me.GroupBox4.Text = "Per Employee"
+        '
+        'Label10
+        '
+        Me.Label10.AutoSize = True
+        Me.Label10.Location = New System.Drawing.Point(15, 143)
+        Me.Label10.Name = "Label10"
+        Me.Label10.Size = New System.Drawing.Size(50, 22)
+        Me.Label10.TabIndex = 98
+        Me.Label10.Text = "Time In"
+        '
+        'ClockEmp_IN_CB
+        '
+        Me.ClockEmp_IN_CB.FormattingEnabled = True
+        Me.ClockEmp_IN_CB.Items.AddRange(New Object() {"1:00 AM", "2:00 AM", "3:00 AM", "4:00 AM", "5:00 AM", "6:00 AM", "7:00 AM", "8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM", "6:00 PM", "7:00 PM", "8:00 PM", "9:00 PM", "10:00 PM", "11:00 PM", "12:00 AM"})
+        Me.ClockEmp_IN_CB.Location = New System.Drawing.Point(84, 138)
+        Me.ClockEmp_IN_CB.Name = "ClockEmp_IN_CB"
+        Me.ClockEmp_IN_CB.Size = New System.Drawing.Size(121, 30)
+        Me.ClockEmp_IN_CB.TabIndex = 97
+        '
+        'ClockClear_BTN
+        '
+        Me.ClockClear_BTN.BackColor = System.Drawing.Color.PeachPuff
+        Me.ClockClear_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.ClockClear_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ClockClear_BTN.Location = New System.Drawing.Point(227, 177)
+        Me.ClockClear_BTN.Name = "ClockClear_BTN"
+        Me.ClockClear_BTN.Size = New System.Drawing.Size(83, 36)
+        Me.ClockClear_BTN.TabIndex = 95
+        Me.ClockClear_BTN.Text = "Clear"
+        Me.ClockClear_BTN.UseVisualStyleBackColor = False
+        '
+        'Label33
+        '
+        Me.Label33.AutoSize = True
+        Me.Label33.Location = New System.Drawing.Point(15, 90)
+        Me.Label33.Name = "Label33"
+        Me.Label33.Size = New System.Drawing.Size(41, 22)
+        Me.Label33.TabIndex = 93
+        Me.Label33.Text = "Name"
+        '
+        'Label34
+        '
+        Me.Label34.AutoSize = True
+        Me.Label34.Location = New System.Drawing.Point(15, 42)
+        Me.Label34.Name = "Label34"
+        Me.Label34.Size = New System.Drawing.Size(62, 22)
+        Me.Label34.TabIndex = 92
+        Me.Label34.Text = "Biometric"
+        '
+        'ClockBio_TXT
+        '
+        Me.ClockBio_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ClockBio_TXT.Location = New System.Drawing.Point(84, 38)
+        Me.ClockBio_TXT.Name = "ClockBio_TXT"
+        Me.ClockBio_TXT.Size = New System.Drawing.Size(319, 33)
+        Me.ClockBio_TXT.TabIndex = 91
+        '
+        'ClockEmp_TXT
+        '
+        Me.ClockEmp_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ClockEmp_TXT.Location = New System.Drawing.Point(84, 85)
+        Me.ClockEmp_TXT.Name = "ClockEmp_TXT"
+        Me.ClockEmp_TXT.ReadOnly = True
+        Me.ClockEmp_TXT.Size = New System.Drawing.Size(319, 33)
+        Me.ClockEmp_TXT.TabIndex = 90
+        '
+        'ClockSearch_BTN
+        '
+        Me.ClockSearch_BTN.AutoSize = True
+        Me.ClockSearch_BTN.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ClockSearch_BTN.Location = New System.Drawing.Point(418, 38)
+        Me.ClockSearch_BTN.Name = "ClockSearch_BTN"
+        Me.ClockSearch_BTN.Size = New System.Drawing.Size(57, 30)
+        Me.ClockSearch_BTN.TabIndex = 89
+        Me.ClockSearch_BTN.Text = "..."
+        Me.ClockSearch_BTN.UseVisualStyleBackColor = True
+        '
+        'ClockSave_BTN
+        '
+        Me.ClockSave_BTN.BackColor = System.Drawing.Color.DarkSalmon
+        Me.ClockSave_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.ClockSave_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ClockSave_BTN.Location = New System.Drawing.Point(320, 176)
+        Me.ClockSave_BTN.Name = "ClockSave_BTN"
+        Me.ClockSave_BTN.Size = New System.Drawing.Size(83, 36)
+        Me.ClockSave_BTN.TabIndex = 85
+        Me.ClockSave_BTN.Text = "Save"
+        Me.ClockSave_BTN.UseVisualStyleBackColor = False
+        '
+        'GroupBox9
+        '
+        Me.GroupBox9.Controls.Add(Me.Label37)
+        Me.GroupBox9.Controls.Add(Me.ClockBranch_OUT_CB)
+        Me.GroupBox9.Controls.Add(Me.Label36)
+        Me.GroupBox9.Controls.Add(Me.ClockBranch_IN_CB)
+        Me.GroupBox9.Controls.Add(Me.Label35)
+        Me.GroupBox9.Controls.Add(Me.ClockBranch_BTN)
+        Me.GroupBox9.Controls.Add(Me.ClockBranch_CB)
+        Me.GroupBox9.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GroupBox9.Location = New System.Drawing.Point(6, 21)
+        Me.GroupBox9.Name = "GroupBox9"
+        Me.GroupBox9.Size = New System.Drawing.Size(486, 179)
+        Me.GroupBox9.TabIndex = 88
+        Me.GroupBox9.TabStop = False
+        Me.GroupBox9.Text = "Per Branch"
+        '
+        'ClockBranch_IN_CB
+        '
+        Me.ClockBranch_IN_CB.FormattingEnabled = True
+        Me.ClockBranch_IN_CB.Items.AddRange(New Object() {"1:00 AM", "2:00 AM", "3:00 AM", "4:00 AM", "5:00 AM", "6:00 AM", "7:00 AM", "8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM", "6:00 PM", "7:00 PM", "8:00 PM", "9:00 PM", "10:00 PM", "11:00 PM", "12:00 AM"})
+        Me.ClockBranch_IN_CB.Location = New System.Drawing.Point(70, 91)
+        Me.ClockBranch_IN_CB.Name = "ClockBranch_IN_CB"
+        Me.ClockBranch_IN_CB.Size = New System.Drawing.Size(107, 30)
+        Me.ClockBranch_IN_CB.TabIndex = 96
+        '
+        'Label35
+        '
+        Me.Label35.AutoSize = True
+        Me.Label35.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label35.Location = New System.Drawing.Point(7, 97)
+        Me.Label35.Name = "Label35"
+        Me.Label35.Size = New System.Drawing.Size(50, 22)
+        Me.Label35.TabIndex = 95
+        Me.Label35.Text = "Time In"
+        '
+        'ClockBranch_BTN
+        '
+        Me.ClockBranch_BTN.BackColor = System.Drawing.Color.DarkSalmon
+        Me.ClockBranch_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.ClockBranch_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ClockBranch_BTN.Location = New System.Drawing.Point(196, 134)
+        Me.ClockBranch_BTN.Name = "ClockBranch_BTN"
+        Me.ClockBranch_BTN.Size = New System.Drawing.Size(79, 34)
+        Me.ClockBranch_BTN.TabIndex = 85
+        Me.ClockBranch_BTN.Text = "Save"
+        Me.ClockBranch_BTN.UseVisualStyleBackColor = False
+        '
+        'ClockBranch_CB
+        '
+        Me.ClockBranch_CB.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ClockBranch_CB.FormattingEnabled = True
+        Me.ClockBranch_CB.Location = New System.Drawing.Point(70, 42)
+        Me.ClockBranch_CB.Name = "ClockBranch_CB"
+        Me.ClockBranch_CB.Size = New System.Drawing.Size(205, 30)
+        Me.ClockBranch_CB.TabIndex = 8
+        Me.ClockBranch_CB.Text = "   Select Branch"
+        '
         'TabPage6
         '
         Me.TabPage6.Controls.Add(Me.Password_TXT)
@@ -1595,13 +1913,13 @@ Partial Class frmSettings
         'ApproveToolStripMenuItem
         '
         Me.ApproveToolStripMenuItem.Name = "ApproveToolStripMenuItem"
-        Me.ApproveToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.ApproveToolStripMenuItem.Size = New System.Drawing.Size(133, 22)
         Me.ApproveToolStripMenuItem.Text = "Approve"
         '
         'Allow_Disapprove
         '
         Me.Allow_Disapprove.Name = "Allow_Disapprove"
-        Me.Allow_Disapprove.Size = New System.Drawing.Size(180, 22)
+        Me.Allow_Disapprove.Size = New System.Drawing.Size(133, 22)
         Me.Allow_Disapprove.Text = "Disapprove"
         '
         'Context_deduct
@@ -1621,6 +1939,53 @@ Partial Class frmSettings
         Me.menu_edit.Name = "menu_edit"
         Me.menu_edit.Size = New System.Drawing.Size(146, 22)
         Me.menu_edit.Text = "Edit"
+        '
+        'ClockBranch_OUT_CB
+        '
+        Me.ClockBranch_OUT_CB.FormattingEnabled = True
+        Me.ClockBranch_OUT_CB.Items.AddRange(New Object() {"1:00 AM", "2:00 AM", "3:00 AM", "4:00 AM", "5:00 AM", "6:00 AM", "7:00 AM", "8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM", "6:00 PM", "7:00 PM", "8:00 PM", "9:00 PM", "10:00 PM", "11:00 PM", "12:00 AM"})
+        Me.ClockBranch_OUT_CB.Location = New System.Drawing.Point(70, 140)
+        Me.ClockBranch_OUT_CB.Name = "ClockBranch_OUT_CB"
+        Me.ClockBranch_OUT_CB.Size = New System.Drawing.Size(107, 30)
+        Me.ClockBranch_OUT_CB.TabIndex = 98
+        '
+        'Label36
+        '
+        Me.Label36.AutoSize = True
+        Me.Label36.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label36.Location = New System.Drawing.Point(7, 146)
+        Me.Label36.Name = "Label36"
+        Me.Label36.Size = New System.Drawing.Size(61, 22)
+        Me.Label36.TabIndex = 97
+        Me.Label36.Text = "Time Out"
+        '
+        'Label37
+        '
+        Me.Label37.AutoSize = True
+        Me.Label37.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label37.Location = New System.Drawing.Point(7, 45)
+        Me.Label37.Name = "Label37"
+        Me.Label37.Size = New System.Drawing.Size(48, 22)
+        Me.Label37.TabIndex = 99
+        Me.Label37.Text = "Branch"
+        '
+        'Label38
+        '
+        Me.Label38.AutoSize = True
+        Me.Label38.Location = New System.Drawing.Point(15, 190)
+        Me.Label38.Name = "Label38"
+        Me.Label38.Size = New System.Drawing.Size(61, 22)
+        Me.Label38.TabIndex = 100
+        Me.Label38.Text = "Time Out"
+        '
+        'ClockEmp_OUT_CB
+        '
+        Me.ClockEmp_OUT_CB.FormattingEnabled = True
+        Me.ClockEmp_OUT_CB.Items.AddRange(New Object() {"1:00 AM", "2:00 AM", "3:00 AM", "4:00 AM", "5:00 AM", "6:00 AM", "7:00 AM", "8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM", "6:00 PM", "7:00 PM", "8:00 PM", "9:00 PM", "10:00 PM", "11:00 PM", "12:00 AM"})
+        Me.ClockEmp_OUT_CB.Location = New System.Drawing.Point(84, 187)
+        Me.ClockEmp_OUT_CB.Name = "ClockEmp_OUT_CB"
+        Me.ClockEmp_OUT_CB.Size = New System.Drawing.Size(121, 30)
+        Me.ClockEmp_OUT_CB.TabIndex = 99
         '
         'frmSettings
         '
@@ -1662,6 +2027,12 @@ Partial Class frmSettings
         Me.GroupBox8.PerformLayout()
         Me.GroupBox7.ResumeLayout(False)
         Me.GroupBox7.PerformLayout()
+        Me.TabPage7.ResumeLayout(False)
+        Me.TabPage7.PerformLayout()
+        Me.GroupBox4.ResumeLayout(False)
+        Me.GroupBox4.PerformLayout()
+        Me.GroupBox9.ResumeLayout(False)
+        Me.GroupBox9.PerformLayout()
         Me.TabPage6.ResumeLayout(False)
         Me.TabPage6.PerformLayout()
         Me.Holiday_Remove.ResumeLayout(False)
@@ -1816,4 +2187,36 @@ Partial Class frmSettings
     Friend WithEvents MonthlyRate_TXT As TextBox
     Friend WithEvents ColumnHeader7 As ColumnHeader
     Friend WithEvents ApproveToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents SBU_LV As ListView
+    Friend WithEvents ColumnHeader10 As ColumnHeader
+    Friend WithEvents ColumnHeader23 As ColumnHeader
+    Friend WithEvents SearchSBU_TXT As TextBox
+    Friend WithEvents SearchSBU_BTN As Button
+    Friend WithEvents TabPage7 As TabPage
+    Friend WithEvents GroupBox4 As GroupBox
+    Friend WithEvents ClockClear_BTN As Button
+    Friend WithEvents Label33 As Label
+    Friend WithEvents Label34 As Label
+    Friend WithEvents ClockBio_TXT As TextBox
+    Friend WithEvents ClockEmp_TXT As TextBox
+    Friend WithEvents ClockSearch_BTN As Button
+    Friend WithEvents ClockSave_BTN As Button
+    Friend WithEvents GroupBox9 As GroupBox
+    Friend WithEvents Label35 As Label
+    Friend WithEvents ClockBranch_BTN As Button
+    Friend WithEvents ClockBranch_CB As ComboBox
+    Friend WithEvents ClockBranch_IN_CB As ComboBox
+    Friend WithEvents ClockEmp_IN_CB As ComboBox
+    Friend WithEvents Label10 As Label
+    Friend WithEvents TextBox1 As TextBox
+    Friend WithEvents Button1 As Button
+    Friend WithEvents ListView1 As ListView
+    Friend WithEvents ColumnHeader24 As ColumnHeader
+    Friend WithEvents ColumnHeader25 As ColumnHeader
+    Friend WithEvents ColumnHeader26 As ColumnHeader
+    Friend WithEvents Label37 As Label
+    Friend WithEvents ClockBranch_OUT_CB As ComboBox
+    Friend WithEvents Label36 As Label
+    Friend WithEvents Label38 As Label
+    Friend WithEvents ClockEmp_OUT_CB As ComboBox
 End Class

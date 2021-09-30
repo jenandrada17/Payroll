@@ -290,11 +290,11 @@ Partial Class frmNewEmployee
         '
         Me.Add_BTN.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Add_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Add_BTN.Location = New System.Drawing.Point(949, 50)
+        Me.Add_BTN.Location = New System.Drawing.Point(935, 50)
         Me.Add_BTN.Name = "Add_BTN"
-        Me.Add_BTN.Size = New System.Drawing.Size(95, 34)
+        Me.Add_BTN.Size = New System.Drawing.Size(109, 34)
         Me.Add_BTN.TabIndex = 94
-        Me.Add_BTN.Text = "Add"
+        Me.Add_BTN.Text = "Add/Update"
         Me.Add_BTN.UseVisualStyleBackColor = True
         '
         'Add_Panel

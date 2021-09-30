@@ -77,7 +77,7 @@ Public Class frmPayout
         If Bio_Exist_Attendance(BIO_NO, paydate_) Then
 
             AttendanceDetails(BIO_NO, paydate_, NoOfDays_TXT, RegularOT_TXT, SpecialHol_TXT, RegularHol_TXT,
-                                        Late_TXT, UnderTime_TXT, TrainingDays_LBL)
+                                        Late_TXT, UnderTime_TXT, TrainingDays_LBL, NightTime_TXT)
 
             '============================ CHECK IF NOT TRAINEE ==================================  
             If TrainingDays_LBL.Text = 0 Or TrainingDays_LBL.Text = Nothing Then
@@ -88,7 +88,7 @@ Public Class frmPayout
                     Dim monthly_Basic As Double = GetMonthly_Basic(BIO_NO, paydate_)
                     Prev_Amount_lbl.Text = (GetFirst_Basic(BIO_NO, paydate_)).ToString("N")
 
-                    SSSComp_LBL.Text = (Get_SSS(monthly_Basic)).ToString("N")
+                    SSSComp_LBL.Text = (Get_SSS(monthly_Basic).EE).ToString("N")
                     HDMF_LBL.Text = (Get_Pagibig(monthly_Basic)).ToString("N")
                     Philhealth_LBL.Text = (Get_PhilHealth(monthly_Basic)).ToString("N")
                     Tax_Wheld_LBL.Text = (Get_WHolding(monthly_Basic)).ToString("N")
@@ -112,6 +112,8 @@ Public Class frmPayout
 
                     sched_deduc = "OPEN PAYROLL"
                 End If
+            Else
+                Training_GB.Visible = True
             End If
 
             '================ FETCHING ALLOWANCE RECORDED WHEN ATTENDANCE BIOMETRIC IMPORTED ================== 
@@ -237,7 +239,7 @@ Public Class frmPayout
                 SavePayout(BIO_NO, paydate_, TotalBasic_LBL.Text, TotalOT_LBL.Text,
                   TotalLateUnder_LBL.Text, GrossAmount_LBL.Text, SSSComp_LBL.Text, HDMF_LBL.Text, Philhealth_LBL.Text,
                   Tax_Wheld_LBL.Text, NetTax_LBL.Text, SSSLoan_LBL.Text, PagibigLoan_LBL.Text,
-                  Allowances_LBL.Text, Deduction_LBL.Text, NetPay_LBL.Text)
+                  Allowances_LBL.Text, Deduction_LBL.Text, NetPay_LBL.Text, "", TotalNight_LBL.Text)
 
                 If Deduction_grid.Rows.Count > 0 Then
 
@@ -304,13 +306,15 @@ Public Class frmPayout
 
             rate = rate * 0.75
             deduct_per_day = Convert.ToDouble(Rate_TXT.Text) - rate
-            total_train = (Convert.ToDouble(Rate_TXT.Text) - rate) * Convert.ToDouble(TrainingDays_LBL.Text)
+            total_train = deduct_per_day * Convert.ToDouble(TrainingDays_LBL.Text)
 
             TotalBasic_LBL.Text = ((Convert.ToDouble(NoOfDays_TXT.Text) * Convert.ToDouble(Rate_TXT.Text)) - total_train).ToString("N")
 
-            TotalHol_LBL.Text = ((((Convert.ToInt32(SpecialHol_TXT.Text) * Convert.ToInt32(Rate_TXT.Text)) * specHoliday_) / specHoliday_) + (((Convert.ToInt32(RegularHol_TXT.Text) * Convert.ToInt32(Rate_TXT.Text)) * regHoliday_) / regHoliday_)).ToString("N") ' =========== CALCULATE hOLIDAY TO PESO ===========
+            TotalHol_LBL.Text = ((((Convert.ToInt32(SpecialHol_TXT.Text) * Convert.ToInt32(rate)) * specHoliday_) / specHoliday_) + (((Convert.ToInt32(RegularHol_TXT.Text) * Convert.ToInt32(rate)) * regHoliday_) / regHoliday_)).ToString("N") ' =========== CALCULATE hOLIDAY TO PESO ===========
 
-            TotalOT_LBL.Text = (((Convert.ToInt32(Rate_TXT.Text) / 8) * 1.25) * Convert.ToInt32(RegularOT_TXT.Tag)).ToString("N") ' =========== CALCULATE OVERTIME TO PESO ===========
+            TotalOT_LBL.Text = (((Convert.ToInt32(rate) / 8) * 1.25) * Convert.ToInt32(RegularOT_TXT.Tag)).ToString("N") ' =========== CALCULATE OVERTIME TO PESO ===========
+
+            TotalNight_LBL.Text = (((Convert.ToInt32(rate) / 8) * 0.1) * Convert.ToInt32(NightTime_TXT.Tag)).ToString("N") ' =========== CALCULATE OVERTIME TO PESO ===========
 
             Dim late_split() As String, under_split() As String, lateTOMinute, underToMinute As Double
 
@@ -321,12 +325,12 @@ Public Class frmPayout
             underToMinute = (CDbl(under_split(0)) * 60 + CDbl(under_split(1)) + CDbl(under_split(2)) / 60) / 60
 
             Dim LATEE, UNDERTIMEE As Double
-            LATEE = ((Convert.ToInt32(Rate_TXT.Text) / 8) / 60) * lateTOMinute
-            UNDERTIMEE = (Convert.ToInt32(Rate_TXT.Text) / 8) * underToMinute
+            LATEE = ((Convert.ToInt32(rate) / 8) / 60) * lateTOMinute
+            UNDERTIMEE = (Convert.ToInt32(rate) / 8) * underToMinute
 
             TotalLateUnder_LBL.Text = (LATEE + UNDERTIMEE).ToString("N")
 
-            GrossAmount_LBL.Text = ((Convert.ToDouble(TotalBasic_LBL.Text) + Convert.ToDouble(TotalHol_LBL.Text) + Convert.ToDouble(TotalOT_LBL.Text)) - Convert.ToDouble(TotalLateUnder_LBL.Text)).ToString("N")
+            GrossAmount_LBL.Text = ((Convert.ToDouble(TotalBasic_LBL.Text) + Convert.ToDouble(TotalHol_LBL.Text) + Convert.ToDouble(TotalOT_LBL.Text) + Convert.ToDouble(TotalNight_LBL.Text)) - Convert.ToDouble(TotalLateUnder_LBL.Text)).ToString("N")
 
         Else '========================================= NOT A TRAINEE ===========================================
 
@@ -336,6 +340,8 @@ Public Class frmPayout
 
             TotalOT_LBL.Text = (((Convert.ToInt32(Rate_TXT.Text) / 8) * 1.25) * Convert.ToInt32(RegularOT_TXT.Tag)).ToString("N") ' =========== CALCULATE OVERTIME TO PESO ===========
 
+            TotalNight_LBL.Text = (((Convert.ToInt32(Rate_TXT.Text) / 8) * 0.1) * Convert.ToInt32(NightTime_TXT.Tag)).ToString("N") ' =========== CALCULATE OVERTIME TO PESO ===========
+
             Dim late_split() As String, under_split() As String, lateTOMinute, underToMinute As Double
 
             late_split = Split(Late_TXT.Tag, ":")
@@ -350,7 +356,7 @@ Public Class frmPayout
 
             TotalLateUnder_LBL.Text = (LATEE + UNDERTIMEE).ToString("N")
 
-            GrossAmount_LBL.Text = ((Convert.ToDouble(TotalBasic_LBL.Text) + Convert.ToDouble(TotalHol_LBL.Text) + Convert.ToDouble(TotalOT_LBL.Text)) - Convert.ToDouble(TotalLateUnder_LBL.Text)).ToString("N")
+            GrossAmount_LBL.Text = ((Convert.ToDouble(TotalBasic_LBL.Text) + Convert.ToDouble(TotalHol_LBL.Text) + Convert.ToDouble(TotalOT_LBL.Text) + Convert.ToDouble(TotalNight_LBL.Text)) - Convert.ToDouble(TotalLateUnder_LBL.Text)).ToString("N")
 
         End If
 

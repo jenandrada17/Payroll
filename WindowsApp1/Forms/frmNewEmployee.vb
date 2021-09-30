@@ -227,6 +227,7 @@ Public Class frmNewEmployee
     End Sub
 
     Private Sub Import_BTN_Click(sender As Object, e As EventArgs) Handles Import_BTN.Click
+        Excel_Panel.Location = New Point(ClientSize.Width / 2 - Excel_Panel.Size.Width / 2, ClientSize.Height / 2 - Excel_Panel.Size.Height / 2)
         Excel_Panel.Visible = True
     End Sub
 
@@ -271,6 +272,7 @@ Public Class frmNewEmployee
     End Sub
 
     Private Sub Add_BTN_Click(sender As Object, e As EventArgs) Handles Add_BTN.Click
+        Add_Panel.Location = New Point(ClientSize.Width / 2 - Add_Panel.Size.Width / 2, ClientSize.Height / 2 - Add_Panel.Size.Height / 2)
         Add_Panel.Visible = True
         PopulateComboBox(Branch_ComboB, "PAYROLL_EMPLOYEE", "BRANCH_CODE")
     End Sub
@@ -346,6 +348,11 @@ Public Class frmNewEmployee
         ElseIf txtSearch.Tag = "Attendance-PrintDTR_2" Then
 
             SwitchForm_Attendance(FormName.Attendance, tmpEmp, 2)
+            Close()
+
+        ElseIf txtSearch.Tag = "Attendance-7Eleven" Then
+
+            SwitchForm_Attendance(FormName.Attendance, tmpEmp, 4)
             Close()
 
         ElseIf txtSearch.Tag = "Payout" Then

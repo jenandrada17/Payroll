@@ -15,7 +15,7 @@ Public Class frmAttendance
     Dim late_count, under_count, over_count As New List(Of TimeSpan)()
     Dim list_dateHour, list_inOut, list_hourMin, list_Group, list_count, list_bio, distinct_bio As New List(Of String)()
     Dim hourMinn, timee, bio_list As List(Of String)
-    Dim dateee As DateTime
+    Dim dateee, starting_date, ending_date As DateTime
     Dim DATE_ONLY, am_in, am_out, pm_in, pm_out As String
     Public branchID, Branch_Name, paydate_, paydate_Records As String
 
@@ -39,8 +39,7 @@ Public Class frmAttendance
         PopulateComboBox(Paydate_ComboB, "BIOMETRIC_DTR", "PAYDATE")
         PopulateComboBox(Payslip_DTR_Combo, "BIOMETRIC_DTR", "PAYDATE")
         PopulateComboBox(DTR_Branch_Combo, "PAYROLL_EMPLOYEE", "BRANCH_CODE")
-
-        Dim array() As String = {".HO ACCOUNTING", ".HO ADMIN", ".HO HR", ".HO MAIN", ".HO REMATADO", ".HO WAREHOUSE"}
+        PopulateComboBox(Paydate7_CB, "BIOMETRIC_DTR", "PAYDATE")
 
     End Sub
 
@@ -78,6 +77,8 @@ Public Class frmAttendance
 
             Paydate = EndNineteen.AddDays(12)
             DataGridView1.Tag = Paydate
+            starting_date = StartNineteen.AddDays(1)
+            ending_date = EndNineteen
 
             While (StartNineteen < EndNineteen)
                 startingDate = StartNineteen.ToString("d")
@@ -94,6 +95,8 @@ Public Class frmAttendance
 
             Paydate = New DateTime(EndFour.Year, EndFour.Month, DateTime.DaysInMonth(EndFour.Year, EndFour.Month))
             DataGridView1.Tag = Paydate
+            starting_date = StartFour.AddDays(1)
+            ending_date = EndFour
 
             While (StartFour < EndFour)
 
@@ -444,6 +447,9 @@ Public Class frmAttendance
 
         End If
 
+        'Dim hourss As DateTime
+        'hourss = hourss.AddHours(row.Cells(1).Value, row.Cells(4).Value)
+
     End Sub
 
     Private Sub Cancel_BTN_Click(sender As Object, e As EventArgs) Handles Cancel_BTN.Click
@@ -510,7 +516,7 @@ Public Class frmAttendance
             SaveAttendanceEE(BiometricID_TXT.Text, PAYROLL, TotalDays_LBL.Text, TotalOTHr_LBL.Text, TotalLateHR_LBL.Text, TotalUTHR_LBL.Text,
                              TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text)
 
-            SavePayout_IndividualL(BiometricID_TXT.Text, PAYROLL, EndingDate)
+            SavePayout_IndividualL(BiometricID_TXT.Text, PAYROLL, starting_date, ending_date)
 
             Cancel_BTN.PerformClick()
         Else
@@ -652,19 +658,19 @@ Public Class frmAttendance
 
                     mysqll = $"Select A.*, B.FULLNAME, B.BIO_NO as bioNo, C.* From PAYROLL_ATTENDANCE A 
                                         inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRICID 
-                                        inner join BIOMETRIC_DTR C ON C.BIO_ID = A.BIOMETRICID where A.PAYDATE  = '{paydatee}' and A.BIOMETRICID IN ('{Bio1_DTR_TXT.Text}','{Bio2_DTR_TXT.Text}') ORDER BY DATE_ONLY"
+                                        inner join BIOMETRIC_DTR C ON C.BIO_ID = A.BIOMETRICID AND C.PAYDATE  = A.PAYDATE where A.PAYDATE  = '{paydatee}' and A.BIOMETRICID IN ('{Bio1_DTR_TXT.Text}','{Bio2_DTR_TXT.Text}') ORDER BY DATE_ONLY"
                 Else
                     If Bio1_DTR_TXT.Text <> Nothing And Bio2_DTR_TXT.Text = Nothing Then  '============ 1ST EMPLOYEE
 
                         mysqll = $"Select A.*, B.FULLNAME, B.BIO_NO as bioNo, C.* From PAYROLL_ATTENDANCE A 
                                         inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRICID 
-                                        inner join BIOMETRIC_DTR C ON C.BIO_ID = A.BIOMETRICID where A.PAYDATE  = '{paydatee}' and A.BIOMETRICID = '{Bio1_DTR_TXT.Text}'  ORDER BY DATE_ONLY"
+                                        inner join BIOMETRIC_DTR C ON C.BIO_ID = A.BIOMETRICID AND C.PAYDATE  = A.PAYDATE where A.PAYDATE  = '{paydatee}' and A.BIOMETRICID = '{Bio1_DTR_TXT.Text}'  ORDER BY DATE_ONLY"
 
                     ElseIf Bio2_DTR_TXT.Text <> Nothing And Bio1_DTR_TXT.Text = Nothing Then '============ 2ND EMPLOYEE
 
                         mysqll = $"Select A.*, B.FULLNAME, B.BIO_NO as bioNo, C.* From PAYROLL_ATTENDANCE A 
                                         inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRICID 
-                                        inner join BIOMETRIC_DTR C ON C.BIO_ID = A.BIOMETRICID where A.PAYDATE  = '{paydatee}' and A.BIOMETRICID = '{Bio2_DTR_TXT.Text}'  ORDER BY DATE_ONLY"
+                                        inner join BIOMETRIC_DTR C ON C.BIO_ID = A.BIOMETRICID  AND C.PAYDATE  = A.PAYDATE where A.PAYDATE  = '{paydatee}' and A.BIOMETRICID = '{Bio2_DTR_TXT.Text}'  ORDER BY DATE_ONLY"
 
                     Else
                         MsgBox("Please Select Employee Name!")
@@ -675,7 +681,7 @@ Public Class frmAttendance
 
                 mysqll = $"Select A.*, B.FULLNAME, B.BIO_NO as bioNo, C.* From PAYROLL_ATTENDANCE A 
                                         inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRICID 
-                                        inner join BIOMETRIC_DTR C ON C.BIO_ID = A.BIOMETRICID  
+                                        inner join BIOMETRIC_DTR C ON C.BIO_ID = A.BIOMETRICID AND C.PAYDATE  = A.PAYDATE 
                                         where A.PAYDATE  = '{paydatee}' and COMPANY = 'HEAD OFFICE'  ORDER BY DATE_ONLY"
 
             End If
@@ -749,7 +755,7 @@ Public Class frmAttendance
 
             mysqll = $"Select * From PAYROLL_ATTENDANCE A 
                                         inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRICID 
-                                        inner join BIOMETRIC_DTR C ON C.BIO_ID = B.BIO_NO 
+                                        inner join BIOMETRIC_DTR C ON C.BIO_ID = B.BIO_NO  AND C.PAYDATE  = A.PAYDATE 
                                         where A.PAYDATE  = '{paydatee}' and B.BRANCH_CODE = '{DTR_Branch_Combo.Text}'  ORDER BY DATE_ONLY"
 
             Using ds As DataSet = LoadSQL(mysqll, "PAYROLL_EMPLOYEE")
@@ -1025,6 +1031,202 @@ Public Class frmAttendance
         End If
     End Sub
 
+    Private Sub Button3_Click(sender As Object, e As EventArgs)
+
+        Dim dialog = New OpenFileDialog
+        If dialog.ShowDialog() = DialogResult.OK Then
+            Emp7_TXT.Text = dialog.FileName
+        End If
+    End Sub
+
+    Private Sub IMPORTED_7eleven()   '================================ WORKS WELL- FOR ALL RECORDS ONLY (PARTNER WITH SAVE_DIRECT_Attendance()()) =============================   
+
+        'LoadDateTime()
+        'AM_In_DataGrid.Items.Insert(0, "")
+        'AM_Out_DataGrid.Items.Insert(0, "")
+        'PM_IN_DataGrid.Items.Insert(0, "")
+        'PM_Out_DataGrid.Items.Insert(0, "")
+
+        Dim timee_ As List(Of DateTime) = Nothing
+        Dim list_inOut_ As List(Of DateTime) = Nothing
+
+        Dim paydate_ As String = Paydate.ToString("d")
+        distinct_bio = distinct_bio.Distinct().ToList
+
+        For Each biometric_No As String In distinct_bio
+            list_inOut_.Clear()
+
+            Dim mysql As String = $"Select * From IMPORT_DTR where BIO_ID = '{biometric_No}' and PAYDATE = '{paydate_}'"
+            Using ds As DataSet = LoadSQL(mysql, "IMPORT_DTR")
+                If ds.Tables(0).Rows.Count > 0 Then
+                    For Each dr In ds.Tables(0).Rows
+                        With dr
+                            Dim date_ As DateTime = .Item("DATEANDTIME")
+
+                            list_inOut_.Add(date_.ToString("d") & " " & date_.ToShortTimeString)
+                        End With
+                    Next
+                End If
+            End Using
+
+
+            timee_ = list_inOut_.Distinct().ToList
+
+
+            'For i = 0 To timee_.Count
+
+            '    Dim timePeriod As TimeSpan
+            '    Dim time1 As DateTime = timee.Item(i)
+            '    Dim time2 As DateTime = timee.Item(i + 1)
+
+            'Next
+
+
+            'For Each row As DataGridViewRow In DataGridView1.Rows
+
+            '    Dim list_hour(3) As String
+            '    Dim DATE_ONLY As String = ""
+
+            '    Dim rowIndex As Integer = row.Index
+            '    Dim asss As DateTime = DataGridView1.Rows(rowIndex).Tag
+            '    Dim groups_timee As New List(Of DateTime)()
+
+            'For Each timme As String In timee
+            '    If timme.StartsWith(asss.ToString("d")) Then
+            '        groups_timee.Add(timme)
+
+            '    End If
+            'Next
+
+            'groups_timee.Sort(New Comparison(Of Date)(Function(x As Date, y As Date) y.CompareTo(x)))
+            'groups_timee.Reverse()
+
+            'For Each dateTime As String In groups_timee
+            '    Console.WriteLine("Sorted dateTime  " & dateTime)
+            'Next
+
+            'Console.WriteLine("tOTAL HOUR " & )
+            'Console.WriteLine()
+
+            'If list_hour(0) = "" And list_hour(1) = "" And list_hour(2) = "" And list_hour(3) = "" Then
+            'Else
+            '    SaveDTR(biometric_No, Paydate, DATE_ONLY, list_hour(0), list_hour(1), list_hour(2), list_hour(3))
+            'End If
+            'Next
+        Next
+    End Sub
+
+    Private Sub SearchEmp7_BTN_Click(sender As Object, e As EventArgs) Handles SearchEmp7_BTN.Click
+
+        Try
+
+            Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmNewEmployee").SingleOrDefault()
+            If instForm Is Nothing Then
+                Dim frm As frmNewEmployee
+                frm = DirectCast(CreateObjectInstance("frmNewEmployee"), Form)
+                frm.MdiParent = frmMainForm
+                frmMainForm.pNavigate.Controls.Add(frm)
+                frmMainForm.pNavigate.Tag = frm
+                frm.txtSearch.Tag = "Attendance-7Eleven"
+                frm.Dock = DockStyle.Fill
+                frm.BringToFront()
+                frm.Show()
+            Else
+                instForm.BringToFront()
+            End If
+
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    Private Sub Bio7_TXT_TextChanged(sender As Object, e As EventArgs) Handles Bio7_TXT.TextChanged
+        If Not String.IsNullOrEmpty(Bio7_TXT.Text) Then
+            GetName(Bio7_TXT.Text, Emp7_TXT)
+        Else
+            Emp7_TXT.Clear()
+        End If
+
+    End Sub
+
+    Private Sub Save7_BTN_Click(sender As Object, e As EventArgs) Handles Save7_BTN.Click
+
+        If Not Bio7_TXT.Text = "" And Not Days7_TXT.Text = "" Then
+            Dim PAYROLL As String
+            If Paydate7_CB.SelectedIndex >= 0 Then
+                PAYROLL = Paydate7_CB.SelectedItem
+            Else
+                PAYROLL = DataGridView1.Tag
+            End If
+
+            '====================== LATE CONVERTER ==============
+            Dim Late_TS, UT_TS As TimeSpan
+            Late_TS = TimeSpan.Zero
+            UT_TS = TimeSpan.Zero
+
+            If Not String.IsNullOrEmpty(Late7_TXT.Text) Then
+                Late_TS = TimeSpan.FromMinutes(Late7_TXT.Text)
+            End If
+
+            If Not String.IsNullOrEmpty(Undertime7_TXT.Text) Then
+                UT_TS = TimeSpan.FromMinutes(Undertime7_TXT.Text)
+            End If
+
+            SaveAttendanceEE(Bio7_TXT.Text, PAYROLL, Days7_TXT.Text, IIf(Overtime7_TXT.Text = "", "0", Overtime7_TXT.Text), Late_TS.ToString, UT_TS.ToString,
+                             "0", "0", Night7_TXT.Text)
+
+            updateHoliday_Attendance(Bio7_TXT.Text, PAYROLL)
+
+            SavePayout_IndividualL(Bio7_TXT.Text, PAYROLL, starting_date, ending_date)
+
+            Cancel7_BTN.PerformClick()
+        Else
+            MsgBox("Please Ensure that Employee's Name and No. of days are inputed!", MsgBoxStyle.Critical, "Error")
+        End If
+
+    End Sub
+
+    Private Sub Hours7_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Undertime7_TXT.KeyPress, Overtime7_TXT.KeyPress, Night7_TXT.KeyPress, Late7_TXT.KeyPress, Days7_TXT.KeyPress
+
+        If e.KeyChar <> ChrW(Keys.Back) Then
+
+            If Not Char.IsNumber(e.KeyChar) AndAlso Not Char.IsControl(e.KeyChar) AndAlso Not e.KeyChar = "." Then
+                e.Handled = True
+            End If
+        End If
+
+    End Sub
+
+    Private Sub Cancel7_BTN_Click(sender As Object, e As EventArgs) Handles Cancel7_BTN.Click
+        Bio7_TXT.Clear()
+        Emp7_TXT.Clear()
+        Days7_TXT.Clear()
+        Overtime7_TXT.Clear()
+        Late7_TXT.Clear()
+        Undertime7_TXT.Clear()
+        Night7_TXT.Clear()
+    End Sub
+
+    Private Sub Paydate7_CB_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Paydate7_CB.SelectedIndexChanged
+
+        If Paydate7_CB.SelectedIndex >= 0 Then
+            paydate_ = Paydate7_CB.SelectedItem
+        Else
+            paydate_ = Paydate.ToString("d")
+        End If
+
+        Populate_S7ELVEN(Seven_Grid, paydate_)
+
+    End Sub
+
+    Private Sub Search7_BTN_Click(sender As Object, e As EventArgs) Handles Search7_BTN.Click
+        Populate_S7ELVEN(Seven_Grid, paydate_, Search7_TXT.Text)
+    End Sub
+
+    Private Sub Search7_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Search7_TXT.KeyPress
+        If IsEnter(e) Then Search7_BTN.PerformClick()
+    End Sub
+
     Private Sub DTR_Branch_Combo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles DTR_Branch_Combo.SelectedIndexChanged
         If DTR_Branch_Combo.SelectedIndex >= 0 Then
             branchID = GetBranch_ID(DTR_Branch_Combo.SelectedItem)
@@ -1108,10 +1310,15 @@ Public Class frmAttendance
         progressBarStart(DtSet.Tables(0).Rows.Count)
 
         For row = 2 To DtSet.Tables(0).Rows.Count + 1
-            SaveBiometricSheet(Paydate, eCell(row, 1).Value, eCell(row, 2).Value)
-            distinct_bio.Add(eCell(row, 1).Value)
 
-            frmMainForm.AppProgressBar.Value += 1
+            If eCell(row, 1).Value <> Nothing And eCell(row, 2).Value <> Nothing Then
+
+                SaveBiometricSheet(Paydate, eCell(row, 1).Value, eCell(row, 2).Value)
+                distinct_bio.Add(eCell(row, 1).Value)
+
+                frmMainForm.AppProgressBar.Value += 1
+
+            End If
 
         Next
 
@@ -1122,7 +1329,7 @@ Public Class frmAttendance
         forLoop_ALL_IMPORTED()   ' ===== SAVE AM_IN, AM_OUT, PM_IN, PM_OUT ====
         SAVE_DIRECT_Attendance() ' ===== DIRECT SAVE TO ATTENDANCE ==== 
         PopulateBiometricSHEET(Bio_grid, Paydate) ' ===== POPULATE DATAGRIDVIEW FROM SHEET ==== 
-        SavePayout_ALL(Paydate, EndingDate)
+        SavePayout_ALL(Paydate, starting_date, ending_date)
 
         Cursor = Cursors.Default
 
@@ -1158,7 +1365,7 @@ Public Class frmAttendance
 
         SAVE_DIRECT_Attendance() ' ===== DIRECT SAVE TO ATTENDANCE ==== 
         PopulateBiometricSHEET(Bio_grid, Paydate) ' ===== POPULATE DATAGRIDVIEW FROM SHEET ====  
-        SavePayout_ALL(Paydate, EndingDate)
+        SavePayout_ALL(Paydate, starting_date, ending_date)
 
         Cursor = Cursors.Default
     End Sub
@@ -1310,7 +1517,7 @@ Public Class frmAttendance
         forLoop_ALL_IMPORTED()   ' ===== SAVE AM_IN, AM_OUT, PM_IN, PM_OUT ====
         SAVE_DIRECT_Attendance() ' ===== DIRECT SAVE TO ATTENDANCE ====
         PopulateBiometricSHEET(Bio_grid, Paydate) ' ===== POPULATE DATAGRIDVIEW FROM SHEET ====
-        SavePayout_ALL(Paydate, EndingDate)
+        SavePayout_ALL(Paydate, starting_date, ending_date)
 
         Cursor = Cursors.Default
 
@@ -1386,7 +1593,6 @@ Public Class frmAttendance
                         TotalRHoliday_LBL.Text = TotalRHoliday_LBL.Text + 1
 
                     ElseIf row.DefaultCellStyle.BackColor = Color.Plum Then
-
 
                         TotalSHoliday_LBL.Text = TotalSHoliday_LBL.Text + 1
 
@@ -1732,6 +1938,16 @@ Public Class frmAttendance
 
     End Sub
 
+    Private Sub Seven_Grid_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles Seven_Grid.MouseDoubleClick
+        Bio7_TXT.Text = Seven_Grid.CurrentRow.Cells(0).Value
+        Emp7_TXT.Text = Seven_Grid.CurrentRow.Cells(1).Value
+        Days7_TXT.Text = Seven_Grid.CurrentRow.Cells(2).Value
+        Overtime7_TXT.Text = Seven_Grid.CurrentRow.Cells(3).Value
+        Late7_TXT.Text = Seven_Grid.CurrentRow.Cells(4).Value
+        Undertime7_TXT.Text = Seven_Grid.CurrentRow.Cells(5).Value
+        Night7_TXT.Text = Seven_Grid.CurrentRow.Cells(6).Value
+    End Sub
+
     Public Sub Load_Attendance(emp As Employee, empNo As Integer)
         With emp
             If empNo = 1 Then
@@ -1739,14 +1955,14 @@ Public Class frmAttendance
                 Bio1_DTR_TXT.Tag = .BranchID
                 DTR_Emp1_TXT.Text = .Fullname
                 DTR_Emp1_TXT.Tag = .EMP_ID
-                Attendance_Tab.SelectedIndex = 2
+                Attendance_Tab.SelectedIndex = 3
                 Employee_RadioB.Checked = True
             ElseIf empNo = 2 Then
                 Bio2_DTR_TXT.Text = .BiometricID
                 Bio2_DTR_TXT.Tag = .BranchID
                 DTR_Emp2_TXT.Text = .Fullname
                 DTR_Emp2_TXT.Tag = .EMP_ID
-                Attendance_Tab.SelectedIndex = 2
+                Attendance_Tab.SelectedIndex = 3
                 Employee_RadioB.Checked = True
             ElseIf empNo = 3 Then
                 BiometricID_TXT.Text = .BiometricID
@@ -1754,6 +1970,11 @@ Public Class frmAttendance
                 Name_TXT.Text = .Fullname
                 Name_TXT.Tag = .EMP_ID
                 Attendance_Tab.SelectedIndex = 1
+            ElseIf empNo = 4 Then
+                Bio7_TXT.Text = .BiometricID
+                Emp7_TXT.Text = .Fullname
+                Emp7_TXT.Tag = .EMP_ID
+                Attendance_Tab.SelectedIndex = 2
             End If
         End With
     End Sub
