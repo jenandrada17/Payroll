@@ -592,11 +592,9 @@
     Friend Sub SavePayout(BIOMETRIC_ID As String, PAYDATE As String, TOTAL_BASIC As String, TOTAL_OVERTIME As String, TOTAL_LATE_UT As String,
                           GROSS_AMOUNT As String, SSS_COMP As String, PAGIBIG_COMP As String, PHILHEALTH_COMP As String, TAX_WHELD As String,
                           NET_TAX_COMP As String, SSS_LOAN As String, PAGIBIG_LOAN As String, TOTAL_ALLOWANCE As String,
-                          TOTAL_DEDUCTION As String, NET_PAY As String, Optional all As String = "")
+                          TOTAL_DEDUCTION As String, NET_PAY As String, Optional TRAINING_DAYS As Integer = 0, Optional all As String = "")
 
-        Dim mysql As String
-
-        mysql = $"Select * FROM PAYROLL_PAYOUT where BIOMETRIC_ID = '{BIOMETRIC_ID}' and PAYDATE = '{PAYDATE}'"
+        Dim mysql As String = $"Select * FROM PAYROLL_PAYOUT where BIOMETRIC_ID = '{BIOMETRIC_ID}' and PAYDATE = '{PAYDATE}'"
         Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
         If dss.Tables(0).Rows.Count > 0 Then
             For Each dr In dss.Tables(0).Rows
@@ -617,7 +615,7 @@
                     .Item("TOTAL_ALLOWANCE") = TOTAL_ALLOWANCE
                     .Item("TOTAL_DEDUCTION") = TOTAL_DEDUCTION
                     .Item("NET_PAY") = NET_PAY
-                    '.Item("BRANCH_IMPORT") = BRANCH_IMPORT
+                    .Item("TRAINING_DAYS") = TRAINING_DAYS
 
                 End With
                 SaveEntry(dss, False)
@@ -650,6 +648,7 @@
                     .Item("TOTAL_DEDUCTION") = TOTAL_DEDUCTION
                     .Item("NET_PAY") = NET_PAY
                     .Item("PAYDATE") = PAYDATE
+                    .Item("TRAINING_DAYS") = TRAINING_DAYS
 
                 End With
 
@@ -692,7 +691,58 @@
         End Using
     End Sub
 
-    Friend Sub SavePayout_IndividualL(bioNo As String, paydate_ As String, startingDate As DateTime, EndingDate As DateTime) '========== AUTO SAVE TO PAYOUT ============  
+    'Friend Sub SaveTraining_days(BIO_NO As String, PAYDATE As String, TRAINING_DAYS As String)
+
+    '    Dim mysql As String = $"Select * FROM PAYROLL_PAYOUT where BIOMETRIC_ID = '{BIO_NO}' and PAYDATE = '{PAYDATE}'"
+    '    Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
+    '    If dss.Tables(0).Rows.Count > 0 Then
+    '        Dim dr As DataRow = dss.Tables(0).Rows(0)
+    '        With dr
+
+    '            .Item("TRAINING_DAYS") = TRAINING_DAYS
+
+    '        End With
+    '        SaveEntry(dss, False)
+    '    End If
+    'End Sub
+
+    'Private Sub check_if_trainee(COMPANY As String, DATE_STARTED As String, EndingDate As DateTime, bioNo As String, paydate_ As String)
+    '    Dim training_days As Integer
+
+    '    If COMPANY = "DALTON" Or COMPANY = "PHOTO" Or COMPANY = "HEAD OFFICE" Then
+    '        training_days = 15
+    '    Else
+    '        training_days = 30
+    '    End If
+
+    '    Dim Started As DateTime = DATE_STARTED
+    '    Dim noOf_days_training As Double = 0
+
+    '    Dim days As Long = DateDiff(DateInterval.Day, Started, EndingDate)
+
+    '    If days <= training_days Then
+
+    '        While (Started.Day < EndingDate.Day)
+
+    '            If PRESENT_Date(bioNo, paydate_, Started) Then
+
+    '                noOf_days_training += 1
+
+    '                If Halfday_Training(bioNo, paydate_, Started) Then
+    '                    noOf_days_training -= 0.5
+    '                End If
+
+    '            End If
+
+    '            Started = Started.AddDays(1)
+    '        End While
+
+    '        MsgBox(noOf_days_training)
+    '        SaveTraining_days(bioNo, paydate_, noOf_days_training)
+    '    End If
+    'End Sub
+
+    Friend Sub SavePayout_IndividualL(bioNo As String, paydate_ As String, EndingDate As DateTime) '========== AUTO SAVE TO PAYOUT ============  
         Dim regHoliday = Holiday_Rate("REGULAR")
         Dim specHoliday = Holiday_Rate("SPECIAL")
         Dim SBU = SBU_Amount()
@@ -710,41 +760,45 @@
                     Dim UnderTime As String = ""
                     Dim rate, NoOfDays, RegularOT, SpecialHol, RegularHol As Double
                     Dim Allowances, Deduction As Double
-                    Dim training_days As Integer
-
-                    rate = IIf(IsDBNull(.Item("RATE_DAILY")), 0, .Item("RATE_DAILY"))
-                    Dim sched As String
-
-                    '====================================== GET TRAINING DAYS TO CALCULATE TRAINING FEE ===============================================
-                    If .Item("COMPANY") = "DALTON" Or .Item("COMPANY") = "PHOTO" Or .Item("COMPANY") = "HEAD OFFICE" Then
-                        training_days = 15
-                    Else
-                        training_days = 30
-                    End If
-
-                    Dim Started As DateTime = .Item("DATE_STARTED")
+                    Dim sched, Company As String
                     Dim noOf_days_training As Double = 0
 
-                    Dim days As Long = DateDiff(DateInterval.Day, Started, EndingDate)
+                    rate = IIf(IsDBNull(.Item("RATE_DAILY")), 0, .Item("RATE_DAILY"))
+                    Company = IIf(IsDBNull(.Item("COMPANY")), "", .Item("COMPANY"))
 
-                    If days <= training_days Then
+                    '====================================== GET TRAINING DAYS TO CALCULATE TRAINING FEE ===============================================
+                    If Not IsDBNull(.Item("DATE_STARTED")) Then
+                        Dim training_days As Integer
 
-                        While (Started.Day < EndingDate.Day)
+                        If Company = "DALTON" Or Company = "PHOTO" Or Company = "HEAD OFFICE" Then
+                            training_days = 15
+                        Else
+                            training_days = 30
+                        End If
 
-                            If PRESENT_Date(bioNo, paydate_, Started) Then
+                        Dim Started As DateTime = .Item("DATE_STARTED")
 
-                                noOf_days_training += 1
+                        Dim days As Long = DateDiff(DateInterval.Day, Started, EndingDate)
 
-                                If Halfday_Training(bioNo, paydate_, Started) Then
-                                    noOf_days_training -= 0.5
+                        If days <= training_days Then
+
+                            While (Started.Day < EndingDate.Day)
+
+                                If PRESENT_Date(bioNo, paydate_, Started) Then
+
+                                    noOf_days_training += 1
+
+                                    If Halfday_Training(bioNo, paydate_, Started) Then
+                                        noOf_days_training -= 0.5
+                                    End If
+
                                 End If
 
-                            End If
+                                Started = Started.AddDays(1)
+                            End While
 
-                            Started = Started.AddDays(1)
-                        End While
-
-                        MsgBox(noOf_days_training)
+                            MsgBox(noOf_days_training)
+                        End If
                     End If
 
                     '============================================= ATTENDANCE (TOTAL DAYS) =========================================================
@@ -902,13 +956,13 @@
                     SavePayout(bioNo, paydate_, TotalBasic, TotalOT,
                                   TotalLateUnder, GrossAmount, SSSComp, PagibigComp, PhilhealthComp,
                                   Tax_Wheld, netTax, sssLoan, pagibigLoan,
-                                  Allowances, Deduction, NetPay)
+                                  Allowances, Deduction, NetPay, noOf_days_training)
                 End With
             End If
         End Using
     End Sub
 
-    Friend Sub SavePayout_ALL(paydate_ As String) '========== AUTO SAVE TO PAYOUT ============   
+    Friend Sub SavePayout_ALL(paydate_ As String, EndingDate As DateTime) '========== AUTO SAVE TO PAYOUT ============   
 
         Dim regHoliday = Holiday_Rate("REGULAR")
         Dim specHoliday = Holiday_Rate("SPECIAL")
@@ -925,15 +979,52 @@
                 For Each dr In ds.Tables(0).Rows
                     With dr
 
-                        Dim BiometricID, sched As String
+                        Dim BiometricID, sched, Company As String
                         Dim Late As String = ""
                         Dim UnderTime As String = ""
                         Dim rate, NoOfDays, RegularOT, SpecialHol, RegularHol As Double
                         Dim Allowances, Deduction As Double
+                        Dim noOf_days_training As Double = 0
 
                         BiometricID = .Item("BIOMETRICID")
                         rate = IIf(IsDBNull(.Item("RATE_DAILY")), 0, .Item("RATE_DAILY"))
+                        Company = IIf(IsDBNull(.Item("COMPANY")), "", .Item("COMPANY"))
 
+                        '==================== GET TRAINING DAYS TO CALCULATE TRAINING FEE (IF DATE_STARTED NOT NULL =================================
+                        If Not IsDBNull(.Item("DATE_STARTED")) Then
+                            Dim training_days As Integer
+
+                            If Company = "DALTON" Or Company = "PHOTO" Or Company = "HEAD OFFICE" Then
+                                training_days = 15
+                            Else
+                                training_days = 30
+                            End If
+
+                            Dim Started As DateTime = .Item("DATE_STARTED")
+
+                            Dim days As Long = DateDiff(DateInterval.Day, Started, EndingDate)
+
+                            If days <= training_days Then
+
+                                While (Started.Day < EndingDate.Day)
+
+                                    If PRESENT_Date(BiometricID, paydate_, Started) Then
+
+                                        noOf_days_training += 1
+
+                                        If Halfday_Training(BiometricID, paydate_, Started) Then
+                                            noOf_days_training -= 0.5
+                                        End If
+
+                                    End If
+
+                                    Started = Started.AddDays(1)
+                                End While
+
+                                MsgBox(noOf_days_training)
+                            End If
+
+                        End If
                         '============================================= ATTENDANCE (TOTAL DAYS) =========================================================
                         Dim sql_1 As String = $"Select * From PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{BiometricID}' and paydate = '{paydate_}'"
                         Using ds_1 As DataSet = LoadSQL(sql_1, "PAYROLL_ATTENDANCE")
@@ -1088,7 +1179,7 @@
                         SavePayout(BiometricID, paydate_, TotalBasic, TotalOT,
                                   TotalLateUnder, GrossAmount, SSSComp, PagibigComp, PhilhealthComp,
                                   Tax_Wheld, netTax, sssLoan, pagibigLoan,
-                                  Allowances, Deduction, NetPay, "Group")
+                                  Allowances, Deduction, NetPay, noOf_days_training, "Group")
 
                         frmMainForm.AppProgressBar.Value += 1
                     End With

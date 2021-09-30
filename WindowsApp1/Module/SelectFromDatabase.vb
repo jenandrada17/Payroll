@@ -1804,15 +1804,15 @@ Module SelectFromDatabase
 
                     For column As Integer = 0 To 3
 
-                        If IsDBNull(.Item(IN_OUT(column))) Or .Item(IN_OUT(column)) = Nothing Then
+                        If IsDBNull(.Item(IN_OUT(column))) Or .Item(IN_OUT(column)) Is String.Empty Then
                             count += 1
                         End If
                     Next
 
 
-                    If .Item("AM_IN") = Nothing And .Item("AM_OUT") = Nothing Then
+                    If (IsDBNull(.Item("AM_IN")) Or .Item("AM_IN") Is String.Empty) And (IsDBNull(.Item("AM_OUT")) Or .Item("AM_OUT") Is String.Empty) Then
                         status = "HALFDAY"
-                    ElseIf .Item("PM_IN") = Nothing And .Item("PM_OUT") = Nothing Then
+                    ElseIf (IsDBNull(.Item("PM_IN")) Or .Item("PM_IN") Is String.Empty) And (IsDBNull(.Item("PM_OUT")) Or .Item("PM_OUT") Is String.Empty) Then
                         status = "HALFDAY"
                     End If
 

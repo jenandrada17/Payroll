@@ -510,7 +510,7 @@ Public Class frmAttendance
             SaveAttendanceEE(BiometricID_TXT.Text, PAYROLL, TotalDays_LBL.Text, TotalOTHr_LBL.Text, TotalLateHR_LBL.Text, TotalUTHR_LBL.Text,
                              TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text)
 
-            SavePayout_IndividualL(BiometricID_TXT.Text, PAYROLL, startingDate, EndingDate)
+            SavePayout_IndividualL(BiometricID_TXT.Text, PAYROLL, EndingDate)
 
             Cancel_BTN.PerformClick()
         Else
@@ -1122,7 +1122,7 @@ Public Class frmAttendance
         forLoop_ALL_IMPORTED()   ' ===== SAVE AM_IN, AM_OUT, PM_IN, PM_OUT ====
         SAVE_DIRECT_Attendance() ' ===== DIRECT SAVE TO ATTENDANCE ==== 
         PopulateBiometricSHEET(Bio_grid, Paydate) ' ===== POPULATE DATAGRIDVIEW FROM SHEET ==== 
-        SavePayout_ALL(Paydate)
+        SavePayout_ALL(Paydate, EndingDate)
 
         Cursor = Cursors.Default
 
@@ -1158,7 +1158,7 @@ Public Class frmAttendance
 
         SAVE_DIRECT_Attendance() ' ===== DIRECT SAVE TO ATTENDANCE ==== 
         PopulateBiometricSHEET(Bio_grid, Paydate) ' ===== POPULATE DATAGRIDVIEW FROM SHEET ====  
-        SavePayout_ALL(Paydate)
+        SavePayout_ALL(Paydate, EndingDate)
 
         Cursor = Cursors.Default
     End Sub
@@ -1301,7 +1301,6 @@ Public Class frmAttendance
             distinct_bio.Add(eCell(row, 3).Value)
 
             frmMainForm.AppProgressBar.Value += 1
-
         Next
 
         progressBarEnd()
@@ -1311,7 +1310,7 @@ Public Class frmAttendance
         forLoop_ALL_IMPORTED()   ' ===== SAVE AM_IN, AM_OUT, PM_IN, PM_OUT ====
         SAVE_DIRECT_Attendance() ' ===== DIRECT SAVE TO ATTENDANCE ====
         PopulateBiometricSHEET(Bio_grid, Paydate) ' ===== POPULATE DATAGRIDVIEW FROM SHEET ====
-        SavePayout_ALL(Paydate)
+        SavePayout_ALL(Paydate, EndingDate)
 
         Cursor = Cursors.Default
 
