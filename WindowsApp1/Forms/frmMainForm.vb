@@ -41,7 +41,8 @@ Public Class frmMainForm
     '======================================Buttons================================================== 
 
     Private Sub btnManageEmployee_Click(sender As Object, e As EventArgs) Handles Employee_BTN.Click
-        OpenWindowsForm("frmEmployee")
+        'OpenWindowsForm("frmEmployee")
+        OpenWindowsForm("frmNewEmployee")
     End Sub
 
     Private Sub Attendance_BTN_Click(sender As Object, e As EventArgs) Handles Attendance_BTN.Click

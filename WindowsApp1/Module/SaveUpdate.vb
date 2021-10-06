@@ -1249,4 +1249,56 @@
 
     End Sub
 
+    Public Sub SaveNew_Employee(COMPANY As String, BRANCH_CODE As String, FULLNAME As String, BIO_NO As String, EMAIL_ADD As String, EMP_STATUS As String, Optional group As Boolean = False)
+
+        Dim mysql As String
+
+        mysql = $"Select * FROM PAYROLL_EMPLOYEE  where BIO_NO = '{BIO_NO}'"
+        Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE ")
+        If ds.Tables(0).Rows.Count > 0 Then
+
+            With ds.Tables(0).Rows(0)
+
+                .Item("COMPANY") = COMPANY
+                .Item("BRANCH_CODE") = BRANCH_CODE
+                .Item("FULLNAME") = FULLNAME
+                .Item("EMAIL_ADD") = EMAIL_ADD
+                .Item("EMP_STATUS") = EMP_STATUS
+
+            End With
+
+            SaveEntry(ds, False)
+
+            If group = False Then
+                MsgBox("Successfully Updated!", MsgBoxStyle.Information, "Information")
+            End If
+
+        Else
+            mysql = "Select * From PAYROLL_EMPLOYEE Rows 1"
+            Using dss As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+
+                Dim dsNewRow As DataRow = dss.Tables(0).NewRow
+                With dsNewRow
+
+                    .Item("BIO_NO") = BIO_NO
+                    .Item("COMPANY") = COMPANY
+                    .Item("BRANCH_CODE") = BRANCH_CODE
+                    .Item("FULLNAME") = FULLNAME
+                    .Item("EMAIL_ADD") = EMAIL_ADD
+                    .Item("EMP_STATUS") = EMP_STATUS
+
+                End With
+                dss.Tables(0).Rows.Add(dsNewRow)
+                SaveEntry(dss)
+
+
+                If group = False Then
+                    MsgBox("Successfully Saved!", MsgBoxStyle.Information, "Information")
+                End If
+
+            End Using
+        End If
+
+    End Sub
+
 End Module

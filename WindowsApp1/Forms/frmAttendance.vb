@@ -493,11 +493,11 @@ Public Class frmAttendance
                 PAYROLL = DataGridView1.Tag
             End If
 
-            Dim i As Integer = Bio_grid.CurrentRow.Index
-            Dim BIO As String = Bio_grid.Item(0, i).Value
-            Dim EMP_ID As String = Bio_grid.Item(1, i).Tag
+            'Dim i As Integer = Bio_grid.CurrentRow.Index
+            'Dim BIO As String = Bio_grid.Item(0, i).Value
+            'Dim EMP_ID As String = Bio_grid.Item(1, i).Tag
 
-            Replacing($"BIOMETRIC_DTR where BIO_ID = '{BIO}' and PAYDATE = '{PAYROLL}';")
+            Replacing($"BIOMETRIC_DTR where BIO_ID = '{BiometricID_TXT.Text}' and PAYDATE = '{PAYROLL}';")
 
             For Each row As DataGridViewRow In DataGridView1.Rows
 
@@ -587,19 +587,19 @@ Public Class frmAttendance
 
     Private Sub OpenFile_BTN_Click(sender As Object, e As EventArgs) Handles OpenFile_BTN.Click
 
-        'Dim dialog = New OpenFileDialog
-        'If dialog.ShowDialog() = DialogResult.OK Then
-        '    Path_TXT.Text = dialog.FileName
-        'End If
+        Dim dialog = New OpenFileDialog
+        If dialog.ShowDialog() = DialogResult.OK Then
+            Path_TXT.Text = dialog.FileName
+        End If
 
-        Using f As New OpenFileDialog
-            f.Filter = "Excel 2003|*.xls|Excel 2007|*.xlsx"
-            If DialogResult.OK = f.ShowDialog() Then
-                Path_TXT.Text = f.FileName
-                ExcelFilePath(Path_TXT.Text)
-                Import_BTN.Enabled = True
-            End If
-        End Using
+        'Using f As New OpenFileDialog
+        '    f.Filter = "Excel 2003|*.xls|Excel 2007|*.xlsx"
+        '    If DialogResult.OK = f.ShowDialog() Then
+        '        Path_TXT.Text = f.FileName
+        '        ExcelFilePath(Path_TXT.Text)
+        '        Import_BTN.Enabled = True
+        '    End If
+        'End Using
     End Sub
 
     Private Sub Preview_BTN_Click(sender As Object, e As EventArgs) Handles Preview_BTN.Click
@@ -1072,11 +1072,11 @@ Public Class frmAttendance
         eSheet = eBook.Worksheets(1)
         eCell = eSheet.UsedRange
 
-        MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path_TXT.Text}';Extended Properties=Excel 8.0;")
-        MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
-        MyCommand.TableMappings.Add("Table", "Net-informations.com")
-        DtSet = New System.Data.DataSet
-        MyCommand.Fill(DtSet)
+        'MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path_TXT.Text}';Extended Properties=Excel 8.0;")
+        'MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
+        'MyCommand.TableMappings.Add("Table", "Net-informations.com")
+        'DtSet = New System.Data.DataSet
+        'MyCommand.Fill(DtSet)
 
         Dim FirstColumn As String = eCell(2, 1).Value
 
@@ -1511,7 +1511,7 @@ Public Class frmAttendance
         Name_TXT.Text = Bio_grid.Item(1, i).Value
         Name_TXT.Tag = Bio_grid.Item(1, i).Tag
 
-        If Paydate_ComboB.Text = "   Select Date" Then
+        If Paydate_ComboB.SelectedIndex < 0 Then
             paydate_ = Paydate.ToString("d")
         Else
             paydate_ = Paydate_ComboB.SelectedItem

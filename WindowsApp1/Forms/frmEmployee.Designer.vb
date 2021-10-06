@@ -40,17 +40,17 @@ Partial Class frmEmployee
         Me.Close_LBL = New System.Windows.Forms.Label()
         Me.Context_Action = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.View_Context = New System.Windows.Forms.ToolStripMenuItem()
-        Me.Modify_Panel = New System.Windows.Forms.Panel()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.Fix_Combo = New System.Windows.Forms.ComboBox()
+        Me.Check_BTN = New System.Windows.Forms.Button()
+        Me.Close_Modify_BTN = New System.Windows.Forms.Button()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.Rate_TXT = New System.Windows.Forms.TextBox()
-        Me.Close_Modify_BTN = New System.Windows.Forms.Button()
-        Me.Check_BTN = New System.Windows.Forms.Button()
-        Me.Fix_Combo = New System.Windows.Forms.ComboBox()
-        Me.Label4 = New System.Windows.Forms.Label()
-        Me.Label3 = New System.Windows.Forms.Label()
+        Me.Modify_Panel = New System.Windows.Forms.Panel()
         Me.Context_Action.SuspendLayout()
-        Me.Modify_Panel.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
+        Me.Modify_Panel.SuspendLayout()
         Me.SuspendLayout()
         '
         'lvEmployee
@@ -175,21 +175,56 @@ Partial Class frmEmployee
         Me.View_Context.Size = New System.Drawing.Size(141, 22)
         Me.View_Context.Text = "Go to Details"
         '
-        'Modify_Panel
+        'Label3
         '
-        Me.Modify_Panel.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.Modify_Panel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.Modify_Panel.Controls.Add(Me.GroupBox1)
-        Me.Modify_Panel.Controls.Add(Me.Close_Modify_BTN)
-        Me.Modify_Panel.Controls.Add(Me.Check_BTN)
-        Me.Modify_Panel.Controls.Add(Me.Fix_Combo)
-        Me.Modify_Panel.Controls.Add(Me.Label4)
-        Me.Modify_Panel.Controls.Add(Me.Label3)
-        Me.Modify_Panel.Location = New System.Drawing.Point(578, 192)
-        Me.Modify_Panel.Name = "Modify_Panel"
-        Me.Modify_Panel.Size = New System.Drawing.Size(229, 106)
-        Me.Modify_Panel.TabIndex = 74
-        Me.Modify_Panel.Visible = False
+        Me.Label3.AutoSize = True
+        Me.Label3.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label3.Location = New System.Drawing.Point(17, 16)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(41, 27)
+        Me.Label3.TabIndex = 2
+        Me.Label3.Text = "Rate"
+        '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label4.Location = New System.Drawing.Point(20, 59)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(31, 27)
+        Me.Label4.TabIndex = 3
+        Me.Label4.Text = "Fix"
+        '
+        'Fix_Combo
+        '
+        Me.Fix_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.Fix_Combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Fix_Combo.FormattingEnabled = True
+        Me.Fix_Combo.Items.AddRange(New Object() {"YES", "NO"})
+        Me.Fix_Combo.Location = New System.Drawing.Point(69, 58)
+        Me.Fix_Combo.Name = "Fix_Combo"
+        Me.Fix_Combo.Size = New System.Drawing.Size(103, 33)
+        Me.Fix_Combo.TabIndex = 78
+        '
+        'Check_BTN
+        '
+        Me.Check_BTN.Font = New System.Drawing.Font("Dubai", 8.999999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Check_BTN.Location = New System.Drawing.Point(181, 58)
+        Me.Check_BTN.Name = "Check_BTN"
+        Me.Check_BTN.Size = New System.Drawing.Size(31, 27)
+        Me.Check_BTN.TabIndex = 79
+        Me.Check_BTN.Text = "√"
+        Me.Check_BTN.UseVisualStyleBackColor = True
+        '
+        'Close_Modify_BTN
+        '
+        Me.Close_Modify_BTN.Font = New System.Drawing.Font("Dubai", 8.999999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Close_Modify_BTN.Location = New System.Drawing.Point(181, 18)
+        Me.Close_Modify_BTN.Name = "Close_Modify_BTN"
+        Me.Close_Modify_BTN.Size = New System.Drawing.Size(31, 27)
+        Me.Close_Modify_BTN.TabIndex = 80
+        Me.Close_Modify_BTN.Text = "X"
+        Me.Close_Modify_BTN.UseVisualStyleBackColor = True
         '
         'GroupBox1
         '
@@ -208,56 +243,21 @@ Partial Class frmEmployee
         Me.Rate_TXT.Size = New System.Drawing.Size(103, 35)
         Me.Rate_TXT.TabIndex = 75
         '
-        'Close_Modify_BTN
+        'Modify_Panel
         '
-        Me.Close_Modify_BTN.Font = New System.Drawing.Font("Dubai", 8.999999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Close_Modify_BTN.Location = New System.Drawing.Point(181, 18)
-        Me.Close_Modify_BTN.Name = "Close_Modify_BTN"
-        Me.Close_Modify_BTN.Size = New System.Drawing.Size(31, 27)
-        Me.Close_Modify_BTN.TabIndex = 80
-        Me.Close_Modify_BTN.Text = "X"
-        Me.Close_Modify_BTN.UseVisualStyleBackColor = True
-        '
-        'Check_BTN
-        '
-        Me.Check_BTN.Font = New System.Drawing.Font("Dubai", 8.999999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Check_BTN.Location = New System.Drawing.Point(181, 58)
-        Me.Check_BTN.Name = "Check_BTN"
-        Me.Check_BTN.Size = New System.Drawing.Size(31, 27)
-        Me.Check_BTN.TabIndex = 79
-        Me.Check_BTN.Text = "√"
-        Me.Check_BTN.UseVisualStyleBackColor = True
-        '
-        'Fix_Combo
-        '
-        Me.Fix_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.Fix_Combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Fix_Combo.FormattingEnabled = True
-        Me.Fix_Combo.Items.AddRange(New Object() {"YES", "NO"})
-        Me.Fix_Combo.Location = New System.Drawing.Point(69, 58)
-        Me.Fix_Combo.Name = "Fix_Combo"
-        Me.Fix_Combo.Size = New System.Drawing.Size(103, 33)
-        Me.Fix_Combo.TabIndex = 78
-        '
-        'Label4
-        '
-        Me.Label4.AutoSize = True
-        Me.Label4.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label4.Location = New System.Drawing.Point(20, 59)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(31, 27)
-        Me.Label4.TabIndex = 3
-        Me.Label4.Text = "Fix"
-        '
-        'Label3
-        '
-        Me.Label3.AutoSize = True
-        Me.Label3.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label3.Location = New System.Drawing.Point(17, 16)
-        Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(41, 27)
-        Me.Label3.TabIndex = 2
-        Me.Label3.Text = "Rate"
+        Me.Modify_Panel.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(224, Byte), Integer), CType(CType(192, Byte), Integer))
+        Me.Modify_Panel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.Modify_Panel.Controls.Add(Me.GroupBox1)
+        Me.Modify_Panel.Controls.Add(Me.Close_Modify_BTN)
+        Me.Modify_Panel.Controls.Add(Me.Check_BTN)
+        Me.Modify_Panel.Controls.Add(Me.Fix_Combo)
+        Me.Modify_Panel.Controls.Add(Me.Label4)
+        Me.Modify_Panel.Controls.Add(Me.Label3)
+        Me.Modify_Panel.Location = New System.Drawing.Point(578, 192)
+        Me.Modify_Panel.Name = "Modify_Panel"
+        Me.Modify_Panel.Size = New System.Drawing.Size(229, 106)
+        Me.Modify_Panel.TabIndex = 74
+        Me.Modify_Panel.Visible = False
         '
         'frmEmployee
         '
@@ -274,10 +274,10 @@ Partial Class frmEmployee
         Me.Name = "frmEmployee"
         Me.Text = "frmEmployee"
         Me.Context_Action.ResumeLayout(False)
-        Me.Modify_Panel.ResumeLayout(False)
-        Me.Modify_Panel.PerformLayout()
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
+        Me.Modify_Panel.ResumeLayout(False)
+        Me.Modify_Panel.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -299,12 +299,12 @@ Partial Class frmEmployee
     Friend WithEvents ColumnHeader7 As ColumnHeader
     Friend WithEvents Context_Action As ContextMenuStrip
     Friend WithEvents View_Context As ToolStripMenuItem
-    Friend WithEvents Modify_Panel As Panel
-    Friend WithEvents Label4 As Label
     Friend WithEvents Label3 As Label
-    Friend WithEvents Rate_TXT As TextBox
-    Friend WithEvents Check_BTN As Button
+    Friend WithEvents Label4 As Label
     Friend WithEvents Fix_Combo As ComboBox
+    Friend WithEvents Check_BTN As Button
     Friend WithEvents Close_Modify_BTN As Button
     Friend WithEvents GroupBox1 As GroupBox
+    Friend WithEvents Rate_TXT As TextBox
+    Friend WithEvents Modify_Panel As Panel
 End Class

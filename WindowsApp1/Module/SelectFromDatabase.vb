@@ -636,7 +636,7 @@ Module SelectFromDatabase
         End Using
     End Sub
 
-    'Public Function GetFirst_Basic(biono As String, branchID As String, paydate As String) As Double
+    'Public Function GetFirst_Basic(biono As String, branchID As String, paydate As String) As Double 
     Public Function GetFirst_Basic(EMP_ID As String, paydate As String) As Double
         Dim first_Basic As Double
 
@@ -658,7 +658,6 @@ Module SelectFromDatabase
                 first_Basic = 0
             End If
         End Using
-
         Return first_Basic
     End Function
 
@@ -1768,23 +1767,58 @@ Module SelectFromDatabase
         End Using
     End Sub
 
-    'Public Sub Trial()
-    '    Dim mysql As String = $"Select * From tbl_employee_copy where id <> (Select id from tbl_employee)"
-    '    Using ds As DataSet = LoadSQL(mysql, "tbl_employee_copy")
+    Friend Sub Lists_Employees(LV As ListView, Optional searchName As String = "")
 
-    '        For Each dr As DataRow In ds.Tables(0).Rows
-    '            With dr
+        Dim secured_str As String = searchName
+        secured_str = DreadKnight(secured_str)
+        Dim strWords As String() = secured_str.Split(New Char() {" "c})
+        Dim name As String
+        Dim mysql As String
 
-    '            End With
+        If searchName.Length <> 0 Then
 
-    '        Next
+            mysql = "select * from PAYROLL_EMPLOYEE where EMP_STATUS = 'ACTIVE' and "
 
-    '    End Using
-    'End Sub
+            For Each name In strWords
+                mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(BRANCH_CODE) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(FULLNAME) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(BIO_NO) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(EMP_STATUS) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(EMAIL_ADD) LIKE UPPER('%{name}%') ORDER BY COMPANY ASC "
+            Next
+
+        Else
+            mysql = "select * from PAYROLL_EMPLOYEE ORDER BY COMPANY ASC "
+        End If
+
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+            LV.Items.Clear()
+            progressBarStart(ds.Tables(0).Rows.Count)
+            For Each dr In ds.Tables(0).Rows
+                AddRow_Payroll_Employee(dr, LV)
+
+                frmMainForm.AppProgressBar.Value += 1
+            Next
+            progressBarEnd()
+        End Using
+
+    End Sub
+
+    Private Sub AddRow_Payroll_Employee(ByVal dr As DataRow, LV As ListView)
+        With dr
+            Dim i As ListViewItem = LV.Items.Add(.Item("COMPANY"))
+            i.Tag = .Item("ID")
+            i.SubItems.Add(.Item("BRANCH_CODE"))
+            i.SubItems.Add(.Item("FULLNAME"))
+            i.SubItems.Add(.Item("BIO_NO"))
+            i.SubItems.Add(.Item("EMAIL_ADD"))
+        End With
+    End Sub
+
 
     Public Sub Replacing(str As String)
         RunCommand($"DELETE FROM {str}")  'THIS IS TO DELETE EXISTING DATA TO REPLACE ESPECIALLY FROM DATAGRID
     End Sub
-
 
 End Module

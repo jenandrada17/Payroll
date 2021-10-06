@@ -215,14 +215,6 @@ Public Class frmPayout
             If TypeOf Ctl Is TextBox Then Ctl.Text = ""
         Next
 
-        'For Each Ctl In GroupBox2.Controls
-        '    If TypeOf Ctl Is TextBox Then Ctl.Text = ""
-        'Next
-
-        'For Each Ctl In GroupBox3.Controls
-        '    If TypeOf Ctl Is TextBox Then Ctl.Text = ""
-        'Next
-
         For Each Ctl In GroupBox4.Controls
 
             If TypeOf Ctl Is Label Then
@@ -441,7 +433,8 @@ Public Class frmPayout
 
     Private Sub Preview_BTN_Click(sender As Object, e As EventArgs) Handles Preview_BTN.Click
         If Employee_TXT.Text <> Nothing Then
-            LoadPayslip(Employee_TXT.Tag, EmpSelect_BTN.Tag, Payslip_paydate_Combo.Text, Email_TXT.Tag)
+            'LoadPayslip(Employee_TXT.Tag, EmpSelect_BTN.Tag, Payslip_paydate_Combo.Text, Email_TXT.Tag)
+            LoadPayslip(Employee_TXT.Tag, EmpSelect_BTN.Tag, Payslip_paydate_Combo.Text)
         Else
             MsgBox("Please Select Employee.", MsgBoxStyle.Exclamation, "INVALID")
         End If
@@ -566,23 +559,35 @@ Public Class frmPayout
         If All_RadioB.Checked = True Then
 
             Payslip_All()
-            MsgBox("Email Sent to those who have a valid email address.", MsgBoxStyle.Information, "")
 
         ElseIf Branch_RadioB.Checked = True Then
 
             If Branch_ComboB.SelectedIndex >= 0 Then
                 Payslip_Branch()
-                MsgBox("Email Sent to those who have a valid email address.", MsgBoxStyle.Information, "")
             Else
                 MsgBox("Please Select Branch.", MsgBoxStyle.Exclamation, "INVALID")
             End If
 
         Else
-            LoadPayslip(Employee_TXT.Tag, EmpSelect_BTN.Tag, Payslip_paydate_Combo.Text, Email_TXT.Tag)
+
+            LoadPayslip(Employee_TXT.Tag, EmpSelect_BTN.Tag, Payslip_paydate_Combo.Text)
 
             Deduct_ifExist(Preview_BTN.Tag, Payslip_paydate_Combo.Text)             '======= REFLECT DEDUCTION IF EXIST  (Preview_BTN.Tag = EMP_ID)
 
-            Send_Email(ReportViewer_payslip.LocalReport.Render("PDF"), Email_TXT.Text, Employee_TXT.Text, Payslip_paydate_Combo.Text, BodyText_RichB.Text, datee.ToString("MMMM dd, yyyy") & " PAYROLL")
+
+            '================================ CHECK IF VALID EMAIL ADDRESS ============================
+            Dim FoundMatch As Boolean = Regex.IsMatch(Email_TXT.Text, "\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase)
+
+            If Not FoundMatch Then
+                MsgBox(Employee_TXT.Text & " has an invalid email address.", MsgBoxStyle.Exclamation, "INVALID")
+                Exit Sub
+            Else
+                '================================ SEND TO EMAIL ADDRESS IF VALID ============================
+                Send_Email(ReportViewer_payslip.LocalReport.Render("PDF"), Email_TXT.Text, Employee_TXT.Text, Payslip_paydate_Combo.Text, BodyText_RichB.Text, datee.ToString("MMMM dd, yyyy") & " PAYROLL")
+
+                MsgBox("Email sent to " & Employee_TXT.Text, MsgBoxStyle.Information, "Information")
+            End If
+
         End If
 
     End Sub
@@ -612,22 +617,23 @@ Public Class frmPayout
                         Dim namee = String.Format("{0}, {1} {2}", .Item("LastName"), .Item("FirstName"), MI)
 
                         Dim branch_name As String = .item("BRANCHNAME")
-                        LoadPayslip(.item("BIOMETRIC_ID"), .item("BRANCH_ID"), Payslip_paydate_Combo.Text, branch_name)
+                        LoadPayslip(.item("BIOMETRIC_ID"), .item("BRANCH_ID"), Payslip_paydate_Combo.Text)
 
                         recipient = GetEmail_recipient(.item("BIOMETRIC_ID"))
 
                         Deduct_ifExist(.Item("emp_id"), Payslip_paydate_Combo.Text)             '======= REFLECT DEDUCTION IF EXIST
 
-                        '================================ CHECK IF VALID EMAIL ADDRESS ============================
                         Dim FoundMatch As Boolean = Regex.IsMatch(recipient, "\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase)
 
-                        If Not FoundMatch Then
-                            MsgBox(namee & " has an INVALID EMAIL ADDRESS.", MsgBoxStyle.Exclamation, "INVALID")
+                        If Not FoundMatch Then  '=========== CHECK IF VALID EMAIL ADDRESS ============================
+                            MsgBox(namee & " has an invalid email address.", MsgBoxStyle.Exclamation, "INVALID")
                             Continue For
-                        End If
+                        Else                    '============== SEND TO EMAIL ADDRESS IF VALID ============================
+                            Send_Email(ReportViewer_payslip.LocalReport.Render("PDF"), recipient, namee, Payslip_paydate_Combo.Text, BodyText_RichB.Text, datee.ToString("MMMM dd, yyyy") & " PAYROLL")
 
-                        '================================ SEND TO EMAIL ADDRESS IF VALID ============================
-                        Send_Email(ReportViewer_payslip.LocalReport.Render("PDF"), recipient, namee, Payslip_paydate_Combo.Text, BodyText_RichB.Text, datee.ToString("MMMM dd, yyyy") & " PAYROLL")
+                            MsgBox("Email sent to " & namee, MsgBoxStyle.Information, "Information")
+
+                        End If
 
                         frmMainForm.AppProgressBar.Value += 1
                     End With
@@ -664,22 +670,26 @@ Public Class frmPayout
                         Dim namee = String.Format("{0}, {1} {2}", .Item("LastName"), .Item("FirstName"), MI)
 
                         Dim branch_name As String = .item("BRANCHNAME")
-                        LoadPayslip(.item("BIOMETRIC_ID"), branchID, Payslip_paydate_Combo.Text, branch_name)
+
+                        LoadPayslip(.item("BIOMETRIC_ID"), branchID, Payslip_paydate_Combo.Text)
 
                         recipient = GetEmail_recipient(.item("BIOMETRIC_ID"))
 
                         Deduct_ifExist(.Item("emp_id"), Payslip_paydate_Combo.Text)             '======= REFLECT DEDUCTION IF EXIST
 
-                        '================================ CHECK IF VALID EMAIL ADDRESS ============================
                         Dim FoundMatch As Boolean = Regex.IsMatch(recipient, "\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase)
 
-                        If Not FoundMatch Then
-                            MsgBox(namee & " has an INVALID EMAIL ADDRESS.", MsgBoxStyle.Exclamation, "INVALID")
+                        If Not FoundMatch Then  '============= CHECK IF VALID EMAIL ADDRESS ============================
+                            MsgBox(namee & " has an invalid email address.", MsgBoxStyle.Exclamation, "INVALID")
                             Continue For
-                        End If
 
-                        '================================ SEND TO EMAIL ADDRESS IF VALID ============================
-                        Send_Email(ReportViewer_payslip.LocalReport.Render("PDF"), recipient, namee, Payslip_paydate_Combo.Text, BodyText_RichB.Text, datee.ToString("MMMM dd, yyyy") & " PAYROLL")
+                        Else                    '============== SEND TO EMAIL ADDRESS IF VALID ============================
+
+                            Send_Email(ReportViewer_payslip.LocalReport.Render("PDF"), recipient, namee, Payslip_paydate_Combo.Text, BodyText_RichB.Text, datee.ToString("MMMM dd, yyyy") & " PAYROLL")
+
+                            MsgBox("Email sent to ." & namee, MsgBoxStyle.Information, "Information")
+
+                        End If
 
                         frmMainForm.AppProgressBar.Value += 1
                     End With
@@ -690,11 +700,12 @@ Public Class frmPayout
         End Using
     End Sub
 
-    Public Sub LoadPayslip(biometricID As String, branchID As String, paydatee As String, rate As String)
+    Public Sub LoadPayslip(biometricID As String, branchID As String, paydatee As String)
         ReportViewer_payslip.LocalReport.DataSources.Clear()
 
         Dim sched As String
         Dim emp_id As String = ""
+        Dim rate As Double = 0
         Dim date_pay As DateTime = Convert.ToDateTime(paydatee)
         date_pay = date_pay.ToString("d")
 
@@ -721,9 +732,11 @@ Public Class frmPayout
                     Dim data As DataRow = ds.Tables(0).Rows(0)
                     With data
 
+                        rate = .Item("RATE")
                         emp_id = .Item("ID")
                         Dim namee As String = String.Format("{0}, {1} {2}", .Item("LastName"), .Item("FirstName"), .Item("MiddleName"))
                         dt_employee.Rows.Add(namee, .Item("SSSNO"), .Item("PHILHEALTHNO"), .Item("TINNO"), .Item("PAGIBIG"))
+
                     End With
                 End If
             End Using
@@ -758,8 +771,8 @@ Public Class frmPayout
 
             Dim PRESENT_DAYS As String = ""
             Dim OVERTIME As String = ""
-            Dim REGHOLIDAY As String = ""
-            Dim SPECHOLIDAY As String = ""
+            Dim REGHOLIDAY As Integer = 0
+            Dim SPECHOLIDAY As Integer = 0
             Dim LATE As String = ""
             Dim present_hours As Double = 0
 
@@ -986,13 +999,13 @@ Public Class frmPayout
             Dim spec_hrs As Double = 0
 
             If REGHOLIDAY <> 0 Then
-                reg_rate = (((Convert.ToInt32(REGHOLIDAY) * Convert.ToInt32(rate)) * regHoliday_) / regHoliday_).ToString(”N”)
-                reg_hrs = Convert.ToInt32(REGHOLIDAY) * 8
+                reg_rate = (((REGHOLIDAY * Convert.ToInt32(rate)) * regHoliday_) / regHoliday_).ToString(”N”)
+                reg_hrs = REGHOLIDAY * 8
             End If
 
             If SPECHOLIDAY <> 0 Then
-                spec_rate = (((Convert.ToInt32(SPECHOLIDAY) * Convert.ToInt32(rate)) * specHoliday_) / specHoliday_).ToString("N")
-                spec_hrs = Convert.ToInt32(SPECHOLIDAY) * 8
+                spec_rate = (((SPECHOLIDAY * Convert.ToInt32(rate)) * specHoliday_) / specHoliday_).ToString("N")
+                spec_hrs = SPECHOLIDAY * 8
             End If
 
             date_pay = date_pay.ToString("MMMM dd, yyyy")
