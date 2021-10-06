@@ -358,46 +358,68 @@
 
     End Sub
 
-    Friend Sub SaveRATE(value As String, column As String, amount As String, moreThan As Boolean) '=========== BOOLEAN IF MORE THAN 1 ========== 
+    'Friend Sub SaveRATE(value As String, column As String, amount As String, moreThan As Boolean) '=========== BOOLEAN IF MORE THAN 1 ========== 
 
-        Dim mysql As String
+    '    Dim mysql As String
 
-        If moreThan = True Then '============= PER BRANCH OR PER POSITION ==============
+    '    If moreThan = True Then '============= PER BRANCH OR PER POSITION ==============
 
-            mysql = $"Select * FROM TBL_EMPLOYEE where {column} = '{value}'"
-            Dim dss As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
-            If dss.Tables(0).Rows.Count > 0 Then
-                For Each dr In dss.Tables(0).Rows
-                    With dr
+    '        mysql = $"Select * FROM TBL_EMPLOYEE where {column} = '{value}'"
+    '        Dim dss As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
+    '        If dss.Tables(0).Rows.Count > 0 Then
+    '            For Each dr In dss.Tables(0).Rows
+    '                With dr
 
-                        .Item("RATE") = amount
+    '                    .Item("DAILY_RATE") = amount
 
-                    End With
-                    SaveEntry(dss, False)
-                Next
+    '                End With
+    '                SaveEntry(dss, False)
+    '            Next
 
-                MsgBox("Successfully Updated!", MsgBoxStyle.Information, "Information")
-            End If
+    '            MsgBox("Successfully Updated!", MsgBoxStyle.Information, "Information")
+    '        End If
 
-        Else  '============ PER EMPLOYEE (FOR THERE ARE SAME BIOMETRIC NUMBER BUT DIFFERENT NAME/EMPLOYEE) ===========
+    '    Else  '============ PER EMPLOYEE (FOR THERE ARE SAME BIOMETRIC NUMBER BUT DIFFERENT NAME/EMPLOYEE) ===========
 
-            'mysql = $"Select * FROM TBL_EMPLOYEE where {column} = '{value}' and BRANCH_ID = '{branchID}'"
+    '        'mysql = $"Select * FROM TBL_EMPLOYEE where {column} = '{value}' and BRANCH_ID = '{branchID}'"
 
-            mysql = $"Select * FROM TBL_EMPLOYEE where {column} = '{value}'"
-            Dim dss As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
-            If dss.Tables(0).Rows.Count > 0 Then
-                With dss.Tables(0).Rows(0)
+    '        mysql = $"Select * FROM TBL_EMPLOYEE where {column} = '{value}'"
+    '        Dim dss As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
+    '        If dss.Tables(0).Rows.Count > 0 Then
+    '            With dss.Tables(0).Rows(0)
 
-                    .Item("RATE") = amount
+    '                .Item("RATE") = amount
+
+    '            End With
+    '            SaveEntry(dss, False)
+
+    '            MsgBox("Successfully Updated!", MsgBoxStyle.Information, "Information")
+    '        End If
+
+    '    End If
+    'End Sub
+
+
+    Friend Sub SaveRATE(column As String, value As String, daily_rate As String, Optional group As Boolean = False) '=========== BOOLEAN IF MORE THAN 1 ========== 
+
+        Dim mysql As String = $"Select * FROM PAYROLL_EMPLOYEE where {column} = '{value}'"
+        Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+        If dss.Tables(0).Rows.Count > 0 Then
+            For Each dr In dss.Tables(0).Rows
+                With dr
+
+                    .Item("RATE_DAILY") = daily_rate
 
                 End With
                 SaveEntry(dss, False)
+            Next
 
+            If group = False Then
                 MsgBox("Successfully Updated!", MsgBoxStyle.Information, "Information")
             End If
-
         End If
     End Sub
+
 
     Friend Sub AllowanceRemove(id As String)
         Dim mysql As String

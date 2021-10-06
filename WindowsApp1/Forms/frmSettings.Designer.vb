@@ -43,11 +43,6 @@ Partial Class frmSettings
         Me.Rate_EmpSelect_BTN = New System.Windows.Forms.Button()
         Me.Rate_EmpSave_BTN = New System.Windows.Forms.Button()
         Me.Rate_EmpAmount_TXT = New System.Windows.Forms.TextBox()
-        Me.GroupBox4 = New System.Windows.Forms.GroupBox()
-        Me.Label12 = New System.Windows.Forms.Label()
-        Me.Rate_Position_BTN = New System.Windows.Forms.Button()
-        Me.Rate_Pos_ComboB = New System.Windows.Forms.ComboBox()
-        Me.Rate_PosAmount_TXT = New System.Windows.Forms.TextBox()
         Me.GroupBox3 = New System.Windows.Forms.GroupBox()
         Me.Label11 = New System.Windows.Forms.Label()
         Me.Rate_Branch_BTN = New System.Windows.Forms.Button()
@@ -169,7 +164,6 @@ Partial Class frmSettings
         Me.Settings_Tab.SuspendLayout()
         Me.TabPage5.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
-        Me.GroupBox4.SuspendLayout()
         Me.GroupBox3.SuspendLayout()
         Me.Holiday_Tab.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
@@ -222,7 +216,6 @@ Partial Class frmSettings
         Me.TabPage5.Controls.Add(Me.Rate_Search_TXT)
         Me.TabPage5.Controls.Add(Me.Rate_Search_BTN)
         Me.TabPage5.Controls.Add(Me.GroupBox5)
-        Me.TabPage5.Controls.Add(Me.GroupBox4)
         Me.TabPage5.Controls.Add(Me.GroupBox3)
         Me.TabPage5.Location = New System.Drawing.Point(4, 38)
         Me.TabPage5.Name = "TabPage5"
@@ -258,12 +251,12 @@ Partial Class frmSettings
         'ColumnHeader18
         '
         Me.ColumnHeader18.Text = "Name"
-        Me.ColumnHeader18.Width = 250
+        Me.ColumnHeader18.Width = 300
         '
         'ColumnHeader19
         '
-        Me.ColumnHeader19.Text = "Position"
-        Me.ColumnHeader19.Width = 130
+        Me.ColumnHeader19.Text = "Bio No."
+        Me.ColumnHeader19.Width = 85
         '
         'ColumnHeader20
         '
@@ -300,9 +293,9 @@ Partial Class frmSettings
         Me.GroupBox5.Controls.Add(Me.Rate_EmpSave_BTN)
         Me.GroupBox5.Controls.Add(Me.Rate_EmpAmount_TXT)
         Me.GroupBox5.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GroupBox5.Location = New System.Drawing.Point(13, 366)
+        Me.GroupBox5.Location = New System.Drawing.Point(13, 164)
         Me.GroupBox5.Name = "GroupBox5"
-        Me.GroupBox5.Size = New System.Drawing.Size(486, 184)
+        Me.GroupBox5.Size = New System.Drawing.Size(486, 248)
         Me.GroupBox5.TabIndex = 87
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "Per Employee"
@@ -393,60 +386,6 @@ Partial Class frmSettings
         Me.Rate_EmpAmount_TXT.Name = "Rate_EmpAmount_TXT"
         Me.Rate_EmpAmount_TXT.Size = New System.Drawing.Size(319, 33)
         Me.Rate_EmpAmount_TXT.TabIndex = 9
-        '
-        'GroupBox4
-        '
-        Me.GroupBox4.Controls.Add(Me.Label12)
-        Me.GroupBox4.Controls.Add(Me.Rate_Position_BTN)
-        Me.GroupBox4.Controls.Add(Me.Rate_Pos_ComboB)
-        Me.GroupBox4.Controls.Add(Me.Rate_PosAmount_TXT)
-        Me.GroupBox4.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GroupBox4.Location = New System.Drawing.Point(13, 181)
-        Me.GroupBox4.Name = "GroupBox4"
-        Me.GroupBox4.Size = New System.Drawing.Size(486, 98)
-        Me.GroupBox4.TabIndex = 86
-        Me.GroupBox4.TabStop = False
-        Me.GroupBox4.Text = "Per Position"
-        '
-        'Label12
-        '
-        Me.Label12.AutoSize = True
-        Me.Label12.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label12.Location = New System.Drawing.Point(247, 19)
-        Me.Label12.Name = "Label12"
-        Me.Label12.Size = New System.Drawing.Size(35, 22)
-        Me.Label12.TabIndex = 96
-        Me.Label12.Text = "Rate"
-        '
-        'Rate_Position_BTN
-        '
-        Me.Rate_Position_BTN.BackColor = System.Drawing.Color.DarkSalmon
-        Me.Rate_Position_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.Rate_Position_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Rate_Position_BTN.Location = New System.Drawing.Point(418, 43)
-        Me.Rate_Position_BTN.Name = "Rate_Position_BTN"
-        Me.Rate_Position_BTN.Size = New System.Drawing.Size(57, 33)
-        Me.Rate_Position_BTN.TabIndex = 85
-        Me.Rate_Position_BTN.Text = "Save"
-        Me.Rate_Position_BTN.UseVisualStyleBackColor = False
-        '
-        'Rate_Pos_ComboB
-        '
-        Me.Rate_Pos_ComboB.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Rate_Pos_ComboB.FormattingEnabled = True
-        Me.Rate_Pos_ComboB.Location = New System.Drawing.Point(11, 44)
-        Me.Rate_Pos_ComboB.Name = "Rate_Pos_ComboB"
-        Me.Rate_Pos_ComboB.Size = New System.Drawing.Size(211, 33)
-        Me.Rate_Pos_ComboB.TabIndex = 8
-        Me.Rate_Pos_ComboB.Text = "   Select Position"
-        '
-        'Rate_PosAmount_TXT
-        '
-        Me.Rate_PosAmount_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Rate_PosAmount_TXT.Location = New System.Drawing.Point(251, 44)
-        Me.Rate_PosAmount_TXT.Name = "Rate_PosAmount_TXT"
-        Me.Rate_PosAmount_TXT.Size = New System.Drawing.Size(146, 33)
-        Me.Rate_PosAmount_TXT.TabIndex = 9
         '
         'GroupBox3
         '
@@ -1651,8 +1590,6 @@ Partial Class frmSettings
         Me.TabPage5.PerformLayout()
         Me.GroupBox5.ResumeLayout(False)
         Me.GroupBox5.PerformLayout()
-        Me.GroupBox4.ResumeLayout(False)
-        Me.GroupBox4.PerformLayout()
         Me.GroupBox3.ResumeLayout(False)
         Me.GroupBox3.PerformLayout()
         Me.Holiday_Tab.ResumeLayout(False)
@@ -1721,10 +1658,6 @@ Partial Class frmSettings
     Friend WithEvents GroupBox3 As GroupBox
     Friend WithEvents FileSystemWatcher1 As IO.FileSystemWatcher
     Friend WithEvents Rate_Branch_BTN As Button
-    Friend WithEvents GroupBox4 As GroupBox
-    Friend WithEvents Rate_Position_BTN As Button
-    Friend WithEvents Rate_Pos_ComboB As ComboBox
-    Friend WithEvents Rate_PosAmount_TXT As TextBox
     Friend WithEvents GroupBox5 As GroupBox
     Friend WithEvents Rate_EmpSave_BTN As Button
     Friend WithEvents Rate_EmpAmount_TXT As TextBox
@@ -1734,7 +1667,6 @@ Partial Class frmSettings
     Friend WithEvents Label9 As Label
     Friend WithEvents Label8 As Label
     Friend WithEvents Rate_BioNo_TXT As TextBox
-    Friend WithEvents Label12 As Label
     Friend WithEvents Label11 As Label
     Friend WithEvents Rate_EmpClear_BTN As Button
     Friend WithEvents Rate_Search_TXT As TextBox

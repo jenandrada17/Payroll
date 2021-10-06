@@ -1152,8 +1152,8 @@ Module SelectFromDatabase
 
     Public Sub Payout_Details(bioNo As String, name As TextBox, ratee As TextBox)
 
-        Dim mysql As String = "Select * From tbl_employee WHERE BIOMETRICID= '" & bioNo & "'"
-        Using ds As DataSet = LoadSQL(mysql, "tbl_employee")
+        Dim mysql As String = "Select * From PAYROLL_EMPLOYEE WHERE BIO_NO= '" & bioNo & "'"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
 
             If ds.Tables(0).Rows.Count > 0 Then
 
@@ -1161,17 +1161,9 @@ Module SelectFromDatabase
 
                 With data
 
-                    Dim MI As String
-
-                    If String.IsNullOrEmpty(.Item("MIDDLENAME")) Then
-                        MI = ""
-                    Else
-                        MI = .Item("MIDDLENAME").Substring(0, 1) & "."
-                    End If
-
-                    ratee.Text = IIf(IsDBNull(.Item("RATE")), 0, .Item("RATE"))
-                    ratee.Tag = .Item("BRANCH_ID")
-                    name.Text = .Item("FIRSTNAME") & " " & MI & " " & .Item("LASTNAME") & " " & .Item("SUFFIX")
+                    ratee.Text = IIf(IsDBNull(.Item("RATE_DAILY")), 0, .Item("RATE_DAILY"))
+                    ratee.Tag = .Item("BRANCH_CODE")
+                    name.Text = .Item("FULLNAME")
                     name.Tag = .Item("ID")
                 End With
             Else
@@ -1488,7 +1480,7 @@ Module SelectFromDatabase
     End Function
 
 
-    Friend Sub Lists_Rate(listview As ListView, Optional searchName As String = "", Optional orderBy As String = "")
+    Friend Sub Lists_Rate(listview As ListView, Optional searchName As String = "")
 
         Dim secured_str As String = searchName
         secured_str = DreadKnight(secured_str)
@@ -1498,22 +1490,21 @@ Module SelectFromDatabase
 
         If searchName.Length <> 0 Then
 
-            mysql = $"Select * From TBL_EMPLOYEE A inner join TBL_BRANCH B on B.ID = A.BRANCH_ID where "
+            mysql = $"Select * From PAYROLL_EMPLOYEE where "
 
             For Each name In strWords
-                mysql &= $"{vbCr}UPPER(BIOMETRICID) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(firstname) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(lastname) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(branchname) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(EMP_POSITION) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(rate) LIKE UPPER('%{name}%')  ORDER BY {orderBy}"
+                mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(BRANCH_CODE) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(FULLNAME) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(BIO_NO) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(EMP_STATUS) LIKE UPPER('%{name}%') ORDER BY COMPANY, BRANCH_CODE ASC "
             Next
 
         Else
-            mysql = $"Select * From TBL_EMPLOYEE A inner join TBL_BRANCH B on B.ID = A.BRANCH_ID ORDER BY BRANCHNAME"
+            mysql = $"Select * From PAYROLL_EMPLOYEE ORDER BY COMPANY, BRANCH_CODE ASC "
         End If
 
-        Using ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
             If ds.Tables(0).Rows.Count > 0 Then
 
                 listview.Items.Clear()
@@ -1532,11 +1523,18 @@ Module SelectFromDatabase
     Private Sub AddRow_RATE(ByVal dr As DataRow, listview As ListView)
 
         With dr
-            Dim i As ListViewItem = listview.Items.Add(.Item("BRANCHNAME"))
-            i.SubItems.Add(.Item("LASTNAME") & ", " & .Item("FIRSTNAME") & " " & .Item("MIDDLENAME")).tag = .Item("BIOMETRICID")
-            i.SubItems.Add(IIf(IsDBNull(.Item("EMP_POSITION")), "", .Item("EMP_POSITION")))
-            i.SubItems.Add(IIf(IsDBNull(.Item("RATE")), "", .Item("RATE")))
+            Dim i As ListViewItem = listview.Items.Add(.Item("BRANCH_CODE"))
+            i.SubItems.Add(.Item("FULLNAME"))
+            i.SubItems.Add(.Item("BIO_NO"))
+            i.SubItems.Add(IIf(IsDBNull(.Item("RATE_DAILY")), "", .Item("RATE_DAILY")))
         End With
+
+        'With dr
+        '    Dim i As ListViewItem = listview.Items.Add(.Item("BRANCHNAME"))
+        '    i.SubItems.Add(.Item("LASTNAME") & ", " & .Item("FIRSTNAME") & " " & .Item("MIDDLENAME")).tag = .Item("BIOMETRICID")
+        '    i.SubItems.Add(IIf(IsDBNull(.Item("EMP_POSITION")), "", .Item("EMP_POSITION")))
+        '    i.SubItems.Add(IIf(IsDBNull(.Item("RATE")), "", .Item("RATE")))
+        'End With
 
     End Sub
 
@@ -1765,7 +1763,6 @@ Module SelectFromDatabase
             Next
             progressBarEnd()
         End Using
-
     End Sub
 
     Private Sub AddRow_Payroll_Employee(ByVal dr As DataRow, LV As ListView)
@@ -1779,7 +1776,7 @@ Module SelectFromDatabase
         End With
     End Sub
 
-    Public Sub GetFullname(bio_no As String, Add_Company_CB As ComboBox, Branch_ComboB As ComboBox, Fullname_TXT As TextBox, Email_TXT As TextBox)
+    Public Sub GetFullname(bio_no As String, Add_Company_CB As ComboBox, Branch_ComboB As ComboBox, Fullname_TXT As TextBox, Email_TXT As TextBox, Active_RB As RadioButton, InActive_RB As RadioButton)
 
         Dim mysql As String = $"select * from PAYROLL_EMPLOYEE where BIO_NO = '{bio_no}'"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
@@ -1790,6 +1787,13 @@ Module SelectFromDatabase
                     Branch_ComboB.SelectedItem = .Item("BRANCH_CODE")
                     Fullname_TXT.Text = .Item("FULLNAME")
                     Email_TXT.Text = .Item("EMAIL_ADD")
+
+                    If .Item("EMP_STATUS") = "ACTIVE" Then
+                        Active_RB.Checked = True
+                    Else
+                        InActive_RB.Checked = True
+                    End If
+
                 End With
             Else
                 Add_Company_CB.Text = ""

@@ -175,12 +175,75 @@ Public Class frmNewEmployee
 
     Private Sub Bio_TXT_TextChanged(sender As Object, e As EventArgs) Handles Bio_TXT.TextChanged
         If Bio_TXT.Text <> Nothing Then
-            GetFullname(Bio_TXT.Text, Add_Company_CB, Branch_ComboB, Fullname_TXT, Email_TXT)
+            GetFullname(Bio_TXT.Text, Add_Company_CB, Branch_ComboB, Fullname_TXT, Email_TXT, Active_RB, InActive_RB)
         Else
             Add_Company_CB.Text = ""
             Branch_ComboB.Text = ""
             Fullname_TXT.Text = ""
             Email_TXT.Text = ""
         End If
+    End Sub
+
+    Private Sub lvEmployee_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles lvEmployee.MouseDoubleClick
+
+        If lvEmployee.Items.Count = 0 Then Exit Sub
+
+        Dim bio_No As Integer = lvEmployee.Items(lvEmployee.FocusedItem.Index).SubItems(3).Text
+        Dim tmpEmp As Employee
+        tmpEmp = New Employee
+        tmpEmp.LoadEmployee_New(bio_No)
+
+        If txtSearch.Tag = "Attendance1" Then
+
+            SwitchForm_Attendance(FormName.Attendance, tmpEmp, 3)
+            Close()
+
+        ElseIf txtSearch.Tag = "Attendance-PrintDTR_1" Then
+
+            SwitchForm_Attendance(FormName.Attendance, tmpEmp, 1)
+            Close()
+
+        ElseIf txtSearch.Tag = "Attendance-PrintDTR_2" Then
+
+            SwitchForm_Attendance(FormName.Attendance, tmpEmp, 2)
+            Close()
+
+        ElseIf txtSearch.Tag = "Payout" Then
+
+            SwitchForm_Payout(FormName.Payout, tmpEmp, btnSearch.Tag, "DETAILS")
+            Close()
+
+        ElseIf txtSearch.Tag = "Payslip-Employee" Then
+
+            SwitchForm_Payout(FormName.Payout, tmpEmp, btnSearch.Tag, "PAYSLIP")
+            Close()
+
+        ElseIf txtSearch.Tag = "Settings-Rate" Then
+
+            SwitchForm_Settings(FormName.Settings, tmpEmp, "RATE")
+            Close()
+
+        ElseIf txtSearch.Tag = "Settings-Allowance" Then
+
+            SwitchForm_Settings(FormName.Settings, tmpEmp, "ALLOWANCE")
+            Close()
+
+        ElseIf txtSearch.Tag = "Settings-Deduction" Then
+
+            SwitchForm_Settings(FormName.Settings, tmpEmp, "DEDUCTION")
+            Close()
+
+        ElseIf txtSearch.Tag = "SSS Loan" Then
+
+            SwitchForm_Loans(FormName.Loans, tmpEmp, "SSS")
+            Close()
+
+        ElseIf txtSearch.Tag = "Pagibig Loan" Then
+
+            SwitchForm_Loans(FormName.Loans, tmpEmp, "PAGIBIG")
+            Close()
+
+        End If
+
     End Sub
 End Class

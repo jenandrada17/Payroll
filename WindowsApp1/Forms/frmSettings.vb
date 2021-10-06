@@ -17,8 +17,7 @@ Public Class frmSettings
             GetEmail(Email_TXT, Password_TXT)
         End If
 
-        PopulateComboBox(Rate_Branch_ComboB, "tbl_branch", "BRANCHNAME")
-        PopulateComboBox(Rate_Pos_ComboB, "tbl_employee", "EMP_POSITION")
+        PopulateComboBox(Rate_Branch_ComboB, "PAYROLL_EMPLOYEE", "BRANCH_CODE")
         PopulateComboBox(Allow_Category_Combo, "CATEGORY_ALLOWANCE", "ALLOWANCE_NAME")
         PopulateComboBox(DE_Category_Combo, "CATEGORY_DEDUCTION", "DEDUCTION_NAME")
         Lists_Rate(Rate_list)
@@ -138,10 +137,10 @@ Public Class frmSettings
 
     Private Sub Rate_EmpSelect_BTN_Click(sender As Object, e As EventArgs) Handles Rate_EmpSelect_BTN.Click
         Try
-            Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmEmployee").SingleOrDefault()
+            Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmNewEmployee").SingleOrDefault()
             If instForm Is Nothing Then
-                Dim frm As frmEmployee
-                frm = DirectCast(CreateObjectInstance("frmEmployee"), Form)
+                Dim frm As frmNewEmployee
+                frm = DirectCast(CreateObjectInstance("frmNewEmployee"), Form)
                 frm.MdiParent = frmMainForm
                 frmMainForm.pNavigate.Controls.Add(frm)
                 frmMainForm.pNavigate.Tag = frm
@@ -161,9 +160,7 @@ Public Class frmSettings
     Private Sub Rate_EmpSave_BTN_Click(sender As Object, e As EventArgs) Handles Rate_EmpSave_BTN.Click
         If Not Rate_BioNo_TXT.Text = "" Then
 
-            'SaveRATE(Rate_BioNo_TXT.Text, "BIOMETRICID", Rate_EmpAmount_TXT.Text, False, Rate_EmpAmount_TXT.Tag) ' === Rate_BioNo_TXT.Tag is BRANCHid ==== 
-
-            SaveRATE(Rate_Employee_TXT.Tag, "ID", Rate_EmpAmount_TXT.Text, False) ' === Rate_Employee_TXT.Tag is EMP_ID ==== 
+            SaveRATE("BIO_NO", Rate_BioNo_TXT.Text, Rate_EmpAmount_TXT.Text)
 
             Rate_EmpClear_BTN.PerformClick()
         End If
@@ -185,18 +182,6 @@ Public Class frmSettings
 
     End Sub
 
-    Private Sub Rate_Position_BTN_Click(sender As Object, e As EventArgs) Handles Rate_Position_BTN.Click
-        If Rate_Pos_ComboB.SelectedIndex >= 0 And Not Rate_PosAmount_TXT.Text = "" Then
-
-            SaveRATE(Rate_Pos_ComboB.SelectedItem, "EMP_POSITION", Rate_PosAmount_TXT.Text, True)
-
-            Rate_Pos_ComboB.Text = "   Select Position"
-            Rate_PosAmount_TXT.Clear()
-
-            Lists_Rate(Rate_list, "", "EMP_POSITION")
-        End If
-    End Sub
-
     Private Sub Rate_Branch_ComboB_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Rate_Branch_ComboB.SelectedIndexChanged
         Get_Branch_ID(Rate_Branch_ComboB.SelectedItem, Rate_Branch_ComboB)
     End Sub
@@ -204,31 +189,38 @@ Public Class frmSettings
     Private Sub Rate_Branch_BTN_Click(sender As Object, e As EventArgs) Handles Rate_Branch_BTN.Click
         If Rate_Branch_ComboB.SelectedIndex >= 0 And Not Rate_BranchAmount_TXT.Text = "" Then
 
-            SaveRATE(Rate_Branch_ComboB.Tag, "BRANCH_ID", Rate_BranchAmount_TXT.Text, True)
+            SaveRATE("BRANCH_CODE", Rate_Branch_ComboB.Text, Rate_BranchAmount_TXT.Text, True)
 
             Rate_Branch_ComboB.Text = "   Select Branch"
             Rate_BranchAmount_TXT.Clear()
 
-            Lists_Rate(Rate_list, "", "BRANCHNAME")
+            Lists_Rate(Rate_list)
 
         End If
     End Sub
 
-    Private Sub Rate_BranchAmount_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Rate_PosAmount_TXT.KeyPress, Rate_EmpAmount_TXT.KeyPress,
+    Private Sub Rate_BranchAmount_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Rate_EmpAmount_TXT.KeyPress,
                                                 Rate_BranchAmount_TXT.KeyPress, Rate_BioNo_TXT.KeyPress, Allow_Amount_TXT.KeyPress, DE_NoOfGives_TXT.KeyPress,
                                                 DE_AmountGive_TXT.KeyPress, DE_Total_TXT.KeyPress
 
         If e.KeyChar <> ChrW(Keys.Back) Then
-            If Char.IsNumber(e.KeyChar) Then
-            Else
+
+            If Not Char.IsNumber(e.KeyChar) AndAlso Not Char.IsControl(e.KeyChar) AndAlso Not e.KeyChar = "." Then
                 e.Handled = True
             End If
         End If
 
+        'If e.KeyChar <> ChrW(Keys.Back) Then
+        '    If Char.IsNumber(e.KeyChar) Then
+        '    Else
+        '        e.Handled = True
+        '    End If
+        'End If
+
     End Sub
 
     Private Sub Rate_Search_BTN_Click(sender As Object, e As EventArgs) Handles Rate_Search_BTN.Click
-        Lists_Rate(Rate_list, Rate_Search_TXT.Text, "BRANCHNAME")
+        Lists_Rate(Rate_list, Rate_Search_TXT.Text)
     End Sub
 
     Private Sub Rate_Search_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Rate_Search_TXT.KeyPress
@@ -617,16 +609,16 @@ Public Class frmSettings
 
             If tabName = "RATE" Then
 
-                Rate_BioNo_TXT.Text = .BiometricID
-                Rate_BioNo_TXT.Tag = .BranchID
+                Rate_BioNo_TXT.Text = .BIO_NO
+                Rate_BioNo_TXT.Tag = .BRANCH_CODE
                 Rate_Employee_TXT.Text = .Fullname
                 Rate_Employee_TXT.Tag = .EMP_ID
 
             ElseIf tabName = "ALLOWANCE" Then
 
                 Allow_Name_TXT.Text = .Fullname
-                Allow_Name_TXT.Tag = .BiometricID
-                Allow_SearchEmp_BTN.Tag = .BranchID
+                Allow_Name_TXT.Tag = .BIO_NO
+                Allow_SearchEmp_BTN.Tag = .BRANCH_CODE
                 Label14.Tag = .EMP_ID
                 Settings_Tab.SelectedIndex = 2
                 Allow_Category_Combo.SelectedItem = category
@@ -635,8 +627,8 @@ Public Class frmSettings
 
                 DE_Name_TXT.Text = .Fullname
                 DE_Category_Combo.Tag = .EMP_ID
-                DE_Name_TXT.Tag = .BiometricID
-                DE_SearchEmp_BTN.Tag = .BranchID
+                DE_Name_TXT.Tag = .BIO_NO
+                DE_SearchEmp_BTN.Tag = .BRANCH_CODE
                 Settings_Tab.SelectedIndex = 3
                 DE_Category_Combo.SelectedItem = category
 

@@ -36,9 +36,43 @@
 #End Region
 
 
+#Region "NEW Employee Details"
+    Public Property BRANCH_CODE() As String
+
+    Public Property BIO_NO() As String
+
+    Public Property EMAIL_ADD() As String
+
+    Public Property DAILY_RATE() As String
+#End Region
+
+
+    Friend Sub LoadEmployee_New(ByVal bioNo As Integer)
+        Dim mysql As String = "Select * From PAYROLL_EMPLOYEE where BIO_NO = '" & bioNo & "'"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+
+            If ds.Tables(0).Rows.Count > 0 Then
+
+                Dim dr As DataRow = ds.Tables(0).Rows(0)
+                With dr
+
+                    EMP_ID = .Item("id")
+                    Company = .Item("Company")
+                    BRANCH_CODE = IIf(IsDBNull(.Item("BRANCH_CODE")), "", .Item("BRANCH_CODE"))
+                    Fullname = .Item("Fullname")
+                    BIO_NO = .Item("BIO_NO")
+                    EMAIL_ADD = IIf(IsDBNull(.Item("EMAIL_ADD")), "", .Item("EMAIL_ADD"))
+                    'DAILY_RATE = IIf(IsDBNull(.Item("DAILY_RATE")), "", .Item("DAILY_RATE"))
+                    DAILY_RATE = IIf(IsDBNull(.Item("RATE_DAILY")), "", .Item("RATE_DAILY"))
+
+                End With
+            End If
+        End Using
+    End Sub
+
     Friend Sub LoadEmployee(ByVal idx As Integer)
-        Dim mysql As String = "Select * From tbl_Employee where id = '" & idx & "'"
-        Using ds As DataSet = LoadSQL(mysql, "tbl_Employee")
+        Dim mysql As String = "Select * From PAYROLL_EMPLOYEE where id = '" & idx & "'"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
 
             If ds.Tables(0).Rows.Count > 0 Then
 
@@ -52,7 +86,6 @@
                     Else
                         MI = .Item("MIDDLENAME").Substring(0, 1) & "."
                     End If
-
 
                     EMP_ID = .Item("id")
                     BiometricID = .Item("BIOMETRICID")
