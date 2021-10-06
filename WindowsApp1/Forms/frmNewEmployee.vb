@@ -17,6 +17,7 @@ Public Class frmNewEmployee
 
     Private Sub frmNewEmployee_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Lists_Employees(lvEmployee)
+        'ListViewGrouping(lvEmployee, 0)
     End Sub
 
     Private Sub Close_LBL_Click(sender As Object, e As EventArgs) Handles Close_LBL.Click
@@ -53,31 +54,43 @@ Public Class frmNewEmployee
             DtSet = New System.Data.DataSet
             MyCommand.Fill(DtSet)
 
+            If Company_ComboB.SelectedIndex = 4 Then
 
+                progressBarStart(DtSet.Tables(0).Rows.Count)
 
-            progressBarStart(DtSet.Tables(0).Rows.Count)
+                For row = 3 To DtSet.Tables(0).Rows.Count + 1
 
-            For row = 3 To DtSet.Tables(0).Rows.Count + 1
+                    SaveNew_Employee(Company_ComboB.Text, "", eCell(row, 2).Value, eCell(row, 3).Value, eCell(row, 4).Value, "ACTIVE", True)
 
-                'If Font.Color = Color.B Then
-                '    SaveNew_Employee(Company_ComboB.Text, eCell(row, 1).value, eCell(row, 2).Value, eCell(row, 3).Value, eCell(row, 4).Value, "ACTIVE", True)
-                'Else
-                '    SaveNew_Employee(Company_ComboB.Text, eCell(row, 1).value, eCell(row, 2).Value, eCell(row, 3).Value, eCell(row, 4).Value, "INACTIVE", True)
-                'End If
+                    frmMainForm.AppProgressBar.Value += 1
 
-                SaveNew_Employee(Company_ComboB.Text, eCell(row, 1).value, eCell(row, 2).Value, eCell(row, 3).Value, eCell(row, 4).Value, "ACTIVE", True)
+                Next
 
-                frmMainForm.AppProgressBar.Value += 1
+                progressBarEnd()
 
-            Next
+            Else
 
-            progressBarEnd()
+                progressBarStart(DtSet.Tables(0).Rows.Count)
 
-            Lists_Employees(lvEmployee) ' ===== POPULATE DATAGRIDVIEW FROM SHEET ====    
+                For row = 3 To DtSet.Tables(0).Rows.Count + 1
+
+                    SaveNew_Employee(Company_ComboB.Text, eCell(row, 1).value, eCell(row, 2).Value, eCell(row, 3).Value, eCell(row, 4).Value, "ACTIVE", True)
+
+                    frmMainForm.AppProgressBar.Value += 1
+
+                Next
+
+                progressBarEnd()
+
+            End If
+
+            Lists_Employees(lvEmployee)
 
             Import_BTN.Enabled = False
             Path_TXT.Clear()
             MyConnection.Close()
+
+            Excel_Panel.Visible = False
         Else
             MsgBox("Please Select Company.", MsgBoxStyle.Exclamation, "Error")
         End If
@@ -88,21 +101,10 @@ Public Class frmNewEmployee
         Excel_Panel.Visible = True
     End Sub
 
-    Private Sub Excel_Panel_MouseDown(sender As Object, e As MouseEventArgs) Handles Excel_Panel.MouseDown
-        allowCoolMove = True
-        myCoolPoint = New Point(e.X, e.Y)
-        Cursor = Cursors.SizeAll
-    End Sub
-
     Private Sub Excel_Panel_MouseMove(sender As Object, e As MouseEventArgs) Handles Excel_Panel.MouseMove
         If allowCoolMove = True Then
             Excel_Panel.Location = New Point(Excel_Panel.Location.X + e.X - myCoolPoint.X, Excel_Panel.Location.Y + e.Y - myCoolPoint.Y)
         End If
-    End Sub
-
-    Private Sub Excel_Panel_MouseUp(sender As Object, e As MouseEventArgs) Handles Excel_Panel.MouseUp
-        allowCoolMove = False
-        Cursor = Cursors.Default
     End Sub
 
     Private Sub Path_TXT_TextChanged(sender As Object, e As EventArgs) Handles Path_TXT.TextChanged
@@ -113,4 +115,72 @@ Public Class frmNewEmployee
         End If
     End Sub
 
+    Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
+        Lists_Employees(lvEmployee, txtSearch.Text)
+        'ListViewGrouping(lvEmployee, 0)
+    End Sub
+
+    Private Sub txtSearch_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtSearch.KeyPress
+        If IsEnter(e) Then btnSearch.PerformClick()
+    End Sub
+
+    Private Sub Excel_Panel_MouseDown_1(sender As Object, e As MouseEventArgs) Handles Excel_Panel.MouseDown, Add_Panel.MouseDown
+        allowCoolMove = True
+        myCoolPoint = New Point(e.X, e.Y)
+        Cursor = Cursors.SizeAll
+    End Sub
+
+    Private Sub Excel_Panel_MouseUp_1(sender As Object, e As MouseEventArgs) Handles Excel_Panel.MouseUp, Add_Panel.MouseUp
+        allowCoolMove = False
+        Cursor = Cursors.Default
+    End Sub
+
+    Private Sub Add_Panel_MouseMove(sender As Object, e As MouseEventArgs) Handles Add_Panel.MouseMove
+        If allowCoolMove = True Then
+            Add_Panel.Location = New Point(Add_Panel.Location.X + e.X - myCoolPoint.X, Add_Panel.Location.Y + e.Y - myCoolPoint.Y)
+        End If
+    End Sub
+
+    Private Sub Add_BTN_Click(sender As Object, e As EventArgs) Handles Add_BTN.Click
+        Add_Panel.Visible = True
+        PopulateComboBox(Branch_ComboB, "PAYROLL_EMPLOYEE", "BRANCH_CODE")
+    End Sub
+
+    Private Sub Label9_Click(sender As Object, e As EventArgs) Handles Label9.Click
+        Add_Panel.Visible = False
+    End Sub
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        clearAdd()
+    End Sub
+
+    Private Sub clearAdd()
+        Add_Company_CB.Text = ""
+        Branch_ComboB.Text = ""
+        Bio_TXT.Clear()
+        Fullname_TXT.Clear()
+        Email_TXT.Clear()
+        Add_Panel.Visible = False
+    End Sub
+
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+        If Add_Company_CB.Text <> "" And Branch_ComboB.Text <> "" And Branch_ComboB.Text <> "" And Bio_TXT.Text <> "" And Fullname_TXT.Text <> "" And Email_TXT.Text <> "" Then
+            SaveNew_Employee(Add_Company_CB.Text, Branch_ComboB.Text, Fullname_TXT.Text, Bio_TXT.Text, Email_TXT.Text, "ACTIVE")
+            clearAdd()
+        Else
+            MsgBox("Incomplete information.", MsgBoxStyle.Exclamation, "Error")
+        End If
+
+    End Sub
+
+    Private Sub Bio_TXT_TextChanged(sender As Object, e As EventArgs) Handles Bio_TXT.TextChanged
+        If Bio_TXT.Text <> Nothing Then
+            GetFullname(Bio_TXT.Text, Add_Company_CB, Branch_ComboB, Fullname_TXT, Email_TXT)
+        Else
+            Add_Company_CB.Text = ""
+            Branch_ComboB.Text = ""
+            Fullname_TXT.Text = ""
+            Email_TXT.Text = ""
+        End If
+    End Sub
 End Class

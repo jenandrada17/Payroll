@@ -1150,43 +1150,6 @@ Module SelectFromDatabase
         Return status
     End Function
 
-    'Friend Sub PopulateAttendanceRECORD(datagrid As DataGridView, Paydate As String)
-
-    '    datagrid.Rows.Clear()
-    '    Dim mysql As String = $"Select * From PAYROLL_ATTENDANCE A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRICID where A.PAYDATE = '{Paydate}' ORDER BY BRANCH"
-
-    '    Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
-    '        If ds.Tables(0).Rows.Count > 0 Then
-    '            For Each dr In ds.Tables(0).Rows
-    '                AddRowRECORDS(dr, datagrid)
-    '            Next
-    '            'AdjustHeightOfGridBasedOnRows(datagrid)
-    '        Else
-    '            datagrid.Rows.Clear()
-    '        End If
-    '    End Using
-
-    'End Sub
-
-    'Public Sub AddRowRECORDS(ByVal dr As DataRow, datagrid As DataGridView)
-
-    '    With dr
-    '        Dim rowId As Integer = datagrid.Rows.Add()
-    '        Dim row As DataGridViewRow = datagrid.Rows(rowId)
-    '        row.Cells("RE_BIO_DGV").Value = .Item("BIOMETRICID")
-    '        row.Cells("RE_NAME_DGV").Value = .Item("LASTNAME") & ", " & .Item("FIRSTNAME") & " " & .Item("MIDDLENAME")
-    '        row.Cells("RE_NAME_DGV").Tag = .Item("ID")
-    '        row.Cells("RE_OT_DGV").Value = .Item("OVERTIME")
-    '        row.Cells("RE_LATE_DGV").Value = .Item("LATE")
-    '        row.Cells("RE_UT_DGV").Value = .Item("UNDERTIME")
-    '        row.Cells("RE_DAYS_DGV").Value = .Item("PRESENT_DAYS")
-    '        row.Cells("RE_BRANCH_DGV").Value = .Item("BRANCH")
-    '        row.Cells("RE_BRANCH_DGV").Tag = .Item("BRANCH")
-    '        row.Height = 30
-    '    End With
-
-    'End Sub
-
     Public Sub Payout_Details(bioNo As String, name As TextBox, ratee As TextBox)
 
         Dim mysql As String = "Select * From tbl_employee WHERE BIOMETRICID= '" & bioNo & "'"
@@ -1785,11 +1748,11 @@ Module SelectFromDatabase
                 mysql &= $"{vbCr}UPPER(FULLNAME) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(BIO_NO) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(EMP_STATUS) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(EMAIL_ADD) LIKE UPPER('%{name}%') ORDER BY COMPANY ASC "
+                mysql &= $"{vbCr}UPPER(EMAIL_ADD) LIKE UPPER('%{name}%') ORDER BY COMPANY, BRANCH_CODE ASC "
             Next
 
         Else
-            mysql = "select * from PAYROLL_EMPLOYEE ORDER BY COMPANY ASC "
+            mysql = "select * from PAYROLL_EMPLOYEE ORDER BY COMPANY, BRANCH_CODE ASC "
         End If
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
@@ -1812,8 +1775,30 @@ Module SelectFromDatabase
             i.SubItems.Add(.Item("BRANCH_CODE"))
             i.SubItems.Add(.Item("FULLNAME"))
             i.SubItems.Add(.Item("BIO_NO"))
-            i.SubItems.Add(.Item("EMAIL_ADD"))
+            i.SubItems.Add(IIf(IsDBNull(.Item("EMAIL_ADD")), "", .Item("EMAIL_ADD")))
         End With
+    End Sub
+
+    Public Sub GetFullname(bio_no As String, Add_Company_CB As ComboBox, Branch_ComboB As ComboBox, Fullname_TXT As TextBox, Email_TXT As TextBox)
+
+        Dim mysql As String = $"select * from PAYROLL_EMPLOYEE where BIO_NO = '{bio_no}'"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+            If ds.Tables(0).Rows.Count > 0 Then
+                Dim dr As DataRow = ds.Tables(0).Rows(0)
+                With dr
+                    Add_Company_CB.SelectedItem = .Item("COMPANY")
+                    Branch_ComboB.SelectedItem = .Item("BRANCH_CODE")
+                    Fullname_TXT.Text = .Item("FULLNAME")
+                    Email_TXT.Text = .Item("EMAIL_ADD")
+                End With
+            Else
+                Add_Company_CB.Text = ""
+                Branch_ComboB.Text = ""
+                Fullname_TXT.Text = ""
+                Email_TXT.Text = ""
+            End If
+        End Using
+
     End Sub
 
 

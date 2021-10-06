@@ -42,7 +42,24 @@ Partial Class frmNewEmployee
         Me.Add_BTN = New System.Windows.Forms.Button()
         Me.Company_ComboB = New System.Windows.Forms.ComboBox()
         Me.Label2 = New System.Windows.Forms.Label()
+        Me.Add_Panel = New System.Windows.Forms.Panel()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.Add_Company_CB = New System.Windows.Forms.ComboBox()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.Branch_ComboB = New System.Windows.Forms.ComboBox()
+        Me.Bio_TXT = New System.Windows.Forms.TextBox()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.Fullname_TXT = New System.Windows.Forms.TextBox()
+        Me.Email_TXT = New System.Windows.Forms.TextBox()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.Button1 = New System.Windows.Forms.Button()
+        Me.Button2 = New System.Windows.Forms.Button()
+        Me.Label8 = New System.Windows.Forms.Label()
+        Me.Label9 = New System.Windows.Forms.Label()
+        Me.Label10 = New System.Windows.Forms.Label()
         Me.Excel_Panel.SuspendLayout()
+        Me.Add_Panel.SuspendLayout()
         Me.SuspendLayout()
         '
         'lvEmployee
@@ -66,7 +83,7 @@ Partial Class frmNewEmployee
         'ColumnHeader2
         '
         Me.ColumnHeader2.Text = "Company"
-        Me.ColumnHeader2.Width = 100
+        Me.ColumnHeader2.Width = 130
         '
         'ColumnHeader3
         '
@@ -76,7 +93,7 @@ Partial Class frmNewEmployee
         'ColumnHeader6
         '
         Me.ColumnHeader6.Text = "Employee's Name"
-        Me.ColumnHeader6.Width = 450
+        Me.ColumnHeader6.Width = 420
         '
         'ColumnHeader7
         '
@@ -152,7 +169,7 @@ Partial Class frmNewEmployee
         Me.Excel_Panel.Controls.Add(Me.Path_TXT)
         Me.Excel_Panel.Controls.Add(Me.Browse_BTN)
         Me.Excel_Panel.Controls.Add(Me.Save_BTN)
-        Me.Excel_Panel.Location = New System.Drawing.Point(206, 224)
+        Me.Excel_Panel.Location = New System.Drawing.Point(212, 143)
         Me.Excel_Panel.Name = "Excel_Panel"
         Me.Excel_Panel.Size = New System.Drawing.Size(756, 78)
         Me.Excel_Panel.TabIndex = 93
@@ -223,7 +240,7 @@ Partial Class frmNewEmployee
         '
         Me.Company_ComboB.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Company_ComboB.FormattingEnabled = True
-        Me.Company_ComboB.Items.AddRange(New Object() {"PHOTO", "PERFECOM", "DALTON", "HEAD OFFICE", "P&G UY"})
+        Me.Company_ComboB.Items.AddRange(New Object() {"PHOTO", "P&G UY", "DALTON", "PERFECOM", "HEAD OFFICE"})
         Me.Company_ComboB.Location = New System.Drawing.Point(20, 28)
         Me.Company_ComboB.Name = "Company_ComboB"
         Me.Company_ComboB.Size = New System.Drawing.Size(161, 28)
@@ -240,11 +257,188 @@ Partial Class frmNewEmployee
         Me.Label2.TabIndex = 85
         Me.Label2.Text = "Select Company"
         '
+        'Add_Panel
+        '
+        Me.Add_Panel.BackColor = System.Drawing.Color.MidnightBlue
+        Me.Add_Panel.Controls.Add(Me.Label10)
+        Me.Add_Panel.Controls.Add(Me.Label9)
+        Me.Add_Panel.Controls.Add(Me.Label8)
+        Me.Add_Panel.Controls.Add(Me.Button2)
+        Me.Add_Panel.Controls.Add(Me.Button1)
+        Me.Add_Panel.Controls.Add(Me.Email_TXT)
+        Me.Add_Panel.Controls.Add(Me.Label7)
+        Me.Add_Panel.Controls.Add(Me.Label6)
+        Me.Add_Panel.Controls.Add(Me.Fullname_TXT)
+        Me.Add_Panel.Controls.Add(Me.Label5)
+        Me.Add_Panel.Controls.Add(Me.Bio_TXT)
+        Me.Add_Panel.Controls.Add(Me.Label4)
+        Me.Add_Panel.Controls.Add(Me.Label3)
+        Me.Add_Panel.Controls.Add(Me.Branch_ComboB)
+        Me.Add_Panel.Controls.Add(Me.Add_Company_CB)
+        Me.Add_Panel.Location = New System.Drawing.Point(348, 227)
+        Me.Add_Panel.Name = "Add_Panel"
+        Me.Add_Panel.Size = New System.Drawing.Size(506, 354)
+        Me.Add_Panel.TabIndex = 95
+        Me.Add_Panel.Visible = False
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label3.ForeColor = System.Drawing.Color.LightSalmon
+        Me.Label3.Location = New System.Drawing.Point(23, 60)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(66, 16)
+        Me.Label3.TabIndex = 87
+        Me.Label3.Text = "Company"
+        '
+        'Add_Company_CB
+        '
+        Me.Add_Company_CB.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Add_Company_CB.FormattingEnabled = True
+        Me.Add_Company_CB.Items.AddRange(New Object() {"PHOTO", "P&G UY", "DALTON", "PERFECOM", "HEAD OFFICE"})
+        Me.Add_Company_CB.Location = New System.Drawing.Point(119, 54)
+        Me.Add_Company_CB.Name = "Add_Company_CB"
+        Me.Add_Company_CB.Size = New System.Drawing.Size(161, 28)
+        Me.Add_Company_CB.TabIndex = 86
+        '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label4.ForeColor = System.Drawing.Color.LightSalmon
+        Me.Label4.Location = New System.Drawing.Point(23, 103)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(86, 16)
+        Me.Label4.TabIndex = 97
+        Me.Label4.Text = "Branch Code"
+        '
+        'Branch_ComboB
+        '
+        Me.Branch_ComboB.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Branch_ComboB.FormattingEnabled = True
+        Me.Branch_ComboB.Items.AddRange(New Object() {"PHOTO", "P&G UY", "DALTON", "PERFECOM", "HEAD OFFICE"})
+        Me.Branch_ComboB.Location = New System.Drawing.Point(119, 98)
+        Me.Branch_ComboB.Name = "Branch_ComboB"
+        Me.Branch_ComboB.Size = New System.Drawing.Size(161, 28)
+        Me.Branch_ComboB.TabIndex = 96
+        '
+        'Bio_TXT
+        '
+        Me.Bio_TXT.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Bio_TXT.Location = New System.Drawing.Point(119, 143)
+        Me.Bio_TXT.Name = "Bio_TXT"
+        Me.Bio_TXT.Size = New System.Drawing.Size(161, 26)
+        Me.Bio_TXT.TabIndex = 86
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label5.ForeColor = System.Drawing.Color.LightSalmon
+        Me.Label5.Location = New System.Drawing.Point(23, 208)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(63, 16)
+        Me.Label5.TabIndex = 98
+        Me.Label5.Text = "Fullname"
+        '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label6.ForeColor = System.Drawing.Color.LightSalmon
+        Me.Label6.Location = New System.Drawing.Point(23, 148)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(52, 16)
+        Me.Label6.TabIndex = 100
+        Me.Label6.Text = "Bio No."
+        '
+        'Fullname_TXT
+        '
+        Me.Fullname_TXT.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Fullname_TXT.Location = New System.Drawing.Point(119, 202)
+        Me.Fullname_TXT.Name = "Fullname_TXT"
+        Me.Fullname_TXT.Size = New System.Drawing.Size(365, 26)
+        Me.Fullname_TXT.TabIndex = 99
+        '
+        'Email_TXT
+        '
+        Me.Email_TXT.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Email_TXT.Location = New System.Drawing.Point(119, 245)
+        Me.Email_TXT.Name = "Email_TXT"
+        Me.Email_TXT.Size = New System.Drawing.Size(365, 26)
+        Me.Email_TXT.TabIndex = 102
+        '
+        'Label7
+        '
+        Me.Label7.AutoSize = True
+        Me.Label7.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label7.ForeColor = System.Drawing.Color.LightSalmon
+        Me.Label7.Location = New System.Drawing.Point(23, 249)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(73, 16)
+        Me.Label7.TabIndex = 101
+        Me.Label7.Text = "Email Add."
+        '
+        'Button1
+        '
+        Me.Button1.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button1.Location = New System.Drawing.Point(26, 302)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(99, 31)
+        Me.Button1.TabIndex = 86
+        Me.Button1.Text = "Cancel"
+        Me.Button1.UseVisualStyleBackColor = True
+        '
+        'Button2
+        '
+        Me.Button2.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button2.Location = New System.Drawing.Point(382, 302)
+        Me.Button2.Name = "Button2"
+        Me.Button2.Size = New System.Drawing.Size(102, 31)
+        Me.Button2.TabIndex = 103
+        Me.Button2.Text = "Save"
+        Me.Button2.UseVisualStyleBackColor = True
+        '
+        'Label8
+        '
+        Me.Label8.AutoSize = True
+        Me.Label8.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label8.ForeColor = System.Drawing.Color.LightSalmon
+        Me.Label8.Location = New System.Drawing.Point(116, 183)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(172, 16)
+        Me.Label8.TabIndex = 104
+        Me.Label8.Text = "(Last Name, First Name MI.)"
+        '
+        'Label9
+        '
+        Me.Label9.AutoSize = True
+        Me.Label9.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label9.ForeColor = System.Drawing.Color.LightSalmon
+        Me.Label9.Location = New System.Drawing.Point(485, 2)
+        Me.Label9.Name = "Label9"
+        Me.Label9.Size = New System.Drawing.Size(20, 20)
+        Me.Label9.TabIndex = 105
+        Me.Label9.Text = "X"
+        '
+        'Label10
+        '
+        Me.Label10.AutoSize = True
+        Me.Label10.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label10.ForeColor = System.Drawing.Color.LightSalmon
+        Me.Label10.Location = New System.Drawing.Point(186, 11)
+        Me.Label10.Name = "Label10"
+        Me.Label10.Size = New System.Drawing.Size(163, 18)
+        Me.Label10.TabIndex = 106
+        Me.Label10.Text = "Employee's Information"
+        '
         'frmNewEmployee
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1169, 665)
+        Me.Controls.Add(Me.Add_Panel)
         Me.Controls.Add(Me.Add_BTN)
         Me.Controls.Add(Me.Excel_Panel)
         Me.Controls.Add(Me.Close_LBL)
@@ -258,6 +452,8 @@ Partial Class frmNewEmployee
         Me.Text = "frmNewEmployee"
         Me.Excel_Panel.ResumeLayout(False)
         Me.Excel_Panel.PerformLayout()
+        Me.Add_Panel.ResumeLayout(False)
+        Me.Add_Panel.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -283,4 +479,20 @@ Partial Class frmNewEmployee
     Friend WithEvents Add_BTN As Button
     Friend WithEvents Label2 As Label
     Friend WithEvents Company_ComboB As ComboBox
+    Friend WithEvents Add_Panel As Panel
+    Friend WithEvents Label3 As Label
+    Friend WithEvents Add_Company_CB As ComboBox
+    Friend WithEvents Label4 As Label
+    Friend WithEvents Branch_ComboB As ComboBox
+    Friend WithEvents Label5 As Label
+    Friend WithEvents Bio_TXT As TextBox
+    Friend WithEvents Label6 As Label
+    Friend WithEvents Fullname_TXT As TextBox
+    Friend WithEvents Button2 As Button
+    Friend WithEvents Button1 As Button
+    Friend WithEvents Email_TXT As TextBox
+    Friend WithEvents Label7 As Label
+    Friend WithEvents Label8 As Label
+    Friend WithEvents Label9 As Label
+    Friend WithEvents Label10 As Label
 End Class

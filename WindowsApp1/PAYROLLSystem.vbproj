@@ -63,6 +63,9 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DBConnect">
+      <HintPath>..\..\..\HR-System Record\LATEST HRSystem\HRSystem - exx\DBConnect\obj\Release\DBConnect.dll</HintPath>
+    </Reference>
     <Reference Include="DeathCodez">
       <HintPath>D:\HRSystem\HRSystem\DeathCodez.dll</HintPath>
     </Reference>
@@ -186,6 +189,7 @@
     </Compile>
     <Compile Include="Module\Database.vb" />
     <Compile Include="Module\FileDirectory.vb" />
+    <Compile Include="Module\GroupingListview.vb" />
     <Compile Include="Module\Public_Function.vb" />
     <Compile Include="Module\SaveUpdate.vb" />
     <Compile Include="Module\SelectFromDatabase.vb" />

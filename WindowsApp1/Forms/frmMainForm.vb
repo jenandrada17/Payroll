@@ -1,4 +1,5 @@
 ﻿Imports System.Globalization
+Imports DBConnect
 
 Public Class frmMainForm
 
@@ -7,18 +8,6 @@ Public Class frmMainForm
     Public Paydate As DateTime
 
     Private Sub frmMainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
-        'RunCommand("INSERT INTO TBL_EMPLOYEE (ID, FIRSTNAME, MIDDLENAME, LASTNAME, SUFFIX, DATEOFBIRTH, GENDER, CIVILSTATUS, PERMANENT_ADDID, PERMANENT_STREET, PRESENT_ADDID, PRESENT_STREET, EMAILADD,
-        '                        DATEHIRED, BIOMETRICID, CONTACTNO, BIRATE, BI_REMARKS, SSSNO, PHILHEALTHNO, TINNO, STATUS, REMARKS, ASSIGN_STATUS, PAGIBIG, EMP_POSITION, BRANCH_ID, NO_OF_DAYS, RATE) 
-        '                    SELECT ID, FIRSTNAME, MIDDLENAME, LASTNAME, SUFFIX, DATEOFBIRTH, GENDER, CIVILSTATUS, PERMANENT_ADDID, PERMANENT_STREET, PRESENT_ADDID, PRESENT_STREET, EMAILADD, 
-        '                        DATEHIRED, BIOMETRICID, CONTACTNO, BIRATE, BI_REMARKS, SSSNO, PHILHEALTHNO, TINNO, STATUS, REMARKS, ASSIGN_STATUS, PAGIBIG, EMP_POSITION, BRANCH_ID, NO_OF_DAYS, RATE 
-        '                    FROM TBL_EMPLOYEE_COPY where id <> ;")
-
-        'RunCommand("INSERT INTO TBL_EMPLOYEE SELECT * FROM TBL_EMPLOYEE_COPY where NOT EXISTS(SELECT id FROM TBL_EMPLOYEE) ;")
-
-        'RunCommand("INSERT INTO TBL_EMPLOYEE (ID, FIRSTNAME, MIDDLENAME, LASTNAME, SUFFIX, DATEOFBIRTH, GENDER, CIVILSTATUS, PERMANENT_ADDID, PERMANENT_STREET, PRESENT_ADDID, PRESENT_STREET, EMAILADD,
-        ''                        DATEHIRED, BIOMETRICID, CONTACTNO, BIRATE, BI_REMARKS, SSSNO, PHILHEALTHNO, TINNO, STATUS, REMARKS, ASSIGN_STATUS, PAGIBIG, EMP_POSITION, BRANCH_ID, NO_OF_DAYS, RATE) 
-        '            SELECT MAX(id) FROM TBL_EMPLOYEE_COPY where NOT EXISTS(SELECT id FROM TBL_EMPLOYEE where id <> (SELECT id FROM TBL_EMPLOYEE_COPY) ) ;")
 
         AppDateTime.Text = Date.Now.ToString("dddd, MMMM dd, yyyy hh:mm:ss tt", CultureInfo.CurrentCulture)
 
@@ -35,7 +24,6 @@ Public Class frmMainForm
             Paydate = New DateTime(EndFour.Year, EndFour.Month, DateTime.DaysInMonth(EndFour.Year, EndFour.Month))
         End If
 
-        'MsgBox("Padyasdas " & Paydate)
     End Sub
 
     '======================================Buttons================================================== 
@@ -147,6 +135,12 @@ Public Class frmMainForm
 
     Private Sub Loan_BTN_Click(sender As Object, e As EventArgs) Handles Loan_BTN.Click
         OpenWindowsForm("frmDecrypt")
+    End Sub
+
+    Private Sub ConnectToDatabaseToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ConnectToDatabaseToolStripMenuItem.Click
+        Using conSettings As New ServerSettings
+            conSettings.ShowDialog()
+        End Using
     End Sub
 
     Private Sub Calculator_BTN_MouseLeave(sender As Object, e As EventArgs) Handles Contribution_BTN.MouseLeave

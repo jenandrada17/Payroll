@@ -23,11 +23,12 @@ Partial Class frmMainForm
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.NavagationPanel = New System.Windows.Forms.Panel()
+        Me.PictureBox7 = New System.Windows.Forms.PictureBox()
+        Me.Paysilp_BTN = New System.Windows.Forms.Button()
         Me.PictureBox10 = New System.Windows.Forms.PictureBox()
         Me.PictureBox8 = New System.Windows.Forms.PictureBox()
         Me.Loan_BTN = New System.Windows.Forms.Button()
         Me.PictureBox9 = New System.Windows.Forms.PictureBox()
-        Me.PictureBox7 = New System.Windows.Forms.PictureBox()
         Me.PictureBox3 = New System.Windows.Forms.PictureBox()
         Me.PictureBox2 = New System.Windows.Forms.PictureBox()
         Me.Employee_BTN = New System.Windows.Forms.Button()
@@ -49,7 +50,6 @@ Partial Class frmMainForm
         Me.Dashboard_BTN = New System.Windows.Forms.Button()
         Me.Attendance_BTN = New System.Windows.Forms.Button()
         Me.Payout_BTN = New System.Windows.Forms.Button()
-        Me.Paysilp_BTN = New System.Windows.Forms.Button()
         Me.Settings_BTN = New System.Windows.Forms.Button()
         Me.Contribution_BTN = New System.Windows.Forms.Button()
         Me.Panel1 = New System.Windows.Forms.Panel()
@@ -61,10 +61,10 @@ Partial Class frmMainForm
         Me.PictureBox5 = New System.Windows.Forms.PictureBox()
         Me.pNavigate = New System.Windows.Forms.Panel()
         Me.NavagationPanel.SuspendLayout()
+        CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox10, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox8, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox9, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -100,6 +100,33 @@ Partial Class frmMainForm
         Me.NavagationPanel.Name = "NavagationPanel"
         Me.NavagationPanel.Size = New System.Drawing.Size(196, 715)
         Me.NavagationPanel.TabIndex = 2
+        '
+        'PictureBox7
+        '
+        Me.PictureBox7.BackColor = System.Drawing.Color.Black
+        Me.PictureBox7.Image = Global.WindowsApp1.My.Resources.Resources.dtr
+        Me.PictureBox7.Location = New System.Drawing.Point(10, 657)
+        Me.PictureBox7.Name = "PictureBox7"
+        Me.PictureBox7.Size = New System.Drawing.Size(42, 38)
+        Me.PictureBox7.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.PictureBox7.TabIndex = 26
+        Me.PictureBox7.TabStop = False
+        '
+        'Paysilp_BTN
+        '
+        Me.Paysilp_BTN.BackColor = System.Drawing.Color.Black
+        Me.Paysilp_BTN.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.Paysilp_BTN.FlatAppearance.BorderSize = 0
+        Me.Paysilp_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Paysilp_BTN.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Paysilp_BTN.ForeColor = System.Drawing.Color.White
+        Me.Paysilp_BTN.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Paysilp_BTN.Location = New System.Drawing.Point(-1, 640)
+        Me.Paysilp_BTN.Name = "Paysilp_BTN"
+        Me.Paysilp_BTN.Size = New System.Drawing.Size(197, 75)
+        Me.Paysilp_BTN.TabIndex = 8
+        Me.Paysilp_BTN.Text = "      &Reports"
+        Me.Paysilp_BTN.UseVisualStyleBackColor = False
         '
         'PictureBox10
         '
@@ -149,17 +176,6 @@ Partial Class frmMainForm
         Me.PictureBox9.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.PictureBox9.TabIndex = 28
         Me.PictureBox9.TabStop = False
-        '
-        'PictureBox7
-        '
-        Me.PictureBox7.BackColor = System.Drawing.Color.Black
-        Me.PictureBox7.Image = Global.WindowsApp1.My.Resources.Resources.dtr
-        Me.PictureBox7.Location = New System.Drawing.Point(10, 657)
-        Me.PictureBox7.Name = "PictureBox7"
-        Me.PictureBox7.Size = New System.Drawing.Size(42, 38)
-        Me.PictureBox7.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.PictureBox7.TabIndex = 26
-        Me.PictureBox7.TabStop = False
         '
         'PictureBox3
         '
@@ -262,7 +278,7 @@ Partial Class frmMainForm
         Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileToolStripMenuItem, Me.AboutUsToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(-5, 80)
         Me.MenuStrip1.Name = "MenuStrip1"
-        Me.MenuStrip1.Size = New System.Drawing.Size(113, 24)
+        Me.MenuStrip1.Size = New System.Drawing.Size(233, 24)
         Me.MenuStrip1.TabIndex = 3
         Me.MenuStrip1.Text = "MenuStrip1"
         '
@@ -374,22 +390,6 @@ Partial Class frmMainForm
         Me.Payout_BTN.TabIndex = 13
         Me.Payout_BTN.Text = "    &Payout"
         Me.Payout_BTN.UseVisualStyleBackColor = False
-        '
-        'Paysilp_BTN
-        '
-        Me.Paysilp_BTN.BackColor = System.Drawing.Color.Black
-        Me.Paysilp_BTN.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.Paysilp_BTN.FlatAppearance.BorderSize = 0
-        Me.Paysilp_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.Paysilp_BTN.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Paysilp_BTN.ForeColor = System.Drawing.Color.White
-        Me.Paysilp_BTN.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Paysilp_BTN.Location = New System.Drawing.Point(-1, 640)
-        Me.Paysilp_BTN.Name = "Paysilp_BTN"
-        Me.Paysilp_BTN.Size = New System.Drawing.Size(197, 75)
-        Me.Paysilp_BTN.TabIndex = 8
-        Me.Paysilp_BTN.Text = "      &Reports"
-        Me.Paysilp_BTN.UseVisualStyleBackColor = False
         '
         'Settings_BTN
         '
@@ -521,10 +521,10 @@ Partial Class frmMainForm
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Form1"
         Me.NavagationPanel.ResumeLayout(False)
+        CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox10, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox8, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox9, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).EndInit()
