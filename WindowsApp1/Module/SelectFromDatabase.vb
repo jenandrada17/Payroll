@@ -1095,7 +1095,7 @@ Module SelectFromDatabase
         Return status
     End Function
 
-    Public Sub Payout_Details(bioNo As String, name As TextBox, ratee As TextBox)
+    Public Sub Payout_Details(bioNo As String, name As TextBox, ratee As TextBox, Optional MonthlyRate_TXT As TextBox = Nothing)
 
         Dim mysql As String = "Select * From PAYROLL_EMPLOYEE WHERE BIO_NO = '" & bioNo & "'"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
@@ -1107,7 +1107,10 @@ Module SelectFromDatabase
                     ratee.Text = IIf(IsDBNull(.Item("RATE_DAILY")), 0, .Item("RATE_DAILY"))
                     ratee.Tag = .Item("BRANCH_CODE")
                     name.Text = .Item("FULLNAME")
-                    name.Tag = .Item("ID")
+
+                    If MonthlyRate_TXT IsNot Nothing Then
+                        MonthlyRate_TXT.Text = IIf(IsDBNull(.Item("RATE_MONTHLY")), 0, Convert.ToInt16(.Item("RATE_MONTHLY")))
+                    End If
                 End With
 
             Else
@@ -1205,7 +1208,7 @@ Module SelectFromDatabase
             Next
 
         Else
-            mysql = "select A.*, A.id as allow_id, B.* from PAYROLL_ALLOWANCES A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIOMETRIC_NO where ALLOWED = 'YES' ORDER BY FULLNAME ASC "
+            mysql = "select A.*, A.id as allow_id, B.* from PAYROLL_ALLOWANCES A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIOMETRIC_NO ORDER BY FULLNAME ASC "
         End If
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ALLOWANCES")
@@ -1236,6 +1239,7 @@ Module SelectFromDatabase
             i.SubItems.Add(sched)
             i.SubItems.Add(effectivity.ToString("MMM dd, yyyy"))
             i.SubItems.Add(.Item("AMOUNT"))
+            i.SubItems.Add(.Item("ALLOWED"))
         End With
     End Sub
 
@@ -1249,7 +1253,7 @@ Module SelectFromDatabase
 
         If searchName.Length <> 0 Then
 
-            mysql = "select A.* A.id as deduc_id, B.* from PAYROLL_DEDUCTIONS A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIO_NO where A.STATUS is null  and "
+            mysql = "select A.* A.id as deduc_id, B.*, B.BIO_NO as bioNo from PAYROLL_DEDUCTIONS A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIO_NO where A.STATUS is null  and ("
 
             For Each name In strWords
                 mysql &= $"{vbCr}UPPER(BIO_NO) LIKE UPPER('%{name}%') OR "
@@ -1259,7 +1263,7 @@ Module SelectFromDatabase
             Next
 
         Else
-            mysql = "select A.*,B.* from PAYROLL_DEDUCTIONS A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIO_NO where A.STATUS is null  ORDER BY FULLNAME ASC"
+            mysql = "select A.*, A.id as deduc_id, B.*, B.BIO_NO as bioNo from PAYROLL_DEDUCTIONS A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIO_NO where A.STATUS is null ORDER BY FULLNAME ASC"
         End If
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_DEDUCTIONS")
@@ -1278,7 +1282,7 @@ Module SelectFromDatabase
 
         With dr
             Dim i As ListViewItem = LV.Items.Add(.Item("FULLNAME"))
-            i.SubItems.Add(.Item("CATEGORY"))
+            i.SubItems.Add(.Item("CATEGORY")).Tag = .Item("bioNo")
             i.SubItems.Add(.Item("TOTAL_AMOUNT")).Tag = .Item("deduc_id")
             i.SubItems.Add(.Item("NO_OF_GIVES"))
             i.SubItems.Add(.Item("AMOUNT_PER_GIVE"))
@@ -1319,13 +1323,13 @@ Module SelectFromDatabase
         Return balance
     End Function
 
-    Public Function GetDeduction_OverAll_Balance(emp_id As String) As String
+    Public Function GetDeduction_OverAll_Balance(BIO_NO As String) As String
 
-        Dim total_amount = GetDeduction_TotalAmount(emp_id)
+        Dim total_amount = GetDeduction_TotalAmount(BIO_NO)
         Dim balance As Double
 
-        If isExist_String("HISTORY_DEDUCTION", $"WHERE EMP_ID = '{emp_id}'") Then
-            Dim mysql_ As String = $"Select SUM(H_AMOUNT) as tots From HISTORY_DEDUCTION A inner join PAYROLL_DEDUCTIONS B on B.EMP_ID = A.EMP_ID where B.EMP_ID = '{emp_id}' and B.STATUS is null"
+        If isExist_String("HISTORY_DEDUCTION", $"WHERE BIO_NO = '{BIO_NO}'") Then
+            Dim mysql_ As String = $"Select SUM(H_AMOUNT) as tots From HISTORY_DEDUCTION A inner join PAYROLL_DEDUCTIONS B on B.BIO_NO = A.BIO_NO where B.BIO_NO = '{BIO_NO}' and B.STATUS is null"
             Dim dSs As DataSet = LoadSQL(mysql_, "HISTORY_DEDUCTION")
             If dSs.Tables(0).Rows.Count > 0 Then
                 Dim dr As DataRow = dSs.Tables(0).Rows(0)
@@ -1341,10 +1345,10 @@ Module SelectFromDatabase
     End Function
 
 
-    Public Function GetDeduction_TotalAmount(emp_id As String) As Double
+    Public Function GetDeduction_TotalAmount(BIO_NO As String) As Double
 
         Dim total_amount As Double = 0
-        Dim mysql As String = $"Select SUM(TOTAL_AMOUNT) as totals From PAYROLL_DEDUCTIONS where emp_id = '{emp_id}' AND STATUS is null"
+        Dim mysql As String = $"Select SUM(TOTAL_AMOUNT) as totals From PAYROLL_DEDUCTIONS where BIO_NO = '{BIO_NO}' AND STATUS is null"
         Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_DEDUCTIONS")
         If ds.Tables(0).Rows.Count > 0 Then
             Dim dr As DataRow = ds.Tables(0).Rows(0)
@@ -1356,10 +1360,10 @@ Module SelectFromDatabase
         Return total_amount
     End Function
 
-    Public Function GetDeduction_OPEN(emp_id As String) As Double '=================== OPEN PAYROLL ======================
+    Public Function GetDeduction_OPEN(BIO_NO As String) As Double '=================== OPEN PAYROLL ======================
 
         Dim amount_per_deduc As Double = 0
-        Dim mysql As String = $"Select SUM(AMOUNT_PER_GIVE) as totals From PAYROLL_DEDUCTIONS where emp_id = '{emp_id}' AND STATUS is null and SCHEDULE = 'OPEN PAYROLL'"
+        Dim mysql As String = $"Select SUM(AMOUNT_PER_GIVE) as totals From PAYROLL_DEDUCTIONS where BIO_NO = '{BIO_NO}' AND STATUS is null and SCHEDULE = 'OPEN PAYROLL'"
         Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_DEDUCTIONS")
         If ds.Tables(0).Rows.Count > 0 Then
             Dim dr As DataRow = ds.Tables(0).Rows(0)
@@ -1372,10 +1376,10 @@ Module SelectFromDatabase
     End Function
 
 
-    Public Function GetDeduction_CLOSE(emp_id As String) As Double '=================== CLOSE PAYROLL ======================
+    Public Function GetDeduction_CLOSE(BIO_NO As String) As Double '=================== CLOSE PAYROLL ======================
 
         Dim amount_per_deduc As Double = 0
-        Dim mysql As String = $"Select SUM(AMOUNT_PER_GIVE) as totals From PAYROLL_DEDUCTIONS where emp_id = '{emp_id}' AND STATUS is null and SCHEDULE = 'CLOSE PAYROLL'"
+        Dim mysql As String = $"Select SUM(AMOUNT_PER_GIVE) as totals From PAYROLL_DEDUCTIONS where BIO_NO = '{BIO_NO}' AND STATUS is null and SCHEDULE = 'CLOSE PAYROLL'"
         Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_DEDUCTIONS")
         If ds.Tables(0).Rows.Count > 0 Then
             Dim dr As DataRow = ds.Tables(0).Rows(0)
@@ -1388,10 +1392,10 @@ Module SelectFromDatabase
     End Function
 
 
-    Public Function GetDeduction_EVERY(emp_id As String) As Double '=================== EVERY PAYROLL ======================
+    Public Function GetDeduction_EVERY(BIO_NO As String) As Double '=================== EVERY PAYROLL ======================
 
         Dim amount_per_deduc As Double = 0
-        Dim mysql As String = $"Select SUM(AMOUNT_PER_GIVE) as totals From PAYROLL_DEDUCTIONS where emp_id = '{emp_id}' AND STATUS is null and SCHEDULE = 'EVERY PAYROLL'"
+        Dim mysql As String = $"Select SUM(AMOUNT_PER_GIVE) as totals From PAYROLL_DEDUCTIONS where BIO_NO = '{BIO_NO}' AND STATUS is null and SCHEDULE = 'EVERY PAYROLL'"
         Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_DEDUCTIONS")
         If ds.Tables(0).Rows.Count > 0 Then
             Dim dr As DataRow = ds.Tables(0).Rows(0)
@@ -1421,7 +1425,7 @@ Module SelectFromDatabase
                 mysql &= $"{vbCr}UPPER(BRANCH_CODE) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(FULLNAME) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(BIO_NO) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(EMP_STATUS) LIKE UPPER('%{name}%')) ORDER BY COMPANY, BRANCH_CODE ASC "
+                mysql &= $"{vbCr}UPPER(EMP_STATUS) LIKE UPPER('%{name}%') ORDER BY COMPANY, BRANCH_CODE ASC "
             Next
 
         Else

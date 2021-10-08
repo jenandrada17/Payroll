@@ -403,7 +403,7 @@
     End Sub
 
 
-    Friend Sub AllowanceRemove(id As String)
+    Friend Sub AllowanceRemove(id As String, value As String)
         Dim mysql As String
 
         mysql = $"Select * FROM PAYROLL_ALLOWANCES where id = '{id}'"
@@ -412,18 +412,19 @@
             For Each dr In ds.Tables(0).Rows
                 With dr
 
-                    .Item("ALLOWED") = "NO"
+                    .Item("ALLOWED") = value
+                    .Item("ALLOW_REMOVE_DATE") = Today
 
                 End With
                 SaveEntry(ds, False)
             Next
 
-            MsgBox("Successfully Removed from the list!", MsgBoxStyle.Information, "Information")
+            MsgBox("Successfully Updated!", MsgBoxStyle.Information, "Information")
         End If
 
     End Sub
 
-    Friend Sub SaveDeductionS(EMP_ID As String, category As String, TOTAL_AMOUNT As String, NO_OF_GIVES As String, AMOUNT_PER_GIVE As String, SCHEDULE As String, bioNo As String, branchID As String, effectivity As String)
+    Friend Sub SaveDeductionS(category As String, TOTAL_AMOUNT As String, NO_OF_GIVES As String, AMOUNT_PER_GIVE As String, SCHEDULE As String, bioNo As String, effectivity As String)
 
         Dim mysql As String = "Select * From PAYROLL_DEDUCTIONS Rows 1"
         Using dss As DataSet = LoadSQL(mysql, "PAYROLL_DEDUCTIONS")
@@ -431,13 +432,13 @@
             Dim dsNewRow As DataRow = dss.Tables(0).NewRow
             With dsNewRow
 
-                .Item("EMP_ID") = EMP_ID
                 .Item("CATEGORY") = category
                 .Item("TOTAL_AMOUNT") = TOTAL_AMOUNT
                 .Item("NO_OF_GIVES") = NO_OF_GIVES
                 .Item("AMOUNT_PER_GIVE") = AMOUNT_PER_GIVE
                 .Item("SCHEDULE") = SCHEDULE
                 .Item("EFFECTIVE_DATE") = effectivity
+                .Item("BIO_NO") = bioNo
 
             End With
             dss.Tables(0).Rows.Add(dsNewRow)
@@ -468,7 +469,6 @@
             MsgBox("Successfully Updated!", MsgBoxStyle.Information, "Information")
 
         End If
-
     End Sub
 
     Friend Sub SaveSBU(amount As String)
@@ -1092,7 +1092,7 @@
 
     End Sub
 
-    Friend Sub SaveAllowance(emp_id As String, bioNo As String, branchID As String, category As String, amount As String, fix As String, SCHEDULE As String, DAY_DATE As String, EFFECTIVE_DATE As String)
+    Friend Sub SaveAllowance(bioNo As String, category As String, amount As String, fix As String, SCHEDULE As String, DAY_DATE As String, EFFECTIVE_DATE As String)
         Dim mysql As String = "Select * From PAYROLL_ALLOWANCES Rows 1"
         Using dss As DataSet = LoadSQL(mysql, "PAYROLL_ALLOWANCES")
 
@@ -1100,15 +1100,12 @@
             With dsNewRow
 
                 .Item("BIOMETRIC_NO") = bioNo
-                .Item("BRANCH_ID") = branchID
                 .Item("category") = category
                 .Item("AMOUNT") = amount
                 .Item("fix") = fix
                 .Item("SCHEDULE") = SCHEDULE
                 .Item("DAY_DATE") = DAY_DATE
                 .Item("EFFECTIVE_DATE") = EFFECTIVE_DATE
-                .Item("emp_id") = emp_id
-                .Item("ALLOWED") = "YES"
 
             End With
             dss.Tables(0).Rows.Add(dsNewRow)

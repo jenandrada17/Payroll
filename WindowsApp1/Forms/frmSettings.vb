@@ -177,15 +177,13 @@ Public Class frmSettings
 
         If Rate_BioNo_TXT.Text = "" Then
             Rate_Employee_TXT.Text = ""
+            Rate_EmpAmount_TXT.Text = ""
+            MonthlyRate_TXT.Text = ""
         Else
-            Payout_Details(Rate_BioNo_TXT.Text, Rate_Employee_TXT, Rate_EmpAmount_TXT)
+            Payout_Details(Rate_BioNo_TXT.Text, Rate_Employee_TXT, Rate_EmpAmount_TXT, MonthlyRate_TXT)
         End If
 
     End Sub
-
-    'Private Sub Rate_Branch_ComboB_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Rate_Branch_ComboB.SelectedIndexChanged
-    'Get_Branch_ID(Rate_Branch_ComboB.SelectedItem, Rate_Branch_ComboB)
-    'End Sub
 
     Private Sub Rate_Branch_BTN_Click(sender As Object, e As EventArgs) Handles Rate_Branch_BTN.Click
         If Rate_Branch_ComboB.SelectedIndex >= 0 And Not Rate_BranchAmount_TXT.Text = "" Then
@@ -194,6 +192,8 @@ Public Class frmSettings
 
             Rate_Branch_ComboB.Text = "   Select Branch"
             Rate_BranchAmount_TXT.Clear()
+
+            MsgBox("Successfully updated!", MsgBoxStyle.Information, "Information")
 
             Lists_Rate(Rate_list)
 
@@ -230,10 +230,10 @@ Public Class frmSettings
 
     Private Sub Allow_Search_BTN_Click(sender As Object, e As EventArgs) Handles Allow_SearchEmp_BTN.Click
         Try
-            Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmEmployee").SingleOrDefault()
+            Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmNewEmployee").SingleOrDefault()
             If instForm Is Nothing Then
-                Dim frm As frmEmployee
-                frm = DirectCast(CreateObjectInstance("frmEmployee"), Form)
+                Dim frm As frmNewEmployee
+                frm = DirectCast(CreateObjectInstance("frmNewEmployee"), Form)
                 frm.MdiParent = frmMainForm
                 frmMainForm.pNavigate.Controls.Add(frm)
                 frmMainForm.pNavigate.Tag = frm
@@ -262,7 +262,7 @@ Public Class frmSettings
 
         If FixYes_RadioB.Checked Then fix = "YES"
 
-        SaveAllowance(Label14.Tag, Allow_Name_TXT.Tag, Allow_SearchEmp_BTN.Tag, Allow_Category_Combo.SelectedItem, Allow_Amount_TXT.Text, fix, Allow_Schedule_Combo.SelectedItem, everyThisDate, A_EffectiveDate_DTP.Value) ' Label14 is EMP_ID
+        SaveAllowance(Allow_Name_TXT.Tag, Allow_Category_Combo.SelectedItem, Allow_Amount_TXT.Text, fix, Allow_Schedule_Combo.SelectedItem, everyThisDate, A_EffectiveDate_DTP.Value) ' Label14 is EMP_ID
 
         Lists_Allowance(Allowance_LV)
         Allow_Cancel_BTN.PerformClick()
@@ -341,15 +341,6 @@ Public Class frmSettings
         A_EffectiveDate_DTP.Value = Today
     End Sub
 
-    Private Sub Allow_Remove_Click(sender As Object, e As EventArgs) Handles Allow_Remove.Click
-        If Allowance_LV.SelectedItems.Count > 0 Then
-            For Each item As ListViewItem In Allowance_LV.SelectedItems
-                AllowanceRemove(item.SubItems(1).Tag) ' ===== ALLOWANCE ID =====
-                Lists_Allowance(Allowance_LV)
-            Next
-        End If
-    End Sub
-
     Private Sub Allowance_LV_MouseClick(sender As Object, e As MouseEventArgs) Handles Allowance_LV.MouseClick
         If e.Button = MouseButtons.Right Then
             If Allowance_LV.Items.Count > 0 Then
@@ -368,10 +359,10 @@ Public Class frmSettings
 
     Private Sub DE_SearchEmp_BTN_Click(sender As Object, e As EventArgs) Handles DE_SearchEmp_BTN.Click
         Try
-            Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmEmployee").SingleOrDefault()
+            Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmNewEmployee").SingleOrDefault()
             If instForm Is Nothing Then
-                Dim frm As frmEmployee
-                frm = DirectCast(CreateObjectInstance("frmEmployee"), Form)
+                Dim frm As frmNewEmployee
+                frm = DirectCast(CreateObjectInstance("frmNewEmployee"), Form)
                 frm.MdiParent = frmMainForm
                 frmMainForm.pNavigate.Controls.Add(frm)
                 frmMainForm.pNavigate.Tag = frm
@@ -420,7 +411,7 @@ Public Class frmSettings
         If Not isValidSave_DEDUC() Then Exit Sub
         '======================================== CHECK IF CONTEXT EDIT CLICK =======================================
         If Deduction_List.Tag = 0 Then
-            SaveDeductionS(DE_Category_Combo.Tag, DE_Category_Combo.SelectedItem, DE_Total_TXT.Text, DE_NoOfGives_TXT.Text, DE_AmountGive_TXT.Text, DE_Schedule_Combo.Text, DE_Name_TXT.Tag, DE_SearchEmp_BTN.Tag, DE_Effectivity_DTP.Value) 'DE_Category_Combo.Tag (EMP_ID) | DE_Name_TXT.Tag(Biometric) |  DE_SearchEmp_BTN.Tag.Tag(Branch_id) | 
+            SaveDeductionS(DE_Category_Combo.SelectedItem, DE_Total_TXT.Text, DE_NoOfGives_TXT.Text, DE_AmountGive_TXT.Text, DE_Schedule_Combo.Text, DE_Name_TXT.Tag, DE_Effectivity_DTP.Value) 'DE_Category_Combo.Tag (EMP_ID) | DE_Name_TXT.Tag(Biometric) |  DE_SearchEmp_BTN.Tag.Tag(Branch_id) | 
         Else
             updateDeductionS(Deduction_List.Tag, DE_Category_Combo.SelectedItem, DE_Total_TXT.Text, DE_NoOfGives_TXT.Text, DE_AmountGive_TXT.Text, DE_Schedule_Combo.Text, DE_Effectivity_DTP.Value) 'DE_Category_Combo.Tag (EMP_ID)
         End If
@@ -505,17 +496,17 @@ Public Class frmSettings
     End Sub
 
     Private Sub menu_subtotal_Click(sender As Object, e As EventArgs) Handles menu_subtotal.Click
-        Dim emp_id, total_amount, open_amount, close_amount, every_amount, balance As String
+        Dim bioNo, total_amount, open_amount, close_amount, every_amount, balance As String
 
         If Deduction_List.SelectedItems.Count > 0 Then
-            emp_id = Deduction_List.Items(Deduction_List.FocusedItem.Index).SubItems(1).Tag
-            total_amount = GetDeduction_TotalAmount(emp_id)
+            bioNo = Deduction_List.Items(Deduction_List.FocusedItem.Index).SubItems(1).Tag
+            total_amount = GetDeduction_TotalAmount(bioNo)
 
-            every_amount = GetDeduction_EVERY(emp_id)
+            every_amount = GetDeduction_EVERY(bioNo)
 
-            open_amount = GetDeduction_OPEN(emp_id) + every_amount
-            close_amount = GetDeduction_CLOSE(emp_id) + every_amount
-            balance = GetDeduction_OverAll_Balance(emp_id)
+            open_amount = GetDeduction_OPEN(bioNo) + every_amount
+            close_amount = GetDeduction_CLOSE(bioNo) + every_amount
+            balance = GetDeduction_OverAll_Balance(bioNo)
 
             MsgBox("Total Amount     :  " & total_amount & vbCrLf &
                    "Open Payroll      :  " & open_amount & vbCrLf &
@@ -614,7 +605,6 @@ Public Class frmSettings
                 Rate_BioNo_TXT.Tag = .BRANCH_CODE
                 Rate_Employee_TXT.Text = .Fullname
                 Rate_Employee_TXT.Tag = .EMP_ID
-                MonthlyRate_TXT.Text = .MONTHLY_RATE
 
             ElseIf tabName = "ALLOWANCE" Then
 
@@ -681,6 +671,30 @@ Public Class frmSettings
             Else
                 Rate_EmpAmount_TXT.Text = ""
             End If
+        End If
+    End Sub
+
+
+    Private Sub ApproveToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ApproveToolStripMenuItem.Click
+
+        If Allowance_LV.SelectedItems.Count > 0 Then
+
+            Dim bio_No As String = Allowance_LV.Items(Allowance_LV.FocusedItem.Index).SubItems(1).Tag
+
+            AllowanceRemove(bio_No, "YES") ' ===== ALLOWANCE ID =====
+            Lists_Allowance(Allowance_LV)
+
+        End If
+
+    End Sub
+
+    Private Sub Allow_Disapprove_Click(sender As Object, e As EventArgs) Handles Allow_Disapprove.Click
+        If Allowance_LV.SelectedItems.Count > 0 Then
+
+            Dim bio_No As String = Allowance_LV.Items(Allowance_LV.FocusedItem.Index).SubItems(1).Tag
+
+            AllowanceRemove(bio_No, "NO") ' ===== ALLOWANCE ID =====
+            Lists_Allowance(Allowance_LV)
         End If
     End Sub
 End Class

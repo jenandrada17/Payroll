@@ -95,6 +95,7 @@ Partial Class frmSettings
         Me.ColumnHeader3 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader9 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader6 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader7 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.Allow_SearchEmp_BTN = New System.Windows.Forms.Button()
         Me.Label14 = New System.Windows.Forms.Label()
         Me.Allow_Name_TXT = New System.Windows.Forms.TextBox()
@@ -160,7 +161,8 @@ Partial Class frmSettings
         Me.RemoveToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.FileSystemWatcher1 = New System.IO.FileSystemWatcher()
         Me.Allowance_Remove = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.Allow_Remove = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ApproveToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.Allow_Disapprove = New System.Windows.Forms.ToolStripMenuItem()
         Me.Context_deduct = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.menu_subtotal = New System.Windows.Forms.ToolStripMenuItem()
         Me.menu_edit = New System.Windows.Forms.ToolStripMenuItem()
@@ -881,9 +883,9 @@ Partial Class frmSettings
         'Allow_Search_TXT
         '
         Me.Allow_Search_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Allow_Search_TXT.Location = New System.Drawing.Point(470, 20)
+        Me.Allow_Search_TXT.Location = New System.Drawing.Point(455, 20)
         Me.Allow_Search_TXT.Name = "Allow_Search_TXT"
-        Me.Allow_Search_TXT.Size = New System.Drawing.Size(579, 33)
+        Me.Allow_Search_TXT.Size = New System.Drawing.Size(594, 33)
         Me.Allow_Search_TXT.TabIndex = 108
         '
         'Allow_Search_BTN
@@ -901,15 +903,15 @@ Partial Class frmSettings
         Me.Allowance_LV.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Allowance_LV.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader4, Me.ColumnHeader5, Me.ColumnHeader3, Me.ColumnHeader9, Me.ColumnHeader6})
+        Me.Allowance_LV.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader4, Me.ColumnHeader5, Me.ColumnHeader3, Me.ColumnHeader9, Me.ColumnHeader6, Me.ColumnHeader7})
         Me.Allowance_LV.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Allowance_LV.FullRowSelect = True
         Me.Allowance_LV.GridLines = True
         Me.Allowance_LV.HideSelection = False
-        Me.Allowance_LV.Location = New System.Drawing.Point(470, 59)
+        Me.Allowance_LV.Location = New System.Drawing.Point(455, 59)
         Me.Allowance_LV.MultiSelect = False
         Me.Allowance_LV.Name = "Allowance_LV"
-        Me.Allowance_LV.Size = New System.Drawing.Size(674, 539)
+        Me.Allowance_LV.Size = New System.Drawing.Size(689, 539)
         Me.Allowance_LV.TabIndex = 107
         Me.Allowance_LV.UseCompatibleStateImageBehavior = False
         Me.Allowance_LV.View = System.Windows.Forms.View.Details
@@ -917,17 +919,17 @@ Partial Class frmSettings
         'ColumnHeader4
         '
         Me.ColumnHeader4.Text = "Fullname"
-        Me.ColumnHeader4.Width = 215
+        Me.ColumnHeader4.Width = 190
         '
         'ColumnHeader5
         '
         Me.ColumnHeader5.Text = "Category"
-        Me.ColumnHeader5.Width = 125
+        Me.ColumnHeader5.Width = 135
         '
         'ColumnHeader3
         '
         Me.ColumnHeader3.Text = "Schedule"
-        Me.ColumnHeader3.Width = 115
+        Me.ColumnHeader3.Width = 120
         '
         'ColumnHeader9
         '
@@ -938,12 +940,17 @@ Partial Class frmSettings
         '
         Me.ColumnHeader6.Text = "Amount"
         Me.ColumnHeader6.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.ColumnHeader6.Width = 80
+        Me.ColumnHeader6.Width = 100
+        '
+        'ColumnHeader7
+        '
+        Me.ColumnHeader7.Text = "Approve"
+        Me.ColumnHeader7.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         '
         'Allow_SearchEmp_BTN
         '
         Me.Allow_SearchEmp_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Allow_SearchEmp_BTN.Location = New System.Drawing.Point(389, 47)
+        Me.Allow_SearchEmp_BTN.Location = New System.Drawing.Point(385, 47)
         Me.Allow_SearchEmp_BTN.Name = "Allow_SearchEmp_BTN"
         Me.Allow_SearchEmp_BTN.Size = New System.Drawing.Size(47, 31)
         Me.Allow_SearchEmp_BTN.TabIndex = 105
@@ -954,7 +961,7 @@ Partial Class frmSettings
         '
         Me.Label14.AutoSize = True
         Me.Label14.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label14.Location = New System.Drawing.Point(8, 49)
+        Me.Label14.Location = New System.Drawing.Point(4, 49)
         Me.Label14.Name = "Label14"
         Me.Label14.Size = New System.Drawing.Size(49, 27)
         Me.Label14.TabIndex = 103
@@ -963,7 +970,7 @@ Partial Class frmSettings
         'Allow_Name_TXT
         '
         Me.Allow_Name_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Allow_Name_TXT.Location = New System.Drawing.Point(64, 45)
+        Me.Allow_Name_TXT.Location = New System.Drawing.Point(60, 45)
         Me.Allow_Name_TXT.Name = "Allow_Name_TXT"
         Me.Allow_Name_TXT.ReadOnly = True
         Me.Allow_Name_TXT.Size = New System.Drawing.Size(319, 33)
@@ -1581,15 +1588,21 @@ Partial Class frmSettings
         '
         'Allowance_Remove
         '
-        Me.Allowance_Remove.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.Allow_Remove})
+        Me.Allowance_Remove.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ApproveToolStripMenuItem, Me.Allow_Disapprove})
         Me.Allowance_Remove.Name = "ContextMenuStrip1"
-        Me.Allowance_Remove.Size = New System.Drawing.Size(118, 26)
+        Me.Allowance_Remove.Size = New System.Drawing.Size(134, 48)
         '
-        'Allow_Remove
+        'ApproveToolStripMenuItem
         '
-        Me.Allow_Remove.Name = "Allow_Remove"
-        Me.Allow_Remove.Size = New System.Drawing.Size(117, 22)
-        Me.Allow_Remove.Text = "Remove"
+        Me.ApproveToolStripMenuItem.Name = "ApproveToolStripMenuItem"
+        Me.ApproveToolStripMenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.ApproveToolStripMenuItem.Text = "Approve"
+        '
+        'Allow_Disapprove
+        '
+        Me.Allow_Disapprove.Name = "Allow_Disapprove"
+        Me.Allow_Disapprove.Size = New System.Drawing.Size(180, 22)
+        Me.Allow_Disapprove.Text = "Disapprove"
         '
         'Context_deduct
         '
@@ -1722,7 +1735,7 @@ Partial Class frmSettings
     Friend WithEvents Allow_Search_BTN As Button
     Friend WithEvents Allow_Cancel_BTN As Button
     Friend WithEvents Allowance_Remove As ContextMenuStrip
-    Friend WithEvents Allow_Remove As ToolStripMenuItem
+    Friend WithEvents Allow_Disapprove As ToolStripMenuItem
     Friend WithEvents ColumnHeader6 As ColumnHeader
     Friend WithEvents DE_Cancel_BTN As Button
     Friend WithEvents DE_Save_BTN As Button
@@ -1801,4 +1814,6 @@ Partial Class frmSettings
     Friend WithEvents Daily_BTN As Button
     Friend WithEvents Label12 As Label
     Friend WithEvents MonthlyRate_TXT As TextBox
+    Friend WithEvents ColumnHeader7 As ColumnHeader
+    Friend WithEvents ApproveToolStripMenuItem As ToolStripMenuItem
 End Class

@@ -301,7 +301,8 @@ Public Class frmPayout
 
         roww.Cells(0).Value = "SBU"
         roww.Cells(1).Value = sbu.ToString(”N”)
-        roww.Cells(3) = New DataGridViewTextBoxCell()
+        roww.Cells(3).Value = "OFF"
+        'roww.Cells(3) = New DataGridViewTextBoxCell()
     End Sub
 
     Private Sub Pay_Refresh_BTN_Click(sender As Object, e As EventArgs) Handles Pay_Refresh_BTN.Click
