@@ -510,7 +510,7 @@ Public Class frmAttendance
             SaveAttendanceEE(BiometricID_TXT.Text, PAYROLL, TotalDays_LBL.Text, TotalOTHr_LBL.Text, TotalLateHR_LBL.Text, TotalUTHR_LBL.Text,
                              TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text)
 
-            SavePayout_IndividualL(BiometricID_TXT.Text, PAYROLL)
+            SavePayout_IndividualL(BiometricID_TXT.Text, PAYROLL, EndingDate)
 
             Cancel_BTN.PerformClick()
         Else

@@ -1766,8 +1766,8 @@ Module SelectFromDatabase
             If ds.Tables(0).Rows.Count > 0 Then
                 Dim dr As DataRow = ds.Tables(0).Rows(0)
                 With dr
-                    Add_Company_CB.SelectedItem = .Item("COMPANY")
-                    Branch_ComboB.SelectedItem = .Item("BRANCH_CODE")
+                    Add_Company_CB.Text = .Item("COMPANY")
+                    Branch_ComboB.Text = .Item("BRANCH_CODE")
                     Fullname_TXT.Text = .Item("FULLNAME")
                     Email_TXT.Text = IIf(IsDBNull(.Item("EMAIL_ADD")), "", .Item("EMAIL_ADD"))
                     Started_DTP.Text = IIf(IsDBNull(.Item("DATE_STARTED")), Today, .Item("DATE_STARTED"))

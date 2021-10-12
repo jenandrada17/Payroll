@@ -294,8 +294,19 @@ Public Class frmNewEmployee
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
         If Add_Company_CB.Text <> "" And Branch_ComboB.Text <> "" And Branch_ComboB.Text <> "" And Bio_TXT.Text <> "" And Fullname_TXT.Text <> "" And Email_TXT.Text <> "" Then
-            SaveNew_Employee(Add_Company_CB.Text, Branch_ComboB.Text, Fullname_TXT.Text, Bio_TXT.Text, Email_TXT.Text, emp_status)
+
+            If Active_RB.Checked = True Then
+                emp_status = Active_RB.Text
+            Else
+                emp_status = InActive_RB.Text
+            End If
+
+            SaveNew_Employee(Add_Company_CB.Text, Branch_ComboB.Text, Fullname_TXT.Text, Bio_TXT.Text, Email_TXT.Text, emp_status, Started_DTP.Value)
+
+            Lists_Employees(lvEmployee)
+
             clearAdd()
+
         Else
             MsgBox("Incomplete information.", MsgBoxStyle.Exclamation, "Error")
         End If
@@ -376,21 +387,4 @@ Public Class frmNewEmployee
 
     End Sub
 
-    Private Sub Trainee_RadioB_CheckedChanged(sender As Object, e As EventArgs) Handles Trainee_RB.CheckedChanged
-        If Trainee_RB.Checked Then
-            emp_status = Trainee_RB.Text
-        End If
-    End Sub
-
-    Private Sub InActive_RB_CheckedChanged(sender As Object, e As EventArgs) Handles InActive_RB.CheckedChanged
-        If InActive_RB.Checked Then
-            emp_status = InActive_RB.Text
-        End If
-    End Sub
-
-    Private Sub Active_RB_CheckedChanged(sender As Object, e As EventArgs) Handles Active_RB.CheckedChanged
-        If Active_RB.Checked Then
-            emp_status = Active_RB.Text
-        End If
-    End Sub
 End Class

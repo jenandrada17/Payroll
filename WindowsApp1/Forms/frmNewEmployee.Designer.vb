@@ -28,6 +28,12 @@ Partial Class frmNewEmployee
         Me.ColumnHeader6 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader7 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader8 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader4 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader5 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader9 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader10 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader11 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.btnSearch = New System.Windows.Forms.Button()
         Me.txtSearch = New System.Windows.Forms.TextBox()
         Me.Label1 = New System.Windows.Forms.Label()
@@ -43,6 +49,8 @@ Partial Class frmNewEmployee
         Me.Save_BTN = New System.Windows.Forms.Button()
         Me.Add_BTN = New System.Windows.Forms.Button()
         Me.Add_Panel = New System.Windows.Forms.Panel()
+        Me.Started_DTP = New System.Windows.Forms.DateTimePicker()
+        Me.Label11 = New System.Windows.Forms.Label()
         Me.InActive_RB = New System.Windows.Forms.RadioButton()
         Me.Active_RB = New System.Windows.Forms.RadioButton()
         Me.Label10 = New System.Windows.Forms.Label()
@@ -60,15 +68,6 @@ Partial Class frmNewEmployee
         Me.Label3 = New System.Windows.Forms.Label()
         Me.Branch_ComboB = New System.Windows.Forms.ComboBox()
         Me.Add_Company_CB = New System.Windows.Forms.ComboBox()
-        Me.Trainee_RB = New System.Windows.Forms.RadioButton()
-        Me.Label11 = New System.Windows.Forms.Label()
-        Me.Started_DTP = New System.Windows.Forms.DateTimePicker()
-        Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader4 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader5 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader9 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader10 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader11 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.Excel_Panel.SuspendLayout()
         Me.Add_Panel.SuspendLayout()
         Me.SuspendLayout()
@@ -115,6 +114,36 @@ Partial Class frmNewEmployee
         '
         Me.ColumnHeader8.Text = "Email Address"
         Me.ColumnHeader8.Width = 250
+        '
+        'ColumnHeader1
+        '
+        Me.ColumnHeader1.Text = "Date Started"
+        Me.ColumnHeader1.Width = 120
+        '
+        'ColumnHeader4
+        '
+        Me.ColumnHeader4.Text = "Position"
+        Me.ColumnHeader4.Width = 100
+        '
+        'ColumnHeader5
+        '
+        Me.ColumnHeader5.Text = "TIN No."
+        Me.ColumnHeader5.Width = 150
+        '
+        'ColumnHeader9
+        '
+        Me.ColumnHeader9.Text = "SSS No."
+        Me.ColumnHeader9.Width = 150
+        '
+        'ColumnHeader10
+        '
+        Me.ColumnHeader10.Text = "PhilHealth No."
+        Me.ColumnHeader10.Width = 150
+        '
+        'ColumnHeader11
+        '
+        Me.ColumnHeader11.Text = "Pagibig No. "
+        Me.ColumnHeader11.Width = 150
         '
         'btnSearch
         '
@@ -273,7 +302,6 @@ Partial Class frmNewEmployee
         Me.Add_Panel.BackColor = System.Drawing.Color.MidnightBlue
         Me.Add_Panel.Controls.Add(Me.Started_DTP)
         Me.Add_Panel.Controls.Add(Me.Label11)
-        Me.Add_Panel.Controls.Add(Me.Trainee_RB)
         Me.Add_Panel.Controls.Add(Me.InActive_RB)
         Me.Add_Panel.Controls.Add(Me.Active_RB)
         Me.Add_Panel.Controls.Add(Me.Label10)
@@ -296,6 +324,28 @@ Partial Class frmNewEmployee
         Me.Add_Panel.Size = New System.Drawing.Size(506, 427)
         Me.Add_Panel.TabIndex = 95
         Me.Add_Panel.Visible = False
+        '
+        'Started_DTP
+        '
+        Me.Started_DTP.CalendarFont = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Started_DTP.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Started_DTP.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.Started_DTP.Location = New System.Drawing.Point(119, 187)
+        Me.Started_DTP.Name = "Started_DTP"
+        Me.Started_DTP.Size = New System.Drawing.Size(161, 24)
+        Me.Started_DTP.TabIndex = 111
+        Me.Started_DTP.Value = New Date(2021, 9, 30, 8, 47, 4, 0)
+        '
+        'Label11
+        '
+        Me.Label11.AutoSize = True
+        Me.Label11.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label11.ForeColor = System.Drawing.Color.LightSalmon
+        Me.Label11.Location = New System.Drawing.Point(23, 251)
+        Me.Label11.Name = "Label11"
+        Me.Label11.Size = New System.Drawing.Size(63, 16)
+        Me.Label11.TabIndex = 110
+        Me.Label11.Text = "Fullname"
         '
         'InActive_RB
         '
@@ -476,70 +526,6 @@ Partial Class frmNewEmployee
         Me.Add_Company_CB.Size = New System.Drawing.Size(161, 28)
         Me.Add_Company_CB.TabIndex = 86
         '
-        'Trainee_RB
-        '
-        Me.Trainee_RB.AutoSize = True
-        Me.Trainee_RB.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Trainee_RB.ForeColor = System.Drawing.Color.LightSalmon
-        Me.Trainee_RB.Location = New System.Drawing.Point(354, 333)
-        Me.Trainee_RB.Name = "Trainee_RB"
-        Me.Trainee_RB.Size = New System.Drawing.Size(97, 24)
-        Me.Trainee_RB.TabIndex = 109
-        Me.Trainee_RB.Text = "TRAINEE"
-        Me.Trainee_RB.UseVisualStyleBackColor = True
-        '
-        'Label11
-        '
-        Me.Label11.AutoSize = True
-        Me.Label11.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label11.ForeColor = System.Drawing.Color.LightSalmon
-        Me.Label11.Location = New System.Drawing.Point(23, 251)
-        Me.Label11.Name = "Label11"
-        Me.Label11.Size = New System.Drawing.Size(63, 16)
-        Me.Label11.TabIndex = 110
-        Me.Label11.Text = "Fullname"
-        '
-        'Started_DTP
-        '
-        Me.Started_DTP.CalendarFont = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Started_DTP.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Started_DTP.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.Started_DTP.Location = New System.Drawing.Point(119, 187)
-        Me.Started_DTP.Name = "Started_DTP"
-        Me.Started_DTP.Size = New System.Drawing.Size(161, 24)
-        Me.Started_DTP.TabIndex = 111
-        Me.Started_DTP.Value = New Date(2021, 9, 30, 8, 47, 4, 0)
-        '
-        'ColumnHeader1
-        '
-        Me.ColumnHeader1.Text = "Date Started"
-        Me.ColumnHeader1.Width = 120
-        '
-        'ColumnHeader4
-        '
-        Me.ColumnHeader4.Text = "Position"
-        Me.ColumnHeader4.Width = 100
-        '
-        'ColumnHeader5
-        '
-        Me.ColumnHeader5.Text = "TIN No."
-        Me.ColumnHeader5.Width = 150
-        '
-        'ColumnHeader9
-        '
-        Me.ColumnHeader9.Text = "SSS No."
-        Me.ColumnHeader9.Width = 150
-        '
-        'ColumnHeader10
-        '
-        Me.ColumnHeader10.Text = "PhilHealth No."
-        Me.ColumnHeader10.Width = 150
-        '
-        'ColumnHeader11
-        '
-        Me.ColumnHeader11.Text = "Pagibig No. "
-        Me.ColumnHeader11.Width = 150
-        '
         'frmNewEmployee
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -604,7 +590,6 @@ Partial Class frmNewEmployee
     Friend WithEvents Label10 As Label
     Friend WithEvents InActive_RB As RadioButton
     Friend WithEvents Active_RB As RadioButton
-    Friend WithEvents Trainee_RB As RadioButton
     Friend WithEvents Started_DTP As DateTimePicker
     Friend WithEvents Label11 As Label
     Friend WithEvents ColumnHeader1 As ColumnHeader

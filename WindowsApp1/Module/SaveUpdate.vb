@@ -209,13 +209,16 @@
     Public Function SBU_notFull(BIO_NO As String)
 
         Dim total_amount As Double = 0
+        Dim training_days As Integer = 0
 
         '================================== GET TOTAL_AMOUNT ================================ 
-        Dim mysql As String = $"Select COMPANY From PAYROLL_EMPLOYEE where BIO_NO = '{BIO_NO}' "
+        Dim mysql As String = $"Select COMPANY, DATE_STARTED From PAYROLL_EMPLOYEE where BIO_NO = '{BIO_NO}' "
         Using dss As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
             If dss.Tables(0).Rows.Count > 0 Then
                 Dim data As DataRow = dss.Tables(0).Rows(0)
                 With data
+
+                    '=============== SBU MAXIMUM LIMIT ================
                     If .Item("COMPANY") = "DALTON" Then
                         total_amount = 50000
                     ElseIf .Item("COMPANY") = "PHOTO" Then
@@ -223,25 +226,41 @@
                     Else
                         total_amount = 15000
                     End If
+
+                    '=============== TRAINING DAYS ================
+                    If .Item("COMPANY") = "DALTON" Or .Item("COMPANY") = "PHOTO" Or .Item("COMPANY") = "HEAD OFFICE" Then
+                        training_days = 15
+                    Else
+                        training_days = 30
+                    End If
+
+                    '=============== CALCULATE SBU ================ 
+                    Dim Started As DateTime = .Item("DATE_STARTED")
+                    Dim noOf_SBU As Integer = 0
+
+                    Dim count_days = New DateTime(Started.Year, Started.Month, Started.Day)
+                    count_days = count_days.AddDays(training_days)
+
+                    If Today >= count_days Then
+
+                        While (count_days < Today)
+                            count_days = count_days.AddDays(1)
+
+                            If count_days.Day = 15 Or count_days.Day = System.DateTime.DaysInMonth(count_days.Year, count_days.Month) Then
+                                noOf_SBU += 1
+                            End If
+                        End While
+
+                        Dim total_SBU As Double = noOf_SBU * SBU_Amount()
+
+                        '=============== IF NOT YET PAID INCLUDE SBU ================ 
+                        If total_SBU < total_amount Then
+                            Return True
+                        End If
+                    End If
                 End With
             End If
         End Using
-
-        '================================== SUM UP ALL IN HISTORY_DEDUCTION ================================  
-        If isExist_String("HISTORY_DEDUCTION", $"WHERE H_DEDUC_ID IS NULL") Then
-            Dim mysql_ As String = $"Select SUM(H_AMOUNT) as tots From HISTORY_DEDUCTION where H_DEDUC_ID IS NULL "
-            Using ds As DataSet = LoadSQL(mysql_, "HISTORY_DEDUCTION")
-                If ds.Tables(0).Rows.Count > 0 Then
-                    For Each drR In ds.Tables(0).Rows
-                        With drR
-                            If .item("tots") < total_amount Then    '====== IF GREATER OR EQUAL TO TOTAL AMOUNT OF DEDUCTION ====== 
-                                Return True
-                            End If
-                        End With
-                    Next
-                End If
-            End Using
-        End If
 
         Return False
     End Function
@@ -673,7 +692,7 @@
         End Using
     End Sub
 
-    Friend Sub SavePayout_IndividualL(bioNo As String, paydate_ As String) '========== AUTO SAVE TO PAYOUT ============  
+    Friend Sub SavePayout_IndividualL(bioNo As String, paydate_ As String, EndingDate As DateTime) '========== AUTO SAVE TO PAYOUT ============  
         Dim regHoliday = Holiday_Rate("REGULAR")
         Dim specHoliday = Holiday_Rate("SPECIAL")
         Dim SBU = SBU_Amount()
@@ -691,9 +710,33 @@
                     Dim UnderTime As String = ""
                     Dim rate, NoOfDays, RegularOT, SpecialHol, RegularHol As Double
                     Dim Allowances, Deduction As Double
+                    Dim training_days As Integer
 
                     rate = IIf(IsDBNull(.Item("RATE_DAILY")), 0, .Item("RATE_DAILY"))
                     Dim sched As String
+
+                    '====================================== GET TRAINING DAYS TO CALCULATE TRAINING FEE ===============================================
+                    If .Item("COMPANY") = "DALTON" Or .Item("COMPANY") = "PHOTO" Or .Item("COMPANY") = "HEAD OFFICE" Then
+                        training_days = 15
+                    Else
+                        training_days = 30
+                    End If
+
+                    Dim Started As DateTime = .Item("DATE_STARTED")
+                    Dim noOf_SBU As Integer = 0
+
+                    Dim count_days = New DateTime(Started.Year, Started.Month, Started.Day)
+
+                    count_days = count_days.AddDays(Today.Day)
+
+                    Dim days As Long = DateDiff(DateInterval.Day, Started, EndingDate)
+
+                    MsgBox(EndingDate)
+                    MsgBox((days).ToString)
+
+                    If days < training_days Then
+
+                    End If
 
                     '============================================= ATTENDANCE (TOTAL DAYS) =========================================================
                     Dim sql_1 As String = $"Select * From PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{bioNo}' and paydate = '{paydate_}'"
@@ -798,8 +841,8 @@
                             Next
                         End If
 
-                        '============================================= CHECK SBU TOTAL DISTRIBUTION IF ALREADY REACH THE LIMIT ========================================================= 
-                        If SBU_notFull(bioNo) Then
+
+                        If SBU_notFull(bioNo) Then '================ CHECK SBU TOTAL DISTRIB IF ALREADY REACH THE LIMIT ==============
                             Save_Recorded_Allow_Deduc(bioNo, paydate_, "SBU", SBU_Amount(), "DEDUCTION")
                         End If
 
@@ -986,7 +1029,7 @@
                             End If
 
 
-                            If SBU_notFull(bioNo) Then '================ CHECK SBU TOTAL DISTRIB IF ALREADY REACH THE LIMIT ==============
+                            If SBU_notFull(BiometricID) Then '================ CHECK SBU TOTAL DISTRIB IF ALREADY REACH THE LIMIT ==============
                                 Save_Recorded_Allow_Deduc(BiometricID, paydate_, "SBU", SBU_Amount(), "DEDUCTION")
                             End If
 
@@ -1060,7 +1103,10 @@
                 .Item("CATEGORY") = CATEGORY
                 .Item("AMOUNT") = AMOUNT
                 .Item("TRANSAC_NAME") = TRANSAC_NAME
-                .Item("R_DEDUC_ID") = R_DEDUC_ID
+
+                If R_DEDUC_ID <> Nothing Then
+                    .Item("R_DEDUC_ID") = R_DEDUC_ID
+                End If
 
             End With
             ds.Tables(0).Rows.Add(dsNewRow)
@@ -1339,7 +1385,7 @@
 
     End Sub
 
-    Public Sub SaveNew_Employee(COMPANY As String, BRANCH_CODE As String, FULLNAME As String, BIO_NO As String, EMAIL_ADD As String, EMP_STATUS As String, Optional group As Boolean = False)
+    Public Sub SaveNew_Employee(COMPANY As String, BRANCH_CODE As String, FULLNAME As String, BIO_NO As String, EMAIL_ADD As String, EMP_STATUS As String, Optional DATE_STARTED As String = "", Optional group As Boolean = False)
 
         Dim mysql As String
 
@@ -1354,6 +1400,10 @@
                 .Item("FULLNAME") = FULLNAME
                 .Item("EMAIL_ADD") = EMAIL_ADD
                 .Item("EMP_STATUS") = EMP_STATUS
+
+                If DATE_STARTED <> "" Then
+                    .Item("DATE_STARTED") = DATE_STARTED
+                End If
 
             End With
 
@@ -1376,6 +1426,10 @@
                     .Item("FULLNAME") = FULLNAME
                     .Item("EMAIL_ADD") = EMAIL_ADD
                     .Item("EMP_STATUS") = EMP_STATUS
+
+                    If DATE_STARTED <> "" Then
+                        .Item("DATE_STARTED") = DATE_STARTED
+                    End If
 
                 End With
                 dss.Tables(0).Rows.Add(dsNewRow)
