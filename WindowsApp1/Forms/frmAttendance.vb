@@ -289,11 +289,11 @@ Public Class frmAttendance
                 End If
 
 
-                CalculateLATE(row)
+                CalculateLATE(row, BiometricID_TXT.Text)
 
-                CalculateuNDERTIME(row)
+                CalculateuNDERTIME(row, BiometricID_TXT.Text)
 
-                CalculateuOVERTIME(row)
+                CalculateuOVERTIME(row, BiometricID_TXT.Text)
 
             End If
         Next
@@ -344,9 +344,9 @@ Public Class frmAttendance
         TotalDays_LBL.Text = product
     End Sub
 
-    Private Sub CalculateLATE(row As DataGridViewRow)
+    Private Sub CalculateLATE(row As DataGridViewRow, bio_No As String)
 
-        Dim TIME_IN As DateTime = GetTimeInOut(BiometricID_TXT.Text).Time_in
+        Dim TIME_IN As DateTime = GetTime_In(bio_No)
 
         '========================================================================= CELL NUMBER AM IN ===========================================================
         If Not row.Cells(1).Value = Nothing Then
@@ -377,10 +377,10 @@ Public Class frmAttendance
 
     End Sub
 
-    Private Sub CalculateuNDERTIME(row As DataGridViewRow)
+    Private Sub CalculateuNDERTIME(row As DataGridViewRow, bio_No As String)
 
-        Dim TIME_IN As DateTime = GetTimeInOut(BiometricID_TXT.Text).Time_in
-        Dim TIME_OUT As DateTime = GetTimeInOut(BiometricID_TXT.Text).Time_out
+        Dim TIME_IN As DateTime = GetTime_In(bio_No)
+        Dim TIME_OUT As DateTime = GetTime_Out(bio_No)
 
         '========================================================================= CELL NUMBER AM OUT ===========================================================
         If Not row.Cells(2).Value = Nothing Then
@@ -414,9 +414,9 @@ Public Class frmAttendance
 
     End Sub
 
-    Private Sub CalculateuOVERTIME(row As DataGridViewRow)
+    Private Sub CalculateuOVERTIME(row As DataGridViewRow, bio_No As String)
 
-        Dim TIME_OUT As DateTime = GetTimeInOut(BiometricID_TXT.Text).Time_out
+        Dim TIME_OUT As DateTime = GetTime_Out(bio_No)
         '========================================================================= CELL NUMBER PM OUT ===========================================================
         If Not row.Cells(4).Value = Nothing Then
 
@@ -1576,11 +1576,11 @@ Public Class frmAttendance
 
                     End If
 
-                    CalculateLATE(row)
+                    CalculateLATE(row, biometric_No)
 
-                    CalculateuNDERTIME(row)
+                    CalculateuNDERTIME(row, biometric_No)
 
-                    CalculateuOVERTIME(row)
+                    CalculateuOVERTIME(row, biometric_No)
 
                 End If
             Next

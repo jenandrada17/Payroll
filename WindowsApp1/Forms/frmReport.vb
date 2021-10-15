@@ -1,7 +1,7 @@
 ﻿Public Class frmReport
 
     Private Sub frmReport_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
+        PopulateComboBox(PaydateNet_ComboB, "PAYROLL_PAYOUT", "PAYDATE")
     End Sub
 
     Private Sub PreviewNet_BTN_Click(sender As Object, e As EventArgs) Handles PreviewNet_BTN.Click
@@ -25,53 +25,70 @@
         Dim GROUP As String = ""
 
         Try
-            Dim all_in As New dtr_all.overAllDataTable
+            Dim all_in As New reports.NetPayDataTable
 
-            Dim dt_DTR As New DataTable()
-            With dt_DTR
-                .Columns.Add("BIOMETRICID")
+            Dim dt_NetPay As New DataTable()
+            With dt_NetPay
+                .Columns.Add("EMP_NO")
                 .Columns.Add("FULLNAME")
-                .Columns.Add("PRESENT_DAYS")
+                .Columns.Add("BASIC")
                 .Columns.Add("OVERTIME")
-                .Columns.Add("LATE")
-                .Columns.Add("DATE_ONLY")
-                .Columns.Add("AM_IN")
-                .Columns.Add("AM_OUT")
-                .Columns.Add("PM_IN")
-                .Columns.Add("PM_OUT")
-                .Columns.Add("REGHOLIDAY")
-                .Columns.Add("SPECHOLIDAY")
+                .Columns.Add("HOLIDAY")
+                .Columns.Add("N_DIFF")
+                .Columns.Add("PI_ECOLA_SIL")
+                .Columns.Add("TARDINESS")
+                .Columns.Add("SSS")
+                .Columns.Add("PHIC")
+                .Columns.Add("PAGIBIG")
+                .Columns.Add("SBU_CHARGES")
+                .Columns.Add("NET_PAY")
+                .Columns.Add("BRANCH_CODE")
+                .Columns.Add("PAYDATE")
+                .Columns.Add("PERIOD")
+                .Columns.Add("RANGE")
+                .Columns.Add("COMPANY")
             End With
 
-            mysqll = $"Select A.*, B.FULLNAME, B.BIO_NO as bioNo, C.* From PAYROLL_PAYOUT A 
-                                        inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRICID 
+            mysqll = $"Select * From PAYROLL_PAYOUT A 
+                                        inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
                                         where A.PAYDATE  = '{paydatee}' ORDER BY COMPANY, BRANCH_CODE, FULLNAME ASC"
 
-            Using ds As DataSet = LoadSQL(mysqll, "PAYROLL_ATTENDANCE")
+            Using ds As DataSet = LoadSQL(mysqll, "PAYROLL_PAYOUT")
 
                 If ds.Tables(0).Rows.Count > 0 Then
 
                     For Each dr In ds.Tables(0).Rows
                         With dr
 
+                            Dim dateStarted As DateTime = .Item("DATE_STARTED")
+
+                            Dim year As String = dateStarted.ToString("yy")
+                            Dim month As String = dateStarted.ToString("MM")
+
+                            Dim EMP_NO As String = year & "-0" & month & "-" & .Item("BIOMETRIC_ID")
+
+                            Dim payroll As DateTime = paydatee
+
                             '============================= NAME AND ATTENDANCE ============================  
                             Dim namee As String = .Item("FULLNAME")
-                            Dim bioNo As String = .Item("bioNo")
-                            Dim DAYS As String = .Item("PRESENT_DAYS")
-                            Dim OT As String = IIf(.Item("OVERTIME") = 0, 0, .Item("OVERTIME"))
-                            Dim LATE As String = IIf(.Item("LATE").Equals("00:00:00"), "00:00:00", .Item("LATE").Substring(0, 5))
-                            Dim REGHOLIDAY As String = .Item("REGHOLIDAY")
-                            Dim SPECHOLIDAY As String = .Item("SPECHOLIDAY")
+                            Dim BASIC As String = .Item("TOTAL_BASIC")
+                            Dim OVERTIME As String = IIf(.Item("TOTAL_OVERTIME") = 0, "", .Item("TOTAL_OVERTIME"))
+                            Dim HOLIDAY As String = IIf(.Item("TOTAL_HOLIDAY") = 0, "", .Item("TOTAL_HOLIDAY"))
+                            Dim N_DIFF As String = IIf(.Item("TOTAL_NIGHT_RATE") = 0, "", .Item("TOTAL_NIGHT_RATE"))
+                            Dim PI_ECOLA_SIL As String = IIf(.Item("TOTAL_ALLOWANCE") = 0, "", .Item("TOTAL_ALLOWANCE"))
+                            Dim TARDINESS As String = IIf(.Item("TOTAL_LATE_UT") = 0, "", .Item("TOTAL_LATE_UT"))
+                            Dim SSS As String = IIf(.Item("SSS_COMP") = 0, "", .Item("SSS_COMP"))
+                            Dim PHIC As String = IIf(.Item("PHILHEALTH_COMP") = 0, "", .Item("PHILHEALTH_COMP"))
+                            Dim PAGIBIG As String = IIf(.Item("PAGIBIG_COMP") = 0, "", .Item("PAGIBIG_COMP"))
+                            Dim SBU_CHARGES As String = IIf(.Item("TOTAL_DEDUCTION") = 0, "", .Item("TOTAL_DEDUCTION"))
+                            Dim NET_PAY As String = IIf(.Item("NET_PAY") = 0, "", .Item("NET_PAY"))
+                            Dim BRANCH_CODE As String = .Item("BRANCH_CODE")
+                            Dim RANGE As String = ""
+                            Dim COMPANY As String = .Item("COMPANY")
 
-
-                            '============================= BIOMETRIC_DTR ============================
-                            Dim dateE As DateTime = Convert.ToDateTime(.Item("DATE_ONLY"))
-                            Dim AM_IN = IIf(IsDBNull(.Item("AM_IN")), "", .Item("AM_IN"))
-                            Dim AM_OUT = IIf(IsDBNull(.Item("AM_OUT")), "", .Item("AM_OUT"))
-                            Dim PM_IN = IIf(IsDBNull(.Item("PM_IN")), "", .Item("PM_IN"))
-                            Dim PM_OUT = IIf(IsDBNull(.Item("PM_OUT")), "", .Item("PM_OUT"))
-
-                            dt_DTR.Rows.Add(bioNo, namee, DAYS, OT, LATE, dateE.ToString("MMM dd, yyyy"), AM_IN, AM_OUT, PM_IN, PM_OUT, REGHOLIDAY, SPECHOLIDAY)
+                            dt_NetPay.Rows.Add(EMP_NO, namee, BASIC, OVERTIME, HOLIDAY, N_DIFF,
+                                               PI_ECOLA_SIL, TARDINESS, SSS, PHIC, PAGIBIG, SBU_CHARGES,
+                                               NET_PAY, BRANCH_CODE, payroll.ToString("MMMM dd, yyyy"), RANGE, COMPANY)
 
                         End With
                     Next
@@ -79,9 +96,9 @@
                 End If
             End Using
 
-            Dim rds_DTR As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt_DTR)
-            RptViewer_DTR.LocalReport.DataSources.Add(rds_DTR)
-            RptViewer_DTR.RefreshReport()
+            Dim rds_DTR As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt_NetPay)
+            ReportV_NetPay.LocalReport.DataSources.Add(rds_DTR)
+            ReportV_NetPay.RefreshReport()
 
         Catch ex As Exception
             Log_Report(ex.ToString)

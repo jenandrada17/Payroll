@@ -622,7 +622,7 @@
     Friend Sub SavePayout(BIOMETRIC_ID As String, PAYDATE As String, TOTAL_BASIC As String, TOTAL_OVERTIME As String, TOTAL_LATE_UT As String,
                           GROSS_AMOUNT As String, SSS_COMP As String, PAGIBIG_COMP As String, PHILHEALTH_COMP As String, TAX_WHELD As String,
                           NET_TAX_COMP As String, SSS_LOAN As String, PAGIBIG_LOAN As String, TOTAL_ALLOWANCE As String,
-                          TOTAL_DEDUCTION As String, NET_PAY As String, Optional all As String = "", Optional TOTAL_NIGHT_RATE As Double = 0)
+                          TOTAL_DEDUCTION As String, NET_PAY As String, HOLIDAY As String, TOTAL_NIGHT_RATE As String, Optional all As String = "")
 
         Dim mysql As String = $"Select * FROM PAYROLL_PAYOUT where BIOMETRIC_ID = '{BIOMETRIC_ID}' and PAYDATE = '{PAYDATE}'"
         Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
@@ -645,10 +645,8 @@
                     .Item("TOTAL_ALLOWANCE") = TOTAL_ALLOWANCE
                     .Item("TOTAL_DEDUCTION") = TOTAL_DEDUCTION
                     .Item("NET_PAY") = NET_PAY
-
-                    If TOTAL_NIGHT_RATE <> 0 Then
-                        .Item("TOTAL_NIGHT_RATE") = TOTAL_NIGHT_RATE
-                    End If
+                    .Item("TOTAL_NIGHT_RATE") = TOTAL_NIGHT_RATE
+                    .Item("TOTAL_HOLIDAY") = HOLIDAY
 
                 End With
                 SaveEntry(dss, False)
@@ -681,10 +679,8 @@
                     .Item("TOTAL_DEDUCTION") = TOTAL_DEDUCTION
                     .Item("PAYDATE") = PAYDATE
                     .Item("NET_PAY") = NET_PAY
-
-                    If TOTAL_NIGHT_RATE <> 0 Then
-                        .Item("TOTAL_NIGHT_RATE") = TOTAL_NIGHT_RATE
-                    End If
+                    .Item("TOTAL_NIGHT_RATE") = TOTAL_NIGHT_RATE
+                    .Item("TOTAL_HOLIDAY") = HOLIDAY
 
                 End With
 
@@ -860,7 +856,7 @@
                                 RegularHol = .Item("REGHOLIDAY")
                                 Late = .Item("LATE")
                                 UnderTime = .Item("UNDERTIME")
-                                nightRate = IIf(IsDBNull(.Item("NIGHT_RATE")), 0, .Item("NIGHT_RATE"))
+                                nightRate = .Item("NIGHT_RATE")
                             End With
                         End If
                     End Using
@@ -989,7 +985,7 @@
 
                     TotalOT = ((rate / 8) * 1.25) * RegularOT ' =========== CALCULATE OVERTIME TO PESO ===========
 
-                    TotalNight = (((rate / 8) * 0.1) * nightRate).ToString("N") ' =========== CALCULATE NIGHT RATE TO PESO ===========
+                    TotalNight = ((rate / 8) * 0.1) * nightRate ' =========== CALCULATE NIGHT RATE TO PESO ===========
 
                     Dim late_split() As String, under_split() As String, lateTOMinute, underToMinute As Double
 
@@ -1028,7 +1024,7 @@
                     SavePayout(bioNo, paydate_, TotalBasic, TotalOT,
                                   TotalLateUnder, GrossAmount, SSSComp, PagibigComp, PhilhealthComp,
                                   Tax_Wheld, netTax, sssLoan, pagibigLoan,
-                                  Allowances, Deduction, NetPay, "", TotalNight)
+                                  Allowances, Deduction, NetPay, TotalHol, TotalNight)
                 End With
             End If
         End Using
@@ -1283,7 +1279,7 @@
                         SavePayout(BiometricID, paydate_, TotalBasic, TotalOT,
                                   TotalLateUnder, GrossAmount, SSSComp, PagibigComp, PhilhealthComp,
                                   Tax_Wheld, netTax, sssLoan, pagibigLoan,
-                                  Allowances, Deduction, NetPay, "Group")
+                                  Allowances, Deduction, NetPay, TotalHol, 0, "Group")
 
                         frmMainForm.AppProgressBar.Value += 1
                     End With
@@ -1428,7 +1424,7 @@
         Next
 
         MsgBox("Successfully Saved!", MsgBoxStyle.Information, "Information")
-        RunCommand("DELETE FROM PAYROLL_WHOLDING WHERE COMP_RANGE is null")
+        RunCommand("DELETE FROM PAYROLL_WHOLDING WHERE COMP_RANGE Is null")
 
     End Sub
 

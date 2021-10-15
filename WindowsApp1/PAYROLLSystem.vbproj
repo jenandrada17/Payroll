@@ -143,6 +143,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>reports.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Dataset\reports.vb">
+      <DependentUpon>reports.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Forms\frmAttendance.Designer.vb">
       <DependentUpon>frmAttendance.vb</DependentUpon>
     </Compile>

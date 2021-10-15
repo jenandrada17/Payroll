@@ -239,7 +239,7 @@ Public Class frmPayout
                 SavePayout(BIO_NO, paydate_, TotalBasic_LBL.Text, TotalOT_LBL.Text,
                   TotalLateUnder_LBL.Text, GrossAmount_LBL.Text, SSSComp_LBL.Text, HDMF_LBL.Text, Philhealth_LBL.Text,
                   Tax_Wheld_LBL.Text, NetTax_LBL.Text, SSSLoan_LBL.Text, PagibigLoan_LBL.Text,
-                  Allowances_LBL.Text, Deduction_LBL.Text, NetPay_LBL.Text, "", TotalNight_LBL.Text)
+                  Allowances_LBL.Text, Deduction_LBL.Text, NetPay_LBL.Text, TotalHol_LBL.Text, TotalNight_LBL.Text, "")
 
                 If Deduction_grid.Rows.Count > 0 Then
 

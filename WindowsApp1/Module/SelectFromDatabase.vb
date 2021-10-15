@@ -2146,26 +2146,71 @@ Module SelectFromDatabase
     End Sub
 
     Public Function GetTimeInOut(BIO_NO As String) As (Time_in As DateTime, Time_out As DateTime)
-        Dim inn As DateTime = New DateTime(Today.Year, Today.Month, Today.Day, 8, 0, 0)
-        Dim outt As DateTime = New DateTime(Today.Year, Today.Month, Today.Day, 17, 0, 0)
+        Dim inn As DateTime
+        Dim outt As DateTime
 
-        Dim mysql As String = $"Select * FROM  PAYROLL_EMPLOYEE WHERE BIO_NO = '{BIO_NO}'"
+        Dim mysql As String = $"Select TIME_IN, TIME_OUT FROM  PAYROLL_EMPLOYEE WHERE BIO_NO = '{BIO_NO}'"
         Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
         If ds.Tables(0).Rows.Count > 0 Then
             Dim dr As DataRow = ds.Tables(0).Rows(0)
             With dr
 
-                If Not IsDBNull(.Item("TIME_IN")) Then
+                If IsDBNull(.Item("TIME_IN")) Then
+                    inn = New DateTime(Now.Year, Now.Month, Now.Day, 8, 0, 0, 0)
+                Else
                     inn = .Item("TIME_IN")
                 End If
 
-                If Not IsDBNull(.Item("TIME_OUT")) Then
+                If IsDBNull(.Item("TIME_OUT")) Then
+                    outt = New DateTime(Now.Year, Now.Month, Now.Day, 17, 0, 0, 0)
+                Else
                     outt = .Item("TIME_OUT")
                 End If
 
             End With
         End If
+
         Return (inn, outt)
+    End Function
+
+    Public Function GetTime_In(BIO_NO As String)
+        Dim inn As DateTime
+
+        Dim mysql As String = $"Select TIME_IN FROM  PAYROLL_EMPLOYEE WHERE BIO_NO = '{BIO_NO}'"
+        Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+        If ds.Tables(0).Rows.Count > 0 Then
+            Dim dr As DataRow = ds.Tables(0).Rows(0)
+            With dr
+
+                If IsDBNull(.Item("TIME_IN")) Then
+                    inn = New DateTime(Now.Year, Now.Month, Now.Day, 8, 0, 0, 0)
+                Else
+                    inn = .Item("TIME_IN")
+                End If
+
+            End With
+        End If
+        Return inn
+    End Function
+
+    Public Function GetTime_Out(BIO_NO As String)
+        Dim outt As DateTime
+
+        Dim mysql As String = $"Select TIME_OUT FROM  PAYROLL_EMPLOYEE WHERE BIO_NO = '{BIO_NO}'"
+        Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+        If ds.Tables(0).Rows.Count > 0 Then
+            Dim dr As DataRow = ds.Tables(0).Rows(0)
+            With dr
+
+                If IsDBNull(.Item("TIME_OUT")) Then
+                    outt = New DateTime(Now.Year, Now.Month, Now.Day, 17, 0, 0, 0)
+                Else
+                    outt = .Item("TIME_OUT")
+                End If
+
+            End With
+        End If
+        Return outt
     End Function
 
 
