@@ -1216,6 +1216,21 @@ Module SelectFromDatabase
         End While
     End Sub
 
+    Public Sub PopulateComboBox_BRANCH(combo As ComboBox, table As String, column As String)
+        Dim sql As String = $"select distinct({column}) from {table}"
+        Dim rdr As FbDataReader = LoadSQL_byDataReader(sql)
+        combo.Items.Clear()
+        While rdr.Read()
+            If rdr.HasRows Then
+                With rdr
+                    combo.Items.Add(rdr.Item(0).ToString)
+                End With
+            Else
+                Exit Sub
+            End If
+        End While
+    End Sub
+
     Public Function CountCELL_Nothing(row As DataGridViewRow) As Integer
 
         Dim count As New Integer
@@ -2070,6 +2085,89 @@ Module SelectFromDatabase
 
         Return False
     End Function
+
+
+    Friend Sub Lists_TimeInOut(listview As ListView, Optional searchName As String = "")
+
+        Dim secured_str As String = searchName
+        secured_str = DreadKnight(secured_str)
+        Dim strWords As String() = secured_str.Split(New Char() {" "c})
+        Dim name As String
+        Dim mysql As String
+
+        If searchName.Length <> 0 Then
+
+            mysql = $"Select * From PAYROLL_EMPLOYEE where "
+
+            For Each name In strWords
+                mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(BRANCH_CODE) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(FULLNAME) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(BIO_NO) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(EMP_STATUS) LIKE UPPER('%{name}%') ORDER BY COMPANY, BRANCH_CODE ASC "
+            Next
+
+        Else
+            mysql = $"Select * From PAYROLL_EMPLOYEE ORDER BY COMPANY, BRANCH_CODE ASC "
+        End If
+
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+            If ds.Tables(0).Rows.Count > 0 Then
+
+                listview.Items.Clear()
+                progressBarStart(ds.Tables(0).Rows.Count)
+
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+
+                        Dim TIME_IN, TIME_OUT As DateTime
+
+                        Dim i As ListViewItem = listview.Items.Add(.Item("BRANCH_CODE"))
+                        i.SubItems.Add(.Item("FULLNAME"))
+
+                        If Not IsDBNull(.Item("TIME_IN")) Then
+                            TIME_IN = .Item("TIME_IN")
+                            i.SubItems.Add(TIME_IN.ToShortTimeString)
+                        End If
+
+                        If Not IsDBNull(.Item("TIME_OUT")) Then
+                            TIME_OUT = .Item("TIME_OUT")
+                            i.SubItems.Add(TIME_OUT.ToShortTimeString)
+                        End If
+
+                    End With
+
+                    frmMainForm.AppProgressBar.Value += 1
+                Next
+            End If
+        End Using
+
+        progressBarEnd()
+    End Sub
+
+    Public Function GetTimeInOut(BIO_NO As String) As (Time_in As DateTime, Time_out As DateTime)
+        Dim inn As DateTime = New DateTime(Today.Year, Today.Month, Today.Day, 8, 0, 0)
+        Dim outt As DateTime = New DateTime(Today.Year, Today.Month, Today.Day, 17, 0, 0)
+
+        Dim mysql As String = $"Select * FROM  PAYROLL_EMPLOYEE WHERE BIO_NO = '{BIO_NO}'"
+        Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+        If ds.Tables(0).Rows.Count > 0 Then
+            Dim dr As DataRow = ds.Tables(0).Rows(0)
+            With dr
+
+                If Not IsDBNull(.Item("TIME_IN")) Then
+                    inn = .Item("TIME_IN")
+                End If
+
+                If Not IsDBNull(.Item("TIME_OUT")) Then
+                    outt = .Item("TIME_OUT")
+                End If
+
+            End With
+        End If
+        Return (inn, outt)
+    End Function
+
 
     Public Sub Replacing(str As String)
         RunCommand($"DELETE FROM {str}")  'THIS IS TO DELETE EXISTING DATA TO REPLACE ESPECIALLY FROM DATAGRID

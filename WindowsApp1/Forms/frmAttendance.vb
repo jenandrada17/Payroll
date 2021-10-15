@@ -320,24 +320,14 @@ Public Class frmAttendance
 
         '===================================== SUM UP PRESENT AND ABSENT ==================================== 
         Dim Present As Integer = 0
-        Dim Absent As Integer = 0
         For Each oRow As DataGridViewRow In DataGridView1.Rows
 
             If oRow.Cells(5).Value = True Then
                 Present += 1
             End If
-            'If Not oRow.DefaultCellStyle.ForeColor = Color.Red And oRow.Cells(5).Value = True Then
-            '    Present += 1
-            'ElseIf Not oRow.DefaultCellStyle.ForeColor = Color.Red And oRow.Cells(5).Value = False Then
-            '    If Not oRow.DefaultCellStyle.BackColor = Color.MediumOrchid Or Not oRow.DefaultCellStyle.BackColor = Color.Plum Then
-            '        Absent += 1
-            '    End If
-            'End If
         Next
 
         TotalDays_LBL.Text = Present
-        'TotalAbsent_LBL.Text = Absent
-
 
         '===================================== SUM UP HALF DAY ====================================  
         Dim halfday_Hour As Integer = 0
@@ -348,18 +338,6 @@ Public Class frmAttendance
             End If
         Next
 
-        'If halfday_Hour = 4 Then
-
-        '    TotalAbsent_LBL.Text = Convert.ToInt32(TotalAbsent_LBL.Text) + 0.5
-
-        'ElseIf halfday_Hour > 4 Then
-
-        '    Dim result As Integer
-        '    result = halfday_Hour / 8
-
-        '    TotalAbsent_LBL.Text = result + Convert.ToInt32(TotalAbsent_LBL.Text)
-        'End If
-
         Dim product As Double
         product = ((Convert.ToInt32(TotalDays_LBL.Text) * 8)) - halfday_Hour
         product = product / 8
@@ -368,14 +346,15 @@ Public Class frmAttendance
 
     Private Sub CalculateLATE(row As DataGridViewRow)
 
+        Dim TIME_IN As DateTime = GetTimeInOut(BiometricID_TXT.Text).Time_in
+
         '========================================================================= CELL NUMBER AM IN ===========================================================
         If Not row.Cells(1).Value = Nothing Then
 
-            Dim inHour = New DateTime(Now.Year, Now.Month, Now.Day, 8, 0, 0, 0).ToString("t")
-            Dim lateHour As TimeSpan = DateTime.Parse(row.Cells(1).Value).Subtract(DateTime.Parse(inHour))
+            Dim lateHour As TimeSpan = DateTime.Parse(row.Cells(1).Value).Subtract(DateTime.Parse(TIME_IN.ToShortTimeString))
 
             Dim cellValue As DateTime = row.Cells(1).Value
-            Dim limit As DateTime = "7:59 AM"
+            Dim limit As DateTime = (TIME_IN.AddMinutes(-1)).ToShortTimeString
 
             If cellValue > limit Then
                 late_count.Add(lateHour)
@@ -385,11 +364,11 @@ Public Class frmAttendance
         '========================================================================= CELL NUMBER PM IN ===========================================================
         If Not row.Cells(3).Value = Nothing Then
 
-            Dim inHourr = New DateTime(Now.Year, Now.Month, Now.Day, 13, 0, 0, 0).ToString("t")
-            Dim lateHourr As TimeSpan = DateTime.Parse(row.Cells(3).Value).Subtract(DateTime.Parse(inHourr))
+            TIME_IN = TIME_IN.AddHours(5)
+            Dim lateHourr As TimeSpan = DateTime.Parse(row.Cells(3).Value).Subtract(DateTime.Parse(TIME_IN.ToShortTimeString))
 
             Dim cellValue As DateTime = row.Cells(3).Value
-            Dim limit As DateTime = "12:59 PM"
+            Dim limit As DateTime = TIME_IN.AddMinutes(-1).ToShortTimeString
 
             If cellValue > limit Then
                 late_count.Add(lateHourr)
@@ -400,14 +379,17 @@ Public Class frmAttendance
 
     Private Sub CalculateuNDERTIME(row As DataGridViewRow)
 
+        Dim TIME_IN As DateTime = GetTimeInOut(BiometricID_TXT.Text).Time_in
+        Dim TIME_OUT As DateTime = GetTimeInOut(BiometricID_TXT.Text).Time_out
+
         '========================================================================= CELL NUMBER AM OUT ===========================================================
         If Not row.Cells(2).Value = Nothing Then
 
-            Dim inHour = New DateTime(Now.Year, Now.Month, Now.Day, 12, 0, 0, 0).ToString("t")
-            Dim underHour As TimeSpan = DateTime.Parse(inHour).Subtract(DateTime.Parse(row.Cells(2).Value))
+            TIME_IN = TIME_IN.AddHours(4)
+            Dim underHour As TimeSpan = DateTime.Parse(TIME_IN.ToShortTimeString).Subtract(DateTime.Parse(row.Cells(2).Value))
 
             Dim cellValue As DateTime = row.Cells(2).Value
-            Dim limit As DateTime = "12:00 PM"
+            Dim limit As DateTime = TIME_IN.ToShortTimeString
 
             If cellValue < limit Then
                 under_count.Add(underHour)
@@ -418,12 +400,11 @@ Public Class frmAttendance
         '========================================================================= CELL NUMBER PM OUT ===========================================================
         If Not row.Cells(4).Value = Nothing Then
 
-            Dim inHour = New DateTime(Now.Year, Now.Month, Now.Day, 17, 0, 0, 0).ToString("t")
-            Dim underHour As TimeSpan = DateTime.Parse(inHour).Subtract(DateTime.Parse(row.Cells(4).Value))
+            Dim underHour As TimeSpan = DateTime.Parse(TIME_OUT.ToShortTimeString).Subtract(DateTime.Parse(row.Cells(4).Value))
 
 
             Dim cellValue As DateTime = row.Cells(4).Value
-            Dim limit As DateTime = "17:00 PM"
+            Dim limit As DateTime = TIME_OUT.ToShortTimeString
 
             If cellValue < limit Then
                 under_count.Add(underHour)
@@ -434,11 +415,12 @@ Public Class frmAttendance
     End Sub
 
     Private Sub CalculateuOVERTIME(row As DataGridViewRow)
+
+        Dim TIME_OUT As DateTime = GetTimeInOut(BiometricID_TXT.Text).Time_out
         '========================================================================= CELL NUMBER PM OUT ===========================================================
         If Not row.Cells(4).Value = Nothing Then
 
-            Dim inHour = New DateTime(Now.Year, Now.Month, Now.Day, 17, 0, 0, 0).ToString("t")
-            Dim OTHour As TimeSpan = DateTime.Parse(row.Cells(4).Value).Subtract(DateTime.Parse(inHour))
+            Dim OTHour As TimeSpan = DateTime.Parse(row.Cells(4).Value).Subtract(DateTime.Parse(TIME_OUT.ToShortTimeString))
 
             If OTHour.Hours > 0 Then
 
@@ -446,10 +428,6 @@ Public Class frmAttendance
             End If
 
         End If
-
-        'Dim hourss As DateTime
-        'hourss = hourss.AddHours(row.Cells(1).Value, row.Cells(4).Value)
-
     End Sub
 
     Private Sub Cancel_BTN_Click(sender As Object, e As EventArgs) Handles Cancel_BTN.Click

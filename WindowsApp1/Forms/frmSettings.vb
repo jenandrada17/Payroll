@@ -3,6 +3,7 @@
 Public Class frmSettings
 
     Private Sub frmSettings_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
         Date_DTP.CustomFormat = "MM/yyyy"
 
         If ThisHasRow("PAYROLL_HOLIDAY_RATE") Then
@@ -18,16 +19,22 @@ Public Class frmSettings
         End If
 
         PopulateComboBox(Rate_Branch_ComboB, "PAYROLL_EMPLOYEE", "BRANCH_CODE")
-        PopulateComboBox(ClockBranch_CB, "PAYROLL_EMPLOYEE", "BRANCH_CODE")
+        PopulateComboBox_BRANCH(ClockBranch_CB, "PAYROLL_EMPLOYEE", "BRANCH_CODE")
         PopulateComboBox(Allow_Category_Combo, "CATEGORY_ALLOWANCE", "ALLOWANCE_NAME")
         PopulateComboBox(DE_Category_Combo, "CATEGORY_DEDUCTION", "DEDUCTION_NAME")
         Lists_Rate(Rate_list)
         Lists_Allowance(Allowance_LV)
         Lists_deduction(Deduction_List)
-        Lists_SBU(SBU_LV)
+        'Lists_SBU(SBU_LV)
+        Lists_TimeInOut(TimeInOut_LV)
         Load_Category_LIST(Allowance_List, "CATEGORY_ALLOWANCE", "ALLOWANCE_NAME")
         Load_Category_LIST(Cat_Deduc_List, "CATEGORY_DEDUCTION", "DEDUCTION_NAME")
 
+        For x = 0 To 23
+            Dim tm As New Date(1, 1, 1, x, 0, 0)
+            ClockBranch_IN_CB.Items.Add(tm.ToShortTimeString)
+            ClockBranch_OUT_CB.Items.Add(tm.ToShortTimeString)
+        Next
     End Sub
 
     Private Sub Close_LBL_Click(sender As Object, e As EventArgs) Handles Close_LBL.Click
@@ -598,39 +605,6 @@ Public Class frmSettings
         End If
     End Sub
 
-    Public Sub Load_Settings(emp As Employee, tabName As String, Optional category As String = "")
-        With emp
-
-            If tabName = "RATE" Then
-
-                Rate_BioNo_TXT.Text = .BiometricID
-                Rate_BioNo_TXT.Tag = .BRANCH_CODE
-                Rate_Employee_TXT.Text = .Fullname
-                Rate_Employee_TXT.Tag = .EMP_ID
-
-            ElseIf tabName = "ALLOWANCE" Then
-
-                Allow_Name_TXT.Text = .Fullname
-                Allow_Name_TXT.Tag = .BiometricID
-                Allow_SearchEmp_BTN.Tag = .BRANCH_CODE
-                Label14.Tag = .EMP_ID
-                Settings_Tab.SelectedIndex = 2
-                Allow_Category_Combo.SelectedItem = category
-
-            ElseIf tabName = "DEDUCTION" Then
-
-                DE_Name_TXT.Text = .Fullname
-                DE_Category_Combo.Tag = .EMP_ID
-                DE_Name_TXT.Tag = .BiometricID
-                DE_SearchEmp_BTN.Tag = .BRANCH_CODE
-                Settings_Tab.SelectedIndex = 3
-                DE_Category_Combo.SelectedItem = category
-
-            End If
-
-        End With
-    End Sub
-
     Private Sub Daily_BTN_Click(sender As Object, e As EventArgs) Handles Daily_BTN.Click
         Rate_EmpAmount_TXT.ReadOnly = False
         MonthlyRate_TXT.ReadOnly = True
@@ -725,5 +699,107 @@ Public Class frmSettings
             Clock_IN_Details(ClockBio_TXT.Text, ClockEmp_TXT, ClockEmp_IN_CB, ClockEmp_OUT_CB)
         End If
 
+    End Sub
+
+    Private Sub ClockBranch_BTN_Click(sender As Object, e As EventArgs) Handles ClockBranch_BTN.Click
+
+        If ClockBranch_CB.SelectedIndex >= 0 And ClockBranch_IN_CB.SelectedIndex >= 0 And ClockBranch_OUT_CB.SelectedIndex >= 0 Then
+            Save_ClockINOUT("BRANCH_CODE", ClockBranch_CB.Text, ClockBranch_IN_CB.Text, ClockBranch_OUT_CB.Text)
+            Lists_TimeInOut(TimeInOut_LV)
+            ClearlBranch_BTN.PerformClick()
+        End If
+
+    End Sub
+
+    Private Sub ClockSave_BTN_Click(sender As Object, e As EventArgs) Handles ClockSave_BTN.Click
+
+        If ClockEmp_TXT.Text <> "" And ClockEmp_IN_CB.SelectedIndex >= 0 And ClockEmp_OUT_CB.SelectedIndex >= 0 Then
+            Save_ClockINOUT("BIO_NO", ClockBio_TXT.Text, ClockEmp_IN_CB.Text, ClockEmp_OUT_CB.Text)
+            Lists_TimeInOut(TimeInOut_LV)
+            ClockClear_BTN.PerformClick()
+        End If
+
+    End Sub
+
+    Private Sub ClockClear_BTN_Click(sender As Object, e As EventArgs) Handles ClockClear_BTN.Click
+        ClockBio_TXT.Clear()
+        ClockEmp_TXT.Clear()
+        ClockEmp_IN_CB.SelectedIndex = -1
+        ClockEmp_OUT_CB.SelectedIndex = -1
+    End Sub
+
+    Private Sub ClearlBranch_BTN_Click(sender As Object, e As EventArgs) Handles ClearlBranch_BTN.Click
+        ClockBranch_CB.SelectedIndex = -1
+        ClockBranch_IN_CB.SelectedIndex = -1
+        ClockBranch_OUT_CB.SelectedIndex = -1
+    End Sub
+
+    Private Sub ClockSearch_BTN_Click(sender As Object, e As EventArgs) Handles ClockSearch_BTN.Click
+        Try
+            Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmNewEmployee").SingleOrDefault()
+            If instForm Is Nothing Then
+                Dim frm As frmNewEmployee
+                frm = DirectCast(CreateObjectInstance("frmNewEmployee"), Form)
+                frm.MdiParent = frmMainForm
+                frmMainForm.pNavigate.Controls.Add(frm)
+                frmMainForm.pNavigate.Tag = frm
+                frm.txtSearch.Tag = "Settings-TimeInOUt"
+                frm.Dock = DockStyle.Fill
+                frm.BringToFront()
+                frm.Show()
+            Else
+                instForm.BringToFront()
+            End If
+
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    Public Sub Load_Settings(emp As Employee, tabName As String, Optional category As String = "")
+        With emp
+
+            If tabName = "RATE" Then
+
+                Rate_BioNo_TXT.Text = .BiometricID
+                Rate_BioNo_TXT.Tag = .BRANCH_CODE
+                Rate_Employee_TXT.Text = .Fullname
+                Rate_Employee_TXT.Tag = .EMP_ID
+
+            ElseIf tabName = "ALLOWANCE" Then
+
+                Allow_Name_TXT.Text = .Fullname
+                Allow_Name_TXT.Tag = .BiometricID
+                Allow_SearchEmp_BTN.Tag = .BRANCH_CODE
+                Label14.Tag = .EMP_ID
+                Settings_Tab.SelectedIndex = 2
+                Allow_Category_Combo.SelectedItem = category
+
+            ElseIf tabName = "DEDUCTION" Then
+
+                DE_Name_TXT.Text = .Fullname
+                DE_Category_Combo.Tag = .EMP_ID
+                DE_Name_TXT.Tag = .BiometricID
+                DE_SearchEmp_BTN.Tag = .BRANCH_CODE
+                Settings_Tab.SelectedIndex = 3
+                DE_Category_Combo.SelectedItem = category
+
+            ElseIf tabName = "TIMEIN/OUT" Then
+
+                ClockEmp_TXT.Text = .Fullname
+                ClockBio_TXT.Text = .BiometricID
+                ClockEmp_IN_CB.Text = .TIME_IN
+                ClockEmp_OUT_CB.Text = .TIME_OUT
+            End If
+
+        End With
+    End Sub
+
+    Private Sub SearchTime_BTN_Click(sender As Object, e As EventArgs) Handles SearchTime_BTN.Click
+        Lists_TimeInOut(TimeInOut_LV, SearchTime_TXT.Text)
+    End Sub
+
+    Private Sub SearchTime_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles SearchTime_TXT.KeyPress
+        If IsEnter(e) Then SearchTime_BTN.PerformClick()
     End Sub
 End Class

@@ -380,6 +380,11 @@ Public Class frmNewEmployee
             SwitchForm_Settings(FormName.Settings, tmpEmp, "DEDUCTION")
             Close()
 
+        ElseIf txtSearch.Tag = "Settings-TimeInOUt" Then
+
+            SwitchForm_Settings(FormName.Settings, tmpEmp, "TIMEIN/OUT")
+            Close()
+
         ElseIf txtSearch.Tag = "SSS Loan" Then
 
             SwitchForm_Loans(FormName.Loans, tmpEmp, "SSS")

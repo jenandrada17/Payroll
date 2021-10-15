@@ -130,7 +130,7 @@ Public Class frmMainForm
     End Sub
 
     Private Sub Paysilp_BTN_Click(sender As Object, e As EventArgs) Handles Paysilp_BTN.Click
-        'OpenWindowsForm("frmPayslip")
+        OpenWindowsForm("frmReport")
     End Sub
 
     Private Sub Loan_BTN_Click(sender As Object, e As EventArgs) Handles Loan_BTN.Click

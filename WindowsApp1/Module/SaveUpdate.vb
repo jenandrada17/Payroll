@@ -1744,4 +1744,24 @@
 
     End Sub
 
+    Friend Sub Save_ClockINOUT(column As String, columnValue As String, TIME_IN As String, TIME_OUT As String)
+        Dim mysql As String
+
+        mysql = $"Select * FROM PAYROLL_EMPLOYEE where {column} = '{columnValue}'"
+        Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+        If ds.Tables(0).Rows.Count > 0 Then
+            For Each dr In ds.Tables(0).Rows
+                With dr
+                    .Item("TIME_IN") = TIME_IN
+                    .Item("TIME_OUT") = TIME_OUT
+
+                End With
+
+                SaveEntry(ds, False)
+            Next
+
+            MsgBox("Successfully Updated!", MsgBoxStyle.Information, "Information")
+        End If
+    End Sub
+
 End Module

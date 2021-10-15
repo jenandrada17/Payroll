@@ -138,6 +138,11 @@
     <Compile Include="Dataset\payslip.vb">
       <DependentUpon>payslip.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Dataset\reports.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>reports.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Forms\frmAttendance.Designer.vb">
       <DependentUpon>frmAttendance.vb</DependentUpon>
     </Compile>
@@ -179,6 +184,12 @@
       <DependentUpon>frmPayout.vb</DependentUpon>
     </Compile>
     <Compile Include="Forms\frmPayout.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmReport.Designer.vb">
+      <DependentUpon>frmReport.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmReport.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\frmSettings.Designer.vb">
@@ -232,6 +243,9 @@
     <EmbeddedResource Include="Forms\frmPayout.resx">
       <DependentUpon>frmPayout.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmReport.resx">
+      <DependentUpon>frmReport.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmSettings.resx">
       <DependentUpon>frmSettings.vb</DependentUpon>
     </EmbeddedResource>
@@ -243,6 +257,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\rptDTR_All.rdlc" />
     <EmbeddedResource Include="Reports\rpt_DTR_ByGroup.rdlc" />
+    <EmbeddedResource Include="Reports\rpt_NetPay.rdlc" />
     <EmbeddedResource Include="Reports\rpt_payslip.rdlc" />
   </ItemGroup>
   <ItemGroup>
@@ -267,6 +282,17 @@
     </None>
     <None Include="Dataset\payslip.xss">
       <DependentUpon>payslip.xsd</DependentUpon>
+    </None>
+    <None Include="Dataset\reports.xsc">
+      <DependentUpon>reports.xsd</DependentUpon>
+    </None>
+    <None Include="Dataset\reports.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>reports.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Dataset\reports.xss">
+      <DependentUpon>reports.xsd</DependentUpon>
     </None>
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
