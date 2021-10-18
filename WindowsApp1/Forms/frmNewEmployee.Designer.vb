@@ -27,6 +27,7 @@ Partial Class frmNewEmployee
         Me.ColumnHeader3 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader6 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader7 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader12 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader8 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader4 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -49,6 +50,12 @@ Partial Class frmNewEmployee
         Me.Save_BTN = New System.Windows.Forms.Button()
         Me.Add_BTN = New System.Windows.Forms.Button()
         Me.Add_Panel = New System.Windows.Forms.Panel()
+        Me.Label14 = New System.Windows.Forms.Label()
+        Me.Label13 = New System.Windows.Forms.Label()
+        Me.TimeOut_Combo = New System.Windows.Forms.ComboBox()
+        Me.TimeIn_Combo = New System.Windows.Forms.ComboBox()
+        Me.Label12 = New System.Windows.Forms.Label()
+        Me.EmpNo_TXT = New System.Windows.Forms.TextBox()
         Me.Started_DTP = New System.Windows.Forms.DateTimePicker()
         Me.Label11 = New System.Windows.Forms.Label()
         Me.InActive_RB = New System.Windows.Forms.RadioButton()
@@ -77,7 +84,7 @@ Partial Class frmNewEmployee
         Me.lvEmployee.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.lvEmployee.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader2, Me.ColumnHeader3, Me.ColumnHeader6, Me.ColumnHeader7, Me.ColumnHeader8, Me.ColumnHeader1, Me.ColumnHeader4, Me.ColumnHeader5, Me.ColumnHeader9, Me.ColumnHeader10, Me.ColumnHeader11})
+        Me.lvEmployee.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader2, Me.ColumnHeader3, Me.ColumnHeader6, Me.ColumnHeader7, Me.ColumnHeader12, Me.ColumnHeader8, Me.ColumnHeader1, Me.ColumnHeader4, Me.ColumnHeader5, Me.ColumnHeader9, Me.ColumnHeader10, Me.ColumnHeader11})
         Me.lvEmployee.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lvEmployee.FullRowSelect = True
         Me.lvEmployee.GridLines = True
@@ -109,6 +116,11 @@ Partial Class frmNewEmployee
         '
         Me.ColumnHeader7.Text = "Bio No."
         Me.ColumnHeader7.Width = 100
+        '
+        'ColumnHeader12
+        '
+        Me.ColumnHeader12.Text = "EMP NO."
+        Me.ColumnHeader12.Width = 120
         '
         'ColumnHeader8
         '
@@ -209,7 +221,7 @@ Partial Class frmNewEmployee
         Me.Excel_Panel.Controls.Add(Me.Path_TXT)
         Me.Excel_Panel.Controls.Add(Me.Browse_BTN)
         Me.Excel_Panel.Controls.Add(Me.Save_BTN)
-        Me.Excel_Panel.Location = New System.Drawing.Point(212, 143)
+        Me.Excel_Panel.Location = New System.Drawing.Point(20, 575)
         Me.Excel_Panel.Name = "Excel_Panel"
         Me.Excel_Panel.Size = New System.Drawing.Size(756, 78)
         Me.Excel_Panel.TabIndex = 93
@@ -300,6 +312,12 @@ Partial Class frmNewEmployee
         'Add_Panel
         '
         Me.Add_Panel.BackColor = System.Drawing.Color.MidnightBlue
+        Me.Add_Panel.Controls.Add(Me.Label14)
+        Me.Add_Panel.Controls.Add(Me.Label13)
+        Me.Add_Panel.Controls.Add(Me.TimeOut_Combo)
+        Me.Add_Panel.Controls.Add(Me.TimeIn_Combo)
+        Me.Add_Panel.Controls.Add(Me.Label12)
+        Me.Add_Panel.Controls.Add(Me.EmpNo_TXT)
         Me.Add_Panel.Controls.Add(Me.Started_DTP)
         Me.Add_Panel.Controls.Add(Me.Label11)
         Me.Add_Panel.Controls.Add(Me.InActive_RB)
@@ -319,11 +337,73 @@ Partial Class frmNewEmployee
         Me.Add_Panel.Controls.Add(Me.Label3)
         Me.Add_Panel.Controls.Add(Me.Branch_ComboB)
         Me.Add_Panel.Controls.Add(Me.Add_Company_CB)
-        Me.Add_Panel.Location = New System.Drawing.Point(348, 210)
+        Me.Add_Panel.Location = New System.Drawing.Point(350, 91)
         Me.Add_Panel.Name = "Add_Panel"
-        Me.Add_Panel.Size = New System.Drawing.Size(506, 427)
+        Me.Add_Panel.Size = New System.Drawing.Size(575, 429)
         Me.Add_Panel.TabIndex = 95
         Me.Add_Panel.Visible = False
+        '
+        'Label14
+        '
+        Me.Label14.AutoSize = True
+        Me.Label14.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label14.ForeColor = System.Drawing.Color.LightSalmon
+        Me.Label14.Location = New System.Drawing.Point(318, 139)
+        Me.Label14.Name = "Label14"
+        Me.Label14.Size = New System.Drawing.Size(62, 16)
+        Me.Label14.TabIndex = 118
+        Me.Label14.Text = "Time Out"
+        '
+        'Label13
+        '
+        Me.Label13.AutoSize = True
+        Me.Label13.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label13.ForeColor = System.Drawing.Color.LightSalmon
+        Me.Label13.Location = New System.Drawing.Point(318, 95)
+        Me.Label13.Name = "Label13"
+        Me.Label13.Size = New System.Drawing.Size(52, 16)
+        Me.Label13.TabIndex = 117
+        Me.Label13.Text = "Time In"
+        '
+        'TimeOut_Combo
+        '
+        Me.TimeOut_Combo.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TimeOut_Combo.FormattingEnabled = True
+        Me.TimeOut_Combo.Items.AddRange(New Object() {"PHOTO", "P&G UY", "DALTON", "PERFECOM", "HEAD OFFICE"})
+        Me.TimeOut_Combo.Location = New System.Drawing.Point(384, 133)
+        Me.TimeOut_Combo.Name = "TimeOut_Combo"
+        Me.TimeOut_Combo.Size = New System.Drawing.Size(169, 28)
+        Me.TimeOut_Combo.TabIndex = 116
+        '
+        'TimeIn_Combo
+        '
+        Me.TimeIn_Combo.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TimeIn_Combo.FormattingEnabled = True
+        Me.TimeIn_Combo.Items.AddRange(New Object() {"PHOTO", "P&G UY", "DALTON", "PERFECOM", "HEAD OFFICE"})
+        Me.TimeIn_Combo.Location = New System.Drawing.Point(384, 89)
+        Me.TimeIn_Combo.Name = "TimeIn_Combo"
+        Me.TimeIn_Combo.Size = New System.Drawing.Size(169, 28)
+        Me.TimeIn_Combo.TabIndex = 114
+        '
+        'Label12
+        '
+        Me.Label12.AutoSize = True
+        Me.Label12.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label12.ForeColor = System.Drawing.Color.LightSalmon
+        Me.Label12.Location = New System.Drawing.Point(318, 192)
+        Me.Label12.Name = "Label12"
+        Me.Label12.Size = New System.Drawing.Size(60, 16)
+        Me.Label12.TabIndex = 113
+        Me.Label12.Text = "Emp No."
+        '
+        'EmpNo_TXT
+        '
+        Me.EmpNo_TXT.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper
+        Me.EmpNo_TXT.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.EmpNo_TXT.Location = New System.Drawing.Point(384, 186)
+        Me.EmpNo_TXT.Name = "EmpNo_TXT"
+        Me.EmpNo_TXT.Size = New System.Drawing.Size(169, 26)
+        Me.EmpNo_TXT.TabIndex = 112
         '
         'Started_DTP
         '
@@ -334,7 +414,7 @@ Partial Class frmNewEmployee
         Me.Started_DTP.Name = "Started_DTP"
         Me.Started_DTP.Size = New System.Drawing.Size(161, 24)
         Me.Started_DTP.TabIndex = 111
-        Me.Started_DTP.Value = New Date(2021, 9, 30, 8, 47, 4, 0)
+        Me.Started_DTP.Value = New Date(2000, 1, 1, 0, 0, 0, 0)
         '
         'Label11
         '
@@ -389,7 +469,7 @@ Partial Class frmNewEmployee
         Me.Label9.AutoSize = True
         Me.Label9.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label9.ForeColor = System.Drawing.Color.LightSalmon
-        Me.Label9.Location = New System.Drawing.Point(485, 2)
+        Me.Label9.Location = New System.Drawing.Point(555, 0)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(20, 20)
         Me.Label9.TabIndex = 105
@@ -409,7 +489,7 @@ Partial Class frmNewEmployee
         'Button2
         '
         Me.Button2.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button2.Location = New System.Drawing.Point(382, 383)
+        Me.Button2.Location = New System.Drawing.Point(451, 383)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(102, 31)
         Me.Button2.TabIndex = 103
@@ -431,7 +511,7 @@ Partial Class frmNewEmployee
         Me.Email_TXT.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Email_TXT.Location = New System.Drawing.Point(119, 290)
         Me.Email_TXT.Name = "Email_TXT"
-        Me.Email_TXT.Size = New System.Drawing.Size(365, 26)
+        Me.Email_TXT.Size = New System.Drawing.Size(434, 26)
         Me.Email_TXT.TabIndex = 102
         '
         'Label7
@@ -462,7 +542,7 @@ Partial Class frmNewEmployee
         Me.Fullname_TXT.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Fullname_TXT.Location = New System.Drawing.Point(119, 247)
         Me.Fullname_TXT.Name = "Fullname_TXT"
-        Me.Fullname_TXT.Size = New System.Drawing.Size(365, 26)
+        Me.Fullname_TXT.Size = New System.Drawing.Size(434, 26)
         Me.Fullname_TXT.TabIndex = 99
         '
         'Label5
@@ -598,4 +678,11 @@ Partial Class frmNewEmployee
     Friend WithEvents ColumnHeader9 As ColumnHeader
     Friend WithEvents ColumnHeader10 As ColumnHeader
     Friend WithEvents ColumnHeader11 As ColumnHeader
+    Friend WithEvents ColumnHeader12 As ColumnHeader
+    Friend WithEvents Label12 As Label
+    Friend WithEvents EmpNo_TXT As TextBox
+    Friend WithEvents Label14 As Label
+    Friend WithEvents Label13 As Label
+    Friend WithEvents TimeOut_Combo As ComboBox
+    Friend WithEvents TimeIn_Combo As ComboBox
 End Class

@@ -10,6 +10,9 @@ Public Class frmPayout
     Dim gross, netTax, sssLoan, pagibigLoan, allowance, deduction As Double
     Dim emp_id, sched_deduc As String
 
+    Private allowCoolMove As Boolean = False
+    Private myCoolPoint As New Point
+
     Private Sub frmPayout_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         regHoliday_ = Holiday_Rate("REGULAR")
         specHoliday_ = Holiday_Rate("SPECIAL")
@@ -156,7 +159,7 @@ Public Class frmPayout
         If Allowance_grid.RowCount > 0 Then
             Label18.Visible = True
             Allowance_grid.Visible = True
-            Edit_BTN.Visible = True
+            Refresh_BTN.Visible = True
         Else
             Label18.Visible = False
             Allowance_grid.Visible = False
@@ -167,7 +170,7 @@ Public Class frmPayout
         If Deduction_grid.RowCount > 0 Then
             Label22.Visible = True
             Deduction_grid.Visible = True
-            Edit_BTN.Visible = True
+            Refresh_BTN.Visible = True
         Else
             Label22.Visible = False
             Deduction_grid.Visible = False
@@ -241,6 +244,20 @@ Public Class frmPayout
                   Tax_Wheld_LBL.Text, NetTax_LBL.Text, SSSLoan_LBL.Text, PagibigLoan_LBL.Text,
                   Allowances_LBL.Text, Deduction_LBL.Text, NetPay_LBL.Text, TotalHol_LBL.Text, TotalNight_LBL.Text, "")
 
+                '====================================== SAVE NEW ADDITIONAL ===================================================
+                If Allowance_grid.Rows.Count > 0 Then
+
+                    If isExist_String("RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{BIO_NO}' AND PAYDATE = '{paydate_}' AND TRANSAC_NAME = 'ALLOWANCE'") Then
+                        RunCommand($"DELETE FROM RECORDED_ALLOW_DEDUC WHERE BIO_NO = '{BIO_NO}' and PAYDATE = '{paydate_}';")
+                    End If
+
+                    For Each row As DataGridViewRow In Allowance_grid.Rows
+                        Save_Recorded_Allow_Deduc(BiometricID_TXT.Text, paydate_, row.Cells(0).Value, row.Cells(1).Value, "ALLOWANCE")
+                    Next
+
+                End If
+
+                '====================================== SAVE NEW DEDUCTION ===================================================
                 If Deduction_grid.Rows.Count > 0 Then
 
                     If isExist_String("MODIFIED_DEDUCTION", $"WHERE BIO_NO = '{BIO_NO}'") Then
@@ -370,7 +387,52 @@ Public Class frmPayout
         End If
     End Sub
 
-    Private Sub Edit_BTN_Click(sender As Object, e As EventArgs) Handles Edit_BTN.Click
+    Private Sub Label37_Click(sender As Object, e As EventArgs) Handles Label37.Click
+        Additional_Panel.Visible = False
+    End Sub
+
+    Private Sub CancelAdd_BTN_Click(sender As Object, e As EventArgs) Handles CancelAdd_BTN.Click
+        CategoryAdd_TXT.Clear()
+        AmountAdd_TXT.Clear()
+    End Sub
+
+    Private Sub SaveAdd_BTN_Click(sender As Object, e As EventArgs) Handles SaveAdd_BTN.Click
+        If CategoryAdd_TXT.Text <> String.Empty And AmountAdd_TXT.Text <> String.Empty Then
+
+            Dim rowId As Integer = Allowance_grid.Rows.Add()
+            Dim row As DataGridViewRow = Allowance_grid.Rows(rowId)
+
+            Dim toProper As String
+            Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
+
+            toProper = info.ToTitleCase(CategoryAdd_TXT.Text)
+            Dim amountt As Double = AmountAdd_TXT.Text
+
+            row.Cells(0).Value = toProper
+            row.Cells(1).Value = amountt.ToString("N")
+
+            CancelAdd_BTN.PerformClick()
+            Additional_Panel.Visible = False
+
+            AdjustHeightOfGridBasedOnRows(Allowance_grid, 25)
+
+            Calculate_Allowance()
+            Calculate_NetPay()
+
+        End If
+    End Sub
+
+    Private Sub AmountAdd_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles AmountAdd_TXT.KeyPress
+        If e.KeyChar <> ChrW(Keys.Back) Then
+            If Not Char.IsNumber(e.KeyChar) AndAlso Not Char.IsControl(e.KeyChar) AndAlso Not e.KeyChar = "." Then
+                e.Handled = True
+            End If
+        End If
+
+        If IsEnter(e) Then SaveAdd_BTN.PerformClick()
+    End Sub
+
+    Private Sub Refresh_BTN_Click(sender As Object, e As EventArgs) Handles Refresh_BTN.Click
 
         AllowanceDetails(BiometricID_TXT.Text, Allowance_grid, sched_deduc)
         DeductioneDetails_ORIG(BiometricID_TXT.Text, Deduction_grid, sched_deduc)
@@ -391,6 +453,28 @@ Public Class frmPayout
             Details_Save_BTN.Enabled = False
         End If
 
+    End Sub
+
+    Private Sub Additional_BTN_Click(sender As Object, e As EventArgs) Handles Additional_BTN.Click
+        Additional_Panel.Location = New Point(ClientSize.Width / 2 - Additional_Panel.Size.Width / 2, ClientSize.Height / 2 - Additional_Panel.Size.Height / 2)
+        Additional_Panel.Visible = True
+    End Sub
+
+    Private Sub Additional_Panel_MouseDown(sender As Object, e As MouseEventArgs) Handles Additional_Panel.MouseDown
+        allowCoolMove = True
+        myCoolPoint = New Point(e.X, e.Y)
+        Cursor = Cursors.SizeAll
+    End Sub
+
+    Private Sub Additional_Panel_MouseMove(sender As Object, e As MouseEventArgs) Handles Additional_Panel.MouseMove
+        If allowCoolMove = True Then
+            Additional_Panel.Location = New Point(Additional_Panel.Location.X + e.X - myCoolPoint.X, Additional_Panel.Location.Y + e.Y - myCoolPoint.Y)
+        End If
+    End Sub
+
+    Private Sub Additional_Panel_MouseUp(sender As Object, e As MouseEventArgs) Handles Additional_Panel.MouseUp
+        allowCoolMove = False
+        Cursor = Cursors.Default
     End Sub
 
     Private Sub Calculate_Allowance()

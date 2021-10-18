@@ -20,6 +20,13 @@ Public Class frmNewEmployee
     Private Sub frmNewEmployee_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Lists_Employees(lvEmployee)
         'ListViewGrouping(lvEmployee, 0)
+
+
+        For x = 0 To 23
+            Dim tm As New Date(1, 1, 1, x, 0, 0)
+            TimeIn_Combo.Items.Add(tm.ToShortTimeString)
+            TimeOut_Combo.Items.Add(tm.ToShortTimeString)
+        Next
     End Sub
 
     Private Sub Close_LBL_Click(sender As Object, e As EventArgs) Handles Close_LBL.Click
@@ -44,11 +51,11 @@ Public Class frmNewEmployee
     Private Sub Save_BTN_Click(sender As Object, e As EventArgs) Handles Save_BTN.Click
         'Import_Employee_Fullname_biometric_ActiveOnly()
 
-        'Import_Employee_DateStarted_Position()
+        Import_Employee_DateStarted_Position()
 
         'Import_Employee_Benifits_Details_BY_BIO()
 
-        Import_Employee_Benifits_Details_BY_NAME()
+        'Import_Employee_Benifits_Details_BY_NAME()
 
     End Sub
 
@@ -151,7 +158,7 @@ Public Class frmNewEmployee
 
         For row = 1 To DtSet.Tables(0).Rows.Count + 1
 
-            Update_Emp_DateHired_Position(eCell(row, 3).Value, eCell(row, 4).Value, eCell(row, 5).Value, eCell(row, 1).Value)
+            Update_Emp_DateHired_Position(eCell(row, 3).Value, eCell(row, 4).Value, eCell(row, 5).Value, eCell(row, 3).Value, eCell(row, 1).Value)
 
             frmMainForm.AppProgressBar.Value += 1
 
@@ -303,7 +310,8 @@ Public Class frmNewEmployee
                 emp_status = InActive_RB.Text
             End If
 
-            SaveNew_Employee(Add_Company_CB.Text, Branch_ComboB.Text, Fullname_TXT.Text, Bio_TXT.Text, Email_TXT.Text, emp_status, Started_DTP.Value)
+            SaveNew_Employee(Add_Company_CB.Text, Branch_ComboB.Text, Fullname_TXT.Text, Bio_TXT.Text, Email_TXT.Text, emp_status, Started_DTP.Value,
+                                                    False, TimeIn_Combo.Text, TimeOut_Combo.Text, EmpNo_TXT.Text)
 
             Lists_Employees(lvEmployee)
 
@@ -317,12 +325,16 @@ Public Class frmNewEmployee
 
     Private Sub Bio_TXT_TextChanged(sender As Object, e As EventArgs) Handles Bio_TXT.TextChanged
         If Bio_TXT.Text <> Nothing Then
-            GetFullname(Bio_TXT.Text, Add_Company_CB, Branch_ComboB, Fullname_TXT, Email_TXT, Active_RB, InActive_RB, Started_DTP)
+            GetFullname(Bio_TXT.Text, Add_Company_CB, Branch_ComboB, Fullname_TXT, Email_TXT,
+                        Active_RB, InActive_RB, Started_DTP, TimeIn_Combo, TimeOut_Combo, EmpNo_TXT)
         Else
             Add_Company_CB.Text = ""
             Branch_ComboB.Text = ""
             Fullname_TXT.Text = ""
             Email_TXT.Text = ""
+            TimeIn_Combo.Text = ""
+            TimeOut_Combo.Text = ""
+            EmpNo_TXT.Text = ""
         End If
     End Sub
 
@@ -399,4 +411,16 @@ Public Class frmNewEmployee
 
     End Sub
 
+    Private Sub Started_DTP_CloseUp(sender As Object, e As EventArgs) Handles Started_DTP.CloseUp
+        If Not Started_DTP.Value = "1/1/2000" Then
+
+            Dim dateStarted As DateTime = Started_DTP.Value
+
+            Dim year As String = dateStarted.ToString("yy")
+            Dim month As String = dateStarted.ToString("MM")
+
+            EmpNo_TXT.Text = year & "-0" & month & "-" & Bio_TXT.Text
+
+        End If
+    End Sub
 End Class

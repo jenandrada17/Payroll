@@ -23,6 +23,16 @@
         Dim paydatee As String = PaydateNet_ComboB.SelectedItem
         Dim mysqll As String = ""
         Dim GROUP As String = ""
+        Dim period As String
+
+        Dim date_pay As DateTime = Convert.ToDateTime(PaydateNet_ComboB.Text)
+        date_pay = date_pay.ToString("d")
+
+        If IsLastDay(date_pay) Then
+            period = "2nd Period"
+        Else
+            period = "1st Period"
+        End If
 
         Try
             Dim all_in As New reports.NetPayDataTable
@@ -103,7 +113,7 @@
 
                             dt_NetPay.Rows.Add(EMP_NO, namee, BASIC.ToString("n"), OVERTIME.ToString("n"), HOLIDAY.ToString("n"), N_DIFF.ToString("n"),
                                                PI_ECOLA_SIL.ToString("n"), TARDINESS.ToString("n"), SSS.ToString("n"), PHIC.ToString("n"), PAGIBIG.ToString("n"),
-                                               SBU_CHARGES.ToString("n"), NET_PAY.ToString("n"), BRANCH_CODE, payroll.ToString("MMMM dd, yyyy"), COMPANY)
+                                               SBU_CHARGES.ToString("n"), NET_PAY.ToString("n"), BRANCH_CODE, payroll.ToString("MMMM dd, yyyy"), period, COMPANY)
 
                         End With
                     Next

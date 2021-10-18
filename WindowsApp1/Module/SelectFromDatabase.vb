@@ -1992,6 +1992,7 @@ Module SelectFromDatabase
             i.SubItems.Add(.Item("BRANCH_CODE"))
             i.SubItems.Add(.Item("FULLNAME"))
             i.SubItems.Add(.Item("BIO_NO"))
+            i.SubItems.Add(IIf(IsDBNull(.Item("EMP_NO")), "", .Item("EMP_NO")))
             i.SubItems.Add(IIf(IsDBNull(.Item("EMAIL_ADD")), "", .Item("EMAIL_ADD")))
             i.SubItems.Add(IIf(datee = Nothing, "", datee.ToString("MMM dd, yyyy")))
             i.SubItems.Add(IIf(IsDBNull(.Item("EMP_POSITION")), "", .Item("EMP_POSITION")))
@@ -2004,30 +2005,39 @@ Module SelectFromDatabase
     End Sub
 
     Public Sub GetFullname(bio_no As String, Add_Company_CB As ComboBox, Branch_ComboB As ComboBox, Fullname_TXT As TextBox,
-                           Email_TXT As TextBox, Active_RB As RadioButton, InActive_RB As RadioButton, Started_DTP As DateTimePicker)
+                           Email_TXT As TextBox, Active_RB As RadioButton, InActive_RB As RadioButton, Started_DTP As DateTimePicker,
+                           TimeIn_Combo As ComboBox, TimeOut_Combo As ComboBox, EmoNo_TXT As TextBox)
 
         Dim mysql As String = $"select * from PAYROLL_EMPLOYEE where BIO_NO = '{bio_no}'"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
             If ds.Tables(0).Rows.Count > 0 Then
                 Dim dr As DataRow = ds.Tables(0).Rows(0)
                 With dr
+
                     Add_Company_CB.Text = .Item("COMPANY")
                     Branch_ComboB.Text = .Item("BRANCH_CODE")
                     Fullname_TXT.Text = .Item("FULLNAME")
                     Email_TXT.Text = IIf(IsDBNull(.Item("EMAIL_ADD")), "", .Item("EMAIL_ADD"))
-                    Started_DTP.Text = IIf(IsDBNull(.Item("DATE_STARTED")), Today, .Item("DATE_STARTED"))
+                    Started_DTP.Text = IIf(IsDBNull(.Item("DATE_STARTED")), "", .Item("DATE_STARTED"))
+                    TimeIn_Combo.Text = IIf(IsDBNull(.Item("TIME_IN")), "", .Item("TIME_IN").ToShortTimeString())
+                    TimeOut_Combo.Text = IIf(IsDBNull(.Item("TIME_OUT")), "", .Item("TIME_OUT").ToShortTimeString())
+                    EmoNo_TXT.Text = IIf(IsDBNull(.Item("EMP_NO")), "", .Item("EMP_NO"))
 
                     If .Item("EMP_STATUS") = "ACTIVE" Then
                         Active_RB.Checked = True
                     Else
                         InActive_RB.Checked = True
                     End If
+
                 End With
             Else
                 Add_Company_CB.Text = ""
                 Branch_ComboB.Text = ""
                 Fullname_TXT.Text = ""
                 Email_TXT.Text = ""
+                TimeIn_Combo.Text = ""
+                TimeOut_Combo.Text = ""
+                EmoNo_TXT.Text = ""
             End If
         End Using
     End Sub

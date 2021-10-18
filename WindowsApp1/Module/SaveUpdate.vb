@@ -1585,7 +1585,9 @@
 
     End Sub
 
-    Public Sub SaveNew_Employee(COMPANY As String, BRANCH_CODE As String, FULLNAME As String, BIO_NO As String, EMAIL_ADD As String, EMP_STATUS As String, Optional DATE_STARTED As String = "", Optional group As Boolean = False)
+    Public Sub SaveNew_Employee(COMPANY As String, BRANCH_CODE As String, FULLNAME As String, BIO_NO As String, EMAIL_ADD As String,
+                                EMP_STATUS As String, Optional DATE_STARTED As String = "", Optional group As Boolean = False,
+                                Optional TIME_IN As String = "", Optional TIME_OUT As String = "", Optional EMP_NO As String = "")
 
         Dim mysql As String
 
@@ -1603,6 +1605,18 @@
 
                 If DATE_STARTED <> "" Then
                     .Item("DATE_STARTED") = DATE_STARTED
+                End If
+
+                If TIME_IN <> "" Then
+                    .Item("TIME_IN") = TIME_IN
+                End If
+
+                If TIME_OUT <> "" Then
+                    .Item("TIME_OUT") = TIME_OUT
+                End If
+
+                If EMP_NO <> "" Then
+                    .Item("EMP_NO") = EMP_NO
                 End If
 
             End With
@@ -1631,7 +1645,20 @@
                         .Item("DATE_STARTED") = DATE_STARTED
                     End If
 
+                    If TIME_IN <> "" Then
+                        .Item("TIME_IN") = TIME_IN
+                    End If
+
+                    If TIME_OUT <> "" Then
+                        .Item("TIME_OUT") = TIME_OUT
+                    End If
+
+                    If EMP_NO <> "" Then
+                        .Item("EMP_NO") = EMP_NO
+                    End If
+
                 End With
+
                 dss.Tables(0).Rows.Add(dsNewRow)
                 SaveEntry(dss)
 
@@ -1645,7 +1672,7 @@
 
     End Sub
 
-    Public Sub Update_Emp_DateHired_Position(BIO_NO As String, DATE_STARTED As String, EMP_POSITION As String, empNo As String)
+    Public Sub Update_Emp_DateHired_Position(BIO_NO As String, DATE_STARTED As String, EMP_POSITION As String, EMP_NO As String, empNo As String)
 
         Dim id_no As String() = BIO_NO.Split(New Char() {"-"c})
 
@@ -1662,6 +1689,7 @@
                     End If
 
                     .Item("EMP_POSITION") = EMP_POSITION.ToUpper
+                    .Item("EMP_NO") = EMP_NO
 
                 End With
 
