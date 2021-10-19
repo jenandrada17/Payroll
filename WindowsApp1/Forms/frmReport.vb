@@ -6,10 +6,10 @@
 
     Private Sub PreviewNet_BTN_Click(sender As Object, e As EventArgs) Handles PreviewNet_BTN.Click
 
-        If PaydateNet_ComboB.SelectedIndex >= 0 And Company_Combo.SelectedIndex >= 0 Then
+        If PaydateNet_ComboB.SelectedIndex >= 0 Then
             LoadNet_Print()
         Else
-            MsgBox("Please select date of payroll and company.", MsgBoxStyle.Exclamation, "Error")
+            MsgBox("Please select date of payroll.", MsgBoxStyle.Exclamation, "Error")
         End If
 
     End Sub
@@ -24,7 +24,6 @@
         Dim GROUP As String = ""
         Dim period As String
 
-        Dim COMPANY As String = Company_Combo.Text
         Dim date_pay As DateTime = Convert.ToDateTime(PaydateNet_ComboB.Text)
         date_pay = date_pay.ToString("d")
 
@@ -59,10 +58,19 @@
                 .Columns.Add("COMPANY")
             End With
 
-            mysqll = $"Select * From PAYROLL_PAYOUT A 
-                                        inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
-                                        where A.PAYDATE  = '{paydatee}' and B.COMPANY  = '{COMPANY}' ORDER BY BRANCH_CODE, FULLNAME ASC"
+            If Company_Combo.SelectedIndex >= 0 Then
 
+                mysqll = $"Select * From PAYROLL_PAYOUT A 
+                                        inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
+                                        where A.PAYDATE  = '{paydatee}' and B.COMPANY  = '{Company_Combo.Text}' ORDER BY BRANCH_CODE, FULLNAME ASC"
+
+            Else
+
+                mysqll = $"Select * From PAYROLL_PAYOUT A 
+                                        inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
+                                        where A.PAYDATE  = '{paydatee}' ORDER BY COMPANY, BRANCH_CODE, FULLNAME ASC"
+
+            End If
             Using ds As DataSet = LoadSQL(mysqll, "PAYROLL_PAYOUT")
 
                 If ds.Tables(0).Rows.Count > 0 Then
@@ -93,6 +101,7 @@
                             Dim SBU_CHARGES As Double = .Item("TOTAL_DEDUCTION")
                             Dim NET_PAY As Double = .Item("NET_PAY")
                             Dim BRANCH_CODE As String = .Item("BRANCH_CODE")
+                            Dim COMPANY As String = .Item("COMPANY")
 
                             dt_NetPay.Rows.Add(EMP_NO, namee, BASIC.ToString("n"), OVERTIME.ToString("n"), HOLIDAY.ToString("n"), N_DIFF.ToString("n"),
                                                PI_ECOLA_SIL.ToString("n"), TARDINESS.ToString("n"), SSS.ToString("n"), PHIC.ToString("n"), PAGIBIG.ToString("n"),
@@ -100,7 +109,6 @@
 
                         End With
                     Next
-
                 End If
             End Using
 
@@ -114,5 +122,6 @@
         End Try
 
     End Sub
+
 
 End Class
