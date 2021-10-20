@@ -515,7 +515,7 @@ Module SelectFromDatabase
             End If
 
             ' ================ SBU DEDUCTION  ================  
-            Dim sbu As Double = SBU_Amount()
+            Dim sbu As Double = SBU_Amount(BIO_NO)
 
             Dim rowIdd As Integer = datagrid.Rows.Add()
             Dim roww As DataGridViewRow = datagrid.Rows(rowIdd)
@@ -1297,11 +1297,7 @@ Module SelectFromDatabase
 
                 Dim data As DataRow = ds.Tables(0).Rows(0)
                 With data
-
                     name.Text = .Item("FULLNAME")
-                    'ClockEmp_IN_CB.Text = IIf(IsDBNull(.Item("RATE_DAILY")), "", .Item("RATE_DAILY"))
-                    'ClockEmp_OUT_CB.Text = IIf(IsDBNull(.Item("RATE_DAILY")), "", .Item("RATE_DAILY"))
-
                 End With
 
             Else
@@ -1325,9 +1321,9 @@ Module SelectFromDatabase
         Return rate
     End Function
 
-    Public Function SBU_Amount() As Double
+    Public Function SBU_Amount(bio_no As String) As Double
         Dim Amount As Integer = 0
-        Dim mysql As String = "Select * From payroll_sbu WHERE id= '1'"
+        Dim mysql As String = $"Select * From payroll_sbu WHERE BIO_NO = '{bio_no}'"
         Using ds As DataSet = LoadSQL(mysql, "payroll_sbu")
             If ds.Tables(0).Rows.Count > 0 Then
                 Dim data As DataRow = ds.Tables(0).Rows(0)
@@ -1343,6 +1339,15 @@ Module SelectFromDatabase
     Public Function Bio_Exist_Attendance(bioNo As String, paydate As String)
         Dim mysql As String = $"Select * FROM PAYROLL_ATTENDANCE where BIOMETRICID = '{bioNo}' and PAYDATE = '{paydate}'"
         Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
+        If ds.Tables(0).Rows.Count > 0 Then
+            Return True
+        End If
+        Return False
+    End Function
+
+    Public Function Match_Employee(BIO_NO As String)
+        Dim mysql As String = $"Select * FROM PAYROLL_EMPLOYEE where BIO_NO = '{BIO_NO}' "
+        Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
         If ds.Tables(0).Rows.Count > 0 Then
             Return True
         End If
@@ -2191,6 +2196,42 @@ Module SelectFromDatabase
         Return outt
     End Function
 
+    Public Function SBU_notFull(BIO_NO As String)
+        Dim mysql As String = $"Select COMPANY, DATE_STARTED, SBU_BALANCE From PAYROLL_EMPLOYEE where BIO_NO = '{BIO_NO}' "
+        Using dss As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+            If dss.Tables(0).Rows.Count > 0 Then
+                Dim data As DataRow = dss.Tables(0).Rows(0)
+                With data
+
+                    Dim training_days As Integer = 0
+                    Dim Started As DateTime = .Item("DATE_STARTED")
+                    Dim sbu_bal As Double = .Item("SBU_BALANCE")
+
+                    '=============== TRAINING DAYS ================
+                    If .Item("COMPANY") = "DALTON" Or .Item("COMPANY") = "PHOTO" Or .Item("COMPANY") = "HEAD OFFICE" Then
+                        training_days = 15
+                    Else
+                        training_days = 30
+                    End If
+
+                    '=============== CALCULATE SBU ================  
+                    Dim count_days = New DateTime(Started.Year, Started.Month, Started.Day)
+                    count_days = count_days.AddDays(training_days)
+
+                    If Today >= count_days Then
+
+                        If sbu_bal > 0 Then
+                            Return True
+                        End If
+
+                    End If
+
+                End With
+            End If
+        End Using
+
+        Return False
+    End Function
 
     Public Sub Replacing(str As String)
         RunCommand($"DELETE FROM {str}")  'THIS IS TO DELETE EXISTING DATA TO REPLACE ESPECIALLY FROM DATAGRID

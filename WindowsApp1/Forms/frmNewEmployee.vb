@@ -50,13 +50,82 @@ Public Class frmNewEmployee
     Private Sub Save_BTN_Click(sender As Object, e As EventArgs) Handles Save_BTN.Click
         'Import_Employee_Fullname_biometric_ActiveOnly()
 
-        Import_Employee_DateStarted_Position()
-
-        'Import_Employee_Benifits_Details_BY_BIO()
+        'Import_Employee_DateStarted_Position() 
 
         'Import_Employee_Benifits_Details_BY_NAME()
 
+        Import_Employee_SBU_AMOUNT_PRINCIPAL_CREDIT()
     End Sub
+
+    Private Sub Import_Employee_SBU_AMOUNT_PRINCIPAL_CREDIT()
+
+        eApp = New Excel.Application
+        eBook = eApp.Workbooks.Open(Path_TXT.Text)
+        eSheet = eBook.Worksheets(1)
+        eCell = eSheet.UsedRange
+
+        MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path_TXT.Text}';Extended Properties=Excel 8.0;")
+        MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
+        MyCommand.TableMappings.Add("Table", "Net-informations.com")
+        DtSet = New System.Data.DataSet
+        MyCommand.Fill(DtSet)
+
+        '====================== DELETE PAYROLL_SBU TO REPLACE NEW ==================
+        If isExist_String("PAYROLL_SBU", "") Then
+            RunCommand($"DELETE FROM PAYROLL_SBU ;")
+        End If
+
+        progressBarStart(DtSet.Tables(0).Rows.Count + 1)
+
+        For row = 7 To DtSet.Tables(0).Rows.Count Step 3
+
+            Dim FULLNAME As String
+            FULLNAME = eCell(row, 1).Value
+
+            Dim CATEGORY As String = eCell(row + 1, 4).Value
+            Dim AMOUNT As String = eCell(row + 1, 5).Value
+            Dim PRINCIPAL As String = eCell(row + 1, 6).Value
+            Dim CREDIT As String = eCell(row + 1, 8).Value
+            Dim BALANCE As String = eCell(row + 1, 9).Value
+
+            If FULLNAME = "1" Or FULLNAME = "2" Then
+
+                FULLNAME = eCell(row - 2, 1).Value
+                CATEGORY = eCell(row - 1, 4).Value
+                AMOUNT = eCell(row - 1, 5).Value
+                PRINCIPAL = eCell(row - 1, 6).Value
+                CREDIT = eCell(row - 1, 8).Value
+                BALANCE = eCell(row - 1, 9).Value
+
+            End If
+
+            Console.WriteLine("ROWWW -" & FULLNAME & "- " & row - 1)
+
+            If CATEGORY.TrimEnd = "CASH BOND" Or CATEGORY.TrimEnd = "Cash Bond" Or CATEGORY.TrimEnd = "cash bond" Then
+                CATEGORY = "CASH BOND"
+            ElseIf CATEGORY.TrimEnd = "SBU(Savings Build Up)" Then
+                CATEGORY = "SBU"
+            End If
+
+            SAVE_Emp_SBU_AMOUNT_PRINCIPAL_CREDIT_NAME(FULLNAME, CATEGORY, AMOUNT, PRINCIPAL, CREDIT, BALANCE, row)
+
+            frmMainForm.AppProgressBar.Value += 1
+        Next row
+
+        progressBarEnd()
+
+        Path_TXT.Clear()
+        MyConnection.Close()
+
+        Excel_Panel.Visible = False
+
+    End Sub
+
+    Public Function IsDate(input As String) As Boolean '======== FOR IMPORTING SBU EXCEL =====
+        Dim result As DateTime
+        Return DateTime.TryParse(input, result)
+    End Function
+
 
     Private Sub Import_Employee_Benifits_Details_BY_NAME()
 

@@ -132,8 +132,10 @@ Public Class frmPayout
             '==========================  CHECK PAYDATE IF VALID FOR EDITING (DEDUCTION) =========================   
             If paydate_ = frmMainForm.Paydate.ToString("d") Then
                 Deduction_grid.Enabled = True
+                Additional_BTN.Enabled = True
             Else
                 Deduction_grid.Enabled = False
+                Additional_BTN.Enabled = False
             End If
 
             Calculate_Gross()
@@ -912,7 +914,7 @@ Public Class frmPayout
                                         CDbl(.Item("TOTAL_BASIC")).ToString("N"), CDbl(.Item("TOTAL_OVERTIME")).ToString("N"), LATE,
                                         CDbl(.Item("GROSS_AMOUNT")).ToString("N"), CDbl(.Item("SSS_COMP")).ToString("N"), CDbl(.Item("PAGIBIG_COMP")).ToString("N"),
                                         CDbl(.Item("PHILHEALTH_COMP")).ToString("N"), CDbl(.Item("TAX_WHELD")).ToString("N"), CDbl(.Item("SSS_LOAN")).ToString("N"),
-                                        CDbl(.Item("PAGIBIG_LOAN")).ToString("N"), CDbl(.Item("NET_PAY")).ToString("N"), CDbl(SBU_Amount()).ToString("N"), TOTAL_COMP.ToString("N"),
+                                        CDbl(.Item("PAGIBIG_LOAN")).ToString("N"), CDbl(.Item("NET_PAY")).ToString("N"), CDbl(SBU_Amount(biometricID)).ToString("N"), TOTAL_COMP.ToString("N"),
                                         present_hours)
                     End With
                 End If
@@ -944,7 +946,7 @@ Public Class frmPayout
                 End Using
 
                 Dim mysql_1 As String = $"select * from RECORDED_ALLOW_DEDUC WHERE BIO_NO = '{biometricID}' AND PAYDATE = '{paydatee}' AND TRANSAC_NAME = 'ALLOWANCE'"
-                Using ds As DataSet = LoadSQL(mysql_1, "payroll_allowances")
+                Using ds As DataSet = LoadSQL(mysql_1, "RECORDED_ALLOW_DEDUC")
                     If ds.Tables(0).Rows.Count > 0 Then
                         For Each dr In ds.Tables(0).Rows
                             With dr
@@ -953,6 +955,10 @@ Public Class frmPayout
                                 Dim toLower = .item("CATEGORY").ToLower()
                                 Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
                                 Dim toProper As String = info.ToTitleCase(toLower)
+
+                                If .item("CATEGORY") = "SIL" Then
+                                    toProper = "SIL"
+                                End If
 
                                 dt_allowance.Rows.Add(toProper, amountt.ToString(”N”))
                             End With
@@ -976,58 +982,9 @@ Public Class frmPayout
             Dim mysql_ As String
 
             '================================================ DEDUCTIONS -  MODIFIED_DEDUCTION================================================ 
-            If isExist_String("MODIFIED_DEDUCTION", $"WHERE BIO_NO = '{biometricID}' AND PAYDATE = '{paydate_}'") Then  '=======m MDIFIED DEDUCTION (ON/OFF) 
+            If isExist_String("RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{biometricID}' AND PAYDATE = '{paydatee}' and TRANSAC_NAME = 'DEDUCTION'") Then  '=======m MDIFIED DEDUCTION (ON/OFF) 
 
-                mysql_ = $"Select * From MODIFIED_DEDUCTION A inner join PAYROLL_DEDUCTIONS B on A.m_deduc_id = B.id and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')
-                                            WHERE A.BIO_NO = '{biometricID}' and PAYDATE = '{paydatee}'"
-
-                Using ds As DataSet = LoadSQL(mysql_, "MODIFIED_DEDUCTION")
-                    If ds.Tables(0).Rows.Count > 0 Then
-                        For Each dr In ds.Tables(0).Rows
-                            With dr
-                                total_deduction = total_deduction + .Item("M_AMOUNT")
-                            End With
-                        Next
-                    End If
-                End Using
-
-                mysql_ = $"Select * From MODIFIED_DEDUCTION A inner join PAYROLL_DEDUCTIONS B on A.m_deduc_id = B.id and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')
-                                            WHERE A.BIO_NO = '{biometricID}' and PAYDATE = '{paydatee}'"
-
-                Using ds As DataSet = LoadSQL(mysql_, "MODIFIED_DEDUCTION")
-                    If ds.Tables(0).Rows.Count > 0 Then
-                        For Each dr In ds.Tables(0).Rows
-                            With dr
-
-                                Dim amountt As Double = .item("AMOUNT_PER_GIVE")
-
-                                Dim toLower = .item("CATEGORY").ToLower()
-                                Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
-                                Dim toProper As String = info.ToTitleCase(toLower)
-
-                                dt_deduction.Rows.Add(toProper, amountt.ToString(”N”))
-
-                            End With
-                        Next
-                    End If
-                End Using
-
-
-                '============================================== DEDUCTIONS -  RECORDED_ALLOW_DEDUC ================================================ 
-            ElseIf isExist_String("RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{biometricID}' AND PAYDATE = '{paydate_}' AND TRANSAC_NAME = 'DEDUCTION'") Then  '====== RECORDED DEDUCTION IMPORTING ATTENDANCE
-
-                mysql_ = $"select * from RECORDED_ALLOW_DEDUC  where BIO_NO = '{biometricID}' and PAYDATE = '{paydate_}' and TRANSAC_NAME = 'DEDUCTION'"
-                Using ds As DataSet = LoadSQL(mysql_, "RECORDED_ALLOW_DEDUC")
-                    If ds.Tables(0).Rows.Count > 0 Then
-                        For Each dr In ds.Tables(0).Rows
-                            With dr
-                                total_deduction = total_deduction + .Item("AMOUNT")
-                            End With
-                        Next
-                    End If
-                End Using
-
-                mysql_ = $"select * from RECORDED_ALLOW_DEDUC  where BIO_NO = '{biometricID}' and PAYDATE = '{paydate_}' and TRANSAC_NAME = 'DEDUCTION'"
+                mysql_ = $"select * from RECORDED_ALLOW_DEDUC  where BIO_NO = '{biometricID}' and PAYDATE = '{paydatee}' and TRANSAC_NAME = 'DEDUCTION'"
                 Using ds As DataSet = LoadSQL(mysql_, "RECORDED_ALLOW_DEDUC")
                     If ds.Tables(0).Rows.Count > 0 Then
                         For Each dr In ds.Tables(0).Rows
@@ -1049,45 +1006,6 @@ Public Class frmPayout
                         Next
                     End If
                 End Using
-
-
-                ''================================================== DEDUCTIONS -  ORIGINAL ================================================ 
-                'Else
-                '    mysql_ = $"Select * From payroll_deductions WHERE BIO_NO = '{biometricID}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
-                '    Using ds As DataSet = LoadSQL(mysql_, "payroll_deductions")
-                '        If ds.Tables(0).Rows.Count > 0 Then
-                '            For Each drr In ds.Tables(0).Rows
-                '                With drr
-                '                    If .item("EFFECTIVE_DATE") <= Today Then
-                '                        total_deduction = total_deduction + .Item("AMOUNT_PER_GIVE")
-                '                    End If
-                '                End With
-                '            Next
-                '        End If
-
-                '    End Using
-
-                '    mysql_ = $"select * from payroll_deductions  where BIO_NO = '{biometricID}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
-                '    Using ds As DataSet = LoadSQL(mysql_, "payroll_deductions")
-                '        If ds.Tables(0).Rows.Count > 0 Then
-                '            For Each dr In ds.Tables(0).Rows
-                '                With dr
-                '                    If .Item("EFFECTIVE_DATE") <= Today Then
-
-                '                        Dim amountt As Double = .item("AMOUNT_PER_GIVE")
-
-                '                        Dim toLower = .item("CATEGORY").ToLower()
-                '                        Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
-                '                        Dim toProper As String = info.ToTitleCase(toLower)
-
-                '                        dt_deduction.Rows.Add(toProper, amountt.ToString(”N”))
-
-                '                    End If
-                '                End With
-
-                '            Next
-                '        End If
-                '    End Using
             End If
 
             Dim rds_deduction As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet4", dt_deduction)

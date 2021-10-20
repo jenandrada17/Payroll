@@ -154,29 +154,10 @@
             RunCommand($"DELETE FROM HISTORY_DEDUCTION WHERE BIO_NO = '{BIO_NO}' and PAYDATE = '{PAYDATE}';")
         End If
 
-        If isExist_String("MODIFIED_DEDUCTION", $"WHERE BIO_NO = '{BIO_NO}' AND PAYDATE = '{PAYDATE}'") Then '========= REFER TO MODIFIED_DEDUCTION IF EXIST (IMPORTANT)
-
-            GetFrom_MOdified_Deduction(BIO_NO, PAYDATE)
-
-        Else
+        If isExist_String("RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{BIO_NO}' AND PAYDATE = '{PAYDATE}'") Then '========= REFER TO MODIFIED_DEDUCTION IF EXIST (IMPORTANT)
 
             GetFrom_Recorded_Allow_Deduc(BIO_NO, PAYDATE)
 
-        End If
-
-    End Sub
-
-    Public Sub Update_SBU_BALANCE(BIO_NO As String, AMOUNTT As String)
-        If AMOUNTT <> 0 Then
-            Dim mysql As String = $"Select * From PAYROLL_EMPLOYEE where BIO_NO = '{BIO_NO}'"
-            Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
-                If ds.Tables(0).Rows.Count > 0 Then
-                    With ds.Tables(0).Rows(0)
-                        MsgBox(.Item("SBU_BALANCE"))
-                    End With
-                    SaveEntry(ds, False)
-                End If
-            End Using
         End If
     End Sub
 
@@ -193,35 +174,26 @@
 
                         If decut_id <> "" Then Calculate_Balance(.item("R_DEDUC_ID")) '========= CALCULATE DEDUCTION BALANCE ========= 
 
+                        If .item("CATEGORY") = "SBU" Then Update_SBU(BIO_NO, PAYDATE, .item("AMOUNT"))
                     End With
                 Next
             End If
         End Using
-
     End Sub
 
-    Private Sub GetFrom_MOdified_Deduction(BIO_NO As String, PAYDATE As String)
-        Dim mysql_1 As String = $"Select * From MODIFIED_DEDUCTION WHERE BIO_NO = '{BIO_NO}' and PAYDATE = '{PAYDATE}'"
-        Using ds As DataSet = LoadSQL(mysql_1, "MODIFIED_DEDUCTION")
+    Public Sub Update_SBU(BIO_NO As String, paydate As String, AMOUNT As String)
+        Dim mysql As String = $"Select * From PAYROLL_SBU where BIO_NO = '{BIO_NO}'"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_SBU")
             If ds.Tables(0).Rows.Count > 0 Then
-                For Each dr In ds.Tables(0).Rows
-                    With dr
+                With ds.Tables(0).Rows(0)
 
-                        Dim decut_id As String = IIf(IsDBNull(.Item("M_DEDUC_ID")), "", .Item("M_DEDUC_ID"))
+                    .Item("SBU_CREDIT") += AMOUNT
+                    .Item("LAST_SBU") = paydate
 
-                        If Not .item("M_AMOUNT") = 0.00 Or Not .item("M_AMOUNT") = 0 Then
-
-                            If .item("M_CATEGORY") = "SBU" Then
-                                Update_SBU_BALANCE(BIO_NO, .item("M_AMOUNT"))
-                            Else
-                                SaveDEDUCTION_HISTORY(BIO_NO, .item("M_CATEGORY"), .item("M_AMOUNT"), Today, PAYDATE, decut_id)
-                            End If
-
-                        End If
-
-                        Calculate_Balance(decut_id) '========= CALCULATE DEDUCTION BALANCE ========= 
-                    End With
-                Next
+                End With
+                SaveEntry(ds, False)
+            Else
+                MsgBox("NO RECORD YET")
             End If
         End Using
     End Sub
@@ -261,103 +233,6 @@
 
         End If
     End Sub
-
-    Public Function SBU_notFull(BIO_NO As String)
-        Dim mysql As String = $"Select COMPANY, DATE_STARTED, SBU_BALANCE From PAYROLL_EMPLOYEE where BIO_NO = '{BIO_NO}' "
-        Using dss As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
-            If dss.Tables(0).Rows.Count > 0 Then
-                Dim data As DataRow = dss.Tables(0).Rows(0)
-                With data
-
-                    Dim training_days As Integer = 0
-                    Dim Started As DateTime = .Item("DATE_STARTED")
-                    Dim sbu_bal As Double = .Item("SBU_BALANCE")
-
-                    '=============== TRAINING DAYS ================
-                    If .Item("COMPANY") = "DALTON" Or .Item("COMPANY") = "PHOTO" Or .Item("COMPANY") = "HEAD OFFICE" Then
-                        training_days = 15
-                    Else
-                        training_days = 30
-                    End If
-
-                    '=============== CALCULATE SBU ================  
-                    Dim count_days = New DateTime(Started.Year, Started.Month, Started.Day)
-                    count_days = count_days.AddDays(training_days)
-
-                    If Today >= count_days Then
-
-                        If sbu_bal > 0 Then
-                            Return True
-                        End If
-
-                    End If
-
-                End With
-            End If
-        End Using
-
-        Return False
-    End Function
-
-    'Public Function SBU_notFull(BIO_NO As String)
-
-    '    Dim total_amount As Double = 0
-    '    Dim training_days As Integer = 0
-
-    '    '================================== GET TOTAL_AMOUNT ================================ 
-    '    Dim mysql As String = $"Select COMPANY, DATE_STARTED From PAYROLL_EMPLOYEE where BIO_NO = '{BIO_NO}' "
-    '    Using dss As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
-    '        If dss.Tables(0).Rows.Count > 0 Then
-    '            Dim data As DataRow = dss.Tables(0).Rows(0)
-    '            With data
-
-    '                '=============== SBU MAXIMUM LIMIT ================
-    '                If .Item("COMPANY") = "DALTON" Then
-    '                    total_amount = 50000
-    '                ElseIf .Item("COMPANY") = "PHOTO" Then
-    '                    total_amount = 30000
-    '                Else
-    '                    total_amount = 15000
-    '                End If
-
-    '                '=============== TRAINING DAYS ================
-    '                If .Item("COMPANY") = "DALTON" Or .Item("COMPANY") = "PHOTO" Or .Item("COMPANY") = "HEAD OFFICE" Then
-    '                    training_days = 15
-    '                Else
-    '                    training_days = 30
-    '                End If
-
-    '                '=============== CALCULATE SBU ================ 
-    '                Dim Started As DateTime = .Item("DATE_STARTED")
-    '                Dim noOf_SBU As Integer = 0
-
-    '                Dim count_days = New DateTime(Started.Year, Started.Month, Started.Day)
-    '                count_days = count_days.AddDays(training_days)
-
-    '                If Today >= count_days Then
-
-    '                    While (count_days < Today)
-    '                        count_days = count_days.AddDays(1)
-
-    '                        If count_days.Day = 15 Or count_days.Day = System.DateTime.DaysInMonth(count_days.Year, count_days.Month) Then
-    '                            noOf_SBU += 1
-    '                        End If
-    '                    End While
-
-    '                    Dim total_SBU As Double = noOf_SBU * SBU_Amount()
-
-    '                    '=============== IF NOT YET PAID INCLUDE SBU ================ 
-    '                    If total_SBU < total_amount Then
-    '                        Return True
-    '                    End If
-    '                End If
-
-    '            End With
-    '        End If
-    '    End Using
-
-    '    Return False
-    'End Function
 
     Public Sub Update_DEDUCTION_STATUS(deduc_id As String)
 
@@ -1039,8 +914,8 @@
                         '================ CHECK SBU TOTAL DISTRIB IF ALREADY REACH THE LIMIT ==============
                         If SBU_notFull(bioNo) Then
 
-                            SBU = SBU_Amount()
-                            Save_Recorded_Allow_Deduc(bioNo, paydate_, "SBU", SBU_Amount(), "DEDUCTION")
+                            SBU = SBU_Amount(bioNo)
+                            Save_Recorded_Allow_Deduc(bioNo, paydate_, "SBU", SBU, "DEDUCTION")
 
                         End If
                     End If
@@ -1297,8 +1172,8 @@
 
                             If SBU_notFull(BiometricID) Then '================ CHECK SBU TOTAL DISTRIB IF ALREADY REACH THE LIMIT ==============
 
-                                SBU = SBU_Amount()
-                                Save_Recorded_Allow_Deduc(BiometricID, paydate_, "SBU", SBU_Amount(), "DEDUCTION")
+                                SBU = SBU_Amount(BiometricID)
+                                Save_Recorded_Allow_Deduc(BiometricID, paydate_, "SBU", SBU, "DEDUCTION")
 
                             End If
                         End If
@@ -1807,6 +1682,112 @@
         End If
 
     End Sub
+
+    Function RemoveWhitespace(fullString As String) As String
+        Return New String(fullString.Where(Function(x) Not Char.IsWhiteSpace(x)).ToArray())
+    End Function
+
+    Public Sub SAVE_Emp_SBU_AMOUNT_PRINCIPAL_CREDIT_NAME(FULLNAME As String, CATEGORY As String, AMOUNT As String, PRINCIPAL As String, CREDIT As String, BALANCE As String, RowNo As Integer)
+        If FULLNAME <> "1" Or FULLNAME <> "2" Then
+
+            FULLNAME = FULLNAME.TrimEnd
+
+            Dim mysql As String
+            Dim BIO As String = ""
+
+            '====================== GET BIO_NO FOR SAVING TO PAYROLL_SBU  ==================
+            mysql = "Select * From PAYROLL_EMPLOYEE WHERE FULLNAME = '" & FULLNAME & "'"
+            Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+                If ds.Tables(0).Rows.Count > 0 Then
+                    Dim data As DataRow = ds.Tables(0).Rows(0)
+                    With data
+                        BIO = .Item("BIO_NO")
+                    End With
+                Else
+                    Exit Sub
+                End If
+            End Using
+
+            '====================== ADD NEW PAYROLL_SBU ==================
+            mysql = "Select * From PAYROLL_SBU Rows 1"
+            Using dssS As DataSet = LoadSQL(mysql, "PAYROLL_SBU")
+
+                Dim dsNewRow As DataRow = dssS.Tables(0).NewRow
+                With dsNewRow
+
+                    .Item("BIO_NO") = BIO
+                    .Item("PRINCIPAL") = IIf(PRINCIPAL = Nothing, 0, PRINCIPAL)
+                    .Item("CREDIT") = IIf(CREDIT = Nothing, 0, CREDIT)
+                    .Item("BALANCE") = IIf(BALANCE = Nothing, PRINCIPAL, BALANCE)
+
+                    If CATEGORY = "CASH BOND" Then
+                        .Item("CASH_BOND") = IIf(AMOUNT = Nothing, 250, AMOUNT)
+                    Else
+                        .Item("SBU") = IIf(AMOUNT = Nothing, 250, AMOUNT)
+                    End If
+
+                End With
+                dssS.Tables(0).Rows.Add(dsNewRow)
+                SaveEntry(dssS)
+                Console.WriteLine("NEWWWW -" & FULLNAME & "- " & RowNo - 1)
+            End Using
+        End If
+
+    End Sub
+
+
+    'Public Sub SAVE_Emp_SBU_AMOUNT_PRINCIPAL_CREDIT_BIO(EMP_NO As String, SBU_AMOUNT As String, SBU_PRINCIPAL As String, SBU_CREDIT As String, SBU_BALANCE As String, RowNo As Integer)
+    '    If EMP_NO <> "" Then
+    '        Dim REMOVE_SPACE As String = RemoveWhitespace(EMP_NO)
+    '        Dim BIO As String() = REMOVE_SPACE.Split(New Char() {"-"c})
+
+    '        '====================== UPDATE OR ADD PAYROLL_SBU ==================
+    '        Dim mysql As String
+
+    '        If BIO.Length = 3 Then
+
+    '            If Match_Employee(BIO(2)) Then
+    '                mysql = $"Select * FROM PAYROLL_SBU where BIO_NO = '{BIO(2)}'"
+    '                Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_SBU")
+    '                If dss.Tables(0).Rows.Count > 0 Then
+
+    '                    With dss.Tables(0).Rows(0)
+
+    '                        .Item("SBU_AMOUNT") = SBU_AMOUNT
+    '                        .Item("SBU_PRINCIPAL") = SBU_PRINCIPAL
+    '                        .Item("SBU_CREDIT") = SBU_CREDIT
+    '                        .Item("SBU_BALANCE") = SBU_BALANCE
+
+    '                    End With
+
+    '                    SaveEntry(dss, False)
+
+    '                Else
+    '                    mysql = "Select * From PAYROLL_SBU Rows 1"
+    '                    Using dssS As DataSet = LoadSQL(mysql, "PAYROLL_SBU")
+
+    '                        Dim dsNewRow As DataRow = dssS.Tables(0).NewRow
+    '                        With dsNewRow
+
+    '                            .Item("BIO_NO") = BIO(2)
+    '                            .Item("SBU_AMOUNT") = SBU_AMOUNT
+    '                            .Item("SBU_PRINCIPAL") = SBU_PRINCIPAL
+    '                            .Item("SBU_CREDIT") = SBU_CREDIT
+    '                            .Item("SBU_BALANCE") = SBU_BALANCE
+
+    '                        End With
+    '                        dssS.Tables(0).Rows.Add(dsNewRow)
+    '                        SaveEntry(dssS)
+    '                    End Using
+    '                End If
+    '            Else
+    '                Console.WriteLine("ROWWW -" & REMOVE_SPACE & "- " & RowNo - 1)
+    '            End If
+
+    '        End If
+    '    End If
+    'End Sub
+
 
     'Update_Emp_Benefits_DetailS_BY_NAME(fullname, eCell(row, 9).Value, eCell(row, 10).Value, eCell(row, 11).Value, eCell(row, 12).Value, eCell(row, 6).Value, eCell(row, 8).Value, eCell(row, 1).Value)
 
