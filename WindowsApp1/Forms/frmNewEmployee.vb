@@ -393,10 +393,8 @@ Public Class frmNewEmployee
                 emp_status = InActive_RB.Text
             End If
 
-            SaveNew_Employee(Add_Company_CB.Text, Branch_ComboB.Text, Fullname_TXT.Text, Bio_TXT.Text, Email_TXT.Text, emp_status, Started_DTP.Value,
-                                                    False, TimeIn_Combo.Text, TimeOut_Combo.Text, EmpNo_TXT.Text)
-
-            SaveNew_SBU(Bio_TXT.Text, Add_Company_CB.Text)
+            SaveNew_Employee(Add_Company_CB.Text, Branch_ComboB.Text, Fullname_TXT.Text, Bio_TXT.Text, Email_TXT.Text, emp_status, Started_DTP.Value, False,
+                             TimeIn_Combo.Text, TimeOut_Combo.Text, EmpNo_TXT.Text, TIN_TXT.Text, SSS_TXT.Text, PHILH_TXT.Text, HDMF_TXT.Text)
 
             Lists_Employees(lvEmployee)
 
@@ -410,8 +408,8 @@ Public Class frmNewEmployee
 
     Private Sub Bio_TXT_TextChanged(sender As Object, e As EventArgs) Handles Bio_TXT.TextChanged
         If Bio_TXT.Text <> Nothing Then
-            GetFullname(Bio_TXT.Text, Add_Company_CB, Branch_ComboB, Fullname_TXT, Email_TXT,
-                        Active_RB, InActive_RB, Started_DTP, TimeIn_Combo, TimeOut_Combo, EmpNo_TXT)
+            GetFullname(Bio_TXT.Text, Add_Company_CB, Branch_ComboB, Fullname_TXT, Email_TXT, Active_RB, InActive_RB,
+                        Started_DTP, TimeIn_Combo, TimeOut_Combo, EmpNo_TXT, TIN_TXT, SSS_TXT, PHILH_TXT, HDMF_TXT)
         Else
             Add_Company_CB.Text = ""
             Branch_ComboB.Text = ""
@@ -420,6 +418,10 @@ Public Class frmNewEmployee
             TimeIn_Combo.Text = ""
             TimeOut_Combo.Text = ""
             EmpNo_TXT.Text = ""
+            TIN_TXT.Text = ""
+            SSS_TXT.Text = ""
+            PHILH_TXT.Text = ""
+            HDMF_TXT.Text = ""
         End If
     End Sub
 

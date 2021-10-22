@@ -30,8 +30,6 @@ Partial Class frmAttendance
         Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim ReportDataSource1 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
         Me.overAllBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.dtr_all = New WindowsApp1.dtr_all()
@@ -54,6 +52,11 @@ Partial Class frmAttendance
         Me.Path_TXT = New System.Windows.Forms.TextBox()
         Me.OpenFile_BTN = New System.Windows.Forms.Button()
         Me.Manual_Tab = New System.Windows.Forms.TabPage()
+        Me.SIL_Panel = New System.Windows.Forms.Panel()
+        Me.CancelSIL_BTN = New System.Windows.Forms.Button()
+        Me.AddSIL_BTN = New System.Windows.Forms.Button()
+        Me.SIL_NUP = New System.Windows.Forms.NumericUpDown()
+        Me.SIL_BTN = New System.Windows.Forms.Button()
         Me.UT_BTN = New System.Windows.Forms.Button()
         Me.Late_BTN = New System.Windows.Forms.Button()
         Me.OT_BTN = New System.Windows.Forms.Button()
@@ -102,6 +105,8 @@ Partial Class frmAttendance
         Me.Label30 = New System.Windows.Forms.Label()
         Me.Paydate7_CB = New System.Windows.Forms.ComboBox()
         Me.Panel2 = New System.Windows.Forms.Panel()
+        Me.SIL7_NUP = New System.Windows.Forms.NumericUpDown()
+        Me.Label13 = New System.Windows.Forms.Label()
         Me.Undertime7_TXT = New System.Windows.Forms.TextBox()
         Me.Label29 = New System.Windows.Forms.Label()
         Me.Cancel7_BTN = New System.Windows.Forms.Button()
@@ -163,24 +168,20 @@ Partial Class frmAttendance
         Me.RE_NAME_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.RE_BIO_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.RE_BRANCH_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.SIL_BTN = New System.Windows.Forms.Button()
-        Me.SIL_Panel = New System.Windows.Forms.Panel()
-        Me.SIL_NUP = New System.Windows.Forms.NumericUpDown()
-        Me.AddSIL_BTN = New System.Windows.Forms.Button()
-        Me.CancelSIL_BTN = New System.Windows.Forms.Button()
-        Me.Label13 = New System.Windows.Forms.Label()
-        Me.SIL7_NUP = New System.Windows.Forms.NumericUpDown()
         CType(Me.overAllBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.dtr_all, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Attendance_Tab.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         CType(Me.Bio_grid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Manual_Tab.SuspendLayout()
+        Me.SIL_Panel.SuspendLayout()
+        CType(Me.SIL_NUP, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox3.SuspendLayout()
         CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
         Me.TabPage2.SuspendLayout()
         Me.Panel2.SuspendLayout()
+        CType(Me.SIL7_NUP, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Seven_Grid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage3.SuspendLayout()
         Me.Panel1.SuspendLayout()
@@ -190,9 +191,6 @@ Partial Class frmAttendance
         Me.Branch_group.SuspendLayout()
         CType(Me.printDTRBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Context_Records.SuspendLayout()
-        Me.SIL_Panel.SuspendLayout()
-        CType(Me.SIL_NUP, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.SIL7_NUP, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'overAllBindingSource
@@ -442,6 +440,59 @@ Partial Class frmAttendance
         Me.Manual_Tab.TabIndex = 0
         Me.Manual_Tab.Text = "    Manual    "
         Me.Manual_Tab.UseVisualStyleBackColor = True
+        '
+        'SIL_Panel
+        '
+        Me.SIL_Panel.BackColor = System.Drawing.Color.LightSalmon
+        Me.SIL_Panel.Controls.Add(Me.CancelSIL_BTN)
+        Me.SIL_Panel.Controls.Add(Me.AddSIL_BTN)
+        Me.SIL_Panel.Controls.Add(Me.SIL_NUP)
+        Me.SIL_Panel.Location = New System.Drawing.Point(437, 537)
+        Me.SIL_Panel.Name = "SIL_Panel"
+        Me.SIL_Panel.Size = New System.Drawing.Size(149, 48)
+        Me.SIL_Panel.TabIndex = 115
+        Me.SIL_Panel.Visible = False
+        '
+        'CancelSIL_BTN
+        '
+        Me.CancelSIL_BTN.Font = New System.Drawing.Font("Dubai", 8.249999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CancelSIL_BTN.Location = New System.Drawing.Point(66, 7)
+        Me.CancelSIL_BTN.Name = "CancelSIL_BTN"
+        Me.CancelSIL_BTN.Size = New System.Drawing.Size(37, 34)
+        Me.CancelSIL_BTN.TabIndex = 117
+        Me.CancelSIL_BTN.Text = "✖"
+        Me.CancelSIL_BTN.UseVisualStyleBackColor = True
+        '
+        'AddSIL_BTN
+        '
+        Me.AddSIL_BTN.Font = New System.Drawing.Font("Dubai", 8.249999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.AddSIL_BTN.Location = New System.Drawing.Point(104, 7)
+        Me.AddSIL_BTN.Name = "AddSIL_BTN"
+        Me.AddSIL_BTN.Size = New System.Drawing.Size(37, 34)
+        Me.AddSIL_BTN.TabIndex = 116
+        Me.AddSIL_BTN.Text = " ✔"
+        Me.AddSIL_BTN.UseVisualStyleBackColor = True
+        '
+        'SIL_NUP
+        '
+        Me.SIL_NUP.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SIL_NUP.Location = New System.Drawing.Point(7, 7)
+        Me.SIL_NUP.Maximum = New Decimal(New Integer() {5, 0, 0, 0})
+        Me.SIL_NUP.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+        Me.SIL_NUP.Name = "SIL_NUP"
+        Me.SIL_NUP.Size = New System.Drawing.Size(49, 35)
+        Me.SIL_NUP.TabIndex = 0
+        Me.SIL_NUP.Value = New Decimal(New Integer() {1, 0, 0, 0})
+        '
+        'SIL_BTN
+        '
+        Me.SIL_BTN.Font = New System.Drawing.Font("Dubai", 8.249999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SIL_BTN.Location = New System.Drawing.Point(364, 454)
+        Me.SIL_BTN.Name = "SIL_BTN"
+        Me.SIL_BTN.Size = New System.Drawing.Size(44, 26)
+        Me.SIL_BTN.TabIndex = 114
+        Me.SIL_BTN.Text = "Add"
+        Me.SIL_BTN.UseVisualStyleBackColor = True
         '
         'UT_BTN
         '
@@ -961,6 +1012,27 @@ Partial Class frmAttendance
         Me.Panel2.Size = New System.Drawing.Size(629, 183)
         Me.Panel2.TabIndex = 109
         '
+        'SIL7_NUP
+        '
+        Me.SIL7_NUP.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SIL7_NUP.Location = New System.Drawing.Point(482, 93)
+        Me.SIL7_NUP.Maximum = New Decimal(New Integer() {5, 0, 0, 0})
+        Me.SIL7_NUP.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+        Me.SIL7_NUP.Name = "SIL7_NUP"
+        Me.SIL7_NUP.Size = New System.Drawing.Size(135, 35)
+        Me.SIL7_NUP.TabIndex = 113
+        Me.SIL7_NUP.Value = New Decimal(New Integer() {1, 0, 0, 0})
+        '
+        'Label13
+        '
+        Me.Label13.AutoSize = True
+        Me.Label13.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label13.Location = New System.Drawing.Point(351, 100)
+        Me.Label13.Name = "Label13"
+        Me.Label13.Size = New System.Drawing.Size(65, 27)
+        Me.Label13.TabIndex = 112
+        Me.Label13.Text = "SIL (dd)"
+        '
         'Undertime7_TXT
         '
         Me.Undertime7_TXT.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -1148,24 +1220,8 @@ Partial Class frmAttendance
         Me.Seven_Grid.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.Seven_Grid.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText
         Me.Seven_Grid.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
-        DataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle8.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.Seven_Grid.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle8
         Me.Seven_Grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.Seven_Grid.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.DataGridViewTextBoxColumn1, Me.DataGridViewTextBoxColumn2, Me.DataGridViewTextBoxColumn3, Me.DataGridViewTextBoxColumn4, Me.DataGridViewTextBoxColumn5, Me.DataGridViewTextBoxColumn6, Me.Column1})
-        DataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle9.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.Seven_Grid.DefaultCellStyle = DataGridViewCellStyle9
         Me.Seven_Grid.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically
         Me.Seven_Grid.Location = New System.Drawing.Point(3, 231)
         Me.Seven_Grid.Name = "Seven_Grid"
@@ -1547,80 +1603,6 @@ Partial Class frmAttendance
         Me.RE_BRANCH_DGV.ReadOnly = True
         Me.RE_BRANCH_DGV.Width = 140
         '
-        'SIL_BTN
-        '
-        Me.SIL_BTN.Font = New System.Drawing.Font("Dubai", 8.249999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.SIL_BTN.Location = New System.Drawing.Point(364, 454)
-        Me.SIL_BTN.Name = "SIL_BTN"
-        Me.SIL_BTN.Size = New System.Drawing.Size(44, 26)
-        Me.SIL_BTN.TabIndex = 114
-        Me.SIL_BTN.Text = "Add"
-        Me.SIL_BTN.UseVisualStyleBackColor = True
-        '
-        'SIL_Panel
-        '
-        Me.SIL_Panel.BackColor = System.Drawing.Color.LightSalmon
-        Me.SIL_Panel.Controls.Add(Me.CancelSIL_BTN)
-        Me.SIL_Panel.Controls.Add(Me.AddSIL_BTN)
-        Me.SIL_Panel.Controls.Add(Me.SIL_NUP)
-        Me.SIL_Panel.Location = New System.Drawing.Point(437, 537)
-        Me.SIL_Panel.Name = "SIL_Panel"
-        Me.SIL_Panel.Size = New System.Drawing.Size(149, 48)
-        Me.SIL_Panel.TabIndex = 115
-        Me.SIL_Panel.Visible = False
-        '
-        'SIL_NUP
-        '
-        Me.SIL_NUP.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.SIL_NUP.Location = New System.Drawing.Point(7, 7)
-        Me.SIL_NUP.Maximum = New Decimal(New Integer() {5, 0, 0, 0})
-        Me.SIL_NUP.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
-        Me.SIL_NUP.Name = "SIL_NUP"
-        Me.SIL_NUP.Size = New System.Drawing.Size(49, 35)
-        Me.SIL_NUP.TabIndex = 0
-        Me.SIL_NUP.Value = New Decimal(New Integer() {1, 0, 0, 0})
-        '
-        'AddSIL_BTN
-        '
-        Me.AddSIL_BTN.Font = New System.Drawing.Font("Dubai", 8.249999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.AddSIL_BTN.Location = New System.Drawing.Point(104, 7)
-        Me.AddSIL_BTN.Name = "AddSIL_BTN"
-        Me.AddSIL_BTN.Size = New System.Drawing.Size(37, 34)
-        Me.AddSIL_BTN.TabIndex = 116
-        Me.AddSIL_BTN.Text = " ✔"
-        Me.AddSIL_BTN.UseVisualStyleBackColor = True
-        '
-        'CancelSIL_BTN
-        '
-        Me.CancelSIL_BTN.Font = New System.Drawing.Font("Dubai", 8.249999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.CancelSIL_BTN.Location = New System.Drawing.Point(66, 7)
-        Me.CancelSIL_BTN.Name = "CancelSIL_BTN"
-        Me.CancelSIL_BTN.Size = New System.Drawing.Size(37, 34)
-        Me.CancelSIL_BTN.TabIndex = 117
-        Me.CancelSIL_BTN.Text = "✖"
-        Me.CancelSIL_BTN.UseVisualStyleBackColor = True
-        '
-        'Label13
-        '
-        Me.Label13.AutoSize = True
-        Me.Label13.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label13.Location = New System.Drawing.Point(351, 100)
-        Me.Label13.Name = "Label13"
-        Me.Label13.Size = New System.Drawing.Size(65, 27)
-        Me.Label13.TabIndex = 112
-        Me.Label13.Text = "SIL (dd)"
-        '
-        'SIL7_NUP
-        '
-        Me.SIL7_NUP.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.SIL7_NUP.Location = New System.Drawing.Point(482, 93)
-        Me.SIL7_NUP.Maximum = New Decimal(New Integer() {5, 0, 0, 0})
-        Me.SIL7_NUP.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
-        Me.SIL7_NUP.Name = "SIL7_NUP"
-        Me.SIL7_NUP.Size = New System.Drawing.Size(135, 35)
-        Me.SIL7_NUP.TabIndex = 113
-        Me.SIL7_NUP.Value = New Decimal(New Integer() {1, 0, 0, 0})
-        '
         'frmAttendance
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1631,7 +1613,7 @@ Partial Class frmAttendance
         Me.Controls.Add(Me.Label1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Name = "frmAttendance"
-        Me.Text = "frmAttendance"
+        Me.Text = " "
         CType(Me.overAllBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.dtr_all, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Attendance_Tab.ResumeLayout(False)
@@ -1640,6 +1622,8 @@ Partial Class frmAttendance
         CType(Me.Bio_grid, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Manual_Tab.ResumeLayout(False)
         Me.Manual_Tab.PerformLayout()
+        Me.SIL_Panel.ResumeLayout(False)
+        CType(Me.SIL_NUP, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox3.ResumeLayout(False)
         Me.GroupBox3.PerformLayout()
         CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).EndInit()
@@ -1649,6 +1633,7 @@ Partial Class frmAttendance
         Me.TabPage2.PerformLayout()
         Me.Panel2.ResumeLayout(False)
         Me.Panel2.PerformLayout()
+        CType(Me.SIL7_NUP, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Seven_Grid, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage3.ResumeLayout(False)
         Me.TabPage3.PerformLayout()
@@ -1662,9 +1647,6 @@ Partial Class frmAttendance
         Me.Branch_group.PerformLayout()
         CType(Me.printDTRBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Context_Records.ResumeLayout(False)
-        Me.SIL_Panel.ResumeLayout(False)
-        CType(Me.SIL_NUP, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.SIL7_NUP, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

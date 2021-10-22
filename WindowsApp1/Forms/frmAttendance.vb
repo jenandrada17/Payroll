@@ -1177,13 +1177,25 @@ Public Class frmAttendance
     End Sub
 
     Private Sub SIL_BTN_Click(sender As Object, e As EventArgs) Handles SIL_BTN.Click
-        If SIL_BTN.Text = "Add" Then
-            SIL_Panel.Visible = True
-            SIL_Panel.Location = New Point(SIL_BTN.Location.X - 160, SIL_BTN.Location.Y - 10)
+        If Name_TXT.Text <> "" Then
+            If SIL_BTN.Text = "Add" Then
+
+                Dim totalMonths As Integer = CountYear_SIL(BiometricID_TXT.Text, ending_date)
+
+                If totalMonths >= 13 Then
+                    SIL_Panel.Visible = True
+                    SIL_Panel.Location = New Point(SIL_BTN.Location.X - 160, SIL_BTN.Location.Y - 10)
+                Else
+                    MsgBox($"Not yet allowed to avail SIL.", MsgBoxStyle.Critical, "Invalid")
+                End If
+
+            Else
+                SIL_BTN.Text = "Add"
+                SIL_LBL.Text = 0
+                SIL_NUP.Text = 1
+            End If
         Else
-            SIL_BTN.Text = "Add"
-            SIL_LBL.Text = 0
-            SIL_NUP.Text = 1
+            MsgBox($"Please select employee.", MsgBoxStyle.Exclamation, "Invalid")
         End If
     End Sub
 
@@ -1743,6 +1755,7 @@ Public Class frmAttendance
 
         If BiometricID_TXT.Text = "" Then
             Name_TXT.Text = ""
+            SIL_Panel.Visible = False
         Else
             GetName(BiometricID_TXT.Text, Name_TXT)
 
@@ -1776,7 +1789,6 @@ Public Class frmAttendance
             Else
                 Save_BTN.Enabled = True
             End If
-
         End If
 
     End Sub

@@ -638,7 +638,7 @@ Module SelectFromDatabase
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
                     With dr
-                        first_NoOfDays = .Item("PRESENT_DAYS") + .Item("REGHOLIDAY") + .Item("SPECHOLIDAY")
+                        first_NoOfDays = .Item("PRESENT_DAYS") + .Item("REGHOLIDAY") + .Item("SPECHOLIDAY") + .Item("SIL")
                     End With
                 Next
             Else
@@ -1979,22 +1979,30 @@ Module SelectFromDatabase
 
     Public Sub GetFullname(bio_no As String, Add_Company_CB As ComboBox, Branch_ComboB As ComboBox, Fullname_TXT As TextBox,
                            Email_TXT As TextBox, Active_RB As RadioButton, InActive_RB As RadioButton, Started_DTP As DateTimePicker,
-                           TimeIn_Combo As ComboBox, TimeOut_Combo As ComboBox, EmoNo_TXT As TextBox)
+                           TimeIn_Combo As ComboBox, TimeOut_Combo As ComboBox, EmoNo_TXT As TextBox,
+                           TIN_TXT As TextBox, SSS_TXT As TextBox, PHILH_TXT As TextBox, HDMF_TXT As TextBox)
 
         Dim mysql As String = $"select * from PAYROLL_EMPLOYEE where BIO_NO = '{bio_no}'"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
             If ds.Tables(0).Rows.Count > 0 Then
                 Dim dr As DataRow = ds.Tables(0).Rows(0)
                 With dr
+                    Dim TIME_IN, TIME_OUT As DateTime
+                    TIME_IN = IIf(IsDBNull(.Item("TIME_IN")), Nothing, .Item("TIME_IN"))
+                    TIME_OUT = IIf(IsDBNull(.Item("TIME_OUT")), Nothing, .Item("TIME_OUT"))
 
                     Add_Company_CB.Text = .Item("COMPANY")
                     Branch_ComboB.Text = .Item("BRANCH_CODE")
                     Fullname_TXT.Text = .Item("FULLNAME")
                     Email_TXT.Text = IIf(IsDBNull(.Item("EMAIL_ADD")), "", .Item("EMAIL_ADD"))
                     Started_DTP.Text = IIf(IsDBNull(.Item("DATE_STARTED")), "", .Item("DATE_STARTED"))
-                    TimeIn_Combo.Text = IIf(IsDBNull(.Item("TIME_IN")), "", .Item("TIME_IN").ToShortTimeString())
-                    TimeOut_Combo.Text = IIf(IsDBNull(.Item("TIME_OUT")), "", .Item("TIME_OUT").ToShortTimeString())
+                    TimeIn_Combo.Text = IIf(TIME_IN = Nothing, "", TIME_IN.ToShortTimeString())
+                    TimeOut_Combo.Text = IIf(TIME_OUT = Nothing, "", TIME_OUT.ToShortTimeString())
                     EmoNo_TXT.Text = IIf(IsDBNull(.Item("EMP_NO")), "", .Item("EMP_NO"))
+                    TIN_TXT.Text = IIf(IsDBNull(.Item("TINNO")), "", .Item("TINNO"))
+                    SSS_TXT.Text = IIf(IsDBNull(.Item("SSSNO")), "", .Item("SSSNO"))
+                    PHILH_TXT.Text = IIf(IsDBNull(.Item("PHILHEALTHNO")), "", .Item("PHILHEALTHNO"))
+                    HDMF_TXT.Text = IIf(IsDBNull(.Item("PAGIBIGNO")), "", .Item("PAGIBIGNO"))
 
                     If .Item("EMP_STATUS") = "ACTIVE" Then
                         Active_RB.Checked = True
@@ -2201,40 +2209,57 @@ Module SelectFromDatabase
     End Function
 
     Public Function SBU_notFull(BIO_NO As String)
-        Dim mysql As String = $"Select COMPANY, DATE_STARTED, BALANCE From PAYROLL_EMPLOYEE A inner join PAYROLL_SBU B ON A.BIO_NO = B.BIO_NO where A.BIO_NO = '{BIO_NO}' "
+        Dim mysql As String = $"Select A.DATE_STARTED, A.COMPANY, B.* From PAYROLL_EMPLOYEE A inner join PAYROLL_SBU B ON A.BIO_NO = B.BIO_NO where A.BIO_NO = '{BIO_NO}' AND CATEGORY = 'SBU'"
         Using dss As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
             If dss.Tables(0).Rows.Count > 0 Then
-                Dim data As DataRow = dss.Tables(0).Rows(0)
-                With data
+                For Each dr In dss.Tables(0).Rows
+                    With dr
 
-                    Dim training_days As Integer = 0
-                    Dim Started As DateTime = .Item("DATE_STARTED")
-                    Dim sbu_bal As Double = IIf(IsDBNull(.Item("BALANCE")), 0, .Item("BALANCE"))
+                        Dim training_days As Integer = 0
+                        Dim Started As DateTime = .Item("DATE_STARTED")
+                        Dim sbu_bal As Double = .Item("BALANCE")
 
-                    '=============== TRAINING DAYS ================
-                    If .Item("COMPANY") = "DALTON" Or .Item("COMPANY") = "PHOTO" Or .Item("COMPANY") = "HEAD OFFICE" Then
-                        training_days = 15
-                    Else
-                        training_days = 30
-                    End If
-
-                    '=============== CALCULATE SBU ================  
-                    Dim count_days = New DateTime(Started.Year, Started.Month, Started.Day)
-                    count_days = count_days.AddDays(training_days)
-
-                    If Today >= count_days Then
-
-                        If sbu_bal > 0 Then
-                            Return True
+                        '=============== TRAINING DAYS ================
+                        If .Item("COMPANY") = "DALTON" Or .Item("COMPANY") = "PHOTO" Or .Item("COMPANY") = "HEAD OFFICE" Then
+                            training_days = 15
+                        Else
+                            training_days = 30
                         End If
 
-                    End If
+                        '=============== CALCULATE SBU ================  
+                        Dim count_days = New DateTime(Started.Year, Started.Month, Started.Day)
+                        count_days = count_days.AddDays(training_days)
 
-                End With
+                        If Today >= count_days Then
+
+                            If sbu_bal > 0 Then
+                                Return True
+                            End If
+
+                        End If
+                    End With
+                Next
             End If
         End Using
 
         Return False
+    End Function
+
+    Public Function CountYear_SIL(Bio_no As String, endingDate As DateTime) As Integer
+
+        Dim cnt As Integer = 0
+        Dim mysql As String = $"Select DATE_STARTED From PAYROLL_EMPLOYEE where BIO_NO = '{Bio_no}'"
+        Using dss As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+            If dss.Tables(0).Rows.Count > 0 Then
+                Dim dr As DataRow = dss.Tables(0).Rows(0)
+                With dr
+                    Dim date_started As DateTime = IIf(IsDBNull(.Item("DATE_STARTED")), Today, .Item("DATE_STARTED"))
+                    cnt = DateDiff(DateInterval.Month, date_started, endingDate)
+                End With
+            End If
+        End Using
+
+        Return cnt
     End Function
 
     Public Sub Replacing(str As String)

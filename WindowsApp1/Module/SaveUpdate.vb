@@ -429,8 +429,7 @@
     '        End If
 
     '    End If
-    'End Sub
-
+    'End Sub 
 
     Friend Sub SaveRATE(column As String, value As String, daily_rate As String, Optional group As Boolean = False) '=========== BOOLEAN IF MORE THAN 1 ========== 
 
@@ -1002,7 +1001,6 @@
                         Dim Late As String = ""
                         Dim UnderTime As String = ""
                         Dim NoOfDays, RegularOT, SpecialHol, RegularHol As Double
-                        Dim Allowances, Deduction As Double
                         Dim noOf_days_training As Double = 0
                         Dim SBU As Double = 0
                         Dim TotalBasic As Double = 0
@@ -1015,6 +1013,8 @@
                         Dim pagibigLoan As Double = 0
                         Dim rate As Double = 0
                         Dim nightRate As Double = 0
+                        Dim Allowances As Double = 0
+                        Dim Deduction As Double = 0
 
                         BiometricID = .Item("BIOMETRICID")
                         rate = IIf(IsDBNull(.Item("RATE_DAILY")), 0, .Item("RATE_DAILY"))
@@ -1118,8 +1118,7 @@
 
                         '============================================= DELETE TO REPLACE =================================================
                         Replacing($"RECORDED_ALLOW_DEDUC where BIO_NO = '{BiometricID}' and PAYDATE = '{paydate_}';")
-                        '============================================= ALLOWANCE =========================================================
-                        Allowances = 0
+                        '============================================= ALLOWANCE ========================================================= 
 
                         Dim sql_2 As String = $"Select * From PAYROLL_ALLOWANCES WHERE BIOMETRIC_NO = '{BiometricID}' and ALLOWED = 'YES' and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
                         Using ds_2 As DataSet = LoadSQL(sql_2, "PAYROLL_ALLOWANCES")
@@ -1132,7 +1131,7 @@
                                             Dim PI As Double = 0
 
                                             If sched = "CLOSE PAYROLL" Then
-                                                If .item("CATEGORY") = "PERFORMANCE INCENTIVES" Then
+                                                If .item("CATEGORY") = "PERFORMANCE INCENTIVES" Or .item("CATEGORY") = "PI" Then
 
                                                     Dim PI_totalDays As Double = GetFirst_NoOfDays(BiometricID, paydate_) + NoOfDays + RegularHol + SpecialHol
                                                     Dim absent As Double = 26 - PI_totalDays
@@ -1153,9 +1152,7 @@
                             End If
                         End Using
 
-                        '============================================= DEDUCTION =========================================================  
-                        Deduction = 0
-
+                        '============================================= DEDUCTION =========================================================   
                         Dim sql_3 As String = $"Select * From PAYROLL_DEDUCTIONS WHERE BIO_NO = '{BiometricID}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
                         Using ds_3 As DataSet = LoadSQL(sql_3, "PAYROLL_DEDUCTIONS")
                             If ds_3.Tables(0).Rows.Count > 0 Then
@@ -1188,6 +1185,7 @@
                                 End If
 
                             End If
+
                         End If
 
                         '============================================= Calculate_Gross() ========================================================= 
@@ -1541,7 +1539,9 @@
 
     Public Sub SaveNew_Employee(COMPANY As String, BRANCH_CODE As String, FULLNAME As String, BIO_NO As String, EMAIL_ADD As String,
                                 EMP_STATUS As String, Optional DATE_STARTED As String = "", Optional group As Boolean = False,
-                                Optional TIME_IN As String = "", Optional TIME_OUT As String = "", Optional EMP_NO As String = "")
+                                Optional TIME_IN As String = "", Optional TIME_OUT As String = "", Optional EMP_NO As String = "",
+                                Optional TIN As String = "", Optional SSS As String = "", Optional PHILH As String = "",
+                                Optional HDMF As String = "")
 
         Dim mysql As String
 
@@ -1557,21 +1557,14 @@
                 .Item("EMAIL_ADD") = EMAIL_ADD
                 .Item("EMP_STATUS") = EMP_STATUS
 
-                If DATE_STARTED <> "" Then
-                    .Item("DATE_STARTED") = DATE_STARTED
-                End If
-
-                If TIME_IN <> "" Then
-                    .Item("TIME_IN") = TIME_IN
-                End If
-
-                If TIME_OUT <> "" Then
-                    .Item("TIME_OUT") = TIME_OUT
-                End If
-
-                If EMP_NO <> "" Then
-                    .Item("EMP_NO") = EMP_NO
-                End If
+                If DATE_STARTED <> "" Then .Item("DATE_STARTED") = DATE_STARTED
+                If TIME_IN <> "" Then .Item("TIME_IN") = TIME_IN
+                If TIME_OUT <> "" Then .Item("TIME_OUT") = TIME_OUT
+                If EMP_NO <> "" Then .Item("EMP_NO") = EMP_NO
+                If TIN <> "" Then .Item("TINNO") = TIN
+                If SSS <> "" Then .Item("SSSNO") = SSS
+                If PHILH <> "" Then .Item("PHILHEALTHNO") = PHILH
+                If HDMF <> "" Then .Item("PAGIBIGNO") = HDMF
 
             End With
 
@@ -1595,27 +1588,21 @@
                     .Item("EMAIL_ADD") = EMAIL_ADD
                     .Item("EMP_STATUS") = EMP_STATUS
 
-                    If DATE_STARTED <> "" Then
-                        .Item("DATE_STARTED") = DATE_STARTED
-                    End If
-
-                    If TIME_IN <> "" Then
-                        .Item("TIME_IN") = TIME_IN
-                    End If
-
-                    If TIME_OUT <> "" Then
-                        .Item("TIME_OUT") = TIME_OUT
-                    End If
-
-                    If EMP_NO <> "" Then
-                        .Item("EMP_NO") = EMP_NO
-                    End If
+                    If DATE_STARTED <> "" Then .Item("DATE_STARTED") = DATE_STARTED
+                    If TIME_IN <> "" Then .Item("TIME_IN") = TIME_IN
+                    If TIME_OUT <> "" Then .Item("TIME_OUT") = TIME_OUT
+                    If EMP_NO <> "" Then .Item("EMP_NO") = EMP_NO
+                    If TIN <> "" Then .Item("TINNO") = TIN
+                    If SSS <> "" Then .Item("SSSNO") = SSS
+                    If PHILH <> "" Then .Item("PHILHEALTHNO") = PHILH
+                    If HDMF <> "" Then .Item("PAGIBIGNO") = HDMF
 
                 End With
 
                 dss.Tables(0).Rows.Add(dsNewRow)
                 SaveEntry(dss)
 
+                SaveNew_SBU(BIO_NO, COMPANY)
 
                 If group = False Then
                     MsgBox("Successfully Saved!", MsgBoxStyle.Information, "Information")
@@ -1629,58 +1616,33 @@
     Public Sub SaveNew_SBU(BIO_NO As String, COMPANY As String)
 
         Dim mysql As String
+        Dim PRINCIPAL As Double
 
-        mysql = $"Select * FROM PAYROLL_SBU  where BIO_NO = '{BIO_NO}'"
-        Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_SBU ")
-        If ds.Tables(0).Rows.Count > 0 Then
+        If COMPANY = "DALTON" Then
+            PRINCIPAL = 50000
+        ElseIf COMPANY = "PHOTO" Then
+            PRINCIPAL = 30000
+        Else
+            PRINCIPAL = 15000
+        End If
 
-            With ds.Tables(0).Rows(0)
+        mysql = "Select * From PAYROLL_SBU Rows 1"
+        Using dss As DataSet = LoadSQL(mysql, "PAYROLL_SBU")
 
-                Dim PRINCIPAL As Double
+            Dim dsNewRow As DataRow = dss.Tables(0).NewRow
+            With dsNewRow
 
-                If COMPANY = "DALTON" Then
-                    PRINCIPAL = 50000
-                ElseIf COMPANY = "PHOTO" Then
-                    PRINCIPAL = 30000
-                Else
-                    PRINCIPAL = 15000
-                End If
-
-                .Item("SBU") = 250
+                .Item("BIO_NO") = BIO_NO
+                .Item("AMOUNT") = 250
+                .Item("CATEGORY") = "SBU"
                 .Item("PRINCIPAL") = PRINCIPAL
 
             End With
 
-            SaveEntry(ds, False)
+            dss.Tables(0).Rows.Add(dsNewRow)
+            SaveEntry(dss)
 
-        Else
-            mysql = "Select * From PAYROLL_SBU Rows 1"
-            Using dss As DataSet = LoadSQL(mysql, "PAYROLL_SBU")
-
-                Dim dsNewRow As DataRow = dss.Tables(0).NewRow
-                With dsNewRow
-
-                    Dim PRINCIPAL As Double
-
-                    If COMPANY = "DALTON" Then
-                        PRINCIPAL = 50000
-                    ElseIf COMPANY = "PHOTO" Then
-                        PRINCIPAL = 30000
-                    Else
-                        PRINCIPAL = 15000
-                    End If
-
-                    .Item("BIO_NO") = BIO_NO
-                    .Item("SBU") = 250
-                    .Item("PRINCIPAL") = PRINCIPAL
-
-                End With
-
-                dss.Tables(0).Rows.Add(dsNewRow)
-                SaveEntry(dss)
-
-            End Using
-        End If
+        End Using
 
     End Sub
 

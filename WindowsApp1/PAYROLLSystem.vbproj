@@ -261,6 +261,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\rptDTR_All.rdlc" />
+    <EmbeddedResource Include="Reports\rpt_Common.rdlc" />
     <EmbeddedResource Include="Reports\rpt_DTR_ByGroup.rdlc" />
     <EmbeddedResource Include="Reports\rpt_NetPay.rdlc" />
     <EmbeddedResource Include="Reports\rpt_payslip.rdlc" />
