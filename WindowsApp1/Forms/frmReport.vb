@@ -65,6 +65,7 @@
                 .Columns.Add("PERIOD")
                 '.Columns.Add("RANGE")
                 .Columns.Add("COMPANY")
+                .Columns.Add("HO_CATEGORY")
             End With
 
             If Company_Combo.SelectedIndex >= 0 Then
@@ -111,10 +112,11 @@
                             Dim NET_PAY As Double = .Item("NET_PAY")
                             Dim BRANCH_CODE As String = .Item("BRANCH_CODE")
                             Dim COMPANY As String = .Item("COMPANY")
+                            Dim HO_CATEGORY As String = IIf(IsDBNull(.Item("HO_CATEGORY")), "", .Item("HO_CATEGORY"))
 
                             dt_NetPay.Rows.Add(EMP_NO, namee, BASIC.ToString("n"), OVERTIME.ToString("n"), HOLIDAY.ToString("n"), N_DIFF.ToString("n"),
                                                PI_ECOLA_SIL.ToString("n"), TARDINESS.ToString("n"), SSS.ToString("n"), PHIC.ToString("n"), PAGIBIG.ToString("n"),
-                                               SBU_CHARGES.ToString("n"), NET_PAY.ToString("n"), BRANCH_CODE, payroll.ToString("MMMM dd, yyyy"), period, COMPANY)
+                                               SBU_CHARGES.ToString("n"), NET_PAY.ToString("n"), BRANCH_CODE, payroll.ToString("MMMM dd, yyyy"), period, COMPANY, HO_CATEGORY)
 
                         End With
                     Next
@@ -132,5 +134,48 @@
 
     End Sub
 
+    Public Sub LoadCommon_Print()
 
+        RptViewer_Common.LocalReport.DataSources.Clear()
+
+        Dim mysqll As String = ""
+
+        Try
+            Dim all_in As New reports.CommonDataTable
+
+            Dim dt_Common As New DataTable()
+            With dt_Common
+                .Columns.Add("DALTON_BB")
+                .Columns.Add("DALTON_HO")
+                .Columns.Add("GENSANPERFECT_BB")
+                '.Columns.Add("GENSANPERFECT_HO")
+                .Columns.Add("DAVAOP_BB")
+                '.Columns.Add("DAVAOP_HO")
+            End With
+
+            Dim DALTON_BB, DALTON_HO, GENSANPERFECT_BB, GENSANPERFECT_HO, DAVAOP_BB, DAVAOP_HO As Integer
+
+            DALTON_BB = GetCount_Common("where company = 'DALTON'")
+            DALTON_HO = GetCount_Common("where UPPER(HO_CATEGORY) LIKE UPPER('%Dalton%')")
+            GENSANPERFECT_BB = GetCount_Common("where branch_code IN ('ROG','ROX','FINEPIXEL','GMALL','DIGOS','SNP','SMD')")
+            'GENSANPERFECT_HO = GetCount_Common("where branch_code IN ('SMG','KCG','ACM','TAC')")
+            DAVAOP_BB = GetCount_Common("where branch_code IN ('SMG','KCG','ACM','TAC')")
+
+            dt_Common.Rows.Add(DALTON_BB, DALTON_HO, GENSANPERFECT_BB, DAVAOP_BB)
+
+
+            Dim rds_DTR As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt_Common)
+            RptViewer_Common.LocalReport.DataSources.Add(rds_DTR)
+            RptViewer_Common.RefreshReport()
+
+        Catch ex As Exception
+            Log_Report(ex.ToString)
+            MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+
+    End Sub
+
+    Private Sub ComPrev_BTN_Click(sender As Object, e As EventArgs) Handles ComPrev_BTN.Click
+        LoadCommon_Print()
+    End Sub
 End Class

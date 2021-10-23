@@ -1541,7 +1541,7 @@
                                 EMP_STATUS As String, Optional DATE_STARTED As String = "", Optional group As Boolean = False,
                                 Optional TIME_IN As String = "", Optional TIME_OUT As String = "", Optional EMP_NO As String = "",
                                 Optional TIN As String = "", Optional SSS As String = "", Optional PHILH As String = "",
-                                Optional HDMF As String = "")
+                                Optional HDMF As String = "", Optional HO_CATEGORY As String = "")
 
         Dim mysql As String
 
@@ -1565,6 +1565,7 @@
                 If SSS <> "" Then .Item("SSSNO") = SSS
                 If PHILH <> "" Then .Item("PHILHEALTHNO") = PHILH
                 If HDMF <> "" Then .Item("PAGIBIGNO") = HDMF
+                If HO_CATEGORY <> "" Then .Item("HO_CATEGORY") = HO_CATEGORY
 
             End With
 
@@ -1596,6 +1597,7 @@
                     If SSS <> "" Then .Item("SSSNO") = SSS
                     If PHILH <> "" Then .Item("PHILHEALTHNO") = PHILH
                     If HDMF <> "" Then .Item("PAGIBIGNO") = HDMF
+                    If HO_CATEGORY <> "" Then .Item("HO_CATEGORY") = HO_CATEGORY
 
                 End With
 

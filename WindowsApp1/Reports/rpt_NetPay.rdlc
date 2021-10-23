@@ -1760,7 +1760,73 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Switch(Fields!BRANCH_CODE.Value = "", "Head Office", Fields!BRANCH_CODE.Value = "3G", "3G Hotel", Fields!BRANCH_CODE.Value = "COMI", "Commissary", Fields!BRANCH_CODE.Value = "KTV", "Music Play &amp; KTV Bar", Fields!BRANCH_CODE.Value = "PBA", "PBA", Fields!BRANCH_CODE.Value = "WAVE", "WAVE", Fields!BRANCH_CODE.Value = "711-POL", "7 Eleven Polomolok", Fields!BRANCH_CODE.Value = "711-ROX", "7 Eleven Roxas", Fields!BRANCH_CODE.Value = "CAG", "Dalton-Cagampang", Fields!BRANCH_CODE.Value = "JCAT 2", "Dalton-Jcat 2", Fields!BRANCH_CODE.Value = "KCG", "Dalton-KCG Gensan", Fields!BRANCH_CODE.Value = "LAG", "Dalton-Lagao", Fields!BRANCH_CODE.Value = "PMA", "Dalton-Malakas", Fields!BRANCH_CODE.Value = "NUN", "Dalton-Nuñez", Fields!BRANCH_CODE.Value = "PEN", "Dalton-Pendatun", Fields!BRANCH_CODE.Value = "ACM", "Ace Commercial", Fields!BRANCH_CODE.Value = "AL1", "Alunan 1", Fields!BRANCH_CODE.Value = "AL2", "Alunan 2", Fields!BRANCH_CODE.Value = "AWANG", "Awang", Fields!BRANCH_CODE.Value = "COT 1", "Cotabato 1", Fields!BRANCH_CODE.Value = "COT 2", "Cotabato 2", Fields!BRANCH_CODE.Value = "COT 3", "Cotabato 3", Fields!BRANCH_CODE.Value = "COT 4", "Cotabato 4", Fields!BRANCH_CODE.Value = "GAM", "Gaisano Mabel", Fields!BRANCH_CODE.Value = "GAP", "Gaisano Polomolok", Fields!BRANCH_CODE.Value = "GCS", "Gaisano Capital Surigao", Fields!BRANCH_CODE.Value = "GGP", "Panabo", Fields!BRANCH_CODE.Value = "GLAN", "Glan", Fields!BRANCH_CODE.Value = "ISU 1", "Isulan 1", Fields!BRANCH_CODE.Value = "ISU 2", "Isulan 2", Fields!BRANCH_CODE.Value = "ISU 3", "Isulan 3", Fields!BRANCH_CODE.Value = "KAB", "Kabacan", Fields!BRANCH_CODE.Value = "KAB 2", "Kabacan 2", Fields!BRANCH_CODE.Value = "KAB3", "Kabacan 3", Fields!BRANCH_CODE.Value = "KAL", "Kalamansig", Fields!BRANCH_CODE.Value = "KIA", "Kiamba", Fields!BRANCH_CODE.Value = "KID", "Kidapawan", Fields!BRANCH_CODE.Value = "KID2", "Kidapawan 2", Fields!BRANCH_CODE.Value = "LAM", "Lambayong", Fields!BRANCH_CODE.Value = "LEBAK", "Lebak", Fields!BRANCH_CODE.Value = "M'LANG", "M'lang", Fields!BRANCH_CODE.Value = "MAA", "Maasim", Fields!BRANCH_CODE.Value = "MAITUM", "Maitum", Fields!BRANCH_CODE.Value = "MID", "Midsayap", Fields!BRANCH_CODE.Value = "PGN", "PG Building", Fields!BRANCH_CODE.Value = "PIKIT", "Pikit", Fields!BRANCH_CODE.Value = "PIO", "Pioneer", Fields!BRANCH_CODE.Value = "POL", "Polomolok", Fields!BRANCH_CODE.Value = "POL2", "Polomolok 2", Fields!BRANCH_CODE.Value = "POL3", "Polomolok 3", Fields!BRANCH_CODE.Value = "PQO", "President Quirino", Fields!BRANCH_CODE.Value = "ROG", "Robinson Gensan", Fields!BRANCH_CODE.Value = "ROX", "Roxas Gensa", Fields!BRANCH_CODE.Value = "SAN", "Santiago", Fields!BRANCH_CODE.Value = "SHARIFF", "Shariff Aguak", Fields!BRANCH_CODE.Value = "SNP", "San Pedro", Fields!BRANCH_CODE.Value = "SRA", "Surallah", Fields!BRANCH_CODE.Value = "SURI 2", "Surigao 2", Fields!BRANCH_CODE.Value = "SURI 3", "Surigao 3", Fields!BRANCH_CODE.Value = "TAC 1", "Tacurong 1", Fields!BRANCH_CODE.Value = "TAC 2", "Tacurong 2", Fields!BRANCH_CODE.Value = "TAG", "Tagum", Fields!BRANCH_CODE.Value = "TBOLI", "TBOLI", Fields!BRANCH_CODE.Value = "TUL", "Tulunan", Fields!BRANCH_CODE.Value = "UHA", "Uhaw", Fields!BRANCH_CODE.Value = "UPI", "UPI", Fields!BRANCH_CODE.Value = "ZUL", "Zulueta")</Value>
+                              <Value>=Switch(Fields!BRANCH_CODE.Value = "", Fields!HO_CATEGORY.Value, 
+Fields!BRANCH_CODE.Value = "3G", "3G Hotel", 
+Fields!BRANCH_CODE.Value = "COMI", "Commissary", 
+Fields!BRANCH_CODE.Value = "KTV", "Music Play &amp; KTV Bar", 
+Fields!BRANCH_CODE.Value = "PBA", "PBA", 
+Fields!BRANCH_CODE.Value = "WAVE", "WAVE", 
+Fields!BRANCH_CODE.Value = "711-POL", "7 Eleven Polomolok", 
+Fields!BRANCH_CODE.Value = "711-ROX", "7 Eleven Roxas", 
+Fields!BRANCH_CODE.Value = "CAG", "Dalton-Cagampang", 
+Fields!BRANCH_CODE.Value = "JCAT 2", "Dalton-Jcat 2", 
+Fields!BRANCH_CODE.Value = "KCG", "Dalton-KCG Gensan", 
+Fields!BRANCH_CODE.Value = "LAG", "Dalton-Lagao", 
+Fields!BRANCH_CODE.Value = "PMA", "Dalton-Malakas", 
+Fields!BRANCH_CODE.Value = "NUN", "Dalton-Nuñez", 
+Fields!BRANCH_CODE.Value = "PEN", "Dalton-Pendatun", 
+Fields!BRANCH_CODE.Value = "ACM", "Ace Commercial", 
+Fields!BRANCH_CODE.Value = "AL1", "Alunan 1", 
+Fields!BRANCH_CODE.Value = "AL2", "Alunan 2", 
+Fields!BRANCH_CODE.Value = "AWANG", "Awang", 
+Fields!BRANCH_CODE.Value = "COT 1", "Cotabato 1", 
+Fields!BRANCH_CODE.Value = "COT 2", "Cotabato 2", 
+Fields!BRANCH_CODE.Value = "COT 3", "Cotabato 3", 
+Fields!BRANCH_CODE.Value = "COT 4", "Cotabato 4", 
+Fields!BRANCH_CODE.Value = "GAM", "Gaisano Mabel", 
+Fields!BRANCH_CODE.Value = "GAP", "Gaisano Polomolok", 
+Fields!BRANCH_CODE.Value = "GCS", "Gaisano Capital Surigao", 
+Fields!BRANCH_CODE.Value = "GGP", "Panabo", 
+Fields!BRANCH_CODE.Value = "GLAN", "Glan", 
+Fields!BRANCH_CODE.Value = "ISU 1", "Isulan 1", 
+Fields!BRANCH_CODE.Value = "ISU 2", "Isulan 2", 
+Fields!BRANCH_CODE.Value = "ISU 3", "Isulan 3", 
+Fields!BRANCH_CODE.Value = "KAB", "Kabacan", 
+Fields!BRANCH_CODE.Value = "KAB 2", "Kabacan 2", 
+Fields!BRANCH_CODE.Value = "KAB3", "Kabacan 3", 
+Fields!BRANCH_CODE.Value = "KAL", "Kalamansig", 
+Fields!BRANCH_CODE.Value = "KIA", "Kiamba", 
+Fields!BRANCH_CODE.Value = "KID", "Kidapawan", 
+Fields!BRANCH_CODE.Value = "KID2", "Kidapawan 2", 
+Fields!BRANCH_CODE.Value = "LAM", "Lambayong", 
+Fields!BRANCH_CODE.Value = "LEBAK", "Lebak", 
+Fields!BRANCH_CODE.Value = "M'LANG", "M'lang", 
+Fields!BRANCH_CODE.Value = "MAA", "Maasim", 
+Fields!BRANCH_CODE.Value = "MAITUM", "Maitum", 
+Fields!BRANCH_CODE.Value = "MID", "Midsayap", 
+Fields!BRANCH_CODE.Value = "PGN", "PG Building", 
+Fields!BRANCH_CODE.Value = "PIKIT", "Pikit", 
+Fields!BRANCH_CODE.Value = "PIO", "Pioneer", 
+Fields!BRANCH_CODE.Value = "POL", "Polomolok", 
+Fields!BRANCH_CODE.Value = "POL2", "Polomolok 2", 
+Fields!BRANCH_CODE.Value = "POL3", "Polomolok 3", 
+Fields!BRANCH_CODE.Value = "PQO", "President Quirino",
+Fields!BRANCH_CODE.Value = "ROG", "Robinson Gensan",
+Fields!BRANCH_CODE.Value = "ROX", "Roxas Gensa",
+Fields!BRANCH_CODE.Value = "SAN", "Santiago", 
+Fields!BRANCH_CODE.Value = "SHARIFF", "Shariff Aguak", 
+Fields!BRANCH_CODE.Value = "SNP", "San Pedro", 
+Fields!BRANCH_CODE.Value = "SRA", "Surallah", 
+Fields!BRANCH_CODE.Value = "SURI 2", "Surigao 2", 
+Fields!BRANCH_CODE.Value = "SURI 3", "Surigao 3", 
+Fields!BRANCH_CODE.Value = "TAC 1", "Tacurong 1",
+Fields!BRANCH_CODE.Value = "TAC 2", "Tacurong 2", 
+Fields!BRANCH_CODE.Value = "TAG", "Tagum", 
+Fields!BRANCH_CODE.Value = "TBOLI", "TBOLI", 
+Fields!BRANCH_CODE.Value = "TUL", "Tulunan", 
+Fields!BRANCH_CODE.Value = "UHA", "Uhaw", 
+Fields!BRANCH_CODE.Value = "UPI", "UPI", 
+Fields!BRANCH_CODE.Value = "ZUL", "Zulueta")</Value>
                               <Style>
                                 <FontFamily>Berlin Sans FB</FontFamily>
                                 <FontSize>8pt</FontSize>
@@ -7393,7 +7459,7 @@
         </PageBreak>
         <Top>0.0925in</Top>
         <Left>0.11458in</Left>
-        <Height>4.35547in</Height>
+        <Height>4.35548in</Height>
         <Width>12.31234in</Width>
         <Style>
           <Border>
@@ -7502,6 +7568,10 @@
         </Field>
         <Field Name="COMPANY">
           <DataField>COMPANY</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="HO_CATEGORY">
+          <DataField>HO_CATEGORY</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>

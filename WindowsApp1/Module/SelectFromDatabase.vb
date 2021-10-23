@@ -1979,8 +1979,8 @@ Module SelectFromDatabase
 
     Public Sub GetFullname(bio_no As String, Add_Company_CB As ComboBox, Branch_ComboB As ComboBox, Fullname_TXT As TextBox,
                            Email_TXT As TextBox, Active_RB As RadioButton, InActive_RB As RadioButton, Started_DTP As DateTimePicker,
-                           TimeIn_Combo As ComboBox, TimeOut_Combo As ComboBox, EmoNo_TXT As TextBox,
-                           TIN_TXT As TextBox, SSS_TXT As TextBox, PHILH_TXT As TextBox, HDMF_TXT As TextBox)
+                           TimeIn_Combo As ComboBox, TimeOut_Combo As ComboBox, EmoNo_TXT As TextBox, TIN_TXT As TextBox,
+                           SSS_TXT As TextBox, PHILH_TXT As TextBox, HDMF_TXT As TextBox, HO_Category As ComboBox)
 
         Dim mysql As String = $"select * from PAYROLL_EMPLOYEE where BIO_NO = '{bio_no}'"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
@@ -1992,6 +1992,7 @@ Module SelectFromDatabase
                     TIME_OUT = IIf(IsDBNull(.Item("TIME_OUT")), Nothing, .Item("TIME_OUT"))
 
                     Add_Company_CB.Text = .Item("COMPANY")
+                    HO_Category.Text = IIf(IsDBNull(.Item("HO_CATEGORY")), Nothing, .Item("HO_CATEGORY"))
                     Branch_ComboB.Text = .Item("BRANCH_CODE")
                     Fullname_TXT.Text = .Item("FULLNAME")
                     Email_TXT.Text = IIf(IsDBNull(.Item("EMAIL_ADD")), "", .Item("EMAIL_ADD"))
@@ -2261,6 +2262,20 @@ Module SelectFromDatabase
 
         Return cnt
     End Function
+
+    Public Function GetCount_Common(whereString As String) As Integer
+        Dim countt As Integer = 0
+        Dim mysql As String = $"Select Count(*) as Countt From PAYROLL_EMPLOYEE {whereString}"
+        Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+        If ds.Tables(0).Rows.Count > 0 Then
+            Dim dr As DataRow = ds.Tables(0).Rows(0)
+            With dr
+                countt = .Item("Countt")
+            End With
+        End If
+        Return countt
+    End Function
+
 
     Public Sub Replacing(str As String)
         RunCommand($"DELETE FROM {str}")  'THIS IS TO DELETE EXISTING DATA TO REPLACE ESPECIALLY FROM DATAGRID

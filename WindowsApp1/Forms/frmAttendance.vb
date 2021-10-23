@@ -822,6 +822,10 @@ Public Class frmAttendance
         For Each biometric_No As String In distinct_bio
             list_inOut.Clear()
 
+            '======================== GET TIME IN/OUT TO CALCULATE LATE UNDERTIME OVERTIME ============================
+            TIME_IN = GetTimeInOut(biometric_No).Time_in
+            TIME_OUT = GetTimeInOut(biometric_No).Time_out
+
             Dim mysql As String = $"Select * From IMPORT_DTR where BIO_ID = '{biometric_No}' and PAYDATE = '{paydate_}'"
             Using ds As DataSet = LoadSQL(mysql, "IMPORT_DTR")
                 If ds.Tables(0).Rows.Count > 0 Then
@@ -860,7 +864,7 @@ Public Class frmAttendance
                     DATE_ONLY = dateTime.ToString("d")
                     '============================== WORKED FINE ========================
 
-                    If time >= "5:00 AM" And time <= "11:59 AM" Then
+                    If time >= TIME_IN.AddHours(-3) And time <= TIME_IN.AddHours(4).AddMinutes(-1) Then
                         If list_hour(0) = "" Then
 
                             list_hour(0) = time.ToString("t")
@@ -868,11 +872,11 @@ Public Class frmAttendance
                             list_hour(1) = time.ToString("t")
                         End If
 
-                    ElseIf time >= "4:00 PM" And time <= "11:00 PM" Then
+                    ElseIf time >= TIME_OUT.AddHours(-1) And time <= TIME_OUT.AddHours(6) Then
 
                         list_hour(3) = time.ToString("t")
 
-                    ElseIf time >= "1:00 PM" And time <= "3:59 PM" Then
+                    ElseIf time >= TIME_IN.AddHours(5) And time <= TIME_IN.AddHours(7).AddMinutes(-1) Then
                         If list_hour(2) = "" Then
 
                             list_hour(2) = time.ToString("t")
@@ -880,7 +884,7 @@ Public Class frmAttendance
                             list_hour(3) = time.ToString("t")
                         End If
 
-                    ElseIf time >= "12:00 PM" And time <= "12:59 PM" Then
+                    ElseIf time >= TIME_IN.AddHours(4) And time <= TIME_IN.AddHours(5).AddMinutes(-1) Then
 
                         Dim oldValuee As DateTime = dateTime
                         Dim newValuee As String = oldValuee.ToString("d") & " " & oldValuee.TimeOfDay.Hours

@@ -1,4 +1,5 @@
-﻿Imports Microsoft.Office.Interop
+﻿Imports System.Text.RegularExpressions
+Imports Microsoft.Office.Interop
 
 Public Class frmNewEmployee
 
@@ -385,44 +386,81 @@ Public Class frmNewEmployee
     End Sub
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
-        If Add_Company_CB.Text <> "" And Bio_TXT.Text <> "" And Fullname_TXT.Text <> "" Then
 
-            If Active_RB.Checked = True Then
-                emp_status = Active_RB.Text
-            Else
-                emp_status = InActive_RB.Text
-            End If
+        If Not isValidSave() Then Exit Sub
 
-            SaveNew_Employee(Add_Company_CB.Text, Branch_ComboB.Text, Fullname_TXT.Text, Bio_TXT.Text, Email_TXT.Text, emp_status, Started_DTP.Value, False,
-                             TimeIn_Combo.Text, TimeOut_Combo.Text, EmpNo_TXT.Text, TIN_TXT.Text, SSS_TXT.Text, PHILH_TXT.Text, HDMF_TXT.Text)
-
-            Lists_Employees(lvEmployee)
-
-            clearAdd()
-
+        If Active_RB.Checked = True Then
+            emp_status = Active_RB.Text
         Else
-            MsgBox("Incomplete information.", MsgBoxStyle.Exclamation, "Error")
+            emp_status = InActive_RB.Text
         End If
+
+        SaveNew_Employee(Add_Company_CB.Text, Branch_ComboB.Text, Fullname_TXT.Text, Bio_TXT.Text, Email_TXT.Text, emp_status, Started_DTP.Value, False,
+                         TimeIn_Combo.Text, TimeOut_Combo.Text, EmpNo_TXT.Text, TIN_TXT.Text, SSS_TXT.Text, PHILH_TXT.Text, HDMF_TXT.Text, HO_Category.Text)
+
+        Lists_Employees(lvEmployee)
+
+        clearAdd()
 
     End Sub
 
-    Private Sub Bio_TXT_TextChanged(sender As Object, e As EventArgs) Handles Bio_TXT.TextChanged
-        If Bio_TXT.Text <> Nothing Then
-            GetFullname(Bio_TXT.Text, Add_Company_CB, Branch_ComboB, Fullname_TXT, Email_TXT, Active_RB, InActive_RB,
-                        Started_DTP, TimeIn_Combo, TimeOut_Combo, EmpNo_TXT, TIN_TXT, SSS_TXT, PHILH_TXT, HDMF_TXT)
-        Else
-            Add_Company_CB.Text = ""
-            Branch_ComboB.Text = ""
-            Fullname_TXT.Text = ""
-            Email_TXT.Text = ""
-            TimeIn_Combo.Text = ""
-            TimeOut_Combo.Text = ""
-            EmpNo_TXT.Text = ""
-            TIN_TXT.Text = ""
-            SSS_TXT.Text = ""
-            PHILH_TXT.Text = ""
-            HDMF_TXT.Text = ""
+    Private Function isValidSave()
+
+        Dim FoundMatch As Boolean = Regex.IsMatch(Email_TXT.Text, "\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase)
+
+        If String.IsNullOrEmpty(Bio_TXT.Text) Then
+            Bio_TXT.Region = New Region(New Rectangle(2, 2, Bio_TXT.Width - 4, Bio_TXT.Height - 4))
+            Return False
+
+        ElseIf String.IsNullOrEmpty(Add_Company_CB.Text) Then
+            Add_Company_CB.Region = New Region(New Rectangle(2, 2, Add_Company_CB.Width - 4, Add_Company_CB.Height - 4))
+            Return False
+
+        ElseIf String.IsNullOrEmpty(HO_Category.Text) And Add_Company_CB.Text = "HEAD OFFICE" Then
+            HO_Category.Region = New Region(New Rectangle(2, 2, HO_Category.Width - 4, HO_Category.Height - 4))
+            Return False
+
+        ElseIf String.IsNullOrEmpty(Branch_ComboB.Text) And Add_Company_CB.Text <> "HEAD OFFICE" Then
+            Branch_ComboB.Region = New Region(New Rectangle(2, 2, Branch_ComboB.Width - 4, Branch_ComboB.Height - 4))
+            Return False
+
+        ElseIf String.IsNullOrEmpty(TimeIn_Combo.Text) Then
+            TimeIn_Combo.Region = New Region(New Rectangle(2, 2, TimeIn_Combo.Width - 4, TimeIn_Combo.Height - 4))
+            Return False
+
+        ElseIf String.IsNullOrEmpty(TimeOut_Combo.Text) Then
+            TimeOut_Combo.Region = New Region(New Rectangle(2, 2, TimeOut_Combo.Width - 4, TimeOut_Combo.Height - 4))
+            Return False
+
+        ElseIf Started_DTP.Value = "1/1/2000" Then
+            Started_DTP.Region = New Region(New Rectangle(2, 2, Started_DTP.Width - 4, Started_DTP.Height - 4))
+            Return False
+
+        ElseIf String.IsNullOrEmpty(EmpNo_TXT.Text) Then
+            EmpNo_TXT.Region = New Region(New Rectangle(2, 2, EmpNo_TXT.Width - 4, EmpNo_TXT.Height - 4))
+            Return False
+
+        ElseIf String.IsNullOrEmpty(Fullname_TXT.Text) Then
+            Fullname_TXT.Region = New Region(New Rectangle(2, 2, Fullname_TXT.Width - 4, Fullname_TXT.Height - 4))
+            Return False
+
+        ElseIf String.IsNullOrEmpty(Email_TXT.Text) Then
+            Email_TXT.Region = New Region(New Rectangle(2, 2, Email_TXT.Width - 4, Email_TXT.Height - 4))
+            Return False
+
+        ElseIf Not FoundMatch Then
+            Email_TXT.Region = New Region(New Rectangle(2, 2, Email_TXT.Width - 4, Email_TXT.Height - 4))
+            MsgBox("Invalid Email Address!", MsgBoxStyle.Exclamation, "Error")
+            Return False
+
         End If
+
+        Return True
+    End Function
+
+
+    Private Sub Bio_TXT_TextChanged(sender As Object, e As EventArgs)
+
     End Sub
 
     Private Sub lvEmployee_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles lvEmployee.MouseDoubleClick
@@ -509,5 +547,85 @@ Public Class frmNewEmployee
             EmpNo_TXT.Text = year & "-0" & month & "-" & Bio_TXT.Text
 
         End If
+    End Sub
+
+    Private Sub GroupBox1_Paint(sender As Object, e As PaintEventArgs) Handles GroupBox1.Paint
+
+        Dim textbox As TextBox = Nothing
+        Dim combo As ComboBox = Nothing
+        Dim datepicker As DateTimePicker = Nothing
+        For Each xObject As Object In GroupBox1.Controls
+            If TypeOf xObject Is TextBox Then
+                textbox = xObject
+                Dim p As New Pen(Color.Red, 2)
+                e.Graphics.DrawRectangle(p, New Rectangle(textbox.Location + New Size(1, 1), textbox.Size - New Size(2, 2)))
+                p.Dispose()
+            ElseIf TypeOf xObject Is ComboBox Then
+                combo = xObject
+                Dim p As New Pen(Color.Red, 2)
+                e.Graphics.DrawRectangle(p, New Rectangle(combo.Location + New Size(1, 1), combo.Size - New Size(2, 2)))
+                p.Dispose()
+            ElseIf TypeOf xObject Is DateTimePicker Then
+                datepicker = xObject
+                Dim p As New Pen(Color.Red, 2)
+                e.Graphics.DrawRectangle(p, New Rectangle(datepicker.Location + New Size(1, 1), datepicker.Size - New Size(2, 2)))
+                p.Dispose()
+            End If
+        Next
+
+    End Sub
+
+
+    Private Sub Started_DTP_ValueChanged(sender As Object, e As EventArgs) Handles Started_DTP.ValueChanged
+        If Started_DTP.Value <> "1/1/2000" Then
+            sender.Region = Nothing
+        End If
+    End Sub
+
+    Private Sub TIN_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles TIN_TXT.KeyPress, SSS_TXT.KeyPress, PHILH_TXT.KeyPress, HDMF_TXT.KeyPress
+
+        If e.KeyChar <> ChrW(Keys.Back) Then
+
+            If Not Char.IsNumber(e.KeyChar) AndAlso Not Char.IsControl(e.KeyChar) AndAlso Not e.KeyChar = "-" Then
+                e.Handled = True
+            End If
+        End If
+
+    End Sub
+
+    Private Sub Add_Company_CB_TextChanged(sender As Object, e As EventArgs) Handles TimeOut_Combo.TextChanged, TimeIn_Combo.TextChanged, HO_Category.TextChanged, Fullname_TXT.TextChanged, EmpNo_TXT.TextChanged, Email_TXT.TextChanged, Branch_ComboB.TextChanged, Add_Company_CB.TextChanged
+
+        If sender.Text = "" Then
+            sender.Region = New Region(New Rectangle(2, 2, sender.Width - 4, sender.Height - 4))
+        Else
+            sender.Region = Nothing
+        End If
+
+    End Sub
+
+    Private Sub Bio_TXT_TextChanged_1(sender As Object, e As EventArgs) Handles Bio_TXT.TextChanged
+
+        If Bio_TXT.Text <> Nothing Then
+            GetFullname(Bio_TXT.Text, Add_Company_CB, Branch_ComboB, Fullname_TXT, Email_TXT, Active_RB, InActive_RB,
+                            Started_DTP, TimeIn_Combo, TimeOut_Combo, EmpNo_TXT, TIN_TXT, SSS_TXT, PHILH_TXT, HDMF_TXT, HO_Category)
+
+            sender.Region = Nothing
+        Else
+            Add_Company_CB.Text = ""
+            HO_Category.Text = ""
+            Branch_ComboB.Text = ""
+            Fullname_TXT.Text = ""
+            Email_TXT.Text = ""
+            TimeIn_Combo.Text = ""
+            TimeOut_Combo.Text = ""
+            EmpNo_TXT.Text = ""
+            TIN_TXT.Text = ""
+            SSS_TXT.Text = ""
+            PHILH_TXT.Text = ""
+            HDMF_TXT.Text = ""
+
+            sender.Region = New Region(New Rectangle(2, 2, sender.Width - 4, sender.Height - 4))
+        End If
+
     End Sub
 End Class

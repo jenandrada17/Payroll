@@ -30,6 +30,8 @@ Public Class frmSettings
             ClockBranch_IN_CB.Items.Add(tm.ToShortTimeString)
             ClockBranch_OUT_CB.Items.Add(tm.ToShortTimeString)
         Next
+
+        'ClockBranch_CB.Items.Insert(0, "HEAD OFFICE")
     End Sub
 
     Private Sub Close_LBL_Click(sender As Object, e As EventArgs) Handles Close_LBL.Click
