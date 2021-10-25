@@ -2276,6 +2276,19 @@ Module SelectFromDatabase
         Return countt
     End Function
 
+    Public Function GetDistinctCount(column As String, whereString As String) As Integer
+        Dim countt As Integer = 0
+        Dim mysql As String = $"Select Count(distinct {column}) as Countt From PAYROLL_EMPLOYEE {whereString}"
+        Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+        If ds.Tables(0).Rows.Count > 0 Then
+            Dim dr As DataRow = ds.Tables(0).Rows(0)
+            With dr
+                countt = .Item("Countt")
+            End With
+        End If
+        Return countt
+    End Function
+
 
     Public Sub Replacing(str As String)
         RunCommand($"DELETE FROM {str}")  'THIS IS TO DELETE EXISTING DATA TO REPLACE ESPECIALLY FROM DATAGRID

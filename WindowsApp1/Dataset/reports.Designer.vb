@@ -825,15 +825,69 @@ Partial Public Class reports
         
         Private columnDALTON_BB As Global.System.Data.DataColumn
         
-        Private columnGENSANPERFECT_BB As Global.System.Data.DataColumn
-        
         Private columnDALTON_HO As Global.System.Data.DataColumn
+        
+        Private columnGENSANPERFECT_BB As Global.System.Data.DataColumn
         
         Private columnGENSANPERFECT_HO As Global.System.Data.DataColumn
         
         Private columnDAVAOP_BB As Global.System.Data.DataColumn
         
         Private columnDAVAOP_HO As Global.System.Data.DataColumn
+        
+        Private columnPERFECOM_BB As Global.System.Data.DataColumn
+        
+        Private columnPERFECOM_HO As Global.System.Data.DataColumn
+        
+        Private columnG3_BB As Global.System.Data.DataColumn
+        
+        Private columnG3_HO As Global.System.Data.DataColumn
+        
+        Private columnSeven11_ROX_BB As Global.System.Data.DataColumn
+        
+        Private columnSeven11_ROX_HO As Global.System.Data.DataColumn
+        
+        Private columnSeven11_POL_BB As Global.System.Data.DataColumn
+        
+        Private columnSeven11_POL_HO As Global.System.Data.DataColumn
+        
+        Private columnCOMI_BB As Global.System.Data.DataColumn
+        
+        Private columnCOMI_HO As Global.System.Data.DataColumn
+        
+        Private columnPBA_BB As Global.System.Data.DataColumn
+        
+        Private columnPBA_HO As Global.System.Data.DataColumn
+        
+        Private columnKTV_BB As Global.System.Data.DataColumn
+        
+        Private columnKTV_HO As Global.System.Data.DataColumn
+        
+        Private columnWAVE_BB As Global.System.Data.DataColumn
+        
+        Private columnWAVE_HO As Global.System.Data.DataColumn
+        
+        Private columnPGC As Global.System.Data.DataColumn
+        
+        Private columnLEASING As Global.System.Data.DataColumn
+        
+        Private columnJRPHOTO_BB As Global.System.Data.DataColumn
+        
+        Private columnJRPHOTO_HO As Global.System.Data.DataColumn
+        
+        Private columnDALTON_BR As Global.System.Data.DataColumn
+        
+        Private columnGENSANPERFECT_BR As Global.System.Data.DataColumn
+        
+        Private columnDAVAOP_BR As Global.System.Data.DataColumn
+        
+        Private columnPERFECOM_BR As Global.System.Data.DataColumn
+        
+        Private columnG3_BR As Global.System.Data.DataColumn
+        
+        Private columnSeven11_BR As Global.System.Data.DataColumn
+        
+        Private columnCOMI_TO_FUJI_BR As Global.System.Data.DataColumn
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
@@ -880,17 +934,17 @@ Partial Public Class reports
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public ReadOnly Property GENSANPERFECT_BBColumn() As Global.System.Data.DataColumn
+        Public ReadOnly Property DALTON_HOColumn() As Global.System.Data.DataColumn
             Get
-                Return Me.columnGENSANPERFECT_BB
+                Return Me.columnDALTON_HO
             End Get
         End Property
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public ReadOnly Property DALTON_HOColumn() As Global.System.Data.DataColumn
+        Public ReadOnly Property GENSANPERFECT_BBColumn() As Global.System.Data.DataColumn
             Get
-                Return Me.columnDALTON_HO
+                Return Me.columnGENSANPERFECT_BB
             End Get
         End Property
         
@@ -915,6 +969,222 @@ Partial Public Class reports
         Public ReadOnly Property DAVAOP_HOColumn() As Global.System.Data.DataColumn
             Get
                 Return Me.columnDAVAOP_HO
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property PERFECOM_BBColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnPERFECOM_BB
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property PERFECOM_HOColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnPERFECOM_HO
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property G3_BBColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnG3_BB
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property G3_HOColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnG3_HO
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property Seven11_ROX_BBColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnSeven11_ROX_BB
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property Seven11_ROX_HOColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnSeven11_ROX_HO
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property Seven11_POL_BBColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnSeven11_POL_BB
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property Seven11_POL_HOColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnSeven11_POL_HO
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property COMI_BBColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnCOMI_BB
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property COMI_HOColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnCOMI_HO
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property PBA_BBColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnPBA_BB
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property PBA_HOColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnPBA_HO
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property KTV_BBColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnKTV_BB
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property KTV_HOColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnKTV_HO
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property WAVE_BBColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnWAVE_BB
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property WAVE_HOColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnWAVE_HO
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property PGCColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnPGC
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property LEASINGColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnLEASING
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property JRPHOTO_BBColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnJRPHOTO_BB
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property JRPHOTO_HOColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnJRPHOTO_HO
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property DALTON_BRColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnDALTON_BR
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property GENSANPERFECT_BRColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnGENSANPERFECT_BR
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property DAVAOP_BRColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnDAVAOP_BR
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property PERFECOM_BRColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnPERFECOM_BR
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property G3_BRColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnG3_BR
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property Seven11_BRColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnSeven11_BR
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property COMI_TO_FUJI_BRColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnCOMI_TO_FUJI_BR
             End Get
         End Property
         
@@ -955,9 +1225,42 @@ Partial Public Class reports
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Overloads Function AddCommonRow(ByVal DALTON_BB As String, ByVal GENSANPERFECT_BB As String, ByVal DALTON_HO As String, ByVal GENSANPERFECT_HO As String, ByVal DAVAOP_BB As String, ByVal DAVAOP_HO As String) As CommonRow
+        Public Overloads Function AddCommonRow( _
+                    ByVal DALTON_BB As String,  _
+                    ByVal DALTON_HO As String,  _
+                    ByVal GENSANPERFECT_BB As String,  _
+                    ByVal GENSANPERFECT_HO As String,  _
+                    ByVal DAVAOP_BB As String,  _
+                    ByVal DAVAOP_HO As String,  _
+                    ByVal PERFECOM_BB As String,  _
+                    ByVal PERFECOM_HO As String,  _
+                    ByVal G3_BB As String,  _
+                    ByVal G3_HO As String,  _
+                    ByVal Seven11_ROX_BB As String,  _
+                    ByVal Seven11_ROX_HO As String,  _
+                    ByVal Seven11_POL_BB As String,  _
+                    ByVal Seven11_POL_HO As String,  _
+                    ByVal COMI_BB As String,  _
+                    ByVal COMI_HO As String,  _
+                    ByVal PBA_BB As String,  _
+                    ByVal PBA_HO As String,  _
+                    ByVal KTV_BB As String,  _
+                    ByVal KTV_HO As String,  _
+                    ByVal WAVE_BB As String,  _
+                    ByVal WAVE_HO As String,  _
+                    ByVal PGC As String,  _
+                    ByVal LEASING As String,  _
+                    ByVal JRPHOTO_BB As String,  _
+                    ByVal JRPHOTO_HO As String,  _
+                    ByVal DALTON_BR As String,  _
+                    ByVal GENSANPERFECT_BR As String,  _
+                    ByVal DAVAOP_BR As String,  _
+                    ByVal PERFECOM_BR As String,  _
+                    ByVal G3_BR As String,  _
+                    ByVal Seven11_BR As String,  _
+                    ByVal COMI_TO_FUJI_BR As String) As CommonRow
             Dim rowCommonRow As CommonRow = CType(Me.NewRow,CommonRow)
-            Dim columnValuesArray() As Object = New Object() {DALTON_BB, GENSANPERFECT_BB, DALTON_HO, GENSANPERFECT_HO, DAVAOP_BB, DAVAOP_HO}
+            Dim columnValuesArray() As Object = New Object() {DALTON_BB, DALTON_HO, GENSANPERFECT_BB, GENSANPERFECT_HO, DAVAOP_BB, DAVAOP_HO, PERFECOM_BB, PERFECOM_HO, G3_BB, G3_HO, Seven11_ROX_BB, Seven11_ROX_HO, Seven11_POL_BB, Seven11_POL_HO, COMI_BB, COMI_HO, PBA_BB, PBA_HO, KTV_BB, KTV_HO, WAVE_BB, WAVE_HO, PGC, LEASING, JRPHOTO_BB, JRPHOTO_HO, DALTON_BR, GENSANPERFECT_BR, DAVAOP_BR, PERFECOM_BR, G3_BR, Seven11_BR, COMI_TO_FUJI_BR}
             rowCommonRow.ItemArray = columnValuesArray
             Me.Rows.Add(rowCommonRow)
             Return rowCommonRow
@@ -981,11 +1284,38 @@ Partial Public Class reports
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Friend Sub InitVars()
             Me.columnDALTON_BB = MyBase.Columns("DALTON_BB")
-            Me.columnGENSANPERFECT_BB = MyBase.Columns("GENSANPERFECT_BB")
             Me.columnDALTON_HO = MyBase.Columns("DALTON_HO")
+            Me.columnGENSANPERFECT_BB = MyBase.Columns("GENSANPERFECT_BB")
             Me.columnGENSANPERFECT_HO = MyBase.Columns("GENSANPERFECT_HO")
             Me.columnDAVAOP_BB = MyBase.Columns("DAVAOP_BB")
             Me.columnDAVAOP_HO = MyBase.Columns("DAVAOP_HO")
+            Me.columnPERFECOM_BB = MyBase.Columns("PERFECOM_BB")
+            Me.columnPERFECOM_HO = MyBase.Columns("PERFECOM_HO")
+            Me.columnG3_BB = MyBase.Columns("G3_BB")
+            Me.columnG3_HO = MyBase.Columns("G3_HO")
+            Me.columnSeven11_ROX_BB = MyBase.Columns("Seven11_ROX_BB")
+            Me.columnSeven11_ROX_HO = MyBase.Columns("Seven11_ROX_HO")
+            Me.columnSeven11_POL_BB = MyBase.Columns("Seven11_POL_BB")
+            Me.columnSeven11_POL_HO = MyBase.Columns("Seven11_POL_HO")
+            Me.columnCOMI_BB = MyBase.Columns("COMI_BB")
+            Me.columnCOMI_HO = MyBase.Columns("COMI_HO")
+            Me.columnPBA_BB = MyBase.Columns("PBA_BB")
+            Me.columnPBA_HO = MyBase.Columns("PBA_HO")
+            Me.columnKTV_BB = MyBase.Columns("KTV_BB")
+            Me.columnKTV_HO = MyBase.Columns("KTV_HO")
+            Me.columnWAVE_BB = MyBase.Columns("WAVE_BB")
+            Me.columnWAVE_HO = MyBase.Columns("WAVE_HO")
+            Me.columnPGC = MyBase.Columns("PGC")
+            Me.columnLEASING = MyBase.Columns("LEASING")
+            Me.columnJRPHOTO_BB = MyBase.Columns("JRPHOTO_BB")
+            Me.columnJRPHOTO_HO = MyBase.Columns("JRPHOTO_HO")
+            Me.columnDALTON_BR = MyBase.Columns("DALTON_BR")
+            Me.columnGENSANPERFECT_BR = MyBase.Columns("GENSANPERFECT_BR")
+            Me.columnDAVAOP_BR = MyBase.Columns("DAVAOP_BR")
+            Me.columnPERFECOM_BR = MyBase.Columns("PERFECOM_BR")
+            Me.columnG3_BR = MyBase.Columns("G3_BR")
+            Me.columnSeven11_BR = MyBase.Columns("Seven11_BR")
+            Me.columnCOMI_TO_FUJI_BR = MyBase.Columns("COMI_TO_FUJI_BR")
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -993,16 +1323,70 @@ Partial Public Class reports
         Private Sub InitClass()
             Me.columnDALTON_BB = New Global.System.Data.DataColumn("DALTON_BB", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnDALTON_BB)
-            Me.columnGENSANPERFECT_BB = New Global.System.Data.DataColumn("GENSANPERFECT_BB", GetType(String), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnGENSANPERFECT_BB)
             Me.columnDALTON_HO = New Global.System.Data.DataColumn("DALTON_HO", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnDALTON_HO)
+            Me.columnGENSANPERFECT_BB = New Global.System.Data.DataColumn("GENSANPERFECT_BB", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnGENSANPERFECT_BB)
             Me.columnGENSANPERFECT_HO = New Global.System.Data.DataColumn("GENSANPERFECT_HO", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnGENSANPERFECT_HO)
             Me.columnDAVAOP_BB = New Global.System.Data.DataColumn("DAVAOP_BB", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnDAVAOP_BB)
             Me.columnDAVAOP_HO = New Global.System.Data.DataColumn("DAVAOP_HO", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnDAVAOP_HO)
+            Me.columnPERFECOM_BB = New Global.System.Data.DataColumn("PERFECOM_BB", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnPERFECOM_BB)
+            Me.columnPERFECOM_HO = New Global.System.Data.DataColumn("PERFECOM_HO", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnPERFECOM_HO)
+            Me.columnG3_BB = New Global.System.Data.DataColumn("G3_BB", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnG3_BB)
+            Me.columnG3_HO = New Global.System.Data.DataColumn("G3_HO", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnG3_HO)
+            Me.columnSeven11_ROX_BB = New Global.System.Data.DataColumn("Seven11_ROX_BB", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnSeven11_ROX_BB)
+            Me.columnSeven11_ROX_HO = New Global.System.Data.DataColumn("Seven11_ROX_HO", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnSeven11_ROX_HO)
+            Me.columnSeven11_POL_BB = New Global.System.Data.DataColumn("Seven11_POL_BB", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnSeven11_POL_BB)
+            Me.columnSeven11_POL_HO = New Global.System.Data.DataColumn("Seven11_POL_HO", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnSeven11_POL_HO)
+            Me.columnCOMI_BB = New Global.System.Data.DataColumn("COMI_BB", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnCOMI_BB)
+            Me.columnCOMI_HO = New Global.System.Data.DataColumn("COMI_HO", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnCOMI_HO)
+            Me.columnPBA_BB = New Global.System.Data.DataColumn("PBA_BB", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnPBA_BB)
+            Me.columnPBA_HO = New Global.System.Data.DataColumn("PBA_HO", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnPBA_HO)
+            Me.columnKTV_BB = New Global.System.Data.DataColumn("KTV_BB", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnKTV_BB)
+            Me.columnKTV_HO = New Global.System.Data.DataColumn("KTV_HO", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnKTV_HO)
+            Me.columnWAVE_BB = New Global.System.Data.DataColumn("WAVE_BB", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnWAVE_BB)
+            Me.columnWAVE_HO = New Global.System.Data.DataColumn("WAVE_HO", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnWAVE_HO)
+            Me.columnPGC = New Global.System.Data.DataColumn("PGC", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnPGC)
+            Me.columnLEASING = New Global.System.Data.DataColumn("LEASING", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnLEASING)
+            Me.columnJRPHOTO_BB = New Global.System.Data.DataColumn("JRPHOTO_BB", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnJRPHOTO_BB)
+            Me.columnJRPHOTO_HO = New Global.System.Data.DataColumn("JRPHOTO_HO", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnJRPHOTO_HO)
+            Me.columnDALTON_BR = New Global.System.Data.DataColumn("DALTON_BR", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnDALTON_BR)
+            Me.columnGENSANPERFECT_BR = New Global.System.Data.DataColumn("GENSANPERFECT_BR", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnGENSANPERFECT_BR)
+            Me.columnDAVAOP_BR = New Global.System.Data.DataColumn("DAVAOP_BR", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnDAVAOP_BR)
+            Me.columnPERFECOM_BR = New Global.System.Data.DataColumn("PERFECOM_BR", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnPERFECOM_BR)
+            Me.columnG3_BR = New Global.System.Data.DataColumn("G3_BR", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnG3_BR)
+            Me.columnSeven11_BR = New Global.System.Data.DataColumn("Seven11_BR", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnSeven11_BR)
+            Me.columnCOMI_TO_FUJI_BR = New Global.System.Data.DataColumn("COMI_TO_FUJI_BR", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnCOMI_TO_FUJI_BR)
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -1693,21 +2077,6 @@ Partial Public Class reports
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Property GENSANPERFECT_BB() As String
-            Get
-                Try 
-                    Return CType(Me(Me.tableCommon.GENSANPERFECT_BBColumn),String)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'GENSANPERFECT_BB' in table 'Common' is DBNull.", e)
-                End Try
-            End Get
-            Set
-                Me(Me.tableCommon.GENSANPERFECT_BBColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Property DALTON_HO() As String
             Get
                 Try 
@@ -1718,6 +2087,21 @@ Partial Public Class reports
             End Get
             Set
                 Me(Me.tableCommon.DALTON_HOColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property GENSANPERFECT_BB() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableCommon.GENSANPERFECT_BBColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'GENSANPERFECT_BB' in table 'Common' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableCommon.GENSANPERFECT_BBColumn) = value
             End Set
         End Property
         
@@ -1768,6 +2152,411 @@ Partial Public Class reports
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property PERFECOM_BB() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableCommon.PERFECOM_BBColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'PERFECOM_BB' in table 'Common' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableCommon.PERFECOM_BBColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property PERFECOM_HO() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableCommon.PERFECOM_HOColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'PERFECOM_HO' in table 'Common' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableCommon.PERFECOM_HOColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property G3_BB() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableCommon.G3_BBColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'G3_BB' in table 'Common' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableCommon.G3_BBColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property G3_HO() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableCommon.G3_HOColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'G3_HO' in table 'Common' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableCommon.G3_HOColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property Seven11_ROX_BB() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableCommon.Seven11_ROX_BBColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'Seven11_ROX_BB' in table 'Common' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableCommon.Seven11_ROX_BBColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property Seven11_ROX_HO() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableCommon.Seven11_ROX_HOColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'Seven11_ROX_HO' in table 'Common' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableCommon.Seven11_ROX_HOColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property Seven11_POL_BB() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableCommon.Seven11_POL_BBColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'Seven11_POL_BB' in table 'Common' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableCommon.Seven11_POL_BBColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property Seven11_POL_HO() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableCommon.Seven11_POL_HOColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'Seven11_POL_HO' in table 'Common' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableCommon.Seven11_POL_HOColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property COMI_BB() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableCommon.COMI_BBColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'COMI_BB' in table 'Common' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableCommon.COMI_BBColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property COMI_HO() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableCommon.COMI_HOColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'COMI_HO' in table 'Common' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableCommon.COMI_HOColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property PBA_BB() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableCommon.PBA_BBColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'PBA_BB' in table 'Common' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableCommon.PBA_BBColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property PBA_HO() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableCommon.PBA_HOColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'PBA_HO' in table 'Common' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableCommon.PBA_HOColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property KTV_BB() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableCommon.KTV_BBColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'KTV_BB' in table 'Common' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableCommon.KTV_BBColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property KTV_HO() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableCommon.KTV_HOColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'KTV_HO' in table 'Common' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableCommon.KTV_HOColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property WAVE_BB() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableCommon.WAVE_BBColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'WAVE_BB' in table 'Common' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableCommon.WAVE_BBColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property WAVE_HO() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableCommon.WAVE_HOColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'WAVE_HO' in table 'Common' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableCommon.WAVE_HOColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property PGC() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableCommon.PGCColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'PGC' in table 'Common' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableCommon.PGCColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property LEASING() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableCommon.LEASINGColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'LEASING' in table 'Common' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableCommon.LEASINGColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property JRPHOTO_BB() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableCommon.JRPHOTO_BBColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'JRPHOTO_BB' in table 'Common' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableCommon.JRPHOTO_BBColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property JRPHOTO_HO() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableCommon.JRPHOTO_HOColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'JRPHOTO_HO' in table 'Common' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableCommon.JRPHOTO_HOColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property DALTON_BR() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableCommon.DALTON_BRColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'DALTON_BR' in table 'Common' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableCommon.DALTON_BRColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property GENSANPERFECT_BR() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableCommon.GENSANPERFECT_BRColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'GENSANPERFECT_BR' in table 'Common' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableCommon.GENSANPERFECT_BRColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property DAVAOP_BR() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableCommon.DAVAOP_BRColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'DAVAOP_BR' in table 'Common' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableCommon.DAVAOP_BRColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property PERFECOM_BR() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableCommon.PERFECOM_BRColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'PERFECOM_BR' in table 'Common' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableCommon.PERFECOM_BRColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property G3_BR() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableCommon.G3_BRColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'G3_BR' in table 'Common' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableCommon.G3_BRColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property Seven11_BR() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableCommon.Seven11_BRColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'Seven11_BR' in table 'Common' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableCommon.Seven11_BRColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property COMI_TO_FUJI_BR() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableCommon.COMI_TO_FUJI_BRColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'COMI_TO_FUJI_BR' in table 'Common' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableCommon.COMI_TO_FUJI_BRColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Function IsDALTON_BBNull() As Boolean
             Return Me.IsNull(Me.tableCommon.DALTON_BBColumn)
         End Function
@@ -1780,18 +2569,6 @@ Partial Public Class reports
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Function IsGENSANPERFECT_BBNull() As Boolean
-            Return Me.IsNull(Me.tableCommon.GENSANPERFECT_BBColumn)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Sub SetGENSANPERFECT_BBNull()
-            Me(Me.tableCommon.GENSANPERFECT_BBColumn) = Global.System.Convert.DBNull
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Function IsDALTON_HONull() As Boolean
             Return Me.IsNull(Me.tableCommon.DALTON_HOColumn)
         End Function
@@ -1800,6 +2577,18 @@ Partial Public Class reports
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Sub SetDALTON_HONull()
             Me(Me.tableCommon.DALTON_HOColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsGENSANPERFECT_BBNull() As Boolean
+            Return Me.IsNull(Me.tableCommon.GENSANPERFECT_BBColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetGENSANPERFECT_BBNull()
+            Me(Me.tableCommon.GENSANPERFECT_BBColumn) = Global.System.Convert.DBNull
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -1836,6 +2625,330 @@ Partial Public Class reports
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Sub SetDAVAOP_HONull()
             Me(Me.tableCommon.DAVAOP_HOColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsPERFECOM_BBNull() As Boolean
+            Return Me.IsNull(Me.tableCommon.PERFECOM_BBColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetPERFECOM_BBNull()
+            Me(Me.tableCommon.PERFECOM_BBColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsPERFECOM_HONull() As Boolean
+            Return Me.IsNull(Me.tableCommon.PERFECOM_HOColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetPERFECOM_HONull()
+            Me(Me.tableCommon.PERFECOM_HOColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsG3_BBNull() As Boolean
+            Return Me.IsNull(Me.tableCommon.G3_BBColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetG3_BBNull()
+            Me(Me.tableCommon.G3_BBColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsG3_HONull() As Boolean
+            Return Me.IsNull(Me.tableCommon.G3_HOColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetG3_HONull()
+            Me(Me.tableCommon.G3_HOColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsSeven11_ROX_BBNull() As Boolean
+            Return Me.IsNull(Me.tableCommon.Seven11_ROX_BBColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetSeven11_ROX_BBNull()
+            Me(Me.tableCommon.Seven11_ROX_BBColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsSeven11_ROX_HONull() As Boolean
+            Return Me.IsNull(Me.tableCommon.Seven11_ROX_HOColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetSeven11_ROX_HONull()
+            Me(Me.tableCommon.Seven11_ROX_HOColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsSeven11_POL_BBNull() As Boolean
+            Return Me.IsNull(Me.tableCommon.Seven11_POL_BBColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetSeven11_POL_BBNull()
+            Me(Me.tableCommon.Seven11_POL_BBColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsSeven11_POL_HONull() As Boolean
+            Return Me.IsNull(Me.tableCommon.Seven11_POL_HOColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetSeven11_POL_HONull()
+            Me(Me.tableCommon.Seven11_POL_HOColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsCOMI_BBNull() As Boolean
+            Return Me.IsNull(Me.tableCommon.COMI_BBColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetCOMI_BBNull()
+            Me(Me.tableCommon.COMI_BBColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsCOMI_HONull() As Boolean
+            Return Me.IsNull(Me.tableCommon.COMI_HOColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetCOMI_HONull()
+            Me(Me.tableCommon.COMI_HOColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsPBA_BBNull() As Boolean
+            Return Me.IsNull(Me.tableCommon.PBA_BBColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetPBA_BBNull()
+            Me(Me.tableCommon.PBA_BBColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsPBA_HONull() As Boolean
+            Return Me.IsNull(Me.tableCommon.PBA_HOColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetPBA_HONull()
+            Me(Me.tableCommon.PBA_HOColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsKTV_BBNull() As Boolean
+            Return Me.IsNull(Me.tableCommon.KTV_BBColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetKTV_BBNull()
+            Me(Me.tableCommon.KTV_BBColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsKTV_HONull() As Boolean
+            Return Me.IsNull(Me.tableCommon.KTV_HOColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetKTV_HONull()
+            Me(Me.tableCommon.KTV_HOColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsWAVE_BBNull() As Boolean
+            Return Me.IsNull(Me.tableCommon.WAVE_BBColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetWAVE_BBNull()
+            Me(Me.tableCommon.WAVE_BBColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsWAVE_HONull() As Boolean
+            Return Me.IsNull(Me.tableCommon.WAVE_HOColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetWAVE_HONull()
+            Me(Me.tableCommon.WAVE_HOColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsPGCNull() As Boolean
+            Return Me.IsNull(Me.tableCommon.PGCColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetPGCNull()
+            Me(Me.tableCommon.PGCColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsLEASINGNull() As Boolean
+            Return Me.IsNull(Me.tableCommon.LEASINGColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetLEASINGNull()
+            Me(Me.tableCommon.LEASINGColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsJRPHOTO_BBNull() As Boolean
+            Return Me.IsNull(Me.tableCommon.JRPHOTO_BBColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetJRPHOTO_BBNull()
+            Me(Me.tableCommon.JRPHOTO_BBColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsJRPHOTO_HONull() As Boolean
+            Return Me.IsNull(Me.tableCommon.JRPHOTO_HOColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetJRPHOTO_HONull()
+            Me(Me.tableCommon.JRPHOTO_HOColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsDALTON_BRNull() As Boolean
+            Return Me.IsNull(Me.tableCommon.DALTON_BRColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetDALTON_BRNull()
+            Me(Me.tableCommon.DALTON_BRColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsGENSANPERFECT_BRNull() As Boolean
+            Return Me.IsNull(Me.tableCommon.GENSANPERFECT_BRColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetGENSANPERFECT_BRNull()
+            Me(Me.tableCommon.GENSANPERFECT_BRColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsDAVAOP_BRNull() As Boolean
+            Return Me.IsNull(Me.tableCommon.DAVAOP_BRColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetDAVAOP_BRNull()
+            Me(Me.tableCommon.DAVAOP_BRColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsPERFECOM_BRNull() As Boolean
+            Return Me.IsNull(Me.tableCommon.PERFECOM_BRColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetPERFECOM_BRNull()
+            Me(Me.tableCommon.PERFECOM_BRColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsG3_BRNull() As Boolean
+            Return Me.IsNull(Me.tableCommon.G3_BRColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetG3_BRNull()
+            Me(Me.tableCommon.G3_BRColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsSeven11_BRNull() As Boolean
+            Return Me.IsNull(Me.tableCommon.Seven11_BRColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetSeven11_BRNull()
+            Me(Me.tableCommon.Seven11_BRColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsCOMI_TO_FUJI_BRNull() As Boolean
+            Return Me.IsNull(Me.tableCommon.COMI_TO_FUJI_BRColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetCOMI_TO_FUJI_BRNull()
+            Me(Me.tableCommon.COMI_TO_FUJI_BRColumn) = Global.System.Convert.DBNull
         End Sub
     End Class
     

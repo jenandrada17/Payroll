@@ -148,21 +148,81 @@
                 .Columns.Add("DALTON_BB")
                 .Columns.Add("DALTON_HO")
                 .Columns.Add("GENSANPERFECT_BB")
-                '.Columns.Add("GENSANPERFECT_HO")
+                .Columns.Add("GENSANPERFECT_HO")
+                .Columns.Add("JRPHOTO_BB")
+                .Columns.Add("JRPHOTO_HO")
                 .Columns.Add("DAVAOP_BB")
-                '.Columns.Add("DAVAOP_HO")
+                .Columns.Add("DAVAOP_HO")
+                .Columns.Add("PERFECOM_BB")
+                .Columns.Add("PERFECOM_HO")
+                .Columns.Add("G3_BB")
+                .Columns.Add("G3_HO")
+                .Columns.Add("Seven11_ROX_BB")
+                .Columns.Add("Seven11_ROX_HO")
+                .Columns.Add("Seven11_POL_BB")
+                .Columns.Add("Seven11_POL_HO")
+                .Columns.Add("COMI_BB")
+                .Columns.Add("COMI_HO")
+                .Columns.Add("PBA_BB")
+                .Columns.Add("PBA_HO")
+                .Columns.Add("KTV_BB")
+                .Columns.Add("KTV_HO")
+                .Columns.Add("WAVE_BB")
+                .Columns.Add("WAVE_HO")
+                .Columns.Add("PGC")
+                .Columns.Add("LEASING")
+                .Columns.Add("DALTON_BR")
+                .Columns.Add("GENSANPERFECT_BR")
+                .Columns.Add("DAVAOP_BR")
+                .Columns.Add("PERFECOM_BR")
+                .Columns.Add("G3_BR")
+                .Columns.Add("Seven11_BR")
+                .Columns.Add("COMI_TO_FUJI_BR")
             End With
 
-            Dim DALTON_BB, DALTON_HO, GENSANPERFECT_BB, GENSANPERFECT_HO, DAVAOP_BB, DAVAOP_HO As Integer
+            Dim DALTON_BB, DALTON_HO, GENSANPERFECT_BB, GENSANPERFECT_HO, JRPHOTO_BB, JRPHOTO_HO, DAVAOP_BB, DAVAOP_HO, PERFECOM_BB,
+                PERFECOM_HO, G3_BB, G3_HO, Seven11_ROX_BB, Seven11_ROX_HO, Seven11_POL_BB, Seven11_POL_HO, COMI_BB, COMI_HO, PBA_BB,
+                PBA_HO, KTV_BB, KTV_HO, WAVE_BB, WAVE_HO, PGC, LEASING, DALTON_BR, GENSANPERFECT_BR, DAVAOP_BR, PERFECOM_BR, G3_BR,
+                Seven11_BR, COMI_TO_FUJI_BR As Integer
 
             DALTON_BB = GetCount_Common("where company = 'DALTON'")
             DALTON_HO = GetCount_Common("where UPPER(HO_CATEGORY) LIKE UPPER('%Dalton%')")
-            GENSANPERFECT_BB = GetCount_Common("where branch_code IN ('ROG','ROX','FINEPIXEL','GMALL','DIGOS','SNP','SMD')")
-            'GENSANPERFECT_HO = GetCount_Common("where branch_code IN ('SMG','KCG','ACM','TAC')")
+            GENSANPERFECT_BB = GetCount_Common("where branch_code IN ('ROG','ROX','FINEPIX','GMA','DIG','SNP','SMD')")
+            GENSANPERFECT_HO = Nothing
+            JRPHOTO_BB = Nothing
+            JRPHOTO_HO = Nothing
             DAVAOP_BB = GetCount_Common("where branch_code IN ('SMG','KCG','ACM','TAC')")
+            DAVAOP_HO = Nothing
+            PERFECOM_BB = GetCount_Common("where company = 'PERFECOM'")
+            PERFECOM_HO = GetCount_Common("where company = 'HEAD OFFICE' AND UPPER(HO_CATEGORY) LIKE UPPER('%Perfecom%')")
+            G3_BB = GetCount_Common("where branch_code = '3G'")
+            G3_HO = Nothing
+            Seven11_ROX_BB = GetCount_Common("where branch_code = '711-ROX'")
+            Seven11_ROX_HO = Nothing
+            Seven11_POL_BB = GetCount_Common("where branch_code = '711-POL'")
+            Seven11_POL_HO = Nothing
+            COMI_BB = GetCount_Common("where branch_code = 'COMI'")
+            COMI_HO = Nothing
+            PBA_BB = GetCount_Common("where branch_code = 'PBA'")
+            PBA_HO = Nothing
+            KTV_BB = GetCount_Common("where branch_code = 'KTV'")
+            KTV_HO = Nothing
+            WAVE_BB = GetCount_Common("where branch_code = 'WAVE'")
+            WAVE_HO = Nothing
+            PGC = GetCount_Common("where ho_category = 'PGC Head Office'")
+            LEASING = GetCount_Common("where ho_category IN ('Leasing Admin Office','Construction')")
+            DALTON_BR = GetDistinctCount("branch_code", "where company = 'DALTON'")
+            GENSANPERFECT_BR = GetDistinctCount("branch_code", "where company = 'PHOTO'")
+            DAVAOP_BR = GetDistinctCount("branch_code", "where branch_code IN ('SMG','KCG','ACM','TAC')")
+            PERFECOM_BR = GetDistinctCount("branch_code", "where company = 'PERFECOM'")
+            G3_BR = GetDistinctCount("branch_code", "where branch_code = '3G'")
+            Seven11_BR = GetDistinctCount("branch_code", "where branch_code IN ('711-ROX','711-POL')")
+            COMI_TO_FUJI_BR = GetDistinctCount("branch_code", "where branch_code IN ('COMI','PBA','KTV','WAVE')")
 
-            dt_Common.Rows.Add(DALTON_BB, DALTON_HO, GENSANPERFECT_BB, DAVAOP_BB)
-
+            dt_Common.Rows.Add(DALTON_BB, DALTON_HO, GENSANPERFECT_BB, GENSANPERFECT_HO, JRPHOTO_BB, JRPHOTO_HO, DAVAOP_BB, DAVAOP_HO, PERFECOM_BB,
+                               PERFECOM_HO, G3_BB, G3_HO, Seven11_ROX_BB, Seven11_ROX_HO, Seven11_POL_BB, Seven11_POL_HO, COMI_BB, COMI_HO, PBA_BB,
+                               PBA_HO, KTV_BB, KTV_HO, WAVE_BB, WAVE_HO, PGC, LEASING, DALTON_BR, GENSANPERFECT_BR, DAVAOP_BR, PERFECOM_BR,
+                               G3_BR, Seven11_BR, COMI_TO_FUJI_BR)
 
             Dim rds_DTR As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt_Common)
             RptViewer_Common.LocalReport.DataSources.Add(rds_DTR)
@@ -178,4 +238,24 @@
     Private Sub ComPrev_BTN_Click(sender As Object, e As EventArgs) Handles ComPrev_BTN.Click
         LoadCommon_Print()
     End Sub
+
+    Private Sub DaltonP_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles M_Photo_TXT.KeyPress, M_Perfecom_TXT.KeyPress, M_DavaoP_TXT.KeyPress, M_DaltonP_TXT.KeyPress
+
+        If e.KeyChar <> ChrW(Keys.Back) Then
+
+            If Not Char.IsNumber(e.KeyChar) AndAlso Not Char.IsControl(e.KeyChar) Then
+                e.Handled = True
+            End If
+        End If
+
+    End Sub
+
+    Private Sub Modify_BTN_Click(sender As Object, e As EventArgs) Handles Modify_BTN.Click
+        Modify_Panel.Visible = True
+    End Sub
+
+    Private Sub Label14_Click(sender As Object, e As EventArgs) Handles Label14.Click
+        Modify_Panel.Visible = False
+    End Sub
+
 End Class
