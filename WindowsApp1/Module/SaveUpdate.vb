@@ -1854,9 +1854,10 @@
         End If
     End Sub
 
-
     Friend Sub Save_Marketing_DYU(M_DaltonP As String, M_Photo As String, M_DavaoP As String, M_Perfecom As String,
-                                  D_DaltonP As String, D_Photo As String, D_DavaoP As String, D_Perfecom As String)
+                                  D_DaltonP As String, D_Photo As String, D_DavaoP As String, D_Perfecom As String,
+                                  DR_Dalton As String, DR_Photo As String, DR_House As String, ConDalton As String,
+                                  ConPhoto As String, ConHouse As String, LeasingBR As String)
 
         Replacing("PAYROLL_MARKETING_DYU")
 
@@ -1874,6 +1875,13 @@
                 .Item("D_Photo") = IIf(D_Photo = Nothing, 0, D_Photo)
                 .Item("D_DavaoP") = IIf(D_DavaoP = Nothing, 0, D_DavaoP)
                 .Item("D_Perfecom") = IIf(D_Perfecom = Nothing, 0, D_Perfecom)
+                .Item("DR_Dalton") = IIf(DR_Dalton = Nothing, 0, DR_Dalton)
+                .Item("DR_Photo") = IIf(DR_Photo = Nothing, 0, DR_Photo)
+                .Item("DR_House") = IIf(DR_House = Nothing, 0, DR_House)
+                .Item("ConDalton") = IIf(ConDalton = Nothing, 0, ConDalton)
+                .Item("ConPhoto") = IIf(ConPhoto = Nothing, 0, ConPhoto)
+                .Item("ConHouse") = IIf(ConHouse = Nothing, 0, ConHouse)
+                .Item("LeasingBR") = IIf(LeasingBR = Nothing, 0, LeasingBR)
 
             End With
             ds.Tables(0).Rows.Add(dsNewRow)
@@ -1881,6 +1889,54 @@
 
             MsgBox("Successfully Save!", MsgBoxStyle.Information, "Information")
         End Using
+    End Sub
+
+    Friend Sub Save_PERCENTAGE(COMPANY As String, EMPLOYEE As String, BRANCH As String, MARKETING As String, PHOTO_PERFECOM As String,
+                                  PHOTO_GHS_3G As String, PERFECOM_LEASING_711 As String, DYU As String, DRIVER As String, CONSTRUCTION As String)
+        Dim mysql As String
+
+        mysql = $"Select * FROM PAYROLL_PERCENTAGE where COMPANY_NAME = '{COMPANY}'"
+        Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_PERCENTAGE")
+        If ds.Tables(0).Rows.Count > 0 Then
+
+            Dim data As DataRow = ds.Tables(0).Rows(0)
+            With data
+                .Item("EMPLOYEE") = EMPLOYEE
+                .Item("BRANCH") = BRANCH
+                .Item("MARKETING") = MARKETING
+                .Item("PHOTO_PERFECOM") = PHOTO_PERFECOM
+                .Item("PHOTO_GHS_3G") = PHOTO_GHS_3G
+                .Item("PERFECOM_LEASING_711") = PERFECOM_LEASING_711
+                .Item("DYU") = PERFECOM_LEASING_711
+                .Item("DRIVER") = DRIVER
+                .Item("CONSTRUCTION") = PERFECOM_LEASING_711
+            End With
+            SaveEntry(ds, False)
+
+        Else
+
+            mysql = "Select * From PAYROLL_PERCENTAGE Rows 1"
+            Using dss As DataSet = LoadSQL(mysql, "PAYROLL_PERCENTAGE")
+
+                Dim dsNewRow As DataRow = dss.Tables(0).NewRow
+                With dsNewRow
+
+                    .Item("COMPANY_NAME") = COMPANY
+                    .Item("EMPLOYEE") = EMPLOYEE
+                    .Item("BRANCH") = BRANCH
+                    .Item("MARKETING") = MARKETING
+                    .Item("PHOTO_PERFECOM") = PHOTO_PERFECOM
+                    .Item("PHOTO_GHS_3G") = PHOTO_GHS_3G
+                    .Item("PERFECOM_LEASING_711") = PERFECOM_LEASING_711
+                    .Item("DYU") = PERFECOM_LEASING_711
+                    .Item("CONSTRUCTION") = PERFECOM_LEASING_711
+
+                End With
+                dss.Tables(0).Rows.Add(dsNewRow)
+                SaveEntry(dss)
+            End Using
+        End If
+
     End Sub
 
 End Module

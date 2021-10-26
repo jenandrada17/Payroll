@@ -181,6 +181,34 @@
           <DataField>D_PERFECOM</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="DR_Dalton">
+          <DataField>DR_Dalton</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="DR_Photo">
+          <DataField>DR_Photo</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="DR_House">
+          <DataField>DR_House</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ConDalton">
+          <DataField>ConDalton</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ConPhoto">
+          <DataField>ConPhoto</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="ConHouse">
+          <DataField>ConHouse</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="LEASINGBR">
+          <DataField>LEASINGBR</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
       </Fields>
       <rd:DataSetInfo>
         <rd:DataSetName>reports</rd:DataSetName>
@@ -2137,7 +2165,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Convert.ToInt16(Fields!DALTON_BB.Value) + Convert.ToInt16(Fields!DALTON_HO.Value)</Value>
+                                  <Value>=CInt(Fields!DALTON_BB.Value) + CInt(Fields!DALTON_HO.Value)</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -2636,7 +2664,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Fields!DR_Dalton.Value</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -2663,14 +2691,14 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox535">
+                        <Textbox Name="DALTON_BB19">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=FormatPercent(ReportItems!DRIVER_DALTON.Value / ReportItems!TOTAL_DRIVER.Value, 2, TriState.False)</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -2682,7 +2710,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox535</rd:DefaultName>
+                          <rd:DefaultName>DALTON_BB6</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
@@ -2721,7 +2749,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Fields!ConDalton.Value</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -2748,14 +2776,14 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox577">
+                        <Textbox Name="DALTON_BB22">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=FormatPercent(ReportItems!Cons_Dalton.Value / ReportItems!TOTAL_DRIVER.Value, 2, TriState.False)</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -2767,7 +2795,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox577</rd:DefaultName>
+                          <rd:DefaultName>DALTON_BB6</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
@@ -2962,7 +2990,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Convert.ToInt16(Fields!GENSANPERFECT_BB.Value) + Convert.ToInt16(Fields!GENSANPERFECT_HO.Value)</Value>
+                                  <Value>=CInt(Fields!GENSANPERFECT_BB.Value) + CInt(Fields!GENSANPERFECT_HO.Value)</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -3494,7 +3522,7 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox515">
+                        <Textbox Name="Textbox24">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -3513,7 +3541,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox515</rd:DefaultName>
+                          <rd:DefaultName>Textbox24</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
@@ -3596,7 +3624,7 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox557">
+                        <Textbox Name="Textbox41">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -3615,7 +3643,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox557</rd:DefaultName>
+                          <rd:DefaultName>Textbox41</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
@@ -3861,7 +3889,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Convert.ToInt16(Fields!JRPHOTO_BB.Value) + Convert.ToInt16(Fields!JRPHOTO_HO.Value)</Value>
+                                  <Value>=CInt(Fields!JRPHOTO_BB.Value) + CInt(Fields!JRPHOTO_HO.Value)</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -4388,14 +4416,14 @@ ReportItems!COMI_TO_FUJI_BR.Value)</Value>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="DIVER_PHOTO">
+                        <Textbox Name="DRIVER_PHOTO">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Fields!DR_Photo.Value</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -4422,14 +4450,14 @@ ReportItems!COMI_TO_FUJI_BR.Value)</Value>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox537">
+                        <Textbox Name="DALTON_BB20">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=FormatPercent(ReportItems!DRIVER_PHOTO.Value / ReportItems!TOTAL_DRIVER.Value, 2, TriState.False)</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -4441,7 +4469,7 @@ ReportItems!COMI_TO_FUJI_BR.Value)</Value>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox537</rd:DefaultName>
+                          <rd:DefaultName>DALTON_BB6</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
@@ -4480,7 +4508,7 @@ ReportItems!COMI_TO_FUJI_BR.Value)</Value>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Fields!ConPhoto.Value</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -4507,14 +4535,14 @@ ReportItems!COMI_TO_FUJI_BR.Value)</Value>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox579">
+                        <Textbox Name="DALTON_BB23">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=FormatPercent(ReportItems!Cons_Photo.Value / ReportItems!TOTAL_DRIVER.Value, 2, TriState.False)</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -4526,7 +4554,7 @@ ReportItems!COMI_TO_FUJI_BR.Value)</Value>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox579</rd:DefaultName>
+                          <rd:DefaultName>DALTON_BB6</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
@@ -4721,7 +4749,7 @@ ReportItems!COMI_TO_FUJI_BR.Value)</Value>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Convert.ToInt16(Fields!DAVAOP_BB.Value) + Convert.ToInt16(Fields!DAVAOP_HO.Value)</Value>
+                                  <Value>=CInt(Fields!DAVAOP_BB.Value) + CInt(Fields!DAVAOP_HO.Value)</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -6535,7 +6563,7 @@ ReportItems!COMI_TO_FUJI_BR.Value)</Value>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Convert.ToInt16(Fields!PERFECOM_BB.Value) + Convert.ToInt16(Fields!PERFECOM_HO.Value)</Value>
+                                  <Value>=CInt(Fields!PERFECOM_BB.Value) + CInt(Fields!PERFECOM_HO.Value)</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -8350,7 +8378,7 @@ ReportItems!LEASING_BR.Value)</Value>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Convert.ToInt16(Fields!G3_BB.Value) + Convert.ToInt16(Fields!G3_HO.Value)</Value>
+                                  <Value>=CInt(Fields!G3_BB.Value) + CInt(Fields!G3_HO.Value)</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -9244,7 +9272,7 @@ ReportItems!COMI_TO_FUJI_BR.Value)</Value>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Convert.ToInt16(Fields!Seven11_ROX_BB.Value) + Convert.ToInt16(Fields!Seven11_ROX_HO.Value)</Value>
+                                  <Value>=CInt(Fields!Seven11_ROX_BB.Value) + CInt(Fields!Seven11_ROX_HO.Value)</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -10160,7 +10188,7 @@ ReportItems!COMI_TO_FUJI_BR.Value)</Value>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Convert.ToInt16(Fields!Seven11_POL_BB.Value) + Convert.ToInt16(Fields!Seven11_POL_HO.Value)</Value>
+                                  <Value>=CInt(Fields!Seven11_POL_BB.Value) + CInt(Fields!Seven11_POL_HO.Value)</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -11060,7 +11088,7 @@ ReportItems!LEASING_BR.Value)</Value>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Convert.ToInt16(Fields!COMI_BB.Value) + Convert.ToInt16(Fields!COMI_HO.Value)</Value>
+                                  <Value>=CInt(Fields!COMI_BB.Value) + CInt(Fields!COMI_HO.Value)</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -12861,7 +12889,7 @@ ReportItems!LEASING_BR.Value)</Value>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Convert.ToInt16(Fields!PBA_BB.Value) + Convert.ToInt16(Fields!PBA_HO.Value)</Value>
+                                  <Value>=CInt(Fields!PBA_BB.Value) + CInt(Fields!PBA_HO.Value)</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -13760,7 +13788,7 @@ ReportItems!LEASING_BR.Value)</Value>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Convert.ToInt16(Fields!KTV_BB.Value) + Convert.ToInt16(Fields!KTV_HO.Value)</Value>
+                                  <Value>=CInt(Fields!KTV_BB.Value) + CInt(Fields!KTV_HO.Value)</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -16461,7 +16489,7 @@ ReportItems!G3_BR.Value)</Value>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Convert.ToInt16(Fields!WAVE_BB.Value) + Convert.ToInt16(Fields!WAVE_HO.Value)</Value>
+                                  <Value>=CInt(Fields!WAVE_BB.Value) + CInt(Fields!WAVE_HO.Value)</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -18297,16 +18325,10 @@ ReportItems!G3_BR.Value)</Value>
                               <Color>Black</Color>
                               <Style>Double</Style>
                             </TopBorder>
-                            <BottomBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </BottomBorder>
                             <LeftBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
                             </LeftBorder>
                             <RightBorder>
-                              <Color>Gray</Color>
                               <Style>Solid</Style>
                             </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
@@ -18359,9 +18381,6 @@ CInt(Fields!WAVE_BB.Value) + CInt(Fields!WAVE_HO.Value)</Value>
                               <Color>Black</Color>
                               <Style>Double</Style>
                             </TopBorder>
-                            <BottomBorder>
-                              <Style>Solid</Style>
-                            </BottomBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -18398,8 +18417,8 @@ CInt(Fields!WAVE_BB.Value) + CInt(Fields!WAVE_HO.Value)</Value>
                               <Style>None</Style>
                             </Border>
                             <TopBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
+                              <Color>Black</Color>
+                              <Style>Double</Style>
                             </TopBorder>
                             <BottomBorder>
                               <Color>Gray</Color>
@@ -18449,8 +18468,7 @@ CInt(Fields!WAVE_BB.Value) + CInt(Fields!WAVE_HO.Value)</Value>
                               <Style>None</Style>
                             </Border>
                             <TopBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
+                              <Style>Double</Style>
                             </TopBorder>
                             <BottomBorder>
                               <Color>Gray</Color>
@@ -18499,6 +18517,9 @@ CInt(Fields!WAVE_BB.Value) + CInt(Fields!WAVE_HO.Value)</Value>
                               <Color>Gray</Color>
                               <Style>Solid</Style>
                             </Border>
+                            <TopBorder>
+                              <Style>Double</Style>
+                            </TopBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -18815,7 +18836,7 @@ CInt(Fields!WAVE_BB.Value) + CInt(Fields!WAVE_HO.Value)</Value>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="ASD">
+                        <Textbox Name="Textbox31">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -18834,6 +18855,7 @@ CInt(Fields!WAVE_BB.Value) + CInt(Fields!WAVE_HO.Value)</Value>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
+                          <rd:DefaultName>Textbox31</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
@@ -19358,7 +19380,7 @@ CInt(Fields!WAVE_BB.Value) + CInt(Fields!WAVE_HO.Value)</Value>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox7">
+                        <Textbox Name="Textbox64">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -19377,7 +19399,7 @@ CInt(Fields!WAVE_BB.Value) + CInt(Fields!WAVE_HO.Value)</Value>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox7</rd:DefaultName>
+                          <rd:DefaultName>Textbox64</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
@@ -19715,14 +19737,14 @@ CInt(Fields!WAVE_BB.Value) + CInt(Fields!WAVE_HO.Value)</Value>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox14">
+                        <Textbox Name="DR_House">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Fields!DR_House.Value</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -19734,28 +19756,12 @@ CInt(Fields!WAVE_BB.Value) + CInt(Fields!WAVE_HO.Value)</Value>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox14</rd:DefaultName>
+                          <rd:DefaultName>DR_House</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
-                              <Style>None</Style>
+                              <Style>Solid</Style>
                             </Border>
-                            <TopBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </TopBorder>
-                            <BottomBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </BottomBorder>
-                            <LeftBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </LeftBorder>
-                            <RightBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -19766,14 +19772,14 @@ CInt(Fields!WAVE_BB.Value) + CInt(Fields!WAVE_HO.Value)</Value>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox15">
+                        <Textbox Name="DALTON_BB21">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=FormatPercent(ReportItems!DR_House.Value / ReportItems!TOTAL_DRIVER.Value, 2, TriState.False)</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -19785,7 +19791,7 @@ CInt(Fields!WAVE_BB.Value) + CInt(Fields!WAVE_HO.Value)</Value>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox15</rd:DefaultName>
+                          <rd:DefaultName>DALTON_BB6</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
@@ -20101,7 +20107,7 @@ CInt(Fields!WAVE_BB.Value) + CInt(Fields!WAVE_HO.Value)</Value>
                             </TopBorder>
                             <BottomBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
+                              <Style>Double</Style>
                             </BottomBorder>
                             <LeftBorder>
                               <Color>Gray</Color>
@@ -20153,7 +20159,7 @@ CInt(Fields!WAVE_BB.Value) + CInt(Fields!WAVE_HO.Value)</Value>
                             </TopBorder>
                             <BottomBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
+                              <Style>Double</Style>
                             </BottomBorder>
                             <LeftBorder>
                               <Color>Gray</Color>
@@ -20204,7 +20210,7 @@ CInt(Fields!WAVE_BB.Value) + CInt(Fields!WAVE_HO.Value)</Value>
                             </TopBorder>
                             <BottomBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
+                              <Style>Double</Style>
                             </BottomBorder>
                             <LeftBorder>
                               <Color>Gray</Color>
@@ -20255,7 +20261,7 @@ CInt(Fields!WAVE_BB.Value) + CInt(Fields!WAVE_HO.Value)</Value>
                             </TopBorder>
                             <BottomBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
+                              <Style>Double</Style>
                             </BottomBorder>
                             <LeftBorder>
                               <Color>Gray</Color>
@@ -20282,7 +20288,7 @@ CInt(Fields!WAVE_BB.Value) + CInt(Fields!WAVE_HO.Value)</Value>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>1</Value>
+                                  <Value>=Fields!LEASINGBR.Value</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -20299,6 +20305,9 @@ CInt(Fields!WAVE_BB.Value) + CInt(Fields!WAVE_HO.Value)</Value>
                               <Color>Gray</Color>
                               <Style>Solid</Style>
                             </Border>
+                            <BottomBorder>
+                              <Style>Double</Style>
+                            </BottomBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -20340,7 +20349,7 @@ CInt(Fields!WAVE_BB.Value) + CInt(Fields!WAVE_HO.Value)</Value>
                             </TopBorder>
                             <BottomBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
+                              <Style>Double</Style>
                             </BottomBorder>
                             <LeftBorder>
                               <Color>Gray</Color>
@@ -20391,7 +20400,7 @@ CInt(Fields!WAVE_BB.Value) + CInt(Fields!WAVE_HO.Value)</Value>
                             </TopBorder>
                             <BottomBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
+                              <Style>Double</Style>
                             </BottomBorder>
                             <LeftBorder>
                               <Color>Gray</Color>
@@ -20442,7 +20451,7 @@ CInt(Fields!WAVE_BB.Value) + CInt(Fields!WAVE_HO.Value)</Value>
                             </TopBorder>
                             <BottomBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
+                              <Style>Double</Style>
                             </BottomBorder>
                             <LeftBorder>
                               <Color>Gray</Color>
@@ -20493,7 +20502,7 @@ CInt(Fields!WAVE_BB.Value) + CInt(Fields!WAVE_HO.Value)</Value>
                             </TopBorder>
                             <BottomBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
+                              <Style>Double</Style>
                             </BottomBorder>
                             <LeftBorder>
                               <Color>Gray</Color>
@@ -20546,7 +20555,7 @@ ReportItems!Seven11_BR.Value)</Value>
                             </TopBorder>
                             <BottomBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
+                              <Style>Double</Style>
                             </BottomBorder>
                             <LeftBorder>
                               <Color>Gray</Color>
@@ -20597,7 +20606,7 @@ ReportItems!Seven11_BR.Value)</Value>
                             </TopBorder>
                             <BottomBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
+                              <Style>Double</Style>
                             </BottomBorder>
                             <LeftBorder>
                               <Color>Gray</Color>
@@ -20617,7 +20626,7 @@ ReportItems!Seven11_BR.Value)</Value>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox48">
+                        <Textbox Name="Textbox46">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -20636,7 +20645,7 @@ ReportItems!Seven11_BR.Value)</Value>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox48</rd:DefaultName>
+                          <rd:DefaultName>Textbox46</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
@@ -20648,7 +20657,7 @@ ReportItems!Seven11_BR.Value)</Value>
                             </TopBorder>
                             <BottomBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
+                              <Style>Double</Style>
                             </BottomBorder>
                             <LeftBorder>
                               <Color>Gray</Color>
@@ -20699,7 +20708,7 @@ ReportItems!Seven11_BR.Value)</Value>
                             </TopBorder>
                             <BottomBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
+                              <Style>Double</Style>
                             </BottomBorder>
                             <LeftBorder>
                               <Color>Gray</Color>
@@ -20750,7 +20759,7 @@ ReportItems!Seven11_BR.Value)</Value>
                             </TopBorder>
                             <BottomBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
+                              <Style>Double</Style>
                             </BottomBorder>
                             <LeftBorder>
                               <Color>Gray</Color>
@@ -20801,7 +20810,7 @@ ReportItems!Seven11_BR.Value)</Value>
                             </TopBorder>
                             <BottomBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
+                              <Style>Double</Style>
                             </BottomBorder>
                             <LeftBorder>
                               <Color>Gray</Color>
@@ -20997,22 +21006,12 @@ ReportItems!Seven11_BR.Value)</Value>
                               <Color>Gray</Color>
                               <Style>None</Style>
                             </Border>
-                            <TopBorder>
-                              <Color>Black</Color>
-                              <Style>Double</Style>
-                            </TopBorder>
                             <BottomBorder>
-                              <Color>Gray</Color>
                               <Style>Solid</Style>
                             </BottomBorder>
                             <LeftBorder>
-                              <Color>Gray</Color>
                               <Style>Solid</Style>
                             </LeftBorder>
-                            <RightBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -21060,13 +21059,15 @@ Convert.ToInt16(Fields!PGC.Value) + Convert.ToInt16(Fields!LEASING.Value)</Value
                               <Color>Gray</Color>
                               <Style>None</Style>
                             </Border>
-                            <TopBorder>
-                              <Color>Black</Color>
-                              <Style>Double</Style>
-                            </TopBorder>
                             <BottomBorder>
+                              <Color>Gray</Color>
                               <Style>Solid</Style>
                             </BottomBorder>
+                            <LeftBorder>
+                              <Color>Gray</Color>
+                              <Style>Solid</Style>
+                              <Width>1pt</Width>
+                            </LeftBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -21104,7 +21105,7 @@ Convert.ToInt16(Fields!PGC.Value) + Convert.ToInt16(Fields!LEASING.Value)</Value
                             </Border>
                             <TopBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
+                              <Style>Double</Style>
                             </TopBorder>
                             <BottomBorder>
                               <Color>Gray</Color>
@@ -21154,8 +21155,8 @@ Convert.ToInt16(Fields!PGC.Value) + Convert.ToInt16(Fields!LEASING.Value)</Value
                               <Style>None</Style>
                             </Border>
                             <TopBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
+                              <Color>Black</Color>
+                              <Style>Double</Style>
                             </TopBorder>
                             <BottomBorder>
                               <Color>Gray</Color>
@@ -21186,14 +21187,14 @@ Convert.ToInt16(Fields!PGC.Value) + Convert.ToInt16(Fields!LEASING.Value)</Value
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=ReportItems!DALTON_BR.Value + 
-ReportItems!GENSANPERFECT_BR.Value +
-ReportItems!DAVAOP_BR.Value +
-ReportItems!PERFECOM_BR.Value +
-ReportItems!G3_BR.Value +
-ReportItems!Seven11_BR.Value +
-ReportItems!COMI_TO_FUJI_BR.Value +
-ReportItems!LEASING_BR.Value</Value>
+                                  <Value>=CInt(ReportItems!DALTON_BR.Value) + 
+CInt(ReportItems!GENSANPERFECT_BR.Value) +
+CInt(ReportItems!DAVAOP_BR.Value) +
+CInt(ReportItems!PERFECOM_BR.Value) +
+CInt(ReportItems!G3_BR.Value) +
+CInt(ReportItems!Seven11_BR.Value) +
+CInt(ReportItems!COMI_TO_FUJI_BR.Value) +
+CInt(ReportItems!LEASING_BR.Value)</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -21210,6 +21211,10 @@ ReportItems!LEASING_BR.Value</Value>
                               <Color>Gray</Color>
                               <Style>Solid</Style>
                             </Border>
+                            <TopBorder>
+                              <Color>Black</Color>
+                              <Style>Double</Style>
+                            </TopBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -21246,8 +21251,8 @@ ReportItems!LEASING_BR.Value</Value>
                               <Style>None</Style>
                             </Border>
                             <TopBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
+                              <Color>Black</Color>
+                              <Style>Double</Style>
                             </TopBorder>
                             <BottomBorder>
                               <Color>Gray</Color>
@@ -21259,7 +21264,6 @@ ReportItems!LEASING_BR.Value</Value>
                             </LeftBorder>
                             <RightBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
                             </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -21297,21 +21301,15 @@ ReportItems!LEASING_BR.Value</Value>
                               <Style>None</Style>
                             </Border>
                             <TopBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
+                              <Color>Black</Color>
+                              <Style>Double</Style>
                             </TopBorder>
                             <BottomBorder>
-                              <Color>Gray</Color>
                               <Style>Solid</Style>
                             </BottomBorder>
                             <LeftBorder>
-                              <Color>Gray</Color>
                               <Style>Solid</Style>
                             </LeftBorder>
-                            <RightBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -21348,8 +21346,8 @@ ReportItems!LEASING_BR.Value</Value>
                               <Style>None</Style>
                             </Border>
                             <TopBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
+                              <Color>Black</Color>
+                              <Style>Double</Style>
                             </TopBorder>
                             <BottomBorder>
                               <Color>Gray</Color>
@@ -21399,8 +21397,8 @@ ReportItems!LEASING_BR.Value</Value>
                               <Style>None</Style>
                             </Border>
                             <TopBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
+                              <Color>Black</Color>
+                              <Style>Double</Style>
                             </TopBorder>
                             <BottomBorder>
                               <Color>Gray</Color>
@@ -21450,8 +21448,8 @@ ReportItems!LEASING_BR.Value</Value>
                               <Style>None</Style>
                             </Border>
                             <TopBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
+                              <Color>Black</Color>
+                              <Style>Double</Style>
                             </TopBorder>
                             <BottomBorder>
                               <Color>Gray</Color>
@@ -21501,8 +21499,8 @@ ReportItems!LEASING_BR.Value</Value>
                               <Style>None</Style>
                             </Border>
                             <TopBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
+                              <Color>Black</Color>
+                              <Style>Double</Style>
                             </TopBorder>
                             <BottomBorder>
                               <Color>Gray</Color>
@@ -21514,7 +21512,6 @@ ReportItems!LEASING_BR.Value</Value>
                             </LeftBorder>
                             <RightBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
                             </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -21533,7 +21530,9 @@ ReportItems!LEASING_BR.Value</Value>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=CInt(ReportItems!DRIVER_DALTON.Value) + 
+CInt(ReportItems!DRIVER_PHOTO.Value) + 
+CInt(ReportItems!DR_House.Value)</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -21548,8 +21547,21 @@ ReportItems!LEASING_BR.Value</Value>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
+                              <Style>None</Style>
                             </Border>
+                            <TopBorder>
+                              <Color>Black</Color>
+                              <Style>Double</Style>
+                            </TopBorder>
+                            <BottomBorder>
+                              <Style>Solid</Style>
+                            </BottomBorder>
+                            <LeftBorder>
+                              <Style>Solid</Style>
+                            </LeftBorder>
+                            <RightBorder>
+                              <Style>None</Style>
+                            </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -21586,8 +21598,8 @@ ReportItems!LEASING_BR.Value</Value>
                               <Style>None</Style>
                             </Border>
                             <TopBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
+                              <Color>Black</Color>
+                              <Style>Double</Style>
                             </TopBorder>
                             <BottomBorder>
                               <Color>Gray</Color>
@@ -21637,8 +21649,8 @@ ReportItems!LEASING_BR.Value</Value>
                               <Style>None</Style>
                             </Border>
                             <TopBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
+                              <Color>Black</Color>
+                              <Style>Double</Style>
                             </TopBorder>
                             <BottomBorder>
                               <Color>Gray</Color>
@@ -21688,8 +21700,8 @@ ReportItems!LEASING_BR.Value</Value>
                               <Style>None</Style>
                             </Border>
                             <TopBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
+                              <Color>Black</Color>
+                              <Style>Double</Style>
                             </TopBorder>
                             <BottomBorder>
                               <Color>Gray</Color>
@@ -21899,7 +21911,7 @@ ReportItems!LEASING_BR.Value</Value>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox938">
+                        <Textbox Name="Textbox48">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -21919,24 +21931,12 @@ ReportItems!LEASING_BR.Value</Value>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox938</rd:DefaultName>
+                          <rd:DefaultName>Textbox48</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
                               <Style>None</Style>
                             </Border>
-                            <TopBorder>
-                              <Color>Black</Color>
-                            </TopBorder>
-                            <BottomBorder>
-                              <Color>Gray</Color>
-                            </BottomBorder>
-                            <LeftBorder>
-                              <Color>Gray</Color>
-                            </LeftBorder>
-                            <RightBorder>
-                              <Color>Gray</Color>
-                            </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -22041,7 +22041,7 @@ ReportItems!LEASING_BR.Value</Value>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox940">
+                        <Textbox Name="Textbox58">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -22060,7 +22060,7 @@ ReportItems!LEASING_BR.Value</Value>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox940</rd:DefaultName>
+                          <rd:DefaultName>Textbox58</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
@@ -22886,7 +22886,7 @@ ReportItems!LEASING_BR.Value</Value>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox138">
+                        <Textbox Name="Textbox56">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -22905,7 +22905,7 @@ ReportItems!LEASING_BR.Value</Value>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox138</rd:DefaultName>
+                          <rd:DefaultName>Textbox56</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>

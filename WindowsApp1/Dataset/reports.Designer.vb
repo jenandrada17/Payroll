@@ -905,6 +905,20 @@ Partial Public Class reports
         
         Private columnD_PERFECOM As Global.System.Data.DataColumn
         
+        Private columnDR_Dalton As Global.System.Data.DataColumn
+        
+        Private columnDR_Photo As Global.System.Data.DataColumn
+        
+        Private columnDR_House As Global.System.Data.DataColumn
+        
+        Private columnConDalton As Global.System.Data.DataColumn
+        
+        Private columnConPhoto As Global.System.Data.DataColumn
+        
+        Private columnConHouse As Global.System.Data.DataColumn
+        
+        Private columnLEASINGBR As Global.System.Data.DataColumn
+        
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Sub New()
@@ -1269,6 +1283,62 @@ Partial Public Class reports
         End Property
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property DR_DaltonColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnDR_Dalton
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property DR_PhotoColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnDR_Photo
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property DR_HouseColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnDR_House
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property ConDaltonColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnConDalton
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property ConPhotoColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnConPhoto
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property ConHouseColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnConHouse
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property LEASINGBRColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnLEASINGBR
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0"),  _
          Global.System.ComponentModel.Browsable(false)>  _
         Public ReadOnly Property Count() As Integer
@@ -1346,9 +1416,16 @@ Partial Public Class reports
                     ByVal D_DALTONP As String,  _
                     ByVal D_PHOTO As String,  _
                     ByVal D_DAVAOP As String,  _
-                    ByVal D_PERFECOM As String) As CommonRow
+                    ByVal D_PERFECOM As String,  _
+                    ByVal DR_Dalton As String,  _
+                    ByVal DR_Photo As String,  _
+                    ByVal DR_House As String,  _
+                    ByVal ConDalton As String,  _
+                    ByVal ConPhoto As String,  _
+                    ByVal ConHouse As String,  _
+                    ByVal LEASINGBR As String) As CommonRow
             Dim rowCommonRow As CommonRow = CType(Me.NewRow,CommonRow)
-            Dim columnValuesArray() As Object = New Object() {DALTON_BB, DALTON_HO, GENSANPERFECT_BB, GENSANPERFECT_HO, DAVAOP_BB, DAVAOP_HO, PERFECOM_BB, PERFECOM_HO, G3_BB, G3_HO, Seven11_ROX_BB, Seven11_ROX_HO, Seven11_POL_BB, Seven11_POL_HO, COMI_BB, COMI_HO, PBA_BB, PBA_HO, KTV_BB, KTV_HO, WAVE_BB, WAVE_HO, PGC, LEASING, JRPHOTO_BB, JRPHOTO_HO, DALTON_BR, GENSANPERFECT_BR, DAVAOP_BR, PERFECOM_BR, G3_BR, Seven11_BR, COMI_TO_FUJI_BR, M_DALTONP, M_PHOTO, M_DAVAOP, M_PERFECOM, D_DALTONP, D_PHOTO, D_DAVAOP, D_PERFECOM}
+            Dim columnValuesArray() As Object = New Object() {DALTON_BB, DALTON_HO, GENSANPERFECT_BB, GENSANPERFECT_HO, DAVAOP_BB, DAVAOP_HO, PERFECOM_BB, PERFECOM_HO, G3_BB, G3_HO, Seven11_ROX_BB, Seven11_ROX_HO, Seven11_POL_BB, Seven11_POL_HO, COMI_BB, COMI_HO, PBA_BB, PBA_HO, KTV_BB, KTV_HO, WAVE_BB, WAVE_HO, PGC, LEASING, JRPHOTO_BB, JRPHOTO_HO, DALTON_BR, GENSANPERFECT_BR, DAVAOP_BR, PERFECOM_BR, G3_BR, Seven11_BR, COMI_TO_FUJI_BR, M_DALTONP, M_PHOTO, M_DAVAOP, M_PERFECOM, D_DALTONP, D_PHOTO, D_DAVAOP, D_PERFECOM, DR_Dalton, DR_Photo, DR_House, ConDalton, ConPhoto, ConHouse, LEASINGBR}
             rowCommonRow.ItemArray = columnValuesArray
             Me.Rows.Add(rowCommonRow)
             Return rowCommonRow
@@ -1412,6 +1489,13 @@ Partial Public Class reports
             Me.columnD_PHOTO = MyBase.Columns("D_PHOTO")
             Me.columnD_DAVAOP = MyBase.Columns("D_DAVAOP")
             Me.columnD_PERFECOM = MyBase.Columns("D_PERFECOM")
+            Me.columnDR_Dalton = MyBase.Columns("DR_Dalton")
+            Me.columnDR_Photo = MyBase.Columns("DR_Photo")
+            Me.columnDR_House = MyBase.Columns("DR_House")
+            Me.columnConDalton = MyBase.Columns("ConDalton")
+            Me.columnConPhoto = MyBase.Columns("ConPhoto")
+            Me.columnConHouse = MyBase.Columns("ConHouse")
+            Me.columnLEASINGBR = MyBase.Columns("LEASINGBR")
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -1499,6 +1583,20 @@ Partial Public Class reports
             MyBase.Columns.Add(Me.columnD_DAVAOP)
             Me.columnD_PERFECOM = New Global.System.Data.DataColumn("D_PERFECOM", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnD_PERFECOM)
+            Me.columnDR_Dalton = New Global.System.Data.DataColumn("DR_Dalton", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnDR_Dalton)
+            Me.columnDR_Photo = New Global.System.Data.DataColumn("DR_Photo", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnDR_Photo)
+            Me.columnDR_House = New Global.System.Data.DataColumn("DR_House", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnDR_House)
+            Me.columnConDalton = New Global.System.Data.DataColumn("ConDalton", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnConDalton)
+            Me.columnConPhoto = New Global.System.Data.DataColumn("ConPhoto", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnConPhoto)
+            Me.columnConHouse = New Global.System.Data.DataColumn("ConHouse", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnConHouse)
+            Me.columnLEASINGBR = New Global.System.Data.DataColumn("LEASINGBR", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnLEASINGBR)
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -2789,6 +2887,111 @@ Partial Public Class reports
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property DR_Dalton() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableCommon.DR_DaltonColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'DR_Dalton' in table 'Common' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableCommon.DR_DaltonColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property DR_Photo() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableCommon.DR_PhotoColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'DR_Photo' in table 'Common' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableCommon.DR_PhotoColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property DR_House() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableCommon.DR_HouseColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'DR_House' in table 'Common' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableCommon.DR_HouseColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property ConDalton() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableCommon.ConDaltonColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'ConDalton' in table 'Common' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableCommon.ConDaltonColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property ConPhoto() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableCommon.ConPhotoColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'ConPhoto' in table 'Common' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableCommon.ConPhotoColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property ConHouse() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableCommon.ConHouseColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'ConHouse' in table 'Common' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableCommon.ConHouseColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property LEASINGBR() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableCommon.LEASINGBRColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'LEASINGBR' in table 'Common' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableCommon.LEASINGBRColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Function IsDALTON_BBNull() As Boolean
             Return Me.IsNull(Me.tableCommon.DALTON_BBColumn)
         End Function
@@ -3277,6 +3480,90 @@ Partial Public Class reports
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Sub SetD_PERFECOMNull()
             Me(Me.tableCommon.D_PERFECOMColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsDR_DaltonNull() As Boolean
+            Return Me.IsNull(Me.tableCommon.DR_DaltonColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetDR_DaltonNull()
+            Me(Me.tableCommon.DR_DaltonColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsDR_PhotoNull() As Boolean
+            Return Me.IsNull(Me.tableCommon.DR_PhotoColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetDR_PhotoNull()
+            Me(Me.tableCommon.DR_PhotoColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsDR_HouseNull() As Boolean
+            Return Me.IsNull(Me.tableCommon.DR_HouseColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetDR_HouseNull()
+            Me(Me.tableCommon.DR_HouseColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsConDaltonNull() As Boolean
+            Return Me.IsNull(Me.tableCommon.ConDaltonColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetConDaltonNull()
+            Me(Me.tableCommon.ConDaltonColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsConPhotoNull() As Boolean
+            Return Me.IsNull(Me.tableCommon.ConPhotoColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetConPhotoNull()
+            Me(Me.tableCommon.ConPhotoColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsConHouseNull() As Boolean
+            Return Me.IsNull(Me.tableCommon.ConHouseColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetConHouseNull()
+            Me(Me.tableCommon.ConHouseColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsLEASINGBRNull() As Boolean
+            Return Me.IsNull(Me.tableCommon.LEASINGBRColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetLEASINGBRNull()
+            Me(Me.tableCommon.LEASINGBRColumn) = Global.System.Convert.DBNull
         End Sub
     End Class
     

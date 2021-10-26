@@ -2303,7 +2303,9 @@ Module SelectFromDatabase
     End Function
 
     Public Sub GetModify_Report(M_DaltonP_TXT As TextBox, M_Photo_TXT As TextBox, M_DavaoP_TXT As TextBox, M_Perfecom_TXT As TextBox,
-                                D_DaltonP_TXT As TextBox, D_Photo_TXT As TextBox, D_DavaoP_TXT As TextBox, D_Perfecom_TXT As TextBox)
+                                D_DaltonP_TXT As TextBox, D_Photo_TXT As TextBox, D_DavaoP_TXT As TextBox, D_Perfecom_TXT As TextBox,
+                                DR_Dalton_TXT As TextBox, DR_Photo_TXT As TextBox, DR_House_TXT As TextBox, ConDalton_TXT As TextBox,
+                                ConPhoto_TXT As TextBox, ConHouse_TXT As TextBox, LeasingBR_TXT As TextBox)
 
         Dim mysql As String = "Select * FROM  PAYROLL_MARKETING_DYU"
         Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_MARKETING_DYU")
@@ -2319,6 +2321,13 @@ Module SelectFromDatabase
                 D_Photo_TXT.Text = .Item("D_PHOTO")
                 D_DavaoP_TXT.Text = .Item("D_DAVAOP")
                 D_Perfecom_TXT.Text = .Item("D_PERFECOM")
+                DR_Dalton_TXT.Text = .Item("DR_DALTON")
+                DR_Photo_TXT.Text = .Item("DR_PHOTO")
+                DR_House_TXT.Text = .Item("DR_HOUSE")
+                ConDalton_TXT.Text = .Item("CONDALTON")
+                ConPhoto_TXT.Text = .Item("CONPHOTO")
+                ConHouse_TXT.Text = .Item("CONHOUSE")
+                LeasingBR_TXT.Text = .Item("LEASINGBR")
 
             End With
         End If
