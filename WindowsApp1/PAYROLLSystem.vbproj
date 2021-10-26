@@ -124,6 +124,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Class\Employee.vb" />
+    <Compile Include="Class\Rdlc_Class.vb" />
     <Compile Include="Class\Updater.vb" />
     <Compile Include="CryptoStuff.vb" />
     <Compile Include="Dataset\dtr_all.Designer.vb">

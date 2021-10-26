@@ -149,6 +149,38 @@
           <DataField>COMI_TO_FUJI_BR</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="M_DALTONP">
+          <DataField>M_DALTONP</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="M_PHOTO">
+          <DataField>M_PHOTO</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="M_DAVAOP">
+          <DataField>M_DAVAOP</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="M_PERFECOM">
+          <DataField>M_PERFECOM</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="D_DALTONP">
+          <DataField>D_DALTONP</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="D_PHOTO">
+          <DataField>D_PHOTO</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="D_DAVAOP">
+          <DataField>D_DAVAOP</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="D_PERFECOM">
+          <DataField>D_PERFECOM</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
       </Fields>
       <rd:DataSetInfo>
         <rd:DataSetName>reports</rd:DataSetName>
@@ -2318,7 +2350,6 @@
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -2343,14 +2374,14 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox388">
+                        <Textbox Name="M_DALTONP">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Fields!M_DALTONP.Value + "%"</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -2362,7 +2393,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox388</rd:DefaultName>
+                          <rd:DefaultName>M_DALTONP</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
@@ -2547,14 +2578,14 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox493">
+                        <Textbox Name="D_DALTONP">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Fields!D_DALTONP.Value + "%"</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -2566,7 +2597,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox493</rd:DefaultName>
+                          <rd:DefaultName>D_DALTONP</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
@@ -2598,7 +2629,7 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox514">
+                        <Textbox Name="DRIVER_DALTON">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -2617,28 +2648,11 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox514</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
-                              <Style>None</Style>
+                              <Style>Solid</Style>
                             </Border>
-                            <TopBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </TopBorder>
-                            <BottomBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </BottomBorder>
-                            <LeftBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </LeftBorder>
-                            <RightBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -2700,7 +2714,7 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox556">
+                        <Textbox Name="Cons_Dalton">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -2719,28 +2733,11 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox556</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
-                              <Style>None</Style>
+                              <Style>Solid</Style>
                             </Border>
-                            <TopBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </TopBorder>
-                            <BottomBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </BottomBorder>
-                            <LeftBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </LeftBorder>
-                            <RightBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -3259,7 +3256,7 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox389">
+                        <Textbox Name="Textbox72">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -3278,26 +3275,19 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox389</rd:DefaultName>
+                          <rd:DefaultName>Textbox72</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
                               <Style>None</Style>
                             </Border>
                             <TopBorder>
-                              <Color>Gray</Color>
                               <Style>Solid</Style>
                             </TopBorder>
-                            <BottomBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </BottomBorder>
                             <LeftBorder>
-                              <Color>Gray</Color>
                               <Style>Solid</Style>
                             </LeftBorder>
                             <RightBorder>
-                              <Color>Gray</Color>
                               <Style>Solid</Style>
                             </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
@@ -3310,7 +3300,7 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox410">
+                        <Textbox Name="Textbox77">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -3329,26 +3319,19 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox410</rd:DefaultName>
+                          <rd:DefaultName>Textbox77</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
                               <Style>None</Style>
                             </Border>
                             <TopBorder>
-                              <Color>Gray</Color>
                               <Style>Solid</Style>
                             </TopBorder>
-                            <BottomBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </BottomBorder>
                             <LeftBorder>
-                              <Color>Gray</Color>
                               <Style>Solid</Style>
                             </LeftBorder>
                             <RightBorder>
-                              <Color>Gray</Color>
                               <Style>Solid</Style>
                             </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
@@ -3392,7 +3375,6 @@
                             </TopBorder>
                             <BottomBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
                             </BottomBorder>
                             <LeftBorder>
                               <Color>Gray</Color>
@@ -3463,7 +3445,7 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox494">
+                        <Textbox Name="Textbox74">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -3482,7 +3464,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox494</rd:DefaultName>
+                          <rd:DefaultName>Textbox74</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
@@ -3490,11 +3472,9 @@
                             </Border>
                             <TopBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
                             </TopBorder>
                             <BottomBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
                             </BottomBorder>
                             <LeftBorder>
                               <Color>Gray</Color>
@@ -4090,19 +4070,13 @@ CInt(Fields!JRPHOTO_HO.Value)</Value>
                               <Color>Gray</Color>
                               <Style>None</Style>
                             </Border>
-                            <TopBorder>
-                              <Color>Gray</Color>
-                            </TopBorder>
                             <BottomBorder>
-                              <Color>Gray</Color>
                               <Style>Solid</Style>
                             </BottomBorder>
                             <LeftBorder>
-                              <Color>Gray</Color>
                               <Style>Solid</Style>
                             </LeftBorder>
                             <RightBorder>
-                              <Color>Gray</Color>
                               <Style>Solid</Style>
                             </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
@@ -4126,7 +4100,6 @@ CInt(Fields!JRPHOTO_HO.Value)</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -4166,14 +4139,14 @@ CInt(Fields!JRPHOTO_HO.Value)</Value>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox390">
+                        <Textbox Name="M_PHOTO">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Fields!M_PHOTO.Value + "%"</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -4185,7 +4158,53 @@ CInt(Fields!JRPHOTO_HO.Value)</Value>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox390</rd:DefaultName>
+                          <rd:DefaultName>M_PHOTO</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>Gray</Color>
+                              <Style>None</Style>
+                            </Border>
+                            <BottomBorder>
+                              <Style>Solid</Style>
+                            </BottomBorder>
+                            <LeftBorder>
+                              <Style>Solid</Style>
+                            </LeftBorder>
+                            <RightBorder>
+                              <Style>Solid</Style>
+                            </RightBorder>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="DALTON_BB10">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Code.Photo_Perfecom(ReportItems!GENSANPERFECT_BR.Value, 
+ReportItems!DAVAOP_BR.Value, 
+ReportItems!PERFECOM_BR.Value)</Value>
+                                  <Style>
+                                    <FontFamily>Berlin Sans FB</FontFamily>
+                                    <FontSize>8pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>DALTON_BB6</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
@@ -4193,7 +4212,6 @@ CInt(Fields!JRPHOTO_HO.Value)</Value>
                             </Border>
                             <TopBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
                             </TopBorder>
                             <BottomBorder>
                               <Color>Gray</Color>
@@ -4217,14 +4235,17 @@ CInt(Fields!JRPHOTO_HO.Value)</Value>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox411">
+                        <Textbox Name="DALTON_BB12">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Code.Photo_GHS_3G(ReportItems!GENSANPERFECT_BR.Value, 
+ReportItems!DAVAOP_BR.Value,  
+ReportItems!G3_BR.Value,
+ReportItems!COMI_TO_FUJI_BR.Value)</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -4236,7 +4257,7 @@ CInt(Fields!JRPHOTO_HO.Value)</Value>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox411</rd:DefaultName>
+                          <rd:DefaultName>DALTON_BB6</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
@@ -4244,58 +4265,6 @@ CInt(Fields!JRPHOTO_HO.Value)</Value>
                             </Border>
                             <TopBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </TopBorder>
-                            <BottomBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </BottomBorder>
-                            <LeftBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </LeftBorder>
-                            <RightBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </RightBorder>
-                            <PaddingLeft>2pt</PaddingLeft>
-                            <PaddingRight>2pt</PaddingRight>
-                            <PaddingTop>2pt</PaddingTop>
-                            <PaddingBottom>2pt</PaddingBottom>
-                          </Style>
-                        </Textbox>
-                      </CellContents>
-                    </TablixCell>
-                    <TablixCell>
-                      <CellContents>
-                        <Textbox Name="Textbox453">
-                          <CanGrow>true</CanGrow>
-                          <KeepTogether>true</KeepTogether>
-                          <Paragraphs>
-                            <Paragraph>
-                              <TextRuns>
-                                <TextRun>
-                                  <Value />
-                                  <Style>
-                                    <FontFamily>Berlin Sans FB</FontFamily>
-                                    <FontSize>8pt</FontSize>
-                                  </Style>
-                                </TextRun>
-                              </TextRuns>
-                              <Style>
-                                <TextAlign>Center</TextAlign>
-                              </Style>
-                            </Paragraph>
-                          </Paragraphs>
-                          <rd:DefaultName>Textbox453</rd:DefaultName>
-                          <Style>
-                            <Border>
-                              <Color>Gray</Color>
-                              <Style>None</Style>
-                            </Border>
-                            <TopBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
                             </TopBorder>
                             <BottomBorder>
                               <Color>Gray</Color>
@@ -4370,14 +4339,14 @@ CInt(Fields!JRPHOTO_HO.Value)</Value>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox495">
+                        <Textbox Name="M_PHOTO1">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Fields!M_PHOTO.Value + "%"</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -4389,7 +4358,7 @@ CInt(Fields!JRPHOTO_HO.Value)</Value>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox495</rd:DefaultName>
+                          <rd:DefaultName>M_PHOTO1</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
@@ -4397,11 +4366,9 @@ CInt(Fields!JRPHOTO_HO.Value)</Value>
                             </Border>
                             <TopBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
                             </TopBorder>
                             <BottomBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
                             </BottomBorder>
                             <LeftBorder>
                               <Color>Gray</Color>
@@ -4421,7 +4388,7 @@ CInt(Fields!JRPHOTO_HO.Value)</Value>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox516">
+                        <Textbox Name="DIVER_PHOTO">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -4440,28 +4407,11 @@ CInt(Fields!JRPHOTO_HO.Value)</Value>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox516</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
-                              <Style>None</Style>
+                              <Style>Solid</Style>
                             </Border>
-                            <TopBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </TopBorder>
-                            <BottomBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </BottomBorder>
-                            <LeftBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </LeftBorder>
-                            <RightBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -4523,7 +4473,7 @@ CInt(Fields!JRPHOTO_HO.Value)</Value>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox558">
+                        <Textbox Name="Cons_Photo">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -4542,28 +4492,11 @@ CInt(Fields!JRPHOTO_HO.Value)</Value>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox558</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
-                              <Style>None</Style>
+                              <Style>Solid</Style>
                             </Border>
-                            <TopBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </TopBorder>
-                            <BottomBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </BottomBorder>
-                            <LeftBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </LeftBorder>
-                            <RightBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -4994,24 +4927,8 @@ CInt(Fields!JRPHOTO_HO.Value)</Value>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
-                              <Style>None</Style>
+                              <Style>Solid</Style>
                             </Border>
-                            <TopBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </TopBorder>
-                            <BottomBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </BottomBorder>
-                            <LeftBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </LeftBorder>
-                            <RightBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -5033,7 +4950,6 @@ CInt(Fields!JRPHOTO_HO.Value)</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -5074,14 +4990,14 @@ CInt(Fields!JRPHOTO_HO.Value)</Value>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox391">
+                        <Textbox Name="M_DAVAOP">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Fields!M_DAVAOP.Value + "%"</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -5093,7 +5009,7 @@ CInt(Fields!JRPHOTO_HO.Value)</Value>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox391</rd:DefaultName>
+                          <rd:DefaultName>M_DAVAOP</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
@@ -5125,14 +5041,14 @@ CInt(Fields!JRPHOTO_HO.Value)</Value>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox412">
+                        <Textbox Name="DALTON_BB8">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Code.Photo_Perfecom(ReportItems!DAVAOP_BR.Value, ReportItems!GENSANPERFECT_BR.Value, ReportItems!PERFECOM_BR.Value)</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -5144,7 +5060,7 @@ CInt(Fields!JRPHOTO_HO.Value)</Value>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox412</rd:DefaultName>
+                          <rd:DefaultName>DALTON_BB6</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
@@ -5152,11 +5068,9 @@ CInt(Fields!JRPHOTO_HO.Value)</Value>
                             </Border>
                             <TopBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
                             </TopBorder>
                             <BottomBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
                             </BottomBorder>
                             <LeftBorder>
                               <Color>Gray</Color>
@@ -5176,14 +5090,17 @@ CInt(Fields!JRPHOTO_HO.Value)</Value>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox454">
+                        <Textbox Name="DALTON_BB13">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Code.Photo_GHS_3G(ReportItems!DAVAOP_BR.Value, 
+ReportItems!GENSANPERFECT_BR.Value,  
+ReportItems!G3_BR.Value,
+ReportItems!COMI_TO_FUJI_BR.Value)</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -5195,7 +5112,7 @@ CInt(Fields!JRPHOTO_HO.Value)</Value>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox454</rd:DefaultName>
+                          <rd:DefaultName>DALTON_BB6</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
@@ -5278,14 +5195,14 @@ CInt(Fields!JRPHOTO_HO.Value)</Value>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox496">
+                        <Textbox Name="D_DAVAOP">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Fields!D_DAVAOP.Value + "%"</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -5297,7 +5214,7 @@ CInt(Fields!JRPHOTO_HO.Value)</Value>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox496</rd:DefaultName>
+                          <rd:DefaultName>D_DAVAOP</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
@@ -5996,7 +5913,7 @@ CInt(Fields!JRPHOTO_HO.Value)</Value>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox75">
+                        <Textbox Name="Textbox73">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -6015,7 +5932,7 @@ CInt(Fields!JRPHOTO_HO.Value)</Value>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox75</rd:DefaultName>
+                          <rd:DefaultName>Textbox73</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
@@ -6196,12 +6113,11 @@ CInt(Fields!JRPHOTO_HO.Value)</Value>
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox497">
+                        <Textbox Name="Textbox75">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -6220,7 +6136,7 @@ CInt(Fields!JRPHOTO_HO.Value)</Value>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox497</rd:DefaultName>
+                          <rd:DefaultName>Textbox75</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
@@ -6825,24 +6741,8 @@ CInt(Fields!JRPHOTO_HO.Value)</Value>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
-                              <Style>None</Style>
+                              <Style>Solid</Style>
                             </Border>
-                            <TopBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </TopBorder>
-                            <BottomBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </BottomBorder>
-                            <LeftBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </LeftBorder>
-                            <RightBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -6864,7 +6764,6 @@ CInt(Fields!JRPHOTO_HO.Value)</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -6905,14 +6804,14 @@ CInt(Fields!JRPHOTO_HO.Value)</Value>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox74">
+                        <Textbox Name="M_PERFECOM">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Fields!M_PERFECOM.Value + "%"</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -6924,7 +6823,7 @@ CInt(Fields!JRPHOTO_HO.Value)</Value>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox74</rd:DefaultName>
+                          <rd:DefaultName>M_PERFECOM</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
@@ -6956,14 +6855,14 @@ CInt(Fields!JRPHOTO_HO.Value)</Value>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox414">
+                        <Textbox Name="DALTON_BB11">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Code.Photo_Perfecom(ReportItems!PERFECOM_BR.Value, ReportItems!GENSANPERFECT_BR.Value, ReportItems!DAVAOP_BR.Value)</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -6975,7 +6874,7 @@ CInt(Fields!JRPHOTO_HO.Value)</Value>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox414</rd:DefaultName>
+                          <rd:DefaultName>DALTON_BB6</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
@@ -7058,14 +6957,16 @@ CInt(Fields!JRPHOTO_HO.Value)</Value>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox477">
+                        <Textbox Name="DALTON_BB16">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Code.Photo_Perfecom(ReportItems!PERFECOM_BR.Value, 
+ReportItems!Seven11_BR.Value, 
+ReportItems!LEASING_BR.Value)</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -7077,7 +6978,7 @@ CInt(Fields!JRPHOTO_HO.Value)</Value>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox477</rd:DefaultName>
+                          <rd:DefaultName>DALTON_BB6</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
@@ -7109,14 +7010,14 @@ CInt(Fields!JRPHOTO_HO.Value)</Value>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox498">
+                        <Textbox Name="D_PERFECOM">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Fields!D_PERFECOM.Value + "%"</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -7128,7 +7029,7 @@ CInt(Fields!JRPHOTO_HO.Value)</Value>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox498</rd:DefaultName>
+                          <rd:DefaultName>D_PERFECOM</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
@@ -8655,24 +8556,8 @@ CInt(Fields!JRPHOTO_HO.Value)</Value>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
-                              <Style>None</Style>
+                              <Style>Solid</Style>
                             </Border>
-                            <TopBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </TopBorder>
-                            <BottomBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </BottomBorder>
-                            <LeftBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </LeftBorder>
-                            <RightBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -8694,7 +8579,6 @@ CInt(Fields!JRPHOTO_HO.Value)</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -8837,14 +8721,17 @@ CInt(Fields!JRPHOTO_HO.Value)</Value>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox458">
+                        <Textbox Name="DALTON_BB14">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Code.Photo_GHS_3G(ReportItems!G3_BR.Value, 
+ReportItems!GENSANPERFECT_BR.Value,  
+ReportItems!DAVAOP_BR.Value,
+ReportItems!COMI_TO_FUJI_BR.Value)</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -8856,7 +8743,7 @@ CInt(Fields!JRPHOTO_HO.Value)</Value>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox458</rd:DefaultName>
+                          <rd:DefaultName>DALTON_BB6</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
@@ -10486,19 +10373,13 @@ Convert.ToInt16(Fields!Seven11_POL_HO.ValuE)</Value>
                               <Color>Gray</Color>
                               <Style>None</Style>
                             </Border>
-                            <TopBorder>
-                              <Color>Gray</Color>
-                            </TopBorder>
                             <BottomBorder>
-                              <Color>Gray</Color>
                               <Style>Solid</Style>
                             </BottomBorder>
                             <LeftBorder>
-                              <Color>Gray</Color>
                               <Style>Solid</Style>
                             </LeftBorder>
                             <RightBorder>
-                              <Color>Gray</Color>
                               <Style>Solid</Style>
                             </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
@@ -10522,7 +10403,6 @@ Convert.ToInt16(Fields!Seven11_POL_HO.ValuE)</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -10709,14 +10589,16 @@ Convert.ToInt16(Fields!Seven11_POL_HO.ValuE)</Value>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox481">
+                        <Textbox Name="DALTON_BB17">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Code.Photo_Perfecom(ReportItems!Seven11_BR.Value, 
+ReportItems!PERFECOM_BR.Value, 
+ReportItems!LEASING_BR.Value)</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -10728,7 +10610,7 @@ Convert.ToInt16(Fields!Seven11_POL_HO.ValuE)</Value>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox481</rd:DefaultName>
+                          <rd:DefaultName>DALTON_BB6</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
@@ -11370,7 +11252,7 @@ Convert.ToInt16(Fields!Seven11_POL_HO.ValuE)</Value>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox440">
+                        <Textbox Name="COMI_BR">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -11389,25 +11271,18 @@ Convert.ToInt16(Fields!Seven11_POL_HO.ValuE)</Value>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox440</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
                               <Style>None</Style>
                             </Border>
                             <TopBorder>
-                              <Color>Gray</Color>
                               <Style>Solid</Style>
                             </TopBorder>
-                            <BottomBorder>
-                              <Color>Gray</Color>
-                            </BottomBorder>
                             <LeftBorder>
-                              <Color>Gray</Color>
                               <Style>Solid</Style>
                             </LeftBorder>
                             <RightBorder>
-                              <Color>Gray</Color>
                               <Style>Solid</Style>
                             </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
@@ -11496,11 +11371,9 @@ Convert.ToInt16(Fields!Seven11_POL_HO.ValuE)</Value>
                             </Border>
                             <TopBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
                             </TopBorder>
                             <BottomBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
                             </BottomBorder>
                             <LeftBorder>
                               <Color>Gray</Color>
@@ -11598,11 +11471,9 @@ Convert.ToInt16(Fields!Seven11_POL_HO.ValuE)</Value>
                             </Border>
                             <TopBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
                             </TopBorder>
                             <BottomBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
                             </BottomBorder>
                             <LeftBorder>
                               <Color>Gray</Color>
@@ -12283,7 +12154,7 @@ Convert.ToInt16(Fields!Seven11_POL_HO.ValuE)</Value>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox441">
+                        <Textbox Name="FOODCOURT_BR">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -12302,24 +12173,15 @@ Convert.ToInt16(Fields!Seven11_POL_HO.ValuE)</Value>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox441</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
                               <Style>None</Style>
                             </Border>
-                            <TopBorder>
-                              <Color>Gray</Color>
-                            </TopBorder>
-                            <BottomBorder>
-                              <Color>Gray</Color>
-                            </BottomBorder>
                             <LeftBorder>
-                              <Color>Gray</Color>
                               <Style>Solid</Style>
                             </LeftBorder>
                             <RightBorder>
-                              <Color>Gray</Color>
                               <Style>Solid</Style>
                             </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
@@ -12408,11 +12270,9 @@ Convert.ToInt16(Fields!Seven11_POL_HO.ValuE)</Value>
                             </Border>
                             <TopBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
                             </TopBorder>
                             <BottomBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
                             </BottomBorder>
                             <LeftBorder>
                               <Color>Gray</Color>
@@ -12510,11 +12370,9 @@ Convert.ToInt16(Fields!Seven11_POL_HO.ValuE)</Value>
                             </Border>
                             <TopBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
                             </TopBorder>
                             <BottomBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
                             </BottomBorder>
                             <LeftBorder>
                               <Color>Gray</Color>
@@ -13195,7 +13053,7 @@ Convert.ToInt16(Fields!Seven11_POL_HO.ValuE)</Value>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox442">
+                        <Textbox Name="PBA_BR">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -13214,24 +13072,15 @@ Convert.ToInt16(Fields!Seven11_POL_HO.ValuE)</Value>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox442</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
                               <Style>None</Style>
                             </Border>
-                            <TopBorder>
-                              <Color>Gray</Color>
-                            </TopBorder>
-                            <BottomBorder>
-                              <Color>Gray</Color>
-                            </BottomBorder>
                             <LeftBorder>
-                              <Color>Gray</Color>
                               <Style>Solid</Style>
                             </LeftBorder>
                             <RightBorder>
-                              <Color>Gray</Color>
                               <Style>Solid</Style>
                             </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
@@ -13320,11 +13169,9 @@ Convert.ToInt16(Fields!Seven11_POL_HO.ValuE)</Value>
                             </Border>
                             <TopBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
                             </TopBorder>
                             <BottomBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
                             </BottomBorder>
                             <LeftBorder>
                               <Color>Gray</Color>
@@ -13422,11 +13269,9 @@ Convert.ToInt16(Fields!Seven11_POL_HO.ValuE)</Value>
                             </Border>
                             <TopBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
                             </TopBorder>
                             <BottomBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
                             </BottomBorder>
                             <LeftBorder>
                               <Color>Gray</Color>
@@ -14149,7 +13994,6 @@ Convert.ToInt16(Fields!Seven11_POL_HO.ValuE)</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>
-                                    <FontWeight>Bold</FontWeight>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -14164,18 +14008,10 @@ Convert.ToInt16(Fields!Seven11_POL_HO.ValuE)</Value>
                               <Color>Gray</Color>
                               <Style>None</Style>
                             </Border>
-                            <TopBorder>
-                              <Color>Gray</Color>
-                            </TopBorder>
-                            <BottomBorder>
-                              <Color>Gray</Color>
-                            </BottomBorder>
                             <LeftBorder>
-                              <Color>Gray</Color>
                               <Style>Solid</Style>
                             </LeftBorder>
                             <RightBorder>
-                              <Color>Gray</Color>
                               <Style>Solid</Style>
                             </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
@@ -14215,11 +14051,9 @@ Convert.ToInt16(Fields!Seven11_POL_HO.ValuE)</Value>
                             </Border>
                             <TopBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
                             </TopBorder>
                             <BottomBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
                             </BottomBorder>
                             <LeftBorder>
                               <Color>Gray</Color>
@@ -14290,14 +14124,17 @@ Convert.ToInt16(Fields!Seven11_POL_HO.ValuE)</Value>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox464">
+                        <Textbox Name="DALTON_BB15">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Code.Photo_GHS_3G(ReportItems!COMI_TO_FUJI_BR.Value, 
+ReportItems!GENSANPERFECT_BR.Value,  
+ReportItems!DAVAOP_BR.Value,
+ReportItems!G3_BR.Value)</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -14309,7 +14146,7 @@ Convert.ToInt16(Fields!Seven11_POL_HO.ValuE)</Value>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox464</rd:DefaultName>
+                          <rd:DefaultName>DALTON_BB6</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
@@ -14317,11 +14154,9 @@ Convert.ToInt16(Fields!Seven11_POL_HO.ValuE)</Value>
                             </Border>
                             <TopBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
                             </TopBorder>
                             <BottomBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
                             </BottomBorder>
                             <LeftBorder>
                               <Color>Gray</Color>
@@ -15127,11 +14962,9 @@ Convert.ToInt16(Fields!Seven11_POL_HO.ValuE)</Value>
                             </Border>
                             <TopBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
                             </TopBorder>
                             <BottomBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
                             </BottomBorder>
                             <LeftBorder>
                               <Color>Gray</Color>
@@ -15229,11 +15062,9 @@ Convert.ToInt16(Fields!Seven11_POL_HO.ValuE)</Value>
                             </Border>
                             <TopBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
                             </TopBorder>
                             <BottomBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
                             </BottomBorder>
                             <LeftBorder>
                               <Color>Gray</Color>
@@ -16039,11 +15870,9 @@ Convert.ToInt16(Fields!Seven11_POL_HO.ValuE)</Value>
                             </Border>
                             <TopBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
                             </TopBorder>
                             <BottomBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
                             </BottomBorder>
                             <LeftBorder>
                               <Color>Gray</Color>
@@ -16141,11 +15970,9 @@ Convert.ToInt16(Fields!Seven11_POL_HO.ValuE)</Value>
                             </Border>
                             <TopBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
                             </TopBorder>
                             <BottomBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
                             </BottomBorder>
                             <LeftBorder>
                               <Color>Gray</Color>
@@ -16951,11 +16778,9 @@ Convert.ToInt16(Fields!Seven11_POL_HO.ValuE)</Value>
                             </Border>
                             <TopBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
                             </TopBorder>
                             <BottomBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
                             </BottomBorder>
                             <LeftBorder>
                               <Color>Gray</Color>
@@ -17053,11 +16878,9 @@ Convert.ToInt16(Fields!Seven11_POL_HO.ValuE)</Value>
                             </Border>
                             <TopBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
                             </TopBorder>
                             <BottomBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
                             </BottomBorder>
                             <LeftBorder>
                               <Color>Gray</Color>
@@ -17862,11 +17685,9 @@ Convert.ToInt16(Fields!Seven11_POL_HO.ValuE)</Value>
                             </Border>
                             <TopBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
                             </TopBorder>
                             <BottomBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
                             </BottomBorder>
                             <LeftBorder>
                               <Color>Gray</Color>
@@ -17964,11 +17785,9 @@ Convert.ToInt16(Fields!Seven11_POL_HO.ValuE)</Value>
                             </Border>
                             <TopBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
                             </TopBorder>
                             <BottomBorder>
                               <Color>Gray</Color>
-                              <Style>Solid</Style>
                             </BottomBorder>
                             <LeftBorder>
                               <Color>Gray</Color>
@@ -18655,20 +18474,14 @@ CInt(Fields!WAVE_BB.Value) + CInt(Fields!WAVE_HO.Value)</Value>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="TOTAL_BR">
+                        <Textbox Name="Textbox83">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=cInt(ReportItems!DALTON_BR.Value) + 
-cInt(ReportItems!GENSANPERFECT_BR.Value) +
-cInt(ReportItems!DAVAOP_BR.Value) +
-cInt(ReportItems!PERFECOM_BR.Value) +
-cInt(ReportItems!G3_BR.Value) +
-cInt(ReportItems!Seven11_BR.Value) +
-cInt(ReportItems!COMI_TO_FUJI_BR.Value)</Value>
+                                  <Value />
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -18680,6 +18493,7 @@ cInt(ReportItems!COMI_TO_FUJI_BR.Value)</Value>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
+                          <rd:DefaultName>Textbox83</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
@@ -19001,7 +18815,7 @@ cInt(ReportItems!COMI_TO_FUJI_BR.Value)</Value>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox532">
+                        <Textbox Name="ASD">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -19020,28 +18834,11 @@ cInt(ReportItems!COMI_TO_FUJI_BR.Value)</Value>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox532</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
-                              <Style>None</Style>
+                              <Style>Solid</Style>
                             </Border>
-                            <TopBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </TopBorder>
-                            <BottomBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </BottomBorder>
-                            <LeftBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </LeftBorder>
-                            <RightBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -20478,7 +20275,7 @@ cInt(ReportItems!COMI_TO_FUJI_BR.Value)</Value>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox41">
+                        <Textbox Name="LEASING_BR">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -20497,28 +20294,11 @@ cInt(ReportItems!COMI_TO_FUJI_BR.Value)</Value>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox41</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
-                              <Style>None</Style>
+                              <Style>Solid</Style>
                             </Border>
-                            <TopBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </TopBorder>
-                            <BottomBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </BottomBorder>
-                            <LeftBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </LeftBorder>
-                            <RightBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -20733,14 +20513,16 @@ cInt(ReportItems!COMI_TO_FUJI_BR.Value)</Value>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox46">
+                        <Textbox Name="DALTON_BB18">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=Code.Photo_Perfecom(ReportItems!LEASING_BR.Value, 
+ReportItems!PERFECOM_BR.Value, 
+ReportItems!Seven11_BR.Value)</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -20752,7 +20534,7 @@ cInt(ReportItems!COMI_TO_FUJI_BR.Value)</Value>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox46</rd:DefaultName>
+                          <rd:DefaultName>DALTON_BB6</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
@@ -21397,14 +21179,21 @@ Convert.ToInt16(Fields!PGC.Value) + Convert.ToInt16(Fields!LEASING.Value)</Value
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox24">
+                        <Textbox Name="TOTAL_BR">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=ReportItems!DALTON_BR.Value + 
+ReportItems!GENSANPERFECT_BR.Value +
+ReportItems!DAVAOP_BR.Value +
+ReportItems!PERFECOM_BR.Value +
+ReportItems!G3_BR.Value +
+ReportItems!Seven11_BR.Value +
+ReportItems!COMI_TO_FUJI_BR.Value +
+ReportItems!LEASING_BR.Value</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -21416,28 +21205,11 @@ Convert.ToInt16(Fields!PGC.Value) + Convert.ToInt16(Fields!LEASING.Value)</Value
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox24</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
-                              <Style>None</Style>
+                              <Style>Solid</Style>
                             </Border>
-                            <TopBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </TopBorder>
-                            <BottomBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </BottomBorder>
-                            <LeftBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </LeftBorder>
-                            <RightBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -21754,7 +21526,7 @@ Convert.ToInt16(Fields!PGC.Value) + Convert.ToInt16(Fields!LEASING.Value)</Value
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox31">
+                        <Textbox Name="TOTAL_DRIVER">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -21773,28 +21545,11 @@ Convert.ToInt16(Fields!PGC.Value) + Convert.ToInt16(Fields!LEASING.Value)</Value
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox31</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
-                              <Style>None</Style>
+                              <Style>Solid</Style>
                             </Border>
-                            <TopBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </TopBorder>
-                            <BottomBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </BottomBorder>
-                            <LeftBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </LeftBorder>
-                            <RightBorder>
-                              <Color>Gray</Color>
-                              <Style>Solid</Style>
-                            </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -25343,6 +25098,20 @@ Convert.ToInt16(Fields!PGC.Value) + Convert.ToInt16(Fields!LEASING.Value)</Value
       <NumberOfRows>2</NumberOfRows>
     </GridLayoutDefinition>
   </ReportParametersLayout>
+  <Code>Function Photo_Perfecom(one as Integer, two as Integer, three as Integer ) as String
+
+	Dim sum as Integer = one + two  + three 
+	Dim percent as String = FormatPercent(one / sum , 2, TriState.False)
+	Return percent 
+End Function
+
+Function Photo_GHS_3G(one as Integer, two as Integer, three as Integer , four as Integer ) as String
+
+	Dim sum as Integer = one + two  + three  + four
+	Dim percent as String = FormatPercent(one / sum , 2, TriState.False)
+	Return percent 
+End Function
+</Code>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
   <rd:ReportID>7472a1d2-37e5-4f80-a602-603e63a234bb</rd:ReportID>
 </Report>

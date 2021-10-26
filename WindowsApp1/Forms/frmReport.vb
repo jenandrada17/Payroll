@@ -1,5 +1,8 @@
 ﻿Public Class frmReport
 
+    Private allowCoolMove As Boolean = False
+    Private myCoolPoint As New Point
+
     Private Sub frmReport_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         PopulateComboBox(PaydateNet_ComboB, "PAYROLL_PAYOUT", "PAYDATE")
         Lists_SBU(SBU_LV)
@@ -178,12 +181,20 @@
                 .Columns.Add("G3_BR")
                 .Columns.Add("Seven11_BR")
                 .Columns.Add("COMI_TO_FUJI_BR")
+                .Columns.Add("M_DALTONP")
+                .Columns.Add("M_PHOTO")
+                .Columns.Add("M_DAVAOP")
+                .Columns.Add("M_PERFECOM")
+                .Columns.Add("D_DALTONP")
+                .Columns.Add("D_PHOTO")
+                .Columns.Add("D_DAVAOP")
+                .Columns.Add("D_PERFECOM")
             End With
 
             Dim DALTON_BB, DALTON_HO, GENSANPERFECT_BB, GENSANPERFECT_HO, JRPHOTO_BB, JRPHOTO_HO, DAVAOP_BB, DAVAOP_HO, PERFECOM_BB,
                 PERFECOM_HO, G3_BB, G3_HO, Seven11_ROX_BB, Seven11_ROX_HO, Seven11_POL_BB, Seven11_POL_HO, COMI_BB, COMI_HO, PBA_BB,
                 PBA_HO, KTV_BB, KTV_HO, WAVE_BB, WAVE_HO, PGC, LEASING, DALTON_BR, GENSANPERFECT_BR, DAVAOP_BR, PERFECOM_BR, G3_BR,
-                Seven11_BR, COMI_TO_FUJI_BR As Integer
+                Seven11_BR, COMI_TO_FUJI_BR, M_DALTONP, M_PHOTO, M_DAVAOP, M_PERFECOM, D_DALTONP, D_PHOTO, D_DAVAOP, D_PERFECOM As Integer
 
             DALTON_BB = GetCount_Common("where company = 'DALTON'")
             DALTON_HO = GetCount_Common("where UPPER(HO_CATEGORY) LIKE UPPER('%Dalton%')")
@@ -218,11 +229,20 @@
             G3_BR = GetDistinctCount("branch_code", "where branch_code = '3G'")
             Seven11_BR = GetDistinctCount("branch_code", "where branch_code IN ('711-ROX','711-POL')")
             COMI_TO_FUJI_BR = GetDistinctCount("branch_code", "where branch_code IN ('COMI','PBA','KTV','WAVE')")
+            M_DALTONP = GetModify_Reports("M_DALTONP")
+            M_PHOTO = GetModify_Reports("M_PHOTO")
+            M_DAVAOP = GetModify_Reports("M_DAVAOP")
+            M_PERFECOM = GetModify_Reports("M_PERFECOM")
+            D_DALTONP = GetModify_Reports("D_DALTONP")
+            D_PHOTO = GetModify_Reports("D_PHOTO")
+            D_DAVAOP = GetModify_Reports("D_DAVAOP")
+            D_PERFECOM = GetModify_Reports("D_PERFECOM")
 
             dt_Common.Rows.Add(DALTON_BB, DALTON_HO, GENSANPERFECT_BB, GENSANPERFECT_HO, JRPHOTO_BB, JRPHOTO_HO, DAVAOP_BB, DAVAOP_HO, PERFECOM_BB,
                                PERFECOM_HO, G3_BB, G3_HO, Seven11_ROX_BB, Seven11_ROX_HO, Seven11_POL_BB, Seven11_POL_HO, COMI_BB, COMI_HO, PBA_BB,
                                PBA_HO, KTV_BB, KTV_HO, WAVE_BB, WAVE_HO, PGC, LEASING, DALTON_BR, GENSANPERFECT_BR, DAVAOP_BR, PERFECOM_BR,
-                               G3_BR, Seven11_BR, COMI_TO_FUJI_BR)
+                               G3_BR, Seven11_BR, COMI_TO_FUJI_BR, M_DALTONP, M_PHOTO, M_DAVAOP, M_PERFECOM,
+                               D_DALTONP, D_PHOTO, D_DAVAOP, D_PERFECOM)
 
             Dim rds_DTR As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt_Common)
             RptViewer_Common.LocalReport.DataSources.Add(rds_DTR)
@@ -251,6 +271,7 @@
     End Sub
 
     Private Sub Modify_BTN_Click(sender As Object, e As EventArgs) Handles Modify_BTN.Click
+        GetModify_Report(M_DaltonP_TXT, M_Photo_TXT, M_DavaoP_TXT, M_Perfecom_TXT, D_DaltonP_TXT, D_Photo_TXT, D_DavaoP_TXT, D_Perfecom_TXT)
         Modify_Panel.Visible = True
     End Sub
 
@@ -258,4 +279,42 @@
         Modify_Panel.Visible = False
     End Sub
 
+    Private Sub Save_BTN_Click(sender As Object, e As EventArgs) Handles Save_BTN.Click
+
+        Save_Marketing_DYU(M_DaltonP_TXT.Text, M_Photo_TXT.Text, M_DavaoP_TXT.Text, M_Perfecom_TXT.Text,
+                           D_DaltonP_TXT.Text, D_Photo_TXT.Text, D_DavaoP_TXT.Text, D_Perfecom_TXT.Text)
+
+        Modify_Panel.Visible = False
+
+    End Sub
+
+    Private Sub Clear_BTN_Click(sender As Object, e As EventArgs) Handles Clear_BTN.Click
+
+        M_DaltonP_TXT.Clear()
+        M_Photo_TXT.Clear()
+        M_DavaoP_TXT.Clear()
+        M_Perfecom_TXT.Clear()
+        D_DaltonP_TXT.Clear()
+        D_Photo_TXT.Clear()
+        D_DavaoP_TXT.Clear()
+        D_Perfecom_TXT.Clear()
+
+    End Sub
+
+    Private Sub Modify_Panel_MouseDown(sender As Object, e As MouseEventArgs) Handles Modify_Panel.MouseDown
+        allowCoolMove = True
+        myCoolPoint = New Point(e.X, e.Y)
+        Cursor = Cursors.SizeAll
+    End Sub
+
+    Private Sub Modify_Panel_MouseMove(sender As Object, e As MouseEventArgs) Handles Modify_Panel.MouseMove
+        If allowCoolMove = True Then
+            Modify_Panel.Location = New Point(Modify_Panel.Location.X + e.X - myCoolPoint.X, Modify_Panel.Location.Y + e.Y - myCoolPoint.Y)
+        End If
+    End Sub
+
+    Private Sub Modify_Panel_MouseUp(sender As Object, e As MouseEventArgs) Handles Modify_Panel.MouseUp
+        allowCoolMove = False
+        Cursor = Cursors.Default
+    End Sub
 End Class

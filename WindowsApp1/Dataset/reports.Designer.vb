@@ -889,6 +889,22 @@ Partial Public Class reports
         
         Private columnCOMI_TO_FUJI_BR As Global.System.Data.DataColumn
         
+        Private columnM_DALTONP As Global.System.Data.DataColumn
+        
+        Private columnM_PHOTO As Global.System.Data.DataColumn
+        
+        Private columnM_DAVAOP As Global.System.Data.DataColumn
+        
+        Private columnM_PERFECOM As Global.System.Data.DataColumn
+        
+        Private columnD_DALTONP As Global.System.Data.DataColumn
+        
+        Private columnD_PHOTO As Global.System.Data.DataColumn
+        
+        Private columnD_DAVAOP As Global.System.Data.DataColumn
+        
+        Private columnD_PERFECOM As Global.System.Data.DataColumn
+        
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Sub New()
@@ -1189,6 +1205,70 @@ Partial Public Class reports
         End Property
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property M_DALTONPColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnM_DALTONP
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property M_PHOTOColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnM_PHOTO
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property M_DAVAOPColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnM_DAVAOP
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property M_PERFECOMColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnM_PERFECOM
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property D_DALTONPColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnD_DALTONP
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property D_PHOTOColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnD_PHOTO
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property D_DAVAOPColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnD_DAVAOP
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property D_PERFECOMColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnD_PERFECOM
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0"),  _
          Global.System.ComponentModel.Browsable(false)>  _
         Public ReadOnly Property Count() As Integer
@@ -1258,9 +1338,17 @@ Partial Public Class reports
                     ByVal PERFECOM_BR As String,  _
                     ByVal G3_BR As String,  _
                     ByVal Seven11_BR As String,  _
-                    ByVal COMI_TO_FUJI_BR As String) As CommonRow
+                    ByVal COMI_TO_FUJI_BR As String,  _
+                    ByVal M_DALTONP As String,  _
+                    ByVal M_PHOTO As String,  _
+                    ByVal M_DAVAOP As String,  _
+                    ByVal M_PERFECOM As String,  _
+                    ByVal D_DALTONP As String,  _
+                    ByVal D_PHOTO As String,  _
+                    ByVal D_DAVAOP As String,  _
+                    ByVal D_PERFECOM As String) As CommonRow
             Dim rowCommonRow As CommonRow = CType(Me.NewRow,CommonRow)
-            Dim columnValuesArray() As Object = New Object() {DALTON_BB, DALTON_HO, GENSANPERFECT_BB, GENSANPERFECT_HO, DAVAOP_BB, DAVAOP_HO, PERFECOM_BB, PERFECOM_HO, G3_BB, G3_HO, Seven11_ROX_BB, Seven11_ROX_HO, Seven11_POL_BB, Seven11_POL_HO, COMI_BB, COMI_HO, PBA_BB, PBA_HO, KTV_BB, KTV_HO, WAVE_BB, WAVE_HO, PGC, LEASING, JRPHOTO_BB, JRPHOTO_HO, DALTON_BR, GENSANPERFECT_BR, DAVAOP_BR, PERFECOM_BR, G3_BR, Seven11_BR, COMI_TO_FUJI_BR}
+            Dim columnValuesArray() As Object = New Object() {DALTON_BB, DALTON_HO, GENSANPERFECT_BB, GENSANPERFECT_HO, DAVAOP_BB, DAVAOP_HO, PERFECOM_BB, PERFECOM_HO, G3_BB, G3_HO, Seven11_ROX_BB, Seven11_ROX_HO, Seven11_POL_BB, Seven11_POL_HO, COMI_BB, COMI_HO, PBA_BB, PBA_HO, KTV_BB, KTV_HO, WAVE_BB, WAVE_HO, PGC, LEASING, JRPHOTO_BB, JRPHOTO_HO, DALTON_BR, GENSANPERFECT_BR, DAVAOP_BR, PERFECOM_BR, G3_BR, Seven11_BR, COMI_TO_FUJI_BR, M_DALTONP, M_PHOTO, M_DAVAOP, M_PERFECOM, D_DALTONP, D_PHOTO, D_DAVAOP, D_PERFECOM}
             rowCommonRow.ItemArray = columnValuesArray
             Me.Rows.Add(rowCommonRow)
             Return rowCommonRow
@@ -1316,6 +1404,14 @@ Partial Public Class reports
             Me.columnG3_BR = MyBase.Columns("G3_BR")
             Me.columnSeven11_BR = MyBase.Columns("Seven11_BR")
             Me.columnCOMI_TO_FUJI_BR = MyBase.Columns("COMI_TO_FUJI_BR")
+            Me.columnM_DALTONP = MyBase.Columns("M_DALTONP")
+            Me.columnM_PHOTO = MyBase.Columns("M_PHOTO")
+            Me.columnM_DAVAOP = MyBase.Columns("M_DAVAOP")
+            Me.columnM_PERFECOM = MyBase.Columns("M_PERFECOM")
+            Me.columnD_DALTONP = MyBase.Columns("D_DALTONP")
+            Me.columnD_PHOTO = MyBase.Columns("D_PHOTO")
+            Me.columnD_DAVAOP = MyBase.Columns("D_DAVAOP")
+            Me.columnD_PERFECOM = MyBase.Columns("D_PERFECOM")
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -1387,6 +1483,22 @@ Partial Public Class reports
             MyBase.Columns.Add(Me.columnSeven11_BR)
             Me.columnCOMI_TO_FUJI_BR = New Global.System.Data.DataColumn("COMI_TO_FUJI_BR", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnCOMI_TO_FUJI_BR)
+            Me.columnM_DALTONP = New Global.System.Data.DataColumn("M_DALTONP", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnM_DALTONP)
+            Me.columnM_PHOTO = New Global.System.Data.DataColumn("M_PHOTO", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnM_PHOTO)
+            Me.columnM_DAVAOP = New Global.System.Data.DataColumn("M_DAVAOP", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnM_DAVAOP)
+            Me.columnM_PERFECOM = New Global.System.Data.DataColumn("M_PERFECOM", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnM_PERFECOM)
+            Me.columnD_DALTONP = New Global.System.Data.DataColumn("D_DALTONP", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnD_DALTONP)
+            Me.columnD_PHOTO = New Global.System.Data.DataColumn("D_PHOTO", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnD_PHOTO)
+            Me.columnD_DAVAOP = New Global.System.Data.DataColumn("D_DAVAOP", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnD_DAVAOP)
+            Me.columnD_PERFECOM = New Global.System.Data.DataColumn("D_PERFECOM", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnD_PERFECOM)
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -2557,6 +2669,126 @@ Partial Public Class reports
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property M_DALTONP() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableCommon.M_DALTONPColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'M_DALTONP' in table 'Common' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableCommon.M_DALTONPColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property M_PHOTO() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableCommon.M_PHOTOColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'M_PHOTO' in table 'Common' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableCommon.M_PHOTOColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property M_DAVAOP() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableCommon.M_DAVAOPColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'M_DAVAOP' in table 'Common' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableCommon.M_DAVAOPColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property M_PERFECOM() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableCommon.M_PERFECOMColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'M_PERFECOM' in table 'Common' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableCommon.M_PERFECOMColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property D_DALTONP() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableCommon.D_DALTONPColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'D_DALTONP' in table 'Common' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableCommon.D_DALTONPColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property D_PHOTO() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableCommon.D_PHOTOColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'D_PHOTO' in table 'Common' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableCommon.D_PHOTOColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property D_DAVAOP() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableCommon.D_DAVAOPColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'D_DAVAOP' in table 'Common' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableCommon.D_DAVAOPColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property D_PERFECOM() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableCommon.D_PERFECOMColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'D_PERFECOM' in table 'Common' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableCommon.D_PERFECOMColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Function IsDALTON_BBNull() As Boolean
             Return Me.IsNull(Me.tableCommon.DALTON_BBColumn)
         End Function
@@ -2949,6 +3181,102 @@ Partial Public Class reports
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Sub SetCOMI_TO_FUJI_BRNull()
             Me(Me.tableCommon.COMI_TO_FUJI_BRColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsM_DALTONPNull() As Boolean
+            Return Me.IsNull(Me.tableCommon.M_DALTONPColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetM_DALTONPNull()
+            Me(Me.tableCommon.M_DALTONPColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsM_PHOTONull() As Boolean
+            Return Me.IsNull(Me.tableCommon.M_PHOTOColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetM_PHOTONull()
+            Me(Me.tableCommon.M_PHOTOColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsM_DAVAOPNull() As Boolean
+            Return Me.IsNull(Me.tableCommon.M_DAVAOPColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetM_DAVAOPNull()
+            Me(Me.tableCommon.M_DAVAOPColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsM_PERFECOMNull() As Boolean
+            Return Me.IsNull(Me.tableCommon.M_PERFECOMColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetM_PERFECOMNull()
+            Me(Me.tableCommon.M_PERFECOMColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsD_DALTONPNull() As Boolean
+            Return Me.IsNull(Me.tableCommon.D_DALTONPColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetD_DALTONPNull()
+            Me(Me.tableCommon.D_DALTONPColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsD_PHOTONull() As Boolean
+            Return Me.IsNull(Me.tableCommon.D_PHOTOColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetD_PHOTONull()
+            Me(Me.tableCommon.D_PHOTOColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsD_DAVAOPNull() As Boolean
+            Return Me.IsNull(Me.tableCommon.D_DAVAOPColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetD_DAVAOPNull()
+            Me(Me.tableCommon.D_DAVAOPColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsD_PERFECOMNull() As Boolean
+            Return Me.IsNull(Me.tableCommon.D_PERFECOMColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetD_PERFECOMNull()
+            Me(Me.tableCommon.D_PERFECOMColumn) = Global.System.Convert.DBNull
         End Sub
     End Class
     

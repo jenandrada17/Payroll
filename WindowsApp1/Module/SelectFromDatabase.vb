@@ -2289,6 +2289,41 @@ Module SelectFromDatabase
         Return countt
     End Function
 
+    Public Function GetModify_Reports(column As String) As Integer
+        Dim value As Integer = 0
+        Dim mysql As String = $"Select * From PAYROLL_MARKETING_DYU"
+        Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_MARKETING_DYU")
+        If ds.Tables(0).Rows.Count > 0 Then
+            Dim dr As DataRow = ds.Tables(0).Rows(0)
+            With dr
+                value = .Item(column)
+            End With
+        End If
+        Return value
+    End Function
+
+    Public Sub GetModify_Report(M_DaltonP_TXT As TextBox, M_Photo_TXT As TextBox, M_DavaoP_TXT As TextBox, M_Perfecom_TXT As TextBox,
+                                D_DaltonP_TXT As TextBox, D_Photo_TXT As TextBox, D_DavaoP_TXT As TextBox, D_Perfecom_TXT As TextBox)
+
+        Dim mysql As String = "Select * FROM  PAYROLL_MARKETING_DYU"
+        Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_MARKETING_DYU")
+        If ds.Tables(0).Rows.Count > 0 Then
+            Dim dr As DataRow = ds.Tables(0).Rows(0)
+            With dr
+
+                M_DaltonP_TXT.Text = .Item("M_DALTONP")
+                M_Photo_TXT.Text = .Item("M_PHOTO")
+                M_DavaoP_TXT.Text = .Item("M_DAVAOP")
+                M_Perfecom_TXT.Text = .Item("M_PERFECOM")
+                D_DaltonP_TXT.Text = .Item("D_DALTONP")
+                D_Photo_TXT.Text = .Item("D_PHOTO")
+                D_DavaoP_TXT.Text = .Item("D_DAVAOP")
+                D_Perfecom_TXT.Text = .Item("D_PERFECOM")
+
+            End With
+        End If
+    End Sub
+
 
     Public Sub Replacing(str As String)
         RunCommand($"DELETE FROM {str}")  'THIS IS TO DELETE EXISTING DATA TO REPLACE ESPECIALLY FROM DATAGRID

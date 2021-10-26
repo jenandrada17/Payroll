@@ -12,7 +12,7 @@
   <xs:element name="reports" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="reports" msprop:Generator_UserDSName="reports">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element name="NetPay" msprop:Generator_TableClassName="NetPayDataTable" msprop:Generator_TableVarName="tableNetPay" msprop:Generator_TablePropName="NetPay" msprop:Generator_RowDeletingName="NetPayRowDeleting" msprop:Generator_RowChangingName="NetPayRowChanging" msprop:Generator_RowEvHandlerName="NetPayRowChangeEventHandler" msprop:Generator_RowDeletedName="NetPayRowDeleted" msprop:Generator_UserTableName="NetPay" msprop:Generator_RowChangedName="NetPayRowChanged" msprop:Generator_RowEvArgName="NetPayRowChangeEvent" msprop:Generator_RowClassName="NetPayRow">
+        <xs:element name="NetPay" msprop:Generator_TableClassName="NetPayDataTable" msprop:Generator_TableVarName="tableNetPay" msprop:Generator_RowChangedName="NetPayRowChanged" msprop:Generator_TablePropName="NetPay" msprop:Generator_RowDeletingName="NetPayRowDeleting" msprop:Generator_RowChangingName="NetPayRowChanging" msprop:Generator_RowEvHandlerName="NetPayRowChangeEventHandler" msprop:Generator_RowDeletedName="NetPayRowDeleted" msprop:Generator_RowClassName="NetPayRow" msprop:Generator_UserTableName="NetPay" msprop:Generator_RowEvArgName="NetPayRowChangeEvent">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="EMP_NO" msprop:Generator_ColumnVarNameInTable="columnEMP_NO" msprop:Generator_ColumnPropNameInRow="EMP_NO" msprop:Generator_ColumnPropNameInTable="EMP_NOColumn" msprop:Generator_UserColumnName="EMP_NO" type="xs:string" minOccurs="0" />
@@ -37,7 +37,7 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="Common" msprop:Generator_TableClassName="CommonDataTable" msprop:Generator_TableVarName="tableCommon" msprop:Generator_TablePropName="Common" msprop:Generator_RowDeletingName="CommonRowDeleting" msprop:Generator_RowChangingName="CommonRowChanging" msprop:Generator_RowEvHandlerName="CommonRowChangeEventHandler" msprop:Generator_RowDeletedName="CommonRowDeleted" msprop:Generator_UserTableName="Common" msprop:Generator_RowChangedName="CommonRowChanged" msprop:Generator_RowEvArgName="CommonRowChangeEvent" msprop:Generator_RowClassName="CommonRow">
+        <xs:element name="Common" msprop:Generator_TableClassName="CommonDataTable" msprop:Generator_TableVarName="tableCommon" msprop:Generator_RowChangedName="CommonRowChanged" msprop:Generator_TablePropName="Common" msprop:Generator_RowDeletingName="CommonRowDeleting" msprop:Generator_RowChangingName="CommonRowChanging" msprop:Generator_RowEvHandlerName="CommonRowChangeEventHandler" msprop:Generator_RowDeletedName="CommonRowDeleted" msprop:Generator_RowClassName="CommonRow" msprop:Generator_UserTableName="Common" msprop:Generator_RowEvArgName="CommonRowChangeEvent">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="DALTON_BB" msprop:Generator_ColumnVarNameInTable="columnDALTON_BB" msprop:Generator_ColumnPropNameInRow="DALTON_BB" msprop:Generator_ColumnPropNameInTable="DALTON_BBColumn" msprop:Generator_UserColumnName="DALTON_BB" type="xs:string" minOccurs="0" />
@@ -73,6 +73,14 @@
               <xs:element name="G3_BR" msprop:Generator_ColumnVarNameInTable="columnG3_BR" msprop:Generator_ColumnPropNameInRow="G3_BR" msprop:Generator_ColumnPropNameInTable="G3_BRColumn" msprop:Generator_UserColumnName="G3_BR" type="xs:string" minOccurs="0" />
               <xs:element name="Seven11_BR" msprop:Generator_ColumnVarNameInTable="columnSeven11_BR" msprop:Generator_ColumnPropNameInRow="Seven11_BR" msprop:Generator_ColumnPropNameInTable="Seven11_BRColumn" msprop:Generator_UserColumnName="Seven11_BR" type="xs:string" minOccurs="0" />
               <xs:element name="COMI_TO_FUJI_BR" msprop:Generator_ColumnVarNameInTable="columnCOMI_TO_FUJI_BR" msprop:Generator_ColumnPropNameInRow="COMI_TO_FUJI_BR" msprop:Generator_ColumnPropNameInTable="COMI_TO_FUJI_BRColumn" msprop:Generator_UserColumnName="COMI_TO_FUJI_BR" type="xs:string" minOccurs="0" />
+              <xs:element name="M_DALTONP" msprop:Generator_ColumnVarNameInTable="columnM_DALTONP" msprop:Generator_ColumnPropNameInRow="M_DALTONP" msprop:Generator_ColumnPropNameInTable="M_DALTONPColumn" msprop:Generator_UserColumnName="M_DALTONP" type="xs:string" minOccurs="0" />
+              <xs:element name="M_PHOTO" msprop:Generator_ColumnVarNameInTable="columnM_PHOTO" msprop:Generator_ColumnPropNameInRow="M_PHOTO" msprop:Generator_ColumnPropNameInTable="M_PHOTOColumn" msprop:Generator_UserColumnName="M_PHOTO" type="xs:string" minOccurs="0" />
+              <xs:element name="M_DAVAOP" msprop:Generator_ColumnVarNameInTable="columnM_DAVAOP" msprop:Generator_ColumnPropNameInRow="M_DAVAOP" msprop:Generator_ColumnPropNameInTable="M_DAVAOPColumn" msprop:Generator_UserColumnName="M_DAVAOP" type="xs:string" minOccurs="0" />
+              <xs:element name="M_PERFECOM" msprop:Generator_ColumnVarNameInTable="columnM_PERFECOM" msprop:Generator_ColumnPropNameInRow="M_PERFECOM" msprop:Generator_ColumnPropNameInTable="M_PERFECOMColumn" msprop:Generator_UserColumnName="M_PERFECOM" type="xs:string" minOccurs="0" />
+              <xs:element name="D_DALTONP" msprop:Generator_ColumnVarNameInTable="columnD_DALTONP" msprop:Generator_ColumnPropNameInRow="D_DALTONP" msprop:Generator_ColumnPropNameInTable="D_DALTONPColumn" msprop:Generator_UserColumnName="D_DALTONP" type="xs:string" minOccurs="0" />
+              <xs:element name="D_PHOTO" msprop:Generator_ColumnVarNameInTable="columnD_PHOTO" msprop:Generator_ColumnPropNameInRow="D_PHOTO" msprop:Generator_ColumnPropNameInTable="D_PHOTOColumn" msprop:Generator_UserColumnName="D_PHOTO" type="xs:string" minOccurs="0" />
+              <xs:element name="D_DAVAOP" msprop:Generator_ColumnVarNameInTable="columnD_DAVAOP" msprop:Generator_ColumnPropNameInRow="D_DAVAOP" msprop:Generator_ColumnPropNameInTable="D_DAVAOPColumn" msprop:Generator_UserColumnName="D_DAVAOP" type="xs:string" minOccurs="0" />
+              <xs:element name="D_PERFECOM" msprop:Generator_ColumnVarNameInTable="columnD_PERFECOM" msprop:Generator_ColumnPropNameInRow="D_PERFECOM" msprop:Generator_ColumnPropNameInTable="D_PERFECOMColumn" msprop:Generator_UserColumnName="D_PERFECOM" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

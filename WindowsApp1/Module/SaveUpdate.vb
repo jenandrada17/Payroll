@@ -1854,4 +1854,33 @@
         End If
     End Sub
 
+
+    Friend Sub Save_Marketing_DYU(M_DaltonP As String, M_Photo As String, M_DavaoP As String, M_Perfecom As String,
+                                  D_DaltonP As String, D_Photo As String, D_DavaoP As String, D_Perfecom As String)
+
+        Replacing("PAYROLL_MARKETING_DYU")
+
+        Dim mysql As String = "Select * From PAYROLL_MARKETING_DYU Rows 1"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_MARKETING_DYU")
+
+            Dim dsNewRow As DataRow = ds.Tables(0).NewRow
+            With dsNewRow
+
+                .Item("M_DaltonP") = IIf(M_DaltonP = Nothing, 0, M_DaltonP)
+                .Item("M_Photo") = IIf(M_Photo = Nothing, 0, M_Photo)
+                .Item("M_DavaoP") = IIf(M_DavaoP = Nothing, 0, M_DavaoP)
+                .Item("M_Perfecom") = IIf(M_Perfecom = Nothing, 0, M_Perfecom)
+                .Item("D_DaltonP") = IIf(D_DaltonP = Nothing, 0, D_DaltonP)
+                .Item("D_Photo") = IIf(D_Photo = Nothing, 0, D_Photo)
+                .Item("D_DavaoP") = IIf(D_DavaoP = Nothing, 0, D_DavaoP)
+                .Item("D_Perfecom") = IIf(D_Perfecom = Nothing, 0, D_Perfecom)
+
+            End With
+            ds.Tables(0).Rows.Add(dsNewRow)
+            SaveEntry(ds)
+
+            MsgBox("Successfully Save!", MsgBoxStyle.Information, "Information")
+        End Using
+    End Sub
+
 End Module
