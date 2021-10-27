@@ -1930,6 +1930,8 @@ Module SelectFromDatabase
                 mysql &= $"{vbCr}UPPER(PHILHEALTHNO) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(TINNO) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(PAGIBIGNO) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(HO_CATEGORY) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(COMMON_CATEGORY) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(EMAIL_ADD) LIKE UPPER('%{name}%')) ORDER BY COMPANY, BRANCH_CODE ASC "
             Next
 
@@ -1980,7 +1982,7 @@ Module SelectFromDatabase
     Public Sub GetFullname(bio_no As String, Add_Company_CB As ComboBox, Branch_ComboB As ComboBox, Fullname_TXT As TextBox,
                            Email_TXT As TextBox, Active_RB As RadioButton, InActive_RB As RadioButton, Started_DTP As DateTimePicker,
                            TimeIn_Combo As ComboBox, TimeOut_Combo As ComboBox, EmoNo_TXT As TextBox, TIN_TXT As TextBox,
-                           SSS_TXT As TextBox, PHILH_TXT As TextBox, HDMF_TXT As TextBox, HO_Category As ComboBox)
+                           SSS_TXT As TextBox, PHILH_TXT As TextBox, HDMF_TXT As TextBox, HO_Category As ComboBox, ComCategory_Combo As ComboBox)
 
         Dim mysql As String = $"select * from PAYROLL_EMPLOYEE where BIO_NO = '{bio_no}'"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
@@ -1993,6 +1995,7 @@ Module SelectFromDatabase
 
                     Add_Company_CB.Text = .Item("COMPANY")
                     HO_Category.Text = IIf(IsDBNull(.Item("HO_CATEGORY")), Nothing, .Item("HO_CATEGORY"))
+                    ComCategory_Combo.Text = IIf(IsDBNull(.Item("COMMON_CATEGORY")), Nothing, .Item("COMMON_CATEGORY"))
                     Branch_ComboB.Text = .Item("BRANCH_CODE")
                     Fullname_TXT.Text = .Item("FULLNAME")
                     Email_TXT.Text = IIf(IsDBNull(.Item("EMAIL_ADD")), "", .Item("EMAIL_ADD"))
@@ -2014,12 +2017,18 @@ Module SelectFromDatabase
                 End With
             Else
                 Add_Company_CB.Text = ""
+                HO_Category.Text = ""
+                ComCategory_Combo.Text = ""
                 Branch_ComboB.Text = ""
                 Fullname_TXT.Text = ""
                 Email_TXT.Text = ""
                 TimeIn_Combo.Text = ""
                 TimeOut_Combo.Text = ""
                 EmoNo_TXT.Text = ""
+                TIN_TXT.Text = ""
+                SSS_TXT.Text = ""
+                PHILH_TXT.Text = ""
+                HDMF_TXT.Text = ""
             End If
         End Using
     End Sub

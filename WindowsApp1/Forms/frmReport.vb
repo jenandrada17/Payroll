@@ -6,6 +6,8 @@
     Private Sub frmReport_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         PopulateComboBox(PaydateNet_ComboB, "PAYROLL_PAYOUT", "PAYDATE")
         Lists_SBU(SBU_LV)
+        Me.RptViewer_Common.RefreshReport()
+        Me.RptViewer_Common.RefreshReport()
     End Sub
 
     Private Sub SearchSBU_BTN_Click(sender As Object, e As EventArgs) Handles SearchSBU_BTN.Click
@@ -139,7 +141,7 @@
 
     Public Sub LoadCommon_Print()
 
-        RptViewer_Common.LocalReport.DataSources.Clear()
+        RptViewer_Count.LocalReport.DataSources.Clear()
 
         Dim mysqll As String = ""
 
@@ -195,7 +197,7 @@
                 .Columns.Add("ConDalton")
                 .Columns.Add("ConPhoto")
                 .Columns.Add("ConHouse")
-                .Columns.Add("LEASING_BR")
+                .Columns.Add("LEASINGBR")
             End With
 
             Dim DALTON_BB, DALTON_HO, GENSANPERFECT_BB, GENSANPERFECT_HO, JRPHOTO_BB, JRPHOTO_HO, DAVAOP_BB, DAVAOP_HO, PERFECOM_BB,
@@ -260,8 +262,8 @@
                                DR_Dalton, DR_Photo, DR_House, ConDalton, ConPhoto, ConHouse, LEASING_BR)
 
             Dim rds_DTR As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt_Common)
-            RptViewer_Common.LocalReport.DataSources.Add(rds_DTR)
-            RptViewer_Common.RefreshReport()
+            RptViewer_Count.LocalReport.DataSources.Add(rds_DTR)
+            RptViewer_Count.RefreshReport()
 
         Catch ex As Exception
             Log_Report(ex.ToString)
@@ -328,19 +330,19 @@
         Dim WAVE_EMP = WAVE_BB + WAVE_HO
 
         Dim TOTAL_EE = DALTON_EMP + GENSANP_EMP + PHOTO_EMP + DAVAOP_EMP + PERFECOM_EMP + G3_EMP +
-                    SEVENROX_EMP + SEVENPOL_EMP + COMI_EMP + PBA_EMP + KTV_EMP + WAVE_EMP + PGC + LEASING
+                    SEVENROX_EMP + SEVENPOL_EMP + COMI_EMP + PBA_EMP + KTV_EMP + WAVE_EMP
 
         Dim TOTAL_BB = DALTON_BR + GENSANPERFECT_BR + DAVAOP_BR + PERFECOM_BR + G3_BR + Seven11_BR +
                     COMI_TO_FUJI_BR + LEASING_BR
 
         '============================ EMPLOYEE PERCENTAGE ==========================
-        Dim DALTON_EMP_P = (DALTON_EMP / TOTAL_EE) * 100
-        Dim GENSAN_PHOTO_EMP_P = ((GENSANP_EMP + PHOTO_EMP) / TOTAL_EE) * 100
-        Dim DAVAOP_EMP_P = (DAVAOP_EMP / TOTAL_EE) * 100
-        Dim PERFECOM_EMP_P = (PERFECOM_EMP / TOTAL_EE) * 100
-        Dim G3_EMP_P = (G3_EMP / TOTAL_EE) * 100
-        Dim SEVEN11_EMP_P = ((SEVENROX_EMP + SEVENPOL_EMP) / TOTAL_EE) * 100
-        Dim COMI_TO_FUJI_EMP_P = ((COMI_EMP + PBA_EMP + KTV_EMP + WAVE_EMP) / TOTAL_EE) * 100
+        Dim DALTON_EMP_P As Decimal = (DALTON_EMP / TOTAL_EE) * 100
+        Dim GENSAN_PHOTO_EMP_P As Decimal = ((GENSANP_EMP + PHOTO_EMP) / TOTAL_EE) * 100
+        Dim DAVAOP_EMP_P As Decimal = (DAVAOP_EMP / TOTAL_EE) * 100
+        Dim PERFECOM_EMP_P As Decimal = (PERFECOM_EMP / TOTAL_EE) * 100
+        Dim G3_EMP_P As Decimal = (G3_EMP / TOTAL_EE) * 100
+        Dim SEVEN11_EMP_P As Decimal = ((SEVENROX_EMP + SEVENPOL_EMP) / TOTAL_EE) * 100
+        Dim COMI_TO_FUJI_EMP_P As Decimal = ((COMI_EMP + PBA_EMP + KTV_EMP + WAVE_EMP) / TOTAL_EE) * 100
 
         '============================ BRANCH PERCENTAGE ==========================
         Dim DALTON_BR_P = (DALTON_BR / TOTAL_BB) * 100
@@ -407,15 +409,17 @@
         Dim ConPhoto_P = (ConPhoto / sum_const) * 100
         Dim ConHouse_P = (ConHouse / sum_const) * 100
 
-        Dim COMPANY() As String = {"DALTON PAWNSHOP", "PHOTO", "DAVAO PERFECT", "PERFECOM", "3G", "7ELEVEN", "COMI_TO_FUJI"}
+        Replacing("PAYROLL_PERCENTAGE")
 
         Save_PERCENTAGE("DALTON PAWNSHOP", DALTON_EMP_P, DALTON_BR_P, M_DALTONP, 0, 0, 0, D_DALTONP, DR_Dalton_P, ConDalton_P)
-        Save_PERCENTAGE("PHOTO", GENSAN_PHOTO_EMP_P, GENSAN_BR_P, M_PHOTO, GENSAN_PHOTO_PERFECT_P, GENSAN_PHOTO_GHS_3G_P, 0, D_DALTONP, DR_Photo_P, ConPhoto_P)
-        Save_PERCENTAGE("DAVAO PERFECT", DAVAOP_EMP_P, GENSAN_BR_P, DAVAOP_BR_P, GENSAN_PHOTO_PERFECT_P, DAVAOP_PHOTO_GHS_3GT_P, 0, 0, 0, 0)
-        Save_PERCENTAGE("PERFECOM", PERFECOM_EMP_P, PERFECOM_BR_P, PERFECOM_PHOTO_PERFECT_P, GENSAN_PHOTO_PERFECT_P, 0, PERFECOM_PL7_P, 0, 0, 0)
+        Save_PERCENTAGE("PHOTO", GENSAN_PHOTO_EMP_P, GENSAN_BR_P, M_PHOTO, GENSAN_PHOTO_PERFECT_P, GENSAN_PHOTO_GHS_3G_P, 0, D_PHOTO, DR_Photo_P, ConPhoto_P)
+        Save_PERCENTAGE("DAVAO PERFECT", DAVAOP_EMP_P, DAVAOP_BR_P, M_DAVAOP, DAVAOP_PHOTO_PERFECT_P, DAVAOP_PHOTO_GHS_3GT_P, 0, D_DAVAOP, 0, 0)
+        Save_PERCENTAGE("PERFECOM", PERFECOM_EMP_P, PERFECOM_BR_P, M_PERFECOM, PERFECOM_PHOTO_PERFECT_P, 0, PERFECOM_PL7_P, D_PERFECOM, 0, 0)
         Save_PERCENTAGE("3G", G3_EMP_P, G3_BR_P, 0, 0, G3_PHOTO_GHS_3G_P, 0, 0, 0, 0)
         Save_PERCENTAGE("7ELEVEN", SEVEN11_EMP_P, Seven11_BR_P, 0, 0, 0, SEVEN11_PL7_P, 0, 0, 0)
         Save_PERCENTAGE("COMI_TO_FUJI", COMI_TO_FUJI_EMP_P, COMI_TO_FUJI_BR_P, 0, 0, COMI_TO_FUJI_PHOTO_GHS_3G_P, 0, 0, 0, 0)
+        'Save_PERCENTAGE("HOUSEHOLD", COMI_TO_FUJI_EMP_P, COMI_TO_FUJI_BR_P, 0, 0, COMI_TO_FUJI_PHOTO_GHS_3G_P, 0, 0, 0, 0)
+        'Save_PERCENTAGE("LEASING", COMI_TO_FUJI_EMP_P, COMI_TO_FUJI_BR_P, 0, 0, COMI_TO_FUJI_PHOTO_GHS_3G_P, 0, 0, 0, 0)
 
     End Sub
 
@@ -491,5 +495,9 @@
     Private Sub Modify_Panel_MouseUp(sender As Object, e As MouseEventArgs) Handles Modify_Panel.MouseUp
         allowCoolMove = False
         Cursor = Cursors.Default
+    End Sub
+
+    Private Sub Label5_Click(sender As Object, e As EventArgs) Handles Label5.Click
+        NewCom_Panel.Visible = False
     End Sub
 End Class

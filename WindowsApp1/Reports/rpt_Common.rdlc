@@ -1555,7 +1555,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>BRANCHES</Value>
+                                  <Value>BRANCHE</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB Demi</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -3473,7 +3473,7 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox74">
+                        <Textbox Name="Textbox52">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -3492,7 +3492,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox74</rd:DefaultName>
+                          <rd:DefaultName>Textbox52</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
@@ -4367,14 +4367,14 @@ ReportItems!COMI_TO_FUJI_BR.Value)</Value>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="M_PHOTO1">
+                        <Textbox Name="D_PHOTO">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!M_PHOTO.Value + "%"</Value>
+                                  <Value>=Fields!D_PHOTO.Value  + "%"</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -4386,7 +4386,7 @@ ReportItems!COMI_TO_FUJI_BR.Value)</Value>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>M_PHOTO1</rd:DefaultName>
+                          <rd:DefaultName>D_PHOTO</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>
@@ -8058,6 +8058,7 @@ ReportItems!LEASING_BR.Value)</Value>
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
@@ -10239,8 +10240,7 @@ ReportItems!COMI_TO_FUJI_BR.Value)</Value>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Convert.ToInt16(Fields!Seven11_ROX_BB.Value) + 
-Convert.ToInt16(Fields!Seven11_ROX_BB.Value) + 
+                                  <Value>=Convert.ToInt16(Fields!Seven11_ROX_BB.Value) +  
 Convert.ToInt16(Fields!Seven11_ROX_HO.Value) + 
 Convert.ToInt16(Fields!Seven11_POL_BB.Value) + 
 Convert.ToInt16(Fields!Seven11_POL_HO.ValuE)</Value>
@@ -19380,7 +19380,7 @@ CInt(Fields!WAVE_BB.Value) + CInt(Fields!WAVE_HO.Value)</Value>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox64">
+                        <Textbox Name="Textbox14">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -19399,7 +19399,7 @@ CInt(Fields!WAVE_BB.Value) + CInt(Fields!WAVE_HO.Value)</Value>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox64</rd:DefaultName>
+                          <rd:DefaultName>Textbox14</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Gray</Color>

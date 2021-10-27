@@ -377,11 +377,21 @@ Public Class frmNewEmployee
     End Sub
 
     Private Sub clearAdd()
-        Add_Company_CB.Text = ""
-        Branch_ComboB.Text = ""
         Bio_TXT.Clear()
+        Add_Company_CB.Text = ""
+        HO_Category.Text = ""
+        ComCategory_Combo.Text = ""
+        Branch_ComboB.Text = ""
+        Started_DTP.Text = "1/1/2000"
+        EmpNo_TXT.Clear()
+        TimeIn_Combo.Text = ""
+        TimeOut_Combo.Text = ""
         Fullname_TXT.Clear()
         Email_TXT.Clear()
+        TIN_TXT.Clear()
+        SSS_TXT.Clear()
+        PHILH_TXT.Clear()
+        HDMF_TXT.Clear()
         Add_Panel.Visible = False
     End Sub
 
@@ -396,7 +406,7 @@ Public Class frmNewEmployee
         End If
 
         SaveNew_Employee(Add_Company_CB.Text, Branch_ComboB.Text, Fullname_TXT.Text, Bio_TXT.Text, Email_TXT.Text, emp_status, Started_DTP.Value, False,
-                         TimeIn_Combo.Text, TimeOut_Combo.Text, EmpNo_TXT.Text, TIN_TXT.Text, SSS_TXT.Text, PHILH_TXT.Text, HDMF_TXT.Text, HO_Category.Text)
+                         TimeIn_Combo.Text, TimeOut_Combo.Text, EmpNo_TXT.Text, TIN_TXT.Text, SSS_TXT.Text, PHILH_TXT.Text, HDMF_TXT.Text, HO_Category.Text, ComCategory_Combo.Text)
 
         Lists_Employees(lvEmployee)
 
@@ -416,8 +426,12 @@ Public Class frmNewEmployee
             Add_Company_CB.Region = New Region(New Rectangle(2, 2, Add_Company_CB.Width - 4, Add_Company_CB.Height - 4))
             Return False
 
-        ElseIf String.IsNullOrEmpty(HO_Category.Text) And Add_Company_CB.Text = "HEAD OFFICE" Then
+        ElseIf HO_Category.Visible = True And String.IsNullOrEmpty(HO_Category.Text) Then
             HO_Category.Region = New Region(New Rectangle(2, 2, HO_Category.Width - 4, HO_Category.Height - 4))
+            Return False
+
+        ElseIf ComCategory_Combo.Visible = True And String.IsNullOrEmpty(ComCategory_Combo.Text) Then
+            ComCategory_Combo.Region = New Region(New Rectangle(2, 2, ComCategory_Combo.Width - 4, ComCategory_Combo.Height - 4))
             Return False
 
         ElseIf String.IsNullOrEmpty(Branch_ComboB.Text) And Add_Company_CB.Text <> "HEAD OFFICE" Then
@@ -458,10 +472,6 @@ Public Class frmNewEmployee
         Return True
     End Function
 
-
-    Private Sub Bio_TXT_TextChanged(sender As Object, e As EventArgs)
-
-    End Sub
 
     Private Sub lvEmployee_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles lvEmployee.MouseDoubleClick
 
@@ -549,32 +559,6 @@ Public Class frmNewEmployee
         End If
     End Sub
 
-    Private Sub GroupBox1_Paint(sender As Object, e As PaintEventArgs) Handles GroupBox1.Paint
-
-        Dim textbox As TextBox = Nothing
-        Dim combo As ComboBox = Nothing
-        Dim datepicker As DateTimePicker = Nothing
-        For Each xObject As Object In GroupBox1.Controls
-            If TypeOf xObject Is TextBox Then
-                textbox = xObject
-                Dim p As New Pen(Color.Red, 2)
-                e.Graphics.DrawRectangle(p, New Rectangle(textbox.Location + New Size(1, 1), textbox.Size - New Size(2, 2)))
-                p.Dispose()
-            ElseIf TypeOf xObject Is ComboBox Then
-                combo = xObject
-                Dim p As New Pen(Color.Red, 2)
-                e.Graphics.DrawRectangle(p, New Rectangle(combo.Location + New Size(1, 1), combo.Size - New Size(2, 2)))
-                p.Dispose()
-            ElseIf TypeOf xObject Is DateTimePicker Then
-                datepicker = xObject
-                Dim p As New Pen(Color.Red, 2)
-                e.Graphics.DrawRectangle(p, New Rectangle(datepicker.Location + New Size(1, 1), datepicker.Size - New Size(2, 2)))
-                p.Dispose()
-            End If
-        Next
-
-    End Sub
-
 
     Private Sub Started_DTP_ValueChanged(sender As Object, e As EventArgs) Handles Started_DTP.ValueChanged
         If Started_DTP.Value <> "1/1/2000" Then
@@ -593,7 +577,7 @@ Public Class frmNewEmployee
 
     End Sub
 
-    Private Sub Add_Company_CB_TextChanged(sender As Object, e As EventArgs) Handles TimeOut_Combo.TextChanged, TimeIn_Combo.TextChanged, HO_Category.TextChanged, Fullname_TXT.TextChanged, EmpNo_TXT.TextChanged, Email_TXT.TextChanged, Branch_ComboB.TextChanged, Add_Company_CB.TextChanged
+    Private Sub Add_Company_CB_TextChanged(sender As Object, e As EventArgs) Handles TimeOut_Combo.TextChanged, TimeIn_Combo.TextChanged, HO_Category.TextChanged, Fullname_TXT.TextChanged, EmpNo_TXT.TextChanged, Email_TXT.TextChanged, Branch_ComboB.TextChanged
 
         If sender.Text = "" Then
             sender.Region = New Region(New Rectangle(2, 2, sender.Width - 4, sender.Height - 4))
@@ -607,9 +591,8 @@ Public Class frmNewEmployee
 
         If Bio_TXT.Text <> Nothing Then
             GetFullname(Bio_TXT.Text, Add_Company_CB, Branch_ComboB, Fullname_TXT, Email_TXT, Active_RB, InActive_RB,
-                            Started_DTP, TimeIn_Combo, TimeOut_Combo, EmpNo_TXT, TIN_TXT, SSS_TXT, PHILH_TXT, HDMF_TXT, HO_Category)
+                            Started_DTP, TimeIn_Combo, TimeOut_Combo, EmpNo_TXT, TIN_TXT, SSS_TXT, PHILH_TXT, HDMF_TXT, HO_Category, ComCategory_Combo)
 
-            sender.Region = Nothing
         Else
             Add_Company_CB.Text = ""
             HO_Category.Text = ""
@@ -624,8 +607,72 @@ Public Class frmNewEmployee
             PHILH_TXT.Text = ""
             HDMF_TXT.Text = ""
 
-            sender.Region = New Region(New Rectangle(2, 2, sender.Width - 4, sender.Height - 4))
+            For Each xObject As Object In FlowLayoutPanel1.Controls
+                xObject.region = Nothing
+            Next
         End If
 
     End Sub
+
+    Private Sub Add_Company_CB_SelectedValueChanged(sender As Object, e As EventArgs) Handles Add_Company_CB.SelectedValueChanged
+
+        HO_Category.Text = ""
+
+        If Add_Company_CB.SelectedItem = "HEAD OFFICE" Then
+            Label19.Visible = True
+            HO_Category.Visible = True
+        Else
+            Label19.Visible = False
+            HO_Category.Visible = False
+
+            Label20.Visible = False
+            ComCategory_Combo.Visible = False
+        End If
+    End Sub
+
+    Private Sub HO_Category_SelectedValueChanged(sender As Object, e As EventArgs) Handles HO_Category.SelectedValueChanged
+
+        ComCategory_Combo.Text = ""
+
+        If HO_Category.SelectedItem = "PGC Head Office" Then
+            Label20.Visible = True
+            ComCategory_Combo.Visible = True
+        Else
+            Label20.Visible = False
+            ComCategory_Combo.Visible = False
+        End If
+    End Sub
+
+    Private Sub FlowLayoutPanel1_Paint(sender As Object, e As PaintEventArgs) Handles FlowLayoutPanel1.Paint
+
+        Dim textbox As TextBox = Nothing
+        Dim combo As ComboBox = Nothing
+        Dim datepicker As DateTimePicker = Nothing
+        For Each xObject As Object In FlowLayoutPanel1.Controls
+            If TypeOf xObject Is TextBox Then
+                If xObject.visible = True Then
+                    textbox = xObject
+                    Dim p As New Pen(Color.Red, 2)
+                    e.Graphics.DrawRectangle(p, New Rectangle(textbox.Location + New Size(1, 1), textbox.Size - New Size(2, 2)))
+                    p.Dispose()
+                End If
+            ElseIf TypeOf xObject Is ComboBox Then
+                If xObject.visible = True Then
+                    combo = xObject
+                    Dim p As New Pen(Color.Red, 2)
+                    e.Graphics.DrawRectangle(p, New Rectangle(combo.Location + New Size(1, 1), combo.Size - New Size(2, 2)))
+                    p.Dispose()
+                End If
+            ElseIf TypeOf xObject Is DateTimePicker Then
+                If xObject.visible = True Then
+                    datepicker = xObject
+                    Dim p As New Pen(Color.Red, 2)
+                    e.Graphics.DrawRectangle(p, New Rectangle(datepicker.Location + New Size(1, 1), datepicker.Size - New Size(2, 2)))
+                    p.Dispose()
+                End If
+            End If
+        Next
+
+    End Sub
+
 End Class

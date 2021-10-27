@@ -1541,7 +1541,7 @@
                                 EMP_STATUS As String, Optional DATE_STARTED As String = "", Optional group As Boolean = False,
                                 Optional TIME_IN As String = "", Optional TIME_OUT As String = "", Optional EMP_NO As String = "",
                                 Optional TIN As String = "", Optional SSS As String = "", Optional PHILH As String = "",
-                                Optional HDMF As String = "", Optional HO_CATEGORY As String = "")
+                                Optional HDMF As String = "", Optional HO_CATEGORY As String = "", Optional COMMON_CATEGORY As String = "")
 
         Dim mysql As String
 
@@ -1566,6 +1566,7 @@
                 If PHILH <> "" Then .Item("PHILHEALTHNO") = PHILH
                 If HDMF <> "" Then .Item("PAGIBIGNO") = HDMF
                 If HO_CATEGORY <> "" Then .Item("HO_CATEGORY") = HO_CATEGORY
+                If COMMON_CATEGORY <> "" Then .Item("COMMON_CATEGORY") = COMMON_CATEGORY
 
             End With
 
@@ -1891,52 +1892,28 @@
         End Using
     End Sub
 
-    Friend Sub Save_PERCENTAGE(COMPANY As String, EMPLOYEE As String, BRANCH As String, MARKETING As String, PHOTO_PERFECOM As String,
-                                  PHOTO_GHS_3G As String, PERFECOM_LEASING_711 As String, DYU As String, DRIVER As String, CONSTRUCTION As String)
-        Dim mysql As String
+    Friend Sub Save_PERCENTAGE(COMPANY As String, EMPLOYEE As Decimal, BRANCH As Decimal, MARKETING As Decimal, PHOTO_PERFECOM As Decimal,
+                                  PHOTO_GHS_3G As Decimal, PERFECOM_LEASING_711 As Decimal, DYU As Decimal, DRIVER As Decimal, CONSTRUCTION As Decimal)
+        Dim mysql As String = "Select * From PAYROLL_PERCENTAGE Rows 1"
+        Using dss As DataSet = LoadSQL(mysql, "PAYROLL_PERCENTAGE")
 
-        mysql = $"Select * FROM PAYROLL_PERCENTAGE where COMPANY_NAME = '{COMPANY}'"
-        Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_PERCENTAGE")
-        If ds.Tables(0).Rows.Count > 0 Then
+            Dim dsNewRow As DataRow = dss.Tables(0).NewRow
+            With dsNewRow
 
-            Dim data As DataRow = ds.Tables(0).Rows(0)
-            With data
-                .Item("EMPLOYEE") = EMPLOYEE
-                .Item("BRANCH") = BRANCH
-                .Item("MARKETING") = MARKETING
-                .Item("PHOTO_PERFECOM") = PHOTO_PERFECOM
-                .Item("PHOTO_GHS_3G") = PHOTO_GHS_3G
-                .Item("PERFECOM_LEASING_711") = PERFECOM_LEASING_711
-                .Item("DYU") = PERFECOM_LEASING_711
-                .Item("DRIVER") = DRIVER
-                .Item("CONSTRUCTION") = PERFECOM_LEASING_711
+                .Item("COMPANY_NAME") = COMPANY
+                .Item("EMPLOYEE") = Format(EMPLOYEE, "0.00")
+                .Item("BRANCH") = Format(BRANCH, "0.00")
+                .Item("MARKETING") = Format(MARKETING, "0.00")
+                .Item("PHOTO_PERFECOM") = Format(PHOTO_PERFECOM, "0.00")
+                .Item("PHOTO_GHS_3G") = Format(PHOTO_GHS_3G, "0.00")
+                .Item("PERFECOM_LEASING_711") = Format(PERFECOM_LEASING_711, "0.00")
+                .Item("DYU") = Format(DYU, "0.00")
+                .Item("DRIVER") = Format(DRIVER, "0.00")
+                .Item("CONSTRUCTION") = Format(CONSTRUCTION, "0.00")
             End With
-            SaveEntry(ds, False)
-
-        Else
-
-            mysql = "Select * From PAYROLL_PERCENTAGE Rows 1"
-            Using dss As DataSet = LoadSQL(mysql, "PAYROLL_PERCENTAGE")
-
-                Dim dsNewRow As DataRow = dss.Tables(0).NewRow
-                With dsNewRow
-
-                    .Item("COMPANY_NAME") = COMPANY
-                    .Item("EMPLOYEE") = EMPLOYEE
-                    .Item("BRANCH") = BRANCH
-                    .Item("MARKETING") = MARKETING
-                    .Item("PHOTO_PERFECOM") = PHOTO_PERFECOM
-                    .Item("PHOTO_GHS_3G") = PHOTO_GHS_3G
-                    .Item("PERFECOM_LEASING_711") = PERFECOM_LEASING_711
-                    .Item("DYU") = PERFECOM_LEASING_711
-                    .Item("CONSTRUCTION") = PERFECOM_LEASING_711
-
-                End With
-                dss.Tables(0).Rows.Add(dsNewRow)
-                SaveEntry(dss)
-            End Using
-        End If
-
+            dss.Tables(0).Rows.Add(dsNewRow)
+            SaveEntry(dss)
+        End Using
     End Sub
 
 End Module
