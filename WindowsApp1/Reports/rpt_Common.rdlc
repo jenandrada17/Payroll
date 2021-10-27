@@ -8058,7 +8058,6 @@ ReportItems!LEASING_BR.Value)</Value>
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
@@ -20325,7 +20324,7 @@ CInt(Fields!WAVE_BB.Value) + CInt(Fields!WAVE_HO.Value)</Value>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value />
+                                  <Value>=FormatPercent(ReportItems!LEASING_BR.Value / ReportItems!TOTAL_BR.Value, 2, TriState.False)</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                     <FontSize>8pt</FontSize>

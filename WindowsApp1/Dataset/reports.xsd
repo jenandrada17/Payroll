@@ -91,6 +91,25 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
+        <xs:element name="CommonDistribution" msprop:Generator_TableClassName="CommonDistributionDataTable" msprop:Generator_TableVarName="tableCommonDistribution" msprop:Generator_RowChangedName="CommonDistributionRowChanged" msprop:Generator_TablePropName="CommonDistribution" msprop:Generator_RowDeletingName="CommonDistributionRowDeleting" msprop:Generator_RowChangingName="CommonDistributionRowChanging" msprop:Generator_RowEvHandlerName="CommonDistributionRowChangeEventHandler" msprop:Generator_RowDeletedName="CommonDistributionRowDeleted" msprop:Generator_RowClassName="CommonDistributionRow" msprop:Generator_UserTableName="CommonDistribution" msprop:Generator_RowEvArgName="CommonDistributionRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="FULLNAME" msprop:Generator_ColumnVarNameInTable="columnFULLNAME" msprop:Generator_ColumnPropNameInRow="FULLNAME" msprop:Generator_ColumnPropNameInTable="FULLNAMEColumn" msprop:Generator_UserColumnName="FULLNAME" type="xs:string" minOccurs="0" />
+              <xs:element name="COMMON_CATEGORY" msprop:Generator_ColumnVarNameInTable="columnCOMMON_CATEGORY" msprop:Generator_ColumnPropNameInRow="COMMON_CATEGORY" msprop:Generator_ColumnPropNameInTable="COMMON_CATEGORYColumn" msprop:Generator_UserColumnName="COMMON_CATEGORY" type="xs:string" minOccurs="0" />
+              <xs:element name="NETPAY" msprop:Generator_ColumnVarNameInTable="columnNETPAY" msprop:Generator_ColumnPropNameInRow="NETPAY" msprop:Generator_ColumnPropNameInTable="NETPAYColumn" msprop:Generator_UserColumnName="NETPAY" type="xs:string" minOccurs="0" />
+              <xs:element name="DALTON" msprop:Generator_ColumnVarNameInTable="columnDALTON" msprop:Generator_ColumnPropNameInRow="DALTON" msprop:Generator_ColumnPropNameInTable="DALTONColumn" msprop:Generator_UserColumnName="DALTON" type="xs:string" minOccurs="0" />
+              <xs:element name="PHOTO" msprop:Generator_ColumnVarNameInTable="columnPHOTO" msprop:Generator_ColumnPropNameInRow="PHOTO" msprop:Generator_ColumnPropNameInTable="PHOTOColumn" msprop:Generator_UserColumnName="PHOTO" type="xs:string" minOccurs="0" />
+              <xs:element name="DAVAOP" msprop:Generator_ColumnVarNameInTable="columnDAVAOP" msprop:Generator_ColumnPropNameInRow="DAVAOP" msprop:Generator_ColumnPropNameInTable="DAVAOPColumn" msprop:Generator_UserColumnName="DAVAOP" type="xs:string" minOccurs="0" />
+              <xs:element name="PERFECOM" msprop:Generator_ColumnVarNameInTable="columnPERFECOM" msprop:Generator_ColumnPropNameInRow="PERFECOM" msprop:Generator_ColumnPropNameInTable="PERFECOMColumn" msprop:Generator_UserColumnName="PERFECOM" type="xs:string" minOccurs="0" />
+              <xs:element name="G3" msprop:Generator_ColumnVarNameInTable="columnG3" msprop:Generator_ColumnPropNameInRow="G3" msprop:Generator_ColumnPropNameInTable="G3Column" msprop:Generator_UserColumnName="G3" type="xs:string" minOccurs="0" />
+              <xs:element name="Seven11" msprop:Generator_ColumnVarNameInTable="columnSeven11" msprop:Generator_ColumnPropNameInRow="Seven11" msprop:Generator_ColumnPropNameInTable="Seven11Column" msprop:Generator_UserColumnName="Seven11" type="xs:string" minOccurs="0" />
+              <xs:element name="COMI_TO_FUJI" msprop:Generator_ColumnVarNameInTable="columnCOMI_TO_FUJI" msprop:Generator_ColumnPropNameInRow="COMI_TO_FUJI" msprop:Generator_ColumnPropNameInTable="COMI_TO_FUJIColumn" msprop:Generator_UserColumnName="COMI_TO_FUJI" type="xs:string" minOccurs="0" />
+              <xs:element name="HOUSEHOLD" msprop:Generator_ColumnVarNameInTable="columnHOUSEHOLD" msprop:Generator_ColumnPropNameInRow="HOUSEHOLD" msprop:Generator_ColumnPropNameInTable="HOUSEHOLDColumn" msprop:Generator_UserColumnName="HOUSEHOLD" type="xs:string" minOccurs="0" />
+              <xs:element name="LEASING" msprop:Generator_ColumnVarNameInTable="columnLEASING" msprop:Generator_ColumnPropNameInRow="LEASING" msprop:Generator_ColumnPropNameInTable="LEASINGColumn" msprop:Generator_UserColumnName="LEASING" type="xs:string" minOccurs="0" />
+              <xs:element name="PAYDATE" msprop:Generator_ColumnVarNameInTable="columnPAYDATE" msprop:Generator_ColumnPropNameInRow="PAYDATE" msprop:Generator_ColumnPropNameInTable="PAYDATEColumn" msprop:Generator_UserColumnName="PAYDATE" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
       </xs:choice>
     </xs:complexType>
   </xs:element>

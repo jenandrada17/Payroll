@@ -542,6 +542,14 @@ Public Class frmNewEmployee
             SwitchForm_Loans(FormName.Loans, tmpEmp, "PAGIBIG")
             Close()
 
+        ElseIf txtSearch.Tag = Nothing Then
+
+            Bio_TXT.Text = bio_No
+            GetFullname(bio_No, Add_Company_CB, Branch_ComboB, Fullname_TXT, Email_TXT, InActive_RB, Started_DTP,
+                        TimeIn_Combo, TimeOut_Combo, EmpNo_TXT, TIN_TXT, SSS_TXT, PHILH_TXT, HDMF_TXT, HO_Category, ComCategory_Combo)
+
+            Add_Panel.Location = New Point(ClientSize.Width / 2 - Add_Panel.Size.Width / 2, ClientSize.Height / 2 - Add_Panel.Size.Height / 2)
+            Add_Panel.Visible = True
         End If
 
     End Sub
@@ -577,7 +585,7 @@ Public Class frmNewEmployee
 
     End Sub
 
-    Private Sub Add_Company_CB_TextChanged(sender As Object, e As EventArgs) Handles TimeOut_Combo.TextChanged, TimeIn_Combo.TextChanged, HO_Category.TextChanged, Fullname_TXT.TextChanged, EmpNo_TXT.TextChanged, Email_TXT.TextChanged, Branch_ComboB.TextChanged
+    Private Sub Add_Company_CB_TextChanged(sender As Object, e As EventArgs) Handles TimeOut_Combo.TextChanged, TimeIn_Combo.TextChanged, HO_Category.TextChanged, Fullname_TXT.TextChanged, EmpNo_TXT.TextChanged, Email_TXT.TextChanged
 
         If sender.Text = "" Then
             sender.Region = New Region(New Rectangle(2, 2, sender.Width - 4, sender.Height - 4))
@@ -590,7 +598,7 @@ Public Class frmNewEmployee
     Private Sub Bio_TXT_TextChanged_1(sender As Object, e As EventArgs) Handles Bio_TXT.TextChanged
 
         If Bio_TXT.Text <> Nothing Then
-            GetFullname(Bio_TXT.Text, Add_Company_CB, Branch_ComboB, Fullname_TXT, Email_TXT, Active_RB, InActive_RB,
+            GetFullname(Bio_TXT.Text, Add_Company_CB, Branch_ComboB, Fullname_TXT, Email_TXT, InActive_RB,
                             Started_DTP, TimeIn_Combo, TimeOut_Combo, EmpNo_TXT, TIN_TXT, SSS_TXT, PHILH_TXT, HDMF_TXT, HO_Category, ComCategory_Combo)
 
         Else
@@ -606,10 +614,7 @@ Public Class frmNewEmployee
             SSS_TXT.Text = ""
             PHILH_TXT.Text = ""
             HDMF_TXT.Text = ""
-
-            For Each xObject As Object In FlowLayoutPanel1.Controls
-                xObject.region = Nothing
-            Next
+            Active_RB.Checked = True
         End If
 
     End Sub
@@ -634,7 +639,7 @@ Public Class frmNewEmployee
 
         ComCategory_Combo.Text = ""
 
-        If HO_Category.SelectedItem = "PGC Head Office" Then
+        If HO_Category.SelectedItem = "PGC Head Office" Or HO_Category.SelectedItem = "Construction" Or HO_Category.SelectedItem = "Leasing Admin Office" Then
             Label20.Visible = True
             ComCategory_Combo.Visible = True
         Else
@@ -644,34 +649,48 @@ Public Class frmNewEmployee
     End Sub
 
     Private Sub FlowLayoutPanel1_Paint(sender As Object, e As PaintEventArgs) Handles FlowLayoutPanel1.Paint
+        If Bio_TXT.Text = Nothing Then
+            Dim textbox As TextBox = Nothing
+            Dim combo As ComboBox = Nothing
+            Dim datepicker As DateTimePicker = Nothing
+            For Each xObject As Object In FlowLayoutPanel1.Controls
+                If TypeOf xObject Is TextBox Then
+                    If xObject.Text = "" Then
+                        textbox = xObject
+                        Dim p As New Pen(Color.Red, 2)
+                        e.Graphics.DrawRectangle(p, New Rectangle(textbox.Location + New Size(1, 1), textbox.Size - New Size(2, 2)))
+                        p.Dispose()
+                    End If
+                ElseIf TypeOf xObject Is ComboBox Then
+                    If xObject.visible = True Then
+                        combo = xObject
+                        Dim p As New Pen(Color.Red, 2)
+                        e.Graphics.DrawRectangle(p, New Rectangle(combo.Location + New Size(1, 1), combo.Size - New Size(2, 2)))
+                        p.Dispose()
+                    End If
+                ElseIf TypeOf xObject Is DateTimePicker Then
+                    If xObject.Text = "" Then
+                        datepicker = xObject
+                        Dim p As New Pen(Color.Red, 2)
+                        e.Graphics.DrawRectangle(p, New Rectangle(datepicker.Location + New Size(1, 1), datepicker.Size - New Size(2, 2)))
+                        p.Dispose()
+                    End If
+                End If
+            Next
 
-        Dim textbox As TextBox = Nothing
-        Dim combo As ComboBox = Nothing
-        Dim datepicker As DateTimePicker = Nothing
-        For Each xObject As Object In FlowLayoutPanel1.Controls
-            If TypeOf xObject Is TextBox Then
-                If xObject.visible = True Then
-                    textbox = xObject
-                    Dim p As New Pen(Color.Red, 2)
-                    e.Graphics.DrawRectangle(p, New Rectangle(textbox.Location + New Size(1, 1), textbox.Size - New Size(2, 2)))
-                    p.Dispose()
-                End If
-            ElseIf TypeOf xObject Is ComboBox Then
-                If xObject.visible = True Then
-                    combo = xObject
-                    Dim p As New Pen(Color.Red, 2)
-                    e.Graphics.DrawRectangle(p, New Rectangle(combo.Location + New Size(1, 1), combo.Size - New Size(2, 2)))
-                    p.Dispose()
-                End If
-            ElseIf TypeOf xObject Is DateTimePicker Then
-                If xObject.visible = True Then
-                    datepicker = xObject
-                    Dim p As New Pen(Color.Red, 2)
-                    e.Graphics.DrawRectangle(p, New Rectangle(datepicker.Location + New Size(1, 1), datepicker.Size - New Size(2, 2)))
-                    p.Dispose()
-                End If
+        End If
+    End Sub
+
+
+    Private Sub Branch_ComboB_TextChanged(sender As Object, e As EventArgs) Handles Branch_ComboB.TextChanged
+
+        If sender.Text = "" Then
+            If Add_Company_CB.SelectedItem = "HEAD OFFICE" Then
+                sender.Region = New Region(New Rectangle(2, 2, sender.Width - 4, sender.Height - 4))
             End If
-        Next
+        Else
+            sender.Region = Nothing
+        End If
 
     End Sub
 

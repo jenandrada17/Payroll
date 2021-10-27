@@ -1858,7 +1858,8 @@
     Friend Sub Save_Marketing_DYU(M_DaltonP As String, M_Photo As String, M_DavaoP As String, M_Perfecom As String,
                                   D_DaltonP As String, D_Photo As String, D_DavaoP As String, D_Perfecom As String,
                                   DR_Dalton As String, DR_Photo As String, DR_House As String, ConDalton As String,
-                                  ConPhoto As String, ConHouse As String, LeasingBR As String)
+                                  ConPhoto As String, ConHouse As String, LeasingBR As String,
+                                  DTR_Dalton As String, DTR_Photo As String)
 
         Replacing("PAYROLL_MARKETING_DYU")
 
@@ -1883,6 +1884,8 @@
                 .Item("ConPhoto") = IIf(ConPhoto = Nothing, 0, ConPhoto)
                 .Item("ConHouse") = IIf(ConHouse = Nothing, 0, ConHouse)
                 .Item("LeasingBR") = IIf(LeasingBR = Nothing, 0, LeasingBR)
+                .Item("DTR_Dalton") = IIf(DTR_Dalton = Nothing, 0, DTR_Dalton)
+                .Item("DTR_Photo") = IIf(DTR_Photo = Nothing, 0, DTR_Photo)
 
             End With
             ds.Tables(0).Rows.Add(dsNewRow)
@@ -1892,24 +1895,24 @@
         End Using
     End Sub
 
-    Friend Sub Save_PERCENTAGE(COMPANY As String, EMPLOYEE As Decimal, BRANCH As Decimal, MARKETING As Decimal, PHOTO_PERFECOM As Decimal,
-                                  PHOTO_GHS_3G As Decimal, PERFECOM_LEASING_711 As Decimal, DYU As Decimal, DRIVER As Decimal, CONSTRUCTION As Decimal)
-        Dim mysql As String = "Select * From PAYROLL_PERCENTAGE Rows 1"
-        Using dss As DataSet = LoadSQL(mysql, "PAYROLL_PERCENTAGE")
+    Friend Sub Save_PERCENTAGE(DALTON As Decimal, PHOTO As Decimal, DAVAOP As Decimal, PERFECOM As Decimal, G3 As Decimal,
+                                  SEVEN11 As Decimal, COMI_TO_FUJI As Decimal, HOUSEHOLD As Decimal, LEASING As Decimal, CATEGORY As String)
+        Dim mysql As String = "Select * From PAYROLL_PERCENTAGEE Rows 1"
+        Using dss As DataSet = LoadSQL(mysql, "PAYROLL_PERCENTAGEE")
 
             Dim dsNewRow As DataRow = dss.Tables(0).NewRow
             With dsNewRow
 
-                .Item("COMPANY_NAME") = COMPANY
-                .Item("EMPLOYEE") = Format(EMPLOYEE, "0.00")
-                .Item("BRANCH") = Format(BRANCH, "0.00")
-                .Item("MARKETING") = Format(MARKETING, "0.00")
-                .Item("PHOTO_PERFECOM") = Format(PHOTO_PERFECOM, "0.00")
-                .Item("PHOTO_GHS_3G") = Format(PHOTO_GHS_3G, "0.00")
-                .Item("PERFECOM_LEASING_711") = Format(PERFECOM_LEASING_711, "0.00")
-                .Item("DYU") = Format(DYU, "0.00")
-                .Item("DRIVER") = Format(DRIVER, "0.00")
-                .Item("CONSTRUCTION") = Format(CONSTRUCTION, "0.00")
+                .Item("DALTON") = Format(DALTON, "0.00")
+                .Item("PHOTO") = Format(PHOTO, "0.00")
+                .Item("DAVAOP") = Format(DAVAOP, "0.00")
+                .Item("PERFECOM") = Format(PERFECOM, "0.00")
+                .Item("G3") = Format(G3, "0.00")
+                .Item("SEVEN11") = Format(SEVEN11, "0.00")
+                .Item("COMI_TO_FUJI") = Format(COMI_TO_FUJI, "0.00")
+                .Item("HOUSEHOLD") = Format(HOUSEHOLD, "0.00")
+                .Item("LEASING") = Format(LEASING, "0.00")
+                .Item("CATEGORY") = CATEGORY
             End With
             dss.Tables(0).Rows.Add(dsNewRow)
             SaveEntry(dss)

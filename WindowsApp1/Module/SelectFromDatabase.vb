@@ -1980,7 +1980,7 @@ Module SelectFromDatabase
     End Sub
 
     Public Sub GetFullname(bio_no As String, Add_Company_CB As ComboBox, Branch_ComboB As ComboBox, Fullname_TXT As TextBox,
-                           Email_TXT As TextBox, Active_RB As RadioButton, InActive_RB As RadioButton, Started_DTP As DateTimePicker,
+                           Email_TXT As TextBox, InActive_RB As RadioButton, Started_DTP As DateTimePicker,
                            TimeIn_Combo As ComboBox, TimeOut_Combo As ComboBox, EmoNo_TXT As TextBox, TIN_TXT As TextBox,
                            SSS_TXT As TextBox, PHILH_TXT As TextBox, HDMF_TXT As TextBox, HO_Category As ComboBox, ComCategory_Combo As ComboBox)
 
@@ -2008,9 +2008,7 @@ Module SelectFromDatabase
                     PHILH_TXT.Text = IIf(IsDBNull(.Item("PHILHEALTHNO")), "", .Item("PHILHEALTHNO"))
                     HDMF_TXT.Text = IIf(IsDBNull(.Item("PAGIBIGNO")), "", .Item("PAGIBIGNO"))
 
-                    If .Item("EMP_STATUS") = "ACTIVE" Then
-                        Active_RB.Checked = True
-                    Else
+                    If .Item("EMP_STATUS") = "INACTIVE" Then
                         InActive_RB.Checked = True
                     End If
 
@@ -2314,7 +2312,7 @@ Module SelectFromDatabase
     Public Sub GetModify_Report(M_DaltonP_TXT As TextBox, M_Photo_TXT As TextBox, M_DavaoP_TXT As TextBox, M_Perfecom_TXT As TextBox,
                                 D_DaltonP_TXT As TextBox, D_Photo_TXT As TextBox, D_DavaoP_TXT As TextBox, D_Perfecom_TXT As TextBox,
                                 DR_Dalton_TXT As TextBox, DR_Photo_TXT As TextBox, DR_House_TXT As TextBox, ConDalton_TXT As TextBox,
-                                ConPhoto_TXT As TextBox, ConHouse_TXT As TextBox, LeasingBR_TXT As TextBox)
+                                ConPhoto_TXT As TextBox, ConHouse_TXT As TextBox, LeasingBR_TXT As TextBox, DTR_Dalton As TextBox, DTR_Photo As TextBox)
 
         Dim mysql As String = "Select * FROM  PAYROLL_MARKETING_DYU"
         Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_MARKETING_DYU")
@@ -2322,21 +2320,23 @@ Module SelectFromDatabase
             Dim dr As DataRow = ds.Tables(0).Rows(0)
             With dr
 
-                M_DaltonP_TXT.Text = .Item("M_DALTONP")
-                M_Photo_TXT.Text = .Item("M_PHOTO")
-                M_DavaoP_TXT.Text = .Item("M_DAVAOP")
-                M_Perfecom_TXT.Text = .Item("M_PERFECOM")
-                D_DaltonP_TXT.Text = .Item("D_DALTONP")
-                D_Photo_TXT.Text = .Item("D_PHOTO")
-                D_DavaoP_TXT.Text = .Item("D_DAVAOP")
-                D_Perfecom_TXT.Text = .Item("D_PERFECOM")
-                DR_Dalton_TXT.Text = .Item("DR_DALTON")
-                DR_Photo_TXT.Text = .Item("DR_PHOTO")
-                DR_House_TXT.Text = .Item("DR_HOUSE")
-                ConDalton_TXT.Text = .Item("CONDALTON")
-                ConPhoto_TXT.Text = .Item("CONPHOTO")
-                ConHouse_TXT.Text = .Item("CONHOUSE")
-                LeasingBR_TXT.Text = .Item("LEASINGBR")
+                M_DaltonP_TXT.Text = IIf(IsDBNull(.Item("M_DALTONP")), Nothing, .Item("M_DALTONP"))
+                M_Photo_TXT.Text = IIf(IsDBNull(.Item("M_PHOTO")), Nothing, .Item("M_PHOTO"))
+                M_DavaoP_TXT.Text = IIf(IsDBNull(.Item("M_DAVAOP")), Nothing, .Item("M_DAVAOP"))
+                M_Perfecom_TXT.Text = IIf(IsDBNull(.Item("M_PERFECOM")), Nothing, .Item("M_PERFECOM"))
+                D_DaltonP_TXT.Text = IIf(IsDBNull(.Item("D_DALTONP")), Nothing, .Item("D_DALTONP"))
+                D_Photo_TXT.Text = IIf(IsDBNull(.Item("D_PHOTO")), Nothing, .Item("D_PHOTO"))
+                D_DavaoP_TXT.Text = IIf(IsDBNull(.Item("D_DAVAOP")), Nothing, .Item("D_DAVAOP"))
+                D_Perfecom_TXT.Text = IIf(IsDBNull(.Item("D_PERFECOM")), Nothing, .Item("D_PERFECOM"))
+                DR_Dalton_TXT.Text = IIf(IsDBNull(.Item("DR_DALTON")), Nothing, .Item("DR_DALTON"))
+                DR_Photo_TXT.Text = IIf(IsDBNull(.Item("DR_PHOTO")), Nothing, .Item("DR_PHOTO"))
+                DR_House_TXT.Text = IIf(IsDBNull(.Item("DR_HOUSE")), Nothing, .Item("DR_HOUSE"))
+                ConDalton_TXT.Text = IIf(IsDBNull(.Item("CONDALTON")), Nothing, .Item("CONDALTON"))
+                ConPhoto_TXT.Text = IIf(IsDBNull(.Item("CONPHOTO")), Nothing, .Item("CONPHOTO"))
+                ConHouse_TXT.Text = IIf(IsDBNull(.Item("CONHOUSE")), Nothing, .Item("CONHOUSE"))
+                LeasingBR_TXT.Text = IIf(IsDBNull(.Item("LEASINGBR")), Nothing, .Item("LEASINGBR"))
+                DTR_Dalton.Text = IIf(IsDBNull(.Item("DTR_Dalton")), Nothing, .Item("DTR_Dalton"))
+                DTR_Photo.Text = IIf(IsDBNull(.Item("DTR_Photo")), Nothing, .Item("DTR_Photo"))
 
             End With
         End If
