@@ -1859,7 +1859,7 @@
                                   D_DaltonP As String, D_Photo As String, D_DavaoP As String, D_Perfecom As String,
                                   DR_Dalton As String, DR_Photo As String, DR_House As String, ConDalton As String,
                                   ConPhoto As String, ConHouse As String, LeasingBR As String,
-                                  DTR_Dalton As String, DTR_Photo As String)
+                                  DTR_Dalton As String, DTR_Photo As String, LeasingP As String)
 
         Replacing("PAYROLL_MARKETING_DYU")
 
@@ -1886,6 +1886,7 @@
                 .Item("LeasingBR") = IIf(LeasingBR = Nothing, 0, LeasingBR)
                 .Item("DTR_Dalton") = IIf(DTR_Dalton = Nothing, 0, DTR_Dalton)
                 .Item("DTR_Photo") = IIf(DTR_Photo = Nothing, 0, DTR_Photo)
+                .Item("LEASINGP") = IIf(LeasingP = Nothing, 0, LeasingP)
 
             End With
             ds.Tables(0).Rows.Add(dsNewRow)

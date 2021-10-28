@@ -5,9 +5,8 @@
 
     Private Sub frmReport_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         PopulateComboBox(PaydateNet_ComboB, "PAYROLL_PAYOUT", "PAYDATE")
+        PopulateComboBox(PaydateCom_Combo, "PAYROLL_PAYOUT", "PAYDATE")
         Lists_SBU(SBU_LV)
-        Me.RptViewer_Common.RefreshReport()
-        Me.RptViewer_Common.RefreshReport()
     End Sub
 
     Private Sub SearchSBU_BTN_Click(sender As Object, e As EventArgs) Handles SearchSBU_BTN.Click
@@ -278,7 +277,7 @@
             PERFECOM_HO, G3_BB, G3_HO, Seven11_ROX_BB, Seven11_ROX_HO, Seven11_POL_BB, Seven11_POL_HO, COMI_BB, COMI_HO, PBA_BB,
             PBA_HO, KTV_BB, KTV_HO, WAVE_BB, WAVE_HO, PGC, LEASING, LEASING_BR, DALTON_BR, GENSANPERFECT_BR, DAVAOP_BR, PERFECOM_BR, G3_BR,
             Seven11_BR, COMI_TO_FUJI_BR, M_DALTONP, M_PHOTO, M_DAVAOP, M_PERFECOM, D_DALTONP, D_PHOTO, D_DAVAOP, D_PERFECOM,
-            DR_Dalton, DR_Photo, DR_House, ConDalton, ConPhoto As Integer
+            DR_Dalton, DR_Photo, DR_House, ConDalton, ConPhoto, LEASING_P As Integer
 
         DALTON_BB = GetCount_Common("where company = 'DALTON'")
         DALTON_HO = GetCount_Common("where UPPER(HO_CATEGORY) LIKE UPPER('%Dalton%')")
@@ -315,6 +314,7 @@
         COMI_TO_FUJI_BR = GetDistinctCount("branch_code", "where branch_code IN ('COMI','PBA','KTV','WAVE')")
 
         LEASING_BR = GetModify_Reports("LEASINGBR")
+        LEASING_P = GetModify_Reports("LEASINGP")
 
         Dim DALTON_EMP = DALTON_BB + DALTON_HO
         Dim GENSANP_EMP = GENSANPERFECT_BB + GENSANPERFECT_HO
@@ -402,38 +402,26 @@
         '============================ CONSTRUCTION PERCENTAGE ==========================  
         ConDalton = GetModify_Reports("ConDalton")
         ConPhoto = GetModify_Reports("ConPhoto")
-        'ConHouse = GetModify_Reports("ConHouse")
 
         Dim ConDalton_P = (ConDalton / sum_driver) * 100
         Dim ConPhoto_P = (ConPhoto / sum_driver) * 100
 
-        'Dim sum_const As Integer = ConDalton + ConPhoto + ConHouse
-
-        'Dim ConDalton_P = (ConDalton / sum_const) * 100
-        'Dim ConPhoto_P = (ConPhoto / sum_const) * 100
-        'Dim ConHouse_P = (ConHouse / sum_const) * 100
+        Dim DTR_DATON_P = GetModify_Reports("DTR_Dalton")
+        Dim DTR_PHOTO_P = GetModify_Reports("DTR_Photo")
 
         Replacing("PAYROLL_PERCENTAGEE")
 
         Save_PERCENTAGE(DALTON_EMP_P, GENSAN_PHOTO_EMP_P, DAVAOP_EMP_P, PERFECOM_EMP_P, G3_EMP_P, SEVEN11_EMP_P, COMI_TO_FUJI_EMP_P, 0, 0, "EMPLOYEE")
         Save_PERCENTAGE(DALTON_BR_P, GENSAN_BR_P, DAVAOP_BR_P, PERFECOM_BR_P, G3_BR_P, Seven11_BR_P, COMI_TO_FUJI_BR_P, 0, LEASING_BR_P, "BRANCH")
         Save_PERCENTAGE(M_DALTONP, M_PHOTO, M_DAVAOP, M_PERFECOM, 0, 0, 0, 0, 0, "MARKETING")
-        Save_PERCENTAGE(0, GENSAN_PHOTO_PERFECT_P, DAVAOP_PHOTO_PERFECT_P, PERFECOM_PHOTO_PERFECT_P, 0, 0, 0, 0, 0, "PHOTO_PERFECOM")
-        Save_PERCENTAGE(0, GENSAN_PHOTO_GHS_3G_P, DAVAOP_PHOTO_GHS_3GT_P, 0, G3_PHOTO_GHS_3G_P, 0, COMI_TO_FUJI_PHOTO_GHS_3G_P, 0, 0, "PHOTO_GHS_3G")
-        Save_PERCENTAGE(0, 0, 0, PERFECOM_PL7_P, 0, SEVEN11_PL7_P, 0, 0, LEASING_PL7_P, "PERFECOM_LEASING_711")
+        Save_PERCENTAGE(0, GENSAN_PHOTO_PERFECT_P, DAVAOP_PHOTO_PERFECT_P, PERFECOM_PHOTO_PERFECT_P, 0, 0, 0, 0, 0, "PHOTO/PERFECOM")
+        Save_PERCENTAGE(0, GENSAN_PHOTO_GHS_3G_P, DAVAOP_PHOTO_GHS_3GT_P, 0, G3_PHOTO_GHS_3G_P, 0, COMI_TO_FUJI_PHOTO_GHS_3G_P, 0, 0, "PHOTO/GHS/3G")
+        Save_PERCENTAGE(0, 0, 0, PERFECOM_PL7_P, 0, SEVEN11_PL7_P, 0, 0, LEASING_PL7_P, "PERFECOM/LEASING/7ELEVEN")
         Save_PERCENTAGE(D_DALTONP, D_PHOTO, D_DAVAOP, D_PERFECOM, 0, 0, 0, 0, 0, "DYU")
         Save_PERCENTAGE(DR_Dalton_P, DR_Photo_P, 0, 0, 0, 0, 0, DR_House_P, 0, "DRIVER")
         Save_PERCENTAGE(ConDalton_P, ConPhoto_P, 0, 0, 0, 0, 0, 0, 0, "CONSTRUCTION")
-
-        'Save_PERCENTAGE("DALTON PAWNSHOP", DALTON_EMP_P, DALTON_BR_P, M_DALTONP, 0, 0, 0, D_DALTONP, DR_Dalton_P, ConDalton_P)
-        'Save_PERCENTAGE("PHOTO", GENSAN_PHOTO_EMP_P, GENSAN_BR_P, M_PHOTO, GENSAN_PHOTO_PERFECT_P, GENSAN_PHOTO_GHS_3G_P, 0, D_PHOTO, DR_Photo_P, ConPhoto_P)
-        'Save_PERCENTAGE("DAVAO PERFECT", DAVAOP_EMP_P, DAVAOP_BR_P, M_DAVAOP, DAVAOP_PHOTO_PERFECT_P, DAVAOP_PHOTO_GHS_3GT_P, 0, D_DAVAOP, 0, 0)
-        'Save_PERCENTAGE("PERFECOM", PERFECOM_EMP_P, PERFECOM_BR_P, M_PERFECOM, PERFECOM_PHOTO_PERFECT_P, 0, PERFECOM_PL7_P, D_PERFECOM, 0, 0)
-        'Save_PERCENTAGE("3G", G3_EMP_P, G3_BR_P, 0, 0, G3_PHOTO_GHS_3G_P, 0, 0, 0, 0)
-        'Save_PERCENTAGE("7ELEVEN", SEVEN11_EMP_P, Seven11_BR_P, 0, 0, 0, SEVEN11_PL7_P, 0, 0, 0)
-        'Save_PERCENTAGE("COMI_TO_FUJI", COMI_TO_FUJI_EMP_P, COMI_TO_FUJI_BR_P, 0, 0, COMI_TO_FUJI_PHOTO_GHS_3G_P, 0, 0, 0, 0)
-        'Save_PERCENTAGE("HOUSEHOLD", 0, 0, 0, 0, 0, 0, 0, DR_House_P, 0)
-        'Save_PERCENTAGE("LEASING", 0, LEASING_BR_P, 0, 0, 0, LEASING_PL7_P, 0, 0, 0)
+        Save_PERCENTAGE(DTR_DATON_P, DTR_PHOTO_P, 0, 0, 0, 0, 0, 0, 0, "DTR")
+        Save_PERCENTAGE(0, 0, 0, 0, 0, 0, 0, 0, LEASING_P, "LEASING")
 
     End Sub
 
@@ -447,7 +435,6 @@
         RptViewer_Common.LocalReport.DataSources.Clear()
 
         Try
-            Dim all_in As New reports.CommonDistributionDataTable
 
             Dim dt_CommonDis As New DataTable()
             With dt_CommonDis
@@ -466,9 +453,11 @@
             End With
 
             Dim mysqll As String = $"Select * From PAYROLL_EMPLOYEE A 
-                                        LEFT JOIN PAYROLL_PERCENTAGEE B 
+                                        INNER JOIN PAYROLL_PERCENTAGEE B ON B.CATEGORY = A.COMMON_CATEGORY
                                         INNER JOIN PAYROLL_PAYOUT C ON A.BIO_NO = C.BIOMETRIC_ID
                                         where HO_CATEGORY = 'PGC Head Office' AND PAYDATE = '{PaydateCom_Combo.Text}' ORDER BY FULLNAME ASC"
+
+
             Using ds As DataSet = LoadSQL(mysqll, "PAYROLL_EMPLOYEE")
                 If ds.Tables(0).Rows.Count > 0 Then
                     For Each dr In ds.Tables(0).Rows
@@ -478,6 +467,7 @@
 
                             '============================= NAME AND ATTENDANCE ============================  
                             Dim namee As String = .Item("FULLNAME")
+                            Dim CATEGORY As String = .Item("CATEGORY")
                             Dim NET_PAY As Double = .Item("NET_PAY")
                             Dim DALTON As Double = .Item("DALTON")
                             Dim PHOTO As Double = .Item("PHOTO")
@@ -489,7 +479,7 @@
                             Dim HOUSEHOLD As Double = .Item("HOUSEHOLD")
                             Dim LEASING As Double = .Item("LEASING")
 
-                            dt_CommonDis.Rows.Add(namee, NET_PAY.ToString("n"), DALTON, PHOTO, DAVAOP,
+                            dt_CommonDis.Rows.Add(namee, CATEGORY, NET_PAY.ToString("n"), DALTON, PHOTO, DAVAOP,
                                                PERFECOM, G3, Seven11, COMI_TO_FUJI, HOUSEHOLD, LEASING)
 
                         End With
@@ -497,8 +487,61 @@
                 End If
             End Using
 
-            Dim rds_DTR As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt_CommonDis)
-            RptViewer_Common.LocalReport.DataSources.Add(rds_DTR)
+            Dim rds_common As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt_CommonDis)
+
+            Dim dt_ComLeasingDis As New DataTable()
+            With dt_ComLeasingDis
+                .Columns.Add("FULLNAME_L")
+                .Columns.Add("COMMON_CATEGORY_L")
+                .Columns.Add("NETPAY_L")
+                .Columns.Add("DALTON_L")
+                .Columns.Add("PHOTO_L")
+                .Columns.Add("DAVAOP_L")
+                .Columns.Add("PERFECOM_L")
+                .Columns.Add("G3_L")
+                .Columns.Add("Seven11_L")
+                .Columns.Add("COMI_TO_FUJI_L")
+                .Columns.Add("HOUSEHOLD_L")
+                .Columns.Add("LEASING_L")
+            End With
+
+            Dim mysql As String = $"Select * From PAYROLL_EMPLOYEE A 
+                                        LEFT JOIN PAYROLL_PERCENTAGEE B ON B.CATEGORY = A.COMMON_CATEGORY
+                                        INNER JOIN PAYROLL_PAYOUT C ON A.BIO_NO = C.BIOMETRIC_ID
+                                        where HO_CATEGORY IN ('Construction', 'Leasing Admin Office') AND PAYDATE = '{PaydateCom_Combo.Text}' ORDER BY FULLNAME ASC"
+
+            Using dss As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+                If dss.Tables(0).Rows.Count > 0 Then
+                    For Each drR In dss.Tables(0).Rows
+                        With drR
+
+                            Dim dateStarted As DateTime = PaydateCom_Combo.Text
+
+                            '============================= NAME AND ATTENDANCE ============================  
+                            Dim namee As String = .Item("FULLNAME")
+                            Dim CATEGORY As String = .Item("CATEGORY")
+                            Dim NET_PAY As Double = .Item("NET_PAY")
+                            Dim DALTON As Double = .Item("DALTON")
+                            Dim PHOTO As Double = .Item("PHOTO")
+                            Dim DAVAOP As Double = .Item("DAVAOP")
+                            Dim PERFECOM As Double = .Item("PERFECOM")
+                            Dim G3 As Double = .Item("G3")
+                            Dim Seven11 As Double = .Item("Seven11")
+                            Dim COMI_TO_FUJI As Double = .Item("COMI_TO_FUJI")
+                            Dim HOUSEHOLD As Double = .Item("HOUSEHOLD")
+                            Dim LEASING As Double = .Item("LEASING")
+
+                            dt_ComLeasingDis.Rows.Add(namee, CATEGORY, NET_PAY.ToString("n"), DALTON, PHOTO, DAVAOP,
+                                               PERFECOM, G3, Seven11, COMI_TO_FUJI, HOUSEHOLD, LEASING)
+
+                        End With
+                    Next
+                End If
+            End Using
+
+            Dim rds_leasing As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet2", dt_ComLeasingDis)
+            RptViewer_Common.LocalReport.DataSources.Add(rds_common)
+            RptViewer_Common.LocalReport.DataSources.Add(rds_leasing)
             RptViewer_Common.RefreshReport()
 
         Catch ex As Exception
@@ -526,7 +569,7 @@
 
     Private Sub Modify_BTN_Click(sender As Object, e As EventArgs) Handles Modify_BTN.Click
         GetModify_Report(M_DaltonP_TXT, M_Photo_TXT, M_DavaoP_TXT, M_Perfecom_TXT, D_DaltonP_TXT, D_Photo_TXT, D_DavaoP_TXT, D_Perfecom_TXT,
-                                DR_Dalton_TXT, DR_Photo_TXT, DR_House_TXT, ConDalton_TXT, ConPhoto_TXT, ConHouse_TXT, LeasingBR_TXT, DTR_Dalton_TXT, DTR_Photo_TXT)
+                                DR_Dalton_TXT, DR_Photo_TXT, DR_House_TXT, ConDalton_TXT, ConPhoto_TXT, ConHouse_TXT, LeasingBR_TXT, DTR_Dalton_TXT, DTR_Photo_TXT, LeasingP_TXT)
         Modify_Panel.Visible = True
         Modify_Panel.Location = New Point(ClientSize.Width / 2 - Modify_Panel.Size.Width / 2, ClientSize.Height / 2 - Modify_Panel.Size.Height / 2)
     End Sub
@@ -541,7 +584,7 @@
                            D_DaltonP_TXT.Text, D_Photo_TXT.Text, D_DavaoP_TXT.Text, D_Perfecom_TXT.Text,
                            DR_Dalton_TXT.Text, DR_Photo_TXT.Text, DR_House_TXT.Text, ConDalton_TXT.Text,
                            ConPhoto_TXT.Text, ConHouse_TXT.Text, LeasingBR_TXT.Text, DTR_Dalton_TXT.Text,
-                           DTR_Photo_TXT.Text)
+                           DTR_Photo_TXT.Text, LeasingP_TXT.Text)
 
         Modify_Panel.Visible = False
 
@@ -564,6 +607,7 @@
         ConPhoto_TXT.Clear()
         ConHouse_TXT.Clear()
         LeasingBR_TXT.Clear()
+        LeasingP_TXT.Clear()
 
     End Sub
 
@@ -584,9 +628,4 @@
         Cursor = Cursors.Default
     End Sub
 
-    Private Sub Reports_Tab_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Reports_Tab.SelectedIndexChanged
-        If Reports_Tab.SelectedIndex = 1 Then
-            SavePercentage_Common()
-        End If
-    End Sub
 End Class

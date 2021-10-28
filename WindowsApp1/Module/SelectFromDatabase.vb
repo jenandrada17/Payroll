@@ -2303,7 +2303,7 @@ Module SelectFromDatabase
         If ds.Tables(0).Rows.Count > 0 Then
             Dim dr As DataRow = ds.Tables(0).Rows(0)
             With dr
-                value = .Item(column)
+                value = IIf(IsDBNull(.Item(column)), Nothing, .Item(column))
             End With
         End If
         Return value
@@ -2312,7 +2312,8 @@ Module SelectFromDatabase
     Public Sub GetModify_Report(M_DaltonP_TXT As TextBox, M_Photo_TXT As TextBox, M_DavaoP_TXT As TextBox, M_Perfecom_TXT As TextBox,
                                 D_DaltonP_TXT As TextBox, D_Photo_TXT As TextBox, D_DavaoP_TXT As TextBox, D_Perfecom_TXT As TextBox,
                                 DR_Dalton_TXT As TextBox, DR_Photo_TXT As TextBox, DR_House_TXT As TextBox, ConDalton_TXT As TextBox,
-                                ConPhoto_TXT As TextBox, ConHouse_TXT As TextBox, LeasingBR_TXT As TextBox, DTR_Dalton As TextBox, DTR_Photo As TextBox)
+                                ConPhoto_TXT As TextBox, ConHouse_TXT As TextBox, LeasingBR_TXT As TextBox, DTR_Dalton As TextBox,
+                                DTR_Photo As TextBox, LeasingP_TXT As TextBox)
 
         Dim mysql As String = "Select * FROM  PAYROLL_MARKETING_DYU"
         Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_MARKETING_DYU")
@@ -2337,6 +2338,7 @@ Module SelectFromDatabase
                 LeasingBR_TXT.Text = IIf(IsDBNull(.Item("LEASINGBR")), Nothing, .Item("LEASINGBR"))
                 DTR_Dalton.Text = IIf(IsDBNull(.Item("DTR_Dalton")), Nothing, .Item("DTR_Dalton"))
                 DTR_Photo.Text = IIf(IsDBNull(.Item("DTR_Photo")), Nothing, .Item("DTR_Photo"))
+                LeasingP_TXT.Text = IIf(IsDBNull(.Item("LEASINGP")), Nothing, .Item("LEASINGP"))
 
             End With
         End If

@@ -29,7 +29,9 @@ Partial Public Class reports
     
     Private tableCommon As CommonDataTable
     
-    Private tableCommonDistribution As CommonDistributionDataTable
+    Private tableComGensanPDistrib As ComGensanPDistribDataTable
+    
+    Private tableComLeasingDistrib As ComLeasingDistribDataTable
     
     Private _schemaSerializationMode As Global.System.Data.SchemaSerializationMode = Global.System.Data.SchemaSerializationMode.IncludeSchema
     
@@ -66,8 +68,11 @@ Partial Public Class reports
             If (Not (ds.Tables("Common")) Is Nothing) Then
                 MyBase.Tables.Add(New CommonDataTable(ds.Tables("Common")))
             End If
-            If (Not (ds.Tables("CommonDistribution")) Is Nothing) Then
-                MyBase.Tables.Add(New CommonDistributionDataTable(ds.Tables("CommonDistribution")))
+            If (Not (ds.Tables("ComGensanPDistrib")) Is Nothing) Then
+                MyBase.Tables.Add(New ComGensanPDistribDataTable(ds.Tables("ComGensanPDistrib")))
+            End If
+            If (Not (ds.Tables("ComLeasingDistrib")) Is Nothing) Then
+                MyBase.Tables.Add(New ComLeasingDistribDataTable(ds.Tables("ComLeasingDistrib")))
             End If
             Me.DataSetName = ds.DataSetName
             Me.Prefix = ds.Prefix
@@ -110,9 +115,19 @@ Partial Public Class reports
      Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0"),  _
      Global.System.ComponentModel.Browsable(false),  _
      Global.System.ComponentModel.DesignerSerializationVisibility(Global.System.ComponentModel.DesignerSerializationVisibility.Content)>  _
-    Public ReadOnly Property CommonDistribution() As CommonDistributionDataTable
+    Public ReadOnly Property ComGensanPDistrib() As ComGensanPDistribDataTable
         Get
-            Return Me.tableCommonDistribution
+            Return Me.tableComGensanPDistrib
+        End Get
+    End Property
+    
+    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0"),  _
+     Global.System.ComponentModel.Browsable(false),  _
+     Global.System.ComponentModel.DesignerSerializationVisibility(Global.System.ComponentModel.DesignerSerializationVisibility.Content)>  _
+    Public ReadOnly Property ComLeasingDistrib() As ComLeasingDistribDataTable
+        Get
+            Return Me.tableComLeasingDistrib
         End Get
     End Property
     
@@ -189,8 +204,11 @@ Partial Public Class reports
             If (Not (ds.Tables("Common")) Is Nothing) Then
                 MyBase.Tables.Add(New CommonDataTable(ds.Tables("Common")))
             End If
-            If (Not (ds.Tables("CommonDistribution")) Is Nothing) Then
-                MyBase.Tables.Add(New CommonDistributionDataTable(ds.Tables("CommonDistribution")))
+            If (Not (ds.Tables("ComGensanPDistrib")) Is Nothing) Then
+                MyBase.Tables.Add(New ComGensanPDistribDataTable(ds.Tables("ComGensanPDistrib")))
+            End If
+            If (Not (ds.Tables("ComLeasingDistrib")) Is Nothing) Then
+                MyBase.Tables.Add(New ComLeasingDistribDataTable(ds.Tables("ComLeasingDistrib")))
             End If
             Me.DataSetName = ds.DataSetName
             Me.Prefix = ds.Prefix
@@ -236,10 +254,16 @@ Partial Public Class reports
                 Me.tableCommon.InitVars
             End If
         End If
-        Me.tableCommonDistribution = CType(MyBase.Tables("CommonDistribution"),CommonDistributionDataTable)
+        Me.tableComGensanPDistrib = CType(MyBase.Tables("ComGensanPDistrib"),ComGensanPDistribDataTable)
         If (initTable = true) Then
-            If (Not (Me.tableCommonDistribution) Is Nothing) Then
-                Me.tableCommonDistribution.InitVars
+            If (Not (Me.tableComGensanPDistrib) Is Nothing) Then
+                Me.tableComGensanPDistrib.InitVars
+            End If
+        End If
+        Me.tableComLeasingDistrib = CType(MyBase.Tables("ComLeasingDistrib"),ComLeasingDistribDataTable)
+        If (initTable = true) Then
+            If (Not (Me.tableComLeasingDistrib) Is Nothing) Then
+                Me.tableComLeasingDistrib.InitVars
             End If
         End If
     End Sub
@@ -256,8 +280,10 @@ Partial Public Class reports
         MyBase.Tables.Add(Me.tableNetPay)
         Me.tableCommon = New CommonDataTable()
         MyBase.Tables.Add(Me.tableCommon)
-        Me.tableCommonDistribution = New CommonDistributionDataTable()
-        MyBase.Tables.Add(Me.tableCommonDistribution)
+        Me.tableComGensanPDistrib = New ComGensanPDistribDataTable()
+        MyBase.Tables.Add(Me.tableComGensanPDistrib)
+        Me.tableComLeasingDistrib = New ComLeasingDistribDataTable()
+        MyBase.Tables.Add(Me.tableComLeasingDistrib)
     End Sub
     
     <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -274,7 +300,13 @@ Partial Public Class reports
     
     <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
      Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-    Private Function ShouldSerializeCommonDistribution() As Boolean
+    Private Function ShouldSerializeComGensanPDistrib() As Boolean
+        Return false
+    End Function
+    
+    <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+     Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+    Private Function ShouldSerializeComLeasingDistrib() As Boolean
         Return false
     End Function
     
@@ -343,7 +375,10 @@ Partial Public Class reports
     Public Delegate Sub CommonRowChangeEventHandler(ByVal sender As Object, ByVal e As CommonRowChangeEvent)
     
     <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-    Public Delegate Sub CommonDistributionRowChangeEventHandler(ByVal sender As Object, ByVal e As CommonDistributionRowChangeEvent)
+    Public Delegate Sub ComGensanPDistribRowChangeEventHandler(ByVal sender As Object, ByVal e As ComGensanPDistribRowChangeEvent)
+    
+    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+    Public Delegate Sub ComLeasingDistribRowChangeEventHandler(ByVal sender As Object, ByVal e As ComLeasingDistribRowChangeEvent)
     
     '''<summary>
     '''Represents the strongly named DataTable class.
@@ -1766,8 +1801,8 @@ Partial Public Class reports
     '''</summary>
     <Global.System.Serializable(),  _
      Global.System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")>  _
-    Partial Public Class CommonDistributionDataTable
-        Inherits Global.System.Data.TypedTableBase(Of CommonDistributionRow)
+    Partial Public Class ComGensanPDistribDataTable
+        Inherits Global.System.Data.TypedTableBase(Of ComGensanPDistribRow)
         
         Private columnFULLNAME As Global.System.Data.DataColumn
         
@@ -1799,7 +1834,7 @@ Partial Public Class reports
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Sub New()
             MyBase.New
-            Me.TableName = "CommonDistribution"
+            Me.TableName = "ComGensanPDistrib"
             Me.BeginInit
             Me.InitClass
             Me.EndInit
@@ -1945,44 +1980,44 @@ Partial Public Class reports
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Default ReadOnly Property Item(ByVal index As Integer) As CommonDistributionRow
+        Public Default ReadOnly Property Item(ByVal index As Integer) As ComGensanPDistribRow
             Get
-                Return CType(Me.Rows(index),CommonDistributionRow)
+                Return CType(Me.Rows(index),ComGensanPDistribRow)
             End Get
         End Property
         
         <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Event CommonDistributionRowChanging As CommonDistributionRowChangeEventHandler
+        Public Event ComGensanPDistribRowChanging As ComGensanPDistribRowChangeEventHandler
         
         <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Event CommonDistributionRowChanged As CommonDistributionRowChangeEventHandler
+        Public Event ComGensanPDistribRowChanged As ComGensanPDistribRowChangeEventHandler
         
         <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Event CommonDistributionRowDeleting As CommonDistributionRowChangeEventHandler
+        Public Event ComGensanPDistribRowDeleting As ComGensanPDistribRowChangeEventHandler
         
         <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Event CommonDistributionRowDeleted As CommonDistributionRowChangeEventHandler
+        Public Event ComGensanPDistribRowDeleted As ComGensanPDistribRowChangeEventHandler
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Overloads Sub AddCommonDistributionRow(ByVal row As CommonDistributionRow)
+        Public Overloads Sub AddComGensanPDistribRow(ByVal row As ComGensanPDistribRow)
             Me.Rows.Add(row)
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Overloads Function AddCommonDistributionRow(ByVal FULLNAME As String, ByVal COMMON_CATEGORY As String, ByVal NETPAY As String, ByVal DALTON As String, ByVal PHOTO As String, ByVal DAVAOP As String, ByVal PERFECOM As String, ByVal G3 As String, ByVal Seven11 As String, ByVal COMI_TO_FUJI As String, ByVal HOUSEHOLD As String, ByVal LEASING As String, ByVal PAYDATE As String) As CommonDistributionRow
-            Dim rowCommonDistributionRow As CommonDistributionRow = CType(Me.NewRow,CommonDistributionRow)
+        Public Overloads Function AddComGensanPDistribRow(ByVal FULLNAME As String, ByVal COMMON_CATEGORY As String, ByVal NETPAY As String, ByVal DALTON As String, ByVal PHOTO As String, ByVal DAVAOP As String, ByVal PERFECOM As String, ByVal G3 As String, ByVal Seven11 As String, ByVal COMI_TO_FUJI As String, ByVal HOUSEHOLD As String, ByVal LEASING As String, ByVal PAYDATE As String) As ComGensanPDistribRow
+            Dim rowComGensanPDistribRow As ComGensanPDistribRow = CType(Me.NewRow,ComGensanPDistribRow)
             Dim columnValuesArray() As Object = New Object() {FULLNAME, COMMON_CATEGORY, NETPAY, DALTON, PHOTO, DAVAOP, PERFECOM, G3, Seven11, COMI_TO_FUJI, HOUSEHOLD, LEASING, PAYDATE}
-            rowCommonDistributionRow.ItemArray = columnValuesArray
-            Me.Rows.Add(rowCommonDistributionRow)
-            Return rowCommonDistributionRow
+            rowComGensanPDistribRow.ItemArray = columnValuesArray
+            Me.Rows.Add(rowComGensanPDistribRow)
+            Return rowComGensanPDistribRow
         End Function
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Overrides Function Clone() As Global.System.Data.DataTable
-            Dim cln As CommonDistributionDataTable = CType(MyBase.Clone,CommonDistributionDataTable)
+            Dim cln As ComGensanPDistribDataTable = CType(MyBase.Clone,ComGensanPDistribDataTable)
             cln.InitVars
             Return cln
         End Function
@@ -1990,7 +2025,7 @@ Partial Public Class reports
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Protected Overrides Function CreateInstance() As Global.System.Data.DataTable
-            Return New CommonDistributionDataTable()
+            Return New ComGensanPDistribDataTable()
         End Function
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -2044,28 +2079,28 @@ Partial Public Class reports
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Function NewCommonDistributionRow() As CommonDistributionRow
-            Return CType(Me.NewRow,CommonDistributionRow)
+        Public Function NewComGensanPDistribRow() As ComGensanPDistribRow
+            Return CType(Me.NewRow,ComGensanPDistribRow)
         End Function
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Protected Overrides Function NewRowFromBuilder(ByVal builder As Global.System.Data.DataRowBuilder) As Global.System.Data.DataRow
-            Return New CommonDistributionRow(builder)
+            Return New ComGensanPDistribRow(builder)
         End Function
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Protected Overrides Function GetRowType() As Global.System.Type
-            Return GetType(CommonDistributionRow)
+            Return GetType(ComGensanPDistribRow)
         End Function
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Protected Overrides Sub OnRowChanged(ByVal e As Global.System.Data.DataRowChangeEventArgs)
             MyBase.OnRowChanged(e)
-            If (Not (Me.CommonDistributionRowChangedEvent) Is Nothing) Then
-                RaiseEvent CommonDistributionRowChanged(Me, New CommonDistributionRowChangeEvent(CType(e.Row,CommonDistributionRow), e.Action))
+            If (Not (Me.ComGensanPDistribRowChangedEvent) Is Nothing) Then
+                RaiseEvent ComGensanPDistribRowChanged(Me, New ComGensanPDistribRowChangeEvent(CType(e.Row,ComGensanPDistribRow), e.Action))
             End If
         End Sub
         
@@ -2073,8 +2108,8 @@ Partial Public Class reports
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Protected Overrides Sub OnRowChanging(ByVal e As Global.System.Data.DataRowChangeEventArgs)
             MyBase.OnRowChanging(e)
-            If (Not (Me.CommonDistributionRowChangingEvent) Is Nothing) Then
-                RaiseEvent CommonDistributionRowChanging(Me, New CommonDistributionRowChangeEvent(CType(e.Row,CommonDistributionRow), e.Action))
+            If (Not (Me.ComGensanPDistribRowChangingEvent) Is Nothing) Then
+                RaiseEvent ComGensanPDistribRowChanging(Me, New ComGensanPDistribRowChangeEvent(CType(e.Row,ComGensanPDistribRow), e.Action))
             End If
         End Sub
         
@@ -2082,8 +2117,8 @@ Partial Public Class reports
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Protected Overrides Sub OnRowDeleted(ByVal e As Global.System.Data.DataRowChangeEventArgs)
             MyBase.OnRowDeleted(e)
-            If (Not (Me.CommonDistributionRowDeletedEvent) Is Nothing) Then
-                RaiseEvent CommonDistributionRowDeleted(Me, New CommonDistributionRowChangeEvent(CType(e.Row,CommonDistributionRow), e.Action))
+            If (Not (Me.ComGensanPDistribRowDeletedEvent) Is Nothing) Then
+                RaiseEvent ComGensanPDistribRowDeleted(Me, New ComGensanPDistribRowChangeEvent(CType(e.Row,ComGensanPDistribRow), e.Action))
             End If
         End Sub
         
@@ -2091,14 +2126,14 @@ Partial Public Class reports
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Protected Overrides Sub OnRowDeleting(ByVal e As Global.System.Data.DataRowChangeEventArgs)
             MyBase.OnRowDeleting(e)
-            If (Not (Me.CommonDistributionRowDeletingEvent) Is Nothing) Then
-                RaiseEvent CommonDistributionRowDeleting(Me, New CommonDistributionRowChangeEvent(CType(e.Row,CommonDistributionRow), e.Action))
+            If (Not (Me.ComGensanPDistribRowDeletingEvent) Is Nothing) Then
+                RaiseEvent ComGensanPDistribRowDeleting(Me, New ComGensanPDistribRowChangeEvent(CType(e.Row,ComGensanPDistribRow), e.Action))
             End If
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Sub RemoveCommonDistributionRow(ByVal row As CommonDistributionRow)
+        Public Sub RemoveComGensanPDistribRow(ByVal row As ComGensanPDistribRow)
             Me.Rows.Remove(row)
         End Sub
         
@@ -2125,7 +2160,428 @@ Partial Public Class reports
             type.Attributes.Add(attribute1)
             Dim attribute2 As Global.System.Xml.Schema.XmlSchemaAttribute = New Global.System.Xml.Schema.XmlSchemaAttribute()
             attribute2.Name = "tableTypeName"
-            attribute2.FixedValue = "CommonDistributionDataTable"
+            attribute2.FixedValue = "ComGensanPDistribDataTable"
+            type.Attributes.Add(attribute2)
+            type.Particle = sequence
+            Dim dsSchema As Global.System.Xml.Schema.XmlSchema = ds.GetSchemaSerializable
+            If xs.Contains(dsSchema.TargetNamespace) Then
+                Dim s1 As Global.System.IO.MemoryStream = New Global.System.IO.MemoryStream()
+                Dim s2 As Global.System.IO.MemoryStream = New Global.System.IO.MemoryStream()
+                Try 
+                    Dim schema As Global.System.Xml.Schema.XmlSchema = Nothing
+                    dsSchema.Write(s1)
+                    Dim schemas As Global.System.Collections.IEnumerator = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator
+                    Do While schemas.MoveNext
+                        schema = CType(schemas.Current,Global.System.Xml.Schema.XmlSchema)
+                        s2.SetLength(0)
+                        schema.Write(s2)
+                        If (s1.Length = s2.Length) Then
+                            s1.Position = 0
+                            s2.Position = 0
+                            
+                            Do While ((s1.Position <> s1.Length)  _
+                                        AndAlso (s1.ReadByte = s2.ReadByte))
+                                
+                                
+                            Loop
+                            If (s1.Position = s1.Length) Then
+                                Return type
+                            End If
+                        End If
+                        
+                    Loop
+                Finally
+                    If (Not (s1) Is Nothing) Then
+                        s1.Close
+                    End If
+                    If (Not (s2) Is Nothing) Then
+                        s2.Close
+                    End If
+                End Try
+            End If
+            xs.Add(dsSchema)
+            Return type
+        End Function
+    End Class
+    
+    '''<summary>
+    '''Represents the strongly named DataTable class.
+    '''</summary>
+    <Global.System.Serializable(),  _
+     Global.System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")>  _
+    Partial Public Class ComLeasingDistribDataTable
+        Inherits Global.System.Data.TypedTableBase(Of ComLeasingDistribRow)
+        
+        Private columnFULLNAME_L As Global.System.Data.DataColumn
+        
+        Private columnCOMMON_CATEGORY_L As Global.System.Data.DataColumn
+        
+        Private columnNETPAY_L As Global.System.Data.DataColumn
+        
+        Private columnDALTON_L As Global.System.Data.DataColumn
+        
+        Private columnPHOTO_L As Global.System.Data.DataColumn
+        
+        Private columnDAVAOP_L As Global.System.Data.DataColumn
+        
+        Private columnPERFECOM_L As Global.System.Data.DataColumn
+        
+        Private columnG3_L As Global.System.Data.DataColumn
+        
+        Private columnSeven11_L As Global.System.Data.DataColumn
+        
+        Private columnCOMI_TO_FUJI_L As Global.System.Data.DataColumn
+        
+        Private columnHOUSEHOLD_L As Global.System.Data.DataColumn
+        
+        Private columnLEASING_L As Global.System.Data.DataColumn
+        
+        Private columnPAYDATE_L As Global.System.Data.DataColumn
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub New()
+            MyBase.New
+            Me.TableName = "ComLeasingDistrib"
+            Me.BeginInit
+            Me.InitClass
+            Me.EndInit
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Friend Sub New(ByVal table As Global.System.Data.DataTable)
+            MyBase.New
+            Me.TableName = table.TableName
+            If (table.CaseSensitive <> table.DataSet.CaseSensitive) Then
+                Me.CaseSensitive = table.CaseSensitive
+            End If
+            If (table.Locale.ToString <> table.DataSet.Locale.ToString) Then
+                Me.Locale = table.Locale
+            End If
+            If (table.Namespace <> table.DataSet.Namespace) Then
+                Me.Namespace = table.Namespace
+            End If
+            Me.Prefix = table.Prefix
+            Me.MinimumCapacity = table.MinimumCapacity
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Protected Sub New(ByVal info As Global.System.Runtime.Serialization.SerializationInfo, ByVal context As Global.System.Runtime.Serialization.StreamingContext)
+            MyBase.New(info, context)
+            Me.InitVars
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property FULLNAME_LColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnFULLNAME_L
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property COMMON_CATEGORY_LColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnCOMMON_CATEGORY_L
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property NETPAY_LColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnNETPAY_L
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property DALTON_LColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnDALTON_L
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property PHOTO_LColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnPHOTO_L
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property DAVAOP_LColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnDAVAOP_L
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property PERFECOM_LColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnPERFECOM_L
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property G3_LColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnG3_L
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property Seven11_LColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnSeven11_L
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property COMI_TO_FUJI_LColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnCOMI_TO_FUJI_L
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property HOUSEHOLD_LColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnHOUSEHOLD_L
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property LEASING_LColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnLEASING_L
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property PAYDATE_LColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnPAYDATE_L
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0"),  _
+         Global.System.ComponentModel.Browsable(false)>  _
+        Public ReadOnly Property Count() As Integer
+            Get
+                Return Me.Rows.Count
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Default ReadOnly Property Item(ByVal index As Integer) As ComLeasingDistribRow
+            Get
+                Return CType(Me.Rows(index),ComLeasingDistribRow)
+            End Get
+        End Property
+        
+        <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Event ComLeasingDistribRowChanging As ComLeasingDistribRowChangeEventHandler
+        
+        <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Event ComLeasingDistribRowChanged As ComLeasingDistribRowChangeEventHandler
+        
+        <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Event ComLeasingDistribRowDeleting As ComLeasingDistribRowChangeEventHandler
+        
+        <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Event ComLeasingDistribRowDeleted As ComLeasingDistribRowChangeEventHandler
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Overloads Sub AddComLeasingDistribRow(ByVal row As ComLeasingDistribRow)
+            Me.Rows.Add(row)
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Overloads Function AddComLeasingDistribRow(ByVal FULLNAME_L As String, ByVal COMMON_CATEGORY_L As String, ByVal NETPAY_L As String, ByVal DALTON_L As String, ByVal PHOTO_L As String, ByVal DAVAOP_L As String, ByVal PERFECOM_L As String, ByVal G3_L As String, ByVal Seven11_L As String, ByVal COMI_TO_FUJI_L As String, ByVal HOUSEHOLD_L As String, ByVal LEASING_L As String, ByVal PAYDATE_L As String) As ComLeasingDistribRow
+            Dim rowComLeasingDistribRow As ComLeasingDistribRow = CType(Me.NewRow,ComLeasingDistribRow)
+            Dim columnValuesArray() As Object = New Object() {FULLNAME_L, COMMON_CATEGORY_L, NETPAY_L, DALTON_L, PHOTO_L, DAVAOP_L, PERFECOM_L, G3_L, Seven11_L, COMI_TO_FUJI_L, HOUSEHOLD_L, LEASING_L, PAYDATE_L}
+            rowComLeasingDistribRow.ItemArray = columnValuesArray
+            Me.Rows.Add(rowComLeasingDistribRow)
+            Return rowComLeasingDistribRow
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Overrides Function Clone() As Global.System.Data.DataTable
+            Dim cln As ComLeasingDistribDataTable = CType(MyBase.Clone,ComLeasingDistribDataTable)
+            cln.InitVars
+            Return cln
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Protected Overrides Function CreateInstance() As Global.System.Data.DataTable
+            Return New ComLeasingDistribDataTable()
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Friend Sub InitVars()
+            Me.columnFULLNAME_L = MyBase.Columns("FULLNAME_L")
+            Me.columnCOMMON_CATEGORY_L = MyBase.Columns("COMMON_CATEGORY_L")
+            Me.columnNETPAY_L = MyBase.Columns("NETPAY_L")
+            Me.columnDALTON_L = MyBase.Columns("DALTON_L")
+            Me.columnPHOTO_L = MyBase.Columns("PHOTO_L")
+            Me.columnDAVAOP_L = MyBase.Columns("DAVAOP_L")
+            Me.columnPERFECOM_L = MyBase.Columns("PERFECOM_L")
+            Me.columnG3_L = MyBase.Columns("G3_L")
+            Me.columnSeven11_L = MyBase.Columns("Seven11_L")
+            Me.columnCOMI_TO_FUJI_L = MyBase.Columns("COMI_TO_FUJI_L")
+            Me.columnHOUSEHOLD_L = MyBase.Columns("HOUSEHOLD_L")
+            Me.columnLEASING_L = MyBase.Columns("LEASING_L")
+            Me.columnPAYDATE_L = MyBase.Columns("PAYDATE_L")
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Private Sub InitClass()
+            Me.columnFULLNAME_L = New Global.System.Data.DataColumn("FULLNAME_L", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnFULLNAME_L)
+            Me.columnCOMMON_CATEGORY_L = New Global.System.Data.DataColumn("COMMON_CATEGORY_L", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnCOMMON_CATEGORY_L)
+            Me.columnNETPAY_L = New Global.System.Data.DataColumn("NETPAY_L", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnNETPAY_L)
+            Me.columnDALTON_L = New Global.System.Data.DataColumn("DALTON_L", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnDALTON_L)
+            Me.columnPHOTO_L = New Global.System.Data.DataColumn("PHOTO_L", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnPHOTO_L)
+            Me.columnDAVAOP_L = New Global.System.Data.DataColumn("DAVAOP_L", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnDAVAOP_L)
+            Me.columnPERFECOM_L = New Global.System.Data.DataColumn("PERFECOM_L", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnPERFECOM_L)
+            Me.columnG3_L = New Global.System.Data.DataColumn("G3_L", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnG3_L)
+            Me.columnSeven11_L = New Global.System.Data.DataColumn("Seven11_L", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnSeven11_L)
+            Me.columnCOMI_TO_FUJI_L = New Global.System.Data.DataColumn("COMI_TO_FUJI_L", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnCOMI_TO_FUJI_L)
+            Me.columnHOUSEHOLD_L = New Global.System.Data.DataColumn("HOUSEHOLD_L", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnHOUSEHOLD_L)
+            Me.columnLEASING_L = New Global.System.Data.DataColumn("LEASING_L", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnLEASING_L)
+            Me.columnPAYDATE_L = New Global.System.Data.DataColumn("PAYDATE_L", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnPAYDATE_L)
+            Me.columnFULLNAME_L.Caption = "FULLNAME"
+            Me.columnCOMMON_CATEGORY_L.Caption = "COMMON_CATEGORY"
+            Me.columnNETPAY_L.Caption = "NETPAY"
+            Me.columnDALTON_L.Caption = "DALTON"
+            Me.columnPHOTO_L.Caption = "PHOTO"
+            Me.columnDAVAOP_L.Caption = "DAVAOP"
+            Me.columnPERFECOM_L.Caption = "PERFECOM"
+            Me.columnG3_L.Caption = "G3"
+            Me.columnSeven11_L.Caption = "Seven11"
+            Me.columnCOMI_TO_FUJI_L.Caption = "COMI_TO_FUJI"
+            Me.columnHOUSEHOLD_L.Caption = "HOUSEHOLD"
+            Me.columnLEASING_L.Caption = "LEASING"
+            Me.columnPAYDATE_L.Caption = "PAYDATE"
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function NewComLeasingDistribRow() As ComLeasingDistribRow
+            Return CType(Me.NewRow,ComLeasingDistribRow)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Protected Overrides Function NewRowFromBuilder(ByVal builder As Global.System.Data.DataRowBuilder) As Global.System.Data.DataRow
+            Return New ComLeasingDistribRow(builder)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Protected Overrides Function GetRowType() As Global.System.Type
+            Return GetType(ComLeasingDistribRow)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Protected Overrides Sub OnRowChanged(ByVal e As Global.System.Data.DataRowChangeEventArgs)
+            MyBase.OnRowChanged(e)
+            If (Not (Me.ComLeasingDistribRowChangedEvent) Is Nothing) Then
+                RaiseEvent ComLeasingDistribRowChanged(Me, New ComLeasingDistribRowChangeEvent(CType(e.Row,ComLeasingDistribRow), e.Action))
+            End If
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Protected Overrides Sub OnRowChanging(ByVal e As Global.System.Data.DataRowChangeEventArgs)
+            MyBase.OnRowChanging(e)
+            If (Not (Me.ComLeasingDistribRowChangingEvent) Is Nothing) Then
+                RaiseEvent ComLeasingDistribRowChanging(Me, New ComLeasingDistribRowChangeEvent(CType(e.Row,ComLeasingDistribRow), e.Action))
+            End If
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Protected Overrides Sub OnRowDeleted(ByVal e As Global.System.Data.DataRowChangeEventArgs)
+            MyBase.OnRowDeleted(e)
+            If (Not (Me.ComLeasingDistribRowDeletedEvent) Is Nothing) Then
+                RaiseEvent ComLeasingDistribRowDeleted(Me, New ComLeasingDistribRowChangeEvent(CType(e.Row,ComLeasingDistribRow), e.Action))
+            End If
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Protected Overrides Sub OnRowDeleting(ByVal e As Global.System.Data.DataRowChangeEventArgs)
+            MyBase.OnRowDeleting(e)
+            If (Not (Me.ComLeasingDistribRowDeletingEvent) Is Nothing) Then
+                RaiseEvent ComLeasingDistribRowDeleting(Me, New ComLeasingDistribRowChangeEvent(CType(e.Row,ComLeasingDistribRow), e.Action))
+            End If
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub RemoveComLeasingDistribRow(ByVal row As ComLeasingDistribRow)
+            Me.Rows.Remove(row)
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Shared Function GetTypedTableSchema(ByVal xs As Global.System.Xml.Schema.XmlSchemaSet) As Global.System.Xml.Schema.XmlSchemaComplexType
+            Dim type As Global.System.Xml.Schema.XmlSchemaComplexType = New Global.System.Xml.Schema.XmlSchemaComplexType()
+            Dim sequence As Global.System.Xml.Schema.XmlSchemaSequence = New Global.System.Xml.Schema.XmlSchemaSequence()
+            Dim ds As reports = New reports()
+            Dim any1 As Global.System.Xml.Schema.XmlSchemaAny = New Global.System.Xml.Schema.XmlSchemaAny()
+            any1.Namespace = "http://www.w3.org/2001/XMLSchema"
+            any1.MinOccurs = New Decimal(0)
+            any1.MaxOccurs = Decimal.MaxValue
+            any1.ProcessContents = Global.System.Xml.Schema.XmlSchemaContentProcessing.Lax
+            sequence.Items.Add(any1)
+            Dim any2 As Global.System.Xml.Schema.XmlSchemaAny = New Global.System.Xml.Schema.XmlSchemaAny()
+            any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1"
+            any2.MinOccurs = New Decimal(1)
+            any2.ProcessContents = Global.System.Xml.Schema.XmlSchemaContentProcessing.Lax
+            sequence.Items.Add(any2)
+            Dim attribute1 As Global.System.Xml.Schema.XmlSchemaAttribute = New Global.System.Xml.Schema.XmlSchemaAttribute()
+            attribute1.Name = "namespace"
+            attribute1.FixedValue = ds.Namespace
+            type.Attributes.Add(attribute1)
+            Dim attribute2 As Global.System.Xml.Schema.XmlSchemaAttribute = New Global.System.Xml.Schema.XmlSchemaAttribute()
+            attribute2.Name = "tableTypeName"
+            attribute2.FixedValue = "ComLeasingDistribDataTable"
             type.Attributes.Add(attribute2)
             type.Particle = sequence
             Dim dsSchema As Global.System.Xml.Schema.XmlSchema = ds.GetSchemaSerializable
@@ -4013,16 +4469,16 @@ Partial Public Class reports
     '''<summary>
     '''Represents strongly named DataRow class.
     '''</summary>
-    Partial Public Class CommonDistributionRow
+    Partial Public Class ComGensanPDistribRow
         Inherits Global.System.Data.DataRow
         
-        Private tableCommonDistribution As CommonDistributionDataTable
+        Private tableComGensanPDistrib As ComGensanPDistribDataTable
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Friend Sub New(ByVal rb As Global.System.Data.DataRowBuilder)
             MyBase.New(rb)
-            Me.tableCommonDistribution = CType(Me.Table,CommonDistributionDataTable)
+            Me.tableComGensanPDistrib = CType(Me.Table,ComGensanPDistribDataTable)
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -4030,13 +4486,13 @@ Partial Public Class reports
         Public Property FULLNAME() As String
             Get
                 Try 
-                    Return CType(Me(Me.tableCommonDistribution.FULLNAMEColumn),String)
+                    Return CType(Me(Me.tableComGensanPDistrib.FULLNAMEColumn),String)
                 Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'FULLNAME' in table 'CommonDistribution' is DBNull.", e)
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'FULLNAME' in table 'ComGensanPDistrib' is DBNull.", e)
                 End Try
             End Get
             Set
-                Me(Me.tableCommonDistribution.FULLNAMEColumn) = value
+                Me(Me.tableComGensanPDistrib.FULLNAMEColumn) = value
             End Set
         End Property
         
@@ -4045,13 +4501,13 @@ Partial Public Class reports
         Public Property COMMON_CATEGORY() As String
             Get
                 Try 
-                    Return CType(Me(Me.tableCommonDistribution.COMMON_CATEGORYColumn),String)
+                    Return CType(Me(Me.tableComGensanPDistrib.COMMON_CATEGORYColumn),String)
                 Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'COMMON_CATEGORY' in table 'CommonDistribution' is DBNull.", e)
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'COMMON_CATEGORY' in table 'ComGensanPDistrib' is DBNull.", e)
                 End Try
             End Get
             Set
-                Me(Me.tableCommonDistribution.COMMON_CATEGORYColumn) = value
+                Me(Me.tableComGensanPDistrib.COMMON_CATEGORYColumn) = value
             End Set
         End Property
         
@@ -4060,13 +4516,13 @@ Partial Public Class reports
         Public Property NETPAY() As String
             Get
                 Try 
-                    Return CType(Me(Me.tableCommonDistribution.NETPAYColumn),String)
+                    Return CType(Me(Me.tableComGensanPDistrib.NETPAYColumn),String)
                 Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'NETPAY' in table 'CommonDistribution' is DBNull.", e)
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'NETPAY' in table 'ComGensanPDistrib' is DBNull.", e)
                 End Try
             End Get
             Set
-                Me(Me.tableCommonDistribution.NETPAYColumn) = value
+                Me(Me.tableComGensanPDistrib.NETPAYColumn) = value
             End Set
         End Property
         
@@ -4075,13 +4531,13 @@ Partial Public Class reports
         Public Property DALTON() As String
             Get
                 Try 
-                    Return CType(Me(Me.tableCommonDistribution.DALTONColumn),String)
+                    Return CType(Me(Me.tableComGensanPDistrib.DALTONColumn),String)
                 Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'DALTON' in table 'CommonDistribution' is DBNull.", e)
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'DALTON' in table 'ComGensanPDistrib' is DBNull.", e)
                 End Try
             End Get
             Set
-                Me(Me.tableCommonDistribution.DALTONColumn) = value
+                Me(Me.tableComGensanPDistrib.DALTONColumn) = value
             End Set
         End Property
         
@@ -4090,13 +4546,13 @@ Partial Public Class reports
         Public Property PHOTO() As String
             Get
                 Try 
-                    Return CType(Me(Me.tableCommonDistribution.PHOTOColumn),String)
+                    Return CType(Me(Me.tableComGensanPDistrib.PHOTOColumn),String)
                 Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'PHOTO' in table 'CommonDistribution' is DBNull.", e)
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'PHOTO' in table 'ComGensanPDistrib' is DBNull.", e)
                 End Try
             End Get
             Set
-                Me(Me.tableCommonDistribution.PHOTOColumn) = value
+                Me(Me.tableComGensanPDistrib.PHOTOColumn) = value
             End Set
         End Property
         
@@ -4105,13 +4561,13 @@ Partial Public Class reports
         Public Property DAVAOP() As String
             Get
                 Try 
-                    Return CType(Me(Me.tableCommonDistribution.DAVAOPColumn),String)
+                    Return CType(Me(Me.tableComGensanPDistrib.DAVAOPColumn),String)
                 Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'DAVAOP' in table 'CommonDistribution' is DBNull.", e)
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'DAVAOP' in table 'ComGensanPDistrib' is DBNull.", e)
                 End Try
             End Get
             Set
-                Me(Me.tableCommonDistribution.DAVAOPColumn) = value
+                Me(Me.tableComGensanPDistrib.DAVAOPColumn) = value
             End Set
         End Property
         
@@ -4120,13 +4576,13 @@ Partial Public Class reports
         Public Property PERFECOM() As String
             Get
                 Try 
-                    Return CType(Me(Me.tableCommonDistribution.PERFECOMColumn),String)
+                    Return CType(Me(Me.tableComGensanPDistrib.PERFECOMColumn),String)
                 Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'PERFECOM' in table 'CommonDistribution' is DBNull.", e)
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'PERFECOM' in table 'ComGensanPDistrib' is DBNull.", e)
                 End Try
             End Get
             Set
-                Me(Me.tableCommonDistribution.PERFECOMColumn) = value
+                Me(Me.tableComGensanPDistrib.PERFECOMColumn) = value
             End Set
         End Property
         
@@ -4135,13 +4591,13 @@ Partial Public Class reports
         Public Property G3() As String
             Get
                 Try 
-                    Return CType(Me(Me.tableCommonDistribution.G3Column),String)
+                    Return CType(Me(Me.tableComGensanPDistrib.G3Column),String)
                 Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'G3' in table 'CommonDistribution' is DBNull.", e)
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'G3' in table 'ComGensanPDistrib' is DBNull.", e)
                 End Try
             End Get
             Set
-                Me(Me.tableCommonDistribution.G3Column) = value
+                Me(Me.tableComGensanPDistrib.G3Column) = value
             End Set
         End Property
         
@@ -4150,13 +4606,13 @@ Partial Public Class reports
         Public Property Seven11() As String
             Get
                 Try 
-                    Return CType(Me(Me.tableCommonDistribution.Seven11Column),String)
+                    Return CType(Me(Me.tableComGensanPDistrib.Seven11Column),String)
                 Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'Seven11' in table 'CommonDistribution' is DBNull.", e)
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'Seven11' in table 'ComGensanPDistrib' is DBNull.", e)
                 End Try
             End Get
             Set
-                Me(Me.tableCommonDistribution.Seven11Column) = value
+                Me(Me.tableComGensanPDistrib.Seven11Column) = value
             End Set
         End Property
         
@@ -4165,13 +4621,13 @@ Partial Public Class reports
         Public Property COMI_TO_FUJI() As String
             Get
                 Try 
-                    Return CType(Me(Me.tableCommonDistribution.COMI_TO_FUJIColumn),String)
+                    Return CType(Me(Me.tableComGensanPDistrib.COMI_TO_FUJIColumn),String)
                 Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'COMI_TO_FUJI' in table 'CommonDistribution' is DBNull.", e)
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'COMI_TO_FUJI' in table 'ComGensanPDistrib' is DBNull.", e)
                 End Try
             End Get
             Set
-                Me(Me.tableCommonDistribution.COMI_TO_FUJIColumn) = value
+                Me(Me.tableComGensanPDistrib.COMI_TO_FUJIColumn) = value
             End Set
         End Property
         
@@ -4180,13 +4636,13 @@ Partial Public Class reports
         Public Property HOUSEHOLD() As String
             Get
                 Try 
-                    Return CType(Me(Me.tableCommonDistribution.HOUSEHOLDColumn),String)
+                    Return CType(Me(Me.tableComGensanPDistrib.HOUSEHOLDColumn),String)
                 Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'HOUSEHOLD' in table 'CommonDistribution' is DBNull.", e)
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'HOUSEHOLD' in table 'ComGensanPDistrib' is DBNull.", e)
                 End Try
             End Get
             Set
-                Me(Me.tableCommonDistribution.HOUSEHOLDColumn) = value
+                Me(Me.tableComGensanPDistrib.HOUSEHOLDColumn) = value
             End Set
         End Property
         
@@ -4195,13 +4651,13 @@ Partial Public Class reports
         Public Property LEASING() As String
             Get
                 Try 
-                    Return CType(Me(Me.tableCommonDistribution.LEASINGColumn),String)
+                    Return CType(Me(Me.tableComGensanPDistrib.LEASINGColumn),String)
                 Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'LEASING' in table 'CommonDistribution' is DBNull.", e)
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'LEASING' in table 'ComGensanPDistrib' is DBNull.", e)
                 End Try
             End Get
             Set
-                Me(Me.tableCommonDistribution.LEASINGColumn) = value
+                Me(Me.tableComGensanPDistrib.LEASINGColumn) = value
             End Set
         End Property
         
@@ -4210,170 +4666,537 @@ Partial Public Class reports
         Public Property PAYDATE() As String
             Get
                 Try 
-                    Return CType(Me(Me.tableCommonDistribution.PAYDATEColumn),String)
+                    Return CType(Me(Me.tableComGensanPDistrib.PAYDATEColumn),String)
                 Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'PAYDATE' in table 'CommonDistribution' is DBNull.", e)
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'PAYDATE' in table 'ComGensanPDistrib' is DBNull.", e)
                 End Try
             End Get
             Set
-                Me(Me.tableCommonDistribution.PAYDATEColumn) = value
+                Me(Me.tableComGensanPDistrib.PAYDATEColumn) = value
             End Set
         End Property
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Function IsFULLNAMENull() As Boolean
-            Return Me.IsNull(Me.tableCommonDistribution.FULLNAMEColumn)
+            Return Me.IsNull(Me.tableComGensanPDistrib.FULLNAMEColumn)
         End Function
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Sub SetFULLNAMENull()
-            Me(Me.tableCommonDistribution.FULLNAMEColumn) = Global.System.Convert.DBNull
+            Me(Me.tableComGensanPDistrib.FULLNAMEColumn) = Global.System.Convert.DBNull
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Function IsCOMMON_CATEGORYNull() As Boolean
-            Return Me.IsNull(Me.tableCommonDistribution.COMMON_CATEGORYColumn)
+            Return Me.IsNull(Me.tableComGensanPDistrib.COMMON_CATEGORYColumn)
         End Function
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Sub SetCOMMON_CATEGORYNull()
-            Me(Me.tableCommonDistribution.COMMON_CATEGORYColumn) = Global.System.Convert.DBNull
+            Me(Me.tableComGensanPDistrib.COMMON_CATEGORYColumn) = Global.System.Convert.DBNull
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Function IsNETPAYNull() As Boolean
-            Return Me.IsNull(Me.tableCommonDistribution.NETPAYColumn)
+            Return Me.IsNull(Me.tableComGensanPDistrib.NETPAYColumn)
         End Function
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Sub SetNETPAYNull()
-            Me(Me.tableCommonDistribution.NETPAYColumn) = Global.System.Convert.DBNull
+            Me(Me.tableComGensanPDistrib.NETPAYColumn) = Global.System.Convert.DBNull
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Function IsDALTONNull() As Boolean
-            Return Me.IsNull(Me.tableCommonDistribution.DALTONColumn)
+            Return Me.IsNull(Me.tableComGensanPDistrib.DALTONColumn)
         End Function
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Sub SetDALTONNull()
-            Me(Me.tableCommonDistribution.DALTONColumn) = Global.System.Convert.DBNull
+            Me(Me.tableComGensanPDistrib.DALTONColumn) = Global.System.Convert.DBNull
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Function IsPHOTONull() As Boolean
-            Return Me.IsNull(Me.tableCommonDistribution.PHOTOColumn)
+            Return Me.IsNull(Me.tableComGensanPDistrib.PHOTOColumn)
         End Function
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Sub SetPHOTONull()
-            Me(Me.tableCommonDistribution.PHOTOColumn) = Global.System.Convert.DBNull
+            Me(Me.tableComGensanPDistrib.PHOTOColumn) = Global.System.Convert.DBNull
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Function IsDAVAOPNull() As Boolean
-            Return Me.IsNull(Me.tableCommonDistribution.DAVAOPColumn)
+            Return Me.IsNull(Me.tableComGensanPDistrib.DAVAOPColumn)
         End Function
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Sub SetDAVAOPNull()
-            Me(Me.tableCommonDistribution.DAVAOPColumn) = Global.System.Convert.DBNull
+            Me(Me.tableComGensanPDistrib.DAVAOPColumn) = Global.System.Convert.DBNull
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Function IsPERFECOMNull() As Boolean
-            Return Me.IsNull(Me.tableCommonDistribution.PERFECOMColumn)
+            Return Me.IsNull(Me.tableComGensanPDistrib.PERFECOMColumn)
         End Function
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Sub SetPERFECOMNull()
-            Me(Me.tableCommonDistribution.PERFECOMColumn) = Global.System.Convert.DBNull
+            Me(Me.tableComGensanPDistrib.PERFECOMColumn) = Global.System.Convert.DBNull
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Function IsG3Null() As Boolean
-            Return Me.IsNull(Me.tableCommonDistribution.G3Column)
+            Return Me.IsNull(Me.tableComGensanPDistrib.G3Column)
         End Function
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Sub SetG3Null()
-            Me(Me.tableCommonDistribution.G3Column) = Global.System.Convert.DBNull
+            Me(Me.tableComGensanPDistrib.G3Column) = Global.System.Convert.DBNull
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Function IsSeven11Null() As Boolean
-            Return Me.IsNull(Me.tableCommonDistribution.Seven11Column)
+            Return Me.IsNull(Me.tableComGensanPDistrib.Seven11Column)
         End Function
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Sub SetSeven11Null()
-            Me(Me.tableCommonDistribution.Seven11Column) = Global.System.Convert.DBNull
+            Me(Me.tableComGensanPDistrib.Seven11Column) = Global.System.Convert.DBNull
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Function IsCOMI_TO_FUJINull() As Boolean
-            Return Me.IsNull(Me.tableCommonDistribution.COMI_TO_FUJIColumn)
+            Return Me.IsNull(Me.tableComGensanPDistrib.COMI_TO_FUJIColumn)
         End Function
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Sub SetCOMI_TO_FUJINull()
-            Me(Me.tableCommonDistribution.COMI_TO_FUJIColumn) = Global.System.Convert.DBNull
+            Me(Me.tableComGensanPDistrib.COMI_TO_FUJIColumn) = Global.System.Convert.DBNull
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Function IsHOUSEHOLDNull() As Boolean
-            Return Me.IsNull(Me.tableCommonDistribution.HOUSEHOLDColumn)
+            Return Me.IsNull(Me.tableComGensanPDistrib.HOUSEHOLDColumn)
         End Function
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Sub SetHOUSEHOLDNull()
-            Me(Me.tableCommonDistribution.HOUSEHOLDColumn) = Global.System.Convert.DBNull
+            Me(Me.tableComGensanPDistrib.HOUSEHOLDColumn) = Global.System.Convert.DBNull
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Function IsLEASINGNull() As Boolean
-            Return Me.IsNull(Me.tableCommonDistribution.LEASINGColumn)
+            Return Me.IsNull(Me.tableComGensanPDistrib.LEASINGColumn)
         End Function
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Sub SetLEASINGNull()
-            Me(Me.tableCommonDistribution.LEASINGColumn) = Global.System.Convert.DBNull
+            Me(Me.tableComGensanPDistrib.LEASINGColumn) = Global.System.Convert.DBNull
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Function IsPAYDATENull() As Boolean
-            Return Me.IsNull(Me.tableCommonDistribution.PAYDATEColumn)
+            Return Me.IsNull(Me.tableComGensanPDistrib.PAYDATEColumn)
         End Function
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Sub SetPAYDATENull()
-            Me(Me.tableCommonDistribution.PAYDATEColumn) = Global.System.Convert.DBNull
+            Me(Me.tableComGensanPDistrib.PAYDATEColumn) = Global.System.Convert.DBNull
+        End Sub
+    End Class
+    
+    '''<summary>
+    '''Represents strongly named DataRow class.
+    '''</summary>
+    Partial Public Class ComLeasingDistribRow
+        Inherits Global.System.Data.DataRow
+        
+        Private tableComLeasingDistrib As ComLeasingDistribDataTable
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Friend Sub New(ByVal rb As Global.System.Data.DataRowBuilder)
+            MyBase.New(rb)
+            Me.tableComLeasingDistrib = CType(Me.Table,ComLeasingDistribDataTable)
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property FULLNAME_L() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableComLeasingDistrib.FULLNAME_LColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'FULLNAME_L' in table 'ComLeasingDistrib' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableComLeasingDistrib.FULLNAME_LColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property COMMON_CATEGORY_L() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableComLeasingDistrib.COMMON_CATEGORY_LColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'COMMON_CATEGORY_L' in table 'ComLeasingDistrib' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableComLeasingDistrib.COMMON_CATEGORY_LColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property NETPAY_L() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableComLeasingDistrib.NETPAY_LColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'NETPAY_L' in table 'ComLeasingDistrib' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableComLeasingDistrib.NETPAY_LColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property DALTON_L() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableComLeasingDistrib.DALTON_LColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'DALTON_L' in table 'ComLeasingDistrib' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableComLeasingDistrib.DALTON_LColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property PHOTO_L() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableComLeasingDistrib.PHOTO_LColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'PHOTO_L' in table 'ComLeasingDistrib' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableComLeasingDistrib.PHOTO_LColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property DAVAOP_L() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableComLeasingDistrib.DAVAOP_LColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'DAVAOP_L' in table 'ComLeasingDistrib' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableComLeasingDistrib.DAVAOP_LColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property PERFECOM_L() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableComLeasingDistrib.PERFECOM_LColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'PERFECOM_L' in table 'ComLeasingDistrib' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableComLeasingDistrib.PERFECOM_LColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property G3_L() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableComLeasingDistrib.G3_LColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'G3_L' in table 'ComLeasingDistrib' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableComLeasingDistrib.G3_LColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property Seven11_L() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableComLeasingDistrib.Seven11_LColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'Seven11_L' in table 'ComLeasingDistrib' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableComLeasingDistrib.Seven11_LColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property COMI_TO_FUJI_L() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableComLeasingDistrib.COMI_TO_FUJI_LColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'COMI_TO_FUJI_L' in table 'ComLeasingDistrib' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableComLeasingDistrib.COMI_TO_FUJI_LColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property HOUSEHOLD_L() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableComLeasingDistrib.HOUSEHOLD_LColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'HOUSEHOLD_L' in table 'ComLeasingDistrib' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableComLeasingDistrib.HOUSEHOLD_LColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property LEASING_L() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableComLeasingDistrib.LEASING_LColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'LEASING_L' in table 'ComLeasingDistrib' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableComLeasingDistrib.LEASING_LColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property PAYDATE_L() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableComLeasingDistrib.PAYDATE_LColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'PAYDATE_L' in table 'ComLeasingDistrib' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableComLeasingDistrib.PAYDATE_LColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsFULLNAME_LNull() As Boolean
+            Return Me.IsNull(Me.tableComLeasingDistrib.FULLNAME_LColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetFULLNAME_LNull()
+            Me(Me.tableComLeasingDistrib.FULLNAME_LColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsCOMMON_CATEGORY_LNull() As Boolean
+            Return Me.IsNull(Me.tableComLeasingDistrib.COMMON_CATEGORY_LColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetCOMMON_CATEGORY_LNull()
+            Me(Me.tableComLeasingDistrib.COMMON_CATEGORY_LColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsNETPAY_LNull() As Boolean
+            Return Me.IsNull(Me.tableComLeasingDistrib.NETPAY_LColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetNETPAY_LNull()
+            Me(Me.tableComLeasingDistrib.NETPAY_LColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsDALTON_LNull() As Boolean
+            Return Me.IsNull(Me.tableComLeasingDistrib.DALTON_LColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetDALTON_LNull()
+            Me(Me.tableComLeasingDistrib.DALTON_LColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsPHOTO_LNull() As Boolean
+            Return Me.IsNull(Me.tableComLeasingDistrib.PHOTO_LColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetPHOTO_LNull()
+            Me(Me.tableComLeasingDistrib.PHOTO_LColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsDAVAOP_LNull() As Boolean
+            Return Me.IsNull(Me.tableComLeasingDistrib.DAVAOP_LColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetDAVAOP_LNull()
+            Me(Me.tableComLeasingDistrib.DAVAOP_LColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsPERFECOM_LNull() As Boolean
+            Return Me.IsNull(Me.tableComLeasingDistrib.PERFECOM_LColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetPERFECOM_LNull()
+            Me(Me.tableComLeasingDistrib.PERFECOM_LColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsG3_LNull() As Boolean
+            Return Me.IsNull(Me.tableComLeasingDistrib.G3_LColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetG3_LNull()
+            Me(Me.tableComLeasingDistrib.G3_LColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsSeven11_LNull() As Boolean
+            Return Me.IsNull(Me.tableComLeasingDistrib.Seven11_LColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetSeven11_LNull()
+            Me(Me.tableComLeasingDistrib.Seven11_LColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsCOMI_TO_FUJI_LNull() As Boolean
+            Return Me.IsNull(Me.tableComLeasingDistrib.COMI_TO_FUJI_LColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetCOMI_TO_FUJI_LNull()
+            Me(Me.tableComLeasingDistrib.COMI_TO_FUJI_LColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsHOUSEHOLD_LNull() As Boolean
+            Return Me.IsNull(Me.tableComLeasingDistrib.HOUSEHOLD_LColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetHOUSEHOLD_LNull()
+            Me(Me.tableComLeasingDistrib.HOUSEHOLD_LColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsLEASING_LNull() As Boolean
+            Return Me.IsNull(Me.tableComLeasingDistrib.LEASING_LColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetLEASING_LNull()
+            Me(Me.tableComLeasingDistrib.LEASING_LColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsPAYDATE_LNull() As Boolean
+            Return Me.IsNull(Me.tableComLeasingDistrib.PAYDATE_LColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetPAYDATE_LNull()
+            Me(Me.tableComLeasingDistrib.PAYDATE_LColumn) = Global.System.Convert.DBNull
         End Sub
     End Class
     
@@ -4453,16 +5276,16 @@ Partial Public Class reports
     '''Row event argument class
     '''</summary>
     <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-    Public Class CommonDistributionRowChangeEvent
+    Public Class ComGensanPDistribRowChangeEvent
         Inherits Global.System.EventArgs
         
-        Private eventRow As CommonDistributionRow
+        Private eventRow As ComGensanPDistribRow
         
         Private eventAction As Global.System.Data.DataRowAction
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Sub New(ByVal row As CommonDistributionRow, ByVal action As Global.System.Data.DataRowAction)
+        Public Sub New(ByVal row As ComGensanPDistribRow, ByVal action As Global.System.Data.DataRowAction)
             MyBase.New
             Me.eventRow = row
             Me.eventAction = action
@@ -4470,7 +5293,43 @@ Partial Public Class reports
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public ReadOnly Property Row() As CommonDistributionRow
+        Public ReadOnly Property Row() As ComGensanPDistribRow
+            Get
+                Return Me.eventRow
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property Action() As Global.System.Data.DataRowAction
+            Get
+                Return Me.eventAction
+            End Get
+        End Property
+    End Class
+    
+    '''<summary>
+    '''Row event argument class
+    '''</summary>
+    <Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+    Public Class ComLeasingDistribRowChangeEvent
+        Inherits Global.System.EventArgs
+        
+        Private eventRow As ComLeasingDistribRow
+        
+        Private eventAction As Global.System.Data.DataRowAction
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub New(ByVal row As ComLeasingDistribRow, ByVal action As Global.System.Data.DataRowAction)
+            MyBase.New
+            Me.eventRow = row
+            Me.eventAction = action
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property Row() As ComLeasingDistribRow
             Get
                 Return Me.eventRow
             End Get
