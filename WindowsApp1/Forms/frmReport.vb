@@ -450,6 +450,7 @@
                 .Columns.Add("COMI_TO_FUJI")
                 .Columns.Add("HOUSEHOLD")
                 .Columns.Add("LEASING")
+                .Columns.Add("PAYDATE")
             End With
 
             Dim mysqll As String = $"Select * From PAYROLL_EMPLOYEE A 
@@ -463,7 +464,7 @@
                     For Each dr In ds.Tables(0).Rows
                         With dr
 
-                            Dim dateStarted As DateTime = PaydateCom_Combo.Text
+                            Dim PAYROLL As DateTime = PaydateCom_Combo.Text
 
                             '============================= NAME AND ATTENDANCE ============================  
                             Dim namee As String = .Item("FULLNAME")
@@ -480,7 +481,7 @@
                             Dim LEASING As Double = .Item("LEASING")
 
                             dt_CommonDis.Rows.Add(namee, CATEGORY, NET_PAY.ToString("n"), DALTON, PHOTO, DAVAOP,
-                                               PERFECOM, G3, Seven11, COMI_TO_FUJI, HOUSEHOLD, LEASING)
+                                               PERFECOM, G3, Seven11, COMI_TO_FUJI, HOUSEHOLD, LEASING, Format(PAYROLL, "MMMM dd, yyyy").ToUpper())
 
                         End With
                     Next

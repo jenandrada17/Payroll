@@ -2344,6 +2344,19 @@ Module SelectFromDatabase
         End If
     End Sub
 
+    Public Function GetMinimumRate(branch_code As String) As Double
+        Dim minimum_rate As Integer = 0
+        Dim mysql As String = $"Select * From PAYROLL_MINIMUM_RATE where branch_code = '{branch_code}'"
+        Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_MINIMUM_RATE")
+        If ds.Tables(0).Rows.Count > 0 Then
+            Dim dr As DataRow = ds.Tables(0).Rows(0)
+            With dr
+                minimum_rate = IIf(IsDBNull(.Item("MINIMUM_RATE")), 0, .Item("MINIMUM_RATE"))
+            End With
+        End If
+        Return minimum_rate
+    End Function
+
 
     Public Sub Replacing(str As String)
         RunCommand($"DELETE FROM {str}")  'THIS IS TO DELETE EXISTING DATA TO REPLACE ESPECIALLY FROM DATAGRID

@@ -21,6 +21,7 @@ Public Class frmNewEmployee
     Private Sub frmNewEmployee_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Lists_Employees(lvEmployee)
         'ListViewGrouping(lvEmployee, 0) 
+        PopulateComboBox(Branch_ComboB, "PAYROLL_EMPLOYEE", "BRANCH_CODE")
 
         For x = 0 To 23
             Dim tm As New Date(1, 1, 1, x, 0, 0)
@@ -436,14 +437,17 @@ Public Class frmNewEmployee
 
         ElseIf String.IsNullOrEmpty(Branch_ComboB.Text) And Add_Company_CB.Text <> "HEAD OFFICE" Then
             Branch_ComboB.Region = New Region(New Rectangle(2, 2, Branch_ComboB.Width - 4, Branch_ComboB.Height - 4))
+            MsgBox("Please Select Branch!", MsgBoxStyle.Exclamation, "Error")
             Return False
 
         ElseIf String.IsNullOrEmpty(TimeIn_Combo.Text) Then
             TimeIn_Combo.Region = New Region(New Rectangle(2, 2, TimeIn_Combo.Width - 4, TimeIn_Combo.Height - 4))
+            MsgBox("Please Select Time In!", MsgBoxStyle.Exclamation, "Error")
             Return False
 
         ElseIf String.IsNullOrEmpty(TimeOut_Combo.Text) Then
             TimeOut_Combo.Region = New Region(New Rectangle(2, 2, TimeOut_Combo.Width - 4, TimeOut_Combo.Height - 4))
+            MsgBox("Please Select Time Out!", MsgBoxStyle.Exclamation, "Error")
             Return False
 
         ElseIf Started_DTP.Value = "1/1/2000" Then
@@ -655,12 +659,10 @@ Public Class frmNewEmployee
             Dim datepicker As DateTimePicker = Nothing
             For Each xObject As Object In FlowLayoutPanel1.Controls
                 If TypeOf xObject Is TextBox Then
-                    If xObject.Text = "" Then
-                        textbox = xObject
-                        Dim p As New Pen(Color.Red, 2)
-                        e.Graphics.DrawRectangle(p, New Rectangle(textbox.Location + New Size(1, 1), textbox.Size - New Size(2, 2)))
-                        p.Dispose()
-                    End If
+                    textbox = xObject
+                    Dim p As New Pen(Color.Red, 2)
+                    e.Graphics.DrawRectangle(p, New Rectangle(textbox.Location + New Size(1, 1), textbox.Size - New Size(2, 2)))
+                    p.Dispose()
                 ElseIf TypeOf xObject Is ComboBox Then
                     If xObject.visible = True Then
                         combo = xObject
@@ -669,15 +671,12 @@ Public Class frmNewEmployee
                         p.Dispose()
                     End If
                 ElseIf TypeOf xObject Is DateTimePicker Then
-                    If xObject.Text = "" Then
-                        datepicker = xObject
-                        Dim p As New Pen(Color.Red, 2)
-                        e.Graphics.DrawRectangle(p, New Rectangle(datepicker.Location + New Size(1, 1), datepicker.Size - New Size(2, 2)))
-                        p.Dispose()
-                    End If
+                    datepicker = xObject
+                    Dim p As New Pen(Color.Red, 2)
+                    e.Graphics.DrawRectangle(p, New Rectangle(datepicker.Location + New Size(1, 1), datepicker.Size - New Size(2, 2)))
+                    p.Dispose()
                 End If
             Next
-
         End If
     End Sub
 

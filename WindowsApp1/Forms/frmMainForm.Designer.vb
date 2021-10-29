@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class frmMainForm
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,7 +20,7 @@ Partial Class frmMainForm
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.NavagationPanel = New System.Windows.Forms.Panel()
         Me.PictureBox7 = New System.Windows.Forms.PictureBox()
@@ -42,8 +42,6 @@ Partial Class frmMainForm
         Me.LoginToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ConnectToDatabaseToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
-        Me.ImportEployeeFromFileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
         Me.ExitToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.AboutUsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.UserName_LBL = New System.Windows.Forms.Label()
@@ -284,7 +282,7 @@ Partial Class frmMainForm
         '
         'FileToolStripMenuItem
         '
-        Me.FileToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.LoginToolStripMenuItem, Me.ConnectToDatabaseToolStripMenuItem, Me.ToolStripSeparator1, Me.ImportEployeeFromFileToolStripMenuItem, Me.ToolStripSeparator2, Me.ExitToolStripMenuItem})
+        Me.FileToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.LoginToolStripMenuItem, Me.ConnectToDatabaseToolStripMenuItem, Me.ToolStripSeparator1, Me.ExitToolStripMenuItem})
         Me.FileToolStripMenuItem.ForeColor = System.Drawing.Color.White
         Me.FileToolStripMenuItem.Name = "FileToolStripMenuItem"
         Me.FileToolStripMenuItem.Size = New System.Drawing.Size(37, 20)
@@ -293,36 +291,24 @@ Partial Class frmMainForm
         'LoginToolStripMenuItem
         '
         Me.LoginToolStripMenuItem.Name = "LoginToolStripMenuItem"
-        Me.LoginToolStripMenuItem.Size = New System.Drawing.Size(217, 22)
+        Me.LoginToolStripMenuItem.Size = New System.Drawing.Size(184, 22)
         Me.LoginToolStripMenuItem.Text = "&Login"
         '
         'ConnectToDatabaseToolStripMenuItem
         '
         Me.ConnectToDatabaseToolStripMenuItem.Name = "ConnectToDatabaseToolStripMenuItem"
-        Me.ConnectToDatabaseToolStripMenuItem.Size = New System.Drawing.Size(217, 22)
+        Me.ConnectToDatabaseToolStripMenuItem.Size = New System.Drawing.Size(184, 22)
         Me.ConnectToDatabaseToolStripMenuItem.Text = "&Connect to Database"
         '
         'ToolStripSeparator1
         '
         Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-        Me.ToolStripSeparator1.Size = New System.Drawing.Size(214, 6)
-        '
-        'ImportEployeeFromFileToolStripMenuItem
-        '
-        Me.ImportEployeeFromFileToolStripMenuItem.BackColor = System.Drawing.SystemColors.Control
-        Me.ImportEployeeFromFileToolStripMenuItem.Name = "ImportEployeeFromFileToolStripMenuItem"
-        Me.ImportEployeeFromFileToolStripMenuItem.Size = New System.Drawing.Size(217, 22)
-        Me.ImportEployeeFromFileToolStripMenuItem.Text = "Import Employee From File"
-        '
-        'ToolStripSeparator2
-        '
-        Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
-        Me.ToolStripSeparator2.Size = New System.Drawing.Size(214, 6)
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(181, 6)
         '
         'ExitToolStripMenuItem
         '
         Me.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem"
-        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(217, 22)
+        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(184, 22)
         Me.ExitToolStripMenuItem.Text = "&Exit"
         '
         'AboutUsToolStripMenuItem
@@ -550,8 +536,6 @@ Partial Class frmMainForm
     Friend WithEvents LoginToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ConnectToDatabaseToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ToolStripSeparator1 As ToolStripSeparator
-    Friend WithEvents ImportEployeeFromFileToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents ToolStripSeparator2 As ToolStripSeparator
     Friend WithEvents ExitToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents AboutUsToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents UserName_LBL As Label

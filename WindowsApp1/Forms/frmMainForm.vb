@@ -146,9 +146,17 @@ Public Class frmMainForm
         OpenWindowsForm("frmImport")
     End Sub
 
+
     Private Sub ConnectToDatabaseToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ConnectToDatabaseToolStripMenuItem.Click
         Using conSettings As New ServerSettings
             conSettings.ShowDialog()
+        End Using
+    End Sub
+
+    Private Sub PictureBox1_DoubleClick(sender As Object, e As EventArgs) Handles PictureBox1.DoubleClick
+        Using comString As New Developer
+            comString.ShowDialog()
+            comString.BringToFront()
         End Using
     End Sub
 

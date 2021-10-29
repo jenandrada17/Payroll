@@ -31,7 +31,7 @@ Public Class frmSettings
             ClockBranch_OUT_CB.Items.Add(tm.ToShortTimeString)
         Next
 
-        'ClockBranch_CB.Items.Insert(0, "HEAD OFFICE")
+        Rate_Branch_ComboB.Items.Insert(0, "")
     End Sub
 
     Private Sub Close_LBL_Click(sender As Object, e As EventArgs) Handles Close_LBL.Click
@@ -195,6 +195,8 @@ Public Class frmSettings
         If Rate_Branch_ComboB.SelectedIndex >= 0 And Not Rate_BranchAmount_TXT.Text = "" Then
 
             SaveRATE("BRANCH_CODE", Rate_Branch_ComboB.Text, Rate_BranchAmount_TXT.Text, True)
+
+            SaveMinimum_RATE(Rate_Branch_ComboB.Text, Rate_BranchAmount_TXT.Text)
 
             Rate_Branch_ComboB.Text = "   Select Branch"
             Rate_BranchAmount_TXT.Clear()

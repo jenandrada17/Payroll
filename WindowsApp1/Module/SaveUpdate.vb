@@ -439,7 +439,11 @@
             For Each dr In dss.Tables(0).Rows
                 With dr
 
-                    .Item("RATE_DAILY") = daily_rate
+                    Dim existing_rate As Double = IIf(IsDBNull(.Item("RATE_DAILY")), 0, .Item("RATE_DAILY"))
+
+                    If existing_rate < daily_rate Then
+                        .Item("RATE_DAILY") = daily_rate
+                    End If
 
                 End With
                 SaveEntry(dss, False)
@@ -448,6 +452,35 @@
             If group = False Then
                 MsgBox("Successfully Updated!", MsgBoxStyle.Information, "Information")
             End If
+        End If
+    End Sub
+
+    Friend Sub SaveMinimum_RATE(value As String, MINIMUM_RATE As String) '=========== BOOLEAN IF MORE THAN 1 ========== 
+        Dim mysql As String
+
+        mysql = $"Select * FROM PAYROLL_MINIMUM_RATE where BRANCH_CODE = '{value}'"
+        Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_MINIMUM_RATE")
+        If dss.Tables(0).Rows.Count > 0 Then
+            For Each dr In dss.Tables(0).Rows
+                With dr
+                    .Item("MINIMUM_RATE") = MINIMUM_RATE
+                End With
+                SaveEntry(dss, False)
+            Next
+        Else
+
+            mysql = "Select * From PAYROLL_MINIMUM_RATE Rows 1"
+            Using ds As DataSet = LoadSQL(mysql, "PAYROLL_MINIMUM_RATE")
+
+                Dim dsNewRow As DataRow = ds.Tables(0).NewRow
+                With dsNewRow
+                    .Item("BRANCH_CODE") = value
+                    .Item("MINIMUM_RATE") = MINIMUM_RATE
+                End With
+                ds.Tables(0).Rows.Add(dsNewRow)
+                SaveEntry(ds)
+            End Using
+
         End If
     End Sub
 
@@ -742,8 +775,9 @@
                     Dim rate As Double = 0
                     Dim SIL As Double = 0
                     Dim Allowances As Double = 0
+                    Dim Minimum_rate As Double = GetMinimumRate(.Item("BRANCH_CODE"))
 
-                    rate = IIf(IsDBNull(.Item("RATE_DAILY")), 0, .Item("RATE_DAILY"))
+                    rate = IIf(IsDBNull(.Item("RATE_DAILY")) Or .Item("RATE_DAILY") = 0, Minimum_rate, .Item("RATE_DAILY"))
                     Company = IIf(IsDBNull(.Item("COMPANY")), "", .Item("COMPANY"))
 
                     '====================================== IF TRAINEE GET TRAINING DAYS TO CALCULATE TRAINING FEE ===============================================
@@ -1015,9 +1049,10 @@
                         Dim nightRate As Double = 0
                         Dim Allowances As Double = 0
                         Dim Deduction As Double = 0
+                        Dim Minimum_rate As Double = GetMinimumRate(.Item("BRANCH_CODE"))
 
                         BiometricID = .Item("BIOMETRICID")
-                        rate = IIf(IsDBNull(.Item("RATE_DAILY")), 0, .Item("RATE_DAILY"))
+                        rate = IIf(IsDBNull(.Item("RATE_DAILY")) Or .Item("RATE_DAILY") = 0, Minimum_rate, .Item("RATE_DAILY"))
                         Company = IIf(IsDBNull(.Item("COMPANY")), "", .Item("COMPANY"))
 
                         '==================== GET TRAINING DAYS TO CALCULATE TRAINING FEE (IF DATE_STARTED NOT NULL =================================

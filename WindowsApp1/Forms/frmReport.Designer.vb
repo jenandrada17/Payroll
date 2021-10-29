@@ -62,6 +62,9 @@ Partial Class frmReport
         Me.Label26 = New System.Windows.Forms.Label()
         Me.Label14 = New System.Windows.Forms.Label()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.Label28 = New System.Windows.Forms.Label()
+        Me.Label30 = New System.Windows.Forms.Label()
+        Me.LeasingP_TXT = New System.Windows.Forms.TextBox()
         Me.Label3 = New System.Windows.Forms.Label()
         Me.Label4 = New System.Windows.Forms.Label()
         Me.Label5 = New System.Windows.Forms.Label()
@@ -107,9 +110,7 @@ Partial Class frmReport
         Me.ColumnHeader28 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Close_LBL = New System.Windows.Forms.Label()
-        Me.Label28 = New System.Windows.Forms.Label()
-        Me.Label30 = New System.Windows.Forms.Label()
-        Me.LeasingP_TXT = New System.Windows.Forms.TextBox()
+        Me.TabPage2 = New System.Windows.Forms.TabPage()
         CType(Me.NetPayBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.reports, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CommonDistributionBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -149,6 +150,7 @@ Partial Class frmReport
         Me.Reports_Tab.Controls.Add(Me.TabPage1)
         Me.Reports_Tab.Controls.Add(Me.TabPage3)
         Me.Reports_Tab.Controls.Add(Me.d)
+        Me.Reports_Tab.Controls.Add(Me.TabPage2)
         Me.Reports_Tab.Controls.Add(Me.TabPage4)
         Me.Reports_Tab.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Reports_Tab.Location = New System.Drawing.Point(5, 30)
@@ -517,6 +519,33 @@ Partial Class frmReport
         Me.GroupBox1.Size = New System.Drawing.Size(471, 191)
         Me.GroupBox1.TabIndex = 107
         Me.GroupBox1.TabStop = False
+        '
+        'Label28
+        '
+        Me.Label28.AutoSize = True
+        Me.Label28.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label28.Location = New System.Drawing.Point(370, 117)
+        Me.Label28.Name = "Label28"
+        Me.Label28.Size = New System.Drawing.Size(50, 22)
+        Me.Label28.TabIndex = 117
+        Me.Label28.Text = "Leasing"
+        '
+        'Label30
+        '
+        Me.Label30.AutoSize = True
+        Me.Label30.Font = New System.Drawing.Font("Dubai", 8.999999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label30.Location = New System.Drawing.Point(427, 147)
+        Me.Label30.Name = "Label30"
+        Me.Label30.Size = New System.Drawing.Size(22, 21)
+        Me.Label30.TabIndex = 116
+        Me.Label30.Text = "%"
+        '
+        'LeasingP_TXT
+        '
+        Me.LeasingP_TXT.Location = New System.Drawing.Point(365, 142)
+        Me.LeasingP_TXT.Name = "LeasingP_TXT"
+        Me.LeasingP_TXT.Size = New System.Drawing.Size(62, 28)
+        Me.LeasingP_TXT.TabIndex = 10
         '
         'Label3
         '
@@ -920,32 +949,15 @@ Partial Class frmReport
         Me.Close_LBL.TabIndex = 75
         Me.Close_LBL.Text = "Close"
         '
-        'Label28
+        'TabPage2
         '
-        Me.Label28.AutoSize = True
-        Me.Label28.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label28.Location = New System.Drawing.Point(370, 117)
-        Me.Label28.Name = "Label28"
-        Me.Label28.Size = New System.Drawing.Size(50, 22)
-        Me.Label28.TabIndex = 117
-        Me.Label28.Text = "Leasing"
-        '
-        'Label30
-        '
-        Me.Label30.AutoSize = True
-        Me.Label30.Font = New System.Drawing.Font("Dubai", 8.999999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label30.Location = New System.Drawing.Point(427, 147)
-        Me.Label30.Name = "Label30"
-        Me.Label30.Size = New System.Drawing.Size(22, 21)
-        Me.Label30.TabIndex = 116
-        Me.Label30.Text = "%"
-        '
-        'LeasingP_TXT
-        '
-        Me.LeasingP_TXT.Location = New System.Drawing.Point(365, 142)
-        Me.LeasingP_TXT.Name = "LeasingP_TXT"
-        Me.LeasingP_TXT.Size = New System.Drawing.Size(62, 28)
-        Me.LeasingP_TXT.TabIndex = 10
+        Me.TabPage2.Location = New System.Drawing.Point(4, 41)
+        Me.TabPage2.Name = "TabPage2"
+        Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage2.Size = New System.Drawing.Size(1151, 591)
+        Me.TabPage2.TabIndex = 5
+        Me.TabPage2.Text = "    Totals    "
+        Me.TabPage2.UseVisualStyleBackColor = True
         '
         'frmReport
         '
@@ -1065,4 +1077,5 @@ Partial Class frmReport
     Friend WithEvents Label28 As Label
     Friend WithEvents Label30 As Label
     Friend WithEvents LeasingP_TXT As TextBox
+    Friend WithEvents TabPage2 As TabPage
 End Class
