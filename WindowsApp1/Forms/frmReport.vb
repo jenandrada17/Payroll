@@ -17,23 +17,21 @@
         If IsEnter(e) Then SearchSBU_BTN.PerformClick()
     End Sub
 
-    Private Sub PreviewNet_BTN_Click(sender As Object, e As EventArgs) Handles PreviewNet_BTN.Click
+    Private Sub PreviewNet_BTN_Click(sender As Object, e As EventArgs)
 
-        If PaydateNet_ComboB.SelectedIndex >= 0 Then
-            LoadNet_Print()
-        Else
-            MsgBox("Please select date of payroll.", MsgBoxStyle.Exclamation, "Error")
-        End If
+        'If PaydateNet_ComboB.SelectedIndex >= 0 Then
+        '    LoadNet_Print()
+        'Else
+        '    MsgBox("Please select date of payroll.", MsgBoxStyle.Exclamation, "Error")
+        'End If
 
     End Sub
 
-    Public Sub LoadNet_Print()
+    Public Sub LoadNet_Print(mysqll As String)
 
         ReportV_NetPay.LocalReport.DataSources.Clear()
-        ReportV_NetPay.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_NetPay.rdlc"
 
         Dim paydatee As String = PaydateNet_ComboB.SelectedItem
-        Dim mysqll As String = ""
         Dim GROUP As String = ""
         Dim period As String
 
@@ -72,28 +70,15 @@
                 .Columns.Add("HO_CATEGORY")
             End With
 
-            If Company_Combo.SelectedIndex >= 0 Then
-
-                mysqll = $"Select * From PAYROLL_PAYOUT A 
-                                        inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
-                                        where A.PAYDATE  = '{paydatee}' and B.COMPANY  = '{Company_Combo.Text}' ORDER BY BRANCH_CODE, FULLNAME ASC"
-
-            Else
-
-                mysqll = $"Select * From PAYROLL_PAYOUT A 
-                                        inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
-                                        where HO_CATEGORY <> 'PGC Head Office' and A.PAYDATE  = '{paydatee}' ORDER BY COMPANY, BRANCH_CODE, FULLNAME ASC"
-
-            End If
             Using ds As DataSet = LoadSQL(mysqll, "PAYROLL_PAYOUT")
 
                 If ds.Tables(0).Rows.Count > 0 Then
 
                     For Each dr In ds.Tables(0).Rows
                         With dr
-
+                            Console.WriteLine(".Item(BRANCH_CODE)" & .Item("BRANCH_CODE"))
                             Dim dateStarted As DateTime = .Item("DATE_STARTED")
-                            Dim EMP_NO As String = .Item("EMP_NO")
+                            Dim EMP_NO As String = IIf(IsDBNull(.Item("EMP_NO")), "", .Item("EMP_NO"))
 
                             Dim payroll As DateTime = paydatee
 
@@ -113,6 +98,11 @@
                             Dim BRANCH_CODE As String = .Item("BRANCH_CODE")
                             Dim COMPANY As String = .Item("COMPANY")
                             Dim HO_CATEGORY As String = IIf(IsDBNull(.Item("HO_CATEGORY")), "", .Item("HO_CATEGORY"))
+
+                            If HO_CATEGORY = "GHS/P&G UY Admin Office" Or HO_CATEGORY = "GHS/P&G UY Admin Operation" Then
+                                COMPANY = "P&G UY"
+                                BRANCH_CODE = HO_CATEGORY
+                            End If
 
                             dt_NetPay.Rows.Add(EMP_NO, namee, BASIC.ToString("n"), OVERTIME.ToString("n"), HOLIDAY.ToString("n"), N_DIFF.ToString("n"),
                                                PI_ECOLA_SIL.ToString("n"), TARDINESS.ToString("n"), SSS.ToString("n"), PHIC.ToString("n"), PAGIBIG.ToString("n"),
@@ -625,4 +615,69 @@
         Cursor = Cursors.Default
     End Sub
 
+    Private Sub Company_Combo_SelectedValueChanged(sender As Object, e As EventArgs) Handles Company_Combo.SelectedValueChanged
+
+        If Company_Combo.SelectedIndex = 0 Then '=== PHOTO
+            NetBranch_Combo.Items.Clear()
+            NetBranch_Combo.Items.Insert(0, "Davao Perfect")
+            NetBranch_Combo.Items.Insert(1, "JR Photo")
+            NetBranch_Combo.Items.Insert(2, "Gensan Photo")
+
+        ElseIf Company_Combo.SelectedIndex = 1 Then '=== P&G UY
+            NetBranch_Combo.Items.Clear()
+            NetBranch_Combo.Items.Insert(0, "3G")
+            NetBranch_Combo.Items.Insert(1, "7Eleven")
+            NetBranch_Combo.Items.Insert(2, "COMI-GHS Admin Operation")
+
+        ElseIf Company_Combo.SelectedIndex = 2 Then '=== DALTON
+            NetBranch_Combo.Items.Clear()
+            NetBranch_Combo.Items.Insert(0, "Dalton Office-Operation")
+            NetBranch_Combo.Items.Insert(1, "All Dalton Branch")
+
+        ElseIf Company_Combo.SelectedIndex = 3 Then '=== PERFECOM 
+
+        End If
+
+    End Sub
+
+    Private Sub NetBranch_Combo_SelectedValueChanged(sender As Object, e As EventArgs) Handles NetBranch_Combo.SelectedValueChanged
+        If PaydateNet_ComboB.SelectedIndex >= 0 Then
+
+            Dim paydatee As String = PaydateNet_ComboB.SelectedItem
+            Dim mysql As String = ""
+
+            If Company_Combo.SelectedIndex = 0 Then '=== PHOTO
+
+            ElseIf Company_Combo.SelectedIndex = 1 Then '=== P&G UY 
+
+                If NetBranch_Combo.SelectedIndex = 0 Then '=== 3G
+
+                    mysql = $"Select * From PAYROLL_PAYOUT A 
+                                        inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
+                                        where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'P&G UY' and B.BRANCH_CODE = '3G' ORDER BY FULLNAME ASC"
+
+                ElseIf NetBranch_Combo.SelectedIndex = 1 Then '=== 7Eleven
+
+                    mysql = $"Select * From PAYROLL_PAYOUT A 
+                                        inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
+                                        where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'P&G UY' and B.BRANCH_CODE IN ('711-POL','711-ROX') ORDER BY FULLNAME ASC"
+
+                ElseIf NetBranch_Combo.SelectedIndex = 2 Then '=== COMI-GHS Admin Operation
+
+                    mysql = $"Select * From PAYROLL_PAYOUT A 
+                                        inner Join PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
+                                        where A.PAYDATE = '{paydatee}' and B.COMPANY  = 'P&G UY' 
+                                        And B.BRANCH_CODE IN ('COMI','KTV','PBA','WAVE') Or B.HO_CATEGORY In ('GHS/P&G UY Admin Office','GHS/P&G UY Admin Operation') 
+                                        ORDER BY B.BRANCH_CODE, B.FULLNAME"
+
+                End If
+
+            ElseIf Company_Combo.SelectedIndex = 2 Then '=== DALTON
+            ElseIf Company_Combo.SelectedIndex = 3 Then '=== PERFECOM
+
+            End If
+
+            LoadNet_Print(mysql)
+        End If
+    End Sub
 End Class

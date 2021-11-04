@@ -23,21 +23,22 @@ Partial Class frmReport
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim ReportDataSource5 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Dim ReportDataSource6 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Dim ReportDataSource4 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource1 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource2 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource3 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
         Me.NetPayBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.reports = New WindowsApp1.reports()
         Me.CommonDistributionBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.CommonBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.Reports_Tab = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.Label31 = New System.Windows.Forms.Label()
+        Me.NetBranch_Combo = New System.Windows.Forms.ComboBox()
         Me.Button1 = New System.Windows.Forms.Button()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.Company_Combo = New System.Windows.Forms.ComboBox()
         Me.ReportV_NetPay = New Microsoft.Reporting.WinForms.ReportViewer()
         Me.Label20 = New System.Windows.Forms.Label()
-        Me.PreviewNet_BTN = New System.Windows.Forms.Button()
         Me.PaydateNet_ComboB = New System.Windows.Forms.ComboBox()
         Me.TabPage3 = New System.Windows.Forms.TabPage()
         Me.Label27 = New System.Windows.Forms.Label()
@@ -97,6 +98,7 @@ Partial Class frmReport
         Me.Modify_BTN = New System.Windows.Forms.Button()
         Me.ComPrev_BTN = New System.Windows.Forms.Button()
         Me.RptViewer_Count = New Microsoft.Reporting.WinForms.ReportViewer()
+        Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.TabPage4 = New System.Windows.Forms.TabPage()
         Me.SearchSBU_TXT = New System.Windows.Forms.TextBox()
         Me.SearchSBU_BTN = New System.Windows.Forms.Button()
@@ -110,7 +112,6 @@ Partial Class frmReport
         Me.ColumnHeader28 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Close_LBL = New System.Windows.Forms.Label()
-        Me.TabPage2 = New System.Windows.Forms.TabPage()
         CType(Me.NetPayBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.reports, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CommonDistributionBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -161,12 +162,13 @@ Partial Class frmReport
         '
         'TabPage1
         '
+        Me.TabPage1.Controls.Add(Me.Label31)
+        Me.TabPage1.Controls.Add(Me.NetBranch_Combo)
         Me.TabPage1.Controls.Add(Me.Button1)
         Me.TabPage1.Controls.Add(Me.Label2)
         Me.TabPage1.Controls.Add(Me.Company_Combo)
         Me.TabPage1.Controls.Add(Me.ReportV_NetPay)
         Me.TabPage1.Controls.Add(Me.Label20)
-        Me.TabPage1.Controls.Add(Me.PreviewNet_BTN)
         Me.TabPage1.Controls.Add(Me.PaydateNet_ComboB)
         Me.TabPage1.Location = New System.Drawing.Point(4, 41)
         Me.TabPage1.Name = "TabPage1"
@@ -176,10 +178,30 @@ Partial Class frmReport
         Me.TabPage1.Text = "    Net Pay   "
         Me.TabPage1.UseVisualStyleBackColor = True
         '
+        'Label31
+        '
+        Me.Label31.AutoSize = True
+        Me.Label31.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label31.Location = New System.Drawing.Point(611, 16)
+        Me.Label31.Name = "Label31"
+        Me.Label31.Size = New System.Drawing.Size(55, 25)
+        Me.Label31.TabIndex = 107
+        Me.Label31.Text = "Branch"
+        '
+        'NetBranch_Combo
+        '
+        Me.NetBranch_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.NetBranch_Combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.NetBranch_Combo.FormattingEnabled = True
+        Me.NetBranch_Combo.Location = New System.Drawing.Point(672, 13)
+        Me.NetBranch_Combo.Name = "NetBranch_Combo"
+        Me.NetBranch_Combo.Size = New System.Drawing.Size(231, 33)
+        Me.NetBranch_Combo.TabIndex = 106
+        '
         'Button1
         '
         Me.Button1.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button1.Location = New System.Drawing.Point(917, 13)
+        Me.Button1.Location = New System.Drawing.Point(1032, 6)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(114, 36)
         Me.Button1.TabIndex = 105
@@ -190,27 +212,28 @@ Partial Class frmReport
         '
         Me.Label2.AutoSize = True
         Me.Label2.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.Location = New System.Drawing.Point(384, 17)
+        Me.Label2.Location = New System.Drawing.Point(292, 17)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(91, 25)
+        Me.Label2.Size = New System.Drawing.Size(71, 25)
         Me.Label2.TabIndex = 104
-        Me.Label2.Text = "By Company"
+        Me.Label2.Text = "Company"
         '
         'Company_Combo
         '
+        Me.Company_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.Company_Combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Company_Combo.FormattingEnabled = True
-        Me.Company_Combo.Items.AddRange(New Object() {"PHOTO", "P&G UY", "DALTON", "PERFECOM", "HEAD OFFICE"})
-        Me.Company_Combo.Location = New System.Drawing.Point(479, 14)
+        Me.Company_Combo.Items.AddRange(New Object() {"PHOTO", "P&G UY", "DALTON", "PERFECOM"})
+        Me.Company_Combo.Location = New System.Drawing.Point(366, 14)
         Me.Company_Combo.Name = "Company_Combo"
-        Me.Company_Combo.Size = New System.Drawing.Size(197, 33)
+        Me.Company_Combo.Size = New System.Drawing.Size(221, 33)
         Me.Company_Combo.TabIndex = 103
         '
         'ReportV_NetPay
         '
-        ReportDataSource5.Name = "DataSet1"
-        ReportDataSource5.Value = Me.NetPayBindingSource
-        Me.ReportV_NetPay.LocalReport.DataSources.Add(ReportDataSource5)
+        ReportDataSource1.Name = "DataSet1"
+        ReportDataSource1.Value = Me.NetPayBindingSource
+        Me.ReportV_NetPay.LocalReport.DataSources.Add(ReportDataSource1)
         Me.ReportV_NetPay.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_NetPay.rdlc"
         Me.ReportV_NetPay.Location = New System.Drawing.Point(4, 67)
         Me.ReportV_NetPay.Name = "ReportV_NetPay"
@@ -228,23 +251,14 @@ Partial Class frmReport
         Me.Label20.TabIndex = 11
         Me.Label20.Text = "Search Payroll"
         '
-        'PreviewNet_BTN
-        '
-        Me.PreviewNet_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.PreviewNet_BTN.Location = New System.Drawing.Point(1058, 14)
-        Me.PreviewNet_BTN.Name = "PreviewNet_BTN"
-        Me.PreviewNet_BTN.Size = New System.Drawing.Size(87, 36)
-        Me.PreviewNet_BTN.TabIndex = 9
-        Me.PreviewNet_BTN.Text = "Preview"
-        Me.PreviewNet_BTN.UseVisualStyleBackColor = True
-        '
         'PaydateNet_ComboB
         '
+        Me.PaydateNet_ComboB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.PaydateNet_ComboB.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.PaydateNet_ComboB.FormattingEnabled = True
         Me.PaydateNet_ComboB.Location = New System.Drawing.Point(111, 13)
         Me.PaydateNet_ComboB.Name = "PaydateNet_ComboB"
-        Me.PaydateNet_ComboB.Size = New System.Drawing.Size(197, 33)
+        Me.PaydateNet_ComboB.Size = New System.Drawing.Size(144, 33)
         Me.PaydateNet_ComboB.TabIndex = 8
         '
         'TabPage3
@@ -295,9 +309,9 @@ Partial Class frmReport
         '
         'RptViewer_Common
         '
-        ReportDataSource6.Name = "DataSet1"
-        ReportDataSource6.Value = Me.CommonDistributionBindingSource
-        Me.RptViewer_Common.LocalReport.DataSources.Add(ReportDataSource6)
+        ReportDataSource2.Name = "DataSet1"
+        ReportDataSource2.Value = Me.CommonDistributionBindingSource
+        Me.RptViewer_Common.LocalReport.DataSources.Add(ReportDataSource2)
         Me.RptViewer_Common.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_CommonEmp.rdlc"
         Me.RptViewer_Common.Location = New System.Drawing.Point(6, 48)
         Me.RptViewer_Common.Name = "RptViewer_Common"
@@ -835,15 +849,25 @@ Partial Class frmReport
         '
         'RptViewer_Count
         '
-        ReportDataSource4.Name = "DataSet1"
-        ReportDataSource4.Value = Me.CommonBindingSource
-        Me.RptViewer_Count.LocalReport.DataSources.Add(ReportDataSource4)
+        ReportDataSource3.Name = "DataSet1"
+        ReportDataSource3.Value = Me.CommonBindingSource
+        Me.RptViewer_Count.LocalReport.DataSources.Add(ReportDataSource3)
         Me.RptViewer_Count.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_Common.rdlc"
         Me.RptViewer_Count.Location = New System.Drawing.Point(4, 61)
         Me.RptViewer_Count.Name = "RptViewer_Count"
         Me.RptViewer_Count.ServerReport.BearerToken = Nothing
         Me.RptViewer_Count.Size = New System.Drawing.Size(1142, 527)
         Me.RptViewer_Count.TabIndex = 103
+        '
+        'TabPage2
+        '
+        Me.TabPage2.Location = New System.Drawing.Point(4, 41)
+        Me.TabPage2.Name = "TabPage2"
+        Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage2.Size = New System.Drawing.Size(1151, 591)
+        Me.TabPage2.TabIndex = 5
+        Me.TabPage2.Text = "    Totals    "
+        Me.TabPage2.UseVisualStyleBackColor = True
         '
         'TabPage4
         '
@@ -949,16 +973,6 @@ Partial Class frmReport
         Me.Close_LBL.TabIndex = 75
         Me.Close_LBL.Text = "Close"
         '
-        'TabPage2
-        '
-        Me.TabPage2.Location = New System.Drawing.Point(4, 41)
-        Me.TabPage2.Name = "TabPage2"
-        Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(1151, 591)
-        Me.TabPage2.TabIndex = 5
-        Me.TabPage2.Text = "    Totals    "
-        Me.TabPage2.UseVisualStyleBackColor = True
-        '
         'frmReport
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -999,7 +1013,6 @@ Partial Class frmReport
     Friend WithEvents PaydateNet_ComboB As ComboBox
     Friend WithEvents Label1 As Label
     Friend WithEvents Close_LBL As Label
-    Friend WithEvents PreviewNet_BTN As Button
     Friend WithEvents d As TabPage
     Friend WithEvents ReportV_NetPay As Microsoft.Reporting.WinForms.ReportViewer
     Friend WithEvents NetPayBindingSource As BindingSource
@@ -1078,4 +1091,6 @@ Partial Class frmReport
     Friend WithEvents Label30 As Label
     Friend WithEvents LeasingP_TXT As TextBox
     Friend WithEvents TabPage2 As TabPage
+    Friend WithEvents Label31 As Label
+    Friend WithEvents NetBranch_Combo As ComboBox
 End Class

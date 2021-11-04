@@ -610,10 +610,10 @@ Public Class frmAttendance
         Dim LIST_BIOO As New List(Of String)
         Dim LIST_DATE, EXIST_DATE As New HashSet(Of String)
 
+        '=========================== COMPLETE DATE LIST ==================================
         Dim date_pay As DateTime = Convert.ToDateTime(paydatee)
         date_pay = date_pay.ToString("d")
 
-        '=========================== COMPLETE DATE LIST ==================================
         If IsLastDay(date_pay) Then
             StartDate = New DateTime(date_pay.Year, date_pay.Month, 4)
             EndDate = New DateTime(date_pay.Year, date_pay.Month, 18)
@@ -761,6 +761,28 @@ Public Class frmAttendance
         Dim paydatee As String = Payslip_DTR_Combo.SelectedItem
         Dim mysqll As String = ""
 
+        Dim StartDate, EndDate As DateTime
+        Dim LIST_BIOO As New List(Of String)
+        Dim LIST_DATE, EXIST_DATE As New HashSet(Of String)
+
+        '=========================== COMPLETE DATE LIST ==================================
+        Dim date_pay As DateTime = Convert.ToDateTime(paydatee)
+        date_pay = date_pay.ToString("d")
+
+        If IsLastDay(date_pay) Then
+            StartDate = New DateTime(date_pay.Year, date_pay.Month, 4)
+            EndDate = New DateTime(date_pay.Year, date_pay.Month, 18)
+        Else
+            StartDate = New DateTime(date_pay.Year, date_pay.Month, 19).AddMonths(-1)
+            EndDate = New DateTime(date_pay.Year, date_pay.Month, 3)
+        End If
+
+        While (StartDate <= EndDate)
+            LIST_DATE.Add(StartDate.ToString("d"))
+            StartDate = StartDate.AddDays(1)
+        End While
+        '========================================================================
+
         Try
             Dim all_in As New dtr_all.overAllDataTable
 
@@ -781,6 +803,25 @@ Public Class frmAttendance
                                         inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRICID 
                                         inner join BIOMETRIC_DTR C ON C.BIO_ID = B.BIO_NO  AND C.PAYDATE  = A.PAYDATE 
                                         where A.PAYDATE  = '{paydatee}' and B.BRANCH_CODE = '{DTR_Branch_Combo.Text}'  ORDER BY DATE_ONLY"
+
+            '=========================== LIST OF BIO (COMPLETE DATE) ==================================
+            LIST_BIOO.Clear()
+            LIST_BIOO = ListOfBio(LIST_BIOO, mysqll)
+            LIST_BIOO = LIST_BIOO.Distinct().ToList
+            '============================= SAVING ALL DATE ============================  
+            For Each VALUE_BIO As String In LIST_BIOO
+
+                EXIST_DATE.Clear()
+                EXIST_DATE = ListOfDate(EXIST_DATE, VALUE_BIO, paydatee)
+
+                Dim NEW_LIST_DATE As IEnumerable(Of String) = LIST_DATE.Except(EXIST_DATE)
+
+                For Each OtherD As String In NEW_LIST_DATE
+                    SaveDTR(VALUE_BIO, paydatee, OtherD, Nothing, Nothing, Nothing, Nothing)
+                Next
+
+            Next
+            '==================================================================================
 
             Using ds As DataSet = LoadSQL(mysqll, "PAYROLL_EMPLOYEE")
 
@@ -806,7 +847,6 @@ Public Class frmAttendance
 
                         End With
                     Next
-
                 End If
             End Using
 
@@ -814,6 +854,8 @@ Public Class frmAttendance
             Dim rds_DTR As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt_DTR)
             RptViewer_DTR.LocalReport.DataSources.Add(rds_DTR)
             RptViewer_DTR.RefreshReport()
+
+            Replacing($"BIOMETRIC_DTR WHERE PAYDATE = '{paydatee}' AND am_in IS NULL AND  am_out  IS NULL AND  pm_in  IS NULL AND  pm_out  IS NULL ")
 
         Catch ex As Exception
             Log_Report(ex.ToString)
@@ -1582,44 +1624,49 @@ Public Class frmAttendance
 
 
     Private Sub bio_OURCOMPANY()
+        Try
 
-        eApp = New Excel.Application
-        eBook = eApp.Workbooks.Open(Path_TXT.Text)
-        eSheet = eBook.Worksheets(1)
-        eCell = eSheet.UsedRange
-        Dim row As Integer
+            eApp = New Excel.Application
+            eBook = eApp.Workbooks.Open(Path_TXT.Text)
+            eSheet = eBook.Worksheets(1)
+            eCell = eSheet.UsedRange
+            Dim row As Integer
 
-        MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path_TXT.Text}';Extended Properties=Excel 8.0;")
-        MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
-        MyCommand.TableMappings.Add("Table", "Net-informations.com")
-        DtSet = New System.Data.DataSet
-        MyCommand.Fill(DtSet)
+            MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path_TXT.Text}';Extended Properties=Excel 8.0;")
+            MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
+            MyCommand.TableMappings.Add("Table", "Net-informations.com")
+            DtSet = New System.Data.DataSet
+            MyCommand.Fill(DtSet)
 
-        distinct_bio.Clear()
-        list_inOut.Clear()
+            distinct_bio.Clear()
+            list_inOut.Clear()
 
-        progressBarStart(DtSet.Tables(0).Rows.Count)
+            progressBarStart(DtSet.Tables(0).Rows.Count)
 
-        For row = 2 To DtSet.Tables(0).Rows.Count
-            SaveBiometricSheet(Paydate, eCell(row, 3).Value, eCell(row, 4).Value)
-            distinct_bio.Add(eCell(row, 3).Value)
+            For row = 2 To DtSet.Tables(0).Rows.Count
+                SaveBiometricSheet(Paydate, eCell(row, 3).Value, eCell(row, 4).Value)
+                distinct_bio.Add(eCell(row, 3).Value)
 
-            frmMainForm.AppProgressBar.Value += 1
-        Next
+                frmMainForm.AppProgressBar.Value += 1
+            Next
 
-        progressBarEnd()
+            progressBarEnd()
 
-        Cursor = Cursors.WaitCursor
+            Cursor = Cursors.WaitCursor
 
-        forLoop_ALL_IMPORTED()   ' ===== SAVE AM_IN, AM_OUT, PM_IN, PM_OUT ====
-        SAVE_DIRECT_Attendance() ' ===== DIRECT SAVE TO ATTENDANCE ====
-        PopulateBiometricSHEET(Bio_grid, Paydate) ' ===== POPULATE DATAGRIDVIEW FROM SHEET ====
-        SavePayout_ALL(Paydate, starting_date, ending_date)
+            forLoop_ALL_IMPORTED()   ' ===== SAVE AM_IN, AM_OUT, PM_IN, PM_OUT ====
+            SAVE_DIRECT_Attendance() ' ===== DIRECT SAVE TO ATTENDANCE ====
+            PopulateBiometricSHEET(Bio_grid, Paydate) ' ===== POPULATE DATAGRIDVIEW FROM SHEET ====
+            SavePayout_ALL(Paydate, starting_date, ending_date)
 
-        Cursor = Cursors.Default
+            Cursor = Cursors.Default
 
-        Path_TXT.Clear()
-        MyConnection.Close()
+            Path_TXT.Clear()
+            MyConnection.Close()
+
+        Catch ex As Exception
+            MsgBox("Excel is open or inaccessible!", MsgBoxStyle.Critical, "Error")
+        End Try
     End Sub
 
     Public Sub SAVE_DIRECT_Attendance()

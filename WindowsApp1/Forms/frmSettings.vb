@@ -25,10 +25,14 @@ Public Class frmSettings
         Load_Category_LIST(Allowance_List, "CATEGORY_ALLOWANCE", "ALLOWANCE_NAME")
         Load_Category_LIST(Cat_Deduc_List, "CATEGORY_DEDUCTION", "DEDUCTION_NAME")
 
-        For x = 0 To 23
-            Dim tm As New Date(1, 1, 1, x, 0, 0)
+
+        Dim tm As New Date(1, 1, 1, 0, 0, 0)
+        For x = 1 To 48
+            tm = tm.AddMinutes(30)
             ClockBranch_IN_CB.Items.Add(tm.ToShortTimeString)
             ClockBranch_OUT_CB.Items.Add(tm.ToShortTimeString)
+            ClockEmp_IN_CB.Items.Add(tm.ToShortTimeString)
+            ClockEmp_OUT_CB.Items.Add(tm.ToShortTimeString)
         Next
 
         Rate_Branch_ComboB.Items.Insert(0, "")

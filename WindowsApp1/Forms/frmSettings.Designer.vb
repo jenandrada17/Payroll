@@ -1538,7 +1538,6 @@ Partial Class frmSettings
         'ClockEmp_OUT_CB
         '
         Me.ClockEmp_OUT_CB.FormattingEnabled = True
-        Me.ClockEmp_OUT_CB.Items.AddRange(New Object() {"1:00 AM", "2:00 AM", "3:00 AM", "4:00 AM", "5:00 AM", "6:00 AM", "7:00 AM", "8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM", "6:00 PM", "7:00 PM", "8:00 PM", "9:00 PM", "10:00 PM", "11:00 PM", "12:00 AM"})
         Me.ClockEmp_OUT_CB.Location = New System.Drawing.Point(77, 187)
         Me.ClockEmp_OUT_CB.Name = "ClockEmp_OUT_CB"
         Me.ClockEmp_OUT_CB.Size = New System.Drawing.Size(121, 30)
@@ -1556,7 +1555,6 @@ Partial Class frmSettings
         'ClockEmp_IN_CB
         '
         Me.ClockEmp_IN_CB.FormattingEnabled = True
-        Me.ClockEmp_IN_CB.Items.AddRange(New Object() {"1:00 AM", "2:00 AM", "3:00 AM", "4:00 AM", "5:00 AM", "6:00 AM", "7:00 AM", "8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM", "6:00 PM", "7:00 PM", "8:00 PM", "9:00 PM", "10:00 PM", "11:00 PM", "12:00 AM"})
         Me.ClockEmp_IN_CB.Location = New System.Drawing.Point(77, 138)
         Me.ClockEmp_IN_CB.Name = "ClockEmp_IN_CB"
         Me.ClockEmp_IN_CB.Size = New System.Drawing.Size(121, 30)

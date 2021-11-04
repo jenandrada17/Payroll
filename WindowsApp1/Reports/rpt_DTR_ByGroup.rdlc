@@ -868,6 +868,7 @@
                   <KeepWithGroup>Before</KeepWithGroup>
                 </TablixMember>
               </TablixMembers>
+              <KeepTogether>true</KeepTogether>
             </TablixMember>
           </TablixMembers>
         </TablixRowHierarchy>
