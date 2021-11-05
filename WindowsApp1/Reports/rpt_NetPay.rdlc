@@ -9,7 +9,7 @@
               <Width>1.01242in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.85617in</Width>
+              <Width>2.14784in</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>0.85in</Width>
@@ -61,7 +61,7 @@
                               <Value>PAYROLL REGISTER</Value>
                               <Style>
                                 <FontFamily>Berlin Sans FB</FontFamily>
-                                <FontSize>8pt</FontSize>
+                                <FontSize>9pt</FontSize>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -375,35 +375,35 @@
                               <Value>FOR THE PERIOD </Value>
                               <Style>
                                 <FontFamily>Berlin Sans FB</FontFamily>
-                                <FontSize>8pt</FontSize>
+                                <FontSize>9pt</FontSize>
                               </Style>
                             </TextRun>
                             <TextRun>
                               <Value>=Fields!PAYDATE.Value</Value>
                               <Style>
                                 <FontFamily>Berlin Sans FB</FontFamily>
-                                <FontSize>8pt</FontSize>
+                                <FontSize>9pt</FontSize>
                               </Style>
                             </TextRun>
                             <TextRun>
                               <Value> - </Value>
                               <Style>
                                 <FontFamily>Berlin Sans FB</FontFamily>
-                                <FontSize>8pt</FontSize>
+                                <FontSize>9pt</FontSize>
                               </Style>
                             </TextRun>
                             <TextRun>
                               <Value>=Fields!PERIOD.Value</Value>
                               <Style>
                                 <FontFamily>Berlin Sans FB</FontFamily>
-                                <FontSize>8pt</FontSize>
+                                <FontSize>9pt</FontSize>
                               </Style>
                             </TextRun>
                             <TextRun>
                               <Value>   Range: </Value>
                               <Style>
                                 <FontFamily>Berlin Sans FB</FontFamily>
-                                <FontSize>8pt</FontSize>
+                                <FontSize>9pt</FontSize>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -714,14 +714,14 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Switch(Fields!COMPANY.Value = "PHOTO", "NO NAME", 
+                              <Value>=Switch(Fields!COMPANY.Value = "PHOTO", Fields!PHOTO.Value, 
 Fields!COMPANY.Value = "P&amp;G UY", "P&amp;G UY SONS, INC.", 
 Fields!COMPANY.Value = "DALTON", "DALTON PAWNSHOP &amp; JEWELRY INC.", 
 Fields!COMPANY.Value = "PERFECOM", "PERFECOM")</Value>
                               <Style>
                                 <FontFamily>Berlin Sans FB Demi</FontFamily>
-                                <FontSize>8pt</FontSize>
-                                <FontWeight>Bold</FontWeight>
+                                <FontSize>9pt</FontSize>
+                                <FontWeight>Medium</FontWeight>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -1201,8 +1201,9 @@ Fields!COMPANY.Value = "PERFECOM", "PERFECOM")</Value>
                             <TextRun>
                               <Value>GROSS INCOME</Value>
                               <Style>
-                                <FontFamily>Berlin Sans FB</FontFamily>
+                                <FontFamily>Berlin Sans FB Demi</FontFamily>
                                 <FontSize>8pt</FontSize>
+                                <FontWeight>Medium</FontWeight>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -1240,8 +1241,9 @@ Fields!COMPANY.Value = "PERFECOM", "PERFECOM")</Value>
                             <TextRun>
                               <Value>DEDUCTIONS</Value>
                               <Style>
-                                <FontFamily>Berlin Sans FB</FontFamily>
+                                <FontFamily>Berlin Sans FB Demi</FontFamily>
                                 <FontSize>8pt</FontSize>
+                                <FontWeight>Medium</FontWeight>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -1318,7 +1320,7 @@ Fields!COMPANY.Value = "PERFECOM", "PERFECOM")</Value>
                             <TextRun>
                               <Value>EMP NO.</Value>
                               <Style>
-                                <FontFamily>Berlin Sans FB</FontFamily>
+                                <FontFamily>Berlin Sans FB Demi</FontFamily>
                                 <FontSize>8pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
@@ -1353,7 +1355,7 @@ Fields!COMPANY.Value = "PERFECOM", "PERFECOM")</Value>
                             <TextRun>
                               <Value>EMPLOYEE NAME</Value>
                               <Style>
-                                <FontFamily>Berlin Sans FB</FontFamily>
+                                <FontFamily>Berlin Sans FB Demi</FontFamily>
                                 <FontSize>8pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
@@ -1388,7 +1390,7 @@ Fields!COMPANY.Value = "PERFECOM", "PERFECOM")</Value>
                             <TextRun>
                               <Value>BASIC</Value>
                               <Style>
-                                <FontFamily>Berlin Sans FB</FontFamily>
+                                <FontFamily>Berlin Sans FB Demi</FontFamily>
                                 <FontSize>8pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
@@ -1423,7 +1425,7 @@ Fields!COMPANY.Value = "PERFECOM", "PERFECOM")</Value>
                             <TextRun>
                               <Value>OVERTIME</Value>
                               <Style>
-                                <FontFamily>Berlin Sans FB</FontFamily>
+                                <FontFamily>Berlin Sans FB Demi</FontFamily>
                                 <FontSize>8pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
@@ -1458,7 +1460,7 @@ Fields!COMPANY.Value = "PERFECOM", "PERFECOM")</Value>
                             <TextRun>
                               <Value>HOLIDAY</Value>
                               <Style>
-                                <FontFamily>Berlin Sans FB</FontFamily>
+                                <FontFamily>Berlin Sans FB Demi</FontFamily>
                                 <FontSize>8pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
@@ -1493,7 +1495,7 @@ Fields!COMPANY.Value = "PERFECOM", "PERFECOM")</Value>
                             <TextRun>
                               <Value>N DIFF.</Value>
                               <Style>
-                                <FontFamily>Berlin Sans FB</FontFamily>
+                                <FontFamily>Berlin Sans FB Demi</FontFamily>
                                 <FontSize>8pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
@@ -1528,7 +1530,7 @@ Fields!COMPANY.Value = "PERFECOM", "PERFECOM")</Value>
                             <TextRun>
                               <Value>PI/ECOLA/SIL </Value>
                               <Style>
-                                <FontFamily>Berlin Sans FB</FontFamily>
+                                <FontFamily>Berlin Sans FB Demi</FontFamily>
                                 <FontSize>8pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
@@ -1563,7 +1565,7 @@ Fields!COMPANY.Value = "PERFECOM", "PERFECOM")</Value>
                             <TextRun>
                               <Value>TARDINESS</Value>
                               <Style>
-                                <FontFamily>Berlin Sans FB</FontFamily>
+                                <FontFamily>Berlin Sans FB Demi</FontFamily>
                                 <FontSize>8pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
@@ -1598,7 +1600,7 @@ Fields!COMPANY.Value = "PERFECOM", "PERFECOM")</Value>
                             <TextRun>
                               <Value>SSS</Value>
                               <Style>
-                                <FontFamily>Berlin Sans FB</FontFamily>
+                                <FontFamily>Berlin Sans FB Demi</FontFamily>
                                 <FontSize>8pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
@@ -1633,7 +1635,7 @@ Fields!COMPANY.Value = "PERFECOM", "PERFECOM")</Value>
                             <TextRun>
                               <Value>PHIC</Value>
                               <Style>
-                                <FontFamily>Berlin Sans FB</FontFamily>
+                                <FontFamily>Berlin Sans FB Demi</FontFamily>
                                 <FontSize>8pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
@@ -1668,7 +1670,7 @@ Fields!COMPANY.Value = "PERFECOM", "PERFECOM")</Value>
                             <TextRun>
                               <Value>PAGIBIG</Value>
                               <Style>
-                                <FontFamily>Berlin Sans FB</FontFamily>
+                                <FontFamily>Berlin Sans FB Demi</FontFamily>
                                 <FontSize>8pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
@@ -1703,7 +1705,7 @@ Fields!COMPANY.Value = "PERFECOM", "PERFECOM")</Value>
                             <TextRun>
                               <Value>SBU/CHARGES</Value>
                               <Style>
-                                <FontFamily>Berlin Sans FB</FontFamily>
+                                <FontFamily>Berlin Sans FB Demi</FontFamily>
                                 <FontSize>8pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
@@ -1738,7 +1740,7 @@ Fields!COMPANY.Value = "PERFECOM", "PERFECOM")</Value>
                             <TextRun>
                               <Value>NET PAY</Value>
                               <Style>
-                                <FontFamily>Berlin Sans FB</FontFamily>
+                                <FontFamily>Berlin Sans FB Demi</FontFamily>
                                 <FontSize>8pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
@@ -1776,9 +1778,7 @@ Fields!COMPANY.Value = "PERFECOM", "PERFECOM")</Value>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Switch(Fields!BRANCH_CODE.Value = "", Fields!HO_CATEGORY.Value, 
-Fields!BRANCH_CODE.Value = "GHS/P&amp;G UY Admin Operation", Fields!BRANCH_CODE.Value, 
-Fields!BRANCH_CODE.Value = "GHS/P&amp;G UY Admin Office", Fields!BRANCH_CODE.Value, 
+                              <Value>=Switch(Fields!BRANCH_CODE.Value = "ACM ", "Ace Commercial", 
 Fields!BRANCH_CODE.Value = "3G", "3G Hotel", 
 Fields!BRANCH_CODE.Value = "COMI", "Commissary", 
 Fields!BRANCH_CODE.Value = "KTV", "Music Play &amp; KTV Bar", 
@@ -1786,26 +1786,30 @@ Fields!BRANCH_CODE.Value = "PBA", "PBA",
 Fields!BRANCH_CODE.Value = "WAVE", "WAVE", 
 Fields!BRANCH_CODE.Value = "711-POL", "7 Eleven Polomolok", 
 Fields!BRANCH_CODE.Value = "711-ROX", "7 Eleven Roxas", 
-Fields!BRANCH_CODE.Value = "CAG", "Dalton-Cagampang", 
-Fields!BRANCH_CODE.Value = "JCAT 2", "Dalton-Jcat 2", 
-Fields!BRANCH_CODE.Value = "KCG", "Dalton-KCG Gensan", 
-Fields!BRANCH_CODE.Value = "LAG", "Dalton-Lagao", 
-Fields!BRANCH_CODE.Value = "PMA", "Dalton-Malakas", 
-Fields!BRANCH_CODE.Value = "NUN", "Dalton-Nuñez", 
-Fields!BRANCH_CODE.Value = "PEN", "Dalton-Pendatun", 
-Fields!BRANCH_CODE.Value = "ACM", "Ace Commercial", 
+Fields!BRANCH_CODE.Value = "CAG", "Cagampang", 
+Fields!BRANCH_CODE.Value = "JCAT 2", "Jcat 2", 
+Fields!BRANCH_CODE.Value = "LAG", "Lagao", 
+Fields!BRANCH_CODE.Value = "PMA", "Malakas", 
+Fields!BRANCH_CODE.Value = "NUN", "Nuñez", 
+Fields!BRANCH_CODE.Value = "PEN", "Pendatun", 
 Fields!BRANCH_CODE.Value = "AL1", "Alunan 1", 
 Fields!BRANCH_CODE.Value = "AL2", "Alunan 2", 
 Fields!BRANCH_CODE.Value = "AWANG", "Awang", 
+Fields!BRANCH_CODE.Value = "COT", "Cotabato", 
 Fields!BRANCH_CODE.Value = "COT 1", "Cotabato 1", 
 Fields!BRANCH_CODE.Value = "COT 2", "Cotabato 2", 
 Fields!BRANCH_CODE.Value = "COT 3", "Cotabato 3", 
 Fields!BRANCH_CODE.Value = "COT 4", "Cotabato 4", 
+Fields!BRANCH_CODE.Value = "DIG", "Digos", 
+Fields!BRANCH_CODE.Value = "DIG 1", "Digos",  
+Fields!BRANCH_CODE.Value = "DIG 2", "Digos",  
 Fields!BRANCH_CODE.Value = "GAM", "Gaisano Mabel", 
 Fields!BRANCH_CODE.Value = "GAP", "Gaisano Polomolok", 
 Fields!BRANCH_CODE.Value = "GCS", "Gaisano Capital Surigao", 
 Fields!BRANCH_CODE.Value = "GGP", "Panabo", 
 Fields!BRANCH_CODE.Value = "GLAN", "Glan", 
+Fields!BRANCH_CODE.Value = "GMA", "Gaisano Davao", 
+Fields!BRANCH_CODE.Value = "ISU", "Isulan", 
 Fields!BRANCH_CODE.Value = "ISU 1", "Isulan 1", 
 Fields!BRANCH_CODE.Value = "ISU 2", "Isulan 2", 
 Fields!BRANCH_CODE.Value = "ISU 3", "Isulan 3", 
@@ -1813,11 +1817,13 @@ Fields!BRANCH_CODE.Value = "KAB", "Kabacan",
 Fields!BRANCH_CODE.Value = "KAB 2", "Kabacan 2", 
 Fields!BRANCH_CODE.Value = "KAB3", "Kabacan 3", 
 Fields!BRANCH_CODE.Value = "KAL", "Kalamansig", 
+Fields!BRANCH_CODE.Value = "KCG", "KCC Gensan", 
 Fields!BRANCH_CODE.Value = "KIA", "Kiamba", 
 Fields!BRANCH_CODE.Value = "KID", "Kidapawan", 
 Fields!BRANCH_CODE.Value = "KID2", "Kidapawan 2", 
 Fields!BRANCH_CODE.Value = "LAM", "Lambayong", 
 Fields!BRANCH_CODE.Value = "LEBAK", "Lebak", 
+Fields!BRANCH_CODE.Value = "M1", "Marbel", 
 Fields!BRANCH_CODE.Value = "M'LANG", "M'lang", 
 Fields!BRANCH_CODE.Value = "MAA", "Maasim", 
 Fields!BRANCH_CODE.Value = "MAITUM", "Maitum", 
@@ -1830,13 +1836,17 @@ Fields!BRANCH_CODE.Value = "POL2", "Polomolok 2",
 Fields!BRANCH_CODE.Value = "POL3", "Polomolok 3", 
 Fields!BRANCH_CODE.Value = "PQO", "President Quirino",
 Fields!BRANCH_CODE.Value = "ROG", "Robinson Gensan",
-Fields!BRANCH_CODE.Value = "ROX", "Roxas Gensa",
+Fields!BRANCH_CODE.Value = "ROX", "Roxas Gensan",
 Fields!BRANCH_CODE.Value = "SAN", "Santiago", 
 Fields!BRANCH_CODE.Value = "SHARIFF", "Shariff Aguak", 
 Fields!BRANCH_CODE.Value = "SNP", "San Pedro", 
+Fields!BRANCH_CODE.Value = "SMD", "SM Davao", 
+Fields!BRANCH_CODE.Value = "SMG", "SM Gensan", 
+Fields!BRANCH_CODE.Value = "SML", "SM Lazaro", 
 Fields!BRANCH_CODE.Value = "SRA", "Surallah", 
 Fields!BRANCH_CODE.Value = "SURI 2", "Surigao 2", 
 Fields!BRANCH_CODE.Value = "SURI 3", "Surigao 3", 
+Fields!BRANCH_CODE.Value = "TAC", "Tacurong ",
 Fields!BRANCH_CODE.Value = "TAC 1", "Tacurong 1",
 Fields!BRANCH_CODE.Value = "TAC 2", "Tacurong 2", 
 Fields!BRANCH_CODE.Value = "TAG", "Tagum", 
@@ -1844,7 +1854,10 @@ Fields!BRANCH_CODE.Value = "TBOLI", "TBOLI",
 Fields!BRANCH_CODE.Value = "TUL", "Tulunan", 
 Fields!BRANCH_CODE.Value = "UHA", "Uhaw", 
 Fields!BRANCH_CODE.Value = "UPI", "UPI", 
-Fields!BRANCH_CODE.Value = "ZUL", "Zulueta")</Value>
+Fields!BRANCH_CODE.Value = "ZAM", "Zamboanga", 
+Fields!BRANCH_CODE.Value = "ZUL", "Zulueta", 
+Fields!BRANCH_CODE.Value = "FINEPIX", "Finepixel",
+1,Fields!HO_CATEGORY.Value)</Value>
                               <Style>
                                 <FontFamily>Berlin Sans FB</FontFamily>
                                 <FontSize>8pt</FontSize>
@@ -3560,7 +3573,6 @@ Fields!BRANCH_CODE.Value = "ZUL", "Zulueta")</Value>
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
-                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
                 <TablixCell>
@@ -8293,7 +8305,7 @@ Fields!BRANCH_CODE.Value = "ZUL", "Zulueta")</Value>
               </Group>
               <SortExpressions>
                 <SortExpression>
-                  <Value>=Fields!FULLNAME.Value</Value>
+                  <Value>=Fields!BRANCH_CODE.Value</Value>
                 </SortExpression>
               </SortExpressions>
               <TablixMembers>
@@ -8308,7 +8320,7 @@ Fields!BRANCH_CODE.Value = "ZUL", "Zulueta")</Value>
                       </Group>
                       <SortExpressions>
                         <SortExpression>
-                          <Value>=Fields!EMP_NO.Value</Value>
+                          <Value>=Fields!FULLNAME.Value</Value>
                         </SortExpression>
                       </SortExpressions>
                     </TablixMember>
@@ -8323,42 +8335,42 @@ Fields!BRANCH_CODE.Value = "ZUL", "Zulueta")</Value>
             <TablixMember />
             <TablixMember>
               <Visibility>
-                <Hidden>=IIF(FIELDS!COMPANY.Value = "DALTON" OrElse FIELDS!COMPANY.Value = "PERFECOM", TRUE, FALSE)</Hidden>
+                <Hidden>=IIF(FIELDS!COMPANY.Value = "DALTON" OrElse FIELDS!COMPANY.Value = "PERFECOM" OrElse FIELDS!COMPANY.Value = "PHOTO", TRUE, FALSE)</Hidden>
               </Visibility>
             </TablixMember>
             <TablixMember>
               <Visibility>
-                <Hidden>=IIF(FIELDS!COMPANY.Value = "DALTON" OR FIELDS!COMPANY.Value = "PERFECOM", TRUE, FALSE)</Hidden>
+                <Hidden>=IIF(FIELDS!COMPANY.Value = "DALTON" OR FIELDS!COMPANY.Value = "PERFECOM" OrElse FIELDS!COMPANY.Value = "PHOTO", TRUE, FALSE)</Hidden>
               </Visibility>
             </TablixMember>
             <TablixMember>
               <Visibility>
-                <Hidden>=IIF(FIELDS!COMPANY.Value = "DALTON" OR FIELDS!COMPANY.Value = "PERFECOM", TRUE, FALSE)</Hidden>
+                <Hidden>=IIF(FIELDS!COMPANY.Value = "DALTON" OR FIELDS!COMPANY.Value = "PERFECOM" OrElse FIELDS!COMPANY.Value = "PHOTO", TRUE, FALSE)</Hidden>
               </Visibility>
             </TablixMember>
             <TablixMember>
               <Visibility>
-                <Hidden>=IIF(FIELDS!COMPANY.Value = "DALTON" OR FIELDS!COMPANY.Value = "PERFECOM", TRUE, FALSE)</Hidden>
+                <Hidden>=IIF(FIELDS!COMPANY.Value = "DALTON" OR FIELDS!COMPANY.Value = "PERFECOM" OrElse FIELDS!COMPANY.Value = "PHOTO", TRUE, FALSE)</Hidden>
               </Visibility>
             </TablixMember>
             <TablixMember>
               <Visibility>
-                <Hidden>=IIF(FIELDS!COMPANY.Value = "P&amp;G UY" OR FIELDS!COMPANY.Value = "PERFECOM", TRUE, FALSE)</Hidden>
+                <Hidden>=IIF(FIELDS!COMPANY.Value = "P&amp;G UY" OR FIELDS!COMPANY.Value = "PERFECOM" OrElse FIELDS!COMPANY.Value = "PHOTO", TRUE, FALSE)</Hidden>
               </Visibility>
             </TablixMember>
             <TablixMember>
               <Visibility>
-                <Hidden>=IIF(FIELDS!COMPANY.Value = "P&amp;G UY" OR FIELDS!COMPANY.Value = "PERFECOM", TRUE, FALSE)</Hidden>
+                <Hidden>=IIF(FIELDS!COMPANY.Value = "P&amp;G UY" OR FIELDS!COMPANY.Value = "PERFECOM" OrElse FIELDS!COMPANY.Value = "PHOTO", TRUE, FALSE)</Hidden>
               </Visibility>
             </TablixMember>
             <TablixMember>
               <Visibility>
-                <Hidden>=IIF(FIELDS!COMPANY.Value = "P&amp;G UY" OR FIELDS!COMPANY.Value = "PERFECOM", TRUE, FALSE)</Hidden>
+                <Hidden>=IIF(FIELDS!COMPANY.Value = "P&amp;G UY" OR FIELDS!COMPANY.Value = "PERFECOM" OrElse FIELDS!COMPANY.Value = "PHOTO", TRUE, FALSE)</Hidden>
               </Visibility>
             </TablixMember>
             <TablixMember>
               <Visibility>
-                <Hidden>=IIF(FIELDS!COMPANY.Value = "P&amp;G UY" OR FIELDS!COMPANY.Value = "PERFECOM", TRUE, FALSE)</Hidden>
+                <Hidden>=IIF(FIELDS!COMPANY.Value = "P&amp;G UY" OR FIELDS!COMPANY.Value = "PERFECOM" OrElse FIELDS!COMPANY.Value = "PHOTO", TRUE, FALSE)</Hidden>
               </Visibility>
             </TablixMember>
             <TablixMember>
@@ -8390,8 +8402,8 @@ Fields!BRANCH_CODE.Value = "ZUL", "Zulueta")</Value>
         <DataSetName>DataSet1</DataSetName>
         <Top>0.0925in</Top>
         <Left>0.11458in</Left>
-        <Height>5.33725in</Height>
-        <Width>12.31234in</Width>
+        <Height>5.33724in</Height>
+        <Width>12.60401in</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -8402,7 +8414,7 @@ Fields!BRANCH_CODE.Value = "ZUL", "Zulueta")</Value>
     <Height>6in</Height>
     <Style />
   </Body>
-  <Width>12.5in</Width>
+  <Width>12.71859in</Width>
   <Page>
     <PageHeight>8.5in</PageHeight>
     <PageWidth>14in</PageWidth>
@@ -8503,6 +8515,10 @@ Fields!BRANCH_CODE.Value = "ZUL", "Zulueta")</Value>
         </Field>
         <Field Name="HO_CATEGORY">
           <DataField>HO_CATEGORY</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="PHOTO">
+          <DataField>PHOTO</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>

@@ -2,6 +2,7 @@
 
     Private allowCoolMove As Boolean = False
     Private myCoolPoint As New Point
+    Dim PhotoPlus As String = ""
 
     Private Sub frmReport_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         PopulateComboBox(PaydateNet_ComboB, "PAYROLL_PAYOUT", "PAYDATE")
@@ -68,6 +69,7 @@
                 '.Columns.Add("RANGE")
                 .Columns.Add("COMPANY")
                 .Columns.Add("HO_CATEGORY")
+                .Columns.Add("PHOTO")
             End With
 
             Using ds As DataSet = LoadSQL(mysqll, "PAYROLL_PAYOUT")
@@ -76,7 +78,6 @@
 
                     For Each dr In ds.Tables(0).Rows
                         With dr
-                            Console.WriteLine(".Item(BRANCH_CODE)" & .Item("BRANCH_CODE"))
                             Dim dateStarted As DateTime = .Item("DATE_STARTED")
                             Dim EMP_NO As String = IIf(IsDBNull(.Item("EMP_NO")), "", .Item("EMP_NO"))
 
@@ -102,20 +103,30 @@
                             If HO_CATEGORY = "GHS/P&G UY Admin Office" Or HO_CATEGORY = "GHS/P&G UY Admin Operation" Then
                                 COMPANY = "P&G UY"
                                 BRANCH_CODE = HO_CATEGORY
+
+                            ElseIf HO_CATEGORY.Contains("Dalton") Then
+                                COMPANY = "DALTON"
+                                BRANCH_CODE = HO_CATEGORY
                             End If
+
+                            If COMPANY = "PHOTO" Then PhotoPlus = $"{COMPANY}({PhotoPlus})"
 
                             dt_NetPay.Rows.Add(EMP_NO, namee, BASIC.ToString("n"), OVERTIME.ToString("n"), HOLIDAY.ToString("n"), N_DIFF.ToString("n"),
                                                PI_ECOLA_SIL.ToString("n"), TARDINESS.ToString("n"), SSS.ToString("n"), PHIC.ToString("n"), PAGIBIG.ToString("n"),
-                                               SBU_CHARGES.ToString("n"), NET_PAY.ToString("n"), BRANCH_CODE, payroll.ToString("MMMM dd, yyyy"), period, COMPANY, HO_CATEGORY)
+                                               SBU_CHARGES.ToString("n"), NET_PAY.ToString("n"), BRANCH_CODE, payroll.ToString("MMMM dd, yyyy"), period, COMPANY,
+                                               HO_CATEGORY, PhotoPlus)
 
                         End With
                     Next
+
+
+                    Dim rds_DTR As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt_NetPay)
+                    ReportV_NetPay.LocalReport.DataSources.Add(rds_DTR)
+                    ReportV_NetPay.RefreshReport()
+                Else
+                    MsgBox("No Records Found!", MsgBoxStyle.Exclamation, "Information")
                 End If
             End Using
-
-            Dim rds_DTR As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt_NetPay)
-            ReportV_NetPay.LocalReport.DataSources.Add(rds_DTR)
-            ReportV_NetPay.RefreshReport()
 
         Catch ex As Exception
             Log_Report(ex.ToString)
@@ -621,7 +632,7 @@
             NetBranch_Combo.Items.Clear()
             NetBranch_Combo.Items.Insert(0, "Davao Perfect")
             NetBranch_Combo.Items.Insert(1, "JR Photo")
-            NetBranch_Combo.Items.Insert(2, "Gensan Photo")
+            NetBranch_Combo.Items.Insert(2, "Gensan Perfect")
 
         ElseIf Company_Combo.SelectedIndex = 1 Then '=== P&G UY
             NetBranch_Combo.Items.Clear()
@@ -631,7 +642,7 @@
 
         ElseIf Company_Combo.SelectedIndex = 2 Then '=== DALTON
             NetBranch_Combo.Items.Clear()
-            NetBranch_Combo.Items.Insert(0, "Dalton Office-Operation")
+            NetBranch_Combo.Items.Insert(0, "Dalton Head Office")
             NetBranch_Combo.Items.Insert(1, "All Dalton Branch")
 
         ElseIf Company_Combo.SelectedIndex = 3 Then '=== PERFECOM 
@@ -648,32 +659,62 @@
 
             If Company_Combo.SelectedIndex = 0 Then '=== PHOTO
 
+                If NetBranch_Combo.SelectedIndex = 0 Then '=== Davao Perfect
+
+                    mysql = $"Select * From PAYROLL_PAYOUT A 
+                                        inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
+                                        where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' and B.BRANCH_CODE IN ('SMG','KCG','ACM','TAC')"
+
+                    PhotoPlus = "DAVAO PERFECT"
+
+                ElseIf NetBranch_Combo.SelectedIndex = 1 Then '=== JR Photo
+
+                    mysql = $"Select * From PAYROLL_PAYOUT A 
+                                        inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
+                                        where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' and B.BRANCH_CODE IN ('DIG','ISU','M1','POL')"
+
+                    PhotoPlus = "JR PHOTO"
+                ElseIf NetBranch_Combo.SelectedIndex = 2 Then '=== Gensan Perfect
+
+                    mysql = $"Select * From PAYROLL_PAYOUT A 
+                                        inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
+                                        where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' 
+                                        and B.BRANCH_CODE IN ('ROG','ROX','FINEPIX','COT','MID','KID','SNP','GMA','SML','ZAM','SMD')"
+
+                    PhotoPlus = "GENSAN PERFECT"
+                End If
+
             ElseIf Company_Combo.SelectedIndex = 1 Then '=== P&G UY 
 
                 If NetBranch_Combo.SelectedIndex = 0 Then '=== 3G
 
                     mysql = $"Select * From PAYROLL_PAYOUT A 
                                         inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
-                                        where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'P&G UY' and B.BRANCH_CODE = '3G' ORDER BY FULLNAME ASC"
+                                        where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'P&G UY' and B.BRANCH_CODE = '3G'"
 
                 ElseIf NetBranch_Combo.SelectedIndex = 1 Then '=== 7Eleven
 
                     mysql = $"Select * From PAYROLL_PAYOUT A 
                                         inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
-                                        where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'P&G UY' and B.BRANCH_CODE IN ('711-POL','711-ROX') ORDER BY FULLNAME ASC"
+                                        where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'P&G UY' and B.BRANCH_CODE IN ('711-POL','711-ROX')"
 
                 ElseIf NetBranch_Combo.SelectedIndex = 2 Then '=== COMI-GHS Admin Operation
 
                     mysql = $"Select * From PAYROLL_PAYOUT A 
                                         inner Join PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
                                         where A.PAYDATE = '{paydatee}' and B.COMPANY  = 'P&G UY' 
-                                        And B.BRANCH_CODE IN ('COMI','KTV','PBA','WAVE') Or B.HO_CATEGORY In ('GHS/P&G UY Admin Office','GHS/P&G UY Admin Operation') 
-                                        ORDER BY B.BRANCH_CODE, B.FULLNAME"
+                                        And B.BRANCH_CODE IN ('COMI','KTV','PBA','WAVE') Or B.HO_CATEGORY In ('GHS/P&G UY Admin Office','GHS/P&G UY Admin Operation')"
 
                 End If
 
             ElseIf Company_Combo.SelectedIndex = 2 Then '=== DALTON
-            ElseIf Company_Combo.SelectedIndex = 3 Then '=== PERFECOM
+
+                If NetBranch_Combo.SelectedIndex = 0 Then '=== Dalton Office-Operation
+
+                    mysql = $"Select * From PAYROLL_PAYOUT A 
+                                        inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
+                                        where A.PAYDATE  = '{paydatee}' and B.HO_CATEGORY IN ('Dalton Admin Office','Dalton Retail','Dalton Admin Operation')"
+                End If
 
             End If
 

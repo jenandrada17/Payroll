@@ -426,6 +426,8 @@ Partial Public Class reports
         
         Private columnHO_CATEGORY As Global.System.Data.DataColumn
         
+        Private columnPHOTO As Global.System.Data.DataColumn
+        
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Sub New()
@@ -614,6 +616,14 @@ Partial Public Class reports
         End Property
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property PHOTOColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnPHOTO
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0"),  _
          Global.System.ComponentModel.Browsable(false)>  _
         Public ReadOnly Property Count() As Integer
@@ -669,9 +679,10 @@ Partial Public Class reports
                     ByVal PERIOD As String,  _
                     ByVal RANGE As String,  _
                     ByVal COMPANY As String,  _
-                    ByVal HO_CATEGORY As String) As NetPayRow
+                    ByVal HO_CATEGORY As String,  _
+                    ByVal PHOTO As String) As NetPayRow
             Dim rowNetPayRow As NetPayRow = CType(Me.NewRow,NetPayRow)
-            Dim columnValuesArray() As Object = New Object() {EMP_NO, FULLNAME, BASIC, OVERTIME, HOLIDAY, N_DIFF, PI_ECOLA_SIL, TARDINESS, SSS, PHIC, PAGIBIG, SBU_CHARGES, NET_PAY, BRANCH_CODE, PAYDATE, PERIOD, RANGE, COMPANY, HO_CATEGORY}
+            Dim columnValuesArray() As Object = New Object() {EMP_NO, FULLNAME, BASIC, OVERTIME, HOLIDAY, N_DIFF, PI_ECOLA_SIL, TARDINESS, SSS, PHIC, PAGIBIG, SBU_CHARGES, NET_PAY, BRANCH_CODE, PAYDATE, PERIOD, RANGE, COMPANY, HO_CATEGORY, PHOTO}
             rowNetPayRow.ItemArray = columnValuesArray
             Me.Rows.Add(rowNetPayRow)
             Return rowNetPayRow
@@ -713,6 +724,7 @@ Partial Public Class reports
             Me.columnRANGE = MyBase.Columns("RANGE")
             Me.columnCOMPANY = MyBase.Columns("COMPANY")
             Me.columnHO_CATEGORY = MyBase.Columns("HO_CATEGORY")
+            Me.columnPHOTO = MyBase.Columns("PHOTO")
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -756,6 +768,8 @@ Partial Public Class reports
             MyBase.Columns.Add(Me.columnCOMPANY)
             Me.columnHO_CATEGORY = New Global.System.Data.DataColumn("HO_CATEGORY", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnHO_CATEGORY)
+            Me.columnPHOTO = New Global.System.Data.DataColumn("PHOTO", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnPHOTO)
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -2927,6 +2941,21 @@ Partial Public Class reports
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property PHOTO() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableNetPay.PHOTOColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'PHOTO' in table 'NetPay' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableNetPay.PHOTOColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Function IsEMP_NONull() As Boolean
             Return Me.IsNull(Me.tableNetPay.EMP_NOColumn)
         End Function
@@ -3151,6 +3180,18 @@ Partial Public Class reports
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Sub SetHO_CATEGORYNull()
             Me(Me.tableNetPay.HO_CATEGORYColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsPHOTONull() As Boolean
+            Return Me.IsNull(Me.tableNetPay.PHOTOColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetPHOTONull()
+            Me(Me.tableNetPay.PHOTOColumn) = Global.System.Convert.DBNull
         End Sub
     End Class
     
