@@ -714,6 +714,12 @@
                     mysql = $"Select * From PAYROLL_PAYOUT A 
                                         inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
                                         where A.PAYDATE  = '{paydatee}' and B.HO_CATEGORY IN ('Dalton Admin Office','Dalton Retail','Dalton Admin Operation')"
+
+                ElseIf NetBranch_Combo.SelectedIndex = 1 Then '=== All Dalton Except Head Office
+
+                    mysql = $"Select * From PAYROLL_PAYOUT A 
+                                        inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
+                                        where A.PAYDATE  = '{paydatee}' AND B.COMPANY  = 'DALTON'"
                 End If
 
             End If

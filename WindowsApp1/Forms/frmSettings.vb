@@ -14,17 +14,19 @@ Public Class frmSettings
             GetEmail(Email_TXT, Password_TXT)
         End If
 
-        PopulateComboBox(Rate_Branch_ComboB, "PAYROLL_EMPLOYEE", "BRANCH_CODE")
-        PopulateComboBox_BRANCH(ClockBranch_CB, "PAYROLL_EMPLOYEE", "BRANCH_CODE")
+        PopulateComboBox_Any(Rate_City_ComboB, "PAYROLL_EMPLOYEE", "BRANCH_CITY")
+        PopulateComboBox_Any(ClockBranch_CB, "PAYROLL_EMPLOYEE", "BRANCH_CODE")
         PopulateComboBox(Allow_Category_Combo, "CATEGORY_ALLOWANCE", "ALLOWANCE_NAME")
         PopulateComboBox(DE_Category_Combo, "CATEGORY_DEDUCTION", "DEDUCTION_NAME")
+        PopulateComboBox_Any(City_Combo, "PAYROLL_EMPLOYEE", "BRANCH_CITY")
+        PopulateComboBox_Any(CityCode_Combo, "PAYROLL_EMPLOYEE", "BRANCH_CODE")
         Lists_Rate(Rate_list)
         Lists_Allowance(Allowance_LV)
         Lists_deduction(Deduction_List)
         Lists_TimeInOut(TimeInOut_LV)
         Load_Category_LIST(Allowance_List, "CATEGORY_ALLOWANCE", "ALLOWANCE_NAME")
         Load_Category_LIST(Cat_Deduc_List, "CATEGORY_DEDUCTION", "DEDUCTION_NAME")
-
+        Lists_City_Branch(CityBranch_List)
 
         Dim tm As New Date(1, 1, 1, 0, 0, 0)
         For x = 1 To 48
@@ -35,7 +37,7 @@ Public Class frmSettings
             ClockEmp_OUT_CB.Items.Add(tm.ToShortTimeString)
         Next
 
-        Rate_Branch_ComboB.Items.Insert(0, "")
+        Rate_City_ComboB.Items.Insert(0, "")
     End Sub
 
     Private Sub Close_LBL_Click(sender As Object, e As EventArgs) Handles Close_LBL.Click
@@ -196,14 +198,14 @@ Public Class frmSettings
     End Sub
 
     Private Sub Rate_Branch_BTN_Click(sender As Object, e As EventArgs) Handles Rate_Branch_BTN.Click
-        If Rate_Branch_ComboB.SelectedIndex >= 0 And Not Rate_BranchAmount_TXT.Text = "" Then
+        If Rate_City_ComboB.SelectedIndex >= 0 And Not Rate_CityAmount_TXT.Text = "" Then
 
-            SaveRATE("BRANCH_CODE", Rate_Branch_ComboB.Text, Rate_BranchAmount_TXT.Text, True)
+            SaveRATE("BRANCH_CITY", Rate_City_ComboB.Text, Rate_CityAmount_TXT.Text, True)
 
-            SaveMinimum_RATE(Rate_Branch_ComboB.Text, Rate_BranchAmount_TXT.Text)
+            SaveMinimum_RATE(Rate_City_ComboB.Text, Rate_CityAmount_TXT.Text)
 
-            Rate_Branch_ComboB.Text = "   Select Branch"
-            Rate_BranchAmount_TXT.Clear()
+            Rate_City_ComboB.Text = "   Select Branch"
+            Rate_CityAmount_TXT.Clear()
 
             MsgBox("Successfully updated!", MsgBoxStyle.Information, "Information")
 
@@ -212,7 +214,7 @@ Public Class frmSettings
         End If
     End Sub
 
-    Private Sub Rate_BranchAmount_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Rate_BranchAmount_TXT.KeyPress,
+    Private Sub Rate_BranchAmount_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Rate_CityAmount_TXT.KeyPress,
                                                 Rate_BioNo_TXT.KeyPress, Allow_Amount_TXT.KeyPress, DE_NoOfGives_TXT.KeyPress,
                                                 DE_AmountGive_TXT.KeyPress, DE_Total_TXT.KeyPress
 
@@ -781,6 +783,50 @@ Public Class frmSettings
 
     Private Sub SearchTime_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles SearchTime_TXT.KeyPress
         If IsEnter(e) Then SearchTime_BTN.PerformClick()
+    End Sub
+
+    Private Sub SaveCity_BTN_Click(sender As Object, e As EventArgs) Handles SaveCity_BTN.Click
+
+        'SaveCityBranch()
+
+
+        If City_Combo.Text <> Nothing And CityBName_Combo.Text <> Nothing And CityCode_Combo.Text <> Nothing Then
+            SaveCityBranch(CityCode_Combo.Text, CityBName_Combo.Text, City_Combo.Text)
+        Else
+            MsgBox("Please Complete the Details", MsgBoxStyle.Exclamation, "Error")
+        End If
+    End Sub
+
+    Private Sub ClearCity_BTN_Click(sender As Object, e As EventArgs) Handles ClearCity_BTN.Click
+        City_Combo.Text = Nothing
+        CityBName_Combo.Text = Nothing
+        CityCode_Combo.Text = Nothing
+    End Sub
+
+    Private Sub CityBranch_List_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles CityBranch_List.MouseDoubleClick
+
+        If CityBranch_List.Items.Count = 0 Then Exit Sub
+        City_Combo.Text = CityBranch_List.Items(CityBranch_List.FocusedItem.Index).SubItems(0).Text
+        CityBName_Combo.Text = CityBranch_List.Items(CityBranch_List.FocusedItem.Index).SubItems(1).Text
+        CityCode_Combo.Text = CityBranch_List.Items(CityBranch_List.FocusedItem.Index).SubItems(2).Text
+
+    End Sub
+
+    Private Sub City_Combo_TextChanged(sender As Object, e As EventArgs) Handles CityCode_Combo.TextChanged, CityBName_Combo.TextChanged, City_Combo.TextChanged
+        Dim selectionStart As Integer = sender.SelectionStart
+
+        sender.Text = sender.Text.ToUpper()
+        sender.SelectionStart = selectionStart
+    End Sub
+
+    Private Sub SearchCity_BTN_Click(sender As Object, e As EventArgs) Handles SearchCity_BTN.Click
+        Lists_City_Branch(CityBranch_List, SearchCity_TXT.Text)
+    End Sub
+
+    Private Sub SearchCity_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles SearchCity_TXT.KeyPress
+        If e.KeyChar = ChrW(Keys.Enter) Then
+            SearchCity_BTN.PerformClick()
+        End If
     End Sub
 
 End Class

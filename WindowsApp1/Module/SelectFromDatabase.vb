@@ -1217,7 +1217,7 @@ Module SelectFromDatabase
         End While
     End Sub
 
-    Public Sub PopulateComboBox_BRANCH(combo As ComboBox, table As String, column As String)
+    Public Sub PopulateComboBox_Any(combo As ComboBox, table As String, column As String)
         Dim sql As String = $"select distinct({column}) from {table}"
         Dim rdr As FbDataReader = LoadSQL_byDataReader(sql)
         combo.Items.Clear()
@@ -1653,7 +1653,12 @@ Module SelectFromDatabase
                 progressBarStart(ds.Tables(0).Rows.Count)
 
                 For Each dr In ds.Tables(0).Rows
-                    AddRow_RATE(dr, listview)
+                    With dr
+                        Dim i As ListViewItem = listview.Items.Add(.Item("BRANCH_CODE"))
+                        i.SubItems.Add(.Item("FULLNAME"))
+                        i.SubItems.Add(.Item("BIO_NO"))
+                        i.SubItems.Add(IIf(IsDBNull(.Item("RATE_DAILY")), "", .Item("RATE_DAILY")))
+                    End With
                     frmMainForm.AppProgressBar.Value += 1
                 Next
             End If
@@ -1662,14 +1667,49 @@ Module SelectFromDatabase
         progressBarEnd()
     End Sub
 
-    Private Sub AddRow_RATE(ByVal dr As DataRow, listview As ListView)
-        With dr
-            Dim i As ListViewItem = listview.Items.Add(.Item("BRANCH_CODE"))
-            i.SubItems.Add(.Item("FULLNAME"))
-            i.SubItems.Add(.Item("BIO_NO"))
-            i.SubItems.Add(IIf(IsDBNull(.Item("RATE_DAILY")), "", .Item("RATE_DAILY")))
-        End With
+
+    Friend Sub Lists_City_Branch(listview As ListView, Optional searchName As String = "")
+
+        Dim secured_str As String = searchName
+        secured_str = DreadKnight(secured_str)
+        Dim strWords As String() = secured_str.Split(New Char() {" "c})
+        Dim name As String
+        Dim mysql As String
+
+        If searchName.Length <> 0 Then
+
+            mysql = $"Select * From PAYROLL_CITY_BRANCH where "
+
+            For Each name In strWords
+                mysql &= $"{vbCr}UPPER(BRANCHCODE) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(BRANCHNAME) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(CITY) LIKE UPPER('%{name}%') ORDER BY CITY, BRANCHNAME , BRANCHCODE ASC "
+            Next
+
+        Else
+            mysql = $"Select * From PAYROLL_CITY_BRANCH ORDER BY CITY, BRANCHNAME, BRANCHCODE ASC "
+        End If
+
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_CITY_BRANCH")
+            If ds.Tables(0).Rows.Count > 0 Then
+
+                listview.Items.Clear()
+                progressBarStart(ds.Tables(0).Rows.Count)
+
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+                        Dim i As ListViewItem = listview.Items.Add(.Item("CITY"))
+                        i.SubItems.Add(.Item("BRANCHNAME"))
+                        i.SubItems.Add(.Item("BRANCHCODE"))
+                    End With
+                    frmMainForm.AppProgressBar.Value += 1
+                Next
+            End If
+        End Using
+
+        progressBarEnd()
     End Sub
+
 
     Friend Sub Lists_SBU(LV As ListView, Optional searchName As String = "")
 
@@ -1985,7 +2025,8 @@ Module SelectFromDatabase
     Public Sub GetFullname(bio_no As String, Add_Company_CB As ComboBox, Branch_ComboB As ComboBox, Fullname_TXT As TextBox,
                            Email_TXT As TextBox, InActive_RB As RadioButton, Started_DTP As DateTimePicker,
                            TimeIn_Combo As ComboBox, TimeOut_Combo As ComboBox, EmoNo_TXT As TextBox, TIN_TXT As TextBox,
-                           SSS_TXT As TextBox, PHILH_TXT As TextBox, HDMF_TXT As TextBox, HO_Category As ComboBox, ComCategory_Combo As ComboBox)
+                           SSS_TXT As TextBox, PHILH_TXT As TextBox, HDMF_TXT As TextBox, HO_Category As ComboBox,
+                           ComCategory_Combo As ComboBox, Position_Combo As ComboBox, ComCompany_Cmbo As ComboBox)
 
         Dim mysql As String = $"select * from PAYROLL_EMPLOYEE where BIO_NO = '{bio_no}'"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
@@ -1999,9 +2040,11 @@ Module SelectFromDatabase
                     Add_Company_CB.Text = .Item("COMPANY")
                     HO_Category.Text = IIf(IsDBNull(.Item("HO_CATEGORY")), Nothing, .Item("HO_CATEGORY"))
                     ComCategory_Combo.Text = IIf(IsDBNull(.Item("COMMON_CATEGORY")), Nothing, .Item("COMMON_CATEGORY"))
+                    ComCompany_Cmbo.Text = IIf(IsDBNull(.Item("COMMON_COMPANY")), Nothing, .Item("COMMON_COMPANY"))
                     Branch_ComboB.Text = .Item("BRANCH_CODE")
                     Fullname_TXT.Text = .Item("FULLNAME")
                     Email_TXT.Text = IIf(IsDBNull(.Item("EMAIL_ADD")), "", .Item("EMAIL_ADD"))
+                    Position_Combo.Text = IIf(IsDBNull(.Item("EMP_POSITION")), "", .Item("EMP_POSITION"))
                     Started_DTP.Text = IIf(IsDBNull(.Item("DATE_STARTED")), "", .Item("DATE_STARTED"))
                     TimeIn_Combo.Text = IIf(TIME_IN = Nothing, "", TIME_IN.ToShortTimeString())
                     TimeOut_Combo.Text = IIf(TIME_OUT = Nothing, "", TIME_OUT.ToShortTimeString())
@@ -2021,8 +2064,10 @@ Module SelectFromDatabase
                 HO_Category.Text = ""
                 ComCategory_Combo.Text = ""
                 Branch_ComboB.Text = ""
+                Started_DTP.Value = "1/1/2000"
                 Fullname_TXT.Text = ""
                 Email_TXT.Text = ""
+                Position_Combo.Text = ""
                 TimeIn_Combo.Text = ""
                 TimeOut_Combo.Text = ""
                 EmoNo_TXT.Text = ""
@@ -2391,5 +2436,20 @@ Module SelectFromDatabase
 
         Return LIST_BIOO
     End Function
+
+    'Public Function GetMInimumRate(branch As String)
+    '    Dim min_rate As Double = 0
+
+    '    Dim mysql As String = $"Select MINIMUM_RATE FROM  PAYROLL_MINIMUM_RATE WHERE BRANCH_CODE = '{branch}'"
+    '    Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_MINIMUM_RATE")
+    '    If ds.Tables(0).Rows.Count > 0 Then
+    '        Dim dr As DataRow = ds.Tables(0).Rows(0)
+    '        With dr
+    '            min_rate = IIf(IsDBNull(.Item("MINIMUM_RATE")), 0, .Item("MINIMUM_RATE"))
+    '        End With
+    '    End If
+
+    '    Return min_rate
+    'End Function
 
 End Module

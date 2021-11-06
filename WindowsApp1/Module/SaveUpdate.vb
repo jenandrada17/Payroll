@@ -1568,14 +1568,14 @@
                 MsgBox("Successfully Saved!", MsgBoxStyle.Information, "Information")
             End Using
         End If
-
     End Sub
 
     Public Sub SaveNew_Employee(COMPANY As String, BRANCH_CODE As String, FULLNAME As String, BIO_NO As String, EMAIL_ADD As String,
                                 EMP_STATUS As String, Optional DATE_STARTED As String = "", Optional group As Boolean = False,
                                 Optional TIME_IN As String = "", Optional TIME_OUT As String = "", Optional EMP_NO As String = "",
                                 Optional TIN As String = "", Optional SSS As String = "", Optional PHILH As String = "",
-                                Optional HDMF As String = "", Optional HO_CATEGORY As String = "", Optional COMMON_CATEGORY As String = "")
+                                Optional HDMF As String = "", Optional HO_CATEGORY As String = "", Optional COMMON_CATEGORY As String = "",
+                                Optional EMP_POSITION As String = "", Optional COMMON_COMPANY As String = "")
 
         Dim mysql As String
 
@@ -1590,6 +1590,7 @@
                 .Item("FULLNAME") = FULLNAME
                 .Item("EMAIL_ADD") = EMAIL_ADD
                 .Item("EMP_STATUS") = EMP_STATUS
+                .Item("RATE_DAILY") = GetMinimumRate(.Item("BRANCH_CODE"))
 
                 If DATE_STARTED <> "" Then .Item("DATE_STARTED") = DATE_STARTED
                 If TIME_IN <> "" Then .Item("TIME_IN") = TIME_IN
@@ -1601,6 +1602,8 @@
                 If HDMF <> "" Then .Item("PAGIBIGNO") = HDMF
                 If HO_CATEGORY <> "" Then .Item("HO_CATEGORY") = HO_CATEGORY
                 If COMMON_CATEGORY <> "" Then .Item("COMMON_CATEGORY") = COMMON_CATEGORY
+                If EMP_POSITION <> "" Then .Item("EMP_POSITION") = EMP_POSITION
+                If COMMON_COMPANY <> "" Then .Item("COMMON_COMPANY") = COMMON_COMPANY
 
             End With
 
@@ -1623,6 +1626,7 @@
                     .Item("FULLNAME") = FULLNAME
                     .Item("EMAIL_ADD") = EMAIL_ADD
                     .Item("EMP_STATUS") = EMP_STATUS
+                    .Item("RATE_DAILY") = GetMinimumRate(.Item("BRANCH_CODE"))
 
                     If DATE_STARTED <> "" Then .Item("DATE_STARTED") = DATE_STARTED
                     If TIME_IN <> "" Then .Item("TIME_IN") = TIME_IN
@@ -1633,6 +1637,9 @@
                     If PHILH <> "" Then .Item("PHILHEALTHNO") = PHILH
                     If HDMF <> "" Then .Item("PAGIBIGNO") = HDMF
                     If HO_CATEGORY <> "" Then .Item("HO_CATEGORY") = HO_CATEGORY
+                    If COMMON_CATEGORY <> "" Then .Item("COMMON_CATEGORY") = COMMON_CATEGORY
+                    If EMP_POSITION <> "" Then .Item("EMP_POSITION") = EMP_POSITION
+                    If COMMON_COMPANY <> "" Then .Item("COMMON_COMPANY") = COMMON_COMPANY
 
                 End With
 
@@ -1952,6 +1959,84 @@
             dss.Tables(0).Rows.Add(dsNewRow)
             SaveEntry(dss)
         End Using
+    End Sub
+
+    'Friend Sub SaveCityBranch()
+
+    '    Dim mysql As String
+    '    Dim city As String = Nothing
+    '    Dim code As String = Nothing
+    '    Dim namee As String = Nothing
+
+    '    mysql = "Select * From PAYROLL_EMPLOYEE WHERE BRANCH_CITY = 'LAMBAYONG'"
+    '    Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+    '        If ds.Tables(0).Rows.Count > 0 Then
+    '            For Each dr In ds.Tables(0).Rows
+    '                With dr
+    '                    city = 
+    '                End With
+    '            Next
+    '        End If
+    '    End Using
+
+    '    mysql = "Select * From PAYROLL_CITY_BRANCH Rows 1"
+    '    Using dss As DataSet = LoadSQL(mysql, "PAYROLL_CITY_BRANCH")
+
+    '        Dim dsNewRow As DataRow = dss.Tables(0).NewRow
+    '        With dsNewRow
+
+    '            .Item("CITY") = city
+    '            .Item("BRANCHCODE") = BRANCHCODE
+    '            .Item("BRANCHNAME") = BRANCHNAME
+
+    '        End With
+
+    '        dss.Tables(0).Rows.Add(dsNewRow)
+    '        SaveEntry(dss)
+
+    '        MsgBox("Successfully Saved!", MsgBoxStyle.Information, "Information")
+
+    '    End Using
+    'End Sub
+
+    Friend Sub SaveCityBranch(BRANCHCODE As String, BRANCHNAME As String, CITY As String)
+
+        Dim mysql As String
+
+        mysql = $"Select * FROM PAYROLL_CITY_BRANCH  where BRANCHCODE = '{BRANCHCODE}'"
+        Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_CITY_BRANCH ")
+        If ds.Tables(0).Rows.Count > 0 Then
+            With ds.Tables(0).Rows(0)
+
+                .Item("CITY") = CITY
+                .Item("BRANCHNAME") = BRANCHNAME
+
+            End With
+
+            SaveEntry(ds, False)
+
+            MsgBox("Successfully Updated!", MsgBoxStyle.Information, "Information")
+
+        Else
+            mysql = "Select * From PAYROLL_CITY_BRANCH Rows 1"
+            Using dss As DataSet = LoadSQL(mysql, "PAYROLL_CITY_BRANCH")
+
+                Dim dsNewRow As DataRow = dss.Tables(0).NewRow
+                With dsNewRow
+
+                    .Item("CITY") = CITY
+                    .Item("BRANCHCODE") = BRANCHCODE
+                    .Item("BRANCHNAME") = BRANCHNAME
+
+                End With
+
+                dss.Tables(0).Rows.Add(dsNewRow)
+                SaveEntry(dss)
+
+                MsgBox("Successfully Saved!", MsgBoxStyle.Information, "Information")
+
+            End Using
+        End If
     End Sub
 
 End Module

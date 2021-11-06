@@ -22,6 +22,8 @@ Public Class frmNewEmployee
         Lists_Employees(lvEmployee)
         'ListViewGrouping(lvEmployee, 0) 
         PopulateComboBox(Branch_ComboB, "PAYROLL_EMPLOYEE", "BRANCH_CODE")
+        'PopulateComboBox(Position_Combo, "PAYROLL_EMPLOYEE", "EMP_POSITION")
+        PopulateComboBox_Any(Position_Combo, "PAYROLL_EMPLOYEE", "EMP_POSITION")
 
         For x = 0 To 23
             Dim tm As New Date(1, 1, 1, x, 0, 0)
@@ -385,6 +387,7 @@ Public Class frmNewEmployee
         Branch_ComboB.Text = ""
         Started_DTP.Text = "1/1/2000"
         EmpNo_TXT.Clear()
+        Position_Combo.Text = ""
         TimeIn_Combo.Text = ""
         TimeOut_Combo.Text = ""
         Fullname_TXT.Clear()
@@ -407,7 +410,8 @@ Public Class frmNewEmployee
         End If
 
         SaveNew_Employee(Add_Company_CB.Text, Branch_ComboB.Text, Fullname_TXT.Text, Bio_TXT.Text, Email_TXT.Text, emp_status, Started_DTP.Value, False,
-                         TimeIn_Combo.Text, TimeOut_Combo.Text, EmpNo_TXT.Text, TIN_TXT.Text, SSS_TXT.Text, PHILH_TXT.Text, HDMF_TXT.Text, HO_Category.Text, ComCategory_Combo.Text)
+                         TimeIn_Combo.Text, TimeOut_Combo.Text, EmpNo_TXT.Text, TIN_TXT.Text, SSS_TXT.Text, PHILH_TXT.Text, HDMF_TXT.Text, HO_Category.Text,
+                         ComCategory_Combo.Text, Position_Combo.Text, ComCompany_Cmbo.Text)
 
         Lists_Employees(lvEmployee)
 
@@ -433,6 +437,10 @@ Public Class frmNewEmployee
 
         ElseIf ComCategory_Combo.Visible = True And String.IsNullOrEmpty(ComCategory_Combo.Text) Then
             MsgBox("Please Select Common Category!", MsgBoxStyle.Exclamation, "Error")
+            Return False
+
+        ElseIf ComCompany_Cmbo.Visible = True And String.IsNullOrEmpty(ComCompany_Cmbo.Text) Then
+            MsgBox("Please Select Common Company!", MsgBoxStyle.Exclamation, "Error")
             Return False
 
         ElseIf String.IsNullOrEmpty(Branch_ComboB.Text) And Add_Company_CB.Text <> "HEAD OFFICE" Then
@@ -547,7 +555,8 @@ Public Class frmNewEmployee
 
             Bio_TXT.Text = bio_No
             GetFullname(bio_No, Add_Company_CB, Branch_ComboB, Fullname_TXT, Email_TXT, InActive_RB, Started_DTP,
-                        TimeIn_Combo, TimeOut_Combo, EmpNo_TXT, TIN_TXT, SSS_TXT, PHILH_TXT, HDMF_TXT, HO_Category, ComCategory_Combo)
+                        TimeIn_Combo, TimeOut_Combo, EmpNo_TXT, TIN_TXT, SSS_TXT, PHILH_TXT, HDMF_TXT, HO_Category,
+                        ComCategory_Combo, Position_Combo, ComCompany_Cmbo)
 
             Add_Panel.Location = New Point(ClientSize.Width / 2 - Add_Panel.Size.Width / 2, ClientSize.Height / 2 - Add_Panel.Size.Height / 2)
             Add_Panel.Visible = True
@@ -586,7 +595,7 @@ Public Class frmNewEmployee
 
     End Sub
 
-    Private Sub Add_Company_CB_TextChanged(sender As Object, e As EventArgs) Handles TimeOut_Combo.TextChanged, TimeIn_Combo.TextChanged, HO_Category.TextChanged, Fullname_TXT.TextChanged, EmpNo_TXT.TextChanged, Email_TXT.TextChanged
+    Private Sub Add_Company_CB_TextChanged(sender As Object, e As EventArgs) Handles TimeOut_Combo.TextChanged, TimeIn_Combo.TextChanged, Fullname_TXT.TextChanged, EmpNo_TXT.TextChanged, Email_TXT.TextChanged
 
         If sender.Text = "" Then
             sender.Region = New Region(New Rectangle(2, 2, sender.Width - 4, sender.Height - 4))
@@ -600,14 +609,19 @@ Public Class frmNewEmployee
 
         If Bio_TXT.Text <> Nothing Then
             GetFullname(Bio_TXT.Text, Add_Company_CB, Branch_ComboB, Fullname_TXT, Email_TXT, InActive_RB,
-                            Started_DTP, TimeIn_Combo, TimeOut_Combo, EmpNo_TXT, TIN_TXT, SSS_TXT, PHILH_TXT, HDMF_TXT, HO_Category, ComCategory_Combo)
+                            Started_DTP, TimeIn_Combo, TimeOut_Combo, EmpNo_TXT, TIN_TXT, SSS_TXT, PHILH_TXT, HDMF_TXT, HO_Category,
+                            ComCategory_Combo, Position_Combo, ComCompany_Cmbo)
 
         Else
             Add_Company_CB.Text = ""
             HO_Category.Text = ""
+            ComCategory_Combo.Text = ""
+            ComCompany_Cmbo.Text = ""
             Branch_ComboB.Text = ""
+            Started_DTP.Value = "1/1/2000"
             Fullname_TXT.Text = ""
             Email_TXT.Text = ""
+            Position_Combo.Text = ""
             TimeIn_Combo.Text = ""
             TimeOut_Combo.Text = ""
             EmpNo_TXT.Text = ""
@@ -620,21 +634,6 @@ Public Class frmNewEmployee
 
     End Sub
 
-    Private Sub Add_Company_CB_SelectedValueChanged(sender As Object, e As EventArgs) Handles Add_Company_CB.SelectedValueChanged
-
-        HO_Category.Text = ""
-
-        If Add_Company_CB.SelectedItem = "HEAD OFFICE" Then
-            Label19.Visible = True
-            HO_Category.Visible = True
-        Else
-            Label19.Visible = False
-            HO_Category.Visible = False
-
-            Label20.Visible = False
-            ComCategory_Combo.Visible = False
-        End If
-    End Sub
 
     Private Sub HO_Category_SelectedValueChanged(sender As Object, e As EventArgs) Handles HO_Category.SelectedValueChanged
 
@@ -643,9 +642,15 @@ Public Class frmNewEmployee
         If HO_Category.SelectedItem = "PGC Head Office" Or HO_Category.SelectedItem = "Construction" Or HO_Category.SelectedItem = "Leasing Admin Office" Then
             Label20.Visible = True
             ComCategory_Combo.Visible = True
+
+            Label23.Visible = True
+            ComCompany_Cmbo.Visible = True
         Else
             Label20.Visible = False
             ComCategory_Combo.Visible = False
+
+            Label23.Visible = False
+            ComCompany_Cmbo.Visible = False
         End If
     End Sub
 
@@ -678,14 +683,34 @@ Public Class frmNewEmployee
     'End Sub
 
 
-    Private Sub Branch_ComboB_TextChanged(sender As Object, e As EventArgs) Handles Branch_ComboB.TextChanged
 
-        If sender.Text = "" Then
-            If Add_Company_CB.SelectedItem = "HEAD OFFICE" Then
-                sender.Region = New Region(New Rectangle(2, 2, sender.Width - 4, sender.Height - 4))
-            End If
+    Private Sub Add_Company_CB_TextChanged_1(sender As Object, e As EventArgs) Handles Position_Combo.TextChanged, HO_Category.TextChanged, ComCategory_Combo.TextChanged, Branch_ComboB.TextChanged, Add_Company_CB.TextChanged
+        Dim selectionStart As Integer = sender.SelectionStart
+
+        sender.Text = sender.Text.ToUpper()
+        sender.SelectionStart = selectionStart
+
+        If Add_Company_CB.SelectedItem <> "HEAD OFFICE" Then
+            Label4.Visible = True
+            Branch_ComboB.Visible = True
+
+            Label19.Visible = False
+            HO_Category.Visible = False
+            HO_Category.Text = ""
+
+            Label20.Visible = False
+            ComCategory_Combo.Visible = False
+            ComCategory_Combo.Text = ""
+
+            Label23.Visible = False
+            ComCompany_Cmbo.Visible = False
+            ComCompany_Cmbo.Text = ""
         Else
-            sender.Region = Nothing
+            Label4.Visible = False
+            Branch_ComboB.Visible = False
+
+            Label19.Visible = True
+            HO_Category.Visible = True
         End If
 
     End Sub
