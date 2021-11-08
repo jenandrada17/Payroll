@@ -1306,6 +1306,7 @@ Partial Class frmSettings
         Me.Deduction_List.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Deduction_List.FullRowSelect = True
         Me.Deduction_List.GridLines = True
+        Me.Deduction_List.HideSelection = False
         Me.Deduction_List.Location = New System.Drawing.Point(19, 247)
         Me.Deduction_List.MultiSelect = False
         Me.Deduction_List.Name = "Deduction_List"

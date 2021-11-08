@@ -135,17 +135,56 @@ Module SelectFromDatabase
         Return False
     End Function
 
-    Public Function GetSingle_column(table As String, column As String, value As String, getColumn As String)
-        Dim Daily_rate As Double
-        Dim mysql As String = $"Select * FROM  {table} WHERE {column} = {value}"
-        Dim ds As DataSet = LoadSQL(mysql, table)
+    'Public Function GetSingle_String(table As String, column As String, value As String, getColumn As String)
+    '    Dim columnValue As Double
+    '    Dim mysql As String = $"Select * FROM  {table} WHERE {column} = {value}"
+    '    Dim ds As DataSet = LoadSQL(mysql, table)
+    '    If ds.Tables(0).Rows.Count > 0 Then
+    '        Dim dr As DataRow = ds.Tables(0).Rows(0)
+    '        With dr
+    '            columnValue = IIf(IsDBNull(.Item(getColumn)), Nothing, .Item(getColumn))
+    '        End With
+    '    End If
+    '    Return columnValue
+    'End Function 
+
+    'Public Function GetSingle_Numeric(table As String, column As String, value As String, getColumn As String)
+    '    Dim columnValue As Double
+    '    Dim mysql As String = $"Select * FROM  {table} WHERE {column} = {value}"
+    '    Dim ds As DataSet = LoadSQL(mysql, table)
+    '    If ds.Tables(0).Rows.Count > 0 Then
+    '        Dim dr As DataRow = ds.Tables(0).Rows(0)
+    '        With dr
+    '            columnValue = IIf(IsDBNull(.Item(getColumn)), 0, .Item(getColumn))
+    '        End With
+    '    End If
+    '    Return columnValue
+    'End Function
+
+    Public Function GetMinimumRate(column As String, value As String) As Double
+        Dim minimum_rate As Integer = 0
+        Dim mysql As String = $"Select MINIMUM_RATE From PAYROLL_CITY_BRANCH where {column} = '{value}'"
+        Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_CITY_BRANCH")
         If ds.Tables(0).Rows.Count > 0 Then
             Dim dr As DataRow = ds.Tables(0).Rows(0)
             With dr
-                Daily_rate = IIf(IsDBNull(.Item(getColumn)), Nothing, .Item(getColumn))
+                minimum_rate = IIf(IsDBNull(.Item("MINIMUM_RATE")), 0, .Item("MINIMUM_RATE"))
             End With
         End If
-        Return Daily_rate
+        Return minimum_rate
+    End Function
+
+    Public Function GetEcola(column As String, value As String) As Double
+        Dim ecola As Integer = 0
+        Dim mysql As String = $"Select ECOLA From PAYROLL_CITY_BRANCH where {column} = '{value}'"
+        Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_CITY_BRANCH")
+        If ds.Tables(0).Rows.Count > 0 Then
+            Dim dr As DataRow = ds.Tables(0).Rows(0)
+            With dr
+                ecola = IIf(IsDBNull(.Item("ECOLA")), 0, .Item("ECOLA"))
+            End With
+        End If
+        Return ecola
     End Function
 
     Public Sub GetEmail(email As TextBox, pass As TextBox)
@@ -2390,19 +2429,6 @@ Module SelectFromDatabase
             End With
         End If
     End Sub
-
-    Public Function GetMinimumRate(branch_code As String) As Double
-        Dim minimum_rate As Integer = 0
-        Dim mysql As String = $"Select * From PAYROLL_MINIMUM_RATE where branch_code = '{branch_code}'"
-        Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_MINIMUM_RATE")
-        If ds.Tables(0).Rows.Count > 0 Then
-            Dim dr As DataRow = ds.Tables(0).Rows(0)
-            With dr
-                minimum_rate = IIf(IsDBNull(.Item("MINIMUM_RATE")), 0, .Item("MINIMUM_RATE"))
-            End With
-        End If
-        Return minimum_rate
-    End Function
 
 
     Public Sub Replacing(str As String)

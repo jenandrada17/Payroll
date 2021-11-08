@@ -235,4 +235,21 @@ Module Public_Function
         End Try
     End Sub
 
+    Friend Sub TempAttendance()
+
+        RunCommand("DROP TABLE IF EXISTS #TEMP_ATTENDANCE;")
+
+        RunCommand("CREATE TABLE #TEMP_ATTENDANCE (BIOMETRICID BIGINT NOT NULL, PAYDATE DATE, PRESENT_DAYS VARCHAR(20) CHARACTER SET NONE,
+                    OVERTIME SMALLINT DEFAULT 0, LATE VARCHAR(20), UNDERTIME VARCHAR(20), REGHOLIDAY SMALLINT DEFAULT 0, 
+                    SPECHOLIDAY SMALLINT DEFAULT 0;")
+    End Sub
+
+    Friend Sub InsertTempAttendance(BIOMETRICID As String, paydate_ As String, TotalDays As String, TotalOTHr As String,
+                                    Late_Total As String, Under_Total As String, TotalRHoliday As String, TotalSHoliday As String)
+
+        RunCommand($"INSERT INTO #TEMP_ATTENDANCE VALUES ('{BIOMETRICID}', '{paydate_}', '{TotalDays}', '{TotalOTHr}'
+                    '{Late_Total}', '{Under_Total}', '{TotalRHoliday}', '{TotalSHoliday}';")
+
+    End Sub
+
 End Module

@@ -1671,6 +1671,7 @@ Public Class frmAttendance
 
     Public Sub SAVE_DIRECT_Attendance()
         LoadDateTime()
+        TempAttendance()
 
         AM_In_DataGrid.Items.Insert(0, "")
         AM_Out_DataGrid.Items.Insert(0, "")
@@ -1801,13 +1802,9 @@ Public Class frmAttendance
             SaveAttendanceEE(biometric_No, paydate_, TotalDays_LBL.Text, TotalOTHr_LBL.Text, Late_Total.ToString, Under_Total.ToString,
                              TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text)
 
-            'exist_date = exist_date.Distinct().ToList
+            InsertTempAttendance(biometric_No, paydate_, TotalDays_LBL.Text, TotalOTHr_LBL.Text,
+                                    Late_Total.ToString, Under_Total.ToString, TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text)
 
-            'For Each allDate As DateTime In all_date
-            '    If Not exist_date.Contains(allDate) Then
-            '        SaveDTR(biometric_No, paydate_, allDate.ToString("d"), Nothing, Nothing, Nothing, Nothing)
-            '    End If
-            'Next
         Next
     End Sub
 

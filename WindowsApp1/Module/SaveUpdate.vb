@@ -433,14 +433,11 @@
         Dim mysql As String = $"Select * FROM PAYROLL_CITY_BRANCH  WHERE {column} = '{value}'"
         Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_CITY_BRANCH")
         If dss.Tables(0).Rows.Count > 0 Then
-
             For Each dr In dss.Tables(0).Rows
                 With dr
                     SaveRATE("BRANCH_CODE", .Item("BRANCHCODE"), daily_rate, True)
-
                 End With
             Next
-
         End If
     End Sub
 
@@ -459,6 +456,7 @@
                     If existing_rate < daily_rate Then
                         .Item("RATE_DAILY") = daily_rate
                     End If
+
                 End With
                 SaveEntry(dss, False)
                 frmMainForm.AppProgressBar.Value += 1
@@ -511,16 +509,15 @@
     '                End If
     '            End With
     '            SaveEntry(ds, False)
-    '        End If
-
+    '        End If 
     '    End If
     'End Sub
 
-    Friend Sub SaveMinimum_RATE(value As String, MINIMUM_RATE As String, Optional ECOLA As String = Nothing) '=========== BOOLEAN IF MORE THAN 1 ========== 
+    Friend Sub SaveMinimum_RATE(value As String, MINIMUM_RATE As String, ECOLA As String) '=========== BOOLEAN IF MORE THAN 1 ========== 
         Dim mysql As String
 
-        mysql = $"Select * FROM PAYROLL_MINIMUM_RATE where BRANCH_CODE = '{value}'"
-        Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_MINIMUM_RATE")
+        mysql = $"Select * FROM PAYROLL_CITY_BRANCH where CITY = '{value}'"
+        Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_CITY_BRANCH")
         If dss.Tables(0).Rows.Count > 0 Then
             For Each dr In dss.Tables(0).Rows
                 With dr
@@ -533,26 +530,6 @@
                 End With
                 SaveEntry(dss, False)
             Next
-        Else
-
-            mysql = "Select * From PAYROLL_MINIMUM_RATE Rows 1"
-            Using ds As DataSet = LoadSQL(mysql, "PAYROLL_MINIMUM_RATE")
-
-                Dim dsNewRow As DataRow = ds.Tables(0).NewRow
-                With dsNewRow
-
-                    .Item("BRANCH_CODE") = value
-                    .Item("MINIMUM_RATE") = MINIMUM_RATE
-
-                    If ECOLA <> Nothing Then
-                        .Item("ECOLA") = ECOLA
-                    End If
-
-                End With
-                ds.Tables(0).Rows.Add(dsNewRow)
-                SaveEntry(ds)
-            End Using
-
         End If
     End Sub
 
@@ -847,7 +824,8 @@
                     Dim rate As Double = 0
                     Dim SIL As Double = 0
                     Dim Allowances As Double = 0
-                    Dim Minimum_rate As Double = GetMinimumRate(.Item("BRANCH_CODE"))
+                    Dim Minimum_rate As Double = GetMinimumRate("BRANCHCODE", .Item("BRANCH_CODE"))
+                    Dim Ecola As Double = GetEcola("BRANCHCODE", .Item("BRANCH_CODE"))
 
                     rate = IIf(IsDBNull(.Item("RATE_DAILY")) Or .Item("RATE_DAILY") = 0, Minimum_rate, .Item("RATE_DAILY"))
                     Company = IIf(IsDBNull(.Item("COMPANY")), "", .Item("COMPANY"))
@@ -962,6 +940,9 @@
                     Dim SIL_Total As Double = SIL * rate
                     Allowances = SIL_Total
                     Save_Recorded_Allow_Deduc(bioNo, paydate_, "SIL", SIL_Total, "ALLOWANCE")
+
+                    Allowances = Allowances + Ecola
+                    Save_Recorded_Allow_Deduc(bioNo, paydate_, "ECOLA", Ecola, "ALLOWANCE")
 
                     '============================================= OTHER ALLOWANCES =========================================================
                     Dim sql_2 As String = $"Select * From PAYROLL_ALLOWANCES WHERE BIOMETRIC_NO = '{bioNo}' and ALLOWED = 'YES' and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
@@ -1121,7 +1102,8 @@
                         Dim nightRate As Double = 0
                         Dim Allowances As Double = 0
                         Dim Deduction As Double = 0
-                        Dim Minimum_rate As Double = GetMinimumRate(.Item("BRANCH_CODE"))
+                        Dim Minimum_rate As Double = GetMinimumRate("BRANCHCODE", .Item("BRANCH_CODE"))
+                        Dim Ecola As Double = GetEcola("BRANCHCODE", .Item("BRANCH_CODE"))
 
                         BiometricID = .Item("BIOMETRICID")
                         rate = IIf(IsDBNull(.Item("RATE_DAILY")) Or .Item("RATE_DAILY") = 0, Minimum_rate, .Item("RATE_DAILY"))
@@ -1226,6 +1208,10 @@
                         '============================================= DELETE TO REPLACE =================================================
                         Replacing($"RECORDED_ALLOW_DEDUC where BIO_NO = '{BiometricID}' and PAYDATE = '{paydate_}';")
                         '============================================= ALLOWANCE ========================================================= 
+                        '==================== FOR ECOLA 
+                        Allowances = Allowances + Ecola
+                        Save_Recorded_Allow_Deduc(BiometricID, paydate_, "ECOLA", Ecola, "ALLOWANCE")
+                        '================================================================
 
                         Dim sql_2 As String = $"Select * From PAYROLL_ALLOWANCES WHERE BIOMETRIC_NO = '{BiometricID}' and ALLOWED = 'YES' and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
                         Using ds_2 As DataSet = LoadSQL(sql_2, "PAYROLL_ALLOWANCES")
@@ -1663,7 +1649,7 @@
                 .Item("FULLNAME") = FULLNAME
                 .Item("EMAIL_ADD") = EMAIL_ADD
                 .Item("EMP_STATUS") = EMP_STATUS
-                .Item("RATE_DAILY") = GetMinimumRate(.Item("BRANCH_CODE"))
+                .Item("RATE_DAILY") = GetMinimumRate("BRANCHCODE", .Item("BRANCH_CODE"))
 
                 If DATE_STARTED <> "" Then .Item("DATE_STARTED") = DATE_STARTED
                 If TIME_IN <> "" Then .Item("TIME_IN") = TIME_IN
@@ -1699,7 +1685,7 @@
                     .Item("FULLNAME") = FULLNAME
                     .Item("EMAIL_ADD") = EMAIL_ADD
                     .Item("EMP_STATUS") = EMP_STATUS
-                    .Item("RATE_DAILY") = GetMinimumRate(.Item("BRANCH_CODE"))
+                    .Item("RATE_DAILY") = GetMinimumRate("BRANCHCODE", .Item("BRANCH_CODE"))
 
                     If DATE_STARTED <> "" Then .Item("DATE_STARTED") = DATE_STARTED
                     If TIME_IN <> "" Then .Item("TIME_IN") = TIME_IN

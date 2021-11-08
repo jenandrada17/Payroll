@@ -18,7 +18,7 @@ Public Class frmSettings
         PopulateComboBox_Any(ClockBranch_CB, "PAYROLL_EMPLOYEE", "BRANCH_CODE")
         PopulateComboBox(Allow_Category_Combo, "CATEGORY_ALLOWANCE", "ALLOWANCE_NAME")
         PopulateComboBox(DE_Category_Combo, "CATEGORY_DEDUCTION", "DEDUCTION_NAME")
-        PopulateComboBox_Any(City_Combo, "PAYROLL_EMPLOYEE", "BRANCH_CITY")
+        PopulateComboBox_Any(City_Combo, "PAYROLL_CITY_BRANCH", "CITY")
         PopulateComboBox_Any(CityCode_Combo, "PAYROLL_EMPLOYEE", "BRANCH_CODE")
         Lists_Rate(Rate_list)
         Lists_Allowance(Allowance_LV)
@@ -203,13 +203,16 @@ Public Class frmSettings
 
             SaveRATE_City("CITY", Rate_City_ComboB.Text, Rate_CityAmount_TXT.Text, True)
 
-            SaveMinimum_RATE(Rate_City_ComboB.Text, Rate_CityAmount_TXT.Text)
+            SaveMinimum_RATE(Rate_City_ComboB.Text, Rate_CityAmount_TXT.Text, Ecola_TXT.Text)
 
             CityClear_BTN.PerformClick()
 
             MsgBox("Successfully updated!", MsgBoxStyle.Information, "Information")
 
             Lists_Rate(Rate_list)
+        Else
+            If Not Rate_City_ComboB.SelectedIndex >= 0 Then MsgBox("Invalid City. Kindly click CITY-BRANCH to add new City and branch!", MsgBoxStyle.Exclamation, "Error")
+            If Rate_CityAmount_TXT.Text = "" Then MsgBox("Kindly indicate rate amount!", MsgBoxStyle.Exclamation, "Error")
 
         End If
     End Sub
@@ -838,6 +841,12 @@ Public Class frmSettings
         Rate_City_ComboB.Text = ""
         Rate_CityAmount_TXT.Clear()
         Ecola_TXT.Clear()
+    End Sub
+
+    Private Sub Rate_City_ComboB_SelectedValueChanged(sender As Object, e As EventArgs) Handles Rate_City_ComboB.SelectedValueChanged
+        Dim ecola = GetEcola("CITY", Rate_City_ComboB.SelectedItem)
+        Rate_CityAmount_TXT.Text = GetMinimumRate("CITY", Rate_City_ComboB.SelectedItem)
+        Ecola_TXT.Text = IIf(ecola = 0, Nothing, ecola)
     End Sub
 
 End Class
