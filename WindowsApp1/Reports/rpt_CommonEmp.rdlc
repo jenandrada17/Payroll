@@ -114,7 +114,6 @@
                       </Style>
                     </Textbox>
                     <ColSpan>24</ColSpan>
-                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
                 <TablixCell />
@@ -2130,7 +2129,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=IIF(FIELDS!PHOTO.Value = 0, "", Format(REPORTITEMS!NETPAY.Value * FIELDS!PHOTO.Value , "0.00"))</Value>
+                              <Value>=IIF(FIELDS!PHOTO.Value = 0, "", Round(REPORTITEMS!NETPAY.Value * FIELDS!PHOTO.Value, 2))</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
