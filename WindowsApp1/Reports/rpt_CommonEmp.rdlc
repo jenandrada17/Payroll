@@ -114,6 +114,7 @@
                       </Style>
                     </Textbox>
                     <ColSpan>24</ColSpan>
+                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
                 <TablixCell />
@@ -2095,7 +2096,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=IIF(Fields!PHOTO.Value = 0, "", FormatPercent(Fields!PHOTO.Value / 100, 2, TriState.False))</Value>
+                              <Value>=IIF(Fields!PHOTO.Value = 0, "", FormatPercent(Fields!PHOTO.Value, 2, TriState.False))</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -2129,7 +2130,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=IIF(FIELDS!PHOTO.Value = 0, "", Format(CDbl(REPORTITEMS!NETPAY.Value) * (FIELDS!PHOTO.Value / 100), "0.00"))</Value>
+                              <Value>=IIF(FIELDS!PHOTO.Value = 0, "", Format(REPORTITEMS!NETPAY.Value * FIELDS!PHOTO.Value , "0.00"))</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -2163,7 +2164,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=IIF(Fields!DAVAOP.Value = 0, "", FormatPercent(Fields!DAVAOP.Value / 100, 2, TriState.False))</Value>
+                              <Value>=IIF(Fields!DAVAOP.Value = 0, "", FormatPercent(Fields!DAVAOP.Value, 2, TriState.False))</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -2197,7 +2198,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=IIF(FIELDS!DAVAOP.Value = 0, "", Format(CDbl(REPORTITEMS!NETPAY.Value) * (FIELDS!DAVAOP.Value / 100), "0.00"))</Value>
+                              <Value>=IIF(FIELDS!DAVAOP.Value = 0, "", Format(CDbl(REPORTITEMS!NETPAY.Value) * FIELDS!DAVAOP.Value, "0.00"))</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -2231,7 +2232,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=IIF(Fields!DALTON.Value = 0, "", FormatPercent(Fields!DALTON.Value / 100, 2, TriState.False))</Value>
+                              <Value>=IIF(Fields!DALTON.Value = 0, "", FormatPercent(Fields!DALTON.Value, 2, TriState.False))</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -2265,7 +2266,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=IIF(FIELDS!DALTON.Value = 0, "", Format(CDbl(REPORTITEMS!NETPAY.Value) * (FIELDS!DALTON.Value / 100), "0.00"))</Value>
+                              <Value>=IIF(FIELDS!DALTON.Value = 0, "", Format(CDbl(REPORTITEMS!NETPAY.Value) * FIELDS!DALTON.Value, "0.00"))</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -2299,7 +2300,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=IIF(Fields!PERFECOM.Value = 0, "", FormatPercent(Fields!PERFECOM.Value / 100, 2, TriState.False))</Value>
+                              <Value>=IIF(Fields!PERFECOM.Value = 0, "", FormatPercent(Fields!PERFECOM.Value, 2, TriState.False))</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -2333,7 +2334,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=IIF(FIELDS!PERFECOM.Value = 0, "", Format(CDbl(REPORTITEMS!NETPAY.Value) * (FIELDS!PERFECOM.Value / 100), "0.00"))</Value>
+                              <Value>=IIF(FIELDS!PERFECOM.Value = 0, "", Format(CDbl(REPORTITEMS!NETPAY.Value) * FIELDS!PERFECOM.Value, "0.00"))</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -2367,7 +2368,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=IIF(Fields!LEASING.Value = 0, "", FormatPercent(Fields!LEASING.Value / 100, 2, TriState.False))</Value>
+                              <Value>=IIF(Fields!LEASING.Value = 0, "", FormatPercent(Fields!LEASING.Value, 2, TriState.False))</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -2401,7 +2402,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=IIF(FIELDS!LEASING.Value = 0, "", Format(CDbl(REPORTITEMS!NETPAY.Value) * (FIELDS!LEASING.Value / 100), "0.00"))</Value>
+                              <Value>=IIF(FIELDS!LEASING.Value = 0, "", Format(CDbl(REPORTITEMS!NETPAY.Value) * FIELDS!LEASING.Value, "0.00"))</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -2435,7 +2436,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=IIF(Fields!Seven11.Value = 0, "", FormatPercent(Fields!Seven11.Value / 100, 2, TriState.False))</Value>
+                              <Value>=IIF(Fields!Seven11.Value = 0, "", FormatPercent(Fields!Seven11.Value, 2, TriState.False))</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -2469,7 +2470,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=IIF(FIELDS!Seven11.Value = 0, "", Format(CDbl(REPORTITEMS!NETPAY.Value) * (FIELDS!Seven11.Value / 100), "0.00"))</Value>
+                              <Value>=IIF(FIELDS!Seven11.Value = 0, "", Format(CDbl(REPORTITEMS!NETPAY.Value) * FIELDS!Seven11.Value, "0.00"))</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -2503,7 +2504,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=IIF(Fields!G3.Value = 0, "", FormatPercent(Fields!G3.Value / 100, 2, TriState.False))</Value>
+                              <Value>=IIF(Fields!G3.Value = 0, "", FormatPercent(Fields!G3.Value, 2, TriState.False))</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -2537,7 +2538,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=IIF(FIELDS!G3.Value = 0, "", Format(CDbl(REPORTITEMS!NETPAY.Value) * (FIELDS!G3.Value / 100), "0.00"))</Value>
+                              <Value>=IIF(FIELDS!G3.Value = 0, "", Format(CDbl(REPORTITEMS!NETPAY.Value) * FIELDS!G3.Value, "0.00"))</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -2571,7 +2572,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=IIF(Fields!COMI_TO_FUJI.Value = 0, "", FormatPercent(Fields!COMI_TO_FUJI.Value / 100, 2, TriState.False))</Value>
+                              <Value>=IIF(Fields!COMI_TO_FUJI.Value = 0, "", FormatPercent(Fields!COMI_TO_FUJI.Value, 2, TriState.False))</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -2605,7 +2606,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=IIF(FIELDS!COMI_TO_FUJI.Value = 0, "", Format(CDbl(REPORTITEMS!NETPAY.Value) * (FIELDS!COMI_TO_FUJI.Value / 100), "0.00"))</Value>
+                              <Value>=IIF(FIELDS!COMI_TO_FUJI.Value = 0, "", Format(CDbl(REPORTITEMS!NETPAY.Value) * FIELDS!COMI_TO_FUJI.Value, "0.00"))</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -2639,7 +2640,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=IIF(Fields!HOUSEHOLD.Value = 0, "", FormatPercent(Fields!HOUSEHOLD.Value / 100, 2, TriState.False))</Value>
+                              <Value>=IIF(Fields!HOUSEHOLD.Value = 0, "", FormatPercent(Fields!HOUSEHOLD.Value, 2, TriState.False))</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -2673,7 +2674,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=IIF(FIELDS!HOUSEHOLD.Value = 0, "", Format(CDbl(REPORTITEMS!NETPAY.Value) * (FIELDS!HOUSEHOLD.Value / 100), "0.00"))</Value>
+                              <Value>=IIF(FIELDS!HOUSEHOLD.Value = 0, "", Format(CDbl(REPORTITEMS!NETPAY.Value) * FIELDS!HOUSEHOLD.Value, "0.00"))</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -2707,15 +2708,15 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=FormatPercent((CDbl(IIF(FIELDS!PHOTO.Value = NOTHING, 0, FIELDS!PHOTO.Value / 100)) +
-CDbl(IIF(FIELDS!DAVAOP.Value = NOTHING, 0, FIELDS!DAVAOP.Value / 100)) +
-CDbl(IIF(FIELDS!DALTON.Value = NOTHING, 0, FIELDS!DALTON.Value / 100)) +
-CDbl(IIF(FIELDS!PERFECOM.Value = NOTHING, 0, FIELDS!PERFECOM.Value / 100)) +
-CDbl(IIF(FIELDS!LEASING.Value = NOTHING, 0, FIELDS!LEASING.Value / 100)) +
-CDbl(IIF(FIELDS!Seven11.Value = NOTHING, 0, FIELDS!Seven11.Value / 100)) +
-CDbl(IIF(FIELDS!G3.Value = NOTHING, 0, FIELDS!G3.Value / 100)) +
-CDbl(IIF(FIELDS!COMI_TO_FUJI.Value = NOTHING, 0, FIELDS!COMI_TO_FUJI.Value / 100)) +
-CDbl(IIF(FIELDS!HOUSEHOLD.Value = NOTHING, 0, FIELDS!HOUSEHOLD.Value / 100))), 2, TriState.False)</Value>
+                              <Value>=FormatPercent((CDbl(IIF(FIELDS!PHOTO.Value = NOTHING, 0, FIELDS!PHOTO.Value)) +
+CDbl(IIF(FIELDS!DAVAOP.Value = NOTHING, 0, FIELDS!DAVAOP.Value)) +
+CDbl(IIF(FIELDS!DALTON.Value = NOTHING, 0, FIELDS!DALTON.Value)) +
+CDbl(IIF(FIELDS!PERFECOM.Value = NOTHING, 0, FIELDS!PERFECOM.Value)) +
+CDbl(IIF(FIELDS!LEASING.Value = NOTHING, 0, FIELDS!LEASING.Value)) +
+CDbl(IIF(FIELDS!Seven11.Value = NOTHING, 0, FIELDS!Seven11.Value)) +
+CDbl(IIF(FIELDS!G3.Value = NOTHING, 0, FIELDS!G3.Value)) +
+CDbl(IIF(FIELDS!COMI_TO_FUJI.Value = NOTHING, 0, FIELDS!COMI_TO_FUJI.Value)) +
+CDbl(IIF(FIELDS!HOUSEHOLD.Value = NOTHING, 0, FIELDS!HOUSEHOLD.Value))), 2, TriState.False)</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -3945,7 +3946,7 @@ CDbl(IIF(ReportItems!HOUSEHOLD_A.value = NOTHING, 0, ReportItems!HOUSEHOLD_A.val
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=IIF(Fields!PHOTO_L.Value = 0, "", FormatPercent(Fields!PHOTO_L.Value / 100, 2, TriState.False))</Value>
+                              <Value>=IIF(Fields!PHOTO_L.Value = 0, "", FormatPercent(Fields!PHOTO_L.Value, 2, TriState.False))</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -3979,7 +3980,7 @@ CDbl(IIF(ReportItems!HOUSEHOLD_A.value = NOTHING, 0, ReportItems!HOUSEHOLD_A.val
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=IIF(Fields!PHOTO_L.Value = 0, "", Format(CDbl(ReportItems!NETPAY2.Value) * (Fields!PHOTO_L.Value / 100), "0.00"))</Value>
+                              <Value>=IIF(Fields!PHOTO_L.Value = 0, "", Format(CDbl(ReportItems!NETPAY2.Value) * Fields!PHOTO_L.Value , "0.00"))</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -4013,7 +4014,7 @@ CDbl(IIF(ReportItems!HOUSEHOLD_A.value = NOTHING, 0, ReportItems!HOUSEHOLD_A.val
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=IIF(Fields!DAVAOP_L.Value = 0, "", FormatPercent(Fields!DAVAOP_L.Value / 100, 2, TriState.False))</Value>
+                              <Value>=IIF(Fields!DAVAOP_L.Value = 0, "", FormatPercent(Fields!DAVAOP_L.Value, 2, TriState.False))</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -4047,7 +4048,7 @@ CDbl(IIF(ReportItems!HOUSEHOLD_A.value = NOTHING, 0, ReportItems!HOUSEHOLD_A.val
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=IIF(Fields!DAVAOP_L.Value = 0, "", Format(CDbl(ReportItems!NETPAY2.Value) * (Fields!DAVAOP_L.Value / 100), "0.00"))</Value>
+                              <Value>=IIF(Fields!DAVAOP_L.Value = 0, "", Format(CDbl(ReportItems!NETPAY2.Value) * Fields!DAVAOP_L.Value , "0.00"))</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -4081,7 +4082,7 @@ CDbl(IIF(ReportItems!HOUSEHOLD_A.value = NOTHING, 0, ReportItems!HOUSEHOLD_A.val
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=IIF(Fields!DALTON_L.Value = 0, "", FormatPercent(Fields!DALTON_L.Value / 100, 2, TriState.False))</Value>
+                              <Value>=IIF(Fields!DALTON_L.Value = 0, "", FormatPercent(Fields!DALTON_L.Value, 2, TriState.False))</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -4115,7 +4116,7 @@ CDbl(IIF(ReportItems!HOUSEHOLD_A.value = NOTHING, 0, ReportItems!HOUSEHOLD_A.val
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=IIF(Fields!DALTON_L.Value = 0, "", Format(CDbl(ReportItems!NETPAY2.Value) * (Fields!DALTON_L.Value / 100), "0.00"))</Value>
+                              <Value>=IIF(Fields!DALTON_L.Value = 0, "", Format(CDbl(ReportItems!NETPAY2.Value) * Fields!DALTON_L.Value, "0.00"))</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -4149,7 +4150,7 @@ CDbl(IIF(ReportItems!HOUSEHOLD_A.value = NOTHING, 0, ReportItems!HOUSEHOLD_A.val
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=IIF(Fields!PERFECOM_L.Value = 0, "", FormatPercent(Fields!PERFECOM_L.Value / 100, 2, TriState.False))</Value>
+                              <Value>=IIF(Fields!PERFECOM_L.Value = 0, "", FormatPercent(Fields!PERFECOM_L.Value, 2, TriState.False))</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -4183,7 +4184,7 @@ CDbl(IIF(ReportItems!HOUSEHOLD_A.value = NOTHING, 0, ReportItems!HOUSEHOLD_A.val
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=IIF(Fields!PERFECOM_L.Value = 0, "", Format(CDbl(ReportItems!NETPAY2.Value) * (Fields!PERFECOM_L.Value / 100), "0.00"))</Value>
+                              <Value>=IIF(Fields!PERFECOM_L.Value = 0, "", Format(CDbl(ReportItems!NETPAY2.Value) * Fields!PERFECOM_L.Value , "0.00"))</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -4217,7 +4218,7 @@ CDbl(IIF(ReportItems!HOUSEHOLD_A.value = NOTHING, 0, ReportItems!HOUSEHOLD_A.val
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=IIF(Fields!LEASING_L.Value = 0, "", FormatPercent(Fields!LEASING_L.Value / 100, 2, TriState.False))</Value>
+                              <Value>=IIF(Fields!LEASING_L.Value = 0, "", FormatPercent(Fields!LEASING_L.Value, 2, TriState.False))</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -4251,7 +4252,7 @@ CDbl(IIF(ReportItems!HOUSEHOLD_A.value = NOTHING, 0, ReportItems!HOUSEHOLD_A.val
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=IIF(Fields!LEASING_L.Value = 0, "", Format(CDbl(ReportItems!NETPAY2.Value) * (Fields!LEASING_L.Value / 100), "0.00"))</Value>
+                              <Value>=IIF(Fields!LEASING_L.Value = 0, "", Format(CDbl(ReportItems!NETPAY2.Value) * Fields!LEASING_L.Value, "0.00"))</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -4285,7 +4286,7 @@ CDbl(IIF(ReportItems!HOUSEHOLD_A.value = NOTHING, 0, ReportItems!HOUSEHOLD_A.val
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=IIF(Fields!Seven11_L.Value = 0, "", FormatPercent(Fields!Seven11_L.Value / 100, 2, TriState.False))</Value>
+                              <Value>=IIF(Fields!Seven11_L.Value = 0, "", FormatPercent(Fields!Seven11_L.Value, 2, TriState.False))</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -4319,7 +4320,7 @@ CDbl(IIF(ReportItems!HOUSEHOLD_A.value = NOTHING, 0, ReportItems!HOUSEHOLD_A.val
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=IIF(Fields!Seven11_L.Value = 0, "", Format(CDbl(ReportItems!NETPAY2.Value) * (Fields!Seven11_L.Value / 100), "0.00"))</Value>
+                              <Value>=IIF(Fields!Seven11_L.Value = 0, "", Format(CDbl(ReportItems!NETPAY2.Value) * Fields!Seven11_L.Value, "0.00"))</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -4353,7 +4354,7 @@ CDbl(IIF(ReportItems!HOUSEHOLD_A.value = NOTHING, 0, ReportItems!HOUSEHOLD_A.val
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=IIF(Fields!G3_L.Value = 0, "", FormatPercent(Fields!G3_L.Value / 100, 2, TriState.False))</Value>
+                              <Value>=IIF(Fields!G3_L.Value = 0, "", FormatPercent(Fields!G3_L.Value, 2, TriState.False))</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -4387,7 +4388,7 @@ CDbl(IIF(ReportItems!HOUSEHOLD_A.value = NOTHING, 0, ReportItems!HOUSEHOLD_A.val
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=IIF(Fields!G3_L.Value = 0, "", Format(CDbl(ReportItems!NETPAY2.Value) * (Fields!G3_L.Value / 100), "0.00"))</Value>
+                              <Value>=IIF(Fields!G3_L.Value = 0, "", Format(CDbl(ReportItems!NETPAY2.Value) * Fields!G3_L.Value , "0.00"))</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -4421,7 +4422,7 @@ CDbl(IIF(ReportItems!HOUSEHOLD_A.value = NOTHING, 0, ReportItems!HOUSEHOLD_A.val
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=IIF(Fields!COMI_TO_FUJI_L.Value = 0, "", FormatPercent(Fields!COMI_TO_FUJI_L.Value / 100, 2, TriState.False))</Value>
+                              <Value>=IIF(Fields!COMI_TO_FUJI_L.Value = 0, "", FormatPercent(Fields!COMI_TO_FUJI_L.Value, 2, TriState.False))</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -4455,7 +4456,7 @@ CDbl(IIF(ReportItems!HOUSEHOLD_A.value = NOTHING, 0, ReportItems!HOUSEHOLD_A.val
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=IIF(Fields!COMI_TO_FUJI_L.Value = 0, "", Format(CDbl(ReportItems!NETPAY2.Value) * (Fields!COMI_TO_FUJI_L.Value / 100), "0.00"))</Value>
+                              <Value>=IIF(Fields!COMI_TO_FUJI_L.Value = 0, "", Format(CDbl(ReportItems!NETPAY2.Value) * Fields!COMI_TO_FUJI_L.Value, "0.00"))</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -4489,7 +4490,7 @@ CDbl(IIF(ReportItems!HOUSEHOLD_A.value = NOTHING, 0, ReportItems!HOUSEHOLD_A.val
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=IIF(Fields!HOUSEHOLD_L.Value = 0, "", FormatPercent(Fields!HOUSEHOLD_L.Value / 100, 2, TriState.False))</Value>
+                              <Value>=IIF(Fields!HOUSEHOLD_L.Value = 0, "", FormatPercent(Fields!HOUSEHOLD_L.Value, 2, TriState.False))</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -4523,7 +4524,7 @@ CDbl(IIF(ReportItems!HOUSEHOLD_A.value = NOTHING, 0, ReportItems!HOUSEHOLD_A.val
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=IIF(Fields!HOUSEHOLD_L.Value = 0, "", Format(CDbl(ReportItems!NETPAY2.Value) * (Fields!HOUSEHOLD_L.Value / 100), "0.00"))</Value>
+                              <Value>=IIF(Fields!HOUSEHOLD_L.Value = 0, "", Format(CDbl(ReportItems!NETPAY2.Value) * Fields!HOUSEHOLD_L.Value, "0.00"))</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -4557,15 +4558,15 @@ CDbl(IIF(ReportItems!HOUSEHOLD_A.value = NOTHING, 0, ReportItems!HOUSEHOLD_A.val
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=FormatPercent((CDbl(IIF(FIELDS!PHOTO_L.Value = NOTHING, 0, FIELDS!PHOTO_L.Value / 100)) +
-CDbl(IIF(FIELDS!DAVAOP_L.Value = NOTHING, 0, FIELDS!DAVAOP_L.Value / 100)) +
-CDbl(IIF(FIELDS!DALTON_L.Value = NOTHING, 0, FIELDS!DALTON_L.Value / 100)) +
-CDbl(IIF(FIELDS!PERFECOM_L.Value = NOTHING, 0, FIELDS!PERFECOM_L.Value / 100)) +
-CDbl(IIF(FIELDS!LEASING_L.Value = NOTHING, 0, FIELDS!LEASING_L.Value / 100)) +
-CDbl(IIF(FIELDS!Seven11_L.Value = NOTHING, 0, FIELDS!Seven11_L.Value / 100)) +
-CDbl(IIF(FIELDS!G3_L.Value = NOTHING, 0, FIELDS!G3_L.Value / 100)) +
-CDbl(IIF(FIELDS!COMI_TO_FUJI_L.Value = NOTHING, 0, FIELDS!COMI_TO_FUJI_L.Value / 100)) +
-CDbl(IIF(FIELDS!HOUSEHOLD_L.Value = NOTHING, 0, FIELDS!HOUSEHOLD_L.Value / 100))), 2, TriState.False)</Value>
+                              <Value>=FormatPercent((CDbl(IIF(FIELDS!PHOTO_L.Value = NOTHING, 0, FIELDS!PHOTO_L.Value)) +
+CDbl(IIF(FIELDS!DAVAOP_L.Value = NOTHING, 0, FIELDS!DAVAOP_L.Value)) +
+CDbl(IIF(FIELDS!DALTON_L.Value = NOTHING, 0, FIELDS!DALTON_L.Value)) +
+CDbl(IIF(FIELDS!PERFECOM_L.Value = NOTHING, 0, FIELDS!PERFECOM_L.Value)) +
+CDbl(IIF(FIELDS!LEASING_L.Value = NOTHING, 0, FIELDS!LEASING_L.Value)) +
+CDbl(IIF(FIELDS!Seven11_L.Value = NOTHING, 0, FIELDS!Seven11_L.Value)) +
+CDbl(IIF(FIELDS!G3_L.Value = NOTHING, 0, FIELDS!G3_L.Value)) +
+CDbl(IIF(FIELDS!COMI_TO_FUJI_L.Value = NOTHING, 0, FIELDS!COMI_TO_FUJI_L.Value)) +
+CDbl(IIF(FIELDS!HOUSEHOLD_L.Value = NOTHING, 0, FIELDS!HOUSEHOLD_L.Value))), 2, TriState.False)</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>

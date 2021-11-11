@@ -119,10 +119,11 @@
                         End With
                     Next
 
-
                     Dim rds_DTR As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt_NetPay)
                     ReportV_NetPay.LocalReport.DataSources.Add(rds_DTR)
                     ReportV_NetPay.RefreshReport()
+
+                    Plus = Nothing
                 Else
                     MsgBox("No Records Found!", MsgBoxStyle.Exclamation, "Information")
                 End If
@@ -273,8 +274,9 @@
         Dim DALTON_BB, DALTON_HO, GENSANPERFECT_BB, GENSANPERFECT_HO, JRPHOTO_BB, JRPHOTO_HO, DAVAOP_BB, DAVAOP_HO, PERFECOM_BB,
             PERFECOM_HO, G3_BB, G3_HO, Seven11_ROX_BB, Seven11_ROX_HO, Seven11_POL_BB, Seven11_POL_HO, COMI_BB, COMI_HO, PBA_BB,
             PBA_HO, KTV_BB, KTV_HO, WAVE_BB, WAVE_HO, PGC, LEASING, LEASING_BR, DALTON_BR, GENSANPERFECT_BR, DAVAOP_BR, PERFECOM_BR, G3_BR,
-            Seven11_BR, COMI_TO_FUJI_BR, M_DALTONP, M_PHOTO, M_DAVAOP, M_PERFECOM, D_DALTONP, D_PHOTO, D_DAVAOP, D_PERFECOM, L_DALTON, L_PG711,
-            DR_Dalton, DR_Photo, DR_House, ConDalton, ConPhoto, LEASING_P As Integer
+            Seven11_BR, COMI_TO_FUJI_BR, L_DALTON, L_PG711, DR_Dalton, DR_Photo, DR_House, ConDalton, ConPhoto, LEASING_P As Integer
+
+        Dim M_DALTONP, M_PHOTO, M_DAVAOP, M_PERFECOM, D_DALTONP, D_PHOTO, D_DAVAOP, D_PERFECOM As Double
 
         DALTON_BB = GetCount_Common("where company = 'DALTON'")
         DALTON_HO = GetCount_Common("where UPPER(HO_CATEGORY) LIKE UPPER('%Dalton%')")
@@ -310,8 +312,8 @@
         Seven11_BR = GetDistinctCount("branch_code", "where branch_code IN ('711-ROX','711-POL')")
         COMI_TO_FUJI_BR = GetDistinctCount("branch_code", "where branch_code IN ('COMI','PBA','KTV','WAVE')")
 
-        LEASING_BR = GetModify_Reports("LEASINGBR")
-        LEASING_P = GetModify_Reports("LEASINGP")
+        LEASING_BR = GetModify_Reports("LEASINGBR") / 100
+        LEASING_P = GetModify_Reports("LEASINGP") / 100
 
         Dim DALTON_EMP = DALTON_BB + DALTON_HO
         Dim GENSANP_EMP = GENSANPERFECT_BB + GENSANPERFECT_HO
@@ -333,82 +335,82 @@
                     COMI_TO_FUJI_BR + LEASING_BR
 
         '============================ EMPLOYEE PERCENTAGE ==========================
-        Dim DALTON_EMP_P As Decimal = (DALTON_EMP / TOTAL_EE) * 100
-        Dim GENSAN_PHOTO_EMP_P As Decimal = ((GENSANP_EMP + PHOTO_EMP) / TOTAL_EE) * 100
-        Dim DAVAOP_EMP_P As Decimal = (DAVAOP_EMP / TOTAL_EE) * 100
-        Dim PERFECOM_EMP_P As Decimal = (PERFECOM_EMP / TOTAL_EE) * 100
-        Dim G3_EMP_P As Decimal = (G3_EMP / TOTAL_EE) * 100
-        Dim SEVEN11_EMP_P As Decimal = ((SEVENROX_EMP + SEVENPOL_EMP) / TOTAL_EE) * 100
-        Dim COMI_TO_FUJI_EMP_P As Decimal = ((COMI_EMP + PBA_EMP + KTV_EMP + WAVE_EMP) / TOTAL_EE) * 100
+        Dim DALTON_EMP_P As String = DALTON_EMP / TOTAL_EE
+        Dim GENSAN_PHOTO_EMP_P As String = (GENSANP_EMP + PHOTO_EMP) / TOTAL_EE
+        Dim DAVAOP_EMP_P As String = DAVAOP_EMP / TOTAL_EE
+        Dim PERFECOM_EMP_P As String = PERFECOM_EMP / TOTAL_EE
+        Dim G3_EMP_P As String = G3_EMP / TOTAL_EE
+        Dim SEVEN11_EMP_P As String = (SEVENROX_EMP + SEVENPOL_EMP) / TOTAL_EE
+        Dim COMI_TO_FUJI_EMP_P As String = (COMI_EMP + PBA_EMP + KTV_EMP + WAVE_EMP) / TOTAL_EE
 
         '============================ BRANCH PERCENTAGE ==========================
-        Dim DALTON_BR_P = (DALTON_BR / TOTAL_BB) * 100
-        Dim GENSAN_BR_P = (GENSANPERFECT_BR / TOTAL_BB) * 100
-        Dim DAVAOP_BR_P = (DAVAOP_BR / TOTAL_BB) * 100
-        Dim PERFECOM_BR_P = (PERFECOM_BR / TOTAL_BB) * 100
-        Dim G3_BR_P = (G3_BR / TOTAL_BB) * 100
-        Dim Seven11_BR_P = (Seven11_BR / TOTAL_BB) * 100
-        Dim COMI_TO_FUJI_BR_P = (COMI_TO_FUJI_BR / TOTAL_BB) * 100
-        Dim LEASING_BR_P = (LEASING_BR / TOTAL_BB) * 100
+        Dim DALTON_BR_P As String = DALTON_BR / TOTAL_BB
+        Dim GENSAN_BR_P As String = GENSANPERFECT_BR / TOTAL_BB
+        Dim DAVAOP_BR_P As String = DAVAOP_BR / TOTAL_BB
+        Dim PERFECOM_BR_P As String = PERFECOM_BR / TOTAL_BB
+        Dim G3_BR_P As String = G3_BR / TOTAL_BB
+        Dim Seven11_BR_P As String = Seven11_BR / TOTAL_BB
+        Dim COMI_TO_FUJI_BR_P As String = COMI_TO_FUJI_BR / TOTAL_BB
+        Dim LEASING_BR_P As String = LEASING_BR / TOTAL_BB
 
         '============================ MARKETING PERCENTAGE ==========================
-        M_DALTONP = GetModify_Reports("M_DALTONP")
-        M_PHOTO = GetModify_Reports("M_PHOTO")
-        M_DAVAOP = GetModify_Reports("M_DAVAOP")
-        M_PERFECOM = GetModify_Reports("M_PERFECOM")
+        M_DALTONP = GetModify_Reports("M_DALTONP") / 100
+        M_PHOTO = GetModify_Reports("M_PHOTO") / 100
+        M_DAVAOP = GetModify_Reports("M_DAVAOP") / 100
+        M_PERFECOM = GetModify_Reports("M_PERFECOM") / 100
 
         '============================ DYU PERCENTAGE ==========================
-        D_DALTONP = GetModify_Reports("D_DALTONP")
-        D_PHOTO = GetModify_Reports("D_PHOTO")
-        D_DAVAOP = GetModify_Reports("D_DAVAOP")
-        D_PERFECOM = GetModify_Reports("D_PERFECOM")
+        D_DALTONP = GetModify_Reports("D_DALTONP") / 100
+        D_PHOTO = GetModify_Reports("D_PHOTO") / 100
+        D_DAVAOP = GetModify_Reports("D_DAVAOP") / 100
+        D_PERFECOM = GetModify_Reports("D_PERFECOM") / 100
 
         '============================ LYU PERCENTAGE ==========================
-        L_DALTON = GetModify_Reports("L_DALTON")
-        L_PG711 = GetModify_Reports("L_PG711")
+        L_DALTON = GetModify_Reports("L_DALTON") / 100
+        L_PG711 = GetModify_Reports("L_PG711") / 100
 
         '============================ PHOTO_PERFECT PERCENTAGE ==========================
         Dim sum_3 As Integer = GENSANPERFECT_BR + DAVAOP_BR + PERFECOM_BR
 
-        Dim GENSAN_PHOTO_PERFECT_P = (GENSANPERFECT_BR / sum_3) * 100
-        Dim DAVAOP_PHOTO_PERFECT_P = (DAVAOP_BR / sum_3) * 100
-        Dim PERFECOM_PHOTO_PERFECT_P = (PERFECOM_BR / sum_3) * 100
+        Dim GENSAN_PHOTO_PERFECT_P As String = GENSANPERFECT_BR / sum_3
+        Dim DAVAOP_PHOTO_PERFECT_P As String = DAVAOP_BR / sum_3
+        Dim PERFECOM_PHOTO_PERFECT_P As String = PERFECOM_BR / sum_3
 
         '============================ PHOTO_GHS_3G PERCENTAGE ==========================
         Dim sum_4 As Integer = GENSANPERFECT_BR + DAVAOP_BR + G3_BR + COMI_TO_FUJI_BR
 
-        Dim GENSAN_PHOTO_GHS_3G_P = (GENSANPERFECT_BR / sum_4) * 100
-        Dim DAVAOP_PHOTO_GHS_3GT_P = (DAVAOP_BR / sum_4) * 100
-        Dim G3_PHOTO_GHS_3G_P = (G3_BR / sum_4) * 100
-        Dim COMI_TO_FUJI_PHOTO_GHS_3G_P = (COMI_TO_FUJI_BR / sum_4) * 100
+        Dim GENSAN_PHOTO_GHS_3G_P As String = GENSANPERFECT_BR / sum_4
+        Dim DAVAOP_PHOTO_GHS_3GT_P As String = DAVAOP_BR / sum_4
+        Dim G3_PHOTO_GHS_3G_P As String = G3_BR / sum_4
+        Dim COMI_TO_FUJI_PHOTO_GHS_3G_P As String = COMI_TO_FUJI_BR / sum_4
 
         '============================ PERFECOM_LEASING_711 PERCENTAGE ==========================
         Dim sum_5 As Integer = PERFECOM_BR + Seven11_BR + LEASING_BR
 
-        Dim PERFECOM_PL7_P = (PERFECOM_BR / sum_5) * 100
-        Dim SEVEN11_PL7_P = (Seven11_BR / sum_5) * 100
-        Dim LEASING_PL7_P = (LEASING_BR / sum_5) * 100
+        Dim PERFECOM_PL7_P As String = PERFECOM_BR / sum_5
+        Dim SEVEN11_PL7_P As String = Seven11_BR / sum_5
+        Dim LEASING_PL7_P As String = LEASING_BR / sum_5
 
         '============================ DRIVER PERCENTAGE ========================== 
-        DR_Dalton = GetModify_Reports("DR_Dalton")
-        DR_Photo = GetModify_Reports("DR_Photo")
-        DR_House = GetModify_Reports("DR_House")
+        DR_Dalton = GetModify_Reports("DR_Dalton") / 100
+        DR_Photo = GetModify_Reports("DR_Photo") / 100
+        DR_House = GetModify_Reports("DR_House") / 100
 
         Dim sum_driver As Integer = DR_Dalton + DR_Photo + DR_House
 
-        Dim DR_Dalton_P = (DR_Dalton / sum_driver) * 100
-        Dim DR_Photo_P = (DR_Photo / sum_driver) * 100
-        Dim DR_House_P = (DR_House / sum_driver) * 100
+        Dim DR_Dalton_P As String = DR_Dalton / sum_driver
+        Dim DR_Photo_P As String = DR_Photo / sum_driver
+        Dim DR_House_P As String = DR_House / sum_driver
 
         '============================ CONSTRUCTION PERCENTAGE ==========================  
-        ConDalton = GetModify_Reports("ConDalton")
-        ConPhoto = GetModify_Reports("ConPhoto")
+        ConDalton = GetModify_Reports("ConDalton") / 100
+        ConPhoto = GetModify_Reports("ConPhoto") / 100
 
-        Dim ConDalton_P = (ConDalton / sum_driver) * 100
-        Dim ConPhoto_P = (ConPhoto / sum_driver) * 100
+        Dim ConDalton_P As String = ConDalton / sum_driver
+        Dim ConPhoto_P As String = ConPhoto / sum_driver
 
-        Dim DTR_DATON_P = GetModify_Reports("DTR_Dalton")
-        Dim DTR_PHOTO_P = GetModify_Reports("DTR_Photo")
+        Dim DTR_DATON_P As String = GetModify_Reports("DTR_Dalton") / 100
+        Dim DTR_PHOTO_P As String = GetModify_Reports("DTR_Photo") / 100
 
         Replacing("PAYROLL_PERCENTAGEE")
 
@@ -427,9 +429,166 @@
 
     End Sub
 
-    Private Sub PrevCommon_BTN_Click(sender As Object, e As EventArgs) Handles PrevCommon_BTN.Click
-        LoadCommonPercentage_Print()
-    End Sub
+
+    'Public Sub SavePercentage_Common()
+
+    '    Dim DALTON_BB, DALTON_HO, GENSANPERFECT_BB, GENSANPERFECT_HO, JRPHOTO_BB, JRPHOTO_HO, DAVAOP_BB, DAVAOP_HO, PERFECOM_BB,
+    '        PERFECOM_HO, G3_BB, G3_HO, Seven11_ROX_BB, Seven11_ROX_HO, Seven11_POL_BB, Seven11_POL_HO, COMI_BB, COMI_HO, PBA_BB,
+    '        PBA_HO, KTV_BB, KTV_HO, WAVE_BB, WAVE_HO, PGC, LEASING, LEASING_BR, DALTON_BR, GENSANPERFECT_BR, DAVAOP_BR, PERFECOM_BR, G3_BR,
+    '        Seven11_BR, COMI_TO_FUJI_BR, M_DALTONP, M_PHOTO, M_DAVAOP, M_PERFECOM, D_DALTONP, D_PHOTO, D_DAVAOP, D_PERFECOM, L_DALTON, L_PG711,
+    '        DR_Dalton, DR_Photo, DR_House, ConDalton, ConPhoto, LEASING_P As Integer
+
+    '    DALTON_BB = GetCount_Common("where company = 'DALTON'")
+    '    DALTON_HO = GetCount_Common("where UPPER(HO_CATEGORY) LIKE UPPER('%Dalton%')")
+    '    GENSANPERFECT_BB = GetCount_Common("where branch_code IN ('ROG','ROX','FINEPIX','GMA','DIG','SNP','SMD')")
+    '    GENSANPERFECT_HO = Nothing
+    '    JRPHOTO_BB = Nothing
+    '    JRPHOTO_HO = Nothing
+    '    DAVAOP_BB = GetCount_Common("where branch_code IN ('SMG','KCG','ACM','TAC')")
+    '    DAVAOP_HO = Nothing
+    '    PERFECOM_BB = GetCount_Common("where company = 'PERFECOM'")
+    '    PERFECOM_HO = GetCount_Common("where company = 'HEAD OFFICE' AND UPPER(HO_CATEGORY) LIKE UPPER('%Perfecom%')")
+    '    G3_BB = GetCount_Common("where branch_code = '3G'")
+    '    G3_HO = Nothing
+    '    Seven11_ROX_BB = GetCount_Common("where branch_code = '711-ROX'")
+    '    Seven11_ROX_HO = Nothing
+    '    Seven11_POL_BB = GetCount_Common("where branch_code = '711-POL'")
+    '    Seven11_POL_HO = Nothing
+    '    COMI_BB = GetCount_Common("where branch_code = 'COMI'")
+    '    COMI_HO = Nothing
+    '    PBA_BB = GetCount_Common("where branch_code = 'PBA'")
+    '    PBA_HO = Nothing
+    '    KTV_BB = GetCount_Common("where branch_code = 'KTV'")
+    '    KTV_HO = Nothing
+    '    WAVE_BB = GetCount_Common("where branch_code = 'WAVE'")
+    '    WAVE_HO = Nothing
+    '    PGC = GetCount_Common("where ho_category = 'PGC Head Office'")
+    '    LEASING = GetCount_Common("where ho_category IN ('Leasing Admin Office','Construction')")
+    '    DALTON_BR = GetDistinctCount("branch_code", "where company = 'DALTON'")
+    '    GENSANPERFECT_BR = GetDistinctCount("branch_code", "where company = 'PHOTO'")
+    '    DAVAOP_BR = GetDistinctCount("branch_code", "where branch_code IN ('SMG','KCG','ACM','TAC')")
+    '    PERFECOM_BR = GetDistinctCount("branch_code", "where company = 'PERFECOM'")
+    '    G3_BR = GetDistinctCount("branch_code", "where branch_code = '3G'")
+    '    Seven11_BR = GetDistinctCount("branch_code", "where branch_code IN ('711-ROX','711-POL')")
+    '    COMI_TO_FUJI_BR = GetDistinctCount("branch_code", "where branch_code IN ('COMI','PBA','KTV','WAVE')")
+
+    '    LEASING_BR = GetModify_Reports("LEASINGBR")
+    '    LEASING_P = GetModify_Reports("LEASINGP")
+
+    '    Dim DALTON_EMP = DALTON_BB + DALTON_HO
+    '    Dim GENSANP_EMP = GENSANPERFECT_BB + GENSANPERFECT_HO
+    '    Dim PHOTO_EMP = JRPHOTO_BB + JRPHOTO_HO
+    '    Dim DAVAOP_EMP = DAVAOP_BB + DAVAOP_HO
+    '    Dim PERFECOM_EMP = PERFECOM_BB + PERFECOM_HO
+    '    Dim G3_EMP = G3_BB + G3_HO
+    '    Dim SEVENROX_EMP = Seven11_ROX_BB + Seven11_ROX_HO
+    '    Dim SEVENPOL_EMP = Seven11_POL_BB + Seven11_POL_HO
+    '    Dim COMI_EMP = COMI_BB + COMI_HO
+    '    Dim PBA_EMP = PBA_BB + PBA_HO
+    '    Dim KTV_EMP = KTV_BB + KTV_HO
+    '    Dim WAVE_EMP = WAVE_BB + WAVE_HO
+
+    '    Dim TOTAL_EE = DALTON_EMP + GENSANP_EMP + PHOTO_EMP + DAVAOP_EMP + PERFECOM_EMP + G3_EMP +
+    '                SEVENROX_EMP + SEVENPOL_EMP + COMI_EMP + PBA_EMP + KTV_EMP + WAVE_EMP
+
+    '    Dim TOTAL_BB = DALTON_BR + GENSANPERFECT_BR + DAVAOP_BR + PERFECOM_BR + G3_BR + Seven11_BR +
+    '                COMI_TO_FUJI_BR + LEASING_BR
+
+    '    '============================ EMPLOYEE PERCENTAGE ==========================
+    '    Dim DALTON_EMP_P As String = FormatPercent(DALTON_EMP / TOTAL_EE, 2, TriState.False) '(DALTON_EMP / TOTAL_EE) * 100
+    '    Dim GENSAN_PHOTO_EMP_P As String = FormatPercent((GENSANP_EMP + PHOTO_EMP) / TOTAL_EE, 2, TriState.False) '((GENSANP_EMP + PHOTO_EMP) / TOTAL_EE) * 100
+    '    Dim DAVAOP_EMP_P As String = FormatPercent(DAVAOP_EMP / TOTAL_EE, 2, TriState.False) '(DAVAOP_EMP / TOTAL_EE) * 100
+    '    Dim PERFECOM_EMP_P As String = FormatPercent(PERFECOM_EMP / TOTAL_EE, 2, TriState.False) '(PERFECOM_EMP / TOTAL_EE) * 100
+    '    Dim G3_EMP_P As String = FormatPercent(G3_EMP / TOTAL_EE, 2, TriState.False) '(G3_EMP / TOTAL_EE) * 100
+    '    Dim SEVEN11_EMP_P As String = FormatPercent((SEVENROX_EMP + SEVENPOL_EMP) / TOTAL_EE, 2, TriState.False) '((SEVENROX_EMP + SEVENPOL_EMP) / TOTAL_EE) * 100
+    '    Dim COMI_TO_FUJI_EMP_P As String = FormatPercent((COMI_EMP + PBA_EMP + KTV_EMP + WAVE_EMP) / TOTAL_EE, 2, TriState.False) '((COMI_EMP + PBA_EMP + KTV_EMP + WAVE_EMP) / TOTAL_EE) * 100
+
+    '    '============================ BRANCH PERCENTAGE ==========================
+    '    Dim DALTON_BR_P As String = FormatPercent(DALTON_BR / TOTAL_BB, 2, TriState.False) '(DALTON_BR / TOTAL_BB) * 100
+    '    Dim GENSAN_BR_P As String = FormatPercent(GENSANPERFECT_BR / TOTAL_BB, 2, TriState.False) '(GENSANPERFECT_BR / TOTAL_BB) * 100
+    '    Dim DAVAOP_BR_P As String = FormatPercent(DAVAOP_BR / TOTAL_BB, 2, TriState.False) '(DAVAOP_BR / TOTAL_BB) * 100
+    '    Dim PERFECOM_BR_P As String = FormatPercent(PERFECOM_BR / TOTAL_BB, 2, TriState.False) '(PERFECOM_BR / TOTAL_BB) * 100
+    '    Dim G3_BR_P As String = FormatPercent(G3_BR / TOTAL_BB, 2, TriState.False) '(G3_BR / TOTAL_BB) * 100
+    '    Dim Seven11_BR_P As String = FormatPercent(Seven11_BR / TOTAL_BB, 2, TriState.False) '(Seven11_BR / TOTAL_BB) * 100
+    '    Dim COMI_TO_FUJI_BR_P As String = FormatPercent(COMI_TO_FUJI_BR / TOTAL_BB, 2, TriState.False) '(COMI_TO_FUJI_BR / TOTAL_BB) * 100
+    '    Dim LEASING_BR_P As String = FormatPercent(LEASING_BR / TOTAL_BB, 2, TriState.False) '(LEASING_BR / TOTAL_BB) * 100
+
+    '    '============================ MARKETING PERCENTAGE ==========================
+    '    M_DALTONP = GetModify_Reports("M_DALTONP")
+    '    M_PHOTO = GetModify_Reports("M_PHOTO")
+    '    M_DAVAOP = GetModify_Reports("M_DAVAOP")
+    '    M_PERFECOM = GetModify_Reports("M_PERFECOM")
+
+    '    '============================ DYU PERCENTAGE ==========================
+    '    D_DALTONP = GetModify_Reports("D_DALTONP")
+    '    D_PHOTO = GetModify_Reports("D_PHOTO")
+    '    D_DAVAOP = GetModify_Reports("D_DAVAOP")
+    '    D_PERFECOM = GetModify_Reports("D_PERFECOM")
+
+    '    '============================ LYU PERCENTAGE ==========================
+    '    L_DALTON = GetModify_Reports("L_DALTON")
+    '    L_PG711 = GetModify_Reports("L_PG711")
+
+    '    '============================ PHOTO_PERFECT PERCENTAGE ==========================
+    '    Dim sum_3 As Integer = GENSANPERFECT_BR + DAVAOP_BR + PERFECOM_BR
+
+    '    Dim GENSAN_PHOTO_PERFECT_P As String = FormatPercent(GENSANPERFECT_BR / sum_3, 2, TriState.False) '(GENSANPERFECT_BR / sum_3) * 100
+    '    Dim DAVAOP_PHOTO_PERFECT_P As String = FormatPercent(DAVAOP_BR / sum_3, 2, TriState.False) '(DAVAOP_BR / sum_3) * 100
+    '    Dim PERFECOM_PHOTO_PERFECT_P As String = FormatPercent(PERFECOM_BR / sum_3, 2, TriState.False) '(PERFECOM_BR / sum_3) * 100
+
+    '    '============================ PHOTO_GHS_3G PERCENTAGE ==========================
+    '    Dim sum_4 As Integer = GENSANPERFECT_BR + DAVAOP_BR + G3_BR + COMI_TO_FUJI_BR
+
+    '    Dim GENSAN_PHOTO_GHS_3G_P As String = (GENSANPERFECT_BR / sum_4) * 100
+    '    Dim DAVAOP_PHOTO_GHS_3GT_P As String = (DAVAOP_BR / sum_4) * 100
+    '    Dim G3_PHOTO_GHS_3G_P As String = (G3_BR / sum_4) * 100
+    '    Dim COMI_TO_FUJI_PHOTO_GHS_3G_P As String = (COMI_TO_FUJI_BR / sum_4) * 100
+
+    '    '============================ PERFECOM_LEASING_711 PERCENTAGE ==========================
+    '    Dim sum_5 As Integer = PERFECOM_BR + Seven11_BR + LEASING_BR
+
+    '    Dim PERFECOM_PL7_P As String = FormatPercent(PERFECOM_BR / sum_5, 2, TriState.False) '(PERFECOM_BR / sum_5) * 100
+    '    Dim SEVEN11_PL7_P As String = FormatPercent(Seven11_BR / sum_5, 2, TriState.False) '(Seven11_BR / sum_5) * 100
+    '    Dim LEASING_PL7_P As String = FormatPercent(LEASING_BR / sum_5, 2, TriState.False) '(LEASING_BR / sum_5) * 100
+
+    '    '============================ DRIVER PERCENTAGE ========================== 
+    '    DR_Dalton = GetModify_Reports("DR_Dalton")
+    '    DR_Photo = GetModify_Reports("DR_Photo")
+    '    DR_House = GetModify_Reports("DR_House")
+
+    '    Dim sum_driver As Integer = DR_Dalton + DR_Photo + DR_House
+
+    '    Dim DR_Dalton_P As String = FormatPercent(DR_Dalton / sum_driver, 2, TriState.False) '(DR_Dalton / sum_driver) * 100
+    '    Dim DR_Photo_P As String = FormatPercent(DR_Photo / sum_driver, 2, TriState.False) '(DR_Photo / sum_driver) * 100
+    '    Dim DR_House_P As String = FormatPercent(DR_House / sum_driver, 2, TriState.False) '(DR_House / sum_driver) * 100
+
+    '    '============================ CONSTRUCTION PERCENTAGE ==========================  
+    '    ConDalton = GetModify_Reports("ConDalton")
+    '    ConPhoto = GetModify_Reports("ConPhoto")
+
+    '    Dim ConDalton_P As String = FormatPercent(ConDalton / sum_driver, 2, TriState.False) '(ConDalton / sum_driver) * 100
+    '    Dim ConPhoto_P As String = FormatPercent(ConPhoto / sum_driver, 2, TriState.False) '(ConPhoto / sum_driver) * 100
+
+    '    Dim DTR_DATON_P As String = GetModify_Reports("DTR_Dalton")
+    '    Dim DTR_PHOTO_P As String = GetModify_Reports("DTR_Photo")
+
+    '    Replacing("PAYROLL_PERCENTAGEE")
+
+    '    Save_PERCENTAGE(DALTON_EMP_P, GENSAN_PHOTO_EMP_P, DAVAOP_EMP_P, PERFECOM_EMP_P, G3_EMP_P, SEVEN11_EMP_P, COMI_TO_FUJI_EMP_P, 0, 0, "EMPLOYEE")
+    '    Save_PERCENTAGE(DALTON_BR_P, GENSAN_BR_P, DAVAOP_BR_P, PERFECOM_BR_P, G3_BR_P, Seven11_BR_P, COMI_TO_FUJI_BR_P, 0, LEASING_BR_P, "BRANCH")
+    '    Save_PERCENTAGE(M_DALTONP, M_PHOTO, M_DAVAOP, M_PERFECOM, 0, 0, 0, 0, 0, "MARKETING")
+    '    Save_PERCENTAGE(0, GENSAN_PHOTO_PERFECT_P, DAVAOP_PHOTO_PERFECT_P, PERFECOM_PHOTO_PERFECT_P, 0, 0, 0, 0, 0, "PHOTO/PERFECOM")
+    '    Save_PERCENTAGE(0, GENSAN_PHOTO_GHS_3G_P, DAVAOP_PHOTO_GHS_3GT_P, 0, G3_PHOTO_GHS_3G_P, 0, COMI_TO_FUJI_PHOTO_GHS_3G_P, 0, 0, "PHOTO/GHS/3G")
+    '    Save_PERCENTAGE(0, 0, 0, PERFECOM_PL7_P, 0, SEVEN11_PL7_P, 0, 0, LEASING_PL7_P, "PERFECOM/LEASING/7ELEVEN")
+    '    Save_PERCENTAGE(D_DALTONP, D_PHOTO, D_DAVAOP, D_PERFECOM, 0, 0, 0, 0, 0, "DYU")
+    '    Save_PERCENTAGE(L_DALTON, 0, 0, 0, 0, L_PG711, 0, 0, 0, "LYU")
+    '    Save_PERCENTAGE(DR_Dalton_P, DR_Photo_P, 0, 0, 0, 0, 0, DR_House_P, 0, "DRIVER")
+    '    Save_PERCENTAGE(ConDalton_P, ConPhoto_P, 0, 0, 0, 0, 0, 0, 0, "CONSTRUCTION")
+    '    Save_PERCENTAGE(DTR_DATON_P, DTR_PHOTO_P, 0, 0, 0, 0, 0, 0, 0, "DTR")
+    '    Save_PERCENTAGE(0, 0, 0, 0, 0, 0, 0, 0, LEASING_P, "LEASING")
+
+    'End Sub
+
 
 
     Public Sub LoadCommonPercentage_Print()
@@ -638,32 +797,26 @@
             NetBranch_Combo.Items.Insert(0, "Davao Perfect")
             NetBranch_Combo.Items.Insert(1, "JR Photo")
             NetBranch_Combo.Items.Insert(2, "Gensan Perfect")
+            NetBranch_Combo.Items.Insert(3, "Photo PGC")
 
         ElseIf Company_Combo.SelectedIndex = 1 Then '=== P&G UY
             NetBranch_Combo.Items.Clear()
             NetBranch_Combo.Items.Insert(0, "3G")
             NetBranch_Combo.Items.Insert(1, "7Eleven")
             NetBranch_Combo.Items.Insert(2, "COMI-GHS Admin Operation")
+            NetBranch_Combo.Items.Insert(3, "P&G UY PGC")
 
         ElseIf Company_Combo.SelectedIndex = 2 Then '=== DALTON
             NetBranch_Combo.Items.Clear()
             NetBranch_Combo.Items.Insert(0, "Dalton Head Office")
-            NetBranch_Combo.Items.Insert(1, "Dalton PGC")
-            NetBranch_Combo.Items.Insert(2, "Dalton Branch")
+            NetBranch_Combo.Items.Insert(1, "Dalton Branch")
+            NetBranch_Combo.Items.Insert(2, "Dalton PGC")
 
         ElseIf Company_Combo.SelectedIndex = 3 Then '=== PERFECOM 
 
             NetBranch_Combo.Items.Clear()
-            If PaydateNet_ComboB.SelectedIndex >= 0 Then
-                Dim mysql As String = $"Select * From PAYROLL_PAYOUT A 
-                                        inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
-                                        where A.PAYDATE  = '{PaydateNet_ComboB.Text}' 
-                                        and B.COMPANY  = 'PERFECOM' OR B.HO_CATEGORY In ('Perfecom Admin Office','Perfecom Admin Operation')"
-
-                LoadNet_Print(mysql) ' and B.BRANCH_CODE IN ('OPK','SMG','KCG','ARC','KCM','ZAM')
-            Else
-                MsgBox("Please select date of payroll.", MsgBoxStyle.Exclamation, "Error")
-            End If
+            NetBranch_Combo.Items.Insert(0, "Perfecom Admin and Branches")
+            NetBranch_Combo.Items.Insert(1, "Perfecom PGC")
 
         End If
     End Sub
@@ -700,6 +853,16 @@
                                         and B.BRANCH_CODE IN ('ROG','ROX','FINEPIX','COT','MID','KID','SNP','GMA','SML','ZAM','SMD')"
 
                         Plus = "GENSAN PERFECT"
+
+                    ElseIf NetBranch_Combo.SelectedIndex = 3 Then '=== PGC
+
+                        mysql = $"Select * From PAYROLL_PAYOUT A 
+                                        inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
+                                        where A.PAYDATE  = '{paydatee}' AND B.COMMON_COMPANY  = 'PHOTO'"
+
+
+                        Plus = "PHOTO"
+
                     End If
                 Else
                     MsgBox("Please select date of payroll.", MsgBoxStyle.Exclamation, "Error")
@@ -727,6 +890,14 @@
                                         where A.PAYDATE = '{paydatee}' and B.COMPANY  = 'P&G UY' 
                                         And B.BRANCH_CODE IN ('COMI','KTV','PBA','WAVE') Or B.HO_CATEGORY In ('GHS/P&G UY Admin Office','GHS/P&G UY Admin Operation')"
 
+                    ElseIf NetBranch_Combo.SelectedIndex = 3 Then '=== PGC
+
+                        mysql = $"Select * From PAYROLL_PAYOUT A 
+                                        inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
+                                        where A.PAYDATE  = '{paydatee}' AND B.COMMON_COMPANY  = 'P&G UY'"
+
+                        Plus = "P&G UY"
+
                     End If
                 Else
                     MsgBox("Please select date of payroll.", MsgBoxStyle.Exclamation, "Error")
@@ -745,22 +916,46 @@
 
                         mysql = $"Select * From PAYROLL_PAYOUT A 
                                         inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
+                                        where A.PAYDATE  = '{paydatee}' AND B.COMPANY  = 'DALTON'"
+
+                    ElseIf NetBranch_Combo.SelectedIndex = 2 Then '=== PGC
+
+                        mysql = $"Select * From PAYROLL_PAYOUT A 
+                                        inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
                                         where A.PAYDATE  = '{paydatee}' AND B.COMMON_COMPANY  = 'DALTON'"
 
 
                         Plus = "DALTON"
-
-                    ElseIf NetBranch_Combo.SelectedIndex = 2 Then '=== All Dalton Except Head Office
-
-                        mysql = $"Select * From PAYROLL_PAYOUT A 
-                                        inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
-                                        where A.PAYDATE  = '{paydatee}' AND B.COMPANY  = 'DALTON'"
 
                     End If
 
                 Else
                     MsgBox("Please select date of payroll.", MsgBoxStyle.Exclamation, "Error")
                 End If
+            ElseIf Company_Combo.SelectedIndex = 3 Then '=== PERFECOM
+
+                If PaydateNet_ComboB.SelectedIndex >= 0 Then
+
+                    If NetBranch_Combo.SelectedIndex = 0 Then '=== PERFECOM Admin
+
+                        mysql = $"Select * From PAYROLL_PAYOUT A 
+                                        inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
+                                        where A.PAYDATE  = '{PaydateNet_ComboB.Text}' 
+                                        and B.COMPANY  = 'PERFECOM' OR B.HO_CATEGORY In ('Perfecom Admin Office','Perfecom Admin Operation')"
+
+                    ElseIf NetBranch_Combo.SelectedIndex = 1 Then
+
+                        mysql = $"Select * From PAYROLL_PAYOUT A 
+                                        inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
+                                        where A.PAYDATE  = '{paydatee}' AND B.COMMON_COMPANY  = 'PERFECOM'"
+
+                        Plus = "PERFECOM"
+
+                    End If ' and B.BRANCH_CODE IN ('OPK','SMG','KCG','ARC','KCM','ZAM')
+                Else
+                    MsgBox("Please select date of payroll.", MsgBoxStyle.Exclamation, "Error")
+                End If
+
             End If
 
             LoadNet_Print(mysql)
@@ -769,5 +964,11 @@
 
     Private Sub Close_LBL_Click(sender As Object, e As EventArgs) Handles Close_LBL.Click
         Close()
+    End Sub
+
+    Private Sub PaydateCom_Combo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles PaydateCom_Combo.SelectedIndexChanged
+        If PaydateCom_Combo.SelectedIndex >= 0 Then
+            LoadCommonPercentage_Print()
+        End If
     End Sub
 End Class

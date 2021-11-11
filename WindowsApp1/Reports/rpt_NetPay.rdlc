@@ -714,10 +714,10 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Switch(Fields!COMPANY.Value = "PHOTO", Fields!PLUS.Value, 
-Fields!COMPANY.Value = "P&amp;G UY", "P&amp;G UY SONS, INC.", 
+                              <Value>=Switch(Fields!COMPANY.Value = "PHOTO" oR Fields!PLUS.Value = "PHOTO" , Fields!PLUS.Value, 
+Fields!COMPANY.Value = "P&amp;G UY" oR Fields!PLUS.Value = "P&amp;G UY" , "P&amp;G UY SONS, INC.", 
 Fields!COMPANY.Value = "DALTON" oR Fields!PLUS.Value = "DALTON" , "DALTON PAWNSHOP &amp; JEWELRY INC.", 
-Fields!COMPANY.Value = "PERFECOM", "PERFECOM")</Value>
+Fields!COMPANY.Value = "PERFECOM" oR Fields!PLUS.Value = "PERFECOM" , "PERFECOM")</Value>
                               <Style>
                                 <FontFamily>Berlin Sans FB Demi</FontFamily>
                                 <FontSize>9pt</FontSize>
@@ -8335,62 +8335,62 @@ Fields!BRANCH_CODE.Value = "FINEPIX", "Finepixel",
             <TablixMember />
             <TablixMember>
               <Visibility>
-                <Hidden>=IIF(FIELDS!COMPANY.Value = "DALTON" OrElse FIELDS!COMPANY.Value = "PERFECOM" OrElse FIELDS!COMPANY.Value = "PHOTO", TRUE, FALSE)</Hidden>
+                <Hidden>=IIF(FIELDS!COMPANY.Value = "DALTON" Or Fields!PLUS.Value = "DALTON" Or FIELDS!COMPANY.Value = "PERFECOM" Or Fields!PLUS.Value = "PERFECOM" Or FIELDS!COMPANY.Value = "PHOTO" Or Fields!PLUS.Value = "PHOTO", TRUE, FALSE)</Hidden>
               </Visibility>
             </TablixMember>
             <TablixMember>
               <Visibility>
-                <Hidden>=IIF(FIELDS!COMPANY.Value = "DALTON" OR FIELDS!COMPANY.Value = "PERFECOM" OrElse FIELDS!COMPANY.Value = "PHOTO", TRUE, FALSE)</Hidden>
+                <Hidden>=IIF(FIELDS!COMPANY.Value = "DALTON" Or Fields!PLUS.Value = "DALTON" Or FIELDS!COMPANY.Value = "PERFECOM" Or Fields!PLUS.Value = "PERFECOM" Or FIELDS!COMPANY.Value = "PHOTO" Or Fields!PLUS.Value = "PHOTO", TRUE, FALSE)</Hidden>
               </Visibility>
             </TablixMember>
             <TablixMember>
               <Visibility>
-                <Hidden>=IIF(FIELDS!COMPANY.Value = "DALTON" OR FIELDS!COMPANY.Value = "PERFECOM" OrElse FIELDS!COMPANY.Value = "PHOTO", TRUE, FALSE)</Hidden>
+                <Hidden>=IIF(FIELDS!COMPANY.Value = "DALTON" Or Fields!PLUS.Value = "DALTON" Or FIELDS!COMPANY.Value = "PERFECOM" Or Fields!PLUS.Value = "PERFECOM" Or FIELDS!COMPANY.Value = "PHOTO" Or Fields!PLUS.Value = "PHOTO", TRUE, FALSE)</Hidden>
               </Visibility>
             </TablixMember>
             <TablixMember>
               <Visibility>
-                <Hidden>=IIF(FIELDS!COMPANY.Value = "DALTON" OR FIELDS!COMPANY.Value = "PERFECOM" OrElse FIELDS!COMPANY.Value = "PHOTO", TRUE, FALSE)</Hidden>
+                <Hidden>=IIF(FIELDS!COMPANY.Value = "DALTON" Or Fields!PLUS.Value = "DALTON" Or FIELDS!COMPANY.Value = "PERFECOM" Or Fields!PLUS.Value = "PERFECOM" Or FIELDS!COMPANY.Value = "PHOTO" Or Fields!PLUS.Value = "PHOTO", TRUE, FALSE)</Hidden>
               </Visibility>
             </TablixMember>
             <TablixMember>
               <Visibility>
-                <Hidden>=IIF(FIELDS!COMPANY.Value = "P&amp;G UY" OR FIELDS!COMPANY.Value = "PERFECOM" OrElse FIELDS!COMPANY.Value = "PHOTO", TRUE, FALSE)</Hidden>
+                <Hidden>=IIF(FIELDS!COMPANY.Value = "P&amp;G UY" Or Fields!PLUS.Value = "P&amp;G UY"  Or FIELDS!COMPANY.Value = "PERFECOM" OrElse Fields!PLUS.Value = "PERFECOM"  OrElse FIELDS!COMPANY.Value = "PHOTO" OrElse  Fields!PLUS.Value = "PHOTO", TRUE, FALSE)</Hidden>
               </Visibility>
             </TablixMember>
             <TablixMember>
               <Visibility>
-                <Hidden>=IIF(FIELDS!COMPANY.Value = "P&amp;G UY" OR FIELDS!COMPANY.Value = "PERFECOM" OrElse FIELDS!COMPANY.Value = "PHOTO", TRUE, FALSE)</Hidden>
+                <Hidden>=IIF(FIELDS!COMPANY.Value = "P&amp;G UY" OrElse Fields!PLUS.Value = "P&amp;G UY"  OrElse FIELDS!COMPANY.Value = "PERFECOM" OrElse Fields!PLUS.Value = "PERFECOM"  OrElse FIELDS!COMPANY.Value = "PHOTO" OrElse  Fields!PLUS.Value = "PHOTO", TRUE, FALSE)</Hidden>
               </Visibility>
             </TablixMember>
             <TablixMember>
               <Visibility>
-                <Hidden>=IIF(FIELDS!COMPANY.Value = "P&amp;G UY" OR FIELDS!COMPANY.Value = "PERFECOM" OrElse FIELDS!COMPANY.Value = "PHOTO", TRUE, FALSE)</Hidden>
+                <Hidden>=IIF(FIELDS!COMPANY.Value = "P&amp;G UY" OrElse Fields!PLUS.Value = "P&amp;G UY"  OrElse FIELDS!COMPANY.Value = "PERFECOM" OrElse Fields!PLUS.Value = "PERFECOM"  OrElse FIELDS!COMPANY.Value = "PHOTO" OrElse  Fields!PLUS.Value = "PHOTO", TRUE, FALSE)</Hidden>
               </Visibility>
             </TablixMember>
             <TablixMember>
               <Visibility>
-                <Hidden>=IIF(FIELDS!COMPANY.Value = "P&amp;G UY" OR FIELDS!COMPANY.Value = "PERFECOM" OrElse FIELDS!COMPANY.Value = "PHOTO", TRUE, FALSE)</Hidden>
+                <Hidden>=IIF(FIELDS!COMPANY.Value = "P&amp;G UY" OrElse Fields!PLUS.Value = "P&amp;G UY"  OrElse FIELDS!COMPANY.Value = "PERFECOM" OrElse Fields!PLUS.Value = "PERFECOM"  OrElse FIELDS!COMPANY.Value = "PHOTO" OrElse  Fields!PLUS.Value = "PHOTO", TRUE, FALSE)</Hidden>
               </Visibility>
             </TablixMember>
             <TablixMember>
               <Visibility>
-                <Hidden>=IIF(FIELDS!COMPANY.Value = "P&amp;G UY" OR FIELDS!COMPANY.Value = "DALTON", TRUE, FALSE)</Hidden>
+                <Hidden>=IIF(FIELDS!COMPANY.Value = "P&amp;G UY" OR Fields!PLUS.Value = "P&amp;G UY" OR FIELDS!COMPANY.Value = "DALTON" oR Fields!PLUS.Value = "DALTON" ,  TRUE, FALSE)</Hidden>
               </Visibility>
             </TablixMember>
             <TablixMember>
               <Visibility>
-                <Hidden>=IIF(FIELDS!COMPANY.Value = "P&amp;G UY" OR FIELDS!COMPANY.Value = "DALTON", TRUE, FALSE)</Hidden>
+                <Hidden>=IIF(FIELDS!COMPANY.Value = "P&amp;G UY" OR Fields!PLUS.Value = "P&amp;G UY" OR FIELDS!COMPANY.Value = "DALTON" oR Fields!PLUS.Value = "DALTON" , TRUE, FALSE)</Hidden>
               </Visibility>
             </TablixMember>
             <TablixMember>
               <Visibility>
-                <Hidden>=IIF(FIELDS!COMPANY.Value = "P&amp;G UY" OR FIELDS!COMPANY.Value = "DALTON", TRUE, FALSE)</Hidden>
+                <Hidden>=IIF(FIELDS!COMPANY.Value = "P&amp;G UY" OR Fields!PLUS.Value = "P&amp;G UY" OR FIELDS!COMPANY.Value = "DALTON" oR Fields!PLUS.Value = "DALTON" , TRUE, FALSE)</Hidden>
               </Visibility>
             </TablixMember>
             <TablixMember>
               <Visibility>
-                <Hidden>=IIF(FIELDS!COMPANY.Value = "P&amp;G UY" OR FIELDS!COMPANY.Value = "DALTON", TRUE, FALSE)</Hidden>
+                <Hidden>=IIF(FIELDS!COMPANY.Value = "P&amp;G UY" OR Fields!PLUS.Value = "P&amp;G UY" OR FIELDS!COMPANY.Value = "DALTON" oR Fields!PLUS.Value = "DALTON" , TRUE, FALSE)</Hidden>
               </Visibility>
             </TablixMember>
           </TablixMembers>

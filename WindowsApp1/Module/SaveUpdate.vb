@@ -2034,24 +2034,49 @@ Module SaveUpdate
         End Using
     End Sub
 
-    Friend Sub Save_PERCENTAGE(DALTON As Decimal, PHOTO As Decimal, DAVAOP As Decimal, PERFECOM As Decimal, G3 As Decimal,
-                                  SEVEN11 As Decimal, COMI_TO_FUJI As Decimal, HOUSEHOLD As Decimal, LEASING As Decimal, CATEGORY As String)
+    Friend Sub Save_PERCENTAGE(DALTON As String, PHOTO As String, DAVAOP As String, PERFECOM As String, G3 As String,
+                                  SEVEN11 As String, COMI_TO_FUJI As String, HOUSEHOLD As String, LEASING As String, CATEGORY As String)
+
+        'Friend Sub Save_PERCENTAGE(DALTON As Decimal, PHOTO As Decimal, DAVAOP As Decimal, PERFECOM As Decimal, G3 As Decimal,
+        '                              SEVEN11 As Decimal, COMI_TO_FUJI As Decimal, HOUSEHOLD As Decimal, LEASING As Decimal, CATEGORY As String)
         Dim mysql As String = "Select * From PAYROLL_PERCENTAGEE Rows 1"
         Using dss As DataSet = LoadSQL(mysql, "PAYROLL_PERCENTAGEE")
 
             Dim dsNewRow As DataRow = dss.Tables(0).NewRow
             With dsNewRow
 
-                .Item("DALTON") = Format(DALTON, "0.00")
-                .Item("PHOTO") = Format(PHOTO, "0.00")
-                .Item("DAVAOP") = Format(DAVAOP, "0.00")
-                .Item("PERFECOM") = Format(PERFECOM, "0.00")
-                .Item("G3") = Format(G3, "0.00")
-                .Item("SEVEN11") = Format(SEVEN11, "0.00")
-                .Item("COMI_TO_FUJI") = Format(COMI_TO_FUJI, "0.00")
-                .Item("HOUSEHOLD") = Format(HOUSEHOLD, "0.00")
-                .Item("LEASING") = Format(LEASING, "0.00")
+                .Item("DALTON") = DALTON
+                .Item("PHOTO") = PHOTO
+                .Item("DAVAOP") = DAVAOP
+                .Item("PERFECOM") = PERFECOM
+                .Item("G3") = G3
+                .Item("SEVEN11") = SEVEN11
+                .Item("COMI_TO_FUJI") = COMI_TO_FUJI
+                .Item("HOUSEHOLD") = HOUSEHOLD
+                .Item("LEASING") = LEASING
                 .Item("CATEGORY") = CATEGORY
+
+                '.Item("DALTON") = IIf(Not DALTON.Contains("%"), DALTON, DALTON.Substring(0, DALTON.Length - 1))
+                '.Item("PHOTO") = IIf(Not PHOTO.Contains("%"), PHOTO, PHOTO.Substring(0, PHOTO.Length - 1))
+                '.Item("DAVAOP") = IIf(Not DAVAOP.Contains("%"), DAVAOP, DAVAOP.Substring(0, DAVAOP.Length - 1))
+                '.Item("PERFECOM") = IIf(Not PERFECOM.Contains("%"), PERFECOM, PERFECOM.Substring(0, PERFECOM.Length - 1))
+                '.Item("G3") = IIf(Not G3.Contains("%"), G3, G3.Substring(0, G3.Length - 1))
+                '.Item("SEVEN11") = IIf(Not SEVEN11.Contains("%"), SEVEN11, SEVEN11.Substring(0, SEVEN11.Length - 1))
+                '.Item("COMI_TO_FUJI") = IIf(Not COMI_TO_FUJI.Contains("%"), COMI_TO_FUJI, COMI_TO_FUJI.Substring(0, COMI_TO_FUJI.Length - 1))
+                '.Item("HOUSEHOLD") = IIf(Not HOUSEHOLD.Contains("%"), HOUSEHOLD, HOUSEHOLD.Substring(0, HOUSEHOLD.Length - 1))
+                '.Item("LEASING") = IIf(Not LEASING.Contains("%"), LEASING, LEASING.Substring(0, LEASING.Length - 1))
+                '.Item("CATEGORY") = CATEGORY
+
+                '.Item("DALTON") = Format(DALTON, "0.00")
+                '.Item("PHOTO") = Format(PHOTO, "0.00")
+                '.Item("DAVAOP") = Format(DAVAOP, "0.00")
+                '.Item("PERFECOM") = Format(PERFECOM, "0.00")
+                '.Item("G3") = Format(G3, "0.00")
+                '.Item("SEVEN11") = Format(SEVEN11, "0.00")
+                '.Item("COMI_TO_FUJI") = Format(COMI_TO_FUJI, "0.00")
+                '.Item("HOUSEHOLD") = Format(HOUSEHOLD, "0.00")
+                '.Item("LEASING") = Format(LEASING, "0.00")
+                '.Item("CATEGORY") = CATEGORY
             End With
             dss.Tables(0).Rows.Add(dsNewRow)
             SaveEntry(dss)

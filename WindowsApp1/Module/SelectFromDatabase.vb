@@ -2393,7 +2393,7 @@ Module SelectFromDatabase
         Return countt
     End Function
 
-    Public Function GetModify_Reports(column As String) As Integer
+    Public Function GetModify_Reports(column As String) As Double
         Dim value As Integer = 0
         Dim mysql As String = $"Select * From PAYROLL_MARKETING_DYU"
         Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_MARKETING_DYU")
