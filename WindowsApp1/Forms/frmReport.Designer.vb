@@ -276,7 +276,7 @@ Partial Class frmReport
         Me.TabPage3.Padding = New System.Windows.Forms.Padding(3)
         Me.TabPage3.Size = New System.Drawing.Size(1151, 591)
         Me.TabPage3.TabIndex = 3
-        Me.TabPage3.Text = "Common"
+        Me.TabPage3.Text = "    Common    "
         Me.TabPage3.UseVisualStyleBackColor = True
         '
         'Label27

@@ -96,7 +96,7 @@
                             Dim PAGIBIG As Double = .Item("PAGIBIG_COMP")
                             Dim SBU_CHARGES As Double = .Item("TOTAL_DEDUCTION")
                             Dim NET_PAY As Double = .Item("NET_PAY")
-                            Dim BRANCH_CODE As String = .Item("BRANCH_CODE")
+                            Dim BRANCH_CODE As String = IIf(.Item("BRANCH_CODE") = "", .Item("HO_CATEGORY"), .Item("BRANCH_CODE"))
                             Dim COMPANY As String = .Item("COMPANY")
                             Dim HO_CATEGORY As String = IIf(IsDBNull(.Item("HO_CATEGORY")), "", .Item("HO_CATEGORY"))
 
