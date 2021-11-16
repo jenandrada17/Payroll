@@ -18,6 +18,7 @@
         PopulateComboBox(DE_Category_Combo, "CATEGORY_DEDUCTION", "DEDUCTION_NAME")
         PopulateComboBox_Any(City_Combo, "PAYROLL_CITY_BRANCH", "CITY")
         PopulateComboBox_Any(CityCode_Combo, "PAYROLL_EMPLOYEE", "BRANCH_CODE")
+        PopulateComboBox_Any(Address_Combo, "PAYROLL_CITY_BRANCH", "ADDRESS")
         Lists_Rate(Rate_list)
         Lists_Allowance(Allowance_LV)
         Lists_deduction(Deduction_List)
@@ -788,11 +789,10 @@
 
     Private Sub SaveCity_BTN_Click(sender As Object, e As EventArgs) Handles SaveCity_BTN.Click
 
-        'SaveCityBranch()
+        'SaveCityBranch() 
 
-
-        If City_Combo.Text <> Nothing And CityBName_Combo.Text <> Nothing And CityCode_Combo.Text <> Nothing Then
-            SaveCityBranch(CityCode_Combo.Text, CityBName_Combo.Text, City_Combo.Text)
+        If City_Combo.Text <> Nothing And CityBName_Combo.Text <> Nothing And CityCode_Combo.Text <> Nothing And Address_Combo.Text <> Nothing Then
+            SaveCityBranch(CityCode_Combo.Text, CityBName_Combo.Text, City_Combo.Text, BranchCategory_Combo.Text, Address_Combo.Text)
             Lists_City_Branch(CityBranch_List)
         Else
             MsgBox("Please Complete the Details", MsgBoxStyle.Exclamation, "Error")
@@ -811,6 +811,8 @@
         City_Combo.Text = CityBranch_List.Items(CityBranch_List.FocusedItem.Index).SubItems(0).Text
         CityBName_Combo.Text = CityBranch_List.Items(CityBranch_List.FocusedItem.Index).SubItems(1).Text
         CityCode_Combo.Text = CityBranch_List.Items(CityBranch_List.FocusedItem.Index).SubItems(2).Text
+        Address_Combo.Text = CityBranch_List.Items(CityBranch_List.FocusedItem.Index).SubItems(3).Text
+        BranchCategory_Combo.Text = CityBranch_List.Items(CityBranch_List.FocusedItem.Index).SubItems(4).Text
 
     End Sub
 

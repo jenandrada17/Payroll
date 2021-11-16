@@ -200,16 +200,6 @@ Public Class frmAttendance
             For i = 0 To DataGridView1.RowCount - 1
                 Dim row As DataGridViewRow = DataGridView1.Rows(i)
                 If row.DefaultCellStyle.ForeColor = Color.Red Then
-                    'DataGridView1.Rows(i).Cells(5) = New DataGridViewTextBoxCell()
-                    'DataGridView1.Rows(i).Cells(5).ReadOnly = True
-                    'DataGridView1.Rows(i).Cells(1).Value = ""
-                    'DataGridView1.Rows(i).Cells(1).ReadOnly = True
-                    'DataGridView1.Rows(i).Cells(2).Value = ""
-                    'DataGridView1.Rows(i).Cells(1).ReadOnly = True
-                    'DataGridView1.Rows(i).Cells(3).Value = ""
-                    'DataGridView1.Rows(i).Cells(1).ReadOnly = True
-                    'DataGridView1.Rows(i).Cells(4).Value = ""
-                    'DataGridView1.Rows(i).Cells(1).ReadOnly = True
 
                 ElseIf row.DefaultCellStyle.BackColor = Color.MediumOrchid Or row.DefaultCellStyle.BackColor = Color.Plum Then
                     DataGridView1.Rows(i).Cells(5).Value = False
@@ -226,6 +216,8 @@ Public Class frmAttendance
                     DataGridView1.Rows(i).Cells(4).Value = "5:00 PM"
                 End If
             Next
+
+            Calculate_BTN.PerformClick()
         Else
             For i = 0 To DataGridView1.RowCount - 1
                 DataGridView1.Rows(i).Cells(5).Value = False
@@ -235,7 +227,6 @@ Public Class frmAttendance
                 DataGridView1.Rows(i).Cells(4).Value = ""
             Next
         End If
-        Calculate_BTN.PerformClick()
     End Sub
 
     Private Sub DataGridView1_CurrentCellDirtyStateChanged(sender As Object, e As EventArgs) Handles DataGridView1.CurrentCellDirtyStateChanged
@@ -262,89 +253,96 @@ Public Class frmAttendance
 
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Calculate_BTN.Click
+        If Name_TXT.Text <> Nothing Then
+            SIL_LBL.Text = 0
+            TotalDays_LBL.Text = 0
+            TotalRHoliday_LBL.Text = 0
+            TotalSHoliday_LBL.Text = 0
+            TotalLateHR_LBL.Text = 0
+            TotalUTHR_LBL.Text = 0
+            TotalOTHr_LBL.Text = 0
+            under_count.Clear()
+            late_count.Clear()
 
-        SIL_LBL.Text = 0
-        TotalDays_LBL.Text = 0
-        TotalRHoliday_LBL.Text = 0
-        TotalSHoliday_LBL.Text = 0
-        TotalLateHR_LBL.Text = 0
-        TotalUTHR_LBL.Text = 0
-        TotalOTHr_LBL.Text = 0
+            Dim bioNum = BiometricID_TXT.Text
+            Dim branchCode = GetBranchCode(bioNum)
+            Dim timeIn = GetTime_In(bioNum)
+            Dim timeOut = GetTime_Out(bioNum)
 
-        Dim bioNum = BiometricID_TXT.Text
-        Dim branchCode = GetBranchCode(bioNum)
-        Dim timeIn = GetTime_In(bioNum)
-        Dim timeOut = GetTime_Out(bioNum)
+            For Each row As DataGridViewRow In DataGridView1.Rows
 
-        For Each row As DataGridViewRow In DataGridView1.Rows
+                If Not row.DefaultCellStyle.ForeColor = Color.Red Then
 
-            If Not row.DefaultCellStyle.ForeColor = Color.Red Then
-
-                '================================= CALCULATE HOLIDAYS  ===============================
-                If row.DefaultCellStyle.BackColor = Color.MediumOrchid Then
-
-
-                    TotalRHoliday_LBL.Text = TotalRHoliday_LBL.Text + 1
-
-                ElseIf row.DefaultCellStyle.BackColor = Color.Plum Then
+                    '================================= CALCULATE HOLIDAYS  ===============================
+                    If row.DefaultCellStyle.BackColor = Color.MediumOrchid Then
 
 
-                    TotalSHoliday_LBL.Text = TotalSHoliday_LBL.Text + 1
+                        TotalRHoliday_LBL.Text = TotalRHoliday_LBL.Text + 1
 
+                    ElseIf row.DefaultCellStyle.BackColor = Color.Plum Then
+
+
+                        TotalSHoliday_LBL.Text = TotalSHoliday_LBL.Text + 1
+
+                    End If
                 End If
-            End If
 
 
-            CalculateLATE(row, timeIn, bioNum, branchCode)
+                CalculateLATE(row, timeIn, bioNum, branchCode)
 
-            CalculateuNDERTIME(row, timeIn, timeOut, bioNum, branchCode)
+                CalculateuNDERTIME(row, timeIn, timeOut, bioNum, branchCode)
 
-            CalculateuOVERTIME(row, timeOut)
+                CalculateuOVERTIME(row, timeOut)
 
-        Next
+            Next
 
-        '===================================== SUM UP LATE ==================================== 
-        Dim Late_Total As TimeSpan = New TimeSpan(0, 0, 0, 0, 0)
-        For Each valueE As TimeSpan In late_count
-            Late_Total = Late_Total + valueE
-        Next
+            '===================================== SUM UP LATE ==================================== 
+            Dim Late_Total As TimeSpan = New TimeSpan(0, 0, 0, 0, 0)
+            For Each valueE As TimeSpan In late_count
+                Late_Total = Late_Total + valueE
+            Next
 
-        TotalLateHR_LBL.Text = Late_Total.ToString
-        late_count.Clear()
+            TotalLateHR_LBL.Text = Late_Total.ToString
+            late_count.Clear()
 
-        '===================================== SUM UP UNDERTIME ==================================== 
-        Dim Under_Total As TimeSpan = New TimeSpan(0, 0, 0, 0, 0)
-        For Each value As TimeSpan In under_count
-            Under_Total = Under_Total + value
-        Next
+            '===================================== SUM UP UNDERTIME ==================================== 
+            Dim Under_Total As TimeSpan = New TimeSpan(0, 0, 0, 0, 0)
+            For Each value As TimeSpan In under_count
+                Under_Total = Under_Total + value
+            Next
 
-        TotalUTHR_LBL.Text = Under_Total.ToString
-        under_count.Clear()
+            TotalUTHR_LBL.Text = Under_Total.ToString
+            under_count.Clear()
 
-        '===================================== SUM UP PRESENT AND ABSENT ==================================== 
-        Dim Present As Integer = 0
-        For Each oRow As DataGridViewRow In DataGridView1.Rows
+            '===================================== SUM UP PRESENT AND ABSENT ==================================== 
+            Dim Present As Integer = 0
+            For Each oRow As DataGridViewRow In DataGridView1.Rows
 
-            If oRow.Cells(5).Value = True Then
-                Present += 1
-            End If
-        Next
+                If oRow.Cells(5).Value = True Then
+                    Present += 1
+                End If
+            Next
 
-        TotalDays_LBL.Text = Present
+            TotalDays_LBL.Text = Present
 
-        '===================================== SUM UP HALF DAY ====================================  
-        Dim halfday_Hour As Integer = 0
-        For Each oRow As DataGridViewRow In DataGridView1.Rows
+            '===================================== SUM UP HALF DAY ====================================  
+            Dim halfday_Hour As Integer = 0
+            For Each oRow As DataGridViewRow In DataGridView1.Rows
 
-            If CountCELL_Nothing(oRow) = 3 Or CountCELL_Consecutive(oRow) = "HALFDAY" Then
-                halfday_Hour += 4
-            End If
-        Next
+                If CountCELL_Nothing(oRow) = 3 Or CountCELL_Consecutive(oRow) = "HALFDAY" Then
+                    halfday_Hour += 4
+                End If
+            Next
 
-        Dim product As Double
-        product = ((Convert.ToInt32(TotalDays_LBL.Text) * 8)) - halfday_Hour
-        product = product / 8
-        TotalDays_LBL.Text = product
+            Dim product As Double
+            product = ((Convert.ToInt32(TotalDays_LBL.Text) * 8)) - halfday_Hour
+            product = product / 8
+            TotalDays_LBL.Text = product
+
+        Else
+            MsgBox("Please Enter Employee's Name.", MsgBoxStyle.Critical, "Error")
+        End If
+
     End Sub
 
     Private Sub CalculateLATE(row As DataGridViewRow, timeIn As DateTime, bioNo As String, branchCode As String)
@@ -429,7 +427,6 @@ Public Class frmAttendance
     Private Sub Cancel_BTN_Click(sender As Object, e As EventArgs) Handles Cancel_BTN.Click
         BiometricID_TXT.Clear()
         Name_TXT.Clear()
-        CheckALL_CheckBox.Checked = False
         SIL_LBL.Text = 0
         TotalDays_LBL.Text = 0
         TotalRHoliday_LBL.Text = 0
@@ -437,6 +434,12 @@ Public Class frmAttendance
         TotalLateHR_LBL.Text = 0
         TotalUTHR_LBL.Text = 0
         TotalOTHr_LBL.Text = 0
+        CheckALL_CheckBox.Checked = False
+
+        'For Each row As DataGridViewRow In DataGridView1.Rows
+        '    Dim rowIndex As Integer = row.Index
+        '    row.Cells(5) = New DataGridViewCheckBoxCell With {.Value = False}
+        'Next
     End Sub
 
     Private Sub SearchEMP_BTN_Click(sender As Object, e As EventArgs) Handles SearchEMP_BTN.Click
@@ -1921,6 +1924,14 @@ Public Class frmAttendance
         If BiometricID_TXT.Text = "" Then
             Name_TXT.Text = ""
             SIL_Panel.Visible = False
+
+            For Each oRow As DataGridViewRow In DataGridView1.Rows
+                oRow.Cells(5).Value = False
+                For cell As Integer = 1 To 4
+                    oRow.Cells(cell).Value = Nothing
+                Next
+            Next
+
         Else
             GetName(BiometricID_TXT.Text, Name_TXT)
 
@@ -1962,14 +1973,14 @@ Public Class frmAttendance
     End Sub
 
     Public Sub Attendance_Per_Employee(bioNo As String)
-        Dim payroll As String
+        Dim PAYROLL As String
         If Paydate_ComboB.SelectedIndex >= 0 Then
-            payroll = Paydate_ComboB.SelectedItem
+            PAYROLL = Paydate_ComboB.SelectedItem
         Else
-            payroll = Paydate.ToString("d")
+            PAYROLL = DataGridView1.Tag
         End If
 
-        Dim mysql As String = $"Select * From BIOMETRIC_DTR A inner join PAYROLL_ATTENDANCE B on B.BIOMETRICID = A.BIO_ID where A.BIO_ID = '{bioNo}' and A.PAYDATE = '{payroll}'"
+        Dim mysql As String = $"Select * From BIOMETRIC_DTR A inner join PAYROLL_ATTENDANCE B on B.BIOMETRICID = A.BIO_ID  and A.PAYDATE = B.PAYDATE where A.BIO_ID = '{bioNo}' and A.PAYDATE = '{PAYROLL}'"
         Using ds As DataSet = LoadSQL(mysql, "BIOMETRIC_DTR")
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows

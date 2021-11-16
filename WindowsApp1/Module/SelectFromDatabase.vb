@@ -1752,6 +1752,8 @@ Module SelectFromDatabase
                         Dim i As ListViewItem = listview.Items.Add(IIf(IsDBNull(.Item("CITY")), "", .Item("CITY")))
                         i.SubItems.Add(IIf(IsDBNull(.Item("BRANCHNAME")), "", .Item("BRANCHNAME")))
                         i.SubItems.Add(IIf(IsDBNull(.Item("BRANCHCODE")), "", .Item("BRANCHCODE")))
+                        i.SubItems.Add(IIf(IsDBNull(.Item("ADDRESS")), "", .Item("ADDRESS")))
+                        i.SubItems.Add(IIf(IsDBNull(.Item("CATEGORY")), "", .Item("CATEGORY")))
                     End With
                     frmMainForm.AppProgressBar.Value += 1
                 Next
@@ -2490,6 +2492,27 @@ Module SelectFromDatabase
             End If
         End Using
         Return dataa
+    End Function
+
+    Public Function GetSummary_Email(PAYDATE As String, str As String)
+        Dim TOTALS As String = 0
+        Dim mysql_ As String = $"Select COALESCE(sum(NET_PAY), 0) as tots From PAYROLL_PAYOUT A 
+                                    INNER JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID AND {str}
+                                    where  PAYDATE = '{PAYDATE}'"
+
+        'Dim mysql_ As String = $"Select SUM(NET_PAY) as tots From PAYROLL_PAYOUT A 
+        '                            INNER JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID AND PAYDATE = '{PAYDATE}'
+        '                            where BRANCH_CODE = '{BRANCHCODE}' AND PAYDATE = '{PAYDATE}'"
+
+        Dim dSs As DataSet = LoadSQL(mysql_, "PAYROLL_PAYOUT")
+        If dSs.Tables(0).Rows.Count > 0 Then
+            Dim dr As DataRow = dSs.Tables(0).Rows(0)
+            With dr
+                TOTALS = .Item("tots")
+            End With
+        End If
+
+        Return TOTALS
     End Function
 
 End Module

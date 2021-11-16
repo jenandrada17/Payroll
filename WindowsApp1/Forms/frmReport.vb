@@ -1,12 +1,15 @@
-﻿Public Class frmReport
+﻿
+
+Public Class frmReport
 
     Private allowCoolMove As Boolean = False
     Private myCoolPoint As New Point
-    Dim Plus As String = ""
+    Dim PlusS As String = ""
 
     Private Sub frmReport_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         PopulateComboBox(PaydateNet_ComboB, "PAYROLL_PAYOUT", "PAYDATE")
         PopulateComboBox(PaydateCom_Combo, "PAYROLL_PAYOUT", "PAYDATE")
+        PopulateComboBox(SumPaydate_Combo, "PAYROLL_PAYOUT", "PAYDATE")
         Lists_SBU(SBU_LV)
     End Sub
 
@@ -18,15 +21,6 @@
         If IsEnter(e) Then SearchSBU_BTN.PerformClick()
     End Sub
 
-    Private Sub PreviewNet_BTN_Click(sender As Object, e As EventArgs)
-
-        'If PaydateNet_ComboB.SelectedIndex >= 0 Then
-        '    LoadNet_Print()
-        'Else
-        '    MsgBox("Please select date of payroll.", MsgBoxStyle.Exclamation, "Error")
-        'End If
-
-    End Sub
 
     Public Sub LoadNet_Print(mysqll As String)
 
@@ -46,7 +40,6 @@
         End If
 
         Try
-            Dim all_in As New reports.NetPayDataTable
 
             Dim dt_NetPay As New DataTable()
             With dt_NetPay
@@ -113,11 +106,11 @@
                                 BRANCH_CODE = HO_CATEGORY
                             End If
 
-                            Dim tempPlus As String = Plus
+                            Dim tempPlus As String = PlusS
 
-                            If Plus = "DAVAO PERFECT" Or Plus = "GENSAN PERFECT" And HO_CATEGORY = "" Then BRANCH_CODE = "Perfect" & "-" & .Item("BRANCHNAME")
-                            If Plus = "JR PHOTO" Then BRANCH_CODE = "JR Photo" & "-" & .Item("BRANCHNAME")
-                            If COMPANY = "PHOTO" Then tempPlus = $"{COMPANY}({Plus})"
+                            If PlusS = "DAVAO PERFECT" Or PlusS = "GENSAN PERFECT" And HO_CATEGORY = "" Then BRANCH_CODE = "Perfect" & "-" & .Item("BRANCHNAME")
+                            If PlusS = "JR PHOTO" Then BRANCH_CODE = "JR Photo" & "-" & .Item("BRANCHNAME")
+                            If COMPANY = "PHOTO" Then tempPlus = $"{COMPANY}({PlusS})"
 
                             dt_NetPay.Rows.Add(EMP_NO, namee, BASIC.ToString("n"), OVERTIME.ToString("n"), HOLIDAY.ToString("n"), N_DIFF.ToString("n"),
                                                PI_ECOLA_SIL.ToString("n"), TARDINESS.ToString("n"), SSS.ToString("n"), PHIC.ToString("n"), PAGIBIG.ToString("n"),
@@ -131,7 +124,7 @@
                     ReportV_NetPay.LocalReport.DataSources.Add(rds_DTR)
                     ReportV_NetPay.RefreshReport()
 
-                    Plus = Nothing
+                    PlusS = Nothing
                 Else
                     MsgBox("No Records Found!", MsgBoxStyle.Exclamation, "Information")
                 End If
@@ -214,7 +207,7 @@
             DALTON_BB = GetCount_Common("where company = 'DALTON'")
             DALTON_HO = GetCount_Common("where UPPER(HO_CATEGORY) LIKE UPPER('%Dalton%')")
             GENSANPERFECT_BB = GetCount_Common("where branch_code IN ('ROG','ROX','FINEPIX','GMA','DIG','SNP','SMD')")
-            GENSANPERFECT_HO = Nothing
+            GENSANPERFECT_HO = GetCount_Common("where UPPER(HO_CATEGORY) LIKE UPPER('%Photo%')")
             JRPHOTO_BB = Nothing
             JRPHOTO_HO = Nothing
             DAVAOP_BB = GetCount_Common("where branch_code IN ('SMG','KCG','ACM','TAC')")
@@ -230,7 +223,7 @@
             COMI_BB = GetCount_Common("where branch_code = 'COMI'")
             COMI_HO = Nothing
             PBA_BB = GetCount_Common("where branch_code = 'PBA'")
-            PBA_HO = Nothing
+            PBA_HO = GetCount_Common("where UPPER(HO_CATEGORY) LIKE UPPER('%GHS%')")
             KTV_BB = GetCount_Common("where branch_code = 'KTV'")
             KTV_HO = Nothing
             WAVE_BB = GetCount_Common("where branch_code = 'WAVE'")
@@ -289,7 +282,7 @@
         DALTON_BB = GetCount_Common("where company = 'DALTON'")
         DALTON_HO = GetCount_Common("where UPPER(HO_CATEGORY) LIKE UPPER('%Dalton%')")
         GENSANPERFECT_BB = GetCount_Common("where branch_code IN ('ROG','ROX','FINEPIX','GMA','DIG','SNP','SMD')")
-        GENSANPERFECT_HO = Nothing
+        GENSANPERFECT_HO = GetCount_Common("where UPPER(HO_CATEGORY) LIKE UPPER('%Photo%')")
         JRPHOTO_BB = Nothing
         JRPHOTO_HO = Nothing
         DAVAOP_BB = GetCount_Common("where branch_code IN ('SMG','KCG','ACM','TAC')")
@@ -305,7 +298,7 @@
         COMI_BB = GetCount_Common("where branch_code = 'COMI'")
         COMI_HO = Nothing
         PBA_BB = GetCount_Common("where branch_code = 'PBA'")
-        PBA_HO = Nothing
+        PBA_HO = GetCount_Common("where UPPER(HO_CATEGORY) LIKE UPPER('%GHS%')")
         KTV_BB = GetCount_Common("where branch_code = 'KTV'")
         KTV_HO = Nothing
         WAVE_BB = GetCount_Common("where branch_code = 'WAVE'")
@@ -400,9 +393,9 @@
         Dim LEASING_PL7_P As String = LEASING_BR / sum_5
 
         '============================ DRIVER PERCENTAGE ========================== 
-        DR_Dalton = GetModify_Reports("DR_Dalton") / 100
-        DR_Photo = GetModify_Reports("DR_Photo") / 100
-        DR_House = GetModify_Reports("DR_House") / 100
+        DR_Dalton = GetModify_Reports("DR_Dalton")
+        DR_Photo = GetModify_Reports("DR_Photo")
+        DR_House = GetModify_Reports("DR_House")
 
         Dim sum_driver As Integer = DR_Dalton + DR_Photo + DR_House
 
@@ -411,8 +404,8 @@
         Dim DR_House_P As String = DR_House / sum_driver
 
         '============================ CONSTRUCTION PERCENTAGE ==========================  
-        ConDalton = GetModify_Reports("ConDalton") / 100
-        ConPhoto = GetModify_Reports("ConPhoto") / 100
+        ConDalton = GetModify_Reports("ConDalton")
+        ConPhoto = GetModify_Reports("ConPhoto")
 
         Dim ConDalton_P As String = ConDalton / sum_driver
         Dim ConPhoto_P As String = ConPhoto / sum_driver
@@ -560,6 +553,40 @@
 
     End Sub
 
+    Public Sub LoadSummary_Print()
+
+        RptViewer_Summary.LocalReport.DataSources.Clear()
+
+        Try
+            Dim GensanJR As DataTable = LoadDataTable_GensanJR(SumPaydate_Combo.Text)
+
+            Dim Photo_GensanJR As New Microsoft.Reporting.WinForms.ReportDataSource("Photo_GensanJR", LoadDataTable_GensanJR(SumPaydate_Combo.Text))
+            Dim Photo_Davao As New Microsoft.Reporting.WinForms.ReportDataSource("Photo_Davao", LoadDataTable_DavaoPerfect(SumPaydate_Combo.Text))
+            Dim Dalton As New Microsoft.Reporting.WinForms.ReportDataSource("Dalton", LoadDataTable_Dalton(SumPaydate_Combo.Text))
+            Dim Perfecom As New Microsoft.Reporting.WinForms.ReportDataSource("Perfecom", LoadDataTable_Perfecom(SumPaydate_Combo.Text))
+            Dim PG_UY As New Microsoft.Reporting.WinForms.ReportDataSource("PG_UY", LoadDataTable_PG_UY(SumPaydate_Combo.Text))
+            Dim Household As New Microsoft.Reporting.WinForms.ReportDataSource("Household", GensanJR)
+            Dim PG_Realty As New Microsoft.Reporting.WinForms.ReportDataSource("PG_Realty", GensanJR)
+            RptViewer_Summary.LocalReport.DataSources.Add(Photo_GensanJR)
+            RptViewer_Summary.LocalReport.DataSources.Add(Photo_Davao)
+            RptViewer_Summary.LocalReport.DataSources.Add(Dalton)
+            RptViewer_Summary.LocalReport.DataSources.Add(Perfecom)
+            RptViewer_Summary.LocalReport.DataSources.Add(PG_UY)
+            RptViewer_Summary.LocalReport.DataSources.Add(Household)
+            RptViewer_Summary.LocalReport.DataSources.Add(PG_Realty)
+            RptViewer_Summary.RefreshReport()
+
+        Catch ex As Exception
+            Log_Report(ex.ToString)
+            MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+
+    End Sub
+
+    Private Sub SumPaydate_Combo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles SumPaydate_Combo.SelectedIndexChanged
+        LoadSummary_Print()
+    End Sub
+
     Private Sub ComPrev_BTN_Click(sender As Object, e As EventArgs) Handles ComPrev_BTN.Click
         SavePercentage_Common()
         LoadCommon_Print()
@@ -672,7 +699,7 @@
                                                       WHEN B.BRANCH_CODE = 'KCM' THEN 6
                                                       WHEN B.BRANCH_CODE = 'ZAM' THEN 7
                                                       else 0 end, B.HO_CATEGORY asc, B.BRANCH_CODE asc"
-            Plus = "PERFECOM"
+            PlusS = "PERFECOM"
 
             LoadNet_Print(mysql)
         ElseIf Company_Combo.SelectedIndex = 4 Then '=== PGC HEAD OFFICE
@@ -708,7 +735,7 @@
                                                       when B.BRANCH_CODE = 'TAC' then 2
                                                       when B.BRANCH_CODE = 'ACM' then 3 end"
 
-                        Plus = "DAVAO PERFECT"
+                        PlusS = "DAVAO PERFECT"
 
                     ElseIf NetBranch_Combo.SelectedIndex = 1 Then '=== JR Photo
 
@@ -721,7 +748,7 @@
                                                       when B.BRANCH_CODE = 'M1' then 2
                                                       when B.BRANCH_CODE = 'POL' then 3 end"
 
-                        Plus = "JR PHOTO"
+                        PlusS = "JR PHOTO"
                     ElseIf NetBranch_Combo.SelectedIndex = 2 Then '=== Gensan Perfect
 
                         mysql = $"Select * From PAYROLL_PAYOUT A 
@@ -743,7 +770,7 @@
                                                       when B.BRANCH_CODE = 'ZAM' then 11 
                                                       else 0 end"
 
-                        Plus = "GENSAN PERFECT"
+                        PlusS = "GENSAN PERFECT"
 
                     End If
                 Else
@@ -887,6 +914,7 @@
 
     Private Sub PaydateCom_Combo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles PaydateCom_Combo.SelectedIndexChanged
         If PaydateCom_Combo.SelectedIndex >= 0 Then
+            SavePercentage_Common()
             LoadCommonPercentage_Print()
         End If
     End Sub

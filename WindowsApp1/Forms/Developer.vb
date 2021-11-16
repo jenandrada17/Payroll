@@ -43,6 +43,34 @@
             MsgBox("InComplete.", MsgBoxStyle.Critical, "Error")
         End If
 
+        ''====================================== BRANCH ADDRESS FROM PAYROLL_EMPLOYEE ====================================
+        'Dim mysql = "Select * From PAYROLL_CITY_BRANCH A INNER JOIN PAYROLL_EMPLOYEE B ON B.BRANCH_CODE = A.BRANCHCODE"
+        'Using ds As DataSet = LoadSQL(mysql)
+
+        '    If ds.Tables(0).Rows.Count > 0 Then
+
+        '        For Each dr As DataRow In ds.Tables(0).Rows
+        '            With dr
+
+        '                Dim mysqlL As String = "Select * From PAYROLL_CITY_BRANCH Where BRANCHCODE = '" & dr.Item("BRANCH_CODE") & "'"
+        '                Using dsS As DataSet = LoadSQL(mysqlL, "PAYROLL_CITY_BRANCH")
+        '                    If dsS.Tables(0).Rows.Count > 0 Then
+        '                        With dsS.Tables(0).Rows(0)
+
+        '                            .Item("ADDRESS") = dr.Item("BRANCH_CITY")
+
+        '                            SaveEntry(dsS, False)
+        '                        End With
+        '                    End If
+
+        '                End Using
+        '            End With
+        '        Next
+        '    Else
+        '        Console.WriteLine("No Match")
+        '    End If
+
+        'End Using
     End Sub
 
     Private Function ValidString(str As String)

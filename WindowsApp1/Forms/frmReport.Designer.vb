@@ -26,6 +26,13 @@ Partial Class frmReport
         Dim ReportDataSource1 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
         Dim ReportDataSource2 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
         Dim ReportDataSource3 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource4 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource5 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource6 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource7 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource8 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource9 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource10 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
         Me.NetPayBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.reports = New WindowsApp1.reports()
         Me.CommonDistributionBindingSource = New System.Windows.Forms.BindingSource(Me.components)
@@ -62,13 +69,17 @@ Partial Class frmReport
         Me.Label26 = New System.Windows.Forms.Label()
         Me.Label14 = New System.Windows.Forms.Label()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.Label39 = New System.Windows.Forms.Label()
+        Me.Label38 = New System.Windows.Forms.Label()
+        Me.Label37 = New System.Windows.Forms.Label()
+        Me.Household_TXT = New System.Windows.Forms.TextBox()
+        Me.Label36 = New System.Windows.Forms.Label()
         Me.Label35 = New System.Windows.Forms.Label()
         Me.Label32 = New System.Windows.Forms.Label()
         Me.Label33 = New System.Windows.Forms.Label()
         Me.Label34 = New System.Windows.Forms.Label()
         Me.L_PG711_TXT = New System.Windows.Forms.TextBox()
         Me.L_Dalton_TXT = New System.Windows.Forms.TextBox()
-        Me.Label28 = New System.Windows.Forms.Label()
         Me.Label30 = New System.Windows.Forms.Label()
         Me.LeasingP_TXT = New System.Windows.Forms.TextBox()
         Me.Label3 = New System.Windows.Forms.Label()
@@ -104,6 +115,9 @@ Partial Class frmReport
         Me.ComPrev_BTN = New System.Windows.Forms.Button()
         Me.RptViewer_Count = New Microsoft.Reporting.WinForms.ReportViewer()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.Label28 = New System.Windows.Forms.Label()
+        Me.SumPaydate_Combo = New System.Windows.Forms.ComboBox()
+        Me.RptViewer_Summary = New Microsoft.Reporting.WinForms.ReportViewer()
         Me.TabPage4 = New System.Windows.Forms.TabPage()
         Me.SearchSBU_TXT = New System.Windows.Forms.TextBox()
         Me.SearchSBU_BTN = New System.Windows.Forms.Button()
@@ -117,6 +131,14 @@ Partial Class frmReport
         Me.ColumnHeader28 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Close_LBL = New System.Windows.Forms.Label()
+        Me.payroll_summary = New WindowsApp1.payroll_summary()
+        Me.Photo_GensanJRBindingSource = New System.Windows.Forms.BindingSource(Me.components)
+        Me.Photo_DavaoBindingSource = New System.Windows.Forms.BindingSource(Me.components)
+        Me.DaltonBindingSource = New System.Windows.Forms.BindingSource(Me.components)
+        Me.PerfecomBindingSource = New System.Windows.Forms.BindingSource(Me.components)
+        Me.PG_UYBindingSource = New System.Windows.Forms.BindingSource(Me.components)
+        Me.HouseholdBindingSource = New System.Windows.Forms.BindingSource(Me.components)
+        Me.PG_RealtyBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         CType(Me.NetPayBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.reports, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CommonDistributionBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -128,7 +150,16 @@ Partial Class frmReport
         Me.Modify_Panel.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
+        Me.TabPage2.SuspendLayout()
         Me.TabPage4.SuspendLayout()
+        CType(Me.payroll_summary, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.Photo_GensanJRBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.Photo_DavaoBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.DaltonBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.PerfecomBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.PG_UYBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.HouseholdBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.PG_RealtyBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'NetPayBindingSource
@@ -291,11 +322,12 @@ Partial Class frmReport
         '
         'PaydateCom_Combo
         '
+        Me.PaydateCom_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.PaydateCom_Combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.PaydateCom_Combo.FormattingEnabled = True
         Me.PaydateCom_Combo.Location = New System.Drawing.Point(111, 9)
         Me.PaydateCom_Combo.Name = "PaydateCom_Combo"
-        Me.PaydateCom_Combo.Size = New System.Drawing.Size(197, 33)
+        Me.PaydateCom_Combo.Size = New System.Drawing.Size(155, 33)
         Me.PaydateCom_Combo.TabIndex = 107
         '
         'RptViewer_Common
@@ -335,14 +367,14 @@ Partial Class frmReport
         Me.Modify_Panel.Controls.Add(Me.Save_BTN)
         Me.Modify_Panel.Location = New System.Drawing.Point(60, 108)
         Me.Modify_Panel.Name = "Modify_Panel"
-        Me.Modify_Panel.Size = New System.Drawing.Size(999, 229)
+        Me.Modify_Panel.Size = New System.Drawing.Size(1059, 305)
         Me.Modify_Panel.TabIndex = 106
         Me.Modify_Panel.Visible = False
         '
         'LeasingBR_TXT
         '
         Me.LeasingBR_TXT.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.LeasingBR_TXT.Location = New System.Drawing.Point(764, 165)
+        Me.LeasingBR_TXT.Location = New System.Drawing.Point(812, 195)
         Me.LeasingBR_TXT.Name = "LeasingBR_TXT"
         Me.LeasingBR_TXT.Size = New System.Drawing.Size(62, 29)
         Me.LeasingBR_TXT.TabIndex = 17
@@ -362,7 +394,7 @@ Partial Class frmReport
         Me.GroupBox2.Controls.Add(Me.DR_House_TXT)
         Me.GroupBox2.Controls.Add(Me.Label25)
         Me.GroupBox2.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GroupBox2.Location = New System.Drawing.Point(621, 3)
+        Me.GroupBox2.Location = New System.Drawing.Point(680, 3)
         Me.GroupBox2.Name = "GroupBox2"
         Me.GroupBox2.Size = New System.Drawing.Size(271, 152)
         Me.GroupBox2.TabIndex = 122
@@ -470,7 +502,7 @@ Partial Class frmReport
         '
         Me.Label26.AutoSize = True
         Me.Label26.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label26.Location = New System.Drawing.Point(654, 169)
+        Me.Label26.Location = New System.Drawing.Point(702, 199)
         Me.Label26.Name = "Label26"
         Me.Label26.Size = New System.Drawing.Size(105, 25)
         Me.Label26.TabIndex = 122
@@ -480,7 +512,7 @@ Partial Class frmReport
         '
         Me.Label14.AutoSize = True
         Me.Label14.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label14.Location = New System.Drawing.Point(980, 3)
+        Me.Label14.Location = New System.Drawing.Point(1039, 3)
         Me.Label14.Name = "Label14"
         Me.Label14.Size = New System.Drawing.Size(21, 27)
         Me.Label14.TabIndex = 20
@@ -488,13 +520,17 @@ Partial Class frmReport
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.Label39)
+        Me.GroupBox1.Controls.Add(Me.Label38)
+        Me.GroupBox1.Controls.Add(Me.Label37)
+        Me.GroupBox1.Controls.Add(Me.Household_TXT)
+        Me.GroupBox1.Controls.Add(Me.Label36)
         Me.GroupBox1.Controls.Add(Me.Label35)
         Me.GroupBox1.Controls.Add(Me.Label32)
         Me.GroupBox1.Controls.Add(Me.Label33)
         Me.GroupBox1.Controls.Add(Me.Label34)
         Me.GroupBox1.Controls.Add(Me.L_PG711_TXT)
         Me.GroupBox1.Controls.Add(Me.L_Dalton_TXT)
-        Me.GroupBox1.Controls.Add(Me.Label28)
         Me.GroupBox1.Controls.Add(Me.Label30)
         Me.GroupBox1.Controls.Add(Me.LeasingP_TXT)
         Me.GroupBox1.Controls.Add(Me.Label3)
@@ -527,15 +563,62 @@ Partial Class frmReport
         Me.GroupBox1.Font = New System.Drawing.Font("Dubai", 8.999999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.GroupBox1.Location = New System.Drawing.Point(14, 3)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(590, 213)
+        Me.GroupBox1.Size = New System.Drawing.Size(660, 279)
         Me.GroupBox1.TabIndex = 107
         Me.GroupBox1.TabStop = False
+        '
+        'Label39
+        '
+        Me.Label39.AutoSize = True
+        Me.Label39.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label39.Location = New System.Drawing.Point(15, 174)
+        Me.Label39.Name = "Label39"
+        Me.Label39.Size = New System.Drawing.Size(58, 25)
+        Me.Label39.TabIndex = 128
+        Me.Label39.Text = "Leasing"
+        '
+        'Label38
+        '
+        Me.Label38.AutoSize = True
+        Me.Label38.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label38.Location = New System.Drawing.Point(575, 17)
+        Me.Label38.Name = "Label38"
+        Me.Label38.Size = New System.Drawing.Size(51, 22)
+        Me.Label38.TabIndex = 127
+        Me.Label38.Text = "Madera"
+        '
+        'Label37
+        '
+        Me.Label37.AutoSize = True
+        Me.Label37.Font = New System.Drawing.Font("Dubai", 8.999999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label37.Location = New System.Drawing.Point(637, 245)
+        Me.Label37.Name = "Label37"
+        Me.Label37.Size = New System.Drawing.Size(22, 21)
+        Me.Label37.TabIndex = 126
+        Me.Label37.Text = "%"
+        '
+        'Household_TXT
+        '
+        Me.Household_TXT.Location = New System.Drawing.Point(575, 241)
+        Me.Household_TXT.Name = "Household_TXT"
+        Me.Household_TXT.Size = New System.Drawing.Size(62, 28)
+        Me.Household_TXT.TabIndex = 125
+        '
+        'Label36
+        '
+        Me.Label36.AutoSize = True
+        Me.Label36.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label36.Location = New System.Drawing.Point(15, 245)
+        Me.Label36.Name = "Label36"
+        Me.Label36.Size = New System.Drawing.Size(79, 25)
+        Me.Label36.TabIndex = 124
+        Me.Label36.Text = "Household"
         '
         'Label35
         '
         Me.Label35.AutoSize = True
         Me.Label35.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label35.Location = New System.Drawing.Point(15, 179)
+        Me.Label35.Location = New System.Drawing.Point(15, 211)
         Me.Label35.Name = "Label35"
         Me.Label35.Size = New System.Drawing.Size(106, 25)
         Me.Label35.TabIndex = 123
@@ -555,7 +638,7 @@ Partial Class frmReport
         '
         Me.Label33.AutoSize = True
         Me.Label33.Font = New System.Drawing.Font("Dubai", 8.999999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label33.Location = New System.Drawing.Point(542, 183)
+        Me.Label33.Location = New System.Drawing.Point(542, 211)
         Me.Label33.Name = "Label33"
         Me.Label33.Size = New System.Drawing.Size(22, 21)
         Me.Label33.TabIndex = 121
@@ -573,7 +656,7 @@ Partial Class frmReport
         '
         'L_PG711_TXT
         '
-        Me.L_PG711_TXT.Location = New System.Drawing.Point(479, 179)
+        Me.L_PG711_TXT.Location = New System.Drawing.Point(479, 207)
         Me.L_PG711_TXT.Name = "L_PG711_TXT"
         Me.L_PG711_TXT.Size = New System.Drawing.Size(62, 28)
         Me.L_PG711_TXT.TabIndex = 119
@@ -585,21 +668,11 @@ Partial Class frmReport
         Me.L_Dalton_TXT.Size = New System.Drawing.Size(62, 28)
         Me.L_Dalton_TXT.TabIndex = 118
         '
-        'Label28
-        '
-        Me.Label28.AutoSize = True
-        Me.Label28.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label28.Location = New System.Drawing.Point(370, 117)
-        Me.Label28.Name = "Label28"
-        Me.Label28.Size = New System.Drawing.Size(50, 22)
-        Me.Label28.TabIndex = 117
-        Me.Label28.Text = "Leasing"
-        '
         'Label30
         '
         Me.Label30.AutoSize = True
         Me.Label30.Font = New System.Drawing.Font("Dubai", 8.999999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label30.Location = New System.Drawing.Point(427, 147)
+        Me.Label30.Location = New System.Drawing.Point(427, 174)
         Me.Label30.Name = "Label30"
         Me.Label30.Size = New System.Drawing.Size(22, 21)
         Me.Label30.TabIndex = 116
@@ -607,7 +680,7 @@ Partial Class frmReport
         '
         'LeasingP_TXT
         '
-        Me.LeasingP_TXT.Location = New System.Drawing.Point(365, 142)
+        Me.LeasingP_TXT.Location = New System.Drawing.Point(365, 171)
         Me.LeasingP_TXT.Name = "LeasingP_TXT"
         Me.LeasingP_TXT.Size = New System.Drawing.Size(62, 28)
         Me.LeasingP_TXT.TabIndex = 10
@@ -857,7 +930,7 @@ Partial Class frmReport
         Me.Clear_BTN.BackColor = System.Drawing.Color.PeachPuff
         Me.Clear_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.Clear_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Clear_BTN.Location = New System.Drawing.Point(920, 97)
+        Me.Clear_BTN.Location = New System.Drawing.Point(985, 214)
         Me.Clear_BTN.Name = "Clear_BTN"
         Me.Clear_BTN.Size = New System.Drawing.Size(57, 36)
         Me.Clear_BTN.TabIndex = 19
@@ -869,7 +942,7 @@ Partial Class frmReport
         Me.Save_BTN.BackColor = System.Drawing.Color.DarkSalmon
         Me.Save_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.Save_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Save_BTN.Location = New System.Drawing.Point(920, 143)
+        Me.Save_BTN.Location = New System.Drawing.Point(985, 260)
         Me.Save_BTN.Name = "Save_BTN"
         Me.Save_BTN.Size = New System.Drawing.Size(57, 36)
         Me.Save_BTN.TabIndex = 18
@@ -912,6 +985,9 @@ Partial Class frmReport
         '
         'TabPage2
         '
+        Me.TabPage2.Controls.Add(Me.Label28)
+        Me.TabPage2.Controls.Add(Me.SumPaydate_Combo)
+        Me.TabPage2.Controls.Add(Me.RptViewer_Summary)
         Me.TabPage2.Location = New System.Drawing.Point(4, 41)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
@@ -919,6 +995,56 @@ Partial Class frmReport
         Me.TabPage2.TabIndex = 5
         Me.TabPage2.Text = "    Payroll Summary    "
         Me.TabPage2.UseVisualStyleBackColor = True
+        '
+        'Label28
+        '
+        Me.Label28.AutoSize = True
+        Me.Label28.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label28.Location = New System.Drawing.Point(5, 18)
+        Me.Label28.Name = "Label28"
+        Me.Label28.Size = New System.Drawing.Size(98, 25)
+        Me.Label28.TabIndex = 110
+        Me.Label28.Text = "Search Payroll"
+        '
+        'SumPaydate_Combo
+        '
+        Me.SumPaydate_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.SumPaydate_Combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SumPaydate_Combo.FormattingEnabled = True
+        Me.SumPaydate_Combo.Location = New System.Drawing.Point(110, 14)
+        Me.SumPaydate_Combo.Name = "SumPaydate_Combo"
+        Me.SumPaydate_Combo.Size = New System.Drawing.Size(155, 33)
+        Me.SumPaydate_Combo.TabIndex = 109
+        '
+        'RptViewer_Summary
+        '
+        ReportDataSource4.Name = "Photo_GensanJR"
+        ReportDataSource4.Value = Me.Photo_GensanJRBindingSource
+        ReportDataSource5.Name = "Photo_Davao"
+        ReportDataSource5.Value = Me.Photo_DavaoBindingSource
+        ReportDataSource6.Name = "Dalton"
+        ReportDataSource6.Value = Me.DaltonBindingSource
+        ReportDataSource7.Name = "Perfecom"
+        ReportDataSource7.Value = Me.PerfecomBindingSource
+        ReportDataSource8.Name = "PG_UY"
+        ReportDataSource8.Value = Me.PG_UYBindingSource
+        ReportDataSource9.Name = "Household"
+        ReportDataSource9.Value = Me.HouseholdBindingSource
+        ReportDataSource10.Name = "PG_Realty"
+        ReportDataSource10.Value = Me.PG_RealtyBindingSource
+        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource4)
+        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource5)
+        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource6)
+        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource7)
+        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource8)
+        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource9)
+        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource10)
+        Me.RptViewer_Summary.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_PayrollSummary.rdlc"
+        Me.RptViewer_Summary.Location = New System.Drawing.Point(1, 53)
+        Me.RptViewer_Summary.Name = "RptViewer_Summary"
+        Me.RptViewer_Summary.ServerReport.BearerToken = Nothing
+        Me.RptViewer_Summary.Size = New System.Drawing.Size(1148, 532)
+        Me.RptViewer_Summary.TabIndex = 111
         '
         'TabPage4
         '
@@ -1024,6 +1150,46 @@ Partial Class frmReport
         Me.Close_LBL.TabIndex = 75
         Me.Close_LBL.Text = "Close"
         '
+        'payroll_summary
+        '
+        Me.payroll_summary.DataSetName = "payroll_summary"
+        Me.payroll_summary.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema
+        '
+        'Photo_GensanJRBindingSource
+        '
+        Me.Photo_GensanJRBindingSource.DataMember = "Photo_GensanJR"
+        Me.Photo_GensanJRBindingSource.DataSource = Me.payroll_summary
+        '
+        'Photo_DavaoBindingSource
+        '
+        Me.Photo_DavaoBindingSource.DataMember = "Photo_Davao"
+        Me.Photo_DavaoBindingSource.DataSource = Me.payroll_summary
+        '
+        'DaltonBindingSource
+        '
+        Me.DaltonBindingSource.DataMember = "Dalton"
+        Me.DaltonBindingSource.DataSource = Me.payroll_summary
+        '
+        'PerfecomBindingSource
+        '
+        Me.PerfecomBindingSource.DataMember = "Perfecom"
+        Me.PerfecomBindingSource.DataSource = Me.payroll_summary
+        '
+        'PG_UYBindingSource
+        '
+        Me.PG_UYBindingSource.DataMember = "PG_UY"
+        Me.PG_UYBindingSource.DataSource = Me.payroll_summary
+        '
+        'HouseholdBindingSource
+        '
+        Me.HouseholdBindingSource.DataMember = "Household"
+        Me.HouseholdBindingSource.DataSource = Me.payroll_summary
+        '
+        'PG_RealtyBindingSource
+        '
+        Me.PG_RealtyBindingSource.DataMember = "PG_Realty"
+        Me.PG_RealtyBindingSource.DataSource = Me.payroll_summary
+        '
         'frmReport
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1051,8 +1217,18 @@ Partial Class frmReport
         Me.GroupBox2.PerformLayout()
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
+        Me.TabPage2.ResumeLayout(False)
+        Me.TabPage2.PerformLayout()
         Me.TabPage4.ResumeLayout(False)
         Me.TabPage4.PerformLayout()
+        CType(Me.payroll_summary, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.Photo_GensanJRBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.Photo_DavaoBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.DaltonBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.PerfecomBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.PG_UYBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.HouseholdBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.PG_RealtyBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1137,7 +1313,6 @@ Partial Class frmReport
     Friend WithEvents Label27 As Label
     Friend WithEvents PaydateCom_Combo As ComboBox
     Friend WithEvents CommonDistributionBindingSource As BindingSource
-    Friend WithEvents Label28 As Label
     Friend WithEvents Label30 As Label
     Friend WithEvents LeasingP_TXT As TextBox
     Friend WithEvents TabPage2 As TabPage
@@ -1149,4 +1324,20 @@ Partial Class frmReport
     Friend WithEvents L_PG711_TXT As TextBox
     Friend WithEvents L_Dalton_TXT As TextBox
     Friend WithEvents Label35 As Label
+    Friend WithEvents Label37 As Label
+    Friend WithEvents Household_TXT As TextBox
+    Friend WithEvents Label36 As Label
+    Friend WithEvents Label38 As Label
+    Friend WithEvents Label39 As Label
+    Friend WithEvents RptViewer_Summary As Microsoft.Reporting.WinForms.ReportViewer
+    Friend WithEvents Label28 As Label
+    Friend WithEvents SumPaydate_Combo As ComboBox
+    Friend WithEvents Photo_GensanJRBindingSource As BindingSource
+    Friend WithEvents payroll_summary As payroll_summary
+    Friend WithEvents Photo_DavaoBindingSource As BindingSource
+    Friend WithEvents DaltonBindingSource As BindingSource
+    Friend WithEvents PerfecomBindingSource As BindingSource
+    Friend WithEvents PG_UYBindingSource As BindingSource
+    Friend WithEvents HouseholdBindingSource As BindingSource
+    Friend WithEvents PG_RealtyBindingSource As BindingSource
 End Class

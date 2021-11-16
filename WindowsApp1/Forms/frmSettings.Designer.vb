@@ -182,6 +182,10 @@ Partial Class frmSettings
         Me.Label26 = New System.Windows.Forms.Label()
         Me.Email_Save_BTN = New System.Windows.Forms.Button()
         Me.TabPage3 = New System.Windows.Forms.TabPage()
+        Me.Label43 = New System.Windows.Forms.Label()
+        Me.Address_Combo = New System.Windows.Forms.ComboBox()
+        Me.Label42 = New System.Windows.Forms.Label()
+        Me.BranchCategory_Combo = New System.Windows.Forms.ComboBox()
         Me.ClearCity_BTN = New System.Windows.Forms.Button()
         Me.Label40 = New System.Windows.Forms.Label()
         Me.CityBName_Combo = New System.Windows.Forms.ComboBox()
@@ -195,6 +199,7 @@ Partial Class frmSettings
         Me.ColumnHeader10 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader23 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader28 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader29 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.SaveCity_BTN = New System.Windows.Forms.Button()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Holiday_Remove = New System.Windows.Forms.ContextMenuStrip(Me.components)
@@ -206,6 +211,7 @@ Partial Class frmSettings
         Me.Context_deduct = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.menu_subtotal = New System.Windows.Forms.ToolStripMenuItem()
         Me.menu_edit = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ColumnHeader30 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.Settings_Tab.SuspendLayout()
         Me.TabPage5.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
@@ -1858,6 +1864,10 @@ Partial Class frmSettings
         '
         'TabPage3
         '
+        Me.TabPage3.Controls.Add(Me.Label43)
+        Me.TabPage3.Controls.Add(Me.Address_Combo)
+        Me.TabPage3.Controls.Add(Me.Label42)
+        Me.TabPage3.Controls.Add(Me.BranchCategory_Combo)
         Me.TabPage3.Controls.Add(Me.ClearCity_BTN)
         Me.TabPage3.Controls.Add(Me.Label40)
         Me.TabPage3.Controls.Add(Me.CityBName_Combo)
@@ -1876,12 +1886,52 @@ Partial Class frmSettings
         Me.TabPage3.Text = "    City-Branch    "
         Me.TabPage3.UseVisualStyleBackColor = True
         '
+        'Label43
+        '
+        Me.Label43.AutoSize = True
+        Me.Label43.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label43.Location = New System.Drawing.Point(16, 279)
+        Me.Label43.Name = "Label43"
+        Me.Label43.Size = New System.Drawing.Size(61, 25)
+        Me.Label43.TabIndex = 114
+        Me.Label43.Text = "Address"
+        '
+        'Address_Combo
+        '
+        Me.Address_Combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Address_Combo.FormattingEnabled = True
+        Me.Address_Combo.Items.AddRange(New Object() {"", "JR PHOTO", "DAVAO PERFECT", "GENSAN PERFECT"})
+        Me.Address_Combo.Location = New System.Drawing.Point(124, 278)
+        Me.Address_Combo.Name = "Address_Combo"
+        Me.Address_Combo.Size = New System.Drawing.Size(263, 33)
+        Me.Address_Combo.TabIndex = 113
+        '
+        'Label42
+        '
+        Me.Label42.AutoSize = True
+        Me.Label42.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label42.Location = New System.Drawing.Point(16, 221)
+        Me.Label42.Name = "Label42"
+        Me.Label42.Size = New System.Drawing.Size(108, 25)
+        Me.Label42.TabIndex = 112
+        Me.Label42.Text = "Photo Category"
+        '
+        'BranchCategory_Combo
+        '
+        Me.BranchCategory_Combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BranchCategory_Combo.FormattingEnabled = True
+        Me.BranchCategory_Combo.Items.AddRange(New Object() {"", "JR PHOTO", "DAVAO PERFECT", "GENSAN PERFECT"})
+        Me.BranchCategory_Combo.Location = New System.Drawing.Point(124, 220)
+        Me.BranchCategory_Combo.Name = "BranchCategory_Combo"
+        Me.BranchCategory_Combo.Size = New System.Drawing.Size(263, 33)
+        Me.BranchCategory_Combo.TabIndex = 111
+        '
         'ClearCity_BTN
         '
         Me.ClearCity_BTN.BackColor = System.Drawing.Color.PeachPuff
         Me.ClearCity_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.ClearCity_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.ClearCity_BTN.Location = New System.Drawing.Point(147, 234)
+        Me.ClearCity_BTN.Location = New System.Drawing.Point(124, 347)
         Me.ClearCity_BTN.Name = "ClearCity_BTN"
         Me.ClearCity_BTN.Size = New System.Drawing.Size(81, 36)
         Me.ClearCity_BTN.TabIndex = 73
@@ -1891,9 +1941,10 @@ Partial Class frmSettings
         'Label40
         '
         Me.Label40.AutoSize = True
-        Me.Label40.Location = New System.Drawing.Point(30, 166)
+        Me.Label40.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label40.Location = New System.Drawing.Point(16, 166)
         Me.Label40.Name = "Label40"
-        Me.Label40.Size = New System.Drawing.Size(107, 29)
+        Me.Label40.Size = New System.Drawing.Size(95, 25)
         Me.Label40.TabIndex = 110
         Me.Label40.Text = "Branch Name"
         '
@@ -1901,7 +1952,7 @@ Partial Class frmSettings
         '
         Me.CityBName_Combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CityBName_Combo.FormattingEnabled = True
-        Me.CityBName_Combo.Location = New System.Drawing.Point(147, 165)
+        Me.CityBName_Combo.Location = New System.Drawing.Point(124, 165)
         Me.CityBName_Combo.Name = "CityBName_Combo"
         Me.CityBName_Combo.Size = New System.Drawing.Size(263, 33)
         Me.CityBName_Combo.TabIndex = 71
@@ -1909,9 +1960,10 @@ Partial Class frmSettings
         'Label39
         '
         Me.Label39.AutoSize = True
-        Me.Label39.Location = New System.Drawing.Point(30, 118)
+        Me.Label39.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label39.Location = New System.Drawing.Point(16, 118)
         Me.Label39.Name = "Label39"
-        Me.Label39.Size = New System.Drawing.Size(102, 29)
+        Me.Label39.Size = New System.Drawing.Size(91, 25)
         Me.Label39.TabIndex = 108
         Me.Label39.Text = "Branch Code"
         '
@@ -1919,7 +1971,7 @@ Partial Class frmSettings
         '
         Me.CityCode_Combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CityCode_Combo.FormattingEnabled = True
-        Me.CityCode_Combo.Location = New System.Drawing.Point(147, 117)
+        Me.CityCode_Combo.Location = New System.Drawing.Point(124, 117)
         Me.CityCode_Combo.Name = "CityCode_Combo"
         Me.CityCode_Combo.Size = New System.Drawing.Size(263, 33)
         Me.CityCode_Combo.TabIndex = 70
@@ -1927,16 +1979,17 @@ Partial Class frmSettings
         'Label21
         '
         Me.Label21.AutoSize = True
-        Me.Label21.Location = New System.Drawing.Point(30, 68)
+        Me.Label21.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label21.Location = New System.Drawing.Point(16, 68)
         Me.Label21.Name = "Label21"
-        Me.Label21.Size = New System.Drawing.Size(41, 29)
+        Me.Label21.Size = New System.Drawing.Size(36, 25)
         Me.Label21.TabIndex = 106
         Me.Label21.Text = "City"
         '
         'SearchCity_TXT
         '
         Me.SearchCity_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.SearchCity_TXT.Location = New System.Drawing.Point(516, 14)
+        Me.SearchCity_TXT.Location = New System.Drawing.Point(421, 13)
         Me.SearchCity_TXT.Name = "SearchCity_TXT"
         Me.SearchCity_TXT.Size = New System.Drawing.Size(315, 33)
         Me.SearchCity_TXT.TabIndex = 74
@@ -1944,7 +1997,7 @@ Partial Class frmSettings
         'SearchCity_BTN
         '
         Me.SearchCity_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.SearchCity_BTN.Location = New System.Drawing.Point(837, 13)
+        Me.SearchCity_BTN.Location = New System.Drawing.Point(742, 12)
         Me.SearchCity_BTN.Name = "SearchCity_BTN"
         Me.SearchCity_BTN.Size = New System.Drawing.Size(82, 33)
         Me.SearchCity_BTN.TabIndex = 75
@@ -1955,7 +2008,7 @@ Partial Class frmSettings
         '
         Me.City_Combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.City_Combo.FormattingEnabled = True
-        Me.City_Combo.Location = New System.Drawing.Point(147, 67)
+        Me.City_Combo.Location = New System.Drawing.Point(124, 67)
         Me.City_Combo.Name = "City_Combo"
         Me.City_Combo.Size = New System.Drawing.Size(263, 33)
         Me.City_Combo.TabIndex = 69
@@ -1965,15 +2018,15 @@ Partial Class frmSettings
         Me.CityBranch_List.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.CityBranch_List.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader10, Me.ColumnHeader23, Me.ColumnHeader28})
+        Me.CityBranch_List.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader10, Me.ColumnHeader23, Me.ColumnHeader28, Me.ColumnHeader29, Me.ColumnHeader30})
         Me.CityBranch_List.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CityBranch_List.FullRowSelect = True
         Me.CityBranch_List.GridLines = True
         Me.CityBranch_List.HideSelection = False
-        Me.CityBranch_List.Location = New System.Drawing.Point(516, 52)
+        Me.CityBranch_List.Location = New System.Drawing.Point(421, 52)
         Me.CityBranch_List.MultiSelect = False
         Me.CityBranch_List.Name = "CityBranch_List"
-        Me.CityBranch_List.Size = New System.Drawing.Size(623, 523)
+        Me.CityBranch_List.Size = New System.Drawing.Size(723, 549)
         Me.CityBranch_List.TabIndex = 76
         Me.CityBranch_List.UseCompatibleStateImageBehavior = False
         Me.CityBranch_List.View = System.Windows.Forms.View.Details
@@ -1981,24 +2034,29 @@ Partial Class frmSettings
         'ColumnHeader10
         '
         Me.ColumnHeader10.Text = "City"
-        Me.ColumnHeader10.Width = 270
+        Me.ColumnHeader10.Width = 190
         '
         'ColumnHeader23
         '
         Me.ColumnHeader23.Text = "Branch Name"
-        Me.ColumnHeader23.Width = 180
+        Me.ColumnHeader23.Width = 160
         '
         'ColumnHeader28
         '
         Me.ColumnHeader28.Text = "Branch Code"
-        Me.ColumnHeader28.Width = 150
+        Me.ColumnHeader28.Width = 100
+        '
+        'ColumnHeader29
+        '
+        Me.ColumnHeader29.Text = "Address"
+        Me.ColumnHeader29.Width = 130
         '
         'SaveCity_BTN
         '
         Me.SaveCity_BTN.BackColor = System.Drawing.Color.DarkSalmon
         Me.SaveCity_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.SaveCity_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.SaveCity_BTN.Location = New System.Drawing.Point(329, 234)
+        Me.SaveCity_BTN.Location = New System.Drawing.Point(306, 347)
         Me.SaveCity_BTN.Name = "SaveCity_BTN"
         Me.SaveCity_BTN.Size = New System.Drawing.Size(81, 36)
         Me.SaveCity_BTN.TabIndex = 72
@@ -2067,6 +2125,11 @@ Partial Class frmSettings
         Me.menu_edit.Name = "menu_edit"
         Me.menu_edit.Size = New System.Drawing.Size(146, 22)
         Me.menu_edit.Text = "Edit"
+        '
+        'ColumnHeader30
+        '
+        Me.ColumnHeader30.Text = "Photo Category"
+        Me.ColumnHeader30.Width = 120
         '
         'frmSettings
         '
@@ -2306,4 +2369,10 @@ Partial Class frmSettings
     Friend WithEvents Label19 As Label
     Friend WithEvents Ecola_TXT As TextBox
     Friend WithEvents CityClear_BTN As Button
+    Friend WithEvents Label42 As Label
+    Friend WithEvents BranchCategory_Combo As ComboBox
+    Friend WithEvents ColumnHeader29 As ColumnHeader
+    Friend WithEvents Label43 As Label
+    Friend WithEvents Address_Combo As ComboBox
+    Friend WithEvents ColumnHeader30 As ColumnHeader
 End Class

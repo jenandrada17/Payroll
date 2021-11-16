@@ -2155,7 +2155,7 @@ Module SaveUpdate
     '    End Using
     'End Sub
 
-    Friend Sub SaveCityBranch(BRANCHCODE As String, BRANCHNAME As String, CITY As String)
+    Friend Sub SaveCityBranch(BRANCHCODE As String, BRANCHNAME As String, CITY As String, CATEGORY As String, ADDRESS As String)
 
         Dim mysql As String
 
@@ -2166,6 +2166,8 @@ Module SaveUpdate
 
                 .Item("CITY") = CITY
                 .Item("BRANCHNAME") = BRANCHNAME
+                .Item("CATEGORY") = CATEGORY
+                .Item("ADDRESS") = ADDRESS
 
             End With
 
@@ -2183,6 +2185,8 @@ Module SaveUpdate
                     .Item("CITY") = CITY
                     .Item("BRANCHCODE") = BRANCHCODE
                     .Item("BRANCHNAME") = BRANCHNAME
+                    .Item("CATEGORY") = CATEGORY
+                    .Item("ADDRESS") = ADDRESS
 
                 End With
 
