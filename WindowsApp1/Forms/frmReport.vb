@@ -89,9 +89,13 @@ Public Class frmReport
                             Dim PAGIBIG As Double = .Item("PAGIBIG_COMP")
                             Dim SBU_CHARGES As Double = .Item("TOTAL_DEDUCTION")
                             Dim NET_PAY As Double = .Item("NET_PAY")
-                            Dim BRANCH_CODE As String = IIf(.Item("BRANCH_CODE") = "", .Item("HO_CATEGORY"), TitleCase(.Item("COMPANY")) & "-" & .Item("BRANCHNAME"))
+                            Dim BRANCH_CODE As String = IIf(.Item("BRANCH_CODE") = "", .Item("HO_CATEGORY"), .Item("BRANCHNAME"))
                             Dim COMPANY As String = .Item("COMPANY")
                             Dim HO_CATEGORY As String = IIf(IsDBNull(.Item("HO_CATEGORY")), "", .Item("HO_CATEGORY"))
+
+                            If COMPANY = "DALTON" Then
+                                BRANCH_CODE = IIf(.Item("BRANCH_CODE") = "", .Item("HO_CATEGORY"), TitleCase(.Item("COMPANY")) & "-" & .Item("BRANCHNAME"))
+                            End If
 
                             If HO_CATEGORY = "GHS/P&G UY Admin Office" Or HO_CATEGORY = "GHS/P&G UY Admin Operation" Then
                                 COMPANY = "P&G UY"
@@ -103,6 +107,11 @@ Public Class frmReport
 
                             ElseIf HO_CATEGORY.Contains("Photo") Or HO_CATEGORY.Contains("PGC") Then
                                 COMPANY = "PHOTO"
+                                BRANCH_CODE = HO_CATEGORY
+                            End If
+
+                            If PlusS = "PGC" Then
+                                COMPANY = "PGC"
                                 BRANCH_CODE = HO_CATEGORY
                             End If
 
@@ -120,8 +129,37 @@ Public Class frmReport
                         End With
                     Next
 
+                    Dim TOTAL_EMP As Integer = GetOVERALL_COUNT("ID", paydatee)
+                    Dim TOTAL_BASIC As Double = GetOVERALL_SUM("TOTAL_BASIC", paydatee)
+                    Dim TOTAL_OT As Double = GetOVERALL_SUM("TOTAL_OVERTIME", paydatee)
+                    Dim TOTAL_HOLIDAY As Double = GetOVERALL_SUM("TOTAL_HOLIDAY", paydatee)
+                    Dim TOTAL_NDIFF As Double = GetOVERALL_SUM("TOTAL_NIGHT_RATE", paydatee)
+                    Dim TOTAL_PI_ECOLA_SIL As Double = GetOVERALL_SUM("TOTAL_ALLOWANCE", paydatee)
+                    Dim TOTAL_TARDINESS As Double = GetOVERALL_SUM("TOTAL_LATE_UT", paydatee)
+                    Dim TOTAL_SSS As Double = GetOVERALL_SUM("SSS_COMP", paydatee)
+                    Dim TOTAL_PHIC As Double = GetOVERALL_SUM("PHILHEALTH_COMP", paydatee)
+                    Dim TOTAL_PAGIBIG As Double = GetOVERALL_SUM("PAGIBIG_COMP", paydatee)
+                    Dim TOTAL_SBU_CHARGES As Double = GetOVERALL_SUM("TOTAL_DEDUCTION", paydatee)
+                    Dim TOTAL_NET_PAY As Double = GetOVERALL_SUM("NET_PAY", paydatee)
+
+                    Dim paramList As New List(Of Microsoft.Reporting.WinForms.ReportParameter) From {
+                    New Microsoft.Reporting.WinForms.ReportParameter("paramEmployees", TOTAL_EMP),
+                    New Microsoft.Reporting.WinForms.ReportParameter("paramBasic", TOTAL_BASIC.ToString(”N”)),
+                    New Microsoft.Reporting.WinForms.ReportParameter("paramOvertime", TOTAL_OT.ToString(”N”)),
+                    New Microsoft.Reporting.WinForms.ReportParameter("paramHoliday", TOTAL_HOLIDAY.ToString(”N”)),
+                    New Microsoft.Reporting.WinForms.ReportParameter("paramNDiff", TOTAL_NDIFF.ToString(”N”)),
+                    New Microsoft.Reporting.WinForms.ReportParameter("paramPI_Ecola_SIL", TOTAL_PI_ECOLA_SIL.ToString(”N”)),
+                    New Microsoft.Reporting.WinForms.ReportParameter("paramTardiness", TOTAL_TARDINESS.ToString(”N”)),
+                    New Microsoft.Reporting.WinForms.ReportParameter("paramSSS", TOTAL_SSS.ToString(”N”)),
+                    New Microsoft.Reporting.WinForms.ReportParameter("paramPHIC", TOTAL_PHIC.ToString(”N”)),
+                    New Microsoft.Reporting.WinForms.ReportParameter("paramPagibig", TOTAL_PAGIBIG.ToString(”N”)),
+                    New Microsoft.Reporting.WinForms.ReportParameter("paramSBU_Charges", TOTAL_SBU_CHARGES.ToString(”N”)),
+                    New Microsoft.Reporting.WinForms.ReportParameter("paramNetPay", TOTAL_NET_PAY.ToString(”N”))
+                    }
+
                     Dim rds_DTR As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt_NetPay)
                     ReportV_NetPay.LocalReport.DataSources.Add(rds_DTR)
+                    ReportV_NetPay.LocalReport.SetParameters(paramList)
                     ReportV_NetPay.RefreshReport()
 
                     PlusS = Nothing
@@ -459,7 +497,6 @@ Public Class frmReport
                                         INNER JOIN PAYROLL_PAYOUT C ON A.BIO_NO = C.BIOMETRIC_ID
                                         where HO_CATEGORY = 'PGC Head Office' AND PAYDATE = '{PaydateCom_Combo.Text}' ORDER BY FULLNAME ASC"
 
-
             Using ds As DataSet = LoadSQL(mysqll, "PAYROLL_EMPLOYEE")
                 If ds.Tables(0).Rows.Count > 0 Then
                     For Each dr In ds.Tables(0).Rows
@@ -480,6 +517,17 @@ Public Class frmReport
                             Dim COMI_TO_FUJI As Double = .Item("COMI_TO_FUJI")
                             Dim HOUSEHOLD As Double = .Item("HOUSEHOLD")
                             Dim LEASING As Double = .Item("LEASING")
+
+                            If .ITEM("BIO_NO") = "2788" Then ' MADERA
+                                HOUSEHOLD = 50 / 100
+                                DALTON = (50 * DALTON) / 100
+                                PHOTO = (50 * PHOTO) / 100
+                                DAVAOP = (50 * DAVAOP) / 100
+                                PERFECOM = (50 * PERFECOM) / 100
+                                G3 = (50 * G3) / 100
+                                Seven11 = (50 * Seven11) / 100
+                                COMI_TO_FUJI = (50 * COMI_TO_FUJI) / 100
+                            End If
 
                             dt_CommonDis.Rows.Add(namee, CATEGORY, NET_PAY.ToString("n"), DALTON, PHOTO, DAVAOP,
                                                PERFECOM, G3, Seven11, COMI_TO_FUJI, HOUSEHOLD, LEASING, Format(PAYROLL, "MMMM dd, yyyy").ToUpper())
@@ -558,14 +606,16 @@ Public Class frmReport
         RptViewer_Summary.LocalReport.DataSources.Clear()
 
         Try
+
+            Dim PAYDATEE As String = SumPaydate_Combo.Text
             Dim GensanJR As DataTable = LoadDataTable_GensanJR(SumPaydate_Combo.Text)
 
-            Dim Photo_GensanJR As New Microsoft.Reporting.WinForms.ReportDataSource("Photo_GensanJR", LoadDataTable_GensanJR(SumPaydate_Combo.Text))
-            Dim Photo_Davao As New Microsoft.Reporting.WinForms.ReportDataSource("Photo_Davao", LoadDataTable_DavaoPerfect(SumPaydate_Combo.Text))
-            Dim Dalton As New Microsoft.Reporting.WinForms.ReportDataSource("Dalton", LoadDataTable_Dalton(SumPaydate_Combo.Text))
-            Dim Perfecom As New Microsoft.Reporting.WinForms.ReportDataSource("Perfecom", LoadDataTable_Perfecom(SumPaydate_Combo.Text))
-            Dim PG_UY As New Microsoft.Reporting.WinForms.ReportDataSource("PG_UY", LoadDataTable_PG_UY(SumPaydate_Combo.Text))
-            Dim Household As New Microsoft.Reporting.WinForms.ReportDataSource("Household", GensanJR)
+            Dim Photo_GensanJR As New Microsoft.Reporting.WinForms.ReportDataSource("Photo_GensanJR", LoadDataTable_GensanJR(PAYDATEE))
+            Dim Photo_Davao As New Microsoft.Reporting.WinForms.ReportDataSource("Photo_Davao", LoadDataTable_DavaoPerfect(PAYDATEE))
+            Dim Dalton As New Microsoft.Reporting.WinForms.ReportDataSource("Dalton", LoadDataTable_Dalton(PAYDATEE))
+            Dim Perfecom As New Microsoft.Reporting.WinForms.ReportDataSource("Perfecom", LoadDataTable_Perfecom(PAYDATEE))
+            Dim PG_UY As New Microsoft.Reporting.WinForms.ReportDataSource("PG_UY", LoadDataTable_PG_UY(PAYDATEE))
+            Dim Household As New Microsoft.Reporting.WinForms.ReportDataSource("Household", LoadDataTable_Household(PAYDATEE))
             Dim PG_Realty As New Microsoft.Reporting.WinForms.ReportDataSource("PG_Realty", GensanJR)
             RptViewer_Summary.LocalReport.DataSources.Add(Photo_GensanJR)
             RptViewer_Summary.LocalReport.DataSources.Add(Photo_Davao)
@@ -709,8 +759,8 @@ Public Class frmReport
             Dim mysql = $"Select * From PAYROLL_PAYOUT A 
                                         inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
                                         left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCH_CODE
-                                        where A.PAYDATE  = '{PaydateNet_ComboB.Text}' AND B.HO_CATEGORY = 'PGC Head Office' "
-
+                                        where A.PAYDATE  = '{PaydateNet_ComboB.Text}' AND B.HO_CATEGORY IN ('PGC Head Office','Construction' , 'Leasing Admin Office') "
+            PlusS = "PGC"
             LoadNet_Print(mysql)
         End If
     End Sub
@@ -784,18 +834,21 @@ Public Class frmReport
 
                         mysql = $"Select * From PAYROLL_PAYOUT A 
                                         inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
+                                        left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCH_CODE
                                         where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'P&G UY' and B.BRANCH_CODE = '3G'"
 
                     ElseIf NetBranch_Combo.SelectedIndex = 1 Then '=== 7Eleven
 
                         mysql = $"Select * From PAYROLL_PAYOUT A 
-                                        inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
+                                        inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID   
+                                        left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCH_CODE  
                                         where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'P&G UY' and B.BRANCH_CODE IN ('711-POL','711-ROX')"
 
                     ElseIf NetBranch_Combo.SelectedIndex = 2 Then '=== COMI-GHS Admin Operation
 
                         mysql = $"Select * From PAYROLL_PAYOUT A 
-                                        inner Join PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID  
+                                        inner Join PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID
+                                        left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCH_CODE  
                                         where A.PAYDATE = '{paydatee}' and B.COMPANY  = 'P&G UY' 
                                         And B.BRANCH_CODE IN ('COMI','KTV','PBA','WAVE') Or B.HO_CATEGORY In ('GHS/P&G UY Admin Office','GHS/P&G UY Admin Operation','GHS/P&G UY Maintenance')
                                         Order by case when B.HO_CATEGORY LIKE UPPER('%GHS%') then 1 else 0  end, B.HO_CATEGORY asc, B.BRANCH_CODE asc"
@@ -811,7 +864,8 @@ Public Class frmReport
                     If NetBranch_Combo.SelectedIndex = 0 Then '=== Dalton Office-Operation
 
                         mysql = $"Select * From PAYROLL_PAYOUT A 
-                                        inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
+                                        inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID   
+                                        left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCH_CODE  
                                         where A.PAYDATE  = '{paydatee}' and B.HO_CATEGORY IN ('Dalton Admin Office','Dalton Retail','Dalton Admin Operation') 
                                         Order by case when B.HO_CATEGORY LIKE '%Operation%' then 1 else 0  end, B.HO_CATEGORY asc"
 

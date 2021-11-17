@@ -163,7 +163,7 @@ Module Report_function
                                         INNER JOIN PAYROLL_EMPLOYEE C ON BIO_NO = BIOMETRIC_ID    
                                         LEFT JOIN PAYROLL_CITY_BRANCH B ON BRANCHCODE = BRANCH_CODE    
                                         WHERE PAYDATE = '{paydate}' AND COMPANY  = 'DALTON'
-                                            OR (HO_CATEGORY LIKE 'PGC%' and COMMON_COMPANY = 'DALTON') 
+                                            OR  HO_CATEGORY LIKE 'Dalton%' OR (HO_CATEGORY LIKE 'PGC%' and COMMON_COMPANY = 'DALTON') 
                                         ORDER BY CASE WHEN UPPER(HO_CATEGORY) LIKE UPPER('PGC%') THEN 0 
                                                 WHEN UPPER(HO_CATEGORY) LIKE UPPER('%Admin%') THEN 1 
                                                 WHEN UPPER(HO_CATEGORY) LIKE UPPER('%Retail%') THEN 2 
@@ -324,18 +324,18 @@ Module Report_function
         End With
 
         mysql = $"Select * From PAYROLL_PAYOUT A  
-                                        INNER JOIN PAYROLL_EMPLOYEE C ON BIO_NO = BIOMETRIC_ID    
-                                        LEFT JOIN PAYROLL_CITY_BRANCH B ON BRANCHCODE = BRANCH_CODE    
+                                        INNER JOIN PAYROLL_EMPLOYEE C ON BIO_NO = BIOMETRIC_ID     
+                                        LEFT JOIN PAYROLL_CITY_BRANCH B ON BRANCHCODE = BRANCH_CODE      
                                         WHERE PAYDATE = '{paydate}' AND COMPANY  = 'P&G UY'
                                             OR HO_CATEGORY LIKE 'GHS/P&G UY%' OR (HO_CATEGORY LIKE 'PGC%' and COMMON_COMPANY = 'P&G UY') 
                                         ORDER BY CASE WHEN UPPER(HO_CATEGORY) LIKE UPPER('PGC%') THEN 0 
                                                 WHEN UPPER(HO_CATEGORY) LIKE UPPER('%Admin%') THEN 1  
-                                                WHEN BRANCHCODE = '3G' THEN 2   
-                                                WHEN BRANCHNAME LIKE '7 Eleven' THEN 3   
-                                                WHEN BRANCHCODE = 'COMI' THEN 4 
-                                                WHEN BRANCHCODE = 'KTV' THEN 5 
-                                                WHEN BRANCHCODE = 'PBA' THEN 6 
-                                                WHEN BRANCHCODE = 'WAVE' THEN 7 END"
+                                                WHEN BRANCH_CODE = '3G' THEN 2    
+                                                WHEN BRANCH_CODE = 'COMI' THEN 4 
+                                                WHEN BRANCH_CODE = 'KTV' THEN 5 
+                                                WHEN BRANCH_CODE = 'PBA' THEN 6 
+                                                WHEN BRANCH_CODE = 'WAVE' THEN 7 
+                                                else 3 END"
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
             If ds.Tables(0).Rows.Count > 0 Then
@@ -344,22 +344,31 @@ Module Report_function
 
                         '============================= NAME AND ATTENDANCE ============================  
                         Dim COMPANY As String
-                        Dim ADDRESS As String = IIf(IsDBNull(.Item("ADDRESS")), "", .Item("ADDRESS"))
-                        Dim CATEGORY As String = IIf(IsDBNull(.Item("CATEGORY")), "", .Item("CATEGORY"))
-                        Dim BRANCHCODE As String = IIf(IsDBNull(.Item("BRANCHCODE")), "", .Item("BRANCHCODE"))
+                        Dim ADDRESS As String
+                        Dim BRANCHCODE As String = IIf(IsDBNull(.Item("BRANCH_CODE")), "", .Item("BRANCH_CODE"))
                         Dim HO_CATEGORY As String = IIf(IsDBNull(.Item("HO_CATEGORY")), "", .Item("HO_CATEGORY"))
                         Dim EMAIL As Double = GetSummary_Email(PAYROLL, $"BRANCH_CODE = '{BRANCHCODE}'")
                         Dim HO_array As String() = HO_CATEGORY.Split(New Char() {" "c}) '=== ADMIN   
-                        ADDRESS = ADDRESS.ToLower()
+                        ADDRESS = HO_CATEGORY.ToLower()
 
                         If HO_CATEGORY.Contains("GHS") Then
-                            ADDRESS = $"Admin {HO_array.Last}"
+                            ADDRESS = HO_CATEGORY
                             EMAIL = GetSummary_Email(PAYROLL, $"HO_CATEGORY = '{HO_CATEGORY}'")
                         End If
 
                         If HO_CATEGORY.Contains("PGC") Then
                             ADDRESS = $"PGC"
                             EMAIL = GetSummary_Email(PAYROLL, $"HO_CATEGORY = '{HO_CATEGORY}' AND COMMON_COMPANY = 'P&G UY'")
+                        End If
+
+                        If Not HO_CATEGORY.Contains("PGC") And Not HO_CATEGORY.Contains("GHS") Then
+                            ADDRESS = IIf(IsDBNull(.Item("BRANCHNAME")), "", .Item("BRANCHNAME"))
+
+                            If BRANCHCODE = "711-ROX" Or BRANCHCODE = "711-POL" Then
+                                EMAIL = GetSummary_Email(PAYROLL, $"(BRANCH_CODE = '711-ROX' Or BRANCH_CODE = '711-POL') ")
+                                ADDRESS = "7 Eleven"
+                            End If
+
                         End If
 
                         COMPANY = "P & G UY SONS/GHS"
@@ -374,5 +383,76 @@ Module Report_function
 
         Return dt_Dalton
     End Function
+
+    Friend Function LoadDataTable_Household(paydate As String) As DataTable
+
+        Dim mysql As String
+        Dim PAYROLL As DateTime = paydate
+        Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo ' === TITLE CASE ADDRESS
+        Dim total_email As Double = 0
+
+        Dim dt_Dalton As New DataTable()
+        With dt_Dalton
+            .Columns.Add("PAYDATE")
+            .Columns.Add("COMPANY")
+            .Columns.Add("ADDRESS")
+            .Columns.Add("EMAIL")
+            .Columns.Add("WD")
+            .Columns.Add("DEP")
+            .Columns.Add("TOTAL_AMOUNT")
+        End With
+
+        Dim TOTALS As Double = 0
+        mysql = $"Select * From PAYROLL_PAYOUT where BIOMETRIC_ID = '2788' AND PAYDATE = '{paydate}'"
+
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
+            If ds.Tables(0).Rows.Count > 0 Then
+                Dim DR As DataRow = ds.Tables(0).Rows(0)
+                With DR
+
+                    Dim COMPANY As String = "HOUSEHOLD"
+                    Dim ADDRESS As String = "PGC/GENSAN"
+                    Dim EMAIL As Double = .Item("NET_PAY")
+
+                    dt_Dalton.Rows.Add(PAYROLL.ToString("MMMM dd, yyyy").ToUpper(), COMPANY,
+                                                           info.ToTitleCase(ADDRESS), EMAIL.ToString("n"), 0, 0, 0)
+
+                End With
+            End If
+        End Using
+
+        Return dt_Dalton
+    End Function
+
+    Public Function GetOVERALL_COUNT(COLUMN As String, PAYDATE As String)
+        Dim VALUEE As Double
+        Dim mysql As String = $"Select COUNT({COLUMN}) AS TOTS FROM  PAYROLL_PAYOUT WHERE PAYDATE = '{PAYDATE}'"
+        Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
+        If ds.Tables(0).Rows.Count > 0 Then
+            For Each DR In ds.Tables(0).Rows
+                With DR
+                    VALUEE = IIf(IsDBNull(.Item("TOTS")), 0, .Item("TOTS"))
+                End With
+            Next
+        End If
+
+        Return VALUEE
+    End Function
+
+    Public Function GetOVERALL_SUM(COLUMN As String, PAYDATE As String)
+        Dim VALUEE As Double
+        Dim mysql As String = $"Select SUM({COLUMN}) AS TOTS FROM  PAYROLL_PAYOUT WHERE PAYDATE = '{PAYDATE}'"
+        Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
+        If ds.Tables(0).Rows.Count > 0 Then
+            For Each DR In ds.Tables(0).Rows
+                With DR
+                    VALUEE = IIf(IsDBNull(.Item("TOTS")), 0, .Item("TOTS"))
+                End With
+            Next
+        End If
+
+        Return VALUEE
+    End Function
+
 
 End Module

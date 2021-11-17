@@ -12,7 +12,7 @@
   <xs:element name="payroll_summary" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="payroll_summary" msprop:Generator_UserDSName="payroll_summary">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element name="Photo_GensanJR" msprop:Generator_TableClassName="Photo_GensanJRDataTable" msprop:Generator_TableVarName="tablePhoto_GensanJR" msprop:Generator_RowChangedName="Photo_GensanJRRowChanged" msprop:Generator_TablePropName="Photo_GensanJR" msprop:Generator_RowDeletingName="Photo_GensanJRRowDeleting" msprop:Generator_RowChangingName="Photo_GensanJRRowChanging" msprop:Generator_RowEvHandlerName="Photo_GensanJRRowChangeEventHandler" msprop:Generator_RowDeletedName="Photo_GensanJRRowDeleted" msprop:Generator_RowClassName="Photo_GensanJRRow" msprop:Generator_UserTableName="Photo_GensanJR" msprop:Generator_RowEvArgName="Photo_GensanJRRowChangeEvent">
+        <xs:element name="Photo_GensanJR" msprop:Generator_TableClassName="Photo_GensanJRDataTable" msprop:Generator_TableVarName="tablePhoto_GensanJR" msprop:Generator_TablePropName="Photo_GensanJR" msprop:Generator_RowDeletingName="Photo_GensanJRRowDeleting" msprop:Generator_RowChangingName="Photo_GensanJRRowChanging" msprop:Generator_RowEvHandlerName="Photo_GensanJRRowChangeEventHandler" msprop:Generator_RowDeletedName="Photo_GensanJRRowDeleted" msprop:Generator_UserTableName="Photo_GensanJR" msprop:Generator_RowChangedName="Photo_GensanJRRowChanged" msprop:Generator_RowEvArgName="Photo_GensanJRRowChangeEvent" msprop:Generator_RowClassName="Photo_GensanJRRow">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="PAYDATE" msprop:Generator_ColumnVarNameInTable="columnPAYDATE" msprop:Generator_ColumnPropNameInRow="PAYDATE" msprop:Generator_ColumnPropNameInTable="PAYDATEColumn" msprop:Generator_UserColumnName="PAYDATE" type="xs:string" minOccurs="0" />
@@ -25,7 +25,7 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="Photo_Davao" msprop:Generator_TableClassName="Photo_DavaoDataTable" msprop:Generator_TableVarName="tablePhoto_Davao" msprop:Generator_RowChangedName="Photo_DavaoRowChanged" msprop:Generator_TablePropName="Photo_Davao" msprop:Generator_RowDeletingName="Photo_DavaoRowDeleting" msprop:Generator_RowChangingName="Photo_DavaoRowChanging" msprop:Generator_RowEvHandlerName="Photo_DavaoRowChangeEventHandler" msprop:Generator_RowDeletedName="Photo_DavaoRowDeleted" msprop:Generator_RowClassName="Photo_DavaoRow" msprop:Generator_UserTableName="Photo_Davao" msprop:Generator_RowEvArgName="Photo_DavaoRowChangeEvent">
+        <xs:element name="Photo_Davao" msprop:Generator_TableClassName="Photo_DavaoDataTable" msprop:Generator_TableVarName="tablePhoto_Davao" msprop:Generator_TablePropName="Photo_Davao" msprop:Generator_RowDeletingName="Photo_DavaoRowDeleting" msprop:Generator_RowChangingName="Photo_DavaoRowChanging" msprop:Generator_RowEvHandlerName="Photo_DavaoRowChangeEventHandler" msprop:Generator_RowDeletedName="Photo_DavaoRowDeleted" msprop:Generator_UserTableName="Photo_Davao" msprop:Generator_RowChangedName="Photo_DavaoRowChanged" msprop:Generator_RowEvArgName="Photo_DavaoRowChangeEvent" msprop:Generator_RowClassName="Photo_DavaoRow">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="PAYDATE" msprop:Generator_ColumnVarNameInTable="columnPAYDATE" msprop:Generator_ColumnPropNameInRow="PAYDATE" msprop:Generator_ColumnPropNameInTable="PAYDATEColumn" msprop:Generator_UserColumnName="PAYDATE" type="xs:string" minOccurs="0" />
@@ -38,7 +38,7 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="Dalton" msprop:Generator_TableClassName="DaltonDataTable" msprop:Generator_TableVarName="tableDalton" msprop:Generator_RowChangedName="DaltonRowChanged" msprop:Generator_TablePropName="Dalton" msprop:Generator_RowDeletingName="DaltonRowDeleting" msprop:Generator_RowChangingName="DaltonRowChanging" msprop:Generator_RowEvHandlerName="DaltonRowChangeEventHandler" msprop:Generator_RowDeletedName="DaltonRowDeleted" msprop:Generator_RowClassName="DaltonRow" msprop:Generator_UserTableName="Dalton" msprop:Generator_RowEvArgName="DaltonRowChangeEvent">
+        <xs:element name="Dalton" msprop:Generator_TableClassName="DaltonDataTable" msprop:Generator_TableVarName="tableDalton" msprop:Generator_TablePropName="Dalton" msprop:Generator_RowDeletingName="DaltonRowDeleting" msprop:Generator_RowChangingName="DaltonRowChanging" msprop:Generator_RowEvHandlerName="DaltonRowChangeEventHandler" msprop:Generator_RowDeletedName="DaltonRowDeleted" msprop:Generator_UserTableName="Dalton" msprop:Generator_RowChangedName="DaltonRowChanged" msprop:Generator_RowEvArgName="DaltonRowChangeEvent" msprop:Generator_RowClassName="DaltonRow">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="PAYDATE" msprop:Generator_ColumnVarNameInTable="columnPAYDATE" msprop:Generator_ColumnPropNameInRow="PAYDATE" msprop:Generator_ColumnPropNameInTable="PAYDATEColumn" msprop:Generator_UserColumnName="PAYDATE" type="xs:string" minOccurs="0" />
@@ -51,7 +51,7 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="Perfecom" msprop:Generator_TableClassName="PerfecomDataTable" msprop:Generator_TableVarName="tablePerfecom" msprop:Generator_RowChangedName="PerfecomRowChanged" msprop:Generator_TablePropName="Perfecom" msprop:Generator_RowDeletingName="PerfecomRowDeleting" msprop:Generator_RowChangingName="PerfecomRowChanging" msprop:Generator_RowEvHandlerName="PerfecomRowChangeEventHandler" msprop:Generator_RowDeletedName="PerfecomRowDeleted" msprop:Generator_RowClassName="PerfecomRow" msprop:Generator_UserTableName="Perfecom" msprop:Generator_RowEvArgName="PerfecomRowChangeEvent">
+        <xs:element name="Perfecom" msprop:Generator_TableClassName="PerfecomDataTable" msprop:Generator_TableVarName="tablePerfecom" msprop:Generator_TablePropName="Perfecom" msprop:Generator_RowDeletingName="PerfecomRowDeleting" msprop:Generator_RowChangingName="PerfecomRowChanging" msprop:Generator_RowEvHandlerName="PerfecomRowChangeEventHandler" msprop:Generator_RowDeletedName="PerfecomRowDeleted" msprop:Generator_UserTableName="Perfecom" msprop:Generator_RowChangedName="PerfecomRowChanged" msprop:Generator_RowEvArgName="PerfecomRowChangeEvent" msprop:Generator_RowClassName="PerfecomRow">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="PAYDATE" msprop:Generator_ColumnVarNameInTable="columnPAYDATE" msprop:Generator_ColumnPropNameInRow="PAYDATE" msprop:Generator_ColumnPropNameInTable="PAYDATEColumn" msprop:Generator_UserColumnName="PAYDATE" type="xs:string" minOccurs="0" />
@@ -64,7 +64,7 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="PG_UY" msprop:Generator_TableClassName="PG_UYDataTable" msprop:Generator_TableVarName="tablePG_UY" msprop:Generator_RowChangedName="PG_UYRowChanged" msprop:Generator_TablePropName="PG_UY" msprop:Generator_RowDeletingName="PG_UYRowDeleting" msprop:Generator_RowChangingName="PG_UYRowChanging" msprop:Generator_RowEvHandlerName="PG_UYRowChangeEventHandler" msprop:Generator_RowDeletedName="PG_UYRowDeleted" msprop:Generator_RowClassName="PG_UYRow" msprop:Generator_UserTableName="PG_UY" msprop:Generator_RowEvArgName="PG_UYRowChangeEvent">
+        <xs:element name="PG_UY" msprop:Generator_TableClassName="PG_UYDataTable" msprop:Generator_TableVarName="tablePG_UY" msprop:Generator_TablePropName="PG_UY" msprop:Generator_RowDeletingName="PG_UYRowDeleting" msprop:Generator_RowChangingName="PG_UYRowChanging" msprop:Generator_RowEvHandlerName="PG_UYRowChangeEventHandler" msprop:Generator_RowDeletedName="PG_UYRowDeleted" msprop:Generator_UserTableName="PG_UY" msprop:Generator_RowChangedName="PG_UYRowChanged" msprop:Generator_RowEvArgName="PG_UYRowChangeEvent" msprop:Generator_RowClassName="PG_UYRow">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="PAYDATE" msprop:Generator_ColumnVarNameInTable="columnPAYDATE" msprop:Generator_ColumnPropNameInRow="PAYDATE" msprop:Generator_ColumnPropNameInTable="PAYDATEColumn" msprop:Generator_UserColumnName="PAYDATE" type="xs:string" minOccurs="0" />
@@ -77,7 +77,7 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="Household" msprop:Generator_TableClassName="HouseholdDataTable" msprop:Generator_TableVarName="tableHousehold" msprop:Generator_RowChangedName="HouseholdRowChanged" msprop:Generator_TablePropName="Household" msprop:Generator_RowDeletingName="HouseholdRowDeleting" msprop:Generator_RowChangingName="HouseholdRowChanging" msprop:Generator_RowEvHandlerName="HouseholdRowChangeEventHandler" msprop:Generator_RowDeletedName="HouseholdRowDeleted" msprop:Generator_RowClassName="HouseholdRow" msprop:Generator_UserTableName="Household" msprop:Generator_RowEvArgName="HouseholdRowChangeEvent">
+        <xs:element name="Household" msprop:Generator_TableClassName="HouseholdDataTable" msprop:Generator_TableVarName="tableHousehold" msprop:Generator_TablePropName="Household" msprop:Generator_RowDeletingName="HouseholdRowDeleting" msprop:Generator_RowChangingName="HouseholdRowChanging" msprop:Generator_RowEvHandlerName="HouseholdRowChangeEventHandler" msprop:Generator_RowDeletedName="HouseholdRowDeleted" msprop:Generator_UserTableName="Household" msprop:Generator_RowChangedName="HouseholdRowChanged" msprop:Generator_RowEvArgName="HouseholdRowChangeEvent" msprop:Generator_RowClassName="HouseholdRow">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="PAYDATE" msprop:Generator_ColumnVarNameInTable="columnPAYDATE" msprop:Generator_ColumnPropNameInRow="PAYDATE" msprop:Generator_ColumnPropNameInTable="PAYDATEColumn" msprop:Generator_UserColumnName="PAYDATE" type="xs:string" minOccurs="0" />
@@ -90,7 +90,7 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
-        <xs:element name="PG_Realty" msprop:Generator_TableClassName="PG_RealtyDataTable" msprop:Generator_TableVarName="tablePG_Realty" msprop:Generator_RowChangedName="PG_RealtyRowChanged" msprop:Generator_TablePropName="PG_Realty" msprop:Generator_RowDeletingName="PG_RealtyRowDeleting" msprop:Generator_RowChangingName="PG_RealtyRowChanging" msprop:Generator_RowEvHandlerName="PG_RealtyRowChangeEventHandler" msprop:Generator_RowDeletedName="PG_RealtyRowDeleted" msprop:Generator_RowClassName="PG_RealtyRow" msprop:Generator_UserTableName="PG_Realty" msprop:Generator_RowEvArgName="PG_RealtyRowChangeEvent">
+        <xs:element name="PG_Realty" msprop:Generator_TableClassName="PG_RealtyDataTable" msprop:Generator_TableVarName="tablePG_Realty" msprop:Generator_TablePropName="PG_Realty" msprop:Generator_RowDeletingName="PG_RealtyRowDeleting" msprop:Generator_RowChangingName="PG_RealtyRowChanging" msprop:Generator_RowEvHandlerName="PG_RealtyRowChangeEventHandler" msprop:Generator_RowDeletedName="PG_RealtyRowDeleted" msprop:Generator_UserTableName="PG_Realty" msprop:Generator_RowChangedName="PG_RealtyRowChanged" msprop:Generator_RowEvArgName="PG_RealtyRowChangeEvent" msprop:Generator_RowClassName="PG_RealtyRow">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="PAYDATE" msprop:Generator_ColumnVarNameInTable="columnPAYDATE" msprop:Generator_ColumnPropNameInRow="PAYDATE" msprop:Generator_ColumnPropNameInTable="PAYDATEColumn" msprop:Generator_UserColumnName="PAYDATE" type="xs:string" minOccurs="0" />
