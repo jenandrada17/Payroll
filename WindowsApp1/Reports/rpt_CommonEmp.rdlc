@@ -9,7 +9,7 @@
               <Width>0.19743in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.40699in</Width>
+              <Width>1.40055in</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>1.477in</Width>
@@ -80,7 +80,7 @@
           </TablixColumns>
           <TablixRows>
             <TablixRow>
-              <Height>0.20428in</Height>
+              <Height>0.18808in</Height>
               <TablixCells>
                 <TablixCell>
                   <CellContents>
@@ -148,7 +148,7 @@
               </TablixCells>
             </TablixRow>
             <TablixRow>
-              <Height>0.1714in</Height>
+              <Height>0.1552in</Height>
               <TablixCells>
                 <TablixCell>
                   <CellContents>
@@ -333,7 +333,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=IIF(Fields!PHOTO_L.Value = 0, "", CDec(ReportItems!NETPAY2.Value * Fields!PHOTO_L.Value).ToString("n"))</Value>
+                              <Value>=IIF(Fields!PHOTO_L.Value = 0, "", Code.AddTotal(CDec(ReportItems!NETPAY2.Value * Fields!PHOTO_L.Value).ToString("n"), "PHOTO"))</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -991,7 +991,487 @@ IIF(FIELDS!HOUSEHOLD_L.Value = 0, 0 , Fields!NETPAY_L.Value * FIELDS!HOUSEHOLD_L
               </TablixCells>
             </TablixRow>
             <TablixRow>
-              <Height>0.27238in</Height>
+              <Height>0.16559in</Height>
+              <TablixCells>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox1">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value />
+                              <Style>
+                                <FontFamily>Bahnschrift</FontFamily>
+                                <FontSize>7.5pt</FontSize>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox1</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox63">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>TOTAL</Value>
+                              <Style>
+                                <FontFamily>Bahnschrift</FontFamily>
+                                <FontSize>7pt</FontSize>
+                                <FontWeight>SemiBold</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Left</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox61</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Total_Leasing">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=FormatNUMBER(Sum(CDbl(Fields!NETPAY_L.Value)))</Value>
+                              <Style>
+                                <FontFamily>Bahnschrift</FontFamily>
+                                <FontSize>7pt</FontSize>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Right</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                    <ColSpan>2</ColSpan>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell />
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Total_Photo_L">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=IIF(Fields!PHOTO_L.Value = 0, "", FORMATNUMBER(SUM(CDec(Fields!NETPAY_L.Value * Fields!PHOTO_L.Value))))</Value>
+                              <Style>
+                                <FontFamily>Bahnschrift</FontFamily>
+                                <FontSize>7pt</FontSize>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                    <ColSpan>2</ColSpan>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell />
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Total_Davao_L">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=FORMATNUMBER(Sum(CDec(Fields!NETPAY_L.Value * Fields!DAVAOP_L.Value)))</Value>
+                              <Style>
+                                <FontFamily>Bahnschrift</FontFamily>
+                                <FontSize>7pt</FontSize>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                    <ColSpan>2</ColSpan>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell />
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Total_Dalton_L">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=FORMATNUMBER(Sum(CDec(Fields!NETPAY_L.Value * Fields!DALTON_L.Value)))</Value>
+                              <Style>
+                                <FontFamily>Bahnschrift</FontFamily>
+                                <FontSize>7pt</FontSize>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                    <ColSpan>2</ColSpan>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell />
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Total_Perfecom_L">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=FORMATNUMBER(Sum(CDec(Fields!NETPAY_L.Value * Fields!PERFECOM_L.Value)))</Value>
+                              <Style>
+                                <FontFamily>Bahnschrift</FontFamily>
+                                <FontSize>7pt</FontSize>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                    <ColSpan>2</ColSpan>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell />
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Total_Realty_L">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=FORMATNUMBER(Sum(CDec(Fields!NETPAY_L.Value * Fields!LEASING_L.Value)))</Value>
+                              <Style>
+                                <FontFamily>Bahnschrift</FontFamily>
+                                <FontSize>7pt</FontSize>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                    <ColSpan>2</ColSpan>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell />
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Total_Seven11_L">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=FORMATNUMBER(Sum(CDec(Fields!NETPAY_L.Value * Fields!Seven11_L.Value)))</Value>
+                              <Style>
+                                <FontFamily>Bahnschrift</FontFamily>
+                                <FontSize>7pt</FontSize>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                    <ColSpan>2</ColSpan>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell />
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Total_G3_L">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=FORMATNUMBER(Sum(CDec(Fields!NETPAY_L.Value * Fields!G3_L.Value)))</Value>
+                              <Style>
+                                <FontFamily>Bahnschrift</FontFamily>
+                                <FontSize>7pt</FontSize>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                    <ColSpan>2</ColSpan>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell />
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Total_Comi_L">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=FORMATNUMBER(Sum(CDec(Fields!NETPAY_L.Value * Fields!COMI_TO_FUJI_L.Value)))</Value>
+                              <Style>
+                                <FontFamily>Bahnschrift</FontFamily>
+                                <FontSize>7pt</FontSize>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                    <ColSpan>2</ColSpan>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell />
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Total_Household_L">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=FORMATNUMBER(Sum(CDec(Fields!NETPAY_L.Value * Fields!HOUSEHOLD_L.Value)))</Value>
+                              <Style>
+                                <FontFamily>Bahnschrift</FontFamily>
+                                <FontSize>7pt</FontSize>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                    <ColSpan>2</ColSpan>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell />
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Totals_L">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=FORMATNUMBER(Sum(CDec(IIF(Fields!PHOTO_L.Value = 0, 0, Fields!NETPAY_L.Value * Fields!PHOTO_L.Value) + 
+IIF(Fields!DAVAOP_L.Value = 0, 0, Fields!NETPAY_L.Value * Fields!DAVAOP_L.Value) + 
+IIF(Fields!DALTON_L.Value = 0, 0, Fields!NETPAY_L.Value * Fields!DALTON_L.Value) + 
+IIF(Fields!PERFECOM_L.Value = 0, 0, Fields!NETPAY_L.Value * Fields!PERFECOM_L.Value) + 
+IIF(Fields!LEASING_L.Value = 0, 0, Fields!NETPAY_L.Value * Fields!LEASING_L.Value) +
+IIF(Fields!Seven11_L.Value = 0, 0, Fields!NETPAY_L.Value * Fields!Seven11_L.Value) +
+IIF(Fields!G3_L.Value = 0, 0, Fields!NETPAY_L.Value * Fields!G3_L.Value) + 
+IIF(Fields!COMI_TO_FUJI_L.Value = 0, 0, Fields!NETPAY_L.Value * Fields!COMI_TO_FUJI_L.Value) + 
+IIF(Fields!HOUSEHOLD_L.Value = 0, 0, Fields!NETPAY_L.Value * Fields!HOUSEHOLD_L.Value))))</Value>
+                              <Style>
+                                <FontFamily>Bahnschrift</FontFamily>
+                                <FontSize>7pt</FontSize>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Right</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <Style>
+                        <Border>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                    <ColSpan>2</ColSpan>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell />
+              </TablixCells>
+            </TablixRow>
+            <TablixRow>
+              <Height>0.25618in</Height>
               <TablixCells>
                 <TablixCell>
                   <CellContents>
@@ -1073,7 +1553,7 @@ IIF(FIELDS!HOUSEHOLD_L.Value = 0, 0 , Fields!NETPAY_L.Value * FIELDS!HOUSEHOLD_L
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Format(SUM(CDbl(Fields!NETPAY_L.Value)) + CDbl(ReportItems!Total_Gensan.Value), "0,000.00")</Value>
+                              <Value>=FormatNumber(CDbl(reportitems!Total_Leasing.Value) + CDbl(ReportItems!Total_Gensan.Value))</Value>
                               <Style>
                                 <FontFamily>Arial Black</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -1111,15 +1591,16 @@ IIF(FIELDS!HOUSEHOLD_L.Value = 0, 0 , Fields!NETPAY_L.Value * FIELDS!HOUSEHOLD_L
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value />
+                              <Value>=FormatNumber(CDbl(reportitems!Total_Photo_L.Value) + CDbl(ReportItems!Total_Photo.Value))</Value>
                               <Style>
-                                <FontFamily>Bahnschrift</FontFamily>
+                                <FontFamily>Arial Black</FontFamily>
                                 <FontSize>7pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Right</TextAlign>
+                            <TextAlign>Center</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -1135,8 +1616,10 @@ IIF(FIELDS!HOUSEHOLD_L.Value = 0, 0 , Fields!NETPAY_L.Value * FIELDS!HOUSEHOLD_L
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
+                    <ColSpan>2</ColSpan>
                   </CellContents>
                 </TablixCell>
+                <TablixCell />
                 <TablixCell>
                   <CellContents>
                     <Textbox Name="Textbox159">
@@ -1146,19 +1629,20 @@ IIF(FIELDS!HOUSEHOLD_L.Value = 0, 0 , Fields!NETPAY_L.Value * FIELDS!HOUSEHOLD_L
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value />
+                              <Value>=FormatNumber(CDbl(ReportItems!Total_Davao_L.Value) + CDbl(ReportItems!Total_Davao.Value))</Value>
                               <Style>
-                                <FontFamily>Bahnschrift</FontFamily>
+                                <FontFamily>Arial Black</FontFamily>
                                 <FontSize>7pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Right</TextAlign>
+                            <TextAlign>Center</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox159</rd:DefaultName>
+                      <rd:DefaultName>Textbox158</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -1170,78 +1654,10 @@ IIF(FIELDS!HOUSEHOLD_L.Value = 0, 0 , Fields!NETPAY_L.Value * FIELDS!HOUSEHOLD_L
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
+                    <ColSpan>2</ColSpan>
                   </CellContents>
                 </TablixCell>
-                <TablixCell>
-                  <CellContents>
-                    <Textbox Name="Textbox160">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value />
-                              <Style>
-                                <FontFamily>Bahnschrift</FontFamily>
-                                <FontSize>7pt</FontSize>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style>
-                            <TextAlign>Right</TextAlign>
-                          </Style>
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>Textbox160</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Color>LightGrey</Color>
-                          <Style>Solid</Style>
-                        </Border>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                  </CellContents>
-                </TablixCell>
-                <TablixCell>
-                  <CellContents>
-                    <Textbox Name="Textbox161">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value />
-                              <Style>
-                                <FontFamily>Bahnschrift</FontFamily>
-                                <FontSize>7pt</FontSize>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style>
-                            <TextAlign>Right</TextAlign>
-                          </Style>
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>Textbox161</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Color>LightGrey</Color>
-                          <Style>Solid</Style>
-                        </Border>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                  </CellContents>
-                </TablixCell>
+                <TablixCell />
                 <TablixCell>
                   <CellContents>
                     <Textbox Name="Textbox162">
@@ -1251,15 +1667,16 @@ IIF(FIELDS!HOUSEHOLD_L.Value = 0, 0 , Fields!NETPAY_L.Value * FIELDS!HOUSEHOLD_L
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value />
+                              <Value>=FormatNumber(CDbl(ReportItems!Total_Dalton_L.Value) + CDbl(ReportItems!Total_Dalton.Value))</Value>
                               <Style>
-                                <FontFamily>Bahnschrift</FontFamily>
+                                <FontFamily>Arial Black</FontFamily>
                                 <FontSize>7pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Right</TextAlign>
+                            <TextAlign>Center</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -1275,43 +1692,10 @@ IIF(FIELDS!HOUSEHOLD_L.Value = 0, 0 , Fields!NETPAY_L.Value * FIELDS!HOUSEHOLD_L
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
+                    <ColSpan>2</ColSpan>
                   </CellContents>
                 </TablixCell>
-                <TablixCell>
-                  <CellContents>
-                    <Textbox Name="Textbox163">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value />
-                              <Style>
-                                <FontFamily>Bahnschrift</FontFamily>
-                                <FontSize>7pt</FontSize>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style>
-                            <TextAlign>Right</TextAlign>
-                          </Style>
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>Textbox163</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Color>LightGrey</Color>
-                          <Style>Solid</Style>
-                        </Border>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                  </CellContents>
-                </TablixCell>
+                <TablixCell />
                 <TablixCell>
                   <CellContents>
                     <Textbox Name="Textbox165">
@@ -1321,15 +1705,16 @@ IIF(FIELDS!HOUSEHOLD_L.Value = 0, 0 , Fields!NETPAY_L.Value * FIELDS!HOUSEHOLD_L
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value />
+                              <Value>=FormatNumber(CDbl(ReportItems!Total_Perfecom_L.Value) + CDbl(ReportItems!Total_Perfecom.Value))</Value>
                               <Style>
-                                <FontFamily>Bahnschrift</FontFamily>
+                                <FontFamily>Arial Black</FontFamily>
                                 <FontSize>7pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Right</TextAlign>
+                            <TextAlign>Center</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -1345,43 +1730,10 @@ IIF(FIELDS!HOUSEHOLD_L.Value = 0, 0 , Fields!NETPAY_L.Value * FIELDS!HOUSEHOLD_L
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
+                    <ColSpan>2</ColSpan>
                   </CellContents>
                 </TablixCell>
-                <TablixCell>
-                  <CellContents>
-                    <Textbox Name="Textbox166">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value />
-                              <Style>
-                                <FontFamily>Bahnschrift</FontFamily>
-                                <FontSize>7pt</FontSize>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style>
-                            <TextAlign>Right</TextAlign>
-                          </Style>
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>Textbox166</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Color>LightGrey</Color>
-                          <Style>Solid</Style>
-                        </Border>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                  </CellContents>
-                </TablixCell>
+                <TablixCell />
                 <TablixCell>
                   <CellContents>
                     <Textbox Name="Textbox167">
@@ -1391,15 +1743,16 @@ IIF(FIELDS!HOUSEHOLD_L.Value = 0, 0 , Fields!NETPAY_L.Value * FIELDS!HOUSEHOLD_L
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value />
+                              <Value>=FormatNumber(CDbl(ReportItems!Total_Realty_L.Value) + CDbl(ReportItems!Total_Realty.Value))</Value>
                               <Style>
-                                <FontFamily>Bahnschrift</FontFamily>
+                                <FontFamily>Arial Black</FontFamily>
                                 <FontSize>7pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Right</TextAlign>
+                            <TextAlign>Center</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -1415,43 +1768,10 @@ IIF(FIELDS!HOUSEHOLD_L.Value = 0, 0 , Fields!NETPAY_L.Value * FIELDS!HOUSEHOLD_L
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
+                    <ColSpan>2</ColSpan>
                   </CellContents>
                 </TablixCell>
-                <TablixCell>
-                  <CellContents>
-                    <Textbox Name="Textbox170">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value />
-                              <Style>
-                                <FontFamily>Bahnschrift</FontFamily>
-                                <FontSize>7pt</FontSize>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style>
-                            <TextAlign>Right</TextAlign>
-                          </Style>
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>Textbox170</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Color>LightGrey</Color>
-                          <Style>Solid</Style>
-                        </Border>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                  </CellContents>
-                </TablixCell>
+                <TablixCell />
                 <TablixCell>
                   <CellContents>
                     <Textbox Name="Textbox172">
@@ -1461,15 +1781,16 @@ IIF(FIELDS!HOUSEHOLD_L.Value = 0, 0 , Fields!NETPAY_L.Value * FIELDS!HOUSEHOLD_L
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value />
+                              <Value>=FormatNumber(CDbl(ReportItems!Total_Seven11_L.Value) + CDbl(ReportItems!Total_Seven11.Value))</Value>
                               <Style>
-                                <FontFamily>Bahnschrift</FontFamily>
+                                <FontFamily>Arial Black</FontFamily>
                                 <FontSize>7pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Right</TextAlign>
+                            <TextAlign>Center</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -1485,43 +1806,10 @@ IIF(FIELDS!HOUSEHOLD_L.Value = 0, 0 , Fields!NETPAY_L.Value * FIELDS!HOUSEHOLD_L
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
+                    <ColSpan>2</ColSpan>
                   </CellContents>
                 </TablixCell>
-                <TablixCell>
-                  <CellContents>
-                    <Textbox Name="Textbox173">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value />
-                              <Style>
-                                <FontFamily>Bahnschrift</FontFamily>
-                                <FontSize>7pt</FontSize>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style>
-                            <TextAlign>Right</TextAlign>
-                          </Style>
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>Textbox173</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Color>LightGrey</Color>
-                          <Style>Solid</Style>
-                        </Border>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                  </CellContents>
-                </TablixCell>
+                <TablixCell />
                 <TablixCell>
                   <CellContents>
                     <Textbox Name="Textbox174">
@@ -1531,15 +1819,16 @@ IIF(FIELDS!HOUSEHOLD_L.Value = 0, 0 , Fields!NETPAY_L.Value * FIELDS!HOUSEHOLD_L
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value />
+                              <Value>=FormatNumber(CDbl(ReportItems!Toatl_G3.Value) + CDbl(ReportItems!Total_G3_L.Value))</Value>
                               <Style>
-                                <FontFamily>Bahnschrift</FontFamily>
+                                <FontFamily>Arial Black</FontFamily>
                                 <FontSize>7pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Right</TextAlign>
+                            <TextAlign>Center</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -1555,43 +1844,10 @@ IIF(FIELDS!HOUSEHOLD_L.Value = 0, 0 , Fields!NETPAY_L.Value * FIELDS!HOUSEHOLD_L
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
+                    <ColSpan>2</ColSpan>
                   </CellContents>
                 </TablixCell>
-                <TablixCell>
-                  <CellContents>
-                    <Textbox Name="Textbox175">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value />
-                              <Style>
-                                <FontFamily>Bahnschrift</FontFamily>
-                                <FontSize>7pt</FontSize>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style>
-                            <TextAlign>Right</TextAlign>
-                          </Style>
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>Textbox175</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Color>LightGrey</Color>
-                          <Style>Solid</Style>
-                        </Border>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                  </CellContents>
-                </TablixCell>
+                <TablixCell />
                 <TablixCell>
                   <CellContents>
                     <Textbox Name="Textbox176">
@@ -1601,15 +1857,16 @@ IIF(FIELDS!HOUSEHOLD_L.Value = 0, 0 , Fields!NETPAY_L.Value * FIELDS!HOUSEHOLD_L
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value />
+                              <Value>=FormatNumber(CDbl(ReportItems!Total_Comi_L.Value) + CDbl(ReportItems!Total_Comi.Value))</Value>
                               <Style>
-                                <FontFamily>Bahnschrift</FontFamily>
+                                <FontFamily>Arial Black</FontFamily>
                                 <FontSize>7pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Right</TextAlign>
+                            <TextAlign>Center</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -1625,43 +1882,10 @@ IIF(FIELDS!HOUSEHOLD_L.Value = 0, 0 , Fields!NETPAY_L.Value * FIELDS!HOUSEHOLD_L
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
+                    <ColSpan>2</ColSpan>
                   </CellContents>
                 </TablixCell>
-                <TablixCell>
-                  <CellContents>
-                    <Textbox Name="Textbox177">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value />
-                              <Style>
-                                <FontFamily>Bahnschrift</FontFamily>
-                                <FontSize>7pt</FontSize>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style>
-                            <TextAlign>Right</TextAlign>
-                          </Style>
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>Textbox177</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Color>LightGrey</Color>
-                          <Style>Solid</Style>
-                        </Border>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                  </CellContents>
-                </TablixCell>
+                <TablixCell />
                 <TablixCell>
                   <CellContents>
                     <Textbox Name="Textbox178">
@@ -1671,15 +1895,16 @@ IIF(FIELDS!HOUSEHOLD_L.Value = 0, 0 , Fields!NETPAY_L.Value * FIELDS!HOUSEHOLD_L
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value />
+                              <Value>=FormatNumber(CDbl(ReportItems!Total_Household_L.Value) + CDbl(ReportItems!Total_Household.Value))</Value>
                               <Style>
-                                <FontFamily>Bahnschrift</FontFamily>
+                                <FontFamily>Arial Black</FontFamily>
                                 <FontSize>7pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Right</TextAlign>
+                            <TextAlign>Center</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
@@ -1695,43 +1920,10 @@ IIF(FIELDS!HOUSEHOLD_L.Value = 0, 0 , Fields!NETPAY_L.Value * FIELDS!HOUSEHOLD_L
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
+                    <ColSpan>2</ColSpan>
                   </CellContents>
                 </TablixCell>
-                <TablixCell>
-                  <CellContents>
-                    <Textbox Name="Textbox179">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value />
-                              <Style>
-                                <FontFamily>Bahnschrift</FontFamily>
-                                <FontSize>7pt</FontSize>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style>
-                            <TextAlign>Right</TextAlign>
-                          </Style>
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>Textbox179</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Color>LightGrey</Color>
-                          <Style>Solid</Style>
-                        </Border>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                  </CellContents>
-                </TablixCell>
+                <TablixCell />
                 <TablixCell>
                   <CellContents>
                     <Textbox Name="Textbox180">
@@ -1741,10 +1933,11 @@ IIF(FIELDS!HOUSEHOLD_L.Value = 0, 0 , Fields!NETPAY_L.Value * FIELDS!HOUSEHOLD_L
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value />
+                              <Value>=FormatNumber(CDbl(ReportItems!Totals.Value) + CDbl(ReportItems!Totals_L.Value))</Value>
                               <Style>
-                                <FontFamily>Bahnschrift</FontFamily>
+                                <FontFamily>Arial Black</FontFamily>
                                 <FontSize>7pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -1765,43 +1958,10 @@ IIF(FIELDS!HOUSEHOLD_L.Value = 0, 0 , Fields!NETPAY_L.Value * FIELDS!HOUSEHOLD_L
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
+                    <ColSpan>2</ColSpan>
                   </CellContents>
                 </TablixCell>
-                <TablixCell>
-                  <CellContents>
-                    <Textbox Name="Textbox181">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value />
-                              <Style>
-                                <FontFamily>Bahnschrift</FontFamily>
-                                <FontSize>7pt</FontSize>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style>
-                            <TextAlign>Right</TextAlign>
-                          </Style>
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>Textbox181</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Color>LightGrey</Color>
-                          <Style>Solid</Style>
-                        </Border>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                  </CellContents>
-                </TablixCell>
+                <TablixCell />
               </TablixCells>
             </TablixRow>
           </TablixRows>
@@ -1845,14 +2005,17 @@ IIF(FIELDS!HOUSEHOLD_L.Value = 0, 0 , Fields!NETPAY_L.Value * FIELDS!HOUSEHOLD_L
             <TablixMember>
               <KeepWithGroup>Before</KeepWithGroup>
             </TablixMember>
+            <TablixMember>
+              <KeepWithGroup>Before</KeepWithGroup>
+            </TablixMember>
           </TablixMembers>
         </TablixRowHierarchy>
         <KeepTogether>true</KeepTogether>
         <DataSetName>DataSet2</DataSetName>
-        <Top>1.20229in</Top>
+        <Top>1.25089in</Top>
         <Left>0.10145in</Left>
-        <Height>0.64806in</Height>
-        <Width>12.76641in</Width>
+        <Height>0.76505in</Height>
+        <Width>12.75992in</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -2033,6 +2196,7 @@ IIF(FIELDS!HOUSEHOLD_L.Value = 0, 0 , Fields!NETPAY_L.Value * FIELDS!HOUSEHOLD_L
                       </Style>
                     </Textbox>
                     <ColSpan>14</ColSpan>
+                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
                 <TablixCell />
@@ -4055,7 +4219,7 @@ IIF(FIELDS!HOUSEHOLD_L.Value = 0, 0 , Fields!NETPAY_L.Value * FIELDS!HOUSEHOLD_L
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=IIF(Fields!PERFECOM.Value = 0, "", CDec(ReportItems!NETPAY3.Value * Fields!PERFECOM.Value).ToString("n"))</Value>
+                              <Value>=IIF(Fields!PERFECOM.Value = 0, "", CDec(ReportItems!NETPAY3.Value * Fields!PERFECOM.Value).ToString("n") )</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -4123,7 +4287,7 @@ IIF(FIELDS!HOUSEHOLD_L.Value = 0, 0 , Fields!NETPAY_L.Value * FIELDS!HOUSEHOLD_L
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=IIF(Fields!LEASING.Value = 0, "", CDec(ReportItems!NETPAY3.Value * Fields!LEASING.Value).ToString("n"))</Value>
+                              <Value>=IIF(Fields!LEASING.Value = 0, "", CDec(ReportItems!NETPAY3.Value * Fields!LEASING.Value).ToString("n") )</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -4395,7 +4559,7 @@ IIF(FIELDS!HOUSEHOLD_L.Value = 0, 0 , Fields!NETPAY_L.Value * FIELDS!HOUSEHOLD_L
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=IIF(Fields!HOUSEHOLD.Value = 0, "", CDec(ReportItems!NETPAY3.Value * Fields!HOUSEHOLD.Value).ToString("n"))</Value>
+                              <Value>=IIF(Fields!HOUSEHOLD.Value = 0, "",CDec(ReportItems!NETPAY3.Value * Fields!HOUSEHOLD.Value).ToString("n"))</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -4583,11 +4747,10 @@ CDbl(IIF(FIELDS!HOUSEHOLD.Value = NOTHING, 0, FIELDS!HOUSEHOLD.Value))), 2, TriS
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Format(Sum(CDbl(Fields!NETPAY.Value)), "0,000.00")</Value>
+                              <Value>=FormatNUMBER(Sum(CDbl(Fields!NETPAY.Value)))</Value>
                               <Style>
-                                <FontFamily>Arial Black</FontFamily>
+                                <FontFamily>Berlin Sans FB</FontFamily>
                                 <FontSize>7pt</FontSize>
-                                <FontWeight>SemiBold</FontWeight>
                               </Style>
                             </TextRun>
                           </TextRuns>
@@ -4613,14 +4776,14 @@ CDbl(IIF(FIELDS!HOUSEHOLD.Value = NOTHING, 0, FIELDS!HOUSEHOLD.Value))), 2, TriS
                 <TablixCell />
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox171">
+                    <Textbox Name="Total_Photo">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value />
+                              <Value>=FORMATNUMBER(SUM(CDec(Fields!NETPAY.Value * Fields!PHOTO.Value)))</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -4628,11 +4791,10 @@ CDbl(IIF(FIELDS!HOUSEHOLD.Value = NOTHING, 0, FIELDS!HOUSEHOLD.Value))), 2, TriS
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Right</TextAlign>
+                            <TextAlign>Center</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox158</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -4644,18 +4806,20 @@ CDbl(IIF(FIELDS!HOUSEHOLD.Value = NOTHING, 0, FIELDS!HOUSEHOLD.Value))), 2, TriS
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
+                    <ColSpan>2</ColSpan>
                   </CellContents>
                 </TablixCell>
+                <TablixCell />
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox182">
+                    <Textbox Name="Total_Davao">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value />
+                              <Value>=FORMATNUMBER(Sum(CDec(Fields!NETPAY.Value * Fields!DAVAOP.Value)))</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -4663,11 +4827,10 @@ CDbl(IIF(FIELDS!HOUSEHOLD.Value = NOTHING, 0, FIELDS!HOUSEHOLD.Value))), 2, TriS
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Right</TextAlign>
+                            <TextAlign>Center</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox159</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -4679,18 +4842,20 @@ CDbl(IIF(FIELDS!HOUSEHOLD.Value = NOTHING, 0, FIELDS!HOUSEHOLD.Value))), 2, TriS
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
+                    <ColSpan>2</ColSpan>
                   </CellContents>
                 </TablixCell>
+                <TablixCell />
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox183">
+                    <Textbox Name="Total_Dalton">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value />
+                              <Value>=FORMATNUMBER(Sum(CDec(Fields!NETPAY.Value * Fields!DALTON.Value)))</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -4698,11 +4863,10 @@ CDbl(IIF(FIELDS!HOUSEHOLD.Value = NOTHING, 0, FIELDS!HOUSEHOLD.Value))), 2, TriS
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Right</TextAlign>
+                            <TextAlign>Center</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox160</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -4714,18 +4878,20 @@ CDbl(IIF(FIELDS!HOUSEHOLD.Value = NOTHING, 0, FIELDS!HOUSEHOLD.Value))), 2, TriS
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
+                    <ColSpan>2</ColSpan>
                   </CellContents>
                 </TablixCell>
+                <TablixCell />
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox184">
+                    <Textbox Name="Total_Perfecom">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value />
+                              <Value>=FORMATNUMBER(Sum(CDec(Fields!NETPAY.Value * Fields!PERFECOM.Value)))</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -4733,11 +4899,10 @@ CDbl(IIF(FIELDS!HOUSEHOLD.Value = NOTHING, 0, FIELDS!HOUSEHOLD.Value))), 2, TriS
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Right</TextAlign>
+                            <TextAlign>Center</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox161</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -4749,18 +4914,20 @@ CDbl(IIF(FIELDS!HOUSEHOLD.Value = NOTHING, 0, FIELDS!HOUSEHOLD.Value))), 2, TriS
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
+                    <ColSpan>2</ColSpan>
                   </CellContents>
                 </TablixCell>
+                <TablixCell />
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox185">
+                    <Textbox Name="Total_Realty">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value />
+                              <Value>=FORMATNUMBER(Sum(CDec(Fields!NETPAY.Value * Fields!LEASING.Value)))</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -4768,11 +4935,10 @@ CDbl(IIF(FIELDS!HOUSEHOLD.Value = NOTHING, 0, FIELDS!HOUSEHOLD.Value))), 2, TriS
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Right</TextAlign>
+                            <TextAlign>Center</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox162</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -4784,18 +4950,20 @@ CDbl(IIF(FIELDS!HOUSEHOLD.Value = NOTHING, 0, FIELDS!HOUSEHOLD.Value))), 2, TriS
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
+                    <ColSpan>2</ColSpan>
                   </CellContents>
                 </TablixCell>
+                <TablixCell />
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox186">
+                    <Textbox Name="Total_Seven11">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value />
+                              <Value>=FORMATNUMBER(Sum(CDec(Fields!NETPAY.Value * Fields!Seven11.Value)))</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -4803,11 +4971,10 @@ CDbl(IIF(FIELDS!HOUSEHOLD.Value = NOTHING, 0, FIELDS!HOUSEHOLD.Value))), 2, TriS
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Right</TextAlign>
+                            <TextAlign>Center</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox163</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -4819,18 +4986,20 @@ CDbl(IIF(FIELDS!HOUSEHOLD.Value = NOTHING, 0, FIELDS!HOUSEHOLD.Value))), 2, TriS
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
+                    <ColSpan>2</ColSpan>
                   </CellContents>
                 </TablixCell>
+                <TablixCell />
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox187">
+                    <Textbox Name="Toatl_G3">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value />
+                              <Value>=FORMATNUMBER(Sum(CDec(Fields!NETPAY.Value * Fields!G3.Value)))</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -4838,11 +5007,10 @@ CDbl(IIF(FIELDS!HOUSEHOLD.Value = NOTHING, 0, FIELDS!HOUSEHOLD.Value))), 2, TriS
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Right</TextAlign>
+                            <TextAlign>Center</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox165</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -4854,18 +5022,20 @@ CDbl(IIF(FIELDS!HOUSEHOLD.Value = NOTHING, 0, FIELDS!HOUSEHOLD.Value))), 2, TriS
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
+                    <ColSpan>2</ColSpan>
                   </CellContents>
                 </TablixCell>
+                <TablixCell />
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox188">
+                    <Textbox Name="Total_Comi">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value />
+                              <Value>=FORMATNUMBER(Sum(CDec(Fields!NETPAY.Value * Fields!COMI_TO_FUJI.Value)))</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -4873,11 +5043,10 @@ CDbl(IIF(FIELDS!HOUSEHOLD.Value = NOTHING, 0, FIELDS!HOUSEHOLD.Value))), 2, TriS
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Right</TextAlign>
+                            <TextAlign>Center</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox166</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -4889,18 +5058,20 @@ CDbl(IIF(FIELDS!HOUSEHOLD.Value = NOTHING, 0, FIELDS!HOUSEHOLD.Value))), 2, TriS
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
+                    <ColSpan>2</ColSpan>
                   </CellContents>
                 </TablixCell>
+                <TablixCell />
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox189">
+                    <Textbox Name="Total_Household">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value />
+                              <Value>=FORMATNUMBER(Sum(CDec(Fields!NETPAY.Value * Fields!HOUSEHOLD.Value)))</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -4908,11 +5079,10 @@ CDbl(IIF(FIELDS!HOUSEHOLD.Value = NOTHING, 0, FIELDS!HOUSEHOLD.Value))), 2, TriS
                             </TextRun>
                           </TextRuns>
                           <Style>
-                            <TextAlign>Right</TextAlign>
+                            <TextAlign>Center</TextAlign>
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox167</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -4924,18 +5094,20 @@ CDbl(IIF(FIELDS!HOUSEHOLD.Value = NOTHING, 0, FIELDS!HOUSEHOLD.Value))), 2, TriS
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
+                    <ColSpan>2</ColSpan>
                   </CellContents>
                 </TablixCell>
+                <TablixCell />
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox190">
+                    <Textbox Name="Totals">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value />
+                              <Value>=FORMATNUMBER(Sum(CDec(IIF(Fields!PHOTO.Value = 0, 0, Fields!NETPAY.Value * Fields!PHOTO.Value) + IIF(Fields!DAVAOP.Value = 0, 0, Fields!NETPAY.Value * Fields!DAVAOP.Value) + IIF(Fields!DALTON.Value = 0, 0, Fields!NETPAY.Value * Fields!DALTON.Value) + IIF(Fields!PERFECOM.Value = 0, 0, Fields!NETPAY.Value * Fields!PERFECOM.Value) + IIF(Fields!LEASING.Value = 0, 0, Fields!NETPAY.Value * Fields!LEASING.Value) + IIF(Fields!Seven11.Value = 0, 0, Fields!NETPAY.Value * Fields!Seven11.Value) + IIF(Fields!G3.Value = 0, 0, Fields!NETPAY.Value * Fields!G3.Value) + IIF(Fields!COMI_TO_FUJI.Value = 0, 0, Fields!NETPAY.Value * Fields!COMI_TO_FUJI.Value) + IIF(Fields!HOUSEHOLD.Value = 0, 0, Fields!NETPAY.Value * Fields!HOUSEHOLD.Value))))</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -4947,7 +5119,6 @@ CDbl(IIF(FIELDS!HOUSEHOLD.Value = NOTHING, 0, FIELDS!HOUSEHOLD.Value))), 2, TriS
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox170</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -4959,358 +5130,10 @@ CDbl(IIF(FIELDS!HOUSEHOLD.Value = NOTHING, 0, FIELDS!HOUSEHOLD.Value))), 2, TriS
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
+                    <ColSpan>2</ColSpan>
                   </CellContents>
                 </TablixCell>
-                <TablixCell>
-                  <CellContents>
-                    <Textbox Name="Textbox191">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value />
-                              <Style>
-                                <FontFamily>Bahnschrift</FontFamily>
-                                <FontSize>7pt</FontSize>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style>
-                            <TextAlign>Right</TextAlign>
-                          </Style>
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>Textbox172</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Color>LightGrey</Color>
-                          <Style>Solid</Style>
-                        </Border>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                  </CellContents>
-                </TablixCell>
-                <TablixCell>
-                  <CellContents>
-                    <Textbox Name="Textbox192">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value />
-                              <Style>
-                                <FontFamily>Bahnschrift</FontFamily>
-                                <FontSize>7pt</FontSize>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style>
-                            <TextAlign>Right</TextAlign>
-                          </Style>
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>Textbox173</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Color>LightGrey</Color>
-                          <Style>Solid</Style>
-                        </Border>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                  </CellContents>
-                </TablixCell>
-                <TablixCell>
-                  <CellContents>
-                    <Textbox Name="Textbox193">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value />
-                              <Style>
-                                <FontFamily>Bahnschrift</FontFamily>
-                                <FontSize>7pt</FontSize>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style>
-                            <TextAlign>Right</TextAlign>
-                          </Style>
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>Textbox174</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Color>LightGrey</Color>
-                          <Style>Solid</Style>
-                        </Border>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                  </CellContents>
-                </TablixCell>
-                <TablixCell>
-                  <CellContents>
-                    <Textbox Name="Textbox194">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value />
-                              <Style>
-                                <FontFamily>Bahnschrift</FontFamily>
-                                <FontSize>7pt</FontSize>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style>
-                            <TextAlign>Right</TextAlign>
-                          </Style>
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>Textbox175</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Color>LightGrey</Color>
-                          <Style>Solid</Style>
-                        </Border>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                  </CellContents>
-                </TablixCell>
-                <TablixCell>
-                  <CellContents>
-                    <Textbox Name="Textbox195">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value />
-                              <Style>
-                                <FontFamily>Bahnschrift</FontFamily>
-                                <FontSize>7pt</FontSize>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style>
-                            <TextAlign>Right</TextAlign>
-                          </Style>
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>Textbox176</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Color>LightGrey</Color>
-                          <Style>Solid</Style>
-                        </Border>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                  </CellContents>
-                </TablixCell>
-                <TablixCell>
-                  <CellContents>
-                    <Textbox Name="Textbox196">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value />
-                              <Style>
-                                <FontFamily>Bahnschrift</FontFamily>
-                                <FontSize>7pt</FontSize>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style>
-                            <TextAlign>Right</TextAlign>
-                          </Style>
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>Textbox177</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Color>LightGrey</Color>
-                          <Style>Solid</Style>
-                        </Border>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                  </CellContents>
-                </TablixCell>
-                <TablixCell>
-                  <CellContents>
-                    <Textbox Name="Textbox197">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value />
-                              <Style>
-                                <FontFamily>Bahnschrift</FontFamily>
-                                <FontSize>7pt</FontSize>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style>
-                            <TextAlign>Right</TextAlign>
-                          </Style>
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>Textbox178</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Color>LightGrey</Color>
-                          <Style>Solid</Style>
-                        </Border>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                  </CellContents>
-                </TablixCell>
-                <TablixCell>
-                  <CellContents>
-                    <Textbox Name="Textbox198">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value />
-                              <Style>
-                                <FontFamily>Bahnschrift</FontFamily>
-                                <FontSize>7pt</FontSize>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style>
-                            <TextAlign>Right</TextAlign>
-                          </Style>
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>Textbox179</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Color>LightGrey</Color>
-                          <Style>Solid</Style>
-                        </Border>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                  </CellContents>
-                </TablixCell>
-                <TablixCell>
-                  <CellContents>
-                    <Textbox Name="Textbox199">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value />
-                              <Style>
-                                <FontFamily>Bahnschrift</FontFamily>
-                                <FontSize>7pt</FontSize>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style>
-                            <TextAlign>Right</TextAlign>
-                          </Style>
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>Textbox180</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Color>LightGrey</Color>
-                          <Style>Solid</Style>
-                        </Border>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                  </CellContents>
-                </TablixCell>
-                <TablixCell>
-                  <CellContents>
-                    <Textbox Name="Textbox200">
-                      <CanGrow>true</CanGrow>
-                      <KeepTogether>true</KeepTogether>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value />
-                              <Style>
-                                <FontFamily>Bahnschrift</FontFamily>
-                                <FontSize>7pt</FontSize>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                          <Style>
-                            <TextAlign>Right</TextAlign>
-                          </Style>
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>Textbox181</rd:DefaultName>
-                      <Style>
-                        <Border>
-                          <Color>LightGrey</Color>
-                          <Style>Solid</Style>
-                        </Border>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>2pt</PaddingTop>
-                        <PaddingBottom>2pt</PaddingBottom>
-                      </Style>
-                    </Textbox>
-                  </CellContents>
-                </TablixCell>
+                <TablixCell />
               </TablixCells>
             </TablixRow>
           </TablixRows>
@@ -5382,7 +5205,7 @@ CDbl(IIF(FIELDS!HOUSEHOLD.Value = NOTHING, 0, FIELDS!HOUSEHOLD.Value))), 2, TriS
         </Style>
       </Tablix>
     </ReportItems>
-    <Height>2.0702in</Height>
+    <Height>2.10035in</Height>
     <Style />
   </Body>
   <Width>12.91666in</Width>
@@ -5541,6 +5364,78 @@ CDbl(IIF(FIELDS!HOUSEHOLD.Value = NOTHING, 0, FIELDS!HOUSEHOLD.Value))), 2, TriS
       </rd:DataSetInfo>
     </DataSet>
   </DataSets>
+  <Code>Dim public totals_PHOTO as Double
+Dim public totals_DAVAOP as Double
+Dim public totals_DALTON as Double
+Dim public totals_PERFECOM as Double
+Dim public totals_Seven11 as Double
+Dim public totals_G3 as Double
+Dim public totals_COMI_TO_FUJI as Double
+Dim public totals_HOUSEHOLD as Double
+Dim public totals_TOTAL as Double
+
+Public Function AddTotal(Amount AS String, name as String) AS String
+ 	
+if name = "PHOTO " then
+	totals_PHOTO = totals_PHOTO + CDbl(Amount)
+elseif name = "DAVAOP" then
+	totals_DAVAOP = totals_DAVAOP + CDbl(Amount)
+elseif name = "DALTON" then
+	totals_DALTON = totals_DALTON + CDbl(Amount)
+elseif name = "PERFECOM" then
+	totals_PERFECOM = totals_PERFECOM + CDbl(Amount)
+elseif name = "Seven11" then
+	totals_Seven11 = totals_Seven11 + CDbl(Amount)
+elseif name = "G3" then
+	totals_G3 = totals_G3 + CDbl(Amount)
+elseif name = "COMI_TO_FUJI" then
+	totals_COMI_TO_FUJI = totals_COMI_TO_FUJI + CDbl(Amount)
+elseif name = "HOUSEHOLD" then
+	totals_HOUSEHOLD = totals_HOUSEHOLD + CDbl(Amount)
+elseif name = "TOTAL" then
+	totals_TOTAL = totals_TOTAL + CDbl(Amount)
+end if
+                return Amount 
+End Function
+ 
+Public Function GetTotal_PHOTO()
+                return totals_PHOTO .ToString("n")
+End Function
+
+Public Function GetTotal_DAVAOP()
+                return totals_DAVAOP .ToString("n")
+End Function
+
+Public Function GetTotal_DALTON()
+                return totals_DALTON.ToString("n")
+End Function
+
+Public Function GetTotal_PERFECOM()
+                return totals_PERFECOM.ToString("n")
+End Function
+
+Public Function GetTotal_Seven11()
+                return totals_Seven11.ToString("n")
+End Function
+
+Public Function GetTotal_G3()
+                return totals_G3.ToString("n")
+End Function
+
+Public Function GetTotal_COMI_TO_FUJI()
+                return totals_COMI_TO_FUJI.ToString("n")
+End Function
+
+Public Function GetTotal_HOUSEHOLD()
+                return totals_HOUSEHOLD.ToString("n")
+End Function
+
+Public Function GetTotal_TOTAL()
+                return totals_TOTAL.ToString("n")
+End Function
+
+
+</Code>
   <ConsumeContainerWhitespace>true</ConsumeContainerWhitespace>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
   <rd:ReportID>3d7eb17f-c433-4b84-baa4-644e98acce30</rd:ReportID>

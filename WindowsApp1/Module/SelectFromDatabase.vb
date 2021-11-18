@@ -2500,10 +2500,6 @@ Module SelectFromDatabase
                                     INNER JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID AND {str}
                                     where  PAYDATE = '{PAYDATE}'"
 
-        'Dim mysql_ As String = $"Select SUM(NET_PAY) as tots From PAYROLL_PAYOUT A 
-        '                            INNER JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID AND PAYDATE = '{PAYDATE}'
-        '                            where BRANCH_CODE = '{BRANCHCODE}' AND PAYDATE = '{PAYDATE}'"
-
         Dim dSs As DataSet = LoadSQL(mysql_, "PAYROLL_PAYOUT")
         If dSs.Tables(0).Rows.Count > 0 Then
             Dim dr As DataRow = dSs.Tables(0).Rows(0)

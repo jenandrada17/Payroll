@@ -1,9 +1,11 @@
 ﻿Imports System.Globalization
 
 Module Report_function
+    Dim GRAND_TOTAL As Double = 0
 
     Friend Function LoadDataTable_GensanJR(paydate As String) As DataTable
 
+        Dim toatl As Double
         Dim mysql As String
         Dim PAYROLL As DateTime = paydate
         Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo ' === TITLE CASE ADDRESS
@@ -25,20 +27,19 @@ Module Report_function
                                         LEFT JOIN PAYROLL_CITY_BRANCH B ON BRANCHCODE = BRANCH_CODE    
                                         WHERE PAYDATE = '{paydate}' 
                                             AND BRANCHCODE IN ('DIG','ISU','M1','POL', 'ROG','ROX','FINEPIX','COT','MID','KID','SNP','GMA','SML','ZAM','SMD')
-                                            OR HO_CATEGORY LIKE 'Photo%' OR (HO_CATEGORY LIKE 'PGC%' and COMMON_COMPANY = 'PHOTO') 
-                                        ORDER BY CASE WHEN UPPER(HO_CATEGORY) LIKE UPPER('PGC%') THEN 0
-                                                WHEN UPPER(HO_CATEGORY) LIKE UPPER('%Admin%') THEN 1 
-                                                WHEN UPPER(HO_CATEGORY) LIKE UPPER('%Retail%') THEN 2 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('GENSAN') THEN 3 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('POLOMOLOK') THEN 4 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('MARBEL') THEN 5 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('ISULAN') THEN 6 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('COTABATO') THEN 7 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('KIDAPAWAN') THEN 8 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('MIDSAYAP') THEN 9 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('DAVAO') THEN 10 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('SM SAN LAZARO') THEN 11 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('ZAMBOANGA') THEN 12  
+                                            OR HO_CATEGORY LIKE 'Photo%' 
+                                        ORDER BY CASE WHEN UPPER(HO_CATEGORY) LIKE UPPER('%Admin%') THEN 0 
+                                                WHEN UPPER(HO_CATEGORY) LIKE UPPER('%Retail%') THEN 1 
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('GENSAN') THEN 2 
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('POLOMOLOK') THEN 3 
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('MARBEL') THEN 4 
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('ISULAN') THEN 5 
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('COTABATO') THEN 6 
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('KIDAPAWAN') THEN 7 
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('MIDSAYAP') THEN 8 
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('DAVAO') THEN 9 
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('SM SAN LAZARO') THEN 10 
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('ZAMBOANGA') THEN 11  
                                                 END"
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
@@ -61,16 +62,12 @@ Module Report_function
                             EMAIL = GetSummary_Email(PAYROLL, $"HO_CATEGORY = '{HO_CATEGORY}'")
                         End If
 
-                        If HO_CATEGORY.Contains("PGC") Then
-                            ADDRESS = $"PGC"
-                            EMAIL = GetSummary_Email(PAYROLL, $"HO_CATEGORY = '{HO_CATEGORY}' AND COMMON_COMPANY = 'PHOTO'")
-                        End If
-
                         COMPANY = "PHOTO(GENSAN PERFECT/JR PHOTO)"
 
                         dt_PhotoGensanJR.Rows.Add(PAYROLL.ToString("MMMM dd, yyyy").ToUpper(), COMPANY,
                                                   info.ToTitleCase(ADDRESS), EMAIL.ToString("n"), 0, 0, 0)
 
+                        AddGrand(EMAIL)
                     End With
                 Next
             End If
@@ -101,12 +98,10 @@ Module Report_function
                                         INNER JOIN PAYROLL_EMPLOYEE C ON BIO_NO = BIOMETRIC_ID    
                                         LEFT JOIN PAYROLL_CITY_BRANCH B ON BRANCHCODE = BRANCH_CODE    
                                         WHERE PAYDATE = '{paydate}' 
-                                            AND BRANCHCODE IN ('SMG','KCG','ACM','TAC') 
-                                            OR (HO_CATEGORY LIKE 'PGC%' and COMMON_COMPANY = 'PHOTO') 
-                                        ORDER BY CASE WHEN HO_CATEGORY LIKE 'PGC%' THEN 0 
-                                                WHEN ADDRESS = 'GENSAN' THEN 1  
-                                                WHEN ADDRESS = 'MARBEL' THEN 2    
-                                                else 3 END"
+                                            AND BRANCHCODE IN ('SMG','KCG','ACM','TAC')  
+                                        ORDER BY CASE WHEN ADDRESS = 'GENSAN' THEN 0  
+                                                WHEN ADDRESS = 'MARBEL' THEN 1    
+                                                else 2 END"
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
             If ds.Tables(0).Rows.Count > 0 Then
@@ -123,16 +118,12 @@ Module Report_function
                         Dim HO_array As String() = HO_CATEGORY.Split(New Char() {" "c}) '=== ADMIN   
                         ADDRESS = ADDRESS.ToLower()
 
-                        If HO_CATEGORY.Contains("PGC") Then
-                            ADDRESS = $"PGC"
-                            EMAIL = GetSummary_Email(PAYROLL, $"HO_CATEGORY = '{HO_CATEGORY}' AND COMMON_COMPANY = 'PHOTO'")
-                        End If
-
                         COMPANY = $"PHOTO(DAVAO PERFECT)"
 
                         dt_PhotoDavao.Rows.Add(PAYROLL.ToString("MMMM dd, yyyy").ToUpper(), COMPANY,
                                                info.ToTitleCase(ADDRESS), EMAIL.ToString("n"), 0, 0, 0)
 
+                        AddGrand(EMAIL)
                     End With
                 Next
             End If
@@ -163,42 +154,41 @@ Module Report_function
                                         INNER JOIN PAYROLL_EMPLOYEE C ON BIO_NO = BIOMETRIC_ID    
                                         LEFT JOIN PAYROLL_CITY_BRANCH B ON BRANCHCODE = BRANCH_CODE    
                                         WHERE PAYDATE = '{paydate}' AND COMPANY  = 'DALTON'
-                                            OR  HO_CATEGORY LIKE 'Dalton%' OR (HO_CATEGORY LIKE 'PGC%' and COMMON_COMPANY = 'DALTON') 
-                                        ORDER BY CASE WHEN UPPER(HO_CATEGORY) LIKE UPPER('PGC%') THEN 0 
-                                                WHEN UPPER(HO_CATEGORY) LIKE UPPER('%Admin%') THEN 1 
-                                                WHEN UPPER(HO_CATEGORY) LIKE UPPER('%Retail%') THEN 2 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('GENSAN') THEN 3  
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('POLOMOLOK') THEN 4 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('MARBEL') THEN 5 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('ISULAN') THEN 6 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('TACURONG') THEN 7 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('SURALLAH') THEN 8 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('BANGA') THEN 9 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('TBOLI') THEN 10 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('ESPERANZA') THEN 11 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('KALAMANSIG') THEN 12  
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('LAMBAYONG') THEN 13  
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('LEBAK') THEN 14  
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('AWANG') THEN 15  
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('DALICAN') THEN 16  
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('COTABATO') THEN 17  
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('KIDAPAWAN') THEN 18  
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('KIDAPAWAN') THEN 19   
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('MIDSAYAP') THEN 20 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('KABACAN') THEN 21 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('PIKIT') THEN 22 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('MLANG') THEN 23 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('TULUNAN') THEN 24 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('PARANG') THEN 25 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('BULUAN') THEN 26 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('UPI') THEN 27 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('SHARIFF') THEN 28 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('DAVAO') THEN 29 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('SARANGANI') THEN 30 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('SURIGAO') THEN 31 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('BUTUAN') THEN 32  
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('CAGAYAN') THEN 33  
-                                                ELSE 34 END"
+                                            OR  HO_CATEGORY LIKE 'Dalton%' 
+                                        ORDER BY CASE WHEN UPPER(HO_CATEGORY) LIKE UPPER('%Admin%') THEN 0 
+                                                WHEN UPPER(HO_CATEGORY) LIKE UPPER('%Retail%') THEN 1 
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('GENSAN') THEN 2  
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('POLOMOLOK') THEN 3 
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('MARBEL') THEN 4 
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('ISULAN') THEN 5 
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('TACURONG') THEN 6 
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('SURALLAH') THEN 7 
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('BANGA') THEN 8 
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('TBOLI') THEN 9 
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('ESPERANZA') THEN 10 
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('KALAMANSIG') THEN 11  
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('LAMBAYONG') THEN 12  
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('LEBAK') THEN 13  
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('AWANG') THEN 14  
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('DALICAN') THEN 15  
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('COTABATO') THEN 16  
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('KIDAPAWAN') THEN 17  
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('KIDAPAWAN') THEN 18   
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('MIDSAYAP') THEN 19 
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('KABACAN') THEN 20 
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('PIKIT') THEN 21 
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('MLANG') THEN 22 
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('TULUNAN') THEN 23 
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('PARANG') THEN 24 
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('BULUAN') THEN 25 
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('UPI') THEN 26 
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('SHARIFF') THEN 27 
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('DAVAO') THEN 28 
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('SARANGANI') THEN 29 
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('SURIGAO') THEN 30 
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('BUTUAN') THEN 31  
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('CAGAYAN') THEN 32  
+                                                ELSE 33 END"
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
             If ds.Tables(0).Rows.Count > 0 Then
@@ -220,16 +210,12 @@ Module Report_function
                             EMAIL = GetSummary_Email(PAYROLL, $"HO_CATEGORY = '{HO_CATEGORY}'")
                         End If
 
-                        If HO_CATEGORY.Contains("PGC") Then
-                            ADDRESS = $"PGC"
-                            EMAIL = GetSummary_Email(PAYROLL, $"HO_CATEGORY = '{HO_CATEGORY}' AND COMMON_COMPANY = 'DALTON'")
-                        End If
-
                         COMPANY = "DALTON"
 
                         dt_Dalton.Rows.Add(PAYROLL.ToString("MMMM dd, yyyy").ToUpper(), COMPANY,
                                                info.ToTitleCase(ADDRESS), EMAIL.ToString("n"), 0, 0, 0)
 
+                        AddGrand(EMAIL)
                     End With
                 Next
             End If
@@ -260,12 +246,11 @@ Module Report_function
                                         INNER JOIN PAYROLL_EMPLOYEE C ON BIO_NO = BIOMETRIC_ID    
                                         LEFT JOIN PAYROLL_CITY_BRANCH B ON BRANCHCODE = BRANCH_CODE    
                                         WHERE PAYDATE = '{paydate}' AND COMPANY  = 'PERFECOM'
-                                            OR HO_CATEGORY LIKE 'Perfecom%' OR (HO_CATEGORY LIKE 'PGC%' and COMMON_COMPANY = 'PERFECOM') 
-                                        ORDER BY CASE WHEN UPPER(HO_CATEGORY) LIKE UPPER('PGC%') THEN 0 
-                                                WHEN UPPER(HO_CATEGORY) LIKE UPPER('%Admin%') THEN 1  
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('GENSAN') THEN 2   
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('MARBEL') THEN 3 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('ZAMBOANGA') THEN 4 END"
+                                            OR HO_CATEGORY LIKE 'Perfecom%' 
+                                        ORDER BY CASE WHEN UPPER(HO_CATEGORY) LIKE UPPER('%Admin%') THEN 0  
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('GENSAN') THEN 1   
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('MARBEL') THEN 2 
+                                                WHEN UPPER(ADDRESS) LIKE UPPER('ZAMBOANGA') THEN 3 END"
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
             If ds.Tables(0).Rows.Count > 0 Then
@@ -287,16 +272,13 @@ Module Report_function
                             EMAIL = GetSummary_Email(PAYROLL, $"HO_CATEGORY = '{HO_CATEGORY}'")
                         End If
 
-                        If HO_CATEGORY.Contains("PGC") Then
-                            ADDRESS = $"PGC"
-                            EMAIL = GetSummary_Email(PAYROLL, $"HO_CATEGORY = '{HO_CATEGORY}' AND COMMON_COMPANY = 'PERFECOM'")
-                        End If
-
                         COMPANY = "PERFECOM"
 
                         dt_Dalton.Rows.Add(PAYROLL.ToString("MMMM dd, yyyy").ToUpper(), COMPANY,
                                                info.ToTitleCase(ADDRESS), EMAIL.ToString("n"), 0, 0, 0)
 
+
+                        AddGrand(EMAIL)
                     End With
                 Next
             End If
@@ -327,15 +309,14 @@ Module Report_function
                                         INNER JOIN PAYROLL_EMPLOYEE C ON BIO_NO = BIOMETRIC_ID     
                                         LEFT JOIN PAYROLL_CITY_BRANCH B ON BRANCHCODE = BRANCH_CODE      
                                         WHERE PAYDATE = '{paydate}' AND COMPANY  = 'P&G UY'
-                                            OR HO_CATEGORY LIKE 'GHS/P&G UY%' OR (HO_CATEGORY LIKE 'PGC%' and COMMON_COMPANY = 'P&G UY') 
-                                        ORDER BY CASE WHEN UPPER(HO_CATEGORY) LIKE UPPER('PGC%') THEN 0 
-                                                WHEN UPPER(HO_CATEGORY) LIKE UPPER('%Admin%') THEN 1  
-                                                WHEN BRANCH_CODE = '3G' THEN 2    
-                                                WHEN BRANCH_CODE = 'COMI' THEN 4 
-                                                WHEN BRANCH_CODE = 'KTV' THEN 5 
-                                                WHEN BRANCH_CODE = 'PBA' THEN 6 
-                                                WHEN BRANCH_CODE = 'WAVE' THEN 7 
-                                                else 3 END"
+                                            OR HO_CATEGORY LIKE 'GHS/P&G UY%' 
+                                        ORDER BY CASE WHEN UPPER(HO_CATEGORY) LIKE UPPER('%Admin%') THEN 0  
+                                                WHEN BRANCH_CODE = '3G' THEN 1    
+                                                WHEN BRANCH_CODE = 'COMI' THEN 3 
+                                                WHEN BRANCH_CODE = 'KTV' THEN 4 
+                                                WHEN BRANCH_CODE = 'PBA' THEN 5 
+                                                WHEN BRANCH_CODE = 'WAVE' THEN 6 
+                                                else 2 END"
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
             If ds.Tables(0).Rows.Count > 0 Then
@@ -356,11 +337,6 @@ Module Report_function
                             EMAIL = GetSummary_Email(PAYROLL, $"HO_CATEGORY = '{HO_CATEGORY}'")
                         End If
 
-                        If HO_CATEGORY.Contains("PGC") Then
-                            ADDRESS = $"PGC"
-                            EMAIL = GetSummary_Email(PAYROLL, $"HO_CATEGORY = '{HO_CATEGORY}' AND COMMON_COMPANY = 'P&G UY'")
-                        End If
-
                         If Not HO_CATEGORY.Contains("PGC") And Not HO_CATEGORY.Contains("GHS") Then
                             ADDRESS = IIf(IsDBNull(.Item("BRANCHNAME")), "", .Item("BRANCHNAME"))
 
@@ -376,6 +352,7 @@ Module Report_function
                         dt_Dalton.Rows.Add(PAYROLL.ToString("MMMM dd, yyyy").ToUpper(), COMPANY,
                                                info.ToTitleCase(ADDRESS), EMAIL.ToString("n"), 0, 0, 0)
 
+                        AddGrand(EMAIL)
                     End With
                 Next
             End If
@@ -384,9 +361,9 @@ Module Report_function
         Return dt_Dalton
     End Function
 
+
     Friend Function LoadDataTable_Household(paydate As String) As DataTable
 
-        Dim mysql As String
         Dim PAYROLL As DateTime = paydate
         Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo ' === TITLE CASE ADDRESS
         Dim total_email As Double = 0
@@ -403,25 +380,95 @@ Module Report_function
         End With
 
         Dim TOTALS As Double = 0
-        mysql = $"Select * From PAYROLL_PAYOUT where BIOMETRIC_ID = '2788' AND PAYDATE = '{paydate}'"
+        Dim NET_PAY As Double = 0
 
-        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
+        Dim mysqll As String = $"Select * From PAYROLL_EMPLOYEE A  
+                                        INNER JOIN PAYROLL_PAYOUT C ON A.BIO_NO = C.BIOMETRIC_ID
+                                        where BIO_NO = '2788' AND PAYDATE = '{paydate}'"
+
+        Using ds As DataSet = LoadSQL(mysqll, "PAYROLL_EMPLOYEE")
             If ds.Tables(0).Rows.Count > 0 Then
-                Dim DR As DataRow = ds.Tables(0).Rows(0)
-                With DR
+                For Each dr In ds.Tables(0).Rows
+                    With dr
 
-                    Dim COMPANY As String = "HOUSEHOLD"
-                    Dim ADDRESS As String = "PGC/GENSAN"
-                    Dim EMAIL As Double = .Item("NET_PAY")
+                        '============================= NAME AND ATTENDANCE ============================  
+                        NET_PAY = .Item("NET_PAY")
+                        TOTALS = NET_PAY * 0.5
 
-                    dt_Dalton.Rows.Add(PAYROLL.ToString("MMMM dd, yyyy").ToUpper(), COMPANY,
-                                                           info.ToTitleCase(ADDRESS), EMAIL.ToString("n"), 0, 0, 0)
+                    End With
+                Next
 
-                End With
+                Dim COMPANY As String = "HOUSEHOLD"
+                Dim ADDRESS As String = "PGC/GENSAN"
+
+                dt_Dalton.Rows.Add(PAYROLL.ToString("MMMM dd, yyyy").ToUpper(), COMPANY,
+                                                       info.ToTitleCase(ADDRESS), TOTALS.ToString("n"), 0, 0, 0)
+
+                AddGrand(TOTALS)
             End If
         End Using
 
         Return dt_Dalton
+    End Function
+
+    Friend Function LoadDataTable_Realty(paydate As String) As DataTable
+
+        Dim PAYROLL As DateTime = paydate
+        Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo ' === TITLE CASE ADDRESS
+        Dim total_email As Double = 0
+
+        Dim dt_Dalton As New DataTable()
+        With dt_Dalton
+            .Columns.Add("PAYDATE")
+            .Columns.Add("COMPANY")
+            .Columns.Add("ADDRESS")
+            .Columns.Add("EMAIL")
+            .Columns.Add("WD")
+            .Columns.Add("DEP")
+            .Columns.Add("TOTAL_AMOUNT")
+        End With
+
+        Dim TOTALS As Double = 0
+
+        Dim mysqll As String = $"Select * From PAYROLL_EMPLOYEE A 
+                                        INNER JOIN PAYROLL_PERCENTAGEE B ON B.CATEGORY = A.COMMON_CATEGORY
+                                        INNER JOIN PAYROLL_PAYOUT C ON A.BIO_NO = C.BIOMETRIC_ID
+                                        where HO_CATEGORY = 'PGC Head Office' AND PAYDATE = '{paydate}' ORDER BY FULLNAME ASC"
+
+        Using ds As DataSet = LoadSQL(mysqll, "PAYROLL_EMPLOYEE")
+            If ds.Tables(0).Rows.Count > 0 Then
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+
+                        '============================= NAME AND ATTENDANCE ============================  
+                        Dim namee As String = .Item("FULLNAME")
+                        Dim CATEGORY As String = .Item("CATEGORY")
+                        Dim NET_PAY As Double = .Item("NET_PAY")
+                        Dim LEASING As Decimal = .Item("LEASING")
+
+                        TOTALS += NET_PAY * LEASING
+                    End With
+                Next
+
+                Dim COMPANY As String = "HOUSEHOLD"
+                Dim ADDRESS As String = "PGC/GENSAN"
+
+                dt_Dalton.Rows.Add(PAYROLL.ToString("MMMM dd, yyyy").ToUpper(), COMPANY,
+                                                       info.ToTitleCase(ADDRESS), TOTALS.ToString("n"), 0, 0, 0)
+
+                AddGrand(TOTALS)
+            End If
+        End Using
+
+        Return dt_Dalton
+    End Function
+
+    Public Function AddGrand(Amount As Double) As Double
+        GRAND_TOTAL = GRAND_TOTAL + Amount
+    End Function
+
+    Public Function GetGrandTotal() As Double
+        Return GRAND_TOTAL
     End Function
 
     Public Function GetOVERALL_COUNT(COLUMN As String, PAYDATE As String)
@@ -452,6 +499,65 @@ Module Report_function
         End If
 
         Return VALUEE
+    End Function
+
+    Public Function Get_PGC(column As String, paydate As String) As Double
+        Dim TOTALS As Decimal = 0
+        Dim G3_tot As Double = 0
+        Dim Seven11_tot As Double = 0
+        Dim COMI_TO_FUJI_tot As Double = 0
+
+        Dim mysqll As String = $"Select * From PAYROLL_EMPLOYEE A 
+                                        INNER JOIN PAYROLL_PERCENTAGEE B ON B.CATEGORY = A.COMMON_CATEGORY
+                                        INNER JOIN PAYROLL_PAYOUT C ON A.BIO_NO = C.BIOMETRIC_ID
+                                        where HO_CATEGORY = 'PGC Head Office' OR HO_CATEGORY IN ('Construction', 'Leasing Admin Office')
+                                        AND PAYDATE = '{paydate}' ORDER BY FULLNAME ASC"
+
+        Using ds As DataSet = LoadSQL(mysqll, "PAYROLL_EMPLOYEE")
+            If ds.Tables(0).Rows.Count > 0 Then
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+
+                        '============================= NAME AND ATTENDANCE ============================  
+                        Dim namee As String = .Item("FULLNAME")
+                        Dim CATEGORY As String = .Item("CATEGORY")
+                        Dim NET_PAY As Double = .Item("NET_PAY")
+                        Dim G3 As String = .Item("G3")
+                        Dim Seven11 As String = .Item("Seven11")
+                        Dim COMI_TO_FUJI As String = .Item("COMI_TO_FUJI")
+                        Dim VALUEE As String = .Item(column)
+
+                        If .ITEM("BIO_NO") = "2788" Then ' MADERA 
+                            VALUEE = (50 * VALUEE) / 100
+                        End If
+
+                        If column = "COMI_TO_FUJI" Then ' P&G UY SONS
+
+                            If .ITEM("BIO_NO") = "2788" Then ' MADERA  
+                                G3_tot += NET_PAY * ((50 * G3) / 100)
+                                Seven11_tot += NET_PAY * ((50 * Seven11) / 100)
+                                COMI_TO_FUJI_tot += NET_PAY * ((50 * COMI_TO_FUJI) / 100)
+                            Else
+                                G3_tot += NET_PAY * G3
+                                Seven11_tot += NET_PAY * Seven11
+                                COMI_TO_FUJI_tot += NET_PAY * COMI_TO_FUJI
+                            End If
+
+                        End If
+
+                        TOTALS += NET_PAY * VALUEE
+                    End With
+                Next
+            End If
+        End Using
+
+        If column = "COMI_TO_FUJI" Then
+            TOTALS = G3_tot + Seven11_tot + COMI_TO_FUJI_tot
+        End If
+
+        AddGrand(TOTALS)
+
+        Return TOTALS
     End Function
 
 

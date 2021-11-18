@@ -267,7 +267,7 @@ Public Class frmReport
             WAVE_BB = GetCount_Common("where branch_code = 'WAVE'")
             WAVE_HO = Nothing
             PGC = GetCount_Common("where ho_category = 'PGC Head Office'")
-            LEASING = GetCount_Common("where ho_category IN ('Leasing Admin Office','Construction')")
+            LEASING = GetCount_Common("where ho_category IN ('Leasing Admin Office', 'Construction')")
             DALTON_BR = GetDistinctCount("branch_code", "where company = 'DALTON'")
             GENSANPERFECT_BR = GetDistinctCount("branch_code", "where company = 'PHOTO'")
             DAVAOP_BR = GetDistinctCount("branch_code", "where branch_code IN ('SMG','KCG','ACM','TAC')")
@@ -285,11 +285,11 @@ Public Class frmReport
             D_PERFECOM = GetModify_Reports("D_PERFECOM")
             DR_Dalton = GetModify_Reports("DR_Dalton")
             DR_Photo = GetModify_Reports("DR_Photo")
-            DR_House = GetModify_Reports("DR_House")
+            DR_House = GetCount_Common("where ho_category = 'Construction'")
             ConDalton = GetModify_Reports("ConDalton")
             ConPhoto = GetModify_Reports("ConPhoto")
             ConHouse = GetModify_Reports("ConHouse")
-            LEASING_BR = GetModify_Reports("LEASINGBR")
+            LEASING_BR = GetCount_Common("where ho_category = 'Leasing Admin Office'")
 
             dt_Common.Rows.Add(DALTON_BB, DALTON_HO, GENSANPERFECT_BB, GENSANPERFECT_HO, JRPHOTO_BB, JRPHOTO_HO, DAVAOP_BB, DAVAOP_HO, PERFECOM_BB,
                                PERFECOM_HO, G3_BB, G3_HO, Seven11_ROX_BB, Seven11_ROX_HO, Seven11_POL_BB, Seven11_POL_HO, COMI_BB, COMI_HO, PBA_BB,
@@ -351,7 +351,7 @@ Public Class frmReport
         Seven11_BR = GetDistinctCount("branch_code", "where branch_code IN ('711-ROX','711-POL')")
         COMI_TO_FUJI_BR = GetDistinctCount("branch_code", "where branch_code IN ('COMI','PBA','KTV','WAVE')")
 
-        LEASING_BR = GetModify_Reports("LEASINGBR") / 100
+        LEASING_BR = GetCount_Common("where ho_category = 'Leasing Admin Office'")
         LEASING_P = GetModify_Reports("LEASINGP") / 100
 
         Dim DALTON_EMP = DALTON_BB + DALTON_HO
@@ -508,15 +508,15 @@ Public Class frmReport
                             Dim namee As String = .Item("FULLNAME")
                             Dim CATEGORY As String = .Item("CATEGORY")
                             Dim NET_PAY As Double = .Item("NET_PAY")
-                            Dim DALTON As Double = .Item("DALTON")
-                            Dim PHOTO As Double = .Item("PHOTO")
-                            Dim DAVAOP As Double = .Item("DAVAOP")
-                            Dim PERFECOM As Double = .Item("PERFECOM")
-                            Dim G3 As Double = .Item("G3")
-                            Dim Seven11 As Double = .Item("Seven11")
-                            Dim COMI_TO_FUJI As Double = .Item("COMI_TO_FUJI")
-                            Dim HOUSEHOLD As Double = .Item("HOUSEHOLD")
-                            Dim LEASING As Double = .Item("LEASING")
+                            Dim DALTON As String = .Item("DALTON")
+                            Dim PHOTO As String = .Item("PHOTO")
+                            Dim DAVAOP As String = .Item("DAVAOP")
+                            Dim PERFECOM As String = .Item("PERFECOM")
+                            Dim G3 As String = .Item("G3")
+                            Dim Seven11 As String = .Item("Seven11")
+                            Dim COMI_TO_FUJI As String = .Item("COMI_TO_FUJI")
+                            Dim HOUSEHOLD As String = .Item("HOUSEHOLD")
+                            Dim LEASING As String = .Item("LEASING")
 
                             If .ITEM("BIO_NO") = "2788" Then ' MADERA
                                 HOUSEHOLD = 50 / 100
@@ -608,7 +608,10 @@ Public Class frmReport
         Try
 
             Dim PAYDATEE As String = SumPaydate_Combo.Text
-            Dim GensanJR As DataTable = LoadDataTable_GensanJR(SumPaydate_Combo.Text)
+
+            'Dim Grand_total As Double = Get_PGC("PHOTO", PAYDATEE) + Get_PGC("DAVAOP", PAYDATEE) + Get_PGC("DALTON", PAYDATEE) +
+            '                        Get_PGC("PERFECOM", PAYDATEE) + Get_PGC("COMI_TO_FUJI", PAYDATEE)
+
 
             Dim Photo_GensanJR As New Microsoft.Reporting.WinForms.ReportDataSource("Photo_GensanJR", LoadDataTable_GensanJR(PAYDATEE))
             Dim Photo_Davao As New Microsoft.Reporting.WinForms.ReportDataSource("Photo_Davao", LoadDataTable_DavaoPerfect(PAYDATEE))
@@ -616,7 +619,17 @@ Public Class frmReport
             Dim Perfecom As New Microsoft.Reporting.WinForms.ReportDataSource("Perfecom", LoadDataTable_Perfecom(PAYDATEE))
             Dim PG_UY As New Microsoft.Reporting.WinForms.ReportDataSource("PG_UY", LoadDataTable_PG_UY(PAYDATEE))
             Dim Household As New Microsoft.Reporting.WinForms.ReportDataSource("Household", LoadDataTable_Household(PAYDATEE))
-            Dim PG_Realty As New Microsoft.Reporting.WinForms.ReportDataSource("PG_Realty", GensanJR)
+            Dim PG_Realty As New Microsoft.Reporting.WinForms.ReportDataSource("PG_Realty", LoadDataTable_Realty(PAYDATEE))
+
+            Dim paramList As New List(Of Microsoft.Reporting.WinForms.ReportParameter) From {
+                    New Microsoft.Reporting.WinForms.ReportParameter("paramPhotoG", Get_PGC("PHOTO", PAYDATEE).ToString(”N”)),
+                    New Microsoft.Reporting.WinForms.ReportParameter("paramPhotoD", Get_PGC("DAVAOP", PAYDATEE).ToString(”N”)),
+                    New Microsoft.Reporting.WinForms.ReportParameter("paramDalton", Get_PGC("DALTON", PAYDATEE).ToString(”N”)),
+                    New Microsoft.Reporting.WinForms.ReportParameter("paramPerfecom", Get_PGC("PERFECOM", PAYDATEE).ToString(”N”)),
+                    New Microsoft.Reporting.WinForms.ReportParameter("paramPGUY", Get_PGC("COMI_TO_FUJI", PAYDATEE).ToString(”N”)),
+                    New Microsoft.Reporting.WinForms.ReportParameter("paramGrandTotal", GetGrandTotal.ToString(”N”))
+                    }
+
             RptViewer_Summary.LocalReport.DataSources.Add(Photo_GensanJR)
             RptViewer_Summary.LocalReport.DataSources.Add(Photo_Davao)
             RptViewer_Summary.LocalReport.DataSources.Add(Dalton)
@@ -624,6 +637,7 @@ Public Class frmReport
             RptViewer_Summary.LocalReport.DataSources.Add(PG_UY)
             RptViewer_Summary.LocalReport.DataSources.Add(Household)
             RptViewer_Summary.LocalReport.DataSources.Add(PG_Realty)
+            RptViewer_Summary.LocalReport.SetParameters(paramList)
             RptViewer_Summary.RefreshReport()
 
         Catch ex As Exception
