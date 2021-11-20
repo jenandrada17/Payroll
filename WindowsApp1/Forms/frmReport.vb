@@ -118,7 +118,7 @@ Public Class frmReport
 
                                 If PlusS = "PTU" Then
                                     COMPANY = "PGC"
-                                    BRANCH_CODE = "Leasing"
+                                    BRANCH_CODE = HO_CATEGORY
                                 End If
 
                                 Dim tempPlus As String = PlusS

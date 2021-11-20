@@ -51,7 +51,7 @@ Module Report_function
                         Dim CATEGORY As String = IIf(IsDBNull(.Item("CATEGORY")), "", .Item("CATEGORY"))
                         Dim BRANCHCODE As String = IIf(IsDBNull(.Item("BRANCHCODE")), "", .Item("BRANCHCODE"))
                         Dim HO_CATEGORY As String = IIf(IsDBNull(.Item("HO_CATEGORY")), "", .Item("HO_CATEGORY"))
-                        Dim EMAIL As Double
+                        Dim EMAIL As Decimal
 
                         Dim BRANCH_LIST As String = GetList_Branch(ADDRESS, "CATEGORY In ('GENSAN PERFECT', 'JR PHOTO')")
 
@@ -121,7 +121,7 @@ Module Report_function
                         Dim CATEGORY As String = IIf(IsDBNull(.Item("CATEGORY")), "", .Item("CATEGORY"))
                         Dim BRANCHCODE As String = IIf(IsDBNull(.Item("BRANCHCODE")), "", .Item("BRANCHCODE"))
                         Dim HO_CATEGORY As String = IIf(IsDBNull(.Item("HO_CATEGORY")), "", .Item("HO_CATEGORY"))
-                        Dim EMAIL As Double
+                        Dim EMAIL As Decimal
 
                         Dim BRANCH_LIST As String = GetList_Branch(ADDRESS, "CATEGORY = 'DAVAO PERFECT'")
 
@@ -216,7 +216,7 @@ Module Report_function
                         Dim CATEGORY As String = IIf(IsDBNull(.Item("CATEGORY")), "", .Item("CATEGORY"))
                         Dim BRANCHCODE As String = IIf(IsDBNull(.Item("BRANCHCODE")), "", .Item("BRANCHCODE"))
                         Dim HO_CATEGORY As String = IIf(IsDBNull(.Item("HO_CATEGORY")), "", .Item("HO_CATEGORY"))
-                        Dim EMAIL As Double
+                        Dim EMAIL As Decimal
 
                         Dim BRANCH_LIST As String = GetList_Branch(ADDRESS, $"COMPANY = '{COMPANY}'")
 
@@ -286,7 +286,7 @@ Module Report_function
                         Dim CATEGORY As String = IIf(IsDBNull(.Item("CATEGORY")), "", .Item("CATEGORY"))
                         Dim BRANCHCODE As String = IIf(IsDBNull(.Item("BRANCHCODE")), "", .Item("BRANCHCODE"))
                         Dim HO_CATEGORY As String = IIf(IsDBNull(.Item("HO_CATEGORY")), "", .Item("HO_CATEGORY"))
-                        Dim EMAIL As Double = 0
+                        Dim EMAIL As Decimal
 
                         Dim BRANCH_LIST As String = GetList_Branch(ADDRESS, $"COMPANY = '{COMPANY}'")
 
@@ -356,7 +356,7 @@ Module Report_function
                         Dim ADDRESS As String = IIf(IsDBNull(.Item("ADDRESS")), "", .Item("ADDRESS"))
                         Dim BRANCHCODE As String = IIf(IsDBNull(.Item("BRANCH_CODE")), "", .Item("BRANCH_CODE"))
                         Dim HO_CATEGORY As String = IIf(IsDBNull(.Item("HO_CATEGORY")), "", .Item("HO_CATEGORY"))
-                        Dim EMAIL As Double = GetSummary_Email(PAYROLL, $"BRANCH_CODE = '{BRANCHCODE}'")
+                        Dim EMAIL As Decimal = GetSummary_Email(PAYROLL, $"BRANCH_CODE = '{BRANCHCODE}'")
                         Dim HO_array As String() = HO_CATEGORY.Split(New Char() {" "c}) '=== ADMIN   
                         ADDRESS = HO_CATEGORY.ToLower()
 
@@ -406,8 +406,8 @@ Module Report_function
             .Columns.Add("TOTAL_AMOUNT")
         End With
 
-        Dim TOTALS As Double = 0
-        Dim NET_PAY As Double = 0
+        Dim TOTALS As Decimal = 0
+        Dim NET_PAY As Decimal = 0
 
         Dim mysqll As String = $"Select * From PAYROLL_EMPLOYEE A  
                                         INNER JOIN PAYROLL_PAYOUT C ON A.BIO_NO = C.BIOMETRIC_ID
@@ -470,14 +470,18 @@ Module Report_function
                         '============================= NAME AND ATTENDANCE ============================  
                         Dim namee As String = .Item("FULLNAME")
                         Dim CATEGORY As String = .Item("CATEGORY")
-                        Dim NET_PAY As Double = .Item("NET_PAY")
-                        Dim LEASING As Decimal = .Item("LEASING")
+                        Dim NET_PAY As Decimal = .Item("NET_PAY")
+                        Dim LEASING As String = .Item("LEASING")
+
+                        If .ITEM("BIO_NO") = "2788" Then ' MADERA  
+                            LEASING = (50 * LEASING) / 100
+                        End If
 
                         TOTALS += NET_PAY * LEASING
                     End With
                 Next
 
-                Dim COMPANY As String = "HOUSEHOLD"
+                Dim COMPANY As String = "P&G REALTY"
                 Dim ADDRESS As String = "PGC/GENSAN"
 
                 dt_Dalton.Rows.Add(PAYROLL.ToString("MMMM dd, yyyy").ToUpper(), COMPANY,
@@ -532,7 +536,6 @@ Module Report_function
         Dim G3_tot As Double = 0
         Dim Seven11_tot As Double = 0
         Dim COMI_TO_FUJI_tot As Double = 0
-        Dim LEASING_tot As Double = 0
 
         Dim mysqll As String = $"Select * From PAYROLL_EMPLOYEE A 
                                         INNER JOIN PAYROLL_PERCENTAGEE B ON B.CATEGORY = A.COMMON_CATEGORY
@@ -552,7 +555,6 @@ Module Report_function
                         Dim G3 As String = .Item("G3")
                         Dim Seven11 As String = .Item("Seven11")
                         Dim COMI_TO_FUJI As String = .Item("COMI_TO_FUJI")
-                        Dim LEASING As String = .Item("LEASING")
                         Dim VALUEE As String = .Item(column)
 
                         If .ITEM("BIO_NO") = "2788" Then ' MADERA 
@@ -565,7 +567,6 @@ Module Report_function
                                 G3_tot += NET_PAY * ((50 * G3) / 100)
                                 Seven11_tot += NET_PAY * ((50 * Seven11) / 100)
                                 COMI_TO_FUJI_tot += NET_PAY * ((50 * COMI_TO_FUJI) / 100)
-                                'LEASING_tot = NET_PAY * ((50 * LEASING) / 100)
                             Else
                                 G3_tot += NET_PAY * G3
                                 Seven11_tot += NET_PAY * Seven11
@@ -581,7 +582,7 @@ Module Report_function
         End Using
 
         If column = "COMI_TO_FUJI" Then
-            TOTALS = G3_tot + Seven11_tot + COMI_TO_FUJI_tot + LEASING_tot
+            TOTALS = G3_tot + Seven11_tot + COMI_TO_FUJI_tot
         End If
 
         Return TOTALS
