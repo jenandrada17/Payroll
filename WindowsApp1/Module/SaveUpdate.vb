@@ -6,8 +6,7 @@ Module SaveUpdate
         Dim mysql As String = "Select * From PAYROLL_HOLIDAY Rows 1"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_HOLIDAY")
 
-            Dim dsNewRow As DataRow
-            dsNewRow = ds.Tables(0).NewRow
+            Dim dsNewRow As DataRow = ds.Tables(0).NewRow
             With dsNewRow
 
                 .Item("DATEE") = datee
@@ -2197,6 +2196,22 @@ Module SaveUpdate
 
             End Using
         End If
+    End Sub
+
+    Friend Sub SaveLogs(TRANSACTIONN As String, EMPLOYEE As String, USER As String)
+        Dim mysql As String = $"Select * from PAYROLL_LOGS"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_LOGS")
+            Dim dsNew As DataRow = ds.Tables(0).NewRow
+            With dsNew
+                .Item("TRANSACTIONN") = TRANSACTIONN
+                .Item("EMPLOYEE") = EMPLOYEE
+                .Item("USER") = USER
+                .Item("DATEE") = Date.Now
+            End With
+
+            ds.Tables(0).Rows.Add(dsNew)
+            SaveEntry(ds)
+        End Using
     End Sub
 
 End Module

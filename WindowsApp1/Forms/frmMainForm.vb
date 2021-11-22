@@ -10,6 +10,8 @@ Public Class frmMainForm
 
     Private Sub frmMainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
+        Login_Form.ShowDialog()
+
         AppDateTime.Text = Date.Now.ToString("dddd, MMMM dd, yyyy hh:mm:ss tt", CultureInfo.CurrentCulture)
 
         StartFour = New DateTime(DateNow.Year, DateNow.Month, 4).AddDays(-1)
@@ -33,6 +35,8 @@ Public Class frmMainForm
                 End If
             End If
         End If
+
+
     End Sub
 
     '======================================Buttons================================================== 
@@ -158,6 +162,14 @@ Public Class frmMainForm
             comString.ShowDialog()
             comString.BringToFront()
         End Using
+    End Sub
+
+    Private Sub UserLogsMenuItem_Click(sender As Object, e As EventArgs) Handles UserLogsMenuItem.Click
+        OpenWindowsForm("frmUserLogs")
+    End Sub
+
+    Private Sub ExitToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExitToolStripMenuItem.Click
+        Close()
     End Sub
 
     Private Sub Calculator_BTN_MouseLeave(sender As Object, e As EventArgs) Handles Contribution_BTN.MouseLeave

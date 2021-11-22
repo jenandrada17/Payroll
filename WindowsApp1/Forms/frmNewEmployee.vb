@@ -437,19 +437,31 @@ Public Class frmNewEmployee
         Add_Panel.Visible = False
     End Sub
 
-    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles btnSave.Click
 
         If Not isValidSave() Then Exit Sub
 
+        Dim stat As String ' User Logs
+
         If Active_RB.Checked = True Then
             emp_status = Active_RB.Text
+            stat = "Active"
         Else
             emp_status = InActive_RB.Text
+            stat = "Inactive"
         End If
 
         SaveNew_Employee(Add_Company_CB.Text, Branch_ComboB.Text, Fullname_TXT.Text, Bio_TXT.Text, Email_TXT.Text, emp_status, Started_DTP.Value, False,
                          TimeIn_Combo.Text, TimeOut_Combo.Text, EmpNo_TXT.Text, TIN_TXT.Text, SSS_TXT.Text, PHILH_TXT.Text, HDMF_TXT.Text, HO_Category.Text,
                          ComCategory_Combo.Text, Position_Combo.Text, ComCompany_Cmbo.Text)
+
+        If btnSave.Tag = "UPDATE" Then
+            SaveLogs($"EDITED EMPLOYEE - {Add_Company_CB.Text}, {Branch_ComboB.Text}, {Email_TXT.Text}, {stat}, {Started_DTP.Value.ToShortDateString}, Time in/out - ({TimeIn_Combo.Text}/{TimeOut_Combo.Text}), {EmpNo_TXT.Text}, {TIN_TXT.Text}, {SSS_TXT.Text}, {PHILH_TXT.Text}, {HDMF_TXT.Text}, {Position_Combo.Text}, HO ({HO_Category.Text}, {ComCategory_Combo.Text}, {ComCompany_Cmbo.Text})",
+                     $"{Fullname_TXT.Text} - {Bio_TXT.Text}", frmMainForm.UserName_LBL.Text)
+        Else
+            SaveLogs($"ADDED EMPLOYEE - {Add_Company_CB.Text}, {Branch_ComboB.Text}, {Email_TXT.Text}, {stat}, {Started_DTP.Value.ToShortDateString}, Time in/out - ({TimeIn_Combo.Text}/{TimeOut_Combo.Text}), {EmpNo_TXT.Text}, {TIN_TXT.Text}, {SSS_TXT.Text}, {PHILH_TXT.Text}, {HDMF_TXT.Text}, {Position_Combo.Text}, HO ({HO_Category.Text}, {ComCategory_Combo.Text}, {ComCompany_Cmbo.Text})",
+                     $"{Fullname_TXT.Text} ({Bio_TXT.Text})", frmMainForm.UserName_LBL.Text)
+        End If
 
         Lists_Employees(lvEmployee)
 
@@ -639,7 +651,7 @@ Public Class frmNewEmployee
         If Bio_TXT.Text <> Nothing Then
             GetFullname(Bio_TXT.Text, Add_Company_CB, Branch_ComboB, Fullname_TXT, Email_TXT, InActive_RB,
                             Started_DTP, TimeIn_Combo, TimeOut_Combo, EmpNo_TXT, TIN_TXT, SSS_TXT, PHILH_TXT, HDMF_TXT, HO_Category,
-                            ComCategory_Combo, Position_Combo, ComCompany_Cmbo)
+                            ComCategory_Combo, Position_Combo, ComCompany_Cmbo, btnSave)
 
         Else
             Add_Company_CB.Text = ""

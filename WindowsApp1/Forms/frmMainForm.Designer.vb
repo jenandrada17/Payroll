@@ -39,8 +39,8 @@ Partial Class frmMainForm
         Me.AppDateTime = New System.Windows.Forms.Label()
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.FileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.LoginToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ConnectToDatabaseToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.UserLogsMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
         Me.ExitToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.AboutUsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -276,29 +276,29 @@ Partial Class frmMainForm
         Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileToolStripMenuItem, Me.AboutUsToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(-5, 80)
         Me.MenuStrip1.Name = "MenuStrip1"
-        Me.MenuStrip1.Size = New System.Drawing.Size(113, 24)
+        Me.MenuStrip1.Size = New System.Drawing.Size(233, 24)
         Me.MenuStrip1.TabIndex = 3
         Me.MenuStrip1.Text = "MenuStrip1"
         '
         'FileToolStripMenuItem
         '
-        Me.FileToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.LoginToolStripMenuItem, Me.ConnectToDatabaseToolStripMenuItem, Me.ToolStripSeparator1, Me.ExitToolStripMenuItem})
+        Me.FileToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ConnectToDatabaseToolStripMenuItem, Me.UserLogsMenuItem, Me.ToolStripSeparator1, Me.ExitToolStripMenuItem})
         Me.FileToolStripMenuItem.ForeColor = System.Drawing.Color.White
         Me.FileToolStripMenuItem.Name = "FileToolStripMenuItem"
         Me.FileToolStripMenuItem.Size = New System.Drawing.Size(37, 20)
         Me.FileToolStripMenuItem.Text = "&File"
-        '
-        'LoginToolStripMenuItem
-        '
-        Me.LoginToolStripMenuItem.Name = "LoginToolStripMenuItem"
-        Me.LoginToolStripMenuItem.Size = New System.Drawing.Size(184, 22)
-        Me.LoginToolStripMenuItem.Text = "&Login"
         '
         'ConnectToDatabaseToolStripMenuItem
         '
         Me.ConnectToDatabaseToolStripMenuItem.Name = "ConnectToDatabaseToolStripMenuItem"
         Me.ConnectToDatabaseToolStripMenuItem.Size = New System.Drawing.Size(184, 22)
         Me.ConnectToDatabaseToolStripMenuItem.Text = "&Connect to Database"
+        '
+        'UserLogsMenuItem
+        '
+        Me.UserLogsMenuItem.Name = "UserLogsMenuItem"
+        Me.UserLogsMenuItem.Size = New System.Drawing.Size(184, 22)
+        Me.UserLogsMenuItem.Text = "User Logs"
         '
         'ToolStripSeparator1
         '
@@ -533,7 +533,6 @@ Partial Class frmMainForm
     Friend WithEvents PictureBox1 As PictureBox
     Friend WithEvents MenuStrip1 As MenuStrip
     Friend WithEvents FileToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents LoginToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ConnectToDatabaseToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ToolStripSeparator1 As ToolStripSeparator
     Friend WithEvents ExitToolStripMenuItem As ToolStripMenuItem
@@ -564,4 +563,5 @@ Partial Class frmMainForm
     Friend WithEvents PictureBox9 As PictureBox
     Friend WithEvents PictureBox8 As PictureBox
     Friend WithEvents PictureBox7 As PictureBox
+    Friend WithEvents UserLogsMenuItem As ToolStripMenuItem
 End Class

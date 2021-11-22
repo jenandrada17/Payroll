@@ -62,6 +62,9 @@
   <PropertyGroup>
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="DBConnect">
       <HintPath>..\..\..\HR-System Record\LATEST HRSystem\HRSystem - exx\DBConnect\obj\Release\DBConnect.dll</HintPath>
@@ -229,6 +232,12 @@
     <Compile Include="Forms\frmSettings.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="frmUserLogs.Designer.vb">
+      <DependentUpon>frmUserLogs.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmUserLogs.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Login_Form.Designer.vb">
       <DependentUpon>Login_Form.vb</DependentUpon>
     </Compile>
@@ -290,6 +299,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmSettings.resx">
       <DependentUpon>frmSettings.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmUserLogs.resx">
+      <DependentUpon>frmUserLogs.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Login_Form.resx">
       <DependentUpon>Login_Form.vb</DependentUpon>
@@ -353,6 +365,7 @@
     <None Include="Dataset\reports.xss">
       <DependentUpon>reports.xsd</DependentUpon>
     </None>
+    <None Include="My Project\app.manifest" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>

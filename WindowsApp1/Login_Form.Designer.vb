@@ -27,18 +27,19 @@ Partial Class Login_Form
         Me.Guna2Elipse1 = New Guna.UI2.WinForms.Guna2Elipse(Me.components)
         Me.Guna2ShadowForm1 = New Guna.UI2.WinForms.Guna2ShadowForm(Me.components)
         Me.Panel1 = New Guna.UI2.WinForms.Guna2GradientPanel()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.Box_Minimize = New Guna.UI2.WinForms.Guna2ControlBox()
+        Me.Box_X = New Guna.UI2.WinForms.Guna2ControlBox()
         Me.Guna2Elipse2 = New Guna.UI2.WinForms.Guna2Elipse(Me.components)
         Me.Guna2DragControl1 = New Guna.UI2.WinForms.Guna2DragControl(Me.components)
         Me.Guna2Panel1 = New Guna.UI2.WinForms.Guna2Panel()
+        Me.Guna2CirclePictureBox2 = New Guna.UI2.WinForms.Guna2CirclePictureBox()
         Me.txtPass = New Guna.UI2.WinForms.Guna2TextBox()
+        Me.Guna2CirclePictureBox1 = New Guna.UI2.WinForms.Guna2CirclePictureBox()
         Me.txtUser = New Guna.UI2.WinForms.Guna2TextBox()
         Me.btnLogin = New Guna.UI2.WinForms.Guna2GradientButton()
         Me.Label1 = New System.Windows.Forms.Label()
-        Me.Guna2ControlBox1 = New Guna.UI2.WinForms.Guna2ControlBox()
-        Me.Guna2ControlBox2 = New Guna.UI2.WinForms.Guna2ControlBox()
-        Me.Label2 = New System.Windows.Forms.Label()
-        Me.Guna2CirclePictureBox2 = New Guna.UI2.WinForms.Guna2CirclePictureBox()
-        Me.Guna2CirclePictureBox1 = New Guna.UI2.WinForms.Guna2CirclePictureBox()
+        Me.Guna2AnimateWindow1 = New Guna.UI2.WinForms.Guna2AnimateWindow(Me.components)
         Me.Panel1.SuspendLayout()
         Me.Guna2Panel1.SuspendLayout()
         CType(Me.Guna2CirclePictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -59,13 +60,53 @@ Partial Class Login_Form
         '
         Me.Panel1.BackColor = System.Drawing.Color.Maroon
         Me.Panel1.Controls.Add(Me.Label2)
-        Me.Panel1.Controls.Add(Me.Guna2ControlBox2)
-        Me.Panel1.Controls.Add(Me.Guna2ControlBox1)
+        Me.Panel1.Controls.Add(Me.Box_Minimize)
+        Me.Panel1.Controls.Add(Me.Box_X)
         Me.Panel1.Location = New System.Drawing.Point(0, 0)
         Me.Panel1.Name = "Panel1"
         Me.Panel1.ShadowDecoration.Parent = Me.Panel1
         Me.Panel1.Size = New System.Drawing.Size(566, 89)
         Me.Panel1.TabIndex = 6
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label2.ForeColor = System.Drawing.Color.White
+        Me.Label2.Location = New System.Drawing.Point(173, 22)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(249, 22)
+        Me.Label2.TabIndex = 6
+        Me.Label2.Text = "Perfecto Group of Companies Payroll System"
+        '
+        'Box_Minimize
+        '
+        Me.Box_Minimize.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Box_Minimize.BackColor = System.Drawing.Color.Transparent
+        Me.Box_Minimize.ControlBoxType = Guna.UI2.WinForms.Enums.ControlBoxType.MinimizeBox
+        Me.Box_Minimize.FillColor = System.Drawing.Color.Maroon
+        Me.Box_Minimize.HoverState.Parent = Me.Box_Minimize
+        Me.Box_Minimize.IconColor = System.Drawing.Color.White
+        Me.Box_Minimize.Location = New System.Drawing.Point(504, 3)
+        Me.Box_Minimize.Name = "Box_Minimize"
+        Me.Box_Minimize.ShadowDecoration.Parent = Me.Box_Minimize
+        Me.Box_Minimize.Size = New System.Drawing.Size(31, 29)
+        Me.Box_Minimize.TabIndex = 4
+        Me.Box_Minimize.UseTransparentBackground = True
+        '
+        'Box_X
+        '
+        Me.Box_X.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Box_X.BackColor = System.Drawing.Color.Transparent
+        Me.Box_X.FillColor = System.Drawing.Color.Maroon
+        Me.Box_X.HoverState.Parent = Me.Box_X
+        Me.Box_X.IconColor = System.Drawing.Color.White
+        Me.Box_X.Location = New System.Drawing.Point(534, 0)
+        Me.Box_X.Name = "Box_X"
+        Me.Box_X.ShadowDecoration.Parent = Me.Box_X
+        Me.Box_X.Size = New System.Drawing.Size(31, 29)
+        Me.Box_X.TabIndex = 5
+        Me.Box_X.UseTransparentBackground = True
         '
         'Guna2DragControl1
         '
@@ -89,6 +130,19 @@ Partial Class Login_Form
         Me.Guna2Panel1.Size = New System.Drawing.Size(296, 241)
         Me.Guna2Panel1.TabIndex = 3
         '
+        'Guna2CirclePictureBox2
+        '
+        Me.Guna2CirclePictureBox2.Image = CType(resources.GetObject("Guna2CirclePictureBox2.Image"), System.Drawing.Image)
+        Me.Guna2CirclePictureBox2.ImageRotate = 0!
+        Me.Guna2CirclePictureBox2.Location = New System.Drawing.Point(21, 122)
+        Me.Guna2CirclePictureBox2.Name = "Guna2CirclePictureBox2"
+        Me.Guna2CirclePictureBox2.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle
+        Me.Guna2CirclePictureBox2.ShadowDecoration.Parent = Me.Guna2CirclePictureBox2
+        Me.Guna2CirclePictureBox2.Size = New System.Drawing.Size(28, 28)
+        Me.Guna2CirclePictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.Guna2CirclePictureBox2.TabIndex = 8
+        Me.Guna2CirclePictureBox2.TabStop = False
+        '
         'txtPass
         '
         Me.txtPass.Animated = True
@@ -111,13 +165,26 @@ Partial Class Login_Form
         Me.txtPass.Location = New System.Drawing.Point(57, 122)
         Me.txtPass.Margin = New System.Windows.Forms.Padding(3, 5, 3, 5)
         Me.txtPass.Name = "txtPass"
-        Me.txtPass.PasswordChar = Global.Microsoft.VisualBasic.ChrW(35)
+        Me.txtPass.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
         Me.txtPass.PlaceholderText = "Password"
         Me.txtPass.SelectedText = ""
         Me.txtPass.ShadowDecoration.Parent = Me.txtPass
         Me.txtPass.Size = New System.Drawing.Size(217, 32)
         Me.txtPass.TabIndex = 2
         Me.txtPass.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
+        '
+        'Guna2CirclePictureBox1
+        '
+        Me.Guna2CirclePictureBox1.Image = CType(resources.GetObject("Guna2CirclePictureBox1.Image"), System.Drawing.Image)
+        Me.Guna2CirclePictureBox1.ImageRotate = 0!
+        Me.Guna2CirclePictureBox1.Location = New System.Drawing.Point(17, 77)
+        Me.Guna2CirclePictureBox1.Name = "Guna2CirclePictureBox1"
+        Me.Guna2CirclePictureBox1.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle
+        Me.Guna2CirclePictureBox1.ShadowDecoration.Parent = Me.Guna2CirclePictureBox1
+        Me.Guna2CirclePictureBox1.Size = New System.Drawing.Size(36, 28)
+        Me.Guna2CirclePictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.Guna2CirclePictureBox1.TabIndex = 7
+        Me.Guna2CirclePictureBox1.TabStop = False
         '
         'txtUser
         '
@@ -179,78 +246,12 @@ Partial Class Login_Form
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Font = New System.Drawing.Font("Dubai", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.Location = New System.Drawing.Point(98, 17)
+        Me.Label1.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Location = New System.Drawing.Point(97, 10)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(109, 36)
+        Me.Label1.Size = New System.Drawing.Size(100, 32)
         Me.Label1.TabIndex = 0
         Me.Label1.Text = "User Login"
-        '
-        'Guna2ControlBox1
-        '
-        Me.Guna2ControlBox1.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Guna2ControlBox1.BackColor = System.Drawing.Color.Transparent
-        Me.Guna2ControlBox1.FillColor = System.Drawing.Color.Maroon
-        Me.Guna2ControlBox1.HoverState.Parent = Me.Guna2ControlBox1
-        Me.Guna2ControlBox1.IconColor = System.Drawing.Color.White
-        Me.Guna2ControlBox1.Location = New System.Drawing.Point(534, 0)
-        Me.Guna2ControlBox1.Name = "Guna2ControlBox1"
-        Me.Guna2ControlBox1.ShadowDecoration.Parent = Me.Guna2ControlBox1
-        Me.Guna2ControlBox1.Size = New System.Drawing.Size(31, 29)
-        Me.Guna2ControlBox1.TabIndex = 5
-        Me.Guna2ControlBox1.UseTransparentBackground = True
-        '
-        'Guna2ControlBox2
-        '
-        Me.Guna2ControlBox2.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Guna2ControlBox2.BackColor = System.Drawing.Color.Transparent
-        Me.Guna2ControlBox2.ControlBoxType = Guna.UI2.WinForms.Enums.ControlBoxType.MinimizeBox
-        Me.Guna2ControlBox2.FillColor = System.Drawing.Color.Maroon
-        Me.Guna2ControlBox2.HoverState.Parent = Me.Guna2ControlBox2
-        Me.Guna2ControlBox2.IconColor = System.Drawing.Color.White
-        Me.Guna2ControlBox2.Location = New System.Drawing.Point(504, 3)
-        Me.Guna2ControlBox2.Name = "Guna2ControlBox2"
-        Me.Guna2ControlBox2.ShadowDecoration.Parent = Me.Guna2ControlBox2
-        Me.Guna2ControlBox2.Size = New System.Drawing.Size(31, 29)
-        Me.Guna2ControlBox2.TabIndex = 4
-        Me.Guna2ControlBox2.UseTransparentBackground = True
-        '
-        'Label2
-        '
-        Me.Label2.AutoSize = True
-        Me.Label2.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label2.ForeColor = System.Drawing.Color.White
-        Me.Label2.Location = New System.Drawing.Point(173, 22)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(249, 22)
-        Me.Label2.TabIndex = 6
-        Me.Label2.Text = "Perfecto Group of Companies Payroll System"
-        '
-        'Guna2CirclePictureBox2
-        '
-        Me.Guna2CirclePictureBox2.Image = CType(resources.GetObject("Guna2CirclePictureBox2.Image"), System.Drawing.Image)
-        Me.Guna2CirclePictureBox2.ImageRotate = 0!
-        Me.Guna2CirclePictureBox2.Location = New System.Drawing.Point(21, 122)
-        Me.Guna2CirclePictureBox2.Name = "Guna2CirclePictureBox2"
-        Me.Guna2CirclePictureBox2.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle
-        Me.Guna2CirclePictureBox2.ShadowDecoration.Parent = Me.Guna2CirclePictureBox2
-        Me.Guna2CirclePictureBox2.Size = New System.Drawing.Size(28, 28)
-        Me.Guna2CirclePictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.Guna2CirclePictureBox2.TabIndex = 8
-        Me.Guna2CirclePictureBox2.TabStop = False
-        '
-        'Guna2CirclePictureBox1
-        '
-        Me.Guna2CirclePictureBox1.Image = CType(resources.GetObject("Guna2CirclePictureBox1.Image"), System.Drawing.Image)
-        Me.Guna2CirclePictureBox1.ImageRotate = 0!
-        Me.Guna2CirclePictureBox1.Location = New System.Drawing.Point(17, 77)
-        Me.Guna2CirclePictureBox1.Name = "Guna2CirclePictureBox1"
-        Me.Guna2CirclePictureBox1.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle
-        Me.Guna2CirclePictureBox1.ShadowDecoration.Parent = Me.Guna2CirclePictureBox1
-        Me.Guna2CirclePictureBox1.Size = New System.Drawing.Size(36, 28)
-        Me.Guna2CirclePictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.Guna2CirclePictureBox1.TabIndex = 7
-        Me.Guna2CirclePictureBox1.TabStop = False
         '
         'Login_Form
         '
@@ -284,9 +285,10 @@ Partial Class Login_Form
     Friend WithEvents btnLogin As Guna.UI2.WinForms.Guna2GradientButton
     Friend WithEvents txtPass As Guna.UI2.WinForms.Guna2TextBox
     Friend WithEvents txtUser As Guna.UI2.WinForms.Guna2TextBox
-    Friend WithEvents Guna2ControlBox1 As Guna.UI2.WinForms.Guna2ControlBox
-    Friend WithEvents Guna2ControlBox2 As Guna.UI2.WinForms.Guna2ControlBox
+    Friend WithEvents Box_X As Guna.UI2.WinForms.Guna2ControlBox
+    Friend WithEvents Box_Minimize As Guna.UI2.WinForms.Guna2ControlBox
     Friend WithEvents Label2 As Label
     Friend WithEvents Guna2CirclePictureBox1 As Guna.UI2.WinForms.Guna2CirclePictureBox
     Friend WithEvents Guna2CirclePictureBox2 As Guna.UI2.WinForms.Guna2CirclePictureBox
+    Friend WithEvents Guna2AnimateWindow1 As Guna.UI2.WinForms.Guna2AnimateWindow
 End Class

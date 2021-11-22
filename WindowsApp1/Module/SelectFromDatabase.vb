@@ -2080,7 +2080,8 @@ Module SelectFromDatabase
                            Email_TXT As TextBox, InActive_RB As RadioButton, Started_DTP As DateTimePicker,
                            TimeIn_Combo As ComboBox, TimeOut_Combo As ComboBox, EmoNo_TXT As TextBox, TIN_TXT As TextBox,
                            SSS_TXT As TextBox, PHILH_TXT As TextBox, HDMF_TXT As TextBox, HO_Category As ComboBox,
-                           ComCategory_Combo As ComboBox, Position_Combo As ComboBox, ComCompany_Cmbo As ComboBox)
+                           ComCategory_Combo As ComboBox, Position_Combo As ComboBox, ComCompany_Cmbo As ComboBox,
+                           Optional btnSave As Button = Nothing)
 
         Dim mysql As String = $"select * from PAYROLL_EMPLOYEE where BIO_NO = '{bio_no}'"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
@@ -2112,6 +2113,7 @@ Module SelectFromDatabase
                         InActive_RB.Checked = True
                     End If
 
+                    btnSave.Tag = "UPDATE" ' FOR USER_LOGS
                 End With
             Else
                 Add_Company_CB.Text = ""
@@ -2129,6 +2131,7 @@ Module SelectFromDatabase
                 SSS_TXT.Text = ""
                 PHILH_TXT.Text = ""
                 HDMF_TXT.Text = ""
+                btnSave.Tag = "SAVE" ' FOR USER_LOGS
             End If
         End Using
     End Sub
@@ -2446,6 +2449,20 @@ Module SelectFromDatabase
         End If
     End Sub
 
+    Friend Sub UserLogs_Record(lv As ListView)
+        Dim mysql As String = $"Select * from PAYROLL_LOGS ORDER BY DATEE DESC"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_LOGS")
+            For Each dr In ds.Tables(0).Rows
+                With dr
+                    Dim datee As DateTime = .Item("DATEE")
+                    Dim list As ListViewItem = lv.Items.Add(datee.ToString("MMM dd, yyyy hh:mm tt"))
+                    list.SubItems.Add(.Item("USER"))
+                    list.SubItems.Add(.Item("EMPLOYEE"))
+                    list.SubItems.Add(.Item("TRANSACTIONN"))
+                End With
+            Next
+        End Using
+    End Sub
 
     Public Sub Replacing(str As String)
         RunCommand($"DELETE FROM {str}")  'THIS IS TO DELETE EXISTING DATA TO REPLACE ESPECIALLY FROM DATAGRID

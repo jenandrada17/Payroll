@@ -50,7 +50,7 @@ Partial Class frmNewEmployee
         Me.Browse_BTN = New System.Windows.Forms.Button()
         Me.Save_BTN = New System.Windows.Forms.Button()
         Me.Add_BTN = New System.Windows.Forms.Button()
-        Me.Button2 = New System.Windows.Forms.Button()
+        Me.btnSave = New System.Windows.Forms.Button()
         Me.FlowLayoutPanel1 = New System.Windows.Forms.FlowLayoutPanel()
         Me.Label6 = New System.Windows.Forms.Label()
         Me.Bio_TXT = New System.Windows.Forms.TextBox()
@@ -336,17 +336,17 @@ Partial Class frmNewEmployee
         Me.Add_BTN.Text = "Add/Update"
         Me.Add_BTN.UseVisualStyleBackColor = False
         '
-        'Button2
+        'btnSave
         '
-        Me.Button2.BackColor = System.Drawing.Color.Sienna
-        Me.Button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.Button2.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button2.Location = New System.Drawing.Point(500, 486)
-        Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(76, 47)
-        Me.Button2.TabIndex = 103
-        Me.Button2.Text = "Save"
-        Me.Button2.UseVisualStyleBackColor = False
+        Me.btnSave.BackColor = System.Drawing.Color.Sienna
+        Me.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnSave.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSave.Location = New System.Drawing.Point(500, 486)
+        Me.btnSave.Name = "btnSave"
+        Me.btnSave.Size = New System.Drawing.Size(76, 47)
+        Me.btnSave.TabIndex = 103
+        Me.btnSave.Text = "Save"
+        Me.btnSave.UseVisualStyleBackColor = False
         '
         'FlowLayoutPanel1
         '
@@ -828,7 +828,7 @@ Partial Class frmNewEmployee
         '
         Me.Add_Panel.BackColor = System.Drawing.Color.Silver
         Me.Add_Panel.Controls.Add(Me.FlowLayoutPanel1)
-        Me.Add_Panel.Controls.Add(Me.Button2)
+        Me.Add_Panel.Controls.Add(Me.btnSave)
         Me.Add_Panel.Controls.Add(Me.Button1)
         Me.Add_Panel.Controls.Add(Me.Label10)
         Me.Add_Panel.Controls.Add(Me.Label9)
@@ -903,7 +903,7 @@ Partial Class frmNewEmployee
     Friend WithEvents Branch_ComboB As ComboBox
     Friend WithEvents Label5 As Label
     Friend WithEvents Fullname_TXT As TextBox
-    Friend WithEvents Button2 As Button
+    Friend WithEvents btnSave As Button
     Friend WithEvents Button1 As Button
     Friend WithEvents Email_TXT As TextBox
     Friend WithEvents Label7 As Label
