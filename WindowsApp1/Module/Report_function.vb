@@ -588,6 +588,47 @@ Module Report_function
         Return TOTALS
     End Function
 
+    Friend Function LoadDataTable_Remittance(paydate As String) As DataTable
+
+        Dim mysql As String
+        Dim PAYROLL As DateTime = paydate
+
+        Dim dt_Remittance As New DataTable()
+        With dt_Remittance
+            .Columns.Add("NAME")
+            .Columns.Add("NO")
+            .Columns.Add("EE")
+            .Columns.Add("ER")
+            .Columns.Add("EC")
+        End With
+
+        mysql = $"Select * From PAYROLL_PAYOUT INNER JOIN PAYROLL_EMPLOYEE ON BIO_NO = BIOMETRIC_ID       
+                                        WHERE PAYDATE = '{paydate}' ORDER BY FULLNAME"
+
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
+            If ds.Tables(0).Rows.Count > 0 Then
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+
+                        '============================= NAME AND ATTENDANCE ============================  
+                        Dim FULLNAME As String = IIf(IsDBNull(.Item("FULLNAME")), "", .Item("FULLNAME"))
+                        Dim monthly_Basic As Double = GetMonthly_Basic(.item("BIOMETRIC_ID"), paydate)
+
+                        Dim NOO As String = IIf(IsDBNull(.Item("SSSNO")), "", .Item("SSSNO"))
+                        Dim EE As String = Get_SSS(monthly_Basic).EE
+                        Dim ER As String = Get_SSS(monthly_Basic).ER
+                        Dim EC As String = Get_SSS(monthly_Basic).EC
+
+                        dt_Remittance.Rows.Add(FULLNAME, NOO, EE, ER, EC)
+
+                    End With
+                Next
+            End If
+        End Using
+
+        Return dt_Remittance
+    End Function
+
     Public Function GetList_Branch(address As String, str As String) As String
 
         Dim branch_group As New List(Of String)()

@@ -10,7 +10,7 @@
     <Shape ID="DesignTable:Common" ZOrder="4" X="195" Y="16" Height="334" Width="160" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="330" />
     <Shape ID="DesignTable:ComGensanPDistrib" ZOrder="3" X="366" Y="17" Height="315" Width="188" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="311" />
     <Shape ID="DesignTable:ComLeasingDistrib" ZOrder="2" X="571" Y="18" Height="315" Width="188" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="311" />
-    <Shape ID="DesignTable:PayrollSummary" ZOrder="1" X="775" Y="19" Height="162" Width="161" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="158" />
+    <Shape ID="DesignTable:Remittance" ZOrder="1" X="767" Y="19" Height="124" Width="150" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="120" />
   </Shapes>
   <Connectors />
 </DiagramLayout>

@@ -11,6 +11,7 @@ Public Class frmReport
         PopulateComboBox(PaydateNet_ComboB, "PAYROLL_PAYOUT", "PAYDATE")
         PopulateComboBox(PaydateCom_Combo, "PAYROLL_PAYOUT", "PAYDATE")
         PopulateComboBox(SumPaydate_Combo, "PAYROLL_PAYOUT", "PAYDATE")
+        PopulateComboBox(Rem_Paydate_Combo, "PAYROLL_PAYOUT", "PAYDATE")
         Lists_SBU(SBU_LV)
     End Sub
 
@@ -650,6 +651,29 @@ Public Class frmReport
 
     End Sub
 
+    Public Sub LoadRemittance()
+
+        Rpt_Distribution.LocalReport.DataSources.Clear()
+
+        Try
+
+            Dim DataSet1 As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", LoadDataTable_Remittance(Rem_Paydate_Combo.Text))
+
+            'Dim paramList As New List(Of Microsoft.Reporting.WinForms.ReportParameter) From {
+            '        New Microsoft.Reporting.WinForms.ReportParameter("paramPGUY", Get_PGC("COMI_TO_FUJI", PAYDATEE).ToString(”N”))
+            '        }
+
+            Rpt_Distribution.LocalReport.DataSources.Add(DataSet1)
+            'Rpt_Distribution.LocalReport.SetParameters(paramList)
+            Rpt_Distribution.RefreshReport()
+
+        Catch ex As Exception
+            Log_Report(ex.ToString)
+            MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+
+    End Sub
+
     Private Sub SumPaydate_Combo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles SumPaydate_Combo.SelectedIndexChanged
         LoadSummary_Print()
     End Sub
@@ -1000,4 +1024,9 @@ Public Class frmReport
         End If
     End Sub
 
+    Private Sub RemCat_Combo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles RemCat_Combo.SelectedIndexChanged
+        If Rem_Paydate_Combo.SelectedIndex >= 0 And RemCat_Combo.SelectedIndex >= 0 Then
+            LoadRemittance()
+        End If
+    End Sub
 End Class

@@ -310,6 +310,7 @@
     <EmbeddedResource Include="Reports\rpt_NetPay.rdlc" />
     <EmbeddedResource Include="Reports\rpt_PayrollSummary.rdlc" />
     <EmbeddedResource Include="Reports\rpt_payslip.rdlc" />
+    <EmbeddedResource Include="Reports\rpt_Remittance.rdlc" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Dataset\dtr_all.xsc">
