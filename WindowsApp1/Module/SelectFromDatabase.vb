@@ -540,7 +540,6 @@ Module SelectFromDatabase
                         Dim toProper As String = info.ToTitleCase(toLower)
 
                         If .item("EFFECTIVE_DATE") <= Today Then
-
                             Dim rowId As Integer = datagrid.Rows.Add()
                             Dim row As DataGridViewRow = datagrid.Rows(rowId)
 
@@ -556,6 +555,7 @@ Module SelectFromDatabase
             End If
 
             ' ================ SBU DEDUCTION  ================  
+
             Dim sbu As Double = SBU_Amount(BIO_NO)
 
             Dim rowIdd As Integer = datagrid.Rows.Add()
@@ -1184,7 +1184,7 @@ Module SelectFromDatabase
                             row.Cells(5).Value = IIf(IsDBNull(.Item("UNDERTIME")), "", .Item("UNDERTIME"))
                         End If
 
-                        row.Cells(6).Value = IIf(IsDBNull(.Item("NIGHT_RATE")), "", .Item("NIGHT_RATE"))
+                        row.Cells(6).Value = IIf(IsDBNull(.Item("NIGHT_RATE")) Or .Item("NIGHT_RATE").Equals("0"), "", .Item("NIGHT_RATE"))
 
                         row.Height = 30
 
@@ -1377,8 +1377,8 @@ Module SelectFromDatabase
 
     Public Function SBU_Amount(bio_no As String) As Double
         Dim Amount As Integer = 0
-        Dim mysql As String = $"Select * From payroll_sbu WHERE BIO_NO = '{bio_no}' and CATEGORY = 'SBU'"
-        Using ds As DataSet = LoadSQL(mysql, "payroll_sbu")
+        Dim mysql As String = $"Select * From PAYROLL_SBU WHERE BIO_NO = '{bio_no}' and CATEGORY = 'SBU' and (BALANCE IS NULL or BALANCE <> 0)"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_SBU")
             If ds.Tables(0).Rows.Count > 0 Then
                 Dim data As DataRow = ds.Tables(0).Rows(0)
                 With data

@@ -499,11 +499,7 @@ Public Class frmAttendance
 
             SavePayout_IndividualL(BiometricID_TXT.Text, PAYROLL, starting_date, ending_date)
 
-            If Save_BTN.Tag = "UPDATE" Then
-                SaveLogs($"UPDATED ATTENDANCE ({Name_TXT.Text} ({BiometricID_TXT.Text})) - Days({TotalDays_LBL.Text}), OT({TotalOTHr_LBL.Text}), Late({TotalLateHR_LBL.Text}), Undertime({TotalUTHR_LBL.Text}), R/S Holiday({TotalRHoliday_LBL.Text}/{TotalSHoliday_LBL.Text}), SIL({SIL_LBL.Text})", frmMainForm.UserName_LBL.Text)
-            Else
-                SaveLogs($"ADDED ATTENDANCE ({Name_TXT.Text} ({BiometricID_TXT.Text})) - Days({TotalDays_LBL.Text}), OT({TotalOTHr_LBL.Text}), Late({TotalLateHR_LBL.Text}), Undertime({TotalUTHR_LBL.Text}), R/S Holiday({TotalRHoliday_LBL.Text}/{TotalSHoliday_LBL.Text}), SIL({SIL_LBL.Text})", frmMainForm.UserName_LBL.Text)
-            End If
+            SaveLogs($"{Save_BTN.Tag} ATTENDANCE ({Name_TXT.Text} ({BiometricID_TXT.Text})) - Days({TotalDays_LBL.Text}), OT({TotalOTHr_LBL.Text}), Late({TotalLateHR_LBL.Text}), Undertime({TotalUTHR_LBL.Text}), R/S Holiday({TotalRHoliday_LBL.Text}/{TotalSHoliday_LBL.Text}), SIL({SIL_LBL.Text})", frmMainForm.UserName_LBL.Text)
 
             Cancel_BTN.PerformClick()
         Else
@@ -1140,6 +1136,8 @@ Public Class frmAttendance
     Private Sub Email_BTN_Click(sender As Object, e As EventArgs) Handles Email_BTN.Click
         If RptViewer_DTR.LocalReport.DataSources.Count <> 0 Then
             Send_Email(RptViewer_DTR.LocalReport.Render("PDF"), Branch_DTR_TXT.Text, DTR_Branch_Combo.Text, Payslip_DTR_Combo.Text, "", "DAILY TIME RECORD")
+
+            SaveLogs($"SENT DTR BY BRANCH ({DTR_Branch_Combo.Text}) PAYROLL({Payslip_DTR_Combo})", frmMainForm.UserName_LBL.Text)
         Else
             MsgBox("Please Click Preview before Sending", MsgBoxStyle.Exclamation, "INVALID")
         End If
@@ -1257,8 +1255,8 @@ Public Class frmAttendance
     Private Sub Bio7_TXT_TextChanged(sender As Object, e As EventArgs) Handles Bio7_TXT.TextChanged
 
         Dim PAYROLL As String
-        If Paydate_ComboB.SelectedIndex >= 0 Then
-            PAYROLL = Paydate_ComboB.SelectedItem
+        If Paydate7_CB.SelectedIndex >= 0 Then
+            PAYROLL = Paydate7_CB.SelectedItem
         Else
             PAYROLL = DataGridView1.Tag
         End If
@@ -1268,10 +1266,9 @@ Public Class frmAttendance
             GetName(Bio7_TXT.Text, Emp7_TXT)
             GetAttendance_Shifting(Bio7_TXT.Text, PAYROLL)
 
-
             '==========================  CHECK PAYDATE IF VALID FOR EDITING =========================   
-            If Paydate_ComboB.SelectedIndex >= 0 Then
-                If Paydate_ComboB.Text = frmMainForm.Paydate.ToString("d") Then
+            If Paydate7_CB.SelectedIndex >= 0 Then
+                If Paydate7_CB.Text = frmMainForm.Paydate.ToString("d") Then
                     Save7_BTN.Enabled = True
                 Else
                     Save7_BTN.Enabled = False
@@ -1296,25 +1293,17 @@ Public Class frmAttendance
 
                         Days7_TXT.Text = .Item("PRESENT_DAYS")
                         Overtime7_TXT.Text = .Item("OVERTIME")
-                        'Dim Latee As String = IIf(IsDBNull(.Item("LATE")), "", .Item("LATE"))
-                        'Dim Undertime As String = IIf(IsDBNull(.Item("UNDERTIME")), "", .Item("UNDERTIME"))
-                        Late7_TXT.Text = IIf(IsDBNull(.Item("LATE")), "00:00:00", .Item("LATE"))
-                        Undertime7_TXT.Text = IIf(IsDBNull(.Item("UNDERTIME")), "00:00:00", .Item("UNDERTIME"))
+
+                        Late7_TXT.Text = TimeSpan.Parse(.Item("LATE")).TotalMinutes
+                        Undertime7_TXT.Text = TimeSpan.Parse(.Item("UNDERTIME")).TotalMinutes
+
                         Night7_TXT.Text = IIf(IsDBNull(.Item("NIGHT_RATE")), "", .Item("NIGHT_RATE"))
                         SIL7_NUP.Text = IIf(IsDBNull(.Item("SIL")), "", .Item("SIL"))
 
-                        'If Latee.Length > 5 Then
-                        '    Late7_TXT.Text = Latee.Substring(0, Latee.Length - 3)
-                        'End If
-
-                        'If Undertime.Length > 5 Then
-                        '    Undertime7_TXT.Text = Undertime.Substring(0, Undertime.Length - 3)
-                        'End If
-
-                        Save7_BTN.Tag = "UPDATE"
-
                     End With
                 Next
+
+                Save7_BTN.Tag = "UPDATED"
             Else
 
                 Days7_TXT.Clear()
@@ -1323,8 +1312,7 @@ Public Class frmAttendance
                 Undertime7_TXT.Clear()
                 Night7_TXT.Clear()
                 SIL7_NUP.TextAlign = 0
-
-                Save7_BTN.Tag = "NEW"
+                Save7_BTN.Tag = "ADDED"
             End If
         End Using
 
@@ -1354,18 +1342,14 @@ Public Class frmAttendance
                 UT_TS = TimeSpan.FromMinutes(Undertime7_TXT.Text)
             End If
 
-            SaveAttendanceEE(Bio7_TXT.Text, PAYROLL, Days7_TXT.Text, IIf(Overtime7_TXT.Text = "", "0", Overtime7_TXT.Text), Late_TS.ToString, UT_TS.ToString,
+            SaveAttendanceEE(Bio7_TXT.Text, PAYROLL, Days7_TXT.Text, Overtime7_TXT.Text, Late_TS.ToString, UT_TS.ToString,
                              TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text, Night7_TXT.Text, SIL7_NUP.Text)
 
             'updateHoliday_Attendance(Bio7_TXT.Text, PAYROLL)
 
             SavePayout_IndividualL(Bio7_TXT.Text, PAYROLL, starting_date, ending_date)
 
-            If Save_BTN.Tag = "UPDATE" Then
-                SaveLogs($"UPDATED ATTENDANCE ({Emp7_TXT.Text} ({Bio7_TXT.Text})) - Days({Days7_TXT.Text}), OT({Overtime7_TXT.Text}), Late({Late_TS.ToString}), Undertime({UT_TS.ToString}), R/S Holiday({TotalRHoliday_LBL.Text}/{TotalSHoliday_LBL.Text}), Night Rate({Night7_TXT.Text}), SIL({SIL7_NUP.Text})", frmMainForm.UserName_LBL.Text)
-            Else
-                SaveLogs($"ADDED ATTENDANCE ({Emp7_TXT.Text} ({Bio7_TXT.Text})) - Days({Days7_TXT.Text}), OT({Overtime7_TXT.Text}), Late({Late_TS.ToString}), Undertime({UT_TS.ToString}), R/S Holiday({TotalRHoliday_LBL.Text}/{TotalSHoliday_LBL.Text}), Night Rate({Night7_TXT.Text}), SIL({SIL7_NUP.Text})", frmMainForm.UserName_LBL.Text)
-            End If
+            SaveLogs($"{Save7_BTN.Tag} ATTENDANCE ({Emp7_TXT.Text} ({Bio7_TXT.Text})) - Days({Days7_TXT.Text}), OT({Overtime7_TXT.Text}), Late({Late_TS.ToString}), Undertime({UT_TS.ToString}), R/S Holiday({TotalRHoliday_LBL.Text}/{TotalSHoliday_LBL.Text}), Night Rate({Night7_TXT.Text}), SIL({SIL7_NUP.Text})", frmMainForm.UserName_LBL.Text)
 
             Cancel7_BTN.PerformClick()
         Else
@@ -2085,12 +2069,12 @@ Public Class frmAttendance
                         TotalUTHR_LBL.Text = IIf(IsDBNull(.Item("UNDERTIME")), "00:00:00", .Item("UNDERTIME"))
                         TotalOTHr_LBL.Text = .Item("OVERTIME")
 
-                        Save_BTN.Tag = "UPDATE"
+                        Save_BTN.Tag = "UPDATED"
                     End With
                 Next
             Else
                 ClearAfter()
-                Save_BTN.Tag = "NEW"
+                Save_BTN.Tag = "ADDED"
             End If
         End Using
 
@@ -2221,10 +2205,12 @@ Public Class frmAttendance
         Bio7_TXT.Text = Seven_Grid.CurrentRow.Cells(0).Value
         Emp7_TXT.Text = Seven_Grid.CurrentRow.Cells(1).Value
         Days7_TXT.Text = Seven_Grid.CurrentRow.Cells(2).Value
-        Overtime7_TXT.Text = Seven_Grid.CurrentRow.Cells(3).Value
-        Late7_TXT.Text = Seven_Grid.CurrentRow.Cells(4).Value
-        Undertime7_TXT.Text = Seven_Grid.CurrentRow.Cells(5).Value
-        Night7_TXT.Text = Seven_Grid.CurrentRow.Cells(6).Value
+        Overtime7_TXT.Text = IIf(Seven_Grid.CurrentRow.Cells(3).Value = Nothing, 0, Seven_Grid.CurrentRow.Cells(3).Value)
+        Night7_TXT.Text = IIf(Seven_Grid.CurrentRow.Cells(6).Value = Nothing, 0, Seven_Grid.CurrentRow.Cells(6).Value)
+
+        If Seven_Grid.CurrentRow.Cells(4).Value <> Nothing Then Late7_TXT.Text = TimeSpan.Parse(Seven_Grid.CurrentRow.Cells(4).Value).TotalMinutes
+        If Seven_Grid.CurrentRow.Cells(5).Value <> Nothing Then Undertime7_TXT.Text = TimeSpan.Parse(Seven_Grid.CurrentRow.Cells(5).Value).TotalMinutes
+
     End Sub
 
     Public Sub Load_Attendance(emp As Employee, empNo As Integer)

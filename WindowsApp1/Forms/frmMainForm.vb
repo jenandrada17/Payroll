@@ -147,7 +147,7 @@ Public Class frmMainForm
     End Sub
 
     Private Sub Loan_BTN_Click(sender As Object, e As EventArgs) Handles Loan_BTN.Click
-        OpenWindowsForm("frmImport")
+        'OpenWindowsForm("frmImport")
     End Sub
 
 

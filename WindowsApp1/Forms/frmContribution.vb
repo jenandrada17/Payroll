@@ -89,6 +89,8 @@ Public Class frmContribution
             HMDF_EE_TXT.ReadOnly = True
             HMDF_ER_TXT.ReadOnly = True
             Populate_Pagibig(HMDF_EE_TXT, HMDF_ER_TXT)
+
+            SaveLogs($"CHANGED PAGIBIG DISTRIBUTION Employee({HMDF_EE_TXT.Text}), Employer({HMDF_ER_TXT.Text})", frmMainForm.UserName_LBL.Text)
         End If
     End Sub
 
@@ -101,6 +103,8 @@ Public Class frmContribution
             PhilH_Save_BTN.Text = "Change"
             PhilH_Rate_TXT.ReadOnly = True
             Populate_PhilHeath(PhilH_Rate_TXT)
+
+            SaveLogs($"CHANGED PHILHEALTH DISTRIBUTION Amount({PhilH_Rate_TXT.Text})", frmMainForm.UserName_LBL.Text)
         End If
     End Sub
 
@@ -124,6 +128,7 @@ Public Class frmContribution
             WH_grid.ReadOnly = True
             WH_grid.AllowUserToAddRows = False
             Populate_WHOLDING_TAX(WH_grid)
+
         End If
     End Sub
 
@@ -164,6 +169,8 @@ Public Class frmContribution
     Private Sub Allow_Save_BTN_Click(sender As Object, e As EventArgs) Handles Allow_Save_BTN.Click
         Save_SSSLoan(SSS_Name_TXT.Tag, SSS_Amount_TXT.Text, SSS_FirstAmort_DTP.Value, SSS_MaturityAmort_DTP.Value)
         Load_Loans(SSSLoan_LV, "PAYROLL_SSSLOAN")
+
+        SaveLogs($"ADDED SSS LOAN {SSS_Name_TXT.Text} ({SSS_Name_TXT.Tag}), Amount({SSS_Amount_TXT.Text}), Start({SSS_FirstAmort_DTP.Value.ToString("MMM dd, yyyy")}), End({SSS_MaturityAmort_DTP.Value.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
     End Sub
 
     Private Sub Emp_BTN_Click(sender As Object, e As EventArgs) Handles Emp_BTN.Click
@@ -193,6 +200,8 @@ Public Class frmContribution
     Private Sub Pag_Save_BTN_Click(sender As Object, e As EventArgs) Handles Pag_Save_BTN.Click
         Save_PAGIBIGLoan(Pag_Name_TXT.Tag, Pag_Amount_TXT.Text, Pag_Start_DTP.Value, Pag_End_DTP.Value)
         Load_Loans(Pag_grid, "PAYROLL_PAGIBIGLOAN")
+
+        SaveLogs($"ADDED PAGIBIG LOAN {Pag_Name_TXT.Text} ({Pag_Name_TXT.Tag}), Amount({Pag_Amount_TXT.Text}), Start({Pag_Start_DTP.Value.ToString("MMM dd, yyyy")}), End({Pag_End_DTP.Value.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
     End Sub
 
     Public Sub Load_Contrib_Loan(emp As Employee, tabName As String)
@@ -211,4 +220,11 @@ Public Class frmContribution
         End With
     End Sub
 
+    Private Sub SSS_Amount_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles SSS_Amount_TXT.KeyPress, Pag_Amount_TXT.KeyPress
+        If e.KeyChar <> ChrW(Keys.Back) Then
+            If Not Char.IsNumber(e.KeyChar) AndAlso Not Char.IsControl(e.KeyChar) Then
+                e.Handled = True
+            End If
+        End If
+    End Sub
 End Class

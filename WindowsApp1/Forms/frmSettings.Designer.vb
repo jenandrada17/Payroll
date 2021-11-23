@@ -1223,7 +1223,7 @@ Partial Class frmSettings
         Me.DE_Cancel_BTN.BackColor = System.Drawing.Color.MistyRose
         Me.DE_Cancel_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.DE_Cancel_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.DE_Cancel_BTN.Location = New System.Drawing.Point(1050, 133)
+        Me.DE_Cancel_BTN.Location = New System.Drawing.Point(964, 132)
         Me.DE_Cancel_BTN.Name = "DE_Cancel_BTN"
         Me.DE_Cancel_BTN.Size = New System.Drawing.Size(78, 33)
         Me.DE_Cancel_BTN.TabIndex = 42
@@ -1291,7 +1291,7 @@ Partial Class frmSettings
         Me.DE_Save_BTN.BackColor = System.Drawing.Color.RosyBrown
         Me.DE_Save_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.DE_Save_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.DE_Save_BTN.Location = New System.Drawing.Point(966, 134)
+        Me.DE_Save_BTN.Location = New System.Drawing.Point(1050, 132)
         Me.DE_Save_BTN.Name = "DE_Save_BTN"
         Me.DE_Save_BTN.Size = New System.Drawing.Size(78, 33)
         Me.DE_Save_BTN.TabIndex = 41

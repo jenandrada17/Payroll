@@ -68,6 +68,13 @@ Public Class frmPayout
             DETAILS()
         End If
 
+        '==========================  IF VALID FOR EDITING =========================   
+        If paydate_ = frmMainForm.Paydate.ToString("d") Then
+            Details_Save_BTN.Enabled = True
+        Else
+            Details_Save_BTN.Enabled = False
+        End If
+
     End Sub
 
     Public Sub DETAILS()
@@ -230,8 +237,10 @@ Public Class frmPayout
     End Sub
 
     Private Sub Details_Save_BTN_Click(sender As Object, e As EventArgs) Handles Details_Save_BTN.Click
+
         If Not Name_TXT.Text = String.Empty Then
             Dim BIO_NO As String = BiometricID_TXT.Text
+            Dim allow_list = Nothing, deduc_list As String = Nothing
 
             Dim result As DialogResult = MessageBox.Show($"The record will be edited, do you want to proceed?", "Warning", MessageBoxButtons.YesNo)
             If result = DialogResult.Yes Then
@@ -250,6 +259,14 @@ Public Class frmPayout
 
                     For Each row As DataGridViewRow In Allowance_grid.Rows
                         Save_Recorded_Allow_Deduc(BiometricID_TXT.Text, paydate_, row.Cells(0).Value, row.Cells(1).Value, "ALLOWANCE")
+
+                        '======================== SAVING TRANSACTION ========================
+                        If allow_list <> Nothing Then
+                            allow_list = $"{allow_list}, {row.Cells(0).Value}({row.Cells(1).Value}), "
+                        Else
+                            allow_list = $"{row.Cells(0).Value}({row.Cells(1).Value}), "
+                        End If
+
                     Next
 
                 End If
@@ -267,25 +284,20 @@ Public Class frmPayout
 
                         If row.Cells(1).Value <> 0 Then
                             Save_Recorded_Allow_Deduc(BiometricID_TXT.Text, paydate_, row.Cells(0).Value, row.Cells(1).Value, "DEDUCTION", deduct_id)
+
+                            '======================== SAVING TRANSACTION ========================
+                            If deduc_list <> Nothing Then
+                                deduc_list = $"{allow_list}, {row.Cells(0).Value}({row.Cells(1).Value}), "
+                            Else
+                                deduc_list = $"{row.Cells(0).Value}({row.Cells(1).Value}), "
+                            End If
                         End If
 
                     Next
 
                 End If
 
-                ''====================================== SAVE NEW DEDUCTION ===================================================
-                'If Deduction_grid.Rows.Count > 0 Then
-
-                '    If isExist_String("MODIFIED_DEDUCTION", $"WHERE BIO_NO = '{BIO_NO}'") Then
-                '        RunCommand($"DELETE FROM MODIFIED_DEDUCTION WHERE BIO_NO = '{BIO_NO}' and PAYDATE = '{paydate_}';")
-                '    End If
-
-                '    For Each row As DataGridViewRow In Deduction_grid.Rows
-                '        Dim deduct_id As String = IIf(IsDBNull(row.Cells(2).Tag), Nothing, row.Cells(2).Tag)
-                '        SavePayout_MODIFIED_DEDUCTION(BiometricID_TXT.Text, paydate_, row.Cells(0).Value, row.Cells(1).Value, row.Cells(0).Tag, Today, deduct_id)
-                '    Next
-
-                'End If
+                SaveLogs($"UPDATED PAYOUT {Name_TXT.Text}({BiometricID_TXT.Text}), Basic({TotalBasic_LBL.Text}), OT({TotalOT_LBL.Text}), Late/UT({TotalLateUnder_LBL.Text}), Gross Amount({GrossAmount_LBL.Text}), SSS({SSSComp_LBL.Text}), Pagibig({HDMF_LBL.Text}), Philhealth({Philhealth_LBL.Text}), Tax Wheld({Tax_Wheld_LBL.Text}), SSS Loan({SSSLoan_LBL.Text}), Pagibig Loan({PagibigLoan_LBL.Text}), Allowance({allow_list}), Deduction({deduc_list}), Net Pay({NetPay_LBL.Text}), Total Holiday({TotalHol_LBL.Text}), Total Night Rate({TotalNight_LBL.Text})", frmMainForm.UserName_LBL.Text)
 
                 Cancel_BTN.PerformClick()
 
@@ -685,10 +697,14 @@ Public Class frmPayout
 
             Payslip_All()
 
+            SaveLogs($"PAYSLIP EMAILED TO ALL EMPLOYEES, Payroll({datee.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
+
         ElseIf Company_RadioB.Checked = True Then
 
             If Company_ComboB.SelectedIndex >= 0 Then
                 Payslip_By("COMPANY", Company_ComboB.Text)
+
+                SaveLogs($"PAYSLIP EMAILED PER COMPANY - {Company_ComboB.Text}, Payroll({datee.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
             Else
                 MsgBox("Please Select Branch.", MsgBoxStyle.Exclamation, "INVALID")
             End If
@@ -697,6 +713,8 @@ Public Class frmPayout
 
             If Branch_ComboB.SelectedIndex >= 0 Then
                 Payslip_By("BRANCH_CODE", Branch_ComboB.Text)
+
+                SaveLogs($"PAYSLIP EMAILED PER BRANCH - {Branch_ComboB.Text}, Payroll({datee.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
             Else
                 MsgBox("Please Select Branch.", MsgBoxStyle.Exclamation, "INVALID")
             End If
@@ -720,7 +738,10 @@ Public Class frmPayout
                 MsgBox("Email sent to " & Employee_TXT.Text, MsgBoxStyle.Information, "Information")
             End If
 
+            SaveLogs($"PAYSLIP EMAILED TO {Employee_TXT.Text}({Employee_TXT.Tag})", frmMainForm.UserName_LBL.Text)
+
         End If
+
 
     End Sub
 

@@ -1424,14 +1424,24 @@ Module SaveUpdate
 
     Friend Sub Save_WihtholdingTax(datagird As DataGridView)
         Has_Rows_Delete("PAYROLL_WHOLDING")
+        Dim RANGE_LIST As String = Nothing
 
         For Each row As DataGridViewRow In datagird.Rows
             Dim mysql As String = $"Select * FROM PAYROLL_WHOLDING"
             Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_WHOLDING")
             Dim dsNewRow As DataRow = dss.Tables(0).NewRow
             With dsNewRow
+
                 .Item("COMP_RANGE") = row.Cells(0).Value
                 .Item("PRESCRIBE_WH_TAX") = row.Cells(1).Value
+
+                '========= TRANSACTION LOGS ========
+                If RANGE_LIST <> Nothing Then
+                    RANGE_LIST = $"{RANGE_LIST} - Range({row.Cells(0).Value}), Prescribe({row.Cells(1).Value}) "
+                Else
+                    RANGE_LIST = $"Range({row.Cells(0).Value}), Prescribe({row.Cells(1).Value}) "
+                End If
+
             End With
 
             dss.Tables(0).Rows.Add(dsNewRow)
@@ -1441,6 +1451,7 @@ Module SaveUpdate
         MsgBox("Successfully Saved!", MsgBoxStyle.Information, "Information")
         RunCommand("DELETE FROM PAYROLL_WHOLDING WHERE COMP_RANGE Is null")
 
+        SaveLogs($"CHANGED WITHOLDING TAX {RANGE_LIST}", frmMainForm.UserName_LBL.Text)
     End Sub
 
     Friend Sub SaveAllowance(bioNo As String, category As String, amount As String, fix As String, SCHEDULE As String, DAY_DATE As String, EFFECTIVE_DATE As String)

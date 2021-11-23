@@ -79,6 +79,7 @@
 
             End If
 
+            SaveLogs($"ADDED HOLIDAY - Name({Name_TXT.Text}), Date({Date_DTP.Value.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
         Else
             MsgBox("Please Name of Holiday!", MsgBoxStyle.Critical, "Error")
         End If
@@ -97,7 +98,6 @@
         End If
     End Sub
 
-
     Private Sub RemoveToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles RemoveToolStripMenuItem.Click
         If lvHoliday.SelectedItems.Count > 0 Then
             For Each item As ListViewItem In lvHoliday.SelectedItems
@@ -109,6 +109,7 @@
                     SPECIALHolidayLists(lvHoliday)
                 End If
 
+                SaveLogs($"REMOVED HOLIDAY - Name({item.SubItems(1).Text}), Date({item.SubItems(0).Text})", frmMainForm.UserName_LBL.Text)
             Next
         End If
     End Sub
@@ -173,6 +174,8 @@
 
             SaveRATE("BIO_NO", Rate_BioNo_TXT.Text, Rate_EmpAmount_TXT.Text)
 
+            SaveLogs($"UPDATED RATE - {Rate_Employee_TXT.Text} ({Rate_BioNo_TXT.Text}), Rate({Rate_EmpAmount_TXT.Text})", frmMainForm.UserName_LBL.Text)
+
             Rate_EmpClear_BTN.PerformClick()
             Lists_Rate(Rate_list)
         End If
@@ -204,13 +207,17 @@
 
             SaveMinimum_RATE(Rate_City_ComboB.Text, Rate_CityAmount_TXT.Text, Ecola_TXT.Text)
 
+            SaveLogs($"UPDATED MINIMUM RATE - City({Rate_City_ComboB.Text}), Rate({Rate_CityAmount_TXT.Text})", frmMainForm.UserName_LBL.Text)
+
             CityClear_BTN.PerformClick()
 
             MsgBox("Successfully updated!", MsgBoxStyle.Information, "Information")
 
             Lists_Rate(Rate_list)
+
         Else
-            If Not Rate_City_ComboB.SelectedIndex >= 0 Then MsgBox("Invalid City. Kindly click CITY-BRANCH to add new City and branch!", MsgBoxStyle.Exclamation, "Error")
+
+            If Not Rate_City_ComboB.SelectedIndex >= 0 Then MsgBox("Invalid City! Kindly click CITY-BRANCH to add new City or Branch!", MsgBoxStyle.Exclamation, "Error")
             If Rate_CityAmount_TXT.Text = "" Then MsgBox("Kindly indicate rate amount!", MsgBoxStyle.Exclamation, "Error")
 
         End If
@@ -280,6 +287,8 @@
 
         SaveAllowance(Allow_Name_TXT.Tag, Allow_Category_Combo.Text, Allow_Amount_TXT.Text, fix, Allow_Schedule_Combo.SelectedItem, everyThisDate, A_EffectiveDate_DTP.Value) ' Label14 is EMP_ID
 
+        SaveLogs($"ADDED ALLOWANCE - {Allow_Name_TXT.Text} ({Allow_Name_TXT.Tag}), Category({Allow_Category_Combo.Text}), Amount({Allow_Amount_TXT.Text}), Sched({Allow_Schedule_Combo.Text}), Effectivity({A_EffectiveDate_DTP.Value.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
+
         Lists_Allowance(Allowance_LV)
         Allow_Cancel_BTN.PerformClick()
 
@@ -319,8 +328,6 @@
 
 
     Private Function isValidSave_DEDUC()
-
-        Dim num2 = Val(Allow_Amount_TXT.Text)
 
         If String.IsNullOrEmpty(DE_Name_TXT.Text) Then
             MsgBox("Please select a name.", MsgBoxStyle.Critical, "Error")
@@ -433,6 +440,8 @@
             updateDeductionS(Deduction_List.Tag, DE_Category_Combo.Text, DE_Total_TXT.Text, DE_NoOfGives_TXT.Text, DE_AmountGive_TXT.Text, DE_Schedule_Combo.Text, DE_Effectivity_DTP.Value) 'DE_Category_Combo.Tag (EMP_ID)
         End If
 
+        SaveLogs($"{DE_Save_BTN.Tag} DEDUCTION - {DE_Name_TXT.Text} ({DE_Name_TXT.Tag}), Category({DE_Category_Combo.Text}), Total({DE_Total_TXT.Text}), No. of Gives({DE_NoOfGives_TXT.Text}), Amount/Give({DE_AmountGive_TXT.Text}), Effectivity({DE_Effectivity_DTP.Value.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
+
         Lists_deduction(Deduction_List)
         DE_Cancel_BTN.PerformClick()
 
@@ -451,6 +460,8 @@
         If Not AllowCat_TXT.Text = "" Then
             SaveCATEGORY(AllowCat_TXT.Text, "CATEGORY_ALLOWANCE", "ALLOWANCE_NAME")
             Load_Category_LIST(Allowance_List, "CATEGORY_ALLOWANCE", "ALLOWANCE_NAME")
+
+            SaveLogs($"ADDED CATEGORY FOR ALLOWANCE - {AllowCat_TXT.Text}", frmMainForm.UserName_LBL.Text)
             AllowCat_TXT.Text = ""
         End If
     End Sub
@@ -463,6 +474,9 @@
         If Not Deduct_TXT.Text = "" Then
             SaveCATEGORY(Deduct_TXT.Text, "CATEGORY_DEDUCTION", "DEDUCTION_NAME")
             Load_Category_LIST(Cat_Deduc_List, "CATEGORY_DEDUCTION", "DEDUCTION_NAME")
+
+            SaveLogs($"ADDED CATEGORY FOR DEDUCTION - {Deduct_TXT.Text}", frmMainForm.UserName_LBL.Text)
+
             Deduct_TXT.Text = ""
         End If
     End Sub
@@ -478,13 +492,18 @@
             Password_TXT.ReadOnly = False
         Else
             If Not Email_TXT.Text = String.Empty Or Not Password_TXT.Text = String.Empty Then
+
                 SaveEmail(Email_TXT.Text, Password_TXT.Text)
+
+                SaveLogs($"CHANGED EMAIL SENDER {Email_TXT.Text}", frmMainForm.UserName_LBL.Text)
+
                 Email_TXT.Clear()
                 Password_TXT.Clear()
                 Email_TXT.ReadOnly = True
                 Password_TXT.ReadOnly = True
                 GetEmail(Email_TXT, Password_TXT)
                 Email_Save_BTN.Text = "Change"
+
             Else
                 MsgBox("Please Complete the information!", MsgBoxStyle.Information, "Information")
             End If
@@ -540,6 +559,8 @@
         DE_NoOfGives_TXT.Text = Deduction_List.Items(Deduction_List.FocusedItem.Index).SubItems(3).Text
         DE_AmountGive_TXT.Text = Deduction_List.Items(Deduction_List.FocusedItem.Index).SubItems(4).Text
         Deduction_List.Tag = Deduction_List.Items(Deduction_List.FocusedItem.Index).SubItems(2).Tag
+
+        DE_Save_BTN.Tag = "UPDATE"
     End Sub
 
     Private Sub FlowLayoutPanel1_Paint(sender As Object, e As PaintEventArgs) Handles FlowLayoutPanel1.Paint
@@ -690,6 +711,8 @@
         If ClockBranch_CB.SelectedIndex >= 0 And ClockBranch_IN_CB.SelectedIndex >= 0 And ClockBranch_OUT_CB.SelectedIndex >= 0 Then
             Save_ClockINOUT("BRANCH_CODE", ClockBranch_CB.Text, ClockBranch_IN_CB.Text, ClockBranch_OUT_CB.Text)
             Lists_TimeInOut(TimeInOut_LV)
+
+            SaveLogs($"UPDATED TIME IN/OUT FOR BRANCH({ClockBranch_CB.Text}),  In/Out({ClockBranch_IN_CB.Text} - {ClockBranch_OUT_CB.Text})", frmMainForm.UserName_LBL.Text)
             ClearlBranch_BTN.PerformClick()
         End If
 
@@ -700,6 +723,8 @@
         If ClockEmp_TXT.Text <> "" And ClockEmp_IN_CB.SelectedIndex >= 0 And ClockEmp_OUT_CB.SelectedIndex >= 0 Then
             Save_ClockINOUT("BIO_NO", ClockBio_TXT.Text, ClockEmp_IN_CB.Text, ClockEmp_OUT_CB.Text)
             Lists_TimeInOut(TimeInOut_LV)
+
+            SaveLogs($"UPDATED TIME IN/OUT FOR {ClockEmp_TXT.Text} ({ClockBio_TXT.Text}),  In/Out({ClockEmp_IN_CB.Text} - {ClockEmp_OUT_CB.Text})", frmMainForm.UserName_LBL.Text)
             ClockClear_BTN.PerformClick()
         End If
 
@@ -788,12 +813,16 @@
     End Sub
 
     Private Sub SaveCity_BTN_Click(sender As Object, e As EventArgs) Handles SaveCity_BTN.Click
-
         'SaveCityBranch() 
 
         If City_Combo.Text <> Nothing And CityBName_Combo.Text <> Nothing And CityCode_Combo.Text <> Nothing And Address_Combo.Text <> Nothing Then
             SaveCityBranch(CityCode_Combo.Text, CityBName_Combo.Text, City_Combo.Text, BranchCategory_Combo.Text, Address_Combo.Text)
             Lists_City_Branch(CityBranch_List)
+
+            '==================== TRANSACTION LOGS =========================
+            If SaveCity_BTN.Tag = Nothing Then SaveCity_BTN.Tag = "ADDED"
+            SaveLogs($"{SaveCity_BTN.Tag} CITY BRANCH - City({City_Combo.Text}), Code({CityCode_Combo.Text}), BranchName({CityBName_Combo.Text}), BranchCat({BranchCategory_Combo.Text}), Address({Address_Combo.Text})", frmMainForm.UserName_LBL.Text)
+
         Else
             MsgBox("Please Complete the Details", MsgBoxStyle.Exclamation, "Error")
         End If
@@ -814,6 +843,7 @@
         Address_Combo.Text = CityBranch_List.Items(CityBranch_List.FocusedItem.Index).SubItems(3).Text
         BranchCategory_Combo.Text = CityBranch_List.Items(CityBranch_List.FocusedItem.Index).SubItems(4).Text
 
+        SaveCity_BTN.Tag = "UPDATE"
     End Sub
 
     Private Sub City_Combo_TextChanged(sender As Object, e As EventArgs) Handles CityCode_Combo.TextChanged, City_Combo.TextChanged
@@ -862,4 +892,9 @@
         Settings_Tab.SelectedIndex = 4
         Deduct_TXT.Select()
     End Sub
+
+    Private Sub DE_Name_TXT_TextChanged(sender As Object, e As EventArgs) Handles DE_Name_TXT.TextChanged
+        DE_Save_BTN.Tag = "ADDED"
+    End Sub
+
 End Class
