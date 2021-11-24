@@ -646,8 +646,10 @@ Module SelectFromDatabase
         Dim paydate_ As DateTime = Convert.ToDateTime(paydate)
         paydate_ = paydate_.ToString("d")
 
-        Dim first_payroll = New DateTime(paydate_.Year, paydate_.Month, 1)
-        first_payroll = first_payroll.AddDays(14)
+        Dim first_payroll = New DateTime(paydate_.Year, paydate_.Month, 15)
+
+        'Dim first_payroll = New DateTime(paydate_.Year, paydate_.Month, 1)
+        'first_payroll = first_payroll.AddDays(14)
 
         Dim sql As String = $"Select * FROM PAYROLL_PAYOUT where BIOMETRIC_ID = '{BIO_NO}' and PAYDATE = '{first_payroll.ToString("d")}'"
         Using ds As DataSet = LoadSQL(sql, "PAYROLL_PAYOUT")
@@ -695,7 +697,6 @@ Module SelectFromDatabase
         Dim first_basic As Double = GetFirst_Basic(BIOMETRIC_ID, paydate)
         Dim second_basic As Double = 0
         Dim monthly_Basic As Double = 0
-
         Dim sqll As String = $"Select * FROM PAYROLL_PAYOUT where BIOMETRIC_ID = '{BIOMETRIC_ID}' and PAYDATE = '{paydate}'"
         Using ds As DataSet = LoadSQL(sqll, "PAYROLL_PAYOUT")
             If ds.Tables(0).Rows.Count > 0 Then
@@ -732,7 +733,6 @@ Module SelectFromDatabase
                         End If
 
                         If (Enumerable.Range(strWords(0), strWords.Last).Contains(monthly_Basic)) Then
-                            'sss = .Item("TOTAL_EE")
                             ee = .Item("total_ee")
                             er = .Item("total_er")
                             ec = .Item("EC_TOTAL")
@@ -744,40 +744,6 @@ Module SelectFromDatabase
         End Using
         Return (ee, er, ec, total)
     End Function
-
-    'Public Function Get_SSS(monthly_Basic As String) As (EE As Double, ER As Double, EC As Double, total As Double)
-
-    '    Console.WriteLine("monthly_Basic" & monthly_Basic)
-    '    Dim ee As Double = 0
-    '    Dim er As Double = 0
-    '    Dim ec As Double = 0
-    '    Dim total As Double = 0
-
-    '    Dim mysql As String = $"Select * FROM PAYROLL_SSS"
-    '    Using ds As DataSet = LoadSQL(mysql, "PAYROLL_SSS")
-    '        If ds.Tables(0).Rows.Count > 0 Then
-    '            For Each dr In ds.Tables(0).Rows
-    '                With dr
-    '                    Dim range As String = .Item("RANGECOMP")
-    '                    Dim strWords As String() = range.Split(New Char() {" "c})
-
-    '                    If strWords(0).Contains("Below") Then
-    '                        strWords(0) = 1
-    '                    End If
-
-    '                    If (Enumerable.Range(strWords(0), strWords.Last).Contains(monthly_Basic)) Then
-    '                        'sss = .Item("TOTAL_EE")
-    '                        ee = .Item("total_ee")
-    '                        er = .Item("total_er")
-    '                        ec = .Item("EC_TOTAL")
-    '                        total = .Item("TOTAL_TOTAL")
-    '                    End If
-    '                End With
-    '            Next
-    '        End If
-    '    End Using
-    '    Return (ee, er, ec, total)
-    'End Function
 
     Public Function Get_LOAN_SSS(bio_no As String) As Double
         Dim sssLoan As Double = 0
@@ -813,33 +779,6 @@ Module SelectFromDatabase
         Return pagibigLoan
     End Function
 
-    Public Function Get_SSS_ER(monthly_Basic As String) As Double
-        Dim sss_ER As Double
-
-        Dim mysql As String = $"Select * FROM PAYROLL_SSS"
-        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_SSS")
-            If ds.Tables(0).Rows.Count > 0 Then
-                For Each dr In ds.Tables(0).Rows
-                    With dr
-
-                        Dim range As String = .Item("RANGECOMP")
-                        Dim strWords As String() = range.Split(New Char() {" "c})
-
-                        If strWords(0).Contains("Below") Then
-                            strWords(0) = 1
-                        End If
-
-                        If (Enumerable.Range(strWords(0), strWords.Last).Contains(monthly_Basic)) Then
-                            sss_ER = .Item("TOTAL_ER")
-                        End If
-                    End With
-                Next
-            End If
-        End Using
-
-        Return sss_ER
-    End Function
-
     Public Function Get_Pagibig_ER(monthly_Basic As String) As Double
         Dim pagibig_ER As Double
 
@@ -855,7 +794,6 @@ Module SelectFromDatabase
 
         Return pagibig_ER
     End Function
-
 
     Public Function Get_Pagibig(monthly_Basic As String) As Double
         Dim pagibig As Double
@@ -1271,7 +1209,17 @@ Module SelectFromDatabase
         While rdr.Read()
             If rdr.HasRows Then
                 With rdr
-                    combo.Items.Add(rdr.Item(0).ToString)
+
+
+                    If combo.Name = "Rem_Paydate_Combo" Then '====== REMITTANCE =============
+                        If IsLastDay(rdr.Item(0).ToString) Then
+                            Dim datee As DateTime = rdr.Item(0).ToString
+                            combo.Items.Add(datee.ToString("d"))
+                        End If
+                    Else
+                        combo.Items.Add(rdr.Item(0).ToString)
+                    End If
+
                 End With
             Else
                 Exit Sub

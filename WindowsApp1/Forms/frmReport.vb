@@ -1,5 +1,4 @@
 ﻿
-
 Public Class frmReport
 
     Private allowCoolMove As Boolean = False
@@ -11,8 +10,10 @@ Public Class frmReport
         PopulateComboBox(PaydateNet_ComboB, "PAYROLL_PAYOUT", "PAYDATE")
         PopulateComboBox(PaydateCom_Combo, "PAYROLL_PAYOUT", "PAYDATE")
         PopulateComboBox(SumPaydate_Combo, "PAYROLL_PAYOUT", "PAYDATE")
-        PopulateComboBox(Rem_Paydate_Combo, "PAYROLL_PAYOUT", "PAYDATE")
+        PopulateComboBox_Any(Rem_Paydate_Combo, "PAYROLL_PAYOUT", "PAYDATE")
+        PopulateComboBox(CostPaydate_Combo, "PAYROLL_PAYOUT", "PAYDATE")
         Lists_SBU(SBU_LV)
+
     End Sub
 
     Private Sub SearchSBU_BTN_Click(sender As Object, e As EventArgs) Handles SearchSBU_BTN.Click
@@ -71,6 +72,7 @@ Public Class frmReport
 
                     If ds.Tables(0).Rows.Count > 0 Then
 
+                        progressBarStart(ds.Tables(0).Rows.Count)
                         For Each dr In ds.Tables(0).Rows
                             With dr
                                 Dim dateStarted As DateTime = .Item("DATE_STARTED")
@@ -133,9 +135,11 @@ Public Class frmReport
                                                SBU_CHARGES.ToString("n"), NET_PAY.ToString("n"), BRANCH_CODE, payroll.ToString("MMMM dd, yyyy"), period, COMPANY,
                                                HO_CATEGORY, tempPlus)
 
+                                frmMainForm.AppProgressBar.Value += 1
                             End With
                         Next
 
+                        progressBarEnd()
                         Dim TOTAL_EMP As Integer = GetOVERALL_COUNT("ID", paydatee)
                         Dim TOTAL_BASIC As Double = GetOVERALL_SUM("TOTAL_BASIC", paydatee)
                         Dim TOTAL_OT As Double = GetOVERALL_SUM("TOTAL_OVERTIME", paydatee)
@@ -654,18 +658,54 @@ Public Class frmReport
     Public Sub LoadRemittance()
 
         Rpt_Distribution.LocalReport.DataSources.Clear()
+        Dim PAYDATE As DateTime = Rem_Paydate_Combo.Text
+
+        Try
+            Dim FORMNAME As String = ""
+            Dim DATASOURCE As Microsoft.Reporting.WinForms.ReportDataSource = Nothing
+
+            If RemCat_Combo.SelectedIndex = 0 Then
+
+                DATASOURCE = New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", Load_Remittance_SSS(Rem_Paydate_Combo.Text))
+                FORMNAME = $"SSS Remittance - {PAYDATE.ToString("MMMM dd, yyyy")}"
+
+            ElseIf RemCat_Combo.SelectedIndex = 1 Then
+
+                DATASOURCE = New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", Load_Remittance_Pagibig(Rem_Paydate_Combo.Text))
+                FORMNAME = $"Pagibig Remittance - {PAYDATE.ToString("MMMM dd, yyyy")}"
+
+            ElseIf RemCat_Combo.SelectedIndex = 2 Then
+
+                DATASOURCE = New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", Load_Remittance_PhilHealth(Rem_Paydate_Combo.Text))
+                FORMNAME = $"PhilHealth Remittance - {PAYDATE.ToString("MMMM dd, yyyy")}"
+
+            End If
+
+            Dim paramList As New List(Of Microsoft.Reporting.WinForms.ReportParameter) From {
+                        New Microsoft.Reporting.WinForms.ReportParameter("paramFormName", FORMNAME)
+                        }
+
+            Rpt_Distribution.LocalReport.DataSources.Add(DATASOURCE)
+            Rpt_Distribution.LocalReport.SetParameters(paramList)
+            Rpt_Distribution.RefreshReport()
+
+        Catch ex As Exception
+            Log_Report(ex.ToString)
+            MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+
+    End Sub
+
+    Public Sub LoadCostDistribution()
+
+        Rpt_CostContrib.LocalReport.DataSources.Clear()
 
         Try
 
-            Dim DataSet1 As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", LoadDataTable_Remittance(Rem_Paydate_Combo.Text))
+            Dim DATASOURCE As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", Load_CostDistribution(CostPaydate_Combo.Text))
 
-            'Dim paramList As New List(Of Microsoft.Reporting.WinForms.ReportParameter) From {
-            '        New Microsoft.Reporting.WinForms.ReportParameter("paramPGUY", Get_PGC("COMI_TO_FUJI", PAYDATEE).ToString(”N”))
-            '        }
-
-            Rpt_Distribution.LocalReport.DataSources.Add(DataSet1)
-            'Rpt_Distribution.LocalReport.SetParameters(paramList)
-            Rpt_Distribution.RefreshReport()
+            Rpt_CostContrib.LocalReport.DataSources.Add(DATASOURCE)
+            Rpt_CostContrib.RefreshReport()
 
         Catch ex As Exception
             Log_Report(ex.ToString)
@@ -781,7 +821,7 @@ Public Class frmReport
                                         inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
                                         left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCH_CODE
                                         where A.PAYDATE  = '{PaydateNet_ComboB.Text}' 
-                                        and  B.COMPANY  = 'PERFECOM' OR B.HO_CATEGORY In ('Perfecom Admin Office','Perfecom Admin Operation')
+                                        and  (B.COMPANY  = 'PERFECOM' OR B.HO_CATEGORY In ('Perfecom Admin Office','Perfecom Admin Operation'))
                                         ORDER BY CASE WHEN B.BRANCH_CODE = 'SMG' THEN 1
                                                       WHEN B.BRANCH_CODE = 'KCG' THEN 2
                                                       WHEN B.BRANCH_CODE = 'OPK' THEN 3
@@ -855,9 +895,9 @@ Public Class frmReport
                         mysql = $"Select * From PAYROLL_PAYOUT A 
                                         inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
                                         left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCH_CODE
-                                        where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' 
-                                        and B.BRANCH_CODE IN ('ROG','ROX','FINEPIX','COT','MID','KID','SNP','GMA','SML','ZAM','SMD')
-                                        or B.HO_CATEGORY IN ('Photo Admin Office', 'Photo Admin Operation')
+                                        where PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' 
+                                        and (B.BRANCH_CODE IN ('ROG','ROX','FINEPIX','COT','MID','KID','SNP','GMA','SML','ZAM','SMD')
+                                        or B.HO_CATEGORY IN ('Photo Admin Office', 'Photo Admin Operation'))
                                         Order by case when B.BRANCH_CODE = 'ROG' then 1
                                                       when B.BRANCH_CODE = 'ROX' then 2
                                                       when B.BRANCH_CODE = 'FINEPIX' then 3
@@ -901,7 +941,7 @@ Public Class frmReport
                                         inner Join PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID
                                         left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCH_CODE  
                                         where A.PAYDATE = '{paydatee}' and B.COMPANY  = 'P&G UY' 
-                                        And B.BRANCH_CODE IN ('COMI','KTV','PBA','WAVE') Or B.HO_CATEGORY In ('GHS/P&G UY Admin Office','GHS/P&G UY Admin Operation','GHS/P&G UY Maintenance')
+                                        And (B.BRANCH_CODE IN ('COMI','KTV','PBA','WAVE') Or B.HO_CATEGORY In ('GHS/P&G UY Admin Office','GHS/P&G UY Admin Operation','GHS/P&G UY Maintenance'))
                                         Order by case when B.HO_CATEGORY LIKE UPPER('%GHS%') then 1 else 0  end, B.HO_CATEGORY asc, B.BRANCH_CODE asc"
 
                     End If
@@ -1027,6 +1067,12 @@ Public Class frmReport
     Private Sub RemCat_Combo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles RemCat_Combo.SelectedIndexChanged
         If Rem_Paydate_Combo.SelectedIndex >= 0 And RemCat_Combo.SelectedIndex >= 0 Then
             LoadRemittance()
+        End If
+    End Sub
+
+    Private Sub CostPaydate_Combo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CostPaydate_Combo.SelectedIndexChanged
+        If CostPaydate_Combo.SelectedIndex >= 0 Then
+            LoadCostDistribution()
         End If
     End Sub
 End Class

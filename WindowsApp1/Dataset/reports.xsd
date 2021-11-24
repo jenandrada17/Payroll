@@ -141,6 +141,18 @@
             </xs:sequence>
           </xs:complexType>
         </xs:element>
+        <xs:element name="CostContribution" msprop:Generator_TableClassName="CostContributionDataTable" msprop:Generator_TableVarName="tableCostContribution" msprop:Generator_TablePropName="CostContribution" msprop:Generator_RowDeletingName="CostContributionRowDeleting" msprop:Generator_RowChangingName="CostContributionRowChanging" msprop:Generator_RowEvHandlerName="CostContributionRowChangeEventHandler" msprop:Generator_RowDeletedName="CostContributionRowDeleted" msprop:Generator_UserTableName="CostContribution" msprop:Generator_RowChangedName="CostContributionRowChanged" msprop:Generator_RowEvArgName="CostContributionRowChangeEvent" msprop:Generator_RowClassName="CostContributionRow">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="PAYDATE" msdata:Caption="NAME" msprop:Generator_ColumnVarNameInTable="columnPAYDATE" msprop:Generator_ColumnPropNameInRow="PAYDATE" msprop:Generator_ColumnPropNameInTable="PAYDATEColumn" msprop:Generator_UserColumnName="PAYDATE" type="xs:string" minOccurs="0" />
+              <xs:element name="BRANCH" msdata:Caption="NO" msprop:Generator_ColumnVarNameInTable="columnBRANCH" msprop:Generator_ColumnPropNameInRow="BRANCH" msprop:Generator_ColumnPropNameInTable="BRANCHColumn" msprop:Generator_UserColumnName="BRANCH" type="xs:string" minOccurs="0" />
+              <xs:element name="NAME_DEBIT" msprop:Generator_ColumnVarNameInTable="columnNAME_DEBIT" msprop:Generator_ColumnPropNameInRow="NAME_DEBIT" msprop:Generator_ColumnPropNameInTable="NAME_DEBITColumn" msprop:Generator_UserColumnName="NAME_DEBIT" type="xs:string" minOccurs="0" />
+              <xs:element name="NAME_CREDIT" msprop:Generator_ColumnVarNameInTable="columnNAME_CREDIT" msprop:Generator_ColumnPropNameInRow="NAME_CREDIT" msprop:Generator_ColumnPropNameInTable="NAME_CREDITColumn" msprop:Generator_UserColumnName="NAME_CREDIT" type="xs:string" minOccurs="0" />
+              <xs:element name="DEBIT" msprop:Generator_ColumnVarNameInTable="columnDEBIT" msprop:Generator_ColumnPropNameInRow="DEBIT" msprop:Generator_ColumnPropNameInTable="DEBITColumn" msprop:Generator_UserColumnName="DEBIT" type="xs:string" minOccurs="0" />
+              <xs:element name="CREDIT" msprop:Generator_ColumnVarNameInTable="columnCREDIT" msprop:Generator_ColumnPropNameInRow="CREDIT" msprop:Generator_ColumnPropNameInTable="CREDITColumn" msprop:Generator_UserColumnName="CREDIT" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
       </xs:choice>
     </xs:complexType>
   </xs:element>

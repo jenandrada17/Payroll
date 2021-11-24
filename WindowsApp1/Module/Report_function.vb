@@ -24,9 +24,8 @@ Module Report_function
         mysql = $"Select * From PAYROLL_PAYOUT A  
                                         INNER JOIN PAYROLL_EMPLOYEE C ON BIO_NO = BIOMETRIC_ID    
                                         LEFT JOIN PAYROLL_CITY_BRANCH B ON BRANCHCODE = BRANCH_CODE    
-                                        WHERE PAYDATE = '{paydate}' AND COMPANY = 'PHOTO'
-                                            AND BRANCHCODE IN ('DIG','ISU','M1','POL', 'ROG','ROX','FINEPIX','COT','MID','KID','SNP','GMA','SML','ZAM','SMD')
-                                            OR HO_CATEGORY LIKE 'Photo%' 
+                                        WHERE (BRANCHCODE IN ('DIG','ISU','M1','POL', 'ROG','ROX','FINEPIX','COT','MID','KID','SNP','GMA','SML','ZAM','SMD')
+                                                AND  PAYDATE = '{paydate}' AND COMPANY = 'PHOTO') OR (HO_CATEGORY LIKE 'Photo%' AND  PAYDATE = '{paydate}')
                                         ORDER BY CASE WHEN UPPER(HO_CATEGORY) LIKE UPPER('%Admin%') THEN 0  
                                                 WHEN UPPER(ADDRESS) LIKE UPPER('GENSAN') THEN 1 
                                                 WHEN UPPER(ADDRESS) LIKE UPPER('POLOMOLOK') THEN 2 
@@ -42,6 +41,8 @@ Module Report_function
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
             If ds.Tables(0).Rows.Count > 0 Then
+
+                progressBarStart(ds.Tables(0).Rows.Count)
                 For Each dr In ds.Tables(0).Rows
                     With dr
 
@@ -75,8 +76,10 @@ Module Report_function
                         dt_PhotoGensanJR.Rows.Add(PAYROLL.ToString("MMMM dd, yyyy").ToUpper(), COMPANY,
                                                   info.ToTitleCase(ADDRESS), EMAIL.ToString("n"), 0, 0, 0)
 
+                        frmMainForm.AppProgressBar.Value += 1
                     End With
                 Next
+                progressBarEnd()
             End If
         End Using
 
@@ -112,6 +115,8 @@ Module Report_function
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
             If ds.Tables(0).Rows.Count > 0 Then
+
+                progressBarStart(ds.Tables(0).Rows.Count)
                 For Each dr In ds.Tables(0).Rows
                     With dr
 
@@ -139,8 +144,10 @@ Module Report_function
                         dt_PhotoDavao.Rows.Add(PAYROLL.ToString("MMMM dd, yyyy").ToUpper(), COMPANY,
                                                info.ToTitleCase(ADDRESS), EMAIL.ToString("n"), 0, 0, 0)
 
+                        frmMainForm.AppProgressBar.Value += 1
                     End With
                 Next
+                progressBarEnd()
             End If
         End Using
 
@@ -169,7 +176,7 @@ Module Report_function
                                         INNER JOIN PAYROLL_EMPLOYEE C ON BIO_NO = BIOMETRIC_ID    
                                         LEFT JOIN PAYROLL_CITY_BRANCH B ON BRANCHCODE = BRANCH_CODE    
                                         WHERE PAYDATE = '{paydate}' AND COMPANY  = 'DALTON'
-                                            OR  HO_CATEGORY LIKE 'Dalton%' 
+                                            OR  (HO_CATEGORY LIKE 'Dalton%' AND PAYDATE = '{paydate}' )
                                         ORDER BY CASE WHEN UPPER(HO_CATEGORY) LIKE UPPER('%Admin%') THEN 0 
                                                 WHEN UPPER(HO_CATEGORY) LIKE UPPER('%Retail%') THEN 1 
                                                 WHEN UPPER(ADDRESS) LIKE UPPER('GENSAN') THEN 2  
@@ -207,6 +214,8 @@ Module Report_function
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
             If ds.Tables(0).Rows.Count > 0 Then
+
+                progressBarStart(ds.Tables(0).Rows.Count)
                 For Each dr In ds.Tables(0).Rows
                     With dr
 
@@ -239,8 +248,10 @@ Module Report_function
                         dt_Dalton.Rows.Add(PAYROLL.ToString("MMMM dd, yyyy").ToUpper(), COMPANY,
                                                info.ToTitleCase(ADDRESS), EMAIL.ToString("n"), 0, 0, 0)
 
+                        frmMainForm.AppProgressBar.Value += 1
                     End With
                 Next
+                progressBarEnd()
             End If
         End Using
 
@@ -269,7 +280,7 @@ Module Report_function
                                         INNER JOIN PAYROLL_EMPLOYEE C ON BIO_NO = BIOMETRIC_ID    
                                         LEFT JOIN PAYROLL_CITY_BRANCH B ON BRANCHCODE = BRANCH_CODE    
                                         WHERE PAYDATE = '{paydate}' AND COMPANY  = 'PERFECOM'
-                                            OR HO_CATEGORY LIKE 'Perfecom%' 
+                                            OR (HO_CATEGORY LIKE 'Perfecom%' AND  PAYDATE = '{paydate}')
                                         ORDER BY CASE WHEN UPPER(HO_CATEGORY) LIKE UPPER('%Admin%') THEN 0  
                                                 WHEN UPPER(ADDRESS) LIKE UPPER('GENSAN') THEN 1   
                                                 WHEN UPPER(ADDRESS) LIKE UPPER('MARBEL') THEN 2 
@@ -277,6 +288,8 @@ Module Report_function
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
             If ds.Tables(0).Rows.Count > 0 Then
+
+                progressBarStart(ds.Tables(0).Rows.Count)
                 For Each dr In ds.Tables(0).Rows
                     With dr
 
@@ -307,8 +320,10 @@ Module Report_function
                         dt_Dalton.Rows.Add(PAYROLL.ToString("MMMM dd, yyyy").ToUpper(), COMPANY,
                                                info.ToTitleCase(ADDRESS), EMAIL.ToString("n"), 0, 0, 0)
 
+                        frmMainForm.AppProgressBar.Value += 1
                     End With
                 Next
+                progressBarEnd()
             End If
         End Using
 
@@ -337,7 +352,7 @@ Module Report_function
                                         INNER JOIN PAYROLL_EMPLOYEE C ON BIO_NO = BIOMETRIC_ID     
                                         LEFT JOIN PAYROLL_CITY_BRANCH B ON BRANCHCODE = BRANCH_CODE      
                                         WHERE PAYDATE = '{paydate}' AND COMPANY  = 'P&G UY'
-                                            OR HO_CATEGORY LIKE 'GHS/P&G UY%' 
+                                            OR (HO_CATEGORY LIKE 'GHS/P&G UY%' AND PAYDATE = '{paydate}')
                                         ORDER BY CASE WHEN UPPER(HO_CATEGORY) LIKE UPPER('%Admin%') THEN 0  
                                                 WHEN BRANCH_CODE = '3G' THEN 1    
                                                 WHEN BRANCH_CODE = 'COMI' THEN 3 
@@ -348,6 +363,8 @@ Module Report_function
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
             If ds.Tables(0).Rows.Count > 0 Then
+
+                progressBarStart(ds.Tables(0).Rows.Count)
                 For Each dr In ds.Tables(0).Rows
                     With dr
 
@@ -380,8 +397,10 @@ Module Report_function
                         dt_Dalton.Rows.Add(PAYROLL.ToString("MMMM dd, yyyy").ToUpper(), COMPANY,
                                                info.ToTitleCase(ADDRESS), EMAIL.ToString("n"), 0, 0, 0)
 
+                        frmMainForm.AppProgressBar.Value += 1
                     End With
                 Next
+                progressBarEnd()
             End If
         End Using
 
@@ -421,7 +440,6 @@ Module Report_function
                         '============================= NAME AND ATTENDANCE ============================  
                         NET_PAY = .Item("NET_PAY")
                         TOTALS = NET_PAY * 0.5
-
                     End With
                 Next
 
@@ -459,11 +477,13 @@ Module Report_function
         Dim mysqll As String = $"Select * From PAYROLL_EMPLOYEE A 
                                         INNER JOIN PAYROLL_PERCENTAGEE B ON B.CATEGORY = A.COMMON_CATEGORY
                                         INNER JOIN PAYROLL_PAYOUT C ON A.BIO_NO = C.BIOMETRIC_ID
-                                        where HO_CATEGORY = 'PGC Head Office' OR HO_CATEGORY IN ('Construction', 'Leasing Admin Office') 
-                                        AND PAYDATE = '{paydate}' ORDER BY FULLNAME ASC"
+                                        where PAYDATE = '{paydate}' AND HO_CATEGORY = 'PGC Head Office' OR (HO_CATEGORY IN ('Construction', 'Leasing Admin Office') AND PAYDATE = '{paydate}')
+                                          ORDER BY FULLNAME ASC"
 
         Using ds As DataSet = LoadSQL(mysqll, "PAYROLL_EMPLOYEE")
             If ds.Tables(0).Rows.Count > 0 Then
+
+                progressBarStart(ds.Tables(0).Rows.Count)
                 For Each dr In ds.Tables(0).Rows
                     With dr
 
@@ -478,8 +498,11 @@ Module Report_function
                         End If
 
                         TOTALS += NET_PAY * LEASING
+
+                        frmMainForm.AppProgressBar.Value += 1
                     End With
                 Next
+                progressBarEnd()
 
                 Dim COMPANY As String = "P&G REALTY"
                 Dim ADDRESS As String = "PGC/GENSAN"
@@ -506,11 +529,14 @@ Module Report_function
         Dim mysql As String = $"Select COUNT({COLUMN}) AS TOTS FROM  PAYROLL_PAYOUT WHERE PAYDATE = '{PAYDATE}'"
         Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
         If ds.Tables(0).Rows.Count > 0 Then
+            progressBarStart(ds.Tables(0).Rows.Count)
             For Each DR In ds.Tables(0).Rows
                 With DR
                     VALUEE = IIf(IsDBNull(.Item("TOTS")), 0, .Item("TOTS"))
+                    frmMainForm.AppProgressBar.Value += 1
                 End With
             Next
+            progressBarEnd()
         End If
 
         Return VALUEE
@@ -521,11 +547,16 @@ Module Report_function
         Dim mysql As String = $"Select SUM({COLUMN}) AS TOTS FROM  PAYROLL_PAYOUT WHERE PAYDATE = '{PAYDATE}'"
         Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
         If ds.Tables(0).Rows.Count > 0 Then
+
+            progressBarStart(ds.Tables(0).Rows.Count)
             For Each DR In ds.Tables(0).Rows
                 With DR
                     VALUEE = IIf(IsDBNull(.Item("TOTS")), 0, .Item("TOTS"))
+
+                    frmMainForm.AppProgressBar.Value += 1
                 End With
             Next
+            progressBarEnd()
         End If
 
         Return VALUEE
@@ -540,11 +571,14 @@ Module Report_function
         Dim mysqll As String = $"Select * From PAYROLL_EMPLOYEE A 
                                         INNER JOIN PAYROLL_PERCENTAGEE B ON B.CATEGORY = A.COMMON_CATEGORY
                                         INNER JOIN PAYROLL_PAYOUT C ON A.BIO_NO = C.BIOMETRIC_ID
-                                        where HO_CATEGORY = 'PGC Head Office' OR HO_CATEGORY IN ('Construction', 'Leasing Admin Office')
-                                        AND PAYDATE = '{paydate}' ORDER BY FULLNAME ASC"
+                                        where  PAYDATE = '{paydate}' AND HO_CATEGORY = 'PGC Head Office' 
+                                            OR (HO_CATEGORY IN ('Construction', 'Leasing Admin Office') AND  PAYDATE = '{paydate}')
+                                            ORDER BY FULLNAME ASC"
 
         Using ds As DataSet = LoadSQL(mysqll, "PAYROLL_EMPLOYEE")
             If ds.Tables(0).Rows.Count > 0 Then
+
+                progressBarStart(ds.Tables(0).Rows.Count)
                 For Each dr In ds.Tables(0).Rows
                     With dr
 
@@ -576,8 +610,11 @@ Module Report_function
                         End If
 
                         TOTALS += NET_PAY * VALUEE
+
+                        frmMainForm.AppProgressBar.Value += 1
                     End With
                 Next
+                progressBarEnd()
             End If
         End Using
 
@@ -588,7 +625,7 @@ Module Report_function
         Return TOTALS
     End Function
 
-    Friend Function LoadDataTable_Remittance(paydate As String) As DataTable
+    Friend Function Load_Remittance_SSS(paydate As String) As DataTable
 
         Dim mysql As String
         Dim PAYROLL As DateTime = paydate
@@ -607,6 +644,8 @@ Module Report_function
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
             If ds.Tables(0).Rows.Count > 0 Then
+
+                progressBarStart(ds.Tables(0).Rows.Count)
                 For Each dr In ds.Tables(0).Rows
                     With dr
 
@@ -621,13 +660,175 @@ Module Report_function
 
                         dt_Remittance.Rows.Add(FULLNAME, NOO, EE, ER, EC)
 
+                        frmMainForm.AppProgressBar.Value += 1
                     End With
+
                 Next
+                progressBarEnd()
             End If
         End Using
 
         Return dt_Remittance
     End Function
+
+    Friend Function Load_Remittance_Pagibig(paydate As String) As DataTable
+
+        Dim mysql As String
+        Dim PAYROLL As DateTime = paydate
+
+        Dim dt_Remittance As New DataTable()
+        With dt_Remittance
+            .Columns.Add("NAME")
+            .Columns.Add("NO")
+            .Columns.Add("EE")
+            .Columns.Add("ER")
+            .Columns.Add("EC")
+        End With
+
+        mysql = $"Select * From PAYROLL_PAYOUT INNER JOIN PAYROLL_EMPLOYEE ON BIO_NO = BIOMETRIC_ID       
+                                        WHERE PAYDATE = '{paydate}' ORDER BY FULLNAME"
+
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
+            If ds.Tables(0).Rows.Count > 0 Then
+
+                progressBarStart(ds.Tables(0).Rows.Count)
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+
+                        '============================= NAME AND ATTENDANCE ============================  
+                        Dim FULLNAME As String = IIf(IsDBNull(.Item("FULLNAME")), "", .Item("FULLNAME"))
+                        Dim monthly_Basic As Double = GetMonthly_Basic(.item("BIOMETRIC_ID"), paydate)
+
+                        Dim NOO As String = IIf(IsDBNull(.Item("PAGIBIGNO")), "", .Item("PAGIBIGNO"))
+                        Dim EE As String = Get_Pagibig(monthly_Basic)
+
+                        dt_Remittance.Rows.Add(FULLNAME, NOO, EE, EE)
+
+                        frmMainForm.AppProgressBar.Value += 1
+                    End With
+
+                Next
+                progressBarEnd()
+            End If
+        End Using
+
+        Return dt_Remittance
+    End Function
+
+    Friend Function Load_Remittance_PhilHealth(paydate As String) As DataTable
+
+        Dim mysql As String
+        Dim PAYROLL As DateTime = paydate
+
+        Dim dt_Remittance As New DataTable()
+        With dt_Remittance
+            .Columns.Add("NAME")
+            .Columns.Add("NO")
+            .Columns.Add("EE")
+            .Columns.Add("ER")
+            .Columns.Add("EC")
+        End With
+
+        mysql = $"Select * From PAYROLL_PAYOUT INNER JOIN PAYROLL_EMPLOYEE ON BIO_NO = BIOMETRIC_ID       
+                                        WHERE PAYDATE = '{paydate}' ORDER BY FULLNAME"
+
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
+            If ds.Tables(0).Rows.Count > 0 Then
+
+                progressBarStart(ds.Tables(0).Rows.Count)
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+
+                        '============================= NAME AND ATTENDANCE ============================  
+                        Dim FULLNAME As String = IIf(IsDBNull(.Item("FULLNAME")), "", .Item("FULLNAME"))
+                        Dim monthly_Basic As Double = GetMonthly_Basic(.item("BIOMETRIC_ID"), paydate)
+
+                        Dim NOO As String = IIf(IsDBNull(.Item("PHILHEALTHNO")), "", .Item("PHILHEALTHNO"))
+                        Dim EE As String = Get_PhilHealth(monthly_Basic)
+
+                        dt_Remittance.Rows.Add(FULLNAME, NOO, EE, EE)
+
+                        frmMainForm.AppProgressBar.Value += 1
+                    End With
+
+                Next
+                progressBarEnd()
+            End If
+        End Using
+
+        Return dt_Remittance
+    End Function
+
+    Friend Function Load_CostDistribution(paydate As String) As DataTable
+
+        Dim mysql As String
+        Dim PAYROLL As DateTime = paydate
+
+        Dim regHoliday = Holiday_Rate("REGULAR")
+        Dim specHoliday = Holiday_Rate("SPECIAL")
+
+        Dim FORMNAME As String = "2nd PERIOD"
+
+        If PAYROLL.Day = 15 Then
+            FORMNAME = "1st PERIOD"
+        End If
+
+        FORMNAME = $"{PAYROLL.ToString("MMMM dd, yyyy")} - {FORMNAME}"
+
+        Dim dt_Cost As New DataTable()
+        With dt_Cost
+            .Columns.Add("PAYDATE")
+            .Columns.Add("BRANCH")
+            .Columns.Add("NAME_DEBIT")
+            .Columns.Add("NAME_CREDIT")
+            .Columns.Add("DEBIT")
+            .Columns.Add("CREDIT")
+        End With
+
+        mysql = $"Select * From PAYROLL_CITY_BRANCH 
+                                        INNER JOIN PAYROLL_EMPLOYEE ON BRANCH_CODE = BRANCHCODE  
+                                        INNER JOIN PAYROLL_ATTENDANCE ON BIOMETRICID = BIO_NO
+                                        INNER JOIN PAYROLL_PAYOUT A ON BIOMETRIC_ID = BIO_NO  
+                                        WHERE A.PAYDATE = '{paydate}' ORDER BY BRANCHNAME"
+
+        'mysql = $"Select * From PAYROLL_PAYOUT A
+        '                                INNER JOIN PAYROLL_EMPLOYEE ON BIOMETRIC_ID = BIO_NO    
+        '                                INNER JOIN PAYROLL_ATTENDANCE ON BIOMETRICID = BIO_NO
+        '                                INNER JOIN PAYROLL_CITY_BRANCH ON BRANCH_CODE = BRANCHCODE    
+        '                                WHERE A.PAYDATE = '{paydate}' ORDER BY BRANCHNAME"
+
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_CITY_BRANCH")
+            If ds.Tables(0).Rows.Count > 0 Then
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+
+                        '============================= NAME AND ATTENDANCE ============================   
+                        Dim BRANCHNAME As String = IIf(IsDBNull(.Item("BRANCHNAME")), "", .Item("BRANCHNAME"))
+                        Dim BRANCHCODE As String = IIf(IsDBNull(.Item("BRANCHCODE")), "", .Item("BRANCHCODE"))
+                        Dim BASICPAY As String = Get_SUM("TOTAL_BASIC", $"PAYDATE = '{paydate}' AND BRANCH_CODE = '{BRANCHCODE}'")
+                        Dim OVERTIME As String = Get_SUM("TOTAL_OVERTIME", $"PAYDATE = '{paydate}' AND BRANCH_CODE = '{BRANCHCODE}'")
+                        Dim HOLIDAY As String = Get_SUM("TOTAL_HOLIDAY", $"PAYDATE = '{paydate}' AND BRANCH_CODE = '{BRANCHCODE}'")
+                        Dim SSS_EC As String = Get_SUM_SSS(BRANCHCODE, paydate).EC
+                        Dim SSS_ER As String = Get_SUM_SSS(BRANCHCODE, paydate).ER
+                        Dim HDMF As String = Get_SUM("PAGIBIG_COMP", $"PAYDATE = '{paydate}' AND BRANCH_CODE = '{BRANCHCODE}'")
+                        Dim PHILH As String = Get_SUM("PHILHEALTH_COMP", $"PAYDATE = '{paydate}' AND BRANCH_CODE = '{BRANCHCODE}'")
+
+                        Dim debit_name_list As String() = {"Basic Pay", "Regular Overtime", "Holiday", "ECC", "HDMF Employer Share", "Phil Health Employer Share", "SSS Employer Share"}
+                        Dim debit_amount_list As String() = {BASICPAY, OVERTIME, HOLIDAY, SSS_EC, HDMF, PHILH, SSS_ER}
+
+                        For i = 0 To debit_name_list.Length - 1
+                            dt_Cost.Rows.Add(FORMNAME, BRANCHNAME, debit_name_list(i), debit_amount_list(i), "SAmple", 0)
+                        Next
+
+                    End With
+
+                Next
+            End If
+        End Using
+
+        Return dt_Cost
+    End Function
+
 
     Public Function GetList_Branch(address As String, str As String) As String
 
@@ -668,5 +869,52 @@ Module Report_function
             End If
         End Using
     End Sub
+
+    Public Function Get_SUM(COLUMN As String, Str As String)
+        Dim VALUEE As Double
+        Dim mysql As String = $"Select SUM({COLUMN}) AS TOTS FROM  PAYROLL_PAYOUT
+                                    INNER JOIN PAYROLL_EMPLOYEE on BIO_NO = BIOMETRIC_ID  WHERE {Str}"
+        Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
+        If ds.Tables(0).Rows.Count > 0 Then
+
+            progressBarStart(ds.Tables(0).Rows.Count)
+            For Each DR In ds.Tables(0).Rows
+                With DR
+                    VALUEE = IIf(IsDBNull(.Item("TOTS")), 0, .Item("TOTS"))
+
+                    frmMainForm.AppProgressBar.Value += 1
+                End With
+            Next
+            progressBarEnd()
+        End If
+
+        Return VALUEE
+    End Function
+
+    Public Function Get_SUM_SSS(BRANCHCODE As String, PAYDATE As String) As (EC As Double, ER As Double)
+        Dim ECC As Double = 0
+        Dim ERR As Double = 0
+
+        Dim mysql As String = $"Select BIO_NO FROM  PAYROLL_PAYOUT
+                                    INNER JOIN PAYROLL_EMPLOYEE on BIO_NO = BIOMETRIC_ID  WHERE BRANCH_CODE = '{BRANCHCODE}'"
+        Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
+        If ds.Tables(0).Rows.Count > 0 Then
+
+            progressBarStart(ds.Tables(0).Rows.Count)
+            For Each DR In ds.Tables(0).Rows
+                With DR
+                    Dim monthly_Basic As Double = GetMonthly_Basic(.Item("BIO_NO"), PAYDATE)
+
+                    ECC += Get_SSS(monthly_Basic).EC
+                    ERR += Get_SSS(monthly_Basic).ER
+
+                    frmMainForm.AppProgressBar.Value += 1
+                End With
+            Next
+            progressBarEnd()
+        End If
+
+        Return (ECC, ERR)
+    End Function
 
 End Module
