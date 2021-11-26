@@ -709,6 +709,7 @@ Module SelectFromDatabase
         End Using
 
         monthly_Basic = first_basic + second_basic
+
         Return monthly_Basic
     End Function
 
@@ -738,10 +739,12 @@ Module SelectFromDatabase
                             ec = .Item("EC_TOTAL")
                             total = .Item("TOTAL_TOTAL")
                         End If
+
                     End With
                 Next
             End If
         End Using
+
         Return (ee, er, ec, total)
     End Function
 
@@ -2314,6 +2317,23 @@ Module SelectFromDatabase
                     Dim date_started As DateTime = IIf(IsDBNull(.Item("DATE_STARTED")), Today, .Item("DATE_STARTED"))
                     cnt = DateDiff(DateInterval.Month, date_started, endingDate)
                 End With
+            End If
+        End Using
+
+        Return cnt
+    End Function
+
+    Public Function Count_SIL(Bio_no As String) As Integer
+
+        Dim cnt As Integer = 0
+        Dim mysql As String = $"Select SUM(SIL) as tots From PAYROLL_ATTENDANCE where BIOMETRICID = '{Bio_no}' AND EXTRACT (YEAR FROM PAYDATE) = '{Date.Now.Year}'"
+        Using dss As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
+            If dss.Tables(0).Rows.Count > 0 Then
+                For Each dr In dss.Tables(0).Rows
+                    With dr
+                        cnt += .Item("tots")
+                    End With
+                Next
             End If
         End Using
 

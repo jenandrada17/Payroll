@@ -58,7 +58,6 @@ Module Report_function
 
                         If BRANCH_LIST <> Nothing Then
                             EMAIL = GetSummary_Email(PAYROLL, $" BRANCH_CODE In ({BRANCH_LIST}) AND COMPANY = '{COMPANY}'")
-                            'EMAIL = GetSummary_Email(PAYROLL, $" CATEGORY In ('GENSAN PERFECT', 'JR PHOTO') AND ADDRESS = '{ADDRESS}'")
                         Else
                             EMAIL = GetSummary_Email(PAYROLL, $"BRANCH_CODE = '{BRANCHCODE}'")
                         End If
@@ -759,13 +758,13 @@ Module Report_function
         Return dt_Remittance
     End Function
 
-    Friend Function Load_CostDistribution(paydate As String) As DataTable
+    Friend Function Load_Cost_ALLOW_DEDUC(paydate As String) As DataTable
 
         Dim mysql As String
         Dim PAYROLL As DateTime = paydate
 
-        Dim regHoliday = Holiday_Rate("REGULAR")
-        Dim specHoliday = Holiday_Rate("SPECIAL")
+        'Dim regHoliday = Holiday_Rate("REGULAR")
+        'Dim specHoliday = Holiday_Rate("SPECIAL")
 
         Dim FORMNAME As String = "2nd PERIOD"
 
@@ -779,46 +778,21 @@ Module Report_function
         With dt_Cost
             .Columns.Add("PAYDATE")
             .Columns.Add("BRANCH")
-            .Columns.Add("NAME_DEBIT")
-            .Columns.Add("NAME_CREDIT")
-            .Columns.Add("DEBIT")
-            .Columns.Add("CREDIT")
+            .Columns.Add("NAME")
+            .Columns.Add("AMOUNT")
+            .Columns.Add("CATEGORY")
         End With
 
-        mysql = $"Select * From PAYROLL_CITY_BRANCH 
-                                        INNER JOIN PAYROLL_EMPLOYEE ON BRANCH_CODE = BRANCHCODE  
-                                        INNER JOIN PAYROLL_ATTENDANCE ON BIOMETRICID = BIO_NO
-                                        INNER JOIN PAYROLL_PAYOUT A ON BIOMETRIC_ID = BIO_NO  
-                                        WHERE A.PAYDATE = '{paydate}' ORDER BY BRANCHNAME"
+        mysql = $"Select  C.CATEGORY, TRANSAC_NAME, SUM(AMOUNT) AS TOTS From PAYROLL_EMPLOYEE B  
+                                        INNER JOIN RECORDED_ALLOW_DEDUC C ON C.BIO_NO = B.BIO_NO 
+                                        WHERE C.PAYDATE = '{paydate}'  GROUP BY C.CATEGORY,  TRANSAC_NAME"
 
-        'mysql = $"Select * From PAYROLL_PAYOUT A
-        '                                INNER JOIN PAYROLL_EMPLOYEE ON BIOMETRIC_ID = BIO_NO    
-        '                                INNER JOIN PAYROLL_ATTENDANCE ON BIOMETRICID = BIO_NO
-        '                                INNER JOIN PAYROLL_CITY_BRANCH ON BRANCH_CODE = BRANCHCODE    
-        '                                WHERE A.PAYDATE = '{paydate}' ORDER BY BRANCHNAME"
-
-        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_CITY_BRANCH")
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
                     With dr
 
-                        '============================= NAME AND ATTENDANCE ============================   
-                        Dim BRANCHNAME As String = IIf(IsDBNull(.Item("BRANCHNAME")), "", .Item("BRANCHNAME"))
-                        Dim BRANCHCODE As String = IIf(IsDBNull(.Item("BRANCHCODE")), "", .Item("BRANCHCODE"))
-                        Dim BASICPAY As String = Get_SUM("TOTAL_BASIC", $"PAYDATE = '{paydate}' AND BRANCH_CODE = '{BRANCHCODE}'")
-                        Dim OVERTIME As String = Get_SUM("TOTAL_OVERTIME", $"PAYDATE = '{paydate}' AND BRANCH_CODE = '{BRANCHCODE}'")
-                        Dim HOLIDAY As String = Get_SUM("TOTAL_HOLIDAY", $"PAYDATE = '{paydate}' AND BRANCH_CODE = '{BRANCHCODE}'")
-                        Dim SSS_EC As String = Get_SUM_SSS(BRANCHCODE, paydate).EC
-                        Dim SSS_ER As String = Get_SUM_SSS(BRANCHCODE, paydate).ER
-                        Dim HDMF As String = Get_SUM("PAGIBIG_COMP", $"PAYDATE = '{paydate}' AND BRANCH_CODE = '{BRANCHCODE}'")
-                        Dim PHILH As String = Get_SUM("PHILHEALTH_COMP", $"PAYDATE = '{paydate}' AND BRANCH_CODE = '{BRANCHCODE}'")
-
-                        Dim debit_name_list As String() = {"Basic Pay", "Regular Overtime", "Holiday", "ECC", "HDMF Employer Share", "Phil Health Employer Share", "SSS Employer Share"}
-                        Dim debit_amount_list As String() = {BASICPAY, OVERTIME, HOLIDAY, SSS_EC, HDMF, PHILH, SSS_ER}
-
-                        For i = 0 To debit_name_list.Length - 1
-                            dt_Cost.Rows.Add(FORMNAME, BRANCHNAME, debit_name_list(i), debit_amount_list(i), "SAmple", 0)
-                        Next
+                        dt_Cost.Rows.Add(FORMNAME, "SAMPLE", .Item("CATEGORY"), .Item("TOTS"), .Item("TRANSAC_NAME"))
 
                     End With
 
@@ -870,51 +844,18 @@ Module Report_function
         End Using
     End Sub
 
-    Public Function Get_SUM(COLUMN As String, Str As String)
-        Dim VALUEE As Double
-        Dim mysql As String = $"Select SUM({COLUMN}) AS TOTS FROM  PAYROLL_PAYOUT
-                                    INNER JOIN PAYROLL_EMPLOYEE on BIO_NO = BIOMETRIC_ID  WHERE {Str}"
-        Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
-        If ds.Tables(0).Rows.Count > 0 Then
-
-            progressBarStart(ds.Tables(0).Rows.Count)
-            For Each DR In ds.Tables(0).Rows
-                With DR
-                    VALUEE = IIf(IsDBNull(.Item("TOTS")), 0, .Item("TOTS"))
-
-                    frmMainForm.AppProgressBar.Value += 1
+    Friend Function GET_STRING(TABLE As String, column As String, STR As String)
+        Dim VALUEE As String = ""
+        Dim MYSQL = $"SELECT {column} FROM {TABLE} WHERE {STR}"
+        Using ds As DataSet = LoadSQL(MYSQL, TABLE)
+            If ds.Tables(0).Rows.Count > 0 Then
+                Dim dr As DataRow = ds.Tables(0).Rows(0)
+                With dr
+                    VALUEE = .Item(column)
                 End With
-            Next
-            progressBarEnd()
-        End If
+            End If
+        End Using
 
         Return VALUEE
     End Function
-
-    Public Function Get_SUM_SSS(BRANCHCODE As String, PAYDATE As String) As (EC As Double, ER As Double)
-        Dim ECC As Double = 0
-        Dim ERR As Double = 0
-
-        Dim mysql As String = $"Select BIO_NO FROM  PAYROLL_PAYOUT
-                                    INNER JOIN PAYROLL_EMPLOYEE on BIO_NO = BIOMETRIC_ID  WHERE BRANCH_CODE = '{BRANCHCODE}'"
-        Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
-        If ds.Tables(0).Rows.Count > 0 Then
-
-            progressBarStart(ds.Tables(0).Rows.Count)
-            For Each DR In ds.Tables(0).Rows
-                With DR
-                    Dim monthly_Basic As Double = GetMonthly_Basic(.Item("BIO_NO"), PAYDATE)
-
-                    ECC += Get_SSS(monthly_Basic).EC
-                    ERR += Get_SSS(monthly_Basic).ER
-
-                    frmMainForm.AppProgressBar.Value += 1
-                End With
-            Next
-            progressBarEnd()
-        End If
-
-        Return (ECC, ERR)
-    End Function
-
 End Module

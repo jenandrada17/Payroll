@@ -702,8 +702,73 @@ Public Class frmReport
 
         Try
 
-            Dim DATASOURCE As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", Load_CostDistribution(CostPaydate_Combo.Text))
+            Dim mysql As String
+            Dim PAYROLL As DateTime = CostPaydate_Combo.Text
 
+            Dim FORMNAME As String = "2nd PERIOD"
+
+            If PAYROLL.Day = 15 Then
+                FORMNAME = "1st PERIOD"
+            End If
+
+            FORMNAME = $"{PAYROLL.ToString("MMMM dd, yyyy")} - {FORMNAME}"
+
+            Dim dt_Cost As New DataTable()
+            With dt_Cost
+                .Columns.Add("PAYDATE")
+                .Columns.Add("BRANCH")
+                .Columns.Add("NAME")
+                .Columns.Add("AMOUNT")
+                .Columns.Add("CATEGORY")
+                .Columns.Add("BASIC")
+                .Columns.Add("ECC")
+                .Columns.Add("SSS")
+                .Columns.Add("HDMF")
+                .Columns.Add("PHILHEALTH")
+                .Columns.Add("OT")
+            End With
+
+            mysql = $"Select  BRANCH_CODE, C.CATEGORY, TRANSAC_NAME, HO_CATEGORY, SUM(AMOUNT) AS TOTS From PAYROLL_EMPLOYEE B  
+                                        INNER JOIN RECORDED_ALLOW_DEDUC C ON C.BIO_NO = B.BIO_NO 
+                                        WHERE C.PAYDATE = '{CostPaydate_Combo.Text}' GROUP BY BRANCH_CODE, C.CATEGORY,  TRANSAC_NAME, HO_CATEGORY"
+
+            Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+                If ds.Tables(0).Rows.Count > 0 Then
+                    progressBarStart(ds.Tables(0).Rows.Count)
+                    For Each dr In ds.Tables(0).Rows
+                        With dr
+
+                            Dim BRANCHCODE As String = .Item("BRANCH_CODE")
+                            Dim BRANCHNAME As String = GET_STRING("PAYROLL_CITY_BRANCH", "BRANCHNAME", $"BRANCHCODE = '{BRANCHCODE}'")
+
+                            Dim EMP As New Employee
+                            EMP.Get_SUM_PAYOUT(BRANCHCODE, CostPaydate_Combo.Text)
+
+                            Dim Allow_Deduc As Double = .Item("TOTS")
+                            Dim Basic As Double = EMP.Basic
+                            Dim ECC As Double = EMP.SSS_EC
+                            Dim SSS As Double = EMP.SSS_ER
+                            Dim HDMF As Double = EMP.PAGIBIG
+                            Dim PHILHEALTH As Double = EMP.PHILHEALTH
+                            Dim OT As Double = EMP.OVERTIME
+
+                            If BRANCHCODE = Nothing Then
+                                BRANCHNAME = .Item("HO_CATEGORY")
+                            End If
+
+                            dt_Cost.Rows.Add(FORMNAME, BRANCHNAME, .Item("CATEGORY"), Allow_Deduc.ToString("N"), .Item("TRANSAC_NAME"),
+                                             Basic.ToString("N"), ECC.ToString("N"), SSS.ToString("N"), HDMF.ToString("N"), PHILHEALTH.ToString("N"), OT.ToString("N"))
+
+                        End With
+
+                        frmMainForm.AppProgressBar.Value += 1
+                    Next
+                    progressBarEnd()
+                End If
+            End Using
+
+
+            Dim DATASOURCE As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt_Cost)
             Rpt_CostContrib.LocalReport.DataSources.Add(DATASOURCE)
             Rpt_CostContrib.RefreshReport()
 

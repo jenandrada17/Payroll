@@ -1386,8 +1386,14 @@ Public Class frmAttendance
                 Dim totalMonths As Integer = CountYear_SIL(BiometricID_TXT.Text, ending_date)
 
                 If totalMonths >= 13 Then
-                    SIL_Panel.Visible = True
-                    SIL_Panel.Location = New Point(SIL_BTN.Location.X - 160, SIL_BTN.Location.Y - 10)
+
+                    If Count_SIL(BiometricID_TXT.Text) < 5 Then
+                        SIL_Panel.Visible = True
+                        SIL_Panel.Location = New Point(SIL_BTN.Location.X - 160, SIL_BTN.Location.Y - 10)
+                    Else
+                        MsgBox($"Already reached the maximum number of SIL for this year.", MsgBoxStyle.Critical, "Invalid")
+                    End If
+
                 Else
                     MsgBox($"Not yet allowed to avail SIL.", MsgBoxStyle.Critical, "Invalid")
                 End If
