@@ -703,6 +703,7 @@ Public Class frmReport
         Try
 
             Dim mysql As String
+            Dim PAYDATE As String = CostPaydate_Combo.Text
             Dim PAYROLL As DateTime = CostPaydate_Combo.Text
 
             Dim FORMNAME As String = "2nd PERIOD"
@@ -715,24 +716,19 @@ Public Class frmReport
 
             Dim dt_Cost As New DataTable()
             With dt_Cost
-                .Columns.Add("PAYDATE")
                 .Columns.Add("BRANCH")
                 .Columns.Add("NAME")
                 .Columns.Add("AMOUNT")
                 .Columns.Add("CATEGORY")
-                .Columns.Add("BASIC")
-                .Columns.Add("ECC")
-                .Columns.Add("SSS")
-                .Columns.Add("HDMF")
-                .Columns.Add("PHILHEALTH")
-                .Columns.Add("OT")
             End With
 
-            mysql = $"Select  BRANCH_CODE, C.CATEGORY, TRANSAC_NAME, HO_CATEGORY, SUM(AMOUNT) AS TOTS From PAYROLL_EMPLOYEE B  
-                                        INNER JOIN RECORDED_ALLOW_DEDUC C ON C.BIO_NO = B.BIO_NO 
-                                        WHERE C.PAYDATE = '{CostPaydate_Combo.Text}' GROUP BY BRANCH_CODE, C.CATEGORY,  TRANSAC_NAME, HO_CATEGORY"
+            ''========================================= RECORDED_ALLOW_DEDUC ================================================
+            mysql = $"Select  BRANCH_CODE, C.CATEGORY, TRANSAC_NAME, HO_CATEGORY, SUM(AMOUNT) AS TOTS From PAYROLL_PAYOUT B 
+                                        INNER JOIN PAYROLL_EMPLOYEE A ON A.BIO_NO = B.BIOMETRIC_ID 
+                                        LEFT JOIN RECORDED_ALLOW_DEDUC C ON C.BIO_NO = B.BIOMETRIC_ID  
+                                        WHERE B.PAYDATE = '{PAYDATE}' GROUP BY BRANCH_CODE, C.CATEGORY,  TRANSAC_NAME, HO_CATEGORY"
 
-            Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+            Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
                 If ds.Tables(0).Rows.Count > 0 Then
                     progressBarStart(ds.Tables(0).Rows.Count)
                     For Each dr In ds.Tables(0).Rows
@@ -740,24 +736,15 @@ Public Class frmReport
 
                             Dim BRANCHCODE As String = .Item("BRANCH_CODE")
                             Dim BRANCHNAME As String = GET_STRING("PAYROLL_CITY_BRANCH", "BRANCHNAME", $"BRANCHCODE = '{BRANCHCODE}'")
-
-                            Dim EMP As New Employee
-                            EMP.Get_SUM_PAYOUT(BRANCHCODE, CostPaydate_Combo.Text)
-
-                            Dim Allow_Deduc As Double = .Item("TOTS")
-                            Dim Basic As Double = EMP.Basic
-                            Dim ECC As Double = EMP.SSS_EC
-                            Dim SSS As Double = EMP.SSS_ER
-                            Dim HDMF As Double = EMP.PAGIBIG
-                            Dim PHILHEALTH As Double = EMP.PHILHEALTH
-                            Dim OT As Double = EMP.OVERTIME
+                            Dim CATEGORY As String = IIf(IsDBNull(.Item("CATEGORY")), "", .Item("CATEGORY"))
+                            Dim DC_Amount As Double = IIf(IsDBNull(.Item("TOTS")), 0, .Item("TOTS"))
+                            Dim Debit_Credit As String = IIf(IsDBNull(.Item("TRANSAC_NAME")), "", .Item("TRANSAC_NAME"))
 
                             If BRANCHCODE = Nothing Then
                                 BRANCHNAME = .Item("HO_CATEGORY")
                             End If
 
-                            dt_Cost.Rows.Add(FORMNAME, BRANCHNAME, .Item("CATEGORY"), Allow_Deduc.ToString("N"), .Item("TRANSAC_NAME"),
-                                             Basic.ToString("N"), ECC.ToString("N"), SSS.ToString("N"), HDMF.ToString("N"), PHILHEALTH.ToString("N"), OT.ToString("N"))
+                            dt_Cost.Rows.Add(BRANCHNAME, CATEGORY, DC_Amount.ToString("N"), Debit_Credit)
 
                         End With
 
@@ -767,9 +754,95 @@ Public Class frmReport
                 End If
             End Using
 
+            '========================================= PAYROLL_COSTDISTRIBUTION ================================================
+            mysql = $"Select  BRANCH_CODE, HO_CATEGORY, NAMEE, NAME_CATEGORY, SUM(TOTAL_BASIC) AS BASIC, SUM(TOTAL_OVERTIME) AS OT,
+                                        SUM(TOTAL_LATE_UT) AS LATE_UT, SUM(SSS_COMP) AS SSS_EE , SUM(SSS_ER) AS SSS_ER , SUM(SSS_EC) AS SSS_EC , SUM(NET_PAY) AS NETPAY, 
+                                        SUM(PAGIBIG_COMP) AS HDMF, SUM(PHILHEALTH_COMP) AS PHILH , SUM(SSS_LOAN) AS LOAN_SSS , SUM(PAGIBIG_LOAN) AS LOAN_HDMF 
+                                        From PAYROLL_PAYOUT B 
+                                        INNER JOIN PAYROLL_EMPLOYEE A ON A.BIO_NO = B.BIOMETRIC_ID 
+                                        LEFT JOIN PAYROLL_COSTDISTRIB ON 1 = 1 
+                                        WHERE B.PAYDATE = '{PAYDATE}' GROUP BY BRANCH_CODE, HO_CATEGORY, NAMEE, NAME_CATEGORY"
+
+            Using dss As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
+                If dss.Tables(0).Rows.Count > 0 Then
+                    progressBarStart(dss.Tables(0).Rows.Count)
+                    For Each dr In dss.Tables(0).Rows
+                        With dr
+
+                            Dim BRANCHCODE As String = .Item("BRANCH_CODE")
+                            Dim BRANCHNAME As String = GET_STRING("PAYROLL_CITY_BRANCH", "BRANCHNAME", $"BRANCHCODE = '{BRANCHCODE}'")
+                            Dim CATEGORY As String = Nothing
+                            Dim Debit_Credit As String = Nothing
+                            Dim NAMEE As String = Nothing
+                            Dim NAME_CATEGORY As String = Nothing
+                            Dim DC_Amount As Double = 0
+
+                            If BRANCHCODE = Nothing Then
+                                BRANCHNAME = .Item("HO_CATEGORY")
+                            End If
+
+                            '======================== PAYROLL_COSTCONTRIB ================= 
+                            NAMEE = .Item("NAMEE")
+                            NAME_CATEGORY = .Item("NAME_CATEGORY")
+
+                            If NAME_CATEGORY = "DEBIT" Then
+
+                                If NAMEE = "Basic Pay" Then
+                                    DC_Amount = .Item("BASIC")
+                                ElseIf NAMEE = "Regular Overtime" Then
+                                    DC_Amount = .Item("OT")
+                                ElseIf NAMEE = "SSS Employer Share" Then
+                                    DC_Amount = .Item("SSS_ER")
+                                ElseIf NAMEE = "ECC" Then
+                                    DC_Amount = .Item("SSS_EC")
+                                ElseIf NAMEE = "HDMF Employer Share" Then
+                                    DC_Amount = .Item("HDMF")
+                                ElseIf NAMEE = "Phil Health Employer Share" Then
+                                    DC_Amount = .Item("PHILH")
+                                End If
+
+                                Debit_Credit = "DEBIT"
+
+                            ElseIf .Item("NAME_CATEGORY") = "CREDIT" Then
+
+                                If NAMEE = "EC PAYABLE" Then
+                                    DC_Amount = .Item("SSS_EC")
+                                ElseIf NAMEE = "LATE" Then
+                                    DC_Amount = .Item("LATE_UT")
+                                ElseIf NAMEE = "SSS PAYABLE" Then
+                                    DC_Amount = CDbl(.Item("SSS_EE")) + CDbl(.Item("SSS_ER"))
+                                ElseIf NAMEE = "HDMF PAYABLE" Then
+                                    DC_Amount = CDbl(.Item("HDMF")) * 2
+                                ElseIf NAMEE = "PHIL HEALTH PAYABLE" Then
+                                    DC_Amount = CDbl(.Item("PHILH")) * 2
+                                ElseIf NAMEE = "SSS LOAN" Then
+                                    DC_Amount = .Item("LOAN_SSS")
+                                ElseIf NAMEE = "PAGIBIG LOAN" Then
+                                    DC_Amount = .Item("LOAN_HDMF")
+                                ElseIf NAMEE = "CASH IN BANK" Then
+                                    DC_Amount = .Item("NETPAY")
+                                End If
+
+                                Debit_Credit = "CREDIT"
+                            End If
+
+                            dt_Cost.Rows.Add(BRANCHNAME, NAMEE, DC_Amount.ToString("N"), Debit_Credit)
+                        End With
+
+                        frmMainForm.AppProgressBar.Value += 1
+                    Next
+                    progressBarEnd()
+                End If
+            End Using
+
+
+            Dim paramList As New List(Of Microsoft.Reporting.WinForms.ReportParameter) From {
+                    New Microsoft.Reporting.WinForms.ReportParameter("paramPaydate", FORMNAME)
+                    }
 
             Dim DATASOURCE As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt_Cost)
             Rpt_CostContrib.LocalReport.DataSources.Add(DATASOURCE)
+            Rpt_CostContrib.LocalReport.SetParameters(paramList)
             Rpt_CostContrib.RefreshReport()
 
         Catch ex As Exception

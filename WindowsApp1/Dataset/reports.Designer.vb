@@ -3025,8 +3025,6 @@ Partial Public Class reports
     Partial Public Class CostContributionDataTable
         Inherits Global.System.Data.TypedTableBase(Of CostContributionRow)
         
-        Private columnPAYDATE As Global.System.Data.DataColumn
-        
         Private columnBRANCH As Global.System.Data.DataColumn
         
         Private columnNAME As Global.System.Data.DataColumn
@@ -3034,18 +3032,6 @@ Partial Public Class reports
         Private columnAMOUNT As Global.System.Data.DataColumn
         
         Private columnCATEGORY As Global.System.Data.DataColumn
-        
-        Private columnBASIC As Global.System.Data.DataColumn
-        
-        Private columnECC As Global.System.Data.DataColumn
-        
-        Private columnSSS As Global.System.Data.DataColumn
-        
-        Private columnHDMF As Global.System.Data.DataColumn
-        
-        Private columnPHILHEALTH As Global.System.Data.DataColumn
-        
-        Private columnOT As Global.System.Data.DataColumn
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
@@ -3084,14 +3070,6 @@ Partial Public Class reports
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public ReadOnly Property PAYDATEColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnPAYDATE
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public ReadOnly Property BRANCHColumn() As Global.System.Data.DataColumn
             Get
                 Return Me.columnBRANCH
@@ -3119,54 +3097,6 @@ Partial Public Class reports
         Public ReadOnly Property CATEGORYColumn() As Global.System.Data.DataColumn
             Get
                 Return Me.columnCATEGORY
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public ReadOnly Property BASICColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnBASIC
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public ReadOnly Property ECCColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnECC
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public ReadOnly Property SSSColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnSSS
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public ReadOnly Property HDMFColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnHDMF
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public ReadOnly Property PHILHEALTHColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnPHILHEALTH
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public ReadOnly Property OTColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnOT
             End Get
         End Property
         
@@ -3207,9 +3137,9 @@ Partial Public Class reports
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Overloads Function AddCostContributionRow(ByVal PAYDATE As String, ByVal BRANCH As String, ByVal NAME As String, ByVal AMOUNT As String, ByVal CATEGORY As String, ByVal BASIC As String, ByVal ECC As String, ByVal SSS As String, ByVal HDMF As String, ByVal PHILHEALTH As String, ByVal OT As String) As CostContributionRow
+        Public Overloads Function AddCostContributionRow(ByVal BRANCH As String, ByVal NAME As String, ByVal AMOUNT As String, ByVal CATEGORY As String) As CostContributionRow
             Dim rowCostContributionRow As CostContributionRow = CType(Me.NewRow,CostContributionRow)
-            Dim columnValuesArray() As Object = New Object() {PAYDATE, BRANCH, NAME, AMOUNT, CATEGORY, BASIC, ECC, SSS, HDMF, PHILHEALTH, OT}
+            Dim columnValuesArray() As Object = New Object() {BRANCH, NAME, AMOUNT, CATEGORY}
             rowCostContributionRow.ItemArray = columnValuesArray
             Me.Rows.Add(rowCostContributionRow)
             Return rowCostContributionRow
@@ -3232,24 +3162,15 @@ Partial Public Class reports
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Friend Sub InitVars()
-            Me.columnPAYDATE = MyBase.Columns("PAYDATE")
             Me.columnBRANCH = MyBase.Columns("BRANCH")
             Me.columnNAME = MyBase.Columns("NAME")
             Me.columnAMOUNT = MyBase.Columns("AMOUNT")
             Me.columnCATEGORY = MyBase.Columns("CATEGORY")
-            Me.columnBASIC = MyBase.Columns("BASIC")
-            Me.columnECC = MyBase.Columns("ECC")
-            Me.columnSSS = MyBase.Columns("SSS")
-            Me.columnHDMF = MyBase.Columns("HDMF")
-            Me.columnPHILHEALTH = MyBase.Columns("PHILHEALTH")
-            Me.columnOT = MyBase.Columns("OT")
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Private Sub InitClass()
-            Me.columnPAYDATE = New Global.System.Data.DataColumn("PAYDATE", GetType(String), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnPAYDATE)
             Me.columnBRANCH = New Global.System.Data.DataColumn("BRANCH", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnBRANCH)
             Me.columnNAME = New Global.System.Data.DataColumn("NAME", GetType(String), Nothing, Global.System.Data.MappingType.Element)
@@ -3258,19 +3179,6 @@ Partial Public Class reports
             MyBase.Columns.Add(Me.columnAMOUNT)
             Me.columnCATEGORY = New Global.System.Data.DataColumn("CATEGORY", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnCATEGORY)
-            Me.columnBASIC = New Global.System.Data.DataColumn("BASIC", GetType(String), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnBASIC)
-            Me.columnECC = New Global.System.Data.DataColumn("ECC", GetType(String), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnECC)
-            Me.columnSSS = New Global.System.Data.DataColumn("SSS", GetType(String), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnSSS)
-            Me.columnHDMF = New Global.System.Data.DataColumn("HDMF", GetType(String), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnHDMF)
-            Me.columnPHILHEALTH = New Global.System.Data.DataColumn("PHILHEALTH", GetType(String), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnPHILHEALTH)
-            Me.columnOT = New Global.System.Data.DataColumn("OT", GetType(String), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnOT)
-            Me.columnPAYDATE.Caption = "NAME"
             Me.columnBRANCH.Caption = "NO"
         End Sub
         
@@ -6171,21 +6079,6 @@ Partial Public Class reports
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Property PAYDATE() As String
-            Get
-                Try 
-                    Return CType(Me(Me.tableCostContribution.PAYDATEColumn),String)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'PAYDATE' in table 'CostContribution' is DBNull.", e)
-                End Try
-            End Get
-            Set
-                Me(Me.tableCostContribution.PAYDATEColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Property BRANCH() As String
             Get
                 Try 
@@ -6246,108 +6139,6 @@ Partial Public Class reports
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Property BASIC() As String
-            Get
-                Try 
-                    Return CType(Me(Me.tableCostContribution.BASICColumn),String)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'BASIC' in table 'CostContribution' is DBNull.", e)
-                End Try
-            End Get
-            Set
-                Me(Me.tableCostContribution.BASICColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Property ECC() As String
-            Get
-                Try 
-                    Return CType(Me(Me.tableCostContribution.ECCColumn),String)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'ECC' in table 'CostContribution' is DBNull.", e)
-                End Try
-            End Get
-            Set
-                Me(Me.tableCostContribution.ECCColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Property SSS() As String
-            Get
-                Try 
-                    Return CType(Me(Me.tableCostContribution.SSSColumn),String)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'SSS' in table 'CostContribution' is DBNull.", e)
-                End Try
-            End Get
-            Set
-                Me(Me.tableCostContribution.SSSColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Property HDMF() As String
-            Get
-                Try 
-                    Return CType(Me(Me.tableCostContribution.HDMFColumn),String)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'HDMF' in table 'CostContribution' is DBNull.", e)
-                End Try
-            End Get
-            Set
-                Me(Me.tableCostContribution.HDMFColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Property PHILHEALTH() As String
-            Get
-                Try 
-                    Return CType(Me(Me.tableCostContribution.PHILHEALTHColumn),String)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'PHILHEALTH' in table 'CostContribution' is DBNull.", e)
-                End Try
-            End Get
-            Set
-                Me(Me.tableCostContribution.PHILHEALTHColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Property OT() As String
-            Get
-                Try 
-                    Return CType(Me(Me.tableCostContribution.OTColumn),String)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'OT' in table 'CostContribution' is DBNull.", e)
-                End Try
-            End Get
-            Set
-                Me(Me.tableCostContribution.OTColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Function IsPAYDATENull() As Boolean
-            Return Me.IsNull(Me.tableCostContribution.PAYDATEColumn)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Sub SetPAYDATENull()
-            Me(Me.tableCostContribution.PAYDATEColumn) = Global.System.Convert.DBNull
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Function IsBRANCHNull() As Boolean
             Return Me.IsNull(Me.tableCostContribution.BRANCHColumn)
         End Function
@@ -6392,78 +6183,6 @@ Partial Public Class reports
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Sub SetCATEGORYNull()
             Me(Me.tableCostContribution.CATEGORYColumn) = Global.System.Convert.DBNull
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Function IsBASICNull() As Boolean
-            Return Me.IsNull(Me.tableCostContribution.BASICColumn)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Sub SetBASICNull()
-            Me(Me.tableCostContribution.BASICColumn) = Global.System.Convert.DBNull
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Function IsECCNull() As Boolean
-            Return Me.IsNull(Me.tableCostContribution.ECCColumn)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Sub SetECCNull()
-            Me(Me.tableCostContribution.ECCColumn) = Global.System.Convert.DBNull
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Function IsSSSNull() As Boolean
-            Return Me.IsNull(Me.tableCostContribution.SSSColumn)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Sub SetSSSNull()
-            Me(Me.tableCostContribution.SSSColumn) = Global.System.Convert.DBNull
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Function IsHDMFNull() As Boolean
-            Return Me.IsNull(Me.tableCostContribution.HDMFColumn)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Sub SetHDMFNull()
-            Me(Me.tableCostContribution.HDMFColumn) = Global.System.Convert.DBNull
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Function IsPHILHEALTHNull() As Boolean
-            Return Me.IsNull(Me.tableCostContribution.PHILHEALTHColumn)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Sub SetPHILHEALTHNull()
-            Me(Me.tableCostContribution.PHILHEALTHColumn) = Global.System.Convert.DBNull
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Function IsOTNull() As Boolean
-            Return Me.IsNull(Me.tableCostContribution.OTColumn)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Sub SetOTNull()
-            Me(Me.tableCostContribution.OTColumn) = Global.System.Convert.DBNull
         End Sub
     End Class
     

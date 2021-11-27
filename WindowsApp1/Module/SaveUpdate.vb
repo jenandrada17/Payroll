@@ -643,7 +643,7 @@ Module SaveUpdate
     'End Sub
 
     Friend Sub SavePayout(BIOMETRIC_ID As String, PAYDATE As String, TOTAL_BASIC As String, TOTAL_OVERTIME As String, TOTAL_LATE_UT As String,
-                          GROSS_AMOUNT As String, SSS_COMP As String, PAGIBIG_COMP As String, PHILHEALTH_COMP As String, TAX_WHELD As String,
+                          GROSS_AMOUNT As String, SSS_COMP As String, SSS_ER As String, SSS_EC As String, PAGIBIG_COMP As String, PHILHEALTH_COMP As String, TAX_WHELD As String,
                           NET_TAX_COMP As String, SSS_LOAN As String, PAGIBIG_LOAN As String, TOTAL_ALLOWANCE As String,
                           TOTAL_DEDUCTION As String, NET_PAY As String, HOLIDAY As String, TOTAL_NIGHT_RATE As String, Optional all As String = "")
 
@@ -658,6 +658,8 @@ Module SaveUpdate
                     .Item("TOTAL_LATE_UT") = TOTAL_LATE_UT
                     .Item("GROSS_AMOUNT") = GROSS_AMOUNT
                     .Item("SSS_COMP") = SSS_COMP
+                    .Item("SSS_ER") = SSS_ER
+                    .Item("SSS_EC") = SSS_EC
                     .Item("PAGIBIG_COMP") = PAGIBIG_COMP
                     .Item("PHILHEALTH_COMP") = PHILHEALTH_COMP
                     '.Item("TAXABLE") = TAXABLE
@@ -691,6 +693,8 @@ Module SaveUpdate
                     .Item("TOTAL_LATE_UT") = TOTAL_LATE_UT
                     .Item("GROSS_AMOUNT") = GROSS_AMOUNT
                     .Item("SSS_COMP") = SSS_COMP
+                    .Item("SSS_ER") = SSS_ER
+                    .Item("SSS_EC") = SSS_EC
                     .Item("PAGIBIG_COMP") = PAGIBIG_COMP
                     .Item("PHILHEALTH_COMP") = PHILHEALTH_COMP
                     '.Item("TAXABLE") = TAXABLE
@@ -781,7 +785,7 @@ Module SaveUpdate
                     Dim sched As String = ""
                     Dim noOf_days_training As Double = 0
                     Dim TotalBasic As Double = 0
-                    Dim SSSComp As Double = 0
+                    Dim SSSComp = 0, SSS_ER = 0, SSS_EC As Double = 0
                     Dim PagibigComp As Double = 0
                     Dim PhilhealthComp As Double = 0
                     Dim Tax_Wheld As Double = 0
@@ -879,6 +883,8 @@ Module SaveUpdate
                             Dim monthly_Basic As Double = TotalBasic + first_Basic
 
                             SSSComp = Get_SSS(monthly_Basic).EE
+                            SSS_ER = Get_SSS(monthly_Basic).ER
+                            SSS_EC = Get_SSS(monthly_Basic).EC
                             PagibigComp = Get_Pagibig(monthly_Basic)
                             PhilhealthComp = Get_PhilHealth(monthly_Basic)
                             Tax_Wheld = Get_WHolding(monthly_Basic)
@@ -1029,9 +1035,9 @@ Module SaveUpdate
                     NetPay = positive - negative
 
                     SavePayout(bioNo, paydate_, TotalBasic, TotalOT,
-                                  TotalLateUnder, GrossAmount, SSSComp, PagibigComp, PhilhealthComp,
-                                  Tax_Wheld, netTax, sssLoan, pagibigLoan,
-                                  Allowances, Deduction, NetPay, TotalHol, TotalNight)
+                                  TotalLateUnder, GrossAmount, SSSComp, SSS_ER, SSS_EC,
+                                  PagibigComp, PhilhealthComp, Tax_Wheld, netTax, sssLoan,
+                                  pagibigLoan, Allowances, Deduction, NetPay, TotalHol, TotalNight)
                 End With
             End If
         End Using
@@ -1060,7 +1066,7 @@ Module SaveUpdate
                         Dim noOf_days_training As Double = 0
                         Dim SBU As Double = 0
                         Dim TotalBasic As Double = 0
-                        Dim SSSComp As Double = 0
+                        Dim SSSComp = 0, SSS_ER = 0, SSS_EC As Double = 0
                         Dim PagibigComp As Double = 0
                         Dim PhilhealthComp As Double = 0
                         Dim Tax_Wheld As Double = 0
@@ -1158,6 +1164,8 @@ Module SaveUpdate
                                 Dim monthly_Basic As Double = TotalBasic + first_Basic
 
                                 SSSComp = Get_SSS(monthly_Basic).EE
+                                SSS_ER = Get_SSS(monthly_Basic).ER
+                                SSS_EC = Get_SSS(monthly_Basic).EC
                                 PagibigComp = Get_Pagibig(monthly_Basic)
                                 PhilhealthComp = Get_PhilHealth(monthly_Basic)
                                 Tax_Wheld = Get_WHolding(monthly_Basic)
@@ -1292,9 +1300,9 @@ Module SaveUpdate
                         NetPay = positive - negative
 
                         SavePayout(BiometricID, paydate_, TotalBasic, TotalOT,
-                                      TotalLateUnder, GrossAmount, SSSComp, PagibigComp, PhilhealthComp,
-                                      Tax_Wheld, netTax, sssLoan, pagibigLoan,
-                                      Allowances, Deduction, NetPay, TotalHol, 0, "Group")
+                                      TotalLateUnder, GrossAmount, SSSComp, SSS_ER, SSS_EC,
+                                      PagibigComp, PhilhealthComp, Tax_Wheld, netTax, sssLoan,
+                                      pagibigLoan, Allowances, Deduction, NetPay, TotalHol, 0, "Group")
 
                         frmMainForm.AppProgressBar.Value += 1
                     End With

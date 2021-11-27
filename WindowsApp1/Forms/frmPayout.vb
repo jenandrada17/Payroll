@@ -9,6 +9,7 @@ Public Class frmPayout
     Dim SBUUU, Chargesss, Loannn, CashAdvanceee, otherrr As Double
     Dim gross, netTax, sssLoan, pagibigLoan, allowance, deduction As Double
     Dim emp_id, sched_deduc As String
+    Dim SSS_ER, SSS_EC As Double
 
     Private allowCoolMove As Boolean = False
     Private myCoolPoint As New Point
@@ -99,6 +100,8 @@ Public Class frmPayout
                     Prev_Amount_lbl.Text = (GetFirst_Basic(BIO_NO, paydate_)).ToString("N")
 
                     SSSComp_LBL.Text = (Get_SSS(monthly_Basic).EE).ToString("N")
+                    SSS_ER = Get_SSS(monthly_Basic).EE
+                    SSS_EC = Get_SSS(monthly_Basic).EC
                     HDMF_LBL.Text = (Get_Pagibig(monthly_Basic)).ToString("N")
                     Philhealth_LBL.Text = (Get_PhilHealth(monthly_Basic)).ToString("N")
                     Tax_Wheld_LBL.Text = (Get_WHolding(monthly_Basic)).ToString("N")
@@ -246,8 +249,8 @@ Public Class frmPayout
             If result = DialogResult.Yes Then
 
                 SavePayout(BIO_NO, paydate_, TotalBasic_LBL.Text, TotalOT_LBL.Text,
-                  TotalLateUnder_LBL.Text, GrossAmount_LBL.Text, SSSComp_LBL.Text, HDMF_LBL.Text, Philhealth_LBL.Text,
-                  Tax_Wheld_LBL.Text, NetTax_LBL.Text, SSSLoan_LBL.Text, PagibigLoan_LBL.Text,
+                  TotalLateUnder_LBL.Text, GrossAmount_LBL.Text, SSSComp_LBL.Text, SSS_ER, SSS_EC,
+                  HDMF_LBL.Text, Philhealth_LBL.Text, Tax_Wheld_LBL.Text, NetTax_LBL.Text, SSSLoan_LBL.Text, PagibigLoan_LBL.Text,
                   Allowances_LBL.Text, Deduction_LBL.Text, NetPay_LBL.Text, TotalHol_LBL.Text, TotalNight_LBL.Text, "")
 
                 '====================================== SAVE NEW ADDITIONAL ===================================================
