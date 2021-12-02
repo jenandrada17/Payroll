@@ -550,7 +550,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=IIF(fIELDS!CATEGORY.Value = "DEDUCTION" OR FIELDS!CATEGORY.Value = "CREDIT", FormatNumber(FIELDS!AMOUNT.Value), NOTHING)</Value>
+                                  <Value>=IIF(FIELDS!CATEGORY.Value = "DEDUCTION" OR FIELDS!CATEGORY.Value = "CREDIT", FormatNumber(FIELDS!AMOUNT.Value), NOTHING)</Value>
                                   <Style>
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -652,10 +652,11 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=FormatNumber(Code.AddDebit(Sum(IIF(FIELDS!CATEGORY.Value = "ALLOWANCE" OR FIELDS!CATEGORY.Value = "DEBIT", CDbl(FIELDS!AMOUNT.Value), 0))))</Value>
+                                  <Value>=FormatNumber(Code.AddDebit(Sum(CDec(IIF(FIELDS!CATEGORY.Value = "ALLOWANCE" OR FIELDS!CATEGORY.Value = "DEBIT", FIELDS!AMOUNT.Value, 0)))))</Value>
                                   <Style>
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
+                                    <Format>0.00;(0.00)</Format>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -689,7 +690,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=FormatNumber(Code.AddCredit(Sum(IIF(fIELDS!CATEGORY.Value = "DEDUCTION" OR FIELDS!CATEGORY.Value = "CREDIT", CDbl(FIELDS!AMOUNT.Value), 0))))</Value>
+                                  <Value>=FormatNumber(Code.AddCredit(Sum(CDec(IIF(FIELDS!CATEGORY.Value = "DEDUCTION" OR FIELDS!CATEGORY.Value = "CREDIT", FIELDS!AMOUNT.Value, 0)))))</Value>
                                   <Style>
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -870,7 +871,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=FormatNumber(Code.GetCredit_Total())</Value>
+                                  <Value>=FormatNumber(CODE.GetCredit_Total())</Value>
                                   <Style>
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>9pt</FontSize>
@@ -1025,16 +1026,16 @@
       </CellDefinitions>
     </GridLayoutDefinition>
   </ReportParametersLayout>
-  <Code>Dim totalDebit as Double = 0
-Dim totalCredt as Double = 0
+  <Code>Dim totalDebit as Decimal
+Dim totalCredt as Decimal
 
-Public Function AddDebit(Amount as String) as Double
+Public Function AddDebit(Amount as Decimal ) as Decimal 
 	totalDebit = totalDebit + Amount
 	Return Amount 
 End Function
 
-Public Function AddCredit(Amount as String) as Double
-	totalCredt = totalCredt + Amount
+Public Function AddCredit(Amount as Decimal ) as Decimal 
+	totalCredt = totalCredt +  Amount
 	Return Amount 
 End Function
 

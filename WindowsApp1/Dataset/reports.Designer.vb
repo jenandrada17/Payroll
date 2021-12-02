@@ -3137,7 +3137,7 @@ Partial Public Class reports
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Overloads Function AddCostContributionRow(ByVal BRANCH As String, ByVal NAME As String, ByVal AMOUNT As String, ByVal CATEGORY As String) As CostContributionRow
+        Public Overloads Function AddCostContributionRow(ByVal BRANCH As String, ByVal NAME As String, ByVal AMOUNT As Decimal, ByVal CATEGORY As String) As CostContributionRow
             Dim rowCostContributionRow As CostContributionRow = CType(Me.NewRow,CostContributionRow)
             Dim columnValuesArray() As Object = New Object() {BRANCH, NAME, AMOUNT, CATEGORY}
             rowCostContributionRow.ItemArray = columnValuesArray
@@ -3175,7 +3175,7 @@ Partial Public Class reports
             MyBase.Columns.Add(Me.columnBRANCH)
             Me.columnNAME = New Global.System.Data.DataColumn("NAME", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnNAME)
-            Me.columnAMOUNT = New Global.System.Data.DataColumn("AMOUNT", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            Me.columnAMOUNT = New Global.System.Data.DataColumn("AMOUNT", GetType(Decimal), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnAMOUNT)
             Me.columnCATEGORY = New Global.System.Data.DataColumn("CATEGORY", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnCATEGORY)
@@ -6109,10 +6109,10 @@ Partial Public Class reports
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Property AMOUNT() As String
+        Public Property AMOUNT() As Decimal
             Get
                 Try 
-                    Return CType(Me(Me.tableCostContribution.AMOUNTColumn),String)
+                    Return CType(Me(Me.tableCostContribution.AMOUNTColumn),Decimal)
                 Catch e As Global.System.InvalidCastException
                     Throw New Global.System.Data.StrongTypingException("The value for column 'AMOUNT' in table 'CostContribution' is DBNull.", e)
                 End Try

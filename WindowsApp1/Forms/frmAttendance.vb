@@ -24,7 +24,6 @@ Public Class frmAttendance
     Dim MyCommand As System.Data.OleDb.OleDbDataAdapter
 
     Private Sub frmAttendance_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        'Check_This()
 
         LoadDateTime()
 
@@ -955,7 +954,7 @@ Public Class frmAttendance
             TIME_IN = GetTime_In(biometric_No)
             TIME_OUT = GetTime_Out(biometric_No)
 
-            Dim mysql As String = $"Select * From IMPORT_DTR where BIO_ID = '{biometric_No}' and PAYDATE = '{paydate_}'"
+            Dim mysql As String = $"Select DATEANDTIME From IMPORT_DTR where BIO_ID = '{biometric_No}' and PAYDATE = '{paydate_}'"
             Using ds As DataSet = LoadSQL(mysql, "IMPORT_DTR")
                 If ds.Tables(0).Rows.Count > 0 Then
                     For Each dr In ds.Tables(0).Rows
@@ -1484,6 +1483,8 @@ Public Class frmAttendance
 
         Dim FirstColumn As String = eCell(2, 1).Value
 
+        Has_Rows_Delete("IMPORT_DTR") '===== EMPTY THIS TABLE
+
         If Integer.TryParse(FirstColumn, vbNull) Then
             bio_White()
         Else
@@ -1508,7 +1509,6 @@ Public Class frmAttendance
 
         '=============================================================
         PopulateComboBox(Paydate_ComboB, "BIOMETRIC_DTR", "PAYDATE")
-        Has_Rows_Delete("IMPORT_DTR")
 
     End Sub
 
