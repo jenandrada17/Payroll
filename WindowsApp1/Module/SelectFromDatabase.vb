@@ -527,7 +527,7 @@ Module SelectFromDatabase
 
         datagrid.Rows.Clear()
 
-        Dim mysql_1 As String = $"Select * From PAYROLL_DEDUCTIONS WHERE BIO_NO = '{BIO_NO}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
+        Dim mysql_1 As String = $"Select * From PAYROLL_DEDUCTIONS WHERE BIONO = '{BIO_NO}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
         Using ds As DataSet = LoadSQL(mysql_1, "PAYROLL_DEDUCTIONS")
 
             If ds.Tables(0).Rows.Count > 0 Then
@@ -1469,17 +1469,18 @@ Module SelectFromDatabase
 
         If searchName.Length <> 0 Then
 
-            mysql = "select A.* A.id as deduc_id, B.*, B.BIO_NO as bioNo from PAYROLL_DEDUCTIONS A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIO_NO where A.STATUS is null  and ("
+            mysql = "select A.*, A.id as deduc_id, B.* from PAYROLL_DEDUCTIONS A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIONO WHERE "
 
             For Each name In strWords
-                mysql &= $"{vbCr}UPPER(BIO_NO) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(BIONO) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(FULLNAME) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(BRANCH_CODE) LIKE UPPER('%{name}%')) ORDER BY FULLNAME ASC "
+                mysql &= $"{vbCr}UPPER(STATUS) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(BRANCH_CODE) LIKE UPPER('%{name}%')"
             Next
 
         Else
-            mysql = "select A.*, A.id as deduc_id, B.*, B.BIO_NO as bioNo from PAYROLL_DEDUCTIONS A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIO_NO where A.STATUS is null ORDER BY FULLNAME ASC"
+            mysql = "select A.*, A.id as deduc_id, B.* from PAYROLL_DEDUCTIONS A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIONO "
         End If
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_DEDUCTIONS")
@@ -1498,9 +1499,9 @@ Module SelectFromDatabase
 
         With dr
             Dim i As ListViewItem = LV.Items.Add(.Item("FULLNAME"))
-            i.SubItems.Add(.Item("CATEGORY")).Tag = .Item("bioNo")
+            i.SubItems.Add(.Item("CATEGORY")).Tag = .Item("BIONO")
             i.SubItems.Add(.Item("TOTAL_AMOUNT")).Tag = .Item("deduc_id")
-            i.SubItems.Add(.Item("NO_OF_GIVES"))
+            i.SubItems.Add(.Item("NO_OF_GIVES")).Tag = .Item("EFFECTIVE_DATE")
             i.SubItems.Add(.Item("AMOUNT_PER_GIVE"))
             i.SubItems.Add(.Item("SCHEDULE"))
             i.SubItems.Add(GetDeduction_balance(.Item("id")))
@@ -1545,7 +1546,7 @@ Module SelectFromDatabase
         Dim balance As Double
 
         If isExist_String("HISTORY_DEDUCTION", $"WHERE BIO_NO = '{BIO_NO}'") Then
-            Dim mysql_ As String = $"Select SUM(H_AMOUNT) as tots From HISTORY_DEDUCTION A inner join PAYROLL_DEDUCTIONS B on B.BIO_NO = A.BIO_NO where B.BIO_NO = '{BIO_NO}' and B.STATUS is null"
+            Dim mysql_ As String = $"Select SUM(H_AMOUNT) as tots From HISTORY_DEDUCTION A inner join PAYROLL_DEDUCTIONS B on B.BIONO = A.BIO_NO where B.BIONO = '{BIO_NO}' and B.STATUS is null"
             Dim dSs As DataSet = LoadSQL(mysql_, "HISTORY_DEDUCTION")
             If dSs.Tables(0).Rows.Count > 0 Then
                 Dim dr As DataRow = dSs.Tables(0).Rows(0)
@@ -1564,7 +1565,7 @@ Module SelectFromDatabase
     Public Function GetDeduction_TotalAmount(BIO_NO As String) As Double
 
         Dim total_amount As Double = 0
-        Dim mysql As String = $"Select SUM(TOTAL_AMOUNT) as totals From PAYROLL_DEDUCTIONS where BIO_NO = '{BIO_NO}' AND STATUS is null"
+        Dim mysql As String = $"Select SUM(TOTAL_AMOUNT) as totals From PAYROLL_DEDUCTIONS where BIONO = '{BIO_NO}' AND STATUS is null"
         Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_DEDUCTIONS")
         If ds.Tables(0).Rows.Count > 0 Then
             Dim dr As DataRow = ds.Tables(0).Rows(0)
@@ -1579,7 +1580,7 @@ Module SelectFromDatabase
     Public Function GetDeduction_OPEN(BIO_NO As String) As Double '=================== OPEN PAYROLL ======================
 
         Dim amount_per_deduc As Double = 0
-        Dim mysql As String = $"Select SUM(AMOUNT_PER_GIVE) as totals From PAYROLL_DEDUCTIONS where BIO_NO = '{BIO_NO}' AND STATUS is null and SCHEDULE = 'OPEN PAYROLL'"
+        Dim mysql As String = $"Select SUM(AMOUNT_PER_GIVE) as totals From PAYROLL_DEDUCTIONS where BIONO = '{BIO_NO}' AND STATUS is null and SCHEDULE = 'OPEN PAYROLL'"
         Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_DEDUCTIONS")
         If ds.Tables(0).Rows.Count > 0 Then
             Dim dr As DataRow = ds.Tables(0).Rows(0)
@@ -1595,7 +1596,7 @@ Module SelectFromDatabase
     Public Function GetDeduction_CLOSE(BIO_NO As String) As Double '=================== CLOSE PAYROLL ======================
 
         Dim amount_per_deduc As Double = 0
-        Dim mysql As String = $"Select SUM(AMOUNT_PER_GIVE) as totals From PAYROLL_DEDUCTIONS where BIO_NO = '{BIO_NO}' AND STATUS is null and SCHEDULE = 'CLOSE PAYROLL'"
+        Dim mysql As String = $"Select SUM(AMOUNT_PER_GIVE) as totals From PAYROLL_DEDUCTIONS where BIONO = '{BIO_NO}' AND STATUS is null and SCHEDULE = 'CLOSE PAYROLL'"
         Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_DEDUCTIONS")
         If ds.Tables(0).Rows.Count > 0 Then
             Dim dr As DataRow = ds.Tables(0).Rows(0)
@@ -1611,7 +1612,7 @@ Module SelectFromDatabase
     Public Function GetDeduction_EVERY(BIO_NO As String) As Double '=================== EVERY PAYROLL ======================
 
         Dim amount_per_deduc As Double = 0
-        Dim mysql As String = $"Select SUM(AMOUNT_PER_GIVE) as totals From PAYROLL_DEDUCTIONS where BIO_NO = '{BIO_NO}' AND STATUS is null and SCHEDULE = 'EVERY PAYROLL'"
+        Dim mysql As String = $"Select SUM(AMOUNT_PER_GIVE) as totals From PAYROLL_DEDUCTIONS where BIONO = '{BIO_NO}' AND STATUS is null and SCHEDULE = 'EVERY PAYROLL'"
         Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_DEDUCTIONS")
         If ds.Tables(0).Rows.Count > 0 Then
             Dim dr As DataRow = ds.Tables(0).Rows(0)
@@ -2270,14 +2271,14 @@ Module SelectFromDatabase
     End Function
 
     Public Function SBU_notFull(BIO_NO As String)
-        Dim mysql As String = $"Select A.DATE_STARTED, A.COMPANY, B.* From PAYROLL_EMPLOYEE A inner join PAYROLL_SBU B ON A.BIO_NO = B.BIO_NO where A.BIO_NO = '{BIO_NO}' AND CATEGORY = 'SBU'"
+        Dim mysql As String = $"Select DATE_STARTED, A.COMPANY, FULLNAME, B.* From PAYROLL_EMPLOYEE A inner join PAYROLL_SBU B ON A.BIO_NO = B.BIO_NO where A.BIO_NO = '{BIO_NO}' AND CATEGORY = 'SBU'"
         Using dss As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
             If dss.Tables(0).Rows.Count > 0 Then
                 For Each dr In dss.Tables(0).Rows
                     With dr
 
                         Dim training_days As Integer = 0
-                        Dim Started As DateTime = .Item("DATE_STARTED")
+                        Dim Started As DateTime = IIf(IsDBNull(.Item("DATE_STARTED")), "1/1/1000", .Item("DATE_STARTED"))
                         Dim sbu_bal As Double = .Item("BALANCE")
 
                         '=============== TRAINING DAYS ================
@@ -2288,15 +2289,19 @@ Module SelectFromDatabase
                         End If
 
                         '=============== CALCULATE SBU ================  
-                        Dim count_days = New DateTime(Started.Year, Started.Month, Started.Day)
-                        count_days = count_days.AddDays(training_days)
+                        If Started = "1/1/1000" Then
+                            MsgBox($"There's no date of started recorded for { .item("FULLNAME")}", MsgBoxStyle.Critical, "INVALID")
+                        Else
+                            Dim count_days = New DateTime(Started.Year, Started.Month, Started.Day)
+                            count_days = count_days.AddDays(training_days)
 
-                        If Today >= count_days Then
+                            If Today >= count_days Then
 
-                            If sbu_bal > 0 Then
-                                Return True
+                                If sbu_bal > 0 Then
+                                    Return True
+                                End If
+
                             End If
-
                         End If
                     End With
                 Next

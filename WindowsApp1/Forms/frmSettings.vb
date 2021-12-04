@@ -402,24 +402,6 @@
         Catch ex As Exception
 
         End Try
-
-        'If frmEmployee Is Nothing Then
-        '    Dim frm As New frmEmployee With {
-        '        .MdiParent = frmMainForm
-        '    }
-        '    frmMainForm.pNavigate.Controls.Add(frm)
-        '    frmMainForm.pNavigate.Tag = frm
-        '    frm.txtSearch.Tag = "Settings-Deduction"
-        '    frm.btnSearch.Tag = DE_Category_Combo.SelectedItem
-        '    frm.Show()
-        '    frm.Dock = DockStyle.Fill
-        '    frm.BringToFront()
-        'Else
-        '    frmEmployee.BringToFront()
-        'End If
-
-        'Close()
-
     End Sub
 
     Private Sub DE_Cancel_BTN_Click(sender As Object, e As EventArgs) Handles DE_Cancel_BTN.Click

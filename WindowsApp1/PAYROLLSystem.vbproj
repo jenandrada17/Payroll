@@ -195,6 +195,12 @@
     <Compile Include="Forms\frmEmployee.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Forms\frmLoan.Designer.vb">
+      <DependentUpon>frmLoan.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmLoan.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\frmMainForm.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -275,6 +281,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmEmployee.resx">
       <DependentUpon>frmEmployee.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmLoan.resx">
+      <DependentUpon>frmLoan.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmMainForm.resx">
       <DependentUpon>frmMainForm.vb</DependentUpon>

@@ -119,12 +119,22 @@ Public Class frmNewEmployee
                 Console.WriteLine("NOT EMPTY - ROWWW -" & EMP_NO & "- " & row - 1)
             End If
 
+            'If row = "2406" Then
+            '    Console.WriteLine("CATEGORY  - " & CATEGORY)
+            'End If
 
-            If CATEGORY.Contains("CASH") Or CATEGORY.Contains("Cashbond") Or CATEGORY.Contains("cash") Then
-                CATEGORY = "CASH BOND"
-            ElseIf CATEGORY.Contains("Build") Then
-                CATEGORY = "SBU"
-            End If
+
+            'If CATEGORY.Contains("Cash Bond") Or CATEGORY.Contains("CASH") Or CATEGORY.Contains("Cashbond") Or CATEGORY.Contains("cash") Or CATEGORY.Contains("CASH BOND") Or CATEGORY.Contains("cash bond") Or CATEGORY.Contains("Cash Bond") Then
+            '    CATEGORY = "CASH BOND"
+            'ElseIf CATEGORY.Contains("Build") Then
+            '    CATEGORY = "SBU"
+            'End If 
+
+            'If CATEGORY.Contains("Build") Then
+            '    CATEGORY = "SBU"
+            'Else
+            '    CATEGORY = "CASH BOND"
+            'End If 
 
             SAVE_Emp_SBU_AMOUNT_PRINCIPAL_CREDIT_NAME(EMP_NO, CATEGORY, AMOUNT, PRINCIPAL, CREDIT, BALANCE, row)
 
@@ -581,11 +591,6 @@ Public Class frmNewEmployee
             SwitchForm_Settings(FormName.Settings, tmpEmp, "ALLOWANCE")
             Close()
 
-        ElseIf txtSearch.Tag = "Settings-Deduction" Then
-
-            SwitchForm_Settings(FormName.Settings, tmpEmp, "DEDUCTION")
-            Close()
-
         ElseIf txtSearch.Tag = "Settings-TimeInOUt" Then
 
             SwitchForm_Settings(FormName.Settings, tmpEmp, "TIMEIN/OUT")
@@ -599,6 +604,11 @@ Public Class frmNewEmployee
         ElseIf txtSearch.Tag = "Pagibig Loan" Then
 
             SwitchForm_Loans(FormName.Loans, tmpEmp, "PAGIBIG")
+            Close()
+
+        ElseIf txtSearch.Tag = "Loan-Deduction" Then
+
+            SwitchForm_Loans(FormName.Loans, tmpEmp, "DEDUCTION")
             Close()
 
         End If

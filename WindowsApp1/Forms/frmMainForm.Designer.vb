@@ -161,7 +161,7 @@ Partial Class frmMainForm
         Me.Loan_BTN.Name = "Loan_BTN"
         Me.Loan_BTN.Size = New System.Drawing.Size(197, 75)
         Me.Loan_BTN.TabIndex = 7
-        Me.Loan_BTN.Text = "           ......................."
+        Me.Loan_BTN.Text = "     Loans"
         Me.Loan_BTN.UseVisualStyleBackColor = False
         '
         'PictureBox9

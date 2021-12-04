@@ -10,6 +10,8 @@ Public Class frmMainForm
 
     Private Sub frmMainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
+        'Check_This()
+
         'Login_Form.ShowDialog()
 
         AppDateTime.Text = Date.Now.ToString("dddd, MMMM dd, yyyy hh:mm:ss tt", CultureInfo.CurrentCulture)
@@ -147,7 +149,7 @@ Public Class frmMainForm
     End Sub
 
     Private Sub Loan_BTN_Click(sender As Object, e As EventArgs) Handles Loan_BTN.Click
-        'OpenWindowsForm("frmImport")
+        OpenWindowsForm("frmLoan")
     End Sub
 
 

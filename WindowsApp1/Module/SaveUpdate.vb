@@ -548,7 +548,7 @@ Module SaveUpdate
                 .Item("AMOUNT_PER_GIVE") = AMOUNT_PER_GIVE
                 .Item("SCHEDULE") = SCHEDULE
                 .Item("EFFECTIVE_DATE") = effectivity
-                .Item("BIO_NO") = bioNo
+                .Item("BIONO") = bioNo
 
             End With
             dss.Tables(0).Rows.Add(dsNewRow)
@@ -581,10 +581,10 @@ Module SaveUpdate
         End If
     End Sub
 
-    Friend Sub SavePayout(BIOMETRIC_ID As String, PAYDATE As String, TOTAL_BASIC As String, TOTAL_OVERTIME As String, TOTAL_LATE_UT As String,
-                          GROSS_AMOUNT As String, SSS_COMP As String, SSS_ER As String, SSS_EC As String, PAGIBIG_COMP As String, PHILHEALTH_COMP As String, TAX_WHELD As String,
-                          NET_TAX_COMP As String, SSS_LOAN As String, PAGIBIG_LOAN As String, TOTAL_ALLOWANCE As String,
-                          TOTAL_DEDUCTION As String, NET_PAY As String, REGHOLIDAY As String, SPECHOLIDAY As String, TOTAL_NIGHT_RATE As String, Optional all As String = "")
+    Friend Sub SavePayout(BIOMETRIC_ID As String, PAYDATE As String, TOTAL_BASIC As Decimal, TOTAL_OVERTIME As Decimal, TOTAL_LATE_UT As Decimal,
+                          GROSS_AMOUNT As Decimal, SSS_COMP As Decimal, SSS_ER As Decimal, SSS_EC As Decimal, PAGIBIG_COMP As Decimal, PHILHEALTH_COMP As String, TAX_WHELD As String,
+                          NET_TAX_COMP As Decimal, SSS_LOAN As Decimal, PAGIBIG_LOAN As Decimal, TOTAL_ALLOWANCE As Decimal,
+                          TOTAL_DEDUCTION As Decimal, NET_PAY As Decimal, REGHOLIDAY As Decimal, SPECHOLIDAY As Decimal, TOTAL_NIGHT_RATE As Decimal, Optional all As String = "")
 
         Dim mysql As String = $"Select * FROM PAYROLL_PAYOUT where BIOMETRIC_ID = '{BIOMETRIC_ID}' and PAYDATE = '{PAYDATE}'"
         Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
@@ -898,7 +898,7 @@ Module SaveUpdate
                     '============================================= DEDUCTION =========================================================  
                     Deduction = 0
 
-                    Dim sql_3 As String = $"Select * From PAYROLL_DEDUCTIONS WHERE BIO_NO = '{bioNo}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
+                    Dim sql_3 As String = $"Select * From PAYROLL_DEDUCTIONS WHERE BIONO = '{bioNo}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
                     Using ds_3 As DataSet = LoadSQL(sql_3, "PAYROLL_DEDUCTIONS")
                         If ds_3.Tables(0).Rows.Count > 0 Then
                             For Each dr_3 In ds_3.Tables(0).Rows
@@ -942,7 +942,7 @@ Module SaveUpdate
 
                     TotalNight = ((rate / 8) * 0.1) * nightRate ' =========== CALCULATE NIGHT RATE TO PESO ===========
 
-                    Dim late_split() As String, under_split() As String, lateTOMinute, underToMinute As Double
+                    Dim late_split() As String, under_split() As String, lateTOMinute, underToMinute As Decimal
 
                     late_split = Split(Late, ":")
                     under_split = Split(UnderTime, ":")
@@ -950,7 +950,7 @@ Module SaveUpdate
                     lateTOMinute = CDbl(late_split(0)) * 60 + CDbl(late_split(1)) + CDbl(late_split(2)) / 60
                     underToMinute = (CDbl(under_split(0)) * 60 + CDbl(under_split(1)) + CDbl(under_split(2)) / 60) / 60
 
-                    Dim LATEE, UNDERTIMEE As Double
+                    Dim LATEE, UNDERTIMEE As Decimal
                     LATEE = ((CDbl(rate) / 8) / 60) * lateTOMinute
                     UNDERTIMEE = (CDbl(rate) / 8) * underToMinute
 
@@ -960,11 +960,11 @@ Module SaveUpdate
                     'GrossAmount = (TotalBasic + TotalHol + TotalOT + TotalNight) - TotalLateUnder 
 
                     '============================================= Calculate =========================================================  
-                    Dim NetPay As Double
+                    Dim NetPay As Decimal
 
-                    Dim CONTRIB As Double = SSSComp + PagibigComp + PhilhealthComp + Tax_Wheld
+                    Dim CONTRIB As Decimal = SSSComp + PagibigComp + PhilhealthComp + Tax_Wheld
 
-                    Dim positive, negative As Double
+                    Dim positive, negative As Decimal
                     If IsLastDay(paydate_) Then
                         positive = GrossAmount + Allowances
                         negative = CONTRIB + sssLoan + pagibigLoan + Deduction
@@ -976,13 +976,13 @@ Module SaveUpdate
 
                     NetPay = positive - negative
 
-                    SavePayout(bioNo, paydate_, (TotalBasic).ToString("N"), (TotalOT).ToString("N"),
-                                  (TotalLateUnder).ToString("N"), (GrossAmount).ToString("N"),
-                                  (SSSComp).ToString("N"), (SSS_ER).ToString("N"), (SSS_EC).ToString("N"),
-                                  (PagibigComp).ToString("N"), (PhilhealthComp).ToString("N"), (Tax_Wheld).ToString("N"),
-                                  (netTax).ToString("N"), (sssLoan).ToString("N"), (pagibigLoan).ToString("N"),
-                                  (Allowances).ToString("N"), (Deduction).ToString("N"), (NetPay).ToString("N"),
-                                  (TotalREGHol).ToString("N"), (TotalSPECHol).ToString("N"), (TotalNight).ToString("N"))
+                    SavePayout(bioNo, paydate_, TotalBasic, TotalOT,
+                                  TotalLateUnder, GrossAmount,
+                                  SSSComp, SSS_ER, SSS_EC,
+                                  PagibigComp, PhilhealthComp, Tax_Wheld,
+                                  netTax, sssLoan, pagibigLoan,
+                                  Allowances, Deduction, NetPay,
+                                  TotalREGHol, TotalSPECHol, TotalNight)
                 End With
             End If
         End Using
@@ -1060,14 +1060,14 @@ Module SaveUpdate
                                     startingDate = startingDate.AddDays(1)
                                 End While
 
-                                SaveTraining_days(BiometricID, paydate_, noOf_days_training)
                             End If
 
+                            SaveTraining_days(BiometricID, paydate_, noOf_days_training)
                         End If
 
                         '============================================= ATTENDANCE (TOTAL DAYS) =========================================================
-                        Dim sql_1 As String = $"Select * From PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{BiometricID}' and paydate = '{paydate_}'"
-                        Using ds_1 As DataSet = LoadSQL(sql_1, "PAYROLL_ATTENDANCE")
+                        Dim sql_1 As String = $"Select * From TEMP_ATTENDANCE WHERE BIOMETRICID = '{BiometricID}' and paydate = '{paydate_}'"
+                        Using ds_1 As DataSet = LoadSQL(sql_1, "TEMP_ATTENDANCE")
                             If ds_1.Tables(0).Rows.Count > 0 Then
 
                                 Dim dr_11 As DataRow = ds_1.Tables(0).Rows(0)
@@ -1169,7 +1169,7 @@ Module SaveUpdate
                         End Using
 
                         '============================================= DEDUCTION =========================================================   
-                        Dim sql_3 As String = $"Select * From PAYROLL_DEDUCTIONS WHERE BIO_NO = '{BiometricID}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
+                        Dim sql_3 As String = $"Select * From PAYROLL_DEDUCTIONS WHERE BIONO = '{BiometricID}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
                         Using ds_3 As DataSet = LoadSQL(sql_3, "PAYROLL_DEDUCTIONS")
                             If ds_3.Tables(0).Rows.Count > 0 Then
                                 For Each dr_3 In ds_3.Tables(0).Rows
@@ -1205,14 +1205,14 @@ Module SaveUpdate
                         End If
 
                         '============================================= Calculate_Gross() ========================================================= 
-                        Dim TotalREGHol, TotalSPECHol, TotalOT, TotalLateUnder, GrossAmount As Double
+                        Dim TotalREGHol, TotalSPECHol, TotalOT, TotalLateUnder, GrossAmount As Decimal
 
                         TotalREGHol = (RegularHol * rate) * regHoliday
                         TotalSPECHol = (SpecialHol * rate) * specHoliday
 
                         TotalOT = ((rate / 8) * 1.25) * RegularOT ' =========== CALCULATE OVERTIME TO PESO ===========
 
-                        Dim late_split() As String, under_split() As String, lateTOMinute, underToMinute As Double
+                        Dim late_split() As String, under_split() As String, lateTOMinute, underToMinute As Decimal
 
                         late_split = Split(Late, ":")
                         under_split = Split(UnderTime, ":")
@@ -1220,7 +1220,7 @@ Module SaveUpdate
                         lateTOMinute = CDbl(late_split(0)) * 60 + CDbl(late_split(1)) + CDbl(late_split(2)) / 60
                         underToMinute = (CDbl(under_split(0)) * 60 + CDbl(under_split(1)) + CDbl(under_split(2)) / 60) / 60
 
-                        Dim LATEE, UNDERTIMEE As Double
+                        Dim LATEE, UNDERTIMEE As Decimal
                         LATEE = ((rate / 8) / 60) * lateTOMinute
                         UNDERTIMEE = (rate / 8) * underToMinute
 
@@ -1229,11 +1229,11 @@ Module SaveUpdate
                         GrossAmount = (TotalBasic + TotalREGHol + TotalSPECHol + TotalOT) - TotalLateUnder
 
                         '============================================= Calculate =========================================================  
-                        Dim NetPay As Double
+                        Dim NetPay As Decimal
 
-                        Dim CONTRIB As Double = SSSComp + PagibigComp + PhilhealthComp + Tax_Wheld
+                        Dim CONTRIB As Decimal = SSSComp + PagibigComp + PhilhealthComp + Tax_Wheld
 
-                        Dim positive, negative As Double
+                        Dim positive, negative As Decimal
                         If IsLastDay(paydate_) Then
                             positive = GrossAmount + Allowances
                             negative = CONTRIB + sssLoan + pagibigLoan + Deduction
@@ -1244,13 +1244,21 @@ Module SaveUpdate
 
                         NetPay = positive - negative
 
-                        SavePayout(BiometricID, paydate_, (TotalBasic).ToString("N"), (TotalOT).ToString("N"),
-                                      (TotalLateUnder).ToString("N"), (GrossAmount).ToString("N"),
-                                      (SSSComp).ToString("N"), (SSS_ER).ToString("N"), (SSS_EC).ToString("N"),
-                                      (PagibigComp).ToString("N"), (PhilhealthComp).ToString("N"), (Tax_Wheld).ToString("N"),
-                                      (netTax).ToString("N"), (sssLoan).ToString("N"), (pagibigLoan).ToString("N"),
-                                      (Allowances).ToString("N"), (Deduction).ToString("N"), (NetPay).ToString("N"),
-                                      (TotalREGHol).ToString("N"), (TotalSPECHol).ToString("N"), 0, "Group")
+                        SavePayout(BiometricID, paydate_, TotalBasic, TotalOT,
+                                      TotalLateUnder, GrossAmount,
+                                      SSSComp, SSS_ER, SSS_EC,
+                                      PagibigComp, PhilhealthComp, Tax_Wheld,
+                                      netTax, sssLoan, pagibigLoan,
+                                      Allowances, Deduction, NetPay,
+                                      TotalREGHol, TotalSPECHol, 0, "Group")
+
+                        'SavePayout(BiometricID, paydate_, (TotalBasic).ToString("N"), (TotalOT).ToString("N"),
+                        '              (TotalLateUnder).ToString("N"), (GrossAmount).ToString("N"),
+                        '              (SSSComp).ToString("N"), (SSS_ER).ToString("N"), (SSS_EC).ToString("N"),
+                        '              (PagibigComp).ToString("N"), (PhilhealthComp).ToString("N"), (Tax_Wheld).ToString("N"),
+                        '              (netTax).ToString("N"), (sssLoan).ToString("N"), (pagibigLoan).ToString("N"),
+                        '              (Allowances).ToString("N"), (Deduction).ToString("N"), (NetPay).ToString("N"),
+                        '              (TotalREGHol).ToString("N"), (TotalSPECHol).ToString("N"), 0, "Group")
 
                         frmMainForm.AppProgressBar.Value += 1
                     End With
@@ -1792,6 +1800,8 @@ Module SaveUpdate
     End Function
 
     Public Sub SAVE_Emp_SBU_AMOUNT_PRINCIPAL_CREDIT_NAME(EMP_NO As String, CATEGORY As String, AMOUNT As String, PRINCIPAL As String, CREDIT As String, BALANCE As String, RowNo As Integer)
+        If EMP_NO.TrimEnd = "addt'l. cash bond" Then Exit Sub
+
         If EMP_NO <> "" Or EMP_NO <> Nothing Then
 
             Dim mysql As String

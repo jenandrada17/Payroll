@@ -1,4 +1,5 @@
-﻿
+﻿Imports System.Globalization
+
 Public Class frmReport
 
     Private allowCoolMove As Boolean = False
@@ -6,6 +7,7 @@ Public Class frmReport
     Dim PlusS As String = ""
 
     Private Sub frmReport_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        'Check_This()
 
         PopulateComboBox(PaydateNet_ComboB, "PAYROLL_PAYOUT", "PAYDATE")
         PopulateComboBox(PaydateCom_Combo, "PAYROLL_PAYOUT", "PAYDATE")
@@ -75,7 +77,6 @@ Public Class frmReport
                         progressBarStart(ds.Tables(0).Rows.Count)
                         For Each dr In ds.Tables(0).Rows
                             With dr
-                                Dim dateStarted As DateTime = .Item("DATE_STARTED")
                                 Dim EMP_NO As String = IIf(IsDBNull(.Item("EMP_NO")), "", .Item("EMP_NO"))
 
                                 Dim payroll As DateTime = paydatee
@@ -141,21 +142,21 @@ Public Class frmReport
 
                         progressBarEnd()
                         Dim TOTAL_EMP As Integer = GetOVERALL_COUNT("ID", paydatee)
-                        Dim TOTAL_BASIC As Double = GetOVERALL_SUM("TOTAL_BASIC", paydatee)
-                        Dim TOTAL_OT As Double = GetOVERALL_SUM("TOTAL_OVERTIME", paydatee)
+                        Dim TOTAL_BASIC As Decimal = GetOVERALL_SUM("TOTAL_BASIC", paydatee)
+                        Dim TOTAL_OT As Decimal = GetOVERALL_SUM("TOTAL_OVERTIME", paydatee)
 
-                        Dim TOTAL_REGHOLIDAY As Double = GetOVERALL_SUM("TOTAL_REGHOLIDAY", paydatee)
-                        Dim TOTAL_SPECHOLIDAY As Double = GetOVERALL_SUM("TOTAL_SPECHOLIDAY", paydatee)
-                        Dim TOTAL_HOLIDAY As Double = TOTAL_REGHOLIDAY + TOTAL_SPECHOLIDAY
+                        Dim TOTAL_REGHOLIDAY As Decimal = GetOVERALL_SUM("TOTAL_REGHOLIDAY", paydatee)
+                        Dim TOTAL_SPECHOLIDAY As Decimal = GetOVERALL_SUM("TOTAL_SPECHOLIDAY", paydatee)
+                        Dim TOTAL_HOLIDAY As Decimal = TOTAL_REGHOLIDAY + TOTAL_SPECHOLIDAY
 
-                        Dim TOTAL_NDIFF As Double = GetOVERALL_SUM("TOTAL_NIGHT_RATE", paydatee)
-                        Dim TOTAL_PI_ECOLA_SIL As Double = GetOVERALL_SUM("TOTAL_ALLOWANCE", paydatee)
-                        Dim TOTAL_TARDINESS As Double = GetOVERALL_SUM("TOTAL_LATE_UT", paydatee)
-                        Dim TOTAL_SSS As Double = GetOVERALL_SUM("SSS_COMP", paydatee)
-                        Dim TOTAL_PHIC As Double = GetOVERALL_SUM("PHILHEALTH_COMP", paydatee)
-                        Dim TOTAL_PAGIBIG As Double = GetOVERALL_SUM("PAGIBIG_COMP", paydatee)
-                        Dim TOTAL_SBU_CHARGES As Double = GetOVERALL_SUM("TOTAL_DEDUCTION", paydatee)
-                        Dim TOTAL_NET_PAY As Double = GetOVERALL_SUM("NET_PAY", paydatee)
+                        Dim TOTAL_NDIFF As Decimal = GetOVERALL_SUM("TOTAL_NIGHT_RATE", paydatee)
+                        Dim TOTAL_PI_ECOLA_SIL As Decimal = GetOVERALL_SUM("TOTAL_ALLOWANCE", paydatee)
+                        Dim TOTAL_TARDINESS As Decimal = GetOVERALL_SUM("TOTAL_LATE_UT", paydatee)
+                        Dim TOTAL_SSS As Decimal = GetOVERALL_SUM("SSS_COMP", paydatee)
+                        Dim TOTAL_PHIC As Decimal = GetOVERALL_SUM("PHILHEALTH_COMP", paydatee)
+                        Dim TOTAL_PAGIBIG As Decimal = GetOVERALL_SUM("PAGIBIG_COMP", paydatee)
+                        Dim TOTAL_SBU_CHARGES As Decimal = GetOVERALL_SUM("TOTAL_DEDUCTION", paydatee)
+                        Dim TOTAL_NET_PAY As Decimal = GetOVERALL_SUM("NET_PAY", paydatee)
 
                         Dim paramList As New List(Of Microsoft.Reporting.WinForms.ReportParameter) From {
                     New Microsoft.Reporting.WinForms.ReportParameter("paramEmployees", TOTAL_EMP),
@@ -713,10 +714,10 @@ Public Class frmReport
             Dim FORMNAME As String = "2nd PERIOD"
 
             If PAYROLL.Day = 15 Then
-                FORMNAME = "1st PERIOD"
+                FORMNAME = "1ST PERIOD"
             End If
 
-            FORMNAME = $"{PAYROLL.ToString("MMMM dd, yyyy")} - {FORMNAME}"
+            FORMNAME = $"{(PAYROLL.ToString("MMMM dd, yyyy")).ToUpper} - {FORMNAME}"
 
             Dim dt_Cost As New DataTable()
             With dt_Cost
@@ -727,16 +728,20 @@ Public Class frmReport
             End With
 
             ''========================================= RECORDED_ALLOW_DEDUC ================================================
-            mysql = $"Select  BRANCH_CODE, C.CATEGORY, TRANSAC_NAME, HO_CATEGORY, SUM(AMOUNT) AS TOTS From PAYROLL_PAYOUT B 
+            mysql = $"Select  BRANCH_CODE, C.CATEGORY, TRANSAC_NAME, HO_CATEGORY, COMPANY, SUM(AMOUNT) AS TOTS From PAYROLL_PAYOUT B 
                                         INNER JOIN PAYROLL_EMPLOYEE A ON A.BIO_NO = B.BIOMETRIC_ID 
                                         LEFT JOIN RECORDED_ALLOW_DEDUC C ON C.BIO_NO = B.BIOMETRIC_ID  
-                                        WHERE B.PAYDATE = '{PAYDATE}' GROUP BY BRANCH_CODE, C.CATEGORY,  TRANSAC_NAME, HO_CATEGORY"
+                                        WHERE B.PAYDATE = '{PAYDATE}' GROUP BY BRANCH_CODE, C.CATEGORY,  TRANSAC_NAME, HO_CATEGORY, COMPANY"
 
             Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
                 If ds.Tables(0).Rows.Count > 0 Then
                     progressBarStart(ds.Tables(0).Rows.Count)
                     For Each dr In ds.Tables(0).Rows
                         With dr
+
+                            Dim COMPANY As String = .Item("COMPANY").ToLower()
+                            Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
+                            Dim toProper As String = info.ToTitleCase(COMPANY)
 
                             Dim BRANCHCODE As String = .Item("BRANCH_CODE")
                             Dim BRANCHNAME As String = GET_STRING("PAYROLL_CITY_BRANCH", "BRANCHNAME", $"BRANCHCODE = '{BRANCHCODE}'")
@@ -746,6 +751,8 @@ Public Class frmReport
 
                             If BRANCHCODE = Nothing Then
                                 BRANCHNAME = .Item("HO_CATEGORY")
+                            ElseIf BRANCHCODE = "ROG" Or BRANCHCODE = "ROX" Or BRANCHCODE = "MID" Or BRANCHCODE = "ACM" Or BRANCHCODE = "ACM " Or BRANCHCODE = "KID" Or BRANCHCODE = "POL" Or BRANCHCODE = "KCG" Then
+                                BRANCHNAME = toProper & " " & BRANCHNAME
                             End If
 
                             dt_Cost.Rows.Add(BRANCHNAME, CATEGORY, DC_Amount, Debit_Credit)
@@ -759,20 +766,26 @@ Public Class frmReport
             End Using
 
             '========================================= PAYROLL_COSTDISTRIBUTION ================================================
-            mysql = $"Select  BRANCH_CODE, HO_CATEGORY, NAMEE, NAME_CATEGORY, SUM(TOTAL_BASIC) AS BASIC, SUM(TOTAL_OVERTIME) AS OT,
+            mysql = $"Select  BRANCH_CODE, HO_CATEGORY, NAMEE, NAME_CATEGORY, COMPANY, SUM(TOTAL_BASIC) AS BASIC, SUM(TOTAL_OVERTIME) AS OT,
                                         SUM(TOTAL_LATE_UT) AS LATE_UT, SUM(SSS_COMP) AS SSS_EE , SUM(SSS_ER) AS SSS_ER , SUM(SSS_EC) AS SSS_EC , SUM(NET_PAY) AS NETPAY, 
                                         SUM(PAGIBIG_COMP) AS HDMF, SUM(PHILHEALTH_COMP) AS PHILH , SUM(SSS_LOAN) AS LOAN_SSS , SUM(PAGIBIG_LOAN) AS LOAN_HDMF, 
                                         SUM(TOTAL_REGHOLIDAY) AS REGHOLIDAY , SUM(TOTAL_SPECHOLIDAY) AS SPECHOLIDAY  
                                         From PAYROLL_PAYOUT B 
                                         INNER JOIN PAYROLL_EMPLOYEE A ON A.BIO_NO = B.BIOMETRIC_ID 
                                         LEFT JOIN PAYROLL_COSTDISTRIB ON 1 = 1 
-                                        WHERE B.PAYDATE = '{PAYDATE}' GROUP BY BRANCH_CODE, HO_CATEGORY, NAMEE, NAME_CATEGORY"
+                                        WHERE B.PAYDATE = '{PAYDATE}' GROUP BY BRANCH_CODE, HO_CATEGORY, NAMEE, NAME_CATEGORY, COMPANY"
+
+            '  WHERE B.PAYDATE = '{PAYDATE}' AND BRANCH_CODE IN ('UPI', 'ZAM') GROUP BY BRANCH_CODE, HO_CATEGORY, NAMEE, NAME_CATEGORY"
 
             Using dss As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
                 If dss.Tables(0).Rows.Count > 0 Then
                     progressBarStart(dss.Tables(0).Rows.Count)
                     For Each dr In dss.Tables(0).Rows
                         With dr
+
+                            Dim COMPANY As String = .Item("COMPANY").ToLower()
+                            Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
+                            Dim toProper As String = info.ToTitleCase(COMPANY)
 
                             Dim BRANCHCODE As String = .Item("BRANCH_CODE")
                             Dim BRANCHNAME As String = GET_STRING("PAYROLL_CITY_BRANCH", "BRANCHNAME", $"BRANCHCODE = '{BRANCHCODE}'")
@@ -784,6 +797,8 @@ Public Class frmReport
 
                             If BRANCHCODE = Nothing Then
                                 BRANCHNAME = .Item("HO_CATEGORY")
+                            ElseIf BRANCHCODE = "ROG" Or BRANCHCODE = "ROX" Or BRANCHCODE = "MID" Or BRANCHCODE = "ACM" Or BRANCHCODE = "ACM " Or BRANCHCODE = "KID" Or BRANCHCODE = "POL" Or BRANCHCODE = "KCG" Then
+                                BRANCHNAME = toProper & " " & BRANCHNAME
                             End If
 
                             '======================== PAYROLL_COSTCONTRIB ================= 
@@ -794,18 +809,25 @@ Public Class frmReport
 
                                 If NAMEE = "Basic Pay" Then
                                     DC_Amount = .Item("BASIC")
+
                                 ElseIf NAMEE = "Regular Overtime" Then
                                     DC_Amount = .Item("OT")
+
                                 ElseIf NAMEE = "SSS Employer Share" Then
                                     DC_Amount = .Item("SSS_ER")
+
                                 ElseIf NAMEE = "ECC" Then
                                     DC_Amount = .Item("SSS_EC")
+
                                 ElseIf NAMEE = "HDMF Employer Share" Then
                                     DC_Amount = .Item("HDMF")
+
                                 ElseIf NAMEE = "Phil Health Employer Share" Then
                                     DC_Amount = .Item("PHILH")
+
                                 ElseIf NAMEE = "Regular Holiday" Then
                                     DC_Amount = .Item("REGHOLIDAY")
+
                                 ElseIf NAMEE = "Special Holiday" Then
                                     DC_Amount = .Item("SPECHOLIDAY")
                                 End If
@@ -816,18 +838,25 @@ Public Class frmReport
 
                                 If NAMEE = "EC PAYABLE" Then
                                     DC_Amount = .Item("SSS_EC")
-                                ElseIf NAMEE = "LATE" Then
+
+                                ElseIf NAMEE = "Late" Then
                                     DC_Amount = .Item("LATE_UT")
+
                                 ElseIf NAMEE = "SSS PAYABLE" Then
                                     DC_Amount = .Item("SSS_EE") + .Item("SSS_ER")
+
                                 ElseIf NAMEE = "HDMF PAYABLE" Then
                                     DC_Amount = .Item("HDMF") * 2
+
                                 ElseIf NAMEE = "PHIL HEALTH PAYABLE" Then
                                     DC_Amount = .Item("PHILH") * 2
+
                                 ElseIf NAMEE = "SSS LOAN" Then
                                     DC_Amount = .Item("LOAN_SSS")
+
                                 ElseIf NAMEE = "PAGIBIG LOAN" Then
                                     DC_Amount = .Item("LOAN_HDMF")
+
                                 ElseIf NAMEE = "CASH IN BANK" Then
                                     DC_Amount = .Item("NETPAY")
                                 End If
@@ -1006,7 +1035,7 @@ Public Class frmReport
     Private Sub NetBranch_Combo_SelectedValueChanged(sender As Object, e As EventArgs) Handles NetBranch_Combo.SelectedValueChanged
         If PaydateNet_ComboB.SelectedIndex >= 0 Then
 
-            Dim paydatee As String = PaydateNet_ComboB.SelectedItem
+            Dim paydatee As String = PaydateNet_ComboB.Text
             Dim mysql As String = ""
 
             If Company_Combo.SelectedIndex = 0 Then '=== PHOTO
@@ -1222,4 +1251,5 @@ Public Class frmReport
             LoadCostDistribution()
         End If
     End Sub
+
 End Class

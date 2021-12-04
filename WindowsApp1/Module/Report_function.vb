@@ -542,7 +542,7 @@ Module Report_function
     End Function
 
     Public Function GetOVERALL_SUM(COLUMN As String, PAYDATE As String)
-        Dim VALUEE As Double
+        Dim VALUEE As Decimal
         Dim mysql As String = $"Select SUM({COLUMN}) AS TOTS FROM  PAYROLL_PAYOUT WHERE PAYDATE = '{PAYDATE}'"
         Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
         If ds.Tables(0).Rows.Count > 0 Then
@@ -828,42 +828,65 @@ Module Report_function
     End Function
 
     Public Sub Check_This()
-        'Dim mysql As String = $"Select * From PAYROLL_PAYOUT where PAYDATE = '9/15/2021'"
 
-        Dim mysql As String = $"Select Sum(NET_PAY) as tots From PAYROLL_PAYOUT 
-                            inner join PAYROLL_EMPLOYEE ON BIO_NO = BIOMETRIC_ID 
-                            LEFT JOIN PAYROLL_CITY_BRANCH ON BRANCHCODE = BRANCH_CODE  
-                            WHERE PAYDATE = '9/15/2021' AND CATEGORY In ('GENSAN PERFECT', 'JR PHOTO') AND ADDRESS = 'POLOMOLOK'"
+        Dim mysql As String = $"Select * From 1M4N4G3YU0.PAYROLL_EMPLOYEE WHERE BIO_NO = '3995'"
 
-        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
+        'Dim mysql As String = $"Select Sum(NET_PAY) as tots From PAYROLL_PAYOUT 
+        '                    inner join PAYROLL_EMPLOYEE ON BIO_NO = BIOMETRIC_ID   
+        '                    WHERE PAYDATE = '9/15/2021' "
+
+        Using ds As DataSet = LoadSQL(mysql, "1M4N4G3YU0.PAYROLL_EMPLOYEE")
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
                     With dr
 
-                        MsgBox(FormatNumber(.item("tots")))
-                        'SAVEE(.item("BIOMETRIC_ID"), .item("TOTAL_LATE_UT"))
+                        MsgBox(.item("FULLNAME"))
+
+                        'SAVEE(.item("BIOMETRIC_ID"), .item("TOTAL_BASIC"), .item("TOTAL_OVERTIME"), .item("TOTAL_LATE_UT"), .item("TOTAL_REGHOLIDAY"), .item("TOTAL_SPECHOLIDAY"),
+                        '        .item("GROSS_AMOUNT"), .item("SSS_COMP"), .item("SSS_ER"), .item("SSS_EC"), .item("PAGIBIG_COMP"), .item("PHILHEALTH_COMP"), .item("TAX_WHELD"),
+                        '        .item("NET_TAX_COMP"), .item("SSS_LOAN"), .item("PAGIBIG_LOAN"), .item("TOTAL_ALLOWANCE"), .item("TOTAL_DEDUCTION"), .item("TOTAL_NIGHT_RATE"),
+                        '        .item("NET_PAY"), .item("PAYDATE"))
                     End With
                 Next
             End If
         End Using
     End Sub
 
-    'Public Sub SAVEE(BIO As String, LASTE As String)
+    Public Sub SAVEE(BIO As String, BASIC As String, OT As String, LATE_UT As String, REGHOLIDAY As String, SPECHOLIDAY As String, GROSS As String, SSS_EE As String, SSS_ER As String, SSS_EC As String,
+                     PAGIBIG As String, PHILHEALTH As String, TAX_WH As String, NETTAX As String, SSS_LOAN As String, PAGIBIG_LOAN As String, ALLOWANCE As String, DEDUCTION As String, NIGHT_RATE As String,
+                     NET_PAY As String, PAYDATE As String)
 
-    '    Dim mysqlL As String = $"Select * FROM PAYROLL_PAYOUT where BIOMETRIC_ID = '{BIO}' and PAYDATE = '9/15/2021'"
-    '    Dim dss As DataSet = LoadSQL(mysqlL, "PAYROLL_PAYOUT")
-    '    If dss.Tables(0).Rows.Count > 0 Then
-    '        For Each dr In dss.Tables(0).Rows
-    '            With dr
+        Dim mysqlL As String = $"Select * FROM PAYROLL_PAYOUT"
+        Dim dss As DataSet = LoadSQL(mysqlL, "PAYROLL_PAYOUT")
+        Dim DSnEW As DataRow = dss.Tables(0).NewRow
+        With DSnEW
+            .Item("BIOMETRIC_ID") = BIO
+            .Item("TOTAL_BASIC") = BASIC
+            .Item("TOTAL_OVERTIME") = OT
+            .Item("TOTAL_LATE_UT") = LATE_UT
+            .Item("TOTAL_REGHOLIDAY") = REGHOLIDAY
+            .Item("TOTAL_SPECHOLIDAY") = SPECHOLIDAY
+            .Item("GROSS_AMOUNT") = GROSS
+            .Item("SSS_COMP") = SSS_EE
+            .Item("SSS_ER") = SSS_ER
+            .Item("SSS_EC") = SSS_EC
+            .Item("PAGIBIG_COMP") = PAGIBIG
+            .Item("PHILHEALTH_COMP") = PHILHEALTH
+            .Item("TAX_WHELD") = TAX_WH
+            .Item("NET_TAX_COMP") = NETTAX
+            .Item("SSS_LOAN") = SSS_LOAN
+            .Item("PAGIBIG_LOAN") = PAGIBIG_LOAN
+            .Item("TOTAL_ALLOWANCE") = ALLOWANCE
+            .Item("TOTAL_DEDUCTION") = DEDUCTION
+            .Item("TOTAL_NIGHT_RATE") = NIGHT_RATE
+            .Item("NET_PAY") = NET_PAY
+            .Item("PAYDATE") = PAYDATE
 
-    '                .Item("TOTAL_LATE_UTT") = LASTE
+        End With
+        dss.Tables(0).Rows.Add(DSnEW)
+        SaveEntry(dss)
 
-    '            End With
-    '            SaveEntry(dss, False)
-    '        Next
-    '    End If
-
-    'End Sub
+    End Sub
 
     Friend Function GET_STRING(TABLE As String, column As String, STR As String)
         Dim VALUEE As String = ""

@@ -204,21 +204,21 @@ Public Class frmContribution
         SaveLogs($"ADDED PAGIBIG LOAN {Pag_Name_TXT.Text} ({Pag_Name_TXT.Tag}), Amount({Pag_Amount_TXT.Text}), Start({Pag_Start_DTP.Value.ToString("MMM dd, yyyy")}), End({Pag_End_DTP.Value.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
     End Sub
 
-    Public Sub Load_Contrib_Loan(emp As Employee, tabName As String)
-        With emp
-            If tabName = "SSS" Then
+    'Public Sub Load_Contrib_Loan(emp As Employee, tabName As String)
+    '    With emp
+    '        If tabName = "SSS" Then
 
-                Contribution_Tab.SelectedIndex = 4
-                SSS_Name_TXT.Text = .Fullname
-                SSS_Name_TXT.Tag = .BiometricID
+    '            Contribution_Tab.SelectedIndex = 4
+    '            SSS_Name_TXT.Text = .Fullname
+    '            SSS_Name_TXT.Tag = .BiometricID
 
-            Else
-                Contribution_Tab.SelectedIndex = 5
-                Pag_Name_TXT.Text = .Fullname
-                Pag_Name_TXT.Tag = .BiometricID
-            End If
-        End With
-    End Sub
+    '        Else
+    '            Contribution_Tab.SelectedIndex = 5
+    '            Pag_Name_TXT.Text = .Fullname
+    '            Pag_Name_TXT.Tag = .BiometricID
+    '        End If
+    '    End With
+    'End Sub
 
     Private Sub SSS_Amount_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles SSS_Amount_TXT.KeyPress, Pag_Amount_TXT.KeyPress
         If e.KeyChar <> ChrW(Keys.Back) Then

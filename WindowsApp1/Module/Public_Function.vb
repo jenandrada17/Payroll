@@ -119,11 +119,11 @@ Module Public_Function
         Select Case gotoForm
             Case FormName.Loans
                 Try
-                    Dim instForm_ As frmContribution = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmContribution").SingleOrDefault()
+                    Dim instForm_ As frmLoan = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmLoan").SingleOrDefault()
                     instForm_.Load_Contrib_Loan(emp, tabName)
 
                     If instForm_ Is Nothing Then
-                        instForm_ = DirectCast(CreateObjectInstance("frmContribution"), Form)
+                        instForm_ = DirectCast(CreateObjectInstance("frmLoan"), Form)
                         instForm_.MdiParent = frmMainForm
                         frmMainForm.pNavigate.Controls.Add(instForm_)
                         frmMainForm.pNavigate.Tag = instForm_
@@ -138,6 +138,29 @@ Module Public_Function
 
                 End Try
         End Select
+
+        'Select Case gotoForm
+        '    Case FormName.Loans
+        '        Try
+        '            Dim instForm_ As frmContribution = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmContribution").SingleOrDefault()
+        '            instForm_.Load_Contrib_Loan(emp, tabName)
+
+        '            If instForm_ Is Nothing Then
+        '                instForm_ = DirectCast(CreateObjectInstance("frmContribution"), Form)
+        '                instForm_.MdiParent = frmMainForm
+        '                frmMainForm.pNavigate.Controls.Add(instForm_)
+        '                frmMainForm.pNavigate.Tag = instForm_
+        '                instForm_.Show()
+        '                instForm_.Dock = DockStyle.Fill
+        '                instForm_.BringToFront()
+        '            Else
+        '                instForm_.BringToFront()
+        '            End If
+
+        '        Catch ex As Exception
+
+        '        End Try
+        'End Select
     End Sub
 
     Public Function CreateObjectInstance(ByVal objectName As String) As Object

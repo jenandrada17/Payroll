@@ -3191,7 +3191,7 @@ Fields!PLUS.Value = "PTU", "PTU REALTY")</Value>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=FormatNumber(SUM(CDbl(Fields!BASIC.Value),"Tablix4"))</Value>
+                                  <Value>=FormatNumber(SUM(CDec(Fields!BASIC.Value),"Tablix4"))</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB Demi</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -3225,7 +3225,7 @@ Fields!PLUS.Value = "PTU", "PTU REALTY")</Value>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=FormatNumber(Sum(CDbl(Fields!OVERTIME.Value), "Tablix4"))</Value>
+                                  <Value>=FormatNumber(Sum(CDec(Fields!OVERTIME.Value), "Tablix4"))</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB Demi</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -3259,7 +3259,7 @@ Fields!PLUS.Value = "PTU", "PTU REALTY")</Value>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=FormatNumber(Sum(CDbl(Fields!HOLIDAY.Value), "Tablix4"))</Value>
+                                  <Value>=FormatNumber(Sum(CDec(Fields!HOLIDAY.Value), "Tablix4"))</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB Demi</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -3293,7 +3293,7 @@ Fields!PLUS.Value = "PTU", "PTU REALTY")</Value>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=FormatNumber(Sum(CDbl(Fields!N_DIFF.Value), "Tablix4"))</Value>
+                                  <Value>=FormatNumber(Sum(CDec(Fields!N_DIFF.Value), "Tablix4"))</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB Demi</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -3327,7 +3327,7 @@ Fields!PLUS.Value = "PTU", "PTU REALTY")</Value>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=FormatNumber(Sum(CDbl(Fields!PI_ECOLA_SIL.Value), "Tablix4"))</Value>
+                                  <Value>=FormatNumber(Sum(CDec(Fields!PI_ECOLA_SIL.Value), "Tablix4"))</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB Demi</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -3361,7 +3361,7 @@ Fields!PLUS.Value = "PTU", "PTU REALTY")</Value>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=FormatNumber(Sum(CDbl(Fields!TARDINESS.Value), "Tablix4"))</Value>
+                                  <Value>=FormatNumber(Sum(CDec(Fields!TARDINESS.Value), "Tablix4"))</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB Demi</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -3395,7 +3395,7 @@ Fields!PLUS.Value = "PTU", "PTU REALTY")</Value>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=FormatNumber(Sum(CDbl(Fields!SSS.Value), "Tablix4"))</Value>
+                                  <Value>=FormatNumber(Sum(CDec(Fields!SSS.Value), "Tablix4"))</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB Demi</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -3429,7 +3429,7 @@ Fields!PLUS.Value = "PTU", "PTU REALTY")</Value>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=FormatNumber(Sum(CDbl(Fields!PHIC.Value), "Tablix4"))</Value>
+                                  <Value>=FormatNumber(Sum(CDec(Fields!PHIC.Value), "Tablix4"))</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB Demi</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -3463,7 +3463,7 @@ Fields!PLUS.Value = "PTU", "PTU REALTY")</Value>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=FormatNumber(Sum(CDbl(Fields!PAGIBIG.Value), "Tablix4"))</Value>
+                                  <Value>=FormatNumber(Sum(CDec(Fields!PAGIBIG.Value), "Tablix4"))</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB Demi</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -3497,7 +3497,7 @@ Fields!PLUS.Value = "PTU", "PTU REALTY")</Value>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=FormatNumber(Sum(CDbl(Fields!SBU_CHARGES.Value), "Tablix4"))</Value>
+                                  <Value>=FormatNumber(Sum(CDec(Fields!SBU_CHARGES.Value), "Tablix4"))</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB Demi</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -3531,7 +3531,7 @@ Fields!PLUS.Value = "PTU", "PTU REALTY")</Value>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=FormatNumber(Sum(CDbl(Fields!NET_PAY.Value), "Tablix4"))</Value>
+                                  <Value>=FormatNumber(Sum(CDec(Fields!NET_PAY.Value), "Tablix4"))</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB Demi</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -4479,7 +4479,6 @@ Fields!PLUS.Value = "PTU", "PTU REALTY")</Value>
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
