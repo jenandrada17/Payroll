@@ -383,37 +383,52 @@ Module SelectFromDatabase
     End Sub
 
     Friend Sub REGULDARHolidayLists(LV As ListView)
-        Dim sql As String = "select  DATEE, NAME from PAYROLL_HOLIDAY where KINDS = 'REGULAR' "
 
-        Using rdr As FbDataReader = LoadSQL_byDataReader(sql)
-            LV.Items.Clear()
-
-            While rdr.Read()
-                If rdr.HasRows Then
-                    With rdr
+        LV.Items.Clear()
+        Dim sql As String = "select * from PAYROLL_HOLIDAY where KINDS = 'REGULAR' "
+        Using ds As DataSet = LoadSQL(sql, "PAYROLL_HOLIDAY")
+            If ds.Tables(0).Rows.Count > 0 Then
+                For Each dr In ds.Tables(0).Rows
+                    With dr
                         Dim i As ListViewItem = LV.Items.Add(.Item("DATEE"))
                         i.SubItems.Add(.Item("NAME"))
                     End With
-                End If
-            End While
+                Next
+
+            End If
         End Using
     End Sub
 
     Friend Sub SPECIALHolidayLists(LV As ListView)
-        Dim sql As String = "select DATEE, NAME from PAYROLL_HOLIDAY where KINDS = 'SPECIAL' "
 
-        Using rdr As FbDataReader = LoadSQL_byDataReader(sql)
-            LV.Items.Clear()
-
-            While rdr.Read()
-                If rdr.HasRows Then
-                    With rdr
+        LV.Items.Clear()
+        Dim sql As String = "select * from PAYROLL_HOLIDAY where KINDS = 'SPECIAL' "
+        Using ds As DataSet = LoadSQL(sql, "PAYROLL_HOLIDAY")
+            If ds.Tables(0).Rows.Count > 0 Then
+                For Each dr In ds.Tables(0).Rows
+                    With dr
                         Dim i As ListViewItem = LV.Items.Add(.Item("DATEE"))
                         i.SubItems.Add(.Item("NAME"))
                     End With
-                End If
-            End While
+                Next
+
+            End If
         End Using
+
+        'Dim sql As String = "select DATEE, NAME from PAYROLL_HOLIDAY where KINDS = 'SPECIAL' "
+
+        'Using rdr As FbDataReader = LoadSQL_byDataReader(sql)
+        '    LV.Items.Clear()
+
+        '    While rdr.Read()
+        '        If rdr.HasRows Then
+        '            With rdr
+        '                Dim i As ListViewItem = LV.Items.Add(.Item("DATEE"))
+        '                i.SubItems.Add(.Item("NAME"))
+        '            End With
+        '        End If
+        '    End While
+        'End Using
     End Sub
 
     Friend Sub AttendanceDetails(biometric As String, paydate As String, NoOfDays_TXT As TextBox, RegularOT_TXT As TextBox,
@@ -1280,7 +1295,7 @@ Module SelectFromDatabase
                     name.Text = .Item("FULLNAME")
 
                     If MonthlyRate_TXT IsNot Nothing Then
-                        MonthlyRate_TXT.Text = IIf(IsDBNull(.Item("RATE_MONTHLY")), 0, Convert.ToInt16(.Item("RATE_MONTHLY")))
+                        MonthlyRate_TXT.Text = IIf(IsDBNull(.Item("RATE_MONTHLY")), 0, .Item("RATE_MONTHLY"))
                     End If
                 End With
 

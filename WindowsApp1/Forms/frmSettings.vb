@@ -15,13 +15,11 @@
         PopulateComboBox_Any(Rate_City_ComboB, "PAYROLL_CITY_BRANCH", "CITY")
         PopulateComboBox_Any(ClockBranch_CB, "PAYROLL_EMPLOYEE", "BRANCH_CODE")
         PopulateComboBox(Allow_Category_Combo, "CATEGORY_ALLOWANCE", "ALLOWANCE_NAME")
-        PopulateComboBox(DE_Category_Combo, "CATEGORY_DEDUCTION", "DEDUCTION_NAME")
         PopulateComboBox_Any(City_Combo, "PAYROLL_CITY_BRANCH", "CITY")
         PopulateComboBox_Any(CityCode_Combo, "PAYROLL_EMPLOYEE", "BRANCH_CODE")
         PopulateComboBox_Any(Address_Combo, "PAYROLL_CITY_BRANCH", "ADDRESS")
         Lists_Rate(Rate_list)
         Lists_Allowance(Allowance_LV)
-        Lists_deduction(Deduction_List)
         Lists_TimeInOut(TimeInOut_LV)
         Load_Category_LIST(Allowance_List, "CATEGORY_ALLOWANCE", "ALLOWANCE_NAME")
         Load_Category_LIST(Cat_Deduc_List, "CATEGORY_DEDUCTION", "DEDUCTION_NAME")
@@ -225,8 +223,7 @@
     End Sub
 
     Private Sub Rate_BranchAmount_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Rate_CityAmount_TXT.KeyPress,
-                                                Rate_BioNo_TXT.KeyPress, Allow_Amount_TXT.KeyPress, DE_NoOfGives_TXT.KeyPress,
-                                                DE_AmountGive_TXT.KeyPress, DE_Total_TXT.KeyPress
+                                                Rate_BioNo_TXT.KeyPress, Allow_Amount_TXT.KeyPress
 
         If e.KeyChar <> ChrW(Keys.Back) Then
 
@@ -328,33 +325,6 @@
     End Function
 
 
-    Private Function isValidSave_DEDUC()
-
-        If String.IsNullOrEmpty(DE_Name_TXT.Text) Then
-            MsgBox("Please select a name.", MsgBoxStyle.Critical, "Error")
-            Return False
-
-        ElseIf DE_Category_Combo.SelectedIndex < 0 Then
-            DE_Category_Combo.Region = New Region(New Rectangle(2, 2, DE_Category_Combo.Width - 4, DE_Category_Combo.Height - 4))
-            Return False
-
-        ElseIf DE_Schedule_Combo.SelectedIndex < 0 Then
-            DE_Schedule_Combo.Region = New Region(New Rectangle(2, 2, DE_Schedule_Combo.Width - 4, DE_Schedule_Combo.Height - 4))
-            Return False
-
-        ElseIf String.IsNullOrEmpty(DE_Total_TXT.Text) Then
-            DE_Total_TXT.Region = New Region(New Rectangle(2, 2, DE_Total_TXT.Width - 4, DE_Total_TXT.Height - 4))
-            Return False
-
-        ElseIf String.IsNullOrEmpty(DE_NoOfGives_TXT.Text) Then
-            DE_NoOfGives_TXT.Region = New Region(New Rectangle(2, 2, DE_NoOfGives_TXT.Width - 4, DE_NoOfGives_TXT.Height - 4))
-            Return False
-        End If
-
-        Return True
-    End Function
-
-
     Private Sub Allow_Cancel_BTN_Click(sender As Object, e As EventArgs) Handles Allow_Cancel_BTN.Click
         Allow_Category_Combo.Text = "Select"
         Allow_Name_TXT.Text = ""
@@ -381,63 +351,6 @@
         If IsEnter(e) Then Allow_Search_BTN.PerformClick()
     End Sub
 
-    Private Sub DE_SearchEmp_BTN_Click(sender As Object, e As EventArgs) Handles DE_SearchEmp_BTN.Click
-        Try
-            Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmNewEmployee").SingleOrDefault()
-            If instForm Is Nothing Then
-                Dim frm As frmNewEmployee
-                frm = DirectCast(CreateObjectInstance("frmNewEmployee"), Form)
-                frm.MdiParent = frmMainForm
-                frmMainForm.pNavigate.Controls.Add(frm)
-                frmMainForm.pNavigate.Tag = frm
-                frm.txtSearch.Tag = "Settings-Deduction"
-                frm.btnSearch.Tag = DE_Category_Combo.SelectedItem
-                frm.Dock = DockStyle.Fill
-                frm.BringToFront()
-                frm.Show()
-            Else
-                instForm.BringToFront()
-            End If
-
-        Catch ex As Exception
-
-        End Try
-    End Sub
-
-    Private Sub DE_Cancel_BTN_Click(sender As Object, e As EventArgs) Handles DE_Cancel_BTN.Click
-        DE_Category_Combo.Text = "Select"
-        DE_Name_TXT.Clear()
-        DE_Total_TXT.Clear()
-        DE_NoOfGives_TXT.Clear()
-        DE_AmountGive_TXT.Clear()
-        DE_Schedule_Combo.Text = "Select"
-    End Sub
-
-    Private Sub DE_Save_BTN_Click(sender As Object, e As EventArgs) Handles DE_Save_BTN.Click
-
-        If Not isValidSave_DEDUC() Then Exit Sub
-        '======================================== CHECK IF CONTEXT EDIT CLICK =======================================
-        If Deduction_List.Tag = 0 Then
-            SaveDeductionS(DE_Category_Combo.SelectedItem, DE_Total_TXT.Text, DE_NoOfGives_TXT.Text, DE_AmountGive_TXT.Text, DE_Schedule_Combo.Text, DE_Name_TXT.Tag, DE_Effectivity_DTP.Value) 'DE_Category_Combo.Tag (EMP_ID) | DE_Name_TXT.Tag(Biometric) |  DE_SearchEmp_BTN.Tag.Tag(Branch_id) | 
-        Else
-            updateDeductionS(Deduction_List.Tag, DE_Category_Combo.Text, DE_Total_TXT.Text, DE_NoOfGives_TXT.Text, DE_AmountGive_TXT.Text, DE_Schedule_Combo.Text, DE_Effectivity_DTP.Value) 'DE_Category_Combo.Tag (EMP_ID)
-        End If
-
-        SaveLogs($"{DE_Save_BTN.Tag} DEDUCTION - {DE_Name_TXT.Text} ({DE_Name_TXT.Tag}), Category({DE_Category_Combo.Text}), Total({DE_Total_TXT.Text}), No. of Gives({DE_NoOfGives_TXT.Text}), Amount/Give({DE_AmountGive_TXT.Text}), Effectivity({DE_Effectivity_DTP.Value.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
-
-        Lists_deduction(Deduction_List)
-        DE_Cancel_BTN.PerformClick()
-
-    End Sub
-
-
-    Private Sub DE_Search_BTN_Click(sender As Object, e As EventArgs) Handles DE_Search_BTN.Click
-        Lists_deduction(Deduction_List, DE_Search_TXT.Text)
-    End Sub
-
-    Private Sub DE_Search_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles DE_Search_TXT.KeyPress
-        If IsEnter(e) Then DE_Search_BTN.PerformClick()
-    End Sub
 
     Private Sub Cat_Allow_Save_BTN_Click(sender As Object, e As EventArgs) Handles Cat_Allow_Save_BTN.Click
         If Not AllowCat_TXT.Text = "" Then
@@ -504,47 +417,6 @@
         End If
     End Sub
 
-    Private Sub menu_subtotal_Click(sender As Object, e As EventArgs) Handles menu_subtotal.Click
-        Dim bioNo, total_amount, open_amount, close_amount, every_amount, balance As String
-
-        If Deduction_List.SelectedItems.Count > 0 Then
-            bioNo = Deduction_List.Items(Deduction_List.FocusedItem.Index).SubItems(1).Tag
-            total_amount = GetDeduction_TotalAmount(bioNo)
-
-            every_amount = GetDeduction_EVERY(bioNo)
-
-            open_amount = GetDeduction_OPEN(bioNo) + every_amount
-            close_amount = GetDeduction_CLOSE(bioNo) + every_amount
-            balance = GetDeduction_OverAll_Balance(bioNo)
-
-            MsgBox("Total Amount     :  " & total_amount & vbCrLf &
-                   "Open Payroll      :  " & open_amount & vbCrLf &
-                   "Close Payroll      :  " & close_amount & vbCrLf &
-                   "Balance               :  " & balance, MsgBoxStyle.Information, "TOTAL")
-        End If
-
-    End Sub
-
-    Private Sub Deduction_List_MouseClick(sender As Object, e As MouseEventArgs) Handles Deduction_List.MouseClick
-        If e.Button = MouseButtons.Right Then
-            If Deduction_List.Items.Count > 0 Then
-                Context_deduct.Show(Deduction_List, New Point(e.X, e.Y))
-            End If
-        End If
-    End Sub
-
-    Private Sub menu_edit_Click(sender As Object, e As EventArgs) Handles menu_edit.Click
-        DE_Name_TXT.Text = Deduction_List.Items(Deduction_List.FocusedItem.Index).SubItems(0).Text
-        DE_Name_TXT.Tag = Deduction_List.Items(Deduction_List.FocusedItem.Index).SubItems(1).Tag
-        DE_Category_Combo.Text = Deduction_List.Items(Deduction_List.FocusedItem.Index).SubItems(1).Text
-        DE_Schedule_Combo.Text = Deduction_List.Items(Deduction_List.FocusedItem.Index).SubItems(5).Text
-        DE_Total_TXT.Text = Deduction_List.Items(Deduction_List.FocusedItem.Index).SubItems(2).Text
-        DE_NoOfGives_TXT.Text = Deduction_List.Items(Deduction_List.FocusedItem.Index).SubItems(3).Text
-        DE_AmountGive_TXT.Text = Deduction_List.Items(Deduction_List.FocusedItem.Index).SubItems(4).Text
-        Deduction_List.Tag = Deduction_List.Items(Deduction_List.FocusedItem.Index).SubItems(2).Tag
-
-        DE_Save_BTN.Tag = "UPDATE"
-    End Sub
 
     Private Sub FlowLayoutPanel1_Paint(sender As Object, e As PaintEventArgs) Handles FlowLayoutPanel1.Paint
         Dim txtbox As TextBox = Nothing
@@ -575,35 +447,10 @@
         End If
     End Sub
 
-    Private Sub GroupBox6_Paint(sender As Object, e As PaintEventArgs) Handles GroupBox6.Paint
-        Dim txtbox As TextBox = Nothing
-        Dim comboB As ComboBox = Nothing
-        For Each xObject As Object In GroupBox6.Controls
-            Dim p As New Pen(Color.Red, 2)
-            If TypeOf xObject Is TextBox Then
-                txtbox = xObject
-                e.Graphics.DrawRectangle(p, New Rectangle(txtbox.Location + New Size(1, 1), txtbox.Size - New Size(2, 2)))
-            ElseIf TypeOf xObject Is ComboBox Then
-                comboB = xObject
-                e.Graphics.DrawRectangle(p, New Rectangle(comboB.Location + New Size(1, 1), comboB.Size - New Size(2, 2)))
-            End If
-            p.Dispose()
-        Next
-    End Sub
-
-    Private Sub DE_Category_Combo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles DE_Schedule_Combo.SelectedIndexChanged, DE_Category_Combo.SelectedIndexChanged
+    Private Sub DE_Category_Combo_SelectedIndexChanged(sender As Object, e As EventArgs)
         Dim cmb As ComboBox = DirectCast(sender, ComboBox)
         If cmb.SelectedIndex >= 0 Then
             cmb.Region = Nothing
-        End If
-    End Sub
-
-    Private Sub DE_NoOfGives_TXT_TextChanged(sender As Object, e As EventArgs) Handles DE_NoOfGives_TXT.TextChanged
-        If Not DE_Total_TXT.Text = String.Empty And Not DE_NoOfGives_TXT.Text = String.Empty And IsNumeric(DE_NoOfGives_TXT.Text) Then
-            DE_AmountGive_TXT.Text = Math.Ceiling(Convert.ToDouble(DE_Total_TXT.Text) / Convert.ToDouble(DE_NoOfGives_TXT.Text))
-            DE_NoOfGives_TXT.Region = Nothing
-        Else
-            DE_AmountGive_TXT.Clear()
         End If
     End Sub
 
@@ -767,15 +614,6 @@
                 Settings_Tab.SelectedIndex = 2
                 Allow_Category_Combo.SelectedItem = category
 
-            ElseIf tabName = "DEDUCTION" Then
-
-                DE_Name_TXT.Text = .Fullname
-                DE_Category_Combo.Tag = .EMP_ID
-                DE_Name_TXT.Tag = .BiometricID
-                DE_SearchEmp_BTN.Tag = .BRANCH_CODE
-                Settings_Tab.SelectedIndex = 3
-                DE_Category_Combo.SelectedItem = category
-
             ElseIf tabName = "TIMEIN/OUT" Then
 
                 ClockEmp_TXT.Text = .Fullname
@@ -861,23 +699,6 @@
         Dim ecola = GetEcola("CITY", Rate_City_ComboB.SelectedItem)
         Rate_CityAmount_TXT.Text = GetMinimumRate("CITY", Rate_City_ComboB.SelectedItem)
         Ecola_TXT.Text = IIf(ecola = 0, Nothing, ecola)
-    End Sub
-
-    Private Sub lblAdd_MouseEnter(sender As Object, e As EventArgs) Handles lblAdd.MouseEnter
-        lblAdd.ForeColor = Color.Red
-    End Sub
-
-    Private Sub lblAdd_MouseLeave(sender As Object, e As EventArgs) Handles lblAdd.MouseLeave
-        lblAdd.ForeColor = Color.RoyalBlue
-    End Sub
-
-    Private Sub lblAdd_Click(sender As Object, e As EventArgs) Handles lblAdd.Click
-        Settings_Tab.SelectedIndex = 4
-        Deduct_TXT.Select()
-    End Sub
-
-    Private Sub DE_Name_TXT_TextChanged(sender As Object, e As EventArgs) Handles DE_Name_TXT.TextChanged
-        DE_Save_BTN.Tag = "ADDED"
     End Sub
 
     Private Sub RegularRate_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles SpecialRate_TXT.KeyPress, RegularRate_TXT.KeyPress

@@ -47,6 +47,8 @@
         Load_Category_LIST(CatDeduc_list, "CATEGORY_DEDUCTION", "DEDUCTION_NAME")
         PopulateComboBox_Any(Category_Combo, "CATEGORY_DEDUCTION", "DEDUCTION_NAME")
         Lists_deduction(Deduc_list)
+        Load_Loans(SSSLoan_LV, "PAYROLL_SSSLOAN")
+        Load_Loans(Pag_grid, "PAYROLL_PAGIBIGLOAN")
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Cancel_btn.Click
@@ -173,14 +175,14 @@
 
             ElseIf tabName = "SSS" Then
 
-                'Contribution_Tab.SelectedIndex = 4
-                'SSS_Name_TXT.Text = .Fullname
-                'SSS_Name_TXT.Tag = .BiometricID
+                Loans_Tab.SelectedIndex = 4
+                SSS_Name_TXT.Text = .Fullname
+                SSS_Name_TXT.Tag = .BiometricID
 
             Else
-                'Contribution_Tab.SelectedIndex = 5
-                'Pag_Name_TXT.Text = .Fullname
-                'Pag_Name_TXT.Tag = .BiometricID
+                Loans_Tab.SelectedIndex = 5
+                Pag_Name_TXT.Text = .Fullname
+                Pag_Name_TXT.Tag = .BiometricID
             End If
         End With
     End Sub
@@ -214,5 +216,86 @@
 
     Private Sub Search_txt_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Search_txt.KeyPress
         If IsEnter(e) Then Search_btn.PerformClick()
+    End Sub
+
+    Private Sub SSS_SearchEmp_BTN_Click(sender As Object, e As EventArgs) Handles SSS_SearchEmp_BTN.Click
+
+        Try
+            Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmNewEmployee").SingleOrDefault()
+            If instForm Is Nothing Then
+                Dim frm As frmNewEmployee
+                frm = DirectCast(CreateObjectInstance("frmNewEmployee"), Form)
+                frm.MdiParent = frmMainForm
+                frmMainForm.pNavigate.Controls.Add(frm)
+                frmMainForm.pNavigate.Tag = frm
+                frm.txtSearch.Tag = "SSS Loan"
+                frm.Dock = DockStyle.Fill
+                frm.BringToFront()
+                frm.Show()
+            Else
+                instForm.BringToFront()
+            End If
+
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    Private Sub Allow_Cancel_BTN_Click(sender As Object, e As EventArgs) Handles Allow_Cancel_BTN.Click
+        SSS_Name_TXT.Clear()
+        SSS_Amount_TXT.Clear()
+        SSS_FirstAmort_DTP.Value = Today
+        SSS_MaturityAmort_DTP.Value = Today
+    End Sub
+
+    Private Sub Allow_Save_BTN_Click(sender As Object, e As EventArgs) Handles Allow_Save_BTN.Click
+        Save_SSSLoan(SSS_Name_TXT.Tag, SSS_Amount_TXT.Text, SSS_FirstAmort_DTP.Value, SSS_MaturityAmort_DTP.Value)
+        Load_Loans(SSSLoan_LV, "PAYROLL_SSSLOAN")
+
+        SaveLogs($"ADDED SSS LOAN {SSS_Name_TXT.Text} ({SSS_Name_TXT.Tag}), Amount({SSS_Amount_TXT.Text}), Start({SSS_FirstAmort_DTP.Value.ToString("MMM dd, yyyy")}), End({SSS_MaturityAmort_DTP.Value.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
+        Allow_Cancel_BTN.PerformClick()
+    End Sub
+
+    Private Sub Emp_BTN_Click(sender As Object, e As EventArgs) Handles Emp_BTN.Click
+
+        Try
+            Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmNewEmployee").SingleOrDefault()
+            If instForm Is Nothing Then
+                Dim frm As frmNewEmployee
+                frm = DirectCast(CreateObjectInstance("frmNewEmployee"), Form)
+                frm.MdiParent = frmMainForm
+                frmMainForm.pNavigate.Controls.Add(frm)
+                frmMainForm.pNavigate.Tag = frm
+                frm.txtSearch.Tag = "Pagibig Loan"
+                frm.Dock = DockStyle.Fill
+                frm.BringToFront()
+                frm.Show()
+            Else
+                instForm.BringToFront()
+            End If
+
+        Catch ex As Exception
+
+        End Try
+
+    End Sub
+
+    Private Sub Pag_Save_BTN_Click(sender As Object, e As EventArgs) Handles Pag_Save_BTN.Click
+        Save_PAGIBIGLoan(Pag_Name_TXT.Tag, Pag_Amount_TXT.Text, Pag_Start_DTP.Value, Pag_End_DTP.Value)
+        Load_Loans(Pag_grid, "PAYROLL_PAGIBIGLOAN")
+
+        SaveLogs($"ADDED PAGIBIG LOAN {Pag_Name_TXT.Text} ({Pag_Name_TXT.Tag}), Amount({Pag_Amount_TXT.Text}), Start({Pag_Start_DTP.Value.ToString("MMM dd, yyyy")}), End({Pag_End_DTP.Value.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
+        Pag_Cancel_BTN.PerformClick()
+    End Sub
+
+    Private Sub Pag_Cancel_BTN_Click(sender As Object, e As EventArgs) Handles Pag_Cancel_BTN.Click
+        Pag_Name_TXT.Clear()
+        Pag_Amount_TXT.Clear()
+        Pag_Start_DTP.Value = Today
+        Pag_End_DTP.Value = Today
+    End Sub
+
+    Private Sub Close_LBL_Click(sender As Object, e As EventArgs) Handles Close_LBL.Click
+        Close()
     End Sub
 End Class

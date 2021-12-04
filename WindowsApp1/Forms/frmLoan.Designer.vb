@@ -62,6 +62,44 @@ Partial Class frmLoan
         Me.CatDeducSave_BTN = New System.Windows.Forms.Button()
         Me.Label24 = New System.Windows.Forms.Label()
         Me.Deduct_txt = New System.Windows.Forms.TextBox()
+        Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.Allow_Cancel_BTN = New System.Windows.Forms.Button()
+        Me.Allow_Save_BTN = New System.Windows.Forms.Button()
+        Me.SSS_MaturityAmort_DTP = New System.Windows.Forms.DateTimePicker()
+        Me.Label10 = New System.Windows.Forms.Label()
+        Me.SSS_FirstAmort_DTP = New System.Windows.Forms.DateTimePicker()
+        Me.Label11 = New System.Windows.Forms.Label()
+        Me.SSS_Search_TXT = New System.Windows.Forms.TextBox()
+        Me.SSS_Search_BTN = New System.Windows.Forms.Button()
+        Me.SSSLoan_LV = New System.Windows.Forms.ListView()
+        Me.ColumnHeader9 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader10 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader17 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader18 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.SSS_SearchEmp_BTN = New System.Windows.Forms.Button()
+        Me.Label14 = New System.Windows.Forms.Label()
+        Me.SSS_Name_TXT = New System.Windows.Forms.TextBox()
+        Me.Label16 = New System.Windows.Forms.Label()
+        Me.SSS_Amount_TXT = New System.Windows.Forms.TextBox()
+        Me.TabPage3 = New System.Windows.Forms.TabPage()
+        Me.Pag_Cancel_BTN = New System.Windows.Forms.Button()
+        Me.Pag_Save_BTN = New System.Windows.Forms.Button()
+        Me.Pag_Search_BTN = New System.Windows.Forms.Button()
+        Me.Pag_End_DTP = New System.Windows.Forms.DateTimePicker()
+        Me.Label12 = New System.Windows.Forms.Label()
+        Me.Pag_Start_DTP = New System.Windows.Forms.DateTimePicker()
+        Me.Label13 = New System.Windows.Forms.Label()
+        Me.Pag_Search_TXT = New System.Windows.Forms.TextBox()
+        Me.Pag_grid = New System.Windows.Forms.ListView()
+        Me.ColumnHeader19 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader20 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader21 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader23 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.Emp_BTN = New System.Windows.Forms.Button()
+        Me.Label19 = New System.Windows.Forms.Label()
+        Me.Pag_Name_TXT = New System.Windows.Forms.TextBox()
+        Me.Label21 = New System.Windows.Forms.Label()
+        Me.Pag_Amount_TXT = New System.Windows.Forms.TextBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.ColumnHeader11 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader12 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -96,6 +134,8 @@ Partial Class frmLoan
         Me.GroupBox6.SuspendLayout()
         Me.TabPage4.SuspendLayout()
         Me.GroupBox8.SuspendLayout()
+        Me.TabPage1.SuspendLayout()
+        Me.TabPage3.SuspendLayout()
         Me.Context_deduct.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -113,6 +153,8 @@ Partial Class frmLoan
         '
         Me.Loans_Tab.Controls.Add(Me.TabPage2)
         Me.Loans_Tab.Controls.Add(Me.TabPage4)
+        Me.Loans_Tab.Controls.Add(Me.TabPage1)
+        Me.Loans_Tab.Controls.Add(Me.TabPage3)
         Me.Loans_Tab.Font = New System.Drawing.Font("Dubai", 12.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Loans_Tab.Location = New System.Drawing.Point(6, 32)
         Me.Loans_Tab.Name = "Loans_Tab"
@@ -493,6 +535,374 @@ Partial Class frmLoan
         Me.Deduct_txt.Size = New System.Drawing.Size(310, 35)
         Me.Deduct_txt.TabIndex = 49
         '
+        'TabPage1
+        '
+        Me.TabPage1.Controls.Add(Me.Allow_Cancel_BTN)
+        Me.TabPage1.Controls.Add(Me.Allow_Save_BTN)
+        Me.TabPage1.Controls.Add(Me.SSS_MaturityAmort_DTP)
+        Me.TabPage1.Controls.Add(Me.Label10)
+        Me.TabPage1.Controls.Add(Me.SSS_FirstAmort_DTP)
+        Me.TabPage1.Controls.Add(Me.Label11)
+        Me.TabPage1.Controls.Add(Me.SSS_Search_TXT)
+        Me.TabPage1.Controls.Add(Me.SSS_Search_BTN)
+        Me.TabPage1.Controls.Add(Me.SSSLoan_LV)
+        Me.TabPage1.Controls.Add(Me.SSS_SearchEmp_BTN)
+        Me.TabPage1.Controls.Add(Me.Label14)
+        Me.TabPage1.Controls.Add(Me.SSS_Name_TXT)
+        Me.TabPage1.Controls.Add(Me.Label16)
+        Me.TabPage1.Controls.Add(Me.SSS_Amount_TXT)
+        Me.TabPage1.Location = New System.Drawing.Point(4, 38)
+        Me.TabPage1.Name = "TabPage1"
+        Me.TabPage1.Size = New System.Drawing.Size(1147, 604)
+        Me.TabPage1.TabIndex = 8
+        Me.TabPage1.Text = "    SSS Loan    "
+        Me.TabPage1.UseVisualStyleBackColor = True
+        '
+        'Allow_Cancel_BTN
+        '
+        Me.Allow_Cancel_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Allow_Cancel_BTN.Location = New System.Drawing.Point(77, 401)
+        Me.Allow_Cancel_BTN.Name = "Allow_Cancel_BTN"
+        Me.Allow_Cancel_BTN.Size = New System.Drawing.Size(90, 33)
+        Me.Allow_Cancel_BTN.TabIndex = 143
+        Me.Allow_Cancel_BTN.Text = "Cancel"
+        Me.Allow_Cancel_BTN.UseVisualStyleBackColor = True
+        '
+        'Allow_Save_BTN
+        '
+        Me.Allow_Save_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Allow_Save_BTN.Location = New System.Drawing.Point(306, 401)
+        Me.Allow_Save_BTN.Name = "Allow_Save_BTN"
+        Me.Allow_Save_BTN.Size = New System.Drawing.Size(90, 33)
+        Me.Allow_Save_BTN.TabIndex = 142
+        Me.Allow_Save_BTN.Text = "Save"
+        Me.Allow_Save_BTN.UseVisualStyleBackColor = True
+        '
+        'SSS_MaturityAmort_DTP
+        '
+        Me.SSS_MaturityAmort_DTP.Font = New System.Drawing.Font("Dubai", 11.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SSS_MaturityAmort_DTP.Location = New System.Drawing.Point(77, 270)
+        Me.SSS_MaturityAmort_DTP.Name = "SSS_MaturityAmort_DTP"
+        Me.SSS_MaturityAmort_DTP.Size = New System.Drawing.Size(304, 32)
+        Me.SSS_MaturityAmort_DTP.TabIndex = 141
+        Me.SSS_MaturityAmort_DTP.Value = New Date(2021, 8, 27, 21, 55, 17, 0)
+        '
+        'Label10
+        '
+        Me.Label10.AutoSize = True
+        Me.Label10.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label10.Location = New System.Drawing.Point(7, 270)
+        Me.Label10.Name = "Label10"
+        Me.Label10.Size = New System.Drawing.Size(69, 27)
+        Me.Label10.TabIndex = 140
+        Me.Label10.Text = "Maturity"
+        '
+        'SSS_FirstAmort_DTP
+        '
+        Me.SSS_FirstAmort_DTP.Font = New System.Drawing.Font("Dubai", 11.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SSS_FirstAmort_DTP.Location = New System.Drawing.Point(77, 202)
+        Me.SSS_FirstAmort_DTP.Name = "SSS_FirstAmort_DTP"
+        Me.SSS_FirstAmort_DTP.Size = New System.Drawing.Size(304, 32)
+        Me.SSS_FirstAmort_DTP.TabIndex = 139
+        Me.SSS_FirstAmort_DTP.Value = New Date(2021, 8, 27, 21, 55, 17, 0)
+        '
+        'Label11
+        '
+        Me.Label11.AutoSize = True
+        Me.Label11.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label11.Location = New System.Drawing.Point(7, 202)
+        Me.Label11.Name = "Label11"
+        Me.Label11.Size = New System.Drawing.Size(43, 27)
+        Me.Label11.TabIndex = 138
+        Me.Label11.Text = "First"
+        '
+        'SSS_Search_TXT
+        '
+        Me.SSS_Search_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SSS_Search_TXT.Location = New System.Drawing.Point(473, 13)
+        Me.SSS_Search_TXT.Name = "SSS_Search_TXT"
+        Me.SSS_Search_TXT.Size = New System.Drawing.Size(579, 33)
+        Me.SSS_Search_TXT.TabIndex = 136
+        '
+        'SSS_Search_BTN
+        '
+        Me.SSS_Search_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SSS_Search_BTN.Location = New System.Drawing.Point(1058, 13)
+        Me.SSS_Search_BTN.Name = "SSS_Search_BTN"
+        Me.SSS_Search_BTN.Size = New System.Drawing.Size(82, 33)
+        Me.SSS_Search_BTN.TabIndex = 137
+        Me.SSS_Search_BTN.Text = "Search"
+        Me.SSS_Search_BTN.UseVisualStyleBackColor = True
+        '
+        'SSSLoan_LV
+        '
+        Me.SSSLoan_LV.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.SSSLoan_LV.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader9, Me.ColumnHeader10, Me.ColumnHeader17, Me.ColumnHeader18})
+        Me.SSSLoan_LV.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SSSLoan_LV.FullRowSelect = True
+        Me.SSSLoan_LV.GridLines = True
+        Me.SSSLoan_LV.HideSelection = False
+        Me.SSSLoan_LV.Location = New System.Drawing.Point(473, 52)
+        Me.SSSLoan_LV.MultiSelect = False
+        Me.SSSLoan_LV.Name = "SSSLoan_LV"
+        Me.SSSLoan_LV.Size = New System.Drawing.Size(667, 539)
+        Me.SSSLoan_LV.TabIndex = 135
+        Me.SSSLoan_LV.UseCompatibleStateImageBehavior = False
+        Me.SSSLoan_LV.View = System.Windows.Forms.View.Details
+        '
+        'ColumnHeader9
+        '
+        Me.ColumnHeader9.Text = "Fullname"
+        Me.ColumnHeader9.Width = 250
+        '
+        'ColumnHeader10
+        '
+        Me.ColumnHeader10.Text = "Monthly Amort."
+        Me.ColumnHeader10.Width = 135
+        '
+        'ColumnHeader17
+        '
+        Me.ColumnHeader17.Text = "First Amort."
+        Me.ColumnHeader17.Width = 130
+        '
+        'ColumnHeader18
+        '
+        Me.ColumnHeader18.Text = "Maturity Date"
+        Me.ColumnHeader18.Width = 130
+        '
+        'SSS_SearchEmp_BTN
+        '
+        Me.SSS_SearchEmp_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SSS_SearchEmp_BTN.Location = New System.Drawing.Point(387, 64)
+        Me.SSS_SearchEmp_BTN.Name = "SSS_SearchEmp_BTN"
+        Me.SSS_SearchEmp_BTN.Size = New System.Drawing.Size(47, 31)
+        Me.SSS_SearchEmp_BTN.TabIndex = 134
+        Me.SSS_SearchEmp_BTN.Text = "..."
+        Me.SSS_SearchEmp_BTN.UseVisualStyleBackColor = True
+        '
+        'Label14
+        '
+        Me.Label14.AutoSize = True
+        Me.Label14.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label14.Location = New System.Drawing.Point(7, 68)
+        Me.Label14.Name = "Label14"
+        Me.Label14.Size = New System.Drawing.Size(49, 27)
+        Me.Label14.TabIndex = 133
+        Me.Label14.Text = "Name"
+        '
+        'SSS_Name_TXT
+        '
+        Me.SSS_Name_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SSS_Name_TXT.Location = New System.Drawing.Point(77, 62)
+        Me.SSS_Name_TXT.Name = "SSS_Name_TXT"
+        Me.SSS_Name_TXT.ReadOnly = True
+        Me.SSS_Name_TXT.Size = New System.Drawing.Size(304, 33)
+        Me.SSS_Name_TXT.TabIndex = 132
+        '
+        'Label16
+        '
+        Me.Label16.AutoSize = True
+        Me.Label16.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label16.Location = New System.Drawing.Point(7, 131)
+        Me.Label16.Name = "Label16"
+        Me.Label16.Size = New System.Drawing.Size(64, 27)
+        Me.Label16.TabIndex = 131
+        Me.Label16.Text = "Amount"
+        '
+        'SSS_Amount_TXT
+        '
+        Me.SSS_Amount_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SSS_Amount_TXT.Location = New System.Drawing.Point(77, 131)
+        Me.SSS_Amount_TXT.Name = "SSS_Amount_TXT"
+        Me.SSS_Amount_TXT.Size = New System.Drawing.Size(304, 33)
+        Me.SSS_Amount_TXT.TabIndex = 130
+        '
+        'TabPage3
+        '
+        Me.TabPage3.Controls.Add(Me.Pag_Cancel_BTN)
+        Me.TabPage3.Controls.Add(Me.Pag_Save_BTN)
+        Me.TabPage3.Controls.Add(Me.Pag_Search_BTN)
+        Me.TabPage3.Controls.Add(Me.Pag_End_DTP)
+        Me.TabPage3.Controls.Add(Me.Label12)
+        Me.TabPage3.Controls.Add(Me.Pag_Start_DTP)
+        Me.TabPage3.Controls.Add(Me.Label13)
+        Me.TabPage3.Controls.Add(Me.Pag_Search_TXT)
+        Me.TabPage3.Controls.Add(Me.Pag_grid)
+        Me.TabPage3.Controls.Add(Me.Emp_BTN)
+        Me.TabPage3.Controls.Add(Me.Label19)
+        Me.TabPage3.Controls.Add(Me.Pag_Name_TXT)
+        Me.TabPage3.Controls.Add(Me.Label21)
+        Me.TabPage3.Controls.Add(Me.Pag_Amount_TXT)
+        Me.TabPage3.Location = New System.Drawing.Point(4, 38)
+        Me.TabPage3.Name = "TabPage3"
+        Me.TabPage3.Size = New System.Drawing.Size(1147, 604)
+        Me.TabPage3.TabIndex = 9
+        Me.TabPage3.Text = "    Pagibig Loan    "
+        Me.TabPage3.UseVisualStyleBackColor = True
+        '
+        'Pag_Cancel_BTN
+        '
+        Me.Pag_Cancel_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Pag_Cancel_BTN.Location = New System.Drawing.Point(77, 409)
+        Me.Pag_Cancel_BTN.Name = "Pag_Cancel_BTN"
+        Me.Pag_Cancel_BTN.Size = New System.Drawing.Size(90, 33)
+        Me.Pag_Cancel_BTN.TabIndex = 155
+        Me.Pag_Cancel_BTN.Text = "Cancel"
+        Me.Pag_Cancel_BTN.UseVisualStyleBackColor = True
+        '
+        'Pag_Save_BTN
+        '
+        Me.Pag_Save_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Pag_Save_BTN.Location = New System.Drawing.Point(306, 409)
+        Me.Pag_Save_BTN.Name = "Pag_Save_BTN"
+        Me.Pag_Save_BTN.Size = New System.Drawing.Size(90, 33)
+        Me.Pag_Save_BTN.TabIndex = 154
+        Me.Pag_Save_BTN.Text = "Save"
+        Me.Pag_Save_BTN.UseVisualStyleBackColor = True
+        '
+        'Pag_Search_BTN
+        '
+        Me.Pag_Search_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Pag_Search_BTN.Location = New System.Drawing.Point(1058, 13)
+        Me.Pag_Search_BTN.Name = "Pag_Search_BTN"
+        Me.Pag_Search_BTN.Size = New System.Drawing.Size(82, 33)
+        Me.Pag_Search_BTN.TabIndex = 153
+        Me.Pag_Search_BTN.Text = "Search"
+        Me.Pag_Search_BTN.UseVisualStyleBackColor = True
+        '
+        'Pag_End_DTP
+        '
+        Me.Pag_End_DTP.Font = New System.Drawing.Font("Dubai", 11.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Pag_End_DTP.Location = New System.Drawing.Point(77, 270)
+        Me.Pag_End_DTP.Name = "Pag_End_DTP"
+        Me.Pag_End_DTP.Size = New System.Drawing.Size(304, 32)
+        Me.Pag_End_DTP.TabIndex = 152
+        Me.Pag_End_DTP.Value = New Date(2021, 8, 27, 21, 55, 17, 0)
+        '
+        'Label12
+        '
+        Me.Label12.AutoSize = True
+        Me.Label12.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label12.Location = New System.Drawing.Point(7, 270)
+        Me.Label12.Name = "Label12"
+        Me.Label12.Size = New System.Drawing.Size(37, 27)
+        Me.Label12.TabIndex = 151
+        Me.Label12.Text = "End"
+        '
+        'Pag_Start_DTP
+        '
+        Me.Pag_Start_DTP.Font = New System.Drawing.Font("Dubai", 11.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Pag_Start_DTP.Location = New System.Drawing.Point(77, 202)
+        Me.Pag_Start_DTP.Name = "Pag_Start_DTP"
+        Me.Pag_Start_DTP.Size = New System.Drawing.Size(304, 32)
+        Me.Pag_Start_DTP.TabIndex = 150
+        Me.Pag_Start_DTP.Value = New Date(2021, 8, 27, 21, 55, 17, 0)
+        '
+        'Label13
+        '
+        Me.Label13.AutoSize = True
+        Me.Label13.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label13.Location = New System.Drawing.Point(7, 202)
+        Me.Label13.Name = "Label13"
+        Me.Label13.Size = New System.Drawing.Size(46, 27)
+        Me.Label13.TabIndex = 149
+        Me.Label13.Text = "Start"
+        '
+        'Pag_Search_TXT
+        '
+        Me.Pag_Search_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Pag_Search_TXT.Location = New System.Drawing.Point(473, 13)
+        Me.Pag_Search_TXT.Name = "Pag_Search_TXT"
+        Me.Pag_Search_TXT.Size = New System.Drawing.Size(579, 33)
+        Me.Pag_Search_TXT.TabIndex = 148
+        '
+        'Pag_grid
+        '
+        Me.Pag_grid.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Pag_grid.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader19, Me.ColumnHeader20, Me.ColumnHeader21, Me.ColumnHeader23})
+        Me.Pag_grid.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Pag_grid.FullRowSelect = True
+        Me.Pag_grid.GridLines = True
+        Me.Pag_grid.HideSelection = False
+        Me.Pag_grid.Location = New System.Drawing.Point(473, 52)
+        Me.Pag_grid.MultiSelect = False
+        Me.Pag_grid.Name = "Pag_grid"
+        Me.Pag_grid.Size = New System.Drawing.Size(667, 539)
+        Me.Pag_grid.TabIndex = 147
+        Me.Pag_grid.UseCompatibleStateImageBehavior = False
+        Me.Pag_grid.View = System.Windows.Forms.View.Details
+        '
+        'ColumnHeader19
+        '
+        Me.ColumnHeader19.Text = "Fullname"
+        Me.ColumnHeader19.Width = 250
+        '
+        'ColumnHeader20
+        '
+        Me.ColumnHeader20.Text = "Amount"
+        Me.ColumnHeader20.Width = 135
+        '
+        'ColumnHeader21
+        '
+        Me.ColumnHeader21.Text = "Start Date"
+        Me.ColumnHeader21.Width = 130
+        '
+        'ColumnHeader23
+        '
+        Me.ColumnHeader23.Text = "End Date"
+        Me.ColumnHeader23.Width = 130
+        '
+        'Emp_BTN
+        '
+        Me.Emp_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Emp_BTN.Location = New System.Drawing.Point(387, 64)
+        Me.Emp_BTN.Name = "Emp_BTN"
+        Me.Emp_BTN.Size = New System.Drawing.Size(47, 31)
+        Me.Emp_BTN.TabIndex = 146
+        Me.Emp_BTN.Text = "..."
+        Me.Emp_BTN.UseVisualStyleBackColor = True
+        '
+        'Label19
+        '
+        Me.Label19.AutoSize = True
+        Me.Label19.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label19.Location = New System.Drawing.Point(7, 68)
+        Me.Label19.Name = "Label19"
+        Me.Label19.Size = New System.Drawing.Size(49, 27)
+        Me.Label19.TabIndex = 145
+        Me.Label19.Text = "Name"
+        '
+        'Pag_Name_TXT
+        '
+        Me.Pag_Name_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Pag_Name_TXT.Location = New System.Drawing.Point(77, 62)
+        Me.Pag_Name_TXT.Name = "Pag_Name_TXT"
+        Me.Pag_Name_TXT.ReadOnly = True
+        Me.Pag_Name_TXT.Size = New System.Drawing.Size(304, 33)
+        Me.Pag_Name_TXT.TabIndex = 144
+        '
+        'Label21
+        '
+        Me.Label21.AutoSize = True
+        Me.Label21.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label21.Location = New System.Drawing.Point(7, 131)
+        Me.Label21.Name = "Label21"
+        Me.Label21.Size = New System.Drawing.Size(64, 27)
+        Me.Label21.TabIndex = 143
+        Me.Label21.Text = "Amount"
+        '
+        'Pag_Amount_TXT
+        '
+        Me.Pag_Amount_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Pag_Amount_TXT.Location = New System.Drawing.Point(77, 131)
+        Me.Pag_Amount_TXT.Name = "Pag_Amount_TXT"
+        Me.Pag_Amount_TXT.Size = New System.Drawing.Size(304, 33)
+        Me.Pag_Amount_TXT.TabIndex = 142
+        '
         'Label1
         '
         Me.Label1.AutoSize = True
@@ -754,6 +1164,10 @@ Partial Class frmLoan
         Me.TabPage4.ResumeLayout(False)
         Me.GroupBox8.ResumeLayout(False)
         Me.GroupBox8.PerformLayout()
+        Me.TabPage1.ResumeLayout(False)
+        Me.TabPage1.PerformLayout()
+        Me.TabPage3.ResumeLayout(False)
+        Me.TabPage3.PerformLayout()
         Me.Context_deduct.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
@@ -828,4 +1242,42 @@ Partial Class frmLoan
     Friend WithEvents Context_deduct As ContextMenuStrip
     Friend WithEvents menu_subtotal As ToolStripMenuItem
     Friend WithEvents menu_edit As ToolStripMenuItem
+    Friend WithEvents TabPage1 As TabPage
+    Friend WithEvents Allow_Cancel_BTN As Button
+    Friend WithEvents Allow_Save_BTN As Button
+    Friend WithEvents SSS_MaturityAmort_DTP As DateTimePicker
+    Friend WithEvents Label10 As Label
+    Friend WithEvents SSS_FirstAmort_DTP As DateTimePicker
+    Friend WithEvents Label11 As Label
+    Friend WithEvents SSS_Search_TXT As TextBox
+    Friend WithEvents SSS_Search_BTN As Button
+    Friend WithEvents SSSLoan_LV As ListView
+    Friend WithEvents ColumnHeader9 As ColumnHeader
+    Friend WithEvents ColumnHeader10 As ColumnHeader
+    Friend WithEvents ColumnHeader17 As ColumnHeader
+    Friend WithEvents ColumnHeader18 As ColumnHeader
+    Friend WithEvents SSS_SearchEmp_BTN As Button
+    Friend WithEvents Label14 As Label
+    Friend WithEvents SSS_Name_TXT As TextBox
+    Friend WithEvents Label16 As Label
+    Friend WithEvents SSS_Amount_TXT As TextBox
+    Friend WithEvents TabPage3 As TabPage
+    Friend WithEvents Pag_Cancel_BTN As Button
+    Friend WithEvents Pag_Save_BTN As Button
+    Friend WithEvents Pag_Search_BTN As Button
+    Friend WithEvents Pag_End_DTP As DateTimePicker
+    Friend WithEvents Label12 As Label
+    Friend WithEvents Pag_Start_DTP As DateTimePicker
+    Friend WithEvents Label13 As Label
+    Friend WithEvents Pag_Search_TXT As TextBox
+    Friend WithEvents Pag_grid As ListView
+    Friend WithEvents ColumnHeader19 As ColumnHeader
+    Friend WithEvents ColumnHeader20 As ColumnHeader
+    Friend WithEvents ColumnHeader21 As ColumnHeader
+    Friend WithEvents ColumnHeader23 As ColumnHeader
+    Friend WithEvents Emp_BTN As Button
+    Friend WithEvents Label19 As Label
+    Friend WithEvents Pag_Name_TXT As TextBox
+    Friend WithEvents Label21 As Label
+    Friend WithEvents Pag_Amount_TXT As TextBox
 End Class

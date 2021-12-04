@@ -413,13 +413,13 @@ Module SaveUpdate
         If dss.Tables(0).Rows.Count > 0 Then
             For Each dr In dss.Tables(0).Rows
                 With dr
-                    Dim branchCode As String = IIf(.Item("CITY") = "GENSAN", "", .Item("BRANCHCODE"))
+                    Dim branchCode As String = IIf(value = "", "", .Item("BRANCHCODE"))
+
                     SaveRATE("BRANCH_CODE", branchCode, daily_rate, True)
                 End With
             Next
         End If
     End Sub
-
 
     Friend Sub SaveRATE(column As String, value As String, daily_rate As String, Optional group As Boolean = False) '=========== BOOLEAN IF MORE THAN 1 ========== 
 
@@ -430,10 +430,12 @@ Module SaveUpdate
             progressBarStart(dss.Tables(0).Rows.Count)
             For Each dr In dss.Tables(0).Rows
                 With dr
-                    Dim existing_rate As Double = .Item("RATE_DAILY")
+
+                    Dim existing_rate As Decimal = IIf(IsDBNull(.Item("RATE_DAILY")), 0, .Item("RATE_DAILY"))
 
                     If existing_rate < daily_rate Then
                         .Item("RATE_DAILY") = daily_rate
+                        .Item("RATE_MONTHLY") = daily_rate * 26
                     End If
 
                 End With

@@ -102,36 +102,6 @@ Partial Class frmSettings
         Me.Label14 = New System.Windows.Forms.Label()
         Me.Allow_Name_TXT = New System.Windows.Forms.TextBox()
         Me.Allow_Save_BTN = New System.Windows.Forms.Button()
-        Me.TabPage2 = New System.Windows.Forms.TabPage()
-        Me.GroupBox6 = New System.Windows.Forms.GroupBox()
-        Me.lblAdd = New System.Windows.Forms.Label()
-        Me.DE_Effectivity_DTP = New System.Windows.Forms.DateTimePicker()
-        Me.Label31 = New System.Windows.Forms.Label()
-        Me.DE_Schedule_Combo = New System.Windows.Forms.ComboBox()
-        Me.Label28 = New System.Windows.Forms.Label()
-        Me.DE_Category_Combo = New System.Windows.Forms.ComboBox()
-        Me.Label22 = New System.Windows.Forms.Label()
-        Me.DE_Name_TXT = New System.Windows.Forms.TextBox()
-        Me.Label17 = New System.Windows.Forms.Label()
-        Me.DE_AmountGive_TXT = New System.Windows.Forms.TextBox()
-        Me.DE_Cancel_BTN = New System.Windows.Forms.Button()
-        Me.Label20 = New System.Windows.Forms.Label()
-        Me.Label15 = New System.Windows.Forms.Label()
-        Me.DE_NoOfGives_TXT = New System.Windows.Forms.TextBox()
-        Me.DE_SearchEmp_BTN = New System.Windows.Forms.Button()
-        Me.Label18 = New System.Windows.Forms.Label()
-        Me.DE_Total_TXT = New System.Windows.Forms.TextBox()
-        Me.DE_Save_BTN = New System.Windows.Forms.Button()
-        Me.DE_Search_TXT = New System.Windows.Forms.TextBox()
-        Me.DE_Search_BTN = New System.Windows.Forms.Button()
-        Me.Deduction_List = New System.Windows.Forms.ListView()
-        Me.ColumnHeader11 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader12 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader13 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader15 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader14 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader8 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader16 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.TabPage4 = New System.Windows.Forms.TabPage()
         Me.GroupBox8 = New System.Windows.Forms.GroupBox()
         Me.Cat_Deduc_List = New System.Windows.Forms.ListView()
@@ -208,9 +178,6 @@ Partial Class frmSettings
         Me.Allowance_Remove = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.ApproveToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.Allow_Disapprove = New System.Windows.Forms.ToolStripMenuItem()
-        Me.Context_deduct = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.menu_subtotal = New System.Windows.Forms.ToolStripMenuItem()
-        Me.menu_edit = New System.Windows.Forms.ToolStripMenuItem()
         Me.Settings_Tab.SuspendLayout()
         Me.TabPage5.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
@@ -220,8 +187,6 @@ Partial Class frmSettings
         Me.GroupBox1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.FlowLayoutPanel1.SuspendLayout()
-        Me.TabPage2.SuspendLayout()
-        Me.GroupBox6.SuspendLayout()
         Me.TabPage4.SuspendLayout()
         Me.GroupBox8.SuspendLayout()
         Me.GroupBox7.SuspendLayout()
@@ -233,7 +198,6 @@ Partial Class frmSettings
         Me.Holiday_Remove.SuspendLayout()
         CType(Me.FileSystemWatcher1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Allowance_Remove.SuspendLayout()
-        Me.Context_deduct.SuspendLayout()
         Me.SuspendLayout()
         '
         'Close_LBL
@@ -251,7 +215,6 @@ Partial Class frmSettings
         Me.Settings_Tab.Controls.Add(Me.TabPage5)
         Me.Settings_Tab.Controls.Add(Me.Holiday_Tab)
         Me.Settings_Tab.Controls.Add(Me.TabPage1)
-        Me.Settings_Tab.Controls.Add(Me.TabPage2)
         Me.Settings_Tab.Controls.Add(Me.TabPage4)
         Me.Settings_Tab.Controls.Add(Me.TabPage7)
         Me.Settings_Tab.Controls.Add(Me.TabPage6)
@@ -1058,300 +1021,6 @@ Partial Class frmSettings
         Me.Allow_Save_BTN.Text = "Save"
         Me.Allow_Save_BTN.UseVisualStyleBackColor = True
         '
-        'TabPage2
-        '
-        Me.TabPage2.Controls.Add(Me.GroupBox6)
-        Me.TabPage2.Controls.Add(Me.DE_Search_TXT)
-        Me.TabPage2.Controls.Add(Me.DE_Search_BTN)
-        Me.TabPage2.Controls.Add(Me.Deduction_List)
-        Me.TabPage2.Location = New System.Drawing.Point(4, 38)
-        Me.TabPage2.Name = "TabPage2"
-        Me.TabPage2.Size = New System.Drawing.Size(1147, 604)
-        Me.TabPage2.TabIndex = 2
-        Me.TabPage2.Text = "  Deductions  "
-        Me.TabPage2.UseVisualStyleBackColor = True
-        '
-        'GroupBox6
-        '
-        Me.GroupBox6.Controls.Add(Me.lblAdd)
-        Me.GroupBox6.Controls.Add(Me.DE_Effectivity_DTP)
-        Me.GroupBox6.Controls.Add(Me.Label31)
-        Me.GroupBox6.Controls.Add(Me.DE_Schedule_Combo)
-        Me.GroupBox6.Controls.Add(Me.Label28)
-        Me.GroupBox6.Controls.Add(Me.DE_Category_Combo)
-        Me.GroupBox6.Controls.Add(Me.Label22)
-        Me.GroupBox6.Controls.Add(Me.DE_Name_TXT)
-        Me.GroupBox6.Controls.Add(Me.Label17)
-        Me.GroupBox6.Controls.Add(Me.DE_AmountGive_TXT)
-        Me.GroupBox6.Controls.Add(Me.DE_Cancel_BTN)
-        Me.GroupBox6.Controls.Add(Me.Label20)
-        Me.GroupBox6.Controls.Add(Me.Label15)
-        Me.GroupBox6.Controls.Add(Me.DE_NoOfGives_TXT)
-        Me.GroupBox6.Controls.Add(Me.DE_SearchEmp_BTN)
-        Me.GroupBox6.Controls.Add(Me.Label18)
-        Me.GroupBox6.Controls.Add(Me.DE_Total_TXT)
-        Me.GroupBox6.Controls.Add(Me.DE_Save_BTN)
-        Me.GroupBox6.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GroupBox6.Location = New System.Drawing.Point(5, -1)
-        Me.GroupBox6.Name = "GroupBox6"
-        Me.GroupBox6.Size = New System.Drawing.Size(1134, 180)
-        Me.GroupBox6.TabIndex = 122
-        Me.GroupBox6.TabStop = False
-        Me.GroupBox6.Text = "Information"
-        '
-        'lblAdd
-        '
-        Me.lblAdd.AutoSize = True
-        Me.lblAdd.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblAdd.ForeColor = System.Drawing.Color.RoyalBlue
-        Me.lblAdd.Location = New System.Drawing.Point(429, 82)
-        Me.lblAdd.Name = "lblAdd"
-        Me.lblAdd.Size = New System.Drawing.Size(32, 22)
-        Me.lblAdd.TabIndex = 125
-        Me.lblAdd.Text = "Add"
-        '
-        'DE_Effectivity_DTP
-        '
-        Me.DE_Effectivity_DTP.Location = New System.Drawing.Point(693, 137)
-        Me.DE_Effectivity_DTP.Name = "DE_Effectivity_DTP"
-        Me.DE_Effectivity_DTP.Size = New System.Drawing.Size(223, 29)
-        Me.DE_Effectivity_DTP.TabIndex = 40
-        Me.DE_Effectivity_DTP.Value = New Date(2021, 9, 15, 0, 0, 0, 0)
-        '
-        'Label31
-        '
-        Me.Label31.AutoSize = True
-        Me.Label31.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label31.Location = New System.Drawing.Point(548, 139)
-        Me.Label31.Name = "Label31"
-        Me.Label31.Size = New System.Drawing.Size(73, 25)
-        Me.Label31.TabIndex = 124
-        Me.Label31.Text = "Effectivity"
-        '
-        'DE_Schedule_Combo
-        '
-        Me.DE_Schedule_Combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.DE_Schedule_Combo.FormattingEnabled = True
-        Me.DE_Schedule_Combo.Items.AddRange(New Object() {"OPEN PAYROLL", "CLOSE PAYROLL", "EVERY PAYROLL"})
-        Me.DE_Schedule_Combo.Location = New System.Drawing.Point(97, 116)
-        Me.DE_Schedule_Combo.Name = "DE_Schedule_Combo"
-        Me.DE_Schedule_Combo.Size = New System.Drawing.Size(319, 33)
-        Me.DE_Schedule_Combo.TabIndex = 36
-        Me.DE_Schedule_Combo.Text = "Select "
-        '
-        'Label28
-        '
-        Me.Label28.AutoSize = True
-        Me.Label28.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label28.Location = New System.Drawing.Point(8, 118)
-        Me.Label28.Name = "Label28"
-        Me.Label28.Size = New System.Drawing.Size(67, 25)
-        Me.Label28.TabIndex = 123
-        Me.Label28.Text = "Schedule"
-        '
-        'DE_Category_Combo
-        '
-        Me.DE_Category_Combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.DE_Category_Combo.FormattingEnabled = True
-        Me.DE_Category_Combo.Location = New System.Drawing.Point(97, 77)
-        Me.DE_Category_Combo.Name = "DE_Category_Combo"
-        Me.DE_Category_Combo.Size = New System.Drawing.Size(319, 33)
-        Me.DE_Category_Combo.TabIndex = 35
-        Me.DE_Category_Combo.Text = "Select "
-        '
-        'Label22
-        '
-        Me.Label22.AutoSize = True
-        Me.Label22.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label22.Location = New System.Drawing.Point(548, 91)
-        Me.Label22.Name = "Label22"
-        Me.Label22.Size = New System.Drawing.Size(132, 25)
-        Me.Label22.TabIndex = 121
-        Me.Label22.Text = "Amount per Deduc."
-        '
-        'DE_Name_TXT
-        '
-        Me.DE_Name_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.DE_Name_TXT.Location = New System.Drawing.Point(97, 35)
-        Me.DE_Name_TXT.Name = "DE_Name_TXT"
-        Me.DE_Name_TXT.ReadOnly = True
-        Me.DE_Name_TXT.Size = New System.Drawing.Size(319, 33)
-        Me.DE_Name_TXT.TabIndex = 109
-        '
-        'Label17
-        '
-        Me.Label17.AutoSize = True
-        Me.Label17.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label17.Location = New System.Drawing.Point(8, 79)
-        Me.Label17.Name = "Label17"
-        Me.Label17.Size = New System.Drawing.Size(67, 25)
-        Me.Label17.TabIndex = 110
-        Me.Label17.Text = "Category"
-        '
-        'DE_AmountGive_TXT
-        '
-        Me.DE_AmountGive_TXT.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.DE_AmountGive_TXT.Location = New System.Drawing.Point(693, 87)
-        Me.DE_AmountGive_TXT.Name = "DE_AmountGive_TXT"
-        Me.DE_AmountGive_TXT.Size = New System.Drawing.Size(223, 29)
-        Me.DE_AmountGive_TXT.TabIndex = 39
-        '
-        'DE_Cancel_BTN
-        '
-        Me.DE_Cancel_BTN.BackColor = System.Drawing.Color.MistyRose
-        Me.DE_Cancel_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.DE_Cancel_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.DE_Cancel_BTN.Location = New System.Drawing.Point(964, 132)
-        Me.DE_Cancel_BTN.Name = "DE_Cancel_BTN"
-        Me.DE_Cancel_BTN.Size = New System.Drawing.Size(78, 33)
-        Me.DE_Cancel_BTN.TabIndex = 42
-        Me.DE_Cancel_BTN.Text = "Cancel"
-        Me.DE_Cancel_BTN.UseVisualStyleBackColor = False
-        '
-        'Label20
-        '
-        Me.Label20.AutoSize = True
-        Me.Label20.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label20.Location = New System.Drawing.Point(548, 56)
-        Me.Label20.Name = "Label20"
-        Me.Label20.Size = New System.Drawing.Size(93, 25)
-        Me.Label20.TabIndex = 119
-        Me.Label20.Text = "No of Deduc."
-        '
-        'Label15
-        '
-        Me.Label15.AutoSize = True
-        Me.Label15.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label15.Location = New System.Drawing.Point(8, 37)
-        Me.Label15.Name = "Label15"
-        Me.Label15.Size = New System.Drawing.Size(48, 25)
-        Me.Label15.TabIndex = 111
-        Me.Label15.Text = "Name"
-        '
-        'DE_NoOfGives_TXT
-        '
-        Me.DE_NoOfGives_TXT.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.DE_NoOfGives_TXT.Location = New System.Drawing.Point(693, 54)
-        Me.DE_NoOfGives_TXT.Name = "DE_NoOfGives_TXT"
-        Me.DE_NoOfGives_TXT.Size = New System.Drawing.Size(223, 29)
-        Me.DE_NoOfGives_TXT.TabIndex = 38
-        '
-        'DE_SearchEmp_BTN
-        '
-        Me.DE_SearchEmp_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.DE_SearchEmp_BTN.Location = New System.Drawing.Point(422, 36)
-        Me.DE_SearchEmp_BTN.Name = "DE_SearchEmp_BTN"
-        Me.DE_SearchEmp_BTN.Size = New System.Drawing.Size(47, 31)
-        Me.DE_SearchEmp_BTN.TabIndex = 34
-        Me.DE_SearchEmp_BTN.Text = "..."
-        Me.DE_SearchEmp_BTN.UseVisualStyleBackColor = True
-        '
-        'Label18
-        '
-        Me.Label18.AutoSize = True
-        Me.Label18.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label18.Location = New System.Drawing.Point(548, 26)
-        Me.Label18.Name = "Label18"
-        Me.Label18.Size = New System.Drawing.Size(44, 25)
-        Me.Label18.TabIndex = 108
-        Me.Label18.Text = "Total"
-        '
-        'DE_Total_TXT
-        '
-        Me.DE_Total_TXT.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.DE_Total_TXT.Location = New System.Drawing.Point(693, 21)
-        Me.DE_Total_TXT.Name = "DE_Total_TXT"
-        Me.DE_Total_TXT.Size = New System.Drawing.Size(223, 29)
-        Me.DE_Total_TXT.TabIndex = 37
-        '
-        'DE_Save_BTN
-        '
-        Me.DE_Save_BTN.BackColor = System.Drawing.Color.RosyBrown
-        Me.DE_Save_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.DE_Save_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.DE_Save_BTN.Location = New System.Drawing.Point(1050, 132)
-        Me.DE_Save_BTN.Name = "DE_Save_BTN"
-        Me.DE_Save_BTN.Size = New System.Drawing.Size(78, 33)
-        Me.DE_Save_BTN.TabIndex = 41
-        Me.DE_Save_BTN.Text = "Save"
-        Me.DE_Save_BTN.UseVisualStyleBackColor = False
-        '
-        'DE_Search_TXT
-        '
-        Me.DE_Search_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.DE_Search_TXT.Location = New System.Drawing.Point(18, 199)
-        Me.DE_Search_TXT.Name = "DE_Search_TXT"
-        Me.DE_Search_TXT.Size = New System.Drawing.Size(358, 33)
-        Me.DE_Search_TXT.TabIndex = 43
-        '
-        'DE_Search_BTN
-        '
-        Me.DE_Search_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.DE_Search_BTN.Location = New System.Drawing.Point(382, 198)
-        Me.DE_Search_BTN.Name = "DE_Search_BTN"
-        Me.DE_Search_BTN.Size = New System.Drawing.Size(82, 33)
-        Me.DE_Search_BTN.TabIndex = 44
-        Me.DE_Search_BTN.Text = "Search"
-        Me.DE_Search_BTN.UseVisualStyleBackColor = True
-        '
-        'Deduction_List
-        '
-        Me.Deduction_List.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Deduction_List.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader11, Me.ColumnHeader12, Me.ColumnHeader13, Me.ColumnHeader15, Me.ColumnHeader14, Me.ColumnHeader8, Me.ColumnHeader16})
-        Me.Deduction_List.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Deduction_List.FullRowSelect = True
-        Me.Deduction_List.GridLines = True
-        Me.Deduction_List.HideSelection = False
-        Me.Deduction_List.Location = New System.Drawing.Point(19, 247)
-        Me.Deduction_List.MultiSelect = False
-        Me.Deduction_List.Name = "Deduction_List"
-        Me.Deduction_List.Size = New System.Drawing.Size(1125, 348)
-        Me.Deduction_List.TabIndex = 45
-        Me.Deduction_List.UseCompatibleStateImageBehavior = False
-        Me.Deduction_List.View = System.Windows.Forms.View.Details
-        '
-        'ColumnHeader11
-        '
-        Me.ColumnHeader11.Text = "Fullname"
-        Me.ColumnHeader11.Width = 400
-        '
-        'ColumnHeader12
-        '
-        Me.ColumnHeader12.Text = "Category"
-        Me.ColumnHeader12.Width = 130
-        '
-        'ColumnHeader13
-        '
-        Me.ColumnHeader13.Text = "Total"
-        Me.ColumnHeader13.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.ColumnHeader13.Width = 85
-        '
-        'ColumnHeader15
-        '
-        Me.ColumnHeader15.Text = "No. of Deduc."
-        Me.ColumnHeader15.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.ColumnHeader15.Width = 110
-        '
-        'ColumnHeader14
-        '
-        Me.ColumnHeader14.Text = "Amount/Deduc"
-        Me.ColumnHeader14.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.ColumnHeader14.Width = 130
-        '
-        'ColumnHeader8
-        '
-        Me.ColumnHeader8.Text = "Schedule"
-        Me.ColumnHeader8.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.ColumnHeader8.Width = 140
-        '
-        'ColumnHeader16
-        '
-        Me.ColumnHeader16.Text = "Balance"
-        Me.ColumnHeader16.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.ColumnHeader16.Width = 100
-        '
         'TabPage4
         '
         Me.TabPage4.Controls.Add(Me.GroupBox8)
@@ -2104,24 +1773,6 @@ Partial Class frmSettings
         Me.Allow_Disapprove.Size = New System.Drawing.Size(133, 22)
         Me.Allow_Disapprove.Text = "Disapprove"
         '
-        'Context_deduct
-        '
-        Me.Context_deduct.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.menu_subtotal, Me.menu_edit})
-        Me.Context_deduct.Name = "Context_deduct"
-        Me.Context_deduct.Size = New System.Drawing.Size(147, 48)
-        '
-        'menu_subtotal
-        '
-        Me.menu_subtotal.Name = "menu_subtotal"
-        Me.menu_subtotal.Size = New System.Drawing.Size(146, 22)
-        Me.menu_subtotal.Text = "View Subtotal"
-        '
-        'menu_edit
-        '
-        Me.menu_edit.Name = "menu_edit"
-        Me.menu_edit.Size = New System.Drawing.Size(146, 22)
-        Me.menu_edit.Text = "Edit"
-        '
         'frmSettings
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -2149,10 +1800,6 @@ Partial Class frmSettings
         Me.TabPage1.PerformLayout()
         Me.FlowLayoutPanel1.ResumeLayout(False)
         Me.FlowLayoutPanel1.PerformLayout()
-        Me.TabPage2.ResumeLayout(False)
-        Me.TabPage2.PerformLayout()
-        Me.GroupBox6.ResumeLayout(False)
-        Me.GroupBox6.PerformLayout()
         Me.TabPage4.ResumeLayout(False)
         Me.GroupBox8.ResumeLayout(False)
         Me.GroupBox8.PerformLayout()
@@ -2171,7 +1818,6 @@ Partial Class frmSettings
         Me.Holiday_Remove.ResumeLayout(False)
         CType(Me.FileSystemWatcher1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Allowance_Remove.ResumeLayout(False)
-        Me.Context_deduct.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -2201,7 +1847,6 @@ Partial Class frmSettings
     Friend WithEvents RegularRate_TXT As TextBox
     Friend WithEvents Label6 As Label
     Friend WithEvents TabPage1 As TabPage
-    Friend WithEvents TabPage2 As TabPage
     Friend WithEvents TabPage5 As TabPage
     Friend WithEvents Rate_CityAmount_TXT As TextBox
     Friend WithEvents Rate_City_ComboB As ComboBox
@@ -2239,29 +1884,6 @@ Partial Class frmSettings
     Friend WithEvents Allowance_Remove As ContextMenuStrip
     Friend WithEvents Allow_Disapprove As ToolStripMenuItem
     Friend WithEvents ColumnHeader6 As ColumnHeader
-    Friend WithEvents DE_Cancel_BTN As Button
-    Friend WithEvents DE_Save_BTN As Button
-    Friend WithEvents DE_SearchEmp_BTN As Button
-    Friend WithEvents Label15 As Label
-    Friend WithEvents Label17 As Label
-    Friend WithEvents DE_Name_TXT As TextBox
-    Friend WithEvents Label18 As Label
-    Friend WithEvents DE_Category_Combo As ComboBox
-    Friend WithEvents DE_Total_TXT As TextBox
-    Friend WithEvents DE_Search_TXT As TextBox
-    Friend WithEvents DE_Search_BTN As Button
-    Friend WithEvents Deduction_List As ListView
-    Friend WithEvents ColumnHeader11 As ColumnHeader
-    Friend WithEvents ColumnHeader12 As ColumnHeader
-    Friend WithEvents ColumnHeader13 As ColumnHeader
-    Friend WithEvents ColumnHeader15 As ColumnHeader
-    Friend WithEvents ColumnHeader14 As ColumnHeader
-    Friend WithEvents ColumnHeader16 As ColumnHeader
-    Friend WithEvents Label22 As Label
-    Friend WithEvents DE_AmountGive_TXT As TextBox
-    Friend WithEvents Label20 As Label
-    Friend WithEvents DE_NoOfGives_TXT As TextBox
-    Friend WithEvents GroupBox6 As GroupBox
     Friend WithEvents Rate_list As ListView
     Friend WithEvents ColumnHeader17 As ColumnHeader
     Friend WithEvents ColumnHeader18 As ColumnHeader
@@ -2288,9 +1910,6 @@ Partial Class frmSettings
     Friend WithEvents Email_Save_BTN As Button
     Friend WithEvents Password_TXT As TextBox
     Friend WithEvents Label27 As Label
-    Friend WithEvents DE_Schedule_Combo As ComboBox
-    Friend WithEvents Label28 As Label
-    Friend WithEvents ColumnHeader8 As ColumnHeader
     Friend WithEvents Allow_Schedule_Combo As ComboBox
     Friend WithEvents Label29 As Label
     Friend WithEvents FlowLayoutPanel1 As FlowLayoutPanel
@@ -2299,11 +1918,6 @@ Partial Class frmSettings
     Friend WithEvents Label32 As Label
     Friend WithEvents A_EveryDate_Combo As ComboBox
     Friend WithEvents ColumnHeader9 As ColumnHeader
-    Friend WithEvents Context_deduct As ContextMenuStrip
-    Friend WithEvents menu_subtotal As ToolStripMenuItem
-    Friend WithEvents menu_edit As ToolStripMenuItem
-    Friend WithEvents DE_Effectivity_DTP As DateTimePicker
-    Friend WithEvents Label31 As Label
     Friend WithEvents Monthly_BTN As Button
     Friend WithEvents Daily_BTN As Button
     Friend WithEvents Label12 As Label
@@ -2364,5 +1978,4 @@ Partial Class frmSettings
     Friend WithEvents Label43 As Label
     Friend WithEvents Address_Combo As ComboBox
     Friend WithEvents ColumnHeader30 As ColumnHeader
-    Friend WithEvents lblAdd As Label
 End Class
