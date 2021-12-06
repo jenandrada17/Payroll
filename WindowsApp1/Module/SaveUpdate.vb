@@ -740,6 +740,7 @@ Module SaveUpdate
                     Dim Allowances As Double = 0
                     Dim Minimum_rate As Double = IIf(.Item("BRANCH_CODE") = Nothing, GetMinimumRate("CITY", "GENSAN"), GetMinimumRate("BRANCHCODE", .Item("BRANCH_CODE")))
                     Dim Ecola As Double = GetEcola("BRANCHCODE", .Item("BRANCH_CODE"))
+                    Dim Monthly_rate As Double = IIf(IsDBNull(.Item("RATE_MONTHLY")) Or .Item("RATE_MONTHLY") = 0, Minimum_rate * 26, .Item("RATE_MONTHLY"))
 
                     rate = IIf(IsDBNull(.Item("RATE_DAILY")) Or .Item("RATE_DAILY") = 0, Minimum_rate, .Item("RATE_DAILY"))
                     Company = IIf(IsDBNull(.Item("COMPANY")), "", .Item("COMPANY"))
@@ -814,6 +815,12 @@ Module SaveUpdate
                         TotalBasic = (NoOfDays * rate)
                     End If
 
+                    '============================= FOR MONTHLY NA SAHURAN ================================== 
+                    If Monthly_rate > (Minimum_rate * 26) Then  '=== CHECK IF ABOVE MINIMUM
+                        Monthly_rate = Monthly_rate / 2
+                        TotalBasic = Monthly_rate
+                    End If
+
                     '============================ CHECK WITH TRAINING DAYS COVERED ==================================   
                     If noOf_days_training = 0 Then
                         '============================ CHECK IF CLOSE PAYROLL ==================================   
@@ -845,8 +852,6 @@ Module SaveUpdate
                             netTax = 0
                             sched = "OPEN PAYROLL"
                         End If
-                    Else
-                        MsgBox("TRAINEE")
                     End If
 
                     '============================================= DELETE ALLOWANCE AND DEDUCTION TO REPLACE =================================================
@@ -1024,8 +1029,9 @@ Module SaveUpdate
                         Dim nightRate As Double = 0
                         Dim Allowances As Double = 0
                         Dim Deduction As Double = 0
-                        Dim Minimum_rate As Double = IIf(.Item("BRANCH_CODE") = Nothing, GetMinimumRate("CITY", "GENSAN"), GetMinimumRate("BRANCHCODE", .Item("BRANCH_CODE")))
+                        Dim Minimum_rate As Double = IIf(.Item("RATE_MONTHLY") = Nothing, GetMinimumRate("CITY", "GENSAN"), GetMinimumRate("BRANCHCODE", .Item("BRANCH_CODE")))
                         Dim Ecola As Double = GetEcola("BRANCHCODE", .Item("BRANCH_CODE"))
+                        Dim Monthly_rate As Double = IIf(IsDBNull(.Item("RATE_MONTHLY")) Or .Item("RATE_MONTHLY") = 0, Minimum_rate * 26, .Item("RATE_MONTHLY"))
 
                         BiometricID = .Item("BIOMETRICID")
                         rate = IIf(IsDBNull(.Item("RATE_DAILY")) Or .Item("RATE_DAILY") = 0, Minimum_rate, .Item("RATE_DAILY"))
@@ -1097,6 +1103,12 @@ Module SaveUpdate
 
                             TotalBasic = (NoOfDays * rate) - total_train
                             rate = rate * 0.75
+                        End If
+
+                        '============================= FOR MONTHLY NA SAHURAN ================================== 
+                        If Monthly_rate > (Minimum_rate * 26) Then  '=== CHECK IF ABOVE MINIMUM
+                            Monthly_rate = Monthly_rate / 2
+                            TotalBasic = Monthly_rate
                         End If
 
                         '============================= BENEFITS CONTRIBUTION ================================== 
@@ -1253,14 +1265,6 @@ Module SaveUpdate
                                       netTax, sssLoan, pagibigLoan,
                                       Allowances, Deduction, NetPay,
                                       TotalREGHol, TotalSPECHol, 0, "Group")
-
-                        'SavePayout(BiometricID, paydate_, (TotalBasic).ToString("N"), (TotalOT).ToString("N"),
-                        '              (TotalLateUnder).ToString("N"), (GrossAmount).ToString("N"),
-                        '              (SSSComp).ToString("N"), (SSS_ER).ToString("N"), (SSS_EC).ToString("N"),
-                        '              (PagibigComp).ToString("N"), (PhilhealthComp).ToString("N"), (Tax_Wheld).ToString("N"),
-                        '              (netTax).ToString("N"), (sssLoan).ToString("N"), (pagibigLoan).ToString("N"),
-                        '              (Allowances).ToString("N"), (Deduction).ToString("N"), (NetPay).ToString("N"),
-                        '              (TotalREGHol).ToString("N"), (TotalSPECHol).ToString("N"), 0, "Group")
 
                         frmMainForm.AppProgressBar.Value += 1
                     End With

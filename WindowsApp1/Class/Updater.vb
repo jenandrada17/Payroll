@@ -6,13 +6,12 @@
 
         Try
 
-            Dim file As New System.IO.StreamReader("\\PGCNAS_SERVER\MIS DEPARTMENT\COMMON FILES\Jennifer\Payroll\version.txt")
-            'Dim file As New System.IO.StreamReader("\\PGCNAS_SERVER\MIS DEPARTMENT\COMMON FILES\Jennifer\HRSystem\version.txt")
+            Dim file As New System.IO.StreamReader("\\Pgcnas_server\hr\PAYROLL\version.txt")
             Dim Contents As String = file.ReadToEnd()
             file.Close()
             If Contents <> "" Then
                 If Contents > Application.ProductVersion Then
-                    System.Diagnostics.Process.Start("\\PGCNAS_SERVER\MIS DEPARTMENT\COMMON FILES\Jennifer\Payroll\HR_SYS.exe")
+                    System.Diagnostics.Process.Start("\\Pgcnas_server\hr\PAYROLL\PayrollSystem.exe")
                     ret = True
                 End If
             End If

@@ -9,54 +9,55 @@ Module SelectFromDatabase
         Return myDate.Day = Date.DaysInMonth(myDate.Year, myDate.Month)
     End Function
 
-    Public Sub GetAttendance_Manual(bioNo As String, paydate As String, datagrid As DataGridView,
-                                    TotalDays_LBL As Label, TotalRHoliday_LBL As Label, TotalSHoliday_LBL As Label,
-                                    TotalLateHR_LBL As Label, TotalUTHR_LBL As Label, TotalOTHr_LBL As Label)
+    'Public Sub GetAttendance_Manual(bioNo As String, paydate As String, datagrid As DataGridView,
+    '                                TotalDays_LBL As Label, TotalRHoliday_LBL As Label, TotalSHoliday_LBL As Label,
+    '                                TotalLateHR_LBL As Label, TotalUTHR_LBL As Label, TotalOTHr_LBL As Label)
 
-        'Dim mysql As String = $"Select * From BIOMETRIC_DTR where BIO_ID = '{bioNo}' and BRANCH = '{branch}' and PAYDATE = '{paydate}'"
-        Dim mysql As String = $"Select * From BIOMETRIC_DTR where BIO_ID = '{bioNo}' and PAYDATE = '{paydate}'"
-        Using ds As DataSet = LoadSQL(mysql, "BIOMETRIC_DTR")
-            If ds.Tables(0).Rows.Count > 0 Then
-                For Each dr In ds.Tables(0).Rows
-                    With dr
+    '    Dim mysql As String = $"Select * From BIOMETRIC_DTR where BIO_ID = '{bioNo}' and PAYDATE = '{paydate}'"
+    '    Using ds As DataSet = LoadSQL(mysql, "BIOMETRIC_DTR")
+    '        If ds.Tables(0).Rows.Count > 0 Then
+    '            For Each dr In ds.Tables(0).Rows
+    '                With dr
 
-                        Dim date_ As Date = .Item("DATE_ONLY")
+    '                    Dim date_ As Date = .Item("DATE_ONLY")
 
-                        For Each row As DataGridViewRow In datagrid.Rows
+    '                    For Each row As DataGridViewRow In datagrid.Rows
 
-                            Dim rowIndex As Integer = row.Index
-                            Dim asss As Date = datagrid.Rows(rowIndex).Tag
+    '                        Dim rowIndex As Integer = row.Index
+    '                        Dim asss As Date = datagrid.Rows(rowIndex).Tag
 
-                            If asss = date_ Then
-                                row.Cells(1).Value = IIf(IsDBNull(.Item("AM_IN")), "", .Item("AM_IN"))
-                                row.Cells(2).Value = IIf(IsDBNull(.Item("AM_OUT")), "", .Item("AM_OUT"))
-                                row.Cells(3).Value = IIf(IsDBNull(.Item("PM_IN")), "", .Item("PM_IN"))
-                                row.Cells(4).Value = IIf(IsDBNull(.Item("PM_OUT")), "", .Item("PM_OUT"))
-                                row.Cells(5) = New DataGridViewCheckBoxCell With {.Value = True}
-                            End If
-                        Next
-                    End With
-                Next
-            End If
-        End Using
+    '                        If asss = date_ Then
+    '                            row.Cells(1).Value = IIf(IsDBNull(.Item("AM_IN")), "", .Item("AM_IN"))
+    '                            row.Cells(2).Value = IIf(IsDBNull(.Item("AM_OUT")), "", .Item("AM_OUT"))
+    '                            row.Cells(3).Value = IIf(IsDBNull(.Item("PM_IN")), "", .Item("PM_IN"))
+    '                            row.Cells(4).Value = IIf(IsDBNull(.Item("PM_OUT")), "", .Item("PM_OUT"))
+    '                            row.Cells(5) = New DataGridViewCheckBoxCell With {.Value = True}
+    '                        End If
+
+    '                        RowHoliday(date_.ToString("M"), row)
+    '                    Next
+    '                End With
+    '            Next
+    '        End If
+    '    End Using
 
 
-        Dim sql As String = $"Select * From PAYROLL_ATTENDANCE where BIOMETRICID = '{bioNo}' and PAYDATE = '{paydate}'"
-        Using ds As DataSet = LoadSQL(sql, "PAYROLL_ATTENDANCE")
-            If ds.Tables(0).Rows.Count > 0 Then
-                Dim data As DataRow = ds.Tables(0).Rows(0)
-                With data
-                    TotalDays_LBL.Text = .Item("PRESENT_DAYS")
-                    TotalRHoliday_LBL.Text = .Item("REGHOLIDAY")
-                    TotalSHoliday_LBL.Text = .Item("SPECHOLIDAY")
-                    TotalLateHR_LBL.Text = IIf(IsDBNull(.Item("LATE")), "00:00:00", .Item("LATE"))
-                    TotalUTHR_LBL.Text = IIf(IsDBNull(.Item("UNDERTIME")), "00:00:00", .Item("UNDERTIME"))
-                    TotalOTHr_LBL.Text = .Item("OVERTIME")
-                End With
-            End If
-        End Using
+    '    Dim sql As String = $"Select * From PAYROLL_ATTENDANCE where BIOMETRICID = '{bioNo}' and PAYDATE = '{paydate}'"
+    '    Using ds As DataSet = LoadSQL(sql, "PAYROLL_ATTENDANCE")
+    '        If ds.Tables(0).Rows.Count > 0 Then
+    '            Dim data As DataRow = ds.Tables(0).Rows(0)
+    '            With data
+    '                TotalDays_LBL.Text = .Item("PRESENT_DAYS")
+    '                TotalRHoliday_LBL.Text = .Item("REGHOLIDAY")
+    '                TotalSHoliday_LBL.Text = .Item("SPECHOLIDAY")
+    '                TotalLateHR_LBL.Text = IIf(IsDBNull(.Item("LATE")), "00:00:00", .Item("LATE"))
+    '                TotalUTHR_LBL.Text = IIf(IsDBNull(.Item("UNDERTIME")), "00:00:00", .Item("UNDERTIME"))
+    '                TotalOTHr_LBL.Text = .Item("OVERTIME")
+    '            End With
+    '        End If
+    '    End Using
 
-    End Sub
+    'End Sub
 
 
     Public Sub GetPayout_TOTALS(paydate As String, P_GrossAmount_LBL As Label, P_SSSComp_LBL As Label, P_PagibigComp_LBL As Label, P_PhilHComp_LBL As Label,
@@ -927,6 +928,21 @@ Module SelectFromDatabase
         Return False
     End Function
 
+    Friend Sub RowHoliday(datee As String, row As DataGridViewRow)
+        Dim mysql As String = "SELECT * FROM PAYROLL_HOLIDAY Where DATEE = '" & datee & "' "
+        Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_HOLIDAY")
+        If ds.Tables(0).Rows.Count > 0 Then
+            Dim data As DataRow = ds.Tables(0).Rows(0)
+            With data
+                If .Item("KINDS") = "REGULAR" Then
+                    row.DefaultCellStyle.BackColor = Color.MediumOrchid
+                Else
+                    row.DefaultCellStyle.BackColor = Color.Plum
+                End If
+            End With
+        End If
+    End Sub
+
     Friend Sub HolidayDetails(datee As String, rowID As Integer, dategrid As DataGridView)
         Dim mysql As String = "SELECT * FROM PAYROLL_HOLIDAY Where DATEE = '" & datee & "' "
         Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_HOLIDAY")
@@ -950,12 +966,42 @@ Module SelectFromDatabase
                 dategrid.Rows(rowID).Cells(3).Value = ""
                 dategrid.Rows(rowID).Cells(4).Value = ""
                 dategrid.Rows(rowID).Cells(5).Value = False
-
             End With
 
         End If
     End Sub
 
+    Friend Function REGHolidayCount(startingDate As DateTime, EndingDate As DateTime) As Integer
+        Dim count As Integer
+
+        While (startingDate <= EndingDate)
+            Dim mysql As String = $"SELECT * FROM PAYROLL_HOLIDAY Where DATEE = '{startingDate.ToString("M")}' and KINDS = 'REGULAR'"
+            Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_HOLIDAY")
+            If ds.Tables(0).Rows.Count > 0 Then
+                count += 1
+            End If
+
+            startingDate = startingDate.AddDays(1)
+        End While
+
+        Return count
+    End Function
+
+    Friend Function SPECHolidayCount(startingDate As DateTime, EndingDate As DateTime) As Integer
+        Dim count As Integer
+
+        While (startingDate <= EndingDate)
+            Dim mysql As String = $"SELECT * FROM PAYROLL_HOLIDAY Where DATEE = '{startingDate.ToString("M")}' and KINDS = 'SPECIAL'"
+            Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_HOLIDAY")
+            If ds.Tables(0).Rows.Count > 0 Then
+                count += 1
+            End If
+
+            startingDate = startingDate.AddDays(1)
+        End While
+
+        Return count
+    End Function
 
     Friend Sub HolidayRate(regularRate As TextBox, SpecialRate As TextBox)
 
@@ -1002,9 +1048,9 @@ Module SelectFromDatabase
         Return False
     End Function
 
-    Friend Sub PopulateBiometricSHEET(datagrid As DataGridView, Paydate As String, Optional searchName As String = "")
+    Friend Sub PopulateBiometricSHEET(LV As ListView, Paydate As String, Optional searchName As String = "")
 
-        datagrid.Rows.Clear()
+        LV.Items.Clear()
 
         Dim secured_str As String = searchName
         secured_str = DreadKnight(secured_str)
@@ -1034,53 +1080,58 @@ Module SelectFromDatabase
                 progressBarStart(ds.Tables(0).Rows.Count)
 
                 For Each dr In ds.Tables(0).Rows
-                    AddRowBiometric(dr, datagrid)
+                    With dr
+
+                        Dim i As ListViewItem = LV.Items.Add(.Item("BIOMETRICID"))
+                        i.SubItems.Add(.Item("FULLNAME")).Tag = .Item("ID")
+                        i.SubItems.Add(.Item("PRESENT_DAYS"))
+                        i.SubItems.Add(IIf(.Item("OVERTIME") = 0, "", .Item("OVERTIME")))
+                        i.SubItems.Add(IIf(.Item("LATE").Equals("00:00:00"), "", .Item("LATE")))
+                        i.SubItems.Add(IIf(.Item("UNDERTIME").Equals("00:00:00"), "", .Item("UNDERTIME")))
+                    End With
 
                     frmMainForm.AppProgressBar.Value += 1
                 Next
-
                 progressBarEnd()
-            Else
-                datagrid.Rows.Clear()
             End If
         End Using
 
     End Sub
 
-    Public Sub AddRowBiometric(ByVal dr As DataRow, datagrid As DataGridView)
-        'If datagrid.Rows.Count <= 12 Then
-        With dr
+    'Public Sub AddRowBiometric(ByVal dr As DataRow, datagrid As DataGridView)
+    '    'If datagrid.Rows.Count <= 12 Then
+    '    With dr
 
-            Dim rowId As Integer = datagrid.Rows.Add()
-            Dim row As DataGridViewRow = datagrid.Rows(rowId)
-            row.Cells("BIOID_DGVV").Value = .Item("BIOMETRICID")
-            row.Cells("Name_DGVV").Value = .Item("FULLNAME")
-            row.Cells("Name_DGVV").Tag = .Item("ID")
-            row.Cells("PRESENT_DGVV").Value = .Item("PRESENT_DAYS")
+    '        Dim rowId As Integer = datagrid.Rows.Add()
+    '        Dim row As DataGridViewRow = datagrid.Rows(rowId)
+    '        row.Cells("BIOID_DGVV").Value = .Item("BIOMETRICID")
+    '        row.Cells("Name_DGVV").Value = .Item("FULLNAME")
+    '        row.Cells("Name_DGVV").Tag = .Item("ID")
+    '        row.Cells("PRESENT_DGVV").Value = .Item("PRESENT_DAYS")
 
-            If .Item("OVERTIME") = 0 Then
-                row.Cells("Overtime_DGVV").Value = ""
-            Else
-                row.Cells("Overtime_DGVV").Value = .Item("OVERTIME")
-            End If
+    '        If .Item("OVERTIME") = 0 Then
+    '            row.Cells("Overtime_DGVV").Value = ""
+    '        Else
+    '            row.Cells("Overtime_DGVV").Value = .Item("OVERTIME")
+    '        End If
 
-            If .Item("LATE").Equals("00:00:00") Then
-                row.Cells("Late_DGVV").Value = ""
-            Else
-                row.Cells("Late_DGVV").Value = IIf(IsDBNull(.Item("LATE")), "", .Item("LATE"))
-            End If
+    '        If .Item("LATE").Equals("00:00:00") Then
+    '            row.Cells("Late_DGVV").Value = ""
+    '        Else
+    '            row.Cells("Late_DGVV").Value = IIf(IsDBNull(.Item("LATE")), "", .Item("LATE"))
+    '        End If
 
-            If .Item("UNDERTIME").Equals("00:00:00") Then
-                row.Cells("Undertime_DGVV").Value = ""
-            Else
-                row.Cells("Undertime_DGVV").Value = IIf(IsDBNull(.Item("UNDERTIME")), "", .Item("UNDERTIME"))
-            End If
+    '        If .Item("UNDERTIME").Equals("00:00:00") Then
+    '            row.Cells("Undertime_DGVV").Value = ""
+    '        Else
+    '            row.Cells("Undertime_DGVV").Value = IIf(IsDBNull(.Item("UNDERTIME")), "", .Item("UNDERTIME"))
+    '        End If
 
-            row.Height = 30
+    '        row.Height = 30
 
-        End With
-        'End If
-    End Sub
+    '    End With
+    '    'End If
+    'End Sub
 
     Friend Sub Populate_S7ELVEN(datagrid As DataGridView, Paydate As String, Optional searchName As String = "")
 
@@ -1177,7 +1228,7 @@ Module SelectFromDatabase
                 HourGroup.Add(AAA)
             End If
         Next
-
+        HourGroup.Distinct().ToList
         Return HourGroup
     End Function
 
@@ -2080,7 +2131,10 @@ Module SelectFromDatabase
                         InActive_RB.Checked = True
                     End If
 
-                    btnSave.Tag = "UPDATE" ' FOR USER_LOGS
+                    If btnSave IsNot Nothing Then
+                        btnSave.Tag = "UPDATE" ' FOR USER_LOGS
+                    End If
+
                 End With
             Else
                 Add_Company_CB.Text = ""
@@ -2098,7 +2152,11 @@ Module SelectFromDatabase
                 SSS_TXT.Text = ""
                 PHILH_TXT.Text = ""
                 HDMF_TXT.Text = ""
-                btnSave.Tag = "SAVE" ' FOR USER_LOGS
+
+                If btnSave IsNot Nothing Then
+                    btnSave.Tag = "SAVE" ' FOR USER_LOGS
+                End If
+
             End If
         End Using
     End Sub

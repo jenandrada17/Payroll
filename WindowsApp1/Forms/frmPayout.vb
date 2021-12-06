@@ -398,6 +398,12 @@ Public Class frmPayout
             TotalBasic_LBL.Text = (CDbl(NoOfDays_TXT.Text) * CDbl(Rate_TXT.Text)).ToString("N")
             TotalBasic_LBL.Tag = CDbl(NoOfDays_TXT.Text) * CDbl(Rate_TXT.Text)
 
+            '============================= FOR MONTHLY NA SAHURAN ================================== 
+            If Monthly_rate > (Minimum_rate * 26) Then  '=== CHECK IF ABOVE MINIMUM
+                Monthly_rate = Monthly_rate / 2
+                TotalBasic = Monthly_rate
+            End If
+
             TotalHol_LBL.Text = (((CDbl(SpecialHol_TXT.Text) * CDbl(Rate_TXT.Text)) * specHoliday_) + ((CDbl(RegularHol_TXT.Text) * CDbl(Rate_TXT.Text)) * regHoliday_)).ToString("N") ' =========== CALCULATE hOLIDAY TO PESO ===========
             TotalHol_LBL.Tag = ((CDbl(SpecialHol_TXT.Text) * CDbl(Rate_TXT.Text)) * specHoliday_) + ((CDbl(RegularHol_TXT.Text) * CDbl(Rate_TXT.Text)) * regHoliday_) ' =========== CALCULATE hOLIDAY TO PESO ===========
 
@@ -758,7 +764,7 @@ Public Class frmPayout
                 Exit Sub
             Else
                 '================================ SEND TO EMAIL ADDRESS IF VALID ============================
-                'Send_Email(ReportViewer_payslip.LocalReport.Render("PDF"), Email_TXT.Text, Employee_TXT.Text, Payslip_paydate_Combo.Text, BodyText_RichB.Text, datee.ToString("MMMM dd, yyyy") & " PAYROLL")
+                Send_Email(ReportViewer_payslip.LocalReport.Render("PDF"), Email_TXT.Text, Employee_TXT.Text, Payslip_paydate_Combo.Text, BodyText_RichB.Text, datee.ToString("MMMM dd, yyyy") & " PAYROLL")
 
                 MsgBox("Email sent to " & Employee_TXT.Text, MsgBoxStyle.Information, "Information")
             End If

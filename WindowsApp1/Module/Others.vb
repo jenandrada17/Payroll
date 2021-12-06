@@ -2,8 +2,7 @@
     Public Function GetVersion() As String
         Dim version As String = Nothing
         Try
-            'Dim file As New System.IO.StreamReader("\\PGCNAS_SERVER\MIS DEPARTMENT\COMMON FILES\Jennifer\HRSystem\version.txt")
-            Dim file As New System.IO.StreamReader("\\PGCNAS_SERVER\MIS DEPARTMENT\COMMON FILES\Jennifer\Payroll\version.txt")
+            Dim file As New System.IO.StreamReader("\\Pgcnas_server\hr\PAYROLL\version.txt")
             Dim Contents As String = file.ReadToEnd()
             file.Close()
             version = Contents
