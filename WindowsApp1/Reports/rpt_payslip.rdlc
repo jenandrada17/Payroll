@@ -899,7 +899,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>@</Value>
+                                      <Value>@ </Value>
                                       <Style>
                                         <FontFamily>Berlin Sans FB</FontFamily>
                                       </Style>

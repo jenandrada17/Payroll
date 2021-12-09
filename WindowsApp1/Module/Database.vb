@@ -148,8 +148,7 @@ Module Database
 
         con = New FbConnection(conStr)
 
-        Dim cmd As FbCommand
-        cmd = New FbCommand(sql, con)
+        Dim cmd As FbCommand = New FbCommand(sql, con)
 
         Try
             con.Open()
@@ -161,6 +160,7 @@ Module Database
             con.Dispose()
             Exit Sub
         End Try
+
     End Sub
 
 End Module

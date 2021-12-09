@@ -27,6 +27,9 @@
               <xs:element name="FULLNAME" msprop:Generator_ColumnVarNameInTable="columnFULLNAME" msprop:Generator_ColumnPropNameInRow="FULLNAME" msprop:Generator_ColumnPropNameInTable="FULLNAMEColumn" msprop:Generator_UserColumnName="FULLNAME" type="xs:string" minOccurs="0" />
               <xs:element name="REGHOLIDAY" msprop:Generator_ColumnVarNameInTable="columnREGHOLIDAY" msprop:Generator_ColumnPropNameInRow="REGHOLIDAY" msprop:Generator_ColumnPropNameInTable="REGHOLIDAYColumn" msprop:Generator_UserColumnName="REGHOLIDAY" type="xs:string" minOccurs="0" />
               <xs:element name="SPECHOLIDAY" msprop:Generator_ColumnVarNameInTable="columnSPECHOLIDAY" msprop:Generator_ColumnPropNameInRow="SPECHOLIDAY" msprop:Generator_ColumnPropNameInTable="SPECHOLIDAYColumn" msprop:Generator_UserColumnName="SPECHOLIDAY" type="xs:string" minOccurs="0" />
+              <xs:element name="UNDERTIME" msprop:Generator_ColumnVarNameInTable="columnUNDERTIME" msprop:Generator_ColumnPropNameInRow="UNDERTIME" msprop:Generator_ColumnPropNameInTable="UNDERTIMEColumn" msprop:Generator_UserColumnName="UNDERTIME" type="xs:string" minOccurs="0" />
+              <xs:element name="TIME_IN" msprop:Generator_ColumnVarNameInTable="columnTIME_IN" msprop:Generator_ColumnPropNameInRow="TIME_IN" msprop:Generator_ColumnPropNameInTable="TIME_INColumn" msprop:Generator_UserColumnName="TIME_IN" type="xs:string" minOccurs="0" />
+              <xs:element name="TIME_OUT" msprop:Generator_ColumnVarNameInTable="columnTIME_OUT" msprop:Generator_ColumnPropNameInRow="TIME_OUT" msprop:Generator_ColumnPropNameInTable="TIME_OUTColumn" msprop:Generator_UserColumnName="TIME_OUT" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

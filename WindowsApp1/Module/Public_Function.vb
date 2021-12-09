@@ -1,4 +1,6 @@
-﻿Imports System.IO
+﻿Imports System.Globalization
+Imports System.IO
+Imports System.Net.Mail
 Imports System.Reflection
 
 Module Public_Function
@@ -32,15 +34,15 @@ Module Public_Function
     End Sub
 
     Friend Enum FormName As Integer
-        Attendance_DTR
-        Attendance_Mannual
-        Payout_Details
-        Payout_Payslip
+        Attendance
+        Payout
+        Loans
+        Settings
     End Enum
 
     Friend Sub SwitchForm_Attendance(ByVal gotoForm As FormName, emp As Employee, empNo As Integer, Optional btnSearch_tag As String = "")
         Select Case gotoForm
-            Case FormName.Attendance_DTR
+            Case FormName.Attendance
                 Try
                     Dim instForm As frmAttendance = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmAttendance").SingleOrDefault()
                     instForm.Load_Attendance(emp, empNo)
@@ -60,34 +62,12 @@ Module Public_Function
                 Catch ex As Exception
 
                 End Try
-
-            Case FormName.Attendance_Mannual
-                Try
-                    Dim instForm_ As frmAttendance = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmAttendance").SingleOrDefault()
-                    instForm_.Load_Attendance(emp, empNo)
-
-                    If instForm_ Is Nothing Then
-                        instForm_ = DirectCast(CreateObjectInstance("frmAttendance"), Form)
-                        instForm_.MdiParent = frmMainForm
-                        frmMainForm.pNavigate.Controls.Add(instForm_)
-                        frmMainForm.pNavigate.Tag = instForm_
-                        instForm_.Show()
-                        instForm_.Dock = DockStyle.Fill
-                        instForm_.BringToFront()
-                    Else
-                        instForm_.BringToFront()
-                    End If
-
-                Catch ex As Exception
-
-                End Try
-
         End Select
     End Sub
 
     Friend Sub SwitchForm_Payout(ByVal gotoForm As FormName, emp As Employee, paydate As String, empNo As String)
         Select Case gotoForm
-            Case FormName.Payout_Details
+            Case FormName.Payout
                 Try
                     Dim instForm_ As frmPayout = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmPayout").SingleOrDefault()
                     instForm_.Load_Payout(emp, paydate, empNo)
@@ -110,15 +90,40 @@ Module Public_Function
         End Select
     End Sub
 
-    Friend Sub SwitchForm_Settings(ByVal gotoForm As FormName, emp As Employee)
+    Friend Sub SwitchForm_Settings(ByVal gotoForm As FormName, emp As Employee, tabName As String)
         Select Case gotoForm
-            Case FormName.Payout_Details
+            Case FormName.Settings
                 Try
-                    Dim instForm_ As frmPayout = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmPayout").SingleOrDefault()
-                    'instForm_.Load_Payout(emp, paydate)
+                    Dim instForm_ As frmSettings = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmSettings").SingleOrDefault()
+                    instForm_.Load_Settings(emp, tabName)
 
                     If instForm_ Is Nothing Then
-                        instForm_ = DirectCast(CreateObjectInstance("frmPayout"), Form)
+                        instForm_ = DirectCast(CreateObjectInstance("frmSettings"), Form)
+                        instForm_.MdiParent = frmMainForm
+                        frmMainForm.pNavigate.Controls.Add(instForm_)
+                        frmMainForm.pNavigate.Tag = instForm_
+                        instForm_.Show()
+                        instForm_.Dock = DockStyle.Fill
+                        instForm_.BringToFront()
+                    Else
+                        instForm_.BringToFront()
+                    End If
+
+                Catch ex As Exception
+
+                End Try
+        End Select
+    End Sub
+
+    Friend Sub SwitchForm_Loans(ByVal gotoForm As FormName, emp As Employee, tabName As String)
+        Select Case gotoForm
+            Case FormName.Loans
+                Try
+                    Dim instForm_ As frmContribution = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmContribution").SingleOrDefault()
+                    instForm_.Load_Contrib_Loan(emp, tabName)
+
+                    If instForm_ Is Nothing Then
+                        instForm_ = DirectCast(CreateObjectInstance("frmContribution"), Form)
                         instForm_.MdiParent = frmMainForm
                         frmMainForm.pNavigate.Controls.Add(instForm_)
                         frmMainForm.pNavigate.Tag = instForm_
@@ -191,5 +196,81 @@ Module Public_Function
     End Sub
 
 #End Region
+
+    'Friend Sub Send_Email(byteViewer As Byte(), recipient_Email As String, recipient_Name As String, paydate As String, BodyText As String, subjectt As String, Optional FOR_single As Boolean = False)
+    Friend Sub Send_Email(byteViewer As Byte(), recipient_Email As String, recipient_Name As String, paydate As String, BodyText As String, subjectt As String)
+        Try
+
+            Dim email As String = GetEmail()
+            Dim password As String = GetPassword()
+
+            Dim Smtp_Server As New SmtpClient
+            Dim e_mail As New MailMessage()
+            Smtp_Server.UseDefaultCredentials = False
+            Smtp_Server.Credentials = New Net.NetworkCredential(email, password)
+            Smtp_Server.Port = 587
+            Smtp_Server.EnableSsl = True
+            Smtp_Server.Host = "smtp.gmail.com"
+
+            e_mail = New MailMessage()
+            e_mail.From = New MailAddress(email)
+            e_mail.To.Add(recipient_Email)
+            e_mail.Subject = subjectt
+            e_mail.IsBodyHtml = False
+
+            Dim memoryStream = New MemoryStream(byteViewer)
+            memoryStream.Seek(0, SeekOrigin.Begin)
+
+            Dim attachment = New Attachment(memoryStream, recipient_Name & ".pdf")
+            e_mail.Attachments.Add(attachment)
+
+            e_mail.Body = BodyText
+            Smtp_Server.Send(e_mail)
+
+            'If FOR_single Then
+            '    MsgBox("Email Sent!")
+            'End If
+
+        Catch error_t As Exception
+            MsgBox(error_t.ToString)
+        End Try
+    End Sub
+
+    Friend Sub TempAttendance()
+        RunCommand("DELETE FROM TEMP_ATTENDANCE")
+    End Sub
+
+    Friend Sub InsertTempAttendance(BIOMETRICID As String, paydate_ As String, TotalDays As String, TotalOTHr As String,
+                                    Late_Total As String, Under_Total As String, TotalRHoliday As String, TotalSHoliday As String)
+
+        Dim mysql As String = "Select * From TEMP_ATTENDANCE Rows 1"
+        Using ds As DataSet = LoadSQL(mysql, "TEMP_ATTENDANCE")
+
+            Dim dsNewRow As DataRow = ds.Tables(0).NewRow
+            With dsNewRow
+                .Item("BIOMETRICID") = BIOMETRICID
+                .Item("PAYDATE") = paydate_
+                .Item("PRESENT_DAYS") = TotalDays
+                .Item("OVERTIME") = TotalOTHr
+                .Item("LATE") = Late_Total
+                .Item("UNDERTIME") = Under_Total
+                .Item("REGHOLIDAY") = TotalRHoliday
+                .Item("SPECHOLIDAY") = TotalSHoliday
+            End With
+            ds.Tables(0).Rows.Add(dsNewRow)
+            SaveEntry(ds)
+        End Using
+    End Sub
+
+    Friend Function TitleCase(str As String)
+
+        Dim toLower, toProper As String
+
+        toLower = str.ToLower()
+        Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
+        toProper = info.ToTitleCase(toLower)
+
+        Return toProper
+    End Function
 
 End Module

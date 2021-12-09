@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class frmMainForm
     Inherits System.Windows.Forms.Form
 
     'Form overrides dispose to clean up the component list.
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,14 +20,15 @@ Partial Class frmMainForm
     'NOTE: The following procedure is required by the Windows Form Designer
     'It can be modified using the Windows Form Designer.  
     'Do not modify it using the code editor.
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.NavagationPanel = New System.Windows.Forms.Panel()
+        Me.PictureBox7 = New System.Windows.Forms.PictureBox()
+        Me.Paysilp_BTN = New System.Windows.Forms.Button()
         Me.PictureBox10 = New System.Windows.Forms.PictureBox()
         Me.PictureBox8 = New System.Windows.Forms.PictureBox()
         Me.Loan_BTN = New System.Windows.Forms.Button()
         Me.PictureBox9 = New System.Windows.Forms.PictureBox()
-        Me.PictureBox7 = New System.Windows.Forms.PictureBox()
         Me.PictureBox3 = New System.Windows.Forms.PictureBox()
         Me.PictureBox2 = New System.Windows.Forms.PictureBox()
         Me.Employee_BTN = New System.Windows.Forms.Button()
@@ -38,18 +39,15 @@ Partial Class frmMainForm
         Me.AppDateTime = New System.Windows.Forms.Label()
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.FileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.LoginToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ConnectToDatabaseToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.UserLogsMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
-        Me.ImportEployeeFromFileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
         Me.ExitToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.AboutUsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.UserName_LBL = New System.Windows.Forms.Label()
         Me.Dashboard_BTN = New System.Windows.Forms.Button()
         Me.Attendance_BTN = New System.Windows.Forms.Button()
         Me.Payout_BTN = New System.Windows.Forms.Button()
-        Me.Paysilp_BTN = New System.Windows.Forms.Button()
         Me.Settings_BTN = New System.Windows.Forms.Button()
         Me.Contribution_BTN = New System.Windows.Forms.Button()
         Me.Panel1 = New System.Windows.Forms.Panel()
@@ -61,10 +59,10 @@ Partial Class frmMainForm
         Me.PictureBox5 = New System.Windows.Forms.PictureBox()
         Me.pNavigate = New System.Windows.Forms.Panel()
         Me.NavagationPanel.SuspendLayout()
+        CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox10, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox8, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox9, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -101,6 +99,33 @@ Partial Class frmMainForm
         Me.NavagationPanel.Size = New System.Drawing.Size(196, 715)
         Me.NavagationPanel.TabIndex = 2
         '
+        'PictureBox7
+        '
+        Me.PictureBox7.BackColor = System.Drawing.Color.Black
+        Me.PictureBox7.Image = Global.WindowsApp1.My.Resources.Resources.dtr
+        Me.PictureBox7.Location = New System.Drawing.Point(10, 657)
+        Me.PictureBox7.Name = "PictureBox7"
+        Me.PictureBox7.Size = New System.Drawing.Size(42, 38)
+        Me.PictureBox7.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.PictureBox7.TabIndex = 26
+        Me.PictureBox7.TabStop = False
+        '
+        'Paysilp_BTN
+        '
+        Me.Paysilp_BTN.BackColor = System.Drawing.Color.Black
+        Me.Paysilp_BTN.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.Paysilp_BTN.FlatAppearance.BorderSize = 0
+        Me.Paysilp_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Paysilp_BTN.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Paysilp_BTN.ForeColor = System.Drawing.Color.White
+        Me.Paysilp_BTN.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Paysilp_BTN.Location = New System.Drawing.Point(-1, 640)
+        Me.Paysilp_BTN.Name = "Paysilp_BTN"
+        Me.Paysilp_BTN.Size = New System.Drawing.Size(197, 75)
+        Me.Paysilp_BTN.TabIndex = 8
+        Me.Paysilp_BTN.Text = "      &Reports"
+        Me.Paysilp_BTN.UseVisualStyleBackColor = False
+        '
         'PictureBox10
         '
         Me.PictureBox10.BackColor = System.Drawing.Color.Black
@@ -136,7 +161,7 @@ Partial Class frmMainForm
         Me.Loan_BTN.Name = "Loan_BTN"
         Me.Loan_BTN.Size = New System.Drawing.Size(197, 75)
         Me.Loan_BTN.TabIndex = 7
-        Me.Loan_BTN.Text = "     &Loans"
+        Me.Loan_BTN.Text = "           ......................."
         Me.Loan_BTN.UseVisualStyleBackColor = False
         '
         'PictureBox9
@@ -149,17 +174,6 @@ Partial Class frmMainForm
         Me.PictureBox9.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
         Me.PictureBox9.TabIndex = 28
         Me.PictureBox9.TabStop = False
-        '
-        'PictureBox7
-        '
-        Me.PictureBox7.BackColor = System.Drawing.Color.Black
-        Me.PictureBox7.Image = Global.WindowsApp1.My.Resources.Resources.dtr
-        Me.PictureBox7.Location = New System.Drawing.Point(10, 657)
-        Me.PictureBox7.Name = "PictureBox7"
-        Me.PictureBox7.Size = New System.Drawing.Size(42, 38)
-        Me.PictureBox7.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
-        Me.PictureBox7.TabIndex = 26
-        Me.PictureBox7.TabStop = False
         '
         'PictureBox3
         '
@@ -268,45 +282,33 @@ Partial Class frmMainForm
         '
         'FileToolStripMenuItem
         '
-        Me.FileToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.LoginToolStripMenuItem, Me.ConnectToDatabaseToolStripMenuItem, Me.ToolStripSeparator1, Me.ImportEployeeFromFileToolStripMenuItem, Me.ToolStripSeparator2, Me.ExitToolStripMenuItem})
+        Me.FileToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ConnectToDatabaseToolStripMenuItem, Me.UserLogsMenuItem, Me.ToolStripSeparator1, Me.ExitToolStripMenuItem})
         Me.FileToolStripMenuItem.ForeColor = System.Drawing.Color.White
         Me.FileToolStripMenuItem.Name = "FileToolStripMenuItem"
         Me.FileToolStripMenuItem.Size = New System.Drawing.Size(37, 20)
         Me.FileToolStripMenuItem.Text = "&File"
         '
-        'LoginToolStripMenuItem
-        '
-        Me.LoginToolStripMenuItem.Name = "LoginToolStripMenuItem"
-        Me.LoginToolStripMenuItem.Size = New System.Drawing.Size(217, 22)
-        Me.LoginToolStripMenuItem.Text = "&Login"
-        '
         'ConnectToDatabaseToolStripMenuItem
         '
         Me.ConnectToDatabaseToolStripMenuItem.Name = "ConnectToDatabaseToolStripMenuItem"
-        Me.ConnectToDatabaseToolStripMenuItem.Size = New System.Drawing.Size(217, 22)
+        Me.ConnectToDatabaseToolStripMenuItem.Size = New System.Drawing.Size(184, 22)
         Me.ConnectToDatabaseToolStripMenuItem.Text = "&Connect to Database"
+        '
+        'UserLogsMenuItem
+        '
+        Me.UserLogsMenuItem.Name = "UserLogsMenuItem"
+        Me.UserLogsMenuItem.Size = New System.Drawing.Size(184, 22)
+        Me.UserLogsMenuItem.Text = "User Logs"
         '
         'ToolStripSeparator1
         '
         Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-        Me.ToolStripSeparator1.Size = New System.Drawing.Size(214, 6)
-        '
-        'ImportEployeeFromFileToolStripMenuItem
-        '
-        Me.ImportEployeeFromFileToolStripMenuItem.BackColor = System.Drawing.SystemColors.Control
-        Me.ImportEployeeFromFileToolStripMenuItem.Name = "ImportEployeeFromFileToolStripMenuItem"
-        Me.ImportEployeeFromFileToolStripMenuItem.Size = New System.Drawing.Size(217, 22)
-        Me.ImportEployeeFromFileToolStripMenuItem.Text = "Import Employee From File"
-        '
-        'ToolStripSeparator2
-        '
-        Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
-        Me.ToolStripSeparator2.Size = New System.Drawing.Size(214, 6)
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(181, 6)
         '
         'ExitToolStripMenuItem
         '
         Me.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem"
-        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(217, 22)
+        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(184, 22)
         Me.ExitToolStripMenuItem.Text = "&Exit"
         '
         'AboutUsToolStripMenuItem
@@ -374,22 +376,6 @@ Partial Class frmMainForm
         Me.Payout_BTN.TabIndex = 13
         Me.Payout_BTN.Text = "    &Payout"
         Me.Payout_BTN.UseVisualStyleBackColor = False
-        '
-        'Paysilp_BTN
-        '
-        Me.Paysilp_BTN.BackColor = System.Drawing.Color.Black
-        Me.Paysilp_BTN.Cursor = System.Windows.Forms.Cursors.Hand
-        Me.Paysilp_BTN.FlatAppearance.BorderSize = 0
-        Me.Paysilp_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.Paysilp_BTN.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Paysilp_BTN.ForeColor = System.Drawing.Color.White
-        Me.Paysilp_BTN.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Paysilp_BTN.Location = New System.Drawing.Point(-1, 640)
-        Me.Paysilp_BTN.Name = "Paysilp_BTN"
-        Me.Paysilp_BTN.Size = New System.Drawing.Size(197, 75)
-        Me.Paysilp_BTN.TabIndex = 8
-        Me.Paysilp_BTN.Text = "      &Reports"
-        Me.Paysilp_BTN.UseVisualStyleBackColor = False
         '
         'Settings_BTN
         '
@@ -521,10 +507,10 @@ Partial Class frmMainForm
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Form1"
         Me.NavagationPanel.ResumeLayout(False)
+        CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox10, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox8, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox9, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox6, System.ComponentModel.ISupportInitialize).EndInit()
@@ -547,11 +533,8 @@ Partial Class frmMainForm
     Friend WithEvents PictureBox1 As PictureBox
     Friend WithEvents MenuStrip1 As MenuStrip
     Friend WithEvents FileToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents LoginToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ConnectToDatabaseToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents ToolStripSeparator1 As ToolStripSeparator
-    Friend WithEvents ImportEployeeFromFileToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents ToolStripSeparator2 As ToolStripSeparator
     Friend WithEvents ExitToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents AboutUsToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents UserName_LBL As Label
@@ -580,4 +563,5 @@ Partial Class frmMainForm
     Friend WithEvents PictureBox9 As PictureBox
     Friend WithEvents PictureBox8 As PictureBox
     Friend WithEvents PictureBox7 As PictureBox
+    Friend WithEvents UserLogsMenuItem As ToolStripMenuItem
 End Class

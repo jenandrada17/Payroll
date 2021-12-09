@@ -1,24 +1,16 @@
 ﻿Imports System.Globalization
+Imports DBConnect
 
 Public Class frmMainForm
 
     Dim DateNow As DateTime = DateTime.Now
     Dim StartFour, EndFour, StartNineteen, EndNineteen As DateTime
     Public Paydate As DateTime
+    Public CommandLine As String
 
     Private Sub frmMainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
-        'RunCommand("INSERT INTO TBL_EMPLOYEE (ID, FIRSTNAME, MIDDLENAME, LASTNAME, SUFFIX, DATEOFBIRTH, GENDER, CIVILSTATUS, PERMANENT_ADDID, PERMANENT_STREET, PRESENT_ADDID, PRESENT_STREET, EMAILADD,
-        '                        DATEHIRED, BIOMETRICID, CONTACTNO, BIRATE, BI_REMARKS, SSSNO, PHILHEALTHNO, TINNO, STATUS, REMARKS, ASSIGN_STATUS, PAGIBIG, EMP_POSITION, BRANCH_ID, NO_OF_DAYS, RATE) 
-        '                    SELECT ID, FIRSTNAME, MIDDLENAME, LASTNAME, SUFFIX, DATEOFBIRTH, GENDER, CIVILSTATUS, PERMANENT_ADDID, PERMANENT_STREET, PRESENT_ADDID, PRESENT_STREET, EMAILADD, 
-        '                        DATEHIRED, BIOMETRICID, CONTACTNO, BIRATE, BI_REMARKS, SSSNO, PHILHEALTHNO, TINNO, STATUS, REMARKS, ASSIGN_STATUS, PAGIBIG, EMP_POSITION, BRANCH_ID, NO_OF_DAYS, RATE 
-        '                    FROM TBL_EMPLOYEE_COPY where id <> ;")
-
-        'RunCommand("INSERT INTO TBL_EMPLOYEE SELECT * FROM TBL_EMPLOYEE_COPY where NOT EXISTS(SELECT id FROM TBL_EMPLOYEE) ;")
-
-        'RunCommand("INSERT INTO TBL_EMPLOYEE (ID, FIRSTNAME, MIDDLENAME, LASTNAME, SUFFIX, DATEOFBIRTH, GENDER, CIVILSTATUS, PERMANENT_ADDID, PERMANENT_STREET, PRESENT_ADDID, PRESENT_STREET, EMAILADD,
-        ''                        DATEHIRED, BIOMETRICID, CONTACTNO, BIRATE, BI_REMARKS, SSSNO, PHILHEALTHNO, TINNO, STATUS, REMARKS, ASSIGN_STATUS, PAGIBIG, EMP_POSITION, BRANCH_ID, NO_OF_DAYS, RATE) 
-        '            SELECT MAX(id) FROM TBL_EMPLOYEE_COPY where NOT EXISTS(SELECT id FROM TBL_EMPLOYEE where id <> (SELECT id FROM TBL_EMPLOYEE_COPY) ) ;")
+        'Login_Form.ShowDialog()
 
         AppDateTime.Text = Date.Now.ToString("dddd, MMMM dd, yyyy hh:mm:ss tt", CultureInfo.CurrentCulture)
 
@@ -28,20 +20,30 @@ Public Class frmMainForm
         StartNineteen = New DateTime(DateNow.Year, DateNow.Month, 19).AddMonths(-1).AddDays(-1)
         EndNineteen = New DateTime(StartNineteen.Year, StartNineteen.Month, 3).AddMonths(1)
 
-
         If DateNow.Day - 16 <= 2 And DateNow.Day - 16 >= -12 Then
             Paydate = EndNineteen.AddDays(12)
         Else
             Paydate = New DateTime(EndFour.Year, EndFour.Month, DateTime.DaysInMonth(EndFour.Year, EndFour.Month))
         End If
 
-        'MsgBox("Padyasdas " & Paydate)
+        If GetVersion() > Application.ProductVersion Then
+            Dim result As DialogResult = MessageBox.Show($"New {GetVersion()} version of the program is available, do you want to upgrade?", "Question", MessageBoxButtons.YesNo)
+            If result = DialogResult.Yes Then
+                Dim MyAutoUpdate As New Updater
+                If MyAutoUpdate.AutoUpdate(CommandLine) Then
+                    Close()
+                End If
+            End If
+        End If
+
+
     End Sub
 
     '======================================Buttons================================================== 
 
     Private Sub btnManageEmployee_Click(sender As Object, e As EventArgs) Handles Employee_BTN.Click
-        OpenWindowsForm("frmEmployee")
+        'OpenWindowsForm("frmEmployee")
+        OpenWindowsForm("frmNewEmployee")
     End Sub
 
     Private Sub Attendance_BTN_Click(sender As Object, e As EventArgs) Handles Attendance_BTN.Click
@@ -141,11 +143,33 @@ Public Class frmMainForm
     End Sub
 
     Private Sub Paysilp_BTN_Click(sender As Object, e As EventArgs) Handles Paysilp_BTN.Click
-        'OpenWindowsForm("frmPayslip")
+        OpenWindowsForm("frmReport")
     End Sub
 
     Private Sub Loan_BTN_Click(sender As Object, e As EventArgs) Handles Loan_BTN.Click
-        OpenWindowsForm("frmDecrypt")
+        'OpenWindowsForm("frmImport")
+    End Sub
+
+
+    Private Sub ConnectToDatabaseToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ConnectToDatabaseToolStripMenuItem.Click
+        Using conSettings As New ServerSettings
+            conSettings.ShowDialog()
+        End Using
+    End Sub
+
+    Private Sub PictureBox1_DoubleClick(sender As Object, e As EventArgs) Handles PictureBox1.DoubleClick
+        Using comString As New Developer
+            comString.ShowDialog()
+            comString.BringToFront()
+        End Using
+    End Sub
+
+    Private Sub UserLogsMenuItem_Click(sender As Object, e As EventArgs) Handles UserLogsMenuItem.Click
+        OpenWindowsForm("frmUserLogs")
+    End Sub
+
+    Private Sub ExitToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExitToolStripMenuItem.Click
+        Close()
     End Sub
 
     Private Sub Calculator_BTN_MouseLeave(sender As Object, e As EventArgs) Handles Contribution_BTN.MouseLeave
