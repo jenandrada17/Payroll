@@ -7,12 +7,13 @@ Public Class frmMainForm
     Dim StartFour, EndFour, StartNineteen, EndNineteen As DateTime
     Public Paydate As DateTime
     Public CommandLine As String
+    Public DAYS_COUNT As Integer = 0
 
     Private Sub frmMainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
         'Check_This()
 
-        Login_Form.ShowDialog()
+        'Login_Form.ShowDialog()
 
         AppDateTime.Text = Date.Now.ToString("dddd, MMMM dd, yyyy hh:mm:ss tt", CultureInfo.CurrentCulture)
 
@@ -22,11 +23,30 @@ Public Class frmMainForm
         StartNineteen = New DateTime(DateNow.Year, DateNow.Month, 19).AddMonths(-1).AddDays(-1)
         EndNineteen = New DateTime(StartNineteen.Year, StartNineteen.Month, 3).AddMonths(1)
 
+        Dim startt, endd As Date
         If DateNow.Day - 16 <= 2 And DateNow.Day - 16 >= -12 Then
             Paydate = EndNineteen.AddDays(12)
+            startt = StartNineteen.AddDays(1)
+            endd = EndNineteen
         Else
             Paydate = New DateTime(EndFour.Year, EndFour.Month, DateTime.DaysInMonth(EndFour.Year, EndFour.Month))
+            startt = StartFour.AddDays(1)
+            endd = EndFour
         End If
+
+        '=================== COUNT STANDARD DAYS ==================
+        Dim RHOLIDAY As Integer = REGHolidayCount(startt, endd)
+        Dim SHOLIDAY As Integer = SPECHolidayCount(startt, endd)
+
+        While (startt <= endd)
+            If startt.DayOfWeek <> DayOfWeek.Sunday Then
+                DAYS_COUNT += 1
+            End If
+            startt = startt.AddDays(1)
+        End While
+
+        DAYS_COUNT = DAYS_COUNT - (RHOLIDAY + SHOLIDAY)
+        '===========================================================
 
         If GetVersion() > Application.ProductVersion Then
             Dim result As DialogResult = MessageBox.Show($"New {GetVersion()} version of the program is available, do you want to upgrade?", "Question", MessageBoxButtons.YesNo)

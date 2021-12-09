@@ -846,11 +846,11 @@ Module Report_function
 
     '                .Item("TOTAL_LATE_UTT") = LASTE
 
-        End With
-        dss.Tables(0).Rows.Add(DSnEW)
-        SaveEntry(dss)
+    '    End With
+    '    dss.Tables(0).Rows.Add(DSnEW)
+    '    SaveEntry(dss)
 
-    End Sub
+    'End Sub
 
     Friend Function GET_STRING(TABLE As String, column As String, STR As String)
         Dim VALUEE As String = ""

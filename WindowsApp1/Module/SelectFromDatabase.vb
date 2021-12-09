@@ -391,18 +391,16 @@ Module SelectFromDatabase
 
                 Dim dr As DataRow = ds.Tables(0).Rows(0)
                 With dr
-                    NoOfDays_TXT.Text = .Item("PRESENT_DAYS")
 
-                    RegularOT_TXT.Text = .Item("OVERTIME")
-                    'RegularOT_TXT.Text = IIf(.Item("OVERTIME") = "00:00:00", "", .Item("OVERTIME"))
+                    ''============================= FOR MONTHLY RATE (IF ABOVE MINIMUM RATE)================================== 
+                    NoOfDays_TXT.Text = .Item("PRESENT_DAYS")
+                    RegularOT_TXT.Text = .Item("OVERTIME") + .Item("MORNING_OT")
                     RegularOT_TXT.Tag = .Item("OVERTIME")
                     SpecialHol_TXT.Text = .Item("SPECHOLIDAY")
                     RegularHol_TXT.Text = .Item("REGHOLIDAY")
                     Late_TXT.Text = .Item("LATE")
-                    'Late_TXT.Text = IIf(.Item("LATE") = "00:00:00", "", .Item("LATE").Substring(0, 5))
                     Late_TXT.Tag = .Item("LATE")
                     UnderTime_TXT.Text = .Item("UNDERTIME")
-                    'UnderTime_TXT.Text = IIf(.Item("UNDERTIME") = "00:00:00", "", .Item("UNDERTIME").Substring(0, 5))
                     UnderTime_TXT.Tag = .Item("UNDERTIME")
                     NightTime_TXT.Text = IIf(IsDBNull(.Item("NIGHT_RATE")), "", .Item("NIGHT_RATE") & ":00")
                     NightTime_TXT.Tag = IIf(IsDBNull(.Item("NIGHT_RATE")), 0, .Item("NIGHT_RATE"))
@@ -885,21 +883,6 @@ Module SelectFromDatabase
         Return False
     End Function
 
-    'Friend Sub RowHoliday(datee As String, row As DataGridViewRow)
-    '    Dim mysql As String = "SELECT * FROM PAYROLL_HOLIDAY Where DATEE = '" & datee & "' "
-    '    Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_HOLIDAY")
-    '    If ds.Tables(0).Rows.Count > 0 Then
-    '        Dim data As DataRow = ds.Tables(0).Rows(0)
-    '        With data
-    '            If .Item("KINDS") = "REGULAR" Then
-    '                row.DefaultCellStyle.BackColor = Color.MediumOrchid
-    '            Else
-    '                row.DefaultCellStyle.BackColor = Color.Plum
-    '            End If
-    '        End With
-    '    End If
-    'End Sub
-
     Friend Sub HolidayDetails(datee As String, rowID As Integer, dategrid As DataGridView)
         Dim mysql As String = "SELECT * FROM PAYROLL_HOLIDAY Where DATEE = '" & datee & "' "
         Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_HOLIDAY")
@@ -1268,7 +1251,7 @@ Module SelectFromDatabase
                     ratee.Tag = .Item("BRANCH_CODE")
                     name.Text = .Item("FULLNAME")
                     MonthlyRate_TXT.Text = IIf(IsDBNull(.Item("RATE_MONTHLY")) Or .Item("RATE_MONTHLY").Equals("0"), ratee.Text * 26, .Item("RATE_MONTHLY"))
-                    MonthlyRate_TXT.Tag = minimum * 26
+                    MonthlyRate_TXT.Tag = minimum
 
                 End With
 

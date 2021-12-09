@@ -164,13 +164,14 @@ Public Class frmReport
                         Dim TOTAL_HOLIDAY As Decimal = TOTAL_REGHOLIDAY + TOTAL_SPECHOLIDAY
 
                         Dim TOTAL_NDIFF As Double = GetOVERALL_SUM("TOTAL_NIGHT_RATE", paydatee)
-                        Dim TOTAL_PI_ECOLA_SIL As Double = GetOVERALL_SUM("TOTAL_ALLOWANCE", paydatee)
+                        Dim TOTAL_PI_ECOLA_SIL As Double = Get_PI_ECOLA_SIL_TOTAL(paydatee)
                         Dim TOTAL_TARDINESS As Double = GetOVERALL_SUM("TOTAL_LATE_UT", paydatee)
                         Dim TOTAL_SSS As Double = GetOVERALL_SUM("SSS_COMP", paydatee)
                         Dim TOTAL_PHIC As Double = GetOVERALL_SUM("PHILHEALTH_COMP", paydatee)
                         Dim TOTAL_PAGIBIG As Double = GetOVERALL_SUM("PAGIBIG_COMP", paydatee)
                         Dim TOTAL_SBU_CHARGES As Double = GetOVERALL_SUM("TOTAL_DEDUCTION", paydatee)
                         Dim TOTAL_NET_PAY As Double = GetOVERALL_SUM("NET_PAY", paydatee)
+                        Dim TOTAL_13MONTH As Double = Get13MONTH_TOTAL(paydatee)
 
                         Dim paramList As New List(Of Microsoft.Reporting.WinForms.ReportParameter) From {
                     New Microsoft.Reporting.WinForms.ReportParameter("paramEmployees", TOTAL_EMP),

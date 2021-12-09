@@ -436,6 +436,7 @@ Public Class frmAttendance
         TotalLateHR_LBL.Text = 0
         TotalUTHR_LBL.Text = 0
         TotalOTHr_LBL.Text = 0
+        AM_OT_NUP.Text = 0
         CheckALL_CheckBox.Checked = False
 
         'For Each row As DataGridViewRow In DataGridView1.Rows
@@ -495,7 +496,7 @@ Public Class frmAttendance
             Next
 
             SaveAttendanceEE(BiometricID_TXT.Text, PAYROLL, TotalDays_LBL.Text, TotalOTHr_LBL.Text, TotalLateHR_LBL.Text, TotalUTHR_LBL.Text,
-                             TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text, SIL_LBL.Text)
+                             TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text, SIL_LBL.Text, AM_OT_NUP.Value)
 
             SavePayout_IndividualL(BiometricID_TXT.Text, PAYROLL, starting_date, ending_date)
 
@@ -1338,7 +1339,7 @@ Public Class frmAttendance
             Dim night7 As Integer = IIf(Night7_TXT.Text = Nothing, 0, Night7_TXT.Text)
 
             SaveAttendanceEE(Bio7_TXT.Text, PAYROLL, Days7_TXT.Text, Overtime7_TXT.Text, latee, undertimee,
-                             RHOLIDAY, SHOLIDAY, SIL7_NUP.Text, night7)
+                             RHOLIDAY, SHOLIDAY, SIL7_NUP.Text, Nothing, night7)
 
             SavePayout_IndividualL(Bio7_TXT.Text, PAYROLL, starting_date, ending_date)
 
@@ -1421,6 +1422,10 @@ Public Class frmAttendance
         Attendance_Per_Employee(BiometricID_TXT.Text)
         Attendance_Tab.SelectedIndex = 1
 
+    End Sub
+
+    Private Sub Cancel_lbl_Click(sender As Object, e As EventArgs) Handles Cancel_lbl.Click
+        AM_OT_NUP.Value = 0.0
     End Sub
 
     Private Sub CancelSIL_BTN_Click(sender As Object, e As EventArgs) Handles CancelSIL_BTN.Click
@@ -2005,8 +2010,6 @@ Public Class frmAttendance
                                 row.Cells(5) = New DataGridViewCheckBoxCell With {.Value = True}
                             End If
 
-                            'RowHoliday(date_.ToString("M"), row)
-
                         Next
 
                         TotalDays_LBL.Text = .Item("PRESENT_DAYS")
@@ -2015,6 +2018,7 @@ Public Class frmAttendance
                         TotalLateHR_LBL.Text = .Item("LATE")
                         TotalUTHR_LBL.Text = .Item("UNDERTIME")
                         TotalOTHr_LBL.Text = .Item("OVERTIME")
+                        AM_OT_NUP.Value = IIf(IsDBNull(.Item("MORNING_OT")), 0, .Item("MORNING_OT"))
 
                     End With
 
@@ -2300,30 +2304,6 @@ Public Class frmAttendance
                     halfday_Hour += 4
                 End If
             Next
-
-            ''===================================== SUM UP LATE ==================================== 
-            'Dim Late_Total As TimeSpan = New TimeSpan(0, 0, 0, 0, 0)
-            'For Each valueE As TimeSpan In late_count
-            '    Late_Total = Late_Total + valueE
-            'Next
-
-            'late_count.Clear()
-
-            ''===================================== SUM UP UNDERTIME ==================================== 
-            'Dim Under_Total As TimeSpan = New TimeSpan(0, 0, 0, 0, 0)
-            'For Each value As TimeSpan In under_count
-            '    Under_Total = Under_Total + value
-            'Next
-
-            'under_count.Clear()
-
-            ''===================================== SUM UP OVERTIME ==================================== 
-            'Dim OT_Total As TimeSpan = New TimeSpan(0, 0, 0, 0, 0)
-            'For Each value As TimeSpan In over_count
-            '    OT_Total = OT_Total + value
-            'Next
-
-            'over_count.Clear()
 
             TotalDays_LBL.Text = Present
 
