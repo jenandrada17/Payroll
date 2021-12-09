@@ -1,14 +1,13 @@
 ﻿Imports System.Globalization
 
 Module Report_function
-    Dim GRAND_TOTAL As Double = 0
 
     Friend Function LoadDataTable_GensanJR(paydate As String) As DataTable
 
         Dim mysql As String
         Dim PAYROLL As DateTime = paydate
         Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo ' === TITLE CASE ADDRESS
-        Dim total_email As Double = 0
+        Dim total_email As Decimal = 0
 
         Dim dt_PhotoGensanJR As New DataTable()
         With dt_PhotoGensanJR
@@ -90,7 +89,7 @@ Module Report_function
         Dim mysql As String
         Dim PAYROLL As DateTime = paydate
         Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo ' === TITLE CASE ADDRESS
-        Dim total_email As Double = 0
+        Dim total_email As Decimal = 0
 
         Dim dt_PhotoDavao As New DataTable()
         With dt_PhotoDavao
@@ -158,7 +157,7 @@ Module Report_function
         Dim mysql As String
         Dim PAYROLL As DateTime = paydate
         Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo ' === TITLE CASE ADDRESS
-        Dim total_email As Double = 0
+        Dim total_email As Decimal = 0
 
         Dim dt_Dalton As New DataTable()
         With dt_Dalton
@@ -262,7 +261,7 @@ Module Report_function
         Dim mysql As String
         Dim PAYROLL As DateTime = paydate
         Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo ' === TITLE CASE ADDRESS
-        Dim total_email As Double = 0
+        Dim total_email As Decimal = 0
 
         Dim dt_Dalton As New DataTable()
         With dt_Dalton
@@ -334,7 +333,7 @@ Module Report_function
         Dim mysql As String
         Dim PAYROLL As DateTime = paydate
         Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo ' === TITLE CASE ADDRESS
-        Dim total_email As Double = 0
+        Dim total_email As Decimal = 0
 
         Dim dt_Dalton As New DataTable()
         With dt_Dalton
@@ -411,7 +410,7 @@ Module Report_function
 
         Dim PAYROLL As DateTime = paydate
         Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo ' === TITLE CASE ADDRESS
-        Dim total_email As Double = 0
+        Dim total_email As Decimal = 0
 
         Dim dt_Dalton As New DataTable()
         With dt_Dalton
@@ -458,7 +457,7 @@ Module Report_function
 
         Dim PAYROLL As DateTime = paydate
         Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo ' === TITLE CASE ADDRESS
-        Dim total_email As Double = 0
+        Dim total_email As Decimal = 0
 
         Dim dt_Dalton As New DataTable()
         With dt_Dalton
@@ -471,7 +470,7 @@ Module Report_function
             .Columns.Add("TOTAL_AMOUNT")
         End With
 
-        Dim TOTALS As Double = 0
+        Dim TOTALS As Decimal = 0
 
         Dim mysqll As String = $"Select * From PAYROLL_EMPLOYEE A 
                                         INNER JOIN PAYROLL_PERCENTAGEE B ON B.CATEGORY = A.COMMON_CATEGORY
@@ -515,16 +514,8 @@ Module Report_function
         Return dt_Dalton
     End Function
 
-    'Public Function AddGrand(Amount As Double) As Double
-    '    GRAND_TOTAL = GRAND_TOTAL + Amount
-    'End Function
-
-    'Public Function GetGrandTotal() As Double
-    '    Return GRAND_TOTAL
-    'End Function
-
     Public Function GetOVERALL_COUNT(COLUMN As String, PAYDATE As String)
-        Dim VALUEE As Double
+        Dim VALUEE As Integer
         Dim mysql As String = $"Select COUNT({COLUMN}) AS TOTS FROM  PAYROLL_PAYOUT WHERE PAYDATE = '{PAYDATE}'"
         Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
         If ds.Tables(0).Rows.Count > 0 Then
@@ -605,9 +596,9 @@ Module Report_function
 
     Public Function Get_PGC(column As String, paydate As String) As Double
         Dim TOTALS As Decimal = 0
-        Dim G3_tot As Double = 0
-        Dim Seven11_tot As Double = 0
-        Dim COMI_TO_FUJI_tot As Double = 0
+        Dim G3_tot As Decimal = 0
+        Dim Seven11_tot As Decimal = 0
+        Dim COMI_TO_FUJI_tot As Decimal = 0
 
         Dim mysqll As String = $"Select * From PAYROLL_EMPLOYEE A 
                                         INNER JOIN PAYROLL_PERCENTAGEE B ON B.CATEGORY = A.COMMON_CATEGORY
@@ -626,7 +617,7 @@ Module Report_function
                         '============================= NAME AND ATTENDANCE ============================  
                         Dim namee As String = .Item("FULLNAME")
                         Dim CATEGORY As String = .Item("CATEGORY")
-                        Dim NET_PAY As Double = .Item("NET_PAY")
+                        Dim NET_PAY As Decimal = .Item("NET_PAY")
                         Dim G3 As String = .Item("G3")
                         Dim Seven11 As String = .Item("Seven11")
                         Dim COMI_TO_FUJI As String = .Item("COMI_TO_FUJI")
@@ -692,7 +683,7 @@ Module Report_function
 
                         '============================= NAME AND ATTENDANCE ============================  
                         Dim FULLNAME As String = IIf(IsDBNull(.Item("FULLNAME")), "", .Item("FULLNAME"))
-                        Dim monthly_Basic As Double = GetMonthly_Basic(.item("BIOMETRIC_ID"), paydate)
+                        Dim monthly_Basic As Decimal = GetMonthly_Basic(.item("BIOMETRIC_ID"), paydate)
 
                         Dim NOO As String = IIf(IsDBNull(.Item("SSSNO")), "", .Item("SSSNO"))
                         Dim EE As String = Get_SSS(monthly_Basic).EE
@@ -738,7 +729,7 @@ Module Report_function
 
                         '============================= NAME AND ATTENDANCE ============================  
                         Dim FULLNAME As String = IIf(IsDBNull(.Item("FULLNAME")), "", .Item("FULLNAME"))
-                        Dim monthly_Basic As Double = GetMonthly_Basic(.item("BIOMETRIC_ID"), paydate)
+                        Dim monthly_Basic As Decimal = GetMonthly_Basic(.item("BIOMETRIC_ID"), paydate)
 
                         Dim NOO As String = IIf(IsDBNull(.Item("PAGIBIGNO")), "", .Item("PAGIBIGNO"))
                         Dim EE As String = Get_Pagibig(monthly_Basic)
@@ -782,7 +773,7 @@ Module Report_function
 
                         '============================= NAME AND ATTENDANCE ============================  
                         Dim FULLNAME As String = IIf(IsDBNull(.Item("FULLNAME")), "", .Item("FULLNAME"))
-                        Dim monthly_Basic As Double = GetMonthly_Basic(.item("BIOMETRIC_ID"), paydate)
+                        Dim monthly_Basic As Decimal = GetMonthly_Basic(.item("BIOMETRIC_ID"), paydate)
 
                         Dim NOO As String = IIf(IsDBNull(.Item("PHILHEALTHNO")), "", .Item("PHILHEALTHNO"))
                         Dim EE As String = Get_PhilHealth(monthly_Basic)
@@ -799,52 +790,6 @@ Module Report_function
 
         Return dt_Remittance
     End Function
-
-    'Friend Function Load_Cost_ALLOW_DEDUC(paydate As String) As DataTable
-
-    '    Dim mysql As String
-    '    Dim PAYROLL As DateTime = paydate
-
-    '    'Dim regHoliday = Holiday_Rate("REGULAR")
-    '    'Dim specHoliday = Holiday_Rate("SPECIAL")
-
-    '    Dim FORMNAME As String = "2nd PERIOD"
-
-    '    If PAYROLL.Day = 15 Then
-    '        FORMNAME = "1st PERIOD"
-    '    End If
-
-    '    FORMNAME = $"{PAYROLL.ToString("MMMM dd, yyyy")} - {FORMNAME}"
-
-    '    Dim dt_Cost As New DataTable()
-    '    With dt_Cost
-    '        .Columns.Add("PAYDATE")
-    '        .Columns.Add("BRANCH")
-    '        .Columns.Add("NAME")
-    '        .Columns.Add("AMOUNT")
-    '        .Columns.Add("CATEGORY")
-    '    End With
-
-    '    mysql = $"Select  C.CATEGORY, TRANSAC_NAME, SUM(AMOUNT) AS TOTS From PAYROLL_EMPLOYEE B  
-    '                                    INNER JOIN RECORDED_ALLOW_DEDUC C ON C.BIO_NO = B.BIO_NO 
-    '                                    WHERE C.PAYDATE = '{paydate}'  GROUP BY C.CATEGORY,  TRANSAC_NAME"
-
-    '    Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
-    '        If ds.Tables(0).Rows.Count > 0 Then
-    '            For Each dr In ds.Tables(0).Rows
-    '                With dr
-
-    '                    dt_Cost.Rows.Add(FORMNAME, "SAMPLE", .Item("CATEGORY"), .Item("TOTS"), .Item("TRANSAC_NAME"))
-
-    '                End With
-
-    '            Next
-    '        End If
-    '    End Using
-
-    '    Return dt_Cost
-    'End Function
-
 
     Public Function GetList_Branch(address As String, str As String) As String
 
@@ -871,103 +816,35 @@ Module Report_function
 
     Public Sub Check_This()
 
-        Dim mysql As String = $"Select * From PAYROLL_EMPLOYEE1"
-        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE1")
+        Dim mysql As String = $"Select Sum(NET_PAY) as tots From PAYROLL_PAYOUT 
+                            inner join PAYROLL_EMPLOYEE ON BIO_NO = BIOMETRIC_ID 
+                            LEFT JOIN PAYROLL_CITY_BRANCH ON BRANCHCODE = BRANCH_CODE  
+                            WHERE PAYDATE = '9/15/2021' AND CATEGORY In ('GENSAN PERFECT', 'JR PHOTO') AND ADDRESS = 'POLOMOLOK'"
+
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
             If ds.Tables(0).Rows.Count > 0 Then
                 Has_Rows_Delete("PAYROLL_EMPLOYEE")
 
                 For Each dr In ds.Tables(0).Rows
                     With dr
 
-                        'MsgBox(.item("FULLNAME"))
-
-                        SAVEE(IIf(IsDBNull(.item("COMPANY")), Nothing, .item("COMPANY")),
-                              IIf(IsDBNull(.item("BRANCH_CODE")), Nothing, .item("BRANCH_CODE")),
-                              IIf(IsDBNull(.item("FULLNAME")), Nothing, .item("FULLNAME")),
-                              IIf(IsDBNull(.item("BIO_NO")), Nothing, .item("BIO_NO")),
-                              IIf(IsDBNull(.item("EMAIL_ADD")), Nothing, .item("EMAIL_ADD")),
-                              IIf(IsDBNull(.item("EMP_STATUS")), Nothing, .item("EMP_STATUS")),
-                                IIf(IsDBNull(.item("SSSNO")), Nothing, .item("SSSNO")),
-                                IIf(IsDBNull(.item("PHILHEALTHNO")), Nothing, .item("PHILHEALTHNO")),
-                                IIf(IsDBNull(.item("TINNO")), Nothing, .item("TINNO")),
-                                IIf(IsDBNull(.item("PAGIBIGNO")), Nothing, .item("PAGIBIGNO")),
-                                IIf(IsDBNull(.item("DATE_STARTED")), Nothing, .item("DATE_STARTED")),
-                                IIf(IsDBNull(.item("EMP_POSITION")), Nothing, .item("EMP_POSITION")),
-                                IIf(IsDBNull(.item("TIME_IN")), Nothing, .item("TIME_IN")),
-                                IIf(IsDBNull(.item("TIME_OUT")), Nothing, .item("TIME_OUT")),
-                                IIf(IsDBNull(.item("EMP_NO")), Nothing, .item("EMP_NO")),
-                                IIf(IsDBNull(.item("HO_CATEGORY")), Nothing, .item("HO_CATEGORY")),
-                                IIf(IsDBNull(.item("COMMON_CATEGORY")), Nothing, .item("COMMON_CATEGORY")),
-                                IIf(IsDBNull(.item("BRANCH_CITY")), Nothing, .item("BRANCH_CITY")),
-                                IIf(IsDBNull(.item("COMMON_COMPANY")), Nothing, .item("COMMON_COMPANY")))
-
-                        'SAVEE(IIf(IsDBNull(.item("COMPANY")), Nothing, .item("COMPANY")),
-                        '      IIf(IsDBNull(.item("BRANCH_CODE")), Nothing, .item("BRANCH_CODE")),
-                        '      IIf(IsDBNull(.item("FULLNAME")), Nothing, .item("FULLNAME")),
-                        '      IIf(IsDBNull(.item("BIO_NO")), Nothing, .item("BIO_NO")),
-                        '      IIf(IsDBNull(.item("EMAIL_ADD")), Nothing, .item("EMAIL_ADD")),
-                        '      IIf(IsDBNull(.item("EMP_STATUS")), Nothing, .item("EMP_STATUS")),
-                        '        IIf(IsDBNull(.item("RATE_DAILY")), Nothing, .item("RATE_DAILY")),
-                        '        IIf(IsDBNull(.item("RATE_MONTHLY")), Nothing, .item("RATE_MONTHLY")),
-                        '        IIf(IsDBNull(.item("SSSNO")), Nothing, .item("SSSNO")),
-                        '        IIf(IsDBNull(.item("PHILHEALTHNO")), Nothing, .item("PHILHEALTHNO")),
-                        '        IIf(IsDBNull(.item("TINNO")), Nothing, .item("TINNO")),
-                        '        IIf(IsDBNull(.item("PAGIBIGNO")), Nothing, .item("PAGIBIGNO")),
-                        '        IIf(IsDBNull(.item("DATE_STARTED")), Nothing, .item("DATE_STARTED")),
-                        '        IIf(IsDBNull(.item("EMP_POSITION")), Nothing, .item("EMP_POSITION")),
-                        '        IIf(IsDBNull(.item("TIME_IN")), Nothing, .item("TIME_IN")),
-                        '        IIf(IsDBNull(.item("TIME_OUT")), Nothing, .item("TIME_OUT")),
-                        '        IIf(IsDBNull(.item("EMP_NO")), Nothing, .item("EMP_NO")),
-                        '        IIf(IsDBNull(.item("HO_CATEGORY")), Nothing, .item("HO_CATEGORY")),
-                        '        IIf(IsDBNull(.item("COMMON_CATEGORY")), Nothing, .item("COMMON_CATEGORY")),
-                        '        IIf(IsDBNull(.item("BRANCH_CITY")), Nothing, .item("BRANCH_CITY")),
-                        '        IIf(IsDBNull(.item("COMMON_COMPANY")), Nothing, .item("COMMON_COMPANY")))
+                        MsgBox(FormatNumber(.item("tots")))
+                        'SAVEE(.item("BIOMETRIC_ID"), .item("TOTAL_LATE_UT"))
                     End With
                 Next
             End If
         End Using
     End Sub
 
-    Public Sub SAVEE(BIO As String, BASIC As String, OT As String, LATE_UT As Integer, REGHOLIDAY As String, SPECHOLIDAY As String, SSS_ER As String, SSS_EC As String,
-                     PAGIBIG As String, PHILHEALTH As String, TAX_WH As String, NETTAX As String, SSS_LOAN As String, PAGIBIG_LOAN As String, ALLOWANCE As String, DEDUCTION As String, NIGHT_RATE As String,
-                     NET_PAY As String, PAYDATE As String)
+    'Public Sub SAVEE(BIO As String, LASTE As String)
 
-        'Public Sub SAVEE(BIO As String, BASIC As String, OT As String, LATE_UT As Integer, REGHOLIDAY As String, SPECHOLIDAY As String, GROSS As String, SSS_EE As String, SSS_ER As String, SSS_EC As String,
-        '                 PAGIBIG As String, PHILHEALTH As String, TAX_WH As String, NETTAX As String, SSS_LOAN As String, PAGIBIG_LOAN As String, ALLOWANCE As String, DEDUCTION As String, NIGHT_RATE As String,
-        '                 NET_PAY As String, PAYDATE As String)
+    '    Dim mysqlL As String = $"Select * FROM PAYROLL_PAYOUT where BIOMETRIC_ID = '{BIO}' and PAYDATE = '9/15/2021'"
+    '    Dim dss As DataSet = LoadSQL(mysqlL, "PAYROLL_PAYOUT")
+    '    If dss.Tables(0).Rows.Count > 0 Then
+    '        For Each dr In dss.Tables(0).Rows
+    '            With dr
 
-        Dim mysqlL As String = $"Select * FROM PAYROLL_EMPLOYEE"
-        Dim dss As DataSet = LoadSQL(mysqlL, "PAYROLL_EMPLOYEE")
-        Dim DSnEW As DataRow = dss.Tables(0).NewRow
-        With DSnEW
-            .Item("COMPANY") = BIO
-            .Item("BRANCH_CODE") = BASIC
-            .Item("FULLNAME") = OT
-            .Item("BIO_NO") = LATE_UT
-            .Item("EMAIL_ADD") = REGHOLIDAY
-            .Item("EMP_STATUS") = SPECHOLIDAY
-            '.Item("RATE_DAILY") = GROSS
-            .Item("SSSNO") = SSS_ER
-            .Item("PHILHEALTHNO") = SSS_EC
-            .Item("TINNO") = PAGIBIG
-            .Item("PAGIBIGNO") = PHILHEALTH
-
-            If LATE_UT <> 4340 Then
-                .Item("DATE_STARTED") = TAX_WH
-            End If
-
-            .Item("EMP_POSITION") = NETTAX
-
-            If SSS_LOAN <> Nothing Or PAGIBIG_LOAN <> Nothing Then
-                .Item("TIME_IN") = SSS_LOAN
-                .Item("TIME_OUT") = PAGIBIG_LOAN
-            End If
-
-            .Item("EMP_NO") = ALLOWANCE
-            .Item("HO_CATEGORY") = DEDUCTION
-            .Item("COMMON_CATEGORY") = NIGHT_RATE
-            .Item("BRANCH_CITY") = NET_PAY
-            .Item("COMMON_COMPANY") = PAYDATE
+    '                .Item("TOTAL_LATE_UTT") = LASTE
 
         End With
         dss.Tables(0).Rows.Add(DSnEW)

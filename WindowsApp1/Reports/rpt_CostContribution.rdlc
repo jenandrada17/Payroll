@@ -821,7 +821,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=FormatNumber(Code.AddDebit(Sum(CDec(IIF(FIELDS!CATEGORY.Value = "ALLOWANCE" OR FIELDS!CATEGORY.Value = "DEBIT", FIELDS!AMOUNT.Value, 0.00)))))</Value>
+                                  <Value>=FormatNumber(Code.AddDebit(Sum(IIF(FIELDS!CATEGORY.Value = "ALLOWANCE" OR FIELDS!CATEGORY.Value = "DEBIT", CDbl(FIELDS!AMOUNT.Value), 0))))</Value>
                                   <Style>
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -859,7 +859,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=FormatNumber(Code.AddCredit(Sum(CDec(IIF(FIELDS!CATEGORY.Value = "DEDUCTION" OR FIELDS!CATEGORY.Value = "CREDIT", FIELDS!AMOUNT.Value, 0.00)))))</Value>
+                                  <Value>=FormatNumber(Code.AddCredit(Sum(IIF(fIELDS!CATEGORY.Value = "DEDUCTION" OR FIELDS!CATEGORY.Value = "CREDIT", CDbl(FIELDS!AMOUNT.Value), 0))))</Value>
                                   <Style>
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>

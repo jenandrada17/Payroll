@@ -22,19 +22,19 @@ Module SelectFromDatabase
             If ds.Tables(0).Rows.Count > 0 Then
                 Dim data As DataRow = ds.Tables(0).Rows(0)
                 With data
-                    P_GrossAmount_LBL.Text = CDbl(IIf(IsDBNull(.Item("gross")), 0, .Item("gross"))).ToString("N")
-                    P_SSSComp_LBL.Text = CDbl(IIf(IsDBNull(.Item("sssC")), 0, .Item("sssC"))).ToString("N")
-                    P_PagibigComp_LBL.Text = CDbl(IIf(IsDBNull(.Item("pagibiC")), 0, .Item("pagibiC"))).ToString("N")
-                    P_PhilHComp_LBL.Text = CDbl(IIf(IsDBNull(.Item("philHC")), 0, .Item("philHC"))).ToString("N")
+                    P_GrossAmount_LBL.Text = FormatNumber(IIf(IsDBNull(.Item("gross")), 0, .Item("gross")))
+                    P_SSSComp_LBL.Text = FormatNumber(IIf(IsDBNull(.Item("sssC")), 0, .Item("sssC")))
+                    P_PagibigComp_LBL.Text = FormatNumber(IIf(IsDBNull(.Item("pagibiC")), 0, .Item("pagibiC")))
+                    P_PhilHComp_LBL.Text = FormatNumber(IIf(IsDBNull(.Item("philHC")), 0, .Item("philHC")))
 
-                    P_TaxWH_LBL.Text = CDbl(IIf(IsDBNull(.Item("taxWH")), 0, .Item("taxWH"))).ToString("N")
+                    P_TaxWH_LBL.Text = FormatNumber(IIf(IsDBNull(.Item("taxWH")), 0, .Item("taxWH")))
 
-                    P_SSSLoan_LBL.Text = CDbl(IIf(IsDBNull(.Item("sssLoan")), 0, .Item("sssLoan"))).ToString("N")
-                    P_PagibigLoan_LBL.Text = CDbl(IIf(IsDBNull(.Item("pagibigLoan")), 0, .Item("pagibigLoan"))).ToString("N")
+                    P_SSSLoan_LBL.Text = FormatNumber(IIf(IsDBNull(.Item("sssLoan")), 0, .Item("sssLoan")))
+                    P_PagibigLoan_LBL.Text = FormatNumber(IIf(IsDBNull(.Item("pagibigLoan")), 0, .Item("pagibigLoan")))
 
-                    P_Allowance_LBL.Text = CDbl(IIf(IsDBNull(.Item("allowance")), 0, .Item("allowance"))).ToString("N")
-                    P_Deduction_LBL.Text = CDbl(IIf(IsDBNull(.Item("deducttion")), 0, .Item("deducttion"))).ToString("N")
-                    P_NetPay_LBL.Text = CDbl(IIf(IsDBNull(.Item("netPay")), 0, .Item("netPay"))).ToString("N")
+                    P_Allowance_LBL.Text = FormatNumber(IIf(IsDBNull(.Item("allowance")), 0, .Item("allowance")))
+                    P_Deduction_LBL.Text = FormatNumber(IIf(IsDBNull(.Item("deducttion")), 0, .Item("deducttion")))
+                    P_NetPay_LBL.Text = FormatNumber(IIf(IsDBNull(.Item("netPay")), 0, .Item("netPay")))
                 End With
             End If
         End Using
@@ -613,8 +613,8 @@ Module SelectFromDatabase
         End Using
     End Sub
 
-    Public Function GetFirst_Basic(BIO_NO As String, paydate As String) As Double
-        Dim first_Basic As Double
+    Public Function GetFirst_Basic(BIO_NO As String, paydate As String) As Decimal
+        Dim first_Basic As Decimal
 
         Dim paydate_ As DateTime = Convert.ToDateTime(paydate)
         paydate_ = paydate_.ToString("d")
@@ -666,10 +666,10 @@ Module SelectFromDatabase
         Return first_NoOfDays
     End Function
 
-    Public Function GetMonthly_Basic(BIOMETRIC_ID As String, paydate As String) As Double
-        Dim first_basic As Double = GetFirst_Basic(BIOMETRIC_ID, paydate)
-        Dim second_basic As Double = 0
-        Dim monthly_Basic As Double = 0
+    Public Function GetMonthly_Basic(BIOMETRIC_ID As String, paydate As String) As Decimal
+        Dim first_basic As Decimal = GetFirst_Basic(BIOMETRIC_ID, paydate)
+        Dim second_basic As Decimal = 0
+        Dim monthly_Basic As Decimal = 0
         Dim sqll As String = $"Select * FROM PAYROLL_PAYOUT where BIOMETRIC_ID = '{BIOMETRIC_ID}' and PAYDATE = '{paydate}'"
         Using ds As DataSet = LoadSQL(sqll, "PAYROLL_PAYOUT")
             If ds.Tables(0).Rows.Count > 0 Then

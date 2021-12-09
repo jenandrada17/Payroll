@@ -163,15 +163,14 @@ Public Class frmReport
                         Dim TOTAL_SPECHOLIDAY As Decimal = GetOVERALL_SUM("TOTAL_SPECHOLIDAY", paydatee)
                         Dim TOTAL_HOLIDAY As Decimal = TOTAL_REGHOLIDAY + TOTAL_SPECHOLIDAY
 
-                        Dim TOTAL_NDIFF As Decimal = GetOVERALL_SUM("TOTAL_NIGHT_RATE", paydatee)
-                        Dim TOTAL_PI_ECOLA_SIL As Decimal = Get_PI_ECOLA_SIL_TOTAL(paydatee)
-                        Dim TOTAL_TARDINESS As Decimal = GetOVERALL_SUM("TOTAL_LATE_UT", paydatee)
-                        Dim TOTAL_SSS As Decimal = GetOVERALL_SUM("SSS_COMP", paydatee)
-                        Dim TOTAL_PHIC As Decimal = GetOVERALL_SUM("PHILHEALTH_COMP", paydatee)
-                        Dim TOTAL_PAGIBIG As Decimal = GetOVERALL_SUM("PAGIBIG_COMP", paydatee)
-                        Dim TOTAL_SBU_CHARGES As Decimal = GetOVERALL_SUM("TOTAL_DEDUCTION", paydatee)
-                        Dim TOTAL_NET_PAY As Decimal = GetOVERALL_SUM("NET_PAY", paydatee)
-                        Dim TOTAL_13MONTH As Decimal = Get13MONTH_TOTAL(paydatee)
+                        Dim TOTAL_NDIFF As Double = GetOVERALL_SUM("TOTAL_NIGHT_RATE", paydatee)
+                        Dim TOTAL_PI_ECOLA_SIL As Double = GetOVERALL_SUM("TOTAL_ALLOWANCE", paydatee)
+                        Dim TOTAL_TARDINESS As Double = GetOVERALL_SUM("TOTAL_LATE_UT", paydatee)
+                        Dim TOTAL_SSS As Double = GetOVERALL_SUM("SSS_COMP", paydatee)
+                        Dim TOTAL_PHIC As Double = GetOVERALL_SUM("PHILHEALTH_COMP", paydatee)
+                        Dim TOTAL_PAGIBIG As Double = GetOVERALL_SUM("PAGIBIG_COMP", paydatee)
+                        Dim TOTAL_SBU_CHARGES As Double = GetOVERALL_SUM("TOTAL_DEDUCTION", paydatee)
+                        Dim TOTAL_NET_PAY As Double = GetOVERALL_SUM("NET_PAY", paydatee)
 
                         Dim paramList As New List(Of Microsoft.Reporting.WinForms.ReportParameter) From {
                     New Microsoft.Reporting.WinForms.ReportParameter("paramEmployees", TOTAL_EMP),
@@ -793,6 +792,8 @@ Public Class frmReport
 
             '  WHERE B.PAYDATE = '{PAYDATE}' AND BRANCH_CODE IN ('UPI', 'ZAM') GROUP BY BRANCH_CODE, HO_CATEGORY, NAMEE, NAME_CATEGORY"
 
+            '  WHERE B.PAYDATE = '{PAYDATE}' AND BRANCH_CODE IN ('UPI', 'ZAM') GROUP BY BRANCH_CODE, HO_CATEGORY, NAMEE, NAME_CATEGORY"
+
             Using dss As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
                 If dss.Tables(0).Rows.Count > 0 Then
                     progressBarStart(dss.Tables(0).Rows.Count)
@@ -854,8 +855,7 @@ Public Class frmReport
 
                                 If NAMEE = "EC PAYABLE" Then
                                     DC_Amount = .Item("SSS_EC")
-
-                                ElseIf NAMEE = "Late" Then
+                                ElseIf NAMEE = "LATE" Then
                                     DC_Amount = .Item("LATE_UT")
 
                                 ElseIf NAMEE = "SSS PAYABLE" Then

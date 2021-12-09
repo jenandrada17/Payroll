@@ -593,8 +593,8 @@ Module SaveUpdate
                           NET_TAX_COMP As Decimal, SSS_LOAN As Decimal, PAGIBIG_LOAN As Decimal, TOTAL_ALLOWANCE As Decimal,
                           TOTAL_DEDUCTION As Decimal, NET_PAY As Decimal, REGHOLIDAY As Decimal, SPECHOLIDAY As Decimal, TOTAL_NIGHT_RATE As Decimal, Optional all As String = "")
 
-        Dim mysql As String = $"Select * FROM PAYROLL_PAYOUT where BIOMETRIC_ID = '{BIOMETRIC_ID}' and PAYDATE = '{PAYDATE}'"
-        Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
+        Dim mysql As String = $"Select * FROM PAYROLL_PAYOUTT where BIOMETRIC_ID = '{BIOMETRIC_ID}' and PAYDATE = '{PAYDATE}'"
+        Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUTT")
         If dss.Tables(0).Rows.Count > 0 Then
             For Each dr In dss.Tables(0).Rows
                 With dr
@@ -630,8 +630,8 @@ Module SaveUpdate
 
 
         Else
-            mysql = "Select * From PAYROLL_PAYOUT Rows 1"
-            Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
+            mysql = "Select * From PAYROLL_PAYOUTT Rows 1"
+            Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUTT")
                 Dim dsNewRow As DataRow = ds.Tables(0).NewRow
                 With dsNewRow
                     .Item("BIOMETRIC_ID") = BIOMETRIC_ID
@@ -970,9 +970,9 @@ Module SaveUpdate
                     'lateTOMinute = CDbl(late_split(0)) * 60 + CDbl(late_split(1)) + CDbl(late_split(2)) / 60
                     'underToMinute = (CDbl(under_split(0)) * 60 + CDbl(under_split(1)) + CDbl(under_split(2)) / 60) / 60
 
-                    'Dim LATEE, UNDERTIMEE As Decimal
-                    'LATEE = ((CDbl(rate) / 8) / 60) * lateTOMinute
-                    'UNDERTIMEE = (CDbl(rate) / 8) * underToMinute
+                    Dim LATEE, UNDERTIMEE As Double
+                    LATEE = ((CDbl(rate) / 8) / 60) * lateTOMinute
+                    UNDERTIMEE = (CDbl(rate) / 8) * underToMinute
 
                     '================= WORKS PERFECT ===============
                     Dim LATEE, UNDERTIMEE As Decimal
@@ -1255,32 +1255,14 @@ Module SaveUpdate
                         End If
 
                         '============================================= Calculate_Gross() ========================================================= 
-                        Dim TotalREGHol, TotalSPECHol, TotalLateUnder, TotalOT, GrossAmount As Decimal
+                        Dim TotalREGHol, TotalSPECHol, TotalOT, TotalLateUnder, GrossAmount As Double
 
                         TotalREGHol = (RegularHol * rate) * regHoliday
                         TotalSPECHol = (SpecialHol * rate) * specHoliday
 
                         TotalOT = ((rate / 8) * 1.25) * RegularOT ' =========== CALCULATE OVERTIME TO PESO ===========
 
-                        'Dim late_split() As String, under_split() As String, lateTOMinute, underToMinute As Decimal
-
-                        'late_split = Split(Late, ":")
-                        'under_split = Split(UnderTime, ":")
-
-                        'lateTOMinute = CDbl(late_split(0)) * 60 + CDbl(late_split(1)) + CDbl(late_split(2)) / 60
-                        'underToMinute = (CDbl(under_split(0)) * 60 + CDbl(under_split(1)) + CDbl(under_split(2)) / 60) / 60
-
-                        'Dim OVERTIMEE, overTimeToMinute As Decimal
-                        'Dim total_ot As TimeSpan = TimeSpan.Parse(RegularOT)
-                        'overTimeToMinute = total_ot.TotalMinutes / 60
-                        'OVERTIMEE = ((CDbl(rate) / 8) * 1.25) * overTimeToMinute
-
-                        'Dim LATEE, UNDERTIMEE As Decimal
-                        'LATEE = ((rate / 8) / 60) * lateTOMinute
-                        'UNDERTIMEE = (rate / 8) * underToMinute
-
-                        '==================== WORKS PERFECT 00:00:00 FORMAT ===============
-                        'Dim LATEE, UNDERTIMEE, lateTOMinute, underToMinute As Decimal
+                        Dim late_split() As String, under_split() As String, lateTOMinute, underToMinute As Double
 
                         'Dim TS_LATE As TimeSpan = TimeSpan.Parse(Late)
                         'lateTOMinute = TS_LATE.TotalMinutes
@@ -1291,9 +1273,9 @@ Module SaveUpdate
                         'UNDERTIMEE = ((rate / 8) / 60) * underToMinute
                         '================================================
 
-                        Dim LATEE, UNDERTIMEE As Decimal
-                        LATEE = ((rate / 8) / 60) * Late
-                        UNDERTIMEE = ((rate / 8) / 60) * UnderTime
+                        Dim LATEE, UNDERTIMEE As Double
+                        LATEE = ((rate / 8) / 60) * lateTOMinute
+                        UNDERTIMEE = (rate / 8) * underToMinute
 
                         TotalLateUnder = LATEE + UNDERTIMEE
 
@@ -1315,13 +1297,13 @@ Module SaveUpdate
 
                         NetPay = positive - negative
 
-                        SavePayout(BiometricID, paydate_, TotalBasic, TotalOT,
-                                      TotalLateUnder, GrossAmount,
-                                      SSSComp, SSS_ER, SSS_EC,
-                                      PagibigComp, PhilhealthComp, Tax_Wheld,
-                                      netTax, sssLoan, pagibigLoan,
-                                      Allowances, Deduction, NetPay,
-                                      TotalREGHol, TotalSPECHol, 0, "Group")
+                        SavePayout(BiometricID, paydate_, (TotalBasic).ToString("N"), (TotalOT).ToString("N"),
+                                      (TotalLateUnder).ToString("N"), (GrossAmount).ToString("N"),
+                                      (SSSComp).ToString("N"), (SSS_ER).ToString("N"), (SSS_EC).ToString("N"),
+                                      (PagibigComp).ToString("N"), (PhilhealthComp).ToString("N"), (Tax_Wheld).ToString("N"),
+                                      (netTax).ToString("N"), (sssLoan).ToString("N"), (pagibigLoan).ToString("N"),
+                                      (Allowances).ToString("N"), (Deduction).ToString("N"), (NetPay).ToString("N"),
+                                      (TotalREGHol).ToString("N"), (TotalSPECHol).ToString("N"), 0, "Group")
 
                         frmMainForm.AppProgressBar.Value += 1
                     End With
