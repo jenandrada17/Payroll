@@ -2,6 +2,8 @@
 
 Module SaveUpdate
 
+    Dim STANDARD_DAYS As Integer = frmMainForm.DAYS_COUNT
+
     Friend Sub SaveHoliday(datee As String, namee As String, kinds As String)
         Dim mysql As String = "Select * From PAYROLL_HOLIDAY Rows 1"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_HOLIDAY")
@@ -734,7 +736,6 @@ Module SaveUpdate
                 Dim dr As DataRow = ds.Tables(0).Rows(0)
                 With dr
 
-                    Dim STANDARD_DAYS As Integer = frmMainForm.DAYS_COUNT
                     Dim Late As String = ""
                     Dim UnderTime As String = ""
                     Dim RegularOT As String = ""
@@ -1114,12 +1115,14 @@ Module SaveUpdate
 
                                 Dim dr_11 As DataRow = ds_1.Tables(0).Rows(0)
                                 With dr_11
-                                    NoOfDays = .Item("PRESENT_DAYS")
-                                    RegularOT = .Item("OVERTIME")
-                                    SpecialHol = .Item("SPECHOLIDAY")
-                                    RegularHol = .Item("REGHOLIDAY")
-                                    Late = .Item("LATE")
-                                    UnderTime = .Item("UNDERTIME")
+
+                                    If Not rate > Minimum_rate Then
+                                        RegularOT = .Item("OVERTIME") + .Item("MORNING_OT")
+                                        SpecialHol = .Item("SPECHOLIDAY")
+                                        RegularHol = .Item("REGHOLIDAY")
+                                        Late = .Item("LATE")
+                                        UnderTime = .Item("UNDERTIME")
+                                    End If
                                     '========= NO NIGHT RIGHT SEPARATE IN 7ELEVEN TAB ===========
                                 End With
                             End If
@@ -1139,11 +1142,16 @@ Module SaveUpdate
                             rate = rate * 0.75
                         End If
 
-                        ''============================= FOR MONTHLY NA SAHURAN ================================== 
-                        'If Monthly_rate > (Minimum_rate * 26) Then  '=== CHECK IF ABOVE MINIMUM
-                        '    Monthly_rate = Monthly_rate / 2
-                        '    TotalBasic = Monthly_rate
-                        'End If
+                        ''============================= FOR MONTHLY RATE (IF ABOVE MINIMUM RATE)================================== 
+                        If rate > Minimum_rate Then
+                            Monthly_rate = Monthly_rate / 2
+                            If NoOfDays >= STANDARD_DAYS Then  '=== CHECK IF ABOVE MINIMUM
+                                TotalBasic = Monthly_rate
+                            Else
+                                Dim MINUS_DAYS As Double = STANDARD_DAYS - NoOfDays
+                                TotalBasic = Monthly_rate - (MINUS_DAYS * rate)
+                            End If
+                        End If
 
                         '============================= BENEFITS CONTRIBUTION ================================== 
                         If noOf_days_training = 0 Then
@@ -1262,30 +1270,24 @@ Module SaveUpdate
                         '============================================= Calculate_Gross() ========================================================= 
                         Dim TotalREGHol, TotalSPECHol, TotalOT, TotalLateUnder, GrossAmount As Double
 
-                        TotalREGHol = (RegularHol * rate) * regHoliday
-                        TotalSPECHol = (SpecialHol * rate) * specHoliday
+                        If rate > Minimum_rate Then
+                            GrossAmount = TotalBasic
+                        Else
 
-                        TotalOT = ((rate / 8) * 1.25) * RegularOT ' =========== CALCULATE OVERTIME TO PESO ===========
+                            TotalREGHol = (RegularHol * rate) * regHoliday
+                            TotalSPECHol = (SpecialHol * rate) * specHoliday
 
-                        Dim late_split() As String, under_split() As String, lateTOMinute, underToMinute As Double
+                            TotalOT = ((rate / 8) * 1.25) * RegularOT ' =========== CALCULATE OVERTIME TO PESO =========== 
 
-                        'Dim TS_LATE As TimeSpan = TimeSpan.Parse(Late)
-                        'lateTOMinute = TS_LATE.TotalMinutes
-                        'LATEE = ((rate / 8) / 60) * lateTOMinute
+                            Dim LATEE, UNDERTIMEE As Decimal
+                            LATEE = ((rate / 8) / 60) * Late
+                            UNDERTIMEE = ((rate / 8) / 60) * UnderTime
 
-                        'Dim TS_UNDERTIME As TimeSpan = TimeSpan.Parse(UnderTime)
-                        'underToMinute = TS_UNDERTIME.TotalMinutes
-                        'UNDERTIMEE = ((rate / 8) / 60) * underToMinute
-                        '================================================
+                            TotalLateUnder = LATEE + UNDERTIMEE
 
-                        Dim LATEE, UNDERTIMEE As Double
-                        LATEE = ((rate / 8) / 60) * lateTOMinute
-                        UNDERTIMEE = (rate / 8) * underToMinute
+                            GrossAmount = (TotalBasic + TotalREGHol + TotalSPECHol + TotalOT) - TotalLateUnder
 
-                        TotalLateUnder = LATEE + UNDERTIMEE
-
-                        GrossAmount = (TotalBasic + TotalREGHol + TotalSPECHol + TotalOT) - TotalLateUnder
-
+                        End If
                         '============================================= Calculate =========================================================  
                         Dim NetPay As Decimal
 
