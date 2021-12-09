@@ -60,8 +60,80 @@ Public Class frmNewEmployee
 
         'Import_Employee_Benifits_Details_BY_NAME()
 
-        Import_Employee_SBU_AMOUNT_PRINCIPAL_CREDIT()
+        'Import_Employee_SBU_AMOUNT_PRINCIPAL_CREDIT()
+
+        'Import_13MONTH()
     End Sub
+
+    Private Sub Import_13MONTH()
+
+        eApp = New Excel.Application
+        eBook = eApp.Workbooks.Open(Path_TXT.Text)
+        eSheet = eBook.Worksheets(1)
+        eCell = eSheet.UsedRange
+
+        MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path_TXT.Text}';Extended Properties=Excel 8.0;")
+        MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
+        MyCommand.TableMappings.Add("Table", "Net-informations.com")
+        DtSet = New System.Data.DataSet
+        MyCommand.Fill(DtSet)
+
+        '====================== DELETE PAYROLL_SBU TO REPLACE NEW ==================
+        If isExist_String("PAYROLL_13MONTH", "") Then
+            RunCommand($"DELETE FROM PAYROLL_13MONTH ;")
+        End If
+
+        progressBarStart(DtSet.Tables(0).Rows.Count + 1)
+
+        For row = 1 To DtSet.Tables(0).Rows.Count
+
+
+            If Not String.IsNullOrEmpty(eCell(row, 1).Value) Then
+                If Not IsDate(eCell(row, 1).Value) Then
+                    If eCell(row, 1).Value.Contains("EMPLOYEE NO.:") Then
+                        Dim EMP_NO As String = eCell(row, 2).Value
+                        SAVE_13MONTH_EMPNO(EMP_NO, row)
+                    End If
+                End If
+
+            End If
+
+            Dim val As Double
+            If String.IsNullOrEmpty(eCell(row, 3).Value) Or Double.TryParse(eCell(row, 3).Value, val) Then
+                Continue For
+            Else
+                If eCell(row, 3).Value = "13TH MONTH PAY" Then
+                    Dim AMOUNT As Decimal = eCell(row, 5).Value
+                    SAVE_13MONTH_AMOUNT(AMOUNT, row)
+                End If
+            End If
+
+            frmMainForm.AppProgressBar.Value += 1
+        Next row
+
+        progressBarEnd()
+
+        Path_TXT.Clear()
+        MyConnection.Close()
+        eApp.Quit()
+        eApp.Application.DisplayAlerts = False
+
+        Excel_Panel.Visible = False
+
+        Dim mysql As String = $"Select * From payroll_payout A 
+                                inner join payroll_employee B on B.BIO_NO = A.BIOMETRIC_ID 
+                                inner Join payroll_13month C on B.EMP_NO = B.EMP_NO where C.EMP_NO = B.EMP_NO"
+
+        Using ds As DataSet = LoadSQL(mysql, "payroll_payout")
+            For Each dr In ds.Tables(0).Rows()
+                With dr
+                    Save_Recorded_Allow_Deduc_13month(.item("BIO_NO"), "12/15/2021", "13th Month Pay", .item("AMOUNT"), "ALLOWANCE")
+                    UPDATENETPAY(.item("BIO_NO"), "12/15/2021", .item("AMOUNT"))
+                End With
+            Next
+        End Using
+    End Sub
+
 
     Private Sub Import_Employee_SBU_AMOUNT_PRINCIPAL_CREDIT()
 

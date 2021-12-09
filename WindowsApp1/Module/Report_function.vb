@@ -561,6 +561,48 @@ Module Report_function
         Return VALUEE
     End Function
 
+    Public Function Get13MONTH_TOTAL(PAYDATE As String)
+        Dim VALUEE As Decimal
+        Dim mysql As String = $"Select SUM(AMOUNT) AS TOTS FROM  RECORDED_ALLOW_DEDUC WHERE PAYDATE = '{PAYDATE}' AND CATEGORY = '13th Month Pay'"
+        Dim ds As DataSet = LoadSQL(mysql, "RECORDED_ALLOW_DEDUC")
+        If ds.Tables(0).Rows.Count > 0 Then
+            Dim DR As DataRow = ds.Tables(0).Rows(0)
+            With DR
+                VALUEE = IIf(IsDBNull(.Item("TOTS")), 0, .Item("TOTS"))
+            End With
+        End If
+
+        Return VALUEE
+    End Function
+
+    Public Function Get_PI_ECOLA_SIL_TOTAL(PAYDATE As String)
+        Dim VALUEE As Decimal
+        Dim mysql As String = $"Select SUM(AMOUNT) AS TOTS FROM  RECORDED_ALLOW_DEDUC WHERE PAYDATE = '{PAYDATE}' AND TRANSAC_NAME = 'ALLOWANCE' AND CATEGORY <> '13th Month Pay'"
+        Dim ds As DataSet = LoadSQL(mysql, "RECORDED_ALLOW_DEDUC")
+        If ds.Tables(0).Rows.Count > 0 Then
+            Dim DR As DataRow = ds.Tables(0).Rows(0)
+            With DR
+                VALUEE = IIf(IsDBNull(.Item("TOTS")), 0, .Item("TOTS"))
+            End With
+        End If
+
+        Return VALUEE
+    End Function
+
+    Public Function Get_PI_ECOLA_SIL(BIO_NO As String, PAYDATE As String)
+        Dim VALUEE As Decimal
+        Dim mysql As String = $"Select SUM(AMOUNT) AS TOTS FROM  RECORDED_ALLOW_DEDUC WHERE BIO_NO = '{BIO_NO}' AND  PAYDATE = '{PAYDATE}' AND TRANSAC_NAME = 'ALLOWANCE' AND CATEGORY <> '13th Month Pay'"
+        Dim ds As DataSet = LoadSQL(mysql, "RECORDED_ALLOW_DEDUC")
+        If ds.Tables(0).Rows.Count > 0 Then
+            Dim DR As DataRow = ds.Tables(0).Rows(0)
+            With DR
+                VALUEE = IIf(IsDBNull(.Item("TOTS")), 0, .Item("TOTS"))
+            End With
+        End If
+
+        Return VALUEE
+    End Function
+
     Public Function Get_PGC(column As String, paydate As String) As Double
         Dim TOTALS As Decimal = 0
         Dim G3_tot As Double = 0
@@ -947,4 +989,5 @@ Module Report_function
 
         Return VALUEE
     End Function
+
 End Module

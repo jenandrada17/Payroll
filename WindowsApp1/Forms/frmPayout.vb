@@ -66,7 +66,7 @@ Public Class frmPayout
         If BiometricID_TXT.Text = "" Then
             Cancel_BTN.PerformClick()
         Else
-            Payout_Details(BiometricID_TXT.Text, Name_TXT, Rate_TXT)
+            Payout_Details(BiometricID_TXT.Text, Name_TXT, Rate_TXT, MonthlyRate_txt)
             DETAILS()
         End If
 
@@ -366,26 +366,32 @@ Public Class frmPayout
             TotalBasic_LBL.Text = ((CDbl(NoOfDays_TXT.Text) * CDbl(Rate_TXT.Text)) - total_train).ToString("N")
             TotalBasic_LBL.Tag = (CDbl(NoOfDays_TXT.Text) * CDbl(Rate_TXT.Text)) - total_train
 
-            TotalHol_LBL.Text = (((CDbl(SpecialHol_TXT.Text) * CDbl(rate)) * specHoliday_) + ((CDbl(RegularHol_TXT.Text) * CDbl(rate)) * regHoliday_)).ToString("N") ' =========== CALCULATE hOLIDAY TO PESO ===========
-            TotalHol_LBL.Tag = ((CDbl(SpecialHol_TXT.Text) * CDbl(rate)) * specHoliday_) + ((CDbl(RegularHol_TXT.Text) * CDbl(rate)) * regHoliday_) ' =========== CALCULATE hOLIDAY TO PESO ===========
+            TotalHol_LBL.Text = (((CDbl(SpecialHol_TXT.Text) * CDbl(rate)) * specHoliday_) + ((CDbl(RegularHol_TXT.Text) * rate) * regHoliday_)).ToString("N") ' =========== CALCULATE hOLIDAY TO PESO ===========
+            TotalHol_LBL.Tag = ((CDbl(SpecialHol_TXT.Text) * CDbl(rate)) * specHoliday_) + ((CDbl(RegularHol_TXT.Text) * rate) * regHoliday_) ' =========== CALCULATE hOLIDAY TO PESO ===========
 
-            TotalOT_LBL.Text = (((CDbl(rate) / 8) * 1.25) * CDbl(RegularOT_TXT.Tag)).ToString("N") ' =========== CALCULATE OVERTIME TO PESO ===========
-            TotalOT_LBL.Tag = ((CDbl(rate) / 8) * 1.25) * CDbl(RegularOT_TXT.Tag) ' =========== CALCULATE OVERTIME TO PESO ===========
+            TotalOT_LBL.Text = (((rate / 8) * 1.25) * CDbl(RegularOT_TXT.Text)).ToString("N") ' =========== CALCULATE OVERTIME TO PESO ===========
+            TotalOT_LBL.Tag = ((rate / 8) * 1.25) * CDbl(RegularOT_TXT.Text) ' =========== CALCULATE OVERTIME TO PESO ===========
 
-            TotalNight_LBL.Text = (((CDbl(rate) / 8) * 0.1) * CDbl(NightTime_TXT.Tag)).ToString("N") ' =========== CALCULATE OVERTIME TO PESO ===========
-            TotalNight_LBL.Tag = ((CDbl(rate) / 8) * 0.1) * CDbl(NightTime_TXT.Tag) ' =========== CALCULATE OVERTIME TO PESO ===========
+            TotalNight_LBL.Text = (((rate / 8) * 0.1) * CDbl(NightTime_TXT.Tag)).ToString("N") ' =========== CALCULATE OVERTIME TO PESO ===========
+            TotalNight_LBL.Tag = ((rate / 8) * 0.1) * CDbl(NightTime_TXT.Tag) ' =========== CALCULATE OVERTIME TO PESO ===========
 
-            Dim late_split() As String, under_split() As String, lateTOMinute, underToMinute As Double
+            'Dim late_split() As String, under_split() As String, lateTOMinute, underToMinute As Double
 
-            late_split = Split(Late_TXT.Tag, ":")
-            under_split = Split(UnderTime_TXT.Tag, ":")
+            'late_split = Split(Late_TXT.Tag, ":")
+            'under_split = Split(UnderTime_TXT.Tag, ":")
 
-            lateTOMinute = CDbl(late_split(0)) * 60 + CDbl(late_split(1)) + CDbl(late_split(2)) / 60
-            underToMinute = (CDbl(under_split(0)) * 60 + CDbl(under_split(1)) + CDbl(under_split(2)) / 60) / 60
+            'lateTOMinute = CDbl(late_split(0)) * 60 + CDbl(late_split(1)) + CDbl(late_split(2)) / 60
+            'underToMinute = (CDbl(under_split(0)) * 60 + CDbl(under_split(1)) + CDbl(under_split(2)) / 60) / 60
+
+            'Dim LATEE, UNDERTIMEE As Double
+            'LATEE = ((CDbl(rate) / 8) / 60) * lateTOMinute
+            'UNDERTIMEE = (CDbl(rate) / 8) * underToMinute
+
 
             Dim LATEE, UNDERTIMEE As Double
-            LATEE = ((CDbl(rate) / 8) / 60) * lateTOMinute
-            UNDERTIMEE = (CDbl(rate) / 8) * underToMinute
+            LATEE = ((rate / 8) / 60) * CDbl(Late_TXT.Text)
+            UNDERTIMEE = ((rate / 8) / 60) * CDbl(UnderTime_TXT.Text)
+
 
             TotalLateUnder_LBL.Text = (LATEE + UNDERTIMEE).ToString("N")
             TotalLateUnder_LBL.Tag = LATEE + UNDERTIMEE
@@ -394,39 +400,59 @@ Public Class frmPayout
             GrossAmount_LBL.Tag = (CDbl(TotalBasic_LBL.Text) + CDbl(TotalHol_LBL.Text) + CDbl(TotalOT_LBL.Text) + CDbl(TotalNight_LBL.Text)) - CDbl(TotalLateUnder_LBL.Text)
 
         Else '========================================= NOT A TRAINEE ===========================================
+            Dim RATEE As Double = Rate_TXT.Text
+            TotalBasic_LBL.Text = (CDbl(NoOfDays_TXT.Text) * RATEE).ToString("N")
+            TotalBasic_LBL.Tag = CDbl(NoOfDays_TXT.Text) * RATEE
 
-            TotalBasic_LBL.Text = (CDbl(NoOfDays_TXT.Text) * CDbl(Rate_TXT.Text)).ToString("N")
-            TotalBasic_LBL.Tag = CDbl(NoOfDays_TXT.Text) * CDbl(Rate_TXT.Text)
+            TotalHol_LBL.Text = (((CDbl(SpecialHol_TXT.Text) * RATEE) * specHoliday_) + ((CDbl(RegularHol_TXT.Text) * RATEE) * regHoliday_)).ToString("N") ' =========== CALCULATE hOLIDAY TO PESO ===========
+            TotalHol_LBL.Tag = ((CDbl(SpecialHol_TXT.Text) * RATEE) * specHoliday_) + ((CDbl(RegularHol_TXT.Text) * RATEE) * regHoliday_) ' =========== CALCULATE hOLIDAY TO PESO ===========
 
-            '============================= FOR MONTHLY NA SAHURAN ================================== 
-            If Monthly_rate > (Minimum_rate * 26) Then  '=== CHECK IF ABOVE MINIMUM
-                Monthly_rate = Monthly_rate / 2
-                TotalBasic = Monthly_rate
-            End If
+            TotalOT_LBL.Text = (((CDbl(Rate_TXT.Text) / 8) * 1.25) * CDbl(RegularOT_TXT.Text)).ToString("N") ' =========== CALCULATE OVERTIME TO PESO ===========
+            TotalOT_LBL.Tag = ((CDbl(Rate_TXT.Text) / 8) * 1.25) * CDbl(RegularOT_TXT.Text) ' =========== CALCULATE OVERTIME TO PESO ===========
 
-            TotalHol_LBL.Text = (((CDbl(SpecialHol_TXT.Text) * CDbl(Rate_TXT.Text)) * specHoliday_) + ((CDbl(RegularHol_TXT.Text) * CDbl(Rate_TXT.Text)) * regHoliday_)).ToString("N") ' =========== CALCULATE hOLIDAY TO PESO ===========
-            TotalHol_LBL.Tag = ((CDbl(SpecialHol_TXT.Text) * CDbl(Rate_TXT.Text)) * specHoliday_) + ((CDbl(RegularHol_TXT.Text) * CDbl(Rate_TXT.Text)) * regHoliday_) ' =========== CALCULATE hOLIDAY TO PESO ===========
+            TotalNight_LBL.Text = (((RATEE / 8) * 0.1) * CDbl(NightTime_TXT.Tag)).ToString("N") ' =========== CALCULATE OVERTIME TO PESO ===========
+            TotalNight_LBL.Tag = ((RATEE / 8) * 0.1) * CDbl(NightTime_TXT.Tag) ' =========== CALCULATE OVERTIME TO PESO ===========
 
-            TotalOT_LBL.Text = (((CDbl(Rate_TXT.Text) / 8) * 1.25) * CDbl(RegularOT_TXT.Tag)).ToString("N") ' =========== CALCULATE OVERTIME TO PESO ===========
-            TotalOT_LBL.Tag = ((CDbl(Rate_TXT.Text) / 8) * 1.25) * CDbl(RegularOT_TXT.Tag) ' =========== CALCULATE OVERTIME TO PESO ===========
+            'Dim late_split() As String, under_split() As String, lateTOMinute, underToMinute As Double
 
-            TotalNight_LBL.Text = (((CDbl(Rate_TXT.Text) / 8) * 0.1) * CDbl(NightTime_TXT.Tag)).ToString("N") ' =========== CALCULATE OVERTIME TO PESO ===========
-            TotalNight_LBL.Tag = ((CDbl(Rate_TXT.Text) / 8) * 0.1) * CDbl(NightTime_TXT.Tag) ' =========== CALCULATE OVERTIME TO PESO ===========
+            'late_split = Split(Late_TXT.Tag, ":")
+            'under_split = Split(UnderTime_TXT.Tag, ":")
 
-            Dim late_split() As String, under_split() As String, lateTOMinute, underToMinute As Double
+            '================ OVERTIME LIKE STRING FORMAT LIK LATE AND UNDERTIME ============
+            'Dim overToMinute, OVERTIMEE As Double
+            'Dim total_ot As TimeSpan = TimeSpan.Parse(RegularOT_TXT.Tag)
+            'overToMinute = total_ot.TotalMinutes / 60
+            'OVERTIMEE = ((RATEE / 8) * 1.25) * overToMinute
+            'TotalOT_LBL.Text = OVERTIMEE.ToString("N")
+            'TotalOT_LBL.Tag = OVERTIMEE
 
-            late_split = Split(Late_TXT.Tag, ":")
-            under_split = Split(UnderTime_TXT.Tag, ":")
-
-            lateTOMinute = CDbl(late_split(0)) * 60 + CDbl(late_split(1)) + CDbl(late_split(2)) / 60
-            underToMinute = (CDbl(under_split(0)) * 60 + CDbl(under_split(1)) + CDbl(under_split(2)) / 60) / 60
+            'lateTOMinute = CDbl(late_split(0)) * 60 + CDbl(late_split(1)) + CDbl(late_split(2)) / 60
+            'underToMinute = (CDbl(under_split(0)) * 60 + CDbl(under_split(1)) + CDbl(under_split(2)) / 60) / 60
 
             Dim LATEE, UNDERTIMEE As Double
-            LATEE = ((CDbl(Rate_TXT.Text) / 8) / 60) * lateTOMinute
-            UNDERTIMEE = (CDbl(Rate_TXT.Text) / 8) * underToMinute
+            LATEE = ((RATEE / 8) / 60) * CDbl(Late_TXT.Text)
+            UNDERTIMEE = ((RATEE / 8) / 60) * CDbl(UnderTime_TXT.Text)
 
             TotalLateUnder_LBL.Text = (LATEE + UNDERTIMEE).ToString("N")
             TotalLateUnder_LBL.Tag = LATEE + UNDERTIMEE
+
+            ''============================= FOR MONTHLY NA SAHURAN ================================== 
+            'Dim MONTHLY As Decimal = MonthlyRate_txt.Text '=== TEXT(MONTHLYRATE)
+            'Dim MONTHLY_MINIMUM As Decimal = MonthlyRate_txt.Tag '=== TAG(MINIMUM MONTHLY RATE)
+            'If MONTHLY > MONTHLY_MINIMUM Then
+            '    MONTHLY = MONTHLY / 2
+            'End If
+
+            'If TotalBasic_LBL.Text > MONTHLY Then
+            '    TotalBasic_LBL.Text = MONTHLY.ToString("N")
+            '    TotalBasic_LBL.Tag = MONTHLY
+            '    TotalHol_LBL.Text = 0
+            '    TotalHol_LBL.Tag = 0
+            '    TotalOT_LBL.Text = 0
+            '    TotalOT_LBL.Tag = 0
+            '    TotalLateUnder_LBL.Text = 0
+            '    TotalLateUnder_LBL.Tag = 0
+            'End If
 
             GrossAmount_LBL.Text = ((CDbl(TotalBasic_LBL.Text) + CDbl(TotalHol_LBL.Text) + CDbl(TotalOT_LBL.Text) + CDbl(TotalNight_LBL.Text)) - CDbl(TotalLateUnder_LBL.Text)).ToString("N")
             GrossAmount_LBL.Tag = (CDbl(TotalBasic_LBL.Text) + CDbl(TotalHol_LBL.Text) + CDbl(TotalOT_LBL.Text) + CDbl(TotalNight_LBL.Text)) - CDbl(TotalLateUnder_LBL.Text)
@@ -490,11 +516,18 @@ Public Class frmPayout
 
     Private Sub Refresh_BTN_Click(sender As Object, e As EventArgs) Handles Undo_BTN.Click
 
+        Dim PAYROLL As String
+        If Paydate_ComboB.SelectedIndex >= 0 Then
+            PAYROLL = Paydate_ComboB.SelectedItem
+        Else
+            PAYROLL = paydate_
+        End If
+
         Recorded_Details(BiometricID_TXT.Text, Allowance_grid, paydate_, "ALLOWANCE")
 
         'AllowanceDetails(BiometricID_TXT.Text, Allowance_grid, sched_deduc)
 
-        DeductioneDetails_ORIG(BiometricID_TXT.Text, Deduction_grid, sched_deduc)
+        DeductioneDetails_ORIG(BiometricID_TXT.Text, Deduction_grid, sched_deduc, PAYROLL)
 
         Calculate_Gross()
 
@@ -529,6 +562,10 @@ Public Class frmPayout
         If allowCoolMove = True Then
             Additional_Panel.Location = New Point(Additional_Panel.Location.X + e.X - myCoolPoint.X, Additional_Panel.Location.Y + e.Y - myCoolPoint.Y)
         End If
+    End Sub
+
+    Private Sub OtherDeduction_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles BiometricID_TXT.KeyPress
+
     End Sub
 
     Private Sub Additional_Panel_MouseUp(sender As Object, e As MouseEventArgs) Handles Additional_Panel.MouseUp
@@ -586,15 +623,6 @@ Public Class frmPayout
         NetPay_LBL.Text = (positive - negative).ToString("N")
         NetPay_LBL.Tag = positive - negative
 
-    End Sub
-
-    Private Sub OtherDeduction_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles BiometricID_TXT.KeyPress
-        If e.KeyChar <> ChrW(Keys.Back) Then
-            If Char.IsNumber(e.KeyChar) Then
-            Else
-                e.Handled = True
-            End If
-        End If
     End Sub
 
     '====================================================== PAYSLIP ==========================================================
@@ -946,8 +974,8 @@ Public Class frmPayout
                         PRESENT_DAYS = .Item("PRESENT_DAYS")
                         REGHOLIDAY = .Item("REGHOLIDAY")
                         SPECHOLIDAY = .Item("SPECHOLIDAY")
-                        OVERTIME = IIf(.Item("OVERTIME") = 0, 0, .Item("OVERTIME") & ":00")
-                        LATE = IIf(.Item("LATE").Equals("00:00:00"), "00:00:00", .Item("LATE").Substring(0, 5))
+                        OVERTIME = .Item("OVERTIME")
+                        LATE = .Item("LATE")
 
                     End With
                 End If
@@ -1008,6 +1036,10 @@ Public Class frmPayout
 
                                 If .item("CATEGORY") = "SIL" Then
                                     toProper = "SIL"
+                                End If
+
+                                If .item("CATEGORY") = "13th Month Pay" Then
+                                    toProper = "13th Month Pay"
                                 End If
 
                                 dt_allowance.Rows.Add(toProper, amountt.ToString(”N”))

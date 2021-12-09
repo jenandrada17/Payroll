@@ -408,12 +408,17 @@ Module SaveUpdate
     'End Sub 
 
     Friend Sub SaveRATE_City(column As String, value As String, daily_rate As String, Optional group As Boolean = False) '=========== BOOLEAN IF MORE THAN 1 ========== 
+        If value = "" Then
+            SaveRATE("BRANCH_CODE", "", daily_rate, True)
+            Exit Sub
+        End If
+
         Dim mysql As String = $"Select * FROM PAYROLL_CITY_BRANCH  WHERE {column} = '{value}'"
         Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_CITY_BRANCH")
         If dss.Tables(0).Rows.Count > 0 Then
             For Each dr In dss.Tables(0).Rows
                 With dr
-                    Dim branchCode As String = IIf(value = "", "", .Item("BRANCHCODE"))
+                    Dim branchCode As String = .Item("BRANCHCODE")
 
                     SaveRATE("BRANCH_CODE", branchCode, daily_rate, True)
                 End With
@@ -433,7 +438,7 @@ Module SaveUpdate
 
                     Dim existing_rate As Decimal = IIf(IsDBNull(.Item("RATE_DAILY")), 0, .Item("RATE_DAILY"))
 
-                    If existing_rate < daily_rate Then
+                    If existing_rate <= daily_rate Then
                         .Item("RATE_DAILY") = daily_rate
                         .Item("RATE_MONTHLY") = daily_rate * 26
                     End If
@@ -721,8 +726,9 @@ Module SaveUpdate
 
                     Dim Late As String = ""
                     Dim UnderTime As String = ""
+                    Dim RegularOT As String = ""
                     Dim nightRate As Double = 0
-                    Dim NoOfDays, RegularOT, SpecialHol, RegularHol As Double
+                    Dim NoOfDays, SpecialHol, RegularHol As Double
                     Dim Deduction, SBU As Double
                     Dim Company As String
                     Dim sched As String = ""
@@ -735,14 +741,14 @@ Module SaveUpdate
                     Dim netTax As Double = 0
                     Dim sssLoan As Double = 0
                     Dim pagibigLoan As Double = 0
-                    Dim rate As Double = 0
+                    Dim rate As Decimal = 0
                     Dim SIL As Double = 0
                     Dim Allowances As Double = 0
-                    Dim Minimum_rate As Double = IIf(.Item("BRANCH_CODE") = Nothing, GetMinimumRate("CITY", "GENSAN"), GetMinimumRate("BRANCHCODE", .Item("BRANCH_CODE")))
+                    Dim Minimum_rate As Double = IIf(IsDBNull(.Item("BRANCH_CODE")) Or .Item("BRANCH_CODE").Equals(Nothing), GetMinimumRate("CITY", "GENSAN"), GetMinimumRate("BRANCHCODE", .Item("BRANCH_CODE")))
                     Dim Ecola As Double = GetEcola("BRANCHCODE", .Item("BRANCH_CODE"))
-                    Dim Monthly_rate As Double = IIf(IsDBNull(.Item("RATE_MONTHLY")) Or .Item("RATE_MONTHLY") = 0, Minimum_rate * 26, .Item("RATE_MONTHLY"))
 
                     rate = IIf(IsDBNull(.Item("RATE_DAILY")) Or .Item("RATE_DAILY") = 0, Minimum_rate, .Item("RATE_DAILY"))
+                    Dim Monthly_rate As Decimal = IIf(IsDBNull(.Item("RATE_MONTHLY")) Or .Item("RATE_MONTHLY").Equals("0"), rate * 26, .Item("RATE_MONTHLY"))
                     Company = IIf(IsDBNull(.Item("COMPANY")), "", .Item("COMPANY"))
 
                     '====================================== IF TRAINEE GET TRAINING DAYS TO CALCULATE TRAINING FEE ===============================================
@@ -761,7 +767,7 @@ Module SaveUpdate
 
                         If days <= training_days Then
 
-                            While (startingDate < EndingDate)
+                            While (startingDate <= EndingDate)
 
                                 If PRESENT_Date(bioNo, paydate_, startingDate) Then
 
@@ -815,11 +821,11 @@ Module SaveUpdate
                         TotalBasic = (NoOfDays * rate)
                     End If
 
-                    '============================= FOR MONTHLY NA SAHURAN ================================== 
-                    If Monthly_rate > (Minimum_rate * 26) Then  '=== CHECK IF ABOVE MINIMUM
-                        Monthly_rate = Monthly_rate / 2
-                        TotalBasic = Monthly_rate
-                    End If
+                    ''============================= FOR MONTHLY NA SAHURAN ================================== 
+                    'If Monthly_rate > (Minimum_rate * 26) Then  '=== CHECK IF ABOVE MINIMUM
+                    '    Monthly_rate = Monthly_rate / 2
+                    '    TotalBasic = Monthly_rate
+                    'End If
 
                     '============================ CHECK WITH TRAINING DAYS COVERED ==================================   
                     If noOf_days_training = 0 Then
@@ -868,13 +874,20 @@ Module SaveUpdate
                         Allowances = Allowances + Ecola
                         Save_Recorded_Allow_Deduc(bioNo, paydate_, "ECOLA", Ecola, "ALLOWANCE")
                     End If
+
+                    If paydate_ = "12/15/2021" Then ' FOR 13 MONTH DECEMBER 15 ONLY =============== 
+                        Dim Month13 As Decimal = Get_13Month(bioNo)
+                        Allowances = Allowances + Month13
+                        Save_Recorded_Allow_Deduc(bioNo, paydate_, "13th Month Pay", Month13, "ALLOWANCE")
+                    End If
+
                     '============================================= OTHER ALLOWANCES =========================================================
                     Dim sql_2 As String = $"Select * From PAYROLL_ALLOWANCES WHERE BIOMETRIC_NO = '{bioNo}' and ALLOWED = 'YES' and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
                     Using ds_2 As DataSet = LoadSQL(sql_2, "PAYROLL_ALLOWANCES")
                         If ds_2.Tables(0).Rows.Count > 0 Then
                             For Each dr_2 In ds_2.Tables(0).Rows
                                 With dr_2
-                                    If .item("EFFECTIVE_DATE") <= Today Then
+                                    If .item("EFFECTIVE_DATE") <= paydate_ Then
 
                                         '============== PERFORMANCE INCENTIVES DEDUCTION IF EVER MAY ABSENT ===================
                                         Dim PI As Double = 0
@@ -910,7 +923,7 @@ Module SaveUpdate
                         If ds_3.Tables(0).Rows.Count > 0 Then
                             For Each dr_3 In ds_3.Tables(0).Rows
                                 With dr_3
-                                    If .item("EFFECTIVE_DATE") <= Today Then
+                                    If .item("EFFECTIVE_DATE") <= paydate_ Then
                                         Deduction = Deduction + .Item("AMOUNT_PER_GIVE")
                                         Save_Recorded_Allow_Deduc(bioNo, paydate_, .Item("CATEGORY"), .Item("AMOUNT_PER_GIVE"), "DEDUCTION", .Item("ID"))
                                     End If
@@ -949,22 +962,37 @@ Module SaveUpdate
 
                     TotalNight = ((rate / 8) * 0.1) * nightRate ' =========== CALCULATE NIGHT RATE TO PESO ===========
 
-                    Dim late_split() As String, under_split() As String, lateTOMinute, underToMinute As Decimal
+                    'Dim late_split() As String, under_split() As String, lateTOMinute, underToMinute, overTimeToMinute As Decimal
 
-                    late_split = Split(Late, ":")
-                    under_split = Split(UnderTime, ":")
+                    'late_split = Split(Late, ":")
+                    'under_split = Split(UnderTime, ":")
 
-                    lateTOMinute = CDbl(late_split(0)) * 60 + CDbl(late_split(1)) + CDbl(late_split(2)) / 60
-                    underToMinute = (CDbl(under_split(0)) * 60 + CDbl(under_split(1)) + CDbl(under_split(2)) / 60) / 60
+                    'lateTOMinute = CDbl(late_split(0)) * 60 + CDbl(late_split(1)) + CDbl(late_split(2)) / 60
+                    'underToMinute = (CDbl(under_split(0)) * 60 + CDbl(under_split(1)) + CDbl(under_split(2)) / 60) / 60
 
+                    'Dim LATEE, UNDERTIMEE As Decimal
+                    'LATEE = ((CDbl(rate) / 8) / 60) * lateTOMinute
+                    'UNDERTIMEE = (CDbl(rate) / 8) * underToMinute
+
+                    '================= WORKS PERFECT ===============
                     Dim LATEE, UNDERTIMEE As Decimal
-                    LATEE = ((CDbl(rate) / 8) / 60) * lateTOMinute
-                    UNDERTIMEE = (CDbl(rate) / 8) * underToMinute
+                    LATEE = ((rate / 8) / 60) * Late
+                    UNDERTIMEE = ((rate / 8) / 60) * UnderTime
+
+                    ''=========================================
+                    'Dim LATEE, UNDERTIMEE, lateTOMinute, underToMinute As Decimal
+
+                    'Dim TS_LATE As TimeSpan = TimeSpan.Parse(Late)
+                    'lateTOMinute = TS_LATE.TotalMinutes
+                    'LATEE = ((rate / 8) / 60) * lateTOMinute
+
+                    'Dim TS_UNDERTIME As TimeSpan = TimeSpan.Parse(UnderTime)
+                    'underToMinute = TS_UNDERTIME.TotalMinutes
+                    'UNDERTIMEE = ((rate / 8) / 60) * underToMinute
 
                     TotalLateUnder = LATEE + UNDERTIMEE
 
                     GrossAmount = (TotalBasic + TotalREGHol + TotalSPECHol + TotalOT + TotalNight) - TotalLateUnder
-                    'GrossAmount = (TotalBasic + TotalHol + TotalOT + TotalNight) - TotalLateUnder 
 
                     '============================================= Calculate =========================================================  
                     Dim NetPay As Decimal
@@ -1014,7 +1042,8 @@ Module SaveUpdate
                         Dim sched As String = ""
                         Dim Late As String = ""
                         Dim UnderTime As String = ""
-                        Dim NoOfDays, RegularOT, SpecialHol, RegularHol As Double
+                        Dim RegularOT As String = ""
+                        Dim NoOfDays, SpecialHol, RegularHol As Double
                         Dim noOf_days_training As Double = 0
                         Dim SBU As Double = 0
                         Dim TotalBasic As Double = 0
@@ -1025,16 +1054,16 @@ Module SaveUpdate
                         Dim netTax As Double = 0
                         Dim sssLoan As Double = 0
                         Dim pagibigLoan As Double = 0
-                        Dim rate As Double = 0
+                        Dim rate As Decimal = 0
                         Dim nightRate As Double = 0
                         Dim Allowances As Double = 0
                         Dim Deduction As Double = 0
-                        Dim Minimum_rate As Double = IIf(.Item("RATE_MONTHLY") = Nothing, GetMinimumRate("CITY", "GENSAN"), GetMinimumRate("BRANCHCODE", .Item("BRANCH_CODE")))
+                        Dim Minimum_rate As Double = IIf(IsDBNull(.Item("BRANCH_CODE")) Or .Item("BRANCH_CODE").Equals(Nothing), GetMinimumRate("CITY", "GENSAN"), GetMinimumRate("BRANCHCODE", .Item("BRANCH_CODE")))
                         Dim Ecola As Double = GetEcola("BRANCHCODE", .Item("BRANCH_CODE"))
-                        Dim Monthly_rate As Double = IIf(IsDBNull(.Item("RATE_MONTHLY")) Or .Item("RATE_MONTHLY") = 0, Minimum_rate * 26, .Item("RATE_MONTHLY"))
 
                         BiometricID = .Item("BIOMETRICID")
                         rate = IIf(IsDBNull(.Item("RATE_DAILY")) Or .Item("RATE_DAILY") = 0, Minimum_rate, .Item("RATE_DAILY"))
+                        Dim Monthly_rate As Double = IIf(IsDBNull(.Item("RATE_MONTHLY")) Or .Item("RATE_MONTHLY").Equals("0"), rate * 26, .Item("RATE_MONTHLY"))
                         Company = IIf(IsDBNull(.Item("COMPANY")), "", .Item("COMPANY"))
 
                         '==================== GET TRAINING DAYS TO CALCULATE TRAINING FEE (IF DATE_STARTED NOT NULL =================================
@@ -1053,7 +1082,7 @@ Module SaveUpdate
 
                             If days <= training_days Then
 
-                                While (startingDate < EndingDate)
+                                While (startingDate <= EndingDate)
 
                                     If PRESENT_Date(BiometricID, paydate_, startingDate) Then
 
@@ -1105,11 +1134,11 @@ Module SaveUpdate
                             rate = rate * 0.75
                         End If
 
-                        '============================= FOR MONTHLY NA SAHURAN ================================== 
-                        If Monthly_rate > (Minimum_rate * 26) Then  '=== CHECK IF ABOVE MINIMUM
-                            Monthly_rate = Monthly_rate / 2
-                            TotalBasic = Monthly_rate
-                        End If
+                        ''============================= FOR MONTHLY NA SAHURAN ================================== 
+                        'If Monthly_rate > (Minimum_rate * 26) Then  '=== CHECK IF ABOVE MINIMUM
+                        '    Monthly_rate = Monthly_rate / 2
+                        '    TotalBasic = Monthly_rate
+                        'End If
 
                         '============================= BENEFITS CONTRIBUTION ================================== 
                         If noOf_days_training = 0 Then
@@ -1148,6 +1177,13 @@ Module SaveUpdate
                             Allowances = Ecola
                             Save_Recorded_Allow_Deduc(BiometricID, paydate_, "ECOLA", Ecola, "ALLOWANCE")
                         End If
+
+                        If paydate_ = "12/15/2021" Then ' FOR 13 MONTH DECEMBER 15 ONLY =============== 
+                            Dim Month13 As Decimal = Get_13Month(BiometricID)
+                            Allowances = Allowances + Month13
+                            Save_Recorded_Allow_Deduc(BiometricID, paydate_, "13th Month Pay", Month13, "ALLOWANCE")
+                        End If
+
                         '================================================================
 
                         Dim sql_2 As String = $"Select * From PAYROLL_ALLOWANCES WHERE BIOMETRIC_NO = '{BiometricID}' and ALLOWED = 'YES' and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
@@ -1155,7 +1191,7 @@ Module SaveUpdate
                             If ds_2.Tables(0).Rows.Count > 0 Then
                                 For Each dr_2 In ds_2.Tables(0).Rows
                                     With dr_2
-                                        If .item("EFFECTIVE_DATE") <= Today Then
+                                        If .item("EFFECTIVE_DATE") <= paydate_ Then
 
                                             '============== PERFORMANCE INCENTIVES DEDUCTION IF EVER MAY ABSENT ===================
                                             Dim PI As Double = 0
@@ -1188,7 +1224,7 @@ Module SaveUpdate
                             If ds_3.Tables(0).Rows.Count > 0 Then
                                 For Each dr_3 In ds_3.Tables(0).Rows
                                     With dr_3
-                                        If .item("EFFECTIVE_DATE") <= Today Then
+                                        If .item("EFFECTIVE_DATE") <= paydate_ Then
                                             Deduction = Deduction + .Item("AMOUNT_PER_GIVE")
                                             Save_Recorded_Allow_Deduc(BiometricID, paydate_, .Item("CATEGORY"), .Item("AMOUNT_PER_GIVE"), "DEDUCTION", .Item("ID"))
                                         End If
@@ -1219,24 +1255,45 @@ Module SaveUpdate
                         End If
 
                         '============================================= Calculate_Gross() ========================================================= 
-                        Dim TotalREGHol, TotalSPECHol, TotalOT, TotalLateUnder, GrossAmount As Decimal
+                        Dim TotalREGHol, TotalSPECHol, TotalLateUnder, TotalOT, GrossAmount As Decimal
 
                         TotalREGHol = (RegularHol * rate) * regHoliday
                         TotalSPECHol = (SpecialHol * rate) * specHoliday
 
                         TotalOT = ((rate / 8) * 1.25) * RegularOT ' =========== CALCULATE OVERTIME TO PESO ===========
 
-                        Dim late_split() As String, under_split() As String, lateTOMinute, underToMinute As Decimal
+                        'Dim late_split() As String, under_split() As String, lateTOMinute, underToMinute As Decimal
 
-                        late_split = Split(Late, ":")
-                        under_split = Split(UnderTime, ":")
+                        'late_split = Split(Late, ":")
+                        'under_split = Split(UnderTime, ":")
 
-                        lateTOMinute = CDbl(late_split(0)) * 60 + CDbl(late_split(1)) + CDbl(late_split(2)) / 60
-                        underToMinute = (CDbl(under_split(0)) * 60 + CDbl(under_split(1)) + CDbl(under_split(2)) / 60) / 60
+                        'lateTOMinute = CDbl(late_split(0)) * 60 + CDbl(late_split(1)) + CDbl(late_split(2)) / 60
+                        'underToMinute = (CDbl(under_split(0)) * 60 + CDbl(under_split(1)) + CDbl(under_split(2)) / 60) / 60
+
+                        'Dim OVERTIMEE, overTimeToMinute As Decimal
+                        'Dim total_ot As TimeSpan = TimeSpan.Parse(RegularOT)
+                        'overTimeToMinute = total_ot.TotalMinutes / 60
+                        'OVERTIMEE = ((CDbl(rate) / 8) * 1.25) * overTimeToMinute
+
+                        'Dim LATEE, UNDERTIMEE As Decimal
+                        'LATEE = ((rate / 8) / 60) * lateTOMinute
+                        'UNDERTIMEE = (rate / 8) * underToMinute
+
+                        '==================== WORKS PERFECT 00:00:00 FORMAT ===============
+                        'Dim LATEE, UNDERTIMEE, lateTOMinute, underToMinute As Decimal
+
+                        'Dim TS_LATE As TimeSpan = TimeSpan.Parse(Late)
+                        'lateTOMinute = TS_LATE.TotalMinutes
+                        'LATEE = ((rate / 8) / 60) * lateTOMinute
+
+                        'Dim TS_UNDERTIME As TimeSpan = TimeSpan.Parse(UnderTime)
+                        'underToMinute = TS_UNDERTIME.TotalMinutes
+                        'UNDERTIMEE = ((rate / 8) / 60) * underToMinute
+                        '================================================
 
                         Dim LATEE, UNDERTIMEE As Decimal
-                        LATEE = ((rate / 8) / 60) * lateTOMinute
-                        UNDERTIMEE = (rate / 8) * underToMinute
+                        LATEE = ((rate / 8) / 60) * Late
+                        UNDERTIMEE = ((rate / 8) / 60) * UnderTime
 
                         TotalLateUnder = LATEE + UNDERTIMEE
 
@@ -1847,6 +1904,39 @@ Module SaveUpdate
             End Using
         End If
 
+    End Sub
+
+    Public Sub SAVE_13MONTH_EMPNO(EMP_NO As String, RowNo As Integer)
+        Dim mysql As String = "Select * From PAYROLL_13MONTH Rows 1"
+        Using dssS As DataSet = LoadSQL(mysql, "PAYROLL_13MONTH")
+
+            Dim dsNewRow As DataRow = dssS.Tables(0).NewRow
+            With dsNewRow
+
+                .Item("EMP_NO") = EMP_NO
+
+            End With
+            dssS.Tables(0).Rows.Add(dsNewRow)
+            SaveEntry(dssS)
+            Console.WriteLine("EMP_NOOO-" & RowNo)
+        End Using
+    End Sub
+
+    Public Sub SAVE_13MONTH_AMOUNT(AMOUNT As String, RowNo As Integer)
+
+        Dim mysql As String = $"SelecT * FROM PAYROLL_13MONTH ORDER BY ID DESC rows 1"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_13MONTH")
+            If ds.Tables(0).Rows.Count > 0 Then
+                Dim data As DataRow = ds.Tables(0).Rows(0)
+                With data
+                    .Item("AMOUNT") = AMOUNT
+                End With
+
+                SaveEntry(ds, False)
+            End If
+
+            Console.WriteLine("AMOUNTTTT-" & RowNo)
+        End Using
     End Sub
 
 

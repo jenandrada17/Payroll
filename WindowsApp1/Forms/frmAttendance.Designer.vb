@@ -52,6 +52,9 @@ Partial Class frmAttendance
         Me.Path_TXT = New System.Windows.Forms.TextBox()
         Me.OpenFile_BTN = New System.Windows.Forms.Button()
         Me.Manual_Tab = New System.Windows.Forms.TabPage()
+        Me.Label34 = New System.Windows.Forms.Label()
+        Me.Label33 = New System.Windows.Forms.Label()
+        Me.Label19 = New System.Windows.Forms.Label()
         Me.SIL_Panel = New System.Windows.Forms.Panel()
         Me.CancelSIL_BTN = New System.Windows.Forms.Button()
         Me.AddSIL_BTN = New System.Windows.Forms.Button()
@@ -67,7 +70,6 @@ Partial Class frmAttendance
         Me.Label5 = New System.Windows.Forms.Label()
         Me.Label16 = New System.Windows.Forms.Label()
         Me.TotalRHoliday_LBL = New System.Windows.Forms.Label()
-        Me.Label19 = New System.Windows.Forms.Label()
         Me.Label18 = New System.Windows.Forms.Label()
         Me.TotalOTHr_LBL = New System.Windows.Forms.Label()
         Me.TotalSHoliday_LBL = New System.Windows.Forms.Label()
@@ -372,6 +374,9 @@ Partial Class frmAttendance
         '
         'Manual_Tab
         '
+        Me.Manual_Tab.Controls.Add(Me.Label34)
+        Me.Manual_Tab.Controls.Add(Me.Label33)
+        Me.Manual_Tab.Controls.Add(Me.Label19)
         Me.Manual_Tab.Controls.Add(Me.SIL_Panel)
         Me.Manual_Tab.Controls.Add(Me.SIL_BTN)
         Me.Manual_Tab.Controls.Add(Me.UT_BTN)
@@ -384,7 +389,6 @@ Partial Class frmAttendance
         Me.Manual_Tab.Controls.Add(Me.Label5)
         Me.Manual_Tab.Controls.Add(Me.Label16)
         Me.Manual_Tab.Controls.Add(Me.TotalRHoliday_LBL)
-        Me.Manual_Tab.Controls.Add(Me.Label19)
         Me.Manual_Tab.Controls.Add(Me.Label18)
         Me.Manual_Tab.Controls.Add(Me.TotalOTHr_LBL)
         Me.Manual_Tab.Controls.Add(Me.TotalSHoliday_LBL)
@@ -410,6 +414,36 @@ Partial Class frmAttendance
         Me.Manual_Tab.TabIndex = 0
         Me.Manual_Tab.Text = "    Manual    "
         Me.Manual_Tab.UseVisualStyleBackColor = True
+        '
+        'Label34
+        '
+        Me.Label34.AutoSize = True
+        Me.Label34.Font = New System.Drawing.Font("Dubai Light", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label34.Location = New System.Drawing.Point(288, 402)
+        Me.Label34.Name = "Label34"
+        Me.Label34.Size = New System.Drawing.Size(48, 25)
+        Me.Label34.TabIndex = 118
+        Me.Label34.Text = "Min/s"
+        '
+        'Label33
+        '
+        Me.Label33.AutoSize = True
+        Me.Label33.Font = New System.Drawing.Font("Dubai Light", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label33.Location = New System.Drawing.Point(288, 361)
+        Me.Label33.Name = "Label33"
+        Me.Label33.Size = New System.Drawing.Size(48, 25)
+        Me.Label33.TabIndex = 117
+        Me.Label33.Text = "Min/s"
+        '
+        'Label19
+        '
+        Me.Label19.AutoSize = True
+        Me.Label19.Font = New System.Drawing.Font("Dubai Light", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label19.Location = New System.Drawing.Point(288, 317)
+        Me.Label19.Name = "Label19"
+        Me.Label19.Size = New System.Drawing.Size(56, 25)
+        Me.Label19.TabIndex = 116
+        Me.Label19.Text = "Hour/s"
         '
         'SIL_Panel
         '
@@ -520,7 +554,7 @@ Partial Class frmAttendance
         '
         Me.Label4.AutoSize = True
         Me.Label4.Font = New System.Drawing.Font("Dubai Light", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label4.Location = New System.Drawing.Point(282, 454)
+        Me.Label4.Location = New System.Drawing.Point(288, 454)
         Me.Label4.Name = "Label4"
         Me.Label4.Size = New System.Drawing.Size(49, 25)
         Me.Label4.TabIndex = 106
@@ -530,7 +564,7 @@ Partial Class frmAttendance
         '
         Me.Label24.AutoSize = True
         Me.Label24.Font = New System.Drawing.Font("Dubai Light", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label24.Location = New System.Drawing.Point(282, 193)
+        Me.Label24.Location = New System.Drawing.Point(288, 193)
         Me.Label24.Name = "Label24"
         Me.Label24.Size = New System.Drawing.Size(49, 25)
         Me.Label24.TabIndex = 105
@@ -566,21 +600,11 @@ Partial Class frmAttendance
         Me.TotalRHoliday_LBL.TabIndex = 93
         Me.TotalRHoliday_LBL.Text = "0"
         '
-        'Label19
-        '
-        Me.Label19.AutoSize = True
-        Me.Label19.Font = New System.Drawing.Font("Dubai Light", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label19.Location = New System.Drawing.Point(281, 318)
-        Me.Label19.Name = "Label19"
-        Me.Label19.Size = New System.Drawing.Size(56, 25)
-        Me.Label19.TabIndex = 98
-        Me.Label19.Text = "Hour/s"
-        '
         'Label18
         '
         Me.Label18.AutoSize = True
         Me.Label18.Font = New System.Drawing.Font("Dubai Light", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label18.Location = New System.Drawing.Point(282, 274)
+        Me.Label18.Location = New System.Drawing.Point(288, 274)
         Me.Label18.Name = "Label18"
         Me.Label18.Size = New System.Drawing.Size(49, 25)
         Me.Label18.TabIndex = 96
@@ -620,7 +644,7 @@ Partial Class frmAttendance
         '
         Me.Label17.AutoSize = True
         Me.Label17.Font = New System.Drawing.Font("Dubai Light", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label17.Location = New System.Drawing.Point(282, 232)
+        Me.Label17.Location = New System.Drawing.Point(288, 232)
         Me.Label17.Name = "Label17"
         Me.Label17.Size = New System.Drawing.Size(49, 25)
         Me.Label17.TabIndex = 95
@@ -1117,9 +1141,9 @@ Partial Class frmAttendance
         Me.Label23.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label23.Location = New System.Drawing.Point(22, 62)
         Me.Label23.Name = "Label23"
-        Me.Label23.Size = New System.Drawing.Size(72, 27)
+        Me.Label23.Size = New System.Drawing.Size(104, 27)
         Me.Label23.TabIndex = 77
-        Me.Label23.Text = "Overtime"
+        Me.Label23.Text = "Overtime (hh)"
         '
         'Night7_TXT
         '
@@ -1135,9 +1159,9 @@ Partial Class frmAttendance
         Me.Label26.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label26.Location = New System.Drawing.Point(351, 13)
         Me.Label26.Name = "Label26"
-        Me.Label26.Size = New System.Drawing.Size(82, 27)
+        Me.Label26.Size = New System.Drawing.Size(114, 27)
         Me.Label26.TabIndex = 79
-        Me.Label26.Text = "Night Rate"
+        Me.Label26.Text = "Night Rate (hh)"
         '
         'Late7_TXT
         '
@@ -1232,7 +1256,7 @@ Partial Class frmAttendance
         Me.Seven_Grid.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
         DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
         DataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle6.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle6.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         DataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText
         DataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight
         DataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText
@@ -1242,11 +1266,11 @@ Partial Class frmAttendance
         Me.Seven_Grid.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.DataGridViewTextBoxColumn1, Me.DataGridViewTextBoxColumn2, Me.DataGridViewTextBoxColumn3, Me.DataGridViewTextBoxColumn4, Me.DataGridViewTextBoxColumn5, Me.DataGridViewTextBoxColumn6, Me.Column1})
         DataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
         DataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle7.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle7.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         DataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.ControlText
         DataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight
         DataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        DataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
         Me.Seven_Grid.DefaultCellStyle = DataGridViewCellStyle7
         Me.Seven_Grid.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically
         Me.Seven_Grid.Location = New System.Drawing.Point(3, 231)
@@ -1704,7 +1728,6 @@ Partial Class frmAttendance
     Friend WithEvents TotalRHoliday_LBL As Label
     Friend WithEvents Label16 As Label
     Friend WithEvents TotalOTHr_LBL As Label
-    Friend WithEvents Label19 As Label
     Friend WithEvents Label24 As Label
     Friend WithEvents Label4 As Label
     Friend WithEvents Label15 As Label
@@ -1803,4 +1826,7 @@ Partial Class frmAttendance
     Friend WithEvents ColumnHeader20 As ColumnHeader
     Friend WithEvents ColumnHeader1 As ColumnHeader
     Friend WithEvents ColumnHeader2 As ColumnHeader
+    Friend WithEvents Label34 As Label
+    Friend WithEvents Label33 As Label
+    Friend WithEvents Label19 As Label
 End Class

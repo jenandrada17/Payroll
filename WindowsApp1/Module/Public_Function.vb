@@ -296,4 +296,106 @@ Module Public_Function
         Return toProper
     End Function
 
+#Region "FOR IMPORT ONLY frmNewEmployee"
+
+    Friend Sub Save_Recorded_Allow_Deduc_13month(bio_no As String, PAYDATE As String, CATEGORY As String, AMOUNT As String, TRANSAC_NAME As String)
+        Dim sql As String
+        sql = $"Select * From RECORDED_ALLOW_DEDUC where BIO_NO = '{bio_no}' and PAYDATE = '{PAYDATE}' and CATEGORY = '13th Month Pay'"
+        Using dss As DataSet = LoadSQL(sql, "RECORDED_ALLOW_DEDUC")
+            If dss.Tables(0).Rows.Count > 0 Then
+                Dim dsRow As DataRow = dss.Tables(0).Rows(0)
+                With dsRow
+                    .Item("BIO_NO") = bio_no
+                    .Item("PAYDATE") = PAYDATE
+                    .Item("CATEGORY") = CATEGORY
+                    .Item("AMOUNT") = AMOUNT
+                    .Item("TRANSAC_NAME") = TRANSAC_NAME
+                End With
+
+                SaveEntry(dss, False)
+            Else
+
+                sql = "Select * From RECORDED_ALLOW_DEDUC Rows 1"
+                Using ds As DataSet = LoadSQL(sql, "RECORDED_ALLOW_DEDUC")
+
+                    Dim dsNewRow As DataRow = ds.Tables(0).NewRow
+                    With dsNewRow
+
+                        .Item("BIO_NO") = bio_no
+                        .Item("PAYDATE") = PAYDATE
+                        .Item("CATEGORY") = CATEGORY
+                        .Item("AMOUNT") = AMOUNT
+                        .Item("TRANSAC_NAME") = TRANSAC_NAME
+
+                    End With
+                    ds.Tables(0).Rows.Add(dsNewRow)
+                    SaveEntry(ds)
+                End Using
+            End If
+        End Using
+
+    End Sub
+
+    Public Sub UPDATENETPAY(BIO_NO As String, PAYDATE As String, AMOUNT As String)
+        Dim total_allowance As Decimal
+        Dim mysql As String = $"Select SUM(AMOUNT) AS TOTS FROM RECORDED_ALLOW_DEDUC where BIO_NO = '{BIO_NO}' and PAYDATE = '{PAYDATE}' and TRANSAC_NAME = 'ALLOWANCE'"
+        Dim dss As DataSet = LoadSQL(mysql, "RECORDED_ALLOW_DEDUC")
+        If dss.Tables(0).Rows.Count > 0 Then
+            For Each dr In dss.Tables(0).Rows()
+                With dr
+                    total_allowance = .Item("TOTS")
+                End With
+            Next
+        End If
+
+        mysql = $"Select * FROM PAYROLL_PAYOUT where BIOMETRIC_ID = '{BIO_NO}' and PAYDATE = '{PAYDATE}'"
+        Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
+        If ds.Tables(0).Rows.Count > 0 Then
+            With ds.Tables(0).Rows(0)
+
+                Dim positive, negative As Decimal
+                positive = .Item("GROSS_AMOUNT") + total_allowance
+                negative = .Item("TOTAL_DEDUCTION")
+
+                .Item("NET_PAY") = positive - negative
+
+            End With
+
+            SaveEntry(ds, False)
+        End If
+
+    End Sub
+
+    Public Function Get_13Month(BIO_NO As String)
+        Dim THIRTEEN_MONTH As Decimal = 0
+        Dim mysql As String = $"Select * FROM PAYROLL_13MONTH A inner join PAYROLL_EMPLOYEE B ON B.EMP_NO = A.EMP_NO where B.BIO_NO = '{BIO_NO}'"
+        Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_13MONTH")
+        If dss.Tables(0).Rows.Count > 0 Then
+            For Each dr In dss.Tables(0).Rows()
+                With dr
+                    THIRTEEN_MONTH = .Item("AMOUNT")
+                End With
+            Next
+        End If
+
+        Return THIRTEEN_MONTH
+    End Function
+
+    Public Function Get_13MontHHHH(EMP_NO As String)
+        Dim THIRTEEN_MONTH As Decimal = 0
+        Dim mysql As String = $"Select * FROM PAYROLL_13MONTH where EMP_NO = '{EMP_NO}'"
+        Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_13MONTH")
+        If dss.Tables(0).Rows.Count > 0 Then
+            For Each dr In dss.Tables(0).Rows()
+                With dr
+                    THIRTEEN_MONTH = .Item("AMOUNT")
+                End With
+            Next
+        End If
+
+        Return THIRTEEN_MONTH
+    End Function
+
+#End Region
+
 End Module

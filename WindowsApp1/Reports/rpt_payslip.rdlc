@@ -1465,7 +1465,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>Late</Value>
+                                      <Value>Late/UT</Value>
                                       <Style>
                                         <FontFamily>Berlin Sans FB</FontFamily>
                                       </Style>
@@ -1907,7 +1907,7 @@
                     </TablixMember>
                     <TablixMember>
                       <Visibility>
-                        <Hidden>=iif(fields!LATE.Value = "00:00:00", True, False)</Hidden>
+                        <Hidden>=iif(fields!LATE.Value = 0, True, False)</Hidden>
                       </Visibility>
                     </TablixMember>
                     <TablixMember>

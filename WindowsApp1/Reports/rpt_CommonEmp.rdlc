@@ -1109,7 +1109,7 @@ IIF(FIELDS!HOUSEHOLD_L.Value = 0, 0 , Fields!NETPAY_L.Value * FIELDS!HOUSEHOLD_L
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=IIF(Fields!PHOTO_L.Value = 0, "", FORMATNUMBER(SUM(CDec(Fields!NETPAY_L.Value * Fields!PHOTO_L.Value))))</Value>
+                              <Value>=FORMATNUMBER(Sum(CDec(Fields!NETPAY_L.Value * Fields!PHOTO_L.Value)))</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -1617,6 +1617,7 @@ IIF(Fields!HOUSEHOLD_L.Value = 0, 0, Fields!NETPAY_L.Value * Fields!HOUSEHOLD_L.
                       </Style>
                     </Textbox>
                     <ColSpan>2</ColSpan>
+                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
                 <TablixCell />

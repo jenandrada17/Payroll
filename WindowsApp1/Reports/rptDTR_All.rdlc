@@ -426,7 +426,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!LATE.Value</Value>
+                                  <Value>=iif(Fields!LATE.Value = "0", "0", Fields!LATE.Value &amp; " mins")</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                   </Style>
@@ -500,7 +500,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!UNDERTIME.Value</Value>
+                                  <Value>=iif(Fields!UNDERTIME.Value = "0", "0", Fields!UNDERTIME.Value &amp; " mins")</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                   </Style>
@@ -574,7 +574,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!OVERTIME.Value</Value>
+                                  <Value>=iif(Fields!OVERTIME.Value = "0" , "0", Fields!OVERTIME.Value &amp; " mins")</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                   </Style>
@@ -1843,19 +1843,19 @@
                     </TablixMember>
                     <TablixMember>
                       <Visibility>
-                        <Hidden>=iif(fields!LATE.Value = "00:00:00", True, False)</Hidden>
+                        <Hidden>=iif(fields!LATE.Value = "0" Or fields!LATE.Value = nothing, True, False)</Hidden>
                       </Visibility>
                       <KeepWithGroup>After</KeepWithGroup>
                     </TablixMember>
                     <TablixMember>
                       <Visibility>
-                        <Hidden>=iif(fields!UNDERTIME.Value = "00:00:00", True, False)</Hidden>
+                        <Hidden>=iif(fields!UNDERTIME.Value = "0" Or fields!UNDERTIME.Value = nothing, True, False)</Hidden>
                       </Visibility>
                       <KeepWithGroup>After</KeepWithGroup>
                     </TablixMember>
                     <TablixMember>
                       <Visibility>
-                        <Hidden>=iif(fields!OVERTIME.Value = "0", True, False)</Hidden>
+                        <Hidden>=iif(fields!OVERTIME.Value = "0" Or fields!OVERTIME.Value = nothing, True, False)</Hidden>
                       </Visibility>
                       <KeepWithGroup>After</KeepWithGroup>
                     </TablixMember>
