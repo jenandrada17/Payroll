@@ -312,6 +312,7 @@ Public Class frmAttendance
             TotalUTHR_LBL.Text = under_count.TotalMinutes
             under_count = New TimeSpan(0, 0, 0, 0, 0)
 
+            TotalOTHr_LBL.Text = CDbl(TotalOTHr_LBL.Text) + AM_OT_NUP.Value
             '===================================== SUM UP PRESENT AND ABSENT ==================================== 
             Dim Present As Integer = 0
             For Each oRow As DataGridViewRow In DataGridView1.Rows
@@ -496,7 +497,10 @@ Public Class frmAttendance
             Next
 
             SaveAttendanceEE(BiometricID_TXT.Text, PAYROLL, TotalDays_LBL.Text, TotalOTHr_LBL.Text, TotalLateHR_LBL.Text, TotalUTHR_LBL.Text,
-                             TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text, SIL_LBL.Text, AM_OT_NUP.Value)
+                             TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text, SIL_LBL.Text)
+
+            'SaveAttendanceEE(BiometricID_TXT.Text, PAYROLL, TotalDays_LBL.Text, TotalOTHr_LBL.Text, TotalLateHR_LBL.Text, TotalUTHR_LBL.Text,
+            '                 TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text, SIL_LBL.Text, AM_OT_NUP.Value)
 
             SavePayout_IndividualL(BiometricID_TXT.Text, PAYROLL, starting_date, ending_date)
 
@@ -951,6 +955,8 @@ Public Class frmAttendance
         For Each biometric_No As String In distinct_bio
             list_inOut.Clear()
 
+            '======================== TO REPLACE EXISTING RECORD ========================================================
+            If ThisHasRow($"BIOMETRIC_DTR where BIO_ID = '{biometric_No}' and PAYDATE = '{paydate_}'") Then Replacing($"BIOMETRIC_DTR where BIO_ID = '{biometric_No}' and PAYDATE = '{paydate_}';")
             '======================== GET TIME IN/OUT TO CALCULATE LATE UNDERTIME OVERTIME ============================
             TIME_IN = GetTime_In(biometric_No)
             TIME_OUT = GetTime_Out(biometric_No)
@@ -984,6 +990,12 @@ Public Class frmAttendance
                         groups_timee.Add(timme)
                     End If
                 Next
+
+                If DATE_ONLY = "11/22/2021" Then
+                    For Each dateTime As String In groups_timee
+                        Console.WriteLine("asdas " & dateTime)
+                    Next
+                End If
 
                 For Each dateTime As DateTime In groups_timee
 
@@ -1339,7 +1351,7 @@ Public Class frmAttendance
             Dim night7 As Integer = IIf(Night7_TXT.Text = Nothing, 0, Night7_TXT.Text)
 
             SaveAttendanceEE(Bio7_TXT.Text, PAYROLL, Days7_TXT.Text, Overtime7_TXT.Text, latee, undertimee,
-                             RHOLIDAY, SHOLIDAY, SIL7_NUP.Text, Nothing, night7)
+                             RHOLIDAY, SHOLIDAY, SIL7_NUP.Text, night7)
 
             SavePayout_IndividualL(Bio7_TXT.Text, PAYROLL, starting_date, ending_date)
 
@@ -1585,15 +1597,13 @@ Public Class frmAttendance
         progressBarStart(DtSet.Tables(0).Rows.Count)
 
         For row = 7 To DtSet.Tables(0).Rows.Count + 1
-            'If eCell(row, 3).Value = Nothing Then
-            '    Continue For
-            'End If
 
             Dim list_hour(3) As String
 
             '=============== BIO NUMBER ================
             If eCell(row, 2).Value <> Nothing Then
                 bio_no = eCell(row, 2).Value
+                If ThisHasRow($"BIOMETRIC_DTR where BIO_ID = '{bio_no}' and PAYDATE = '{Paydate.ToShortDateString}'") Then Replacing($"BIOMETRIC_DTR where BIO_ID = '{bio_no}' and PAYDATE = '{Paydate.ToShortDateString}';") 'TO REPLACE EXISTING RECORD =========================
             End If
 
             '======================== GET TIME IN/OUT TO CALCULATE LATE UNDERTIME OVERTIME ============================

@@ -1720,10 +1720,10 @@ Module SelectFromDatabase
 
                     Dim i As ListViewItem = LV.Items.Add(.Item("FULLNAME"))
                     i.SubItems.Add(.Item("CATEGORY"))
-                    i.SubItems.Add(.Item("AMOUNT"))
-                    i.SubItems.Add(IIf(IsDBNull(.Item("PRINCIPAL")), "", .Item("PRINCIPAL")))
-                    i.SubItems.Add(IIf(IsDBNull(.Item("CREDIT")), "", .Item("CREDIT")))
-                    i.SubItems.Add(IIf(IsDBNull(.Item("BALANCE")), "", .Item("BALANCE")))
+                    i.SubItems.Add(CDbl(.Item("AMOUNT")).ToString("N"))
+                    i.SubItems.Add(IIf(IsDBNull(.Item("PRINCIPAL")), "", CDbl(.Item("PRINCIPAL")).ToString("N")))
+                    i.SubItems.Add(IIf(IsDBNull(.Item("CREDIT")), "", CDbl(.Item("CREDIT")).ToString("N")))
+                    i.SubItems.Add(IIf(IsDBNull(.Item("BALANCE")), "", CDbl(.Item("BALANCE")).ToString("N")))
                     i.SubItems.Add(IIf(Last_update = Nothing, "", Last_update.ToString("MMM dd, yyyy")))
 
                 End With
@@ -2248,38 +2248,55 @@ Module SelectFromDatabase
         Return BRANCH_CODE
     End Function
 
-    Public Function SBU_notFull(BIO_NO As String)
-        Dim mysql As String = $"Select DATE_STARTED, A.COMPANY, FULLNAME, B.* From PAYROLL_EMPLOYEE A inner join PAYROLL_SBU B ON A.BIO_NO = B.BIO_NO where A.BIO_NO = '{BIO_NO}' AND CATEGORY = 'SBU'"
-        Using dss As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+    'Public Function SBU_notFull(BIO_NO As String)
+    '    Dim mysql As String = $"Select DATE_STARTED, A.COMPANY, FULLNAME, B.* From PAYROLL_EMPLOYEE A inner join PAYROLL_SBU B ON A.BIO_NO = B.BIO_NO where A.BIO_NO = '{BIO_NO}' AND CATEGORY = 'SBU'"
+    '    Using dss As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+    '        If dss.Tables(0).Rows.Count > 0 Then
+    '            For Each dr In dss.Tables(0).Rows
+    '                With dr
+
+    '                    Dim training_days As Integer = 0
+    '                    Dim Started As DateTime = IIf(IsDBNull(.Item("DATE_STARTED")), "1/1/1000", .Item("DATE_STARTED"))
+    '                    Dim sbu_bal As Double = IIf(IsDBNull(.Item("BALANCE")), .Item("PRINCIPAL"), .Item("BALANCE"))
+
+    '                    '=============== TRAINING DAYS ================
+    '                    If .Item("COMPANY") = "DALTON" Or .Item("COMPANY") = "PHOTO" Or .Item("COMPANY") = "HEAD OFFICE" Then
+    '                        training_days = 15
+    '                    Else
+    '                        training_days = 30
+    '                    End If
+
+    '                    '=============== CALCULATE SBU ================  
+    '                    If Started = "1/1/1000" Then
+    '                        MsgBox($"There's no date of started recorded for { .item("FULLNAME")}", MsgBoxStyle.Critical, "INVALID")
+    '                    Else
+    '                        Dim count_days = New DateTime(Started.Year, Started.Month, Started.Day)
+    '                        count_days = count_days.AddDays(training_days)
+
+    '                        If Today >= count_days Then
+
+    '                            If sbu_bal > 0 Then
+    '                                Return True
+    '                            End If
+
+    '                        End If
+    '                    End If
+    '                End With
+    '            Next
+    '        End If
+    '    End Using
+
+    '    Return False
+    'End Function
+
+    Public Function SBU_With_Balance(BIO_NO As String)
+        Dim mysql As String = $"Select * From PAYROLL_SBU where BIO_NO = '{BIO_NO}' AND CATEGORY = 'SBU'"
+        Using dss As DataSet = LoadSQL(mysql, "PAYROLL_SBU")
             If dss.Tables(0).Rows.Count > 0 Then
                 For Each dr In dss.Tables(0).Rows
                     With dr
-
-                        Dim training_days As Integer = 0
-                        Dim Started As DateTime = IIf(IsDBNull(.Item("DATE_STARTED")), "1/1/1000", .Item("DATE_STARTED"))
-                        Dim sbu_bal As Double = IIf(IsDBNull(.Item("BALANCE")), .Item("PRINCIPAL"), .Item("BALANCE"))
-
-                        '=============== TRAINING DAYS ================
-                        If .Item("COMPANY") = "DALTON" Or .Item("COMPANY") = "PHOTO" Or .Item("COMPANY") = "HEAD OFFICE" Then
-                            training_days = 15
-                        Else
-                            training_days = 30
-                        End If
-
-                        '=============== CALCULATE SBU ================  
-                        If Started = "1/1/1000" Then
-                            MsgBox($"There's no date of started recorded for { .item("FULLNAME")}", MsgBoxStyle.Critical, "INVALID")
-                        Else
-                            Dim count_days = New DateTime(Started.Year, Started.Month, Started.Day)
-                            count_days = count_days.AddDays(training_days)
-
-                            If Today >= count_days Then
-
-                                If sbu_bal > 0 Then
-                                    Return True
-                                End If
-
-                            End If
+                        If .item("BALANCE") <> 0 Then
+                            Return True
                         End If
                     End With
                 Next

@@ -396,6 +396,61 @@ Module Public_Function
         Return THIRTEEN_MONTH
     End Function
 
+    Public Sub SAVE_Emp_SBU_EXCEL(EMP_NO As String, RowNo As Integer)
+        Dim mysql As String
+        Dim BIO As String = ""
+
+        '====================== GET BIO_NO FOR SAVING TO PAYROLL_SBU  ==================
+        mysql = "Select * From PAYROLL_EMPLOYEE WHERE EMP_NO = '" & EMP_NO.TrimEnd & "'"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+            If ds.Tables(0).Rows.Count > 0 Then
+                Dim data As DataRow = ds.Tables(0).Rows(0)
+                With data
+                    BIO = .Item("BIO_NO")
+                End With
+            Else
+                Exit Sub
+            End If
+        End Using
+
+        '====================== ADD NEW PAYROLL_SBU ==================
+        mysql = "Select * From PAYROLL_SBU Rows 1"
+        Using dssS As DataSet = LoadSQL(mysql, "PAYROLL_SBU")
+
+            Dim dsNewRow As DataRow = dssS.Tables(0).NewRow
+            With dsNewRow
+
+                .Item("BIO_NO") = BIO
+
+            End With
+            dssS.Tables(0).Rows.Add(dsNewRow)
+            SaveEntry(dssS)
+        End Using
+
+    End Sub
+
+    Public Sub UPDATE_Emp_SBU_EXCEL(CATEGORY As String, AMOUNT As String, PRINCIPAL As String, CREDIT As String, BALANCE As String, RowNo As Integer)
+
+        Dim mysql As String = "Select * From PAYROLL_SBU ORDER BY ID DESC Rows 1"
+        Using dssS As DataSet = LoadSQL(mysql, "PAYROLL_SBU")
+            If dssS.Tables(0).Rows.Count > 0 Then
+                Dim data As DataRow = dssS.Tables(0).Rows(0)
+                With data
+
+                    If IsDBNull(.Item("PRINCIPAL")) Then .Item("PRINCIPAL") = IIf(PRINCIPAL = Nothing, 0, PRINCIPAL)
+                    If IsDBNull(.Item("CREDIT")) Then .Item("CREDIT") = IIf(CREDIT = Nothing, 0, CREDIT)
+                    If IsDBNull(.Item("BALANCE")) Then .Item("BALANCE") = IIf(BALANCE = Nothing, PRINCIPAL, BALANCE)
+                    If IsDBNull(.Item("CATEGORY")) Then .Item("CATEGORY") = CATEGORY
+                    If IsDBNull(.Item("AMOUNT")) Then .Item("AMOUNT") = IIf(AMOUNT = Nothing, 250, AMOUNT)
+
+                End With
+
+                SaveEntry(dssS, False)
+            End If
+        End Using
+
+    End Sub
+
 #End Region
 
 End Module

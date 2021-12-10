@@ -62,7 +62,7 @@ Public Class frmNewEmployee
 
         'Import_Employee_SBU_AMOUNT_PRINCIPAL_CREDIT()
 
-        'Import_13MONTH()
+        Import_13MONTH()
     End Sub
 
     Private Sub Import_13MONTH()
@@ -79,9 +79,9 @@ Public Class frmNewEmployee
         MyCommand.Fill(DtSet)
 
         '====================== DELETE PAYROLL_SBU TO REPLACE NEW ==================
-        If isExist_String("PAYROLL_13MONTH", "") Then
-            RunCommand($"DELETE FROM PAYROLL_13MONTH ;")
-        End If
+        'If isExist_String("PAYROLL_13MONTH", "") Then
+        '    RunCommand($"DELETE FROM PAYROLL_13MONTH ;")
+        'End If
 
         progressBarStart(DtSet.Tables(0).Rows.Count + 1)
 
@@ -155,7 +155,7 @@ Public Class frmNewEmployee
 
         progressBarStart(DtSet.Tables(0).Rows.Count + 1)
 
-        For row = 7 To DtSet.Tables(0).Rows.Count Step 3
+        For row = 1 To DtSet.Tables(0).Rows.Count
 
             Dim EMP_NO As String = ""
             Dim CATEGORY As String = ""
@@ -164,51 +164,20 @@ Public Class frmNewEmployee
             Dim CREDIT As String = ""
             Dim BALANCE As String = ""
 
-            If String.IsNullOrEmpty(eCell(row, 4).Value) Then
-
-                If eCell(row - 2, 4).Value.Contains("cash") Or eCell(row - 2, 4).Value.Contains("Cashbond") Or eCell(row - 2, 4).Value.Contains("CASH") Then
-                    EMP_NO = eCell(row - 3, 4).Value
-                Else
-                    EMP_NO = eCell(row - 2, 4).Value
-                End If
-
-                CATEGORY = eCell(row - 1, 4).Value
-                AMOUNT = eCell(row - 1, 5).Value
-                PRINCIPAL = eCell(row - 1, 6).Value
-                CREDIT = eCell(row - 1, 8).Value
-                BALANCE = eCell(row - 1, 9).Value
-
-                Console.WriteLine("EMPTY - ROWWW -" & EMP_NO & "- " & row - 1)
-            Else
-
+            If eCell(row, 1).Font.Bold = True Then
                 EMP_NO = eCell(row, 4).Value
-                CATEGORY = eCell(row + 1, 4).Value
-                AMOUNT = eCell(row + 1, 5).Value
-                PRINCIPAL = eCell(row + 1, 6).Value
-                CREDIT = eCell(row + 1, 8).Value
-                BALANCE = eCell(row + 1, 9).Value
-
-                Console.WriteLine("NOT EMPTY - ROWWW -" & EMP_NO & "- " & row - 1)
+                SAVE_Emp_SBU_EXCEL(EMP_NO, row)
             End If
 
-            'If row = "2406" Then
-            '    Console.WriteLine("CATEGORY  - " & CATEGORY)
-            'End If
+            If IsDate(eCell(row, 1).value) Then
+                CATEGORY = eCell(row, 4).Value
+                AMOUNT = eCell(row, 5).Value
+                PRINCIPAL = eCell(row, 6).Value
+                CREDIT = eCell(row, 8).Value
+                BALANCE = eCell(row, 9).Value
+                UPDATE_Emp_SBU_EXCEL(CATEGORY, AMOUNT, PRINCIPAL, CREDIT, BALANCE, row)
+            End If
 
-
-            'If CATEGORY.Contains("Cash Bond") Or CATEGORY.Contains("CASH") Or CATEGORY.Contains("Cashbond") Or CATEGORY.Contains("cash") Or CATEGORY.Contains("CASH BOND") Or CATEGORY.Contains("cash bond") Or CATEGORY.Contains("Cash Bond") Then
-            '    CATEGORY = "CASH BOND"
-            'ElseIf CATEGORY.Contains("Build") Then
-            '    CATEGORY = "SBU"
-            'End If 
-
-            'If CATEGORY.Contains("Build") Then
-            '    CATEGORY = "SBU"
-            'Else
-            '    CATEGORY = "CASH BOND"
-            'End If 
-
-            SAVE_Emp_SBU_AMOUNT_PRINCIPAL_CREDIT_NAME(EMP_NO, CATEGORY, AMOUNT, PRINCIPAL, CREDIT, BALANCE, row)
 
             frmMainForm.AppProgressBar.Value += 1
         Next row

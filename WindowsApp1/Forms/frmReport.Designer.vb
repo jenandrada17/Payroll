@@ -1233,21 +1233,25 @@ Partial Class frmReport
         'ColumnHeader2
         '
         Me.ColumnHeader2.Text = "Amount"
+        Me.ColumnHeader2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.ColumnHeader2.Width = 100
         '
         'ColumnHeader29
         '
         Me.ColumnHeader29.Text = "Principal"
+        Me.ColumnHeader29.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.ColumnHeader29.Width = 110
         '
         'ColumnHeader30
         '
         Me.ColumnHeader30.Text = "Credit"
+        Me.ColumnHeader30.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.ColumnHeader30.Width = 110
         '
         'ColumnHeader23
         '
         Me.ColumnHeader23.Text = "Balance"
+        Me.ColumnHeader23.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.ColumnHeader23.Width = 110
         '
         'ColumnHeader28

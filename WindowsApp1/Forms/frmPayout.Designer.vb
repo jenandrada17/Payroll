@@ -145,7 +145,7 @@ Partial Class frmPayout
         Me.CancelAdd_BTN = New System.Windows.Forms.Button()
         Me.SaveAdd_BTN = New System.Windows.Forms.Button()
         Me.Label43 = New System.Windows.Forms.Label()
-        Me.Label41 = New System.Windows.Forms.Label()
+        Me.TransacAdd_lbl = New System.Windows.Forms.Label()
         Me.Label42 = New System.Windows.Forms.Label()
         Me.Label37 = New System.Windows.Forms.Label()
         Me.Training_GB = New System.Windows.Forms.GroupBox()
@@ -154,6 +154,7 @@ Partial Class frmPayout
         Me.FlowLayoutPanel2 = New System.Windows.Forms.FlowLayoutPanel()
         Me.Label18 = New System.Windows.Forms.Label()
         Me.Additional_BTN = New System.Windows.Forms.Button()
+        Me.Deduction_BTN = New System.Windows.Forms.Button()
         Me.Allowance_grid = New System.Windows.Forms.DataGridView()
         Me.grid_1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.grid_2 = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -1395,7 +1396,7 @@ Partial Class frmPayout
         Me.Additional_Panel.Controls.Add(Me.CancelAdd_BTN)
         Me.Additional_Panel.Controls.Add(Me.SaveAdd_BTN)
         Me.Additional_Panel.Controls.Add(Me.Label43)
-        Me.Additional_Panel.Controls.Add(Me.Label41)
+        Me.Additional_Panel.Controls.Add(Me.TransacAdd_lbl)
         Me.Additional_Panel.Controls.Add(Me.Label42)
         Me.Additional_Panel.Controls.Add(Me.Label37)
         Me.Additional_Panel.Location = New System.Drawing.Point(431, 396)
@@ -1454,15 +1455,15 @@ Partial Class frmPayout
         Me.Label43.TabIndex = 87
         Me.Label43.Text = "Amount"
         '
-        'Label41
+        'TransacAdd_lbl
         '
-        Me.Label41.AutoSize = True
-        Me.Label41.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label41.Location = New System.Drawing.Point(142, 6)
-        Me.Label41.Name = "Label41"
-        Me.Label41.Size = New System.Drawing.Size(74, 25)
-        Me.Label41.TabIndex = 86
-        Me.Label41.Text = "Additional"
+        Me.TransacAdd_lbl.AutoSize = True
+        Me.TransacAdd_lbl.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TransacAdd_lbl.Location = New System.Drawing.Point(140, 6)
+        Me.TransacAdd_lbl.Name = "TransacAdd_lbl"
+        Me.TransacAdd_lbl.Size = New System.Drawing.Size(74, 25)
+        Me.TransacAdd_lbl.TabIndex = 86
+        Me.TransacAdd_lbl.Text = "Additional"
         '
         'Label42
         '
@@ -1522,6 +1523,7 @@ Partial Class frmPayout
         Me.FlowLayoutPanel2.Controls.Add(Me.Allowance_grid)
         Me.FlowLayoutPanel2.Controls.Add(Me.Label20)
         Me.FlowLayoutPanel2.Controls.Add(Me.Label22)
+        Me.FlowLayoutPanel2.Controls.Add(Me.Deduction_BTN)
         Me.FlowLayoutPanel2.Controls.Add(Me.Deduction_grid)
         Me.FlowLayoutPanel2.Controls.Add(Me.Label24)
         Me.FlowLayoutPanel2.Controls.Add(Me.Undo_BTN)
@@ -1537,20 +1539,31 @@ Partial Class frmPayout
         Me.Label18.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label18.Location = New System.Drawing.Point(3, 0)
         Me.Label18.Name = "Label18"
-        Me.Label18.Size = New System.Drawing.Size(100, 25)
+        Me.Label18.Size = New System.Drawing.Size(104, 25)
         Me.Label18.TabIndex = 0
-        Me.Label18.Text = "Additional---  "
+        Me.Label18.Text = "Additional---   "
         '
         'Additional_BTN
         '
         Me.Additional_BTN.BackColor = System.Drawing.Color.LightGray
         Me.Additional_BTN.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Additional_BTN.Location = New System.Drawing.Point(109, 3)
+        Me.Additional_BTN.Location = New System.Drawing.Point(113, 3)
         Me.Additional_BTN.Name = "Additional_BTN"
         Me.Additional_BTN.Size = New System.Drawing.Size(57, 27)
         Me.Additional_BTN.TabIndex = 90
         Me.Additional_BTN.Text = "Add"
         Me.Additional_BTN.UseVisualStyleBackColor = False
+        '
+        'Deduction_BTN
+        '
+        Me.Deduction_BTN.BackColor = System.Drawing.Color.LightGray
+        Me.Deduction_BTN.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Deduction_BTN.Location = New System.Drawing.Point(112, 109)
+        Me.Deduction_BTN.Name = "Deduction_BTN"
+        Me.Deduction_BTN.Size = New System.Drawing.Size(57, 27)
+        Me.Deduction_BTN.TabIndex = 91
+        Me.Deduction_BTN.Text = "Add"
+        Me.Deduction_BTN.UseVisualStyleBackColor = False
         '
         'Allowance_grid
         '
@@ -1625,9 +1638,9 @@ Partial Class frmPayout
         Me.Label22.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label22.Location = New System.Drawing.Point(3, 106)
         Me.Label22.Name = "Label22"
-        Me.Label22.Size = New System.Drawing.Size(283, 25)
+        Me.Label22.Size = New System.Drawing.Size(103, 25)
         Me.Label22.TabIndex = 2
-        Me.Label22.Text = "Deductions ---                                             "
+        Me.Label22.Text = "Deductions ---"
         '
         'Deduction_grid
         '
@@ -1660,7 +1673,7 @@ Partial Class frmPayout
         Me.Deduction_grid.DefaultCellStyle = DataGridViewCellStyle6
         Me.Deduction_grid.Dock = System.Windows.Forms.DockStyle.Top
         Me.Deduction_grid.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnKeystroke
-        Me.Deduction_grid.Location = New System.Drawing.Point(3, 134)
+        Me.Deduction_grid.Location = New System.Drawing.Point(3, 142)
         Me.Deduction_grid.Name = "Deduction_grid"
         Me.Deduction_grid.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None
         Me.Deduction_grid.RowHeadersVisible = False
@@ -1703,7 +1716,7 @@ Partial Class frmPayout
         '
         Me.Label24.AutoSize = True
         Me.Label24.Font = New System.Drawing.Font("Dubai", 8.249999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label24.Location = New System.Drawing.Point(3, 173)
+        Me.Label24.Location = New System.Drawing.Point(3, 181)
         Me.Label24.Name = "Label24"
         Me.Label24.Size = New System.Drawing.Size(320, 18)
         Me.Label24.TabIndex = 89
@@ -1714,7 +1727,7 @@ Partial Class frmPayout
         '
         Me.Undo_BTN.BackColor = System.Drawing.Color.LightGray
         Me.Undo_BTN.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Undo_BTN.Location = New System.Drawing.Point(3, 194)
+        Me.Undo_BTN.Location = New System.Drawing.Point(3, 202)
         Me.Undo_BTN.Name = "Undo_BTN"
         Me.Undo_BTN.Size = New System.Drawing.Size(112, 32)
         Me.Undo_BTN.TabIndex = 88
@@ -2190,7 +2203,7 @@ Partial Class frmPayout
     Friend WithEvents Additional_BTN As Button
     Friend WithEvents Additional_Panel As Panel
     Friend WithEvents Label37 As Label
-    Friend WithEvents Label41 As Label
+    Friend WithEvents TransacAdd_lbl As Label
     Friend WithEvents Label42 As Label
     Friend WithEvents Label43 As Label
     Friend WithEvents SaveAdd_BTN As Button
@@ -2205,4 +2218,5 @@ Partial Class frmPayout
     Friend WithEvents Deduc_BTN As DataGridViewButtonColumn
     Friend WithEvents Label44 As Label
     Friend WithEvents MonthlyRate_txt As TextBox
+    Friend WithEvents Deduction_BTN As Button
 End Class

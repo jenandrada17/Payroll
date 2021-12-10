@@ -86,11 +86,11 @@ Public Class frmReport
                                 '============================= NAME AND ATTENDANCE ============================  
                                 Dim namee As String = .Item("FULLNAME")
                                 Dim BASIC As Double = .Item("TOTAL_BASIC")
-                                Dim OVERTIME As Double = .Item("TOTAL_OVERTIME")
-                                Dim HOLIDAY As Double = .Item("TOTAL_REGHOLIDAY") + .Item("TOTAL_SPECHOLIDAY")
-                                Dim N_DIFF As Double = .Item("TOTAL_NIGHT_RATE")
+                                Dim OVERTIME As Decimal = .Item("TOTAL_OVERTIME")
+                                Dim HOLIDAY As Decimal = .Item("TOTAL_REGHOLIDAY") + .Item("TOTAL_SPECHOLIDAY")
+                                Dim N_DIFF As Decimal = .Item("TOTAL_NIGHT_RATE")
                                 Dim PI_ECOLA_SIL As Double = Get_PI_ECOLA_SIL(BIO_NO, paydatee)
-                                Dim TARDINESS As Double = .Item("TOTAL_LATE_UT")
+                                Dim TARDINESS As Decimal = .Item("TOTAL_LATE_UT")
                                 Dim SSS As Double = .Item("SSS_COMP")
                                 Dim PHIC As Double = .Item("PHILHEALTH_COMP")
                                 Dim PAGIBIG As Double = .Item("PAGIBIG_COMP")
@@ -99,6 +99,14 @@ Public Class frmReport
                                 Dim BRANCH_CODE As String = IIf(.Item("BRANCH_CODE") = "" Or IsDBNull(.Item("BRANCH_CODE")), .Item("HO_CATEGORY"), .Item("BRANCHNAME"))
                                 Dim COMPANY As String = .Item("COMPANY")
                                 Dim HO_CATEGORY As String = IIf(IsDBNull(.Item("HO_CATEGORY")), "", .Item("HO_CATEGORY"))
+                                Dim Minimum_rate As Double = IIf(IsDBNull(.Item("BRANCH_CODE")) Or .Item("BRANCH_CODE").Equals(""), GetMinimumRate("CITY", "GENSAN"), GetMinimumRate("BRANCHCODE", .Item("BRANCH_CODE")))
+                                Dim Rate As Decimal = IIf(IsDBNull(.Item("RATE_DAILY")) Or .Item("RATE_DAILY") = 0, Minimum_rate, .Item("RATE_DAILY"))
+
+                                If Rate > Minimum_rate Then
+                                    OVERTIME = 0
+                                    HOLIDAY = 0
+                                    TARDINESS = 0
+                                End If
 
                                 If COMPANY = "DALTON" Then
                                     BRANCH_CODE = IIf(.Item("BRANCH_CODE") = "" Or IsDBNull(.Item("BRANCH_CODE")), .Item("HO_CATEGORY"), TitleCase(.Item("COMPANY")) & "-" & .Item("BRANCHNAME"))

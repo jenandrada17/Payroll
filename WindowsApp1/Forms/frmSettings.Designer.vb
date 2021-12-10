@@ -784,7 +784,6 @@ Partial Class frmSettings
         '
         Me.Allow_Category_Combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Allow_Category_Combo.FormattingEnabled = True
-        Me.Allow_Category_Combo.Items.AddRange(New Object() {"Carekit", "Boarding", "Incentives", "Positional", "Transfer", "Transportation"})
         Me.Allow_Category_Combo.Location = New System.Drawing.Point(79, 3)
         Me.Allow_Category_Combo.Name = "Allow_Category_Combo"
         Me.Allow_Category_Combo.Size = New System.Drawing.Size(291, 33)

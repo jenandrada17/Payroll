@@ -42,7 +42,10 @@ Module SaveUpdate
     End Sub
 
     Friend Sub SaveAttendanceEE(biometric As Integer, paydate As String, days As String, overTime As String, late_total As String,
-                                  under_total As String, regHoliday As String, specHoliday As String, Optional SIL As Double = 0, Optional MORNING_OT As String = "", Optional NIGHT_RATE As String = "")
+                                  under_total As String, regHoliday As String, specHoliday As String, Optional SIL As Double = 0, Optional NIGHT_RATE As String = "")
+
+        'Friend Sub SaveAttendanceEE(biometric As Integer, paydate As String, days As String, overTime As String, late_total As String,
+        '                              under_total As String, regHoliday As String, specHoliday As String, Optional SIL As Double = 0, Optional MORNING_OT As String = "", Optional NIGHT_RATE As String = "")
 
         Dim mysql As String
 
@@ -812,7 +815,8 @@ Module SaveUpdate
                                 NoOfDays = .Item("PRESENT_DAYS")
 
                                 If Not rate > Minimum_rate Then
-                                    RegularOT = .Item("OVERTIME") + .Item("MORNING_OT")
+                                    RegularOT = .Item("OVERTIME")
+                                    'RegularOT = .Item("OVERTIME") + .Item("MORNING_OT")
                                     SpecialHol = .Item("SPECHOLIDAY")
                                     RegularHol = .Item("REGHOLIDAY")
                                     Late = .Item("LATE")
@@ -960,7 +964,7 @@ Module SaveUpdate
                     '============================================= IF NOT TRAINEE CALCULATE SBU ==================================================  
                     If noOf_days_training = 0 Then
 
-                        If SBU_notFull(bioNo) Then
+                        If SBU_With_Balance(bioNo) Then
 
                             SBU = SBU_Amount(bioNo)
 
@@ -1064,7 +1068,7 @@ Module SaveUpdate
                         Dim nightRate As Double = 0
                         Dim Allowances As Double = 0
                         Dim Deduction As Double = 0
-                        Dim Minimum_rate As Double = IIf(IsDBNull(.Item("BRANCH_CODE")) Or .Item("BRANCH_CODE").Equals(Nothing), GetMinimumRate("CITY", "GENSAN"), GetMinimumRate("BRANCHCODE", .Item("BRANCH_CODE")))
+                        Dim Minimum_rate As Double = IIf(IsDBNull(.Item("BRANCH_CODE")) Or .Item("BRANCH_CODE").Equals(""), GetMinimumRate("CITY", "GENSAN"), GetMinimumRate("BRANCHCODE", .Item("BRANCH_CODE")))
                         Dim Ecola As Double = GetEcola("BRANCHCODE", .Item("BRANCH_CODE"))
 
                         BiometricID = .Item("BIOMETRICID")
@@ -1115,6 +1119,8 @@ Module SaveUpdate
 
                                 Dim dr_11 As DataRow = ds_1.Tables(0).Rows(0)
                                 With dr_11
+
+                                    NoOfDays = .Item("PRESENT_DAYS")
 
                                     If Not rate > Minimum_rate Then
                                         RegularOT = .Item("OVERTIME") + .Item("MORNING_OT")
@@ -1249,7 +1255,7 @@ Module SaveUpdate
                         '============================================= CHECK IF TRAINEE (IF NOT CALCULATE SBU) ==================================================  
                         If noOf_days_training = 0 Then
 
-                            If SBU_notFull(BiometricID) Then '================ CHECK SBU TOTAL DISTRIB IF ALREADY REACH THE LIMIT ==============
+                            If SBU_With_Balance(BiometricID) Then '================ CHECK SBU TOTAL DISTRIB IF ALREADY REACH THE LIMIT ==============
 
                                 SBU = SBU_Amount(BiometricID)
 
@@ -1851,49 +1857,51 @@ Module SaveUpdate
         Return New String(fullString.Where(Function(x) Not Char.IsWhiteSpace(x)).ToArray())
     End Function
 
-    Public Sub SAVE_Emp_SBU_AMOUNT_PRINCIPAL_CREDIT_NAME(EMP_NO As String, CATEGORY As String, AMOUNT As String, PRINCIPAL As String, CREDIT As String, BALANCE As String, RowNo As Integer)
-        If EMP_NO.TrimEnd = "addt'l. cash bond" Then Exit Sub
+    'Public Sub SAVE_Emp_SBU_AMOUNT_PRINCIPAL_CREDIT_NAME(EMP_NO As String, CATEGORY As String, AMOUNT As String, PRINCIPAL As String, CREDIT As String, BALANCE As String, RowNo As Integer)
+    '    If EMP_NO.TrimEnd = "addt'l. cash bond" Then
+    '        Exit Sub
+    '    End If
 
-        If EMP_NO <> "" Or EMP_NO <> Nothing Then
+    '    If EMP_NO <> "" Or EMP_NO <> Nothing Then
 
-            Dim mysql As String
-            Dim BIO As String = ""
+    '        Dim mysql As String
+    '        Dim BIO As String = ""
 
-            '====================== GET BIO_NO FOR SAVING TO PAYROLL_SBU  ==================
-            mysql = "Select * From PAYROLL_EMPLOYEE WHERE EMP_NO = '" & EMP_NO.TrimEnd & "'"
-            Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
-                If ds.Tables(0).Rows.Count > 0 Then
-                    Dim data As DataRow = ds.Tables(0).Rows(0)
-                    With data
-                        BIO = .Item("BIO_NO")
-                    End With
-                Else
-                    Exit Sub
-                End If
-            End Using
+    '        '====================== GET BIO_NO FOR SAVING TO PAYROLL_SBU  ==================
+    '        mysql = "Select * From PAYROLL_EMPLOYEE WHERE EMP_NO = '" & EMP_NO.TrimEnd & "'"
+    '        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+    '            If ds.Tables(0).Rows.Count > 0 Then
+    '                Dim data As DataRow = ds.Tables(0).Rows(0)
+    '                With data
+    '                    BIO = .Item("BIO_NO")
+    '                End With
+    '            Else
+    '                Exit Sub
+    '            End If
+    '        End Using
 
-            '====================== ADD NEW PAYROLL_SBU ==================
-            mysql = "Select * From PAYROLL_SBU Rows 1"
-            Using dssS As DataSet = LoadSQL(mysql, "PAYROLL_SBU")
+    '        '====================== ADD NEW PAYROLL_SBU ==================
+    '        mysql = "Select * From PAYROLL_SBU Rows 1"
+    '        Using dssS As DataSet = LoadSQL(mysql, "PAYROLL_SBU")
 
-                Dim dsNewRow As DataRow = dssS.Tables(0).NewRow
-                With dsNewRow
+    '            Dim dsNewRow As DataRow = dssS.Tables(0).NewRow
+    '            With dsNewRow
 
-                    .Item("BIO_NO") = BIO
-                    .Item("PRINCIPAL") = IIf(PRINCIPAL = Nothing, 0, PRINCIPAL)
-                    .Item("CREDIT") = IIf(CREDIT = Nothing, 0, CREDIT)
-                    .Item("BALANCE") = IIf(BALANCE = Nothing, PRINCIPAL, BALANCE)
-                    .Item("CATEGORY") = CATEGORY
-                    .Item("AMOUNT") = IIf(AMOUNT = Nothing, 250, AMOUNT)
+    '                .Item("BIO_NO") = BIO
+    '                .Item("PRINCIPAL") = IIf(PRINCIPAL = Nothing, 0, PRINCIPAL)
+    '                .Item("CREDIT") = IIf(CREDIT = Nothing, 0, CREDIT)
+    '                .Item("BALANCE") = IIf(BALANCE = Nothing, PRINCIPAL, BALANCE)
+    '                .Item("CATEGORY") = CATEGORY
+    '                .Item("AMOUNT") = IIf(AMOUNT = Nothing, 250, AMOUNT)
 
-                End With
-                dssS.Tables(0).Rows.Add(dsNewRow)
-                SaveEntry(dssS)
-                Console.WriteLine("NEWWWW -" & EMP_NO & "- " & RowNo - 1)
-            End Using
-        End If
+    '            End With
+    '            dssS.Tables(0).Rows.Add(dsNewRow)
+    '            SaveEntry(dssS)
+    '            Console.WriteLine("NEWWWW -" & EMP_NO & "- " & RowNo - 1)
+    '        End Using
+    '    End If
 
-    End Sub
+    'End Sub
 
     Public Sub SAVE_13MONTH_EMPNO(EMP_NO As String, RowNo As Integer)
         Dim mysql As String = "Select * From PAYROLL_13MONTH Rows 1"

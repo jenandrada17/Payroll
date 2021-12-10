@@ -92,14 +92,14 @@ Public Class frmPayout
             AttendanceDetails(BIO_NO, paydate_, NoOfDays_TXT, RegularOT_TXT, SpecialHol_TXT, RegularHol_TXT,
                                         Late_TXT, UnderTime_TXT, TrainingDays_LBL, NightTime_TXT)
 
-            'If Rate_TXT.Text > MonthlyRate_txt.Tag Then
-            '    RegularOT_TXT.Text = 0.00
-            '    SpecialHol_TXT.Text = 0.00
-            '    RegularHol_TXT.Text = 0.00
-            '    Late_TXT.Text = 0.00
-            '    UnderTime_TXT.Text = 0.00
-            '    NightTime_TXT.Text = 0.00
-            'End If
+            If Rate_TXT.Text > MonthlyRate_txt.Tag Then
+                RegularOT_TXT.Text = 0
+                SpecialHol_TXT.Text = 0
+                RegularHol_TXT.Text = 0
+                Late_TXT.Text = 0
+                UnderTime_TXT.Text = 0
+                NightTime_TXT.Text = 0
+            End If
             '============================ CHECK IF NOT TRAINEE ==================================  
             If TrainingDays_LBL.Text = 0 Or TrainingDays_LBL.Text = Nothing Then
                 Training_GB.Visible = False
@@ -125,12 +125,12 @@ Public Class frmPayout
 
                     sched_deduc = "CLOSE PAYROLL"
                 Else
-                    SSSComp_LBL.Text = 0.00
-                    HDMF_LBL.Text = 0.00
-                    Philhealth_LBL.Text = 0.00
-                    Tax_Wheld_LBL.Text = 0.00
-                    SSSLoan_LBL.Text = 0.00
-                    PagibigLoan_LBL.Text = 0.00
+                    SSSComp_LBL.Text = 0
+                    HDMF_LBL.Text = 0
+                    Philhealth_LBL.Text = 0
+                    Tax_Wheld_LBL.Text = 0
+                    SSSLoan_LBL.Text = 0
+                    PagibigLoan_LBL.Text = 0
                     Previous_groupB.Visible = False
 
                     sched_deduc = "OPEN PAYROLL"
@@ -416,7 +416,7 @@ Public Class frmPayout
             TotalLateUnder_LBL.Text = (LATEE + UNDERTIMEE).ToString("N")
             TotalLateUnder_LBL.Tag = LATEE + UNDERTIMEE
 
-            ''============================= FOR MONTHLY RATE (IF ABOVE MINIMUM) ==================================  
+            ''============================= FOR MONTHLY RATE/FIXED RATE (IF ABOVE MINIMUM) ==================================  
             If RATEE > CDec(MonthlyRate_txt.Tag) Then '=== TAG(MINIMUM DAILY RATE) 
                 Dim BASICC As Decimal = CDec(MonthlyRate_txt.Text) / 2
 
@@ -427,14 +427,14 @@ Public Class frmPayout
                     TotalBasic_LBL.Text = (BASICC - (MINUS_DAYS * RATEE)).ToString("N")
                 End If
 
-                TotalHol_LBL.Text = 0.00
-                TotalHol_LBL.Tag = 0.00
-                TotalOT_LBL.Text = 0.00
-                TotalOT_LBL.Tag = 0.00
-                TotalLateUnder_LBL.Text = 0.00
-                TotalLateUnder_LBL.Tag = 0.00
-                TotalNight_LBL.Text = 0.00
-                TotalNight_LBL.Tag = 0.00
+                TotalHol_LBL.Text = 0
+                TotalHol_LBL.Tag = 0
+                TotalOT_LBL.Text = 0
+                TotalOT_LBL.Tag = 0
+                TotalLateUnder_LBL.Text = 0
+                TotalLateUnder_LBL.Tag = 0
+                TotalNight_LBL.Text = 0
+                TotalNight_LBL.Tag = 0
 
             End If
 
@@ -464,25 +464,53 @@ Public Class frmPayout
 
     Private Sub SaveAdd_BTN_Click(sender As Object, e As EventArgs) Handles SaveAdd_BTN.Click
         If CategoryAdd_TXT.Text <> String.Empty And AmountAdd_TXT.Text <> String.Empty Then
-            Allowance_grid.Visible = True
-            Dim rowId As Integer = Allowance_grid.Rows.Add()
-            Dim row As DataGridViewRow = Allowance_grid.Rows(rowId)
 
-            Dim toProper As String
-            Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
+            If TransacAdd_lbl.Text = "Allowance" Then
 
-            toProper = info.ToTitleCase(CategoryAdd_TXT.Text)
-            Dim amountt As Double = AmountAdd_TXT.Text
+                Allowance_grid.Visible = True
+                Dim rowId As Integer = Allowance_grid.Rows.Add()
+                Dim row As DataGridViewRow = Allowance_grid.Rows(rowId)
 
-            row.Cells(0).Value = toProper
-            row.Cells(1).Value = amountt.ToString("N")
+                Dim toProper As String
+                Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
 
-            CancelAdd_BTN.PerformClick()
-            Additional_Panel.Visible = False
+                toProper = info.ToTitleCase(CategoryAdd_TXT.Text)
+                Dim amountt As Double = AmountAdd_TXT.Text
 
-            AdjustHeightOfGridBasedOnRows(Allowance_grid, 25)
+                row.Cells(0).Value = toProper
+                row.Cells(1).Value = amountt.ToString("N")
 
-            Calculate_Allowance()
+                CancelAdd_BTN.PerformClick()
+                Additional_Panel.Visible = False
+
+                AdjustHeightOfGridBasedOnRows(Allowance_grid, 25)
+
+                Calculate_Allowance()
+
+            ElseIf TransacAdd_lbl.Text = "Deduction" Then
+
+                Deduction_grid.Visible = True
+                Dim rowId As Integer = Deduction_grid.Rows.Add()
+                Dim row As DataGridViewRow = Deduction_grid.Rows(rowId)
+
+                Dim toProper As String
+                Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
+
+                toProper = info.ToTitleCase(CategoryAdd_TXT.Text)
+                Dim amountt As Double = AmountAdd_TXT.Text
+
+                row.Cells(0).Value = toProper
+                row.Cells(1).Value = amountt.ToString("N")
+                row.Cells(3).Value = "OFF"
+
+                CancelAdd_BTN.PerformClick()
+                Additional_Panel.Visible = False
+
+                AdjustHeightOfGridBasedOnRows(Deduction_grid, 25)
+
+                Calculate_Deduction()
+            End If
+
             Calculate_NetPay()
 
         End If
@@ -532,8 +560,10 @@ Public Class frmPayout
     End Sub
 
     Private Sub Additional_BTN_Click(sender As Object, e As EventArgs) Handles Additional_BTN.Click
-        Additional_Panel.Location = New Point(ClientSize.Width / 2 - Additional_Panel.Size.Width / 2, ClientSize.Height / 2 - Additional_Panel.Size.Height / 2)
+        'Additional_Panel.Location = New Point(ClientSize.Width / 2 - Additional_Panel.Size.Width / 2, ClientSize.Height / 2 - Additional_Panel.Size.Height / 2)
         Additional_Panel.Visible = True
+        TransacAdd_lbl.Text = "Allowance"
+        Additional_Panel.BackColor = Color.LightCoral
     End Sub
 
     Private Sub Additional_Panel_MouseDown(sender As Object, e As MouseEventArgs) Handles Additional_Panel.MouseDown
@@ -548,8 +578,11 @@ Public Class frmPayout
         End If
     End Sub
 
-    Private Sub OtherDeduction_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles BiometricID_TXT.KeyPress
-
+    Private Sub Deduction_BTN_Click(sender As Object, e As EventArgs) Handles Deduction_BTN.Click
+        'Additional_Panel.Location = New Point(ClientSize.Width / 2 - Additional_Panel.Size.Width / 2, ClientSize.Height / 2 - Additional_Panel.Size.Height / 2)
+        Additional_Panel.Visible = True
+        TransacAdd_lbl.Text = "Deduction"
+        Additional_Panel.BackColor = Color.Chocolate
     End Sub
 
     Private Sub Additional_Panel_MouseUp(sender As Object, e As MouseEventArgs) Handles Additional_Panel.MouseUp
