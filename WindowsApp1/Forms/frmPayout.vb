@@ -247,8 +247,8 @@ Public Class frmPayout
     Private Sub Details_Save_BTN_Click(sender As Object, e As EventArgs) Handles Details_Save_BTN.Click
 
         If Not Name_TXT.Text = String.Empty Then
-
             Dim BIO_NO As String = BiometricID_TXT.Text
+
             Dim allow_list = Nothing, deduc_list As String = Nothing
 
             Dim rate As Double = Rate_TXT.Text
@@ -419,9 +419,11 @@ Public Class frmPayout
 
                 If CDbl(NoOfDays_TXT.Text) >= STANDARD_DAYS Then  '=== CHECK IF ABOVE MINIMUM
                     TotalBasic_LBL.Text = BASICC.ToString("N")
+                    TotalBasic_LBL.Tag = BASICC
                 Else
                     Dim MINUS_DAYS As Double = STANDARD_DAYS - CDbl(NoOfDays_TXT.Text)
                     TotalBasic_LBL.Text = (BASICC - (MINUS_DAYS * RATEE)).ToString("N")
+                    TotalBasic_LBL.Tag = BASICC - (MINUS_DAYS * RATEE)
                 End If
 
                 TotalHol_LBL.Text = 0

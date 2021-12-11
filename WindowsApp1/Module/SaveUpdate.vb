@@ -49,18 +49,21 @@ Module SaveUpdate
 
         Dim mysql As String
 
-        mysql = $"Select * FROM PAYROLL_ATTENDANCE where BIOMETRICID = '{biometric}' and PAYDATE = '{paydate}'"
+        mysql = $"Select * FROM PAYROLL_ATTENDANCE inner join payroll_employee on BIO_NO = BIOMETRICID where BIOMETRICID = '{biometric}' and PAYDATE = '{paydate}'"
         Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
         If dss.Tables(0).Rows.Count > 0 Then
             For Each dr In dss.Tables(0).Rows
                 With dr
+
+                    Dim fix_monthly As Boolean = IIf(IsDBNull(.item("FIX_MONTHLY_RATE")), False, .item("FIX_MONTHLY_RATE"))
+
                     .Item("PRESENT_DAYS") = days
+                    .Item("SIL") = SIL
                     .Item("OVERTIME") = overTime
                     .Item("LATE") = late_total
                     .Item("UNDERTIME") = under_total
                     .Item("REGHOLIDAY") = regHoliday
                     .Item("SPECHOLIDAY") = specHoliday
-                    .Item("SIL") = SIL
 
                     If NIGHT_RATE <> Nothing Then
                         .Item("NIGHT_RATE") = NIGHT_RATE
