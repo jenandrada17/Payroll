@@ -98,17 +98,23 @@
 
     Private Sub RemoveToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles RemoveToolStripMenuItem.Click
         If lvHoliday.SelectedItems.Count > 0 Then
-            For Each item As ListViewItem In lvHoliday.SelectedItems
-                RemoveHoliday(item.SubItems(0).Text)
 
-                If Regular_RB.Checked = True Then
-                    REGULDARHolidayLists(lvHoliday)
-                Else
-                    SPECIALHolidayLists(lvHoliday)
-                End If
+            Dim result As DialogResult = MsgBox($"Holiday will be removed, proceed anyway?", MessageBoxButtons.YesNo)
+            If result = DialogResult.Yes Then
 
-                SaveLogs($"REMOVED HOLIDAY - Name({item.SubItems(1).Text}), Date({item.SubItems(0).Text})", frmMainForm.UserName_LBL.Text)
-            Next
+                For Each item As ListViewItem In lvHoliday.SelectedItems
+                    RemoveHoliday(item.SubItems(0).Text)
+
+                    If Regular_RB.Checked = True Then
+                        REGULDARHolidayLists(lvHoliday)
+                    Else
+                        SPECIALHolidayLists(lvHoliday)
+                    End If
+
+                    SaveLogs($"REMOVED HOLIDAY - Name({item.SubItems(1).Text}), Date({item.SubItems(0).Text})", frmMainForm.UserName_LBL.Text)
+                Next
+
+            End If
         End If
     End Sub
 
@@ -171,12 +177,22 @@
     Private Sub Rate_EmpSave_BTN_Click(sender As Object, e As EventArgs) Handles Rate_EmpSave_BTN.Click
         If Not Rate_BioNo_TXT.Text = "" Then
 
-            SaveRATE("BIO_NO", Rate_BioNo_TXT.Text, Rate_EmpAmount_TXT.Text)
+            Dim result As DialogResult = MsgBox($"Rate for {Rate_Employee_TXT.Text} will be Save/Updated, proceed anyway?", MessageBoxButtons.YesNo)
+            If result = DialogResult.Yes Then
 
-            SaveLogs($"UPDATED RATE - {Rate_Employee_TXT.Text} ({Rate_BioNo_TXT.Text}), Rate({Rate_EmpAmount_TXT.Text})", frmMainForm.UserName_LBL.Text)
+                Dim fix_monthly As Boolean = False
+                If RateFixYes_RB.Checked = True Then
+                    fix_monthly = True
+                End If
 
-            Rate_EmpClear_BTN.PerformClick()
-            Lists_Rate(Rate_list)
+                SaveRATE("BIO_NO", Rate_BioNo_TXT.Text, Rate_EmpAmount_TXT.Text, fix_monthly)
+
+                SaveLogs($"UPDATED RATE - {Rate_Employee_TXT.Text} ({Rate_BioNo_TXT.Text}), Rate({Rate_EmpAmount_TXT.Text})", frmMainForm.UserName_LBL.Text)
+
+                Rate_EmpClear_BTN.PerformClick()
+                Lists_Rate(Rate_list)
+            End If
+
         End If
     End Sub
 
@@ -193,8 +209,9 @@
             Rate_Employee_TXT.Text = ""
             Rate_EmpAmount_TXT.Text = ""
             MonthlyRate_TXT.Text = ""
+            RateFixNo_RB.Checked = True
         Else
-            Payout_Details(Rate_BioNo_TXT.Text, Rate_Employee_TXT, Rate_EmpAmount_TXT, MonthlyRate_TXT)
+            Payout_Details(Rate_BioNo_TXT.Text, Rate_Employee_TXT, Rate_EmpAmount_TXT, RateFixYes_RB, MonthlyRate_TXT)
         End If
 
     End Sub
@@ -202,17 +219,21 @@
     Private Sub Rate_Branch_BTN_Click(sender As Object, e As EventArgs) Handles Rate_Branch_BTN.Click
         If Rate_City_ComboB.SelectedIndex >= 0 And Not Rate_CityAmount_TXT.Text = "" Then
 
-            SaveRATE_City("CITY", Rate_City_ComboB.Text, Rate_CityAmount_TXT.Text, True)
+            Dim result As DialogResult = MsgBox($"Minimum rate will be Save/Updated, proceed anyway?", MessageBoxButtons.YesNo)
+            If result = DialogResult.Yes Then
 
-            SaveMinimum_RATE(Rate_City_ComboB.Text, Rate_CityAmount_TXT.Text, Ecola_TXT.Text)
+                SaveRATE_City("CITY", Rate_City_ComboB.Text, Rate_CityAmount_TXT.Text, True)
 
-            SaveLogs($"UPDATED MINIMUM RATE - City({Rate_City_ComboB.Text}), Rate({Rate_CityAmount_TXT.Text})", frmMainForm.UserName_LBL.Text)
+                SaveMinimum_RATE(Rate_City_ComboB.Text, Rate_CityAmount_TXT.Text, Ecola_TXT.Text)
 
-            CityClear_BTN.PerformClick()
+                SaveLogs($"UPDATED MINIMUM RATE - City({Rate_City_ComboB.Text}), Rate({Rate_CityAmount_TXT.Text})", frmMainForm.UserName_LBL.Text)
 
-            MsgBox("Successfully updated!", MsgBoxStyle.Information, "Information")
+                CityClear_BTN.PerformClick()
 
-            Lists_Rate(Rate_list)
+                MsgBox("Successfully updated!", MsgBoxStyle.Information, "Information")
+
+                Lists_Rate(Rate_list)
+            End If
 
         Else
 
@@ -283,12 +304,17 @@
 
         If FixYes_RadioB.Checked Then fix = "YES"
 
-        SaveAllowance(Allow_Name_TXT.Tag, Allow_Category_Combo.Text, Allow_Amount_TXT.Text, fix, Allow_Schedule_Combo.SelectedItem, everyThisDate, A_EffectiveDate_DTP.Value) ' Label14 is EMP_ID
 
-        SaveLogs($"ADDED ALLOWANCE - {Allow_Name_TXT.Text} ({Allow_Name_TXT.Tag}), Category({Allow_Category_Combo.Text}), Amount({Allow_Amount_TXT.Text}), Sched({Allow_Schedule_Combo.Text}), Effectivity({A_EffectiveDate_DTP.Value.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
+        Dim result As DialogResult = MsgBox($"Allowance for {Allow_Name_TXT.Text} will be Recorded, proceed anyway?", MessageBoxButtons.YesNo)
+        If result = DialogResult.Yes Then
 
-        Lists_Allowance(Allowance_LV)
-        Allow_Cancel_BTN.PerformClick()
+            SaveAllowance(Allow_Name_TXT.Tag, Allow_Category_Combo.Text, Allow_Amount_TXT.Text, fix, Allow_Schedule_Combo.SelectedItem, everyThisDate, A_EffectiveDate_DTP.Value) ' Label14 is EMP_ID
+
+            SaveLogs($"ADDED ALLOWANCE - {Allow_Name_TXT.Text} ({Allow_Name_TXT.Tag}), Category({Allow_Category_Combo.Text}), Amount({Allow_Amount_TXT.Text}), Sched({Allow_Schedule_Combo.Text}), Effectivity({A_EffectiveDate_DTP.Value.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
+
+            Lists_Allowance(Allowance_LV)
+            Allow_Cancel_BTN.PerformClick()
+        End If
 
     End Sub
 
@@ -389,16 +415,20 @@
         Else
             If Not Email_TXT.Text = String.Empty Or Not Password_TXT.Text = String.Empty Then
 
-                SaveEmail(Email_TXT.Text, Password_TXT.Text)
+                Dim result As DialogResult = MsgBox($"Email information will be changed, proceed anyway?", MessageBoxButtons.YesNo)
+                If result = DialogResult.Yes Then
 
-                SaveLogs($"CHANGED EMAIL SENDER {Email_TXT.Text}", frmMainForm.UserName_LBL.Text)
+                    SaveEmail(Email_TXT.Text, Password_TXT.Text)
 
-                Email_TXT.Clear()
-                Password_TXT.Clear()
-                Email_TXT.ReadOnly = True
-                Password_TXT.ReadOnly = True
-                GetEmail(Email_TXT, Password_TXT)
-                Email_Save_BTN.Text = "Change"
+                    SaveLogs($"CHANGED EMAIL SENDER {Email_TXT.Text}", frmMainForm.UserName_LBL.Text)
+
+                    Email_TXT.Clear()
+                    Password_TXT.Clear()
+                    Email_TXT.ReadOnly = True
+                    Password_TXT.ReadOnly = True
+                    GetEmail(Email_TXT, Password_TXT)
+                    Email_Save_BTN.Text = "Change"
+                End If
 
             Else
                 MsgBox("Please Complete the information!", MsgBoxStyle.Information, "Information")
@@ -499,7 +529,6 @@
         End If
     End Sub
 
-
     Private Sub ApproveToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ApproveToolStripMenuItem.Click
 
         If Allowance_LV.SelectedItems.Count > 0 Then
@@ -539,11 +568,17 @@
     Private Sub ClockBranch_BTN_Click(sender As Object, e As EventArgs) Handles ClockBranch_BTN.Click
 
         If ClockBranch_CB.SelectedIndex >= 0 And ClockBranch_IN_CB.SelectedIndex >= 0 And ClockBranch_OUT_CB.SelectedIndex >= 0 Then
-            Save_ClockINOUT("BRANCH_CODE", ClockBranch_CB.Text, ClockBranch_IN_CB.Text, ClockBranch_OUT_CB.Text)
-            Lists_TimeInOut(TimeInOut_LV)
 
-            SaveLogs($"UPDATED TIME IN/OUT FOR BRANCH({ClockBranch_CB.Text}),  In/Out({ClockBranch_IN_CB.Text} - {ClockBranch_OUT_CB.Text})", frmMainForm.UserName_LBL.Text)
-            ClearlBranch_BTN.PerformClick()
+            Dim result As DialogResult = MsgBox($"Time in/out for {ClockBranch_CB.Text} will be Save/Updated, proceed anyway?", MessageBoxButtons.YesNo)
+            If result = DialogResult.Yes Then
+
+                Save_ClockINOUT("BRANCH_CODE", ClockBranch_CB.Text, ClockBranch_IN_CB.Text, ClockBranch_OUT_CB.Text)
+                Lists_TimeInOut(TimeInOut_LV)
+
+                SaveLogs($"UPDATED TIME IN/OUT FOR BRANCH({ClockBranch_CB.Text}),  In/Out({ClockBranch_IN_CB.Text} - {ClockBranch_OUT_CB.Text})", frmMainForm.UserName_LBL.Text)
+                ClearlBranch_BTN.PerformClick()
+            End If
+
         End If
 
     End Sub
@@ -551,11 +586,16 @@
     Private Sub ClockSave_BTN_Click(sender As Object, e As EventArgs) Handles ClockSave_BTN.Click
 
         If ClockEmp_TXT.Text <> "" And ClockEmp_IN_CB.SelectedIndex >= 0 And ClockEmp_OUT_CB.SelectedIndex >= 0 Then
-            Save_ClockINOUT("BIO_NO", ClockBio_TXT.Text, ClockEmp_IN_CB.Text, ClockEmp_OUT_CB.Text)
-            Lists_TimeInOut(TimeInOut_LV)
 
-            SaveLogs($"UPDATED TIME IN/OUT FOR {ClockEmp_TXT.Text} ({ClockBio_TXT.Text}),  In/Out({ClockEmp_IN_CB.Text} - {ClockEmp_OUT_CB.Text})", frmMainForm.UserName_LBL.Text)
-            ClockClear_BTN.PerformClick()
+            Dim result As DialogResult = MsgBox($"Time in/out for {ClockEmp_TXT.Text} will be Save/Updated, proceed anyway?", MessageBoxButtons.YesNo)
+            If result = DialogResult.Yes Then
+
+                Save_ClockINOUT("BIO_NO", ClockBio_TXT.Text, ClockEmp_IN_CB.Text, ClockEmp_OUT_CB.Text)
+                Lists_TimeInOut(TimeInOut_LV)
+
+                SaveLogs($"UPDATED TIME IN/OUT FOR {ClockEmp_TXT.Text} ({ClockBio_TXT.Text}),  In/Out({ClockEmp_IN_CB.Text} - {ClockEmp_OUT_CB.Text})", frmMainForm.UserName_LBL.Text)
+                ClockClear_BTN.PerformClick()
+            End If
         End If
 
     End Sub
@@ -637,12 +677,17 @@
         'SaveCityBranch() 
 
         If City_Combo.Text <> Nothing And CityBName_Combo.Text <> Nothing And CityCode_Combo.Text <> Nothing And Address_Combo.Text <> Nothing Then
-            SaveCityBranch(CityCode_Combo.Text, CityBName_Combo.Text, City_Combo.Text, BranchCategory_Combo.Text, Address_Combo.Text)
-            Lists_City_Branch(CityBranch_List)
 
-            '==================== TRANSACTION LOGS =========================
-            If SaveCity_BTN.Tag = Nothing Then SaveCity_BTN.Tag = "ADDED"
-            SaveLogs($"{SaveCity_BTN.Tag} CITY BRANCH - City({City_Combo.Text}), Code({CityCode_Combo.Text}), BranchName({CityBName_Combo.Text}), BranchCat({BranchCategory_Combo.Text}), Address({Address_Combo.Text})", frmMainForm.UserName_LBL.Text)
+            Dim result As DialogResult = MsgBox($"Branch information will be Saved/Updated, proceed anyway?", MessageBoxButtons.YesNo)
+            If result = DialogResult.Yes Then
+
+                SaveCityBranch(CityCode_Combo.Text, CityBName_Combo.Text, City_Combo.Text, BranchCategory_Combo.Text, Address_Combo.Text)
+                Lists_City_Branch(CityBranch_List)
+
+                '==================== TRANSACTION LOGS =========================
+                If SaveCity_BTN.Tag = Nothing Then SaveCity_BTN.Tag = "ADDED"
+                SaveLogs($"{SaveCity_BTN.Tag} CITY BRANCH - City({City_Combo.Text}), Code({CityCode_Combo.Text}), BranchName({CityBName_Combo.Text}), BranchCat({BranchCategory_Combo.Text}), Address({Address_Combo.Text})", frmMainForm.UserName_LBL.Text)
+            End If
 
         Else
             MsgBox("Please Complete the Details", MsgBoxStyle.Exclamation, "Error")
@@ -708,4 +753,15 @@
             End If
         End If
     End Sub
+
+    Private Sub Rate_Employee_TXT_TextChanged(sender As Object, e As EventArgs) Handles Rate_Employee_TXT.TextChanged
+        'If Rate_Employee_TXT.Text IsNot Nothing Then
+        '    If Rate_Employee_TXT.Tag = True Then
+        '        RateFixYes_RB.Checked = True
+        '    Else
+        '        RateFixYes_RB.Checked = False
+        '    End If
+        'End If
+    End Sub
+
 End Class

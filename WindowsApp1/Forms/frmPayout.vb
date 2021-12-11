@@ -67,7 +67,7 @@ Public Class frmPayout
         If BiometricID_TXT.Text = "" Then
             Cancel_BTN.PerformClick()
         Else
-            Payout_Details(BiometricID_TXT.Text, Name_TXT, Rate_TXT, MonthlyRate_txt)
+            Payout_Details(BiometricID_TXT.Text, Name_TXT, Rate_TXT, RateFixYes_RB)
             DETAILS()
         End If
 
@@ -92,7 +92,7 @@ Public Class frmPayout
             AttendanceDetails(BIO_NO, paydate_, NoOfDays_TXT, RegularOT_TXT, SpecialHol_TXT, RegularHol_TXT,
                                         Late_TXT, UnderTime_TXT, TrainingDays_LBL, NightTime_TXT)
 
-            If Rate_TXT.Text > MonthlyRate_txt.Tag Then
+            If RateFixYes_RB.Checked = True Then
                 RegularOT_TXT.Text = 0
                 SpecialHol_TXT.Text = 0
                 RegularHol_TXT.Text = 0
@@ -175,7 +175,6 @@ Public Class frmPayout
         '========================== Check if allowance grid has rows ===================== 
 
         If Allowance_grid.RowCount > 0 Then
-            Label18.Visible = True
             Allowance_grid.Visible = True
             Undo_BTN.Visible = True
         Else
@@ -185,11 +184,9 @@ Public Class frmPayout
         '========================== Check if deduction grid has rows ===================== 
 
         If Deduction_grid.RowCount > 0 Then
-            Label22.Visible = True
             Deduction_grid.Visible = True
             Undo_BTN.Visible = True
         Else
-            Label22.Visible = False
             Deduction_grid.Visible = False
         End If
 
@@ -241,8 +238,6 @@ Public Class frmPayout
             End If
         Next
 
-        Label18.Visible = False
-        Label22.Visible = False
         Deduction_grid.Rows.Clear()
         Allowance_grid.Rows.Clear()
         Prev_Amount_lbl.Text = "-"
@@ -252,6 +247,7 @@ Public Class frmPayout
     Private Sub Details_Save_BTN_Click(sender As Object, e As EventArgs) Handles Details_Save_BTN.Click
 
         If Not Name_TXT.Text = String.Empty Then
+
             Dim BIO_NO As String = BiometricID_TXT.Text
             Dim allow_list = Nothing, deduc_list As String = Nothing
 
@@ -349,6 +345,7 @@ Public Class frmPayout
             BiometricID_TXT.Text = Payout_list.FocusedItem.SubItems(1).Tag
             emp_id = Payout_list.FocusedItem.SubItems(11).Tag
             TabControl1.SelectedIndex = 1
+            Additional_Panel.Visible = False
         End If
     End Sub
 
@@ -417,8 +414,8 @@ Public Class frmPayout
             TotalLateUnder_LBL.Tag = LATEE + UNDERTIMEE
 
             ''============================= FOR MONTHLY RATE/FIXED RATE (IF ABOVE MINIMUM) ==================================  
-            If RATEE > CDec(MonthlyRate_txt.Tag) Then '=== TAG(MINIMUM DAILY RATE) 
-                Dim BASICC As Decimal = CDec(MonthlyRate_txt.Text) / 2
+            If RateFixYes_RB.Checked = True Then '=== TAG(MINIMUM DAILY RATE) 
+                Dim BASICC As Decimal = CDec(RateFixYes_RB.Tag) / 2
 
                 If CDbl(NoOfDays_TXT.Text) >= STANDARD_DAYS Then  '=== CHECK IF ABOVE MINIMUM
                     TotalBasic_LBL.Text = BASICC.ToString("N")
@@ -467,48 +464,56 @@ Public Class frmPayout
 
             If TransacAdd_lbl.Text = "Allowance" Then
 
-                Allowance_grid.Visible = True
-                Dim rowId As Integer = Allowance_grid.Rows.Add()
-                Dim row As DataGridViewRow = Allowance_grid.Rows(rowId)
+                Dim result As DialogResult = MsgBox($"Additional Allowance for {Name_TXT.Text} will be added, proceed anyway?", MessageBoxButtons.YesNo)
+                If result = DialogResult.Yes Then
 
-                Dim toProper As String
-                Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
+                    Allowance_grid.Visible = True
+                    Dim rowId As Integer = Allowance_grid.Rows.Add()
+                    Dim row As DataGridViewRow = Allowance_grid.Rows(rowId)
 
-                toProper = info.ToTitleCase(CategoryAdd_TXT.Text)
-                Dim amountt As Double = AmountAdd_TXT.Text
+                    Dim toProper As String
+                    Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
 
-                row.Cells(0).Value = toProper
-                row.Cells(1).Value = amountt.ToString("N")
+                    toProper = info.ToTitleCase(CategoryAdd_TXT.Text)
+                    Dim amountt As Double = AmountAdd_TXT.Text
 
-                CancelAdd_BTN.PerformClick()
-                Additional_Panel.Visible = False
+                    row.Cells(0).Value = toProper
+                    row.Cells(1).Value = amountt.ToString("N")
 
-                AdjustHeightOfGridBasedOnRows(Allowance_grid, 25)
+                    CancelAdd_BTN.PerformClick()
+                    Additional_Panel.Visible = False
 
-                Calculate_Allowance()
+                    AdjustHeightOfGridBasedOnRows(Allowance_grid, 25)
+
+                    Calculate_Allowance()
+                End If
 
             ElseIf TransacAdd_lbl.Text = "Deduction" Then
 
-                Deduction_grid.Visible = True
-                Dim rowId As Integer = Deduction_grid.Rows.Add()
-                Dim row As DataGridViewRow = Deduction_grid.Rows(rowId)
+                Dim result As DialogResult = MsgBox($"Additional Deduction for {Name_TXT.Text} will be added, proceed anyway?", MessageBoxButtons.YesNo)
+                If result = DialogResult.Yes Then
 
-                Dim toProper As String
-                Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
+                    Deduction_grid.Visible = True
+                    Dim rowId As Integer = Deduction_grid.Rows.Add()
+                    Dim row As DataGridViewRow = Deduction_grid.Rows(rowId)
 
-                toProper = info.ToTitleCase(CategoryAdd_TXT.Text)
-                Dim amountt As Double = AmountAdd_TXT.Text
+                    Dim toProper As String
+                    Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
 
-                row.Cells(0).Value = toProper
-                row.Cells(1).Value = amountt.ToString("N")
-                row.Cells(3).Value = "OFF"
+                    toProper = info.ToTitleCase(CategoryAdd_TXT.Text)
+                    Dim amountt As Double = AmountAdd_TXT.Text
 
-                CancelAdd_BTN.PerformClick()
-                Additional_Panel.Visible = False
+                    row.Cells(0).Value = toProper
+                    row.Cells(1).Value = amountt.ToString("N")
+                    row.Cells(3).Value = "OFF"
 
-                AdjustHeightOfGridBasedOnRows(Deduction_grid, 25)
+                    CancelAdd_BTN.PerformClick()
+                    Additional_Panel.Visible = False
 
-                Calculate_Deduction()
+                    AdjustHeightOfGridBasedOnRows(Deduction_grid, 25)
+
+                    Calculate_Deduction()
+                End If
             End If
 
             Calculate_NetPay()
@@ -527,40 +532,41 @@ Public Class frmPayout
     End Sub
 
     Private Sub Refresh_BTN_Click(sender As Object, e As EventArgs) Handles Undo_BTN.Click
+        If Name_TXT.Text <> Nothing Then
+            Dim PAYROLL As String
+            If Paydate_ComboB.SelectedIndex >= 0 Then
+                PAYROLL = Paydate_ComboB.SelectedItem
+            Else
+                PAYROLL = paydate_
+            End If
 
-        Dim PAYROLL As String
-        If Paydate_ComboB.SelectedIndex >= 0 Then
-            PAYROLL = Paydate_ComboB.SelectedItem
-        Else
-            PAYROLL = paydate_
-        End If
+            Recorded_Details(BiometricID_TXT.Text, Allowance_grid, paydate_, "ALLOWANCE")
 
-        Recorded_Details(BiometricID_TXT.Text, Allowance_grid, paydate_, "ALLOWANCE")
+            'AllowanceDetails(BiometricID_TXT.Text, Allowance_grid, sched_deduc)
 
-        'AllowanceDetails(BiometricID_TXT.Text, Allowance_grid, sched_deduc)
+            DeductioneDetails_ORIG(BiometricID_TXT.Text, Deduction_grid, sched_deduc, PAYROLL)
 
-        DeductioneDetails_ORIG(BiometricID_TXT.Text, Deduction_grid, sched_deduc, PAYROLL)
+            Calculate_Gross()
 
-        Calculate_Gross()
+            Calculate_Allowance()
 
-        Calculate_Allowance()
+            Calculate_Deduction()
 
-        Calculate_Deduction()
+            Calculate_NetPay()
 
-        Calculate_NetPay()
+            Checkgrid_Visible()
 
-        Checkgrid_Visible()
-
-        If paydate_ = frmMainForm.Paydate.ToString("d") Then     '======== CHECK IF VALID FOR EDITING IF NOT DISABLE SAVING
-            Details_Save_BTN.Enabled = True
-        Else
-            Details_Save_BTN.Enabled = False
+            If paydate_ = frmMainForm.Paydate.ToString("d") Then     '======== CHECK IF VALID FOR EDITING IF NOT DISABLE SAVING
+                Details_Save_BTN.Enabled = True
+            Else
+                Details_Save_BTN.Enabled = False
+            End If
         End If
 
     End Sub
 
     Private Sub Additional_BTN_Click(sender As Object, e As EventArgs) Handles Additional_BTN.Click
-        'Additional_Panel.Location = New Point(ClientSize.Width / 2 - Additional_Panel.Size.Width / 2, ClientSize.Height / 2 - Additional_Panel.Size.Height / 2)
+        Additional_Panel.Location = New Point(175, 200)
         Additional_Panel.Visible = True
         TransacAdd_lbl.Text = "Allowance"
         Additional_Panel.BackColor = Color.LightCoral
@@ -579,10 +585,16 @@ Public Class frmPayout
     End Sub
 
     Private Sub Deduction_BTN_Click(sender As Object, e As EventArgs) Handles Deduction_BTN.Click
-        'Additional_Panel.Location = New Point(ClientSize.Width / 2 - Additional_Panel.Size.Width / 2, ClientSize.Height / 2 - Additional_Panel.Size.Height / 2)
+        Additional_Panel.Location = New Point(175, 340)
         Additional_Panel.Visible = True
         TransacAdd_lbl.Text = "Deduction"
         Additional_Panel.BackColor = Color.Chocolate
+    End Sub
+
+    Private Sub RateFixYes_RB_CheckedChanged(sender As Object, e As EventArgs) Handles RateFixYes_RB.CheckedChanged
+        If RateFixYes_RB.Checked = False Then
+            RateFixNo_RB.Checked = True
+        End If
     End Sub
 
     Private Sub Additional_Panel_MouseUp(sender As Object, e As MouseEventArgs) Handles Additional_Panel.MouseUp
@@ -760,62 +772,66 @@ Public Class frmPayout
 
     Private Sub Send_BTN_Click(sender As Object, e As EventArgs) Handles Send_BTN.Click
 
-        Dim datee As DateTime
+        Dim result As DialogResult = MessageBox.Show($"Deductions will take effect, do you want to proceed?", "Warning", MessageBoxButtons.YesNo)
+        If result = DialogResult.Yes Then
 
-        If Payslip_paydate_Combo.SelectedIndex >= 0 Then
-            datee = Payslip_paydate_Combo.Text
-        Else
-            MsgBox("Please Select Payroll.", MsgBoxStyle.Exclamation, "INVALID")
-            Exit Sub
-        End If
+            Dim datee As DateTime
 
-        If All_RadioB.Checked = True Then
-
-            Payslip_All()
-
-            SaveLogs($"PAYSLIP EMAILED TO ALL EMPLOYEES, Payroll({datee.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
-
-        ElseIf Company_RadioB.Checked = True Then
-
-            If Company_ComboB.SelectedIndex >= 0 Then
-                Payslip_By("COMPANY", Company_ComboB.Text)
-
-                SaveLogs($"PAYSLIP EMAILED PER COMPANY - {Company_ComboB.Text}, Payroll({datee.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
+            If Payslip_paydate_Combo.SelectedIndex >= 0 Then
+                datee = Payslip_paydate_Combo.Text
             Else
-                MsgBox("Please Select Branch.", MsgBoxStyle.Exclamation, "INVALID")
-            End If
-
-        ElseIf Branch_RadioB.Checked = True Then
-
-            If Branch_ComboB.SelectedIndex >= 0 Then
-                Payslip_By("BRANCH_CODE", Branch_ComboB.Text)
-
-                SaveLogs($"PAYSLIP EMAILED PER BRANCH - {Branch_ComboB.Text}, Payroll({datee.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
-            Else
-                MsgBox("Please Select Branch.", MsgBoxStyle.Exclamation, "INVALID")
-            End If
-
-        Else
-
-            LoadPayslip(Employee_TXT.Tag, Payslip_paydate_Combo.Text)
-
-            Deduct_ifExist(Employee_TXT.Tag, Payslip_paydate_Combo.Text)
-
-            '================================ CHECK IF VALID EMAIL ADDRESS ============================
-            Dim FoundMatch As Boolean = Regex.IsMatch(Email_TXT.Text, "\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase)
-
-            If Not FoundMatch Then
-                MsgBox(Employee_TXT.Text & " has an invalid email address.", MsgBoxStyle.Exclamation, "INVALID")
+                MsgBox("Please Select Payroll.", MsgBoxStyle.Exclamation, "INVALID")
                 Exit Sub
-            Else
-                '================================ SEND TO EMAIL ADDRESS IF VALID ============================
-                Send_Email(ReportViewer_payslip.LocalReport.Render("PDF"), Email_TXT.Text, Employee_TXT.Text, Payslip_paydate_Combo.Text, BodyText_RichB.Text, datee.ToString("MMMM dd, yyyy") & " PAYROLL")
-
-                MsgBox("Email sent to " & Employee_TXT.Text, MsgBoxStyle.Information, "Information")
             End If
 
-            SaveLogs($"PAYSLIP EMAILED TO {Employee_TXT.Text}({Employee_TXT.Tag})", frmMainForm.UserName_LBL.Text)
+            If All_RadioB.Checked = True Then
 
+                Payslip_All()
+
+                SaveLogs($"PAYSLIP EMAILED TO ALL EMPLOYEES, Payroll({datee.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
+
+            ElseIf Company_RadioB.Checked = True Then
+
+                If Company_ComboB.SelectedIndex >= 0 Then
+                    Payslip_By("COMPANY", Company_ComboB.Text)
+
+                    SaveLogs($"PAYSLIP EMAILED PER COMPANY - {Company_ComboB.Text}, Payroll({datee.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
+                Else
+                    MsgBox("Please Select Branch.", MsgBoxStyle.Exclamation, "INVALID")
+                End If
+
+            ElseIf Branch_RadioB.Checked = True Then
+
+                If Branch_ComboB.SelectedIndex >= 0 Then
+                    Payslip_By("BRANCH_CODE", Branch_ComboB.Text)
+
+                    SaveLogs($"PAYSLIP EMAILED PER BRANCH - {Branch_ComboB.Text}, Payroll({datee.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
+                Else
+                    MsgBox("Please Select Branch.", MsgBoxStyle.Exclamation, "INVALID")
+                End If
+
+            Else
+
+                LoadPayslip(Employee_TXT.Tag, Payslip_paydate_Combo.Text)
+
+                Deduct_ifExist(Employee_TXT.Tag, Payslip_paydate_Combo.Text)
+
+                '================================ CHECK IF VALID EMAIL ADDRESS ============================
+                Dim FoundMatch As Boolean = Regex.IsMatch(Email_TXT.Text, "\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase)
+
+                If Not FoundMatch Then
+                    MsgBox(Employee_TXT.Text & " has an invalid email address.", MsgBoxStyle.Exclamation, "INVALID")
+                    Exit Sub
+                Else
+                    '================================ SEND TO EMAIL ADDRESS IF VALID ============================
+                    Send_Email(ReportViewer_payslip.LocalReport.Render("PDF"), Email_TXT.Text, Employee_TXT.Text, Payslip_paydate_Combo.Text, BodyText_RichB.Text, datee.ToString("MMMM dd, yyyy") & " PAYROLL")
+
+                    MsgBox("Email sent to " & Employee_TXT.Text, MsgBoxStyle.Information, "Information")
+                End If
+
+                SaveLogs($"PAYSLIP EMAILED TO {Employee_TXT.Text}({Employee_TXT.Tag})", frmMainForm.UserName_LBL.Text)
+
+            End If
         End If
 
 

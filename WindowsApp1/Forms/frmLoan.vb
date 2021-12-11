@@ -64,16 +64,21 @@
 
         If Not isValidSave_DEDUC() Then Exit Sub
         '======================================== CHECK IF CONTEXT EDIT CLICK =======================================
-        If Deduc_list.Tag = 0 Then
-            SaveDeductionS(Category_Combo.SelectedItem, Total_txt.Text, noOfDeduc_txt.Text, Amount_txt.Text, Schedule_Combo.Text, Name_txt.Tag, Effectiv_dtp.Value) 'Category_Combo.Tag (EMP_ID) | Name_TXT.Tag(Biometric) |  SearchEmp_BTN.Tag.Tag(Branch_id) | 
-        Else
-            updateDeductionS(Deduc_list.Tag, Category_Combo.Text, Total_txt.Text, noOfDeduc_txt.Text, Amount_txt.Text, Schedule_Combo.Text, Effectiv_dtp.Value) 'Category_Combo.Tag (EMP_ID)
+
+        Dim result As DialogResult = MsgBox($"Deduction for {Name_txt.Text} will be recorded, proceed anyway?", MessageBoxButtons.YesNo)
+        If result = DialogResult.Yes Then
+
+            If Deduc_list.Tag = 0 Then
+                SaveDeductionS(Category_Combo.SelectedItem, Total_txt.Text, noOfDeduc_txt.Text, Amount_txt.Text, Schedule_Combo.Text, Name_txt.Tag, Effectiv_dtp.Value) 'Category_Combo.Tag (EMP_ID) | Name_TXT.Tag(Biometric) |  SearchEmp_BTN.Tag.Tag(Branch_id) | 
+            Else
+                updateDeductionS(Deduc_list.Tag, Category_Combo.Text, Total_txt.Text, noOfDeduc_txt.Text, Amount_txt.Text, Schedule_Combo.Text, Effectiv_dtp.Value) 'Category_Combo.Tag (EMP_ID)
+            End If
+
+            SaveLogs($"{DE_Save_BTN.Tag} DEDUCTION - {Name_txt.Text} ({Name_txt.Tag}), Category({Category_Combo.Text}), Total({Total_txt.Text}), No. of Gives({noOfDeduc_txt.Text}), Amount/Give({Amount_txt.Text}), Effectivity({Effectiv_dtp.Value.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
+
+            Lists_deduction(Deduc_list)
+            Cancel_btn.PerformClick()
         End If
-
-        SaveLogs($"{DE_Save_BTN.Tag} DEDUCTION - {Name_txt.Text} ({Name_txt.Tag}), Category({Category_Combo.Text}), Total({Total_txt.Text}), No. of Gives({noOfDeduc_txt.Text}), Amount/Give({Amount_txt.Text}), Effectivity({Effectiv_dtp.Value.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
-
-        Lists_deduction(Deduc_list)
-        Cancel_btn.PerformClick()
 
     End Sub
 
@@ -249,11 +254,17 @@
     End Sub
 
     Private Sub Allow_Save_BTN_Click(sender As Object, e As EventArgs) Handles Allow_Save_BTN.Click
-        Save_SSSLoan(SSS_Name_TXT.Tag, SSS_Amount_TXT.Text, SSS_FirstAmort_DTP.Value, SSS_MaturityAmort_DTP.Value)
-        Load_Loans(SSSLoan_LV, "PAYROLL_SSSLOAN")
 
-        SaveLogs($"ADDED SSS LOAN {SSS_Name_TXT.Text} ({SSS_Name_TXT.Tag}), Amount({SSS_Amount_TXT.Text}), Start({SSS_FirstAmort_DTP.Value.ToString("MMM dd, yyyy")}), End({SSS_MaturityAmort_DTP.Value.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
-        Allow_Cancel_BTN.PerformClick()
+        Dim result As DialogResult = MsgBox($"SSS Loan for {SSS_Name_TXT.Text} will be recorded, proceed anyway?", MessageBoxButtons.YesNo)
+        If result = DialogResult.Yes Then
+
+            Save_SSSLoan(SSS_Name_TXT.Tag, SSS_Amount_TXT.Text, SSS_FirstAmort_DTP.Value, SSS_MaturityAmort_DTP.Value)
+            Load_Loans(SSSLoan_LV, "PAYROLL_SSSLOAN")
+
+            SaveLogs($"ADDED SSS LOAN {SSS_Name_TXT.Text} ({SSS_Name_TXT.Tag}), Amount({SSS_Amount_TXT.Text}), Start({SSS_FirstAmort_DTP.Value.ToString("MMM dd, yyyy")}), End({SSS_MaturityAmort_DTP.Value.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
+            Allow_Cancel_BTN.PerformClick()
+        End If
+
     End Sub
 
     Private Sub Emp_BTN_Click(sender As Object, e As EventArgs) Handles Emp_BTN.Click
@@ -281,11 +292,17 @@
     End Sub
 
     Private Sub Pag_Save_BTN_Click(sender As Object, e As EventArgs) Handles Pag_Save_BTN.Click
-        Save_PAGIBIGLoan(Pag_Name_TXT.Tag, Pag_Amount_TXT.Text, Pag_Start_DTP.Value, Pag_End_DTP.Value)
-        Load_Loans(Pag_grid, "PAYROLL_PAGIBIGLOAN")
 
-        SaveLogs($"ADDED PAGIBIG LOAN {Pag_Name_TXT.Text} ({Pag_Name_TXT.Tag}), Amount({Pag_Amount_TXT.Text}), Start({Pag_Start_DTP.Value.ToString("MMM dd, yyyy")}), End({Pag_End_DTP.Value.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
-        Pag_Cancel_BTN.PerformClick()
+        Dim result As DialogResult = MsgBox($"Pagibig Loan for {Pag_Name_TXT.Text} will be recorded, proceed anyway?", MessageBoxButtons.YesNo)
+        If result = DialogResult.Yes Then
+
+            Save_PAGIBIGLoan(Pag_Name_TXT.Tag, Pag_Amount_TXT.Text, Pag_Start_DTP.Value, Pag_End_DTP.Value)
+            Load_Loans(Pag_grid, "PAYROLL_PAGIBIGLOAN")
+
+            SaveLogs($"ADDED PAGIBIG LOAN {Pag_Name_TXT.Text} ({Pag_Name_TXT.Tag}), Amount({Pag_Amount_TXT.Text}), Start({Pag_Start_DTP.Value.ToString("MMM dd, yyyy")}), End({Pag_End_DTP.Value.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
+            Pag_Cancel_BTN.PerformClick()
+        End If
+
     End Sub
 
     Private Sub Pag_Cancel_BTN_Click(sender As Object, e As EventArgs) Handles Pag_Cancel_BTN.Click

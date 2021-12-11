@@ -41,11 +41,11 @@ Module SaveUpdate
         RunCommand("DELETE FROM PAYROLL_HOLIDAY WHERE DATEE = '" & datee & "'")
     End Sub
 
-    Friend Sub SaveAttendanceEE(biometric As Integer, paydate As String, days As String, overTime As String, late_total As String,
-                                  under_total As String, regHoliday As String, specHoliday As String, Optional SIL As Double = 0, Optional NIGHT_RATE As String = "")
+    'Friend Sub SaveAttendanceEE(biometric As Integer, paydate As String, days As String, overTime As String, late_total As String,
+    '                              under_total As String, regHoliday As String, specHoliday As String, Optional SIL As Double = 0, Optional NIGHT_RATE As String = "")
 
-        'Friend Sub SaveAttendanceEE(biometric As Integer, paydate As String, days As String, overTime As String, late_total As String,
-        '                              under_total As String, regHoliday As String, specHoliday As String, Optional SIL As Double = 0, Optional MORNING_OT As String = "", Optional NIGHT_RATE As String = "")
+    Friend Sub SaveAttendanceEE(biometric As Integer, paydate As String, days As String, overTime As String, late_total As String,
+                                      under_total As String, regHoliday As String, specHoliday As String, Optional SIL As Double = 0, Optional MORNING_OT As String = "", Optional NIGHT_RATE As String = "")
 
         Dim mysql As String
 
@@ -424,7 +424,7 @@ Module SaveUpdate
 
     Friend Sub SaveRATE_City(column As String, value As String, daily_rate As String, Optional group As Boolean = False) '=========== BOOLEAN IF MORE THAN 1 ========== 
         If value = "" Then
-            SaveRATE("BRANCH_CODE", "", daily_rate, True)
+            SaveRATE("BRANCH_CODE", "", daily_rate, False, True)
             Exit Sub
         End If
 
@@ -435,13 +435,13 @@ Module SaveUpdate
                 With dr
                     Dim branchCode As String = .Item("BRANCHCODE")
 
-                    SaveRATE("BRANCH_CODE", branchCode, daily_rate, True)
+                    SaveRATE("BRANCH_CODE", branchCode, daily_rate, False, True)
                 End With
             Next
         End If
     End Sub
 
-    Friend Sub SaveRATE(column As String, value As String, daily_rate As String, Optional group As Boolean = False) '=========== BOOLEAN IF MORE THAN 1 ========== 
+    Friend Sub SaveRATE(column As String, value As String, daily_rate As String, Optional fix_monthly As Boolean = False, Optional group As Boolean = False) '=========== BOOLEAN IF MORE THAN 1 ========== 
 
         Dim mysql As String = $"Select * FROM  PAYROLL_EMPLOYEE WHERE {column} = '{value}'"
         Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
@@ -456,6 +456,10 @@ Module SaveUpdate
                     If existing_rate <= daily_rate Then
                         .Item("RATE_DAILY") = daily_rate
                         .Item("RATE_MONTHLY") = daily_rate * 26
+                    End If
+
+                    If fix_monthly = True Then
+                        .item("FIX_MONTHLY_RATE") = fix_monthly
                     End If
 
                 End With
@@ -761,6 +765,7 @@ Module SaveUpdate
                     Dim Allowances As Double = 0
                     Dim Minimum_rate As Decimal = IIf(IsDBNull(.Item("BRANCH_CODE")) Or .Item("BRANCH_CODE").Equals(""), GetMinimumRate("CITY", "GENSAN"), GetMinimumRate("BRANCHCODE", .Item("BRANCH_CODE")))
                     Dim Ecola As Double = GetEcola("BRANCHCODE", .Item("BRANCH_CODE"))
+                    Dim fix_monthly_rate As Boolean = IIf(IsDBNull(.Item("FIX_MONTHLY_RATE")), False, .Item("FIX_MONTHLY_RATE"))
 
                     rate = IIf(IsDBNull(.Item("RATE_DAILY")) Or .Item("RATE_DAILY") = 0, Minimum_rate, .Item("RATE_DAILY"))
                     Dim Monthly_rate As Decimal = IIf(IsDBNull(.Item("RATE_MONTHLY")) Or .Item("RATE_MONTHLY").Equals("0"), rate * 26, .Item("RATE_MONTHLY"))
@@ -814,9 +819,8 @@ Module SaveUpdate
                             With dr_11
                                 NoOfDays = .Item("PRESENT_DAYS")
 
-                                If Not rate > Minimum_rate Then
+                                If fix_monthly_rate = False Then
                                     RegularOT = .Item("OVERTIME")
-                                    'RegularOT = .Item("OVERTIME") + .Item("MORNING_OT")
                                     SpecialHol = .Item("SPECHOLIDAY")
                                     RegularHol = .Item("REGHOLIDAY")
                                     Late = .Item("LATE")
@@ -846,7 +850,7 @@ Module SaveUpdate
                     End If
 
                     ''============================= FOR MONTHLY RATE (IF ABOVE MINIMUM RATE)================================== 
-                    If rate > Minimum_rate Then
+                    If fix_monthly_rate = True Then
                         Monthly_rate = Monthly_rate / 2
                         If NoOfDays >= STANDARD_DAYS Then  '=== CHECK IF ABOVE MINIMUM
                             TotalBasic = Monthly_rate
@@ -984,7 +988,7 @@ Module SaveUpdate
                     '============================================= Calculate_Gross() ========================================================= 
                     Dim TotalREGHol, TotalSPECHol, TotalOT, TotalLateUnder, TotalNight, GrossAmount As Decimal
 
-                    If rate > Minimum_rate Then
+                    If fix_monthly_rate = True Then
                         GrossAmount = TotalBasic
                     Else
 
@@ -1070,6 +1074,7 @@ Module SaveUpdate
                         Dim Deduction As Double = 0
                         Dim Minimum_rate As Double = IIf(IsDBNull(.Item("BRANCH_CODE")) Or .Item("BRANCH_CODE").Equals(""), GetMinimumRate("CITY", "GENSAN"), GetMinimumRate("BRANCHCODE", .Item("BRANCH_CODE")))
                         Dim Ecola As Double = GetEcola("BRANCHCODE", .Item("BRANCH_CODE"))
+                        Dim fix_monthly_rate As Boolean = IIf(IsDBNull(.Item("FIX_MONTHLY_RATE")), False, .Item("FIX_MONTHLY_RATE"))
 
                         BiometricID = .Item("BIOMETRICID")
                         rate = IIf(IsDBNull(.Item("RATE_DAILY")) Or .Item("RATE_DAILY") = 0, Minimum_rate, .Item("RATE_DAILY"))
@@ -1122,7 +1127,7 @@ Module SaveUpdate
 
                                     NoOfDays = .Item("PRESENT_DAYS")
 
-                                    If Not rate > Minimum_rate Then
+                                    If fix_monthly_rate = False Then
                                         RegularOT = .Item("OVERTIME") + .Item("MORNING_OT")
                                         SpecialHol = .Item("SPECHOLIDAY")
                                         RegularHol = .Item("REGHOLIDAY")
@@ -1149,7 +1154,7 @@ Module SaveUpdate
                         End If
 
                         ''============================= FOR MONTHLY RATE (IF ABOVE MINIMUM RATE)================================== 
-                        If rate > Minimum_rate Then
+                        If fix_monthly_rate = True Then
                             Monthly_rate = Monthly_rate / 2
                             If NoOfDays >= STANDARD_DAYS Then  '=== CHECK IF ABOVE MINIMUM
                                 TotalBasic = Monthly_rate
@@ -1276,7 +1281,7 @@ Module SaveUpdate
                         '============================================= Calculate_Gross() ========================================================= 
                         Dim TotalREGHol, TotalSPECHol, TotalOT, TotalLateUnder, GrossAmount As Double
 
-                        If rate > Minimum_rate Then
+                        If fix_monthly_rate = True Then
                             GrossAmount = TotalBasic
                         Else
 

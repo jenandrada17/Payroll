@@ -443,7 +443,8 @@ Public Class frmAttendance
         'For Each row As DataGridViewRow In DataGridView1.Rows
         '    Dim rowIndex As Integer = row.Index
         '    row.Cells(5) = New DataGridViewCheckBoxCell With {.Value = False}
-        'Next
+        'Next 
+
     End Sub
 
     Private Sub SearchEMP_BTN_Click(sender As Object, e As EventArgs) Handles SearchEMP_BTN.Click
@@ -473,40 +474,41 @@ Public Class frmAttendance
     Private Sub Save_BTN_Click(sender As Object, e As EventArgs) Handles Save_BTN.Click
 
         If Not BiometricID_TXT.Text = "" Then
-            Dim PAYROLL As String
-            If Paydate_ComboB.SelectedIndex >= 0 Then
-                PAYROLL = Paydate_ComboB.SelectedItem
-            Else
-                PAYROLL = DataGridView1.Tag
-            End If
+            Dim result As DialogResult = MsgBox($"Record for {Name_TXT.Text} will be Save/Updated, proceed anyway?", MessageBoxButtons.YesNo)
+            If result = DialogResult.Yes Then
 
-            If ThisHasRow($"BIOMETRIC_DTR where BIO_ID = '{BiometricID_TXT.Text}' and PAYDATE = '{PAYROLL}'") Then
-                Replacing($"BIOMETRIC_DTR where BIO_ID = '{BiometricID_TXT.Text}' and PAYDATE = '{PAYROLL}';")
-            End If
-
-            For Each row As DataGridViewRow In DataGridView1.Rows
-
-                Dim dateOnly As DateTime = DataGridView1.Rows(row.Index).Tag
-
-                If row.Cells(1).Value = "" And row.Cells(2).Value = "" And row.Cells(3).Value = "" And row.Cells(4).Value = "" Then
+                Dim PAYROLL As String
+                If Paydate_ComboB.SelectedIndex >= 0 Then
+                    PAYROLL = Paydate_ComboB.SelectedItem
                 Else
-                    SaveDTR(BiometricID_TXT.Text, Paydate, dateOnly.ToString("d"),
-                        row.Cells(1).Value, row.Cells(2).Value, row.Cells(3).Value, row.Cells(4).Value)
+                    PAYROLL = DataGridView1.Tag
                 End If
 
-            Next
+                If ThisHasRow($"BIOMETRIC_DTR where BIO_ID = '{BiometricID_TXT.Text}' and PAYDATE = '{PAYROLL}'") Then
+                    Replacing($"BIOMETRIC_DTR where BIO_ID = '{BiometricID_TXT.Text}' and PAYDATE = '{PAYROLL}';")
+                End If
 
-            SaveAttendanceEE(BiometricID_TXT.Text, PAYROLL, TotalDays_LBL.Text, TotalOTHr_LBL.Text, TotalLateHR_LBL.Text, TotalUTHR_LBL.Text,
-                             TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text, SIL_LBL.Text)
+                For Each row As DataGridViewRow In DataGridView1.Rows
 
-            'SaveAttendanceEE(BiometricID_TXT.Text, PAYROLL, TotalDays_LBL.Text, TotalOTHr_LBL.Text, TotalLateHR_LBL.Text, TotalUTHR_LBL.Text,
-            '                 TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text, SIL_LBL.Text, AM_OT_NUP.Value)
+                    Dim dateOnly As DateTime = DataGridView1.Rows(row.Index).Tag
 
-            SavePayout_IndividualL(BiometricID_TXT.Text, PAYROLL, starting_date, ending_date)
+                    If row.Cells(1).Value = "" And row.Cells(2).Value = "" And row.Cells(3).Value = "" And row.Cells(4).Value = "" Then
+                    Else
+                        SaveDTR(BiometricID_TXT.Text, Paydate, dateOnly.ToString("d"),
+                            row.Cells(1).Value, row.Cells(2).Value, row.Cells(3).Value, row.Cells(4).Value)
+                    End If
 
-            SaveLogs($"{Save_BTN.Tag} ATTENDANCE ({Name_TXT.Text} ({BiometricID_TXT.Text})) - Days({TotalDays_LBL.Text}), OT({TotalOTHr_LBL.Text}), Late({TotalLateHR_LBL.Text}), Undertime({TotalUTHR_LBL.Text}), R/S Holiday({TotalRHoliday_LBL.Text}/{TotalSHoliday_LBL.Text}), SIL({SIL_LBL.Text})", frmMainForm.UserName_LBL.Text)
+                Next
 
-            Cancel_BTN.PerformClick()
+                SaveAttendanceEE(BiometricID_TXT.Text, PAYROLL, TotalDays_LBL.Text, TotalOTHr_LBL.Text, TotalLateHR_LBL.Text, TotalUTHR_LBL.Text,
+                                 TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text, SIL_LBL.Text, AM_OT_NUP.Value)
+
+                SavePayout_IndividualL(BiometricID_TXT.Text, PAYROLL, starting_date, ending_date)
+
+                SaveLogs($"{Save_BTN.Tag} ATTENDANCE ({Name_TXT.Text} ({BiometricID_TXT.Text})) - Days({TotalDays_LBL.Text}), OT({TotalOTHr_LBL.Text}), Late({TotalLateHR_LBL.Text}), Undertime({TotalUTHR_LBL.Text}), R/S Holiday({TotalRHoliday_LBL.Text}/{TotalSHoliday_LBL.Text}), SIL({SIL_LBL.Text})", frmMainForm.UserName_LBL.Text)
+
+                Cancel_BTN.PerformClick()
+            End If
         Else
             MsgBox("Please Choose Employee's Name!", MsgBoxStyle.Critical, "Error")
         End If
@@ -1336,28 +1338,34 @@ Public Class frmAttendance
     Private Sub Save7_BTN_Click(sender As Object, e As EventArgs) Handles Save7_BTN.Click
 
         If Not Bio7_TXT.Text = "" And Not Days7_TXT.Text = "" Then
-            Dim PAYROLL As String
-            If Paydate7_CB.SelectedIndex >= 0 Then
-                PAYROLL = Paydate7_CB.SelectedItem
-            Else
-                PAYROLL = DataGridView1.Tag
-            End If
 
-            '======================== HOLIDAY ============================ 
-            Dim RHOLIDAY As Integer = REGHolidayCount(starting_date, ending_date)
-            Dim SHOLIDAY As Integer = SPECHolidayCount(starting_date, ending_date)
-            Dim latee As Integer = IIf(Late7_TXT.Text = Nothing, 0, Late7_TXT.Text)
-            Dim undertimee As Integer = IIf(Undertime7_TXT.Text = Nothing, 0, Undertime7_TXT.Text)
-            Dim night7 As Integer = IIf(Night7_TXT.Text = Nothing, 0, Night7_TXT.Text)
+            Dim result As DialogResult = MsgBox($"Record for {Emp7_TXT.Text} will be Save/Updated, proceed anyway?", MessageBoxButtons.YesNo)
+            If result = DialogResult.Yes Then
 
-            SaveAttendanceEE(Bio7_TXT.Text, PAYROLL, Days7_TXT.Text, Overtime7_TXT.Text, latee, undertimee,
+                Dim PAYROLL As String
+                If Paydate7_CB.SelectedIndex >= 0 Then
+                    PAYROLL = Paydate7_CB.SelectedItem
+                Else
+                    PAYROLL = DataGridView1.Tag
+                End If
+
+                '======================== HOLIDAY ============================ 
+                Dim RHOLIDAY As Integer = REGHolidayCount(starting_date, ending_date)
+                Dim SHOLIDAY As Integer = SPECHolidayCount(starting_date, ending_date)
+                Dim latee As Integer = IIf(Late7_TXT.Text = Nothing, 0, Late7_TXT.Text)
+                Dim undertimee As Integer = IIf(Undertime7_TXT.Text = Nothing, 0, Undertime7_TXT.Text)
+                Dim night7 As Integer = IIf(Night7_TXT.Text = Nothing, 0, Night7_TXT.Text)
+
+                SaveAttendanceEE(Bio7_TXT.Text, PAYROLL, Days7_TXT.Text, Overtime7_TXT.Text, latee, undertimee,
                              RHOLIDAY, SHOLIDAY, SIL7_NUP.Text, night7)
 
-            SavePayout_IndividualL(Bio7_TXT.Text, PAYROLL, starting_date, ending_date)
+                SavePayout_IndividualL(Bio7_TXT.Text, PAYROLL, starting_date, ending_date)
 
-            SaveLogs($"{Save7_BTN.Tag} ATTENDANCE ({Emp7_TXT.Text} ({Bio7_TXT.Text})) - Days({Days7_TXT.Text}), OT({Overtime7_TXT.Text}), Late({Late7_TXT.Text}), Undertime({Undertime7_TXT.Text}), R/S Holiday({TotalRHoliday_LBL.Text}/{TotalSHoliday_LBL.Text}), Night Rate({Night7_TXT.Text}), SIL({SIL7_NUP.Text})", frmMainForm.UserName_LBL.Text)
+                SaveLogs($"{Save7_BTN.Tag} ATTENDANCE ({Emp7_TXT.Text} ({Bio7_TXT.Text})) - Days({Days7_TXT.Text}), OT({Overtime7_TXT.Text}), Late({Late7_TXT.Text}), Undertime({Undertime7_TXT.Text}), R/S Holiday({TotalRHoliday_LBL.Text}/{TotalSHoliday_LBL.Text}), Night Rate({Night7_TXT.Text}), SIL({SIL7_NUP.Text})", frmMainForm.UserName_LBL.Text)
 
-            Cancel7_BTN.PerformClick()
+                Cancel7_BTN.PerformClick()
+            End If
+
         Else
             MsgBox("Please Ensure that Employee's Name and No. of days are inputed!", MsgBoxStyle.Critical, "Error")
         End If
@@ -1383,6 +1391,7 @@ Public Class frmAttendance
         Late7_TXT.Clear()
         Undertime7_TXT.Clear()
         Night7_TXT.Clear()
+
     End Sub
 
     Private Sub SIL_BTN_Click(sender As Object, e As EventArgs) Handles SIL_BTN.Click
@@ -1438,6 +1447,11 @@ Public Class frmAttendance
 
     Private Sub Cancel_lbl_Click(sender As Object, e As EventArgs) Handles Cancel_lbl.Click
         AM_OT_NUP.Value = 0.0
+    End Sub
+
+    Private Sub AM_OT_NUP_ValueChanged(sender As Object, e As EventArgs) Handles AM_OT_NUP.ValueChanged
+        'Calculate_BTN.PerformClick()
+        'TotalOTHr_LBL.Text = CDbl(TotalOTHr_LBL.Text) + AM_OT_NUP.Value
     End Sub
 
     Private Sub CancelSIL_BTN_Click(sender As Object, e As EventArgs) Handles CancelSIL_BTN.Click

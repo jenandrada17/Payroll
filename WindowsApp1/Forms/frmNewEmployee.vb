@@ -492,31 +492,35 @@ Public Class frmNewEmployee
 
         If Not isValidSave() Then Exit Sub
 
-        Dim stat As String ' User Logs
+        Dim result As DialogResult = MsgBox($"Details for {Fullname_TXT.Text} will be Saved/Updated, proceed anyway?", MessageBoxButtons.YesNo)
+        If result = DialogResult.Yes Then
 
-        If Active_RB.Checked = True Then
-            emp_status = Active_RB.Text
-            stat = "Active"
-        Else
-            emp_status = InActive_RB.Text
-            stat = "Inactive"
-        End If
+            Dim stat As String ' User Logs
 
-        SaveNew_Employee(Add_Company_CB.Text, Branch_ComboB.Text, Fullname_TXT.Text, Bio_TXT.Text, Email_TXT.Text, emp_status, Started_DTP.Value, False,
+            If Active_RB.Checked = True Then
+                emp_status = Active_RB.Text
+                stat = "Active"
+            Else
+                emp_status = InActive_RB.Text
+                stat = "Inactive"
+            End If
+
+            SaveNew_Employee(Add_Company_CB.Text, Branch_ComboB.Text, Fullname_TXT.Text, Bio_TXT.Text, Email_TXT.Text, emp_status, Started_DTP.Value, False,
                          TimeIn_Combo.Text, TimeOut_Combo.Text, EmpNo_TXT.Text, TIN_TXT.Text, SSS_TXT.Text, PHILH_TXT.Text, HDMF_TXT.Text, HO_Category.Text,
                          ComCategory_Combo.Text, Position_Combo.Text, ComCompany_Cmbo.Text)
 
-        If btnSave.Tag = "UPDATE" Then
-            SaveLogs($"EDITED EMPLOYEE - Company({Add_Company_CB.Text}), Branch({Branch_ComboB.Text}), Email({Email_TXT.Text}), Status({stat}), Started({Started_DTP.Value.ToShortDateString}), Time in/out({TimeIn_Combo.Text}/{TimeOut_Combo.Text}), Emp No.({EmpNo_TXT.Text}), TIN({TIN_TXT.Text}), SSS({SSS_TXT.Text}), Philhealth({PHILH_TXT.Text}), Pagibig({HDMF_TXT.Text}), Position({Position_Combo.Text}), HO({HO_Category.Text}, {ComCategory_Combo.Text}, {ComCompany_Cmbo.Text})",
+            If btnSave.Tag = "UPDATE" Then
+                SaveLogs($"EDITED EMPLOYEE - Company({Add_Company_CB.Text}), Branch({Branch_ComboB.Text}), Email({Email_TXT.Text}), Status({stat}), Started({Started_DTP.Value.ToShortDateString}), Time in/out({TimeIn_Combo.Text}/{TimeOut_Combo.Text}), Emp No.({EmpNo_TXT.Text}), TIN({TIN_TXT.Text}), SSS({SSS_TXT.Text}), Philhealth({PHILH_TXT.Text}), Pagibig({HDMF_TXT.Text}), Position({Position_Combo.Text}), HO({HO_Category.Text}, {ComCategory_Combo.Text}, {ComCompany_Cmbo.Text})",
                      frmMainForm.UserName_LBL.Text)
-        Else
-            SaveLogs($"ADDED EMPLOYEE - Company({Add_Company_CB.Text}), Branch({Branch_ComboB.Text}), Email({Email_TXT.Text}), Status({stat}), Started({Started_DTP.Value.ToShortDateString}), Time in/out({TimeIn_Combo.Text}/{TimeOut_Combo.Text}), Emp No.({EmpNo_TXT.Text}), TIN({TIN_TXT.Text}), SSS({SSS_TXT.Text}), Philhealth({PHILH_TXT.Text}), Pagibig({HDMF_TXT.Text}), Position({Position_Combo.Text}), HO({HO_Category.Text}, {ComCategory_Combo.Text}, {ComCompany_Cmbo.Text})",
+            Else
+                SaveLogs($"ADDED EMPLOYEE - Company({Add_Company_CB.Text}), Branch({Branch_ComboB.Text}), Email({Email_TXT.Text}), Status({stat}), Started({Started_DTP.Value.ToShortDateString}), Time in/out({TimeIn_Combo.Text}/{TimeOut_Combo.Text}), Emp No.({EmpNo_TXT.Text}), TIN({TIN_TXT.Text}), SSS({SSS_TXT.Text}), Philhealth({PHILH_TXT.Text}), Pagibig({HDMF_TXT.Text}), Position({Position_Combo.Text}), HO({HO_Category.Text}, {ComCategory_Combo.Text}, {ComCompany_Cmbo.Text})",
                      frmMainForm.UserName_LBL.Text)
+            End If
+
+            Lists_Employees(lvEmployee)
+
+            clearAdd()
         End If
-
-        Lists_Employees(lvEmployee)
-
-        clearAdd()
 
     End Sub
 

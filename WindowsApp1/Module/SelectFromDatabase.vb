@@ -394,7 +394,7 @@ Module SelectFromDatabase
 
                     ''============================= FOR MONTHLY RATE (IF ABOVE MINIMUM RATE)================================== 
                     NoOfDays_TXT.Text = .Item("PRESENT_DAYS")
-                    RegularOT_TXT.Text = .Item("OVERTIME") + .Item("MORNING_OT")
+                    RegularOT_TXT.Text = .Item("OVERTIME")
                     RegularOT_TXT.Tag = .Item("OVERTIME")
                     SpecialHol_TXT.Text = .Item("SPECHOLIDAY")
                     RegularHol_TXT.Text = .Item("REGHOLIDAY")
@@ -402,7 +402,7 @@ Module SelectFromDatabase
                     Late_TXT.Tag = .Item("LATE")
                     UnderTime_TXT.Text = .Item("UNDERTIME")
                     UnderTime_TXT.Tag = .Item("UNDERTIME")
-                    NightTime_TXT.Text = IIf(IsDBNull(.Item("NIGHT_RATE")), "", .Item("NIGHT_RATE") & ":00")
+                    NightTime_TXT.Text = IIf(IsDBNull(.Item("NIGHT_RATE")), "", .Item("NIGHT_RATE"))
                     NightTime_TXT.Tag = IIf(IsDBNull(.Item("NIGHT_RATE")), 0, .Item("NIGHT_RATE"))
                     TrainingDays_LBL.Text = IIf(IsDBNull(.Item("TRAINING_DAYS")), 0, .Item("TRAINING_DAYS"))
                 End With
@@ -1234,9 +1234,9 @@ Module SelectFromDatabase
         Return status
     End Function
 
-    Public Sub Payout_Details(bioNo As String, name As TextBox, ratee As TextBox, MonthlyRate_TXT As TextBox)
+    Public Sub Payout_Details(bioNo As String, name As TextBox, ratee As TextBox, RateFixYes_RB As RadioButton, Optional MonthlyRate_TXT As TextBox = Nothing)
 
-        Dim mysql As String = "Select * From PAYROLL_EMPLOYEE WHERE BIO_NO = '" & bioNo & "'"
+        Dim mysql As String = $"Select * From PAYROLL_EMPLOYEE WHERE BIO_NO = '{bioNo}'"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
 
             If ds.Tables(0).Rows.Count > 0 Then
@@ -1250,13 +1250,18 @@ Module SelectFromDatabase
                     ratee.Text = IIf(rate = 0, minimum, rate)
                     ratee.Tag = .Item("BRANCH_CODE")
                     name.Text = .Item("FULLNAME")
-                    MonthlyRate_TXT.Text = IIf(IsDBNull(.Item("RATE_MONTHLY")) Or .Item("RATE_MONTHLY").Equals("0"), ratee.Text * 26, .Item("RATE_MONTHLY"))
-                    MonthlyRate_TXT.Tag = minimum
+                    RateFixYes_RB.Checked = IIf(IsDBNull(.Item("FIX_MONTHLY_RATE")), False, .Item("FIX_MONTHLY_RATE"))
+                    RateFixYes_RB.Tag = IIf(IsDBNull(.Item("RATE_MONTHLY")) Or .Item("RATE_MONTHLY").Equals("0"), ratee.Text * 26, .Item("RATE_MONTHLY"))
 
+                    If MonthlyRate_TXT IsNot Nothing Then
+                        MonthlyRate_TXT.Text = IIf(IsDBNull(.Item("RATE_MONTHLY")) Or .Item("RATE_MONTHLY").Equals("0"), ratee.Text * 26, .Item("RATE_MONTHLY"))
+                        MonthlyRate_TXT.Tag = minimum
+                    End If
                 End With
 
             Else
                 name.Text = ""
+                RateFixYes_RB.Checked = False
             End If
         End Using
     End Sub

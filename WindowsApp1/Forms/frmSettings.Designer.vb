@@ -34,7 +34,10 @@ Partial Class frmSettings
         Me.Rate_Search_TXT = New System.Windows.Forms.TextBox()
         Me.Rate_Search_BTN = New System.Windows.Forms.Button()
         Me.GroupBox5 = New System.Windows.Forms.GroupBox()
+        Me.Label5 = New System.Windows.Forms.Label()
         Me.Monthly_BTN = New System.Windows.Forms.Button()
+        Me.RateFixNo_RB = New System.Windows.Forms.RadioButton()
+        Me.RateFixYes_RB = New System.Windows.Forms.RadioButton()
         Me.Daily_BTN = New System.Windows.Forms.Button()
         Me.Label12 = New System.Windows.Forms.Label()
         Me.MonthlyRate_TXT = New System.Windows.Forms.TextBox()
@@ -299,7 +302,10 @@ Partial Class frmSettings
         '
         'GroupBox5
         '
+        Me.GroupBox5.Controls.Add(Me.Label5)
         Me.GroupBox5.Controls.Add(Me.Monthly_BTN)
+        Me.GroupBox5.Controls.Add(Me.RateFixNo_RB)
+        Me.GroupBox5.Controls.Add(Me.RateFixYes_RB)
         Me.GroupBox5.Controls.Add(Me.Daily_BTN)
         Me.GroupBox5.Controls.Add(Me.Label12)
         Me.GroupBox5.Controls.Add(Me.MonthlyRate_TXT)
@@ -319,6 +325,16 @@ Partial Class frmSettings
         Me.GroupBox5.TabStop = False
         Me.GroupBox5.Text = "Per Employee"
         '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label5.Location = New System.Drawing.Point(172, 228)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(31, 27)
+        Me.Label5.TabIndex = 114
+        Me.Label5.Text = "Fix"
+        '
         'Monthly_BTN
         '
         Me.Monthly_BTN.Location = New System.Drawing.Point(84, 189)
@@ -327,6 +343,30 @@ Partial Class frmSettings
         Me.Monthly_BTN.TabIndex = 16
         Me.Monthly_BTN.Text = "Monthly"
         Me.Monthly_BTN.UseVisualStyleBackColor = True
+        '
+        'RateFixNo_RB
+        '
+        Me.RateFixNo_RB.AutoSize = True
+        Me.RateFixNo_RB.Checked = True
+        Me.RateFixNo_RB.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.RateFixNo_RB.Location = New System.Drawing.Point(238, 227)
+        Me.RateFixNo_RB.Name = "RateFixNo_RB"
+        Me.RateFixNo_RB.Size = New System.Drawing.Size(49, 31)
+        Me.RateFixNo_RB.TabIndex = 113
+        Me.RateFixNo_RB.TabStop = True
+        Me.RateFixNo_RB.Text = "No"
+        Me.RateFixNo_RB.UseVisualStyleBackColor = True
+        '
+        'RateFixYes_RB
+        '
+        Me.RateFixYes_RB.AutoSize = True
+        Me.RateFixYes_RB.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.RateFixYes_RB.Location = New System.Drawing.Point(327, 228)
+        Me.RateFixYes_RB.Name = "RateFixYes_RB"
+        Me.RateFixYes_RB.Size = New System.Drawing.Size(54, 31)
+        Me.RateFixYes_RB.TabIndex = 112
+        Me.RateFixYes_RB.Text = "Yes"
+        Me.RateFixYes_RB.UseVisualStyleBackColor = True
         '
         'Daily_BTN
         '
@@ -883,10 +923,10 @@ Partial Class frmSettings
         'FixYes_RadioB
         '
         Me.FixYes_RadioB.AutoSize = True
-        Me.FixYes_RadioB.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.FixYes_RadioB.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.FixYes_RadioB.Location = New System.Drawing.Point(84, 198)
         Me.FixYes_RadioB.Name = "FixYes_RadioB"
-        Me.FixYes_RadioB.Size = New System.Drawing.Size(101, 36)
+        Me.FixYes_RadioB.Size = New System.Drawing.Size(86, 31)
         Me.FixYes_RadioB.TabIndex = 39
         Me.FixYes_RadioB.Text = "Yes        "
         Me.FixYes_RadioB.UseVisualStyleBackColor = True
@@ -895,10 +935,10 @@ Partial Class frmSettings
         '
         Me.FixNo_RadioB.AutoSize = True
         Me.FixNo_RadioB.Checked = True
-        Me.FixNo_RadioB.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.FixNo_RadioB.Location = New System.Drawing.Point(191, 198)
+        Me.FixNo_RadioB.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.FixNo_RadioB.Location = New System.Drawing.Point(176, 198)
         Me.FixNo_RadioB.Name = "FixNo_RadioB"
-        Me.FixNo_RadioB.Size = New System.Drawing.Size(56, 36)
+        Me.FixNo_RadioB.Size = New System.Drawing.Size(49, 31)
         Me.FixNo_RadioB.TabIndex = 30
         Me.FixNo_RadioB.TabStop = True
         Me.FixNo_RadioB.Text = "No"
@@ -1977,4 +2017,7 @@ Partial Class frmSettings
     Friend WithEvents Label43 As Label
     Friend WithEvents Address_Combo As ComboBox
     Friend WithEvents ColumnHeader30 As ColumnHeader
+    Friend WithEvents Label5 As Label
+    Friend WithEvents RateFixNo_RB As RadioButton
+    Friend WithEvents RateFixYes_RB As RadioButton
 End Class
