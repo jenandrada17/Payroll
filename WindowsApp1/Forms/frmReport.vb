@@ -101,8 +101,9 @@ Public Class frmReport
                                 Dim HO_CATEGORY As String = IIf(IsDBNull(.Item("HO_CATEGORY")), "", .Item("HO_CATEGORY"))
                                 Dim Minimum_rate As Double = IIf(IsDBNull(.Item("BRANCH_CODE")) Or .Item("BRANCH_CODE").Equals(""), GetMinimumRate("CITY", "GENSAN"), GetMinimumRate("BRANCHCODE", .Item("BRANCH_CODE")))
                                 Dim Rate As Decimal = IIf(IsDBNull(.Item("RATE_DAILY")) Or .Item("RATE_DAILY") = 0, Minimum_rate, .Item("RATE_DAILY"))
+                                Dim fix_monthly_rate As Boolean = IIf(IsDBNull(.Item("FIX_MONTHLY_RATE")), False, .Item("FIX_MONTHLY_RATE"))
 
-                                If Rate > Minimum_rate Then
+                                If fix_monthly_rate = True Then
                                     OVERTIME = 0
                                     HOLIDAY = 0
                                     TARDINESS = 0
@@ -1129,8 +1130,7 @@ Public Class frmReport
                         mysql = $"Select * From PAYROLL_PAYOUT A 
                                         inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID 
                                         left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCH_CODE
-                                        where PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' 
-                                        and B.HO_CATEGORY IN ('Photo Admin Office', 'Photo Admin Operation') order by HO_CATEGORY"
+                                        where PAYDATE  = '{paydatee}' and B.HO_CATEGORY like 'Photo%' order by HO_CATEGORY"
 
                     End If
                 Else
@@ -1168,8 +1168,7 @@ Public Class frmReport
                         mysql = $"Select * From PAYROLL_PAYOUT A 
                                         inner Join PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID
                                         left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCH_CODE  
-                                        where A.PAYDATE = '{paydatee}' and B.COMPANY  = 'P&G UY' 
-                                        And B.HO_CATEGORY In ('GHS/P&G UY Admin Office','GHS/P&G UY Admin Operation','GHS/P&G UY Maintenance')
+                                        where A.PAYDATE = '{paydatee}' and B.HO_CATEGORY In ('GHS/P&G UY Admin Office','GHS/P&G UY Admin Operation','GHS/P&G UY Maintenance')
                                         Order by case when B.HO_CATEGORY LIKE UPPER('%GHS%') then 1 else 0  end, B.HO_CATEGORY asc"
 
                     End If

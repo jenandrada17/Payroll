@@ -690,59 +690,10 @@ Public Class frmPayout
         End If
     End Sub
 
-    'Dim hours, sss_comp, pagibig_comp, philh_comp, tax_WH As Double
-    'Dim sbu, otherLoan_perGive, charges_perGive, cash_advance_perGive, total_deduction As Double
-    'Dim sss_loan, pagibig_loan, net_pay As Double
-    'Dim thirteen_month As Double = 0
-
     Private Sub Close_LBL_Click(sender As Object, e As EventArgs) Handles Close_LBL.Click
         Close()
     End Sub
 
-    'Public Sub Send_Email(byteViewer As Byte(), recipient_Email As String, recipient_Name As String, Optional FOR_single As Boolean = False)
-    '    Try
-    '        Dim FoundMatch As Boolean = Regex.IsMatch(recipient_Email, "\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase)
-
-    '        If Not FoundMatch Then
-    '            MsgBox(recipient_Name & " has an INVALID EMAIL ADDRESS.", MsgBoxStyle.Exclamation, "INVALID")
-    '            Exit Sub
-    '        End If
-
-    '        Dim email As String = GetEmail()
-    '        Dim password As String = GetPassword()
-    '        Dim datee As DateTime = Payslip_paydate_Combo.Text
-
-    '        Dim Smtp_Server As New SmtpClient
-    '        Dim e_mail As New MailMessage()
-    '        Smtp_Server.UseDefaultCredentials = False
-    '        Smtp_Server.Credentials = New Net.NetworkCredential(email, password)
-    '        Smtp_Server.Port = 587
-    '        Smtp_Server.EnableSsl = True
-    '        Smtp_Server.Host = "smtp.gmail.com"
-
-    '        e_mail = New MailMessage()
-    '        e_mail.From = New MailAddress(email)
-    '        e_mail.To.Add(recipient_Email)
-    '        e_mail.Subject = datee.ToString("MMMM dd, yyyy") & " PAYROLL"
-    '        e_mail.IsBodyHtml = False
-
-    '        Dim memoryStream = New MemoryStream(byteViewer)
-    '        memoryStream.Seek(0, SeekOrigin.Begin)
-
-    '        Dim attachment = New Attachment(memoryStream, recipient_Name & ".pdf")
-    '        e_mail.Attachments.Add(attachment)
-
-    '        e_mail.Body = BodyText_RichB.Text
-    '        Smtp_Server.Send(e_mail)
-
-    '        If FOR_single Then
-    '            MsgBox("Email Sent!")
-    '        End If
-
-    '    Catch error_t As Exception
-    '        MsgBox(error_t.ToString)
-    '    End Try
-    'End Sub
 
     Private Sub Rate_EmpSelect_BTN_Click(sender As Object, e As EventArgs) Handles EmpSelect_BTN.Click
         If Payslip_paydate_Combo.SelectedIndex < 0 Then
@@ -769,6 +720,7 @@ Public Class frmPayout
             Catch ex As Exception
 
             End Try
+
         End If
     End Sub
 
@@ -835,7 +787,6 @@ Public Class frmPayout
 
             End If
         End If
-
 
     End Sub
 

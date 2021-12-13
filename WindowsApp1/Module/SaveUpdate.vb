@@ -220,11 +220,6 @@ Module SaveUpdate
                 End If
             End Using
         End If
-
-        '================================== SUM UP ALL IN HISTORY_DEDUCTION ================================  
-        If deduc_id = "" Then
-
-        End If
     End Sub
 
     Public Sub Update_DEDUCTION_STATUS(deduc_id As String)
