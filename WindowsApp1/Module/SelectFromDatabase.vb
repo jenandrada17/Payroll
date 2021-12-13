@@ -2470,19 +2470,6 @@ Module SelectFromDatabase
         Return LIST_BIOO
     End Function
 
-    Friend Function GetData(column As String, str As String)
-        Dim dataa As String = ""
-        Dim mysql As String = $"Select {column} from {str}"
-        Using ds As DataSet = LoadSQL(mysql)
-            If ds.Tables(0).Rows.Count > 0 Then
-                With ds.Tables(0).Rows(0)
-                    dataa = IIf(IsDBNull(.Item(column)), "", .Item(column))
-                End With
-            End If
-        End Using
-        Return dataa
-    End Function
-
     Public Function GetSummary_Email(PAYDATE As String, str As String)
         Dim TOTALS As String = 0
         Dim mysql_ As String = $"Select COALESCE(sum(NET_PAY), 0) as tots From PAYROLL_PAYOUT A 
@@ -2499,6 +2486,30 @@ Module SelectFromDatabase
         End If
 
         Return TOTALS
+    End Function
+
+    Public Function validSampleUser(username As String, password As String)
+        Dim mysql As String = $"Select * from PAYROLL_USER where USERNAME = '{username}' and PASSWORD = '{password}'"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_USER")
+            If ds.Tables(0).Rows.Count > 0 Then
+                Return True
+            End If
+        End Using
+
+        Return False
+    End Function
+
+    Friend Function GetData(column As String, str As String)
+        Dim dataa As String = ""
+        Dim mysql As String = $"Select {column} from {str}"
+        Using ds As DataSet = LoadSQL(mysql)
+            If ds.Tables(0).Rows.Count > 0 Then
+                With ds.Tables(0).Rows(0)
+                    dataa = IIf(IsDBNull(.Item(column)), "", .Item(column))
+                End With
+            End If
+        End Using
+        Return dataa
     End Function
 
 End Module

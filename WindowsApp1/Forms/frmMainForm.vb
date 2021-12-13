@@ -193,6 +193,11 @@ Public Class frmMainForm
         Close()
     End Sub
 
+    Private Sub ChangePasswordToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ChangePasswordToolStripMenuItem.Click
+        Dim form As New frmUser
+        form.ShowDialog()
+    End Sub
+
     Private Sub Calculator_BTN_MouseLeave(sender As Object, e As EventArgs) Handles Contribution_BTN.MouseLeave
         Contribution_BTN.BackColor = Color.Black
     End Sub

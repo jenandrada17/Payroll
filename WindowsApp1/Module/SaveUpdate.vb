@@ -1131,7 +1131,7 @@ Module SaveUpdate
                                     NoOfDays = .Item("PRESENT_DAYS")
 
                                     If fix_monthly_rate = False Then
-                                        RegularOT = .Item("OVERTIME") + .Item("MORNING_OT")
+                                        RegularOT = .Item("OVERTIME")
                                         SpecialHol = .Item("SPECHOLIDAY")
                                         RegularHol = .Item("REGHOLIDAY")
                                         Late = .Item("LATE")
@@ -2234,6 +2234,26 @@ Module SaveUpdate
 
             ds.Tables(0).Rows.Add(dsNew)
             SaveEntry(ds)
+        End Using
+    End Sub
+
+    Public Sub SaveUserDetails(oldUsername As String, newUsername As String, newPassword As String)
+
+        Dim namee As String = GetData("USER_FULLNAME", $"PAYROLL_USER where USERNAME = '{oldUsername}'")
+
+        Dim mysql As String = $"Select * from PAYROLL_USER rows 1"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_USER")
+            Dim dsRow As DataRow = ds.Tables(0).NewRow
+            With dsRow
+                .Item("USERNAME") = newUsername
+                .Item("PASSWORD") = newPassword
+                .Item("USER_FULLNAME") = namee
+            End With
+
+            ds.Tables(0).Rows.Add(dsRow)
+            SaveEntry(ds)
+
+            MsgBox("Successfully Saved.", MsgBoxStyle.Information, "Success")
         End Using
     End Sub
 

@@ -993,17 +993,12 @@ Public Class frmAttendance
                     End If
                 Next
 
-                If DATE_ONLY = "11/22/2021" Then
-                    For Each dateTime As String In groups_timee
-                        Console.WriteLine("asdas " & dateTime)
-                    Next
-                End If
-
                 For Each dateTime As DateTime In groups_timee
 
                     Dim time As DateTime = dateTime.ToString("t")
 
                     DATE_ONLY = dateTime.ToString("d")
+
                     '============================== WORKED FINE ========================
 
                     If time >= TIME_IN.AddHours(-3).ToShortTimeString And time <= TIME_IN.AddHours(4).AddMinutes(-1).ToShortTimeString And Not time.Hour = 12 Then
@@ -1760,7 +1755,7 @@ Public Class frmAttendance
 
             progressBarStart(DtSet.Tables(0).Rows.Count)
 
-            For row = 2 To DtSet.Tables(0).Rows.Count
+            For row = 2 To DtSet.Tables(0).Rows.Count + 1
                 SaveBiometricSheet(Paydate, eCell(row, 3).Value, eCell(row, 4).Value)
                 distinct_bio.Add(eCell(row, 3).Value)
 
