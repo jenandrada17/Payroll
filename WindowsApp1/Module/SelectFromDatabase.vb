@@ -364,21 +364,6 @@ Module SelectFromDatabase
 
             End If
         End Using
-
-        'Dim sql As String = "select DATEE, NAME from PAYROLL_HOLIDAY where KINDS = 'SPECIAL' "
-
-        'Using rdr As FbDataReader = LoadSQL_byDataReader(sql)
-        '    LV.Items.Clear()
-
-        '    While rdr.Read()
-        '        If rdr.HasRows Then
-        '            With rdr
-        '                Dim i As ListViewItem = LV.Items.Add(.Item("DATEE"))
-        '                i.SubItems.Add(.Item("NAME"))
-        '            End With
-        '        End If
-        '    End While
-        'End Using
     End Sub
 
     Friend Sub AttendanceDetails(biometric As String, paydate As String, NoOfDays_TXT As TextBox, RegularOT_TXT As TextBox,
@@ -396,8 +381,10 @@ Module SelectFromDatabase
                     NoOfDays_TXT.Text = .Item("PRESENT_DAYS")
                     RegularOT_TXT.Text = .Item("OVERTIME")
                     RegularOT_TXT.Tag = .Item("OVERTIME")
-                    SpecialHol_TXT.Text = .Item("SPECHOLIDAY")
                     RegularHol_TXT.Text = .Item("REGHOLIDAY")
+                    RegularHol_TXT.Tag = IIf(IsDBNull(.Item("TRAINING_REGHOLIDAY")), 0, .Item("TRAINING_REGHOLIDAY"))
+                    SpecialHol_TXT.Text = .Item("SPECHOLIDAY")
+                    SpecialHol_TXT.Tag = IIf(IsDBNull(.Item("TRAINING_SPECHOLIDAY")), 0, .Item("TRAINING_SPECHOLIDAY"))
                     Late_TXT.Text = .Item("LATE")
                     Late_TXT.Tag = .Item("LATE")
                     UnderTime_TXT.Text = .Item("UNDERTIME")
@@ -1774,21 +1761,16 @@ Module SelectFromDatabase
             Next
             progressBarEnd()
         End Using
-
     End Sub
 
     Private Sub AddRow_PAYOUT(ByVal dr As DataRow, listview As ListView)
 
         With dr
             Dim i As ListViewItem = listview.Items.Add(.Item("FULLNAME"))
-            'i.SubItems.Add(.Item("TOTAL_BASIC")).Tag = .Item("BIOMETRIC_ID")
-            'i.SubItems.Add(.Item("TOTAL_OVERTIME")).Tag = .Item("BRANCH_ID")
-            'i.SubItems.Add(.Item("TOTAL_LATE_UT"))
             i.SubItems.Add(CDbl(.Item("GROSS_AMOUNT")).ToString("N")).Tag = .Item("BIOMETRIC_ID")
             i.SubItems.Add(CDbl(.Item("SSS_COMP")).ToString("N"))
             i.SubItems.Add(CDbl(.Item("PAGIBIG_COMP")).ToString("N"))
             i.SubItems.Add(CDbl(.Item("PHILHEALTH_COMP")).ToString("N"))
-            'i.SubItems.Add(CDbl(.Item("TAXABLE")).ToString("N"))
             i.SubItems.Add(CDbl(.Item("TAX_WHELD")).ToString("N"))
             i.SubItems.Add(CDbl(.Item("NET_TAX_COMP")).ToString("N"))
             i.SubItems.Add(CDbl(.Item("SSS_LOAN")).ToString("N"))
@@ -1796,7 +1778,6 @@ Module SelectFromDatabase
             i.SubItems.Add(CDbl(.Item("TOTAL_ALLOWANCE")).ToString("N"))
             i.SubItems.Add(CDbl(.Item("TOTAL_DEDUCTION")).ToString("N"))
             i.SubItems.Add(CDbl(.Item("NET_PAY")).ToString("N"))
-
         End With
 
     End Sub
@@ -2510,6 +2491,16 @@ Module SelectFromDatabase
             End If
         End Using
         Return dataa
+    End Function
+
+    Friend Function DataeXIST(str As String)
+        Dim mysql As String = $"Select * from {str}"
+        Using ds As DataSet = LoadSQL(mysql)
+            If ds.Tables(0).Rows.Count > 0 Then
+                Return True
+            End If
+        End Using
+        Return False
     End Function
 
 End Module

@@ -865,6 +865,7 @@ Public Class frmReport
 
                                 If NAMEE = "EC PAYABLE" Then
                                     DC_Amount = .Item("SSS_EC")
+
                                 ElseIf NAMEE = "LATE" Then
                                     DC_Amount = .Item("LATE_UT")
 

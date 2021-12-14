@@ -247,18 +247,10 @@
                                                 Rate_BioNo_TXT.KeyPress, Allow_Amount_TXT.KeyPress
 
         If e.KeyChar <> ChrW(Keys.Back) Then
-
             If Not Char.IsNumber(e.KeyChar) AndAlso Not Char.IsControl(e.KeyChar) AndAlso Not e.KeyChar = "." Then
                 e.Handled = True
             End If
         End If
-
-        'If e.KeyChar <> ChrW(Keys.Back) Then
-        '    If Char.IsNumber(e.KeyChar) Then
-        '    Else
-        '        e.Handled = True
-        '    End If
-        'End If
 
     End Sub
 
@@ -752,16 +744,6 @@
                 e.Handled = True
             End If
         End If
-    End Sub
-
-    Private Sub Rate_Employee_TXT_TextChanged(sender As Object, e As EventArgs) Handles Rate_Employee_TXT.TextChanged
-        'If Rate_Employee_TXT.Text IsNot Nothing Then
-        '    If Rate_Employee_TXT.Tag = True Then
-        '        RateFixYes_RB.Checked = True
-        '    Else
-        '        RateFixYes_RB.Checked = False
-        '    End If
-        'End If
     End Sub
 
 End Class

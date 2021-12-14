@@ -64,6 +64,9 @@ Module SaveUpdate
                     .Item("UNDERTIME") = under_total
                     .Item("REGHOLIDAY") = regHoliday
                     .Item("SPECHOLIDAY") = specHoliday
+                    .Item("TRAINING_DAYS") = 0
+                    .Item("TRAINING_REGHOLIDAY") = 0
+                    .Item("TRAINING_SPECHOLIDAY") = 0
 
                     If NIGHT_RATE <> Nothing Then
                         .Item("NIGHT_RATE") = NIGHT_RATE
@@ -93,6 +96,9 @@ Module SaveUpdate
                     .Item("REGHOLIDAY") = regHoliday
                     .Item("SPECHOLIDAY") = specHoliday
                     .Item("SIL") = SIL
+                    .Item("TRAINING_DAYS") = 0
+                    .Item("TRAINING_REGHOLIDAY") = 0
+                    .Item("TRAINING_SPECHOLIDAY") = 0
 
                     If NIGHT_RATE <> Nothing Then
                         .Item("NIGHT_RATE") = NIGHT_RATE
@@ -715,18 +721,19 @@ Module SaveUpdate
         End Using
     End Sub
 
-    Friend Sub SaveTraining_days(BIO_NO As String, PAYDATE As String, TRAINING_DAYS As String)
+    Friend Sub SaveTraining_days(BIO_NO As String, PAYDATE As String, TRAINING_DAYS As String, TRAINING_REGHOLIDAY As String, TRAINING_SPECHOLIDAY As String)
         Dim mysql As String = $"Select * FROM PAYROLL_ATTENDANCE where BIOMETRICID = '{BIO_NO}' and PAYDATE = '{PAYDATE}'"
         Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
         If dss.Tables(0).Rows.Count > 0 Then
             Dim dr As DataRow = dss.Tables(0).Rows(0)
             With dr
                 .Item("TRAINING_DAYS") = TRAINING_DAYS
+                .Item("TRAINING_REGHOLIDAY") = TRAINING_REGHOLIDAY
+                .Item("TRAINING_SPECHOLIDAY") = TRAINING_SPECHOLIDAY
             End With
             SaveEntry(dss, False)
         End If
     End Sub
-
 
     Friend Sub SavePayout_IndividualL(bioNo As String, paydate_ As String, startingDate As DateTime, EndingDate As DateTime) '========== AUTO SAVE TO PAYOUT ============  
         Dim regHoliday = Holiday_Rate("REGULAR")
@@ -761,6 +768,7 @@ Module SaveUpdate
                     Dim rate As Decimal = 0
                     Dim SIL As Double = 0
                     Dim Allowances As Double = 0
+                    Dim TotalREGHol, TotalSPECHol, TotalOT, TotalLateUnder, TotalNight, GrossAmount As Decimal
                     Dim Minimum_rate As Decimal = IIf(IsDBNull(.Item("BRANCH_CODE")) Or .Item("BRANCH_CODE").Equals(""), GetMinimumRate("CITY", "GENSAN"), GetMinimumRate("BRANCHCODE", .Item("BRANCH_CODE")))
                     Dim Ecola As Double = GetEcola("BRANCHCODE", .Item("BRANCH_CODE"))
                     Dim fix_monthly_rate As Boolean = IIf(IsDBNull(.Item("FIX_MONTHLY_RATE")), False, .Item("FIX_MONTHLY_RATE"))
@@ -768,6 +776,30 @@ Module SaveUpdate
                     rate = IIf(IsDBNull(.Item("RATE_DAILY")) Or .Item("RATE_DAILY") = 0, Minimum_rate, .Item("RATE_DAILY"))
                     Dim Monthly_rate As Decimal = IIf(IsDBNull(.Item("RATE_MONTHLY")) Or .Item("RATE_MONTHLY").Equals("0"), rate * 26, .Item("RATE_MONTHLY"))
                     Company = IIf(IsDBNull(.Item("COMPANY")), "", .Item("COMPANY"))
+                    Dim Training_REGHoliday = 0, Training_SPECHoliday As Integer = 0
+
+                    '============================================= ATTENDANCE (TOTAL DAYS) =========================================================
+                    Dim sql_1 As String = $"Select * From PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{bioNo}' and paydate = '{paydate_}'"
+                    Using ds_1 As DataSet = LoadSQL(sql_1, "PAYROLL_ATTENDANCE")
+                        If ds_1.Tables(0).Rows.Count > 0 Then
+
+                            Dim dr_11 As DataRow = ds_1.Tables(0).Rows(0)
+                            With dr_11
+                                NoOfDays = .Item("PRESENT_DAYS")
+
+                                If fix_monthly_rate = False Then
+                                    RegularOT = .Item("OVERTIME")
+                                    SpecialHol = .Item("SPECHOLIDAY")
+                                    RegularHol = .Item("REGHOLIDAY")
+                                    Late = .Item("LATE")
+                                    UnderTime = .Item("UNDERTIME")
+                                    nightRate = IIf(IsDBNull(.Item("NIGHT_RATE")), 0, .Item("NIGHT_RATE"))
+                                End If
+
+                                SIL = IIf(IsDBNull(.Item("SIL")), 0, .Item("SIL"))
+                            End With
+                        End If
+                    End Using
 
                     '====================================== IF TRAINEE GET TRAINING DAYS TO CALCULATE TRAINING FEE ===============================================
                     If Not IsDBNull(.Item("DATE_STARTED")) Then
@@ -801,50 +833,52 @@ Module SaveUpdate
 
                                 End If
 
+                                '=============== IF HOLIDAY TRAINING COVERED ================
+                                If DataeXIST($" PAYROLL_HOLIDAY WHERE DATEE = '{startingDate.ToString("M")}' AND KINDS = 'REGULAR'") Then
+                                    Training_REGHoliday += 1
+                                End If
+
+                                If DataeXIST($" PAYROLL_HOLIDAY WHERE DATEE = '{startingDate.ToString("M")}' AND KINDS = 'SPECIAL'") Then
+                                    Training_SPECHoliday += 1
+                                End If
+
                                 startingDate = startingDate.AddDays(1)
                             End While
 
-                            SaveTraining_days(bioNo, paydate_, noOf_days_training)
+                            SaveTraining_days(bioNo, paydate_, noOf_days_training, Training_REGHoliday, Training_SPECHoliday)
                         End If
                     End If
-
-                    '============================================= ATTENDANCE (TOTAL DAYS) =========================================================
-                    Dim sql_1 As String = $"Select * From PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{bioNo}' and paydate = '{paydate_}'"
-                    Using ds_1 As DataSet = LoadSQL(sql_1, "PAYROLL_ATTENDANCE")
-                        If ds_1.Tables(0).Rows.Count > 0 Then
-
-                            Dim dr_11 As DataRow = ds_1.Tables(0).Rows(0)
-                            With dr_11
-                                NoOfDays = .Item("PRESENT_DAYS")
-
-                                If fix_monthly_rate = False Then
-                                    RegularOT = .Item("OVERTIME")
-                                    SpecialHol = .Item("SPECHOLIDAY")
-                                    RegularHol = .Item("REGHOLIDAY")
-                                    Late = .Item("LATE")
-                                    UnderTime = .Item("UNDERTIME")
-                                    nightRate = IIf(IsDBNull(.Item("NIGHT_RATE")), 0, .Item("NIGHT_RATE"))
-                                End If
-
-                                SIL = IIf(IsDBNull(.Item("SIL")), 0, .Item("SIL"))
-                            End With
-                        End If
-                    End Using
 
                     '============================================= BENIFITS CONTRIBUTION =========================================================  
 
                     If noOf_days_training <> 0 Then '================ IF TRAINEE BASE CALCULATE NEW RATE =================
 
-                        Dim trainee_rate As Double = rate
+                        Dim trainee_rate As Double
                         Dim total_train As Double = 0
 
                         trainee_rate = rate * 0.75
                         total_train = (Convert.ToDouble(rate) - trainee_rate) * Convert.ToDouble(noOf_days_training)
-
                         TotalBasic = (NoOfDays * rate) - total_train
-                        rate = rate * 0.75
+
+                        '===================== TRAINING HOLIDAY ==================  
+                        RegularHol = RegularHol - Training_REGHoliday
+                        SpecialHol = SpecialHol - Training_SPECHoliday
+
+                        Dim REG_STANDARD As Double = (RegularHol * rate) * regHoliday
+                        Dim SPEC_STANDARD As Double = (SpecialHol * rate) * specHoliday
+
+                        Dim REG_TRAINEE As Double = Training_REGHoliday * trainee_rate
+                        Dim SPEC_TRAINEE As Double = Training_SPECHoliday * trainee_rate
+
+                        TotalREGHol = REG_STANDARD + REG_TRAINEE
+                        TotalSPECHol = SPEC_STANDARD + SPEC_TRAINEE
+
                     Else
                         TotalBasic = (NoOfDays * rate)
+
+                        TotalREGHol = (RegularHol * rate) * regHoliday
+                        TotalSPECHol = (SpecialHol * rate) * specHoliday
+
                     End If
 
                     ''============================= FOR MONTHLY RATE (IF ABOVE MINIMUM RATE)================================== 
@@ -984,14 +1018,10 @@ Module SaveUpdate
                     End If
 
                     '============================================= Calculate_Gross() ========================================================= 
-                    Dim TotalREGHol, TotalSPECHol, TotalOT, TotalLateUnder, TotalNight, GrossAmount As Decimal
 
                     If fix_monthly_rate = True Then
                         GrossAmount = TotalBasic
                     Else
-
-                        TotalREGHol = (RegularHol * rate) * regHoliday
-                        TotalSPECHol = (SpecialHol * rate) * specHoliday
 
                         TotalOT = ((rate / 8) * 1.25) * RegularOT ' =========== CALCULATE OVERTIME TO PESO ===========
 
@@ -1070,6 +1100,7 @@ Module SaveUpdate
                         Dim nightRate As Double = 0
                         Dim Allowances As Double = 0
                         Dim Deduction As Double = 0
+                        Dim TotalREGHol, TotalSPECHol, TotalOT, TotalLateUnder, GrossAmount As Double
                         Dim Minimum_rate As Double = IIf(IsDBNull(.Item("BRANCH_CODE")) Or .Item("BRANCH_CODE").Equals(""), GetMinimumRate("CITY", "GENSAN"), GetMinimumRate("BRANCHCODE", .Item("BRANCH_CODE")))
                         Dim Ecola As Double = GetEcola("BRANCHCODE", .Item("BRANCH_CODE"))
                         Dim fix_monthly_rate As Boolean = IIf(IsDBNull(.Item("FIX_MONTHLY_RATE")), False, .Item("FIX_MONTHLY_RATE"))
@@ -1078,6 +1109,29 @@ Module SaveUpdate
                         rate = IIf(IsDBNull(.Item("RATE_DAILY")) Or .Item("RATE_DAILY") = 0, Minimum_rate, .Item("RATE_DAILY"))
                         Dim Monthly_rate As Double = IIf(IsDBNull(.Item("RATE_MONTHLY")) Or .Item("RATE_MONTHLY").Equals("0"), rate * 26, .Item("RATE_MONTHLY"))
                         Company = IIf(IsDBNull(.Item("COMPANY")), "", .Item("COMPANY"))
+                        Dim Training_REGHoliday = 0, Training_SPECHoliday As Integer = 0
+
+                        '============================================= ATTENDANCE (TOTAL DAYS) =========================================================
+                        Dim sql_1 As String = $"Select * From TEMP_ATTENDANCE WHERE BIOMETRICID = '{BiometricID}' and paydate = '{paydate_}'"
+                        Using ds_1 As DataSet = LoadSQL(sql_1, "TEMP_ATTENDANCE")
+                            If ds_1.Tables(0).Rows.Count > 0 Then
+
+                                Dim dr_11 As DataRow = ds_1.Tables(0).Rows(0)
+                                With dr_11
+
+                                    NoOfDays = .Item("PRESENT_DAYS")
+
+                                    If fix_monthly_rate = False Then
+                                        RegularOT = .Item("OVERTIME")
+                                        SpecialHol = .Item("SPECHOLIDAY")
+                                        RegularHol = .Item("REGHOLIDAY")
+                                        Late = .Item("LATE")
+                                        UnderTime = .Item("UNDERTIME")
+                                    End If
+                                    '========= NO NIGHT RIGHT SEPARATE IN 7ELEVEN TAB ===========
+                                End With
+                            End If
+                        End Using
 
                         '==================== GET TRAINING DAYS TO CALCULATE TRAINING FEE (IF DATE_STARTED NOT NULL =================================
                         If Not IsDBNull(.Item("DATE_STARTED")) Then
@@ -1107,40 +1161,32 @@ Module SaveUpdate
 
                                     End If
 
+                                    '=============== IF HOLIDAY TRAINING COVERED ================
+                                    If DataeXIST($" PAYROLL_HOLIDAY WHERE DATEE = '{startingDate.ToString("M")}' AND KINDS = 'REGULAR'") Then
+                                        Training_REGHoliday += 1
+                                    End If
+
+                                    If DataeXIST($" PAYROLL_HOLIDAY WHERE DATEE = '{startingDate.ToString("M")}' AND KINDS = 'SPECIAL'") Then
+                                        Training_SPECHoliday += 1
+                                    End If
+
                                     startingDate = startingDate.AddDays(1)
                                 End While
 
                             End If
 
-                            SaveTraining_days(BiometricID, paydate_, noOf_days_training)
+                            SaveTraining_days(BiometricID, paydate_, noOf_days_training, Training_REGHoliday, Training_SPECHoliday)
                         End If
-
-                        '============================================= ATTENDANCE (TOTAL DAYS) =========================================================
-                        Dim sql_1 As String = $"Select * From TEMP_ATTENDANCE WHERE BIOMETRICID = '{BiometricID}' and paydate = '{paydate_}'"
-                        Using ds_1 As DataSet = LoadSQL(sql_1, "TEMP_ATTENDANCE")
-                            If ds_1.Tables(0).Rows.Count > 0 Then
-
-                                Dim dr_11 As DataRow = ds_1.Tables(0).Rows(0)
-                                With dr_11
-
-                                    NoOfDays = .Item("PRESENT_DAYS")
-
-                                    If fix_monthly_rate = False Then
-                                        RegularOT = .Item("OVERTIME")
-                                        SpecialHol = .Item("SPECHOLIDAY")
-                                        RegularHol = .Item("REGHOLIDAY")
-                                        Late = .Item("LATE")
-                                        UnderTime = .Item("UNDERTIME")
-                                    End If
-                                    '========= NO NIGHT RIGHT SEPARATE IN 7ELEVEN TAB ===========
-                                End With
-                            End If
-                        End Using
 
                         '============================================= BENIFITS CONTRIBUTION ========================================================= 
                         If noOf_days_training = 0 Then '================ BASE ON TRAINING DAYS COVERED =================
                             TotalBasic = NoOfDays * rate
+
+                            TotalREGHol = (RegularHol * rate) * regHoliday
+                            TotalSPECHol = (SpecialHol * rate) * specHoliday
+
                         Else
+
                             Dim trainee_rate As Double = 0
                             Dim total_train As Double = 0
 
@@ -1149,6 +1195,20 @@ Module SaveUpdate
 
                             TotalBasic = (NoOfDays * rate) - total_train
                             rate = rate * 0.75
+
+                            '===================== TRAINING HOLIDAY ==================  
+                            RegularHol = RegularHol - Training_REGHoliday
+                            SpecialHol = SpecialHol - Training_SPECHoliday
+
+                            Dim REG_STANDARD As Double = (RegularHol * rate) * regHoliday
+                            Dim SPEC_STANDARD As Double = (SpecialHol * rate) * specHoliday
+
+                            Dim REG_TRAINEE As Double = Training_REGHoliday * trainee_rate
+                            Dim SPEC_TRAINEE As Double = Training_SPECHoliday * trainee_rate
+
+                            TotalREGHol = REG_STANDARD + REG_TRAINEE
+                            TotalSPECHol = SPEC_STANDARD + SPEC_TRAINEE
+
                         End If
 
                         ''============================= FOR MONTHLY RATE (IF ABOVE MINIMUM RATE)================================== 
@@ -1277,14 +1337,10 @@ Module SaveUpdate
                         End If
 
                         '============================================= Calculate_Gross() ========================================================= 
-                        Dim TotalREGHol, TotalSPECHol, TotalOT, TotalLateUnder, GrossAmount As Double
 
                         If fix_monthly_rate = True Then
                             GrossAmount = TotalBasic
                         Else
-
-                            TotalREGHol = (RegularHol * rate) * regHoliday
-                            TotalSPECHol = (SpecialHol * rate) * specHoliday
 
                             TotalOT = ((rate / 8) * 1.25) * RegularOT ' =========== CALCULATE OVERTIME TO PESO =========== 
 

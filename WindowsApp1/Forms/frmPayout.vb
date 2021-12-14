@@ -369,22 +369,31 @@ Public Class frmPayout
             deduct_per_day = Convert.ToDouble(Rate_TXT.Text) - rate
             total_train = deduct_per_day * Convert.ToDouble(TrainingDays_LBL.Text)
 
+            '===================== TRAINING HOLIDAY ==================  
+            Dim RegularHol As Integer = CDbl(RegularHol_TXT.Text) - CDbl(RegularHol_TXT.Tag)
+            Dim SpecialHol As Integer = CDbl(SpecialHol_TXT.Text) - CDbl(SpecialHol_TXT.Tag)
+
+            Dim REG_STANDARD As Double = (RegularHol * CDec(Rate_TXT.Text)) * regHoliday_
+            Dim SPEC_STANDARD As Double = (SpecialHol * CDec(Rate_TXT.Text)) * specHoliday_
+
+            Dim REG_TRAINEE As Double = (CDbl(RegularHol_TXT.Tag) * rate) * regHoliday_
+            Dim SPEC_TRAINEE As Double = (CDbl(SpecialHol_TXT.Tag) * rate) * specHoliday_
+
+            TotalHol_LBL.Text = (REG_STANDARD + REG_TRAINEE + SPEC_STANDARD + SPEC_TRAINEE).ToString("N")
+            TotalHol_LBL.Tag = REG_STANDARD + REG_TRAINEE + SPEC_STANDARD + SPEC_TRAINEE
+
             TotalBasic_LBL.Text = ((CDbl(NoOfDays_TXT.Text) * CDbl(Rate_TXT.Text)) - total_train).ToString("N")
             TotalBasic_LBL.Tag = (CDbl(NoOfDays_TXT.Text) * CDbl(Rate_TXT.Text)) - total_train
 
-            TotalHol_LBL.Text = (((CDbl(SpecialHol_TXT.Text) * CDbl(rate)) * specHoliday_) + ((CDbl(RegularHol_TXT.Text) * rate) * regHoliday_)).ToString("N") ' =========== CALCULATE hOLIDAY TO PESO ===========
-            TotalHol_LBL.Tag = ((CDbl(SpecialHol_TXT.Text) * CDbl(rate)) * specHoliday_) + ((CDbl(RegularHol_TXT.Text) * rate) * regHoliday_) ' =========== CALCULATE hOLIDAY TO PESO ===========
+            TotalOT_LBL.Text = (((rate / 8) * 1.25) * CDbl(RegularOT_TXT.Text)).ToString("N") ' =====  CALCULATE OVERTIME TO PESO  
+            TotalOT_LBL.Tag = ((rate / 8) * 1.25) * CDbl(RegularOT_TXT.Text) ' ===== CALCULATE OVERTIME TO PESO 
 
-            TotalOT_LBL.Text = (((rate / 8) * 1.25) * CDbl(RegularOT_TXT.Text)).ToString("N") ' =========== CALCULATE OVERTIME TO PESO ===========
-            TotalOT_LBL.Tag = ((rate / 8) * 1.25) * CDbl(RegularOT_TXT.Text) ' =========== CALCULATE OVERTIME TO PESO ===========
-
-            TotalNight_LBL.Text = (((rate / 8) * 0.1) * CDbl(NightTime_TXT.Tag)).ToString("N") ' =========== CALCULATE OVERTIME TO PESO ===========
-            TotalNight_LBL.Tag = ((rate / 8) * 0.1) * CDbl(NightTime_TXT.Tag) ' =========== CALCULATE OVERTIME TO PESO ===========
+            TotalNight_LBL.Text = (((rate / 8) * 0.1) * CDbl(NightTime_TXT.Tag)).ToString("N") ' ==== CALCULATE OVERTIME TO PESO 
+            TotalNight_LBL.Tag = ((rate / 8) * 0.1) * CDbl(NightTime_TXT.Tag) ' ===== CALCULATE OVERTIME TO PESO 
 
             Dim LATEE, UNDERTIMEE As Double
             LATEE = ((rate / 8) / 60) * CDbl(Late_TXT.Text)
             UNDERTIMEE = ((rate / 8) / 60) * CDbl(UnderTime_TXT.Text)
-
 
             TotalLateUnder_LBL.Text = (LATEE + UNDERTIMEE).ToString("N")
             TotalLateUnder_LBL.Tag = LATEE + UNDERTIMEE
@@ -398,13 +407,13 @@ Public Class frmPayout
             TotalBasic_LBL.Tag = CDbl(NoOfDays_TXT.Text) * RATEE
 
             TotalHol_LBL.Text = (((CDbl(SpecialHol_TXT.Text) * RATEE) * specHoliday_) + ((CDbl(RegularHol_TXT.Text) * RATEE) * regHoliday_)).ToString("N") ' =========== CALCULATE hOLIDAY TO PESO ===========
-            TotalHol_LBL.Tag = ((CDbl(SpecialHol_TXT.Text) * RATEE) * specHoliday_) + ((CDbl(RegularHol_TXT.Text) * RATEE) * regHoliday_) ' =========== CALCULATE hOLIDAY TO PESO ===========
+            TotalHol_LBL.Tag = ((CDbl(SpecialHol_TXT.Text) * RATEE) * specHoliday_) + ((CDbl(RegularHol_TXT.Text) * RATEE) * regHoliday_) ' ====== CALCULATE hOLIDAY TO PESO  
 
             TotalOT_LBL.Text = (((CDbl(Rate_TXT.Text) / 8) * 1.25) * CDbl(RegularOT_TXT.Text)).ToString("N") ' =========== CALCULATE OVERTIME TO PESO ===========
-            TotalOT_LBL.Tag = ((CDbl(Rate_TXT.Text) / 8) * 1.25) * CDbl(RegularOT_TXT.Text) ' =========== CALCULATE OVERTIME TO PESO ===========
+            TotalOT_LBL.Tag = ((CDbl(Rate_TXT.Text) / 8) * 1.25) * CDbl(RegularOT_TXT.Text) ' =========== CALCULATE OVERTIME TO PESO  
 
-            TotalNight_LBL.Text = (((RATEE / 8) * 0.1) * CDbl(NightTime_TXT.Tag)).ToString("N") ' =========== CALCULATE OVERTIME TO PESO ===========
-            TotalNight_LBL.Tag = ((RATEE / 8) * 0.1) * CDbl(NightTime_TXT.Tag) ' =========== CALCULATE OVERTIME TO PESO ===========
+            TotalNight_LBL.Text = (((RATEE / 8) * 0.1) * CDbl(NightTime_TXT.Tag)).ToString("N") ' =========== CALCULATE OVERTIME TO PESO  
+            TotalNight_LBL.Tag = ((RATEE / 8) * 0.1) * CDbl(NightTime_TXT.Tag) ' ========  CALCULATE OVERTIME TO PESO  
 
             Dim LATEE, UNDERTIMEE As Double
             LATEE = ((RATEE / 8) / 60) * CDbl(Late_TXT.Text)

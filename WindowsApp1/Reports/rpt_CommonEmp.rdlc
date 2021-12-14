@@ -1617,7 +1617,6 @@ IIF(Fields!HOUSEHOLD_L.Value = 0, 0, Fields!NETPAY_L.Value * Fields!HOUSEHOLD_L.
                       </Style>
                     </Textbox>
                     <ColSpan>2</ColSpan>
-                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
                 <TablixCell />
@@ -2135,6 +2134,7 @@ IIF(Fields!HOUSEHOLD_L.Value = 0, 0, Fields!NETPAY_L.Value * Fields!HOUSEHOLD_L.
                       </Style>
                     </Textbox>
                     <ColSpan>24</ColSpan>
+                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
                 <TablixCell />
