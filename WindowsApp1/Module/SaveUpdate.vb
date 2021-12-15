@@ -1111,7 +1111,7 @@ Module SaveUpdate
                         Company = IIf(IsDBNull(.Item("COMPANY")), "", .Item("COMPANY"))
                         Dim Training_REGHoliday = 0, Training_SPECHoliday As Integer = 0
 
-                        '============================================= ATTENDANCE (TOTAL DAYS) =========================================================
+                        '============================================= ATTENDANCE (TOTAL DAYS) ========================================================= 
                         Dim sql_1 As String = $"Select * From TEMP_ATTENDANCE WHERE BIOMETRICID = '{BiometricID}' and paydate = '{paydate_}'"
                         Using ds_1 As DataSet = LoadSQL(sql_1, "TEMP_ATTENDANCE")
                             If ds_1.Tables(0).Rows.Count > 0 Then
@@ -1370,12 +1370,12 @@ Module SaveUpdate
                         NetPay = positive - negative
 
                         SavePayout(BiometricID, paydate_, (TotalBasic).ToString("N"), (TotalOT).ToString("N"),
-                                      (TotalLateUnder).ToString("N"), (GrossAmount).ToString("N"),
-                                      (SSSComp).ToString("N"), (SSS_ER).ToString("N"), (SSS_EC).ToString("N"),
-                                      (PagibigComp).ToString("N"), (PhilhealthComp).ToString("N"), (Tax_Wheld).ToString("N"),
-                                      (netTax).ToString("N"), (sssLoan).ToString("N"), (pagibigLoan).ToString("N"),
-                                      (Allowances).ToString("N"), (Deduction).ToString("N"), (NetPay).ToString("N"),
-                                      (TotalREGHol).ToString("N"), (TotalSPECHol).ToString("N"), 0, "Group")
+                                          (TotalLateUnder).ToString("N"), (GrossAmount).ToString("N"),
+                                          (SSSComp).ToString("N"), (SSS_ER).ToString("N"), (SSS_EC).ToString("N"),
+                                          (PagibigComp).ToString("N"), (PhilhealthComp).ToString("N"), (Tax_Wheld).ToString("N"),
+                                          (netTax).ToString("N"), (sssLoan).ToString("N"), (pagibigLoan).ToString("N"),
+                                          (Allowances).ToString("N"), (Deduction).ToString("N"), (NetPay).ToString("N"),
+                                          (TotalREGHol).ToString("N"), (TotalSPECHol).ToString("N"), 0, "Group")
 
                         frmMainForm.AppProgressBar.Value += 1
                     End With

@@ -273,7 +273,7 @@ Public Class frmPayout
                     End If
 
                     For Each row As DataGridViewRow In Allowance_grid.Rows
-                        Save_Recorded_Allow_Deduc(BiometricID_TXT.Text, paydate_, row.Cells(0).Value, row.Cells(1).Value, "ALLOWANCE")
+                        Save_Recorded_Allow_Deduc(BiometricID_TXT.Text, paydate_, row.Cells(0).Value, row.Cells(0).Tag, "ALLOWANCE")
 
                         '======================== SAVING TRANSACTION ========================
                         If allow_list <> Nothing Then
@@ -298,7 +298,7 @@ Public Class frmPayout
                         Dim deduct_id As String = IIf(IsDBNull(row.Cells(2).Tag), Nothing, row.Cells(2).Tag)
 
                         If row.Cells(1).Value <> 0 Then
-                            Save_Recorded_Allow_Deduc(BiometricID_TXT.Text, paydate_, row.Cells(0).Value, row.Cells(1).Value, "DEDUCTION", deduct_id)
+                            Save_Recorded_Allow_Deduc(BiometricID_TXT.Text, paydate_, row.Cells(0).Value, row.Cells(0).Tag, "DEDUCTION", deduct_id)
 
                             '======================== SAVING TRANSACTION ========================
                             If deduc_list <> Nothing Then
@@ -370,8 +370,8 @@ Public Class frmPayout
             total_train = deduct_per_day * Convert.ToDouble(TrainingDays_LBL.Text)
 
             '===================== TRAINING HOLIDAY ==================  
-            Dim RegularHol As Integer = CDbl(RegularHol_TXT.Text) - CDbl(RegularHol_TXT.Tag)
-            Dim SpecialHol As Integer = CDbl(SpecialHol_TXT.Text) - CDbl(SpecialHol_TXT.Tag)
+            Dim RegularHol As Integer = CInt(RegularHol_TXT.Text) - CInt(RegularHol_TXT.Tag)
+            Dim SpecialHol As Integer = CInt(SpecialHol_TXT.Text) - CInt(SpecialHol_TXT.Tag)
 
             Dim REG_STANDARD As Double = (RegularHol * CDec(Rate_TXT.Text)) * regHoliday_
             Dim SPEC_STANDARD As Double = (SpecialHol * CDec(Rate_TXT.Text)) * specHoliday_
@@ -382,18 +382,28 @@ Public Class frmPayout
             TotalHol_LBL.Text = (REG_STANDARD + REG_TRAINEE + SPEC_STANDARD + SPEC_TRAINEE).ToString("N")
             TotalHol_LBL.Tag = REG_STANDARD + REG_TRAINEE + SPEC_STANDARD + SPEC_TRAINEE
 
-            TotalBasic_LBL.Text = ((CDbl(NoOfDays_TXT.Text) * CDbl(Rate_TXT.Text)) - total_train).ToString("N")
-            TotalBasic_LBL.Tag = (CDbl(NoOfDays_TXT.Text) * CDbl(Rate_TXT.Text)) - total_train
+            TotalBasic_LBL.Text = ((CDbl(NoOfDays_TXT.Text) * CDec(Rate_TXT.Text)) - total_train).ToString("N")
+            TotalBasic_LBL.Tag = (CDbl(NoOfDays_TXT.Text) * CDec(Rate_TXT.Text)) - total_train
 
-            TotalOT_LBL.Text = (((rate / 8) * 1.25) * CDbl(RegularOT_TXT.Text)).ToString("N") ' =====  CALCULATE OVERTIME TO PESO  
-            TotalOT_LBL.Tag = ((rate / 8) * 1.25) * CDbl(RegularOT_TXT.Text) ' ===== CALCULATE OVERTIME TO PESO 
+            'TotalOT_LBL.Text = (((rate / 8) * 1.25) * CDbl(RegularOT_TXT.Text)).ToString("N") ' =====  CALCULATE OVERTIME TO PESO  
+            'TotalOT_LBL.Tag = ((rate / 8) * 1.25) * CDbl(RegularOT_TXT.Text) ' ===== CALCULATE OVERTIME TO PESO 
 
-            TotalNight_LBL.Text = (((rate / 8) * 0.1) * CDbl(NightTime_TXT.Tag)).ToString("N") ' ==== CALCULATE OVERTIME TO PESO 
-            TotalNight_LBL.Tag = ((rate / 8) * 0.1) * CDbl(NightTime_TXT.Tag) ' ===== CALCULATE OVERTIME TO PESO 
+            'TotalNight_LBL.Text = (((rate / 8) * 0.1) * CDbl(NightTime_TXT.Tag)).ToString("N") ' ==== CALCULATE OVERTIME TO PESO 
+            'TotalNight_LBL.Tag = ((rate / 8) * 0.1) * CDbl(NightTime_TXT.Tag) ' ===== CALCULATE OVERTIME TO PESO 
+
+            'Dim LATEE, UNDERTIMEE As Double
+            'LATEE = ((rate / 8) / 60) * CDbl(Late_TXT.Text)
+            'UNDERTIMEE = ((rate / 8) / 60) * CDbl(UnderTime_TXT.Text)
+
+            TotalOT_LBL.Text = (((CDec(Rate_TXT.Text) / 8) * 1.25) * CDbl(RegularOT_TXT.Text)).ToString("N") ' =====  CALCULATE OVERTIME TO PESO  
+            TotalOT_LBL.Tag = ((CDec(Rate_TXT.Text) / 8) * 1.25) * CDbl(RegularOT_TXT.Text) ' ===== CALCULATE OVERTIME TO PESO 
+
+            TotalNight_LBL.Text = (((CDec(Rate_TXT.Text) / 8) * 0.1) * CDbl(NightTime_TXT.Tag)).ToString("N") ' ==== CALCULATE OVERTIME TO PESO 
+            TotalNight_LBL.Tag = ((CDec(Rate_TXT.Text) / 8) * 0.1) * CDbl(NightTime_TXT.Tag) ' ===== CALCULATE OVERTIME TO PESO 
 
             Dim LATEE, UNDERTIMEE As Double
-            LATEE = ((rate / 8) / 60) * CDbl(Late_TXT.Text)
-            UNDERTIMEE = ((rate / 8) / 60) * CDbl(UnderTime_TXT.Text)
+            LATEE = ((CDec(Rate_TXT.Text) / 8) / 60) * CDbl(Late_TXT.Text)
+            UNDERTIMEE = ((CDec(Rate_TXT.Text) / 8) / 60) * CDbl(UnderTime_TXT.Text)
 
             TotalLateUnder_LBL.Text = (LATEE + UNDERTIMEE).ToString("N")
             TotalLateUnder_LBL.Tag = LATEE + UNDERTIMEE
@@ -617,7 +627,7 @@ Public Class frmPayout
         Dim totals As Double = 0
         If Allowance_grid.Rows.Count > 0 Then
             For Each row As DataGridViewRow In Allowance_grid.Rows
-                totals = totals + row.Cells(1).Value
+                totals = totals + row.Cells(0).Tag
             Next
         End If
 
@@ -630,7 +640,7 @@ Public Class frmPayout
         Dim totals As Double = 0
         If Deduction_grid.Rows.Count > 0 Then
             For Each row As DataGridViewRow In Deduction_grid.Rows
-                totals = totals + row.Cells(1).Value
+                totals = totals + row.Cells(0).Tag
             Next
         End If
 
@@ -972,6 +982,11 @@ Public Class frmPayout
                         OVERTIME = .Item("OVERTIME")
                         LATE = .Item("LATE")
 
+                        'Dim hours As Integer = .Item("LATE") / 60
+                        'Dim minutes As Integer = .Item("LATE") Mod 60
+
+                        'LATE = $"{hours}.{minutes}"
+
                     End With
                 End If
             End Using
@@ -1055,7 +1070,7 @@ Public Class frmPayout
                 .Columns.Add("AMOUNT_PER_GIVE")
             End With
 
-            Dim total_deduction As Double = 0
+            Dim total_deduction As Decimal = 0
             Dim mysql_ As String
 
             '================================================ DEDUCTIONS -  MODIFIED_DEDUCTION================================================ 
@@ -1079,6 +1094,7 @@ Public Class frmPayout
 
                                 dt_deduction.Rows.Add(toProper, amountt.ToString(”N”))
 
+                                total_deduction += amountt
                             End With
                         Next
                     End If

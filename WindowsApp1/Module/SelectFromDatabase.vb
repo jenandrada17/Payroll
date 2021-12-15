@@ -392,6 +392,7 @@ Module SelectFromDatabase
                     NightTime_TXT.Text = IIf(IsDBNull(.Item("NIGHT_RATE")), "", .Item("NIGHT_RATE"))
                     NightTime_TXT.Tag = IIf(IsDBNull(.Item("NIGHT_RATE")), 0, .Item("NIGHT_RATE"))
                     TrainingDays_LBL.Text = IIf(IsDBNull(.Item("TRAINING_DAYS")), 0, .Item("TRAINING_DAYS"))
+
                 End With
             End If
         End Using
@@ -419,7 +420,7 @@ Module SelectFromDatabase
                         Dim row As DataGridViewRow = datagrid.Rows(rowId)
 
                         row.Cells(0).Value = toProper
-                        row.Cells(0).Tag = amountt.ToString(”N”)
+                        row.Cells(0).Tag = amountt
                         row.Cells(1).Value = amountt.ToString(”N”)
 
 
@@ -1244,6 +1245,7 @@ Module SelectFromDatabase
                         MonthlyRate_TXT.Text = IIf(IsDBNull(.Item("RATE_MONTHLY")) Or .Item("RATE_MONTHLY").Equals("0"), ratee.Text * 26, .Item("RATE_MONTHLY"))
                         MonthlyRate_TXT.Tag = minimum
                     End If
+
                 End With
 
             Else

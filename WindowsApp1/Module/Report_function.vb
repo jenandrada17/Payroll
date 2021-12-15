@@ -814,26 +814,59 @@ Module Report_function
         Return list_String
     End Function
 
+    'Has_Rows_Delete("PAYROLL_EMPLOYEE")
+
     Public Sub Check_This()
 
-        Dim mysql As String = $"Select Sum(NET_PAY) as tots From PAYROLL_PAYOUT 
-                            inner join PAYROLL_EMPLOYEE ON BIO_NO = BIOMETRIC_ID 
-                            LEFT JOIN PAYROLL_CITY_BRANCH ON BRANCHCODE = BRANCH_CODE  
-                            WHERE PAYDATE = '9/15/2021' AND CATEGORY In ('GENSAN PERFECT', 'JR PHOTO') AND ADDRESS = 'POLOMOLOK'"
+        Dim mysql As String = $"Select * FROM PAYROLL_EMPLOYEE B 
+                                   INNER Join PAYROLL_13MONTH C ON C.EMP_NO = B.EMP_NO"
 
-        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
             If ds.Tables(0).Rows.Count > 0 Then
-                Has_Rows_Delete("PAYROLL_EMPLOYEE")
+                For Each DR In ds.Tables(0).Rows
+                    With DR
+                        Dim AMOUNT As Decimal = .Item("AMOUNT")
 
-                For Each dr In ds.Tables(0).Rows
-                    With dr
-
-                        MsgBox(FormatNumber(.item("tots")))
-                        'SAVEE(.item("BIOMETRIC_ID"), .item("TOTAL_LATE_UT"))
+                        update_13thMonth(.Item("BIO_NO"), AMOUNT, "13th Month Pay")
                     End With
                 Next
             End If
         End Using
+
+
+        'Dim mysql As String = $"Select Sum(AMOUNT) as tots From payroll_employee B inner join payroll_13MONTH A on B.EMP_NO = A.EMP_NO 
+        '                        WHERE HO_CATEGORY = 'Dalton Admin Office' AND B.EMP_NO = A.EMP_NO"
+
+        'Using ds As DataSet = LoadSQL(mysql, "payroll_employee")
+        '    If ds.Tables(0).Rows.Count > 0 Then
+        '        For Each DR In ds.Tables(0).Rows
+        '            With DR
+        '                Dim asas As String = .Item("tots")
+        '                MsgBox(asas)
+
+        '                SAVEE(.item("BIOMETRIC_ID"), .item("TOTAL_LATE_UT"))
+        '            End With
+        '        Next
+        '    End If
+        'End Using
+
+    End Sub
+
+    Public Sub update_13thMonth(BIO As String, AMOUNT As String, CATEGORY As String)
+
+        Dim sql As String = $"Select * From RECORDED_ALLOW_DEDUC where BIO_NO = '{BIO}' AND CATEGORY = '{CATEGORY}'"
+        Using ds As DataSet = LoadSQL(sql, "RECORDED_ALLOW_DEDUC")
+            If ds.Tables(0).Rows.Count > 0 Then
+                Dim dsNewRow As DataRow = ds.Tables(0).Rows(0)
+                With dsNewRow
+
+                    .Item("AMOUNT") = AMOUNT
+
+                End With
+                SaveEntry(ds, False)
+            End If
+        End Using
+
     End Sub
 
     'Public Sub SAVEE(BIO As String, LASTE As String)
@@ -866,5 +899,59 @@ Module Report_function
 
         Return VALUEE
     End Function
+
+    Public Sub SAVE_ALLATTENDANCE()
+
+        Dim mysql As String = $"Select * From PAYROLL_ATTENDANCE"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
+            If ds.Tables(0).Rows.Count > 0 Then
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+
+                        Dim TRAINING_DAYS = IIf(IsDBNull(.Item("TRAINING_DAYS")), 0, .Item("TRAINING_DAYS"))
+                        Dim TRAINING_REGHOLIDAY = IIf(IsDBNull(.Item("TRAINING_REGHOLIDAY")), 0, .Item("TRAINING_REGHOLIDAY"))
+                        Dim TRAINING_SPECHOLIDAY = IIf(IsDBNull(.Item("TRAINING_SPECHOLIDAY")), 0, .Item("TRAINING_SPECHOLIDAY"))
+                        Dim NIGHT_RATE = IIf(IsDBNull(.Item("NIGHT_RATE")), 0, .Item("NIGHT_RATE"))
+
+                        GetTempAttendance(.Item("BIOMETRICID"), .Item("PAYDATE"), .Item("PRESENT_DAYS"), .Item("OVERTIME"),
+                                                .Item("LATE"), .Item("UNDERTIME"), .Item("REGHOLIDAY"), .Item("SPECHOLIDAY"),
+                                                TRAINING_DAYS, TRAINING_REGHOLIDAY, TRAINING_SPECHOLIDAY, NIGHT_RATE)
+
+                        frmMainForm.AppProgressBar.Value += 1
+                    End With
+                Next
+            End If
+        End Using
+
+        progressBarEnd()
+    End Sub
+
+    Friend Sub GetTempAttendance(BIOMETRICID As String, paydate_ As String, TotalDays As String, TotalOTHr As String,
+                                    Late_Total As String, Under_Total As String, TotalRHoliday As String, TotalSHoliday As String,
+                                    TRAINING_DAYS As String, TRAINING_REGHOLIDAY As String, TRAINING_SPECHOLIDAY As String,
+                                    NIGHT_RATE As String)
+
+        Dim mysql As String = "Select * From TEMP_ATTENDANCE Rows 1"
+        Using ds As DataSet = LoadSQL(mysql, "TEMP_ATTENDANCE")
+
+            Dim dsNewRow As DataRow = ds.Tables(0).NewRow
+            With dsNewRow
+                .Item("BIOMETRICID") = BIOMETRICID
+                .Item("PAYDATE") = paydate_
+                .Item("PRESENT_DAYS") = TotalDays
+                .Item("OVERTIME") = TotalOTHr
+                .Item("LATE") = Late_Total
+                .Item("UNDERTIME") = Under_Total
+                .Item("REGHOLIDAY") = TotalRHoliday
+                .Item("SPECHOLIDAY") = TotalSHoliday
+                '.Item("TRAINING_DAYS") = TRAINING_DAYS
+                '.Item("TRAINING_REGHOLIDAY") = TRAINING_REGHOLIDAY
+                '.Item("TRAINING_SPECHOLIDAY") = TRAINING_SPECHOLIDAY
+                '.Item("NIGHT_RATE") = NIGHT_RATE
+            End With
+            ds.Tables(0).Rows.Add(dsNewRow)
+            SaveEntry(ds)
+        End Using
+    End Sub
 
 End Module

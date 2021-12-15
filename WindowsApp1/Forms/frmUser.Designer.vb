@@ -51,8 +51,8 @@ Partial Class frmUser
         Me.GunaClear_btn.DisabledState.FillColor2 = System.Drawing.Color.FromArgb(CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer))
         Me.GunaClear_btn.DisabledState.ForeColor = System.Drawing.Color.FromArgb(CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer))
         Me.GunaClear_btn.DisabledState.Parent = Me.GunaClear_btn
-        Me.GunaClear_btn.FillColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(128, Byte), Integer), CType(CType(128, Byte), Integer))
-        Me.GunaClear_btn.FillColor2 = System.Drawing.Color.FromArgb(CType(CType(128, Byte), Integer), CType(CType(128, Byte), Integer), CType(CType(255, Byte), Integer))
+        Me.GunaClear_btn.FillColor = System.Drawing.Color.DarkSlateBlue
+        Me.GunaClear_btn.FillColor2 = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
         Me.GunaClear_btn.Font = New System.Drawing.Font("Dubai", 12.0!)
         Me.GunaClear_btn.ForeColor = System.Drawing.Color.Black
         Me.GunaClear_btn.HoverState.Parent = Me.GunaClear_btn
@@ -210,7 +210,9 @@ Partial Class frmUser
         Me.GunaSave_btn.DisabledState.FillColor2 = System.Drawing.Color.FromArgb(CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer), CType(CType(169, Byte), Integer))
         Me.GunaSave_btn.DisabledState.ForeColor = System.Drawing.Color.FromArgb(CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer), CType(CType(141, Byte), Integer))
         Me.GunaSave_btn.DisabledState.Parent = Me.GunaSave_btn
-        Me.GunaSave_btn.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GunaSave_btn.FillColor = System.Drawing.Color.DarkSlateBlue
+        Me.GunaSave_btn.FillColor2 = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(192, Byte), Integer))
+        Me.GunaSave_btn.Font = New System.Drawing.Font("Dubai", 12.0!)
         Me.GunaSave_btn.ForeColor = System.Drawing.Color.Black
         Me.GunaSave_btn.HoverState.Parent = Me.GunaSave_btn
         Me.GunaSave_btn.Location = New System.Drawing.Point(342, 317)
@@ -300,6 +302,7 @@ Partial Class frmUser
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
+        Me.BackColor = System.Drawing.SystemColors.AppWorkspace
         Me.ClientSize = New System.Drawing.Size(556, 370)
         Me.Controls.Add(Me.Label7)
         Me.Controls.Add(Me.NewUser_txt)

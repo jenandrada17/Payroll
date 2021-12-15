@@ -771,7 +771,7 @@ Public Class frmReport
                             Dim BRANCHCODE As String = .Item("BRANCH_CODE")
                             Dim BRANCHNAME As String = GET_STRING("PAYROLL_CITY_BRANCH", "BRANCHNAME", $"BRANCHCODE = '{BRANCHCODE}'")
                             Dim CATEGORY As String = IIf(IsDBNull(.Item("CATEGORY")), "", .Item("CATEGORY"))
-                            Dim DC_Amount As String = IIf(IsDBNull(.Item("TOTS")), Nothing, .Item("TOTS"))
+                            Dim DC_Amount As String = IIf(IsDBNull(.Item("TOTS")), "", .Item("TOTS"))
                             Dim Debit_Credit As String = IIf(IsDBNull(.Item("TRANSAC_NAME")), "", .Item("TRANSAC_NAME"))
 
                             If BRANCHCODE = Nothing Then
@@ -820,7 +820,7 @@ Public Class frmReport
                             Dim Debit_Credit As String = Nothing
                             Dim NAMEE As String = Nothing
                             Dim NAME_CATEGORY As String = Nothing
-                            Dim DC_Amount As String = Nothing
+                            Dim DC_Amount As Decimal = 0
 
                             If BRANCHCODE = Nothing Then
                                 BRANCHNAME = .Item("HO_CATEGORY")
