@@ -315,4 +315,11 @@
     Private Sub Close_LBL_Click(sender As Object, e As EventArgs) Handles Close_LBL.Click
         Close()
     End Sub
+
+    Private Sub Loans_Tab_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Loans_Tab.SelectedIndexChanged
+        If Loans_Tab.SelectedIndex = 0 Then
+            PopulateComboBox_Any(Category_Combo, "CATEGORY_DEDUCTION", "DEDUCTION_NAME")
+        End If
+    End Sub
+
 End Class

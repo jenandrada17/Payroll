@@ -19,6 +19,7 @@ Public Class frmNewEmployee
 
 
     Private Sub frmNewEmployee_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
         Lists_Employees(lvEmployee)
         'ListViewGrouping(lvEmployee, 0) 
         PopulateComboBox(Branch_ComboB, "PAYROLL_EMPLOYEE", "BRANCH_CODE")

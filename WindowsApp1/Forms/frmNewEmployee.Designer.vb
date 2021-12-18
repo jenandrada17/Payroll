@@ -123,7 +123,7 @@ Partial Class frmNewEmployee
         'ColumnHeader2
         '
         Me.ColumnHeader2.Text = "Company"
-        Me.ColumnHeader2.Width = 130
+        Me.ColumnHeader2.Width = 240
         '
         'ColumnHeader3
         '

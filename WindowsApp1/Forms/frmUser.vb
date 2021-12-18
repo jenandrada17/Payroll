@@ -16,6 +16,7 @@
         If Not validSave() Then Exit Sub
 
         SaveUserDetails(SampleUser_txt.Text, NewUser_txt.Text, NewPass_txt.Text)
+        Replacing($"PAYROLL_USER where USERNAME = '{SampleUser_txt.Text}' oR PASSWORD = '{SamplePass_txt.Text}';")
         GunaClear_btn.PerformClick()
 
     End Sub
@@ -25,7 +26,7 @@
         If NewPass_txt.Text <> Confirm_txt.Text Then
             MsgBox("New password and confirm password are not match.", MsgBoxStyle.Exclamation, "INVALID")
             Return False
-        ElseIf Not validSampleUser(SampleUser_txt.Text, SamplePass_txt.Text) Then
+        ElseIf Not validSampleUser(SampleUser_txt.Text, EncryptString(SamplePass_txt.Text)) Then
             MsgBox("Invalid Sample Username and Sample Password.", MsgBoxStyle.Exclamation, "INVALID")
             Return False
         End If

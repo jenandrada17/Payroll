@@ -2337,6 +2337,7 @@ Fields!PLUS.Value = "PTU", "PTU REALTY")</Value>
                             </Border>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
@@ -3201,8 +3202,9 @@ Fields!PLUS.Value = "PTU", "PTU REALTY")</Value>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox785">
+                        <Textbox Name="Textbox14">
                           <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
@@ -3219,7 +3221,7 @@ Fields!PLUS.Value = "PTU", "PTU REALTY")</Value>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox785</rd:DefaultName>
+                          <rd:DefaultName>Textbox14</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -3366,8 +3368,9 @@ Fields!PLUS.Value = "PTU", "PTU REALTY")</Value>
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox790">
+                        <Textbox Name="Textbox10">
                           <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
@@ -3384,7 +3387,7 @@ Fields!PLUS.Value = "PTU", "PTU REALTY")</Value>
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox790</rd:DefaultName>
+                          <rd:DefaultName>Textbox10</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>

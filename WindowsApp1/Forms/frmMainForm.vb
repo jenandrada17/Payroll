@@ -13,7 +13,7 @@ Public Class frmMainForm
 
         'Check_This()
 
-        'Login_Form.ShowDialog()
+        Login_Form.ShowDialog()
 
         AppDateTime.Text = Date.Now.ToString("dddd, MMMM dd, yyyy hh:mm:ss tt", CultureInfo.CurrentCulture)
 
@@ -58,6 +58,7 @@ Public Class frmMainForm
             End If
         End If
 
+        Console.WriteLine(EncryptString("jenkeandre"))
     End Sub
 
     '======================================Buttons================================================== 

@@ -487,7 +487,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=IIF(fIELDS!CATEGORY.Value = "ALLOWANCE" OR FIELDS!CATEGORY.Value = "DEBIT", CDec(FIELDS!AMOUNT.Value).ToString("N"), "0.00")</Value>
+                                  <Value>=FORMATNUMBER(IIF(fIELDS!CATEGORY.Value = "ALLOWANCE" OR FIELDS!CATEGORY.Value = "DEBIT", FIELDS!AMOUNT.Value, 0))</Value>
                                   <Style>
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -685,7 +685,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=IIF(FIELDS!CATEGORY.Value = "DEDUCTION" OR FIELDS!CATEGORY.Value = "CREDIT", CDec(FIELDS!AMOUNT.Value).ToString("N"), "0.00")</Value>
+                                  <Value>=FORMATNUMBER(IIF(FIELDS!CATEGORY.Value = "DEDUCTION" OR FIELDS!CATEGORY.Value = "CREDIT", FIELDS!AMOUNT.Value, 0))</Value>
                                   <Style>
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -821,7 +821,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=FormatNumber(Code.AddDebit(Sum(IIF(FIELDS!CATEGORY.Value = "ALLOWANCE" OR FIELDS!CATEGORY.Value = "DEBIT", CDbl(FIELDS!AMOUNT.Value), 0))))</Value>
+                                  <Value>=FormatNumber(Code.AddDebit(Sum(CDec(IIF(FIELDS!CATEGORY.Value = "ALLOWANCE" OR FIELDS!CATEGORY.Value = "DEBIT", FIELDS!AMOUNT.Value, 0)))))</Value>
                                   <Style>
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -859,7 +859,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=FormatNumber(Code.AddCredit(Sum(IIF(fIELDS!CATEGORY.Value = "DEDUCTION" OR FIELDS!CATEGORY.Value = "CREDIT", CDbl(FIELDS!AMOUNT.Value), 0))))</Value>
+                                  <Value>=FormatNumber(Code.AddCredit(Sum(CDec(IIF(fIELDS!CATEGORY.Value = "DEDUCTION" OR FIELDS!CATEGORY.Value = "CREDIT", FIELDS!AMOUNT.Value, 0)))))</Value>
                                   <Style>
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -1070,7 +1070,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=FormatNumber(Code.GetDebit_Total())</Value>
+                                  <Value>=Code.GetDebit_Total()</Value>
                                   <Style>
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>9pt</FontSize>
@@ -1105,7 +1105,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=FormatNumber(CODE.GetCredit_Total())</Value>
+                                  <Value>=CODE.GetCredit_Total()</Value>
                                   <Style>
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>9pt</FontSize>
@@ -1296,25 +1296,25 @@
       </CellDefinitions>
     </GridLayoutDefinition>
   </ReportParametersLayout>
-  <Code>Dim totalDebit as Decimal
-Dim totalCredt as Decimal
+  <Code>Dim totalDebit as Double
+Dim totalCredt as Double
 
-Public Function AddDebit(Amount as Decimal ) as Decimal 
+Public Function AddDebit(Amount as Double) as Double
 	totalDebit = totalDebit + Amount
 	Return Amount 
 End Function
 
-Public Function AddCredit(Amount as Decimal ) as Decimal 
+Public Function AddCredit(Amount as Double) as Double
 	totalCredt = totalCredt +  Amount
 	Return Amount 
 End Function
 
 Public Function GetDebit_Total()
-	Return totalDebit
+	Return totalDebit.ToString("N")
 End Function
 
 Public Function GetCredit_Total()
-	Return totalCredt 
+	Return totalCredt.ToString("N")
 End Function
 
 </Code>

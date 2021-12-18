@@ -29,6 +29,7 @@ Public Class frmAttendance
         LoadDateTime()
 
         'SAVE_ALLATTENDANCE()
+        'Replacing($"RECORDED_ALLOW_DEDUC where CATEGORY = '13th Month Pay' oR CATEGORY = 'SBU' OR TRANSAC_NAME = 'ALLOWANCE';")
         'SavePayout_ALL(Paydate, starting_date, ending_date)
 
         AM_In_DataGrid.Items.Insert(0, "")
@@ -286,7 +287,6 @@ Public Class frmAttendance
                     '================================= CALCULATE HOLIDAYS  ===============================
                     If row.DefaultCellStyle.BackColor = Color.MediumOrchid Then
 
-
                         TotalRHoliday_LBL.Text = TotalRHoliday_LBL.Text + 1
 
                     ElseIf row.DefaultCellStyle.BackColor = Color.Plum Then
@@ -348,50 +348,21 @@ Public Class frmAttendance
 
         '========================================================================= CELL NUMBER AM IN ===========================================================
         If Not row.Cells(1).Value = Nothing Then
+            If row.Cells(1).Value >= timeIn.ToShortTimeString Then
+                Dim lateHour As TimeSpan = DateTime.Parse(row.Cells(1).Value).Subtract(DateTime.Parse(timeIn.ToShortTimeString))
 
-            Dim lateHour As TimeSpan = DateTime.Parse(row.Cells(1).Value).Subtract(DateTime.Parse(timeIn.ToShortTimeString))
+                Dim cellValue As DateTime = row.Cells(1).Value
+                Dim limit As DateTime = (timeIn.AddMinutes(-1)).ToShortTimeString
 
-            Dim cellValue As DateTime = row.Cells(1).Value
-            Dim limit As DateTime = (timeIn.AddMinutes(-1)).ToShortTimeString
-
-            If cellValue > limit Then
-                late_count += lateHour
+                If cellValue > limit Then
+                    late_count += lateHour
+                End If
             End If
         End If
-
-        ''========================================================================= CELL NUMBER PM IN ===========================================================
-        'If branchCode = "" Then
-        '    If Not row.Cells(3).Value = Nothing Then
-
-        '        Dim lateHourr As TimeSpan = DateTime.Parse(row.Cells(3).Value).Subtract(DateTime.Parse(timeIn.AddHours(5).ToShortTimeString))
-
-        '        Dim cellValue As DateTime = row.Cells(3).Value
-        '        Dim limit As DateTime = timeIn.AddHours(5).AddMinutes(-1).ToShortTimeString
-
-        '        If cellValue > limit Then
-        '            late_count.Add(lateHourr)
-        '        End If
-        '    End If
-        'End If
 
     End Sub
 
     Private Sub CalculateuNDERTIME(row As DataGridViewRow, timeIn As DateTime, timeOut As DateTime, bioNo As String, branchCode As String)
-
-        ''========================================================================= CELL NUMBER AM OUT ===========================================================
-        'If branchCode = Nothing Then
-        '    If Not row.Cells(2).Value = Nothing Then
-
-        '        Dim underHour As TimeSpan = DateTime.Parse(timeIn.AddHours(4).ToShortTimeString).Subtract(DateTime.Parse(row.Cells(2).Value))
-
-        '        Dim cellValue As DateTime = row.Cells(2).Value
-        '        Dim limit As DateTime = timeIn.AddHours(4).ToShortTimeString
-
-        '        If cellValue < limit Then
-        '            under_count.Add(underHour)
-        '        End If 
-        '    End If
-        'End If
 
         '========================================================================= CELL NUMBER PM OUT ===========================================================
         If Not row.Cells(4).Value = Nothing Then
@@ -417,13 +388,12 @@ Public Class frmAttendance
 
             If OTHour.Hours > 0 Then
                 TotalOTHr_LBL.Text = CDbl(TotalOTHr_LBL.Text) + OTHour.Hours
-                'over_count.Add(OTHour) 
 
                 If OTHour.Minutes >= 30 Then
                     TotalOTHr_LBL.Text = CDbl(TotalOTHr_LBL.Text) + 0.5
-                    'over_count.Add(OTHour)
                 End If
             End If
+
         End If
     End Sub
 
@@ -439,12 +409,6 @@ Public Class frmAttendance
         TotalOTHr_LBL.Text = 0
         AM_OT_NUP.Text = 0
         CheckALL_CheckBox.Checked = False
-
-        'For Each row As DataGridViewRow In DataGridView1.Rows
-        '    Dim rowIndex As Integer = row.Index
-        '    row.Cells(5) = New DataGridViewCheckBoxCell With {.Value = False}
-        'Next 
-
     End Sub
 
     Private Sub SearchEMP_BTN_Click(sender As Object, e As EventArgs) Handles SearchEMP_BTN.Click
@@ -999,9 +963,8 @@ Public Class frmAttendance
 
                     DATE_ONLY = dateTime.ToString("d")
 
-                    '============================== WORKED FINE ========================
-
-                    If time >= TIME_IN.AddHours(-3).ToShortTimeString And time <= TIME_IN.AddHours(4).AddMinutes(-1).ToShortTimeString And Not time.Hour = 12 Then
+                    '============================== WORKED FINE ======================== 
+                    If time >= TIME_IN.AddHours(-3).ToShortTimeString And time <= TIME_IN.AddHours(3).AddMinutes(-1).ToShortTimeString And Not time.Hour = 12 Then
                         If list_hour(0) = "" Then
 
                             list_hour(0) = time.ToString("t")
@@ -1636,7 +1599,7 @@ Public Class frmAttendance
                     Continue For
                 Else
 
-                    If time >= TIME_IN.AddHours(-3).ToShortTimeString And time <= TIME_IN.AddHours(4).AddMinutes(-1).ToShortTimeString Then
+                    If time >= TIME_IN.AddHours(-3).ToShortTimeString And time <= TIME_IN.AddHours(3).AddMinutes(-1).ToShortTimeString Then
                         If list_hour(0) = "" Then
 
                             list_hour(0) = time.ToString("t")
@@ -1656,7 +1619,8 @@ Public Class frmAttendance
                             list_hour(3) = time.ToString("t")
                         End If
 
-                    ElseIf (time >= "12:00 PM" And time <= "12:59 PM") OrElse (time >= TIME_IN.AddHours(4).ToShortTimeString And time <= TIME_IN.AddHours(5).AddMinutes(-1).ToShortTimeString) Then
+                    ElseIf (time >= "12:00 PM" And time <= "12:59 PM") Then
+                        'ElseIf (time >= "12:00 PM" And time <= "12:59 PM") OrElse (time >= TIME_IN.AddHours(4).ToShortTimeString And time <= TIME_IN.AddHours(5).AddMinutes(-1).ToShortTimeString) Then
 
                         Dim newValuee As String = time.TimeOfDay.Hours
                         Dim breaktime As DateTime = TIME_IN.AddHours(4)
@@ -1708,12 +1672,12 @@ Public Class frmAttendance
                 End If
             Next
 
-            'If list_hour(1) = "12:00 AM" Then
-            '    list_hour(1) = ""
-            'End If
+            If list_hour(0) = list_hour(1) Then '==== CHECK IF SAME LUNCH TIME 
+                list_hour(0) = ""
+            End If
 
-            If list_hour(1) = list_hour(2) Then '==== CHECK IS SAME LUNCH TIME
-                list_hour(1) = ""
+            If list_hour(1) = list_hour(2) Then '==== CHECK IF SAME LUNCH TIME 
+                list_hour(2) = ""
             End If
 
             If list_hour(0) = "" And list_hour(3) <> "" Then '==== FOR HALFDAY ARRANGEMENT OF NOON BREAK

@@ -368,7 +368,8 @@ Module SelectFromDatabase
 
     Friend Sub AttendanceDetails(biometric As String, paydate As String, NoOfDays_TXT As TextBox, RegularOT_TXT As TextBox,
                              SpecialHol_TXT As TextBox, RegularHol_TXT As TextBox, Late_TXT As TextBox,
-                             UnderTime_TXT As TextBox, TrainingDays_LBL As Label, NightTime_TXT As TextBox)
+                             UnderTime_TXT As TextBox, TrainingDays_LBL As Label, NightTime_TXT As TextBox,
+                             TrainingOT_LBL As Label, TrainningLate_LBL As Label, TrainingUT_LBL As Label)
 
         Dim mysql As String = $"Select * From PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{biometric}' and paydate = '{paydate}'"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
@@ -380,19 +381,22 @@ Module SelectFromDatabase
                     ''============================= FOR MONTHLY RATE (IF ABOVE MINIMUM RATE)================================== 
                     NoOfDays_TXT.Text = .Item("PRESENT_DAYS")
                     RegularOT_TXT.Text = .Item("OVERTIME")
-                    RegularOT_TXT.Tag = .Item("OVERTIME")
+                    'RegularOT_TXT.Tag = IIf(IsDBNull(.Item("TRAINING_OVERTIME")), 0, .Item("TRAINING_OVERTIME"))
                     RegularHol_TXT.Text = .Item("REGHOLIDAY")
                     RegularHol_TXT.Tag = IIf(IsDBNull(.Item("TRAINING_REGHOLIDAY")), 0, .Item("TRAINING_REGHOLIDAY"))
                     SpecialHol_TXT.Text = .Item("SPECHOLIDAY")
                     SpecialHol_TXT.Tag = IIf(IsDBNull(.Item("TRAINING_SPECHOLIDAY")), 0, .Item("TRAINING_SPECHOLIDAY"))
                     Late_TXT.Text = .Item("LATE")
-                    Late_TXT.Tag = .Item("LATE")
+                    'Late_TXT.Tag = IIf(IsDBNull(.Item("TRAINING_LATE")), 0, .Item("TRAINING_LATE"))
                     UnderTime_TXT.Text = .Item("UNDERTIME")
-                    UnderTime_TXT.Tag = .Item("UNDERTIME")
+                    'UnderTime_TXT.Tag = IIf(IsDBNull(.Item("TRAINING_UNDERTIME")), 0, .Item("TRAINING_UNDERTIME"))
                     NightTime_TXT.Text = IIf(IsDBNull(.Item("NIGHT_RATE")), "", .Item("NIGHT_RATE"))
                     NightTime_TXT.Tag = IIf(IsDBNull(.Item("NIGHT_RATE")), 0, .Item("NIGHT_RATE"))
-                    TrainingDays_LBL.Text = IIf(IsDBNull(.Item("TRAINING_DAYS")), 0, .Item("TRAINING_DAYS"))
 
+                    TrainingDays_LBL.Text = IIf(IsDBNull(.Item("TRAINING_DAYS")), 0, .Item("TRAINING_DAYS"))
+                    TrainingOT_LBL.Text = IIf(IsDBNull(.Item("TRAINING_OVERTIME")), 0, .Item("TRAINING_OVERTIME"))
+                    TrainningLate_LBL.Text = IIf(IsDBNull(.Item("TRAINING_LATE")), 0, .Item("TRAINING_LATE"))
+                    TrainingUT_LBL.Text = IIf(IsDBNull(.Item("TRAINING_UNDERTIME")), 0, .Item("TRAINING_UNDERTIME"))
                 End With
             End If
         End Using
@@ -408,21 +412,20 @@ Module SelectFromDatabase
                 For Each dr In ds.Tables(0).Rows
                     With dr
 
-                        Dim toLower, toProper As String
+                        'Dim toLower, toProper As String 
+                        'toLower = .item("CATEGORY").ToLower()
+                        'Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
+                        'toProper = info.ToTitleCase(toLower)
+                        'row.Cells(0).Value = toProper
 
-                        toLower = .item("CATEGORY").ToLower()
-                        Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
-                        toProper = info.ToTitleCase(toLower)
-
-                        Dim amountt As Double = .item("AMOUNT")
+                        Dim amountt As Decimal = IIf(IsDBNull(.item("AMOUNT")), 0, .item("AMOUNT"))
 
                         Dim rowId As Integer = datagrid.Rows.Add()
                         Dim row As DataGridViewRow = datagrid.Rows(rowId)
 
-                        row.Cells(0).Value = toProper
+                        row.Cells(0).Value = .item("CATEGORY")
                         row.Cells(0).Tag = amountt
                         row.Cells(1).Value = amountt.ToString(”N”)
-
 
                         If .item("CATEGORY") = "SBU" Then
                             row.Cells(0).Value = "SBU"
@@ -1711,13 +1714,17 @@ Module SelectFromDatabase
                 With dr
 
                     Dim Last_update As DateTime = IIf(IsDBNull(.Item("LAST_SBU")), Nothing, .Item("LAST_SBU"))
+                    Dim credit = 0, balance As Double = .Item("PRINCIPAL")
+
+                    If Not IsDBNull(.Item("CREDIT")) Then credit = CDbl(.Item("CREDIT")).ToString("N")
+                    If Not IsDBNull(.Item("CREDIT")) Then balance = CDbl(.Item("BALANCE")).ToString("N")
 
                     Dim i As ListViewItem = LV.Items.Add(.Item("FULLNAME"))
                     i.SubItems.Add(.Item("CATEGORY"))
                     i.SubItems.Add(CDbl(.Item("AMOUNT")).ToString("N"))
                     i.SubItems.Add(IIf(IsDBNull(.Item("PRINCIPAL")), "", CDbl(.Item("PRINCIPAL")).ToString("N")))
-                    i.SubItems.Add(IIf(IsDBNull(.Item("CREDIT")), "", CDbl(.Item("CREDIT")).ToString("N")))
-                    i.SubItems.Add(IIf(IsDBNull(.Item("BALANCE")), "", CDbl(.Item("BALANCE")).ToString("N")))
+                    i.SubItems.Add(credit)
+                    i.SubItems.Add(balance)
                     i.SubItems.Add(IIf(Last_update = Nothing, "", Last_update.ToString("MMM dd, yyyy")))
 
                 End With
@@ -1924,7 +1931,7 @@ Module SelectFromDatabase
 
         If searchName.Length <> 0 Then
 
-            mysql = "select * from PAYROLL_EMPLOYEE where EMP_STATUS = 'ACTIVE' and ("
+            mysql = "select * from PAYROLL_EMPLOYEE where "
 
             For Each name In strWords
                 mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%') OR "
@@ -1939,11 +1946,11 @@ Module SelectFromDatabase
                 mysql &= $"{vbCr}UPPER(PAGIBIGNO) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(HO_CATEGORY) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(COMMON_CATEGORY) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(EMAIL_ADD) LIKE UPPER('%{name}%')) ORDER BY COMPANY, BRANCH_CODE ASC "
+                mysql &= $"{vbCr}UPPER(EMAIL_ADD) LIKE UPPER('%{name}%') ORDER BY COMPANY, BRANCH_CODE ASC "
             Next
 
         Else
-            mysql = "select * from PAYROLL_EMPLOYEE ORDER BY COMPANY, BRANCH_CODE ASC "
+            mysql = "select * from PAYROLL_EMPLOYEE  ORDER BY COMPANY, BRANCH_CODE ASC "
         End If
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
@@ -1970,7 +1977,12 @@ Module SelectFromDatabase
                 datee = Nothing
             End If
 
-            Dim i As ListViewItem = LV.Items.Add(.Item("COMPANY"))
+            Dim PHOTO_CATEGORY As String = ""
+            If .Item("COMPANY") = "PHOTO" Then
+                PHOTO_CATEGORY = IIf(IsDBNull(.Item("COMPANY_CATEGORY")), "", .Item("COMPANY_CATEGORY"))
+            End If
+
+            Dim i As ListViewItem = LV.Items.Add(IIf(.Item("COMPANY") = "PHOTO", .Item("COMPANY") & $" ({PHOTO_CATEGORY.TrimEnd})", .Item("COMPANY")))
             i.Tag = .Item("ID")
             i.SubItems.Add(.Item("BRANCH_CODE"))
             i.SubItems.Add(.Item("FULLNAME"))
@@ -2108,6 +2120,98 @@ Module SelectFromDatabase
         Return False
     End Function
 
+    Public Function Calculate_Training_Overtime(BIO_NO As String, PAYDATE As String, datee As String, timeOut As DateTime) As Double
+
+        Dim late_count As Double = 0
+        Dim mysql As String = $"Select PM_OUT From BIOMETRIC_DTR where BIO_ID = '{BIO_NO}' AND PAYDATE = '{PAYDATE}' and DATE_ONLY = '{datee}'"
+        Using dss As DataSet = LoadSQL(mysql, "BIOMETRIC_DTR")
+            If dss.Tables(0).Rows.Count > 0 Then
+                Dim data As DataRow = dss.Tables(0).Rows(0)
+                With data
+
+                    Dim pm_out As String = IIf(IsDBNull(.Item("PM_OUT")), Nothing, .Item("PM_OUT"))
+
+                    '========================================================================= CELL NUMBER PM OUT ===========================================================
+                    If Not pm_out = Nothing Then
+
+                        Dim OTHour As TimeSpan = DateTime.Parse(pm_out).Subtract(DateTime.Parse(timeOut.ToShortTimeString))
+
+                        If OTHour.Hours > 0 Then
+                            late_count = OTHour.Hours
+
+                            If OTHour.Minutes >= 30 Then
+                                late_count += 0.5
+                            End If
+                        End If
+                    End If
+
+                End With
+            End If
+        End Using
+
+        Return late_count
+    End Function
+
+    Public Function Calculate_Training_Late(BIO_NO As String, PAYDATE As String, datee As String, timeIn As DateTime) As TimeSpan
+
+        Dim late_count As New TimeSpan
+        Dim mysql As String = $"Select am_in From BIOMETRIC_DTR where BIO_ID = '{BIO_NO}' AND PAYDATE = '{PAYDATE}' and DATE_ONLY = '{datee}'"
+        Using dss As DataSet = LoadSQL(mysql, "BIOMETRIC_DTR")
+            If dss.Tables(0).Rows.Count > 0 Then
+                Dim data As DataRow = dss.Tables(0).Rows(0)
+                With data
+
+                    Dim am_in As String = IIf(IsDBNull(.Item("am_in")), Nothing, .Item("am_in"))
+
+                    If Not am_in = Nothing Then
+                        If am_in >= timeIn.ToShortTimeString Then
+                            Dim lateHour As TimeSpan = DateTime.Parse(am_in).Subtract(DateTime.Parse(timeIn.ToShortTimeString))
+
+                            Dim cellValue As DateTime = am_in
+                            Dim limit As DateTime = (timeIn.AddMinutes(-1)).ToShortTimeString
+
+                            If cellValue > limit Then
+                                late_count = lateHour
+                            End If
+                        End If
+                    End If
+
+                End With
+            End If
+        End Using
+
+        Return late_count
+    End Function
+
+    Public Function Calculate_Training_Undertime(BIO_NO As String, PAYDATE As String, datee As String, timeOut As DateTime) As TimeSpan
+
+        Dim late_count As New TimeSpan
+        Dim mysql As String = $"Select PM_OUT From BIOMETRIC_DTR where BIO_ID = '{BIO_NO}' AND PAYDATE = '{PAYDATE}' and DATE_ONLY = '{datee}'"
+        Using dss As DataSet = LoadSQL(mysql, "BIOMETRIC_DTR")
+            If dss.Tables(0).Rows.Count > 0 Then
+                Dim data As DataRow = dss.Tables(0).Rows(0)
+                With data
+
+                    Dim pm_out As String = IIf(IsDBNull(.Item("PM_OUT")), Nothing, .Item("PM_OUT"))
+                    If Not pm_out = Nothing Then
+
+                        Dim underHour As TimeSpan = DateTime.Parse(timeOut.ToShortTimeString).Subtract(DateTime.Parse(pm_out))
+
+                        Dim cellValue As DateTime = pm_out
+                        Dim limit As DateTime = timeOut.ToShortTimeString
+
+                        If cellValue < limit Then
+                            late_count += underHour
+                        End If
+
+                    End If
+
+                End With
+            End If
+        End Using
+
+        Return late_count
+    End Function
 
     Friend Sub Lists_TimeInOut(listview As ListView, Optional searchName As String = "")
 

@@ -24,7 +24,7 @@
     Friend Function validLogin(user As String, pass As String) As String
         Dim username As String = Nothing
 
-        Dim mysql As String = $"Select * from PAYROLL_USER where USERNAME = '{user}' and PASSWORD = '{pass}'"
+        Dim mysql As String = $"Select * from PAYROLL_USER where USERNAME = '{user}' and PASSWORD = '{EncryptString(pass)}'"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_USER")
             If ds.Tables(0).Rows.Count > 0 Then
                 Dim dsRow As DataRow = ds.Tables(0).Rows(0)

@@ -368,7 +368,7 @@ Module Public_Function
 
     Public Function Get_13Month(BIO_NO As String)
         Dim THIRTEEN_MONTH As Decimal = 0
-        Dim mysql As String = $"Select * FROM PAYROLL_13MONTH A inner join PAYROLL_EMPLOYEE B ON B.EMP_NO = A.EMP_NO where B.BIO_NO = '{BIO_NO}'"
+        Dim mysql As String = $"Select * FROM PAYROLL_13MONTH A inner join PAYROLL_EMPLOYEE B ON B.EMP_NO = A.EMP_NO where B.BIO_NO = '{BIO_NO}' and B.EMP_NO = A.EMP_NO"
         Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_13MONTH")
         If dss.Tables(0).Rows.Count > 0 Then
             For Each dr In dss.Tables(0).Rows()

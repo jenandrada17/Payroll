@@ -818,37 +818,71 @@ Module Report_function
 
     Public Sub Check_This()
 
-        Dim mysql As String = $"Select * FROM PAYROLL_EMPLOYEE B 
-                                   INNER Join PAYROLL_13MONTH C ON C.EMP_NO = B.EMP_NO"
+        Dim mysql As String = $"Select * FROM  RECORDED_ALLOW_DEDUC "
 
-        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+        Using ds As DataSet = LoadSQL(mysql, "RECORDED_ALLOW_DEDUC")
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each DR In ds.Tables(0).Rows
                     With DR
-                        Dim AMOUNT As Decimal = .Item("AMOUNT")
+                        Dim AMOUNT As Decimal = .Item("AMOUNTT")
+                        Dim CATEGORY As String = .Item("CATEGORY")
 
-                        update_13thMonth(.Item("BIO_NO"), AMOUNT, "13th Month Pay")
+                        update_rECORD_ALLOW_DEDUC(.Item("BIO_NO"), AMOUNT, CATEGORY)
                     End With
                 Next
             End If
         End Using
 
+        'Dim mysql As String = $"Select * FROM PAYROLL_EMPLOYEE B 
+        '                           INNER Join PAYROLL_13MONTH C ON C.EMP_NO = B.EMP_NO"
 
-        'Dim mysql As String = $"Select Sum(AMOUNT) as tots From payroll_employee B inner join payroll_13MONTH A on B.EMP_NO = A.EMP_NO 
-        '                        WHERE HO_CATEGORY = 'Dalton Admin Office' AND B.EMP_NO = A.EMP_NO"
+        'Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+        '    If ds.Tables(0).Rows.Count > 0 Then
+        '        For Each DR In ds.Tables(0).Rows
+        '            With DR
+        '                Dim AMOUNT As Decimal = .Item("AMOUNT")
+
+        '                update_13thMonth(.Item("BIO_NO"), AMOUNT, "13th Month Pay")
+        '            End With
+        '        Next
+        '    End If
+        'End Using
+
+        'Dim mysql As String = $"Select Sum(TOTAL_LATE_UT) as tots From payroll_payout B inner join payroll_employee A on B.BIOMETRIC_ID = A.bio_no 
+        '                        WHERE HO_CATEGORY = 'PGC Head Office' "
 
         'Using ds As DataSet = LoadSQL(mysql, "payroll_employee")
         '    If ds.Tables(0).Rows.Count > 0 Then
         '        For Each DR In ds.Tables(0).Rows
         '            With DR
+
         '                Dim asas As String = .Item("tots")
         '                MsgBox(asas)
 
-        '                SAVEE(.item("BIOMETRIC_ID"), .item("TOTAL_LATE_UT"))
+        '                'MsgBox(asas.ToString("N"))
+
+        '                'SAVEE(.item("BIOMETRIC_ID"), .item("TOTAL_LATE_UT"))
         '            End With
         '        Next
         '    End If
         'End Using
+
+    End Sub
+
+    Public Sub update_rECORD_ALLOW_DEDUC(BIO As String, AMOUNT As String, CATEGORY As String)
+
+        Dim sql As String = $"Select * From RECORDED_ALLOW_DEDUC where BIO_NO = '{BIO}' AND CATEGORY = '{CATEGORY}'"
+        Using ds As DataSet = LoadSQL(sql, "RECORDED_ALLOW_DEDUC")
+            If ds.Tables(0).Rows.Count > 0 Then
+                Dim dsNewRow As DataRow = ds.Tables(0).Rows(0)
+                With dsNewRow
+
+                    .Item("AMOUNT") = AMOUNT
+
+                End With
+                SaveEntry(ds, False)
+            End If
+        End Using
 
     End Sub
 
@@ -902,6 +936,8 @@ Module Report_function
 
     Public Sub SAVE_ALLATTENDANCE()
 
+        Has_Rows_Delete("TEMP_ATTENDANCE")
+
         Dim mysql As String = $"Select * From PAYROLL_ATTENDANCE"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
             If ds.Tables(0).Rows.Count > 0 Then
@@ -944,10 +980,10 @@ Module Report_function
                 .Item("UNDERTIME") = Under_Total
                 .Item("REGHOLIDAY") = TotalRHoliday
                 .Item("SPECHOLIDAY") = TotalSHoliday
-                '.Item("TRAINING_DAYS") = TRAINING_DAYS
-                '.Item("TRAINING_REGHOLIDAY") = TRAINING_REGHOLIDAY
-                '.Item("TRAINING_SPECHOLIDAY") = TRAINING_SPECHOLIDAY
-                '.Item("NIGHT_RATE") = NIGHT_RATE
+                .Item("TRAINING_DAYS") = TRAINING_DAYS
+                .Item("TRAINING_REGHOLIDAY") = TRAINING_REGHOLIDAY
+                .Item("TRAINING_SPECHOLIDAY") = TRAINING_SPECHOLIDAY
+                .Item("NIGHT_RATE") = NIGHT_RATE
             End With
             ds.Tables(0).Rows.Add(dsNewRow)
             SaveEntry(ds)

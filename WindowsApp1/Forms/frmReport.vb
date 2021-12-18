@@ -90,7 +90,7 @@ Public Class frmReport
                                 Dim HOLIDAY As Decimal = .Item("TOTAL_REGHOLIDAY") + .Item("TOTAL_SPECHOLIDAY")
                                 Dim N_DIFF As Decimal = .Item("TOTAL_NIGHT_RATE")
                                 Dim PI_ECOLA_SIL As Double = Get_PI_ECOLA_SIL(BIO_NO, paydatee)
-                                Dim TARDINESS As Decimal = .Item("TOTAL_LATE_UT")
+                                Dim TARDINESS As Double = .Item("TOTAL_LATE_UT")
                                 Dim SSS As Double = .Item("SSS_COMP")
                                 Dim PHIC As Double = .Item("PHILHEALTH_COMP")
                                 Dim PAGIBIG As Double = .Item("PAGIBIG_COMP")
@@ -791,18 +791,26 @@ Public Class frmReport
             End Using
 
             '========================================= PAYROLL_COSTDISTRIBUTION ================================================
+            'mysql = $"Select  BRANCH_CODE, HO_CATEGORY, NAMEE, NAME_CATEGORY, COMPANY, SUM(TOTAL_BASIC) AS BASIC, SUM(TOTAL_OVERTIME) AS OT,
+            '                            cast(sum(TOTAL_LATE_UT) as decimal(12,5)) AS LATE_UT ,
+            '                            SUM(SSS_COMP) AS SSS_EE , SUM(SSS_ER) AS SSS_ER , SUM(SSS_EC) AS SSS_EC , SUM(NET_PAY) AS NETPAY, 
+            '                            SUM(PAGIBIG_COMP) AS HDMF, SUM(PHILHEALTH_COMP) AS PHILH , SUM(SSS_LOAN) AS LOAN_SSS , SUM(PAGIBIG_LOAN) AS LOAN_HDMF, 
+            '                            SUM(TOTAL_REGHOLIDAY) AS REGHOLIDAY , SUM(TOTAL_SPECHOLIDAY) AS SPECHOLIDAY  
+            '                            From PAYROLL_PAYOUT B 
+            '                            INNER JOIN PAYROLL_EMPLOYEE A ON A.BIO_NO = B.BIOMETRIC_ID 
+            '                            LEFT JOIN PAYROLL_COSTDISTRIB ON 1 = 1 
+            '                            WHERE B.PAYDATE = '{PAYDATE}' GROUP BY BRANCH_CODE, HO_CATEGORY, NAMEE, NAME_CATEGORY, COMPANY"
+
+            ''========================================= PAYROLL_COSTDISTRIBUTION ================================================
             mysql = $"Select  BRANCH_CODE, HO_CATEGORY, NAMEE, NAME_CATEGORY, COMPANY, SUM(TOTAL_BASIC) AS BASIC, SUM(TOTAL_OVERTIME) AS OT,
-                                        SUM(TOTAL_LATE_UT) AS LATE_UT, SUM(SSS_COMP) AS SSS_EE , SUM(SSS_ER) AS SSS_ER , SUM(SSS_EC) AS SSS_EC , SUM(NET_PAY) AS NETPAY, 
+                                        SUM(TOTAL_LATE_UT) AS LATE_UT ,
+                                        SUM(SSS_COMP) AS SSS_EE , SUM(SSS_ER) AS SSS_ER , SUM(SSS_EC) AS SSS_EC , SUM(NET_PAY) AS NETPAY, 
                                         SUM(PAGIBIG_COMP) AS HDMF, SUM(PHILHEALTH_COMP) AS PHILH , SUM(SSS_LOAN) AS LOAN_SSS , SUM(PAGIBIG_LOAN) AS LOAN_HDMF, 
                                         SUM(TOTAL_REGHOLIDAY) AS REGHOLIDAY , SUM(TOTAL_SPECHOLIDAY) AS SPECHOLIDAY  
                                         From PAYROLL_PAYOUT B 
                                         INNER JOIN PAYROLL_EMPLOYEE A ON A.BIO_NO = B.BIOMETRIC_ID 
                                         LEFT JOIN PAYROLL_COSTDISTRIB ON 1 = 1 
                                         WHERE B.PAYDATE = '{PAYDATE}' GROUP BY BRANCH_CODE, HO_CATEGORY, NAMEE, NAME_CATEGORY, COMPANY"
-
-            '  WHERE B.PAYDATE = '{PAYDATE}' AND BRANCH_CODE IN ('UPI', 'ZAM') GROUP BY BRANCH_CODE, HO_CATEGORY, NAMEE, NAME_CATEGORY"
-
-            '  WHERE B.PAYDATE = '{PAYDATE}' AND BRANCH_CODE IN ('UPI', 'ZAM') GROUP BY BRANCH_CODE, HO_CATEGORY, NAMEE, NAME_CATEGORY"
 
             Using dss As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
                 If dss.Tables(0).Rows.Count > 0 Then
@@ -868,6 +876,7 @@ Public Class frmReport
 
                                 ElseIf NAMEE = "LATE" Then
                                     DC_Amount = .Item("LATE_UT")
+                                    'Console.WriteLine(DC_Amount)
 
                                 ElseIf NAMEE = "SSS PAYABLE" Then
                                     DC_Amount = .Item("SSS_EE") + .Item("SSS_ER")
@@ -886,6 +895,8 @@ Public Class frmReport
 
                                 ElseIf NAMEE = "CASH IN BANK" Then
                                     DC_Amount = .Item("NETPAY")
+                                    'Console.WriteLine(DC_Amount)
+
                                 End If
 
                                 Debit_Credit = "CREDIT"
