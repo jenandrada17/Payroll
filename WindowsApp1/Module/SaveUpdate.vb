@@ -618,7 +618,7 @@ Module SaveUpdate
     End Sub
 
     Friend Sub SavePayout(BIOMETRIC_ID As String, PAYDATE As String, TOTAL_BASIC As Decimal, TOTAL_OVERTIME As Decimal, TOTAL_LATE_UT As Decimal,
-                          GROSS_AMOUNT As Decimal, SSS_COMP As Decimal, SSS_ER As Decimal, SSS_EC As Decimal, PAGIBIG_COMP As Decimal, PHILHEALTH_COMP As String, TAX_WHELD As String,
+                          GROSS_AMOUNT As Decimal, SSS_COMP As Decimal, SSS_ER As Decimal, SSS_EC As Decimal, PAGIBIG_COMP As Decimal, PHILHEALTH_COMP As Decimal, TAX_WHELD As Decimal,
                           NET_TAX_COMP As Decimal, SSS_LOAN As Decimal, PAGIBIG_LOAN As Decimal, TOTAL_ALLOWANCE As Decimal,
                           TOTAL_DEDUCTION As Decimal, NET_PAY As Decimal, REGHOLIDAY As Decimal, SPECHOLIDAY As Decimal, TOTAL_NIGHT_RATE As Decimal, Optional all As String = "")
 
@@ -790,7 +790,11 @@ Module SaveUpdate
                     Dim Time_Out As DateTime = IIf(IsDBNull(.Item("TIME_OUT")), "", .Item("TIME_OUT"))
                     Dim Training_REGHoliday = 0, Training_SPECHoliday As Integer = 0
 
-                    '============================================= ATTENDANCE (TOTAL DAYS) =========================================================
+                    Dim training_overtime As Double = 0
+                    Dim training_late As TimeSpan = New TimeSpan(0, 0, 0, 0, 0)
+                    Dim training_undertime As TimeSpan = New TimeSpan(0, 0, 0, 0, 0)
+
+                    ''============================================= ATTENDANCE (TOTAL DAYS) =========================================================
                     Dim sql_1 As String = $"Select * From PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{bioNo}' and paydate = '{paydate_}'"
                     Using ds_1 As DataSet = LoadSQL(sql_1, "PAYROLL_ATTENDANCE")
                         If ds_1.Tables(0).Rows.Count > 0 Then
@@ -831,10 +835,6 @@ Module SaveUpdate
 
                         If days_covred > 0 Then
 
-                            Dim training_overtime As Double = 0
-                            Dim training_late As TimeSpan = New TimeSpan(0, 0, 0, 0, 0)
-                            Dim training_undertime As TimeSpan = New TimeSpan(0, 0, 0, 0, 0)
-
                             Dim ending As DateTime = startingDate.AddDays(days_covred - 1)
 
                             While (startingDate <= ending)
@@ -871,13 +871,11 @@ Module SaveUpdate
 
                     '============================================= BENIFITS CONTRIBUTION =========================================================  
 
+                    Dim trainee_rate As Decimal = rate * 0.75
+
                     If noOf_days_training <> 0 Then '================ IF TRAINEE BASE CALCULATE NEW RATE =================
 
-                        Dim trainee_rate As Double
-                        Dim total_train As Double = 0
-
-                        trainee_rate = rate * 0.75
-                        total_train = (Convert.ToDouble(rate) - trainee_rate) * Convert.ToDouble(noOf_days_training)
+                        Dim total_train As Double = (Convert.ToDouble(rate) - trainee_rate) * Convert.ToDouble(noOf_days_training)
                         TotalBasic = (NoOfDays * rate) - total_train
 
                         '===================== TRAINING HOLIDAY ==================  
@@ -887,8 +885,8 @@ Module SaveUpdate
                         Dim REG_STANDARD As Double = (RegularHol * rate) * regHoliday
                         Dim SPEC_STANDARD As Double = (SpecialHol * rate) * specHoliday
 
-                        Dim REG_TRAINEE As Double = Training_REGHoliday * trainee_rate
-                        Dim SPEC_TRAINEE As Double = Training_SPECHoliday * trainee_rate
+                        Dim REG_TRAINEE As Double = (Training_REGHoliday * trainee_rate) * regHoliday
+                        Dim SPEC_TRAINEE As Double = (Training_SPECHoliday * trainee_rate) * specHoliday
 
                         TotalREGHol = REG_STANDARD + REG_TRAINEE
                         TotalSPECHol = SPEC_STANDARD + SPEC_TRAINEE
@@ -929,9 +927,6 @@ Module SaveUpdate
                             PagibigComp = Get_Pagibig(monthly_Basic)
                             PhilhealthComp = Get_PhilHealth(monthly_Basic)
                             Tax_Wheld = Get_WHolding(monthly_Basic)
-
-                            'TaxComp = Get_Taxable(monthly_Basic)
-                            'SSS_ER = Get_SSS_ER(monthly_Basic)
 
                             netTax = monthly_Basic - (SSSComp + PagibigComp + PhilhealthComp + Tax_Wheld)
 
@@ -980,15 +975,20 @@ Module SaveUpdate
 
                                         If sched = "CLOSE PAYROLL" Then
                                             If .item("CATEGORY") = "PERFORMANCE INCENTIVES" Then
+                                                If fix_monthly_rate = False Or .item("FIX") = "NO" Then
+                                                    Dim PI_totalDays As Double = GetFirst_NoOfDays(bioNo, paydate_) + NoOfDays + RegularHol + SpecialHol + SIL
+                                                    Dim absent As Double = 26 - PI_totalDays
+                                                    deduc_to_PI = (.Item("AMOUNT") / 26) * absent
 
-                                                Dim PI_totalDays As Double = GetFirst_NoOfDays(bioNo, paydate_) + NoOfDays + RegularHol + SpecialHol + SIL
-                                                Dim absent As Double = 26 - PI_totalDays
-                                                deduc_to_PI = (.Item("AMOUNT") / 26) * absent
 
-
-                                                Allowances = (Allowances + .Item("AMOUNT")) - deduc_to_PI
-                                                Save_Recorded_Allow_Deduc(bioNo, paydate_, .Item("CATEGORY"), .Item("AMOUNT") - deduc_to_PI, "ALLOWANCE")
-                                                Continue For  '========= EXIT FOR (PARA DILI MAGDOUBLE SAVING ========
+                                                    Allowances = (Allowances + .Item("AMOUNT")) - deduc_to_PI
+                                                    Save_Recorded_Allow_Deduc(bioNo, paydate_, .Item("CATEGORY"), .Item("AMOUNT") - deduc_to_PI, "ALLOWANCE")
+                                                    Continue For  '========= EXIT FOR (PARA DILI MAGDOUBLE SAVING ========
+                                                Else
+                                                    Allowances = Allowances + .Item("AMOUNT")
+                                                    Save_Recorded_Allow_Deduc(bioNo, paydate_, .Item("CATEGORY"), .Item("AMOUNT"), "ALLOWANCE")
+                                                    Continue For  '========= EXIT FOR (PARA DILI MAGDOUBLE SAVING ========
+                                                End If
                                             End If
                                         End If
 
@@ -1043,13 +1043,23 @@ Module SaveUpdate
                         GrossAmount = TotalBasic
                     Else
 
-                        TotalOT = ((rate / 8) * 1.25) * RegularOT ' =========== CALCULATE OVERTIME TO PESO ===========
+                        '===================== STANDARD AND TRAINING OVERTIME/LATE/UNDERTIME ==================   
+                        Dim LATEE, LATE_TRAIN, UNDERTIMEE, UNDERTIMEE_TRAIN, OVERTIMEE, OVERTIMEE_TRAIN As Double
+                        LATEE = ((rate / 8) / 60) * (Late - training_late.TotalMinutes)
+                        UNDERTIMEE = ((rate / 8) / 60) * (UnderTime - training_undertime.TotalMinutes)
+                        OVERTIMEE = ((rate / 8) * 1.25) * (RegularOT - training_overtime)
+
+                        LATE_TRAIN = ((trainee_rate / 8) / 60) * training_late.TotalMinutes
+                        UNDERTIMEE_TRAIN = ((trainee_rate / 8) / 60) * training_undertime.TotalMinutes
+                        OVERTIMEE_TRAIN = ((trainee_rate / 8) * 1.25) * training_overtime
+
+                        LATEE = LATEE + LATE_TRAIN
+                        UNDERTIMEE = UNDERTIMEE + UNDERTIMEE_TRAIN
+                        OVERTIMEE = OVERTIMEE + OVERTIMEE_TRAIN
 
                         TotalNight = ((rate / 8) * 0.1) * nightRate ' =========== CALCULATE NIGHT RATE TO PESO ===========
 
-                        Dim LATEE, UNDERTIMEE As Decimal
-                        LATEE = ((rate / 8) / 60) * Late
-                        UNDERTIMEE = ((rate / 8) / 60) * UnderTime
+                        TotalOT = OVERTIMEE
 
                         TotalLateUnder = LATEE + UNDERTIMEE
 
@@ -1133,6 +1143,10 @@ Module SaveUpdate
                         Dim Time_Out As DateTime = IIf(IsDBNull(.Item("TIME_OUT")), "", .Item("TIME_OUT"))
                         Dim Training_REGHoliday = 0, Training_SPECHoliday As Integer = 0
 
+                        Dim training_overtime As Double = 0
+                        Dim training_late As TimeSpan = New TimeSpan(0, 0, 0, 0, 0)
+                        Dim training_undertime As TimeSpan = New TimeSpan(0, 0, 0, 0, 0)
+
                         '============================================= ATTENDANCE (TOTAL DAYS) ========================================================= 
                         Dim sql_1 As String = $"Select * From TEMP_ATTENDANCE WHERE BIOMETRICID = '{BiometricID}' and paydate = '{paydate_}'"
                         Using ds_1 As DataSet = LoadSQL(sql_1, "TEMP_ATTENDANCE")
@@ -1173,10 +1187,6 @@ Module SaveUpdate
 
                             If days_covred > 0 Then
 
-                                Dim training_overtime As Double = 0
-                                Dim training_late As TimeSpan = New TimeSpan(0, 0, 0, 0, 0)
-                                Dim training_undertime As TimeSpan = New TimeSpan(0, 0, 0, 0, 0)
-
                                 Dim ending As DateTime = startingDate.AddDays(days_covred - 1)
 
                                 While (startingDate <= ending)
@@ -1211,65 +1221,16 @@ Module SaveUpdate
                             End If
                         End If
 
-                        ''==================== GET TRAINING DAYS TO CALCULATE TRAINING FEE (IF DATE_STARTED NOT NULL =================================
-                        'If Not IsDBNull(.Item("DATE_STARTED")) Then
-                        '    Dim training_days As Integer
-
-                        '    If Company = "DALTON" Or Company = "PHOTO" Or Company = "HEAD OFFICE" Then
-                        '        training_days = 15
-                        '    Else
-                        '        training_days = 30
-                        '    End If
-
-                        '    Dim Started As DateTime = .Item("DATE_STARTED")
-
-                        '    Dim days As Long = DateDiff(DateInterval.Day, Started, startingDate)
-
-                        '    If days <= training_days Then
-
-                        '        While (startingDate <= EndingDate)
-
-                        '            If PRESENT_Date(BiometricID, paydate_, startingDate) Then
-
-                        '                noOf_days_training += 1
-
-                        '                If Halfday_Training(BiometricID, paydate_, startingDate) Then
-                        '                    noOf_days_training -= 0.5
-                        '                End If
-
-                        '            End If
-
-                        '            '=============== IF HOLIDAY TRAINING COVERED ================
-                        '            If DataeXIST($" PAYROLL_HOLIDAY WHERE DATEE = '{startingDate.ToString("M")}' AND KINDS = 'REGULAR'") Then
-                        '                Training_REGHoliday += 1
-                        '            End If
-
-                        '            If DataeXIST($" PAYROLL_HOLIDAY WHERE DATEE = '{startingDate.ToString("M")}' AND KINDS = 'SPECIAL'") Then
-                        '                Training_SPECHoliday += 1
-                        '            End If
-
-                        '            startingDate = startingDate.AddDays(1)
-                        '        End While
-
-                        '    End If
-
-                        '    'SaveTraining_days(BiometricID, paydate_, noOf_days_training, Training_REGHoliday, Training_SPECHoliday, 0, 0, 0)
-                        'End If
-
-                        '============================================= BENIFITS CONTRIBUTION ========================================================= 
+                        '============================================= TRAINING =========================================================  
+                        Dim trainee_rate As Decimal = rate * 0.75
                         If noOf_days_training = 0 Then '================ BASE ON TRAINING DAYS COVERED =================
                             TotalBasic = NoOfDays * rate
 
                             TotalREGHol = (RegularHol * rate) * regHoliday
                             TotalSPECHol = (SpecialHol * rate) * specHoliday
-
                         Else
 
-                            Dim trainee_rate As Double = 0
-                            Dim total_train As Double = 0
-
-                            trainee_rate = rate * 0.75
-                            total_train = (Convert.ToDouble(rate) - trainee_rate) * Convert.ToDouble(noOf_days_training)
+                            Dim total_train As Decimal = (Convert.ToDouble(rate) - trainee_rate) * Convert.ToDouble(noOf_days_training)
 
                             TotalBasic = (NoOfDays * rate) - total_train
                             rate = rate * 0.75
@@ -1331,7 +1292,7 @@ Module SaveUpdate
                         End If
 
                         '============================================= DELETE TO REPLACE =================================================
-                        'Replacing($"RECORDED_ALLOW_DEDUC where BIO_NO = '{BiometricID}' and PAYDATE = '{paydate_}';")
+                        Replacing($"RECORDED_ALLOW_DEDUC where BIO_NO = '{BiometricID}' and PAYDATE = '{paydate_}';")
                         '============================================= ALLOWANCE ========================================================= 
                         If Ecola <> 0 Then '==================== FOR ECOLA 
                             Allowances = Ecola
@@ -1359,14 +1320,20 @@ Module SaveUpdate
                                             If sched = "CLOSE PAYROLL" Then
                                                 If .item("CATEGORY") = "PERFORMANCE INCENTIVES" Or .item("CATEGORY") = "PI" Then
 
-                                                    Dim PI_totalDays As Double = GetFirst_NoOfDays(BiometricID, paydate_) + NoOfDays + RegularHol + SpecialHol
-                                                    Dim absent As Double = 26 - PI_totalDays
-                                                    Dim deduc_to_PI As Double = (.Item("AMOUNT") / 26) * absent
+                                                    If fix_monthly_rate = False And .item("FIX") = "NO" Then
+                                                        Dim PI_totalDays As Double = GetFirst_NoOfDays(BiometricID, paydate_) + NoOfDays + RegularHol + SpecialHol
+                                                        Dim absent As Double = 26 - PI_totalDays
+                                                        Dim deduc_to_PI As Double = (.Item("AMOUNT") / 26) * absent
 
+                                                        Allowances = (Allowances + .Item("AMOUNT")) - deduc_to_PI
+                                                        Save_Recorded_Allow_Deduc(BiometricID, paydate_, .Item("CATEGORY"), .Item("AMOUNT") - deduc_to_PI, "ALLOWANCE")
+                                                        Continue For  '========= TO AVOID DOUBLE SAVING ========
+                                                    Else
+                                                        Allowances = Allowances + .Item("AMOUNT")
+                                                        Save_Recorded_Allow_Deduc(BiometricID, paydate_, .Item("CATEGORY"), .Item("AMOUNT"), "ALLOWANCE")
+                                                        Continue For  '========= TO AVOID DOUBLE SAVING ========
+                                                    End If
 
-                                                    Allowances = (Allowances + .Item("AMOUNT")) - deduc_to_PI
-                                                    Save_Recorded_Allow_Deduc(BiometricID, paydate_, .Item("CATEGORY"), .Item("AMOUNT") - deduc_to_PI, "ALLOWANCE")
-                                                    Continue For  '========= NEXT LOOP (PARA DILI MAGDOUBLE SAVING ========
                                                 End If
                                             End If
 
@@ -1420,11 +1387,21 @@ Module SaveUpdate
                             GrossAmount = TotalBasic
                         Else
 
-                            TotalOT = ((rate / 8) * 1.25) * RegularOT ' =========== CALCULATE OVERTIME TO PESO =========== 
+                            '===================== STANDARD AND TRAINING OVERTIME/LATE/UNDERTIME ==================   
+                            Dim LATEE, LATE_TRAIN, UNDERTIMEE, UNDERTIMEE_TRAIN, OVERTIMEE, OVERTIMEE_TRAIN As Double
+                            LATEE = ((rate / 8) / 60) * (Late - training_late.TotalMinutes)
+                            UNDERTIMEE = ((rate / 8) / 60) * (UnderTime - training_undertime.TotalMinutes)
+                            OVERTIMEE = ((rate / 8) * 1.25) * (RegularOT - training_overtime)
 
-                            Dim LATEE, UNDERTIMEE As Decimal
-                            LATEE = ((rate / 8) / 60) * Late
-                            UNDERTIMEE = ((rate / 8) / 60) * UnderTime
+                            LATE_TRAIN = ((trainee_rate / 8) / 60) * training_late.TotalMinutes
+                            UNDERTIMEE_TRAIN = ((trainee_rate / 8) / 60) * training_undertime.TotalMinutes
+                            OVERTIMEE_TRAIN = ((trainee_rate / 8) * 1.25) * training_overtime
+
+                            LATEE = LATEE + LATE_TRAIN
+                            UNDERTIMEE = UNDERTIMEE + UNDERTIMEE_TRAIN
+                            OVERTIMEE = OVERTIMEE + OVERTIMEE_TRAIN
+
+                            TotalOT = OVERTIMEE
 
                             TotalLateUnder = LATEE + UNDERTIMEE
 
@@ -1454,14 +1431,6 @@ Module SaveUpdate
                                           netTax, sssLoan, pagibigLoan,
                                           Allowances, Deduction, NetPay,
                                           TotalREGHol, TotalSPECHol, 0, "Group")
-
-                        'SavePayout(BiometricID, paydate_, (TotalBasic).ToString("N"), (TotalOT).ToString("N"),
-                        '                  (TotalLateUnder).ToString("N"), (GrossAmount).ToString("N"),
-                        '                  (SSSComp).ToString("N"), (SSS_ER).ToString("N"), (SSS_EC).ToString("N"),
-                        '                  (PagibigComp).ToString("N"), (PhilhealthComp).ToString("N"), (Tax_Wheld).ToString("N"),
-                        '                  (netTax).ToString("N"), (sssLoan).ToString("N"), (pagibigLoan).ToString("N"),
-                        '                  (Allowances).ToString("N"), (Deduction).ToString("N"), (NetPay).ToString("N"),
-                        '                  (TotalREGHol).ToString("N"), (TotalSPECHol).ToString("N"), 0, "Group")
 
                         frmMainForm.AppProgressBar.Value += 1
                     End With

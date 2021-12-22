@@ -287,7 +287,7 @@
 
     Private Sub Allow_Save_BTN_Click(sender As Object, e As EventArgs) Handles Allow_Save_BTN.Click
 
-        Dim fix As String = "No"
+        Dim fix As String = "NO"
         Dim everyThisDate As Integer = 0
 
         If Not isValidSave_ALLOW() Then Exit Sub

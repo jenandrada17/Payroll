@@ -357,6 +357,12 @@
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                   </Style>
                                 </TextRun>
+                                <TextRun>
+                                  <Value>  day/s</Value>
+                                  <Style>
+                                    <FontFamily>Berlin Sans FB</FontFamily>
+                                  </Style>
+                                </TextRun>
                               </TextRuns>
                               <Style />
                             </Paragraph>
@@ -426,7 +432,13 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=iif(Fields!LATE.Value = "0", "0", Fields!LATE.Value &amp; " mins")</Value>
+                                  <Value>=Fields!LATE.Value</Value>
+                                  <Style>
+                                    <FontFamily>Berlin Sans FB</FontFamily>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>   min/s</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                   </Style>
@@ -500,7 +512,13 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=iif(Fields!UNDERTIME.Value = "0", "0", Fields!UNDERTIME.Value &amp; " mins")</Value>
+                                  <Value>=Fields!UNDERTIME.Value</Value>
+                                  <Style>
+                                    <FontFamily>Berlin Sans FB</FontFamily>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>  min/s</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                   </Style>
@@ -567,14 +585,20 @@
                     <TablixCell />
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="OVERTIME2">
+                        <Textbox Name="OVERTIME">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=iif(Fields!OVERTIME.Value = "0" , "0", Fields!OVERTIME.Value &amp; " mins")</Value>
+                                  <Value>=Fields!OVERTIME.Value</Value>
+                                  <Style>
+                                    <FontFamily>Berlin Sans FB</FontFamily>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>  hour/s</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                   </Style>
@@ -583,7 +607,7 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>OVERTIME2</rd:DefaultName>
+                          <rd:DefaultName>OVERTIME</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -649,6 +673,12 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!REGHOLIDAY.Value</Value>
+                                  <Style>
+                                    <FontFamily>Berlin Sans FB</FontFamily>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>  day/s</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                   </Style>
@@ -723,6 +753,12 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!SPECHOLIDAY.Value</Value>
+                                  <Style>
+                                    <FontFamily>Berlin Sans FB</FontFamily>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>  day/s</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                   </Style>

@@ -444,11 +444,13 @@ Module Public_Function
                     If IsDBNull(.Item("AMOUNT")) Then .Item("AMOUNT") = IIf(AMOUNT = Nothing, 250, AMOUNT)
 
                 End With
-
                 SaveEntry(dssS, False)
             End If
         End Using
+    End Sub
 
+    Public Sub DeleteDuplicate(table As String)
+        'RunCommand($"DELETE FROM {table} WHERE ID NOT IN  ( SELECT MAX(ID) FROM {table} GROUP BY CATEGORY ) and CATEGORY = 'SBU'  and PAYDATE = '12/31/2021' ")  'THIS IS TO DELETE DUPLICATE IN TBLMANNING 
     End Sub
 
 #End Region

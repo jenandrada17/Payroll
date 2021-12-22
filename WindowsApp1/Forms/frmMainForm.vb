@@ -11,9 +11,11 @@ Public Class frmMainForm
 
     Private Sub frmMainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
-        'Check_This()
+        'Check_This() 
 
         Login_Form.ShowDialog()
+
+        DeleteDuplicate("RECORDED_ALLOW_DEDUC")
 
         AppDateTime.Text = Date.Now.ToString("dddd, MMMM dd, yyyy hh:mm:ss tt", CultureInfo.CurrentCulture)
 

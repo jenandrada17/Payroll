@@ -22,19 +22,19 @@ Module SelectFromDatabase
             If ds.Tables(0).Rows.Count > 0 Then
                 Dim data As DataRow = ds.Tables(0).Rows(0)
                 With data
-                    P_GrossAmount_LBL.Text = FormatNumber(IIf(IsDBNull(.Item("gross")), 0, .Item("gross")))
-                    P_SSSComp_LBL.Text = FormatNumber(IIf(IsDBNull(.Item("sssC")), 0, .Item("sssC")))
-                    P_PagibigComp_LBL.Text = FormatNumber(IIf(IsDBNull(.Item("pagibiC")), 0, .Item("pagibiC")))
-                    P_PhilHComp_LBL.Text = FormatNumber(IIf(IsDBNull(.Item("philHC")), 0, .Item("philHC")))
+                    P_GrossAmount_LBL.Text = Format(.Item("gross"), "0.00")
+                    P_SSSComp_LBL.Text = Format(.Item("sssC"), "0.00")
+                    P_PagibigComp_LBL.Text = Format(.Item("pagibiC"), "0.00")
+                    P_PhilHComp_LBL.Text = Format(.Item("philHC"), "0.00")
 
-                    P_TaxWH_LBL.Text = FormatNumber(IIf(IsDBNull(.Item("taxWH")), 0, .Item("taxWH")))
+                    P_TaxWH_LBL.Text = Format(.Item("taxWH"), "0.00")
 
-                    P_SSSLoan_LBL.Text = FormatNumber(IIf(IsDBNull(.Item("sssLoan")), 0, .Item("sssLoan")))
-                    P_PagibigLoan_LBL.Text = FormatNumber(IIf(IsDBNull(.Item("pagibigLoan")), 0, .Item("pagibigLoan")))
+                    P_SSSLoan_LBL.Text = Format(.Item("sssLoan"), "0.00")
+                    P_PagibigLoan_LBL.Text = Format(.Item("pagibigLoan"), "0.00")
 
-                    P_Allowance_LBL.Text = FormatNumber(IIf(IsDBNull(.Item("allowance")), 0, .Item("allowance")))
-                    P_Deduction_LBL.Text = FormatNumber(IIf(IsDBNull(.Item("deducttion")), 0, .Item("deducttion")))
-                    P_NetPay_LBL.Text = FormatNumber(IIf(IsDBNull(.Item("netPay")), 0, .Item("netPay")))
+                    P_Allowance_LBL.Text = Format(.Item("allowance"), "0.00")
+                    P_Deduction_LBL.Text = Format(.Item("deducttion"), "0.00")
+                    P_NetPay_LBL.Text = Format(.Item("netPay"), "0.00")
                 End With
             End If
         End Using
@@ -381,15 +381,12 @@ Module SelectFromDatabase
                     ''============================= FOR MONTHLY RATE (IF ABOVE MINIMUM RATE)================================== 
                     NoOfDays_TXT.Text = .Item("PRESENT_DAYS")
                     RegularOT_TXT.Text = .Item("OVERTIME")
-                    'RegularOT_TXT.Tag = IIf(IsDBNull(.Item("TRAINING_OVERTIME")), 0, .Item("TRAINING_OVERTIME"))
                     RegularHol_TXT.Text = .Item("REGHOLIDAY")
                     RegularHol_TXT.Tag = IIf(IsDBNull(.Item("TRAINING_REGHOLIDAY")), 0, .Item("TRAINING_REGHOLIDAY"))
                     SpecialHol_TXT.Text = .Item("SPECHOLIDAY")
                     SpecialHol_TXT.Tag = IIf(IsDBNull(.Item("TRAINING_SPECHOLIDAY")), 0, .Item("TRAINING_SPECHOLIDAY"))
                     Late_TXT.Text = .Item("LATE")
-                    'Late_TXT.Tag = IIf(IsDBNull(.Item("TRAINING_LATE")), 0, .Item("TRAINING_LATE"))
                     UnderTime_TXT.Text = .Item("UNDERTIME")
-                    'UnderTime_TXT.Tag = IIf(IsDBNull(.Item("TRAINING_UNDERTIME")), 0, .Item("TRAINING_UNDERTIME"))
                     NightTime_TXT.Text = IIf(IsDBNull(.Item("NIGHT_RATE")), "", .Item("NIGHT_RATE"))
                     NightTime_TXT.Tag = IIf(IsDBNull(.Item("NIGHT_RATE")), 0, .Item("NIGHT_RATE"))
 
@@ -1775,18 +1772,32 @@ Module SelectFromDatabase
     Private Sub AddRow_PAYOUT(ByVal dr As DataRow, listview As ListView)
 
         With dr
+
             Dim i As ListViewItem = listview.Items.Add(.Item("FULLNAME"))
-            i.SubItems.Add(CDbl(.Item("GROSS_AMOUNT")).ToString("N")).Tag = .Item("BIOMETRIC_ID")
-            i.SubItems.Add(CDbl(.Item("SSS_COMP")).ToString("N"))
-            i.SubItems.Add(CDbl(.Item("PAGIBIG_COMP")).ToString("N"))
-            i.SubItems.Add(CDbl(.Item("PHILHEALTH_COMP")).ToString("N"))
-            i.SubItems.Add(CDbl(.Item("TAX_WHELD")).ToString("N"))
-            i.SubItems.Add(CDbl(.Item("NET_TAX_COMP")).ToString("N"))
-            i.SubItems.Add(CDbl(.Item("SSS_LOAN")).ToString("N"))
-            i.SubItems.Add(CDbl(.Item("PAGIBIG_LOAN")).ToString("N"))
-            i.SubItems.Add(CDbl(.Item("TOTAL_ALLOWANCE")).ToString("N"))
-            i.SubItems.Add(CDbl(.Item("TOTAL_DEDUCTION")).ToString("N"))
-            i.SubItems.Add(CDbl(.Item("NET_PAY")).ToString("N"))
+            i.SubItems.Add(FormatNumber(.Item("GROSS_AMOUNT"))).Tag = .Item("BIOMETRIC_ID")
+            i.SubItems.Add(FormatNumber(.Item("SSS_COMP")))
+            i.SubItems.Add(FormatNumber(.Item("PAGIBIG_COMP")))
+            i.SubItems.Add(FormatNumber(.Item("PHILHEALTH_COMP")))
+            i.SubItems.Add(FormatNumber(.Item("TAX_WHELD")))
+            i.SubItems.Add(FormatNumber(.Item("NET_TAX_COMP")))
+            i.SubItems.Add(FormatNumber(.Item("SSS_LOAN")))
+            i.SubItems.Add(FormatNumber(.Item("PAGIBIG_LOAN")))
+            i.SubItems.Add(FormatNumber(.Item("TOTAL_ALLOWANCE")))
+            i.SubItems.Add(FormatNumber(.Item("TOTAL_DEDUCTION")))
+            i.SubItems.Add(FormatNumber(.Item("NET_PAY")))
+
+            'Dim i As ListViewItem = listview.Items.Add(.Item("FULLNAME"))
+            'i.SubItems.Add(Format(.Item("GROSS_AMOUNT"), "0.00")).Tag = .Item("BIOMETRIC_ID")
+            'i.SubItems.Add(Format(.Item("SSS_COMP"), "0.00"))
+            'i.SubItems.Add(Format(.Item("PAGIBIG_COMP"), "0.00"))
+            'i.SubItems.Add(Format(.Item("PHILHEALTH_COMP"), "0.00"))
+            'i.SubItems.Add(Format(.Item("TAX_WHELD"), "0.00"))
+            'i.SubItems.Add(Format(.Item("NET_TAX_COMP"), "0.00"))
+            'i.SubItems.Add(Format(.Item("SSS_LOAN"), "0.00"))
+            'i.SubItems.Add(Format(.Item("PAGIBIG_LOAN"), "0.00"))
+            'i.SubItems.Add(Format(.Item("TOTAL_ALLOWANCE"), "0.00"))
+            'i.SubItems.Add(Format(.Item("TOTAL_DEDUCTION"), "0.00"))
+            'i.SubItems.Add(Format(.Item("NET_PAY"), "0.00"))
         End With
 
     End Sub

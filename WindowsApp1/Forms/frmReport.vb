@@ -756,7 +756,7 @@ Public Class frmReport
             mysql = $"Select  BRANCH_CODE, C.CATEGORY, TRANSAC_NAME, HO_CATEGORY, COMPANY, SUM(AMOUNT) AS TOTS From PAYROLL_PAYOUT B 
                                         INNER JOIN PAYROLL_EMPLOYEE A ON A.BIO_NO = B.BIOMETRIC_ID 
                                         LEFT JOIN RECORDED_ALLOW_DEDUC C ON C.BIO_NO = B.BIOMETRIC_ID  
-                                        WHERE B.PAYDATE = '{PAYDATE}' GROUP BY BRANCH_CODE, C.CATEGORY,  TRANSAC_NAME, HO_CATEGORY, COMPANY"
+                                        WHERE C.PAYDATE = '{PAYDATE}' GROUP BY BRANCH_CODE, C.CATEGORY, TRANSAC_NAME, HO_CATEGORY, COMPANY"
 
             Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
                 If ds.Tables(0).Rows.Count > 0 Then
