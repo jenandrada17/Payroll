@@ -755,8 +755,8 @@ Public Class frmReport
             ''========================================= RECORDED_ALLOW_DEDUC ================================================
             mysql = $"Select  BRANCH_CODE, C.CATEGORY, TRANSAC_NAME, HO_CATEGORY, COMPANY, SUM(AMOUNT) AS TOTS From PAYROLL_PAYOUT B 
                                         INNER JOIN PAYROLL_EMPLOYEE A ON A.BIO_NO = B.BIOMETRIC_ID 
-                                        LEFT JOIN RECORDED_ALLOW_DEDUC C ON C.BIO_NO = B.BIOMETRIC_ID  
-                                        WHERE C.PAYDATE = '{PAYDATE}' GROUP BY BRANCH_CODE, C.CATEGORY, TRANSAC_NAME, HO_CATEGORY, COMPANY"
+                                        LEFT JOIN RECORDED_ALLOW_DEDUC C ON C.BIO_NO = B.BIOMETRIC_ID and C.PAYDATE = B.PAYDATE  
+                                        WHERE B.PAYDATE = '{PAYDATE}' GROUP BY BRANCH_CODE, C.CATEGORY, TRANSAC_NAME, HO_CATEGORY, COMPANY"
 
             Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
                 If ds.Tables(0).Rows.Count > 0 Then
@@ -803,10 +803,9 @@ Public Class frmReport
 
             ''========================================= PAYROLL_COSTDISTRIBUTION ================================================
             mysql = $"Select  BRANCH_CODE, HO_CATEGORY, NAMEE, NAME_CATEGORY, COMPANY, SUM(TOTAL_BASIC) AS BASIC, SUM(TOTAL_OVERTIME) AS OT,
-                                        SUM(TOTAL_LATE_UT) AS LATE_UT ,
-                                        SUM(SSS_COMP) AS SSS_EE , SUM(SSS_ER) AS SSS_ER , SUM(SSS_EC) AS SSS_EC , SUM(NET_PAY) AS NETPAY, 
-                                        SUM(PAGIBIG_COMP) AS HDMF, SUM(PHILHEALTH_COMP) AS PHILH , SUM(SSS_LOAN) AS LOAN_SSS , SUM(PAGIBIG_LOAN) AS LOAN_HDMF, 
-                                        SUM(TOTAL_REGHOLIDAY) AS REGHOLIDAY , SUM(TOTAL_SPECHOLIDAY) AS SPECHOLIDAY  
+                                        SUM(TOTAL_LATE_UT) AS LATE_UT , SUM(SSS_COMP) AS SSS_EE , SUM(SSS_ER) AS SSS_ER , SUM(SSS_EC) AS SSS_EC, 
+                                        SUM(NET_PAY) AS NETPAY, SUM(PAGIBIG_COMP) AS HDMF, SUM(PHILHEALTH_COMP) AS PHILH , SUM(SSS_LOAN) AS LOAN_SSS , 
+                                        SUM(PAGIBIG_LOAN) AS LOAN_HDMF, SUM(TOTAL_REGHOLIDAY) AS REGHOLIDAY , SUM(TOTAL_SPECHOLIDAY) AS SPECHOLIDAY  
                                         From PAYROLL_PAYOUT B 
                                         INNER JOIN PAYROLL_EMPLOYEE A ON A.BIO_NO = B.BIOMETRIC_ID 
                                         LEFT JOIN PAYROLL_COSTDISTRIB ON 1 = 1 
@@ -876,7 +875,6 @@ Public Class frmReport
 
                                 ElseIf NAMEE = "LATE" Then
                                     DC_Amount = .Item("LATE_UT")
-                                    'Console.WriteLine(DC_Amount)
 
                                 ElseIf NAMEE = "SSS PAYABLE" Then
                                     DC_Amount = .Item("SSS_EE") + .Item("SSS_ER")
@@ -895,7 +893,6 @@ Public Class frmReport
 
                                 ElseIf NAMEE = "CASH IN BANK" Then
                                     DC_Amount = .Item("NETPAY")
-                                    'Console.WriteLine(DC_Amount)
 
                                 End If
 

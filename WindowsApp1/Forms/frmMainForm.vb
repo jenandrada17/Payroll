@@ -13,7 +13,7 @@ Public Class frmMainForm
 
         'Check_This() 
 
-        Login_Form.ShowDialog()
+        'Login_Form.ShowDialog()
 
         DeleteDuplicate("RECORDED_ALLOW_DEDUC")
 

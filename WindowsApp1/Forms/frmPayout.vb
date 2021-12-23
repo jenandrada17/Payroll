@@ -115,7 +115,7 @@ Public Class frmPayout
                     SSS_EC = Get_SSS(monthly_Basic).EC
                     HDMF_LBL.Text = (Get_Pagibig(monthly_Basic)).ToString("N")
                     Philhealth_LBL.Text = (Get_PhilHealth(monthly_Basic)).ToString("N")
-                    Tax_Wheld_LBL.Text = (Get_WHolding(monthly_Basic)).ToString("N")
+                    'Tax_Wheld_LBL.Text = (Get_WHolding(monthly_Basic)).ToString("N")
 
                     NetTax_LBL.Text = (monthly_Basic - (CDbl(SSSComp_LBL.Text) + CDbl(HDMF_LBL.Text) + CDbl(Philhealth_LBL.Text) + CDbl(Tax_Wheld_LBL.Text))).ToString(”N”)
 
@@ -129,7 +129,7 @@ Public Class frmPayout
                     SSSComp_LBL.Text = 0.00
                     HDMF_LBL.Text = 0.00
                     Philhealth_LBL.Text = 0.00
-                    Tax_Wheld_LBL.Text = 0.00
+                    'Tax_Wheld_LBL.Text = 0.00
                     SSSLoan_LBL.Text = 0.00
                     PagibigLoan_LBL.Text = 0.00
                     Previous_groupB.Visible = False
@@ -140,7 +140,7 @@ Public Class frmPayout
                 SSSComp_LBL.Text = 0.00
                 HDMF_LBL.Text = 0.00
                 Philhealth_LBL.Text = 0.00
-                Tax_Wheld_LBL.Text = 0.00
+                'Tax_Wheld_LBL.Text = 0.00
                 SSSLoan_LBL.Text = 0.00
                 PagibigLoan_LBL.Text = 0.00
                 Training_GB.Visible = True
@@ -457,30 +457,38 @@ Public Class frmPayout
             TotalLateUnder_LBL.Text = FormatNumber(LATEE + UNDERTIMEE)
             TotalLateUnder_LBL.Tag = LATEE + UNDERTIMEE
 
-            ''============================= FOR MONTHLY RATE/FIXED RATE (IF ABOVE MINIMUM) ==================================  
-            If RateFixYes_RB.Checked = True Then '=== TAG(MINIMUM DAILY RATE) 
+            ''============================= FOR MONTHLY RATE/FIXED RATE (IF ABOVE MINIMUM) ==================================   
+
+            If Rate_TXT.Text > Rate_TXT.Tag Then '=== TAG(MINIMUM DAILY RATE) 
                 Dim BASICC As Decimal = CDec(RateFixYes_RB.Tag) / 2
 
-                If CDbl(NoOfDays_TXT.Text) >= STANDARD_DAYS Then  '=== CHECK IF ABOVE MINIMUM
-                    'TotalBasic_LBL.Text = BASICC.ToString("N")
+                If RateFixYes_RB.Checked = True Then '=== TAG(MINIMUM DAILY RATE) 
+                    BASICC = CDec(RateFixYes_RB.Tag) / 2
                     TotalBasic_LBL.Text = FormatNumber(BASICC)
                     TotalBasic_LBL.Tag = BASICC
                 Else
-                    Dim MINUS_DAYS As Double = STANDARD_DAYS - CDbl(NoOfDays_TXT.Text)
-                    'TotalBasic_LBL.Text = (BASICC - (MINUS_DAYS * RATEE)).ToString("N")
-                    TotalBasic_LBL.Text = FormatNumber(BASICC - (MINUS_DAYS * RATEE))
-                    TotalBasic_LBL.Tag = BASICC - (MINUS_DAYS * RATEE)
+
+                    If CDbl(NoOfDays_TXT.Text) >= STANDARD_DAYS Then  '=== CHECK IF ABOVE MINIMUM
+                        'TotalBasic_LBL.Text = BASICC.ToString("N")
+                        TotalBasic_LBL.Text = FormatNumber(BASICC)
+                        TotalBasic_LBL.Tag = BASICC
+                    Else
+                        Dim MINUS_DAYS As Double = STANDARD_DAYS - CDbl(NoOfDays_TXT.Text)
+                        'TotalBasic_LBL.Text = (BASICC - (MINUS_DAYS * RATEE)).ToString("N")
+                        TotalBasic_LBL.Text = FormatNumber(BASICC - (MINUS_DAYS * RATEE))
+                        TotalBasic_LBL.Tag = BASICC - (MINUS_DAYS * RATEE)
+                    End If
+
+                    TotalHol_LBL.Text = 0.00
+                    TotalHol_LBL.Tag = 0.00
+                    TotalOT_LBL.Text = 0.00
+                    TotalOT_LBL.Tag = 0.00
+                    TotalLateUnder_LBL.Text = 0.00
+                    TotalLateUnder_LBL.Tag = 0.00
+                    TotalNight_LBL.Text = 0.00
+                    TotalNight_LBL.Tag = 0.00
+
                 End If
-
-                TotalHol_LBL.Text = 0.00
-                TotalHol_LBL.Tag = 0.00
-                TotalOT_LBL.Text = 0.00
-                TotalOT_LBL.Tag = 0.00
-                TotalLateUnder_LBL.Text = 0.00
-                TotalLateUnder_LBL.Tag = 0.00
-                TotalNight_LBL.Text = 0.00
-                TotalNight_LBL.Tag = 0.00
-
             End If
 
             GrossAmount_LBL.Text = FormatNumber((CDbl(TotalBasic_LBL.Tag) + CDbl(TotalHol_LBL.Tag) + CDbl(TotalOT_LBL.Tag) + CDbl(TotalNight_LBL.Tag)) - CDbl(TotalLateUnder_LBL.Tag))

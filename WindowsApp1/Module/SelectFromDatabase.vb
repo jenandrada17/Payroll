@@ -672,13 +672,13 @@ Module SelectFromDatabase
         Return monthly_Basic
     End Function
 
-    Public Function Get_SSS(monthly_Basic As String) As (EE As Double, ER As Double, EC As Double, total As Double)
+    Public Function Get_SSS(monthly_Basic As Decimal) As (EE As Decimal, ER As Decimal, EC As Decimal, total As Decimal)
 
         Console.WriteLine("monthly_Basic" & monthly_Basic)
-        Dim ee As Double = 0
-        Dim er As Double = 0
-        Dim ec As Double = 0
-        Dim total As Double = 0
+        Dim ee As Decimal = 0
+        Dim er As Decimal = 0
+        Dim ec As Decimal = 0
+        Dim total As Decimal = 0
 
         Dim mysql As String = $"Select * FROM PAYROLL_SSS"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_SSS")
@@ -707,8 +707,8 @@ Module SelectFromDatabase
         Return (ee, er, ec, total)
     End Function
 
-    Public Function Get_LOAN_SSS(bio_no As String) As Double
-        Dim sssLoan As Double = 0
+    Public Function Get_LOAN_SSS(bio_no As Decimal) As Decimal
+        Dim sssLoan As Decimal = 0
 
         Dim mysql As String = $"Select * From PAYROLL_SSSLOAN WHERE bio_no = '{bio_no}' and STATUS is null"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_SSSLOAN")
@@ -725,8 +725,8 @@ Module SelectFromDatabase
         Return sssLoan
     End Function
 
-    Public Function Get_LOAN_Pagibig(bio_no As String) As Double
-        Dim pagibigLoan As Double = 0
+    Public Function Get_LOAN_Pagibig(bio_no As Decimal) As Decimal
+        Dim pagibigLoan As Decimal = 0
 
         Dim mysql As String = $"Select * From PAYROLL_PAGIBIGLOAN WHERE bio_no = '{bio_no}' and STATUS is null"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAGIBIGLOAN")
@@ -757,8 +757,8 @@ Module SelectFromDatabase
         Return pagibig_ER
     End Function
 
-    Public Function Get_Pagibig(monthly_Basic As String) As Double
-        Dim pagibig As Double
+    Public Function Get_Pagibig(monthly_Basic As Decimal) As Decimal
+        Dim pagibig As Decimal
 
         Dim mysql As String = $"Select * FROM PAYROLL_PAGIBIG"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAGIBIG")
@@ -773,8 +773,8 @@ Module SelectFromDatabase
         Return pagibig
     End Function
 
-    Public Function Get_PhilHealth(monthly_Basic As String) As Double
-        Dim philhealth As Double
+    Public Function Get_PhilHealth(monthly_Basic As Decimal) As Decimal
+        Dim philhealth As Decimal
 
         Dim mysql As String = $"Select * FROM PAYROLL_PHILHEALTH"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PHILHEALTH")
@@ -801,20 +801,21 @@ Module SelectFromDatabase
         Return philhealth
     End Function
 
-    Public Function Get_Taxable(monthly_Basic As String) As Double
-        Dim sss As Double = Get_SSS(monthly_Basic).EE
-        Dim pagibig As Double = Get_Pagibig(monthly_Basic)
-        Dim philhealth As Double = Get_PhilHealth(monthly_Basic)
-        Dim taxable As Double
+    Public Function Get_Taxable(monthly_Basic As String) As Decimal
+        Dim sss As Decimal = Get_SSS(monthly_Basic).EE
+        Dim pagibig As Decimal = Get_Pagibig(monthly_Basic)
+        Dim philhealth As Decimal = Get_PhilHealth(monthly_Basic)
+        Dim taxable As Decimal
 
         taxable = monthly_Basic - (sss + pagibig + philhealth)
 
         Return taxable
     End Function
 
-    Public Function Get_WHolding(monthly_Basic As String) As Double
-        Dim taxable As Double = Get_Taxable(monthly_Basic)
-        Dim Tax_Wheld As Double
+    Public Function Get_WHolding(monthly_Basic As Decimal) As Decimal
+
+        Dim taxable As Decimal = Get_Taxable(monthly_Basic)
+        Dim Tax_Wheld As Decimal
         Dim mysql As String = $"Select * FROM PAYROLL_WHOLDING"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_WHOLDING")
             If ds.Tables(0).Rows.Count > 0 Then
@@ -837,7 +838,7 @@ Module SelectFromDatabase
                             If range.Contains("above") Then
                             Else
                                 If (Enumerable.Range(range_array.First, range_array.Last).Contains(taxable)) Then
-                                    Tax_Wheld = (CDbl(taxable) - CDbl(prescrib_array.Last)) * percent
+                                    Tax_Wheld = (CDec(taxable) - CDec(prescrib_array.Last)) * percent
                                 End If
                             End If
                         End If
@@ -1236,7 +1237,8 @@ Module SelectFromDatabase
                     Dim minimum As Decimal = IIf(.Item("BRANCH_CODE") = Nothing, GetMinimumRate("CITY", "GENSAN"), GetMinimumRate("BRANCHCODE", .Item("BRANCH_CODE")))
 
                     ratee.Text = IIf(rate = 0, minimum, rate)
-                    ratee.Tag = .Item("BRANCH_CODE")
+                    ratee.Tag = minimum
+                    'ratee.Tag = .Item("BRANCH_CODE")
                     name.Text = .Item("FULLNAME")
                     RateFixYes_RB.Checked = IIf(IsDBNull(.Item("FIX_MONTHLY_RATE")), False, .Item("FIX_MONTHLY_RATE"))
                     RateFixYes_RB.Tag = IIf(IsDBNull(.Item("RATE_MONTHLY")) Or .Item("RATE_MONTHLY").Equals("0"), ratee.Text * 26, .Item("RATE_MONTHLY"))

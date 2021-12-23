@@ -637,7 +637,6 @@ Module SaveUpdate
                     .Item("SSS_EC") = SSS_EC
                     .Item("PAGIBIG_COMP") = PAGIBIG_COMP
                     .Item("PHILHEALTH_COMP") = PHILHEALTH_COMP
-                    '.Item("TAXABLE") = TAXABLE
                     .Item("TAX_WHELD") = TAX_WHELD
                     .Item("NET_TAX_COMP") = NET_TAX_COMP
                     .Item("SSS_LOAN") = SSS_LOAN
@@ -761,23 +760,25 @@ Module SaveUpdate
                     Dim Late As String = ""
                     Dim UnderTime As String = ""
                     Dim RegularOT As String = ""
-                    Dim nightRate As Double = 0
+                    Dim nightRate As Decimal = 0
                     Dim NoOfDays, SpecialHol, RegularHol As Double
-                    Dim Deduction, SBU As Double
+                    Dim Deduction, SBU As Decimal
                     Dim Company As String
                     Dim sched As String = ""
                     Dim noOf_days_training As Double = 0
-                    Dim TotalBasic As Double = 0
-                    Dim SSSComp = 0, SSS_ER = 0, SSS_EC As Double = 0
-                    Dim PagibigComp As Double = 0
-                    Dim PhilhealthComp As Double = 0
-                    Dim Tax_Wheld As Double = 0
-                    Dim netTax As Double = 0
-                    Dim sssLoan As Double = 0
-                    Dim pagibigLoan As Double = 0
+                    Dim TotalBasic As Decimal = 0
+                    Dim SSSComp As Decimal = 0
+                    Dim SSS_ER As Decimal = 0
+                    Dim SSS_EC As Decimal = 0
+                    Dim PagibigComp As Decimal = 0
+                    Dim PhilhealthComp As Decimal = 0
+                    Dim Tax_Wheld As Decimal = 0
+                    Dim netTax As Decimal = 0
+                    Dim sssLoan As Decimal = 0
+                    Dim pagibigLoan As Decimal = 0
                     Dim rate As Decimal = 0
-                    Dim SIL As Double = 0
-                    Dim Allowances As Double = 0
+                    Dim SIL As Decimal = 0
+                    Dim Allowances As Decimal = 0
                     Dim TotalREGHol, TotalSPECHol, TotalOT, TotalLateUnder, TotalNight, GrossAmount As Decimal
                     Dim Minimum_rate As Decimal = IIf(IsDBNull(.Item("BRANCH_CODE")) Or .Item("BRANCH_CODE").Equals(""), GetMinimumRate("CITY", "GENSAN"), GetMinimumRate("BRANCHCODE", .Item("BRANCH_CODE")))
                     Dim Ecola As Double = GetEcola("BRANCHCODE", .Item("BRANCH_CODE"))
@@ -835,7 +836,7 @@ Module SaveUpdate
 
                         If days_covred > 0 Then
 
-                            Dim ending As DateTime = startingDate.AddDays(days_covred - 1)
+                            Dim ending As DateTime = startingDate.AddDays(days_covred)
 
                             While (startingDate <= ending)
 
@@ -875,39 +876,45 @@ Module SaveUpdate
 
                     If noOf_days_training <> 0 Then '================ IF TRAINEE BASE CALCULATE NEW RATE =================
 
-                        Dim total_train As Double = (Convert.ToDouble(rate) - trainee_rate) * Convert.ToDouble(noOf_days_training)
+                        Dim total_train As Decimal = (Convert.ToDouble(rate) - trainee_rate) * Convert.ToDouble(noOf_days_training)
                         TotalBasic = (NoOfDays * rate) - total_train
 
                         '===================== TRAINING HOLIDAY ==================  
                         RegularHol = RegularHol - Training_REGHoliday
                         SpecialHol = SpecialHol - Training_SPECHoliday
 
-                        Dim REG_STANDARD As Double = (RegularHol * rate) * regHoliday
-                        Dim SPEC_STANDARD As Double = (SpecialHol * rate) * specHoliday
+                        Dim REG_STANDARD As Decimal = (RegularHol * rate) * regHoliday
+                        Dim SPEC_STANDARD As Decimal = (SpecialHol * rate) * specHoliday
 
-                        Dim REG_TRAINEE As Double = (Training_REGHoliday * trainee_rate) * regHoliday
-                        Dim SPEC_TRAINEE As Double = (Training_SPECHoliday * trainee_rate) * specHoliday
+                        Dim REG_TRAINEE As Decimal = (Training_REGHoliday * trainee_rate) * regHoliday
+                        Dim SPEC_TRAINEE As Decimal = (Training_SPECHoliday * trainee_rate) * specHoliday
 
                         TotalREGHol = REG_STANDARD + REG_TRAINEE
                         TotalSPECHol = SPEC_STANDARD + SPEC_TRAINEE
 
                     Else
-                        TotalBasic = (NoOfDays * rate)
 
+                        TotalBasic = (NoOfDays * rate)
                         TotalREGHol = (RegularHol * rate) * regHoliday
                         TotalSPECHol = (SpecialHol * rate) * specHoliday
 
                     End If
 
                     ''============================= FOR MONTHLY RATE (IF ABOVE MINIMUM RATE)================================== 
-                    If fix_monthly_rate = True Then
+                    If rate > Minimum_rate Then
                         Monthly_rate = Monthly_rate / 2
-                        If NoOfDays >= STANDARD_DAYS Then  '=== CHECK IF ABOVE MINIMUM
+
+                        If fix_monthly_rate = True Then
                             TotalBasic = Monthly_rate
                         Else
-                            Dim MINUS_DAYS As Double = STANDARD_DAYS - NoOfDays
-                            TotalBasic = Monthly_rate - (MINUS_DAYS * rate)
+                            If NoOfDays >= STANDARD_DAYS Then  '=== CHECK IF ABOVE MINIMUM
+                                TotalBasic = Monthly_rate
+                            Else
+                                Dim MINUS_DAYS As Double = STANDARD_DAYS - NoOfDays
+                                TotalBasic = Monthly_rate - (MINUS_DAYS * rate)
+                            End If
                         End If
+
                     End If
 
                     '============================ CHECK WITH TRAINING DAYS COVERED ==================================   
@@ -918,15 +925,15 @@ Module SaveUpdate
 
                         If IsLastDay(date_pay) Then
 
-                            Dim first_Basic As Double = GetFirst_Basic(bioNo, paydate_)
-                            Dim monthly_Basic As Double = TotalBasic + first_Basic
+                            Dim first_Basic As Decimal = GetFirst_Basic(bioNo, paydate_)
+                            Dim monthly_Basic As Decimal = TotalBasic + first_Basic
 
                             SSSComp = Get_SSS(monthly_Basic).EE
                             SSS_ER = Get_SSS(monthly_Basic).ER
                             SSS_EC = Get_SSS(monthly_Basic).EC
                             PagibigComp = Get_Pagibig(monthly_Basic)
                             PhilhealthComp = Get_PhilHealth(monthly_Basic)
-                            Tax_Wheld = Get_WHolding(monthly_Basic)
+                            'Tax_Wheld = Get_WHolding(monthly_Basic)
 
                             netTax = monthly_Basic - (SSSComp + PagibigComp + PhilhealthComp + Tax_Wheld)
 
@@ -945,7 +952,7 @@ Module SaveUpdate
                     '============================================= ALLOWANCE ========================================================= 
 
                     If SIL <> 0 Then ' FOR SIL ADDITIONAL ================================
-                        Dim SIL_Total As Double = SIL * rate
+                        Dim SIL_Total As Decimal = SIL * rate
                         Allowances = SIL_Total
                         Save_Recorded_Allow_Deduc(bioNo, paydate_, "SIL", SIL_Total, "ALLOWANCE")
                     End If
@@ -970,8 +977,8 @@ Module SaveUpdate
                                     If .item("EFFECTIVE_DATE") <= paydate_ Then
 
                                         '============== PERFORMANCE INCENTIVES DEDUCTION IF EVER MAY ABSENT ===================
-                                        Dim PI As Double = 0
-                                        Dim deduc_to_PI As Double = 0
+                                        Dim PI As Decimal = 0
+                                        Dim deduc_to_PI As Decimal = 0
 
                                         If sched = "CLOSE PAYROLL" Then
                                             If .item("CATEGORY") = "PERFORMANCE INCENTIVES" Then
@@ -1044,7 +1051,7 @@ Module SaveUpdate
                     Else
 
                         '===================== STANDARD AND TRAINING OVERTIME/LATE/UNDERTIME ==================   
-                        Dim LATEE, LATE_TRAIN, UNDERTIMEE, UNDERTIMEE_TRAIN, OVERTIMEE, OVERTIMEE_TRAIN As Double
+                        Dim LATEE, LATE_TRAIN, UNDERTIMEE, UNDERTIMEE_TRAIN, OVERTIMEE, OVERTIMEE_TRAIN As Decimal
                         LATEE = ((rate / 8) / 60) * (Late - training_late.TotalMinutes)
                         UNDERTIMEE = ((rate / 8) / 60) * (UnderTime - training_undertime.TotalMinutes)
                         OVERTIMEE = ((rate / 8) * 1.25) * (RegularOT - training_overtime)
@@ -1118,26 +1125,28 @@ Module SaveUpdate
                         Dim NoOfDays, SpecialHol, RegularHol As Double
                         Dim noOf_days_training As Double = 0
                         Dim SBU As Double = 0
-                        Dim TotalBasic As Double = 0
-                        Dim SSSComp = 0, SSS_ER = 0, SSS_EC As Double = 0
-                        Dim PagibigComp As Double = 0
-                        Dim PhilhealthComp As Double = 0
-                        Dim Tax_Wheld As Double = 0
-                        Dim netTax As Double = 0
-                        Dim sssLoan As Double = 0
-                        Dim pagibigLoan As Double = 0
+                        Dim TotalBasic As Decimal = 0
+                        Dim SSSComp As Decimal = 0
+                        Dim SSS_ER As Decimal = 0
+                        Dim SSS_EC As Decimal = 0
+                        Dim PagibigComp As Decimal = 0
+                        Dim PhilhealthComp As Decimal = 0
+                        Dim Tax_Wheld As Decimal = 0
+                        Dim netTax As Decimal = 0
+                        Dim sssLoan As Decimal = 0
+                        Dim pagibigLoan As Decimal = 0
                         Dim rate As Decimal = 0
-                        Dim nightRate As Double = 0
-                        Dim Allowances As Double = 0
-                        Dim Deduction As Double = 0
-                        Dim TotalREGHol, TotalSPECHol, TotalOT, TotalLateUnder, GrossAmount As Double
-                        Dim Minimum_rate As Double = IIf(IsDBNull(.Item("BRANCH_CODE")) Or .Item("BRANCH_CODE").Equals(""), GetMinimumRate("CITY", "GENSAN"), GetMinimumRate("BRANCHCODE", .Item("BRANCH_CODE")))
+                        Dim nightRate As Decimal = 0
+                        Dim Allowances As Decimal = 0
+                        Dim Deduction As Decimal = 0
+                        Dim TotalREGHol, TotalSPECHol, TotalOT, TotalLateUnder, GrossAmount As Decimal
+                        Dim Minimum_rate As Decimal = IIf(IsDBNull(.Item("BRANCH_CODE")) Or .Item("BRANCH_CODE").Equals(""), GetMinimumRate("CITY", "GENSAN"), GetMinimumRate("BRANCHCODE", .Item("BRANCH_CODE")))
                         Dim Ecola As Double = GetEcola("BRANCHCODE", .Item("BRANCH_CODE"))
                         Dim fix_monthly_rate As Boolean = IIf(IsDBNull(.Item("FIX_MONTHLY_RATE")), False, .Item("FIX_MONTHLY_RATE"))
 
                         BiometricID = .Item("BIOMETRICID")
                         rate = IIf(IsDBNull(.Item("RATE_DAILY")) Or .Item("RATE_DAILY") = 0, Minimum_rate, .Item("RATE_DAILY"))
-                        Dim Monthly_rate As Double = IIf(IsDBNull(.Item("RATE_MONTHLY")) Or .Item("RATE_MONTHLY").Equals("0"), rate * 26, .Item("RATE_MONTHLY"))
+                        Dim Monthly_rate As Decimal = IIf(IsDBNull(.Item("RATE_MONTHLY")) Or .Item("RATE_MONTHLY").Equals("0"), rate * 26, .Item("RATE_MONTHLY"))
                         Company = IIf(IsDBNull(.Item("COMPANY")), "", .Item("COMPANY"))
                         Dim Time_In As DateTime = IIf(IsDBNull(.Item("TIME_IN")), "", .Item("TIME_IN"))
                         Dim Time_Out As DateTime = IIf(IsDBNull(.Item("TIME_OUT")), "", .Item("TIME_OUT"))
@@ -1187,7 +1196,7 @@ Module SaveUpdate
 
                             If days_covred > 0 Then
 
-                                Dim ending As DateTime = startingDate.AddDays(days_covred - 1)
+                                Dim ending As DateTime = startingDate.AddDays(days_covred)
 
                                 While (startingDate <= ending)
 
@@ -1225,9 +1234,9 @@ Module SaveUpdate
                         Dim trainee_rate As Decimal = rate * 0.75
                         If noOf_days_training = 0 Then '================ BASE ON TRAINING DAYS COVERED =================
                             TotalBasic = NoOfDays * rate
-
                             TotalREGHol = (RegularHol * rate) * regHoliday
                             TotalSPECHol = (SpecialHol * rate) * specHoliday
+
                         Else
 
                             Dim total_train As Decimal = (Convert.ToDouble(rate) - trainee_rate) * Convert.ToDouble(noOf_days_training)
@@ -1251,16 +1260,32 @@ Module SaveUpdate
                         End If
 
                         ''============================= FOR MONTHLY RATE (IF ABOVE MINIMUM RATE)================================== 
-                        If fix_monthly_rate = True Then
+
+                        If rate > Minimum_rate Then
                             Monthly_rate = Monthly_rate / 2
-                            If NoOfDays >= STANDARD_DAYS Then  '=== CHECK IF ABOVE MINIMUM
+
+                            If fix_monthly_rate = True Then
                                 TotalBasic = Monthly_rate
                             Else
-                                Dim MINUS_DAYS As Double = STANDARD_DAYS - NoOfDays
-                                TotalBasic = Monthly_rate - (MINUS_DAYS * rate)
+                                If NoOfDays >= STANDARD_DAYS Then  '=== CHECK IF ABOVE MINIMUM
+                                    TotalBasic = Monthly_rate
+                                Else
+                                    Dim MINUS_DAYS As Double = STANDARD_DAYS - NoOfDays
+                                    TotalBasic = Monthly_rate - (MINUS_DAYS * rate)
+                                End If
                             End If
+
                         End If
 
+                        'If fix_monthly_rate = False Then
+                        '    Monthly_rate = Monthly_rate / 2
+                        '    If NoOfDays >= STANDARD_DAYS Then  '=== CHECK IF ABOVE MINIMUM
+                        '        TotalBasic = Monthly_rate
+                        '    Else
+                        '        Dim MINUS_DAYS As Double = STANDARD_DAYS - NoOfDays
+                        '        TotalBasic = Monthly_rate - (MINUS_DAYS * rate)
+                        '    End If
+                        'End If
                         '============================= BENEFITS CONTRIBUTION ================================== 
                         If noOf_days_training = 0 Then
 
@@ -1277,7 +1302,7 @@ Module SaveUpdate
                                 SSS_EC = Get_SSS(monthly_Basic).EC
                                 PagibigComp = Get_Pagibig(monthly_Basic)
                                 PhilhealthComp = Get_PhilHealth(monthly_Basic)
-                                Tax_Wheld = Get_WHolding(monthly_Basic)
+                                'Tax_Wheld = Get_WHolding(monthly_Basic)
 
                                 netTax = monthly_Basic - (SSSComp + PagibigComp + PhilhealthComp + Tax_Wheld)
 
@@ -1315,7 +1340,7 @@ Module SaveUpdate
                                         If .item("EFFECTIVE_DATE") <= paydate_ Then
 
                                             '============== PERFORMANCE INCENTIVES DEDUCTION IF EVER MAY ABSENT ===================
-                                            Dim PI As Double = 0
+                                            Dim PI As Decimal = 0
 
                                             If sched = "CLOSE PAYROLL" Then
                                                 If .item("CATEGORY") = "PERFORMANCE INCENTIVES" Or .item("CATEGORY") = "PI" Then
@@ -1323,7 +1348,7 @@ Module SaveUpdate
                                                     If fix_monthly_rate = False And .item("FIX") = "NO" Then
                                                         Dim PI_totalDays As Double = GetFirst_NoOfDays(BiometricID, paydate_) + NoOfDays + RegularHol + SpecialHol
                                                         Dim absent As Double = 26 - PI_totalDays
-                                                        Dim deduc_to_PI As Double = (.Item("AMOUNT") / 26) * absent
+                                                        Dim deduc_to_PI As Decimal = (.Item("AMOUNT") / 26) * absent
 
                                                         Allowances = (Allowances + .Item("AMOUNT")) - deduc_to_PI
                                                         Save_Recorded_Allow_Deduc(BiometricID, paydate_, .Item("CATEGORY"), .Item("AMOUNT") - deduc_to_PI, "ALLOWANCE")
@@ -1388,7 +1413,7 @@ Module SaveUpdate
                         Else
 
                             '===================== STANDARD AND TRAINING OVERTIME/LATE/UNDERTIME ==================   
-                            Dim LATEE, LATE_TRAIN, UNDERTIMEE, UNDERTIMEE_TRAIN, OVERTIMEE, OVERTIMEE_TRAIN As Double
+                            Dim LATEE, LATE_TRAIN, UNDERTIMEE, UNDERTIMEE_TRAIN, OVERTIMEE, OVERTIMEE_TRAIN As Decimal
                             LATEE = ((rate / 8) / 60) * (Late - training_late.TotalMinutes)
                             UNDERTIMEE = ((rate / 8) / 60) * (UnderTime - training_undertime.TotalMinutes)
                             OVERTIMEE = ((rate / 8) * 1.25) * (RegularOT - training_overtime)
