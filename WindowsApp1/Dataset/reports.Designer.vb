@@ -1928,6 +1928,8 @@ Partial Public Class reports
         
         Private columnPAYDATE As Global.System.Data.DataColumn
         
+        Private columnREPORT_CATEGORY As Global.System.Data.DataColumn
+        
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Sub New()
@@ -2068,6 +2070,14 @@ Partial Public Class reports
         End Property
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property REPORT_CATEGORYColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnREPORT_CATEGORY
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0"),  _
          Global.System.ComponentModel.Browsable(false)>  _
         Public ReadOnly Property Count() As Integer
@@ -2104,9 +2114,9 @@ Partial Public Class reports
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Overloads Function AddComGensanPDistribRow(ByVal FULLNAME As String, ByVal COMMON_CATEGORY As String, ByVal NETPAY As String, ByVal DALTON As String, ByVal PHOTO As String, ByVal DAVAOP As String, ByVal PERFECOM As String, ByVal G3 As String, ByVal Seven11 As String, ByVal COMI_TO_FUJI As String, ByVal HOUSEHOLD As String, ByVal LEASING As String, ByVal PAYDATE As String) As ComGensanPDistribRow
+        Public Overloads Function AddComGensanPDistribRow(ByVal FULLNAME As String, ByVal COMMON_CATEGORY As String, ByVal NETPAY As String, ByVal DALTON As String, ByVal PHOTO As String, ByVal DAVAOP As String, ByVal PERFECOM As String, ByVal G3 As String, ByVal Seven11 As String, ByVal COMI_TO_FUJI As String, ByVal HOUSEHOLD As String, ByVal LEASING As String, ByVal PAYDATE As String, ByVal REPORT_CATEGORY As String) As ComGensanPDistribRow
             Dim rowComGensanPDistribRow As ComGensanPDistribRow = CType(Me.NewRow,ComGensanPDistribRow)
-            Dim columnValuesArray() As Object = New Object() {FULLNAME, COMMON_CATEGORY, NETPAY, DALTON, PHOTO, DAVAOP, PERFECOM, G3, Seven11, COMI_TO_FUJI, HOUSEHOLD, LEASING, PAYDATE}
+            Dim columnValuesArray() As Object = New Object() {FULLNAME, COMMON_CATEGORY, NETPAY, DALTON, PHOTO, DAVAOP, PERFECOM, G3, Seven11, COMI_TO_FUJI, HOUSEHOLD, LEASING, PAYDATE, REPORT_CATEGORY}
             rowComGensanPDistribRow.ItemArray = columnValuesArray
             Me.Rows.Add(rowComGensanPDistribRow)
             Return rowComGensanPDistribRow
@@ -2142,6 +2152,7 @@ Partial Public Class reports
             Me.columnHOUSEHOLD = MyBase.Columns("HOUSEHOLD")
             Me.columnLEASING = MyBase.Columns("LEASING")
             Me.columnPAYDATE = MyBase.Columns("PAYDATE")
+            Me.columnREPORT_CATEGORY = MyBase.Columns("REPORT_CATEGORY")
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -2173,6 +2184,8 @@ Partial Public Class reports
             MyBase.Columns.Add(Me.columnLEASING)
             Me.columnPAYDATE = New Global.System.Data.DataColumn("PAYDATE", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnPAYDATE)
+            Me.columnREPORT_CATEGORY = New Global.System.Data.DataColumn("REPORT_CATEGORY", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnREPORT_CATEGORY)
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -5430,6 +5443,21 @@ Partial Public Class reports
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property REPORT_CATEGORY() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableComGensanPDistrib.REPORT_CATEGORYColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'REPORT_CATEGORY' in table 'ComGensanPDistrib' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableComGensanPDistrib.REPORT_CATEGORYColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Function IsFULLNAMENull() As Boolean
             Return Me.IsNull(Me.tableComGensanPDistrib.FULLNAMEColumn)
         End Function
@@ -5582,6 +5610,18 @@ Partial Public Class reports
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Sub SetPAYDATENull()
             Me(Me.tableComGensanPDistrib.PAYDATEColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsREPORT_CATEGORYNull() As Boolean
+            Return Me.IsNull(Me.tableComGensanPDistrib.REPORT_CATEGORYColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetREPORT_CATEGORYNull()
+            Me(Me.tableComGensanPDistrib.REPORT_CATEGORYColumn) = Global.System.Convert.DBNull
         End Sub
     End Class
     

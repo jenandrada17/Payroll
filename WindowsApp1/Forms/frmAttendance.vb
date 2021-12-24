@@ -1,5 +1,4 @@
-﻿Imports FirebirdSql.Data.FirebirdClient
-Imports Microsoft.Office.Interop
+﻿Imports Microsoft.Office.Interop
 
 Public Class frmAttendance
 
@@ -291,8 +290,9 @@ Public Class frmAttendance
 
                     ElseIf row.DefaultCellStyle.BackColor = Color.Plum Then
 
-
-                        TotalSHoliday_LBL.Text = TotalSHoliday_LBL.Text + 1
+                        If PRESENT_Date(bioNum, paydate_, row.Cells(0).Tag) Then
+                            TotalSHoliday_LBL.Text = TotalSHoliday_LBL.Text + 1
+                        End If
 
                     End If
                 End If
@@ -501,35 +501,53 @@ Public Class frmAttendance
 
     Private Sub LoadEmployeeDetails()
 
-        Dim source As New AutoCompleteStringCollection()
-        Dim sql As String = "SELECT * FROM tbl_employee Where Upper(LASTNAME) = Upper('" & Name_TXT.Text & "') or Upper(FIRSTNAME) = Upper('" & Name_TXT.Text & "')"
+        'Dim source As New AutoCompleteStringCollection()
+        'Dim sql As String = $"SELECT * FROM payroll_employee Where Upper(FULLNAME) = Upper('{Name_TXT.Text}')"
+        'Using ds As DataSet = LoadSQL(sql, "payroll_employee")
+        '    If ds.Tables(0).Rows.Count > 0 Then
+        '        For Each dr In ds.Tables(0).Rows
+        '            With dr
+        '                Dim name As String = .Item("FULLNAME")
+        '                source.Add(name.ToString)
+        '            End With
+        '        Next
+        '    End If
+        'End Using
 
-        DbReaderOpen()
-        Using rd As FbDataReader = LoadSQL_byDataReader(sql)
+        'Name_TXT.AutoCompleteCustomSource = source
+        'Name_TXT.AutoCompleteMode = AutoCompleteMode.Suggest
+        'Name_TXT.AutoCompleteSource = AutoCompleteSource.CustomSource
 
-            While rd.Read()
-                If rd.HasRows Then
-                    With rd
-                        Dim MI As String
+        ''============================================================== OLD
+        'Dim source As New AutoCompleteStringCollection()
+        'Dim sql As String = "SELECT * FROM tbl_employee Where Upper(LASTNAME) = Upper('" & Name_TXT.Text & "') or Upper(FIRSTNAME) = Upper('" & Name_TXT.Text & "')"
 
-                        If String.IsNullOrEmpty(.Item("MIDDLENAME")) Then
-                            MI = ""
-                        Else
-                            MI = .Item("MIDDLENAME").Substring(0, 1) & "."
-                        End If
+        'DbReaderOpen()
+        'Using rd As FbDataReader = LoadSQL_byDataReader(sql)
 
-                        Dim name As String = $"{ .Item("FIRSTNAME")} { MI } { .Item("LASTNAME")} { .Item("SUFFIX")}"
+        '    While rd.Read()
+        '        If rd.HasRows Then
+        '            With rd
+        '                Dim MI As String
 
-                        source.Add(name.ToString)
+        '                If String.IsNullOrEmpty(.Item("MIDDLENAME")) Then
+        '                    MI = ""
+        '                Else
+        '                    MI = .Item("MIDDLENAME").Substring(0, 1) & "."
+        '                End If
 
-                    End With
-                End If
-            End While
-            rd.Close()
-        End Using
-        Name_TXT.AutoCompleteCustomSource = source
-        Name_TXT.AutoCompleteMode = AutoCompleteMode.Suggest
-        Name_TXT.AutoCompleteSource = AutoCompleteSource.CustomSource
+        '                Dim name As String = $"{ .Item("FIRSTNAME")} { MI } { .Item("LASTNAME")} { .Item("SUFFIX")}"
+
+        '                source.Add(name.ToString)
+
+        '            End With
+        '        End If
+        '    End While
+        '    rd.Close()
+        'End Using
+        'Name_TXT.AutoCompleteCustomSource = source
+        'Name_TXT.AutoCompleteMode = AutoCompleteMode.Suggest
+        'Name_TXT.AutoCompleteSource = AutoCompleteSource.CustomSource
 
     End Sub
 

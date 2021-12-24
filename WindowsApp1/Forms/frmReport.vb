@@ -511,7 +511,7 @@ Public Class frmReport
     End Sub
 
 
-    Public Sub LoadCommonPercentage_Print()
+    Public Sub LoadCommonNETPAY_Print()
 
         RptViewer_Common.LocalReport.DataSources.Clear()
 
@@ -532,6 +532,7 @@ Public Class frmReport
                 .Columns.Add("HOUSEHOLD")
                 .Columns.Add("LEASING")
                 .Columns.Add("PAYDATE")
+                .Columns.Add("REPORT_CATEGORY")
             End With
 
             Dim mysqll As String = $"Select * From PAYROLL_EMPLOYEE A 
@@ -549,7 +550,7 @@ Public Class frmReport
                             '============================= NAME AND ATTENDANCE ============================  
                             Dim namee As String = .Item("FULLNAME")
                             Dim CATEGORY As String = .Item("CATEGORY")
-                            Dim NET_PAY As Double = .Item("NET_PAY")
+                            Dim TOTALS As Decimal = 0
                             Dim DALTON As String = .Item("DALTON")
                             Dim PHOTO As String = .Item("PHOTO")
                             Dim DAVAOP As String = .Item("DAVAOP")
@@ -572,8 +573,16 @@ Public Class frmReport
                                 LEASING = (50 * LEASING) / 100
                             End If
 
-                            dt_CommonDis.Rows.Add(namee, CATEGORY, NET_PAY.ToString("n"), DALTON, PHOTO, DAVAOP,
-                                               PERFECOM, G3, Seven11, COMI_TO_FUJI, HOUSEHOLD, LEASING, Format(PAYROLL, "MMMM dd, yyyy").ToUpper())
+                            If CommonCat_Combo.SelectedIndex = 0 Then
+                                TOTALS = .Item("GROSS_AMOUNT")
+                            ElseIf CommonCat_Combo.SelectedIndex = 1 Then
+                                TOTALS = .Item("NET_PAY")
+                            ElseIf CommonCat_Combo.SelectedIndex = 2 Then
+                                TOTALS = .Item("TOTAL_DEDUCTION") + .Item("SSS_LOAN") + .Item("PAGIBIG_LOAN")
+                            End If
+
+                            dt_CommonDis.Rows.Add(namee, CATEGORY, TOTALS.ToString("n"), DALTON, PHOTO, DAVAOP,
+                                           PERFECOM, G3, Seven11, COMI_TO_FUJI, HOUSEHOLD, LEASING, Format(PAYROLL, "MMMM dd, yyyy").ToUpper(), CommonCat_Combo.Text)
 
                         End With
                     Next
@@ -613,7 +622,7 @@ Public Class frmReport
                             '============================= NAME AND ATTENDANCE ============================  
                             Dim namee As String = .Item("FULLNAME")
                             Dim CATEGORY As String = .Item("CATEGORY")
-                            Dim NET_PAY As Double = .Item("NET_PAY")
+                            Dim TOTALS As Decimal = 0
                             Dim DALTON As Double = .Item("DALTON")
                             Dim PHOTO As Double = .Item("PHOTO")
                             Dim DAVAOP As Double = .Item("DAVAOP")
@@ -624,7 +633,15 @@ Public Class frmReport
                             Dim HOUSEHOLD As Double = .Item("HOUSEHOLD")
                             Dim LEASING As Double = .Item("LEASING")
 
-                            dt_ComLeasingDis.Rows.Add(namee, CATEGORY, NET_PAY.ToString("n"), DALTON, PHOTO, DAVAOP,
+                            If CommonCat_Combo.SelectedIndex = 0 Then
+                                TOTALS = .Item("GROSS_AMOUNT")
+                            ElseIf CommonCat_Combo.SelectedIndex = 1 Then
+                                TOTALS = .Item("NET_PAY")
+                            ElseIf CommonCat_Combo.SelectedIndex = 2 Then
+                                TOTALS = .Item("TOTAL_DEDUCTION") + .Item("SSS_LOAN") + .Item("PAGIBIG_LOAN")
+                            End If
+
+                            dt_ComLeasingDis.Rows.Add(namee, CATEGORY, TOTALS.ToString("n"), DALTON, PHOTO, DAVAOP,
                                                PERFECOM, G3, Seven11, COMI_TO_FUJI, HOUSEHOLD, LEASING)
 
                         End With
@@ -922,7 +939,6 @@ Public Class frmReport
             Log_Report(ex.ToString)
             MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
-
     End Sub
 
     Private Sub SumPaydate_Combo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles SumPaydate_Combo.SelectedIndexChanged
@@ -1296,7 +1312,6 @@ Public Class frmReport
     Private Sub PaydateCom_Combo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles PaydateCom_Combo.SelectedIndexChanged
         If PaydateCom_Combo.SelectedIndex >= 0 Then
             SavePercentage_Common()
-            LoadCommonPercentage_Print()
         End If
     End Sub
 
@@ -1309,6 +1324,14 @@ Public Class frmReport
     Private Sub CostPaydate_Combo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CostPaydate_Combo.SelectedIndexChanged
         If CostPaydate_Combo.SelectedIndex >= 0 Then
             LoadCostDistribution()
+        End If
+    End Sub
+
+    Private Sub CommonCat_Combo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CommonCat_Combo.SelectedIndexChanged
+        If PaydateCom_Combo.SelectedIndex >= 0 Then
+            LoadCommonNETPAY_Print()
+        Else
+            MsgBox("Please select payroll date!", MsgBoxStyle.Exclamation, "Invalid")
         End If
     End Sub
 

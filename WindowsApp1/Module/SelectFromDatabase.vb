@@ -22,19 +22,19 @@ Module SelectFromDatabase
             If ds.Tables(0).Rows.Count > 0 Then
                 Dim data As DataRow = ds.Tables(0).Rows(0)
                 With data
-                    P_GrossAmount_LBL.Text = Format(.Item("gross"), "0.00")
-                    P_SSSComp_LBL.Text = Format(.Item("sssC"), "0.00")
-                    P_PagibigComp_LBL.Text = Format(.Item("pagibiC"), "0.00")
-                    P_PhilHComp_LBL.Text = Format(.Item("philHC"), "0.00")
+                    P_GrossAmount_LBL.Text = FormatNumber(.Item("gross"))
+                    P_SSSComp_LBL.Text = FormatNumber(.Item("sssC"))
+                    P_PagibigComp_LBL.Text = FormatNumber(.Item("pagibiC"))
+                    P_PhilHComp_LBL.Text = FormatNumber(.Item("philHC"))
 
-                    P_TaxWH_LBL.Text = Format(.Item("taxWH"), "0.00")
+                    P_TaxWH_LBL.Text = FormatNumber(.Item("taxWH"))
 
-                    P_SSSLoan_LBL.Text = Format(.Item("sssLoan"), "0.00")
-                    P_PagibigLoan_LBL.Text = Format(.Item("pagibigLoan"), "0.00")
+                    P_SSSLoan_LBL.Text = FormatNumber(.Item("sssLoan"))
+                    P_PagibigLoan_LBL.Text = FormatNumber(.Item("pagibigLoan"))
 
-                    P_Allowance_LBL.Text = Format(.Item("allowance"), "0.00")
-                    P_Deduction_LBL.Text = Format(.Item("deducttion"), "0.00")
-                    P_NetPay_LBL.Text = Format(.Item("netPay"), "0.00")
+                    P_Allowance_LBL.Text = FormatNumber(.Item("allowance"))
+                    P_Deduction_LBL.Text = FormatNumber(.Item("deducttion"))
+                    P_NetPay_LBL.Text = FormatNumber(.Item("netPay"))
                 End With
             End If
         End Using
@@ -2447,7 +2447,7 @@ Module SelectFromDatabase
 
     Public Function GetCount_Common(whereString As String) As Integer
         Dim countt As Integer = 0
-        Dim mysql As String = $"Select Count(*) as Countt From PAYROLL_EMPLOYEE {whereString}"
+        Dim mysql As String = $"Select Count(*) as Countt From PAYROLL_EMPLOYEE {whereString} where EMP_STATUS = 'ACTIVE'"
         Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
         If ds.Tables(0).Rows.Count > 0 Then
             Dim dr As DataRow = ds.Tables(0).Rows(0)
@@ -2460,7 +2460,7 @@ Module SelectFromDatabase
 
     Public Function GetDistinctCount(column As String, whereString As String) As Integer
         Dim countt As Integer = 0
-        Dim mysql As String = $"Select Count(distinct {column}) as Countt From PAYROLL_EMPLOYEE {whereString}"
+        Dim mysql As String = $"Select Count(distinct {column}) as Countt From PAYROLL_EMPLOYEE {whereString} where EMP_STATUS = 'ACTIVE'"
         Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
         If ds.Tables(0).Rows.Count > 0 Then
             Dim dr As DataRow = ds.Tables(0).Rows(0)

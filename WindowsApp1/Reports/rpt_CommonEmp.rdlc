@@ -2134,7 +2134,6 @@ IIF(Fields!HOUSEHOLD_L.Value = 0, 0, Fields!NETPAY_L.Value * Fields!HOUSEHOLD_L.
                       </Style>
                     </Textbox>
                     <ColSpan>24</ColSpan>
-                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
                 <TablixCell />
@@ -2174,7 +2173,9 @@ IIF(Fields!HOUSEHOLD_L.Value = 0, 0, Fields!NETPAY_L.Value * Fields!HOUSEHOLD_L.
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>COMMON EMPLOYEES % DISTRIBUTION</Value>
+                              <Value>="COMMON EMPLOYEES % DISTRIBUTION - " &amp; Switch(Fields!REPORT_CATEGORY.Value = "Gross" , "GROSS", 
+Fields!REPORT_CATEGORY.Value = "Net Pay" , "NET",
+Fields!REPORT_CATEGORY.Value = "Deduction" , "DEDUCTION")</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>8pt</FontSize>
@@ -3103,7 +3104,9 @@ IIF(Fields!HOUSEHOLD_L.Value = 0, 0, Fields!NETPAY_L.Value * Fields!HOUSEHOLD_L.
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>NET </Value>
+                              <Value>=Switch(Fields!REPORT_CATEGORY.Value = "Gross" , "GROSS", 
+Fields!REPORT_CATEGORY.Value = "Net Pay" , "NET", 
+Fields!REPORT_CATEGORY.Value = "Deduction" , "DEDUCTION")</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>
@@ -5283,6 +5286,10 @@ CDbl(IIF(FIELDS!HOUSEHOLD.Value = NOTHING, 0, FIELDS!HOUSEHOLD.Value))), 2, TriS
         </Field>
         <Field Name="PAYDATE">
           <DataField>PAYDATE</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="REPORT_CATEGORY">
+          <DataField>REPORT_CATEGORY</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>

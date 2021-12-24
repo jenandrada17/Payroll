@@ -328,10 +328,14 @@ Public Class frmPayout
     End Sub
 
     Private Sub Pay_Refresh_BTN_Click(sender As Object, e As EventArgs) Handles Pay_Refresh_BTN.Click
-        Lists_Payout(Payout_list, paydate_)
+        If ThisHasRow($"PAYROLL_PAYOUT WHERE PAYDATE = '{paydate_}'") Then
+            Lists_Payout(Payout_list, paydate_)
 
-        GetPayout_TOTALS(paydate_, P_GrossAmount_LBL, P_SSSComp_LBL, P_PagibigComp_LBL, P_PhilHComp_LBL, P_TaxWH_LBL,
-                         P_SSSLoan_LBL, P_PagibigLoan_LBL, P_Allowance_LBL, P_Deduction_LBL, P_NetPay_LBL)
+            GetPayout_TOTALS(paydate_, P_GrossAmount_LBL, P_SSSComp_LBL, P_PagibigComp_LBL, P_PhilHComp_LBL, P_TaxWH_LBL,
+                             P_SSSLoan_LBL, P_PagibigLoan_LBL, P_Allowance_LBL, P_Deduction_LBL, P_NetPay_LBL)
+        Else
+            MsgBox($"NO RECORD FOR {paydate_} PAYROLL .", MsgBoxStyle.Exclamation, "INVALID")
+        End If
     End Sub
 
     Private Sub Paydate_ComboB_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Paydate_ComboB.SelectedIndexChanged

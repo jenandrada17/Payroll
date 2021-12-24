@@ -852,15 +852,15 @@ Module SaveUpdate
                                         noOf_days_training -= 0.5
                                     End If
 
+                                    If DataeXIST($" PAYROLL_HOLIDAY WHERE DATEE = '{startingDate.ToString("M")}' AND KINDS = 'SPECIAL'") Then
+                                        Training_SPECHoliday += 1
+                                    End If
+
                                 End If
 
                                 '=============== IF HOLIDAY TRAINING COVERED ================
                                 If DataeXIST($" PAYROLL_HOLIDAY WHERE DATEE = '{startingDate.ToString("M")}' AND KINDS = 'REGULAR'") Then
                                     Training_REGHoliday += 1
-                                End If
-
-                                If DataeXIST($" PAYROLL_HOLIDAY WHERE DATEE = '{startingDate.ToString("M")}' AND KINDS = 'SPECIAL'") Then
-                                    Training_SPECHoliday += 1
                                 End If
 
                                 startingDate = startingDate.AddDays(1)
@@ -1212,15 +1212,15 @@ Module SaveUpdate
                                             noOf_days_training -= 0.5
                                         End If
 
+                                        If DataeXIST($" PAYROLL_HOLIDAY WHERE DATEE = '{startingDate.ToString("M")}' AND KINDS = 'SPECIAL'") Then
+                                            Training_SPECHoliday += 1
+                                        End If
+
                                     End If
 
                                     '=============== IF HOLIDAY TRAINING COVERED ================
                                     If DataeXIST($" PAYROLL_HOLIDAY WHERE DATEE = '{startingDate.ToString("M")}' AND KINDS = 'REGULAR'") Then
                                         Training_REGHoliday += 1
-                                    End If
-
-                                    If DataeXIST($" PAYROLL_HOLIDAY WHERE DATEE = '{startingDate.ToString("M")}' AND KINDS = 'SPECIAL'") Then
-                                        Training_SPECHoliday += 1
                                     End If
 
                                     startingDate = startingDate.AddDays(1)
