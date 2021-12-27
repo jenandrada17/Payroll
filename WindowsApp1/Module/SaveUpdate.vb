@@ -972,13 +972,15 @@ Module SaveUpdate
                                         Dim PI As Decimal = 0
                                         Dim deduc_to_PI As Decimal = 0
 
-                                        'If sched = "CLOSE PAYROLL" Then
                                         If .item("CATEGORY") = "PERFORMANCE INCENTIVES" Then
-                                            If fix_monthly_rate = False Or .item("FIX") = "NO" Then
-                                                Dim PI_totalDays As Double = GetFirst_NoOfDays(bioNo, paydate_) + NoOfDays + RegularHol + SpecialHol + SIL
-                                                Dim absent As Double = 26 - PI_totalDays
-                                                deduc_to_PI = (.Item("AMOUNT") / 26) * absent
+                                            If fix_monthly_rate = False And .item("FIX") = "NO" Then
+                                                Dim PI_totalDays As Double = GetFirst_NoOfDays(bioNo, paydate_) + NoOfDays + RegularHol + SIL
+                                                Dim absent As Double = 0
 
+                                                If PI_totalDays < 26 Then
+                                                    absent = 26 - PI_totalDays
+                                                    deduc_to_PI = (.Item("AMOUNT") / 26) * absent
+                                                End If
 
                                                 Allowances = (Allowances + .Item("AMOUNT")) - deduc_to_PI
                                                 Save_Recorded_Allow_Deduc(bioNo, paydate_, .Item("CATEGORY"), .Item("AMOUNT") - deduc_to_PI, "ALLOWANCE")
@@ -989,7 +991,6 @@ Module SaveUpdate
                                                 Continue For  '========= EXIT FOR (PARA DILI MAGDOUBLE SAVING ========
                                             End If
                                         End If
-                                        'End If
 
                                         Allowances = Allowances + .Item("AMOUNT")
                                         Save_Recorded_Allow_Deduc(bioNo, paydate_, .Item("CATEGORY"), .Item("AMOUNT"), "ALLOWANCE")
@@ -1601,26 +1602,48 @@ Module SaveUpdate
         SaveLogs($"CHANGED WITHOLDING TAX {RANGE_LIST}", frmMainForm.UserName_LBL.Text)
     End Sub
 
-    Friend Sub SaveAllowance(bioNo As String, category As String, amount As String, fix As String, SCHEDULE As String, DAY_DATE As String, EFFECTIVE_DATE As String)
-        Dim mysql As String = "Select * From PAYROLL_ALLOWANCES Rows 1"
-        Using dss As DataSet = LoadSQL(mysql, "PAYROLL_ALLOWANCES")
+    Friend Sub SaveAllowance(idNO As Integer, bioNo As String, category As String, amount As String, fix As String, SCHEDULE As String, DAY_DATE As String, EFFECTIVE_DATE As String)
+        Dim mysql As String
 
-            Dim dsNewRow As DataRow = dss.Tables(0).NewRow
-            With dsNewRow
+        mysql = $"Select * From PAYROLL_ALLOWANCES WHERE ID = '{idNO}'"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ALLOWANCES")
+            If ds.Tables(0).Rows.Count > 0 Then
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+                        .Item("category") = category
+                        .Item("AMOUNT") = amount
+                        .Item("fix") = fix
+                        .Item("SCHEDULE") = SCHEDULE
+                        .Item("DAY_DATE") = DAY_DATE
+                        .Item("EFFECTIVE_DATE") = EFFECTIVE_DATE
+                    End With
+                    SaveEntry(ds, False)
+                    MsgBox("Successfully Updated!", MsgBoxStyle.Information, "Information")
+                Next
+            Else
 
-                .Item("BIOMETRIC_NO") = bioNo
-                .Item("category") = category
-                .Item("AMOUNT") = amount
-                .Item("fix") = fix
-                .Item("SCHEDULE") = SCHEDULE
-                .Item("DAY_DATE") = DAY_DATE
-                .Item("EFFECTIVE_DATE") = EFFECTIVE_DATE
+                mysql = "Select * From PAYROLL_ALLOWANCES Rows 1"
+                Using dss As DataSet = LoadSQL(mysql, "PAYROLL_ALLOWANCES")
 
-            End With
-            dss.Tables(0).Rows.Add(dsNewRow)
-            SaveEntry(dss)
+                    Dim dsNewRow As DataRow = dss.Tables(0).NewRow
+                    With dsNewRow
 
-            MsgBox("Successfully Saved!", MsgBoxStyle.Information, "Information")
+                        .Item("BIOMETRIC_NO") = bioNo
+                        .Item("category") = category
+                        .Item("AMOUNT") = amount
+                        .Item("fix") = fix
+                        .Item("SCHEDULE") = SCHEDULE
+                        .Item("DAY_DATE") = DAY_DATE
+                        .Item("EFFECTIVE_DATE") = EFFECTIVE_DATE
+
+                    End With
+                    dss.Tables(0).Rows.Add(dsNewRow)
+                    SaveEntry(dss)
+
+                    MsgBox("Successfully Saved!", MsgBoxStyle.Information, "Information")
+                End Using
+
+            End If
         End Using
 
     End Sub

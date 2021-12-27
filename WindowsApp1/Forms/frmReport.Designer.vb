@@ -23,17 +23,17 @@ Partial Class frmReport
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim ReportDataSource13 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Dim ReportDataSource14 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Dim ReportDataSource15 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Dim ReportDataSource16 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Dim ReportDataSource17 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Dim ReportDataSource18 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Dim ReportDataSource19 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Dim ReportDataSource20 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Dim ReportDataSource21 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Dim ReportDataSource22 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Dim ReportDataSource12 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource35 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource36 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource37 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource38 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource39 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource40 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource41 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource42 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource43 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource44 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource34 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
         Me.NetPayBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.reports = New WindowsApp1.reports()
         Me.CommonDistributionBindingSource = New System.Windows.Forms.BindingSource(Me.components)
@@ -329,9 +329,9 @@ Partial Class frmReport
         '
         'ReportV_NetPay
         '
-        ReportDataSource13.Name = "DataSet1"
-        ReportDataSource13.Value = Me.NetPayBindingSource
-        Me.ReportV_NetPay.LocalReport.DataSources.Add(ReportDataSource13)
+        ReportDataSource35.Name = "DataSet1"
+        ReportDataSource35.Value = Me.NetPayBindingSource
+        Me.ReportV_NetPay.LocalReport.DataSources.Add(ReportDataSource35)
         Me.ReportV_NetPay.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_NetPay.rdlc"
         Me.ReportV_NetPay.Location = New System.Drawing.Point(4, 67)
         Me.ReportV_NetPay.Name = "ReportV_NetPay"
@@ -417,9 +417,9 @@ Partial Class frmReport
         '
         'RptViewer_Common
         '
-        ReportDataSource14.Name = "DataSet1"
-        ReportDataSource14.Value = Me.CommonDistributionBindingSource
-        Me.RptViewer_Common.LocalReport.DataSources.Add(ReportDataSource14)
+        ReportDataSource36.Name = "DataSet1"
+        ReportDataSource36.Value = Me.CommonDistributionBindingSource
+        Me.RptViewer_Common.LocalReport.DataSources.Add(ReportDataSource36)
         Me.RptViewer_Common.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_CommonEmp.rdlc"
         Me.RptViewer_Common.Location = New System.Drawing.Point(6, 48)
         Me.RptViewer_Common.Name = "RptViewer_Common"
@@ -1017,9 +1017,9 @@ Partial Class frmReport
         '
         'RptViewer_Count
         '
-        ReportDataSource15.Name = "DataSet1"
-        ReportDataSource15.Value = Me.CommonBindingSource
-        Me.RptViewer_Count.LocalReport.DataSources.Add(ReportDataSource15)
+        ReportDataSource37.Name = "DataSet1"
+        ReportDataSource37.Value = Me.CommonBindingSource
+        Me.RptViewer_Count.LocalReport.DataSources.Add(ReportDataSource37)
         Me.RptViewer_Count.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_Common.rdlc"
         Me.RptViewer_Count.Location = New System.Drawing.Point(4, 61)
         Me.RptViewer_Count.Name = "RptViewer_Count"
@@ -1062,27 +1062,27 @@ Partial Class frmReport
         '
         'RptViewer_Summary
         '
-        ReportDataSource16.Name = "Photo_GensanJR"
-        ReportDataSource16.Value = Me.Photo_GensanJRBindingSource
-        ReportDataSource17.Name = "Photo_Davao"
-        ReportDataSource17.Value = Me.Photo_DavaoBindingSource
-        ReportDataSource18.Name = "Dalton"
-        ReportDataSource18.Value = Me.DaltonBindingSource
-        ReportDataSource19.Name = "Perfecom"
-        ReportDataSource19.Value = Me.PerfecomBindingSource
-        ReportDataSource20.Name = "PG_UY"
-        ReportDataSource20.Value = Me.PG_UYBindingSource
-        ReportDataSource21.Name = "Household"
-        ReportDataSource21.Value = Me.HouseholdBindingSource
-        ReportDataSource22.Name = "PG_Realty"
-        ReportDataSource22.Value = Me.PG_RealtyBindingSource
-        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource16)
-        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource17)
-        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource18)
-        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource19)
-        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource20)
-        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource21)
-        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource22)
+        ReportDataSource38.Name = "Photo_GensanJR"
+        ReportDataSource38.Value = Me.Photo_GensanJRBindingSource
+        ReportDataSource39.Name = "Photo_Davao"
+        ReportDataSource39.Value = Me.Photo_DavaoBindingSource
+        ReportDataSource40.Name = "Dalton"
+        ReportDataSource40.Value = Me.DaltonBindingSource
+        ReportDataSource41.Name = "Perfecom"
+        ReportDataSource41.Value = Me.PerfecomBindingSource
+        ReportDataSource42.Name = "PG_UY"
+        ReportDataSource42.Value = Me.PG_UYBindingSource
+        ReportDataSource43.Name = "Household"
+        ReportDataSource43.Value = Me.HouseholdBindingSource
+        ReportDataSource44.Name = "PG_Realty"
+        ReportDataSource44.Value = Me.PG_RealtyBindingSource
+        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource38)
+        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource39)
+        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource40)
+        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource41)
+        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource42)
+        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource43)
+        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource44)
         Me.RptViewer_Summary.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_PayrollSummary.rdlc"
         Me.RptViewer_Summary.Location = New System.Drawing.Point(1, 53)
         Me.RptViewer_Summary.Name = "RptViewer_Summary"
@@ -1121,7 +1121,7 @@ Partial Class frmReport
         Me.RemCompany_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.RemCompany_Combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.RemCompany_Combo.FormattingEnabled = True
-        Me.RemCompany_Combo.Items.AddRange(New Object() {"Gensan Perfect", "Davao Perfect", "JR Photo", "Dalton", "Perfecom", "P&G", "PGC Head Office"})
+        Me.RemCompany_Combo.Items.AddRange(New Object() {"Photo Head Office", "Gensan Perfect", "Davao Perfect", "JR Photo", "Dalton", "Perfecom", "P&G", "PGC Head Office"})
         Me.RemCompany_Combo.Location = New System.Drawing.Point(796, 18)
         Me.RemCompany_Combo.Name = "RemCompany_Combo"
         Me.RemCompany_Combo.Size = New System.Drawing.Size(221, 33)
@@ -1150,9 +1150,9 @@ Partial Class frmReport
         '
         'Rpt_Distribution
         '
-        ReportDataSource12.Name = "DataSet1"
-        ReportDataSource12.Value = Me.RemittanceBindingSource
-        Me.Rpt_Distribution.LocalReport.DataSources.Add(ReportDataSource12)
+        ReportDataSource34.Name = "DataSet1"
+        ReportDataSource34.Value = Me.RemittanceBindingSource
+        Me.Rpt_Distribution.LocalReport.DataSources.Add(ReportDataSource34)
         Me.Rpt_Distribution.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_Remittance.rdlc"
         Me.Rpt_Distribution.Location = New System.Drawing.Point(4, 62)
         Me.Rpt_Distribution.Name = "Rpt_Distribution"

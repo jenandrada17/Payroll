@@ -714,18 +714,20 @@ Public Class frmReport
             Dim DATASOURCE As Microsoft.Reporting.WinForms.ReportDataSource = Nothing
 
             If RemCompany_Combo.SelectedIndex = 0 Then
-                str = $"(COMPANY_CATEGORY = 'GENSAN PERFECT' OR COMMON_COMPANY = 'PHOTO')"
+                str = $"HO_CATEGORY LIKE '%Photo%'"
             ElseIf RemCompany_Combo.SelectedIndex = 1 Then
-                str = $"(COMPANY_CATEGORY = 'DAVAO PERFECT'  OR COMMON_COMPANY = 'PHOTO')"
+                str = $"COMPANY_CATEGORY = 'GENSAN PERFECT'"
             ElseIf RemCompany_Combo.SelectedIndex = 2 Then
-                str = $"(COMPANY_CATEGORY = 'JR PHOTO'  OR COMMON_COMPANY = 'PHOTO')"
+                str = $"COMPANY_CATEGORY = 'DAVAO PERFECT'"
             ElseIf RemCompany_Combo.SelectedIndex = 3 Then
-                str = $"(COMPANY = 'DALTON' OR HO_CATEGORY LIKE '%Dalton%'"
+                str = $"COMPANY_CATEGORY = 'JR PHOTO' "
             ElseIf RemCompany_Combo.SelectedIndex = 4 Then
-                str = $"(COMPANY = 'PERFECOM' OR HO_CATEGORY LIKE '%Perfecom%')"
+                str = $"(COMPANY = 'DALTON' OR HO_CATEGORY LIKE '%Dalton%')"
             ElseIf RemCompany_Combo.SelectedIndex = 5 Then
-                str = $"(COMPANY = 'P&G UY' OR HO_CATEGORY LIKE '%GHS/P&G UY%')"
+                str = $"(COMPANY = 'PERFECOM' OR HO_CATEGORY LIKE '%Perfecom%')"
             ElseIf RemCompany_Combo.SelectedIndex = 6 Then
+                str = $"(COMPANY = 'P&G UY' OR HO_CATEGORY LIKE '%GHS/P&G UY%')"
+            ElseIf RemCompany_Combo.SelectedIndex = 7 Then
                 str = $"HO_CATEGORY = 'PGC Head Office'"
             End If
 

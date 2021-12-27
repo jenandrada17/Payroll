@@ -289,6 +289,7 @@
 
         Dim fix As String = "NO"
         Dim everyThisDate As Integer = 0
+        Dim idNo As Integer = 0
 
         If Not isValidSave_ALLOW() Then Exit Sub
 
@@ -300,7 +301,11 @@
         Dim result As DialogResult = MsgBox($"Allowance for {Allow_Name_TXT.Text} will be Recorded, proceed anyway?", MessageBoxButtons.YesNo)
         If result = DialogResult.Yes Then
 
-            SaveAllowance(Allow_Name_TXT.Tag, Allow_Category_Combo.Text, Allow_Amount_TXT.Text, fix, Allow_Schedule_Combo.SelectedItem, everyThisDate, A_EffectiveDate_DTP.Value) ' Label14 is EMP_ID
+            If Allowance_LV.SelectedItems.Count > 0 Then
+                idNo = Allowance_LV.Items(Allowance_LV.FocusedItem.Index).SubItems(4).Tag
+            End If
+
+            SaveAllowance(idNo, Allow_Name_TXT.Tag, Allow_Category_Combo.Text, Allow_Amount_TXT.Text, fix, Allow_Schedule_Combo.SelectedItem, everyThisDate, A_EffectiveDate_DTP.Value) ' Label14 is EMP_ID
 
             SaveLogs($"ADDED ALLOWANCE - {Allow_Name_TXT.Text} ({Allow_Name_TXT.Tag}), Category({Allow_Category_Combo.Text}), Amount({Allow_Amount_TXT.Text}), Sched({Allow_Schedule_Combo.Text}), Effectivity({A_EffectiveDate_DTP.Value.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
 
@@ -746,4 +751,10 @@
         End If
     End Sub
 
+    Private Sub Allowance_LV_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles Allowance_LV.MouseDoubleClick
+        If Allowance_LV.Items.Count = 0 Then Exit Sub
+        Dim idNo As Integer = Allowance_LV.Items(Allowance_LV.FocusedItem.Index).SubItems(4).Tag
+
+        GetAllowance_Details(idNo, Allow_Name_TXT, Allow_Category_Combo, Allow_Schedule_Combo, A_EveryDate_Combo, Allow_Amount_TXT, A_EffectiveDate_DTP, FixYes_RadioB, FixNo_RadioB)
+    End Sub
 End Class

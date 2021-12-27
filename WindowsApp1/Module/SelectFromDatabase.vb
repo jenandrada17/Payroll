@@ -1418,7 +1418,7 @@ Module SelectFromDatabase
             i.SubItems.Add(.Item("CATEGORY")).Tag = .Item("allow_id")
             i.SubItems.Add(sched)
             i.SubItems.Add(effectivity.ToString("MMM dd, yyyy"))
-            i.SubItems.Add(.Item("AMOUNT"))
+            i.SubItems.Add(FormatNumber(.Item("AMOUNT"))).Tag = .Item("id")
             i.SubItems.Add(.Item("ALLOWED"))
         End With
     End Sub
@@ -2571,6 +2571,34 @@ Module SelectFromDatabase
 
         Return TOTALS
     End Function
+
+
+    Public Sub GetAllowance_Details(idNo As Integer, Allow_Name_TXT As TextBox, Allow_Category_Combo As ComboBox, Allow_Schedule_Combo As ComboBox, A_EveryDate_Combo As ComboBox, Allow_Amount_TXT As TextBox, A_EffectiveDate_DTP As DateTimePicker, FixYes_RadioB As RadioButton, FixNo_RadioB As RadioButton)
+        Dim mysql_ As String = $"Select * From PAYROLL_ALLOWANCES A inner join PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_NO where A.ID = '{idNo}'"
+        Dim dSs As DataSet = LoadSQL(mysql_, "PAYROLL_ALLOWANCES")
+        If dSs.Tables(0).Rows.Count > 0 Then
+            Dim dr As DataRow = dSs.Tables(0).Rows(0)
+            With dr
+                Allow_Name_TXT.Text = .Item("FULLNAME")
+                Allow_Name_TXT.Tag = .Item("BIOMETRIC_NO")
+                Allow_Category_Combo.Text = .Item("CATEGORY")
+                Allow_Schedule_Combo.Text = .Item("SCHEDULE")
+                A_EveryDate_Combo.Text = .Item("DAY_DATE")
+                Allow_Amount_TXT.Text = .Item("AMOUNT")
+                A_EffectiveDate_DTP.Value = .Item("EFFECTIVE_DATE")
+
+                If .Item("fix") = "YES" Then
+                    FixYes_RadioB.Checked = True
+                    FixNo_RadioB.Checked = False
+                Else
+                    FixNo_RadioB.Checked = True
+                    FixYes_RadioB.Checked = False
+                End If
+            End With
+        End If
+
+    End Sub
+
 
     Public Function validSampleUser(username As String, password As String)
         Dim mysql As String = $"Select * from PAYROLL_USER where USERNAME = '{username}' and PASSWORD = '{password}'"
