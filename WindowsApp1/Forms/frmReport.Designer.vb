@@ -24,7 +24,6 @@ Partial Class frmReport
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim ReportDataSource13 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Dim ReportDataSource12 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
         Dim ReportDataSource14 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
         Dim ReportDataSource15 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
         Dim ReportDataSource16 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
@@ -34,6 +33,7 @@ Partial Class frmReport
         Dim ReportDataSource20 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
         Dim ReportDataSource21 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
         Dim ReportDataSource22 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource12 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
         Me.NetPayBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.reports = New WindowsApp1.reports()
         Me.CommonDistributionBindingSource = New System.Windows.Forms.BindingSource(Me.components)
@@ -127,6 +127,8 @@ Partial Class frmReport
         Me.SumPaydate_Combo = New System.Windows.Forms.ComboBox()
         Me.RptViewer_Summary = New Microsoft.Reporting.WinForms.ReportViewer()
         Me.TabPage5 = New System.Windows.Forms.TabPage()
+        Me.Label41 = New System.Windows.Forms.Label()
+        Me.RemCompany_Combo = New System.Windows.Forms.ComboBox()
         Me.Label37 = New System.Windows.Forms.Label()
         Me.RemCat_Combo = New System.Windows.Forms.ComboBox()
         Me.Rpt_Distribution = New Microsoft.Reporting.WinForms.ReportViewer()
@@ -415,9 +417,9 @@ Partial Class frmReport
         '
         'RptViewer_Common
         '
-        ReportDataSource12.Name = "DataSet1"
-        ReportDataSource12.Value = Me.CommonDistributionBindingSource
-        Me.RptViewer_Common.LocalReport.DataSources.Add(ReportDataSource12)
+        ReportDataSource14.Name = "DataSet1"
+        ReportDataSource14.Value = Me.CommonDistributionBindingSource
+        Me.RptViewer_Common.LocalReport.DataSources.Add(ReportDataSource14)
         Me.RptViewer_Common.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_CommonEmp.rdlc"
         Me.RptViewer_Common.Location = New System.Drawing.Point(6, 48)
         Me.RptViewer_Common.Name = "RptViewer_Common"
@@ -1015,9 +1017,9 @@ Partial Class frmReport
         '
         'RptViewer_Count
         '
-        ReportDataSource14.Name = "DataSet1"
-        ReportDataSource14.Value = Me.CommonBindingSource
-        Me.RptViewer_Count.LocalReport.DataSources.Add(ReportDataSource14)
+        ReportDataSource15.Name = "DataSet1"
+        ReportDataSource15.Value = Me.CommonBindingSource
+        Me.RptViewer_Count.LocalReport.DataSources.Add(ReportDataSource15)
         Me.RptViewer_Count.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_Common.rdlc"
         Me.RptViewer_Count.Location = New System.Drawing.Point(4, 61)
         Me.RptViewer_Count.Name = "RptViewer_Count"
@@ -1060,27 +1062,27 @@ Partial Class frmReport
         '
         'RptViewer_Summary
         '
-        ReportDataSource15.Name = "Photo_GensanJR"
-        ReportDataSource15.Value = Me.Photo_GensanJRBindingSource
-        ReportDataSource16.Name = "Photo_Davao"
-        ReportDataSource16.Value = Me.Photo_DavaoBindingSource
-        ReportDataSource17.Name = "Dalton"
-        ReportDataSource17.Value = Me.DaltonBindingSource
-        ReportDataSource18.Name = "Perfecom"
-        ReportDataSource18.Value = Me.PerfecomBindingSource
-        ReportDataSource19.Name = "PG_UY"
-        ReportDataSource19.Value = Me.PG_UYBindingSource
-        ReportDataSource20.Name = "Household"
-        ReportDataSource20.Value = Me.HouseholdBindingSource
-        ReportDataSource21.Name = "PG_Realty"
-        ReportDataSource21.Value = Me.PG_RealtyBindingSource
-        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource15)
+        ReportDataSource16.Name = "Photo_GensanJR"
+        ReportDataSource16.Value = Me.Photo_GensanJRBindingSource
+        ReportDataSource17.Name = "Photo_Davao"
+        ReportDataSource17.Value = Me.Photo_DavaoBindingSource
+        ReportDataSource18.Name = "Dalton"
+        ReportDataSource18.Value = Me.DaltonBindingSource
+        ReportDataSource19.Name = "Perfecom"
+        ReportDataSource19.Value = Me.PerfecomBindingSource
+        ReportDataSource20.Name = "PG_UY"
+        ReportDataSource20.Value = Me.PG_UYBindingSource
+        ReportDataSource21.Name = "Household"
+        ReportDataSource21.Value = Me.HouseholdBindingSource
+        ReportDataSource22.Name = "PG_Realty"
+        ReportDataSource22.Value = Me.PG_RealtyBindingSource
         Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource16)
         Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource17)
         Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource18)
         Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource19)
         Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource20)
         Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource21)
+        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource22)
         Me.RptViewer_Summary.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_PayrollSummary.rdlc"
         Me.RptViewer_Summary.Location = New System.Drawing.Point(1, 53)
         Me.RptViewer_Summary.Name = "RptViewer_Summary"
@@ -1090,6 +1092,8 @@ Partial Class frmReport
         '
         'TabPage5
         '
+        Me.TabPage5.Controls.Add(Me.Label41)
+        Me.TabPage5.Controls.Add(Me.RemCompany_Combo)
         Me.TabPage5.Controls.Add(Me.Label37)
         Me.TabPage5.Controls.Add(Me.RemCat_Combo)
         Me.TabPage5.Controls.Add(Me.Rpt_Distribution)
@@ -1102,11 +1106,32 @@ Partial Class frmReport
         Me.TabPage5.Text = "     Remittance     "
         Me.TabPage5.UseVisualStyleBackColor = True
         '
+        'Label41
+        '
+        Me.Label41.AutoSize = True
+        Me.Label41.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label41.Location = New System.Drawing.Point(698, 21)
+        Me.Label41.Name = "Label41"
+        Me.Label41.Size = New System.Drawing.Size(71, 25)
+        Me.Label41.TabIndex = 108
+        Me.Label41.Text = "Company"
+        '
+        'RemCompany_Combo
+        '
+        Me.RemCompany_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.RemCompany_Combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.RemCompany_Combo.FormattingEnabled = True
+        Me.RemCompany_Combo.Items.AddRange(New Object() {"Gensan Perfect", "Davao Perfect", "JR Photo", "Dalton", "Perfecom", "P&G", "PGC Head Office"})
+        Me.RemCompany_Combo.Location = New System.Drawing.Point(796, 18)
+        Me.RemCompany_Combo.Name = "RemCompany_Combo"
+        Me.RemCompany_Combo.Size = New System.Drawing.Size(221, 33)
+        Me.RemCompany_Combo.TabIndex = 107
+        '
         'Label37
         '
         Me.Label37.AutoSize = True
         Me.Label37.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label37.Location = New System.Drawing.Point(351, 18)
+        Me.Label37.Location = New System.Drawing.Point(334, 18)
         Me.Label37.Name = "Label37"
         Me.Label37.Size = New System.Drawing.Size(67, 25)
         Me.Label37.TabIndex = 106
@@ -1118,16 +1143,16 @@ Partial Class frmReport
         Me.RemCat_Combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.RemCat_Combo.FormattingEnabled = True
         Me.RemCat_Combo.Items.AddRange(New Object() {"SSS", "PAGIBIG", "PHILHEALTH"})
-        Me.RemCat_Combo.Location = New System.Drawing.Point(425, 15)
+        Me.RemCat_Combo.Location = New System.Drawing.Point(408, 15)
         Me.RemCat_Combo.Name = "RemCat_Combo"
         Me.RemCat_Combo.Size = New System.Drawing.Size(221, 33)
         Me.RemCat_Combo.TabIndex = 105
         '
         'Rpt_Distribution
         '
-        ReportDataSource22.Name = "DataSet1"
-        ReportDataSource22.Value = Me.RemittanceBindingSource
-        Me.Rpt_Distribution.LocalReport.DataSources.Add(ReportDataSource22)
+        ReportDataSource12.Name = "DataSet1"
+        ReportDataSource12.Value = Me.RemittanceBindingSource
+        Me.Rpt_Distribution.LocalReport.DataSources.Add(ReportDataSource12)
         Me.Rpt_Distribution.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_Remittance.rdlc"
         Me.Rpt_Distribution.Location = New System.Drawing.Point(4, 62)
         Me.Rpt_Distribution.Name = "Rpt_Distribution"
@@ -1468,4 +1493,6 @@ Partial Class frmReport
     Friend WithEvents CostPaydate_Combo As ComboBox
     Friend WithEvents Label40 As Label
     Friend WithEvents CommonCat_Combo As ComboBox
+    Friend WithEvents Label41 As Label
+    Friend WithEvents RemCompany_Combo As ComboBox
 End Class

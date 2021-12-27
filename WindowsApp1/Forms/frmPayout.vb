@@ -12,6 +12,7 @@ Public Class frmPayout
     Dim gross, netTax, sssLoan, pagibigLoan, allowance, deduction As Decimal
     Dim emp_id, sched_deduc As String
     Dim SSS_ER, SSS_EC As Decimal
+    Dim Zeroo As String = "0.00"
 
     Private allowCoolMove As Boolean = False
     Private myCoolPoint As New Point
@@ -115,34 +116,33 @@ Public Class frmPayout
                     SSS_EC = Get_SSS(monthly_Basic).EC
                     HDMF_LBL.Text = (Get_Pagibig(monthly_Basic)).ToString("N")
                     Philhealth_LBL.Text = (Get_PhilHealth(monthly_Basic)).ToString("N")
-                    'Tax_Wheld_LBL.Text = (Get_WHolding(monthly_Basic)).ToString("N")
-
-                    NetTax_LBL.Text = (monthly_Basic - (CDbl(SSSComp_LBL.Text) + CDbl(HDMF_LBL.Text) + CDbl(Philhealth_LBL.Text) + CDbl(Tax_Wheld_LBL.Text))).ToString(”N”)
 
                     Previous_groupB.Visible = True
 
                     SSSLoan_LBL.Text = (Get_LOAN_SSS(BIO_NO)).ToString("N")
                     PagibigLoan_LBL.Text = (Get_LOAN_Pagibig(BIO_NO)).ToString("N")
 
+                    Remittance_LBL.Text = (CDbl(SSSComp_LBL.Text) + CDbl(HDMF_LBL.Text) + CDbl(Philhealth_LBL.Text) + CDbl(SSSLoan_LBL.Text) + CDbl(PagibigLoan_LBL.Text)).ToString(”N”)
+
                     sched_deduc = "CLOSE PAYROLL"
                 Else
-                    SSSComp_LBL.Text = 0.00
-                    HDMF_LBL.Text = 0.00
-                    Philhealth_LBL.Text = 0.00
-                    'Tax_Wheld_LBL.Text = 0.00
-                    SSSLoan_LBL.Text = 0.00
-                    PagibigLoan_LBL.Text = 0.00
+                    SSSComp_LBL.Text = Zeroo
+                    HDMF_LBL.Text = Zeroo
+                    Philhealth_LBL.Text = Zeroo
+                    SSSLoan_LBL.Text = Zeroo
+                    PagibigLoan_LBL.Text = Zeroo
                     Previous_groupB.Visible = False
+                    Remittance_LBL.Text = Zeroo
 
                     sched_deduc = "OPEN PAYROLL"
                 End If
             Else
-                SSSComp_LBL.Text = 0.00
-                HDMF_LBL.Text = 0.00
-                Philhealth_LBL.Text = 0.00
-                'Tax_Wheld_LBL.Text = 0.00
-                SSSLoan_LBL.Text = 0.00
-                PagibigLoan_LBL.Text = 0.00
+                SSSComp_LBL.Text = Zeroo
+                HDMF_LBL.Text = Zeroo
+                Philhealth_LBL.Text = Zeroo
+                SSSLoan_LBL.Text = Zeroo
+                PagibigLoan_LBL.Text = Zeroo
+                Remittance_LBL.Text = Zeroo
                 Training_GB.Visible = True
             End If
 
@@ -269,7 +269,7 @@ Public Class frmPayout
 
                 SavePayout(BIO_NO, paydate_, TotalBasic_LBL.Tag, TotalOT_LBL.Tag,
                   TotalLateUnder_LBL.Tag, GrossAmount_LBL.Tag, SSSComp_LBL.Text, SSS_ER, SSS_EC,
-                  HDMF_LBL.Text, Philhealth_LBL.Text, Tax_Wheld_LBL.Text, NetTax_LBL.Text, SSSLoan_LBL.Text, PagibigLoan_LBL.Text,
+                  HDMF_LBL.Text, Philhealth_LBL.Text, SSSLoan_LBL.Text, PagibigLoan_LBL.Text,
                   Allowances_LBL.Tag, Deduction_LBL.Tag, NetPay_LBL.Tag, reg_holiday, spec_holiday, TotalNight_LBL.Tag, "")
 
                 '====================================== SAVE NEW ADDITIONAL ===================================================
@@ -319,7 +319,7 @@ Public Class frmPayout
 
                 End If
 
-                SaveLogs($"UPDATED PAYOUT {Name_TXT.Text}({BiometricID_TXT.Text}), Basic({TotalBasic_LBL.Text}), OT({TotalOT_LBL.Text}), Late/UT({TotalLateUnder_LBL.Text}), Gross Amount({GrossAmount_LBL.Text}), SSS({SSSComp_LBL.Text}), Pagibig({HDMF_LBL.Text}), Philhealth({Philhealth_LBL.Text}), Tax Wheld({Tax_Wheld_LBL.Text}), SSS Loan({SSSLoan_LBL.Text}), Pagibig Loan({PagibigLoan_LBL.Text}), Allowance({allow_list}), Deduction({deduc_list}), Net Pay({NetPay_LBL.Text}), Total Holiday({TotalHol_LBL.Text}), Total Night Rate({TotalNight_LBL.Text})", frmMainForm.UserName_LBL.Text)
+                SaveLogs($"UPDATED PAYOUT {Name_TXT.Text}({BiometricID_TXT.Text}), Basic({TotalBasic_LBL.Text}), OT({TotalOT_LBL.Text}), Late/UT({TotalLateUnder_LBL.Text}), Gross Amount({GrossAmount_LBL.Text}), SSS({SSSComp_LBL.Text}), Pagibig({HDMF_LBL.Text}), Philhealth({Philhealth_LBL.Text}), Remittance({Remittance_LBL.Text}), SSS Loan({SSSLoan_LBL.Text}), Pagibig Loan({PagibigLoan_LBL.Text}), Allowance({allow_list}), Deduction({deduc_list}), Net Pay({NetPay_LBL.Text}), Total Holiday({TotalHol_LBL.Text}), Total Night Rate({TotalNight_LBL.Text})", frmMainForm.UserName_LBL.Text)
 
                 Cancel_BTN.PerformClick()
 
@@ -331,7 +331,7 @@ Public Class frmPayout
         If ThisHasRow($"PAYROLL_PAYOUT WHERE PAYDATE = '{paydate_}'") Then
             Lists_Payout(Payout_list, paydate_)
 
-            GetPayout_TOTALS(paydate_, P_GrossAmount_LBL, P_SSSComp_LBL, P_PagibigComp_LBL, P_PhilHComp_LBL, P_TaxWH_LBL,
+            GetPayout_TOTALS(paydate_, P_GrossAmount_LBL, P_SSSComp_LBL, P_PagibigComp_LBL, P_PhilHComp_LBL,
                              P_SSSLoan_LBL, P_PagibigLoan_LBL, P_Allowance_LBL, P_Deduction_LBL, P_NetPay_LBL)
         Else
             MsgBox($"NO RECORD FOR {paydate_} PAYROLL .", MsgBoxStyle.Exclamation, "INVALID")
@@ -343,7 +343,7 @@ Public Class frmPayout
 
         Lists_Payout(Payout_list, paydate_)
 
-        GetPayout_TOTALS(paydate_, P_GrossAmount_LBL, P_SSSComp_LBL, P_PagibigComp_LBL, P_PhilHComp_LBL, P_TaxWH_LBL,
+        GetPayout_TOTALS(paydate_, P_GrossAmount_LBL, P_SSSComp_LBL, P_PagibigComp_LBL, P_PhilHComp_LBL,
                          P_SSSLoan_LBL, P_PagibigLoan_LBL, P_Allowance_LBL, P_Deduction_LBL, P_NetPay_LBL)
     End Sub
 
@@ -354,7 +354,7 @@ Public Class frmPayout
             Name_TXT.Clear()
 
             BiometricID_TXT.Text = Payout_list.FocusedItem.SubItems(1).Tag
-            emp_id = Payout_list.FocusedItem.SubItems(11).Tag
+            emp_id = Payout_list.FocusedItem.SubItems(9).Tag
             TabControl1.SelectedIndex = 1
             Additional_Panel.Visible = False
         End If
@@ -390,15 +390,12 @@ Public Class frmPayout
             Dim REG_TRAINEE As Decimal = (CDbl(RegularHol_TXT.Tag) * rate) * regHoliday_
             Dim SPEC_TRAINEE As Decimal = (CDbl(SpecialHol_TXT.Tag) * rate) * specHoliday_
 
-            'TotalHol_LBL.Text = (REG_STANDARD + REG_TRAINEE + SPEC_STANDARD + SPEC_TRAINEE).ToString("N")
             TotalHol_LBL.Text = FormatNumber(REG_STANDARD + REG_TRAINEE + SPEC_STANDARD + SPEC_TRAINEE)
             TotalHol_LBL.Tag = REG_STANDARD + REG_TRAINEE + SPEC_STANDARD + SPEC_TRAINEE
 
-            'TotalBasic_LBL.Text = ((CDbl(NoOfDays_TXT.Text) * CDec(Rate_TXT.Text)) - total_train).ToString("N")
             TotalBasic_LBL.Text = FormatNumber((CDbl(NoOfDays_TXT.Text) * CDec(Rate_TXT.Text)) - total_train)
             TotalBasic_LBL.Tag = (CDbl(NoOfDays_TXT.Text) * CDec(Rate_TXT.Text)) - total_train
 
-            'TotalNight_LBL.Text = (((rate / 8) * 0.1) * CDbl(NightTime_TXT.Tag)).ToString("N")
             TotalNight_LBL.Text = FormatNumber(((rate / 8) * 0.1) * CDbl(NightTime_TXT.Tag))
             TotalNight_LBL.Tag = ((rate / 8) * 0.1) * CDbl(NightTime_TXT.Tag)
 
@@ -417,17 +414,12 @@ Public Class frmPayout
 
             Dim late_ut As String = LATEE + UNDERTIMEE
 
-            Console.WriteLine(late_ut)
-            'TotalLateUnder_LBL.Text = (LATEE + UNDERTIMEE).ToString("N")
-
             TotalLateUnder_LBL.Text = FormatNumber(late_ut)
             TotalLateUnder_LBL.Tag = LATEE + UNDERTIMEE
 
-            'TotalOT_LBL.Text = OVERTIMEE.ToString("N")
             TotalOT_LBL.Text = FormatNumber(OVERTIMEE)
             TotalOT_LBL.Tag = OVERTIMEE
 
-            'TotalNight_LBL.Text = (((CDec(Rate_TXT.Text) / 8) * 0.1) * CDbl(NightTime_TXT.Tag)).ToString("N")
             TotalNight_LBL.Text = FormatNumber(((CDec(Rate_TXT.Text) / 8) * 0.1) * CDbl(NightTime_TXT.Tag))
             TotalNight_LBL.Tag = ((CDec(Rate_TXT.Text) / 8) * 0.1) * CDbl(NightTime_TXT.Tag)
 
@@ -437,19 +429,15 @@ Public Class frmPayout
         Else '========================================= NOT A TRAINEE ===========================================
 
             Dim RATEE As Decimal = Rate_TXT.Text
-            'TotalBasic_LBL.Text = (CDbl(NoOfDays_TXT.Text) * RATEE).ToString("N")
             TotalBasic_LBL.Text = FormatNumber(CDbl(NoOfDays_TXT.Text) * RATEE)
             TotalBasic_LBL.Tag = CDbl(NoOfDays_TXT.Text) * RATEE
 
-            'TotalHol_LBL.Text = (((CDbl(SpecialHol_TXT.Text) * RATEE) * specHoliday_) + ((CDbl(RegularHol_TXT.Text) * RATEE) * regHoliday_)).ToString("N")
             TotalHol_LBL.Text = FormatNumber(((CDbl(SpecialHol_TXT.Text) * RATEE) * specHoliday_) + ((CDbl(RegularHol_TXT.Text) * RATEE) * regHoliday_))
             TotalHol_LBL.Tag = ((CDbl(SpecialHol_TXT.Text) * RATEE) * specHoliday_) + ((CDbl(RegularHol_TXT.Text) * RATEE) * regHoliday_)
 
-            'TotalOT_LBL.Text = (((CDbl(Rate_TXT.Text) / 8) * 1.25) * CDbl(RegularOT_TXT.Text)).ToString("N")
             TotalOT_LBL.Text = FormatNumber(((CDbl(Rate_TXT.Text) / 8) * 1.25) * CDbl(RegularOT_TXT.Text))
             TotalOT_LBL.Tag = ((CDbl(Rate_TXT.Text) / 8) * 1.25) * CDbl(RegularOT_TXT.Text)
 
-            'TotalNight_LBL.Text = (((RATEE / 8) * 0.1) * CDbl(NightTime_TXT.Tag)).ToString("N")
             TotalNight_LBL.Text = FormatNumber(((RATEE / 8) * 0.1) * CDbl(NightTime_TXT.Tag))
             TotalNight_LBL.Tag = ((RATEE / 8) * 0.1) * CDbl(NightTime_TXT.Tag)
 
@@ -457,7 +445,6 @@ Public Class frmPayout
             LATEE = ((RATEE / 8) / 60) * CDbl(Late_TXT.Text)
             UNDERTIMEE = ((RATEE / 8) / 60) * CDbl(UnderTime_TXT.Text)
 
-            'TotalLateUnder_LBL.Text = (LATEE + UNDERTIMEE).ToString("N")
             TotalLateUnder_LBL.Text = FormatNumber(LATEE + UNDERTIMEE)
             TotalLateUnder_LBL.Tag = LATEE + UNDERTIMEE
 
@@ -472,25 +459,23 @@ Public Class frmPayout
                     TotalBasic_LBL.Tag = BASICC
                 Else
 
-                    If CDbl(NoOfDays_TXT.Text) >= STANDARD_DAYS Then  '=== CHECK IF ABOVE MINIMUM
-                        'TotalBasic_LBL.Text = BASICC.ToString("N")
+                    If CDbl(NoOfDays_TXT.Text) >= STANDARD_DAYS Then  '=== CHECK IF ABOVE MINIMUM 
                         TotalBasic_LBL.Text = FormatNumber(BASICC)
                         TotalBasic_LBL.Tag = BASICC
                     Else
                         Dim MINUS_DAYS As Double = STANDARD_DAYS - CDbl(NoOfDays_TXT.Text)
-                        'TotalBasic_LBL.Text = (BASICC - (MINUS_DAYS * RATEE)).ToString("N")
                         TotalBasic_LBL.Text = FormatNumber(BASICC - (MINUS_DAYS * RATEE))
                         TotalBasic_LBL.Tag = BASICC - (MINUS_DAYS * RATEE)
                     End If
 
-                    TotalHol_LBL.Text = 0.00
-                    TotalHol_LBL.Tag = 0.00
-                    TotalOT_LBL.Text = 0.00
-                    TotalOT_LBL.Tag = 0.00
-                    TotalLateUnder_LBL.Text = 0.00
-                    TotalLateUnder_LBL.Tag = 0.00
-                    TotalNight_LBL.Text = 0.00
-                    TotalNight_LBL.Tag = 0.00
+                    TotalHol_LBL.Text = Zeroo
+                    TotalHol_LBL.Tag = Zeroo
+                    TotalOT_LBL.Text = Zeroo
+                    TotalOT_LBL.Tag = Zeroo
+                    TotalLateUnder_LBL.Text = Zeroo
+                    TotalLateUnder_LBL.Tag = Zeroo
+                    TotalNight_LBL.Text = Zeroo
+                    TotalNight_LBL.Tag = Zeroo
 
                 End If
             End If
@@ -717,38 +702,24 @@ Public Class frmPayout
     Private Sub Calculate_NetPay()
 
         'netTax = If(Not (NetTax_LBL.Text = String.Empty), NetTax_LBL.Text, 0)
-        gross = If(Not (GrossAmount_LBL.Text = String.Empty), GrossAmount_LBL.Tag, 0.00)
-        sssLoan = If(Not (SSSLoan_LBL.Text = String.Empty), SSSLoan_LBL.Text, 0.00)
-        pagibigLoan = If(Not (PagibigLoan_LBL.Text = String.Empty), PagibigLoan_LBL.Text, 0.00)
-        allowance = If(Not (Allowances_LBL.Text = String.Empty), Allowances_LBL.Tag, 0.00)
-        deduction = If(Not (Deduction_LBL.Text = String.Empty), Deduction_LBL.Tag, 0.00)
+        'gross = If(Not (GrossAmount_LBL.Text = String.Empty), GrossAmount_LBL.Tag, 0.00)
+        'sssLoan = If(Not (SSSLoan_LBL.Text = String.Empty), SSSLoan_LBL.Text, 0.00)
+        'pagibigLoan = If(Not (PagibigLoan_LBL.Text = String.Empty), PagibigLoan_LBL.Text, 0.00)
+        'allowance = If(Not (Allowances_LBL.Text = String.Empty), Allowances_LBL.Tag, 0.00)
+        'deduction = If(Not (Deduction_LBL.Text = String.Empty), Deduction_LBL.Tag, 0.00)
 
-        Dim CONTRIB As Decimal = CDbl(SSSComp_LBL.Text) + CDbl(HDMF_LBL.Text) + CDbl(Philhealth_LBL.Text) + CDbl(Tax_Wheld_LBL.Text)
+        Dim CONTRIB As Decimal = CDbl(SSSComp_LBL.Text) + CDbl(HDMF_LBL.Text) + CDbl(Philhealth_LBL.Text)
 
         Dim positive, negative As Decimal
         If IsLastDay(paydate_) Then
             positive = CDec(GrossAmount_LBL.Tag) + CDec(Allowances_LBL.Tag)
             negative = CONTRIB + CDec(SSSLoan_LBL.Text) + CDec(PagibigLoan_LBL.Text) + CDec(Deduction_LBL.Tag)
         Else
-            NetTax_LBL.Text = 0
+            Remittance_LBL.Text = 0.00
             positive = CDec(GrossAmount_LBL.Tag) + CDec(Allowances_LBL.Tag)
             negative = CDec(Deduction_LBL.Tag)
         End If
 
-
-        'Dim positive, negative As Decimal
-        'If IsLastDay(paydate_) Then
-        '    positive = gross + allowance
-        '    negative = CONTRIB + sssLoan + pagibigLoan + deduction
-        'Else
-        '    NetTax_LBL.Text = 0
-        '    positive = gross + allowance
-        '    negative = deduction
-        'End If 
-
-        Console.WriteLine(positive - negative)
-
-        'NetPay_LBL.Text = (positive - negative).ToString("N")
         NetPay_LBL.Text = FormatNumber(positive - negative)
         NetPay_LBL.Tag = positive - negative
 

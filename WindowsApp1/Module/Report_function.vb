@@ -657,7 +657,7 @@ Module Report_function
         Return TOTALS
     End Function
 
-    Friend Function Load_Remittance_SSS(paydate As String) As DataTable
+    Friend Function Load_Remittance_SSS(paydate As String, str As String) As DataTable
 
         Dim mysql As String
         Dim PAYROLL As DateTime = paydate
@@ -672,7 +672,7 @@ Module Report_function
         End With
 
         mysql = $"Select * From PAYROLL_PAYOUT INNER JOIN PAYROLL_EMPLOYEE ON BIO_NO = BIOMETRIC_ID       
-                                        WHERE PAYDATE = '{paydate}' ORDER BY FULLNAME"
+                                        WHERE PAYDATE = '{paydate}' and {str} ORDER BY FULLNAME"
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
             If ds.Tables(0).Rows.Count > 0 Then
@@ -697,13 +697,15 @@ Module Report_function
 
                 Next
                 progressBarEnd()
+            Else
+
             End If
         End Using
 
         Return dt_Remittance
     End Function
 
-    Friend Function Load_Remittance_Pagibig(paydate As String) As DataTable
+    Friend Function Load_Remittance_Pagibig(paydate As String, str As String) As DataTable
 
         Dim mysql As String
         Dim PAYROLL As DateTime = paydate
@@ -718,7 +720,7 @@ Module Report_function
         End With
 
         mysql = $"Select * From PAYROLL_PAYOUT INNER JOIN PAYROLL_EMPLOYEE ON BIO_NO = BIOMETRIC_ID       
-                                        WHERE PAYDATE = '{paydate}' ORDER BY FULLNAME"
+                                        WHERE PAYDATE = '{paydate}' and {str}  ORDER BY FULLNAME"
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
             If ds.Tables(0).Rows.Count > 0 Then
@@ -747,7 +749,7 @@ Module Report_function
         Return dt_Remittance
     End Function
 
-    Friend Function Load_Remittance_PhilHealth(paydate As String) As DataTable
+    Friend Function Load_Remittance_PhilHealth(paydate As String, str As String) As DataTable
 
         Dim mysql As String
         Dim PAYROLL As DateTime = paydate
@@ -762,7 +764,7 @@ Module Report_function
         End With
 
         mysql = $"Select * From PAYROLL_PAYOUT INNER JOIN PAYROLL_EMPLOYEE ON BIO_NO = BIOMETRIC_ID       
-                                        WHERE PAYDATE = '{paydate}' ORDER BY FULLNAME"
+                                        WHERE PAYDATE = '{paydate}' and {str}  ORDER BY FULLNAME"
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
             If ds.Tables(0).Rows.Count > 0 Then

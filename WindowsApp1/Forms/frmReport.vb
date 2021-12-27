@@ -708,23 +708,41 @@ Public Class frmReport
         Dim PAYDATE As DateTime = Rem_Paydate_Combo.Text
 
         Try
+
             Dim FORMNAME As String = ""
+            Dim str As String = ""
             Dim DATASOURCE As Microsoft.Reporting.WinForms.ReportDataSource = Nothing
+
+            If RemCompany_Combo.SelectedIndex = 0 Then
+                str = $"(COMPANY_CATEGORY = 'GENSAN PERFECT' OR COMMON_COMPANY = 'PHOTO')"
+            ElseIf RemCompany_Combo.SelectedIndex = 1 Then
+                str = $"(COMPANY_CATEGORY = 'DAVAO PERFECT'  OR COMMON_COMPANY = 'PHOTO')"
+            ElseIf RemCompany_Combo.SelectedIndex = 2 Then
+                str = $"(COMPANY_CATEGORY = 'JR PHOTO'  OR COMMON_COMPANY = 'PHOTO')"
+            ElseIf RemCompany_Combo.SelectedIndex = 3 Then
+                str = $"(COMPANY = 'DALTON' OR HO_CATEGORY LIKE '%Dalton%'"
+            ElseIf RemCompany_Combo.SelectedIndex = 4 Then
+                str = $"(COMPANY = 'PERFECOM' OR HO_CATEGORY LIKE '%Perfecom%')"
+            ElseIf RemCompany_Combo.SelectedIndex = 5 Then
+                str = $"(COMPANY = 'P&G UY' OR HO_CATEGORY LIKE '%GHS/P&G UY%')"
+            ElseIf RemCompany_Combo.SelectedIndex = 6 Then
+                str = $"HO_CATEGORY = 'PGC Head Office'"
+            End If
 
             If RemCat_Combo.SelectedIndex = 0 Then
 
-                DATASOURCE = New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", Load_Remittance_SSS(Rem_Paydate_Combo.Text))
-                FORMNAME = $"SSS Remittance - {PAYDATE.ToString("MMMM dd, yyyy")}"
+                DATASOURCE = New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", Load_Remittance_SSS(Rem_Paydate_Combo.Text, str))
+                FORMNAME = $"SSS Remittance for {RemCompany_Combo.Text} - {PAYDATE.ToString("MMMM dd, yyyy")}"
 
             ElseIf RemCat_Combo.SelectedIndex = 1 Then
 
-                DATASOURCE = New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", Load_Remittance_Pagibig(Rem_Paydate_Combo.Text))
-                FORMNAME = $"Pagibig Remittance - {PAYDATE.ToString("MMMM dd, yyyy")}"
+                DATASOURCE = New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", Load_Remittance_Pagibig(Rem_Paydate_Combo.Text, str))
+                FORMNAME = $"Pagibig Remittance {RemCompany_Combo.Text} - {PAYDATE.ToString("MMMM dd, yyyy")}"
 
             ElseIf RemCat_Combo.SelectedIndex = 2 Then
 
-                DATASOURCE = New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", Load_Remittance_PhilHealth(Rem_Paydate_Combo.Text))
-                FORMNAME = $"PhilHealth Remittance - {PAYDATE.ToString("MMMM dd, yyyy")}"
+                DATASOURCE = New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", Load_Remittance_PhilHealth(Rem_Paydate_Combo.Text, str))
+                FORMNAME = $"PhilHealth Remittance {RemCompany_Combo.Text} - {PAYDATE.ToString("MMMM dd, yyyy")}"
 
             End If
 
@@ -1315,12 +1333,6 @@ Public Class frmReport
         End If
     End Sub
 
-    Private Sub RemCat_Combo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles RemCat_Combo.SelectedIndexChanged
-        If Rem_Paydate_Combo.SelectedIndex >= 0 And RemCat_Combo.SelectedIndex >= 0 Then
-            LoadRemittance()
-        End If
-    End Sub
-
     Private Sub CostPaydate_Combo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CostPaydate_Combo.SelectedIndexChanged
         If CostPaydate_Combo.SelectedIndex >= 0 Then
             LoadCostDistribution()
@@ -1335,4 +1347,15 @@ Public Class frmReport
         End If
     End Sub
 
+    Private Sub RemCompany_Combo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles RemCompany_Combo.SelectedIndexChanged
+        If Not Rem_Paydate_Combo.SelectedIndex >= 0 Then
+            MsgBox("Please select payroll date!", MsgBoxStyle.Exclamation, "Invalid")
+        ElseIf Not RemCat_Combo.SelectedIndex >= 0 Then
+            MsgBox("Please select category!", MsgBoxStyle.Exclamation, "Invalid")
+        ElseIf Not RemCompany_Combo.SelectedIndex >= 0 Then
+            MsgBox("Please select company!", MsgBoxStyle.Exclamation, "Invalid")
+        Else
+            LoadRemittance()
+        End If
+    End Sub
 End Class

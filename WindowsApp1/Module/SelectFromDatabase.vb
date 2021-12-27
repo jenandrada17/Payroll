@@ -10,11 +10,10 @@ Module SelectFromDatabase
     End Function
 
     Public Sub GetPayout_TOTALS(paydate As String, P_GrossAmount_LBL As Label, P_SSSComp_LBL As Label, P_PagibigComp_LBL As Label, P_PhilHComp_LBL As Label,
-                                 P_TaxWH_LBL As Label, P_SSSLoan_LBL As Label, P_PagibigLoan_LBL As Label,
-                                 P_Allowance_LBL As Label, P_Deduction_LBL As Label, P_NetPay_LBL As Label)
+                                 P_SSSLoan_LBL As Label, P_PagibigLoan_LBL As Label, P_Allowance_LBL As Label, P_Deduction_LBL As Label, P_NetPay_LBL As Label)
 
         Dim mysql As String = $"Select SUM(GROSS_AMOUNT) as gross, SUM(SSS_COMP) as sssC, SUM(PAGIBIG_COMP) as pagibiC, SUM(PHILHEALTH_COMP) as philHC,
-                                       SUM(TAX_WHELD) as taxWH, SUM(SSS_LOAN) as sssLoan, SUM(PAGIBIG_LOAN) as pagibigLoan,
+                                       SUM(SSS_LOAN) as sssLoan, SUM(PAGIBIG_LOAN) as pagibigLoan,
                                        SUM(TOTAL_ALLOWANCE) as allowance, SUM(TOTAL_DEDUCTION) as deducttion,
                                        SUM(NET_PAY) as netPay FROM PAYROLL_PAYOUT where paydate = '{paydate}'"
 
@@ -26,8 +25,6 @@ Module SelectFromDatabase
                     P_SSSComp_LBL.Text = FormatNumber(.Item("sssC"))
                     P_PagibigComp_LBL.Text = FormatNumber(.Item("pagibiC"))
                     P_PhilHComp_LBL.Text = FormatNumber(.Item("philHC"))
-
-                    P_TaxWH_LBL.Text = FormatNumber(.Item("taxWH"))
 
                     P_SSSLoan_LBL.Text = FormatNumber(.Item("sssLoan"))
                     P_PagibigLoan_LBL.Text = FormatNumber(.Item("pagibigLoan"))
@@ -1780,26 +1777,13 @@ Module SelectFromDatabase
             i.SubItems.Add(FormatNumber(.Item("SSS_COMP")))
             i.SubItems.Add(FormatNumber(.Item("PAGIBIG_COMP")))
             i.SubItems.Add(FormatNumber(.Item("PHILHEALTH_COMP")))
-            i.SubItems.Add(FormatNumber(.Item("TAX_WHELD")))
-            i.SubItems.Add(FormatNumber(.Item("NET_TAX_COMP")))
+            'i.SubItems.Add(FormatNumber(.Item("TAX_WHELD")))
+            'i.SubItems.Add(FormatNumber(.Item("NET_TAX_COMP")))
             i.SubItems.Add(FormatNumber(.Item("SSS_LOAN")))
             i.SubItems.Add(FormatNumber(.Item("PAGIBIG_LOAN")))
             i.SubItems.Add(FormatNumber(.Item("TOTAL_ALLOWANCE")))
             i.SubItems.Add(FormatNumber(.Item("TOTAL_DEDUCTION")))
             i.SubItems.Add(FormatNumber(.Item("NET_PAY")))
-
-            'Dim i As ListViewItem = listview.Items.Add(.Item("FULLNAME"))
-            'i.SubItems.Add(Format(.Item("GROSS_AMOUNT"), "0.00")).Tag = .Item("BIOMETRIC_ID")
-            'i.SubItems.Add(Format(.Item("SSS_COMP"), "0.00"))
-            'i.SubItems.Add(Format(.Item("PAGIBIG_COMP"), "0.00"))
-            'i.SubItems.Add(Format(.Item("PHILHEALTH_COMP"), "0.00"))
-            'i.SubItems.Add(Format(.Item("TAX_WHELD"), "0.00"))
-            'i.SubItems.Add(Format(.Item("NET_TAX_COMP"), "0.00"))
-            'i.SubItems.Add(Format(.Item("SSS_LOAN"), "0.00"))
-            'i.SubItems.Add(Format(.Item("PAGIBIG_LOAN"), "0.00"))
-            'i.SubItems.Add(Format(.Item("TOTAL_ALLOWANCE"), "0.00"))
-            'i.SubItems.Add(Format(.Item("TOTAL_DEDUCTION"), "0.00"))
-            'i.SubItems.Add(Format(.Item("NET_PAY"), "0.00"))
         End With
 
     End Sub

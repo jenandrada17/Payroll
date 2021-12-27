@@ -742,6 +742,7 @@ Public Class frmNewEmployee
 
             Label23.Visible = True
             ComCompany_Cmbo.Visible = True
+
         Else
             Label20.Visible = False
             ComCategory_Combo.Visible = False
@@ -808,6 +809,8 @@ Public Class frmNewEmployee
 
             Label19.Visible = True
             HO_Category.Visible = True
+
+            Branch_ComboB.Text = ""
         End If
 
     End Sub

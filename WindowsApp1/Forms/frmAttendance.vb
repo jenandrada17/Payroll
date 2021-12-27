@@ -461,7 +461,6 @@ Public Class frmAttendance
                         SaveDTR(BiometricID_TXT.Text, Paydate, dateOnly.ToString("d"),
                             row.Cells(1).Value, row.Cells(2).Value, row.Cells(3).Value, row.Cells(4).Value)
                     End If
-
                 Next
 
                 SaveAttendanceEE(BiometricID_TXT.Text, PAYROLL, TotalDays_LBL.Text, TotalOTHr_LBL.Text, TotalLateHR_LBL.Text, TotalUTHR_LBL.Text,
