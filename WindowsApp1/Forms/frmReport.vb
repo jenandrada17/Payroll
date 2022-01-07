@@ -14,7 +14,8 @@ Public Class frmReport
         PopulateComboBox(SumPaydate_Combo, "PAYROLL_PAYOUT", "PAYDATE")
         PopulateComboBox_Any(Rem_Paydate_Combo, "PAYROLL_PAYOUT", "PAYDATE")
         PopulateComboBox(CostPaydate_Combo, "PAYROLL_PAYOUT", "PAYDATE")
-        Lists_SBU(SBU_LV)
+        Lists_Deduction_History(SBUHistory_List, "SBU")
+        Lists_Deduction_History(DeducHistory_List, "DEDUCTION")
 
     End Sub
 
@@ -1360,4 +1361,31 @@ Public Class frmReport
             LoadRemittance()
         End If
     End Sub
+
+    Private Sub SBUHistory_btn_Click(sender As Object, e As EventArgs) Handles SBUHistory_btn.Click
+        Lists_Deduction_History(SBUHistory_List, "SBU", SBUHistory_txt.Text)
+    End Sub
+
+    Private Sub SBUHistory_txt_KeyPress(sender As Object, e As KeyPressEventArgs) Handles SBUHistory_txt.KeyPress
+        If e.KeyChar = ChrW(Keys.Enter) Then
+            SBUHistory_btn.PerformClick()
+        End If
+    End Sub
+
+    Private Sub DeducHistory_btn_Click(sender As Object, e As EventArgs) Handles DeducHistory_btn.Click
+        Lists_Deduction_History(DeducHistory_List, "DEDUCTION", DeducHistory_txt.Text)
+    End Sub
+
+    Private Sub DeducHistory_txt_KeyPress(sender As Object, e As KeyPressEventArgs) Handles DeducHistory_txt.KeyPress
+        If e.KeyChar = ChrW(Keys.Enter) Then
+            DeducHistory_btn.PerformClick()
+        End If
+    End Sub
+
+    Private Sub Reports_Tab_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Reports_Tab.SelectedIndexChanged
+        If Reports_Tab.SelectedIndex = 7 Then
+            Lists_SBU(SBU_LV)
+        End If
+    End Sub
+
 End Class

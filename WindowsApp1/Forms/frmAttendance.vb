@@ -471,6 +471,8 @@ Public Class frmAttendance
                 SaveLogs($"{Save_BTN.Tag} ATTENDANCE ({Name_TXT.Text} ({BiometricID_TXT.Text})) - Days({TotalDays_LBL.Text}), OT({TotalOTHr_LBL.Text}), Late({TotalLateHR_LBL.Text}), Undertime({TotalUTHR_LBL.Text}), R/S Holiday({TotalRHoliday_LBL.Text}/{TotalSHoliday_LBL.Text}), SIL({SIL_LBL.Text})", frmMainForm.UserName_LBL.Text)
 
                 Cancel_BTN.PerformClick()
+
+                MsgBox("Successfully Saved!", MsgBoxStyle.Information, "Information")
             End If
         Else
             MsgBox("Please Choose Employee's Name!", MsgBoxStyle.Critical, "Error")
@@ -1062,6 +1064,11 @@ Public Class frmAttendance
                     list_hour(1) = ""
                 End If
 
+                If list_hour(3) = "" And list_hour(0) <> "" Then '==== FOR HALFDAY ARRANGEMENT OF NOON BREAK
+                    list_hour(1) = list_hour(2)
+                    list_hour(2) = ""
+                End If
+
                 If list_hour(0) = "" And list_hour(1) = "" And list_hour(2) = "" And list_hour(3) = "" Then
                 Else
                     SaveDTR(biometric_No, Paydate, DATE_ONLY, list_hour(0), list_hour(1), list_hour(2), list_hour(3))
@@ -1339,6 +1346,8 @@ Public Class frmAttendance
                 SaveLogs($"{Save7_BTN.Tag} ATTENDANCE ({Emp7_TXT.Text} ({Bio7_TXT.Text})) - Days({Days7_TXT.Text}), OT({Overtime7_TXT.Text}), Late({Late7_TXT.Text}), Undertime({Undertime7_TXT.Text}), R/S Holiday({TotalRHoliday_LBL.Text}/{TotalSHoliday_LBL.Text}), Night Rate({Night7_TXT.Text}), SIL({SIL7_NUP.Text})", frmMainForm.UserName_LBL.Text)
 
                 Cancel7_BTN.PerformClick()
+
+                MsgBox("Successfully Saved!", MsgBoxStyle.Information, "Information")
             End If
 
         Else
@@ -1700,6 +1709,11 @@ Public Class frmAttendance
             If list_hour(0) = "" And list_hour(3) <> "" Then '==== FOR HALFDAY ARRANGEMENT OF NOON BREAK
                 list_hour(2) = list_hour(1)
                 list_hour(1) = ""
+            End If
+
+            If list_hour(3) = "" And list_hour(0) <> "" Then '==== FOR HALFDAY ARRANGEMENT OF NOON BREAK
+                list_hour(1) = list_hour(2)
+                list_hour(2) = ""
             End If
 
             If list_hour(0) = "" And list_hour(1) = "" And list_hour(2) = "" And list_hour(3) = "" Then

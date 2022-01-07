@@ -84,6 +84,8 @@ Partial Class frmPayout
         Me.TotalHol_LBL = New System.Windows.Forms.Label()
         Me.TotalOT_LBL = New System.Windows.Forms.Label()
         Me.TotalBasic_LBL = New System.Windows.Forms.Label()
+        Me.Remittance_LBL = New System.Windows.Forms.Label()
+        Me.Label45 = New System.Windows.Forms.Label()
         Me.GrossAmount_LBL = New System.Windows.Forms.Label()
         Me.Label39 = New System.Windows.Forms.Label()
         Me.Label28 = New System.Windows.Forms.Label()
@@ -196,8 +198,6 @@ Partial Class frmPayout
         Me.All_RadioB = New System.Windows.Forms.RadioButton()
         Me.Label21 = New System.Windows.Forms.Label()
         Me.Payslip_paydate_Combo = New System.Windows.Forms.ComboBox()
-        Me.Remittance_LBL = New System.Windows.Forms.Label()
-        Me.Label45 = New System.Windows.Forms.Label()
         Me.GroupBox6.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
@@ -846,6 +846,26 @@ Partial Class frmPayout
         Me.TotalBasic_LBL.TabIndex = 52
         Me.TotalBasic_LBL.Text = "0"
         Me.TotalBasic_LBL.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'Remittance_LBL
+        '
+        Me.Remittance_LBL.Font = New System.Drawing.Font("Dubai", 12.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Remittance_LBL.Location = New System.Drawing.Point(183, 409)
+        Me.Remittance_LBL.Name = "Remittance_LBL"
+        Me.Remittance_LBL.Size = New System.Drawing.Size(125, 29)
+        Me.Remittance_LBL.TabIndex = 51
+        Me.Remittance_LBL.Text = "0"
+        Me.Remittance_LBL.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
+        '
+        'Label45
+        '
+        Me.Label45.AutoSize = True
+        Me.Label45.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label45.Location = New System.Drawing.Point(15, 411)
+        Me.Label45.Name = "Label45"
+        Me.Label45.Size = New System.Drawing.Size(140, 25)
+        Me.Label45.TabIndex = 40
+        Me.Label45.Text = "Remittance Amount"
         '
         'GrossAmount_LBL
         '
@@ -1870,7 +1890,6 @@ Partial Class frmPayout
         Me.ConfirmDeduc_btn.TabIndex = 108
         Me.ConfirmDeduc_btn.Text = "Confirm Deduction"
         Me.ConfirmDeduc_btn.UseVisualStyleBackColor = True
-        Me.ConfirmDeduc_btn.Visible = False
         '
         'Company_RadioB
         '
@@ -2085,26 +2104,6 @@ Partial Class frmPayout
         Me.Payslip_paydate_Combo.Size = New System.Drawing.Size(272, 33)
         Me.Payslip_paydate_Combo.TabIndex = 97
         Me.Payslip_paydate_Combo.Text = "   Select Date"
-        '
-        'Remittance_LBL
-        '
-        Me.Remittance_LBL.Font = New System.Drawing.Font("Dubai", 12.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Remittance_LBL.Location = New System.Drawing.Point(183, 409)
-        Me.Remittance_LBL.Name = "Remittance_LBL"
-        Me.Remittance_LBL.Size = New System.Drawing.Size(125, 29)
-        Me.Remittance_LBL.TabIndex = 51
-        Me.Remittance_LBL.Text = "0"
-        Me.Remittance_LBL.TextAlign = System.Drawing.ContentAlignment.MiddleCenter
-        '
-        'Label45
-        '
-        Me.Label45.AutoSize = True
-        Me.Label45.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label45.Location = New System.Drawing.Point(15, 411)
-        Me.Label45.Name = "Label45"
-        Me.Label45.Size = New System.Drawing.Size(140, 25)
-        Me.Label45.TabIndex = 40
-        Me.Label45.Text = "Remittance Amount"
         '
         'frmPayout
         '

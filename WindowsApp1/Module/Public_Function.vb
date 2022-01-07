@@ -449,6 +449,116 @@ Module Public_Function
         End Using
     End Sub
 
+    Public Sub SAVE_EmpNo_Deduction_EXCEL(EMP_NO As String, RowNo As Integer)
+        Dim mysql As String
+        Dim BIO As String = ""
+
+        '====================== GET BIO_NO FOR SAVING TO PAYROLL_SBU  ==================
+        mysql = "Select * From PAYROLL_EMPLOYEE WHERE EMP_NO = '" & EMP_NO.TrimEnd & "'"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+            If ds.Tables(0).Rows.Count > 0 Then
+                Dim data As DataRow = ds.Tables(0).Rows(0)
+                With data
+                    BIO = .Item("BIO_NO")
+                End With
+            Else
+                Exit Sub
+            End If
+        End Using
+
+        '====================== ADD NEW PAYROLL_SBU ==================
+        mysql = "Select * From PAYROLL_DEDUCTION Rows 1"
+        Using dssS As DataSet = LoadSQL(mysql, "PAYROLL_DEDUCTION")
+
+            Dim dsNewRow As DataRow = dssS.Tables(0).NewRow
+            With dsNewRow
+
+                .Item("BIO_NO") = BIO
+
+            End With
+            dssS.Tables(0).Rows.Add(dsNewRow)
+            SaveEntry(dssS)
+        End Using
+
+    End Sub
+
+    Public Sub SAVE_Deduction_EXCEL(CATEGORY As String, AMOUNT As String, PRINCIPAL As String, CREDIT As String, BALANCE As String, DATEE As String, RowNo As Integer)
+
+        Dim bio_no As String = ""
+        '=============================== GET LAST BIO_NO =============================
+        Dim mysql As String = "Select * From PAYROLL_DEDUCTION ORDER BY ID DESC Rows 1"
+        Using dssS As DataSet = LoadSQL(mysql, "PAYROLL_DEDUCTION")
+            If dssS.Tables(0).Rows.Count > 0 Then
+                With dssS.Tables(0).Rows(0)
+                    bio_no = .Item("BIO_NO")
+                End With
+            End If
+        End Using
+
+        '=============================== SAVE NEW ROW =============================
+        Dim mysqlL As String = $"Select * From PAYROLL_DEDUCTION"
+        Using dssS As DataSet = LoadSQL(mysqlL, "PAYROLL_DEDUCTION")
+            If dssS.Tables(0).Rows.Count > 0 Then
+
+                Dim dataA As DataRow = dssS.Tables(0).NewRow
+                With dataA
+
+                    .Item("BIO_NO") = bio_no
+                    .Item("CATEGORY") = CATEGORY
+                    .Item("PRINCIPAL") = PRINCIPAL
+                    .Item("AMORT") = AMOUNT
+                    .Item("CREDIT") = CREDIT
+                    .Item("BALANCE") = BALANCE
+                    .Item("DATEE") = DATEE
+                    .Item("SCHEDULE") = "EVERY PAYROLL"
+
+                End With
+
+                dssS.Tables(0).Rows.Add(dataA)
+                SaveEntry(dssS)
+            End If
+        End Using
+
+        Console.WriteLine("ROWWW " & RowNo)
+    End Sub
+
+    Public Sub SAVE_LOANS_EXCEL(CATEGORY As String, AMOUNT As String, PRINCIPAL As String, CREDIT As String, BALANCE As String, DATEE As String, RowNo As Integer)
+
+        Dim bio_no As String = ""
+        '=============================== GET LAST BIO_NO =============================
+        Dim mysql As String = "Select * From PAYROLL_DEDUCTION ORDER BY ID DESC Rows 1"
+        Using dssS As DataSet = LoadSQL(mysql, "PAYROLL_DEDUCTION")
+            If dssS.Tables(0).Rows.Count > 0 Then
+                With dssS.Tables(0).Rows(0)
+                    bio_no = .Item("BIO_NO")
+                End With
+            End If
+        End Using
+
+        '=============================== SAVE NEW ROW =============================
+        Dim mysqlL As String = $"Select * From PAYROLL_LOANS"
+        Using dssS As DataSet = LoadSQL(mysqlL, "PAYROLL_LOANS")
+            Dim dataA As DataRow = dssS.Tables(0).NewRow
+            With dataA
+
+                .Item("BIO_NO") = bio_no
+                .Item("CATEGORY") = CATEGORY
+                .Item("PRINCIPAL") = PRINCIPAL
+                .Item("AMORT") = AMOUNT
+                .Item("CREDIT") = CREDIT
+                .Item("BALANCE") = BALANCE
+                .Item("DATEE") = DATEE
+
+            End With
+
+            dssS.Tables(0).Rows.Add(dataA)
+            SaveEntry(dssS)
+        End Using
+
+        Console.WriteLine("ROWWW " & RowNo)
+    End Sub
+
+
     Public Sub DeleteDuplicate(table As String)
         'RunCommand($"DELETE FROM {table} WHERE ID NOT IN  ( SELECT MAX(ID) FROM {table} GROUP BY CATEGORY ) and CATEGORY = 'SBU'  and PAYDATE = '12/31/2021' ")  'THIS IS TO DELETE DUPLICATE IN TBLMANNING 
     End Sub

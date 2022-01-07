@@ -107,24 +107,27 @@ Public Class frmPayout
                 Training_GB.Visible = False
                 '============================ CHECK IF CLOSE PAYROLL ==================================  
                 If IsLastDay(paydate_) Then
+                    If BIO_NO <> 58 Then
 
-                    Dim monthly_Basic As Double = GetMonthly_Basic(BIO_NO, paydate_)
-                    Prev_Amount_lbl.Text = (GetFirst_Basic(BIO_NO, paydate_)).ToString("N")
+                        Dim monthly_Basic As Double = GetMonthly_Basic(BIO_NO, paydate_)
+                        Prev_Amount_lbl.Text = (GetFirst_Basic(BIO_NO, paydate_)).ToString("N")
 
-                    SSSComp_LBL.Text = (Get_SSS(monthly_Basic).EE).ToString("N")
-                    SSS_ER = Get_SSS(monthly_Basic).EE
-                    SSS_EC = Get_SSS(monthly_Basic).EC
-                    HDMF_LBL.Text = (Get_Pagibig(monthly_Basic)).ToString("N")
-                    Philhealth_LBL.Text = (Get_PhilHealth(monthly_Basic)).ToString("N")
+                        SSSComp_LBL.Text = (Get_SSS(monthly_Basic).EE).ToString("N")
+                        SSS_ER = Get_SSS(monthly_Basic).EE
+                        SSS_EC = Get_SSS(monthly_Basic).EC
+                        HDMF_LBL.Text = (Get_Pagibig(monthly_Basic)).ToString("N")
+                        Philhealth_LBL.Text = (Get_PhilHealth(monthly_Basic)).ToString("N")
 
-                    Previous_groupB.Visible = True
+                        Previous_groupB.Visible = True
 
-                    SSSLoan_LBL.Text = (Get_LOAN_SSS(BIO_NO)).ToString("N")
-                    PagibigLoan_LBL.Text = (Get_LOAN_Pagibig(BIO_NO)).ToString("N")
+                        SSSLoan_LBL.Text = (Get_LOAN_SSS(BIO_NO)).ToString("N")
+                        PagibigLoan_LBL.Text = (Get_LOAN_Pagibig(BIO_NO)).ToString("N")
 
-                    Remittance_LBL.Text = (CDbl(SSSComp_LBL.Text) + CDbl(HDMF_LBL.Text) + CDbl(Philhealth_LBL.Text) + CDbl(SSSLoan_LBL.Text) + CDbl(PagibigLoan_LBL.Text)).ToString(”N”)
+                        Remittance_LBL.Text = (CDbl(SSSComp_LBL.Text) + CDbl(HDMF_LBL.Text) + CDbl(Philhealth_LBL.Text) + CDbl(SSSLoan_LBL.Text) + CDbl(PagibigLoan_LBL.Text)).ToString(”N”)
 
-                    sched_deduc = "CLOSE PAYROLL"
+                        sched_deduc = "CLOSE PAYROLL"
+                    End If
+
                 Else
                     SSSComp_LBL.Text = Zeroo
                     HDMF_LBL.Text = Zeroo
@@ -174,6 +177,12 @@ Public Class frmPayout
             Calculate_NetPay()
 
             Checkgrid_Visible()
+        Else
+
+            For Each Ctl In GroupBox1.Controls
+                If TypeOf Ctl Is TextBox Then Ctl.Text = ""
+            Next
+
         End If
     End Sub
 
@@ -323,6 +332,7 @@ Public Class frmPayout
 
                 Cancel_BTN.PerformClick()
 
+                MsgBox("Successfully Saved!", MsgBoxStyle.Information, "Information")
             End If
         End If
     End Sub
@@ -433,7 +443,7 @@ Public Class frmPayout
             TotalBasic_LBL.Tag = CDbl(NoOfDays_TXT.Text) * RATEE
 
             TotalHol_LBL.Text = FormatNumber(((CDbl(SpecialHol_TXT.Text) * RATEE) * specHoliday_) + ((CDbl(RegularHol_TXT.Text) * RATEE) * regHoliday_))
-            TotalHol_LBL.Tag = ((CDbl(SpecialHol_TXT.Text) * RATEE) * specHoliday_) + ((CDbl(RegularHol_TXT.Text) * RATEE) * regHoliday_)
+            TotalHol_LBL.Tag = ((CInt(SpecialHol_TXT.Text) * RATEE) * specHoliday_) + ((CInt(RegularHol_TXT.Text) * RATEE) * regHoliday_)
 
             TotalOT_LBL.Text = FormatNumber(((CDbl(Rate_TXT.Text) / 8) * 1.25) * CDbl(RegularOT_TXT.Text))
             TotalOT_LBL.Tag = ((CDbl(Rate_TXT.Text) / 8) * 1.25) * CDbl(RegularOT_TXT.Text)
@@ -457,6 +467,16 @@ Public Class frmPayout
                     BASICC = CDec(RateFixYes_RB.Tag) / 2
                     TotalBasic_LBL.Text = FormatNumber(BASICC)
                     TotalBasic_LBL.Tag = BASICC
+
+                    TotalHol_LBL.Text = Zeroo
+                    TotalHol_LBL.Tag = Zeroo
+                    TotalOT_LBL.Text = Zeroo
+                    TotalOT_LBL.Tag = Zeroo
+                    TotalLateUnder_LBL.Text = Zeroo
+                    TotalLateUnder_LBL.Tag = Zeroo
+                    TotalNight_LBL.Text = Zeroo
+                    TotalNight_LBL.Tag = Zeroo
+
                 Else
 
                     If CDbl(NoOfDays_TXT.Text) >= STANDARD_DAYS Then  '=== CHECK IF ABOVE MINIMUM 
@@ -467,15 +487,6 @@ Public Class frmPayout
                         TotalBasic_LBL.Text = FormatNumber(BASICC - (MINUS_DAYS * RATEE))
                         TotalBasic_LBL.Tag = BASICC - (MINUS_DAYS * RATEE)
                     End If
-
-                    TotalHol_LBL.Text = Zeroo
-                    TotalHol_LBL.Tag = Zeroo
-                    TotalOT_LBL.Text = Zeroo
-                    TotalOT_LBL.Tag = Zeroo
-                    TotalLateUnder_LBL.Text = Zeroo
-                    TotalLateUnder_LBL.Tag = Zeroo
-                    TotalNight_LBL.Text = Zeroo
-                    TotalNight_LBL.Tag = Zeroo
 
                 End If
             End If
@@ -663,7 +674,6 @@ Public Class frmPayout
         Else
             MsgBox("Please Select Paydate.", MsgBoxStyle.Exclamation, "INVALID")
         End If
-
     End Sub
 
     Private Sub Additional_Panel_MouseUp(sender As Object, e As MouseEventArgs) Handles Additional_Panel.MouseUp
@@ -693,7 +703,6 @@ Public Class frmPayout
             Next
         End If
 
-        'Deduction_LBL.Text = totals.ToString("N")
         Deduction_LBL.Text = FormatNumber(totals)
         Deduction_LBL.Tag = totals
 
@@ -1003,7 +1012,7 @@ Public Class frmPayout
                 .Columns.Add("SSS_COMP")
                 .Columns.Add("PAGIBIG_COMP")
                 .Columns.Add("PHILHEALTH_COMP")
-                .Columns.Add("TAX_WHELD")
+                '.Columns.Add("TAX_WHELD")
                 .Columns.Add("SSS_LOAN")
                 .Columns.Add("PAGIBIG_LOAN")
                 .Columns.Add("NET_PAY")
@@ -1034,11 +1043,6 @@ Public Class frmPayout
                         OVERTIME = .Item("OVERTIME")
                         LATE = .Item("LATE")
 
-                        'Dim hours As Integer = .Item("LATE") / 60
-                        'Dim minutes As Integer = .Item("LATE") Mod 60
-
-                        'LATE = $"{hours}.{minutes}"
-
                     End With
                 End If
             End Using
@@ -1052,12 +1056,12 @@ Public Class frmPayout
                         TOTAL_REGHOLIDAY = .Item("TOTAL_REGHOLIDAY")
                         TOTAL_SPECHOLIDAY = .Item("TOTAL_SPECHOLIDAY")
 
-                        Dim TOTAL_COMP As Double = .Item("SSS_COMP") + .Item("PAGIBIG_COMP") + .Item("PHILHEALTH_COMP") + .Item("TAX_WHELD") + .Item("SSS_LOAN") + .Item("PAGIBIG_LOAN")
+                        Dim TOTAL_COMP As Double = .Item("SSS_COMP") + .Item("PAGIBIG_COMP") + .Item("PHILHEALTH_COMP") + .Item("SSS_LOAN") + .Item("PAGIBIG_LOAN")
 
                         dt_attendance.Rows.Add(PRESENT_DAYS, OVERTIME, REGHOLIDAY, SPECHOLIDAY, CDbl(.Item("TOTAL_LATE_UT")).ToString("N"),
                                         CDbl(.Item("TOTAL_BASIC")).ToString("N"), CDbl(.Item("TOTAL_OVERTIME")).ToString("N"), LATE,
                                         CDbl(.Item("GROSS_AMOUNT")).ToString("N"), CDbl(.Item("SSS_COMP")).ToString("N"), CDbl(.Item("PAGIBIG_COMP")).ToString("N"),
-                                        CDbl(.Item("PHILHEALTH_COMP")).ToString("N"), CDbl(.Item("TAX_WHELD")).ToString("N"), CDbl(.Item("SSS_LOAN")).ToString("N"),
+                                        CDbl(.Item("PHILHEALTH_COMP")).ToString("N"), CDbl(.Item("SSS_LOAN")).ToString("N"),
                                         CDbl(.Item("PAGIBIG_LOAN")).ToString("N"), CDbl(.Item("NET_PAY")).ToString("N"), TOTAL_COMP.ToString("N"),
                                         present_hours)
                     End With

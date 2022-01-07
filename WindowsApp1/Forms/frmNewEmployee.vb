@@ -53,6 +53,7 @@ Public Class frmNewEmployee
     End Sub
 
     Private Sub Save_BTN_Click(sender As Object, e As EventArgs) Handles Save_BTN.Click
+
         'Import_BranchesName()
 
         'Import_Employee_Fullname_biometric_ActiveOnly()
@@ -63,8 +64,201 @@ Public Class frmNewEmployee
 
         'Import_Employee_SBU_AMOUNT_PRINCIPAL_CREDIT()
 
-        Import_13MONTH()
+        'Import_13MONTH()
+
+        'Import_Employee_DEDUCTION_2()
+
+        'Import_Deduction() ''===== NAKACOMMENT ANG METHOD
     End Sub
+
+
+    Private Sub Import_Employee_New()
+        If Company_ComboB.SelectedIndex >= 0 Then
+
+            eApp = New Excel.Application
+            eBook = eApp.Workbooks.Open(Path_TXT.Text)
+            eSheet = eBook.Worksheets(1)
+            eCell = eSheet.UsedRange
+            Dim row As Integer
+
+            MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path_TXT.Text}';Extended Properties=Excel 8.0;")
+            MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
+            MyCommand.TableMappings.Add("Table", "Net-informations.com")
+            DtSet = New System.Data.DataSet
+            MyCommand.Fill(DtSet)
+
+            progressBarStart(DtSet.Tables(0).Rows.Count)
+
+            For row = 2 To DtSet.Tables(0).Rows.Count + 1
+
+                SaveNew_Employee(eCell(row, 2).Value, "", eCell(row, 2).Value, eCell(row, 3).Value, eCell(row, 4).Value, "ACTIVE", True)
+
+                frmMainForm.AppProgressBar.Value += 1
+
+            Next
+
+            progressBarEnd()
+
+            Lists_Employees(lvEmployee)
+
+            Path_TXT.Clear()
+            MyConnection.Close()
+
+            Excel_Panel.Visible = False
+        Else
+            MsgBox("Please Select Company.", MsgBoxStyle.Exclamation, "Error")
+        End If
+
+    End Sub
+
+
+    Private Sub Import_Employee_DEDUCTION_2()
+
+        eApp = New Excel.Application
+        eBook = eApp.Workbooks.Open(Path_TXT.Text)
+        eSheet = eBook.Worksheets(1)
+        eCell = eSheet.UsedRange
+
+        MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path_TXT.Text}';Extended Properties=Excel 8.0;")
+        MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
+        MyCommand.TableMappings.Add("Table", "Net-informations.com")
+        DtSet = New System.Data.DataSet
+        MyCommand.Fill(DtSet)
+
+        '====================== DELETE PAYROLL_SBU TO REPLACE NEW ==================
+        If isExist_String("PAYROLL_DEDUCTION", "") Then
+            RunCommand($"DELETE FROM PAYROLL_DEDUCTION ;")
+        End If
+
+        '====================== DELETE PAYROLL_SBU TO REPLACE NEW ==================
+        If isExist_String("PAYROLL_LOANS", "") Then
+            RunCommand($"DELETE FROM PAYROLL_LOANS ;")
+        End If
+
+        progressBarStart(DtSet.Tables(0).Rows.Count + 1)
+
+        For row = 4 To DtSet.Tables(0).Rows.Count
+
+            Dim EMP_NO As String = ""
+            Dim CATEGORY As String = ""
+            Dim AMOUNT As String = ""
+            Dim PRINCIPAL As String = ""
+            Dim DATEE As String = ""
+            Dim CREDIT As String = ""
+            Dim BALANCE As String = ""
+
+            If eCell(row, 1).Font.Bold = True Then
+                EMP_NO = eCell(row, 4).Value
+                SAVE_EmpNo_Deduction_EXCEL(EMP_NO, row)
+            End If
+
+            If IsDate(eCell(row, 1).value) Then
+                Dim IF_SBU As String = eCell(row, 3).value
+
+                If IF_SBU.TrimEnd <> "SBU(Savings Build Up)" Then
+                    DATEE = eCell(row, 1).Value
+                    CATEGORY = eCell(row, 4).Value
+                    AMOUNT = eCell(row, 5).Value
+                    PRINCIPAL = eCell(row, 6).Value
+                    CREDIT = IIf(eCell(row, 8).Value = Nothing, 0, eCell(row, 8).Value)
+                    BALANCE = eCell(row, 9).Value
+
+                    If (CATEGORY.Contains("LOAN") Or CATEGORY.Contains("Loan") Or CATEGORY.Contains("loan")) And Not CATEGORY.Contains("Car") Then
+
+                        If CATEGORY.Contains("PAG-IBIG") Or CATEGORY.Contains("HDMF") Then
+                            CATEGORY = "PAG-IBIG"
+                        Else
+                            CATEGORY = "SSS"
+                        End If
+
+                        SAVE_LOANS_EXCEL(CATEGORY, AMOUNT, PRINCIPAL, CREDIT, BALANCE, DATEE, row)
+                    Else
+                        SAVE_Deduction_EXCEL(CATEGORY, AMOUNT, PRINCIPAL, CREDIT, BALANCE, DATEE, row)
+                    End If
+
+                End If
+
+            End If
+
+            frmMainForm.AppProgressBar.Value += 1
+        Next row
+
+        progressBarEnd()
+
+        RunCommand($"DELETE FROM PAYROLL_DEDUCTION WHERE CATEGORY is null;")
+
+        Path_TXT.Clear()
+        MyConnection.Close()
+        eApp.Quit()
+        eApp.Application.DisplayAlerts = False
+
+        Excel_Panel.Visible = False
+
+    End Sub
+
+    'Private Sub Import_Deduction()
+
+    '    eApp = New Excel.Application
+    '    eBook = eApp.Workbooks.Open(Path_TXT.Text)
+    '    eSheet = eBook.Worksheets(1)
+    '    eCell = eSheet.UsedRange
+
+    '    MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path_TXT.Text}';Extended Properties=Excel 8.0;")
+    '    MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
+    '    MyCommand.TableMappings.Add("Table", "Net-informations.com")
+    '    DtSet = New System.Data.DataSet
+    '    MyCommand.Fill(DtSet)
+
+    '    '====================== DELETE PAYROLL_SBU TO REPLACE NEW ==================
+    '    If isExist_String("PAYROLL_DEDUCTION", "") Then
+    '        RunCommand($"DELETE FROM PAYROLL_DEDUCTION;")
+    '    End If
+
+    '    progressBarStart(DtSet.Tables(0).Rows.Count + 1)
+
+    '    For row = 1 To DtSet.Tables(0).Rows.Count
+
+    '        Dim EMP_NO As String = ""
+    '        Dim CATEGORY As String = ""
+    '        Dim PRINCIPAL As Decimal = 0
+    '        Dim AMOUNT As Decimal = 0
+
+    '        Dim NUM As String = eCell(row, 1).value
+
+    '        If eCell(row, 1).value = "NO.    : " Then
+    '            EMP_NO = eCell(row, 2).Value
+    '            SAVE_Emp_Deduction_EXCEL(EMP_NO, row)
+    '        End If
+
+    '        If Not IsNumeric(eCell(row, 2).value) And IsNumeric(eCell(row, 3).value) And IsNumeric(eCell(row, 4).value) Then
+
+    '            If eCell(row, 4).value <> 0 Then
+    '                CATEGORY = eCell(row, 2).Value
+    '                AMOUNT = eCell(row, 3).Value
+    '                PRINCIPAL = eCell(row, 4).Value
+    '                UPDATE_Emp_Dedeuction_EXCEL(CATEGORY, AMOUNT, PRINCIPAL, row)
+
+
+    '                Console.WriteLine("EMP_NO " & EMP_NO)
+    '            End If
+
+    '        End If
+
+    '        frmMainForm.AppProgressBar.Value += 1
+
+    '    Next row
+
+    '    progressBarEnd()
+
+    '    Path_TXT.Clear()
+    '    MyConnection.Close()
+    '    eApp.Quit()
+    '    eApp.Application.DisplayAlerts = False
+
+    '    Excel_Panel.Visible = False
+
+    'End Sub
+
 
     Private Sub Import_13MONTH()
 
@@ -135,7 +329,6 @@ Public Class frmNewEmployee
         End Using
     End Sub
 
-
     Private Sub Import_Employee_SBU_AMOUNT_PRINCIPAL_CREDIT()
 
         eApp = New Excel.Application
@@ -152,11 +345,12 @@ Public Class frmNewEmployee
         '====================== DELETE PAYROLL_SBU TO REPLACE NEW ==================
         If isExist_String("PAYROLL_SBU", "") Then
             RunCommand($"DELETE FROM PAYROLL_SBU ;")
+            'RunCommand($"DELETE FROM PAYROLL_SBU A INNER JOIN PAYROLL_EMPLOYEE B ON A.BIO_NO = B.BIO_NO WHERE B.BIO_NO <> 'HEAD OFFICE' ;")
         End If
 
         progressBarStart(DtSet.Tables(0).Rows.Count + 1)
 
-        For row = 1 To DtSet.Tables(0).Rows.Count
+        For row = 7 To DtSet.Tables(0).Rows.Count
 
             Dim EMP_NO As String = ""
             Dim CATEGORY As String = ""
@@ -179,9 +373,10 @@ Public Class frmNewEmployee
                 UPDATE_Emp_SBU_EXCEL(CATEGORY, AMOUNT, PRINCIPAL, CREDIT, BALANCE, row)
             End If
 
-
             frmMainForm.AppProgressBar.Value += 1
         Next row
+
+        RunCommand($"UPDATE PAYROLL_SBU SET CATEGORY = 'SBU';")
 
         progressBarEnd()
 
@@ -508,7 +703,7 @@ Public Class frmNewEmployee
 
             SaveNew_Employee(Add_Company_CB.Text, Branch_ComboB.Text, Fullname_TXT.Text, Bio_TXT.Text, Email_TXT.Text, emp_status, Started_DTP.Value, False,
                          TimeIn_Combo.Text, TimeOut_Combo.Text, EmpNo_TXT.Text, TIN_TXT.Text, SSS_TXT.Text, PHILH_TXT.Text, HDMF_TXT.Text, HO_Category.Text,
-                         ComCategory_Combo.Text, Position_Combo.Text, ComCompany_Cmbo.Text)
+                         ComCategory_Combo.Text, Position_Combo.Text, ComCompany_Cmbo.Text, PhotoCategory_Combo.Text)
 
             If btnSave.Tag = "UPDATE" Then
                 SaveLogs($"EDITED EMPLOYEE - Company({Add_Company_CB.Text}), Branch({Branch_ComboB.Text}), Email({Email_TXT.Text}), Status({stat}), Started({Started_DTP.Value.ToShortDateString}), Time in/out({TimeIn_Combo.Text}/{TimeOut_Combo.Text}), Emp No.({EmpNo_TXT.Text}), TIN({TIN_TXT.Text}), SSS({SSS_TXT.Text}), Philhealth({PHILH_TXT.Text}), Pagibig({HDMF_TXT.Text}), Position({Position_Combo.Text}), HO({HO_Category.Text}, {ComCategory_Combo.Text}, {ComCompany_Cmbo.Text})",
@@ -674,7 +869,6 @@ Public Class frmNewEmployee
         End If
     End Sub
 
-
     Private Sub Started_DTP_ValueChanged(sender As Object, e As EventArgs) Handles Started_DTP.ValueChanged
         If Started_DTP.Value <> "1/1/2000" Then
             sender.Region = Nothing
@@ -788,9 +982,21 @@ Public Class frmNewEmployee
         sender.SelectionStart = selectionStart
 
 
-        If Add_Company_CB.SelectedItem <> "HEAD OFFICE" Then
-            Label4.Visible = True
-            Branch_ComboB.Visible = True
+        If Add_Company_CB.SelectedItem = "HEAD OFFICE" Then
+
+            Label4.Visible = False
+            Branch_ComboB.Visible = False
+            Branch_ComboB.Text = ""
+
+            Label24.Visible = False
+            PhotoCategory_Combo.Visible = False
+            PhotoCategory_Combo.Text = ""
+
+            Label19.Visible = True
+            HO_Category.Visible = True
+
+
+        ElseIf Add_Company_CB.SelectedItem = "PHOTO" Then
 
             Label19.Visible = False
             HO_Category.Visible = False
@@ -803,14 +1009,34 @@ Public Class frmNewEmployee
             Label23.Visible = False
             ComCompany_Cmbo.Visible = False
             ComCompany_Cmbo.Text = ""
+
+            Label24.Visible = True
+            PhotoCategory_Combo.Visible = True
+
+            Label4.Visible = True
+            Branch_ComboB.Visible = True
+
         Else
-            Label4.Visible = False
-            Branch_ComboB.Visible = False
 
-            Label19.Visible = True
-            HO_Category.Visible = True
+            Label4.Visible = True
+            Branch_ComboB.Visible = True
 
-            Branch_ComboB.Text = ""
+            Label19.Visible = False
+            HO_Category.Visible = False
+            HO_Category.Text = ""
+
+            Label24.Visible = False
+            PhotoCategory_Combo.Visible = False
+            PhotoCategory_Combo.Text = ""
+
+            Label20.Visible = False
+            ComCategory_Combo.Visible = False
+            ComCategory_Combo.Text = ""
+
+            Label23.Visible = False
+            ComCompany_Cmbo.Visible = False
+            ComCompany_Cmbo.Text = ""
+
         End If
 
     End Sub

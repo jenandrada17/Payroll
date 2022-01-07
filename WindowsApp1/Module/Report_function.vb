@@ -820,20 +820,37 @@ Module Report_function
 
     Public Sub Check_This()
 
-        Dim mysql As String = $"Select * FROM  RECORDED_ALLOW_DEDUC "
-
-        Using ds As DataSet = LoadSQL(mysql, "RECORDED_ALLOW_DEDUC")
+        Dim mysql As String = $"Select Sum(TOTAL_DEDUCTION) as tots From payroll_payout B inner join payroll_employee A on B.BIOMETRIC_ID = A.bio_no 
+                                WHERE HO_CATEGORY = 'Dalton Admin Operation' and PAYDATE = '12/31/2021' "
+        Using ds As DataSet = LoadSQL(mysql, "payroll_employee")
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each DR In ds.Tables(0).Rows
                     With DR
-                        Dim AMOUNT As Decimal = .Item("AMOUNTT")
-                        Dim CATEGORY As String = .Item("CATEGORY")
 
-                        update_rECORD_ALLOW_DEDUC(.Item("BIO_NO"), AMOUNT, CATEGORY)
+                        Dim asas As String = .Item("tots")
+                        MsgBox(asas)
+
+                        'MsgBox(asas.ToString("N"))
+
+                        'SAVEE(.item("BIOMETRIC_ID"), .item("TOTAL_LATE_UT"))
                     End With
                 Next
             End If
         End Using
+        'Dim mysql As String = $"Select * FROM  RECORDED_ALLOW_DEDUC "
+
+        'Using ds As DataSet = LoadSQL(mysql, "RECORDED_ALLOW_DEDUC")
+        '    If ds.Tables(0).Rows.Count > 0 Then
+        '        For Each DR In ds.Tables(0).Rows
+        '            With DR
+        '                Dim AMOUNT As Decimal = .Item("AMOUNTT")
+        '                Dim CATEGORY As String = .Item("CATEGORY")
+
+        '                update_rECORD_ALLOW_DEDUC(.Item("BIO_NO"), AMOUNT, CATEGORY)
+        '            End With
+        '        Next
+        '    End If
+        'End Using
 
         'Dim mysql As String = $"Select * FROM PAYROLL_EMPLOYEE B 
         '                           INNER Join PAYROLL_13MONTH C ON C.EMP_NO = B.EMP_NO"
@@ -848,26 +865,7 @@ Module Report_function
         '            End With
         '        Next
         '    End If
-        'End Using
-
-        'Dim mysql As String = $"Select Sum(TOTAL_LATE_UT) as tots From payroll_payout B inner join payroll_employee A on B.BIOMETRIC_ID = A.bio_no 
-        '                        WHERE HO_CATEGORY = 'PGC Head Office' "
-
-        'Using ds As DataSet = LoadSQL(mysql, "payroll_employee")
-        '    If ds.Tables(0).Rows.Count > 0 Then
-        '        For Each DR In ds.Tables(0).Rows
-        '            With DR
-
-        '                Dim asas As String = .Item("tots")
-        '                MsgBox(asas)
-
-        '                'MsgBox(asas.ToString("N"))
-
-        '                'SAVEE(.item("BIOMETRIC_ID"), .item("TOTAL_LATE_UT"))
-        '            End With
-        '        Next
-        '    End If
-        'End Using
+        'End Using 
 
     End Sub
 

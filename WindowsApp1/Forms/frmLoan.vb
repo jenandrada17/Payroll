@@ -1,4 +1,5 @@
 ﻿Public Class frmLoan
+
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
         Try
             Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmNewEmployee").SingleOrDefault()
@@ -9,7 +10,7 @@
                 frmMainForm.pNavigate.Controls.Add(frm)
                 frmMainForm.pNavigate.Tag = frm
                 frm.txtSearch.Tag = "Loan-Deduction"
-                frm.btnSearch.Tag = Category_Combo.SelectedItem
+                'frm.btnSearch.Tag = Category_Combo.SelectedItem
                 frm.Dock = DockStyle.Fill
                 frm.BringToFront()
                 frm.Show()
@@ -22,42 +23,18 @@
         End Try
     End Sub
 
-    Private Sub Label2_Click(sender As Object, e As EventArgs) Handles Label2.Click
-        Loans_Tab.SelectedIndex = 1
-        Deduct_txt.Select()
-    End Sub
-
-    Private Sub DeducSave_BTN_Click(sender As Object, e As EventArgs) Handles CatDeducSave_BTN.Click
-        If Not Deduct_txt.Text = "" Then
-            SaveCATEGORY(Deduct_txt.Text, "CATEGORY_DEDUCTION", "DEDUCTION_NAME")
-            Load_Category_LIST(CatDeduc_list, "CATEGORY_DEDUCTION", "DEDUCTION_NAME")
-
-            SaveLogs($"ADDED CATEGORY FOR DEDUCTION - {Deduct_txt.Text}", frmMainForm.UserName_LBL.Text)
-
-            PopulateComboBox_Any(Category_Combo, "CATEGORY_DEDUCTION", "DEDUCTION_NAME")
-            Deduct_txt.Text = ""
-        End If
-    End Sub
-
-    Private Sub Deduct_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Deduct_txt.KeyPress
-        If IsEnter(e) Then CatDeducSave_BTN.PerformClick()
-    End Sub
 
     Private Sub frmLoan_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        Load_Category_LIST(CatDeduc_list, "CATEGORY_DEDUCTION", "DEDUCTION_NAME")
-        PopulateComboBox_Any(Category_Combo, "CATEGORY_DEDUCTION", "DEDUCTION_NAME")
         Lists_deduction(Deduc_list)
-        Load_Loans(SSSLoan_LV, "PAYROLL_SSSLOAN")
-        Load_Loans(Pag_grid, "PAYROLL_PAGIBIGLOAN")
+        Load_Loans(SSSLoan_LV, "PAYROLL_LOANS", "SSS")
+        Load_Loans(Pag_grid, "PAYROLL_LOANS", "PAG-IBIG")
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Cancel_btn.Click
-        Category_Combo.Text = "Select"
         Name_txt.Clear()
-        Total_txt.Clear()
-        noOfDeduc_txt.Clear()
-        Amount_txt.Clear()
-        Schedule_Combo.Text = "Select"
+        PrincipalDeduc_txt.Clear()
+        CategoryDeduc_txt.Clear()
+        Schedule_Combo.Text = Nothing
     End Sub
 
     Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Save_btn.Click
@@ -69,12 +46,12 @@
         If result = DialogResult.Yes Then
 
             If Deduc_list.Tag = 0 Then
-                SaveDeductionS(Category_Combo.SelectedItem, Total_txt.Text, noOfDeduc_txt.Text, Amount_txt.Text, Schedule_Combo.Text, Name_txt.Tag, Effectiv_dtp.Value) 'Category_Combo.Tag (EMP_ID) | Name_TXT.Tag(Biometric) |  SearchEmp_BTN.Tag.Tag(Branch_id) | 
+                SaveDeductionS(CategoryDeduc_txt.Text, PrincipalDeduc_txt.Text, Schedule_Combo.Text, DateCharges_DTP.Value, Name_txt.Tag) 'Category_Combo.Tag (EMP_ID) | Name_TXT.Tag(Biometric) |  SearchEmp_BTN.Tag.Tag(Branch_id) |  
             Else
-                updateDeductionS(Deduc_list.Tag, Category_Combo.Text, Total_txt.Text, noOfDeduc_txt.Text, Amount_txt.Text, Schedule_Combo.Text, Effectiv_dtp.Value) 'Category_Combo.Tag (EMP_ID)
+                updateDeductionS(CategoryDeduc_txt.Tag.Tag, CategoryDeduc_txt.Text, PrincipalDeduc_txt.Text, Schedule_Combo.Text, DateCharges_DTP.Value) 'Category_Combo.Tag (EMP_ID)
             End If
 
-            SaveLogs($"{DE_Save_BTN.Tag} DEDUCTION - {Name_txt.Text} ({Name_txt.Tag}), Category({Category_Combo.Text}), Total({Total_txt.Text}), No. of Gives({noOfDeduc_txt.Text}), Amount/Give({Amount_txt.Text}), Effectivity({Effectiv_dtp.Value.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
+            SaveLogs($"{DE_Save_BTN.Tag} DEDUCTION - {Name_txt.Text} ({Name_txt.Tag}), Category({CategoryDeduc_txt.Text}), Total({PrincipalDeduc_txt.Text}), Schedule({Schedule_Combo.Text}), Date({DateCharges_DTP.Value.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
 
             Lists_deduction(Deduc_list)
             Cancel_btn.PerformClick()
@@ -88,21 +65,21 @@
             MsgBox("Please select a name.", MsgBoxStyle.Critical, "Error")
             Return False
 
-        ElseIf Category_Combo.SelectedIndex < 0 Then
-            Category_Combo.Region = New Region(New Rectangle(2, 2, Category_Combo.Width - 4, Category_Combo.Height - 4))
+        ElseIf String.IsNullOrEmpty(CategoryDeduc_txt.Text) Then
+            CategoryDeduc_txt.Region = New Region(New Rectangle(2, 2, CategoryDeduc_txt.Width - 4, CategoryDeduc_txt.Height - 4))
             Return False
 
         ElseIf Schedule_Combo.SelectedIndex < 0 Then
             Schedule_Combo.Region = New Region(New Rectangle(2, 2, Schedule_Combo.Width - 4, Schedule_Combo.Height - 4))
             Return False
 
-        ElseIf String.IsNullOrEmpty(Total_txt.Text) Then
-            Total_txt.Region = New Region(New Rectangle(2, 2, Total_txt.Width - 4, Total_txt.Height - 4))
+        ElseIf String.IsNullOrEmpty(CategoryDeduc_txt.Text) Then
+            PrincipalDeduc_txt.Region = New Region(New Rectangle(2, 2, PrincipalDeduc_txt.Width - 4, PrincipalDeduc_txt.Height - 4))
             Return False
 
-        ElseIf String.IsNullOrEmpty(noOfDeduc_txt.Text) Then
-            noOfDeduc_txt.Region = New Region(New Rectangle(2, 2, noOfDeduc_txt.Width - 4, noOfDeduc_txt.Height - 4))
-            Return False
+            'ElseIf String.IsNullOrEmpty(noOfDeduc_txt.Text) Then
+            '    noOfDeduc_txt.Region = New Region(New Rectangle(2, 2, noOfDeduc_txt.Width - 4, noOfDeduc_txt.Height - 4))
+            '    Return False
         End If
 
         Return True
@@ -125,38 +102,36 @@
     End Sub
 
     Private Sub menu_subtotal_Click(sender As Object, e As EventArgs) Handles menu_subtotal.Click
-        Dim bioNo, total_amount, open_amount, close_amount, every_amount, balance As String
+        Dim bioNo As String
+        Dim total_amount, Amount_perPayroll, balance As Decimal
 
         If Deduc_list.SelectedItems.Count > 0 Then
             bioNo = Deduc_list.Items(Deduc_list.FocusedItem.Index).SubItems(1).Tag
-            total_amount = GetDeduction_TotalAmount(bioNo)
+            total_amount = GetDeduction_PRINCIPAL(bioNo)
 
-            every_amount = GetDeduction_EVERY(bioNo)
-
-            open_amount = GetDeduction_OPEN(bioNo) + every_amount
-            close_amount = GetDeduction_CLOSE(bioNo) + every_amount
+            Amount_perPayroll = GetDeduction_ChargesRange(bioNo, total_amount)
             balance = GetDeduction_OverAll_Balance(bioNo)
 
-            MsgBox("Total Amount     :  " & total_amount & vbCrLf &
-                   "Open Payroll      :  " & open_amount & vbCrLf &
-                   "Close Payroll      :  " & close_amount & vbCrLf &
-                   "Balance               :  " & balance, MsgBoxStyle.Information, "TOTAL")
+            MsgBox("Total Amount     :  " & FormatNumber(total_amount) & vbCrLf &
+                       "Amount/Payroll  :  " & FormatNumber(Amount_perPayroll) & vbCrLf &
+                       "Balance               :  " & FormatNumber(balance), MsgBoxStyle.Information, "TOTAL")
         End If
 
     End Sub
 
     Private Sub menu_edit_Click(sender As Object, e As EventArgs) Handles menu_edit.Click
+        Dim DEDUCT_ID As String = Deduc_list.Items(Deduc_list.FocusedItem.Index).SubItems(3).Tag
         Name_txt.Text = Deduc_list.Items(Deduc_list.FocusedItem.Index).SubItems(0).Text
         Name_txt.Tag = Deduc_list.Items(Deduc_list.FocusedItem.Index).SubItems(1).Tag
-        Category_Combo.Text = Deduc_list.Items(Deduc_list.FocusedItem.Index).SubItems(1).Text
-        Schedule_Combo.Text = Deduc_list.Items(Deduc_list.FocusedItem.Index).SubItems(5).Text
-        Total_txt.Text = Deduc_list.Items(Deduc_list.FocusedItem.Index).SubItems(2).Text
-        noOfDeduc_txt.Text = Deduc_list.Items(Deduc_list.FocusedItem.Index).SubItems(3).Text
-        Amount_txt.Text = Deduc_list.Items(Deduc_list.FocusedItem.Index).SubItems(4).Text
-        Deduc_list.Tag = Deduc_list.Items(Deduc_list.FocusedItem.Index).SubItems(2).Tag
-        Effectiv_dtp.Value = Deduc_list.Items(Deduc_list.FocusedItem.Index).SubItems(3).Tag
+        CategoryDeduc_txt.Text = Deduc_list.Items(Deduc_list.FocusedItem.Index).SubItems(1).Text
+        PrincipalDeduc_txt.Text = Deduc_list.Items(Deduc_list.FocusedItem.Index).SubItems(2).Text
+        Schedule_Combo.Text = Deduc_list.Items(Deduc_list.FocusedItem.Index).SubItems(3).Text
+        CategoryDeduc_txt.Tag = DEDUCT_ID
+
+        DateCharges_DTP.Value = GetDeduction_Datee(DEDUCT_ID)
 
         Save_btn.Tag = "UPDATE"
+
     End Sub
 
     Private Sub Deduc_list_MouseClick(sender As Object, e As MouseEventArgs) Handles Deduc_list.MouseClick
@@ -192,7 +167,7 @@
         End With
     End Sub
 
-    Private Sub Total_txt_KeyPress_1(sender As Object, e As KeyPressEventArgs) Handles Total_txt.KeyPress, noOfDeduc_txt.KeyPress, Amount_txt.KeyPress
+    Private Sub Total_txt_KeyPress_1(sender As Object, e As KeyPressEventArgs) Handles PrincipalDeduc_txt.KeyPress
 
         If e.KeyChar <> ChrW(Keys.Back) Then
 
@@ -203,21 +178,6 @@
 
     End Sub
 
-    Private Sub noOfDeduc_txt_TextChanged(sender As Object, e As EventArgs) Handles noOfDeduc_txt.TextChanged
-        If Not Total_txt.Text = String.Empty And Not noOfDeduc_txt.Text = String.Empty And IsNumeric(noOfDeduc_txt.Text) Then
-            Amount_txt.Text = Math.Ceiling(Convert.ToDouble(Total_txt.Text) / Convert.ToDouble(noOfDeduc_txt.Text))
-            noOfDeduc_txt.Region = Nothing
-        Else
-            Amount_txt.Clear()
-        End If
-    End Sub
-
-    Private Sub Total_txt_TextChanged(sender As Object, e As EventArgs) Handles Total_txt.TextChanged
-        If Total_txt.Text = Nothing Then
-            noOfDeduc_txt.Text = Nothing
-            Amount_txt.Text = Nothing
-        End If
-    End Sub
 
     Private Sub Search_txt_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Search_txt.KeyPress
         If IsEnter(e) Then Search_btn.PerformClick()
@@ -248,9 +208,9 @@
 
     Private Sub Allow_Cancel_BTN_Click(sender As Object, e As EventArgs) Handles Allow_Cancel_BTN.Click
         SSS_Name_TXT.Clear()
-        SSS_Amount_TXT.Clear()
-        SSS_FirstAmort_DTP.Value = Today
-        SSS_MaturityAmort_DTP.Value = Today
+        SSS_Amort_TXT.Clear()
+        SSSPrincipal_TXT.Clear()
+        SSS_Date_DTP.Value = Today
     End Sub
 
     Private Sub Allow_Save_BTN_Click(sender As Object, e As EventArgs) Handles Allow_Save_BTN.Click
@@ -258,10 +218,10 @@
         Dim result As DialogResult = MsgBox($"SSS Loan for {SSS_Name_TXT.Text} will be recorded, proceed anyway?", MessageBoxButtons.YesNo)
         If result = DialogResult.Yes Then
 
-            Save_SSSLoan(SSS_Name_TXT.Tag, SSS_Amount_TXT.Text, SSS_FirstAmort_DTP.Value, SSS_MaturityAmort_DTP.Value)
-            Load_Loans(SSSLoan_LV, "PAYROLL_SSSLOAN")
+            Save_Loans(SSS_Name_TXT.Tag, SSS_Amort_TXT.Text, SSSPrincipal_TXT.Text, SSS_Amort_TXT.Text, SSS_Date_DTP.Value)
+            Load_Loans(SSSLoan_LV, "PAYROLL_LOANS", "SSS")
 
-            SaveLogs($"ADDED SSS LOAN {SSS_Name_TXT.Text} ({SSS_Name_TXT.Tag}), Amount({SSS_Amount_TXT.Text}), Start({SSS_FirstAmort_DTP.Value.ToString("MMM dd, yyyy")}), End({SSS_MaturityAmort_DTP.Value.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
+            SaveLogs($"ADDED SSS LOAN {SSS_Name_TXT.Text} ({SSS_Name_TXT.Tag}), Amort({SSS_Amort_TXT.Text}), Principal({SSSPrincipal_TXT.Text}), Date({SSS_Date_DTP.Value.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
             Allow_Cancel_BTN.PerformClick()
         End If
 
@@ -296,8 +256,8 @@
         Dim result As DialogResult = MsgBox($"Pagibig Loan for {Pag_Name_TXT.Text} will be recorded, proceed anyway?", MessageBoxButtons.YesNo)
         If result = DialogResult.Yes Then
 
-            Save_PAGIBIGLoan(Pag_Name_TXT.Tag, Pag_Amount_TXT.Text, Pag_Start_DTP.Value, Pag_End_DTP.Value)
-            Load_Loans(Pag_grid, "PAYROLL_PAGIBIGLOAN")
+            Save_PAGIBIGLoan(Pag_Name_TXT.Tag, Pag_Amount_TXT.Text, Pag_Start_DTP.Value, Pag_End_DTP.Value, PagibigPrincipal_TXT.Text)
+            Load_Loans(Pag_grid, "PAYROLL_LOANS", "PAG-IBIG")
 
             SaveLogs($"ADDED PAGIBIG LOAN {Pag_Name_TXT.Text} ({Pag_Name_TXT.Tag}), Amount({Pag_Amount_TXT.Text}), Start({Pag_Start_DTP.Value.ToString("MMM dd, yyyy")}), End({Pag_End_DTP.Value.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
             Pag_Cancel_BTN.PerformClick()
@@ -316,10 +276,11 @@
         Close()
     End Sub
 
-    Private Sub Loans_Tab_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Loans_Tab.SelectedIndexChanged
-        If Loans_Tab.SelectedIndex = 0 Then
-            PopulateComboBox_Any(Category_Combo, "CATEGORY_DEDUCTION", "DEDUCTION_NAME")
+    Private Sub SSS_Amount_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles SSSPrincipal_TXT.KeyPress, SSS_Amort_TXT.KeyPress
+        If Not e.KeyChar = ChrW(Keys.Back) Then
+            If Not Char.IsNumber(e.KeyChar) And Not Char.IsControl(e.KeyChar) And Not e.KeyChar = "." Then
+                e.Handled = True
+            End If
         End If
     End Sub
-
 End Class

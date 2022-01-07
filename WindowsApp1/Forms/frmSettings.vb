@@ -757,4 +757,5 @@
 
         GetAllowance_Details(idNo, Allow_Name_TXT, Allow_Category_Combo, Allow_Schedule_Combo, A_EveryDate_Combo, Allow_Amount_TXT, A_EffectiveDate_DTP, FixYes_RadioB, FixNo_RadioB)
     End Sub
+
 End Class
