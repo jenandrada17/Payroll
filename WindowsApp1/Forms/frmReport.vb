@@ -14,6 +14,7 @@ Public Class frmReport
         PopulateComboBox(SumPaydate_Combo, "PAYROLL_PAYOUT", "PAYDATE")
         PopulateComboBox_Any(Rem_Paydate_Combo, "PAYROLL_PAYOUT", "PAYDATE")
         PopulateComboBox(CostPaydate_Combo, "PAYROLL_PAYOUT", "PAYDATE")
+        PopulateComboBox(LoanPaydate_Combo, "PAYROLL_PAYOUT", "PAYDATE")
         Lists_Deduction_History(SBUHistory_List, "SBU")
         Lists_Deduction_History(DeducHistory_List, "DEDUCTION")
 
@@ -727,8 +728,10 @@ Public Class frmReport
             ElseIf RemCompany_Combo.SelectedIndex = 5 Then
                 str = $"(COMPANY = 'PERFECOM' OR HO_CATEGORY LIKE '%Perfecom%')"
             ElseIf RemCompany_Combo.SelectedIndex = 6 Then
-                str = $"(COMPANY = 'P&G UY' OR HO_CATEGORY LIKE '%GHS/P&G UY%')"
+                str = $"(COMPANY = 'P&G UY' OR HO_CATEGORY LIKE '%GHS%')"
             ElseIf RemCompany_Combo.SelectedIndex = 7 Then
+                str = $"HO_CATEGORY IN ('Leasing Admin Office','Construction')"
+            ElseIf RemCompany_Combo.SelectedIndex = 8 Then
                 str = $"HO_CATEGORY = 'PGC Head Office'"
             End If
 
@@ -756,6 +759,64 @@ Public Class frmReport
             Rpt_Distribution.LocalReport.DataSources.Add(DATASOURCE)
             Rpt_Distribution.LocalReport.SetParameters(paramList)
             Rpt_Distribution.RefreshReport()
+
+        Catch ex As Exception
+            Log_Report(ex.ToString)
+            MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+
+    End Sub
+
+    Public Sub LoadLoans()
+
+        Rpt_Loans.LocalReport.DataSources.Clear()
+        Dim PAYDATE As DateTime = LoanPaydate_Combo.Text
+
+        Try
+
+            Dim FORMNAME As String = ""
+            Dim str As String = ""
+            Dim DATASOURCE As Microsoft.Reporting.WinForms.ReportDataSource = Nothing
+
+            If LoanCompany_Combo.SelectedIndex = 0 Then
+                str = $"HO_CATEGORY LIKE '%Photo%'"
+            ElseIf LoanCompany_Combo.SelectedIndex = 1 Then
+                str = $"COMPANY_CATEGORY = 'GENSAN PERFECT'"
+            ElseIf LoanCompany_Combo.SelectedIndex = 2 Then
+                str = $"COMPANY_CATEGORY = 'DAVAO PERFECT'"
+            ElseIf LoanCompany_Combo.SelectedIndex = 3 Then
+                str = $"COMPANY_CATEGORY = 'JR PHOTO' "
+            ElseIf LoanCompany_Combo.SelectedIndex = 4 Then
+                str = $"(COMPANY = 'DALTON' OR HO_CATEGORY LIKE '%Dalton%')"
+            ElseIf LoanCompany_Combo.SelectedIndex = 5 Then
+                str = $"(COMPANY = 'PERFECOM' OR HO_CATEGORY LIKE '%Perfecom%')"
+            ElseIf LoanCompany_Combo.SelectedIndex = 6 Then
+                str = $"(COMPANY = 'P&G UY' OR HO_CATEGORY LIKE '%GHS%')"
+            ElseIf LoanCompany_Combo.SelectedIndex = 7 Then
+                str = $"HO_CATEGORY IN ('Leasing Admin Office','Construction')"
+            ElseIf LoanCompany_Combo.SelectedIndex = 8 Then
+                str = $"HO_CATEGORY = 'PGC Head Office'"
+            End If
+
+            If LoanCat_Combo.SelectedIndex = 0 Then
+
+                DATASOURCE = New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", Load_Loan_Report(LoanPaydate_Combo.Text, str, LoanCat_Combo.Text))
+                FORMNAME = $"SSS Loan for {LoanCompany_Combo.Text} - {PAYDATE.ToString("MMMM dd, yyyy")}"
+
+            ElseIf LoanCat_Combo.SelectedIndex = 1 Then
+
+                DATASOURCE = New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", Load_Loan_Report(LoanPaydate_Combo.Text, str, LoanCat_Combo.Text))
+                FORMNAME = $"Pagibig Loan {LoanCompany_Combo.Text} - {PAYDATE.ToString("MMMM dd, yyyy")}"
+
+            End If
+
+            Dim paramList As New List(Of Microsoft.Reporting.WinForms.ReportParameter) From {
+                        New Microsoft.Reporting.WinForms.ReportParameter("paramFormName", FORMNAME)
+                        }
+
+            Rpt_Loans.LocalReport.DataSources.Add(DATASOURCE)
+            Rpt_Loans.LocalReport.SetParameters(paramList)
+            Rpt_Loans.RefreshReport()
 
         Catch ex As Exception
             Log_Report(ex.ToString)
@@ -1206,7 +1267,7 @@ Public Class frmReport
                                         inner Join PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_ID
                                         left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCH_CODE  
                                         where A.PAYDATE = '{paydatee}' and B.COMPANY  = 'P&G UY' 
-                                        And B.BRANCH_CODE IN ('COMI','KTV','PBA','WAVE') 
+                                        And B.BRANCH_CODE IN ('COMI','KTV','PBA','WAVE', 'GHS MAINTENANCE') 
                                         Order by B.BRANCH_CODE asc"
 
                     ElseIf NetBranch_Combo.SelectedIndex = 3 Then '=== P&G UY HEAD OFFICE
@@ -1388,4 +1449,15 @@ Public Class frmReport
         End If
     End Sub
 
+    Private Sub LoanCompany_Combo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles LoanCompany_Combo.SelectedIndexChanged
+        If Not LoanPaydate_Combo.SelectedIndex >= 0 Then
+            MsgBox("Please select payroll date!", MsgBoxStyle.Exclamation, "Invalid")
+        ElseIf Not LoanCat_Combo.SelectedIndex >= 0 Then
+            MsgBox("Please select category!", MsgBoxStyle.Exclamation, "Invalid")
+        ElseIf Not LoanCompany_Combo.SelectedIndex >= 0 Then
+            MsgBox("Please select company!", MsgBoxStyle.Exclamation, "Invalid")
+        Else
+            LoadLoans()
+        End If
+    End Sub
 End Class

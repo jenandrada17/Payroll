@@ -655,24 +655,30 @@ Public Class frmPayout
         End If
     End Sub
 
-    Private Sub ConfirmDeduc_btn_Click(sender As Object, e As EventArgs) Handles ConfirmDeduc_btn.Click
-        If Payslip_paydate_Combo.SelectedIndex >= 0 Then
-            Dim mysqll As String = $"select * from payroll_payout where paydate = '{Payslip_paydate_Combo.Text}';"
-            Using ds As DataSet = LoadSQL(mysqll, "payroll_payout")
-                If ds.Tables(0).Rows.Count > 0 Then
-                    progressBarStart(ds.Tables(0).Rows.Count)
-                    For Each dr In ds.Tables(0).Rows
-                        With dr
-                            Deduct_ifExist(.Item("BIOMETRIC_ID"), Payslip_paydate_Combo.Text)
-                        End With
+    'Private Sub ConfirmDeduc_btn_Click(sender As Object, e As EventArgs) Handles ConfirmDeduc_btn.Click
+    '    If Payslip_paydate_Combo.SelectedIndex >= 0 Then
+    '        Dim mysqll As String = $"select * from payroll_payout where paydate = '{Payslip_paydate_Combo.Text}';"
+    '        Using ds As DataSet = LoadSQL(mysqll, "payroll_payout")
+    '            If ds.Tables(0).Rows.Count > 0 Then
+    '                progressBarStart(ds.Tables(0).Rows.Count)
+    '                For Each dr In ds.Tables(0).Rows
+    '                    With dr
+    '                        Deduct_ifExist(.Item("BIOMETRIC_ID"), Payslip_paydate_Combo.Text)
+    '                    End With
 
-                        frmMainForm.AppProgressBar.Value += 1
-                    Next
-                    progressBarEnd()
-                End If
-            End Using
-        Else
-            MsgBox("Please Select Paydate.", MsgBoxStyle.Exclamation, "INVALID")
+    '                    frmMainForm.AppProgressBar.Value += 1
+    '                Next
+    '                progressBarEnd()
+    '            End If
+    '        End Using
+    '    Else
+    '        MsgBox("Please Select Paydate.", MsgBoxStyle.Exclamation, "INVALID")
+    '    End If
+    'End Sub
+
+    Private Sub TrainingDays_LBL_TextChanged(sender As Object, e As EventArgs) Handles TrainingDays_LBL.TextChanged
+        If TrainingDays_LBL.Text > 0 Then
+            Training_GB.Visible = True
         End If
     End Sub
 
@@ -689,7 +695,6 @@ Public Class frmPayout
             Next
         End If
 
-        'Allowances_LBL.Text = totals.ToString("N")
         Allowances_LBL.Text = FormatNumber(totals)
         Allowances_LBL.Tag = totals
     End Sub
@@ -699,7 +704,9 @@ Public Class frmPayout
         Dim totals As Double = 0
         If Deduction_grid.Rows.Count > 0 Then
             For Each row As DataGridViewRow In Deduction_grid.Rows
-                totals = totals + row.Cells(0).Tag
+                If row.Cells(3).Value = "OFF" Then
+                    totals = totals + row.Cells(0).Tag
+                End If
             Next
         End If
 
@@ -804,7 +811,7 @@ Public Class frmPayout
 
     Private Sub Send_BTN_Click(sender As Object, e As EventArgs) Handles Send_BTN.Click
 
-        Dim result As DialogResult = MessageBox.Show($"Deductions will take effect, do you want to proceed?", "Warning", MessageBoxButtons.YesNo)
+        Dim result As DialogResult = MessageBox.Show($"Are you sure?", "Warning", MessageBoxButtons.YesNo)
         If result = DialogResult.Yes Then
 
             Dim datee As DateTime
@@ -846,7 +853,9 @@ Public Class frmPayout
 
                 LoadPayslip(Employee_TXT.Tag, Payslip_paydate_Combo.Text)
 
-                Deduct_ifExist(Employee_TXT.Tag, Payslip_paydate_Combo.Text)
+                CheckDeduction_IfZeroBalance(Employee_TXT.Tag)
+
+                'Deduct_ifExist(Employee_TXT.Tag, Payslip_paydate_Combo.Text)
 
                 '================================ CHECK IF VALID EMAIL ADDRESS ============================
                 Dim FoundMatch As Boolean = Regex.IsMatch(Email_TXT.Text, "\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase)
@@ -887,7 +896,9 @@ Public Class frmPayout
 
                         recipient = GetEmail_recipient(.item("BIOMETRIC_ID"))
 
-                        Deduct_ifExist(.Item("BIOMETRIC_ID"), Payslip_paydate_Combo.Text)             '======= REFLECT DEDUCTION IF EXIST
+                        CheckDeduction_IfZeroBalance(.item("BIOMETRIC_ID"))
+
+                        'Deduct_ifExist(.Item("BIOMETRIC_ID"), Payslip_paydate_Combo.Text)             '======= REFLECT DEDUCTION IF EXIST
 
                         Dim FoundMatch As Boolean = Regex.IsMatch(recipient, "\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase)
 
@@ -929,7 +940,9 @@ Public Class frmPayout
 
                         recipient = GetEmail_recipient(.item("BIOMETRIC_ID"))
 
-                        Deduct_ifExist(.Item("BIOMETRIC_ID"), Payslip_paydate_Combo.Text)             '======= REFLECT DEDUCTION IF EXIST
+                        CheckDeduction_IfZeroBalance(.item("BIOMETRIC_ID"))
+
+                        'Deduct_ifExist(.Item("BIOMETRIC_ID"), Payslip_paydate_Combo.Text)             '======= REFLECT DEDUCTION IF EXIST
 
                         Dim FoundMatch As Boolean = Regex.IsMatch(recipient, "\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase)
 

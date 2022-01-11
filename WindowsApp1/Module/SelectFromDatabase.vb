@@ -285,10 +285,10 @@ Module SelectFromDatabase
             Dim mysql As String
             If str.Length <> 0 Then
 
-                mysql = $"Select * from {tablee} A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIO_NO Where A.CATEGORY = '{category}' AND ("
+                mysql = $"Select A.*, A.BIO_NO as bioNo, B.* from {tablee} A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIO_NO Where A.CATEGORY = '{category}' AND ("
 
                 For Each name In strWords
-                    mysql &= $"{vbCr}UPPER(BIO_NO) Like UPPER('%{name}%') OR "
+                    mysql &= $"{vbCr}UPPER(A.BIO_NO) Like UPPER('%{name}%') OR "
                     mysql &= $"{vbCr}UPPER(FULLNAME) Like UPPER('%{name}%') OR "
                     mysql &= $"{vbCr}UPPER(COMPANY) Like UPPER('%{name}%') OR "
                     mysql &= $"{vbCr}UPPER(BRANCH_CODE) LIKE UPPER('%{name}%') OR "
@@ -296,7 +296,7 @@ Module SelectFromDatabase
                 Next
 
             Else
-                mysql = $"Select * from {tablee} A inner join PAYROLL_EMPLOYEE B On B.BIO_NO = A.BIO_NO Where A.CATEGORY = '{category}'"
+                mysql = $"Select A.*, A.BIO_NO as bioNo, B.*  from {tablee} A inner join PAYROLL_EMPLOYEE B On B.BIO_NO = A.BIO_NO Where A.CATEGORY = '{category}'"
             End If
 
             Using ds As DataSet = LoadSQL(mysql, tablee)
@@ -305,10 +305,18 @@ Module SelectFromDatabase
                 frmMainForm.AppProgressBar.Maximum = maxEntries
                 frmMainForm.AppProgressBar.Visible = True
                 listview.Items.Clear()
+
                 For Each dr In ds.Tables(0).Rows
-                    AddItem_Loan(dr, listview)
+                    With dr
+                        Dim datee As DateTime = .Item("DATEE")
+                        Dim lv As ListViewItem = listview.Items.Add(.Item("FULLNAME"))
+                        lv.SubItems.Add(FormatNumber(.Item("PRINCIPAL")))
+                        lv.SubItems.Add(FormatNumber(.Item("AMORT"))).Tag = .Item("ID")
+                        lv.SubItems.Add(datee.ToString("MMM dd, yyyy")).Tag = .Item("bioNo")
+                    End With
                     frmMainForm.AppProgressBar.Value += 1
                 Next
+
             End Using
 
             frmMainForm.AppProgressBar.Value = 0
@@ -319,15 +327,56 @@ Module SelectFromDatabase
         End Try
     End Sub
 
-    Private Sub AddItem_Loan(ByVal dr As DataRow, listview As ListView)
+    Public Sub Load_Other_Deduction(listview As ListView, tablee As String, category As String, Optional ByVal str As String = "")
 
-        With dr
-            Dim datee As DateTime = .Item("DATEE")
-            Dim lv As ListViewItem = listview.Items.Add(.Item("FULLNAME"))
-            lv.SubItems.Add(FormatNumber(.Item("PRINCIPAL")))
-            lv.SubItems.Add(FormatNumber(.Item("AMORT")))
-            lv.SubItems.Add(datee.ToString("MMM dd, yyyy"))
-        End With
+        Try
+
+            Dim secured_str As String = str
+            secured_str = DreadKnight(secured_str)
+            Dim strWords As String() = secured_str.Split(New Char() {" "c})
+            Dim name As String
+            Dim mysql As String
+            If str.Length <> 0 Then
+
+                mysql = $"Select A.*, A.BIO_NO as bioNo, B.* from {tablee} A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIO_NO Where A.CATEGORY = '{category}' AND ("
+
+                For Each name In strWords
+                    mysql &= $"{vbCr}UPPER(A.BIO_NO) Like UPPER('%{name}%') OR "
+                    mysql &= $"{vbCr}UPPER(FULLNAME) Like UPPER('%{name}%') OR "
+                    mysql &= $"{vbCr}UPPER(COMPANY) Like UPPER('%{name}%') OR "
+                    mysql &= $"{vbCr}UPPER(BRANCH_CODE) LIKE UPPER('%{name}%')) ORDER BY FULLNAME ASC "
+                Next
+
+            Else
+                mysql = $"Select A.*, A.BIO_NO as bioNo, B.*  from {tablee} A inner join PAYROLL_EMPLOYEE B On B.BIO_NO = A.BIO_NO Where A.CATEGORY = '{category}'"
+            End If
+
+            Using ds As DataSet = LoadSQL(mysql, tablee)
+                rowCount = ds.Tables(0).Rows.Count
+                Dim maxEntries As Integer = ds.Tables(0).Rows.Count
+                frmMainForm.AppProgressBar.Maximum = maxEntries
+                frmMainForm.AppProgressBar.Visible = True
+                listview.Items.Clear()
+
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+                        Dim datee As DateTime = .Item("DATEE")
+                        Dim lv As ListViewItem = listview.Items.Add(.Item("FULLNAME"))
+                        lv.SubItems.Add(FormatNumber(.Item("AMORT")))
+                        lv.SubItems.Add(datee.ToString("MMM dd, yyyy")).Tag = .Item("ID")
+                        lv.SubItems.Add(.Item("SCHEDULE")).Tag = .Item("bioNo")
+                    End With
+                    frmMainForm.AppProgressBar.Value += 1
+                Next
+
+            End Using
+
+            frmMainForm.AppProgressBar.Value = 0
+            frmMainForm.AppProgressBar.Maximum = 1000
+            frmMainForm.AppProgressBar.Visible = False
+        Catch ex As Exception
+            Log_Report(ex.ToString())
+        End Try
     End Sub
 
     Friend Sub REGULDARHolidayLists(LV As ListView)
@@ -1472,7 +1521,8 @@ Module SelectFromDatabase
             Dim i As ListViewItem = LV.Items.Add(.Item("FULLNAME"))
             i.SubItems.Add(.Item("CATEGORY")).Tag = .Item("BIO_NO")
             i.SubItems.Add(.Item("PRINCIPAL")).Tag = .Item("DATEE")
-            i.SubItems.Add(IIf(IsDBNull(.Item("SCHEDULE")), "", .Item("SCHEDULE"))).Tag = .Item("deduc_id")
+            i.SubItems.Add(.Item("AMORT"))
+            i.SubItems.Add(IIf(IsDBNull(.Item("SCHEDULE")), "", .Item("SCHEDULE"))).Tag = .Item("ID")
             'i.SubItems.Add(.Item("CREDIT"))
             'i.SubItems.Add(.Item("BALANCE"))
         End With
@@ -1501,6 +1551,22 @@ Module SelectFromDatabase
         Dim mysql_ As String = $"Select SUM(PRINCIPAL) as princ_tots, SUM(CREDIT) as tots_credit From  PAYROLL_DEDUCTION where BIO_NO = '{BIO_NO}' AND BALANCE > 0"
 
         Dim dSs As DataSet = LoadSQL(mysql_, "PAYROLL_DEDUCTION")
+        If dSs.Tables(0).Rows.Count > 0 Then
+            Dim dr As DataRow = dSs.Tables(0).Rows(0)
+            With dr
+                balance = .Item("princ_tots") - .Item("tots_credit")
+            End With
+        End If
+
+        Return balance
+    End Function
+
+    Public Function GetDeduction_Balance(BIO_NO As String) As String
+        Dim balance As Decimal = 0
+
+        Dim mysql_ As String = $"Select SUM(PRINCIPAL) as princ_tots, SUM(CREDIT) as tots_credit From  PAYROLL_DEDUCTION  where BIO_NO = '{BIO_NO}' AND BALANCE > 0"
+        Dim dSs As DataSet = LoadSQL(mysql_, "PAYROLL_DEDUCTION")
+
         If dSs.Tables(0).Rows.Count > 0 Then
             Dim dr As DataRow = dSs.Tables(0).Rows(0)
             With dr
@@ -2081,7 +2147,7 @@ Module SelectFromDatabase
                            TimeIn_Combo As ComboBox, TimeOut_Combo As ComboBox, EmoNo_TXT As TextBox, TIN_TXT As TextBox,
                            SSS_TXT As TextBox, PHILH_TXT As TextBox, HDMF_TXT As TextBox, HO_Category As ComboBox,
                            ComCategory_Combo As ComboBox, Position_Combo As ComboBox, ComCompany_Cmbo As ComboBox,
-                           Optional btnSave As Button = Nothing)
+                           PhotoCategory_Combo As ComboBox, Optional btnSave As Button = Nothing)
 
         Dim mysql As String = $"select * from PAYROLL_EMPLOYEE where BIO_NO = '{bio_no}'"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
@@ -2094,6 +2160,7 @@ Module SelectFromDatabase
 
                     Add_Company_CB.Text = .Item("COMPANY")
                     HO_Category.Text = IIf(IsDBNull(.Item("HO_CATEGORY")), Nothing, .Item("HO_CATEGORY"))
+                    PhotoCategory_Combo.Text = IIf(IsDBNull(.Item("COMPANY_CATEGORY")), Nothing, .Item("COMPANY_CATEGORY"))
                     ComCategory_Combo.Text = IIf(IsDBNull(.Item("COMMON_CATEGORY")), Nothing, .Item("COMMON_CATEGORY"))
                     ComCompany_Cmbo.Text = IIf(IsDBNull(.Item("COMMON_COMPANY")), Nothing, .Item("COMMON_COMPANY"))
                     Branch_ComboB.Text = .Item("BRANCH_CODE")
@@ -2654,7 +2721,7 @@ Module SelectFromDatabase
         Return False
     End Function
 
-    Friend Function GetData(column As String, str As String)
+    Friend Function GetData(column As String, str As String) As String
         Dim dataa As String = ""
         Dim mysql As String = $"Select {column} from {str}"
         Using ds As DataSet = LoadSQL(mysql)
@@ -2676,7 +2743,6 @@ Module SelectFromDatabase
         End Using
         Return False
     End Function
-
 
     Public Function GetTotal(column As String, table As String, where As String) As Decimal
         Dim TOTALS As Decimal = 0

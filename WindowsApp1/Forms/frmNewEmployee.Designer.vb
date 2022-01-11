@@ -58,6 +58,8 @@ Partial Class frmNewEmployee
         Me.Add_Company_CB = New System.Windows.Forms.ComboBox()
         Me.Label19 = New System.Windows.Forms.Label()
         Me.HO_Category = New System.Windows.Forms.ComboBox()
+        Me.Label24 = New System.Windows.Forms.Label()
+        Me.PhotoCategory_Combo = New System.Windows.Forms.ComboBox()
         Me.Label20 = New System.Windows.Forms.Label()
         Me.ComCategory_Combo = New System.Windows.Forms.ComboBox()
         Me.Label23 = New System.Windows.Forms.Label()
@@ -71,22 +73,22 @@ Partial Class frmNewEmployee
         Me.Label22 = New System.Windows.Forms.Label()
         Me.Position_Combo = New System.Windows.Forms.ComboBox()
         Me.Label13 = New System.Windows.Forms.Label()
-        Me.TimeIn_Combo = New System.Windows.Forms.ComboBox()
-        Me.Label14 = New System.Windows.Forms.Label()
         Me.TimeOut_Combo = New System.Windows.Forms.ComboBox()
+        Me.Label14 = New System.Windows.Forms.Label()
+        Me.TimeIn_Combo = New System.Windows.Forms.ComboBox()
         Me.Label8 = New System.Windows.Forms.Label()
         Me.Label11 = New System.Windows.Forms.Label()
         Me.Fullname_TXT = New System.Windows.Forms.TextBox()
         Me.Label7 = New System.Windows.Forms.Label()
         Me.Email_TXT = New System.Windows.Forms.TextBox()
         Me.Label15 = New System.Windows.Forms.Label()
-        Me.TIN_TXT = New System.Windows.Forms.TextBox()
-        Me.Label16 = New System.Windows.Forms.Label()
         Me.SSS_TXT = New System.Windows.Forms.TextBox()
+        Me.Label16 = New System.Windows.Forms.Label()
+        Me.TIN_TXT = New System.Windows.Forms.TextBox()
         Me.Label18 = New System.Windows.Forms.Label()
-        Me.PHILH_TXT = New System.Windows.Forms.TextBox()
-        Me.Label17 = New System.Windows.Forms.Label()
         Me.HDMF_TXT = New System.Windows.Forms.TextBox()
+        Me.Label17 = New System.Windows.Forms.Label()
+        Me.PHILH_TXT = New System.Windows.Forms.TextBox()
         Me.Label21 = New System.Windows.Forms.Label()
         Me.Active_RB = New System.Windows.Forms.RadioButton()
         Me.InActive_RB = New System.Windows.Forms.RadioButton()
@@ -96,8 +98,6 @@ Partial Class frmNewEmployee
         Me.Add_Panel = New System.Windows.Forms.Panel()
         Me.Context_Details = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.View_Menu = New System.Windows.Forms.ToolStripMenuItem()
-        Me.Label24 = New System.Windows.Forms.Label()
-        Me.PhotoCategory_Combo = New System.Windows.Forms.ComboBox()
         Me.Excel_Panel.SuspendLayout()
         Me.FlowLayoutPanel1.SuspendLayout()
         Me.Add_Panel.SuspendLayout()
@@ -374,22 +374,22 @@ Partial Class frmNewEmployee
         Me.FlowLayoutPanel1.Controls.Add(Me.Label22)
         Me.FlowLayoutPanel1.Controls.Add(Me.Position_Combo)
         Me.FlowLayoutPanel1.Controls.Add(Me.Label13)
-        Me.FlowLayoutPanel1.Controls.Add(Me.TimeOut_Combo)
-        Me.FlowLayoutPanel1.Controls.Add(Me.Label14)
         Me.FlowLayoutPanel1.Controls.Add(Me.TimeIn_Combo)
+        Me.FlowLayoutPanel1.Controls.Add(Me.Label14)
+        Me.FlowLayoutPanel1.Controls.Add(Me.TimeOut_Combo)
         Me.FlowLayoutPanel1.Controls.Add(Me.Label8)
         Me.FlowLayoutPanel1.Controls.Add(Me.Label11)
         Me.FlowLayoutPanel1.Controls.Add(Me.Fullname_TXT)
         Me.FlowLayoutPanel1.Controls.Add(Me.Label7)
         Me.FlowLayoutPanel1.Controls.Add(Me.Email_TXT)
         Me.FlowLayoutPanel1.Controls.Add(Me.Label15)
-        Me.FlowLayoutPanel1.Controls.Add(Me.SSS_TXT)
-        Me.FlowLayoutPanel1.Controls.Add(Me.Label16)
         Me.FlowLayoutPanel1.Controls.Add(Me.TIN_TXT)
+        Me.FlowLayoutPanel1.Controls.Add(Me.Label16)
+        Me.FlowLayoutPanel1.Controls.Add(Me.SSS_TXT)
         Me.FlowLayoutPanel1.Controls.Add(Me.Label18)
-        Me.FlowLayoutPanel1.Controls.Add(Me.HDMF_TXT)
-        Me.FlowLayoutPanel1.Controls.Add(Me.Label17)
         Me.FlowLayoutPanel1.Controls.Add(Me.PHILH_TXT)
+        Me.FlowLayoutPanel1.Controls.Add(Me.Label17)
+        Me.FlowLayoutPanel1.Controls.Add(Me.HDMF_TXT)
         Me.FlowLayoutPanel1.Controls.Add(Me.Label21)
         Me.FlowLayoutPanel1.Controls.Add(Me.Active_RB)
         Me.FlowLayoutPanel1.Controls.Add(Me.InActive_RB)
@@ -458,6 +458,29 @@ Partial Class frmNewEmployee
         Me.HO_Category.Name = "HO_Category"
         Me.HO_Category.Size = New System.Drawing.Size(260, 28)
         Me.HO_Category.TabIndex = 88
+        '
+        'Label24
+        '
+        Me.Label24.AutoSize = True
+        Me.Label24.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label24.ForeColor = System.Drawing.Color.Black
+        Me.Label24.Location = New System.Drawing.Point(3, 100)
+        Me.Label24.Name = "Label24"
+        Me.Label24.Size = New System.Drawing.Size(119, 16)
+        Me.Label24.TabIndex = 134
+        Me.Label24.Text = "Photo Category      "
+        Me.Label24.Visible = False
+        '
+        'PhotoCategory_Combo
+        '
+        Me.PhotoCategory_Combo.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.PhotoCategory_Combo.FormattingEnabled = True
+        Me.PhotoCategory_Combo.Items.AddRange(New Object() {"JR PHOTO", "DAVAO PERFECT", "GENSAN PERFECT"})
+        Me.PhotoCategory_Combo.Location = New System.Drawing.Point(128, 103)
+        Me.PhotoCategory_Combo.Name = "PhotoCategory_Combo"
+        Me.PhotoCategory_Combo.Size = New System.Drawing.Size(260, 28)
+        Me.PhotoCategory_Combo.TabIndex = 133
+        Me.PhotoCategory_Combo.Visible = False
         '
         'Label20
         '
@@ -601,34 +624,34 @@ Partial Class frmNewEmployee
         Me.Label13.TabIndex = 117
         Me.Label13.Text = "Time In                      "
         '
-        'TimeIn_Combo
+        'TimeOut_Combo
         '
-        Me.TimeIn_Combo.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TimeIn_Combo.FormattingEnabled = True
-        Me.TimeIn_Combo.Location = New System.Drawing.Point(327, 337)
-        Me.TimeIn_Combo.Name = "TimeIn_Combo"
-        Me.TimeIn_Combo.Size = New System.Drawing.Size(119, 28)
-        Me.TimeIn_Combo.TabIndex = 93
+        Me.TimeOut_Combo.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TimeOut_Combo.FormattingEnabled = True
+        Me.TimeOut_Combo.Location = New System.Drawing.Point(320, 337)
+        Me.TimeOut_Combo.Name = "TimeOut_Combo"
+        Me.TimeOut_Combo.Size = New System.Drawing.Size(126, 28)
+        Me.TimeOut_Combo.TabIndex = 94
         '
         'Label14
         '
         Me.Label14.AutoSize = True
         Me.Label14.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label14.ForeColor = System.Drawing.Color.Black
-        Me.Label14.Location = New System.Drawing.Point(259, 334)
+        Me.Label14.Location = New System.Drawing.Point(252, 334)
         Me.Label14.Name = "Label14"
         Me.Label14.Size = New System.Drawing.Size(62, 16)
         Me.Label14.TabIndex = 118
         Me.Label14.Text = "Time Out"
         '
-        'TimeOut_Combo
+        'TimeIn_Combo
         '
-        Me.TimeOut_Combo.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TimeOut_Combo.FormattingEnabled = True
-        Me.TimeOut_Combo.Location = New System.Drawing.Point(127, 337)
-        Me.TimeOut_Combo.Name = "TimeOut_Combo"
-        Me.TimeOut_Combo.Size = New System.Drawing.Size(126, 28)
-        Me.TimeOut_Combo.TabIndex = 94
+        Me.TimeIn_Combo.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TimeIn_Combo.FormattingEnabled = True
+        Me.TimeIn_Combo.Location = New System.Drawing.Point(127, 337)
+        Me.TimeIn_Combo.Name = "TimeIn_Combo"
+        Me.TimeIn_Combo.Size = New System.Drawing.Size(119, 28)
+        Me.TimeIn_Combo.TabIndex = 93
         '
         'Label8
         '
@@ -692,13 +715,13 @@ Partial Class frmNewEmployee
         Me.Label15.TabIndex = 120
         Me.Label15.Text = "TIN No.                      "
         '
-        'TIN_TXT
+        'SSS_TXT
         '
-        Me.TIN_TXT.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TIN_TXT.Location = New System.Drawing.Point(128, 483)
-        Me.TIN_TXT.Name = "TIN_TXT"
-        Me.TIN_TXT.Size = New System.Drawing.Size(259, 26)
-        Me.TIN_TXT.TabIndex = 97
+        Me.SSS_TXT.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SSS_TXT.Location = New System.Drawing.Point(128, 483)
+        Me.SSS_TXT.Name = "SSS_TXT"
+        Me.SSS_TXT.Size = New System.Drawing.Size(261, 26)
+        Me.SSS_TXT.TabIndex = 98
         '
         'Label16
         '
@@ -711,13 +734,13 @@ Partial Class frmNewEmployee
         Me.Label16.TabIndex = 122
         Me.Label16.Text = "SSS No.                    "
         '
-        'SSS_TXT
+        'TIN_TXT
         '
-        Me.SSS_TXT.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.SSS_TXT.Location = New System.Drawing.Point(129, 451)
-        Me.SSS_TXT.Name = "SSS_TXT"
-        Me.SSS_TXT.Size = New System.Drawing.Size(261, 26)
-        Me.SSS_TXT.TabIndex = 98
+        Me.TIN_TXT.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TIN_TXT.Location = New System.Drawing.Point(129, 451)
+        Me.TIN_TXT.Name = "TIN_TXT"
+        Me.TIN_TXT.Size = New System.Drawing.Size(259, 26)
+        Me.TIN_TXT.TabIndex = 97
         '
         'Label18
         '
@@ -730,13 +753,13 @@ Partial Class frmNewEmployee
         Me.Label18.TabIndex = 124
         Me.Label18.Text = "PHILH No.                "
         '
-        'PHILH_TXT
+        'HDMF_TXT
         '
-        Me.PHILH_TXT.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.PHILH_TXT.Location = New System.Drawing.Point(128, 547)
-        Me.PHILH_TXT.Name = "PHILH_TXT"
-        Me.PHILH_TXT.Size = New System.Drawing.Size(261, 26)
-        Me.PHILH_TXT.TabIndex = 99
+        Me.HDMF_TXT.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.HDMF_TXT.Location = New System.Drawing.Point(128, 547)
+        Me.HDMF_TXT.Name = "HDMF_TXT"
+        Me.HDMF_TXT.Size = New System.Drawing.Size(261, 26)
+        Me.HDMF_TXT.TabIndex = 100
         '
         'Label17
         '
@@ -749,13 +772,13 @@ Partial Class frmNewEmployee
         Me.Label17.TabIndex = 126
         Me.Label17.Text = "HDMF No.                "
         '
-        'HDMF_TXT
+        'PHILH_TXT
         '
-        Me.HDMF_TXT.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.HDMF_TXT.Location = New System.Drawing.Point(128, 515)
-        Me.HDMF_TXT.Name = "HDMF_TXT"
-        Me.HDMF_TXT.Size = New System.Drawing.Size(261, 26)
-        Me.HDMF_TXT.TabIndex = 100
+        Me.PHILH_TXT.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.PHILH_TXT.Location = New System.Drawing.Point(128, 515)
+        Me.PHILH_TXT.Name = "PHILH_TXT"
+        Me.PHILH_TXT.Size = New System.Drawing.Size(261, 26)
+        Me.PHILH_TXT.TabIndex = 99
         '
         'Label21
         '
@@ -853,29 +876,6 @@ Partial Class frmNewEmployee
         Me.View_Menu.Name = "View_Menu"
         Me.View_Menu.Size = New System.Drawing.Size(137, 22)
         Me.View_Menu.Text = "View Details"
-        '
-        'Label24
-        '
-        Me.Label24.AutoSize = True
-        Me.Label24.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label24.ForeColor = System.Drawing.Color.Black
-        Me.Label24.Location = New System.Drawing.Point(3, 100)
-        Me.Label24.Name = "Label24"
-        Me.Label24.Size = New System.Drawing.Size(119, 16)
-        Me.Label24.TabIndex = 134
-        Me.Label24.Text = "Photo Category      "
-        Me.Label24.Visible = False
-        '
-        'PhotoCategory_Combo
-        '
-        Me.PhotoCategory_Combo.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.PhotoCategory_Combo.FormattingEnabled = True
-        Me.PhotoCategory_Combo.Items.AddRange(New Object() {"JR PHOTO", "DAVAO PERFECT", "GENSAN PERFECT"})
-        Me.PhotoCategory_Combo.Location = New System.Drawing.Point(128, 103)
-        Me.PhotoCategory_Combo.Name = "PhotoCategory_Combo"
-        Me.PhotoCategory_Combo.Size = New System.Drawing.Size(260, 28)
-        Me.PhotoCategory_Combo.TabIndex = 133
-        Me.PhotoCategory_Combo.Visible = False
         '
         'frmNewEmployee
         '

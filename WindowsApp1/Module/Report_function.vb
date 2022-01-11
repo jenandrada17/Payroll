@@ -705,6 +705,51 @@ Module Report_function
         Return dt_Remittance
     End Function
 
+    Friend Function Load_Loan_Report(paydate As String, str As String, category As String) As DataTable
+
+        Dim mysql As String
+        Dim PAYROLL As DateTime = paydate
+
+        Dim dt_Loans As New DataTable()
+        With dt_Loans
+            .Columns.Add("NAME")
+            .Columns.Add("EE")
+        End With
+
+        If category = "SSS" Then
+            mysql = $"Select * From RECORDED_ALLOW_DEDUC A INNER JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIO_NO       
+                                        WHERE PAYDATE = '{paydate}' AND TRANSAC_NAME = 'DEDUCTION' AND UPPER(CATEGORY) LIKE UPPER('%SSS%') AND {str} ORDER BY FULLNAME"
+        Else
+            mysql = $"Select * From RECORDED_ALLOW_DEDUC A INNER JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIO_NO         
+                                        WHERE PAYDATE = '{paydate}' AND TRANSAC_NAME = 'DEDUCTION' AND (UPPER(CATEGORY) LIKE UPPER('%PAG IBIG%') oR UPPER(CATEGORY) LIKE UPPER('%PAG-IBIG%')) AND {str} ORDER BY FULLNAME"
+        End If
+
+        Using ds As DataSet = LoadSQL(mysql, "RECORDED_ALLOW_DEDUC")
+            If ds.Tables(0).Rows.Count > 0 Then
+
+                progressBarStart(ds.Tables(0).Rows.Count)
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+
+                        '============================= NAME AND ATTENDANCE ============================  
+                        Dim FULLNAME As String = IIf(IsDBNull(.Item("FULLNAME")), "", .Item("FULLNAME"))
+                        Dim AMOUNT As String = FormatNumber(.Item("AMOUNT"))
+
+                        dt_Loans.Rows.Add(FULLNAME, AMOUNT)
+
+                        frmMainForm.AppProgressBar.Value += 1
+                    End With
+
+                Next
+                progressBarEnd()
+            Else
+
+            End If
+        End Using
+
+        Return dt_Loans
+    End Function
+
     Friend Function Load_Remittance_Pagibig(paydate As String, str As String) As DataTable
 
         Dim mysql As String

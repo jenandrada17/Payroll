@@ -54,6 +54,8 @@ Public Class frmNewEmployee
 
     Private Sub Save_BTN_Click(sender As Object, e As EventArgs) Handles Save_BTN.Click
 
+        Import_Employee_New()
+
         'Import_BranchesName()
 
         'Import_Employee_Fullname_biometric_ActiveOnly()
@@ -73,41 +75,46 @@ Public Class frmNewEmployee
 
 
     Private Sub Import_Employee_New()
-        If Company_ComboB.SelectedIndex >= 0 Then
 
-            eApp = New Excel.Application
-            eBook = eApp.Workbooks.Open(Path_TXT.Text)
-            eSheet = eBook.Worksheets(1)
-            eCell = eSheet.UsedRange
-            Dim row As Integer
+        eApp = New Excel.Application
+        eBook = eApp.Workbooks.Open(Path_TXT.Text)
+        eSheet = eBook.Worksheets(1)
+        eCell = eSheet.UsedRange
+        Dim row As Integer
 
-            MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path_TXT.Text}';Extended Properties=Excel 8.0;")
-            MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
-            MyCommand.TableMappings.Add("Table", "Net-informations.com")
-            DtSet = New System.Data.DataSet
-            MyCommand.Fill(DtSet)
+        MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path_TXT.Text}';Extended Properties=Excel 8.0;")
+        MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
+        MyCommand.TableMappings.Add("Table", "Net-informations.com")
+        DtSet = New System.Data.DataSet
+        MyCommand.Fill(DtSet)
 
-            progressBarStart(DtSet.Tables(0).Rows.Count)
+        progressBarStart(DtSet.Tables(0).Rows.Count)
 
-            For row = 2 To DtSet.Tables(0).Rows.Count + 1
+        For row = 2 To DtSet.Tables(0).Rows.Count + 1
 
-                SaveNew_Employee(eCell(row, 2).Value, "", eCell(row, 2).Value, eCell(row, 3).Value, eCell(row, 4).Value, "ACTIVE", True)
+            'Public Sub SaveNew_Employee(COMPANY As String, BRANCH_CODE As String, FULLNAME As String, BIO_NO As String, EMAIL_ADD As String,
+            '                EMP_STATUS As String, Optional DATE_STARTED As String = "", Optional group As Boolean = False,
+            '                Optional TIME_IN As String = "", Optional TIME_OUT As String = "", Optional EMP_NO As String = "",
+            '                Optional TIN As String = "", Optional SSS As String = "", Optional PHILH As String = "",
+            '                Optional HDMF As String = "", Optional HO_CATEGORY As String = "", Optional COMMON_CATEGORY As String = "",
+            '                Optional EMP_POSITION As String = "", Optional COMMON_COMPANY As String = "", Optional PhotoCategory As String = "")
 
-                frmMainForm.AppProgressBar.Value += 1
+            SaveNew_Employee(eCell(row, 2).Value, eCell(row, 3).Value, eCell(row, 9).Value, eCell(row, 1).Value, eCell(row, 10).Value,
+                             "ACTIVE", eCell(row, 4).Value, True, eCell(row, 7).Value, eCell(row, 8).Value, eCell(row, 5).Value,
+                             eCell(row, 11).Value, eCell(row, 12).Value, eCell(row, 13).Value, eCell(row, 14).Value, "", "", eCell(row, 6).Value, "", eCell(row, 15).Value)
 
-            Next
+            frmMainForm.AppProgressBar.Value += 1
 
-            progressBarEnd()
+        Next
 
-            Lists_Employees(lvEmployee)
+        progressBarEnd()
 
-            Path_TXT.Clear()
-            MyConnection.Close()
+        Lists_Employees(lvEmployee)
 
-            Excel_Panel.Visible = False
-        Else
-            MsgBox("Please Select Company.", MsgBoxStyle.Exclamation, "Error")
-        End If
+        Path_TXT.Clear()
+        MyConnection.Close()
+
+        Excel_Panel.Visible = False
 
     End Sub
 
@@ -852,6 +859,16 @@ Public Class frmNewEmployee
             SwitchForm_Loans(FormName.Loans, tmpEmp, "DEDUCTION")
             Close()
 
+        ElseIf txtSearch.Tag = "Loan-Mp2" Then
+
+            SwitchForm_Loans(FormName.Loans, tmpEmp, "MP2")
+            Close()
+
+        ElseIf txtSearch.Tag = "Loan-Maxicare" Then
+
+            SwitchForm_Loans(FormName.Loans, tmpEmp, "MAXICARE")
+            Close()
+
         End If
 
     End Sub
@@ -901,11 +918,12 @@ Public Class frmNewEmployee
         If Bio_TXT.Text <> Nothing Then
             GetFullname(Bio_TXT.Text, Add_Company_CB, Branch_ComboB, Fullname_TXT, Email_TXT, InActive_RB,
                             Started_DTP, TimeIn_Combo, TimeOut_Combo, EmpNo_TXT, TIN_TXT, SSS_TXT, PHILH_TXT, HDMF_TXT, HO_Category,
-                            ComCategory_Combo, Position_Combo, ComCompany_Cmbo, btnSave)
+                            ComCategory_Combo, Position_Combo, ComCompany_Cmbo, PhotoCategory_Combo, btnSave)
 
         Else
             Add_Company_CB.Text = ""
             HO_Category.Text = ""
+            PhotoCategory_Combo.Text = ""
             ComCategory_Combo.Text = ""
             ComCompany_Cmbo.Text = ""
             Branch_ComboB.Text = ""
@@ -1056,10 +1074,11 @@ Public Class frmNewEmployee
         Bio_TXT.Text = bio_No
         GetFullname(bio_No, Add_Company_CB, Branch_ComboB, Fullname_TXT, Email_TXT, InActive_RB, Started_DTP,
                     TimeIn_Combo, TimeOut_Combo, EmpNo_TXT, TIN_TXT, SSS_TXT, PHILH_TXT, HDMF_TXT, HO_Category,
-                    ComCategory_Combo, Position_Combo, ComCompany_Cmbo)
+                    ComCategory_Combo, Position_Combo, ComCompany_Cmbo, PhotoCategory_Combo)
 
         Add_Panel.Location = New Point(ClientSize.Width / 2 - Add_Panel.Size.Width / 2, ClientSize.Height / 2 - Add_Panel.Size.Height / 2)
         Add_Panel.Visible = True
 
     End Sub
+
 End Class
