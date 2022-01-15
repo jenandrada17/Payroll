@@ -114,6 +114,7 @@ Partial Class frmMainForm
         '
         'Paysilp_BTN
         '
+        Me.Paysilp_BTN.AccessibleName = "Report"
         Me.Paysilp_BTN.BackColor = System.Drawing.Color.Black
         Me.Paysilp_BTN.Cursor = System.Windows.Forms.Cursors.Hand
         Me.Paysilp_BTN.FlatAppearance.BorderSize = 0
@@ -152,6 +153,7 @@ Partial Class frmMainForm
         '
         'Loan_BTN
         '
+        Me.Loan_BTN.AccessibleName = "Loans"
         Me.Loan_BTN.BackColor = System.Drawing.Color.Black
         Me.Loan_BTN.Cursor = System.Windows.Forms.Cursors.Hand
         Me.Loan_BTN.FlatAppearance.BorderSize = 0
@@ -201,6 +203,7 @@ Partial Class frmMainForm
         '
         'Employee_BTN
         '
+        Me.Employee_BTN.AccessibleName = "Employee"
         Me.Employee_BTN.BackColor = System.Drawing.Color.Black
         Me.Employee_BTN.Cursor = System.Windows.Forms.Cursors.Hand
         Me.Employee_BTN.FlatAppearance.BorderSize = 0
@@ -278,7 +281,7 @@ Partial Class frmMainForm
         Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileToolStripMenuItem, Me.AboutUsToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(-5, 80)
         Me.MenuStrip1.Name = "MenuStrip1"
-        Me.MenuStrip1.Size = New System.Drawing.Size(233, 24)
+        Me.MenuStrip1.Size = New System.Drawing.Size(113, 24)
         Me.MenuStrip1.TabIndex = 3
         Me.MenuStrip1.Text = "MenuStrip1"
         '
@@ -293,36 +296,36 @@ Partial Class frmMainForm
         'ImportEmployeeScheduleHRToolStripMenuItem
         '
         Me.ImportEmployeeScheduleHRToolStripMenuItem.Name = "ImportEmployeeScheduleHRToolStripMenuItem"
-        Me.ImportEmployeeScheduleHRToolStripMenuItem.Size = New System.Drawing.Size(240, 22)
-        Me.ImportEmployeeScheduleHRToolStripMenuItem.Text = "Import Employee Schedule(HR)"
+        Me.ImportEmployeeScheduleHRToolStripMenuItem.Size = New System.Drawing.Size(208, 22)
+        Me.ImportEmployeeScheduleHRToolStripMenuItem.Text = "Employee's DTR Schedule"
         '
         'ConnectToDatabaseToolStripMenuItem
         '
         Me.ConnectToDatabaseToolStripMenuItem.Name = "ConnectToDatabaseToolStripMenuItem"
-        Me.ConnectToDatabaseToolStripMenuItem.Size = New System.Drawing.Size(240, 22)
+        Me.ConnectToDatabaseToolStripMenuItem.Size = New System.Drawing.Size(208, 22)
         Me.ConnectToDatabaseToolStripMenuItem.Text = "&Connect to Database"
         '
         'ChangePasswordToolStripMenuItem
         '
         Me.ChangePasswordToolStripMenuItem.Name = "ChangePasswordToolStripMenuItem"
-        Me.ChangePasswordToolStripMenuItem.Size = New System.Drawing.Size(240, 22)
+        Me.ChangePasswordToolStripMenuItem.Size = New System.Drawing.Size(208, 22)
         Me.ChangePasswordToolStripMenuItem.Text = "Change User Details"
         '
         'UserLogsMenuItem
         '
         Me.UserLogsMenuItem.Name = "UserLogsMenuItem"
-        Me.UserLogsMenuItem.Size = New System.Drawing.Size(240, 22)
+        Me.UserLogsMenuItem.Size = New System.Drawing.Size(208, 22)
         Me.UserLogsMenuItem.Text = "User Logs"
         '
         'ToolStripSeparator1
         '
         Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-        Me.ToolStripSeparator1.Size = New System.Drawing.Size(237, 6)
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(205, 6)
         '
         'ExitToolStripMenuItem
         '
         Me.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem"
-        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(240, 22)
+        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(208, 22)
         Me.ExitToolStripMenuItem.Text = "&Exit"
         '
         'AboutUsToolStripMenuItem
@@ -344,6 +347,7 @@ Partial Class frmMainForm
         '
         'Dashboard_BTN
         '
+        Me.Dashboard_BTN.AccessibleName = "Dashboard"
         Me.Dashboard_BTN.BackColor = System.Drawing.Color.Black
         Me.Dashboard_BTN.Cursor = System.Windows.Forms.Cursors.Hand
         Me.Dashboard_BTN.FlatAppearance.BorderSize = 0
@@ -360,6 +364,7 @@ Partial Class frmMainForm
         '
         'Attendance_BTN
         '
+        Me.Attendance_BTN.AccessibleName = "Attendance"
         Me.Attendance_BTN.BackColor = System.Drawing.Color.Black
         Me.Attendance_BTN.Cursor = System.Windows.Forms.Cursors.Hand
         Me.Attendance_BTN.FlatAppearance.BorderSize = 0
@@ -376,6 +381,7 @@ Partial Class frmMainForm
         '
         'Payout_BTN
         '
+        Me.Payout_BTN.AccessibleName = "Payout"
         Me.Payout_BTN.BackColor = System.Drawing.Color.Black
         Me.Payout_BTN.Cursor = System.Windows.Forms.Cursors.Hand
         Me.Payout_BTN.FlatAppearance.BorderSize = 0
@@ -392,6 +398,7 @@ Partial Class frmMainForm
         '
         'Settings_BTN
         '
+        Me.Settings_BTN.AccessibleName = "Settings"
         Me.Settings_BTN.BackColor = System.Drawing.Color.Black
         Me.Settings_BTN.Cursor = System.Windows.Forms.Cursors.Hand
         Me.Settings_BTN.FlatAppearance.BorderSize = 0
@@ -408,6 +415,7 @@ Partial Class frmMainForm
         '
         'Contribution_BTN
         '
+        Me.Contribution_BTN.AccessibleName = "Contribution"
         Me.Contribution_BTN.BackColor = System.Drawing.Color.Black
         Me.Contribution_BTN.Cursor = System.Windows.Forms.Cursors.Hand
         Me.Contribution_BTN.FlatAppearance.BorderSize = 0

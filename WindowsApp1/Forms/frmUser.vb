@@ -1,4 +1,7 @@
 ﻿Public Class frmUser
+
+    Dim user_id As Integer = 0
+
     Private Sub Label2_Click(sender As Object, e As EventArgs) Handles Label2.Click
         Close()
     End Sub
@@ -16,9 +19,33 @@
         If Not validSave() Then Exit Sub
 
         SaveUserDetails(SampleUser_txt.Text, NewUser_txt.Text, NewPass_txt.Text)
-        Replacing($"PAYROLL_USER where USERNAME = '{SampleUser_txt.Text}' oR PASSWORD = '{SamplePass_txt.Text}';")
+
+        If SampleUser_txt.Text = NewUser_txt.Text And SamplePass_txt.Text = NewPass_txt.Text Then
+            RunCommand($"DELETE FROM PAYROLL_USER WHERE ID NOT IN  ( SELECT * FROM PAYROLL_USER where ID = '{user_id}'")  'TO DELETE DUPLICATE IN PAYROLL_USER 
+        Else
+            Replacing($"PAYROLL_USER where USERNAME = '{SampleUser_txt.Text}' AND PASSWORD = '{EncryptString(SamplePass_txt.Text)}';")
+        End If
+
+        '===================== ACCESSIBILITY =================== 
+        Replacing($"PAYROLL_ACCESSIBILITY WHERE USER_ID = '{user_id}'")
+
+        For i = 0 To Access_CheckB.Items.Count - 1
+            Dim Item As Object = Access_CheckB.Items(i)
+
+            If Not Access_CheckB.GetItemChecked(i) Then
+                Save_Accessibility(user_id, Access_CheckB.Items(i).ToString)
+            End If
+
+        Next
+
         GunaClear_btn.PerformClick()
 
+    End Sub
+
+    Private Sub SampleUser_txt_TextChanged(sender As Object, e As EventArgs) Handles SampleUser_txt.TextChanged, SamplePass_txt.TextChanged
+        If SampleUser_txt.Text <> Nothing And SamplePass_txt.Text <> Nothing Then
+            user_id = GetData_Integer("ID", $"PAYROLL_USER where USERNAME = '{SampleUser_txt.Text}' AND PASSWORD = '{EncryptString(SamplePass_txt.Text)}'")
+        End If
     End Sub
 
     Private Function validSave()

@@ -38,6 +38,7 @@ Module Public_Function
         Payout
         Loans
         Settings
+        Schedule
     End Enum
 
     Friend Sub SwitchForm_Attendance(ByVal gotoForm As FormName, emp As Employee, empNo As Integer, Optional btnSearch_tag As String = "")
@@ -49,6 +50,31 @@ Module Public_Function
 
                     If instForm Is Nothing Then
                         instForm = DirectCast(CreateObjectInstance("frmAttendance"), Form)
+                        instForm.MdiParent = frmMainForm
+                        frmMainForm.pNavigate.Controls.Add(instForm)
+                        frmMainForm.pNavigate.Tag = instForm
+                        instForm.Show()
+                        instForm.Dock = DockStyle.Fill
+                        instForm.BringToFront()
+                    Else
+                        instForm.BringToFront()
+                    End If
+
+                Catch ex As Exception
+
+                End Try
+        End Select
+    End Sub
+
+    Friend Sub SwitchForm_Scheduling(ByVal gotoForm As FormName, emp As Employee)
+        Select Case gotoForm
+            Case FormName.Schedule
+                Try
+                    Dim instForm As frmSchedule = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmSchedule").SingleOrDefault()
+                    instForm.Load_Schedule(emp)
+
+                    If instForm Is Nothing Then
+                        instForm = DirectCast(CreateObjectInstance("frmSchedule"), Form)
                         instForm.MdiParent = frmMainForm
                         frmMainForm.pNavigate.Controls.Add(instForm)
                         frmMainForm.pNavigate.Tag = instForm

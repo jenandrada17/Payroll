@@ -1837,9 +1837,9 @@ Module SelectFromDatabase
         If searchName.Length <> 0 Then
 
             If categoryDeduction = "SBU" Then
-                mysql = "select * from PAYROLL_EMPLOYEE A inner join HISTORY_DEDUCTION B on B.BIO_NO = A.BIO_NO WHERE H_CATEGORY = 'SBU' and ("
+                mysql = "select * from PAYROLL_EMPLOYEE A inner join RECORDED_ALLOW_DEDUC B on B.BIO_NO = A.BIO_NO WHERE CATEGORY = 'SBU' and ("
             Else
-                mysql = "select * from PAYROLL_EMPLOYEE A inner join HISTORY_DEDUCTION B on B.BIO_NO = A.BIO_NO WHERE H_CATEGORY <> 'SBU' and ("
+                mysql = "select * from PAYROLL_EMPLOYEE A inner join RECORDED_ALLOW_DEDUC B on B.BIO_NO = A.BIO_NO WHERE CATEGORY <> 'SBU' and ("
             End If
 
             For Each name In strWords
@@ -1852,9 +1852,9 @@ Module SelectFromDatabase
         Else
 
             If categoryDeduction = "SBU" Then
-                mysql = "select * from PAYROLL_EMPLOYEE A inner join HISTORY_DEDUCTION B on B.BIO_NO = A.BIO_NO WHERE H_CATEGORY = 'SBU' ORDER BY FULLNAME ASC "
+                mysql = "select * from PAYROLL_EMPLOYEE A inner join RECORDED_ALLOW_DEDUC B on B.BIO_NO = A.BIO_NO WHERE CATEGORY = 'SBU' ORDER BY FULLNAME ASC "
             Else
-                mysql = "select * from PAYROLL_EMPLOYEE A inner join HISTORY_DEDUCTION B on B.BIO_NO = A.BIO_NO WHERE H_CATEGORY <> 'SBU' ORDER BY FULLNAME ASC "
+                mysql = "select * from PAYROLL_EMPLOYEE A inner join RECORDED_ALLOW_DEDUC B on B.BIO_NO = A.BIO_NO WHERE CATEGORY <> 'SBU' ORDER BY FULLNAME ASC "
             End If
 
         End If
@@ -1866,8 +1866,8 @@ Module SelectFromDatabase
                 With dr
 
                     Dim i As ListViewItem = LV.Items.Add(.Item("FULLNAME"))
-                    i.SubItems.Add(.Item("H_CATEGORY"))
-                    i.SubItems.Add(CDec(.Item("H_AMOUNT")).ToString("N"))
+                    i.SubItems.Add(.Item("CATEGORY"))
+                    i.SubItems.Add(CDec(.Item("AMOUNT")).ToString("N"))
                     i.SubItems.Add(CDate(.Item("PAYDATE")).ToString("MMM dd, yyyy"))
 
                 End With
@@ -2736,6 +2736,19 @@ Module SelectFromDatabase
         Return dataa
     End Function
 
+    Friend Function GetData_Integer(column As String, str As String) As Integer
+        Dim dataa As Integer = 0
+        Dim mysql As String = $"Select {column} from {str}"
+        Using ds As DataSet = LoadSQL(mysql)
+            If ds.Tables(0).Rows.Count > 0 Then
+                With ds.Tables(0).Rows(0)
+                    dataa = IIf(IsDBNull(.Item(column)), 0, .Item(column))
+                End With
+            End If
+        End Using
+        Return dataa
+    End Function
+
     Friend Function CheckData(column As String, str As String) As Boolean
         Dim mysql As String = $"Select {column} from {str}"
         Using ds As DataSet = LoadSQL(mysql)
@@ -3063,5 +3076,6 @@ Module SelectFromDatabase
         End Using
         Return False
     End Function
+
 
 End Module

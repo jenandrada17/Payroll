@@ -1007,6 +1007,9 @@ Public Class frmAttendance
 
                     DATE_ONLY = dateTime.ToString("d")
 
+                    'If biometric_No = "3543" Then
+                    '    Console.WriteLine(DATE_ONLY)
+                    'End If
                     '============================== WORKED FINE ======================== 
                     If time >= TIME_IN.AddHours(-3).ToShortTimeString And time <= TIME_IN.AddHours(3).AddMinutes(-1).ToShortTimeString And Not time.Hour = 12 Then
                         If list_hour(0) = "" Then
@@ -1049,9 +1052,9 @@ Public Class frmAttendance
                         Dim VALUE = oldValuee.Hour
                         Dim VALUEE = breaktime.Hour
 
-                        If time >= "12:00 PM" And time <= "12:59 PM" Then
-                            val = oldValuee.ToString("d") & " " & "12"
-                        End If
+                        'If time >= "12:00 PM" And time <= "12:59 PM" Then
+                        '    val = oldValuee.ToString("d") & " " & "12"
+                        'End If
 
                         If newValuee = val Then
 
@@ -1122,20 +1125,23 @@ Public Class frmAttendance
                     list_hour(1) = ""
                 End If
 
-                If list_hour(3) = "" And list_hour(0) <> "" Then '==== FOR HALFDAY ARRANGEMENT OF NOON BREAK
+                If list_hour(3) = "" And list_hour(0) <> "" And list_hour(2) <> "" Then '==== FOR HALFDAY ARRANGEMENT OF NOON BREAK
                     list_hour(1) = list_hour(2)
                     list_hour(2) = ""
                 End If
 
-                '||||||||||||||||||||||||||||||||||||| NEWLY ADDED JANUARY 19, 2022 ||||||||||||||||||||||| 
-                If TIME_IN.ToShortTimeString = "12:00 PM" And list_hour(1) = "" And list_hour(2) = "" Then '==== FOR HALFDAY ARRANGEMENT OF NOON BREAK 
-                    list_hour(1) = list_hour(3)
-                    list_hour(3) = ""
-                End If
+                '||||||||||||||||||||||||||||||||||||| NEWLY ADDED JANUARY 19, 2022 |||||||||||||||||||||||  
 
                 If list_hour(2) >= TIME_OUT.ToShortTimeString And list_hour(3) = "" Then
-                    list_hour(3) = list_hour(3)
+                    list_hour(3) = list_hour(2)
                     list_hour(2) = ""
+                End If
+
+                If list_hour(0) = "" And list_hour(1) = "" And list_hour(2) <> "" Then
+                    If Convert.ToDateTime(list_hour(2)).ToShortTimeString >= TIME_IN.ToShortTimeString Then
+                        list_hour(0) = list_hour(2)
+                        list_hour(2) = ""
+                    End If
                 End If
                 '|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
@@ -1500,6 +1506,25 @@ Public Class frmAttendance
 
     End Sub
 
+    Private Sub Button4_Click(sender As Object, e As EventArgs)
+
+        Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmNewEmployee").SingleOrDefault()
+        If instForm Is Nothing Then
+            Dim frm As frmNewEmployee
+            frm = DirectCast(CreateObjectInstance("frmNewEmployee"), Form)
+            frm.MdiParent = frmMainForm
+            frmMainForm.pNavigate.Controls.Add(frm)
+            frmMainForm.pNavigate.Tag = frm
+            frm.txtSearch.Tag = "Attendance-Scheduling"
+            frm.Dock = DockStyle.Fill
+            frm.BringToFront()
+            frm.Show()
+        Else
+            instForm.BringToFront()
+        End If
+    End Sub
+
+
     Private Sub Cancel_lbl_Click(sender As Object, e As EventArgs) Handles Cancel_lbl.Click
         AM_OT_NUP.Value = 0.0
     End Sub
@@ -1606,16 +1631,18 @@ Public Class frmAttendance
 
         progressBarStart(DtSet.Tables(0).Rows.Count)
 
-        For row = 2 To DtSet.Tables(0).Rows.Count + 1
+        For row = 1 To DtSet.Tables(0).Rows.Count + 1
             If eCell(row, 1).Value <> Nothing And eCell(row, 2).Value <> Nothing Then
+                If IsNumeric(eCell(row, 1).Value) Then
 
-                SaveBiometricSheet(Paydate, eCell(row, 1).Value, eCell(row, 2).Value)
-                distinct_bio.Add(eCell(row, 1).Value)
+                    SaveBiometricSheet(Paydate, eCell(row, 1).Value, eCell(row, 2).Value)
+                    distinct_bio.Add(eCell(row, 1).Value)
 
-                frmMainForm.AppProgressBar.Value += 1
-
+                    frmMainForm.AppProgressBar.Value += 1
+                Else
+                    MsgBox("row 1 Column 1 is empty or not a valid Biometric No.!", MsgBoxStyle.Exclamation)
+                End If
             End If
-
         Next
 
         progressBarEnd()
@@ -1659,7 +1686,6 @@ Public Class frmAttendance
 
     Private Sub Saving_InSys()
 
-
         Dim bio_no As String = ""
 
         progressBarStart(DtSet.Tables(0).Rows.Count)
@@ -1698,8 +1724,7 @@ Public Class frmAttendance
             '=============== GROUP 4 TIME IN ============= 
             For column = 6 To 11
                 If eCell(row, column).Value <> Nothing Then
-                    Dim VALUEE As New DateTime
-                    Dim TIMEEE As New DateTime
+                    Dim VALUEE, TIMEEE As New DateTime
 
                     VALUEE = eCell(row, 3).Value
                     TIMEEE = DateTime.FromOADate(eCell(row, column).Value)
@@ -1718,6 +1743,12 @@ Public Class frmAttendance
                 If time = "1/1/0001 12:00:00 AM" Then
                     Exit For
                 Else
+
+                    Console.WriteLine(eCell(row, 3).Value)
+
+                    If bio_no = "3838" And eCell(row, 3).Value = "12/22/2021" Then
+                        Console.WriteLine(eCell(row, 3).Value)
+                    End If
 
                     If time >= TIME_IN.AddHours(-3).ToShortTimeString And time <= TIME_IN.AddHours(3).AddMinutes(-1).ToShortTimeString Then
                         If list_hour(0) = "" Then
@@ -1747,7 +1778,7 @@ Public Class frmAttendance
                         Dim breaktime As DateTime = TIME_IN.AddHours(4)
                         Dim break = breaktime.Hour
 
-                        'If time >= "12:00 PM" And time <= "12:59 PM" Then
+                        'If time >= "1200 PM" And time <= "12:59 PM" Then
                         '    break = "12"
                         'End If
 
@@ -1834,20 +1865,17 @@ Public Class frmAttendance
                 list_hour(2) = ""
             End If
 
-            '||||||||||||||||||||||||||||||||||||| NEWLY ADDED JANUARY 19, 2022 ||||||||||||||||||||||| 
-            If TIME_IN.ToShortTimeString = "12:00 PM" And list_hour(1) = "" And list_hour(2) = "" Then '==== FOR HALFDAY ARRANGEMENT OF NOON BREAK 
-                list_hour(1) = list_hour(3)
-                list_hour(3) = ""
-            End If
-
+            '||||||||||||||||||||||||||||||||||||| NEWLY ADDED JANUARY 19, 2022 |||||||||||||||||||||||  
             If list_hour(2) >= TIME_OUT.ToShortTimeString And list_hour(3) = "" Then
                 list_hour(3) = list_hour(2)
                 list_hour(2) = ""
             End If
 
-            If list_hour(0) = "" And list_hour(1) And DateTime.Parse(list_hour(2)).TimeOfDay >= TIME_IN.TimeOfDay Then
-                list_hour(2) = list_hour(0)
-                list_hour(2) = ""
+            If list_hour(0) = "" And list_hour(1) = "" And list_hour(2) <> "" Then
+                If Convert.ToDateTime(list_hour(2)).ToShortTimeString >= TIME_IN.ToShortTimeString Then
+                    list_hour(0) = list_hour(2)
+                    list_hour(2) = ""
+                End If
             End If
             '|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
@@ -1885,11 +1913,15 @@ Public Class frmAttendance
 
             progressBarStart(DtSet.Tables(0).Rows.Count)
 
-            For row = 2 To DtSet.Tables(0).Rows.Count + 1
-                SaveBiometricSheet(Paydate, eCell(row, 3).Value, eCell(row, 4).Value)
-                distinct_bio.Add(eCell(row, 3).Value)
+            For row = 1 To DtSet.Tables(0).Rows.Count + 1
+                If IsNumeric(eCell(row, 3).Value) Then
+                    SaveBiometricSheet(Paydate, eCell(row, 3).Value, eCell(row, 4).Value)
+                    distinct_bio.Add(eCell(row, 3).Value)
 
-                frmMainForm.AppProgressBar.Value += 1
+                    frmMainForm.AppProgressBar.Value += 1
+                Else
+                    MsgBox("Row 1 Column 1 is empty or not a valid Biometric No.!", MsgBoxStyle.Exclamation)
+                End If
             Next
 
             progressBarEnd()
@@ -1903,7 +1935,7 @@ Public Class frmAttendance
             MyConnection.Close()
 
         Catch ex As Exception
-            MsgBox("Excel is open or inaccessible!", MsgBoxStyle.Critical, "Error")
+            MsgBox("Excel is open or inaccessible!" & vbNewLine & ex.ToString, MsgBoxStyle.Critical, "Error")
         End Try
     End Sub
 

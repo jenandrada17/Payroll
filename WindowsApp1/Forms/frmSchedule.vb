@@ -61,6 +61,25 @@ Public Class frmSchedule
         LoadDateTime()
     End Sub
 
+    Private Sub SearchEMP_BTN_Click(sender As Object, e As EventArgs) Handles SearchEMP_BTN.Click
+
+        Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmNewEmployee").SingleOrDefault()
+        If instForm Is Nothing Then
+            Dim frm As frmNewEmployee
+            frm = DirectCast(CreateObjectInstance("frmNewEmployee"), Form)
+            frm.MdiParent = frmMainForm
+            frmMainForm.pNavigate.Controls.Add(frm)
+            frmMainForm.pNavigate.Tag = frm
+            frm.txtSearch.Tag = "Scheduling"
+            frm.Dock = DockStyle.Fill
+            frm.BringToFront()
+            frm.Show()
+        Else
+            instForm.BringToFront()
+        End If
+
+    End Sub
+
     Private Sub TabControl1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles TabControl1.SelectedIndexChanged
         If TabControl1.SelectedIndex = 1 Then
             Schedule_DG.ClearSelection()
@@ -253,6 +272,14 @@ Public Class frmSchedule
     Private Sub frmSchedule_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         LoadDateTime()
         PopulateShedule(lvEmployee, Paydate)
+    End Sub
+
+    Public Sub Load_Schedule(emp As Employee)
+        With emp
+            BiometricID_TXT.Text = .BiometricID
+            Name_TXT.Text = .Fullname
+            Name_TXT.Tag = .EMP_ID
+        End With
     End Sub
 
 End Class

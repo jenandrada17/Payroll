@@ -819,6 +819,11 @@ Public Class frmNewEmployee
             SwitchForm_Attendance(FormName.Attendance, tmpEmp, 4)
             Close()
 
+        ElseIf txtSearch.Tag = "Attendance-Scheduling" Then
+
+            SwitchForm_Attendance(FormName.Attendance, tmpEmp, 5)
+            Close()
+
         ElseIf txtSearch.Tag = "Payout" Then
 
             SwitchForm_Payout(FormName.Payout, tmpEmp, btnSearch.Tag, "DETAILS")
@@ -867,6 +872,11 @@ Public Class frmNewEmployee
         ElseIf txtSearch.Tag = "Loan-Maxicare" Then
 
             SwitchForm_Loans(FormName.Loans, tmpEmp, "MAXICARE")
+            Close()
+
+        ElseIf txtSearch.Tag = "Scheduling" Then
+
+            SwitchForm_Scheduling(FormName.Schedule, tmpEmp)
             Close()
 
         End If

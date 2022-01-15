@@ -36,8 +36,8 @@ Partial Class frmUser
         Me.SampleUser_txt = New Guna.UI2.WinForms.Guna2TextBox()
         Me.Label7 = New System.Windows.Forms.Label()
         Me.NewUser_txt = New Guna.UI2.WinForms.Guna2TextBox()
-        Me.Guna2CheckBox1 = New Guna.UI2.WinForms.Guna2CheckBox()
         Me.Label8 = New System.Windows.Forms.Label()
+        Me.Access_CheckB = New System.Windows.Forms.CheckedListBox()
         Me.SuspendLayout()
         '
         'GunaClear_btn
@@ -300,32 +300,29 @@ Partial Class frmUser
         Me.NewUser_txt.Size = New System.Drawing.Size(236, 32)
         Me.NewUser_txt.TabIndex = 22
         '
-        'Guna2CheckBox1
-        '
-        Me.Guna2CheckBox1.AutoSize = True
-        Me.Guna2CheckBox1.CheckedState.BorderColor = System.Drawing.Color.FromArgb(CType(CType(94, Byte), Integer), CType(CType(148, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.Guna2CheckBox1.CheckedState.BorderRadius = 0
-        Me.Guna2CheckBox1.CheckedState.BorderThickness = 0
-        Me.Guna2CheckBox1.CheckedState.FillColor = System.Drawing.Color.FromArgb(CType(CType(94, Byte), Integer), CType(CType(148, Byte), Integer), CType(CType(255, Byte), Integer))
-        Me.Guna2CheckBox1.Location = New System.Drawing.Point(513, 101)
-        Me.Guna2CheckBox1.Name = "Guna2CheckBox1"
-        Me.Guna2CheckBox1.Size = New System.Drawing.Size(113, 17)
-        Me.Guna2CheckBox1.TabIndex = 28
-        Me.Guna2CheckBox1.Text = "Guna2CheckBox1"
-        Me.Guna2CheckBox1.UncheckedState.BorderColor = System.Drawing.Color.FromArgb(CType(CType(125, Byte), Integer), CType(CType(137, Byte), Integer), CType(CType(149, Byte), Integer))
-        Me.Guna2CheckBox1.UncheckedState.BorderRadius = 0
-        Me.Guna2CheckBox1.UncheckedState.BorderThickness = 0
-        Me.Guna2CheckBox1.UncheckedState.FillColor = System.Drawing.Color.FromArgb(CType(CType(125, Byte), Integer), CType(CType(137, Byte), Integer), CType(CType(149, Byte), Integer))
-        '
         'Label8
         '
         Me.Label8.AutoSize = True
         Me.Label8.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label8.Location = New System.Drawing.Point(508, 59)
+        Me.Label8.Location = New System.Drawing.Point(548, 47)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(94, 27)
         Me.Label8.TabIndex = 29
         Me.Label8.Text = "Accessibility"
+        '
+        'Access_CheckB
+        '
+        Me.Access_CheckB.BackColor = System.Drawing.SystemColors.AppWorkspace
+        Me.Access_CheckB.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.Access_CheckB.CheckOnClick = True
+        Me.Access_CheckB.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Access_CheckB.ForeColor = System.Drawing.Color.Black
+        Me.Access_CheckB.FormattingEnabled = True
+        Me.Access_CheckB.Items.AddRange(New Object() {"Dashboard", "Employee", "Attendance", "Payout", "Loans", "Contribution", "Settings", "Report"})
+        Me.Access_CheckB.Location = New System.Drawing.Point(553, 77)
+        Me.Access_CheckB.Name = "Access_CheckB"
+        Me.Access_CheckB.Size = New System.Drawing.Size(139, 224)
+        Me.Access_CheckB.TabIndex = 30
         '
         'frmUser
         '
@@ -333,8 +330,8 @@ Partial Class frmUser
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.AppWorkspace
         Me.ClientSize = New System.Drawing.Size(757, 370)
+        Me.Controls.Add(Me.Access_CheckB)
         Me.Controls.Add(Me.Label8)
-        Me.Controls.Add(Me.Guna2CheckBox1)
         Me.Controls.Add(Me.Label7)
         Me.Controls.Add(Me.NewUser_txt)
         Me.Controls.Add(Me.Label6)
@@ -372,6 +369,6 @@ Partial Class frmUser
     Friend WithEvents SampleUser_txt As Guna.UI2.WinForms.Guna2TextBox
     Friend WithEvents Label7 As Label
     Friend WithEvents NewUser_txt As Guna.UI2.WinForms.Guna2TextBox
-    Friend WithEvents Guna2CheckBox1 As Guna.UI2.WinForms.Guna2CheckBox
     Friend WithEvents Label8 As Label
+    Friend WithEvents Access_CheckB As CheckedListBox
 End Class

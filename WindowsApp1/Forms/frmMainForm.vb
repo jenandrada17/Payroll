@@ -15,7 +15,7 @@ Public Class frmMainForm
 
         'Loans_to_Deduction()
 
-        'Login_Form.ShowDialog()
+        Login_Form.ShowDialog()
 
         AppDateTime.Text = Date.Now.ToString("dddd, MMMM dd, yyyy hh:mm:ss tt", CultureInfo.CurrentCulture)
 
@@ -211,6 +211,23 @@ Public Class frmMainForm
 
     Private Sub Settings_BTN_MouseLeave(sender As Object, e As EventArgs) Handles Settings_BTN.MouseLeave
         Settings_BTN.BackColor = Color.Black
+    End Sub
+
+    Friend Sub Accessibility(idx As String)
+        For Each btn As Button In NavagationPanel.Controls.OfType(Of Button)()
+            Dim mysql As String = $"Select * FROM PAYROLL_ACCESSIBILITY where USER_ID = '{idx}'"
+            Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ACCESSIBILITY")
+                If ds.Tables(0).Rows.Count > 0 Then
+                    For Each dr In ds.Tables(0).Rows
+                        With dr
+                            If btn.AccessibleName = .Item("FUNCTION") Then
+                                btn.Enabled = False
+                            End If
+                        End With
+                    Next
+                End If
+            End Using
+        Next
     End Sub
 
 End Class

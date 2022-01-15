@@ -2162,21 +2162,42 @@ Module SaveUpdate
     Public Sub SaveUserDetails(oldUsername As String, newUsername As String, newPassword As String)
 
         Dim namee As String = GetData("USER_FULLNAME", $"PAYROLL_USER where USERNAME = '{oldUsername}'")
+        Dim oldUser As String = GetData("USERNAME", $"PAYROLL_USER where USERNAME = '{oldUsername}'")
+        Dim oldPass As String = GetData("PASSWORD", $"PAYROLL_USER where USERNAME = '{oldUsername}'")
 
-        Dim mysql As String = $"Select * from PAYROLL_USER rows 1"
-        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_USER")
-            Dim dsRow As DataRow = ds.Tables(0).NewRow
-            With dsRow
-                .Item("USERNAME") = newUsername
-                .Item("PASSWORD") = EncryptString(newPassword)
-                .Item("USER_FULLNAME") = namee
-            End With
+        If oldUser = newUsername And oldPass = newPassword Then
+        Else
 
-            ds.Tables(0).Rows.Add(dsRow)
-            SaveEntry(ds)
+            Dim mysql As String = $"Select * from PAYROLL_USER rows 1"
+            Using ds As DataSet = LoadSQL(mysql, "PAYROLL_USER")
+                Dim dsRow As DataRow = ds.Tables(0).NewRow
+                With dsRow
+                    .Item("USERNAME") = newUsername
+                    .Item("PASSWORD") = EncryptString(newPassword)
+                    .Item("USER_FULLNAME") = namee
+                End With
 
-            MsgBox("Successfully Saved.", MsgBoxStyle.Information, "Success")
-        End Using
+                ds.Tables(0).Rows.Add(dsRow)
+                SaveEntry(ds)
+
+            End Using
+        End If
+
+        MsgBox("Successfully Saved.", MsgBoxStyle.Information, "Success")
     End Sub
 
+    Public Sub Save_Accessibility(USER_ID As String, functionss As String)
+        Dim mysql As String = "Select * From PAYROLL_ACCESSIBILITY Rows 1"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ACCESSIBILITY")
+
+            Dim dsNewRow As DataRow = ds.Tables(0).NewRow
+            With dsNewRow
+                .Item("USER_ID") = USER_ID
+                .Item("FUNCTION") = functionss
+            End With
+            ds.Tables(0).Rows.Add(dsNewRow)
+            SaveEntry(ds)
+
+        End Using
+    End Sub
 End Module

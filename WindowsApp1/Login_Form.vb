@@ -10,6 +10,10 @@
                 txtUser.Clear()
                 txtPass.Clear()
                 loginNo = 0
+
+                Dim idx As Integer = GetData_Integer("ID", $"PAYROLL_USER where USERNAME = '{txtUser.Text}' AND PASSWORD = '{EncryptString(txtPass.Text)}'")
+                frmMainForm.Accessibility(idx)
+
                 Close()
             Else
                 loginNo += 1
