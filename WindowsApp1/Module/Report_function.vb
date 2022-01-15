@@ -1035,24 +1035,24 @@ Module Report_function
         End Using
     End Sub
 
-    Public Sub Loans_to_Deduction()
-        Dim sql As String = $"select * from PAYROLL_LOANS"
-        Using dsSs As DataSet = LoadSQL(sql, "PAYROLL_LOANS")
-            For Each drRr In dsSs.Tables(0).Rows
-                With drRr
-                    Dim BIO_NO = .Item("BIO_NO")
-                    Dim amort = .Item("AMORT")
-                    Dim PRINCIPAL = .Item("PRINCIPAL")
-                    Dim CREDIT = .Item("CREDIT")
-                    Dim BALANCE = .Item("BALANCE")
-                    Dim DATEE = .Item("DATEE")
-                    Dim STATUS = IIf(IsDBNull(.Item("STATUS")), Nothing, .Item("STATUS"))
+    'Public Sub Loans_to_Deduction()
+    '    Dim sql As String = $"select * from PAYROLL_LOANS"
+    '    Using dsSs As DataSet = LoadSQL(sql, "PAYROLL_LOANS")
+    '        For Each drRr In dsSs.Tables(0).Rows
+    '            With drRr
+    '                Dim BIO_NO = .Item("BIO_NO")
+    '                Dim amort = .Item("AMORT")
+    '                Dim PRINCIPAL = .Item("PRINCIPAL")
+    '                Dim CREDIT = .Item("CREDIT")
+    '                Dim BALANCE = .Item("BALANCE")
+    '                Dim DATEE = .Item("DATEE")
+    '                Dim STATUS = IIf(IsDBNull(.Item("STATUS")), Nothing, .Item("STATUS"))
 
-                    SAVE_TO_DEDUCTION(.Item("BIO_NO"), .Item("CATEGORY") & " LOAN", .Item("AMORT"), .Item("PRINCIPAL"), .Item("CREDIT"), .Item("BALANCE"), .Item("DATEE"), "CLOSE PAYROLL", STATUS)
-                End With
-            Next
-        End Using
-    End Sub
+    '                SAVE_TO_DEDUCTION(.Item("BIO_NO"), .Item("CATEGORY") & " LOAN", .Item("AMORT"), .Item("PRINCIPAL"), .Item("CREDIT"), .Item("BALANCE"), .Item("DATEE"), "CLOSE PAYROLL", STATUS)
+    '            End With
+    '        Next
+    '    End Using
+    'End Sub
 
     Private Sub SAVE_TO_DEDUCTION(BIO_NO As String, CATEGORY As String, AMORT As String, PRINCIPAL As String, CREDIT As String, BALANCE As String, DATEE As String, SCHEDULE As String, STATUS As String)
         Dim sql As String = $"select * from PAYROLL_DEDUCTION Rows 1"

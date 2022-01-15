@@ -356,12 +356,12 @@ Partial Class frmLoan
         '
         'Save_btn
         '
-        Me.Save_btn.BackColor = System.Drawing.Color.RosyBrown
+        Me.Save_btn.BackColor = System.Drawing.Color.DarkSalmon
         Me.Save_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.Save_btn.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Save_btn.Location = New System.Drawing.Point(301, 391)
+        Me.Save_btn.Location = New System.Drawing.Point(288, 391)
         Me.Save_btn.Name = "Save_btn"
-        Me.Save_btn.Size = New System.Drawing.Size(89, 38)
+        Me.Save_btn.Size = New System.Drawing.Size(102, 38)
         Me.Save_btn.TabIndex = 41
         Me.Save_btn.Text = "Save"
         Me.Save_btn.UseVisualStyleBackColor = False
@@ -373,7 +373,7 @@ Partial Class frmLoan
         Me.Cancel_btn.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Cancel_btn.Location = New System.Drawing.Point(77, 391)
         Me.Cancel_btn.Name = "Cancel_btn"
-        Me.Cancel_btn.Size = New System.Drawing.Size(89, 38)
+        Me.Cancel_btn.Size = New System.Drawing.Size(105, 38)
         Me.Cancel_btn.TabIndex = 40
         Me.Cancel_btn.Text = "Cancel"
         Me.Cancel_btn.UseVisualStyleBackColor = False
@@ -577,23 +577,27 @@ Partial Class frmLoan
         '
         'SSSCancel_BTN
         '
+        Me.SSSCancel_BTN.BackColor = System.Drawing.Color.PeachPuff
+        Me.SSSCancel_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.SSSCancel_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.SSSCancel_BTN.Location = New System.Drawing.Point(77, 394)
         Me.SSSCancel_BTN.Name = "SSSCancel_BTN"
         Me.SSSCancel_BTN.Size = New System.Drawing.Size(110, 47)
         Me.SSSCancel_BTN.TabIndex = 138
         Me.SSSCancel_BTN.Text = "Cancel"
-        Me.SSSCancel_BTN.UseVisualStyleBackColor = True
+        Me.SSSCancel_BTN.UseVisualStyleBackColor = False
         '
         'SSS_Save_BTN
         '
+        Me.SSS_Save_BTN.BackColor = System.Drawing.Color.DarkSalmon
+        Me.SSS_Save_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.SSS_Save_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.SSS_Save_BTN.Location = New System.Drawing.Point(271, 394)
         Me.SSS_Save_BTN.Name = "SSS_Save_BTN"
         Me.SSS_Save_BTN.Size = New System.Drawing.Size(110, 47)
         Me.SSS_Save_BTN.TabIndex = 139
         Me.SSS_Save_BTN.Text = "Save"
-        Me.SSS_Save_BTN.UseVisualStyleBackColor = True
+        Me.SSS_Save_BTN.UseVisualStyleBackColor = False
         '
         'SSS_Date_DTP
         '
@@ -836,23 +840,27 @@ Partial Class frmLoan
         '
         'Pag_Cancel_BTN
         '
+        Me.Pag_Cancel_BTN.BackColor = System.Drawing.Color.PeachPuff
+        Me.Pag_Cancel_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.Pag_Cancel_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Pag_Cancel_BTN.Location = New System.Drawing.Point(79, 390)
         Me.Pag_Cancel_BTN.Name = "Pag_Cancel_BTN"
         Me.Pag_Cancel_BTN.Size = New System.Drawing.Size(106, 39)
         Me.Pag_Cancel_BTN.TabIndex = 151
         Me.Pag_Cancel_BTN.Text = "Cancel"
-        Me.Pag_Cancel_BTN.UseVisualStyleBackColor = True
+        Me.Pag_Cancel_BTN.UseVisualStyleBackColor = False
         '
         'Pag_Save_BTN
         '
+        Me.Pag_Save_BTN.BackColor = System.Drawing.Color.DarkSalmon
+        Me.Pag_Save_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.Pag_Save_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Pag_Save_BTN.Location = New System.Drawing.Point(275, 390)
         Me.Pag_Save_BTN.Name = "Pag_Save_BTN"
         Me.Pag_Save_BTN.Size = New System.Drawing.Size(106, 39)
         Me.Pag_Save_BTN.TabIndex = 152
         Me.Pag_Save_BTN.Text = "Save"
-        Me.Pag_Save_BTN.UseVisualStyleBackColor = True
+        Me.Pag_Save_BTN.UseVisualStyleBackColor = False
         '
         'PagSearch_BTN
         '
@@ -1031,23 +1039,27 @@ Partial Class frmLoan
         '
         'Mp2Cancel_btn
         '
+        Me.Mp2Cancel_btn.BackColor = System.Drawing.Color.PeachPuff
+        Me.Mp2Cancel_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.Mp2Cancel_btn.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Mp2Cancel_btn.Location = New System.Drawing.Point(71, 408)
         Me.Mp2Cancel_btn.Name = "Mp2Cancel_btn"
-        Me.Mp2Cancel_btn.Size = New System.Drawing.Size(99, 43)
+        Me.Mp2Cancel_btn.Size = New System.Drawing.Size(116, 43)
         Me.Mp2Cancel_btn.TabIndex = 161
         Me.Mp2Cancel_btn.Text = "Cancel"
-        Me.Mp2Cancel_btn.UseVisualStyleBackColor = True
+        Me.Mp2Cancel_btn.UseVisualStyleBackColor = False
         '
         'Mp2Save_btn
         '
+        Me.Mp2Save_btn.BackColor = System.Drawing.Color.DarkSalmon
+        Me.Mp2Save_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.Mp2Save_btn.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Mp2Save_btn.Location = New System.Drawing.Point(300, 408)
+        Me.Mp2Save_btn.Location = New System.Drawing.Point(289, 408)
         Me.Mp2Save_btn.Name = "Mp2Save_btn"
-        Me.Mp2Save_btn.Size = New System.Drawing.Size(99, 43)
+        Me.Mp2Save_btn.Size = New System.Drawing.Size(110, 43)
         Me.Mp2Save_btn.TabIndex = 162
         Me.Mp2Save_btn.Text = "Save"
-        Me.Mp2Save_btn.UseVisualStyleBackColor = True
+        Me.Mp2Save_btn.UseVisualStyleBackColor = False
         '
         'Label11
         '
@@ -1274,23 +1286,27 @@ Partial Class frmLoan
         '
         'MaxCancel_btn
         '
+        Me.MaxCancel_btn.BackColor = System.Drawing.Color.PeachPuff
+        Me.MaxCancel_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.MaxCancel_btn.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.MaxCancel_btn.Location = New System.Drawing.Point(82, 406)
         Me.MaxCancel_btn.Name = "MaxCancel_btn"
-        Me.MaxCancel_btn.Size = New System.Drawing.Size(99, 43)
+        Me.MaxCancel_btn.Size = New System.Drawing.Size(119, 43)
         Me.MaxCancel_btn.TabIndex = 176
         Me.MaxCancel_btn.Text = "Cancel"
-        Me.MaxCancel_btn.UseVisualStyleBackColor = True
+        Me.MaxCancel_btn.UseVisualStyleBackColor = False
         '
         'MaxSave_btn
         '
+        Me.MaxSave_btn.BackColor = System.Drawing.Color.DarkSalmon
+        Me.MaxSave_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.MaxSave_btn.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.MaxSave_btn.Location = New System.Drawing.Point(311, 406)
+        Me.MaxSave_btn.Location = New System.Drawing.Point(301, 406)
         Me.MaxSave_btn.Name = "MaxSave_btn"
-        Me.MaxSave_btn.Size = New System.Drawing.Size(99, 43)
+        Me.MaxSave_btn.Size = New System.Drawing.Size(109, 43)
         Me.MaxSave_btn.TabIndex = 177
         Me.MaxSave_btn.Text = "Save"
-        Me.MaxSave_btn.UseVisualStyleBackColor = True
+        Me.MaxSave_btn.UseVisualStyleBackColor = False
         '
         'Label33
         '

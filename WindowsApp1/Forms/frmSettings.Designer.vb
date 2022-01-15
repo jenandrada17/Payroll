@@ -730,13 +730,15 @@ Partial Class frmSettings
         '
         'Save_BTN
         '
+        Me.Save_BTN.BackColor = System.Drawing.Color.DarkSalmon
+        Me.Save_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.Save_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Save_BTN.Location = New System.Drawing.Point(171, 182)
         Me.Save_BTN.Name = "Save_BTN"
         Me.Save_BTN.Size = New System.Drawing.Size(99, 37)
         Me.Save_BTN.TabIndex = 28
         Me.Save_BTN.Text = "Save"
-        Me.Save_BTN.UseVisualStyleBackColor = True
+        Me.Save_BTN.UseVisualStyleBackColor = False
         '
         'Regular_RB
         '
@@ -946,13 +948,15 @@ Partial Class frmSettings
         '
         'Allow_Cancel_BTN
         '
+        Me.Allow_Cancel_BTN.BackColor = System.Drawing.Color.PeachPuff
+        Me.Allow_Cancel_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.Allow_Cancel_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Allow_Cancel_BTN.Location = New System.Drawing.Point(67, 479)
         Me.Allow_Cancel_BTN.Name = "Allow_Cancel_BTN"
-        Me.Allow_Cancel_BTN.Size = New System.Drawing.Size(90, 33)
+        Me.Allow_Cancel_BTN.Size = New System.Drawing.Size(116, 33)
         Me.Allow_Cancel_BTN.TabIndex = 110
         Me.Allow_Cancel_BTN.Text = "Cancel"
-        Me.Allow_Cancel_BTN.UseVisualStyleBackColor = True
+        Me.Allow_Cancel_BTN.UseVisualStyleBackColor = False
         '
         'Allow_Search_TXT
         '
@@ -1052,13 +1056,15 @@ Partial Class frmSettings
         '
         'Allow_Save_BTN
         '
+        Me.Allow_Save_BTN.BackColor = System.Drawing.Color.DarkSalmon
+        Me.Allow_Save_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.Allow_Save_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Allow_Save_BTN.Location = New System.Drawing.Point(296, 479)
+        Me.Allow_Save_BTN.Location = New System.Drawing.Point(274, 479)
         Me.Allow_Save_BTN.Name = "Allow_Save_BTN"
-        Me.Allow_Save_BTN.Size = New System.Drawing.Size(90, 33)
+        Me.Allow_Save_BTN.Size = New System.Drawing.Size(112, 33)
         Me.Allow_Save_BTN.TabIndex = 85
         Me.Allow_Save_BTN.Text = "Save"
-        Me.Allow_Save_BTN.UseVisualStyleBackColor = True
+        Me.Allow_Save_BTN.UseVisualStyleBackColor = False
         '
         'TabPage4
         '
@@ -1553,13 +1559,15 @@ Partial Class frmSettings
         '
         'Email_Save_BTN
         '
+        Me.Email_Save_BTN.BackColor = System.Drawing.Color.DarkSalmon
+        Me.Email_Save_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.Email_Save_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Email_Save_BTN.Location = New System.Drawing.Point(273, 181)
+        Me.Email_Save_BTN.Location = New System.Drawing.Point(261, 181)
         Me.Email_Save_BTN.Name = "Email_Save_BTN"
-        Me.Email_Save_BTN.Size = New System.Drawing.Size(88, 39)
+        Me.Email_Save_BTN.Size = New System.Drawing.Size(116, 39)
         Me.Email_Save_BTN.TabIndex = 68
         Me.Email_Save_BTN.Text = "Change"
-        Me.Email_Save_BTN.UseVisualStyleBackColor = True
+        Me.Email_Save_BTN.UseVisualStyleBackColor = False
         '
         'TabPage3
         '
@@ -1632,7 +1640,7 @@ Partial Class frmSettings
         Me.ClearCity_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ClearCity_BTN.Location = New System.Drawing.Point(124, 347)
         Me.ClearCity_BTN.Name = "ClearCity_BTN"
-        Me.ClearCity_BTN.Size = New System.Drawing.Size(81, 36)
+        Me.ClearCity_BTN.Size = New System.Drawing.Size(104, 36)
         Me.ClearCity_BTN.TabIndex = 73
         Me.ClearCity_BTN.Text = "Clear"
         Me.ClearCity_BTN.UseVisualStyleBackColor = False
@@ -1760,9 +1768,9 @@ Partial Class frmSettings
         Me.SaveCity_BTN.BackColor = System.Drawing.Color.DarkSalmon
         Me.SaveCity_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.SaveCity_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.SaveCity_BTN.Location = New System.Drawing.Point(306, 347)
+        Me.SaveCity_BTN.Location = New System.Drawing.Point(292, 347)
         Me.SaveCity_BTN.Name = "SaveCity_BTN"
-        Me.SaveCity_BTN.Size = New System.Drawing.Size(81, 36)
+        Me.SaveCity_BTN.Size = New System.Drawing.Size(95, 36)
         Me.SaveCity_BTN.TabIndex = 72
         Me.SaveCity_BTN.Text = "Save"
         Me.SaveCity_BTN.UseVisualStyleBackColor = False

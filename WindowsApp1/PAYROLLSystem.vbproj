@@ -218,12 +218,6 @@
     <Compile Include="Forms\frmNewEmployee.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\frmPassword.Designer.vb">
-      <DependentUpon>frmPassword.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\frmPassword.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Forms\frmPayout.Designer.vb">
       <DependentUpon>frmPayout.vb</DependentUpon>
     </Compile>
@@ -234,6 +228,12 @@
       <DependentUpon>frmReport.vb</DependentUpon>
     </Compile>
     <Compile Include="Forms\frmReport.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmSchedule.Designer.vb">
+      <DependentUpon>frmSchedule.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmSchedule.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\frmSettings.Designer.vb">
@@ -307,14 +307,14 @@
     <EmbeddedResource Include="Forms\frmNewEmployee.resx">
       <DependentUpon>frmNewEmployee.vb</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\frmPassword.resx">
-      <DependentUpon>frmPassword.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmPayout.resx">
       <DependentUpon>frmPayout.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmReport.resx">
       <DependentUpon>frmReport.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmSchedule.resx">
+      <DependentUpon>frmSchedule.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmSettings.resx">
       <DependentUpon>frmSettings.vb</DependentUpon>

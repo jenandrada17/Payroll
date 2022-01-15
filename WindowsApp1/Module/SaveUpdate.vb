@@ -184,6 +184,54 @@ Module SaveUpdate
         End Using
     End Sub
 
+    Public Sub SaveSchedule(BIO_ID As String, DATEE As String, TIME_IN As String, TIME_OUT As String, PAYDATE As String)
+        Dim mysql As String
+
+        mysql = $"Select * From PAYROLL_SCHEDULE WHERE BIO_NO = '{BIO_ID}' AND DATEE = '{DATEE}' AND PAYDATE = '{PAYDATE}'"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_SCHEDULE")
+            If ds.Tables(0).Rows.Count > 0 Then
+
+                With ds.Tables(0).Rows(0)
+                    If TIME_IN <> Nothing Then
+                        .Item("TIME_IN") = TIME_IN
+                    End If
+
+                    If TIME_OUT <> Nothing Then
+                        .Item("TIME_OUT") = TIME_OUT
+                    End If
+                End With
+
+                SaveEntry(ds, False)
+            Else
+
+                mysql = "Select * From PAYROLL_SCHEDULE Rows 1"
+                Using dsS As DataSet = LoadSQL(mysql, "PAYROLL_SCHEDULE")
+
+                    Dim dsNewRow As DataRow = dsS.Tables(0).NewRow
+                    With dsNewRow
+                        .Item("BIO_NO") = BIO_ID
+                        .Item("DATEE") = DATEE
+                        .Item("PAYDATE") = PAYDATE
+
+                        If TIME_IN <> Nothing Then
+                            .Item("TIME_IN") = TIME_IN
+                        End If
+
+                        If TIME_OUT <> Nothing Then
+                            .Item("TIME_OUT") = TIME_OUT
+                        End If
+
+                    End With
+                    dsS.Tables(0).Rows.Add(dsNewRow)
+                    SaveEntry(dsS)
+                End Using
+
+            End If
+        End Using
+
+
+    End Sub
+
 
     Public Sub SaveSheet_FC200(payDate As String, bioID As String, datee As String, BRANCHNAME As String)
 
@@ -698,8 +746,6 @@ Module SaveUpdate
                     rate = IIf(IsDBNull(.Item("RATE_DAILY")) Or .Item("RATE_DAILY") = 0, Minimum_rate, .Item("RATE_DAILY"))
                     Dim Monthly_rate As Decimal = IIf(IsDBNull(.Item("RATE_MONTHLY")) Or .Item("RATE_MONTHLY").Equals("0"), rate * 26, .Item("RATE_MONTHLY"))
                     Company = IIf(IsDBNull(.Item("COMPANY")), "", .Item("COMPANY"))
-                    Dim Time_In As DateTime = IIf(IsDBNull(.Item("TIME_IN")), "", .Item("TIME_IN"))
-                    Dim Time_Out As DateTime = IIf(IsDBNull(.Item("TIME_OUT")), "", .Item("TIME_OUT"))
                     Dim BranchCode As String = .Item("BRANCH_CODE")
                     Dim Training_REGHoliday = 0, Training_SPECHoliday As Integer = 0
 
@@ -755,6 +801,25 @@ Module SaveUpdate
                                 If PRESENT_Date(bioNo, paydate_, startingDate) Then
 
                                     noOf_days_training += 1
+
+                                    Dim Time_In, Time_Out As DateTime
+
+                                    If CheckData("BIO_NO", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{bioNo}'") Then
+
+                                        If DateExist_IN_Schedule(bioNo, startingDate.ToShortDateString) Then
+                                            Time_In = GetData("TIME_IN", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{bioNo}' AND DATEE = '{startingDate.ToShortDateString}' ")
+                                            Time_Out = Time_In.AddHours(9)
+                                        Else
+                                            Time_In = GetData("VALUEE", $"PAYROLL_DEFAULT_TIMEIN")
+                                            Time_Out = Time_In.AddHours(9)
+                                        End If
+
+                                    Else
+
+                                        Time_In = IIf(IsDBNull(.Item("TIME_IN")), "", .Item("TIME_IN"))
+                                        Time_Out = IIf(IsDBNull(.Item("TIME_OUT")), "", .Item("TIME_OUT"))
+
+                                    End If
 
                                     training_overtime += Calculate_Training_Overtime(bioNo, paydate_, startingDate, Time_Out)
                                     training_late += Calculate_Training_Late(bioNo, paydate_, startingDate, Time_In)
@@ -985,7 +1050,7 @@ Module SaveUpdate
                     'End If
 
                     '============================================= OTHER DEDUCTION LIKE MP2, MAXICARE ==================================================  
-                    Dim sql_5 As String = $"Select * From PAYROLL_OTHER_DEDUCTION WHERE BIO_NO = '{bioNo}' and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
+                    Dim sql_5 As String = $"Select * From PAYROLL_OTHER_DEDUCTION WHERE BIO_NO = '{bioNo}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
                     Using ds_5 As DataSet = LoadSQL(sql_5, "PAYROLL_OTHER_DEDUCTION")
                         If ds_5.Tables(0).Rows.Count > 0 Then
                             For Each dr_5 In ds_5.Tables(0).Rows

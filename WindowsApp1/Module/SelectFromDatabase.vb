@@ -1159,12 +1159,17 @@ Module SelectFromDatabase
 
     Public Function CountDate(list As List(Of String), datee As String) As Integer
         Dim cnt As Integer = 0
-        For Each c As String In list
-            If c.StartsWith(datee) Then
+        For Each c As DateTime In list
+
+            Dim convertDate As String = c.ToString("M/dd/yyyy HH:mm:ss")
+
+            If convertDate.StartsWith(datee) Then
                 cnt = cnt + 1
             End If
 
-            Console.WriteLine("Count 12 " & cnt)
+            Console.WriteLine("c " & c)
+            Console.WriteLine("datee " & datee)
+
         Next
 
         Return cnt
@@ -1173,8 +1178,11 @@ Module SelectFromDatabase
     Public Function SortCountedDATE(list As List(Of String), datee As String) As List(Of String)
 
         Dim HourGroup As New List(Of String)()
-        For Each c As String In list
-            If c.StartsWith(datee) Then
+        For Each c As DateTime In list
+
+            Dim convertDate As String = c.ToString("M/dd/yyyy HH:mm:ss")
+
+            If convertDate.StartsWith(datee) Then
                 Dim AAA As DateTime = c
                 AAA = AAA.ToString("t")
                 HourGroup.Add(AAA)
@@ -2728,6 +2736,16 @@ Module SelectFromDatabase
         Return dataa
     End Function
 
+    Friend Function CheckData(column As String, str As String) As Boolean
+        Dim mysql As String = $"Select {column} from {str}"
+        Using ds As DataSet = LoadSQL(mysql)
+            If ds.Tables(0).Rows.Count > 0 Then
+                Return True
+            End If
+        End Using
+        Return False
+    End Function
+
     Friend Function DataeXIST(str As String)
         Dim mysql As String = $"Select * from {str}"
         Using ds As DataSet = LoadSQL(mysql)
@@ -2926,5 +2944,124 @@ Module SelectFromDatabase
 
     '    Return balance
     'End Function
+
+    Friend Sub PopulateShedule(LV As ListView, Paydate As String, Optional searchName As String = "")
+
+        LV.Items.Clear()
+
+        Dim secured_str As String = searchName
+        secured_str = DreadKnight(secured_str)
+        Dim strWords As String() = secured_str.Split(New Char() {" "c})
+        Dim name As String
+        Dim mysql As String
+
+        If searchName.Length <> 0 Then
+
+            mysql = $"Select * From PAYROLL_SCHEDULE A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIO_NO where "
+
+            For Each name In strWords
+                mysql &= $"{vbCr}UPPER(BIO_NO) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(FULLNAME) LIKE UPPER('%{name}%') ORDER BY FULLNAME"
+            Next
+
+        Else
+            mysql = $"Select  PAYDATE, FULLNAME, A.BIO_NO AS IDD  From PAYROLL_SCHEDULE A
+                                        INNER JOIN PAYROLL_EMPLOYEE B ON A.BIO_NO = B.BIO_NO GROUP BY PAYDATE, FULLNAME, A.BIO_NO ORDER BY FULLNAME"
+
+        End If
+
+
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_SCHEDULE")
+            If ds.Tables(0).Rows.Count > 0 Then
+
+                progressBarStart(ds.Tables(0).Rows.Count)
+
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+
+                        Dim i As ListViewItem = LV.Items.Add(.Item("IDD"))
+                        i.SubItems.Add(.Item("FULLNAME"))
+                        i.SubItems.Add(.Item("PAYDATE"))
+
+                    End With
+
+                    frmMainForm.AppProgressBar.Value += 1
+                Next
+                progressBarEnd()
+            End If
+        End Using
+
+    End Sub
+
+    Friend Sub ListSchedule(datagrid As DataGridView, bioNo As String, PAYDATE As String)
+
+        For Each oRow As DataGridViewRow In datagrid.Rows
+            oRow.Cells(1).Value = Nothing
+            oRow.Cells(2).Value = Nothing
+        Next
+
+        Dim mysql As String = $"Select * From PAYROLL_SCHEDULE WHERE BIO_NO = '{bioNo}' AND PAYDATE = '{PAYDATE}'"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_SCHEDULE")
+            If ds.Tables(0).Rows.Count > 0 Then
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+
+                        Dim date_ As DateTime = .Item("DATEE")
+
+                        For Each row As DataGridViewRow In datagrid.Rows
+
+                            Dim rowIndex As Integer = row.Index
+                            Dim asss As Date = datagrid.Rows(rowIndex).Tag
+
+                            If asss = date_ Then
+
+                                Dim timeIN, timeOUT As DateTime
+
+                                timeIN = .item("TIME_IN")
+                                timeOUT = .item("TIME_OUT")
+
+                                row.Cells(0).Value = date_.ToString("D")
+                                row.Cells(0).Tag = date_.ToShortDateString
+                                row.Cells(1).Value = timeIN.ToShortTimeString
+                                row.Cells(2).Value = timeOUT.ToShortTimeString
+
+
+                                'If IsDBNull(.item("TIME_IN")) And IsDBNull(.item("TIME_OUT")) Then
+                                '    row.Cells(0).Value = "Rest Day"
+                                '    row.Cells(0).Tag = date_.ToShortDateString
+                                '    row.DefaultCellStyle.BackColor = Color.DarkKhaki
+                                'Else
+
+                                '    timeIN = .item("TIME_IN")
+                                '    timeOUT = .item("TIME_OUT")
+
+                                '    row.Cells(0).Value = date_.ToString("D")
+                                '    row.Cells(0).Tag = date_.ToShortDateString
+                                '    row.Cells(1).Value = timeIN.ToShortTimeString
+                                '    row.Cells(2).Value = timeOUT.ToShortTimeString
+
+                                'End If
+                            Else
+
+
+                            End If
+
+                        Next
+
+                    End With
+                Next
+            End If
+        End Using
+    End Sub
+
+    Friend Function DateExist_IN_Schedule(bioNo As String, datee As String) As Boolean
+        Dim mysql As String = $"Select * From PAYROLL_SCHEDULE WHERE BIO_NO = '{bioNo}' AND DATEE = '{datee}'"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_SCHEDULE")
+            If ds.Tables(0).Rows.Count > 0 Then
+                Return True
+            End If
+        End Using
+        Return False
+    End Function
 
 End Module

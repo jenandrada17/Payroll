@@ -322,7 +322,7 @@ Partial Class frmNewEmployee
         Me.Save_BTN.Name = "Save_BTN"
         Me.Save_BTN.Size = New System.Drawing.Size(80, 31)
         Me.Save_BTN.TabIndex = 79
-        Me.Save_BTN.Text = "Save"
+        Me.Save_BTN.Text = "Import"
         Me.Save_BTN.UseVisualStyleBackColor = True
         '
         'Add_BTN
@@ -340,10 +340,10 @@ Partial Class frmNewEmployee
         '
         'btnSave
         '
-        Me.btnSave.BackColor = System.Drawing.Color.Sienna
+        Me.btnSave.BackColor = System.Drawing.Color.DarkSalmon
         Me.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnSave.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnSave.Location = New System.Drawing.Point(500, 486)
+        Me.btnSave.Location = New System.Drawing.Point(507, 581)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.Size = New System.Drawing.Size(76, 47)
         Me.btnSave.TabIndex = 103
@@ -837,10 +837,10 @@ Partial Class frmNewEmployee
         '
         'Button1
         '
-        Me.Button1.BackColor = System.Drawing.Color.IndianRed
+        Me.Button1.BackColor = System.Drawing.Color.PeachPuff
         Me.Button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.Button1.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button1.Location = New System.Drawing.Point(501, 423)
+        Me.Button1.Location = New System.Drawing.Point(507, 493)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(76, 47)
         Me.Button1.TabIndex = 104

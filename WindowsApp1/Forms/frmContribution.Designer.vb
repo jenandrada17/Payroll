@@ -22,11 +22,11 @@ Partial Class frmContribution
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.Contribution_Tab = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
         Me.SSS_grid = New System.Windows.Forms.DataGridView()
@@ -109,8 +109,8 @@ Partial Class frmContribution
         Me.SSS_grid.AllowUserToAddRows = False
         Me.SSS_grid.AllowUserToDeleteRows = False
         Me.SSS_grid.AllowUserToResizeRows = False
-        DataGridViewCellStyle1.BackColor = System.Drawing.Color.LightBlue
-        Me.SSS_grid.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle9.BackColor = System.Drawing.Color.LightBlue
+        Me.SSS_grid.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle9
         Me.SSS_grid.BackgroundColor = System.Drawing.Color.White
         Me.SSS_grid.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.SSS_grid.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText
@@ -122,8 +122,8 @@ Partial Class frmContribution
         Me.SSS_grid.ReadOnly = True
         Me.SSS_grid.RowHeadersVisible = False
         Me.SSS_grid.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
-        DataGridViewCellStyle2.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.SSS_grid.RowsDefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle10.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SSS_grid.RowsDefaultCellStyle = DataGridViewCellStyle10
         Me.SSS_grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.SSS_grid.Size = New System.Drawing.Size(1139, 542)
         Me.SSS_grid.TabIndex = 1
@@ -312,13 +312,15 @@ Partial Class frmContribution
         '
         'PagChange_BTN
         '
+        Me.PagChange_BTN.BackColor = System.Drawing.Color.DarkSalmon
+        Me.PagChange_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.PagChange_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.PagChange_BTN.Location = New System.Drawing.Point(183, 174)
         Me.PagChange_BTN.Name = "PagChange_BTN"
         Me.PagChange_BTN.Size = New System.Drawing.Size(93, 44)
         Me.PagChange_BTN.TabIndex = 87
         Me.PagChange_BTN.Text = "Change"
-        Me.PagChange_BTN.UseVisualStyleBackColor = True
+        Me.PagChange_BTN.UseVisualStyleBackColor = False
         '
         'TabPage2
         '
@@ -362,13 +364,15 @@ Partial Class frmContribution
         '
         'PhilH_Save_BTN
         '
+        Me.PhilH_Save_BTN.BackColor = System.Drawing.Color.DarkSalmon
+        Me.PhilH_Save_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.PhilH_Save_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.PhilH_Save_BTN.Location = New System.Drawing.Point(160, 110)
+        Me.PhilH_Save_BTN.Location = New System.Drawing.Point(175, 107)
         Me.PhilH_Save_BTN.Name = "PhilH_Save_BTN"
-        Me.PhilH_Save_BTN.Size = New System.Drawing.Size(135, 38)
+        Me.PhilH_Save_BTN.Size = New System.Drawing.Size(105, 38)
         Me.PhilH_Save_BTN.TabIndex = 92
         Me.PhilH_Save_BTN.Text = "Change"
-        Me.PhilH_Save_BTN.UseVisualStyleBackColor = True
+        Me.PhilH_Save_BTN.UseVisualStyleBackColor = False
         '
         'TabPage3
         '
@@ -394,33 +398,35 @@ Partial Class frmContribution
         '
         'WH_Change_BTN
         '
+        Me.WH_Change_BTN.BackColor = System.Drawing.Color.DarkSalmon
+        Me.WH_Change_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.WH_Change_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.WH_Change_BTN.Location = New System.Drawing.Point(518, 53)
+        Me.WH_Change_BTN.Location = New System.Drawing.Point(528, 46)
         Me.WH_Change_BTN.Name = "WH_Change_BTN"
         Me.WH_Change_BTN.Size = New System.Drawing.Size(116, 33)
         Me.WH_Change_BTN.TabIndex = 93
         Me.WH_Change_BTN.Text = "Change"
-        Me.WH_Change_BTN.UseVisualStyleBackColor = True
+        Me.WH_Change_BTN.UseVisualStyleBackColor = False
         '
         'WH_grid
         '
         Me.WH_grid.AllowUserToAddRows = False
         Me.WH_grid.AllowUserToDeleteRows = False
         Me.WH_grid.AllowUserToResizeRows = False
-        DataGridViewCellStyle3.BackColor = System.Drawing.Color.LightBlue
-        Me.WH_grid.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle6.BackColor = System.Drawing.Color.LightBlue
+        Me.WH_grid.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle6
         Me.WH_grid.BackgroundColor = System.Drawing.Color.White
         Me.WH_grid.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.WH_grid.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText
         Me.WH_grid.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
-        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle4.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.WH_grid.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle7.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.WH_grid.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle7
         Me.WH_grid.ColumnHeadersHeight = 41
         Me.WH_grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing
         Me.WH_grid.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.range_dgv, Me.wh_dgv})
@@ -429,8 +435,8 @@ Partial Class frmContribution
         Me.WH_grid.ReadOnly = True
         Me.WH_grid.RowHeadersVisible = False
         Me.WH_grid.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
-        DataGridViewCellStyle5.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.WH_grid.RowsDefaultCellStyle = DataGridViewCellStyle5
+        DataGridViewCellStyle8.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.WH_grid.RowsDefaultCellStyle = DataGridViewCellStyle8
         Me.WH_grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.WH_grid.Size = New System.Drawing.Size(506, 524)
         Me.WH_grid.TabIndex = 2

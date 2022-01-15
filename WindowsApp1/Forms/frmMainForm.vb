@@ -11,11 +11,11 @@ Public Class frmMainForm
 
     Private Sub frmMainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
-        'Check_This() 
+        'Check_This()
 
         'Loans_to_Deduction()
 
-        Login_Form.ShowDialog()
+        'Login_Form.ShowDialog()
 
         AppDateTime.Text = Date.Now.ToString("dddd, MMMM dd, yyyy hh:mm:ss tt", CultureInfo.CurrentCulture)
 
@@ -195,6 +195,10 @@ Public Class frmMainForm
     Private Sub ChangePasswordToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ChangePasswordToolStripMenuItem.Click
         Dim form As New frmUser
         form.ShowDialog()
+    End Sub
+
+    Private Sub ImportEmployeeScheduleHRToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ImportEmployeeScheduleHRToolStripMenuItem.Click
+        OpenWindowsForm("frmSchedule")
     End Sub
 
     Private Sub Calculator_BTN_MouseLeave(sender As Object, e As EventArgs) Handles Contribution_BTN.MouseLeave
