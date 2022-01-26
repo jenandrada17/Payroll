@@ -15,6 +15,8 @@ Public Class frmMainForm
 
         'Loans_to_Deduction()
 
+        'CheckDeduction_Loans_IfZeroBalance(3869)
+
         Login_Form.ShowDialog()
 
         AppDateTime.Text = Date.Now.ToString("dddd, MMMM dd, yyyy hh:mm:ss tt", CultureInfo.CurrentCulture)
@@ -198,11 +200,15 @@ Public Class frmMainForm
     End Sub
 
     Private Sub ImportEmployeeScheduleHRToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ImportEmployeeScheduleHRToolStripMenuItem.Click
-        OpenWindowsForm("frmSchedule")
+        'OpenWindowsForm("frmSchedule")
     End Sub
 
     Private Sub Calculator_BTN_MouseLeave(sender As Object, e As EventArgs) Handles Contribution_BTN.MouseLeave
         Contribution_BTN.BackColor = Color.Black
+    End Sub
+
+    Private Sub Dashboard_BTN_Click(sender As Object, e As EventArgs) Handles Dashboard_BTN.Click
+        OpenWindowsForm("frmSchedule")
     End Sub
 
     Private Sub Settings_BTN_MouseEnter(sender As Object, e As EventArgs) Handles Settings_BTN.MouseEnter

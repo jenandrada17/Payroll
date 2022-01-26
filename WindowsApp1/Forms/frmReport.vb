@@ -1446,6 +1446,8 @@ Public Class frmReport
     Private Sub Reports_Tab_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Reports_Tab.SelectedIndexChanged
         If Reports_Tab.SelectedIndex = 7 Then
             Lists_SBU(SBU_LV)
+        ElseIf Reports_Tab.SelectedIndex = 10 Then
+            Lists_13Month(Month_LV)
         End If
     End Sub
 
@@ -1458,6 +1460,16 @@ Public Class frmReport
             MsgBox("Please select company!", MsgBoxStyle.Exclamation, "Invalid")
         Else
             LoadLoans()
+        End If
+    End Sub
+
+    Private Sub Month_Search_btn_Click(sender As Object, e As EventArgs) Handles Month_Search_btn.Click
+        Lists_13Month(Month_LV, Month_Search_txt.Text)
+    End Sub
+
+    Private Sub Month_Search_txt_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Month_Search_txt.KeyPress
+        If e.KeyChar = ChrW(Keys.Enter) Then
+            Lists_13Month(Month_LV, Month_Search_txt.Text)
         End If
     End Sub
 End Class

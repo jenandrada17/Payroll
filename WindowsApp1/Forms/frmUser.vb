@@ -21,7 +21,13 @@
         SaveUserDetails(SampleUser_txt.Text, NewUser_txt.Text, NewPass_txt.Text)
 
         If SampleUser_txt.Text = NewUser_txt.Text And SamplePass_txt.Text = NewPass_txt.Text Then
-            RunCommand($"DELETE FROM PAYROLL_USER WHERE ID NOT IN  ( SELECT * FROM PAYROLL_USER where ID = '{user_id}'")  'TO DELETE DUPLICATE IN PAYROLL_USER 
+
+            Dim namee As String = GetData("USER_FULLNAME", $"PAYROLL_USER where USERNAME = '{SampleUser_txt.Text}'")
+            Dim oldUser As String = GetData("USERNAME", $"PAYROLL_USER where USERNAME = '{SampleUser_txt.Text}'")
+            Dim oldPass As String = GetData("PASSWORD", $"PAYROLL_USER where USERNAME = '{SampleUser_txt.Text}'")
+
+            'RunCommand($"DELETE FROM PAYROLL_USER WHERE ID NOT IN  ( SELECT * FROM PAYROLL_USER where ID = '{user_id}')")  'TO DELETE DUPLICATE IN PAYROLL_USER 
+            RunCommand($"DELETE FROM PAYROLL_USER WHERE USER_FULLNAME = '{namee}' and USERNAME = '{oldUser}'  and PASSWORD = '{oldPass}' and ID <> '{user_id}'")  'TO DELETE DUPLICATE IN PAYROLL_USER 
         Else
             Replacing($"PAYROLL_USER where USERNAME = '{SampleUser_txt.Text}' AND PASSWORD = '{EncryptString(SamplePass_txt.Text)}';")
         End If

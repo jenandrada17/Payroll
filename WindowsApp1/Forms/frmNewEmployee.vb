@@ -958,13 +958,14 @@ Public Class frmNewEmployee
 
         ComCategory_Combo.Text = ""
 
-        If HO_Category.SelectedItem = "PGC Head Office" Or HO_Category.SelectedItem = "Construction" Or HO_Category.SelectedItem = "Leasing Admin Office" Then
+        'If HO_Category.SelectedIndex = 12 Or HO_Category.SelectedIndex = 10 Or HO_Category.SelectedIndex = 11 Then
+
+        If HO_Category.SelectedIndex = 12 Then '================ PGC COMMON EMPLOYESS
             Label20.Visible = True
             ComCategory_Combo.Visible = True
 
             Label23.Visible = True
             ComCompany_Cmbo.Visible = True
-
         Else
             Label20.Visible = False
             ComCategory_Combo.Visible = False
@@ -1065,7 +1066,6 @@ Public Class frmNewEmployee
             ComCompany_Cmbo.Text = ""
 
         End If
-
     End Sub
 
     Private Sub lvEmployee_MouseClick(sender As Object, e As MouseEventArgs) Handles lvEmployee.MouseClick

@@ -111,10 +111,10 @@
         If Deduc_list.SelectedItems.Count > 0 Then
 
             bioNo = Deduc_list.Items(Deduc_list.FocusedItem.Index).SubItems(1).Tag
-            total_amount = GetTotal("PRINCIPAL", "PAYROLL_DEDUCTION", $"WHERE BIO_NO = '{bioNo}' AND STATUS IS NULL")
+            total_amount = GetTotal("PRINCIPAL", $"PAYROLL_DEDUCTION WHERE BIO_NO = '{bioNo}'  AND STATUS IS NULL AND CATEGORY NOT IN ('PAG-IBIG LOAN', 'SSS LOAN')")
 
             If GetBranchCode(bioNo) = "" Then
-                Amount_perPayroll = GetTotal("AMORT", "PAYROLL_DEDUCTION", $"WHERE BIO_NO = '{bioNo}' AND STATUS IS NULL")
+                Amount_perPayroll = GetTotal("AMORT", $"PAYROLL_DEDUCTION WHERE BIO_NO = '{bioNo}' AND STATUS IS NULL AND CATEGORY NOT IN ('PAG-IBIG LOAN', 'SSS LOAN')")
             Else
                 Amount_perPayroll = GetDeduction_ChargesRange(bioNo, total_amount)
             End If
@@ -132,7 +132,7 @@
         Dim bioNo As String = Deduc_list.Items(Deduc_list.FocusedItem.Index).SubItems(1).Tag
         Dim IDX As Integer = Deduc_list.Items(Deduc_list.FocusedItem.Index).SubItems(4).Tag
         Dim credit As Decimal = GetData("CREDIT", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'")
-        Dim CollectedCredit As Decimal = GetTotal("AMOUNT", "RECORDED_ALLOW_DEDUC", $"WHERE R_DEDUC_ID = '{IDX}'")
+        Dim CollectedCredit As Decimal = GetTotal("AMOUNT", $" RECORDED_ALLOW_DEDUC WHERE R_DEDUC_ID = '{IDX}'")
         Dim totalCredit As Decimal = credit + CollectedCredit
         Dim balance As Decimal
 
@@ -435,15 +435,15 @@
 
         Dim bioNo As String = SSSLoan_LV.Items(SSSLoan_LV.FocusedItem.Index).SubItems(3).Tag
         Dim IDX As Integer = SSSLoan_LV.Items(SSSLoan_LV.FocusedItem.Index).SubItems(2).Tag
-        Dim credit As Decimal = GetData("CREDIT", $"PAYROLL_LOANS WHERE ID = '{IDX}'")
-        Dim CollectedCredit As Decimal = GetTotal("AMOUNT", "RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{bioNo}' and UPPER(CATEGORY) LIKE '%SSS%'")
+        Dim credit As Decimal = GetData("CREDIT", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'")
+        Dim CollectedCredit As Decimal = GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC WHERE BIO_NO = '{bioNo}' and CATEGORY = 'SSS LOAN'")
         Dim totalCredit As Decimal = credit + CollectedCredit
         Dim balance As Decimal
 
         If CollectedCredit > 0 Then
-            balance = CDec(GetData("PRINCIPAL", $"PAYROLL_LOANS WHERE ID = '{IDX}'")) - totalCredit
+            balance = CDec(GetData("PRINCIPAL", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'")) - totalCredit
         Else
-            balance = CDec(GetData("BALANCE", $"PAYROLL_LOANS WHERE ID = '{IDX}'"))
+            balance = CDec(GetData("BALANCE", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'"))
         End If
 
         MsgBox("Balance               :  " & FormatNumber(balance), MsgBoxStyle.Information, "TOTAL")
@@ -454,15 +454,15 @@
 
         Dim bioNo As String = Pagibig_List.Items(Pagibig_List.FocusedItem.Index).SubItems(3).Tag
         Dim IDX As Integer = Pagibig_List.Items(Pagibig_List.FocusedItem.Index).SubItems(2).Tag
-        Dim credit As Decimal = GetData("CREDIT", $"PAYROLL_LOANS WHERE ID = '{IDX}'")
-        Dim CollectedCredit As Decimal = GetTotal("AMOUNT", "RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{bioNo}' and CATEGORY = 'PAG IBIG LOAN'")
+        Dim credit As Decimal = GetData("CREDIT", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'")
+        Dim CollectedCredit As Decimal = GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC WHERE BIO_NO = '{bioNo}' and CATEGORY = 'PAG-IBIG LOAN'")
         Dim totalCredit As Decimal = credit + CollectedCredit
         Dim balance As Decimal
 
         If CollectedCredit > 0 Then
-            balance = CDec(GetData("PRINCIPAL", $"PAYROLL_LOANS WHERE ID = '{IDX}'")) - totalCredit
+            balance = CDec(GetData("PRINCIPAL", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'")) - totalCredit
         Else
-            balance = CDec(GetData("BALANCE", $"PAYROLL_LOANS WHERE ID = '{IDX}'"))
+            balance = CDec(GetData("BALANCE", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'"))
         End If
 
         MsgBox("Balance               :  " & FormatNumber(balance), MsgBoxStyle.Information, "TOTAL")
@@ -477,11 +477,11 @@
         If SSSLoan_LV.SelectedItems.Count > 0 Then
 
             bioNo = SSSLoan_LV.Items(SSSLoan_LV.FocusedItem.Index).SubItems(3).Tag
-            total_amount = GetTotal("PRINCIPAL", "PAYROLL_LOANS", $"WHERE BIO_NO = '{bioNo}' AND CATEGORY = 'SSS' AND STATUS IS NULL")
+            total_amount = GetTotal("PRINCIPAL", $"PAYROLL_DEDUCTION WHERE BIO_NO = '{bioNo}' AND CATEGORY = 'SSS LOAN' AND STATUS IS NULL")
 
-            Amount_perPayroll = GetTotal("AMORT", "PAYROLL_LOANS", $"WHERE BIO_NO = '{bioNo}' AND CATEGORY = 'SSS'AND STATUS IS NULL")
+            Amount_perPayroll = GetTotal("AMORT", $"PAYROLL_DEDUCTION WHERE BIO_NO = '{bioNo}' AND CATEGORY = 'SSS LOAN' AND STATUS IS NULL")
 
-            balance = GetTotal("BALANCE", "PAYROLL_LOANS", $"WHERE BIO_NO = '{bioNo}' AND CATEGORY = 'SSS' AND STATUS IS NULL")
+            balance = GetTotal("BALANCE", $"PAYROLL_DEDUCTION WHERE BIO_NO = '{bioNo}' AND CATEGORY = 'SSS LOAN' AND STATUS IS NULL")
 
             MsgBox("Total Amount     :  " & FormatNumber(total_amount) & vbCrLf &
                        "Amount/Payroll  :  " & FormatNumber(Amount_perPayroll) & vbCrLf &
@@ -497,11 +497,11 @@
         If Pagibig_List.SelectedItems.Count > 0 Then
 
             bioNo = Pagibig_List.Items(Pagibig_List.FocusedItem.Index).SubItems(3).Tag
-            total_amount = GetTotal("PRINCIPAL", "PAYROLL_LOANS", $"WHERE BIO_NO = '{bioNo}' AND CATEGORY = 'PAG-IBIG' AND STATUS IS NULL")
+            total_amount = GetTotal("PRINCIPAL", $"PAYROLL_DEDUCTION WHERE BIO_NO = '{bioNo}' AND CATEGORY = 'PAG-IBIG LOAN' AND STATUS IS NULL")
 
-            Amount_perPayroll = GetTotal("AMORT", "PAYROLL_LOANS", $"WHERE BIO_NO = '{bioNo}' AND CATEGORY = 'PAG-IBIG' AND STATUS IS NULL")
+            Amount_perPayroll = GetTotal("AMORT", $"PAYROLL_DEDUCTION WHERE BIO_NO = '{bioNo}' AND CATEGORY = 'PAG-IBIG LOAN' AND STATUS IS NULL")
 
-            balance = GetTotal("BALANCE", "PAYROLL_LOANS", $"WHERE BIO_NO = '{bioNo}' AND CATEGORY = 'PAG-IBIG' AND STATUS IS NULL")
+            balance = GetTotal("BALANCE", $"PAYROLL_DEDUCTION WHERE BIO_NO = '{bioNo}' AND CATEGORY = 'PAG-IBIG LOAN' AND STATUS IS NULL")
 
             MsgBox("Total Amount     :  " & FormatNumber(total_amount) & vbCrLf &
                        "Amount/Payroll  :  " & FormatNumber(Amount_perPayroll) & vbCrLf &

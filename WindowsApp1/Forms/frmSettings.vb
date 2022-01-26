@@ -297,7 +297,6 @@
 
         If FixYes_RadioB.Checked Then fix = "YES"
 
-
         Dim result As DialogResult = MsgBox($"Allowance for {Allow_Name_TXT.Text} will be Recorded, proceed anyway?", MessageBoxButtons.YesNo)
         If result = DialogResult.Yes Then
 

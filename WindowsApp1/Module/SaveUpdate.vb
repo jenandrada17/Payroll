@@ -153,20 +153,6 @@ Module SaveUpdate
         End If
     End Sub
 
-    Public Sub Update_DEDUCTION_LOANS_STATUS(deduc_id As String, table As String)
-
-        Dim mysql As String = $"Select * From {table} where ID = '{deduc_id}'"
-        Using ds As DataSet = LoadSQL(mysql, table)
-            If ds.Tables(0).Rows.Count > 0 Then
-                With ds.Tables(0).Rows(0)
-                    .Item("STATUS") = "PAID"
-                End With
-                SaveEntry(ds, False)
-            End If
-        End Using
-
-    End Sub
-
     Public Sub SaveBiometricSheet(payDate As String, bioID As String, dateTime As String)
         Dim mysql As String = "Select * From IMPORT_DTR Rows 1"
         Using ds As DataSet = LoadSQL(mysql, "IMPORT_DTR")

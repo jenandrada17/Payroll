@@ -26,8 +26,9 @@ Partial Class frmPayout
         Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.GroupBox6 = New System.Windows.Forms.GroupBox()
         Me.Label41 = New System.Windows.Forms.Label()
         Me.RateFixNo_RB = New System.Windows.Forms.RadioButton()
@@ -151,7 +152,7 @@ Partial Class frmPayout
         Me.TrainingOT_LBL = New System.Windows.Forms.Label()
         Me.Label25 = New System.Windows.Forms.Label()
         Me.TrainingDays_LBL = New System.Windows.Forms.Label()
-        Me.FlowLayoutPanel2 = New System.Windows.Forms.FlowLayoutPanel()
+        Me.FlowPanel1 = New System.Windows.Forms.FlowLayoutPanel()
         Me.Label18 = New System.Windows.Forms.Label()
         Me.Additional_BTN = New System.Windows.Forms.Button()
         Me.Allowance_grid = New System.Windows.Forms.DataGridView()
@@ -161,10 +162,6 @@ Partial Class frmPayout
         Me.Label22 = New System.Windows.Forms.Label()
         Me.Deduction_BTN = New System.Windows.Forms.Button()
         Me.Deduction_grid = New System.Windows.Forms.DataGridView()
-        Me.DataGridViewTextBoxColumn1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.DataGridViewTextBoxColumn2 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Column1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Deduc_BTN = New System.Windows.Forms.DataGridViewButtonColumn()
         Me.Previous_groupB = New System.Windows.Forms.GroupBox()
         Me.Prev_lbl = New System.Windows.Forms.Label()
         Me.Prev_Amount_lbl = New System.Windows.Forms.Label()
@@ -191,6 +188,10 @@ Partial Class frmPayout
         Me.All_RadioB = New System.Windows.Forms.RadioButton()
         Me.Label21 = New System.Windows.Forms.Label()
         Me.Payslip_paydate_Combo = New System.Windows.Forms.ComboBox()
+        Me.DataGridViewTextBoxColumn1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.DataGridViewTextBoxColumn2 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Column1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Deduc_BTN = New System.Windows.Forms.DataGridViewButtonColumn()
         Me.GroupBox6.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
@@ -200,7 +201,7 @@ Partial Class frmPayout
         Me.TabPage1.SuspendLayout()
         Me.Additional_Panel.SuspendLayout()
         Me.Training_GB.SuspendLayout()
-        Me.FlowLayoutPanel2.SuspendLayout()
+        Me.FlowPanel1.SuspendLayout()
         CType(Me.Allowance_grid, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Deduction_grid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Previous_groupB.SuspendLayout()
@@ -1286,7 +1287,7 @@ Partial Class frmPayout
         '
         Me.TabPage1.Controls.Add(Me.Additional_Panel)
         Me.TabPage1.Controls.Add(Me.Training_GB)
-        Me.TabPage1.Controls.Add(Me.FlowLayoutPanel2)
+        Me.TabPage1.Controls.Add(Me.FlowPanel1)
         Me.TabPage1.Controls.Add(Me.Previous_groupB)
         Me.TabPage1.Controls.Add(Me.Details_Save_BTN)
         Me.TabPage1.Controls.Add(Me.GroupBox6)
@@ -1298,7 +1299,7 @@ Partial Class frmPayout
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
         Me.TabPage1.Size = New System.Drawing.Size(1142, 605)
         Me.TabPage1.TabIndex = 0
-        Me.TabPage1.Text = "    Details    "
+        Me.TabPage1.Text = "     Details     "
         Me.TabPage1.UseVisualStyleBackColor = True
         '
         'Additional_Panel
@@ -1539,20 +1540,21 @@ Partial Class frmPayout
         Me.TrainingDays_LBL.Text = "0"
         Me.TrainingDays_LBL.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
-        'FlowLayoutPanel2
+        'FlowPanel1
         '
-        Me.FlowLayoutPanel2.AutoScroll = True
-        Me.FlowLayoutPanel2.Controls.Add(Me.Label18)
-        Me.FlowLayoutPanel2.Controls.Add(Me.Additional_BTN)
-        Me.FlowLayoutPanel2.Controls.Add(Me.Allowance_grid)
-        Me.FlowLayoutPanel2.Controls.Add(Me.Label20)
-        Me.FlowLayoutPanel2.Controls.Add(Me.Label22)
-        Me.FlowLayoutPanel2.Controls.Add(Me.Deduction_BTN)
-        Me.FlowLayoutPanel2.Controls.Add(Me.Deduction_grid)
-        Me.FlowLayoutPanel2.Location = New System.Drawing.Point(3, 204)
-        Me.FlowLayoutPanel2.Name = "FlowLayoutPanel2"
-        Me.FlowLayoutPanel2.Size = New System.Drawing.Size(434, 395)
-        Me.FlowLayoutPanel2.TabIndex = 87
+        Me.FlowPanel1.AutoScroll = True
+        Me.FlowPanel1.AutoScrollMargin = New System.Drawing.Size(50, 50)
+        Me.FlowPanel1.Controls.Add(Me.Label18)
+        Me.FlowPanel1.Controls.Add(Me.Additional_BTN)
+        Me.FlowPanel1.Controls.Add(Me.Allowance_grid)
+        Me.FlowPanel1.Controls.Add(Me.Label20)
+        Me.FlowPanel1.Controls.Add(Me.Label22)
+        Me.FlowPanel1.Controls.Add(Me.Deduction_BTN)
+        Me.FlowPanel1.Controls.Add(Me.Deduction_grid)
+        Me.FlowPanel1.Location = New System.Drawing.Point(3, 204)
+        Me.FlowPanel1.Name = "FlowPanel1"
+        Me.FlowPanel1.Size = New System.Drawing.Size(434, 395)
+        Me.FlowPanel1.TabIndex = 87
         '
         'Label18
         '
@@ -1583,6 +1585,7 @@ Partial Class frmPayout
         Me.Allowance_grid.AllowUserToDeleteRows = False
         Me.Allowance_grid.AllowUserToResizeColumns = False
         Me.Allowance_grid.AllowUserToResizeRows = False
+        Me.Allowance_grid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells
         Me.Allowance_grid.BackgroundColor = System.Drawing.SystemColors.HighlightText
         Me.Allowance_grid.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.Allowance_grid.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None
@@ -1622,7 +1625,7 @@ Partial Class frmPayout
         Me.grid_1.HeaderText = ""
         Me.grid_1.Name = "grid_1"
         Me.grid_1.ReadOnly = True
-        Me.grid_1.Width = 190
+        Me.grid_1.Width = 5
         '
         'grid_2
         '
@@ -1631,7 +1634,7 @@ Partial Class frmPayout
         Me.grid_2.HeaderText = ""
         Me.grid_2.Name = "grid_2"
         Me.grid_2.ReadOnly = True
-        Me.grid_2.Width = 90
+        Me.grid_2.Width = 5
         '
         'Label20
         '
@@ -1647,23 +1650,20 @@ Partial Class frmPayout
         '
         'Label22
         '
-        Me.Label22.AutoSize = True
-        Me.Label22.Dock = System.Windows.Forms.DockStyle.Top
         Me.Label22.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label22.Location = New System.Drawing.Point(3, 106)
         Me.Label22.Name = "Label22"
-        Me.Label22.Size = New System.Drawing.Size(103, 25)
+        Me.Label22.Size = New System.Drawing.Size(107, 25)
         Me.Label22.TabIndex = 2
         Me.Label22.Text = "Deductions ---"
         '
         'Deduction_BTN
         '
         Me.Deduction_BTN.BackColor = System.Drawing.Color.LightGray
-        Me.Deduction_BTN.Dock = System.Windows.Forms.DockStyle.Top
         Me.Deduction_BTN.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Deduction_BTN.Location = New System.Drawing.Point(112, 109)
+        Me.Deduction_BTN.Location = New System.Drawing.Point(116, 109)
         Me.Deduction_BTN.Name = "Deduction_BTN"
-        Me.Deduction_BTN.Size = New System.Drawing.Size(57, 27)
+        Me.Deduction_BTN.Size = New System.Drawing.Size(63, 27)
         Me.Deduction_BTN.TabIndex = 91
         Me.Deduction_BTN.Text = "Add"
         Me.Deduction_BTN.UseVisualStyleBackColor = False
@@ -1675,6 +1675,7 @@ Partial Class frmPayout
         Me.Deduction_grid.AllowUserToResizeRows = False
         Me.Deduction_grid.BackgroundColor = System.Drawing.SystemColors.HighlightText
         Me.Deduction_grid.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.Deduction_grid.CausesValidation = False
         Me.Deduction_grid.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None
         Me.Deduction_grid.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None
         DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
@@ -1688,51 +1689,24 @@ Partial Class frmPayout
         Me.Deduction_grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing
         Me.Deduction_grid.ColumnHeadersVisible = False
         Me.Deduction_grid.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.DataGridViewTextBoxColumn1, Me.DataGridViewTextBoxColumn2, Me.Column1, Me.Deduc_BTN})
-        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle6.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle6.ForeColor = System.Drawing.Color.Black
-        DataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.White
-        DataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.Black
-        DataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.Deduction_grid.DefaultCellStyle = DataGridViewCellStyle6
-        Me.Deduction_grid.Dock = System.Windows.Forms.DockStyle.Top
+        DataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle7.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle7.ForeColor = System.Drawing.Color.Black
+        DataGridViewCellStyle7.SelectionBackColor = System.Drawing.Color.White
+        DataGridViewCellStyle7.SelectionForeColor = System.Drawing.Color.Black
+        DataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.Deduction_grid.DefaultCellStyle = DataGridViewCellStyle7
         Me.Deduction_grid.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnKeystroke
         Me.Deduction_grid.Location = New System.Drawing.Point(3, 142)
         Me.Deduction_grid.Name = "Deduction_grid"
+        Me.Deduction_grid.ReadOnly = True
         Me.Deduction_grid.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None
         Me.Deduction_grid.RowHeadersVisible = False
         Me.Deduction_grid.ScrollBars = System.Windows.Forms.ScrollBars.None
         Me.Deduction_grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.Deduction_grid.Size = New System.Drawing.Size(400, 36)
         Me.Deduction_grid.TabIndex = 1
-        '
-        'DataGridViewTextBoxColumn1
-        '
-        Me.DataGridViewTextBoxColumn1.HeaderText = ""
-        Me.DataGridViewTextBoxColumn1.Name = "DataGridViewTextBoxColumn1"
-        Me.DataGridViewTextBoxColumn1.ReadOnly = True
-        '
-        'DataGridViewTextBoxColumn2
-        '
-        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.DataGridViewTextBoxColumn2.DefaultCellStyle = DataGridViewCellStyle5
-        Me.DataGridViewTextBoxColumn2.HeaderText = ""
-        Me.DataGridViewTextBoxColumn2.Name = "DataGridViewTextBoxColumn2"
-        Me.DataGridViewTextBoxColumn2.ReadOnly = True
-        '
-        'Column1
-        '
-        Me.Column1.HeaderText = ""
-        Me.Column1.Name = "Column1"
-        Me.Column1.ReadOnly = True
-        '
-        'Deduc_BTN
-        '
-        Me.Deduc_BTN.HeaderText = ""
-        Me.Deduc_BTN.Name = "Deduc_BTN"
-        Me.Deduc_BTN.ReadOnly = True
-        Me.Deduc_BTN.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
         '
         'Previous_groupB
         '
@@ -2022,6 +1996,37 @@ Partial Class frmPayout
         Me.Payslip_paydate_Combo.TabIndex = 97
         Me.Payslip_paydate_Combo.Text = "   Select Date"
         '
+        'DataGridViewTextBoxColumn1
+        '
+        DataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.DataGridViewTextBoxColumn1.DefaultCellStyle = DataGridViewCellStyle5
+        Me.DataGridViewTextBoxColumn1.HeaderText = ""
+        Me.DataGridViewTextBoxColumn1.Name = "DataGridViewTextBoxColumn1"
+        Me.DataGridViewTextBoxColumn1.ReadOnly = True
+        '
+        'DataGridViewTextBoxColumn2
+        '
+        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.DataGridViewTextBoxColumn2.DefaultCellStyle = DataGridViewCellStyle6
+        Me.DataGridViewTextBoxColumn2.HeaderText = ""
+        Me.DataGridViewTextBoxColumn2.Name = "DataGridViewTextBoxColumn2"
+        Me.DataGridViewTextBoxColumn2.ReadOnly = True
+        Me.DataGridViewTextBoxColumn2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
+        '
+        'Column1
+        '
+        Me.Column1.HeaderText = ""
+        Me.Column1.Name = "Column1"
+        Me.Column1.ReadOnly = True
+        '
+        'Deduc_BTN
+        '
+        Me.Deduc_BTN.HeaderText = ""
+        Me.Deduc_BTN.Name = "Deduc_BTN"
+        Me.Deduc_BTN.ReadOnly = True
+        Me.Deduc_BTN.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.Deduc_BTN.Width = 80
+        '
         'frmPayout
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -2048,8 +2053,8 @@ Partial Class frmPayout
         Me.Additional_Panel.PerformLayout()
         Me.Training_GB.ResumeLayout(False)
         Me.Training_GB.PerformLayout()
-        Me.FlowLayoutPanel2.ResumeLayout(False)
-        Me.FlowLayoutPanel2.PerformLayout()
+        Me.FlowPanel1.ResumeLayout(False)
+        Me.FlowPanel1.PerformLayout()
         CType(Me.Allowance_grid, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Deduction_grid, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Previous_groupB.ResumeLayout(False)
@@ -2178,7 +2183,6 @@ Partial Class frmPayout
     Friend WithEvents Email_TXT As TextBox
     Friend WithEvents Employee_TXT As TextBox
     Friend WithEvents EmpSelect_BTN As Button
-    Friend WithEvents FlowLayoutPanel2 As FlowLayoutPanel
     Friend WithEvents Label18 As Label
     Friend WithEvents Label20 As Label
     Friend WithEvents Label22 As Label
@@ -2206,10 +2210,6 @@ Partial Class frmPayout
     Friend WithEvents CancelAdd_BTN As Button
     Friend WithEvents grid_1 As DataGridViewTextBoxColumn
     Friend WithEvents grid_2 As DataGridViewTextBoxColumn
-    Friend WithEvents DataGridViewTextBoxColumn1 As DataGridViewTextBoxColumn
-    Friend WithEvents DataGridViewTextBoxColumn2 As DataGridViewTextBoxColumn
-    Friend WithEvents Column1 As DataGridViewTextBoxColumn
-    Friend WithEvents Deduc_BTN As DataGridViewButtonColumn
     Friend WithEvents Deduction_BTN As Button
     Friend WithEvents Label41 As Label
     Friend WithEvents RateFixNo_RB As RadioButton
@@ -2228,4 +2228,9 @@ Partial Class frmPayout
     Friend WithEvents Remittance_LBL As Label
     Friend WithEvents Label45 As Label
     Friend WithEvents ColumnHeader1 As ColumnHeader
+    Friend WithEvents FlowPanel1 As FlowLayoutPanel
+    Friend WithEvents DataGridViewTextBoxColumn1 As DataGridViewTextBoxColumn
+    Friend WithEvents DataGridViewTextBoxColumn2 As DataGridViewTextBoxColumn
+    Friend WithEvents Column1 As DataGridViewTextBoxColumn
+    Friend WithEvents Deduc_BTN As DataGridViewButtonColumn
 End Class

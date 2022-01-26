@@ -13,6 +13,7 @@ Public Class frmSchedule
     Dim startingDate, EndingDate As DateTime
     Dim starting_date, ending_date As DateTime
     Dim StartFour, EndFour, StartNineteen, EndNineteen, Paydate, DateNow As DateTime
+    Dim paydate_ As String
 
     Private Sub lvEmployee_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles lvEmployee.MouseDoubleClick
 
@@ -28,13 +29,22 @@ Public Class frmSchedule
     Private Sub Save_BTN_Click(sender As Object, e As EventArgs) Handles Save_BTN.Click
 
         If BiometricID_TXT.Text <> Nothing And Name_TXT.Text <> Nothing Then
+
+            Dim PAYROLL As String
+            If Paydate_ComboB.SelectedIndex >= 0 Then
+                PAYROLL = Paydate_ComboB.SelectedItem
+            Else
+                PAYROLL = Schedule_DG.Tag
+            End If
+
             For Each row As DataGridViewRow In Schedule_DG.Rows
                 If row.Cells(1).Value <> Nothing And row.Cells(2).Value <> Nothing Then
-                    SaveSchedule(BiometricID_TXT.Text, row.Tag, row.Cells(1).Value, row.Cells(2).Value, Paydate)
+                    SaveSchedule(BiometricID_TXT.Text, row.Tag, row.Cells(1).Value, row.Cells(2).Value, PAYROLL)
                 End If
             Next
 
             MsgBox("Successfully Saved!", MsgBoxStyle.Information)
+            Cancel_BTN.PerformClick()
         Else
             MsgBox("Please indicate employee details before saving!", MsgBoxStyle.Exclamation)
         End If
@@ -149,6 +159,7 @@ Public Class frmSchedule
 
             End While
 
+            Console.WriteLine("PAydateee1 " & Paydate)
         End If
 
         Dim tm As New Date(1, 1, 1, 0, 0, 0)
@@ -240,15 +251,6 @@ Public Class frmSchedule
                             SaveSchedule(bio, datee, time_in, time_out, Paydate)
                         End If
 
-                        'If eCell(row, columns).Value.Equals("RD") Then
-                        '    SaveSchedule(bio, datee, Nothing, Nothing, Paydate)
-                        'Else
-                        '    time_in = (New DateTime()).AddDays(eCell(row, columns).Value)
-                        '    time_out = (New DateTime()).AddDays(eCell(row, columns + 1).Value)
-
-                        '    SaveSchedule(bio, datee, time_in, time_out, Paydate)
-                        'End If
-
                     End If
 
                 Next
@@ -270,9 +272,29 @@ Public Class frmSchedule
     End Sub
 
     Private Sub frmSchedule_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        PopulateComboBox(Paydate_ComboB, "PAYROLL_SCHEDULE", "PAYDATE")
         LoadDateTime()
-        PopulateShedule(lvEmployee, Paydate)
+
+        Time_In_DataGrid.Items.Insert(0, "")
+        Time_Out_DataGrid.Items.Insert(0, "")
     End Sub
+
+    Private Sub Paydate_ComboB_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Paydate_ComboB.SelectedIndexChanged
+        If Paydate_ComboB.SelectedIndex >= 0 Then
+            paydate_ = Paydate_ComboB.SelectedItem
+        Else
+            paydate_ = Paydate.ToString("d")
+        End If
+
+        PopulateShedule(lvEmployee, paydate_)
+
+        Dim datee As DateTime = paydate_
+        LoadDateTime(paydate_)
+
+        Time_In_DataGrid.Items.Insert(0, "")
+        Time_Out_DataGrid.Items.Insert(0, "")
+    End Sub
+
 
     Public Sub Load_Schedule(emp As Employee)
         With emp

@@ -7,13 +7,13 @@
             Dim user As String = validLogin(txtUser.Text, txtPass.Text)
             If user <> Nothing Then
                 frmMainForm.UserName_LBL.Text = user
-                txtUser.Clear()
-                txtPass.Clear()
                 loginNo = 0
 
                 Dim idx As Integer = GetData_Integer("ID", $"PAYROLL_USER where USERNAME = '{txtUser.Text}' AND PASSWORD = '{EncryptString(txtPass.Text)}'")
                 frmMainForm.Accessibility(idx)
 
+                txtUser.Clear()
+                txtPass.Clear()
                 Close()
             Else
                 loginNo += 1

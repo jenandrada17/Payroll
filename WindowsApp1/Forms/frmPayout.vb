@@ -153,11 +153,34 @@ Public Class frmPayout
             '================ FETCHING ALLOWANCE RECORDED WHEN ATTENDANCE BIOMETRIC IMPORTED ================== 
             If isExist_String("RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{BIO_NO}' AND PAYDATE = '{paydate_}' AND TRANSAC_NAME = 'ALLOWANCE'") Then
                 Recorded_Details(BIO_NO, Allowance_grid, paydate_, "ALLOWANCE")
+
+                If Allowance_grid.Rows.Count >= 0 Then
+                    Dim totalRowHeight As Integer = Allowance_grid.ColumnHeadersHeight
+                    For Each row As DataGridViewRow In Allowance_grid.Rows
+                        totalRowHeight += row.Height
+                        row.Height = 25
+                    Next
+                    Allowance_grid.Height = totalRowHeight
+                    Allowance_grid.DefaultCellStyle.Font = New Font("Dubai", 11)
+                End If
+
             End If
 
             '================ FETCHING ALLOWANCE RECORDED WHEN ATTENDANCE BIOMETRIC IMPORTED ==================
             If isExist_String("RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{BIO_NO}' AND PAYDATE = '{paydate_}' AND TRANSAC_NAME = 'DEDUCTION'") Then         '=========m RECORDED DEDUCTION IMPORTING ATTENDANCE
                 Recorded_Details(BIO_NO, Deduction_grid, paydate_, "DEDUCTION")
+
+                If Deduction_grid.Rows.Count >= 0 Then
+                    Dim totalRowHeight As Integer = Deduction_grid.ColumnHeadersHeight
+                    Dim totalColumnHeight As Integer = Deduction_grid.RowHeadersWidth
+                    For Each row As DataGridViewRow In Deduction_grid.Rows
+                        totalRowHeight += row.Height
+                        row.Height = 25
+                    Next
+                    Deduction_grid.Height = totalRowHeight
+                    Deduction_grid.DefaultCellStyle.Font = New Font("Dubai", 11)
+                End If
+
             End If
 
             '==========================  CHECK PAYDATE IF VALID FOR EDITING (DEDUCTION) =========================   
@@ -187,13 +210,13 @@ Public Class frmPayout
         End If
     End Sub
 
+
     Private Sub Checkgrid_Visible() ' ============== Allowance and Deduction
 
         '========================== Check if allowance grid has rows ===================== 
 
         If Allowance_grid.RowCount > 0 Then
             Allowance_grid.Visible = True
-            'Undo_BTN.Visible = True
         Else
             Allowance_grid.Visible = False
         End If
@@ -202,7 +225,6 @@ Public Class frmPayout
 
         If Deduction_grid.RowCount > 0 Then
             Deduction_grid.Visible = True
-            'Undo_BTN.Visible = True
         Else
             Deduction_grid.Visible = False
         End If
@@ -545,7 +567,7 @@ Public Class frmPayout
                     CancelAdd_BTN.PerformClick()
                     Additional_Panel.Visible = False
 
-                    AdjustHeightOfGridBasedOnRows(Allowance_grid, 25)
+                    AdjustHeightOfGridBasedOnRows(Allowance_grid)
 
                     Calculate_Allowance()
                 End If
@@ -573,7 +595,7 @@ Public Class frmPayout
                     CancelAdd_BTN.PerformClick()
                     Additional_Panel.Visible = False
 
-                    AdjustHeightOfGridBasedOnRows(Deduction_grid, 25)
+                    AdjustHeightOfGridBasedOnRows(Deduction_grid)
 
                     Calculate_Deduction()
                 End If

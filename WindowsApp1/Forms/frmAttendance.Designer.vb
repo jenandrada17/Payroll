@@ -529,6 +529,7 @@ Partial Class frmAttendance
         'SIL_NUP
         '
         Me.SIL_NUP.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SIL_NUP.Increment = New Decimal(New Integer() {5, 0, 0, 65536})
         Me.SIL_NUP.Location = New System.Drawing.Point(7, 7)
         Me.SIL_NUP.Maximum = New Decimal(New Integer() {5, 0, 0, 0})
         Me.SIL_NUP.Minimum = New Decimal(New Integer() {1, 0, 0, 0})

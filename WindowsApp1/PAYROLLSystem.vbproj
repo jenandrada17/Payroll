@@ -454,6 +454,8 @@
     <None Include="Resources\pass21.png" />
     <None Include="Resources\sample31.png" />
     <Content Include="PGC LOGO copy.ico" />
+    <None Include="Resources\sched 1.jpg" />
+    <None Include="Resources\sched 2.png" />
     <Content Include="SqlServerTypes\Loader.cs" />
     <Content Include="SqlServerTypes\readme.htm" />
   </ItemGroup>

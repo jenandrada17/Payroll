@@ -164,8 +164,6 @@ Partial Class frmReport
         Me.ColumnHeader8 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader9 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader11 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.Close_LBL = New System.Windows.Forms.Label()
         Me.TabPage9 = New System.Windows.Forms.TabPage()
         Me.Label42 = New System.Windows.Forms.Label()
         Me.LoanCompany_Combo = New System.Windows.Forms.ComboBox()
@@ -174,6 +172,14 @@ Partial Class frmReport
         Me.Rpt_Loans = New Microsoft.Reporting.WinForms.ReportViewer()
         Me.Label44 = New System.Windows.Forms.Label()
         Me.LoanPaydate_Combo = New System.Windows.Forms.ComboBox()
+        Me.TabPage10 = New System.Windows.Forms.TabPage()
+        Me.Month_Search_txt = New System.Windows.Forms.TextBox()
+        Me.Month_Search_btn = New System.Windows.Forms.Button()
+        Me.Month_LV = New System.Windows.Forms.ListView()
+        Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader13 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.Close_LBL = New System.Windows.Forms.Label()
         CType(Me.NetPayBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.reports, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CommonDistributionBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -201,6 +207,7 @@ Partial Class frmReport
         Me.TabPage4.SuspendLayout()
         Me.TabPage8.SuspendLayout()
         Me.TabPage9.SuspendLayout()
+        Me.TabPage10.SuspendLayout()
         Me.SuspendLayout()
         '
         'NetPayBindingSource
@@ -280,6 +287,7 @@ Partial Class frmReport
         Me.Reports_Tab.Controls.Add(Me.TabPage4)
         Me.Reports_Tab.Controls.Add(Me.TabPage8)
         Me.Reports_Tab.Controls.Add(Me.TabPage9)
+        Me.Reports_Tab.Controls.Add(Me.TabPage10)
         Me.Reports_Tab.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Reports_Tab.Location = New System.Drawing.Point(5, 30)
         Me.Reports_Tab.Name = "Reports_Tab"
@@ -1480,26 +1488,6 @@ Partial Class frmReport
         Me.ColumnHeader11.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.ColumnHeader11.Width = 160
         '
-        'Label1
-        '
-        Me.Label1.AutoSize = True
-        Me.Label1.Font = New System.Drawing.Font("Dubai", 15.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.Location = New System.Drawing.Point(4, -2)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(85, 36)
-        Me.Label1.TabIndex = 68
-        Me.Label1.Text = "Reports"
-        '
-        'Close_LBL
-        '
-        Me.Close_LBL.AutoSize = True
-        Me.Close_LBL.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Close_LBL.Location = New System.Drawing.Point(1116, -2)
-        Me.Close_LBL.Name = "Close_LBL"
-        Me.Close_LBL.Size = New System.Drawing.Size(57, 32)
-        Me.Close_LBL.TabIndex = 75
-        Me.Close_LBL.Text = "Close"
-        '
         'TabPage9
         '
         Me.TabPage9.Controls.Add(Me.Label42)
@@ -1587,6 +1575,86 @@ Partial Class frmReport
         Me.LoanPaydate_Combo.Size = New System.Drawing.Size(144, 33)
         Me.LoanPaydate_Combo.TabIndex = 109
         '
+        'TabPage10
+        '
+        Me.TabPage10.Controls.Add(Me.Month_Search_txt)
+        Me.TabPage10.Controls.Add(Me.Month_Search_btn)
+        Me.TabPage10.Controls.Add(Me.Month_LV)
+        Me.TabPage10.Location = New System.Drawing.Point(4, 36)
+        Me.TabPage10.Name = "TabPage10"
+        Me.TabPage10.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage10.Size = New System.Drawing.Size(1151, 596)
+        Me.TabPage10.TabIndex = 11
+        Me.TabPage10.Text = "     13th Month     "
+        Me.TabPage10.UseVisualStyleBackColor = True
+        '
+        'Month_Search_txt
+        '
+        Me.Month_Search_txt.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Month_Search_txt.Location = New System.Drawing.Point(6, 18)
+        Me.Month_Search_txt.Name = "Month_Search_txt"
+        Me.Month_Search_txt.Size = New System.Drawing.Size(315, 33)
+        Me.Month_Search_txt.TabIndex = 131
+        '
+        'Month_Search_btn
+        '
+        Me.Month_Search_btn.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Month_Search_btn.Location = New System.Drawing.Point(327, 17)
+        Me.Month_Search_btn.Name = "Month_Search_btn"
+        Me.Month_Search_btn.Size = New System.Drawing.Size(82, 33)
+        Me.Month_Search_btn.TabIndex = 132
+        Me.Month_Search_btn.Text = "Search"
+        Me.Month_Search_btn.UseVisualStyleBackColor = True
+        '
+        'Month_LV
+        '
+        Me.Month_LV.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Month_LV.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader13})
+        Me.Month_LV.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Month_LV.FullRowSelect = True
+        Me.Month_LV.GridLines = True
+        Me.Month_LV.HideSelection = False
+        Me.Month_LV.Location = New System.Drawing.Point(6, 56)
+        Me.Month_LV.MultiSelect = False
+        Me.Month_LV.Name = "Month_LV"
+        Me.Month_LV.Size = New System.Drawing.Size(625, 524)
+        Me.Month_LV.TabIndex = 130
+        Me.Month_LV.UseCompatibleStateImageBehavior = False
+        Me.Month_LV.View = System.Windows.Forms.View.Details
+        '
+        'ColumnHeader1
+        '
+        Me.ColumnHeader1.Text = "Name"
+        Me.ColumnHeader1.Width = 400
+        '
+        'ColumnHeader13
+        '
+        Me.ColumnHeader13.Text = "Amount"
+        Me.ColumnHeader13.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.ColumnHeader13.Width = 150
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Font = New System.Drawing.Font("Dubai", 15.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Location = New System.Drawing.Point(4, -2)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(85, 36)
+        Me.Label1.TabIndex = 68
+        Me.Label1.Text = "Reports"
+        '
+        'Close_LBL
+        '
+        Me.Close_LBL.AutoSize = True
+        Me.Close_LBL.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Close_LBL.Location = New System.Drawing.Point(1116, -2)
+        Me.Close_LBL.Name = "Close_LBL"
+        Me.Close_LBL.Size = New System.Drawing.Size(57, 32)
+        Me.Close_LBL.TabIndex = 75
+        Me.Close_LBL.Text = "Close"
+        '
         'frmReport
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1637,6 +1705,8 @@ Partial Class frmReport
         Me.TabPage8.PerformLayout()
         Me.TabPage9.ResumeLayout(False)
         Me.TabPage9.PerformLayout()
+        Me.TabPage10.ResumeLayout(False)
+        Me.TabPage10.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1782,4 +1852,10 @@ Partial Class frmReport
     Friend WithEvents Rpt_Loans As Microsoft.Reporting.WinForms.ReportViewer
     Friend WithEvents Label44 As Label
     Friend WithEvents LoanPaydate_Combo As ComboBox
+    Friend WithEvents TabPage10 As TabPage
+    Friend WithEvents Month_Search_txt As TextBox
+    Friend WithEvents Month_Search_btn As Button
+    Friend WithEvents Month_LV As ListView
+    Friend WithEvents ColumnHeader1 As ColumnHeader
+    Friend WithEvents ColumnHeader13 As ColumnHeader
 End Class
