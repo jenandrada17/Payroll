@@ -10,7 +10,7 @@ Public Class frmPayout
     Dim SBU, Charges, Loan, CashAdvance, other As Decimal
     Dim SBUUU, Chargesss, Loannn, CashAdvanceee, otherrr As Decimal
     Dim gross, netTax, sssLoan, pagibigLoan, allowance, deduction As Decimal
-    Dim emp_id, sched_deduc As String
+    Dim sched_deduc As String
     Dim SSS_ER, SSS_EC As Decimal
     Dim Zeroo As String = "0.00"
 
@@ -193,7 +193,7 @@ Public Class frmPayout
 
         If Allowance_grid.RowCount > 0 Then
             Allowance_grid.Visible = True
-            Undo_BTN.Visible = True
+            'Undo_BTN.Visible = True
         Else
             Allowance_grid.Visible = False
         End If
@@ -202,7 +202,7 @@ Public Class frmPayout
 
         If Deduction_grid.RowCount > 0 Then
             Deduction_grid.Visible = True
-            Undo_BTN.Visible = True
+            'Undo_BTN.Visible = True
         Else
             Deduction_grid.Visible = False
         End If
@@ -348,7 +348,7 @@ Public Class frmPayout
             Lists_Payout(Payout_list, paydate_)
 
             GetPayout_TOTALS(paydate_, P_GrossAmount_LBL, P_SSSComp_LBL, P_PagibigComp_LBL, P_PhilHComp_LBL,
-                             P_SSSLoan_LBL, P_PagibigLoan_LBL, P_Allowance_LBL, P_Deduction_LBL, P_NetPay_LBL)
+                             P_Allowance_LBL, P_Deduction_LBL, P_NetPay_LBL)
         Else
             MsgBox($"NO RECORD FOR {paydate_} PAYROLL .", MsgBoxStyle.Exclamation, "INVALID")
         End If
@@ -360,7 +360,7 @@ Public Class frmPayout
         Lists_Payout(Payout_list, paydate_)
 
         GetPayout_TOTALS(paydate_, P_GrossAmount_LBL, P_SSSComp_LBL, P_PagibigComp_LBL, P_PhilHComp_LBL,
-                         P_SSSLoan_LBL, P_PagibigLoan_LBL, P_Allowance_LBL, P_Deduction_LBL, P_NetPay_LBL)
+                          P_Allowance_LBL, P_Deduction_LBL, P_NetPay_LBL)
     End Sub
 
     Private Sub Payout_list_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles Payout_list.MouseDoubleClick
@@ -370,7 +370,6 @@ Public Class frmPayout
             Name_TXT.Clear()
 
             BiometricID_TXT.Text = Payout_list.FocusedItem.SubItems(1).Tag
-            emp_id = Payout_list.FocusedItem.SubItems(9).Tag
             TabControl1.SelectedIndex = 1
             Additional_Panel.Visible = False
         End If
@@ -595,7 +594,7 @@ Public Class frmPayout
         If IsEnter(e) Then SaveAdd_BTN.PerformClick()
     End Sub
 
-    Private Sub Refresh_BTN_Click(sender As Object, e As EventArgs) Handles Undo_BTN.Click
+    Private Sub Refresh_BTN_Click(sender As Object, e As EventArgs)
         If Name_TXT.Text <> Nothing Then
             Dim PAYROLL As String
             If Paydate_ComboB.SelectedIndex >= 0 Then
@@ -608,7 +607,7 @@ Public Class frmPayout
 
             'AllowanceDetails(BiometricID_TXT.Text, Allowance_grid, sched_deduc)
 
-            DeductioneDetails_ORIG(BiometricID_TXT.Text, Deduction_grid, sched_deduc, PAYROLL)
+            'DeductioneDetails_ORIG(BiometricID_TXT.Text, Deduction_grid, sched_deduc, PAYROLL)
 
             Calculate_Gross()
 
@@ -701,6 +700,7 @@ Public Class frmPayout
                     frmMainForm.AppProgressBar.Value += 1
                 Next
                 progressBarEnd()
+                MsgBox("Successfully updated!", MsgBoxStyle.Information)
             End If
         End Using
 
@@ -1038,8 +1038,8 @@ Public Class frmPayout
                 .Columns.Add("PAGIBIG_COMP")
                 .Columns.Add("PHILHEALTH_COMP")
                 '.Columns.Add("TAX_WHELD")
-                .Columns.Add("SSS_LOAN")
-                .Columns.Add("PAGIBIG_LOAN")
+                '.Columns.Add("SSS_LOAN")
+                '.Columns.Add("PAGIBIG_LOAN")
                 .Columns.Add("NET_PAY")
                 .Columns.Add("TOTAL_DEDUCTION")
                 .Columns.Add("present_hours")
@@ -1087,13 +1087,12 @@ Public Class frmPayout
                         TOTAL_SPECHOLIDAY = .Item("TOTAL_SPECHOLIDAY")
                         total_Allowance = .Item("TOTAL_ALLOWANCE")
 
-                        Dim TOTAL_COMP As Double = .Item("SSS_COMP") + .Item("PAGIBIG_COMP") + .Item("PHILHEALTH_COMP") + .Item("SSS_LOAN") + .Item("PAGIBIG_LOAN")
+                        Dim TOTAL_COMP As Double = .Item("SSS_COMP") + .Item("PAGIBIG_COMP") + .Item("PHILHEALTH_COMP")
 
                         dt_attendance.Rows.Add(PRESENT_DAYS, OVERTIME, REGHOLIDAY, SPECHOLIDAY, CDbl(.Item("TOTAL_LATE_UT")).ToString("N"),
                                         CDbl(.Item("TOTAL_BASIC")).ToString("N"), CDbl(.Item("TOTAL_OVERTIME")).ToString("N"), LATE_UNDERTIME,
                                         CDbl(.Item("GROSS_AMOUNT")).ToString("N"), CDbl(.Item("SSS_COMP")).ToString("N"), CDbl(.Item("PAGIBIG_COMP")).ToString("N"),
-                                        CDbl(.Item("PHILHEALTH_COMP")).ToString("N"), CDbl(.Item("SSS_LOAN")).ToString("N"),
-                                        CDbl(.Item("PAGIBIG_LOAN")).ToString("N"), CDbl(.Item("NET_PAY")).ToString("N"), TOTAL_COMP.ToString("N"),
+                                        CDbl(.Item("PHILHEALTH_COMP")).ToString("N"), CDbl(.Item("NET_PAY")).ToString("N"), TOTAL_COMP.ToString("N"),
                                         present_hours)
 
                         'dt_attendance.Rows.Add(PRESENT_DAYS, OVERTIME, REGHOLIDAY, SPECHOLIDAY, CDbl(.Item("TOTAL_LATE_UT")).ToString("N"),
@@ -1161,7 +1160,7 @@ Public Class frmPayout
                                 Dim amountt As Decimal = .item("AMOUNT")
                                 Dim balance As Decimal = 0
 
-                                If .item("CATEGORY") = "MP2" Or .item("CATEGORY") = "MAXICARE" Then
+                                If category.Contains("MP2") Or category.Contains("MAXICARE") Then
                                 ElseIf .item("CATEGORY") = "SSS LOAN" Then
                                     balance = GetBalance_Deduction(biometricID, .item("CATEGORY"), IIf(IsDBNull(.item("R_DEDUC_ID")), 0, .item("R_DEDUC_ID")))
                                 ElseIf .item("CATEGORY") = "PAG-IBIG LOAN" Then
@@ -1169,8 +1168,6 @@ Public Class frmPayout
                                 Else
                                     balance = GetBalance_Deduction(biometricID, .item("CATEGORY"), IIf(IsDBNull(.item("R_DEDUC_ID")), 0, .item("R_DEDUC_ID")))
                                 End If
-
-                                'End If
 
                                 dt_deduction.Rows.Add(category.TrimEnd, amountt.ToString(”N”), balance.ToString(”N”))
 
