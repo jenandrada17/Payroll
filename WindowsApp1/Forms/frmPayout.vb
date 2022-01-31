@@ -120,10 +120,11 @@ Public Class frmPayout
 
                         Previous_groupB.Visible = True
 
-                        SSSLoan_LBL.Text = (Get_LOAN_SSS(BIO_NO)).ToString("N")
-                        PagibigLoan_LBL.Text = (Get_LOAN_Pagibig(BIO_NO)).ToString("N")
+                        'SSSLoan_LBL.Text = (Get_LOAN_SSS(BIO_NO)).ToString("N")
+                        'PagibigLoan_LBL.Text = (Get_LOAN_Pagibig(BIO_NO)).ToString("N") 
+                        'Remittance_LBL.Text = (CDbl(SSSComp_LBL.Text) + CDbl(HDMF_LBL.Text) + CDbl(Philhealth_LBL.Text) + CDbl(SSSLoan_LBL.Text) + CDbl(PagibigLoan_LBL.Text)).ToString(”N”)
 
-                        Remittance_LBL.Text = (CDbl(SSSComp_LBL.Text) + CDbl(HDMF_LBL.Text) + CDbl(Philhealth_LBL.Text) + CDbl(SSSLoan_LBL.Text) + CDbl(PagibigLoan_LBL.Text)).ToString(”N”)
+                        Remittance_LBL.Text = (CDbl(SSSComp_LBL.Text) + CDbl(HDMF_LBL.Text) + CDbl(Philhealth_LBL.Text)).ToString(”N”)
 
                         sched_deduc = "CLOSE PAYROLL"
                     End If
@@ -132,8 +133,8 @@ Public Class frmPayout
                     SSSComp_LBL.Text = Zeroo
                     HDMF_LBL.Text = Zeroo
                     Philhealth_LBL.Text = Zeroo
-                    SSSLoan_LBL.Text = Zeroo
-                    PagibigLoan_LBL.Text = Zeroo
+                    'SSSLoan_LBL.Text = Zeroo
+                    'PagibigLoan_LBL.Text = Zeroo
                     Previous_groupB.Visible = False
                     Remittance_LBL.Text = Zeroo
 
@@ -143,8 +144,8 @@ Public Class frmPayout
                 SSSComp_LBL.Text = Zeroo
                 HDMF_LBL.Text = Zeroo
                 Philhealth_LBL.Text = Zeroo
-                SSSLoan_LBL.Text = Zeroo
-                PagibigLoan_LBL.Text = Zeroo
+                'SSSLoan_LBL.Text = Zeroo
+                'PagibigLoan_LBL.Text = Zeroo
                 Remittance_LBL.Text = Zeroo
                 Training_GB.Visible = True
             End If
@@ -278,8 +279,13 @@ Public Class frmPayout
 
                 SavePayout(BIO_NO, paydate_, TotalBasic_LBL.Tag, TotalOT_LBL.Tag,
                   TotalLateUnder_LBL.Tag, GrossAmount_LBL.Tag, SSSComp_LBL.Text, SSS_ER, SSS_EC,
-                  HDMF_LBL.Text, Philhealth_LBL.Text, SSSLoan_LBL.Text, PagibigLoan_LBL.Text,
-                  Allowances_LBL.Tag, Deduction_LBL.Tag, NetPay_LBL.Tag, reg_holiday, spec_holiday, TotalNight_LBL.Tag, "")
+                  HDMF_LBL.Text, Philhealth_LBL.Text, Allowances_LBL.Tag, Deduction_LBL.Tag, NetPay_LBL.Tag,
+                  reg_holiday, spec_holiday, TotalNight_LBL.Tag, "")
+
+                'SavePayout(BIO_NO, paydate_, TotalBasic_LBL.Tag, TotalOT_LBL.Tag,
+                '  TotalLateUnder_LBL.Tag, GrossAmount_LBL.Tag, SSSComp_LBL.Text, SSS_ER, SSS_EC,
+                '  HDMF_LBL.Text, Philhealth_LBL.Text, SSSLoan_LBL.Text, PagibigLoan_LBL.Text,
+                '  Allowances_LBL.Tag, Deduction_LBL.Tag, NetPay_LBL.Tag, reg_holiday, spec_holiday, TotalNight_LBL.Tag, "")
 
                 '====================================== SAVE NEW ADDITIONAL ===================================================
                 If Allowance_grid.Rows.Count > 0 Then
@@ -328,7 +334,7 @@ Public Class frmPayout
 
                 End If
 
-                SaveLogs($"UPDATED PAYOUT {Name_TXT.Text}({BiometricID_TXT.Text}), Basic({TotalBasic_LBL.Text}), OT({TotalOT_LBL.Text}), Late/UT({TotalLateUnder_LBL.Text}), Gross Amount({GrossAmount_LBL.Text}), SSS({SSSComp_LBL.Text}), Pagibig({HDMF_LBL.Text}), Philhealth({Philhealth_LBL.Text}), Remittance({Remittance_LBL.Text}), SSS Loan({SSSLoan_LBL.Text}), Pagibig Loan({PagibigLoan_LBL.Text}), Allowance({allow_list}), Deduction({deduc_list}), Net Pay({NetPay_LBL.Text}), Total Holiday({TotalHol_LBL.Text}), Total Night Rate({TotalNight_LBL.Text})", frmMainForm.UserName_LBL.Text)
+                SaveLogs($"UPDATED PAYOUT {Name_TXT.Text}({BiometricID_TXT.Text}), Basic({TotalBasic_LBL.Text}), OT({TotalOT_LBL.Text}), Late/UT({TotalLateUnder_LBL.Text}), Gross Amount({GrossAmount_LBL.Text}), SSS({SSSComp_LBL.Text}), Pagibig({HDMF_LBL.Text}), Philhealth({Philhealth_LBL.Text}), Remittance({Remittance_LBL.Text}), Allowance({allow_list}), Deduction({deduc_list}), Net Pay({NetPay_LBL.Text}), Total Holiday({TotalHol_LBL.Text}), Total Night Rate({TotalNight_LBL.Text})", frmMainForm.UserName_LBL.Text)
 
                 Cancel_BTN.PerformClick()
 
@@ -740,7 +746,8 @@ Public Class frmPayout
         Dim positive, negative As Decimal
         If IsLastDay(paydate_) Then
             positive = CDec(GrossAmount_LBL.Tag) + CDec(Allowances_LBL.Tag)
-            negative = CONTRIB + CDec(SSSLoan_LBL.Text) + CDec(PagibigLoan_LBL.Text) + CDec(Deduction_LBL.Tag)
+            negative = CONTRIB + CDec(Deduction_LBL.Tag)
+            'negative = CONTRIB + CDec(SSSLoan_LBL.Text) + CDec(PagibigLoan_LBL.Text) + CDec(Deduction_LBL.Tag)
         Else
             Remittance_LBL.Text = 0.00
             positive = CDec(GrossAmount_LBL.Tag) + CDec(Allowances_LBL.Tag)
@@ -1036,8 +1043,8 @@ Public Class frmPayout
                 .Columns.Add("NET_PAY")
                 .Columns.Add("TOTAL_DEDUCTION")
                 .Columns.Add("present_hours")
-                .Columns.Add("SSS_LOAN_BALANCE")
-                .Columns.Add("PAGIBIG_LOAN_BALANCE")
+                '.Columns.Add("SSS_LOAN_BALANCE")
+                '.Columns.Add("PAGIBIG_LOAN_BALANCE")
             End With
 
             Dim PRESENT_DAYS As String = ""
@@ -1076,8 +1083,6 @@ Public Class frmPayout
                     Dim data As DataRow = ds.Tables(0).Rows(0)
                     With data
 
-                        SSS_LOAN_BALANCE = GetBalance_Loan(biometricID, "SSS", "SSS_LOAN")
-                        PAGIBIG_LOAN_BALANCE = GetBalance_Loan(biometricID, "PAG-IBIG", "PAGIBIG_LOAN")
                         TOTAL_REGHOLIDAY = .Item("TOTAL_REGHOLIDAY")
                         TOTAL_SPECHOLIDAY = .Item("TOTAL_SPECHOLIDAY")
                         total_Allowance = .Item("TOTAL_ALLOWANCE")
@@ -1089,7 +1094,15 @@ Public Class frmPayout
                                         CDbl(.Item("GROSS_AMOUNT")).ToString("N"), CDbl(.Item("SSS_COMP")).ToString("N"), CDbl(.Item("PAGIBIG_COMP")).ToString("N"),
                                         CDbl(.Item("PHILHEALTH_COMP")).ToString("N"), CDbl(.Item("SSS_LOAN")).ToString("N"),
                                         CDbl(.Item("PAGIBIG_LOAN")).ToString("N"), CDbl(.Item("NET_PAY")).ToString("N"), TOTAL_COMP.ToString("N"),
-                                        present_hours, SSS_LOAN_BALANCE.ToString("N"), PAGIBIG_LOAN_BALANCE.ToString("N"))
+                                        present_hours)
+
+                        'dt_attendance.Rows.Add(PRESENT_DAYS, OVERTIME, REGHOLIDAY, SPECHOLIDAY, CDbl(.Item("TOTAL_LATE_UT")).ToString("N"),
+                        '                CDbl(.Item("TOTAL_BASIC")).ToString("N"), CDbl(.Item("TOTAL_OVERTIME")).ToString("N"), LATE_UNDERTIME,
+                        '                CDbl(.Item("GROSS_AMOUNT")).ToString("N"), CDbl(.Item("SSS_COMP")).ToString("N"), CDbl(.Item("PAGIBIG_COMP")).ToString("N"),
+                        '                CDbl(.Item("PHILHEALTH_COMP")).ToString("N"), CDbl(.Item("SSS_LOAN")).ToString("N"),
+                        '                CDbl(.Item("PAGIBIG_LOAN")).ToString("N"), CDbl(.Item("NET_PAY")).ToString("N"), TOTAL_COMP.ToString("N"),
+                        '                present_hours, SSS_LOAN_BALANCE.ToString("N"), PAGIBIG_LOAN_BALANCE.ToString("N"))
+
                     End With
                 End If
             End Using
@@ -1138,25 +1151,26 @@ Public Class frmPayout
             '================================================ DEDUCTIONS -  MODIFIED_DEDUCTION================================================ 
             If isExist_String("RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{biometricID}' AND PAYDATE = '{paydatee}' and TRANSAC_NAME = 'DEDUCTION'") Then  '=======m MDIFIED DEDUCTION (ON/OFF) 
 
-                mysql_ = $"select * from RECORDED_ALLOW_DEDUC  where BIO_NO = '{biometricID}' and PAYDATE = '{paydatee}' and TRANSAC_NAME = 'DEDUCTION'"
+                mysql_ = $"select  * FROM RECORDED_ALLOW_DEDUC   where BIO_NO = '{biometricID}' and PAYDATE = '{paydatee}' and TRANSAC_NAME = 'DEDUCTION'"
                 Using ds As DataSet = LoadSQL(mysql_, "RECORDED_ALLOW_DEDUC")
                     If ds.Tables(0).Rows.Count > 0 Then
                         For Each dr In ds.Tables(0).Rows
                             With dr
 
-                                Dim amountt As Double = .item("AMOUNT")
+                                Dim category As String = .item("CATEGORY")
+                                Dim amountt As Decimal = .item("AMOUNT")
                                 Dim balance As Decimal = 0
 
                                 If .item("CATEGORY") = "MP2" Or .item("CATEGORY") = "MAXICARE" Then
                                 ElseIf .item("CATEGORY") = "SSS LOAN" Then
-                                    balance = GetBalance_Loans(biometricID, "SSS")
-                                ElseIf .item("CATEGORY") = "PAG IBIG LOAN" Then
-                                    balance = GetBalance_Loans(biometricID, "PAG-IBIG")
+                                    balance = GetBalance_Deduction(biometricID, .item("CATEGORY"), IIf(IsDBNull(.item("R_DEDUC_ID")), 0, .item("R_DEDUC_ID")))
+                                ElseIf .item("CATEGORY") = "PAG-IBIG LOAN" Then
+                                    balance = GetBalance_Deduction(biometricID, .item("CATEGORY"), IIf(IsDBNull(.item("R_DEDUC_ID")), 0, .item("R_DEDUC_ID")))
                                 Else
                                     balance = GetBalance_Deduction(biometricID, .item("CATEGORY"), IIf(IsDBNull(.item("R_DEDUC_ID")), 0, .item("R_DEDUC_ID")))
                                 End If
 
-                                Dim category As String = .item("CATEGORY")
+                                'End If
 
                                 dt_deduction.Rows.Add(category.TrimEnd, amountt.ToString(”N”), balance.ToString(”N”))
 

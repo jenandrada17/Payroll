@@ -2832,137 +2832,91 @@ Module SelectFromDatabase
         End Using
     End Sub
 
-    Public Sub Update_All_Deduction_Loans_IfZeroBalance()
-        Dim sql As String = $"select BIO_NO from PAYROLL_EMPLOYEE"
-        Using dsSs As DataSet = LoadSQL(sql, "PAYROLL_EMPLOYEE")
-            For Each drRr In dsSs.Tables(0).Rows
-                With drRr
+    'Public Function GetBalance_Loan(bioNo As String, category As String, column As String)
+    '    Dim fromPayout As Decimal = 0
+    '    Dim fromRecorded As Decimal = 0
 
-                    Dim bioNo As String = .Item("BIO_NO")
-                    '============================================ DEDUCTION ==========================================
-                    Dim mysql As String = $"Select * From PAYROLL_DEDUCTION where BIO_NO = '{bioNo}' and STATUS is null"
-                    Using ds As DataSet = LoadSQL(mysql, "PAYROLL_DEDUCTION")
-                        If ds.Tables(0).Rows.Count > 0 Then
-                            For Each dr In ds.Tables(0).Rows
-                                With ds.Tables(0).Rows(0)
+    '    If category = "SSS" Then
 
-                                    Dim credit As Decimal = .Item("CREDIT")
-                                    Dim CollectedCredit As Decimal = GetTotal("AMOUNT", "RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{bioNo}' and R_DEDUC_ID = '{ .Item("id")}'")
-                                    Dim totalCredit As Decimal = credit + CollectedCredit
-                                    Dim balance As Decimal = .Item("BALANCE")
-                                    Dim principal As Decimal = .Item("PRINCIPAL")
+    '        fromPayout = GetTotal("SSS_LOAN", "PAYROLL_PAYOUT", $"WHERE BIOMETRIC_ID = '{bioNo}' ")
+    '        fromRecorded = GetTotal("AMOUNT", "RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{bioNo}' and UPPER(CATEGORY) LIKE '%SSS%'")
 
-                                    If CollectedCredit > 0 Then
-                                        balance = principal - totalCredit
-                                    End If
+    '    Else
 
-                                    If balance = 0 Then
-                                        Update_DEDUCTION_LOANS_STATUS(.Item("id"), "PAYROLL_DEDUCTION")
-                                    End If
+    '        fromPayout = GetTotal("PAGIBIG_LOAN", "PAYROLL_PAYOUT", $"WHERE BIOMETRIC_ID = '{bioNo}' ")
+    '        fromRecorded = GetTotal("AMOUNT", "RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{bioNo}' and CATEGORY = 'PAG IBIG LOAN'")
 
-                                End With
-                            Next
-                        End If
-                    End Using
+    '    End If
 
-                    '============================================ LOANS ==========================================
-                    Dim mysqlL As String = $"Select * From PAYROLL_LOANS where BIO_NO = '{bioNo}' and STATUS is null"
-                    Using dsS As DataSet = LoadSQL(mysqlL, "PAYROLL_LOANS")
-                        If dsS.Tables(0).Rows.Count > 0 Then
-                            For Each drR In dsS.Tables(0).Rows
-                                With dsS.Tables(0).Rows(0)
+    '    Dim credit As Decimal = GetTotal("CREDIT", "PAYROLL_LOANS", $"WHERE BIO_NO = '{bioNo}' and CATEGORY = '{category}'")
+    '    Dim totalCredit As Decimal = credit + fromPayout + fromRecorded
+    '    Dim principal As Decimal = GetTotal("PRINCIPAL", "PAYROLL_LOANS", $"WHERE BIO_NO = '{bioNo}' and CATEGORY = '{category}'")
+    '    Dim balance As Decimal = principal - totalCredit
 
-                                    Dim category As String = .Item("CATEGORY")
-                                    Dim credit As Decimal = .Item("CREDIT")
-                                    Dim CollectedCredit As Decimal = 0
+    '    Return balance
+    'End Function
 
-                                    If category = "SSS" Then
+    'Public Function GetBalance_Loan(bioNo As String, category As String, column As String)
+    '    Dim fromPayout As Decimal = 0
+    '    Dim fromRecorded As Decimal = 0
 
-                                        Dim fromPayout As Decimal = GetTotal("SSS_LOAN", "PAYROLL_PAYOUT", $"WHERE BIOMETRIC_ID = '{bioNo}' ")
-                                        Dim fromRecorded As Decimal = GetTotal("AMOUNT", "RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{bioNo}' and UPPER(CATEGORY) LIKE '%SSS%'")
+    '    If category = "SSS" Then
 
-                                        CollectedCredit = fromPayout + fromRecorded
+    '        fromPayout = GetTotal("SSS_LOAN", "PAYROLL_PAYOUT", $"WHERE BIOMETRIC_ID = '{bioNo}' ")
+    '        fromRecorded = GetTotal("AMOUNT", "RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{bioNo}' and UPPER(CATEGORY) LIKE '%SSS%'")
 
-                                    Else
+    '    Else
 
-                                        Dim fromPayout As Decimal = GetTotal("PAGIBIG_LOAN", "PAYROLL_PAYOUT", $"WHERE BIOMETRIC_ID = '{bioNo}' ")
-                                        Dim fromRecorded As Decimal = GetTotal("AMOUNT", "RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{bioNo}' and CATEGORY = 'PAG IBIG LOAN'")
+    '        fromPayout = GetTotal("PAGIBIG_LOAN", "PAYROLL_PAYOUT", $"WHERE BIOMETRIC_ID = '{bioNo}' ")
+    '        fromRecorded = GetTotal("AMOUNT", "RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{bioNo}' and CATEGORY = 'PAG IBIG LOAN'")
 
-                                        CollectedCredit = fromPayout + fromRecorded
+    '    End If
 
-                                    End If
+    '    Dim credit As Decimal = GetTotal("CREDIT", "PAYROLL_LOANS", $"WHERE BIO_NO = '{bioNo}' and CATEGORY = '{category}'")
+    '    Dim totalCredit As Decimal = credit + fromPayout + fromRecorded
+    '    Dim principal As Decimal = GetTotal("PRINCIPAL", "PAYROLL_LOANS", $"WHERE BIO_NO = '{bioNo}' and CATEGORY = '{category}'")
+    '    Dim balance As Decimal = principal - totalCredit
 
-                                    Dim totalCredit As Decimal = credit + CollectedCredit
-                                    Dim balance As Decimal = .Item("BALANCE")
-                                    Dim principal As Decimal = .Item("PRINCIPAL")
-
-                                    If CollectedCredit > 0 Then
-                                        balance = principal - totalCredit
-                                    End If
-
-                                    If balance = 0 Then
-                                        Update_DEDUCTION_LOANS_STATUS(.Item("id"), "PAYROLL_LOANS")
-                                    End If
-
-                                End With
-                            Next
-                        End If
-                    End Using
-                End With
-            Next
-        End Using
-    End Sub
-
-    Public Function GetBalance_Loan(bioNo As String, category As String, column As String)
-        Dim fromPayout As Decimal = 0
-        Dim fromRecorded As Decimal = 0
-
-        If category = "SSS" Then
-
-            fromPayout = GetTotal("SSS_LOAN", "PAYROLL_PAYOUT", $"WHERE BIOMETRIC_ID = '{bioNo}' ")
-            fromRecorded = GetTotal("AMOUNT", "RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{bioNo}' and UPPER(CATEGORY) LIKE '%SSS%'")
-
-        Else
-
-            fromPayout = GetTotal("PAGIBIG_LOAN", "PAYROLL_PAYOUT", $"WHERE BIOMETRIC_ID = '{bioNo}' ")
-            fromRecorded = GetTotal("AMOUNT", "RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{bioNo}' and CATEGORY = 'PAG IBIG LOAN'")
-
-        End If
-
-        Dim credit As Decimal = GetTotal("CREDIT", "PAYROLL_LOANS", $"WHERE BIO_NO = '{bioNo}' and CATEGORY = '{category}'")
-        Dim totalCredit As Decimal = credit + fromPayout + fromRecorded
-        Dim principal As Decimal = GetTotal("PRINCIPAL", "PAYROLL_LOANS", $"WHERE BIO_NO = '{bioNo}' and CATEGORY = '{category}'")
-        Dim balance As Decimal = principal - totalCredit
-
-        Return balance
-    End Function
+    '    Return balance
+    'End Function
 
     Public Function GetBalance_Deduction(bioNo As String, CATEGORY As String, R_DEDUC_ID As String)
 
         Dim getFirst As String() = CATEGORY.Split(" "c)
 
-        Console.WriteLine(CATEGORY)
-
-        Dim fromRecorded As Decimal = GetTotal("AMOUNT", "RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{bioNo}' and (CATEGORY like '%{getFirst.First}%' OR R_DEDUC_ID = '{R_DEDUC_ID}')")
-        Dim credit As Decimal = GetData("CREDIT", $"PAYROLL_DEDUCTION WHERE BIO_NO = '{bioNo}' and (CATEGORY like '%{getFirst.First}%' OR ID = '{R_DEDUC_ID}')")
+        Dim fromRecorded As Decimal = GetTotal("AMOUNT", "RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{bioNo}' and R_DEDUC_ID = '{R_DEDUC_ID}'")
+        Dim credit As Decimal = GetData("CREDIT", $"PAYROLL_DEDUCTION WHERE BIO_NO = '{bioNo}' and  ID = '{R_DEDUC_ID}'")
         Dim totalCredit As Decimal = credit + fromRecorded
-        Dim principal As Decimal = GetTotal("PRINCIPAL", "PAYROLL_DEDUCTION", $"WHERE BIO_NO = '{bioNo}' and (CATEGORY like '%{getFirst.First}%' OR ID = '{R_DEDUC_ID}')")
+        Dim principal As Decimal = GetTotal("PRINCIPAL", "PAYROLL_DEDUCTION", $"WHERE BIO_NO = '{bioNo}' and ID = '{R_DEDUC_ID}'")
         Dim balance As Decimal = principal - totalCredit
 
         Return balance
     End Function
 
-    Public Function GetBalance_Loans(bioNo As String, CATEGORY As String)
+    'Public Function GetBalance_Deduction(bioNo As String, CATEGORY As String)
 
-        Console.WriteLine(CATEGORY)
+    '    Dim getFirst As String() = CATEGORY.Split(" "c)
 
-        Dim fromRecorded As Decimal = GetTotal("AMOUNT", "RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{bioNo}' and CATEGORY = '{CATEGORY}'")
-        Dim credit As Decimal = GetData("CREDIT", $"PAYROLL_LOANS WHERE BIO_NO = '{bioNo}' and CATEGORY = '{CATEGORY}' ")
-        Dim totalCredit As Decimal = credit + fromRecorded
-        Dim principal As Decimal = GetTotal("PRINCIPAL", "PAYROLL_LOANS", $"WHERE BIO_NO = '{bioNo}' and CATEGORY = '{CATEGORY}'")
-        Dim balance As Decimal = principal - totalCredit
+    '    Dim fromRecorded As Decimal = GetTotal("AMOUNT", "RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{bioNo}' and CATEGORY like '%{CATEGORY}'")
+    '    Dim credit As Decimal = GetData("CREDIT", $"PAYROLL_DEDUCTION WHERE BIO_NO = '{bioNo}' and  ID = '{R_DEDUC_ID}'")
+    '    Dim totalCredit As Decimal = credit + fromRecorded
+    '    Dim principal As Decimal = GetTotal("PRINCIPAL", "PAYROLL_DEDUCTION", $"WHERE BIO_NO = '{bioNo}' and ID = '{R_DEDUC_ID}'")
+    '    Dim balance As Decimal = principal - totalCredit
 
-        Return balance
-    End Function
+    '    Return balance
+    'End Function
+
+    'Public Function GetBalance_Loans(bioNo As String, CATEGORY As String)
+
+    '    Console.WriteLine(CATEGORY)
+
+    '    Dim fromRecorded As Decimal = GetTotal("AMOUNT", "RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{bioNo}' and CATEGORY = '{CATEGORY}'")
+    '    Dim credit As Decimal = GetData("CREDIT", $"PAYROLL_LOANS WHERE BIO_NO = '{bioNo}' and CATEGORY = '{CATEGORY}' ")
+    '    Dim totalCredit As Decimal = credit + fromRecorded
+    '    Dim principal As Decimal = GetTotal("PRINCIPAL", "PAYROLL_LOANS", $"WHERE BIO_NO = '{bioNo}' and CATEGORY = '{CATEGORY}'")
+    '    Dim balance As Decimal = principal - totalCredit
+
+    '    Return balance
+    'End Function
 
 End Module

@@ -480,6 +480,8 @@ Module SaveUpdate
                 .Item("CATEGORY") = category
                 .Item("PRINCIPAL") = PRINCIPAL
                 .Item("AMORT") = AMORT
+                .Item("CREDIT") = 0
+                .Item("BALANCE") = PRINCIPAL
                 .Item("SCHEDULE") = SCHEDULE
                 .Item("DATEE") = DATEE
 
@@ -499,6 +501,8 @@ Module SaveUpdate
                     .Item("CATEGORY") = category
                     .Item("PRINCIPAL") = PRINCIPAL
                     .Item("AMORT") = AMORT
+                    .Item("CREDIT") = 0
+                    .Item("BALANCE") = PRINCIPAL
                     .Item("SCHEDULE") = SCHEDULE
                     .Item("DATEE") = DATEE
 
@@ -534,8 +538,13 @@ Module SaveUpdate
 
     Friend Sub SavePayout(BIOMETRIC_ID As String, PAYDATE As String, TOTAL_BASIC As Decimal, TOTAL_OVERTIME As Decimal, TOTAL_LATE_UT As Decimal,
                           GROSS_AMOUNT As Decimal, SSS_COMP As Decimal, SSS_ER As Decimal, SSS_EC As Decimal, PAGIBIG_COMP As Decimal, PHILHEALTH_COMP As Decimal,
-                          SSS_LOAN As Decimal, PAGIBIG_LOAN As Decimal, TOTAL_ALLOWANCE As Decimal,
-                          TOTAL_DEDUCTION As Decimal, NET_PAY As Decimal, REGHOLIDAY As Decimal, SPECHOLIDAY As Decimal, TOTAL_NIGHT_RATE As Decimal, Optional all As String = "")
+                          TOTAL_ALLOWANCE As Decimal, TOTAL_DEDUCTION As Decimal, NET_PAY As Decimal, REGHOLIDAY As Decimal, SPECHOLIDAY As Decimal,
+                          TOTAL_NIGHT_RATE As Decimal, Optional all As String = "")
+
+        'Friend Sub SavePayout(BIOMETRIC_ID As String, PAYDATE As String, TOTAL_BASIC As Decimal, TOTAL_OVERTIME As Decimal, TOTAL_LATE_UT As Decimal,
+        '                      GROSS_AMOUNT As Decimal, SSS_COMP As Decimal, SSS_ER As Decimal, SSS_EC As Decimal, PAGIBIG_COMP As Decimal, PHILHEALTH_COMP As Decimal,
+        '                      SSS_LOAN As Decimal, PAGIBIG_LOAN As Decimal, TOTAL_ALLOWANCE As Decimal,
+        '                      TOTAL_DEDUCTION As Decimal, NET_PAY As Decimal, REGHOLIDAY As Decimal, SPECHOLIDAY As Decimal, TOTAL_NIGHT_RATE As Decimal, Optional all As String = "")
 
         Dim mysql As String = $"Select * FROM PAYROLL_PAYOUT where BIOMETRIC_ID = '{BIOMETRIC_ID}' and PAYDATE = '{PAYDATE}'"
         Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
@@ -552,8 +561,8 @@ Module SaveUpdate
                     .Item("SSS_EC") = SSS_EC
                     .Item("PAGIBIG_COMP") = PAGIBIG_COMP
                     .Item("PHILHEALTH_COMP") = PHILHEALTH_COMP
-                    .Item("SSS_LOAN") = SSS_LOAN
-                    .Item("PAGIBIG_LOAN") = PAGIBIG_LOAN
+                    '.Item("SSS_LOAN") = SSS_LOAN
+                    '.Item("PAGIBIG_LOAN") = PAGIBIG_LOAN
                     .Item("TOTAL_ALLOWANCE") = TOTAL_ALLOWANCE
                     .Item("TOTAL_DEDUCTION") = TOTAL_DEDUCTION
                     .Item("NET_PAY") = NET_PAY
@@ -583,8 +592,8 @@ Module SaveUpdate
                     '.Item("TAXABLE") = TAXABLE
                     '.Item("TAX_WHELD") = TAX_WHELD
                     '.Item("NET_TAX_COMP") = NET_TAX_COMP
-                    .Item("SSS_LOAN") = SSS_LOAN
-                    .Item("PAGIBIG_LOAN") = PAGIBIG_LOAN
+                    '.Item("SSS_LOAN") = SSS_LOAN
+                    '.Item("PAGIBIG_LOAN") = PAGIBIG_LOAN
                     .Item("TOTAL_ALLOWANCE") = TOTAL_ALLOWANCE
                     .Item("TOTAL_DEDUCTION") = TOTAL_DEDUCTION
                     .Item("PAYDATE") = PAYDATE
@@ -676,8 +685,8 @@ Module SaveUpdate
                     Dim SSS_EC As Decimal = 0
                     Dim PagibigComp As Decimal = 0
                     Dim PhilhealthComp As Decimal = 0
-                    Dim sssLoan As Decimal = 0
-                    Dim pagibigLoan As Decimal = 0
+                    'Dim sssLoan As Decimal = 0
+                    'Dim pagibigLoan As Decimal = 0
                     Dim rate As Decimal = 0
                     Dim SIL As Decimal = 0
                     Dim Allowances As Decimal = 0
@@ -838,8 +847,8 @@ Module SaveUpdate
                                 PagibigComp = Get_Pagibig(monthly_Basic)
                                 PhilhealthComp = Get_PhilHealth(monthly_Basic)
 
-                                sssLoan = Get_LOAN_SSS(bioNo)
-                                pagibigLoan = Get_LOAN_Pagibig(bioNo)
+                                'sssLoan = Get_LOAN_SSS(bioNo)
+                                'pagibigLoan = Get_LOAN_Pagibig(bioNo)
 
                                 sched = "CLOSE PAYROLL"
                             End If
@@ -932,41 +941,48 @@ Module SaveUpdate
                                 For Each dr_3 In ds_3.Tables(0).Rows
                                     With dr_3
 
-                                        If .Item("AMORT") > .Item("BALANCE") Then
-                                            Deduction = Deduction + .Item("BALANCE")
-                                            Save_Recorded_Allow_Deduc(bioNo, paydate_, .Item("CATEGORY"), .Item("BALANCE"), "DEDUCTION", .Item("ID"))
-                                        Else
+                                        Dim amountt As Decimal = 0
+
+                                        If IsDBNull(.Item("BALANCE")) Then
+
                                             Deduction = Deduction + .Item("AMORT")
-                                            Save_Recorded_Allow_Deduc(bioNo, paydate_, .Item("CATEGORY"), .Item("AMORT"), "DEDUCTION", .Item("ID"))
-                                        End If
+                                            amountt = .Item("AMORT")
 
-                                    End With
-                                Next
-                            End If
-                        End Using
-                    End If
-
-                    '============================================= LOANS LIKE SSS/PAGIBIG LOAN ==================================================  
-                    sssLoan = 0
-                    pagibigLoan = 0
-                    If sched = "CLOSE PAYROLL" Then
-                        Dim sql_4 As String = $"Select * From PAYROLL_LOANS WHERE BIO_NO = '{bioNo}' and STATUS is null"
-                        Using ds_4 As DataSet = LoadSQL(sql_4, "PAYROLL_LOANS")
-                            If ds_4.Tables(0).Rows.Count > 0 Then
-                                For Each dr_4 In ds_4.Tables(0).Rows
-                                    With dr_4
-
-                                        If .Item("CATEGORY") = "SSS" Then
-                                            sssLoan = sssLoan + .Item("AMORT")
                                         Else
-                                            pagibigLoan = pagibigLoan + .Item("AMORT")
+
+                                            If .Item("AMORT") > .Item("BALANCE") Then
+                                                Deduction = Deduction + .Item("BALANCE")
+                                                amountt = .Item("BALANCE")
+                                            Else
+                                                Deduction = Deduction + .Item("AMORT")
+                                                amountt = .Item("AMORT")
+                                            End If
+
                                         End If
+
+                                        Save_Recorded_Allow_Deduc(bioNo, paydate_, .Item("CATEGORY"), amountt, "DEDUCTION", .Item("ID"))
 
                                     End With
                                 Next
                             End If
                         End Using
                     End If
+
+                    ''============================================= LOANS LIKE SSS/PAGIBIG LOAN ==================================================  
+
+                    'If sched = "CLOSE PAYROLL" Then
+                    '    Dim sql_4 As String = $"Select * From PAYROLL_LOANS WHERE BIO_NO = '{bioNo}' and STATUS is null"
+                    '    Using ds_4 As DataSet = LoadSQL(sql_4, "PAYROLL_LOANS")
+                    '        If ds_4.Tables(0).Rows.Count > 0 Then
+                    '            For Each dr_4 In ds_4.Tables(0).Rows
+                    '                With dr_4
+                    '                    Deduction = Deduction + .Item("AMORT")
+                    '                    Save_Recorded_Allow_Deduc(bioNo, paydate_, .Item("CATEGORY") & "LOAN", .Item("AMORT"), "DEDUCTION")
+                    '                End With
+                    '            Next
+                    '        End If
+                    '    End Using
+                    'End If
 
                     '============================================= OTHER DEDUCTION LIKE MP2, MAXICARE ==================================================  
                     Dim sql_5 As String = $"Select * From PAYROLL_OTHER_DEDUCTION WHERE BIO_NO = '{bioNo}' and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
@@ -1039,7 +1055,8 @@ Module SaveUpdate
                     Dim positive, negative As Decimal
                     If IsLastDay(paydate_) Then
                         positive = GrossAmount + Allowances
-                        negative = CONTRIB + sssLoan + pagibigLoan + Deduction
+                        negative = CONTRIB + Deduction
+                        'negative = CONTRIB + sssLoan + pagibigLoan + Deduction
                     Else
                         positive = GrossAmount + Allowances
                         negative = Deduction
@@ -1051,9 +1068,17 @@ Module SaveUpdate
                                   TotalLateUnder, GrossAmount,
                                   SSSComp, SSS_ER, SSS_EC,
                                   PagibigComp, PhilhealthComp,
-                                  sssLoan, pagibigLoan,
                                   Allowances, Deduction, NetPay,
                                   TotalREGHol, TotalSPECHol, TotalNight)
+
+                    'SavePayout(bioNo, paydate_, TotalBasic, TotalOT,
+                    '              TotalLateUnder, GrossAmount,
+                    '              SSSComp, SSS_ER, SSS_EC,
+                    '              PagibigComp, PhilhealthComp,
+                    '              sssLoan, pagibigLoan,
+                    '              Allowances, Deduction, NetPay,
+                    '              TotalREGHol, TotalSPECHol, TotalNight)
+
                 End With
             End If
         End Using
@@ -1082,7 +1107,7 @@ Module SaveUpdate
         progressBarEnd()
     End Sub
 
-    Friend Sub Save_Recorded_Allow_Deduc(bio_no As String, PAYDATE As String, CATEGORY As String, AMOUNT As String, TRANSAC_NAME As String, Optional R_DEDUC_ID As Integer = 0)
+    Friend Sub Save_Recorded_Allow_Deduc(bio_no As String, PAYDATE As String, CATEGORY As String, AMOUNT As String, TRANSAC_NAME As String, Optional R_DEDUC_ID As Integer = 0, Optional R_LOAN_ID As Integer = 0)
 
         Dim sql As String = "Select * From RECORDED_ALLOW_DEDUC Rows 1"
         Using ds As DataSet = LoadSQL(sql, "RECORDED_ALLOW_DEDUC")
@@ -1098,6 +1123,10 @@ Module SaveUpdate
 
                 If R_DEDUC_ID <> 0 Then
                     .Item("R_DEDUC_ID") = R_DEDUC_ID
+                End If
+
+                If R_LOAN_ID <> 0 Then
+                    .Item("R_LOAN_ID") = R_LOAN_ID
                 End If
 
             End With

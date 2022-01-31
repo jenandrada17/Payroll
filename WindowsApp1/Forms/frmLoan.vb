@@ -30,8 +30,8 @@
 
     Private Sub frmLoan_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Lists_deduction(Deduc_list)
-        Load_Loans(SSSLoan_LV, "PAYROLL_LOANS", "SSS")
-        Load_Loans(Pagibig_List, "PAYROLL_LOANS", "PAG-IBIG")
+        Load_Loans(SSSLoan_LV, "PAYROLL_DEDUCTION", "SSS LOAN")
+        Load_Loans(Pagibig_List, "PAYROLL_DEDUCTION", "PAG-IBIG LOAN")
         Load_Other_Deduction(Mp2_List, "PAYROLL_OTHER_DEDUCTION", "MP2")
         Load_Other_Deduction(Maxicare_List, "PAYROLL_OTHER_DEDUCTION", "MAXICARE")
     End Sub
@@ -275,8 +275,9 @@
         Dim result As DialogResult = MsgBox($"Pagibig Loan for {PagEmp_TXT.Text} will be recorded, proceed anyway?", MessageBoxButtons.YesNo)
         If result = DialogResult.Yes Then
 
-            Save_Loans(PAGIBIG_ID, PagEmp_TXT.Tag, "PAG-IBIG", PagPrincipal_TXT.Text, PagAmort_TXT.Text, PagDate_DTP.Value)
-            Load_Loans(Pagibig_List, "PAYROLL_LOANS", "PAG-IBIG")
+            'Save_Loans(PAGIBIG_ID, PagEmp_TXT.Tag, "PAG-IBIG", PagPrincipal_TXT.Text, PagAmort_TXT.Text, PagDate_DTP.Value)
+            SaveDeductionS(PAGIBIG_ID, "PAG-IBIG LOAN", PagPrincipal_TXT.Text, PagAmort_TXT.Text, "CLOSE PAYROLL", PagDate_DTP.Value, PagEmp_TXT.Tag)
+            Load_Loans(Pagibig_List, "PAYROLL_DEDUCTION", "PAG-IBIG LOAN")
 
             SaveLogs($"ADDED PAGIBIG LOAN {PagEmp_TXT.Text} ({PagEmp_TXT.Tag}), Amount({PagAmort_TXT.Text}), Date({PagDate_DTP.Value.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
             Pag_Cancel_BTN.PerformClick()
@@ -353,11 +354,13 @@
         Dim result As DialogResult = MsgBox($"SSS Loan for {SSS_Name_TXT.Text} will be recorded, proceed anyway?", MessageBoxButtons.YesNo)
         If result = DialogResult.Yes Then
 
-            Save_Loans(SSS_ID, SSS_Name_TXT.Tag, "SSS", SSSPrincipal_TXT.Text, SSS_Amort_TXT.Text, SSS_Date_DTP.Value)
-            Load_Loans(SSSLoan_LV, "PAYROLL_LOANS", "SSS")
+            'Save_Loans(SSS_ID, SSS_Name_TXT.Tag, "SSS", SSSPrincipal_TXT.Text, SSS_Amort_TXT.Text, SSS_Date_DTP.Value)
+            SaveDeductionS(SSS_ID, "SSS LOAN", SSSPrincipal_TXT.Text, SSS_Amort_TXT.Text, "CLOSE PAYROLL", SSS_Date_DTP.Value, SSS_Name_TXT.Tag)
+            Load_Loans(SSSLoan_LV, "PAYROLL_DEDUCTION", "SSS LOAN")
 
-            SaveLogs($"ADDED SSS LOAN {SSS_Name_TXT.Text} ({SSS_Name_TXT.Tag}), Amort({SSS_Amort_TXT.Text}), Principal({SSSPrincipal_TXT.Text}), Date({SSS_Date_DTP.Value.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
+            SaveLogs($"ADDED DEDUCTION - SSS LOAN {SSS_Name_TXT.Text} ({SSS_Name_TXT.Tag}), Amort({SSS_Amort_TXT.Text}), Principal({SSSPrincipal_TXT.Text}), Date({SSS_Date_DTP.Value.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
             SSSCancel_BTN.PerformClick()
+
         End If
 
     End Sub

@@ -26,6 +26,8 @@ Partial Class frmLoan
         Me.Close_LBL = New System.Windows.Forms.Label()
         Me.Loans_Tab = New System.Windows.Forms.TabControl()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.Label40 = New System.Windows.Forms.Label()
+        Me.Label41 = New System.Windows.Forms.Label()
         Me.GroupBox6 = New System.Windows.Forms.GroupBox()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.DeductAmort_txt = New System.Windows.Forms.TextBox()
@@ -51,6 +53,8 @@ Partial Class frmLoan
         Me.ColumnHeader6 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader5 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.Label38 = New System.Windows.Forms.Label()
+        Me.Label39 = New System.Windows.Forms.Label()
         Me.Label25 = New System.Windows.Forms.Label()
         Me.SSSPrincipal_TXT = New System.Windows.Forms.TextBox()
         Me.Label23 = New System.Windows.Forms.Label()
@@ -71,6 +75,8 @@ Partial Class frmLoan
         Me.Label16 = New System.Windows.Forms.Label()
         Me.SSS_Amort_TXT = New System.Windows.Forms.TextBox()
         Me.TabPage3 = New System.Windows.Forms.TabPage()
+        Me.Label37 = New System.Windows.Forms.Label()
+        Me.Label12 = New System.Windows.Forms.Label()
         Me.Pagibig_List = New System.Windows.Forms.ListView()
         Me.ColumnHeader30 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader31 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -91,6 +97,10 @@ Partial Class frmLoan
         Me.Label21 = New System.Windows.Forms.Label()
         Me.PagAmort_TXT = New System.Windows.Forms.TextBox()
         Me.TabPage4 = New System.Windows.Forms.TabPage()
+        Me.Label44 = New System.Windows.Forms.Label()
+        Me.Label45 = New System.Windows.Forms.Label()
+        Me.Mp2Status_Combo = New System.Windows.Forms.ComboBox()
+        Me.Label42 = New System.Windows.Forms.Label()
         Me.Mp2Sched_Combo = New System.Windows.Forms.ComboBox()
         Me.Label7 = New System.Windows.Forms.Label()
         Me.Mp2Cancel_btn = New System.Windows.Forms.Button()
@@ -111,6 +121,10 @@ Partial Class frmLoan
         Me.Label30 = New System.Windows.Forms.Label()
         Me.Mp2Amort_txt = New System.Windows.Forms.TextBox()
         Me.TabPage5 = New System.Windows.Forms.TabPage()
+        Me.Label46 = New System.Windows.Forms.Label()
+        Me.Label47 = New System.Windows.Forms.Label()
+        Me.MaxStatus_Combo = New System.Windows.Forms.ComboBox()
+        Me.Label43 = New System.Windows.Forms.Label()
         Me.MaxSched_Combo = New System.Windows.Forms.ComboBox()
         Me.Label32 = New System.Windows.Forms.Label()
         Me.MaxCancel_btn = New System.Windows.Forms.Button()
@@ -176,20 +190,6 @@ Partial Class frmLoan
         Me.Mp2Edit_Menu = New System.Windows.Forms.ToolStripMenuItem()
         Me.Context_Maxicare = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.MaxEdit_Menu = New System.Windows.Forms.ToolStripMenuItem()
-        Me.Label12 = New System.Windows.Forms.Label()
-        Me.Label37 = New System.Windows.Forms.Label()
-        Me.Label38 = New System.Windows.Forms.Label()
-        Me.Label39 = New System.Windows.Forms.Label()
-        Me.Label40 = New System.Windows.Forms.Label()
-        Me.Label41 = New System.Windows.Forms.Label()
-        Me.Label42 = New System.Windows.Forms.Label()
-        Me.Label43 = New System.Windows.Forms.Label()
-        Me.MaxStatus_Combo = New System.Windows.Forms.ComboBox()
-        Me.Mp2Status_Combo = New System.Windows.Forms.ComboBox()
-        Me.Label44 = New System.Windows.Forms.Label()
-        Me.Label45 = New System.Windows.Forms.Label()
-        Me.Label46 = New System.Windows.Forms.Label()
-        Me.Label47 = New System.Windows.Forms.Label()
         Me.Loans_Tab.SuspendLayout()
         Me.TabPage2.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
@@ -242,6 +242,27 @@ Partial Class frmLoan
         Me.TabPage2.TabIndex = 2
         Me.TabPage2.Text = "  Deductions  "
         Me.TabPage2.UseVisualStyleBackColor = True
+        '
+        'Label40
+        '
+        Me.Label40.AutoSize = True
+        Me.Label40.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label40.Location = New System.Drawing.Point(1098, 34)
+        Me.Label40.Name = "Label40"
+        Me.Label40.Size = New System.Drawing.Size(46, 27)
+        Me.Label40.TabIndex = 163
+        Me.Label40.Text = "PAID"
+        '
+        'Label41
+        '
+        Me.Label41.AutoSize = True
+        Me.Label41.BackColor = System.Drawing.Color.LightCoral
+        Me.Label41.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label41.Location = New System.Drawing.Point(1064, 36)
+        Me.Label41.Name = "Label41"
+        Me.Label41.Size = New System.Drawing.Size(28, 22)
+        Me.Label41.TabIndex = 162
+        Me.Label41.Text = "      "
         '
         'GroupBox6
         '
@@ -505,6 +526,27 @@ Partial Class frmLoan
         Me.TabPage1.Text = "    SSS Loan    "
         Me.TabPage1.UseVisualStyleBackColor = True
         '
+        'Label38
+        '
+        Me.Label38.AutoSize = True
+        Me.Label38.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label38.Location = New System.Drawing.Point(1094, 15)
+        Me.Label38.Name = "Label38"
+        Me.Label38.Size = New System.Drawing.Size(46, 27)
+        Me.Label38.TabIndex = 163
+        Me.Label38.Text = "PAID"
+        '
+        'Label39
+        '
+        Me.Label39.AutoSize = True
+        Me.Label39.BackColor = System.Drawing.Color.LightCoral
+        Me.Label39.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label39.Location = New System.Drawing.Point(1060, 17)
+        Me.Label39.Name = "Label39"
+        Me.Label39.Size = New System.Drawing.Size(28, 22)
+        Me.Label39.TabIndex = 162
+        Me.Label39.Text = "      "
+        '
         'Label25
         '
         Me.Label25.AutoSize = True
@@ -703,6 +745,27 @@ Partial Class frmLoan
         Me.TabPage3.Text = "    Pagibig Loan    "
         Me.TabPage3.UseVisualStyleBackColor = True
         '
+        'Label37
+        '
+        Me.Label37.AutoSize = True
+        Me.Label37.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label37.Location = New System.Drawing.Point(1094, 19)
+        Me.Label37.Name = "Label37"
+        Me.Label37.Size = New System.Drawing.Size(46, 27)
+        Me.Label37.TabIndex = 161
+        Me.Label37.Text = "PAID"
+        '
+        'Label12
+        '
+        Me.Label12.AutoSize = True
+        Me.Label12.BackColor = System.Drawing.Color.LightCoral
+        Me.Label12.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label12.Location = New System.Drawing.Point(1060, 21)
+        Me.Label12.Name = "Label12"
+        Me.Label12.Size = New System.Drawing.Size(28, 22)
+        Me.Label12.TabIndex = 160
+        Me.Label12.Text = "      "
+        '
         'Pagibig_List
         '
         Me.Pagibig_List.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
@@ -747,7 +810,7 @@ Partial Class frmLoan
         '
         Me.Label27.AutoSize = True
         Me.Label27.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label27.Location = New System.Drawing.Point(273, 136)
+        Me.Label27.Location = New System.Drawing.Point(273, 199)
         Me.Label27.Name = "Label27"
         Me.Label27.Size = New System.Drawing.Size(54, 22)
         Me.Label27.TabIndex = 158
@@ -757,7 +820,7 @@ Partial Class frmLoan
         '
         Me.Label26.AutoSize = True
         Me.Label26.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label26.Location = New System.Drawing.Point(7, 198)
+        Me.Label26.Location = New System.Drawing.Point(7, 133)
         Me.Label26.Name = "Label26"
         Me.Label26.Size = New System.Drawing.Size(69, 27)
         Me.Label26.TabIndex = 157
@@ -766,7 +829,7 @@ Partial Class frmLoan
         'PagPrincipal_TXT
         '
         Me.PagPrincipal_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.PagPrincipal_TXT.Location = New System.Drawing.Point(77, 194)
+        Me.PagPrincipal_TXT.Location = New System.Drawing.Point(77, 129)
         Me.PagPrincipal_TXT.Name = "PagPrincipal_TXT"
         Me.PagPrincipal_TXT.Size = New System.Drawing.Size(194, 33)
         Me.PagPrincipal_TXT.TabIndex = 148
@@ -861,7 +924,7 @@ Partial Class frmLoan
         '
         Me.Label21.AutoSize = True
         Me.Label21.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label21.Location = New System.Drawing.Point(7, 131)
+        Me.Label21.Location = New System.Drawing.Point(7, 194)
         Me.Label21.Name = "Label21"
         Me.Label21.Size = New System.Drawing.Size(54, 27)
         Me.Label21.TabIndex = 143
@@ -870,7 +933,7 @@ Partial Class frmLoan
         'PagAmort_TXT
         '
         Me.PagAmort_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.PagAmort_TXT.Location = New System.Drawing.Point(77, 131)
+        Me.PagAmort_TXT.Location = New System.Drawing.Point(77, 194)
         Me.PagAmort_TXT.Name = "PagAmort_TXT"
         Me.PagAmort_TXT.Size = New System.Drawing.Size(194, 33)
         Me.PagAmort_TXT.TabIndex = 147
@@ -902,6 +965,48 @@ Partial Class frmLoan
         Me.TabPage4.TabIndex = 10
         Me.TabPage4.Text = "     MP2     "
         Me.TabPage4.UseVisualStyleBackColor = True
+        '
+        'Label44
+        '
+        Me.Label44.AutoSize = True
+        Me.Label44.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label44.Location = New System.Drawing.Point(1094, 13)
+        Me.Label44.Name = "Label44"
+        Me.Label44.Size = New System.Drawing.Size(39, 27)
+        Me.Label44.TabIndex = 186
+        Me.Label44.Text = "OFF"
+        '
+        'Label45
+        '
+        Me.Label45.AutoSize = True
+        Me.Label45.BackColor = System.Drawing.Color.LightCoral
+        Me.Label45.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label45.Location = New System.Drawing.Point(1060, 15)
+        Me.Label45.Name = "Label45"
+        Me.Label45.Size = New System.Drawing.Size(28, 22)
+        Me.Label45.TabIndex = 185
+        Me.Label45.Text = "      "
+        '
+        'Mp2Status_Combo
+        '
+        Me.Mp2Status_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.Mp2Status_Combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Mp2Status_Combo.FormattingEnabled = True
+        Me.Mp2Status_Combo.Items.AddRange(New Object() {"ON", "OFF"})
+        Me.Mp2Status_Combo.Location = New System.Drawing.Point(77, 314)
+        Me.Mp2Status_Combo.Name = "Mp2Status_Combo"
+        Me.Mp2Status_Combo.Size = New System.Drawing.Size(121, 33)
+        Me.Mp2Status_Combo.TabIndex = 184
+        '
+        'Label42
+        '
+        Me.Label42.AutoSize = True
+        Me.Label42.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label42.Location = New System.Drawing.Point(7, 316)
+        Me.Label42.Name = "Label42"
+        Me.Label42.Size = New System.Drawing.Size(55, 27)
+        Me.Label42.TabIndex = 166
+        Me.Label42.Text = "Status"
         '
         'Mp2Sched_Combo
         '
@@ -1103,6 +1208,48 @@ Partial Class frmLoan
         Me.TabPage5.TabIndex = 11
         Me.TabPage5.Text = "     Maxicare     "
         Me.TabPage5.UseVisualStyleBackColor = True
+        '
+        'Label46
+        '
+        Me.Label46.AutoSize = True
+        Me.Label46.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label46.Location = New System.Drawing.Point(1104, 13)
+        Me.Label46.Name = "Label46"
+        Me.Label46.Size = New System.Drawing.Size(39, 27)
+        Me.Label46.TabIndex = 188
+        Me.Label46.Text = "OFF"
+        '
+        'Label47
+        '
+        Me.Label47.AutoSize = True
+        Me.Label47.BackColor = System.Drawing.Color.LightCoral
+        Me.Label47.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label47.Location = New System.Drawing.Point(1070, 15)
+        Me.Label47.Name = "Label47"
+        Me.Label47.Size = New System.Drawing.Size(28, 22)
+        Me.Label47.TabIndex = 187
+        Me.Label47.Text = "      "
+        '
+        'MaxStatus_Combo
+        '
+        Me.MaxStatus_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.MaxStatus_Combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MaxStatus_Combo.FormattingEnabled = True
+        Me.MaxStatus_Combo.Items.AddRange(New Object() {"ON", "OFF"})
+        Me.MaxStatus_Combo.Location = New System.Drawing.Point(80, 315)
+        Me.MaxStatus_Combo.Name = "MaxStatus_Combo"
+        Me.MaxStatus_Combo.Size = New System.Drawing.Size(121, 33)
+        Me.MaxStatus_Combo.TabIndex = 183
+        '
+        'Label43
+        '
+        Me.Label43.AutoSize = True
+        Me.Label43.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label43.Location = New System.Drawing.Point(9, 317)
+        Me.Label43.Name = "Label43"
+        Me.Label43.Size = New System.Drawing.Size(55, 27)
+        Me.Label43.TabIndex = 181
+        Me.Label43.Text = "Status"
         '
         'MaxSched_Combo
         '
@@ -1602,7 +1749,7 @@ Partial Class frmLoan
         'Mp2Edit_Menu
         '
         Me.Mp2Edit_Menu.Name = "Mp2Edit_Menu"
-        Me.Mp2Edit_Menu.Size = New System.Drawing.Size(146, 22)
+        Me.Mp2Edit_Menu.Size = New System.Drawing.Size(94, 22)
         Me.Mp2Edit_Menu.Text = "Edit"
         '
         'Context_Maxicare
@@ -1614,155 +1761,8 @@ Partial Class frmLoan
         'MaxEdit_Menu
         '
         Me.MaxEdit_Menu.Name = "MaxEdit_Menu"
-        Me.MaxEdit_Menu.Size = New System.Drawing.Size(146, 22)
+        Me.MaxEdit_Menu.Size = New System.Drawing.Size(94, 22)
         Me.MaxEdit_Menu.Text = "Edit"
-        '
-        'Label12
-        '
-        Me.Label12.AutoSize = True
-        Me.Label12.BackColor = System.Drawing.Color.LightCoral
-        Me.Label12.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label12.Location = New System.Drawing.Point(1060, 21)
-        Me.Label12.Name = "Label12"
-        Me.Label12.Size = New System.Drawing.Size(28, 22)
-        Me.Label12.TabIndex = 160
-        Me.Label12.Text = "      "
-        '
-        'Label37
-        '
-        Me.Label37.AutoSize = True
-        Me.Label37.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label37.Location = New System.Drawing.Point(1094, 19)
-        Me.Label37.Name = "Label37"
-        Me.Label37.Size = New System.Drawing.Size(46, 27)
-        Me.Label37.TabIndex = 161
-        Me.Label37.Text = "PAID"
-        '
-        'Label38
-        '
-        Me.Label38.AutoSize = True
-        Me.Label38.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label38.Location = New System.Drawing.Point(1094, 15)
-        Me.Label38.Name = "Label38"
-        Me.Label38.Size = New System.Drawing.Size(46, 27)
-        Me.Label38.TabIndex = 163
-        Me.Label38.Text = "PAID"
-        '
-        'Label39
-        '
-        Me.Label39.AutoSize = True
-        Me.Label39.BackColor = System.Drawing.Color.LightCoral
-        Me.Label39.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label39.Location = New System.Drawing.Point(1060, 17)
-        Me.Label39.Name = "Label39"
-        Me.Label39.Size = New System.Drawing.Size(28, 22)
-        Me.Label39.TabIndex = 162
-        Me.Label39.Text = "      "
-        '
-        'Label40
-        '
-        Me.Label40.AutoSize = True
-        Me.Label40.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label40.Location = New System.Drawing.Point(1098, 34)
-        Me.Label40.Name = "Label40"
-        Me.Label40.Size = New System.Drawing.Size(46, 27)
-        Me.Label40.TabIndex = 163
-        Me.Label40.Text = "PAID"
-        '
-        'Label41
-        '
-        Me.Label41.AutoSize = True
-        Me.Label41.BackColor = System.Drawing.Color.LightCoral
-        Me.Label41.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label41.Location = New System.Drawing.Point(1064, 36)
-        Me.Label41.Name = "Label41"
-        Me.Label41.Size = New System.Drawing.Size(28, 22)
-        Me.Label41.TabIndex = 162
-        Me.Label41.Text = "      "
-        '
-        'Label42
-        '
-        Me.Label42.AutoSize = True
-        Me.Label42.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label42.Location = New System.Drawing.Point(7, 316)
-        Me.Label42.Name = "Label42"
-        Me.Label42.Size = New System.Drawing.Size(55, 27)
-        Me.Label42.TabIndex = 166
-        Me.Label42.Text = "Status"
-        '
-        'Label43
-        '
-        Me.Label43.AutoSize = True
-        Me.Label43.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label43.Location = New System.Drawing.Point(9, 317)
-        Me.Label43.Name = "Label43"
-        Me.Label43.Size = New System.Drawing.Size(55, 27)
-        Me.Label43.TabIndex = 181
-        Me.Label43.Text = "Status"
-        '
-        'MaxStatus_Combo
-        '
-        Me.MaxStatus_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.MaxStatus_Combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.MaxStatus_Combo.FormattingEnabled = True
-        Me.MaxStatus_Combo.Items.AddRange(New Object() {"ON", "OFF"})
-        Me.MaxStatus_Combo.Location = New System.Drawing.Point(80, 315)
-        Me.MaxStatus_Combo.Name = "MaxStatus_Combo"
-        Me.MaxStatus_Combo.Size = New System.Drawing.Size(121, 33)
-        Me.MaxStatus_Combo.TabIndex = 183
-        '
-        'Mp2Status_Combo
-        '
-        Me.Mp2Status_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.Mp2Status_Combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Mp2Status_Combo.FormattingEnabled = True
-        Me.Mp2Status_Combo.Items.AddRange(New Object() {"ON", "OFF"})
-        Me.Mp2Status_Combo.Location = New System.Drawing.Point(77, 314)
-        Me.Mp2Status_Combo.Name = "Mp2Status_Combo"
-        Me.Mp2Status_Combo.Size = New System.Drawing.Size(121, 33)
-        Me.Mp2Status_Combo.TabIndex = 184
-        '
-        'Label44
-        '
-        Me.Label44.AutoSize = True
-        Me.Label44.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label44.Location = New System.Drawing.Point(1094, 13)
-        Me.Label44.Name = "Label44"
-        Me.Label44.Size = New System.Drawing.Size(39, 27)
-        Me.Label44.TabIndex = 186
-        Me.Label44.Text = "OFF"
-        '
-        'Label45
-        '
-        Me.Label45.AutoSize = True
-        Me.Label45.BackColor = System.Drawing.Color.LightCoral
-        Me.Label45.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label45.Location = New System.Drawing.Point(1060, 15)
-        Me.Label45.Name = "Label45"
-        Me.Label45.Size = New System.Drawing.Size(28, 22)
-        Me.Label45.TabIndex = 185
-        Me.Label45.Text = "      "
-        '
-        'Label46
-        '
-        Me.Label46.AutoSize = True
-        Me.Label46.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label46.Location = New System.Drawing.Point(1104, 13)
-        Me.Label46.Name = "Label46"
-        Me.Label46.Size = New System.Drawing.Size(39, 27)
-        Me.Label46.TabIndex = 188
-        Me.Label46.Text = "OFF"
-        '
-        'Label47
-        '
-        Me.Label47.AutoSize = True
-        Me.Label47.BackColor = System.Drawing.Color.LightCoral
-        Me.Label47.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label47.Location = New System.Drawing.Point(1070, 15)
-        Me.Label47.Name = "Label47"
-        Me.Label47.Size = New System.Drawing.Size(28, 22)
-        Me.Label47.TabIndex = 187
-        Me.Label47.Text = "      "
         '
         'frmLoan
         '

@@ -1035,4 +1035,48 @@ Module Report_function
         End Using
     End Sub
 
+    Public Sub Loans_to_Deduction()
+        Dim sql As String = $"select * from PAYROLL_LOANS"
+        Using dsSs As DataSet = LoadSQL(sql, "PAYROLL_LOANS")
+            For Each drRr In dsSs.Tables(0).Rows
+                With drRr
+                    Dim BIO_NO = .Item("BIO_NO")
+                    Dim amort = .Item("AMORT")
+                    Dim PRINCIPAL = .Item("PRINCIPAL")
+                    Dim CREDIT = .Item("CREDIT")
+                    Dim BALANCE = .Item("BALANCE")
+                    Dim DATEE = .Item("DATEE")
+                    Dim STATUS = IIf(IsDBNull(.Item("STATUS")), Nothing, .Item("STATUS"))
+
+                    SAVE_TO_DEDUCTION(.Item("BIO_NO"), .Item("CATEGORY") & " LOAN", .Item("AMORT"), .Item("PRINCIPAL"), .Item("CREDIT"), .Item("BALANCE"), .Item("DATEE"), "CLOSE PAYROLL", STATUS)
+                End With
+            Next
+        End Using
+    End Sub
+
+    Private Sub SAVE_TO_DEDUCTION(BIO_NO As String, CATEGORY As String, AMORT As String, PRINCIPAL As String, CREDIT As String, BALANCE As String, DATEE As String, SCHEDULE As String, STATUS As String)
+        Dim sql As String = $"select * from PAYROLL_DEDUCTION Rows 1"
+        Using ds As DataSet = LoadSQL(sql, "PAYROLL_DEDUCTION")
+            Dim dsNew As DataRow = ds.Tables(0).NewRow
+            With dsNew
+                .Item("BIO_NO") = BIO_NO
+                .Item("CATEGORY") = CATEGORY
+                .Item("AMORT") = AMORT
+                .Item("PRINCIPAL") = PRINCIPAL
+                .Item("CREDIT") = CREDIT
+                .Item("BALANCE") = BALANCE
+                .Item("DATEE") = DATEE
+                .Item("SCHEDULE") = SCHEDULE
+
+                If STATUS <> Nothing Then
+                    .Item("STATUS") = STATUS
+                End If
+            End With
+
+            ds.Tables(0).Rows.Add(dsNew)
+            SaveEntry(ds)
+
+        End Using
+    End Sub
+
 End Module

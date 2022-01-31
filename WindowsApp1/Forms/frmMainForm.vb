@@ -11,9 +11,9 @@ Public Class frmMainForm
 
     Private Sub frmMainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
-        'Check_This()
+        'Check_This() 
 
-        'Update_All_Deduction_Loans_IfZeroBalance()
+        'Loans_to_Deduction()
 
         Login_Form.ShowDialog()
 
