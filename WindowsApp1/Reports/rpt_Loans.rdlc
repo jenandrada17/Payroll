@@ -458,8 +458,8 @@
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>DataSet1</DataSetName>
-            <Height>1.01041in</Height>
-            <Width>3.92083in</Width>
+            <Height>1.01042in</Height>
+            <Width>3.92084in</Width>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -467,15 +467,15 @@
             </Style>
           </Tablix>
         </ReportItems>
-        <Height>1.01041in</Height>
+        <Height>1.01042in</Height>
         <Style />
       </Body>
-      <Width>3.92083in</Width>
+      <Width>3.92084in</Width>
       <Page>
-        <LeftMargin>1in</LeftMargin>
-        <RightMargin>1in</RightMargin>
-        <TopMargin>1in</TopMargin>
-        <BottomMargin>1in</BottomMargin>
+        <LeftMargin>0.5in</LeftMargin>
+        <RightMargin>0.5in</RightMargin>
+        <TopMargin>0.5in</TopMargin>
+        <BottomMargin>0.5in</BottomMargin>
         <Style />
       </Page>
     </ReportSection>

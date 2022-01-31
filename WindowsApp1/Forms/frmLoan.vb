@@ -28,7 +28,6 @@
         End Try
     End Sub
 
-
     Private Sub frmLoan_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Lists_deduction(Deduc_list)
         Load_Loans(SSSLoan_LV, "PAYROLL_LOANS", "SSS")
@@ -83,9 +82,6 @@
             PrincipalDeduc_txt.Region = New Region(New Rectangle(2, 2, PrincipalDeduc_txt.Width - 4, PrincipalDeduc_txt.Height - 4))
             Return False
 
-            'ElseIf String.IsNullOrEmpty(noOfDeduc_txt.Text) Then
-            '    noOfDeduc_txt.Region = New Region(New Rectangle(2, 2, noOfDeduc_txt.Width - 4, noOfDeduc_txt.Height - 4))
-            '    Return False
         End If
 
         Return True
@@ -115,10 +111,10 @@
         If Deduc_list.SelectedItems.Count > 0 Then
 
             bioNo = Deduc_list.Items(Deduc_list.FocusedItem.Index).SubItems(1).Tag
-            total_amount = GetDeduction_PRINCIPAL(bioNo)
+            total_amount = GetTotal("PRINCIPAL", "PAYROLL_DEDUCTION", $"WHERE BIO_NO = '{bioNo}' AND STATUS IS NULL")
 
             If GetBranchCode(bioNo) = "" Then
-                Amount_perPayroll = GetTotal("AMORT", "PAYROLL_DEDUCTION", $"WHERE BIO_NO = '{bioNo}'")
+                Amount_perPayroll = GetTotal("AMORT", "PAYROLL_DEDUCTION", $"WHERE BIO_NO = '{bioNo}' AND STATUS IS NULL")
             Else
                 Amount_perPayroll = GetDeduction_ChargesRange(bioNo, total_amount)
             End If
@@ -141,7 +137,7 @@
         Dim balance As Decimal
 
         If CollectedCredit > 0 Then
-            balance = CDec(GetData("BALANCE", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'")) - totalCredit
+            balance = CDec(GetData("PRINCIPAL", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'")) - totalCredit
         Else
             balance = CDec(GetData("BALANCE", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'"))
         End If
@@ -162,8 +158,6 @@
         CategoryDeduc_txt.Tag = DEDUCT_ID
 
         DateCharges_DTP.Value = GetDeduction_Datee(DEDUCT_ID)
-
-        Save_btn.Tag = "UPDATE"
 
     End Sub
 
@@ -439,12 +433,12 @@
         Dim bioNo As String = SSSLoan_LV.Items(SSSLoan_LV.FocusedItem.Index).SubItems(3).Tag
         Dim IDX As Integer = SSSLoan_LV.Items(SSSLoan_LV.FocusedItem.Index).SubItems(2).Tag
         Dim credit As Decimal = GetData("CREDIT", $"PAYROLL_LOANS WHERE ID = '{IDX}'")
-        Dim CollectedCredit As Decimal = GetTotal("AMOUNT", "RECORDED_ALLOW_DEDUC", $"WHERE R_DEDUC_ID = '{IDX}'")
+        Dim CollectedCredit As Decimal = GetTotal("AMOUNT", "RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{bioNo}' and UPPER(CATEGORY) LIKE '%SSS%'")
         Dim totalCredit As Decimal = credit + CollectedCredit
         Dim balance As Decimal
 
         If CollectedCredit > 0 Then
-            balance = CDec(GetData("BALANCE", $"PAYROLL_LOANS WHERE ID = '{IDX}'")) - totalCredit
+            balance = CDec(GetData("PRINCIPAL", $"PAYROLL_LOANS WHERE ID = '{IDX}'")) - totalCredit
         Else
             balance = CDec(GetData("BALANCE", $"PAYROLL_LOANS WHERE ID = '{IDX}'"))
         End If
@@ -458,12 +452,12 @@
         Dim bioNo As String = Pagibig_List.Items(Pagibig_List.FocusedItem.Index).SubItems(3).Tag
         Dim IDX As Integer = Pagibig_List.Items(Pagibig_List.FocusedItem.Index).SubItems(2).Tag
         Dim credit As Decimal = GetData("CREDIT", $"PAYROLL_LOANS WHERE ID = '{IDX}'")
-        Dim CollectedCredit As Decimal = GetTotal("AMOUNT", "RECORDED_ALLOW_DEDUC", $"WHERE R_DEDUC_ID = '{IDX}'")
+        Dim CollectedCredit As Decimal = GetTotal("AMOUNT", "RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{bioNo}' and CATEGORY = 'PAG IBIG LOAN'")
         Dim totalCredit As Decimal = credit + CollectedCredit
         Dim balance As Decimal
 
         If CollectedCredit > 0 Then
-            balance = CDec(GetData("BALANCE", $"PAYROLL_LOANS WHERE ID = '{IDX}'")) - totalCredit
+            balance = CDec(GetData("PRINCIPAL", $"PAYROLL_LOANS WHERE ID = '{IDX}'")) - totalCredit
         Else
             balance = CDec(GetData("BALANCE", $"PAYROLL_LOANS WHERE ID = '{IDX}'"))
         End If
@@ -480,11 +474,11 @@
         If SSSLoan_LV.SelectedItems.Count > 0 Then
 
             bioNo = SSSLoan_LV.Items(SSSLoan_LV.FocusedItem.Index).SubItems(3).Tag
-            total_amount = GetTotal("PRINCIPAL", "PAYROLL_LOANS", $"WHERE BIO_NO = '{bioNo}' AND CATEGORY = 'SSS'")
+            total_amount = GetTotal("PRINCIPAL", "PAYROLL_LOANS", $"WHERE BIO_NO = '{bioNo}' AND CATEGORY = 'SSS' AND STATUS IS NULL")
 
-            Amount_perPayroll = GetTotal("AMORT", "PAYROLL_LOANS", $"WHERE BIO_NO = '{bioNo}' AND CATEGORY = 'SSS'")
+            Amount_perPayroll = GetTotal("AMORT", "PAYROLL_LOANS", $"WHERE BIO_NO = '{bioNo}' AND CATEGORY = 'SSS'AND STATUS IS NULL")
 
-            balance = GetTotal("BALANCE", "PAYROLL_LOANS", $"WHERE BIO_NO = '{bioNo}' AND CATEGORY = 'SSS'")
+            balance = GetTotal("BALANCE", "PAYROLL_LOANS", $"WHERE BIO_NO = '{bioNo}' AND CATEGORY = 'SSS' AND STATUS IS NULL")
 
             MsgBox("Total Amount     :  " & FormatNumber(total_amount) & vbCrLf &
                        "Amount/Payroll  :  " & FormatNumber(Amount_perPayroll) & vbCrLf &
@@ -500,11 +494,11 @@
         If Pagibig_List.SelectedItems.Count > 0 Then
 
             bioNo = Pagibig_List.Items(Pagibig_List.FocusedItem.Index).SubItems(3).Tag
-            total_amount = GetTotal("PRINCIPAL", "PAYROLL_LOANS", $"WHERE BIO_NO = '{bioNo}' AND CATEGORY = 'PAG-IBIG'")
+            total_amount = GetTotal("PRINCIPAL", "PAYROLL_LOANS", $"WHERE BIO_NO = '{bioNo}' AND CATEGORY = 'PAG-IBIG' AND STATUS IS NULL")
 
-            Amount_perPayroll = GetTotal("AMORT", "PAYROLL_LOANS", $"WHERE BIO_NO = '{bioNo}' AND CATEGORY = 'PAG-IBIG'")
+            Amount_perPayroll = GetTotal("AMORT", "PAYROLL_LOANS", $"WHERE BIO_NO = '{bioNo}' AND CATEGORY = 'PAG-IBIG' AND STATUS IS NULL")
 
-            balance = GetTotal("BALANCE", "PAYROLL_LOANS", $"WHERE BIO_NO = '{bioNo}' AND CATEGORY = 'PAG-IBIG'")
+            balance = GetTotal("BALANCE", "PAYROLL_LOANS", $"WHERE BIO_NO = '{bioNo}' AND CATEGORY = 'PAG-IBIG' AND STATUS IS NULL")
 
             MsgBox("Total Amount     :  " & FormatNumber(total_amount) & vbCrLf &
                        "Amount/Payroll  :  " & FormatNumber(Amount_perPayroll) & vbCrLf &
@@ -517,7 +511,12 @@
         Dim result As DialogResult = MsgBox($"MP2 for {Mp2Emp_txt.Text} will be recorded, proceed anyway?", MessageBoxButtons.YesNo)
         If result = DialogResult.Yes Then
 
-            Save_OtherDeduction(MP2_ID, Mp2Emp_txt.Tag, "MP2", Mp2Sched_Combo.Text, Mp2Amort_txt.Text, Mp2Date_dtp.Value)
+            Dim STATUS As String = Nothing
+            If Mp2Status_Combo.SelectedIndex = 1 Then
+                STATUS = "OFF"
+            End If
+
+            Save_OtherDeduction(MP2_ID, Mp2Emp_txt.Tag, "MP2", Mp2Sched_Combo.Text, Mp2Amort_txt.Text, Mp2Date_dtp.Value, STATUS)
             Load_Other_Deduction(Mp2_List, "PAYROLL_OTHER_DEDUCTION", "MP2")
 
             SaveLogs($"ADDED MP2 {Mp2Emp_txt.Text} ({Mp2Emp_txt.Tag}), Amourt({Mp2Amort_txt.Text}), Date({Mp2Date_dtp.Value.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
@@ -531,6 +530,7 @@
         Mp2Amort_txt.Clear()
         Mp2Sched_Combo.Text = Nothing
         Mp2Date_dtp.Value = Today
+        Mp2Status_Combo.Text = Nothing
         MP2_ID = 0
     End Sub
 
@@ -539,7 +539,12 @@
         Dim result As DialogResult = MsgBox($"Maxicare for {MaxEmp_txt.Text} will be recorded, proceed anyway?", MessageBoxButtons.YesNo)
         If result = DialogResult.Yes Then
 
-            Save_OtherDeduction(MAXICARE_ID, MaxEmp_txt.Tag, "MAXICARE", MaxSched_Combo.Text, MaxAmort_txt.Text, MaxDate_dtp.Value)
+            Dim STATUS As String = Nothing
+            If MaxStatus_Combo.SelectedIndex = 1 Then
+                STATUS = "OFF"
+            End If
+
+            Save_OtherDeduction(MAXICARE_ID, MaxEmp_txt.Tag, "MAXICARE", MaxSched_Combo.Text, MaxAmort_txt.Text, MaxDate_dtp.Value, STATUS)
             Load_Other_Deduction(Maxicare_List, "PAYROLL_OTHER_DEDUCTION", "MAXICARE")
 
             SaveLogs($"ADDED MAXICARE {MaxEmp_txt.Text} ({MaxEmp_txt.Tag}), Amourt({MaxAmort_txt.Text}), Date({MaxDate_dtp.Value.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
@@ -553,6 +558,7 @@
         MaxAmort_txt.Clear()
         MaxSched_Combo.Text = Nothing
         MaxDate_dtp.Value = Today
+        MaxStatus_Combo.Text = Nothing
         MAXICARE_ID = 0
     End Sub
 
@@ -564,6 +570,7 @@
         MaxSched_Combo.Text = Maxicare_List.Items(Maxicare_List.FocusedItem.Index).SubItems(3).Text
         MaxAmort_txt.Text = Maxicare_List.Items(Maxicare_List.FocusedItem.Index).SubItems(1).Text
         MaxDate_dtp.Value = Maxicare_List.Items(Maxicare_List.FocusedItem.Index).SubItems(2).Text
+        MaxStatus_Combo.Text = IIf(GetData("STATUS", $"PAYROLL_OTHER_DEDUCTION WHERE ID = '{MAXICARE_ID}'") = Nothing, "ON", "OFF")
 
     End Sub
 
@@ -575,6 +582,7 @@
         Mp2Sched_Combo.Text = Mp2_List.Items(Mp2_List.FocusedItem.Index).SubItems(3).Text
         Mp2Amort_txt.Text = Mp2_List.Items(Mp2_List.FocusedItem.Index).SubItems(1).Text
         Mp2Date_dtp.Value = Mp2_List.Items(Mp2_List.FocusedItem.Index).SubItems(2).Text
+        Mp2Status_Combo.Text = IIf(GetData("STATUS", $"PAYROLL_OTHER_DEDUCTION WHERE ID = '{MP2_ID}'") = Nothing, "ON", "OFF")
 
     End Sub
 

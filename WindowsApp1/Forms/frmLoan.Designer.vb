@@ -173,13 +173,23 @@ Partial Class frmLoan
         Me.PagBalance_Menu = New System.Windows.Forms.ToolStripMenuItem()
         Me.PagEdit_Menu = New System.Windows.Forms.ToolStripMenuItem()
         Me.Context_Mp2 = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.ToolStripMenuItem1 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ToolStripMenuItem2 = New System.Windows.Forms.ToolStripMenuItem()
         Me.Mp2Edit_Menu = New System.Windows.Forms.ToolStripMenuItem()
         Me.Context_Maxicare = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.ToolStripMenuItem4 = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ToolStripMenuItem5 = New System.Windows.Forms.ToolStripMenuItem()
         Me.MaxEdit_Menu = New System.Windows.Forms.ToolStripMenuItem()
+        Me.Label12 = New System.Windows.Forms.Label()
+        Me.Label37 = New System.Windows.Forms.Label()
+        Me.Label38 = New System.Windows.Forms.Label()
+        Me.Label39 = New System.Windows.Forms.Label()
+        Me.Label40 = New System.Windows.Forms.Label()
+        Me.Label41 = New System.Windows.Forms.Label()
+        Me.Label42 = New System.Windows.Forms.Label()
+        Me.Label43 = New System.Windows.Forms.Label()
+        Me.MaxStatus_Combo = New System.Windows.Forms.ComboBox()
+        Me.Mp2Status_Combo = New System.Windows.Forms.ComboBox()
+        Me.Label44 = New System.Windows.Forms.Label()
+        Me.Label45 = New System.Windows.Forms.Label()
+        Me.Label46 = New System.Windows.Forms.Label()
+        Me.Label47 = New System.Windows.Forms.Label()
         Me.Loans_Tab.SuspendLayout()
         Me.TabPage2.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
@@ -220,6 +230,8 @@ Partial Class frmLoan
         '
         'TabPage2
         '
+        Me.TabPage2.Controls.Add(Me.Label40)
+        Me.TabPage2.Controls.Add(Me.Label41)
         Me.TabPage2.Controls.Add(Me.GroupBox6)
         Me.TabPage2.Controls.Add(Me.Search_txt)
         Me.TabPage2.Controls.Add(Me.Search_btn)
@@ -405,7 +417,7 @@ Partial Class frmLoan
         'Search_txt
         '
         Me.Search_txt.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Search_txt.Location = New System.Drawing.Point(698, 27)
+        Me.Search_txt.Location = New System.Drawing.Point(449, 35)
         Me.Search_txt.Name = "Search_txt"
         Me.Search_txt.Size = New System.Drawing.Size(358, 33)
         Me.Search_txt.TabIndex = 42
@@ -413,7 +425,7 @@ Partial Class frmLoan
         'Search_btn
         '
         Me.Search_btn.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Search_btn.Location = New System.Drawing.Point(1062, 26)
+        Me.Search_btn.Location = New System.Drawing.Point(813, 34)
         Me.Search_btn.Name = "Search_btn"
         Me.Search_btn.Size = New System.Drawing.Size(82, 33)
         Me.Search_btn.TabIndex = 43
@@ -469,6 +481,8 @@ Partial Class frmLoan
         '
         'TabPage1
         '
+        Me.TabPage1.Controls.Add(Me.Label38)
+        Me.TabPage1.Controls.Add(Me.Label39)
         Me.TabPage1.Controls.Add(Me.Label25)
         Me.TabPage1.Controls.Add(Me.SSSPrincipal_TXT)
         Me.TabPage1.Controls.Add(Me.Label23)
@@ -665,6 +679,8 @@ Partial Class frmLoan
         '
         'TabPage3
         '
+        Me.TabPage3.Controls.Add(Me.Label37)
+        Me.TabPage3.Controls.Add(Me.Label12)
         Me.TabPage3.Controls.Add(Me.Pagibig_List)
         Me.TabPage3.Controls.Add(Me.Label27)
         Me.TabPage3.Controls.Add(Me.Label26)
@@ -861,6 +877,10 @@ Partial Class frmLoan
         '
         'TabPage4
         '
+        Me.TabPage4.Controls.Add(Me.Label44)
+        Me.TabPage4.Controls.Add(Me.Label45)
+        Me.TabPage4.Controls.Add(Me.Mp2Status_Combo)
+        Me.TabPage4.Controls.Add(Me.Label42)
         Me.TabPage4.Controls.Add(Me.Mp2Sched_Combo)
         Me.TabPage4.Controls.Add(Me.Label7)
         Me.TabPage4.Controls.Add(Me.Mp2Cancel_btn)
@@ -907,7 +927,7 @@ Partial Class frmLoan
         'Mp2Cancel_btn
         '
         Me.Mp2Cancel_btn.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Mp2Cancel_btn.Location = New System.Drawing.Point(73, 344)
+        Me.Mp2Cancel_btn.Location = New System.Drawing.Point(71, 408)
         Me.Mp2Cancel_btn.Name = "Mp2Cancel_btn"
         Me.Mp2Cancel_btn.Size = New System.Drawing.Size(99, 43)
         Me.Mp2Cancel_btn.TabIndex = 161
@@ -917,7 +937,7 @@ Partial Class frmLoan
         'Mp2Save_btn
         '
         Me.Mp2Save_btn.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Mp2Save_btn.Location = New System.Drawing.Point(302, 344)
+        Me.Mp2Save_btn.Location = New System.Drawing.Point(300, 408)
         Me.Mp2Save_btn.Name = "Mp2Save_btn"
         Me.Mp2Save_btn.Size = New System.Drawing.Size(99, 43)
         Me.Mp2Save_btn.TabIndex = 162
@@ -1058,6 +1078,10 @@ Partial Class frmLoan
         '
         'TabPage5
         '
+        Me.TabPage5.Controls.Add(Me.Label46)
+        Me.TabPage5.Controls.Add(Me.Label47)
+        Me.TabPage5.Controls.Add(Me.MaxStatus_Combo)
+        Me.TabPage5.Controls.Add(Me.Label43)
         Me.TabPage5.Controls.Add(Me.MaxSched_Combo)
         Me.TabPage5.Controls.Add(Me.Label32)
         Me.TabPage5.Controls.Add(Me.MaxCancel_btn)
@@ -1088,7 +1112,7 @@ Partial Class frmLoan
         Me.MaxSched_Combo.Items.AddRange(New Object() {"OPEN PAYROLL", "CLOSE PAYROLL", "EVERY PAYROLL"})
         Me.MaxSched_Combo.Location = New System.Drawing.Point(80, 188)
         Me.MaxSched_Combo.Name = "MaxSched_Combo"
-        Me.MaxSched_Combo.Size = New System.Drawing.Size(285, 33)
+        Me.MaxSched_Combo.Size = New System.Drawing.Size(304, 33)
         Me.MaxSched_Combo.TabIndex = 178
         '
         'Label32
@@ -1104,7 +1128,7 @@ Partial Class frmLoan
         'MaxCancel_btn
         '
         Me.MaxCancel_btn.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.MaxCancel_btn.Location = New System.Drawing.Point(76, 344)
+        Me.MaxCancel_btn.Location = New System.Drawing.Point(82, 406)
         Me.MaxCancel_btn.Name = "MaxCancel_btn"
         Me.MaxCancel_btn.Size = New System.Drawing.Size(99, 43)
         Me.MaxCancel_btn.TabIndex = 176
@@ -1114,7 +1138,7 @@ Partial Class frmLoan
         'MaxSave_btn
         '
         Me.MaxSave_btn.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.MaxSave_btn.Location = New System.Drawing.Point(305, 344)
+        Me.MaxSave_btn.Location = New System.Drawing.Point(311, 406)
         Me.MaxSave_btn.Name = "MaxSave_btn"
         Me.MaxSave_btn.Size = New System.Drawing.Size(99, 43)
         Me.MaxSave_btn.TabIndex = 177
@@ -1571,21 +1595,9 @@ Partial Class frmLoan
         '
         'Context_Mp2
         '
-        Me.Context_Mp2.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItem1, Me.ToolStripMenuItem2, Me.Mp2Edit_Menu})
+        Me.Context_Mp2.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.Mp2Edit_Menu})
         Me.Context_Mp2.Name = "Context_deduct"
-        Me.Context_Mp2.Size = New System.Drawing.Size(147, 70)
-        '
-        'ToolStripMenuItem1
-        '
-        Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
-        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(146, 22)
-        Me.ToolStripMenuItem1.Text = "View Subtotal"
-        '
-        'ToolStripMenuItem2
-        '
-        Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
-        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(146, 22)
-        Me.ToolStripMenuItem2.Text = "Balance"
+        Me.Context_Mp2.Size = New System.Drawing.Size(95, 26)
         '
         'Mp2Edit_Menu
         '
@@ -1595,27 +1607,162 @@ Partial Class frmLoan
         '
         'Context_Maxicare
         '
-        Me.Context_Maxicare.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItem4, Me.ToolStripMenuItem5, Me.MaxEdit_Menu})
+        Me.Context_Maxicare.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MaxEdit_Menu})
         Me.Context_Maxicare.Name = "Context_deduct"
-        Me.Context_Maxicare.Size = New System.Drawing.Size(147, 70)
-        '
-        'ToolStripMenuItem4
-        '
-        Me.ToolStripMenuItem4.Name = "ToolStripMenuItem4"
-        Me.ToolStripMenuItem4.Size = New System.Drawing.Size(146, 22)
-        Me.ToolStripMenuItem4.Text = "View Subtotal"
-        '
-        'ToolStripMenuItem5
-        '
-        Me.ToolStripMenuItem5.Name = "ToolStripMenuItem5"
-        Me.ToolStripMenuItem5.Size = New System.Drawing.Size(146, 22)
-        Me.ToolStripMenuItem5.Text = "Balance"
+        Me.Context_Maxicare.Size = New System.Drawing.Size(95, 26)
         '
         'MaxEdit_Menu
         '
         Me.MaxEdit_Menu.Name = "MaxEdit_Menu"
         Me.MaxEdit_Menu.Size = New System.Drawing.Size(146, 22)
         Me.MaxEdit_Menu.Text = "Edit"
+        '
+        'Label12
+        '
+        Me.Label12.AutoSize = True
+        Me.Label12.BackColor = System.Drawing.Color.LightCoral
+        Me.Label12.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label12.Location = New System.Drawing.Point(1060, 21)
+        Me.Label12.Name = "Label12"
+        Me.Label12.Size = New System.Drawing.Size(28, 22)
+        Me.Label12.TabIndex = 160
+        Me.Label12.Text = "      "
+        '
+        'Label37
+        '
+        Me.Label37.AutoSize = True
+        Me.Label37.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label37.Location = New System.Drawing.Point(1094, 19)
+        Me.Label37.Name = "Label37"
+        Me.Label37.Size = New System.Drawing.Size(46, 27)
+        Me.Label37.TabIndex = 161
+        Me.Label37.Text = "PAID"
+        '
+        'Label38
+        '
+        Me.Label38.AutoSize = True
+        Me.Label38.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label38.Location = New System.Drawing.Point(1094, 15)
+        Me.Label38.Name = "Label38"
+        Me.Label38.Size = New System.Drawing.Size(46, 27)
+        Me.Label38.TabIndex = 163
+        Me.Label38.Text = "PAID"
+        '
+        'Label39
+        '
+        Me.Label39.AutoSize = True
+        Me.Label39.BackColor = System.Drawing.Color.LightCoral
+        Me.Label39.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label39.Location = New System.Drawing.Point(1060, 17)
+        Me.Label39.Name = "Label39"
+        Me.Label39.Size = New System.Drawing.Size(28, 22)
+        Me.Label39.TabIndex = 162
+        Me.Label39.Text = "      "
+        '
+        'Label40
+        '
+        Me.Label40.AutoSize = True
+        Me.Label40.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label40.Location = New System.Drawing.Point(1098, 34)
+        Me.Label40.Name = "Label40"
+        Me.Label40.Size = New System.Drawing.Size(46, 27)
+        Me.Label40.TabIndex = 163
+        Me.Label40.Text = "PAID"
+        '
+        'Label41
+        '
+        Me.Label41.AutoSize = True
+        Me.Label41.BackColor = System.Drawing.Color.LightCoral
+        Me.Label41.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label41.Location = New System.Drawing.Point(1064, 36)
+        Me.Label41.Name = "Label41"
+        Me.Label41.Size = New System.Drawing.Size(28, 22)
+        Me.Label41.TabIndex = 162
+        Me.Label41.Text = "      "
+        '
+        'Label42
+        '
+        Me.Label42.AutoSize = True
+        Me.Label42.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label42.Location = New System.Drawing.Point(7, 316)
+        Me.Label42.Name = "Label42"
+        Me.Label42.Size = New System.Drawing.Size(55, 27)
+        Me.Label42.TabIndex = 166
+        Me.Label42.Text = "Status"
+        '
+        'Label43
+        '
+        Me.Label43.AutoSize = True
+        Me.Label43.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label43.Location = New System.Drawing.Point(9, 317)
+        Me.Label43.Name = "Label43"
+        Me.Label43.Size = New System.Drawing.Size(55, 27)
+        Me.Label43.TabIndex = 181
+        Me.Label43.Text = "Status"
+        '
+        'MaxStatus_Combo
+        '
+        Me.MaxStatus_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.MaxStatus_Combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MaxStatus_Combo.FormattingEnabled = True
+        Me.MaxStatus_Combo.Items.AddRange(New Object() {"ON", "OFF"})
+        Me.MaxStatus_Combo.Location = New System.Drawing.Point(80, 315)
+        Me.MaxStatus_Combo.Name = "MaxStatus_Combo"
+        Me.MaxStatus_Combo.Size = New System.Drawing.Size(121, 33)
+        Me.MaxStatus_Combo.TabIndex = 183
+        '
+        'Mp2Status_Combo
+        '
+        Me.Mp2Status_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.Mp2Status_Combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Mp2Status_Combo.FormattingEnabled = True
+        Me.Mp2Status_Combo.Items.AddRange(New Object() {"ON", "OFF"})
+        Me.Mp2Status_Combo.Location = New System.Drawing.Point(77, 314)
+        Me.Mp2Status_Combo.Name = "Mp2Status_Combo"
+        Me.Mp2Status_Combo.Size = New System.Drawing.Size(121, 33)
+        Me.Mp2Status_Combo.TabIndex = 184
+        '
+        'Label44
+        '
+        Me.Label44.AutoSize = True
+        Me.Label44.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label44.Location = New System.Drawing.Point(1094, 13)
+        Me.Label44.Name = "Label44"
+        Me.Label44.Size = New System.Drawing.Size(39, 27)
+        Me.Label44.TabIndex = 186
+        Me.Label44.Text = "OFF"
+        '
+        'Label45
+        '
+        Me.Label45.AutoSize = True
+        Me.Label45.BackColor = System.Drawing.Color.LightCoral
+        Me.Label45.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label45.Location = New System.Drawing.Point(1060, 15)
+        Me.Label45.Name = "Label45"
+        Me.Label45.Size = New System.Drawing.Size(28, 22)
+        Me.Label45.TabIndex = 185
+        Me.Label45.Text = "      "
+        '
+        'Label46
+        '
+        Me.Label46.AutoSize = True
+        Me.Label46.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label46.Location = New System.Drawing.Point(1104, 13)
+        Me.Label46.Name = "Label46"
+        Me.Label46.Size = New System.Drawing.Size(39, 27)
+        Me.Label46.TabIndex = 188
+        Me.Label46.Text = "OFF"
+        '
+        'Label47
+        '
+        Me.Label47.AutoSize = True
+        Me.Label47.BackColor = System.Drawing.Color.LightCoral
+        Me.Label47.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label47.Location = New System.Drawing.Point(1070, 15)
+        Me.Label47.Name = "Label47"
+        Me.Label47.Size = New System.Drawing.Size(28, 22)
+        Me.Label47.TabIndex = 187
+        Me.Label47.Text = "      "
         '
         'frmLoan
         '
@@ -1800,16 +1947,26 @@ Partial Class frmLoan
     Friend WithEvents PagBalance_Menu As ToolStripMenuItem
     Friend WithEvents PagEdit_Menu As ToolStripMenuItem
     Friend WithEvents Context_Mp2 As ContextMenuStrip
-    Friend WithEvents ToolStripMenuItem1 As ToolStripMenuItem
-    Friend WithEvents ToolStripMenuItem2 As ToolStripMenuItem
     Friend WithEvents Mp2Edit_Menu As ToolStripMenuItem
     Friend WithEvents Context_Maxicare As ContextMenuStrip
-    Friend WithEvents ToolStripMenuItem4 As ToolStripMenuItem
-    Friend WithEvents ToolStripMenuItem5 As ToolStripMenuItem
     Friend WithEvents MaxEdit_Menu As ToolStripMenuItem
     Friend WithEvents Pagibig_List As ListView
     Friend WithEvents ColumnHeader30 As ColumnHeader
     Friend WithEvents ColumnHeader31 As ColumnHeader
     Friend WithEvents ColumnHeader32 As ColumnHeader
     Friend WithEvents ColumnHeader33 As ColumnHeader
+    Friend WithEvents Label37 As Label
+    Friend WithEvents Label12 As Label
+    Friend WithEvents Label38 As Label
+    Friend WithEvents Label39 As Label
+    Friend WithEvents Label40 As Label
+    Friend WithEvents Label41 As Label
+    Friend WithEvents Label42 As Label
+    Friend WithEvents Label43 As Label
+    Friend WithEvents MaxStatus_Combo As ComboBox
+    Friend WithEvents Mp2Status_Combo As ComboBox
+    Friend WithEvents Label44 As Label
+    Friend WithEvents Label45 As Label
+    Friend WithEvents Label46 As Label
+    Friend WithEvents Label47 As Label
 End Class

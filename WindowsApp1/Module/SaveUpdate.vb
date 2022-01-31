@@ -153,119 +153,10 @@ Module SaveUpdate
         End If
     End Sub
 
-    'Friend Sub Deduct_ifExist(BIO_NO As String, PAYDATE As String)
+    Public Sub Update_DEDUCTION_LOANS_STATUS(deduc_id As String, table As String)
 
-    '    If isExist_String("HISTORY_DEDUCTION", $"WHERE BIO_NO = '{BIO_NO}' AND PAYDATE = '{PAYDATE}'") Then 'DELETE RECORD (HISTORY_DEDUCTION) IF EXIST TO REPLACE NEW FROM GRID (IMPORTANT)
-    '        RunCommand($"DELETE FROM HISTORY_DEDUCTION WHERE BIO_NO = '{BIO_NO}' and PAYDATE = '{PAYDATE}';")
-    '    End If
-
-    '    If isExist_String("RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{BIO_NO}' AND PAYDATE = '{PAYDATE}'") Then '========= REFER TO MODIFIED_DEDUCTION IF EXIST (IMPORTANT)
-
-    '        GetFrom_Recorded_Allow_Deduc(BIO_NO, PAYDATE)
-
-    '    End If
-    'End Sub
-
-    'Private Sub GetFrom_Recorded_Allow_Deduc(BIO_NO As String, PAYDATE As String)
-    '    Dim mysql_1 As String = $"Select * From RECORDED_ALLOW_DEDUC WHERE BIO_NO = '{BIO_NO}' and PAYDATE = '{PAYDATE}' AND TRANSAC_NAME = 'DEDUCTION'"
-    '    Using ds As DataSet = LoadSQL(mysql_1, "RECORDED_ALLOW_DEDUC")
-    '        If ds.Tables(0).Rows.Count > 0 Then
-    '            For Each dr In ds.Tables(0).Rows
-    '                With dr
-
-    '                    Dim decut_id As String = IIf(IsDBNull(.Item("R_DEDUC_ID")), "", .Item("R_DEDUC_ID"))
-
-    '                    SaveDEDUCTION_HISTORY(BIO_NO, .item("CATEGORY"), .item("AMOUNT"), Today, PAYDATE, decut_id)
-
-    '                    If decut_id <> "" Then Calculate_Balance(.item("R_DEDUC_ID")) '========= CALCULATE DEDUCTION BALANCE ========= 
-
-    '                    If .item("CATEGORY") = "SBU" Then Update_SBU(BIO_NO, PAYDATE, .item("AMOUNT"))
-    '                End With
-    '            Next
-    '        End If
-    '    End Using
-    'End Sub
-
-    'Public Sub Update_SBU(BIO_NO As String, paydate As String, AMOUNT As String)
-    '    Dim mysql As String = $"Select * From PAYROLL_SBU where BIO_NO = '{BIO_NO}' AND CATEGORY = 'SBU'"
-    '    Using ds As DataSet = LoadSQL(mysql, "PAYROLL_SBU")
-    '        If ds.Tables(0).Rows.Count > 0 Then
-    '            With ds.Tables(0).Rows(0)
-
-    '                .Item("CREDIT") += AMOUNT
-    '                .Item("LAST_SBU") = paydate
-
-    '            End With
-    '            SaveEntry(ds, False)
-    '        Else
-    '            MsgBox($"NO RECORD FOR {BIO_NO}")
-    '        End If
-    '    End Using
-    'End Sub
-
-    'Friend Sub Calculate_Balance(deduc_id As String)
-    '    Dim total_amount As Double = 0
-
-    '    '================================== GET TOTAL_AMOUNT ================================ 
-    '    Dim mysql As String = $"Select TOTAL_AMOUNT From PAYROLL_DEDUCTION where ID = '{deduc_id}' "
-    '    Using dss As DataSet = LoadSQL(mysql, "PAYROLL_DEDUCTION")
-    '        If dss.Tables(0).Rows.Count > 0 Then
-    '            Dim data As DataRow = dss.Tables(0).Rows(0)
-    '            With data
-    '                total_amount = .Item("TOTAL_AMOUNT")
-    '            End With
-    '        End If
-    '    End Using
-
-    '    '================================== SUM UP ALL IN HISTORY_DEDUCTION ================================  
-    '    If isExist_String("HISTORY_DEDUCTION", $"WHERE H_DEDUC_ID = '{deduc_id}'") Then
-    '        Dim mysql_ As String = $"Select SUM(H_AMOUNT) as tots From HISTORY_DEDUCTION where H_DEDUC_ID = '{deduc_id}' "
-    '        Using ds As DataSet = LoadSQL(mysql_, "HISTORY_DEDUCTION")
-    '            If ds.Tables(0).Rows.Count > 0 Then
-    '                For Each drR In ds.Tables(0).Rows
-    '                    With drR
-    '                        If .item("tots") >= total_amount Then    '====== IF GREATER OR EQUAL TO TOTAL AMOUNT OF DEDUCTION ====== 
-    '                            Update_DEDUCTION_STATUS(deduc_id)
-    '                        End If
-    '                    End With
-    '                Next
-    '            End If
-    '        End Using
-    '    End If
-    'End Sub
-
-    Public Sub CheckDeduction_IfZeroBalance(bioNo As String)
-
-        Dim mysql As String = $"Select * From PAYROLL_DEDUCTION where BIO_NO = '{bioNo}' and STATUS is null"
-        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_DEDUCTION")
-            If ds.Tables(0).Rows.Count > 0 Then
-                For Each dr In ds.Tables(0).Rows
-                    With ds.Tables(0).Rows(0)
-
-                        Dim credit As Decimal = .Item("CREDIT")
-                        Dim CollectedCredit As Decimal = GetTotal("AMOUNT", "RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{bioNo}' and R_DEDUC_ID = '{ .Item("id")}'")
-                        Dim totalCredit As Decimal = credit + CollectedCredit
-                        Dim balance As Decimal = .Item("BALANCE")
-                        Dim principal As Decimal = .Item("PRINCIPAL")
-
-                        If CollectedCredit > 0 Then
-                            balance = principal - totalCredit
-                        End If
-
-                        If balance = 0 Then
-                            Update_DEDUCTION_STATUS(.Item("id"))
-                        End If
-
-                    End With
-                Next
-            End If
-        End Using
-    End Sub
-
-    Public Sub Update_DEDUCTION_STATUS(deduc_id As String)
-
-        Dim mysql As String = $"Select * From PAYROLL_DEDUCTION where ID = '{deduc_id}'"
-        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_DEDUCTION")
+        Dim mysql As String = $"Select * From {table} where ID = '{deduc_id}'"
+        Using ds As DataSet = LoadSQL(mysql, table)
             If ds.Tables(0).Rows.Count > 0 Then
                 With ds.Tables(0).Rows(0)
                     .Item("STATUS") = "PAID"
@@ -275,30 +166,6 @@ Module SaveUpdate
         End Using
 
     End Sub
-
-    'Friend Sub SaveDEDUCTION_HISTORY(BIO_NO As String, H_CATEGORY As String, H_AMOUNT As String, PAID_DATE As String, PAYDATE As String, H_DEDUC_ID As String)
-
-    '    Dim mysql As String = "Select * From HISTORY_DEDUCTION Rows 1"
-    '    Using ds As DataSet = LoadSQL(mysql, "HISTORY_DEDUCTION")
-
-    '        Dim dsNewRow As DataRow = ds.Tables(0).NewRow
-    '        With dsNewRow
-
-    '            .Item("BIO_NO") = BIO_NO
-    '            .Item("PAYDATE") = PAYDATE
-    '            .Item("H_CATEGORY") = H_CATEGORY
-    '            .Item("H_AMOUNT") = H_AMOUNT
-    '            .Item("PAID_DATE") = PAID_DATE
-
-    '            If H_DEDUC_ID <> Nothing Then
-    '                .Item("H_DEDUC_ID") = H_DEDUC_ID
-    '            End If
-
-    '        End With
-    '        ds.Tables(0).Rows.Add(dsNewRow)
-    '        SaveEntry(ds)
-    '    End Using
-    'End Sub
 
     Public Sub SaveBiometricSheet(payDate As String, bioID As String, dateTime As String)
         Dim mysql As String = "Select * From IMPORT_DTR Rows 1"
@@ -1043,63 +910,61 @@ Module SaveUpdate
                     '============================================= DEDUCTION =========================================================  
                     Deduction = 0
 
-                    Dim sql_3 As String = $"Select * From PAYROLL_DEDUCTION WHERE BIO_NO = '{bioNo}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
-                    Using ds_3 As DataSet = LoadSQL(sql_3, "PAYROLL_DEDUCTION")
-                        If ds_3.Tables(0).Rows.Count > 0 Then
-                            For Each dr_3 In ds_3.Tables(0).Rows
-                                With dr_3
+                    If BranchCode <> Nothing Then '=============== BRANCHES (BY RANGE)
 
-                                    If .Item("AMORT") > .Item("BALANCE") Then
-                                        Deduction = Deduction + .Item("BALANCE")
-                                        Save_Recorded_Allow_Deduc(bioNo, paydate_, .Item("CATEGORY"), .Item("BALANCE"), "DEDUCTION", .Item("ID"))
-                                    Else
-                                        Deduction = Deduction + .Item("AMORT")
-                                        Save_Recorded_Allow_Deduc(bioNo, paydate_, .Item("CATEGORY"), .Item("AMORT"), "DEDUCTION", .Item("ID"))
-                                    End If
+                        Dim balance As Decimal = GetDeduction_OverAll_Balance(bioNo)
+                        Dim Amount_perPayroll As Decimal = GetDeduction_ChargesRange(bioNo, balance)
 
-
-                                    'If IsDBNull(.item("EFFECTIVE_DATE")) Then
-                                    'Else
-                                    '    If .item("EFFECTIVE_DATE") <= paydate_ Then 
-
-                                    'Deduction = Deduction + .Item("AMORT")
-                                    'Save_Recorded_Allow_Deduc(bioNo, paydate_, .Item("CATEGORY"), .Item("AMORT"), "DEDUCTION", .Item("ID"))
-
-                                    '    End If
-                                    'End If
-
-                                End With
-                            Next
+                        If Amount_perPayroll > balance Then
+                            Amount_perPayroll = balance
                         End If
-                    End Using
 
-                    'Dim sql_3 As String = $"Select * From PAYROLL_DEDUCTION WHERE BIO_NO = '{bioNo}' AND STATUS IS NULL"
-                    'Using ds_3 As DataSet = LoadSQL(sql_3, "PAYROLL_DEDUCTION")
-                    '    If ds_3.Tables(0).Rows.Count > 0 Then
-                    '        With ds_3.Tables(0).Rows(0)
+                        Deduction = Deduction + Amount_perPayroll
+                        Save_Recorded_Allow_Deduc(bioNo, paydate_, "Charges", Amount_perPayroll, "DEDUCTION", .Item("ID"))
 
-                    '            Dim Amount_perPayroll As Decimal = GetDeduction_ChargesRange(bioNo, GetDeduction_PRINCIPAL(bioNo))
-                    '            Dim balance As Decimal = GetDeduction_OverAll_Balance(bioNo)
+                    Else '=============== HEAD OFFICE (BY AMORT)
 
-                    '            If Amount_perPayroll > balance Then
-                    '                Amount_perPayroll = balances
-                    '            End If
+                        Dim sql_3 As String = $"Select * From PAYROLL_DEDUCTION WHERE BIO_NO = '{bioNo}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
+                        Using ds_3 As DataSet = LoadSQL(sql_3, "PAYROLL_DEDUCTION")
+                            If ds_3.Tables(0).Rows.Count > 0 Then
+                                For Each dr_3 In ds_3.Tables(0).Rows
+                                    With dr_3
 
-                    '            'If IsDBNull(.Item("EFFECTIVE_DATE")) Or .Item("EFFECTIVE_DATE") <= paydate_ Then
-                    '            Deduction = Deduction + Amount_perPayroll
-                    '            Save_Recorded_Allow_Deduc(bioNo, paydate_, "Charges", Amount_perPayroll, "DEDUCTION", .Item("ID"))
-                    '            'End If
+                                        If .Item("AMORT") > .Item("BALANCE") Then
+                                            Deduction = Deduction + .Item("BALANCE")
+                                            Save_Recorded_Allow_Deduc(bioNo, paydate_, .Item("CATEGORY"), .Item("BALANCE"), "DEDUCTION", .Item("ID"))
+                                        Else
+                                            Deduction = Deduction + .Item("AMORT")
+                                            Save_Recorded_Allow_Deduc(bioNo, paydate_, .Item("CATEGORY"), .Item("AMORT"), "DEDUCTION", .Item("ID"))
+                                        End If
 
-                    '        End With
-                    '    End If
-                    'End Using
+                                    End With
+                                Next
+                            End If
+                        End Using
+                    End If
+
+                    ''============================================= LOANS LIKE SSS/PAGIBIG LOAN ==================================================  
+                    'If sched = "CLOSE PAYROLL" Then
+                    '    Dim sql_4 As String = $"Select * From PAYROLL_LOANS WHERE BIO_NO = '{bioNo}' and STATUS is null"
+                    '    Using ds_4 As DataSet = LoadSQL(sql_4, "PAYROLL_LOANS")
+                    '        If ds_4.Tables(0).Rows.Count > 0 Then
+                    '            For Each dr_4 In ds_4.Tables(0).Rows
+                    '                With dr_4
+                    '                    Deduction = Deduction + .Item("AMORT")
+                    '                    Save_Recorded_Allow_Deduc(bioNo, paydate_, .Item("CATEGORY"), .Item("AMORT"), "DEDUCTION", 0, .Item("ID"))
+                    '                End With
+                    '            Next
+                    '        End If
+                    '    End Using
+                    'End If
 
                     '============================================= OTHER DEDUCTION LIKE MP2, MAXICARE ==================================================  
-                    Dim sql_4 As String = $"Select * From PAYROLL_OTHER_DEDUCTION WHERE BIO_NO = '{bioNo}' and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
-                    Using ds_4 As DataSet = LoadSQL(sql_4, "PAYROLL_OTHER_DEDUCTION")
-                        If ds_4.Tables(0).Rows.Count > 0 Then
-                            For Each dr_4 In ds_4.Tables(0).Rows
-                                With dr_4
+                    Dim sql_5 As String = $"Select * From PAYROLL_OTHER_DEDUCTION WHERE BIO_NO = '{bioNo}' and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
+                    Using ds_5 As DataSet = LoadSQL(sql_5, "PAYROLL_OTHER_DEDUCTION")
+                        If ds_5.Tables(0).Rows.Count > 0 Then
+                            For Each dr_5 In ds_5.Tables(0).Rows
+                                With dr_5
                                     Deduction = Deduction + .Item("AMORT")
                                     Save_Recorded_Allow_Deduc(bioNo, paydate_, .Item("CATEGORY"), .Item("AMORT"), "DEDUCTION")
                                 End With
@@ -1208,7 +1073,7 @@ Module SaveUpdate
         progressBarEnd()
     End Sub
 
-    Friend Sub Save_Recorded_Allow_Deduc(bio_no As String, PAYDATE As String, CATEGORY As String, AMOUNT As String, TRANSAC_NAME As String, Optional R_DEDUC_ID As String = "")
+    Friend Sub Save_Recorded_Allow_Deduc(bio_no As String, PAYDATE As String, CATEGORY As String, AMOUNT As String, TRANSAC_NAME As String, Optional R_DEDUC_ID As Integer = 0)
 
         Dim sql As String = "Select * From RECORDED_ALLOW_DEDUC Rows 1"
         Using ds As DataSet = LoadSQL(sql, "RECORDED_ALLOW_DEDUC")
@@ -1222,7 +1087,7 @@ Module SaveUpdate
                 .Item("AMOUNT") = AMOUNT
                 .Item("TRANSAC_NAME") = TRANSAC_NAME
 
-                If R_DEDUC_ID <> Nothing Then
+                If R_DEDUC_ID <> 0 Then
                     .Item("R_DEDUC_ID") = R_DEDUC_ID
                 End If
 
@@ -1444,7 +1309,7 @@ Module SaveUpdate
         End If
     End Sub
 
-    Friend Sub Save_OtherDeduction(idx As String, BIO_NO As String, CATEGORY As String, schedule As String, AMORT As String, DATEE As String)
+    Friend Sub Save_OtherDeduction(idx As String, BIO_NO As String, CATEGORY As String, schedule As String, AMORT As String, DATEE As String, STATUS As String)
         Dim mysql As String
 
         mysql = $"Select * FROM PAYROLL_OTHER_DEDUCTION where id = '{idx}'"
@@ -1457,6 +1322,10 @@ Module SaveUpdate
                 .Item("SCHEDULE") = schedule
                 .Item("AMORT") = AMORT
                 .Item("DATEE") = DATEE
+
+                If STATUS <> Nothing Then
+                    .Item("STATUS") = STATUS
+                End If
 
             End With
 

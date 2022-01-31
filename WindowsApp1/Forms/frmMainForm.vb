@@ -13,6 +13,8 @@ Public Class frmMainForm
 
         'Check_This()
 
+        'Update_All_Deduction_Loans_IfZeroBalance()
+
         Login_Form.ShowDialog()
 
         AppDateTime.Text = Date.Now.ToString("dddd, MMMM dd, yyyy hh:mm:ss tt", CultureInfo.CurrentCulture)
@@ -78,8 +80,7 @@ Public Class frmMainForm
         OpenWindowsForm("frmSettings")
     End Sub
 
-    '======================================MouseEnter-MouseLeave================================================== 
-
+    '======================================MouseEnter-MouseLeave=============================== 
     Private Sub Label3_Click(sender As Object, e As EventArgs) Handles Exit_LBL.Click
         Close()
     End Sub

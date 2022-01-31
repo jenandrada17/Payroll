@@ -313,6 +313,12 @@ Module SelectFromDatabase
                         lv.SubItems.Add(FormatNumber(.Item("PRINCIPAL")))
                         lv.SubItems.Add(FormatNumber(.Item("AMORT"))).Tag = .Item("ID")
                         lv.SubItems.Add(datee.ToString("MMM dd, yyyy")).Tag = .Item("bioNo")
+
+                        If IsDBNull(.Item("STATUS")) Then
+                        ElseIf .Item("STATUS") = "PAID" Then
+                            lv.BackColor = Color.LightCoral
+                        End If
+
                     End With
                     frmMainForm.AppProgressBar.Value += 1
                 Next
@@ -365,6 +371,12 @@ Module SelectFromDatabase
                         lv.SubItems.Add(FormatNumber(.Item("AMORT")))
                         lv.SubItems.Add(datee.ToString("MMM dd, yyyy")).Tag = .Item("ID")
                         lv.SubItems.Add(.Item("SCHEDULE")).Tag = .Item("bioNo")
+
+                        If IsDBNull(.Item("STATUS")) Then
+                        ElseIf .Item("STATUS") = "OFF" Then
+                            lv.BackColor = Color.LightCoral
+                        End If
+
                     End With
                     frmMainForm.AppProgressBar.Value += 1
                 Next
@@ -374,9 +386,11 @@ Module SelectFromDatabase
             frmMainForm.AppProgressBar.Value = 0
             frmMainForm.AppProgressBar.Maximum = 1000
             frmMainForm.AppProgressBar.Visible = False
+
         Catch ex As Exception
             Log_Report(ex.ToString())
         End Try
+
     End Sub
 
     Friend Sub REGULDARHolidayLists(LV As ListView)
@@ -757,7 +771,7 @@ Module SelectFromDatabase
     Public Function Get_LOAN_SSS(bio_no As Decimal) As Decimal
         Dim sssLoan As Decimal = 0
 
-        Dim mysql As String = $"Select * From PAYROLL_LOANS WHERE bio_no = '{bio_no}' and CATEGORY = 'SSS'"
+        Dim mysql As String = $"Select * From PAYROLL_LOANS WHERE BIO_NO = '{bio_no}' and CATEGORY = 'SSS' AND STATUS IS NULL"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_LOANS")
             If ds.Tables(0).Rows.Count > 0 Then
 
@@ -775,7 +789,7 @@ Module SelectFromDatabase
     Public Function Get_LOAN_Pagibig(bio_no As Decimal) As Decimal
         Dim pagibigLoan As Decimal = 0
 
-        Dim mysql As String = $"Select * From PAYROLL_LOANS WHERE bio_no = '{bio_no}' and CATEGORY = 'PAG-IBIG'"
+        Dim mysql As String = $"Select * From PAYROLL_LOANS WHERE BIO_NO = '{bio_no}' and CATEGORY = 'PAG-IBIG' AND STATUS IS NULL"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_LOANS")
             If ds.Tables(0).Rows.Count > 0 Then
                 Dim dr As DataRow = ds.Tables(0).Rows(0)
@@ -1507,7 +1521,21 @@ Module SelectFromDatabase
             LV.Items.Clear()
             progressBarStart(ds.Tables(0).Rows.Count)
             For Each dr In ds.Tables(0).Rows
-                AddRow_Deduction(dr, LV)
+                With dr
+
+                    Dim i As ListViewItem = LV.Items.Add(.Item("FULLNAME"))
+                    i.SubItems.Add(.Item("CATEGORY")).Tag = .Item("BIO_NO")
+                    i.SubItems.Add(.Item("PRINCIPAL")).Tag = .Item("DATEE")
+                    i.SubItems.Add(.Item("AMORT"))
+                    i.SubItems.Add(IIf(IsDBNull(.Item("SCHEDULE")), "", .Item("SCHEDULE"))).Tag = .Item("ID")
+
+                    If IsDBNull(.Item("STATUS")) Then
+                    ElseIf .Item("STATUS") = "PAID" Then
+                        i.BackColor = Color.LightCoral
+                    End If
+
+                End With
+
                 frmMainForm.AppProgressBar.Value += 1
             Next
             progressBarEnd()
@@ -1515,41 +1543,10 @@ Module SelectFromDatabase
 
     End Sub
 
-    Private Sub AddRow_Deduction(ByVal dr As DataRow, LV As ListView)
-
-        With dr
-            Dim i As ListViewItem = LV.Items.Add(.Item("FULLNAME"))
-            i.SubItems.Add(.Item("CATEGORY")).Tag = .Item("BIO_NO")
-            i.SubItems.Add(.Item("PRINCIPAL")).Tag = .Item("DATEE")
-            i.SubItems.Add(.Item("AMORT"))
-            i.SubItems.Add(IIf(IsDBNull(.Item("SCHEDULE")), "", .Item("SCHEDULE"))).Tag = .Item("ID")
-            'i.SubItems.Add(.Item("CREDIT"))
-            'i.SubItems.Add(.Item("BALANCE"))
-        End With
-
-    End Sub
-
-
-    'Public Sub GetDeduction(deduc_idd As String, CategoryDeduc_txt As TextBox, Schedule_Combo As ComboBox, PrincipalDeduc_txt As TextBox)
-
-    '    Dim mysql As String = $"Select PRINCIPAL From PAYROLL_DEDUCTION where ID = '{deduc_idd}'"
-    '    Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_DEDUCTION")
-    '    If ds.Tables(0).Rows.Count > 0 Then
-    '        Dim dr As DataRow = ds.Tables(0).Rows(0)
-    '        With dr
-    '            Name_txt.Text = .Item("PRINCIPAL")
-    '            Name_txt.Text = .Item("PRINCIPAL")
-    '            PrincipalDeduc_txt.Text = .Item("PRINCIPAL")
-    '        End With
-    '    End If
-
-    'End Sub
-
     Public Function GetDeduction_OverAll_Balance(BIO_NO As String) As String
         Dim balance As Decimal = 0
 
-        Dim mysql_ As String = $"Select SUM(PRINCIPAL) as princ_tots, SUM(CREDIT) as tots_credit From  PAYROLL_DEDUCTION where BIO_NO = '{BIO_NO}' AND BALANCE > 0"
-
+        Dim mysql_ As String = $"Select COALESCE(sum(PRINCIPAL), 0) as princ_tots, COALESCE(sum(CREDIT), 0) as tots_credit From  PAYROLL_DEDUCTION where BIO_NO = '{BIO_NO}'  AND STATUS IS NULL"
         Dim dSs As DataSet = LoadSQL(mysql_, "PAYROLL_DEDUCTION")
         If dSs.Tables(0).Rows.Count > 0 Then
             Dim dr As DataRow = dSs.Tables(0).Rows(0)
@@ -1564,7 +1561,7 @@ Module SelectFromDatabase
     Public Function GetDeduction_Balance(BIO_NO As String) As String
         Dim balance As Decimal = 0
 
-        Dim mysql_ As String = $"Select SUM(PRINCIPAL) as princ_tots, SUM(CREDIT) as tots_credit From  PAYROLL_DEDUCTION  where BIO_NO = '{BIO_NO}' AND BALANCE > 0"
+        Dim mysql_ As String = $"Select COALESCE(sum(PRINCIPAL), 0) as princ_tots, COALESCE(sum(CREDIT), 0) as tots_credit From  PAYROLL_DEDUCTION  where BIO_NO = '{BIO_NO}' AND STATUS IS NULL"
         Dim dSs As DataSet = LoadSQL(mysql_, "PAYROLL_DEDUCTION")
 
         If dSs.Tables(0).Rows.Count > 0 Then
@@ -1577,7 +1574,7 @@ Module SelectFromDatabase
         Return balance
     End Function
 
-    Public Function GetDeduction_ChargesRange(BIO_NO As String, PRINCIPAL As Decimal) As Decimal
+    Public Function GetDeduction_ChargesRange(BIO_NO As String, Balance As Decimal) As Decimal
         Dim AMOUNT As Decimal = 0
 
         Dim mysql_ As String = $"Select * from PAYROLL_CHARGES_RANGE"
@@ -1586,7 +1583,7 @@ Module SelectFromDatabase
             For Each dr In dSs.Tables(0).Rows
                 With dr
 
-                    If PRINCIPAL >= .Item("FROM") And PRINCIPAL <= .Item("TO") Then
+                    If Balance >= .Item("FROM") And Balance <= .Item("TO") Then
                         AMOUNT = .Item("AMOUNT")
                     End If
 
@@ -1597,20 +1594,20 @@ Module SelectFromDatabase
         Return AMOUNT
     End Function
 
-    Public Function GetDeduction_PRINCIPAL(BIO_NO As String) As Double
+    'Public Function GetDeduction_PRINCIPAL(BIO_NO As String) As Decimal
 
-        Dim total_amount As Double = 0
-        Dim mysql As String = $"Select SUM(PRINCIPAL) as totals From PAYROLL_DEDUCTION where BIO_NO = '{BIO_NO}' AND  STATUS IS NULL"
-        Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_DEDUCTION")
-        If ds.Tables(0).Rows.Count > 0 Then
-            Dim dr As DataRow = ds.Tables(0).Rows(0)
-            With dr
-                total_amount = .Item("totals")
-            End With
-        End If
+    '    Dim total_amount As Decimal = 0
+    '    Dim mysql As String = $"Select SUM(PRINCIPAL) as totals From PAYROLL_DEDUCTION where BIO_NO = '{BIO_NO}' AND STATUS IS NULL"
+    '    Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_DEDUCTION")
+    '    If ds.Tables(0).Rows.Count > 0 Then
+    '        Dim dr As DataRow = ds.Tables(0).Rows(0)
+    '        With dr
+    '            total_amount = .Item("totals")
+    '        End With
+    '    End If
 
-        Return total_amount
-    End Function
+    '    Return total_amount
+    'End Function
 
     Public Function GetDeduction_Datee(DEDUC_ID As String) As Date
 
@@ -2759,4 +2756,157 @@ Module SelectFromDatabase
         Return TOTALS
     End Function
 
+    Public Sub CheckDeduction_Loans_IfZeroBalance(bioNo As String)
+
+        '============================================ DEDUCTION ==========================================
+        Dim mysql As String = $"Select * From PAYROLL_DEDUCTION where BIO_NO = '{bioNo}' and STATUS is null"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_DEDUCTION")
+            If ds.Tables(0).Rows.Count > 0 Then
+                For Each dr In ds.Tables(0).Rows
+                    With ds.Tables(0).Rows(0)
+
+                        Dim credit As Decimal = .Item("CREDIT")
+                        Dim CollectedCredit As Decimal = GetTotal("AMOUNT", "RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{bioNo}' and R_DEDUC_ID = '{ .Item("id")}'")
+                        Dim totalCredit As Decimal = credit + CollectedCredit
+                        Dim balance As Decimal = .Item("BALANCE")
+                        Dim principal As Decimal = .Item("PRINCIPAL")
+
+                        If CollectedCredit > 0 Then
+                            balance = principal - totalCredit
+                        End If
+
+                        If balance = 0 Then
+                            Update_DEDUCTION_LOANS_STATUS(.Item("id"), "PAYROLL_DEDUCTION")
+                        End If
+
+                    End With
+                Next
+            End If
+        End Using
+
+        '============================================ LOANS ==========================================
+        Dim mysqlL As String = $"Select * From PAYROLL_LOANS where BIO_NO = '{bioNo}' and STATUS is null"
+        Using dsS As DataSet = LoadSQL(mysqlL, "PAYROLL_LOANS")
+            If dsS.Tables(0).Rows.Count > 0 Then
+                For Each drR In dsS.Tables(0).Rows
+                    With dsS.Tables(0).Rows(0)
+
+                        Dim category As String = .Item("CATEGORY")
+                        Dim credit As Decimal = .Item("CREDIT")
+                        Dim CollectedCredit As Decimal = 0
+
+                        If category = "SSS" Then
+
+                            Dim fromPayout As Decimal = GetTotal("SSS_LOAN", "PAYROLL_PAYOUT", $"WHERE BIOMETRIC_ID = '{bioNo}' ")
+                            Dim fromRecorded As Decimal = GetTotal("AMOUNT", "RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{bioNo}' and UPPER(CATEGORY) LIKE '%SSS%'")
+
+                            CollectedCredit = fromPayout + fromRecorded
+
+                        Else
+
+                            Dim fromPayout As Decimal = GetTotal("PAGIBIG_LOAN", "PAYROLL_PAYOUT", $"WHERE BIOMETRIC_ID = '{bioNo}' ")
+                            Dim fromRecorded As Decimal = GetTotal("AMOUNT", "RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{bioNo}' and CATEGORY = 'PAG IBIG LOAN'")
+
+                            CollectedCredit = fromPayout + fromRecorded
+
+                        End If
+
+                        Dim totalCredit As Decimal = credit + CollectedCredit
+                        Dim balance As Decimal = .Item("BALANCE")
+                        Dim principal As Decimal = .Item("PRINCIPAL")
+
+                        If CollectedCredit > 0 Then
+                            balance = principal - totalCredit
+                        End If
+
+                        If balance = 0 Then
+                            Update_DEDUCTION_LOANS_STATUS(.Item("id"), "PAYROLL_LOANS")
+                        End If
+
+                    End With
+                Next
+            End If
+        End Using
+    End Sub
+
+    Public Sub Update_All_Deduction_Loans_IfZeroBalance()
+        Dim sql As String = $"select BIO_NO from PAYROLL_EMPLOYEE"
+        Using dsSs As DataSet = LoadSQL(sql, "PAYROLL_EMPLOYEE")
+            For Each drRr In dsSs.Tables(0).Rows
+                With drRr
+
+                    Dim bioNo As String = .Item("BIO_NO")
+                    '============================================ DEDUCTION ==========================================
+                    Dim mysql As String = $"Select * From PAYROLL_DEDUCTION where BIO_NO = '{bioNo}' and STATUS is null"
+                    Using ds As DataSet = LoadSQL(mysql, "PAYROLL_DEDUCTION")
+                        If ds.Tables(0).Rows.Count > 0 Then
+                            For Each dr In ds.Tables(0).Rows
+                                With ds.Tables(0).Rows(0)
+
+                                    Dim credit As Decimal = .Item("CREDIT")
+                                    Dim CollectedCredit As Decimal = GetTotal("AMOUNT", "RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{bioNo}' and R_DEDUC_ID = '{ .Item("id")}'")
+                                    Dim totalCredit As Decimal = credit + CollectedCredit
+                                    Dim balance As Decimal = .Item("BALANCE")
+                                    Dim principal As Decimal = .Item("PRINCIPAL")
+
+                                    If CollectedCredit > 0 Then
+                                        balance = principal - totalCredit
+                                    End If
+
+                                    If balance = 0 Then
+                                        Update_DEDUCTION_LOANS_STATUS(.Item("id"), "PAYROLL_DEDUCTION")
+                                    End If
+
+                                End With
+                            Next
+                        End If
+                    End Using
+
+                    '============================================ LOANS ==========================================
+                    Dim mysqlL As String = $"Select * From PAYROLL_LOANS where BIO_NO = '{bioNo}' and STATUS is null"
+                    Using dsS As DataSet = LoadSQL(mysqlL, "PAYROLL_LOANS")
+                        If dsS.Tables(0).Rows.Count > 0 Then
+                            For Each drR In dsS.Tables(0).Rows
+                                With dsS.Tables(0).Rows(0)
+
+                                    Dim category As String = .Item("CATEGORY")
+                                    Dim credit As Decimal = .Item("CREDIT")
+                                    Dim CollectedCredit As Decimal = 0
+
+                                    If category = "SSS" Then
+
+                                        Dim fromPayout As Decimal = GetTotal("SSS_LOAN", "PAYROLL_PAYOUT", $"WHERE BIOMETRIC_ID = '{bioNo}' ")
+                                        Dim fromRecorded As Decimal = GetTotal("AMOUNT", "RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{bioNo}' and UPPER(CATEGORY) LIKE '%SSS%'")
+
+                                        CollectedCredit = fromPayout + fromRecorded
+
+                                    Else
+
+                                        Dim fromPayout As Decimal = GetTotal("PAGIBIG_LOAN", "PAYROLL_PAYOUT", $"WHERE BIOMETRIC_ID = '{bioNo}' ")
+                                        Dim fromRecorded As Decimal = GetTotal("AMOUNT", "RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{bioNo}' and CATEGORY = 'PAG IBIG LOAN'")
+
+                                        CollectedCredit = fromPayout + fromRecorded
+
+                                    End If
+
+                                    Dim totalCredit As Decimal = credit + CollectedCredit
+                                    Dim balance As Decimal = .Item("BALANCE")
+                                    Dim principal As Decimal = .Item("PRINCIPAL")
+
+                                    If CollectedCredit > 0 Then
+                                        balance = principal - totalCredit
+                                    End If
+
+                                    If balance = 0 Then
+                                        Update_DEDUCTION_LOANS_STATUS(.Item("id"), "PAYROLL_LOANS")
+                                    End If
+
+                                End With
+                            Next
+                        End If
+                    End Using
+                End With
+            Next
+        End Using
+    End Sub
 End Module

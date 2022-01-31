@@ -853,9 +853,7 @@ Public Class frmPayout
 
                 LoadPayslip(Employee_TXT.Tag, Payslip_paydate_Combo.Text)
 
-                CheckDeduction_IfZeroBalance(Employee_TXT.Tag)
-
-                'Deduct_ifExist(Employee_TXT.Tag, Payslip_paydate_Combo.Text)
+                CheckDeduction_Loans_IfZeroBalance(Employee_TXT.Tag)
 
                 '================================ CHECK IF VALID EMAIL ADDRESS ============================
                 Dim FoundMatch As Boolean = Regex.IsMatch(Email_TXT.Text, "\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase)
@@ -896,9 +894,7 @@ Public Class frmPayout
 
                         recipient = GetEmail_recipient(.item("BIOMETRIC_ID"))
 
-                        CheckDeduction_IfZeroBalance(.item("BIOMETRIC_ID"))
-
-                        'Deduct_ifExist(.Item("BIOMETRIC_ID"), Payslip_paydate_Combo.Text)             '======= REFLECT DEDUCTION IF EXIST
+                        CheckDeduction_Loans_IfZeroBalance(.item("BIOMETRIC_ID"))
 
                         Dim FoundMatch As Boolean = Regex.IsMatch(recipient, "\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase)
 
@@ -940,9 +936,7 @@ Public Class frmPayout
 
                         recipient = GetEmail_recipient(.item("BIOMETRIC_ID"))
 
-                        CheckDeduction_IfZeroBalance(.item("BIOMETRIC_ID"))
-
-                        'Deduct_ifExist(.Item("BIOMETRIC_ID"), Payslip_paydate_Combo.Text)             '======= REFLECT DEDUCTION IF EXIST
+                        CheckDeduction_Loans_IfZeroBalance(.item("BIOMETRIC_ID"))
 
                         Dim FoundMatch As Boolean = Regex.IsMatch(recipient, "\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase)
 
