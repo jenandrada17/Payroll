@@ -763,7 +763,9 @@ Module SaveUpdate
 
                                 '=============== IF HOLIDAY TRAINING COVERED ================
                                 If DataeXIST($" PAYROLL_HOLIDAY WHERE DATEE = '{startingDate.ToString("M")}' AND KINDS = 'REGULAR'") Then
-                                    Training_REGHoliday += 1
+                                    If startingDate >= Started Then
+                                        Training_REGHoliday += 1
+                                    End If
                                 End If
 
                                 startingDate = startingDate.AddDays(1)

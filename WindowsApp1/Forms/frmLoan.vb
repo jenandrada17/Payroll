@@ -519,7 +519,7 @@
             Save_OtherDeduction(MP2_ID, Mp2Emp_txt.Tag, "MP2", Mp2Sched_Combo.Text, Mp2Amort_txt.Text, Mp2Date_dtp.Value, STATUS)
             Load_Other_Deduction(Mp2_List, "PAYROLL_OTHER_DEDUCTION", "MP2")
 
-            SaveLogs($"ADDED MP2 {Mp2Emp_txt.Text} ({Mp2Emp_txt.Tag}), Amourt({Mp2Amort_txt.Text}), Date({Mp2Date_dtp.Value.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
+            SaveLogs($"ADDED MP2 {Mp2Emp_txt.Text} ({Mp2Emp_txt.Tag}), Amort({Mp2Amort_txt.Text}), Date({Mp2Date_dtp.Value.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
             Mp2Cancel_btn.PerformClick()
         End If
 

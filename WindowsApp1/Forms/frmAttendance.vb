@@ -114,7 +114,6 @@ Public Class frmAttendance
 
             End While
 
-            Console.WriteLine("PAydateee2 " & Paydate)
         End If
 
         Dim ss As DateTime = Date.UtcNow
@@ -174,9 +173,9 @@ Public Class frmAttendance
                 'DataGridView1.Rows(i).Cells(4).Value = ""
 
             Else
-                If HolidayExist(customizeDate) Then
+                If HolidayExist(asss) Then
 
-                    HolidayDetails(customizeDate, i, DataGridView1)
+                    HolidayDetails(asss, i, DataGridView1)
 
                 End If
             End If
@@ -271,13 +270,11 @@ Public Class frmAttendance
             under_count = New TimeSpan(0, 0, 0, 0, 0)
             late_count = New TimeSpan(0, 0, 0, 0, 0)
 
-            'under_count.Clear()
-            'late_count.Clear()
-
             Dim bioNum = BiometricID_TXT.Text
             Dim branchCode = GetBranchCode(bioNum)
             Dim timeIn = GetTime_In(bioNum)
             Dim timeOut = GetTime_Out(bioNum)
+            Dim dateStarted = GetData("DATE_STARTED", $"PAYROLL_EMPLOYEE WHERE BIO_NO = '{bioNum}'")
 
             For Each row As DataGridViewRow In DataGridView1.Rows
 
@@ -286,17 +283,22 @@ Public Class frmAttendance
                     '================================= CALCULATE HOLIDAYS  ===============================
                     If row.DefaultCellStyle.BackColor = Color.MediumOrchid Then
 
-                        TotalRHoliday_LBL.Text = TotalRHoliday_LBL.Text + 1
+                        Dim datee = row.Cells(0).Tag
+
+                        If datee >= dateStarted Then
+                            TotalRHoliday_LBL.Text = TotalRHoliday_LBL.Text + 1
+                        End If
 
                     ElseIf row.DefaultCellStyle.BackColor = Color.Plum Then
 
                         If PRESENT_Date(bioNum, paydate_, row.Cells(0).Tag) Then
-                            TotalSHoliday_LBL.Text = TotalSHoliday_LBL.Text + 1
+                            If row.Cells(0).Tag >= dateStarted Then
+                                TotalSHoliday_LBL.Text = TotalSHoliday_LBL.Text + 1
+                            End If
                         End If
 
                     End If
                 End If
-
 
                 CalculateLATE(row, timeIn, bioNum, branchCode)
 
@@ -2058,116 +2060,6 @@ Public Class frmAttendance
         TotalLateHR_LBL.Text = 0
         TotalUTHR_LBL.Text = 0
         TotalOTHr_LBL.Text = 0
-    End Sub
-
-    Private Sub LoadDTR()
-
-        SIL_LBL.Text = 0
-        TotalDays_LBL.Text = 0
-        TotalLateHR_LBL.Text = 0
-        TotalUTHR_LBL.Text = 0
-        TotalOTHr_LBL.Text = 0
-        TotalRHoliday_LBL.Text = 0
-        TotalSHoliday_LBL.Text = 0
-        DataGridView1.Rows.Clear()
-
-        StartFour = New DateTime(DateNow.Year, DateNow.Month, 4).AddDays(-1)
-        EndFour = New DateTime(DateNow.Year, DateNow.Month, 18)
-
-        StartNineteen = New DateTime(DateNow.Year, DateNow.Month, 19).AddMonths(-1).AddDays(-1)
-        EndNineteen = New DateTime(StartNineteen.Year, StartNineteen.Month, 3).AddMonths(1)
-
-
-        If DateNow.Day - 16 <= 2 And DateNow.Day - 16 >= -12 Then
-
-            Paydate = EndNineteen.AddDays(12)
-            DataGridView1.Tag = Paydate
-
-            While (StartNineteen < EndNineteen)
-                startingDate = StartNineteen.ToString("d")
-                EndingDate = EndNineteen.ToString("d")
-                DataGridView1.Rows.Add(StartNineteen.AddDays(1).ToString("D"))
-                StartNineteen = StartNineteen.AddDays(1)
-            End While
-
-        Else
-
-            Paydate = New DateTime(EndFour.Year, EndFour.Month, DateTime.DaysInMonth(EndFour.Year, EndFour.Month))
-            DataGridView1.Tag = Paydate
-
-            While (StartFour < EndFour)
-
-                startingDate = StartFour.ToString("d")
-                EndingDate = EndFour.ToString("d")
-                DataGridView1.Rows.Add(StartFour.AddDays(1).ToString("D"))
-                StartFour = StartFour.AddDays(1)
-
-            End While
-
-        End If
-
-        Dim ss As DateTime = Date.UtcNow
-        Dim CurrD As DateTime = ss.AddDays(-1)
-
-        '==============================================AM IN 6AM to 9AM==================================================
-        For y = 0 To 180
-
-            Dim myDate = New DateTime(CurrD.Year, CurrD.Month, CurrD.Day, 6, 0, 0, 0).AddMinutes(y)
-            AM_In_DataGrid.Items.Add(myDate.ToString("t"))
-
-        Next
-
-        '==============================================AM OUT 11AM to 1PM==================================================
-        For y = 0 To 120
-
-            Dim myDate = New DateTime(CurrD.Year, CurrD.Month, CurrD.Day, 11, 0, 0, 0).AddMinutes(y)
-            AM_Out_DataGrid.Items.Add(myDate.ToString("t"))
-
-        Next
-
-        '==============================================PM IN 12AM to 3PM==================================================
-        For y = 0 To 180
-
-            Dim myDate = New DateTime(CurrD.Year, CurrD.Month, CurrD.Day, 12, 0, 0, 0).AddMinutes(y)
-            PM_IN_DataGrid.Items.Add(myDate.ToString("t"))
-
-        Next
-
-
-        '==============================================PM OUT 3PM to 3PM==================================================
-        For y = 0 To 480
-
-            Dim myDate = New DateTime(CurrD.Year, CurrD.Month, CurrD.Day, 15, 0, 0, 0).AddMinutes(y)
-            PM_Out_DataGrid.Items.Add(myDate.ToString("t"))
-
-        Next
-
-        For i = 0 To DataGridView1.Rows.Count - 1
-            Dim r As DataGridViewRow = DataGridView1.Rows(i)
-            r.Height = 28
-
-            Dim asss As Date = DataGridView1.Rows(i).Cells(0).Value
-
-            Dim customizeDate As String = asss.ToString("M")
-
-            If asss.DayOfWeek = DayOfWeek.Sunday Then
-
-                r.DefaultCellStyle.ForeColor = Color.Red
-
-                DataGridView1.Rows(i).Cells(5) = New DataGridViewTextBoxCell()
-                DataGridView1.Rows(i).Cells(1).Value = ""
-                DataGridView1.Rows(i).Cells(2).Value = ""
-                DataGridView1.Rows(i).Cells(3).Value = ""
-                DataGridView1.Rows(i).Cells(4).Value = ""
-
-            ElseIf HolidayExist(customizeDate) Then
-
-                HolidayDetails(customizeDate, i, DataGridView1)
-
-            End If
-
-        Next
-
     End Sub
 
     Private Sub Seven_Grid_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles Seven_Grid.MouseDoubleClick

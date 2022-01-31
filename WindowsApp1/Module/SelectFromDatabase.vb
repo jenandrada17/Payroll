@@ -922,8 +922,8 @@ Module SelectFromDatabase
         Return True
     End Function
 
-    Friend Function HolidayExist(datee As String)
-        Dim mysql As String = "SELECT * FROM PAYROLL_HOLIDAY Where DATEE = '" & datee & "' "
+    Friend Function HolidayExist(datee As Date)
+        Dim mysql As String = "SELECT * FROM PAYROLL_HOLIDAY Where DATEE = '" & datee.ToString("M") & "' "
         Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_HOLIDAY")
 
         If ds.Tables(0).Rows.Count > 0 Then
@@ -933,8 +933,8 @@ Module SelectFromDatabase
         Return False
     End Function
 
-    Friend Sub HolidayDetails(datee As String, rowID As Integer, dategrid As DataGridView)
-        Dim mysql As String = "SELECT * FROM PAYROLL_HOLIDAY Where DATEE = '" & datee & "' "
+    Friend Sub HolidayDetails(datee As Date, rowID As Integer, dategrid As DataGridView)
+        Dim mysql As String = $"SELECT * FROM PAYROLL_HOLIDAY Where DATEE = '{datee.ToString("M")}' "
         Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_HOLIDAY")
 
         If ds.Tables(0).Rows.Count > 0 Then
@@ -950,7 +950,7 @@ Module SelectFromDatabase
                 End If
 
                 dategrid.Rows(rowID).Cells(0).Value = .Item("NAME")
-                dategrid.Rows(rowID).Cells(0).Tag = .Item("DATEE")
+                dategrid.Rows(rowID).Cells(0).Tag = datee
                 dategrid.Rows(rowID).Cells(1).Value = ""
                 dategrid.Rows(rowID).Cells(2).Value = ""
                 dategrid.Rows(rowID).Cells(3).Value = ""
