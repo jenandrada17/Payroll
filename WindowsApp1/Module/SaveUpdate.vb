@@ -214,10 +214,7 @@ Module SaveUpdate
 
             End If
         End Using
-
-
     End Sub
-
 
     Public Sub SaveSheet_FC200(payDate As String, bioID As String, datee As String, BRANCHNAME As String)
 
@@ -262,16 +259,13 @@ Module SaveUpdate
             dss.Tables(0).Rows.Add(dsNewRow)
             SaveEntry(dss)
         End Using
-
     End Sub
-
 
     Public Sub UpdateDTR(bioID As String, payDate As String, DATE_ONLY As String, BRANCH As String, AM_IN As String, AM_OUT As String, PM_IN As String, PM_OUT As String)
 
         Dim mysql As String = $"Select * FROM BIOMETRIC_DTR where BRANCH = '{BRANCH}' and PAYDATE = '{payDate}'"
         Dim dss As DataSet = LoadSQL(mysql, "BIOMETRIC_DTR")
         If dss.Tables(0).Rows.Count > 0 Then
-
             With dss.Tables(0).Rows(0)
 
                 .Item("BIO_ID") = bioID
@@ -982,7 +976,7 @@ Module SaveUpdate
                         End If
 
                         Deduction = Deduction + Amount_perPayroll
-                        Save_Recorded_Allow_Deduc(bioNo, paydate_, "Charges", Amount_perPayroll, "DEDUCTION", .Item("ID"))
+                        Save_Recorded_Allow_Deduc(bioNo, paydate_, "Charges", Amount_perPayroll, "DEDUCTION", 0)
 
                     Else '=============== HEAD OFFICE (BY AMORT)
 
@@ -1050,6 +1044,10 @@ Module SaveUpdate
 
                     '============================================= IF NOT TRAINEE CALCULATE SBU ==================================================  
                     If noOf_days_training = 0 Then
+
+                        If Not SBU_BioNo_Exist(bioNo) Then
+                            SaveNew_SBU(bioNo, Company)
+                        End If
 
                         If SBU_With_Balance(bioNo) Then
 

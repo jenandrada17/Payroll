@@ -867,14 +867,10 @@ Public Class frmPayout
 
                 Payslip_All()
 
-                SaveLogs($"PAYSLIP EMAILED TO ALL EMPLOYEES, Payroll({datee.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
-
             ElseIf Company_RadioB.Checked = True Then
 
                 If Company_ComboB.SelectedIndex >= 0 Then
                     Payslip_By("COMPANY", Company_ComboB.Text)
-
-                    SaveLogs($"PAYSLIP EMAILED PER COMPANY - {Company_ComboB.Text}, Payroll({datee.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
                 Else
                     MsgBox("Please Select Branch.", MsgBoxStyle.Exclamation, "INVALID")
                 End If
@@ -947,6 +943,9 @@ Public Class frmPayout
                         End If
 
                         frmMainForm.AppProgressBar.Value += 1
+
+                        SaveLogs($"PAYSLIP EMAILED TO {namee}({ .item("BIOMETRIC_ID")}), Payroll({datee.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
+
                     End With
                 Next
                 MsgBox("Email successfully sent!", MsgBoxStyle.Information, "Information")
@@ -960,8 +959,8 @@ Public Class frmPayout
         Dim recipient As String
         Dim datee As DateTime = Payslip_paydate_Combo.Text
 
-        Dim mysqll As String = $"select A.*, B.*, B.id as emp_id from payroll_payout A 
-                                                inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIOMETRIC_ID   
+        Dim mysqll As String = $"Select A.*, B.*, B.id as emp_id from payroll_payout A 
+                                                inner Join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIOMETRIC_ID   
                                                 where paydate = '{Payslip_paydate_Combo.Text}' and B.{tbl_column} = '{column_value}';"
 
         Using ds As DataSet = LoadSQL(mysqll, "payroll_payout")
@@ -991,6 +990,8 @@ Public Class frmPayout
                         End If
 
                         frmMainForm.AppProgressBar.Value += 1
+
+                        SaveLogs($"PAYSLIP EMAILED TO {namee}({ .item("BIOMETRIC_ID")}), Payroll({datee.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
                     End With
                 Next
 
@@ -1169,7 +1170,7 @@ Public Class frmPayout
             Dim total_deduction As Decimal = 0
             Dim mysql_ As String
 
-            '================================================ DEDUCTIONS -  MODIFIED_DEDUCTION================================================ 
+            '================================================ DEDUCTIONS ================================================ 
             If isExist_String("RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{biometricID}' AND PAYDATE = '{paydatee}' and TRANSAC_NAME = 'DEDUCTION'") Then  '=======m MDIFIED DEDUCTION (ON/OFF) 
 
                 mysql_ = $"select  * FROM RECORDED_ALLOW_DEDUC   where BIO_NO = '{biometricID}' and PAYDATE = '{paydatee}' and TRANSAC_NAME = 'DEDUCTION'"
@@ -1182,13 +1183,21 @@ Public Class frmPayout
                                 Dim amountt As Decimal = .item("AMOUNT")
                                 Dim balance As Decimal = 0
 
+                                Dim R_DEDUCT_ID As Integer = IIf(IsDBNull(.item("R_DEDUC_ID")), 0, .item("R_DEDUC_ID"))
+
                                 If category.Contains("MP2") Or category.Contains("MAXICARE") Then
                                 ElseIf .item("CATEGORY") = "SSS LOAN" Then
-                                    balance = GetBalance_Deduction(biometricID, .item("CATEGORY"), IIf(IsDBNull(.item("R_DEDUC_ID")), 0, .item("R_DEDUC_ID")))
+                                    balance = GetBalance_Deduction(biometricID, .item("CATEGORY"), R_DEDUCT_ID)
                                 ElseIf .item("CATEGORY") = "PAG-IBIG LOAN" Then
-                                    balance = GetBalance_Deduction(biometricID, .item("CATEGORY"), IIf(IsDBNull(.item("R_DEDUC_ID")), 0, .item("R_DEDUC_ID")))
+                                    balance = GetBalance_Deduction(biometricID, .item("CATEGORY"), R_DEDUCT_ID)
                                 Else
-                                    balance = GetBalance_Deduction(biometricID, .item("CATEGORY"), IIf(IsDBNull(.item("R_DEDUC_ID")), 0, .item("R_DEDUC_ID")))
+                                    If R_DEDUCT_ID = 0 And category <> "SBU" Then
+                                        balance = 0
+                                    ElseIf category = "Charges" Then
+                                        'balance = GetBalance_Deduction(biometricID, .item("CATEGORY"), R_DEDUCT_ID)
+                                    Else
+                                        balance = GetBalance_Deduction(biometricID, .item("CATEGORY"), R_DEDUCT_ID)
+                                    End If
                                 End If
 
                                 dt_deduction.Rows.Add(category.TrimEnd, amountt.ToString(”N”), balance.ToString(”N”))

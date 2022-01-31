@@ -903,8 +903,7 @@ Public Class frmReport
             ''========================================= PAYROLL_COSTDISTRIBUTION ================================================
             mysql = $"Select  BRANCH_CODE, HO_CATEGORY, NAMEE, NAME_CATEGORY, COMPANY, SUM(TOTAL_BASIC) AS BASIC, SUM(TOTAL_OVERTIME) AS OT,
                                         SUM(TOTAL_LATE_UT) AS LATE_UT , SUM(SSS_COMP) AS SSS_EE , SUM(SSS_ER) AS SSS_ER , SUM(SSS_EC) AS SSS_EC, 
-                                        SUM(NET_PAY) AS NETPAY, SUM(PAGIBIG_COMP) AS HDMF, SUM(PHILHEALTH_COMP) AS PHILH , SUM(SSS_LOAN) AS LOAN_SSS , 
-                                        SUM(PAGIBIG_LOAN) AS LOAN_HDMF, SUM(TOTAL_REGHOLIDAY) AS REGHOLIDAY , SUM(TOTAL_SPECHOLIDAY) AS SPECHOLIDAY  
+                                        SUM(NET_PAY) AS NETPAY, SUM(PAGIBIG_COMP) AS HDMF, SUM(PHILHEALTH_COMP) AS PHILH, SUM(TOTAL_REGHOLIDAY) AS REGHOLIDAY , SUM(TOTAL_SPECHOLIDAY) AS SPECHOLIDAY  
                                         From PAYROLL_PAYOUT B 
                                         INNER JOIN PAYROLL_EMPLOYEE A ON A.BIO_NO = B.BIOMETRIC_ID 
                                         LEFT JOIN PAYROLL_COSTDISTRIB ON 1 = 1 
@@ -983,12 +982,6 @@ Public Class frmReport
 
                                 ElseIf NAMEE = "PHIL HEALTH PAYABLE" Then
                                     DC_Amount = .Item("PHILH") * 2
-
-                                ElseIf NAMEE = "SSS LOAN" Then
-                                    DC_Amount = .Item("LOAN_SSS")
-
-                                ElseIf NAMEE = "PAGIBIG LOAN" Then
-                                    DC_Amount = .Item("LOAN_HDMF")
 
                                 ElseIf NAMEE = "CASH IN BANK" Then
                                     DC_Amount = .Item("NETPAY")

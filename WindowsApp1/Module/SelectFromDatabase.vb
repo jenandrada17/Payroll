@@ -2505,6 +2505,17 @@ Module SelectFromDatabase
         Return False
     End Function
 
+    Public Function SBU_BioNo_Exist(BIO_NO As String)
+        Dim mysql As String = $"Select * From PAYROLL_SBU where BIO_NO = '{BIO_NO}' "
+        Using dss As DataSet = LoadSQL(mysql, "PAYROLL_SBU")
+            If dss.Tables(0).Rows.Count > 0 Then
+                Return True
+            End If
+        End Using
+
+        Return False
+    End Function
+
     Public Function CountYear_SIL(Bio_no As String, endingDate As DateTime) As Integer
 
         Dim cnt As Integer = 0
