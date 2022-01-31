@@ -81,8 +81,8 @@
           <DataField>TOTAL_OVERTIME</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="LATE">
-          <DataField>LATE</DataField>
+        <Field Name="LATE_UNDERTIME">
+          <DataField>LATE_UNDERTIME</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="GROSS_AMOUNT">
@@ -210,13 +210,13 @@
                 <TablixBody>
                   <TablixColumns>
                     <TablixColumn>
-                      <Width>1in</Width>
+                      <Width>1.23091in</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>1in</Width>
+                      <Width>1.23091in</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>1.80727in</Width>
+                      <Width>2.03818in</Width>
                     </TablixColumn>
                   </TablixColumns>
                   <TablixRows>
@@ -328,7 +328,7 @@
                 <DataSetName>DataSet2</DataSetName>
                 <Left>0.03346in</Left>
                 <Height>0.44876in</Height>
-                <Width>3.80727in</Width>
+                <Width>4.50001in</Width>
                 <Style>
                   <Border>
                     <Style>None</Style>
@@ -342,13 +342,13 @@
                       <Width>0.5625in</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>1.21874in</Width>
+                      <Width>1.576in</Width>
                     </TablixColumn>
                     <TablixColumn>
                       <Width>0.79168in</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>1.23435in</Width>
+                      <Width>1.576in</Width>
                     </TablixColumn>
                   </TablixColumns>
                   <TablixRows>
@@ -731,7 +731,7 @@
                 <Top>0.66389in</Top>
                 <Left>0.03346in</Left>
                 <Height>0.67968in</Height>
-                <Width>3.80727in</Width>
+                <Width>4.50618in</Width>
                 <ZIndex>1</ZIndex>
                 <Style>
                   <Border>
@@ -743,10 +743,10 @@
                 <TablixBody>
                   <TablixColumns>
                     <TablixColumn>
-                      <Width>0.98958in</Width>
+                      <Width>1.03996in</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>0.79164in</Width>
+                      <Width>1.43398in</Width>
                     </TablixColumn>
                     <TablixColumn>
                       <Width>0.79168in</Width>
@@ -1370,7 +1370,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>= "@ " &amp; Fields!LATE.Value &amp; " min/s"</Value>
+                                      <Value>= "@ " &amp; Fields!LATE_UNDERTIME.Value &amp; " min/s"</Value>
                                       <Style>
                                         <FontFamily>Berlin Sans FB</FontFamily>
                                       </Style>
@@ -1404,7 +1404,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>=CInt(Fields!LATE.Value / 60) &amp; "." &amp; CInt(Fields!LATE.Value Mod 60)</Value>
+                                      <Value>=CInt(Fields!LATE_UNDERTIME.Value / 60) &amp; "." &amp; CInt(Fields!LATE_UNDERTIME.Value Mod 60)</Value>
                                       <Style>
                                         <FontFamily>Berlin Sans FB</FontFamily>
                                       </Style>
@@ -1466,7 +1466,7 @@
                       </TablixCells>
                     </TablixRow>
                     <TablixRow>
-                      <Height>0.23047in</Height>
+                      <Height>0.20295in</Height>
                       <TablixCells>
                         <TablixCell>
                           <CellContents>
@@ -1777,7 +1777,7 @@
                     </TablixMember>
                     <TablixMember>
                       <Visibility>
-                        <Hidden>=iif(fields!LATE.Value = 0, True, False)</Hidden>
+                        <Hidden>=iif(fields!LATE_UNDERTIME.Value = 0, True, False)</Hidden>
                       </Visibility>
                     </TablixMember>
                     <TablixMember>
@@ -1789,10 +1789,10 @@
                   </TablixMembers>
                 </TablixRowHierarchy>
                 <DataSetName>DataSet2</DataSetName>
-                <Top>1.41528in</Top>
+                <Top>1.54028in</Top>
                 <Left>0.0335in</Left>
-                <Height>1.61329in</Height>
-                <Width>3.80725in</Width>
+                <Height>1.58577in</Height>
+                <Width>4.49997in</Width>
                 <ZIndex>2</ZIndex>
                 <Style>
                   <Border>
@@ -1804,7 +1804,7 @@
                 <TablixBody>
                   <TablixColumns>
                     <TablixColumn>
-                      <Width>1.78124in</Width>
+                      <Width>2.47745in</Width>
                     </TablixColumn>
                     <TablixColumn>
                       <Width>0.79168in</Width>
@@ -1826,7 +1826,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>Deduction</Value>
+                                      <Value>Remittance</Value>
                                       <Style>
                                         <FontFamily>Berlin Sans FB</FontFamily>
                                       </Style>
@@ -2350,7 +2350,7 @@
                       </TablixCells>
                     </TablixRow>
                     <TablixRow>
-                      <Height>0.20703in</Height>
+                      <Height>0.20295in</Height>
                       <TablixCells>
                         <TablixCell>
                           <CellContents>
@@ -2596,10 +2596,10 @@
                   </TablixMembers>
                 </TablixRowHierarchy>
                 <DataSetName>DataSet2</DataSetName>
-                <Top>3.73in</Top>
+                <Top>3.855in</Top>
                 <Left>0.03348in</Left>
-                <Height>1.44921in</Height>
-                <Width>3.80727in</Width>
+                <Height>1.44513in</Height>
+                <Width>4.50348in</Width>
                 <ZIndex>3</ZIndex>
                 <Visibility>
                   <Hidden>=IIF(fields!TOTAL_DEDUCTION.Value = 0 or fields!TOTAL_DEDUCTION.Value = nothing, True, false)</Hidden>
@@ -2614,7 +2614,7 @@
                 <TablixBody>
                   <TablixColumns>
                     <TablixColumn>
-                      <Width>1.78124in</Width>
+                      <Width>2.47745in</Width>
                     </TablixColumn>
                     <TablixColumn>
                       <Width>0.79168in</Width>
@@ -2728,7 +2728,7 @@
                       </TablixCells>
                     </TablixRow>
                     <TablixRow>
-                      <Height>0.21528in</Height>
+                      <Height>0.20295in</Height>
                       <TablixCells>
                         <TablixCell>
                           <CellContents>
@@ -2964,10 +2964,10 @@
                   </TablixMembers>
                 </TablixRowHierarchy>
                 <DataSetName>DataSet3</DataSetName>
-                <Top>3.05in</Top>
+                <Top>3.175in</Top>
                 <Left>0.03348in</Left>
-                <Height>0.64584in</Height>
-                <Width>3.80727in</Width>
+                <Height>0.63351in</Height>
+                <Width>4.50348in</Width>
                 <ZIndex>4</ZIndex>
                 <Visibility>
                   <Hidden>=IIF(countrows() =0, True, false)</Hidden>
@@ -2982,13 +2982,13 @@
                 <TablixBody>
                   <TablixColumns>
                     <TablixColumn>
-                      <Width>1.78124in</Width>
+                      <Width>2.47745in</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>0.79168in</Width>
+                      <Width>0.78994in</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>1.23435in</Width>
+                      <Width>1.23261in</Width>
                     </TablixColumn>
                   </TablixColumns>
                   <TablixRows>
@@ -3005,7 +3005,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>Other Deduction</Value>
+                                      <Value>Deduction</Value>
                                       <Style>
                                         <FontFamily>Berlin Sans FB</FontFamily>
                                       </Style>
@@ -3339,10 +3339,10 @@
                   </TablixMembers>
                 </TablixRowHierarchy>
                 <DataSetName>DataSet4</DataSetName>
-                <Top>5.20699in</Top>
+                <Top>5.33199in</Top>
                 <Left>0.03348in</Left>
-                <Height>0.60884in</Height>
-                <Width>3.80727in</Width>
+                <Height>0.60885in</Height>
+                <Width>4.5in</Width>
                 <ZIndex>5</ZIndex>
                 <Visibility>
                   <Hidden>=IIF(countrows() =0, True, false)</Hidden>
@@ -3357,7 +3357,7 @@
                 <TablixBody>
                   <TablixColumns>
                     <TablixColumn>
-                      <Width>1.78124in</Width>
+                      <Width>2.47745in</Width>
                     </TablixColumn>
                     <TablixColumn>
                       <Width>0.79168in</Width>
@@ -3368,7 +3368,7 @@
                   </TablixColumns>
                   <TablixRows>
                     <TablixRow>
-                      <Height>0.21875in</Height>
+                      <Height>0.25503in</Height>
                       <TablixCells>
                         <TablixCell>
                           <CellContents>
@@ -3470,7 +3470,7 @@
                                 </Border>
                                 <TopBorder>
                                   <Color>Black</Color>
-                                  <Style>Dotted</Style>
+                                  <Style>None</Style>
                                 </TopBorder>
                                 <PaddingLeft>2pt</PaddingLeft>
                                 <PaddingRight>2pt</PaddingRight>
@@ -3497,10 +3497,10 @@
                   </TablixMembers>
                 </TablixRowHierarchy>
                 <DataSetName>DataSet2</DataSetName>
-                <Top>5.96389in</Top>
+                <Top>6.08889in</Top>
                 <Left>0.03348in</Left>
-                <Height>0.21875in</Height>
-                <Width>3.80727in</Width>
+                <Height>0.25503in</Height>
+                <Width>4.50348in</Width>
                 <ZIndex>6</ZIndex>
                 <Style>
                   <Border>
@@ -3509,10 +3509,10 @@
                 </Style>
               </Tablix>
               <Line Name="Line2">
-                <Top>6.61459in</Top>
+                <Top>6.73959in</Top>
                 <Left>0.03348in</Left>
                 <Height>0in</Height>
-                <Width>3.77905in</Width>
+                <Width>4.49999in</Width>
                 <ZIndex>7</ZIndex>
                 <Style>
                   <Border>
@@ -3521,10 +3521,10 @@
                 </Style>
               </Line>
               <Line Name="Line3">
-                <Top>6.65626in</Top>
+                <Top>6.78126in</Top>
                 <Left>0.03349in</Left>
                 <Height>0in</Height>
-                <Width>3.77905in</Width>
+                <Width>4.49999in</Width>
                 <ZIndex>8</ZIndex>
                 <Style>
                   <Border>
@@ -3536,13 +3536,13 @@
                 <TablixBody>
                   <TablixColumns>
                     <TablixColumn>
-                      <Width>1.25968in</Width>
+                      <Width>1.49999in</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>1.25968in</Width>
+                      <Width>1.49999in</Width>
                     </TablixColumn>
                     <TablixColumn>
-                      <Width>1.25968in</Width>
+                      <Width>1.49999in</Width>
                     </TablixColumn>
                   </TablixColumns>
                   <TablixRows>
@@ -3649,10 +3649,10 @@
                   </TablixMembers>
                 </TablixRowHierarchy>
                 <DataSetName>DataSet1</DataSetName>
-                <Top>7.10542in</Top>
+                <Top>7.23042in</Top>
                 <Left>0.0335in</Left>
                 <Height>0.40624in</Height>
-                <Width>3.77904in</Width>
+                <Width>4.49998in</Width>
                 <ZIndex>9</ZIndex>
                 <Style>
                   <Border>
@@ -3661,9 +3661,9 @@
                 </Style>
               </Tablix>
               <Line Name="Line4">
-                <Top>1.38in</Top>
+                <Top>1.45in</Top>
                 <Height>0in</Height>
-                <Width>3.77905in</Width>
+                <Width>4.53347in</Width>
                 <ZIndex>10</ZIndex>
                 <Style>
                   <Border>
@@ -3676,7 +3676,7 @@
             <Top>0.07167in</Top>
             <Left>0.19445in</Left>
             <Height>8.28806in</Height>
-            <Width>3.8512in</Width>
+            <Width>4.55779in</Width>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -3687,7 +3687,7 @@
         <Height>8.35973in</Height>
         <Style />
       </Body>
-      <Width>4.3in</Width>
+      <Width>5in</Width>
       <Page>
         <Style />
       </Page>

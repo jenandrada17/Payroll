@@ -67,7 +67,11 @@ Partial Class frmPayout
         Me.Label38 = New System.Windows.Forms.Label()
         Me.Label63 = New System.Windows.Forms.Label()
         Me.Deduction_LBL = New System.Windows.Forms.Label()
+        Me.PagibigLoan_LBL = New System.Windows.Forms.Label()
+        Me.SSSLoan_LBL = New System.Windows.Forms.Label()
         Me.Allowances_LBL = New System.Windows.Forms.Label()
+        Me.Label60 = New System.Windows.Forms.Label()
+        Me.Label61 = New System.Windows.Forms.Label()
         Me.Label58 = New System.Windows.Forms.Label()
         Me.Philhealth_LBL = New System.Windows.Forms.Label()
         Me.HDMF_LBL = New System.Windows.Forms.Label()
@@ -194,10 +198,6 @@ Partial Class frmPayout
         Me.All_RadioB = New System.Windows.Forms.RadioButton()
         Me.Label21 = New System.Windows.Forms.Label()
         Me.Payslip_paydate_Combo = New System.Windows.Forms.ComboBox()
-        Me.Label61 = New System.Windows.Forms.Label()
-        Me.Label60 = New System.Windows.Forms.Label()
-        Me.PagibigLoan_LBL = New System.Windows.Forms.Label()
-        Me.SSSLoan_LBL = New System.Windows.Forms.Label()
         Me.GroupBox6.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
@@ -673,6 +673,26 @@ Partial Class frmPayout
         Me.Deduction_LBL.Text = "0"
         Me.Deduction_LBL.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
+        'PagibigLoan_LBL
+        '
+        Me.PagibigLoan_LBL.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.PagibigLoan_LBL.Location = New System.Drawing.Point(183, 371)
+        Me.PagibigLoan_LBL.Name = "PagibigLoan_LBL"
+        Me.PagibigLoan_LBL.Size = New System.Drawing.Size(124, 27)
+        Me.PagibigLoan_LBL.TabIndex = 89
+        Me.PagibigLoan_LBL.Text = "0"
+        Me.PagibigLoan_LBL.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'SSSLoan_LBL
+        '
+        Me.SSSLoan_LBL.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SSSLoan_LBL.Location = New System.Drawing.Point(183, 340)
+        Me.SSSLoan_LBL.Name = "SSSLoan_LBL"
+        Me.SSSLoan_LBL.Size = New System.Drawing.Size(124, 27)
+        Me.SSSLoan_LBL.TabIndex = 88
+        Me.SSSLoan_LBL.Text = "0"
+        Me.SSSLoan_LBL.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
         'Allowances_LBL
         '
         Me.Allowances_LBL.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -682,6 +702,26 @@ Partial Class frmPayout
         Me.Allowances_LBL.TabIndex = 90
         Me.Allowances_LBL.Text = "0"
         Me.Allowances_LBL.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+        '
+        'Label60
+        '
+        Me.Label60.AutoSize = True
+        Me.Label60.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label60.Location = New System.Drawing.Point(17, 343)
+        Me.Label60.Name = "Label60"
+        Me.Label60.Size = New System.Drawing.Size(71, 25)
+        Me.Label60.TabIndex = 83
+        Me.Label60.Text = "SSS Loan"
+        '
+        'Label61
+        '
+        Me.Label61.AutoSize = True
+        Me.Label61.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label61.Location = New System.Drawing.Point(18, 372)
+        Me.Label61.Name = "Label61"
+        Me.Label61.Size = New System.Drawing.Size(90, 25)
+        Me.Label61.TabIndex = 84
+        Me.Label61.Text = "Pagibig Loan"
         '
         'Label58
         '
@@ -1849,9 +1889,8 @@ Partial Class frmPayout
         Me.ConfirmDeduc_btn.Name = "ConfirmDeduc_btn"
         Me.ConfirmDeduc_btn.Size = New System.Drawing.Size(154, 37)
         Me.ConfirmDeduc_btn.TabIndex = 108
-        Me.ConfirmDeduc_btn.Text = "Confirm Deduction"
+        Me.ConfirmDeduc_btn.Text = "Update Deduction"
         Me.ConfirmDeduc_btn.UseVisualStyleBackColor = True
-        Me.ConfirmDeduc_btn.Visible = False
         '
         'Company_RadioB
         '
@@ -2066,46 +2105,6 @@ Partial Class frmPayout
         Me.Payslip_paydate_Combo.Size = New System.Drawing.Size(272, 33)
         Me.Payslip_paydate_Combo.TabIndex = 97
         Me.Payslip_paydate_Combo.Text = "   Select Date"
-        '
-        'Label61
-        '
-        Me.Label61.AutoSize = True
-        Me.Label61.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label61.Location = New System.Drawing.Point(18, 372)
-        Me.Label61.Name = "Label61"
-        Me.Label61.Size = New System.Drawing.Size(90, 25)
-        Me.Label61.TabIndex = 84
-        Me.Label61.Text = "Pagibig Loan"
-        '
-        'Label60
-        '
-        Me.Label60.AutoSize = True
-        Me.Label60.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label60.Location = New System.Drawing.Point(17, 343)
-        Me.Label60.Name = "Label60"
-        Me.Label60.Size = New System.Drawing.Size(71, 25)
-        Me.Label60.TabIndex = 83
-        Me.Label60.Text = "SSS Loan"
-        '
-        'PagibigLoan_LBL
-        '
-        Me.PagibigLoan_LBL.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.PagibigLoan_LBL.Location = New System.Drawing.Point(183, 371)
-        Me.PagibigLoan_LBL.Name = "PagibigLoan_LBL"
-        Me.PagibigLoan_LBL.Size = New System.Drawing.Size(124, 27)
-        Me.PagibigLoan_LBL.TabIndex = 89
-        Me.PagibigLoan_LBL.Text = "0"
-        Me.PagibigLoan_LBL.TextAlign = System.Drawing.ContentAlignment.MiddleRight
-        '
-        'SSSLoan_LBL
-        '
-        Me.SSSLoan_LBL.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.SSSLoan_LBL.Location = New System.Drawing.Point(183, 340)
-        Me.SSSLoan_LBL.Name = "SSSLoan_LBL"
-        Me.SSSLoan_LBL.Size = New System.Drawing.Size(124, 27)
-        Me.SSSLoan_LBL.TabIndex = 88
-        Me.SSSLoan_LBL.Text = "0"
-        Me.SSSLoan_LBL.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'frmPayout
         '

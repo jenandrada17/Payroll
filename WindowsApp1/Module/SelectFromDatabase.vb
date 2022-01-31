@@ -2741,6 +2741,8 @@ Module SelectFromDatabase
         Return False
     End Function
 
+    'GetTotal("AMOUNT", "RECORDED_ALLOW_DEDUC", $" WHERE BIO_NO = '{bioNo}' and  (CATEGORY = '{ .Item("CATEGORY")}' OR R_DEDUC_ID = '{ .Item("id")}')")
+
     Public Function GetTotal(column As String, table As String, where As String) As Decimal
         Dim TOTALS As Decimal = 0
         Dim mysql As String = $"Select COALESCE(sum({column}), 0) AS TOTALS From {table} {where}"
@@ -2749,7 +2751,6 @@ Module SelectFromDatabase
             Dim dr As DataRow = ds.Tables(0).Rows(0)
             With dr
                 TOTALS = .Item("TOTALS")
-                Console.WriteLine(TOTALS)
             End With
         End If
 
@@ -2763,10 +2764,12 @@ Module SelectFromDatabase
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_DEDUCTION")
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
-                    With ds.Tables(0).Rows(0)
+                    With dr
+
+                        Dim getFirst As String() = .Item("CATEGORY").split(" "c)
 
                         Dim credit As Decimal = .Item("CREDIT")
-                        Dim CollectedCredit As Decimal = GetTotal("AMOUNT", "RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{bioNo}' and R_DEDUC_ID = '{ .Item("id")}'")
+                        Dim CollectedCredit As Decimal = GetTotal("AMOUNT", "RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{bioNo}' and  (CATEGORY like '%{getFirst.First}' OR R_DEDUC_ID = '{ .Item("id")}' );")
                         Dim totalCredit As Decimal = credit + CollectedCredit
                         Dim balance As Decimal = .Item("BALANCE")
                         Dim principal As Decimal = .Item("PRINCIPAL")
@@ -2775,7 +2778,7 @@ Module SelectFromDatabase
                             balance = principal - totalCredit
                         End If
 
-                        If balance = 0 Then
+                        If balance <= 0 Then
                             Update_DEDUCTION_LOANS_STATUS(.Item("id"), "PAYROLL_DEDUCTION")
                         End If
 
@@ -2936,10 +2939,27 @@ Module SelectFromDatabase
 
     Public Function GetBalance_Deduction(bioNo As String, CATEGORY As String, R_DEDUC_ID As String)
 
-        Dim fromRecorded As Decimal = GetTotal("AMOUNT", "RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{bioNo}' and (CATEGORY = '{CATEGORY}' OR R_DEDUC_ID = '{R_DEDUC_ID}')")
-        Dim credit As Decimal = GetData("CREDIT", $"PAYROLL_DEDUCTION WHERE BIO_NO = '{bioNo}' and (CATEGORY = '{CATEGORY}' OR ID = '{R_DEDUC_ID}')")
+        Dim getFirst As String() = CATEGORY.Split(" "c)
+
+        Console.WriteLine(CATEGORY)
+
+        Dim fromRecorded As Decimal = GetTotal("AMOUNT", "RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{bioNo}' and (CATEGORY like '%{getFirst.First}%' OR R_DEDUC_ID = '{R_DEDUC_ID}')")
+        Dim credit As Decimal = GetData("CREDIT", $"PAYROLL_DEDUCTION WHERE BIO_NO = '{bioNo}' and (CATEGORY like '%{getFirst.First}%' OR ID = '{R_DEDUC_ID}')")
         Dim totalCredit As Decimal = credit + fromRecorded
-        Dim principal As Decimal = GetTotal("PRINCIPAL", "PAYROLL_DEDUCTION", $"WHERE BIO_NO = '{bioNo}' and (CATEGORY = '{CATEGORY}' OR ID = '{R_DEDUC_ID}')")
+        Dim principal As Decimal = GetTotal("PRINCIPAL", "PAYROLL_DEDUCTION", $"WHERE BIO_NO = '{bioNo}' and (CATEGORY like '%{getFirst.First}%' OR ID = '{R_DEDUC_ID}')")
+        Dim balance As Decimal = principal - totalCredit
+
+        Return balance
+    End Function
+
+    Public Function GetBalance_Loans(bioNo As String, CATEGORY As String)
+
+        Console.WriteLine(CATEGORY)
+
+        Dim fromRecorded As Decimal = GetTotal("AMOUNT", "RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{bioNo}' and CATEGORY = '{CATEGORY}'")
+        Dim credit As Decimal = GetData("CREDIT", $"PAYROLL_LOANS WHERE BIO_NO = '{bioNo}' and CATEGORY = '{CATEGORY}' ")
+        Dim totalCredit As Decimal = credit + fromRecorded
+        Dim principal As Decimal = GetTotal("PRINCIPAL", "PAYROLL_LOANS", $"WHERE BIO_NO = '{bioNo}' and CATEGORY = '{CATEGORY}'")
         Dim balance As Decimal = principal - totalCredit
 
         Return balance

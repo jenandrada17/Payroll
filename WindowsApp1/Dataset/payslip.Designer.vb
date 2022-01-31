@@ -706,7 +706,7 @@ Partial Public Class payslip
         
         Private columnTOTAL_OVERTIME As Global.System.Data.DataColumn
         
-        Private columnLATE As Global.System.Data.DataColumn
+        Private columnLATE_UNDERTIME As Global.System.Data.DataColumn
         
         Private columnGROSS_AMOUNT As Global.System.Data.DataColumn
         
@@ -827,9 +827,9 @@ Partial Public Class payslip
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public ReadOnly Property LATEColumn() As Global.System.Data.DataColumn
+        Public ReadOnly Property LATE_UNDERTIMEColumn() As Global.System.Data.DataColumn
             Get
-                Return Me.columnLATE
+                Return Me.columnLATE_UNDERTIME
             End Get
         End Property
         
@@ -982,7 +982,7 @@ Partial Public Class payslip
                     ByVal TOTAL_LATE_UT As String,  _
                     ByVal TOTAL_BASIC As String,  _
                     ByVal TOTAL_OVERTIME As String,  _
-                    ByVal LATE As String,  _
+                    ByVal LATE_UNDERTIME As String,  _
                     ByVal GROSS_AMOUNT As String,  _
                     ByVal SSS_COMP As String,  _
                     ByVal PAGIBIG_COMP As String,  _
@@ -997,7 +997,7 @@ Partial Public Class payslip
                     ByVal SSS_LOAN_BALANCE As String,  _
                     ByVal PAGIBIG_LOAN_BALANCE As String) As attendanceRow
             Dim rowattendanceRow As attendanceRow = CType(Me.NewRow,attendanceRow)
-            Dim columnValuesArray() As Object = New Object() {PRESENT_DAYS, OVERTIME, REGHOLIDAY, SPECHOLIDAY, TOTAL_LATE_UT, TOTAL_BASIC, TOTAL_OVERTIME, LATE, GROSS_AMOUNT, SSS_COMP, PAGIBIG_COMP, PHILHEALTH_COMP, TAX_WHELD, SSS_LOAN, PAGIBIG_LOAN, NET_PAY, SBU, TOTAL_DEDUCTION, present_hours, SSS_LOAN_BALANCE, PAGIBIG_LOAN_BALANCE}
+            Dim columnValuesArray() As Object = New Object() {PRESENT_DAYS, OVERTIME, REGHOLIDAY, SPECHOLIDAY, TOTAL_LATE_UT, TOTAL_BASIC, TOTAL_OVERTIME, LATE_UNDERTIME, GROSS_AMOUNT, SSS_COMP, PAGIBIG_COMP, PHILHEALTH_COMP, TAX_WHELD, SSS_LOAN, PAGIBIG_LOAN, NET_PAY, SBU, TOTAL_DEDUCTION, present_hours, SSS_LOAN_BALANCE, PAGIBIG_LOAN_BALANCE}
             rowattendanceRow.ItemArray = columnValuesArray
             Me.Rows.Add(rowattendanceRow)
             Return rowattendanceRow
@@ -1027,7 +1027,7 @@ Partial Public Class payslip
             Me.columnTOTAL_LATE_UT = MyBase.Columns("TOTAL_LATE_UT")
             Me.columnTOTAL_BASIC = MyBase.Columns("TOTAL_BASIC")
             Me.columnTOTAL_OVERTIME = MyBase.Columns("TOTAL_OVERTIME")
-            Me.columnLATE = MyBase.Columns("LATE")
+            Me.columnLATE_UNDERTIME = MyBase.Columns("LATE_UNDERTIME")
             Me.columnGROSS_AMOUNT = MyBase.Columns("GROSS_AMOUNT")
             Me.columnSSS_COMP = MyBase.Columns("SSS_COMP")
             Me.columnPAGIBIG_COMP = MyBase.Columns("PAGIBIG_COMP")
@@ -1060,8 +1060,8 @@ Partial Public Class payslip
             MyBase.Columns.Add(Me.columnTOTAL_BASIC)
             Me.columnTOTAL_OVERTIME = New Global.System.Data.DataColumn("TOTAL_OVERTIME", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnTOTAL_OVERTIME)
-            Me.columnLATE = New Global.System.Data.DataColumn("LATE", GetType(String), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnLATE)
+            Me.columnLATE_UNDERTIME = New Global.System.Data.DataColumn("LATE_UNDERTIME", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnLATE_UNDERTIME)
             Me.columnGROSS_AMOUNT = New Global.System.Data.DataColumn("GROSS_AMOUNT", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnGROSS_AMOUNT)
             Me.columnSSS_COMP = New Global.System.Data.DataColumn("SSS_COMP", GetType(String), Nothing, Global.System.Data.MappingType.Element)
@@ -2034,16 +2034,16 @@ Partial Public Class payslip
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Property LATE() As String
+        Public Property LATE_UNDERTIME() As String
             Get
                 Try 
-                    Return CType(Me(Me.tableattendance.LATEColumn),String)
+                    Return CType(Me(Me.tableattendance.LATE_UNDERTIMEColumn),String)
                 Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'LATE' in table 'attendance' is DBNull.", e)
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'LATE_UNDERTIME' in table 'attendance' is DBNull.", e)
                 End Try
             End Get
             Set
-                Me(Me.tableattendance.LATEColumn) = value
+                Me(Me.tableattendance.LATE_UNDERTIMEColumn) = value
             End Set
         End Property
         
@@ -2328,14 +2328,14 @@ Partial Public Class payslip
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Function IsLATENull() As Boolean
-            Return Me.IsNull(Me.tableattendance.LATEColumn)
+        Public Function IsLATE_UNDERTIMENull() As Boolean
+            Return Me.IsNull(Me.tableattendance.LATE_UNDERTIMEColumn)
         End Function
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Sub SetLATENull()
-            Me(Me.tableattendance.LATEColumn) = Global.System.Convert.DBNull
+        Public Sub SetLATE_UNDERTIMENull()
+            Me(Me.tableattendance.LATE_UNDERTIMEColumn) = Global.System.Convert.DBNull
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
