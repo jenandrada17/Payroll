@@ -946,20 +946,27 @@ Module SaveUpdate
                         End Using
                     End If
 
-                    ''============================================= LOANS LIKE SSS/PAGIBIG LOAN ==================================================  
-                    'If sched = "CLOSE PAYROLL" Then
-                    '    Dim sql_4 As String = $"Select * From PAYROLL_LOANS WHERE BIO_NO = '{bioNo}' and STATUS is null"
-                    '    Using ds_4 As DataSet = LoadSQL(sql_4, "PAYROLL_LOANS")
-                    '        If ds_4.Tables(0).Rows.Count > 0 Then
-                    '            For Each dr_4 In ds_4.Tables(0).Rows
-                    '                With dr_4
-                    '                    Deduction = Deduction + .Item("AMORT")
-                    '                    Save_Recorded_Allow_Deduc(bioNo, paydate_, .Item("CATEGORY"), .Item("AMORT"), "DEDUCTION", 0, .Item("ID"))
-                    '                End With
-                    '            Next
-                    '        End If
-                    '    End Using
-                    'End If
+                    '============================================= LOANS LIKE SSS/PAGIBIG LOAN ==================================================  
+                    sssLoan = 0
+                    pagibigLoan = 0
+                    If sched = "CLOSE PAYROLL" Then
+                        Dim sql_4 As String = $"Select * From PAYROLL_LOANS WHERE BIO_NO = '{bioNo}' and STATUS is null"
+                        Using ds_4 As DataSet = LoadSQL(sql_4, "PAYROLL_LOANS")
+                            If ds_4.Tables(0).Rows.Count > 0 Then
+                                For Each dr_4 In ds_4.Tables(0).Rows
+                                    With dr_4
+
+                                        If .Item("CATEGORY") = "SSS" Then
+                                            sssLoan = sssLoan + .Item("AMORT")
+                                        Else
+                                            pagibigLoan = pagibigLoan + .Item("AMORT")
+                                        End If
+
+                                    End With
+                                Next
+                            End If
+                        End Using
+                    End If
 
                     '============================================= OTHER DEDUCTION LIKE MP2, MAXICARE ==================================================  
                     Dim sql_5 As String = $"Select * From PAYROLL_OTHER_DEDUCTION WHERE BIO_NO = '{bioNo}' and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
@@ -1096,29 +1103,29 @@ Module SaveUpdate
             End With
             ds.Tables(0).Rows.Add(dsNewRow)
             SaveEntry(ds)
+
         End Using
 
     End Sub
 
-    Friend Sub Save_Recorded_Deduction(emp_id As String, BRANCH As String, PAYDATE As String, CATEGORY As String, AMOUNT As String)
+    'Friend Sub Save_Recorded_Loan(emp_id As String, PAYDATE As String, CATEGORY As String, AMOUNT As String)
 
-        Dim sql As String = "Select * From RECORDED_DEDUCTION Rows 1"
-        Using ds As DataSet = LoadSQL(sql, "RECORDED_DEDUCTION")
+    '    Dim sql As String = "Select * From RECORDED_DEDUCTION Rows 1"
+    '    Using ds As DataSet = LoadSQL(sql, "RECORDED_DEDUCTION")
 
-            Dim dsNewRow As DataRow = ds.Tables(0).NewRow
-            With dsNewRow
+    '        Dim dsNewRow As DataRow = ds.Tables(0).NewRow
+    '        With dsNewRow
 
-                .Item("EMP_ID") = emp_id
-                .Item("BRANCH") = BRANCH
-                .Item("PAYDATE") = PAYDATE
-                .Item("CATEGORY") = CATEGORY
-                .Item("AMOUNT") = AMOUNT
+    '            .Item("EMP_ID") = emp_id
+    '            .Item("PAYDATE") = PAYDATE
+    '            .Item("CATEGORY") = CATEGORY
+    '            .Item("AMOUNT") = AMOUNT
 
-            End With
-            ds.Tables(0).Rows.Add(dsNewRow)
-            SaveEntry(ds)
-        End Using
-    End Sub
+    '        End With
+    '        ds.Tables(0).Rows.Add(dsNewRow)
+    '        SaveEntry(ds)
+    '    End Using
+    'End Sub
 
     Public Sub SaveSSS_Contribution(one As String, two As String, three As String, four As String, five As String, six As String, seven As String,
                                     eight As String, nine As String, ten As String, eleven As String, twelve As String, thirteen As String, fourteen As String,

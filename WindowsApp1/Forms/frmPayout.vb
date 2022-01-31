@@ -285,7 +285,7 @@ Public Class frmPayout
                 If Allowance_grid.Rows.Count > 0 Then
 
                     If isExist_String("RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{BIO_NO}' AND PAYDATE = '{paydate_}' AND TRANSAC_NAME = 'ALLOWANCE'") Then
-                        RunCommand($"DELETE FROM RECORDED_ALLOW_DEDUC WHERE BIO_NO = '{BIO_NO}' and PAYDATE = '{paydate_}';")
+                        RunCommand($"DELETE FROM RECORDED_ALLOW_DEDUC WHERE BIO_NO = '{BIO_NO}' and PAYDATE = '{paydate_}' AND TRANSAC_NAME = 'ALLOWANCE';")
                     End If
 
                     For Each row As DataGridViewRow In Allowance_grid.Rows
@@ -306,7 +306,7 @@ Public Class frmPayout
                 If Deduction_grid.Rows.Count > 0 Then
 
                     If isExist_String("RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{BIO_NO}' AND PAYDATE = '{paydate_}' AND TRANSAC_NAME = 'DEDUCTION'") Then
-                        RunCommand($"DELETE FROM RECORDED_ALLOW_DEDUC WHERE BIO_NO = '{BIO_NO}' and PAYDATE = '{paydate_}';")
+                        RunCommand($"DELETE FROM RECORDED_ALLOW_DEDUC WHERE BIO_NO = '{BIO_NO}' and PAYDATE = '{paydate_}' AND TRANSAC_NAME = 'DEDUCTION';")
                     End If
 
                     For Each row As DataGridViewRow In Deduction_grid.Rows
@@ -1025,6 +1025,8 @@ Public Class frmPayout
                 .Columns.Add("NET_PAY")
                 .Columns.Add("TOTAL_DEDUCTION")
                 .Columns.Add("present_hours")
+                .Columns.Add("SSS_LOAN_BALANCE")
+                .Columns.Add("PAGIBIG_LOAN_BALANCE")
             End With
 
             Dim PRESENT_DAYS As String = ""
@@ -1035,6 +1037,8 @@ Public Class frmPayout
             Dim TOTAL_SPECHOLIDAY As Decimal = 0
             Dim LATE As String = ""
             Dim present_hours As Double = 0
+            Dim SSS_LOAN_BALANCE As Decimal = 0
+            Dim PAGIBIG_LOAN_BALANCE As Decimal = 0
 
             Dim _mysql As String = $"select * from payroll_attendance where BIOMETRICID = '{biometricID}' and paydate = '{paydatee}';"
             Using ds As DataSet = LoadSQL(_mysql, "payroll_attendance")
@@ -1060,6 +1064,17 @@ Public Class frmPayout
                     Dim data As DataRow = ds.Tables(0).Rows(0)
                     With data
 
+                        'Dim sss_credit As Decimal = GetData("CREDIT", $"PAYROLL_LOANS WHERE BIO_NO = '{biometricID}' and CATEGORY = 'SSS'")
+                        'Dim pagibig_credit As Decimal = GetData("CREDIT", $"PAYROLL_LOANS WHERE BIO_NO = '{biometricID}' and CATEGORY = 'PAG-IBIG'")
+                        'Dim sss_totalCredit As Decimal = sss_credit + GetTotal("SSS_LOAN", "PAYROLL_PAYOUT", $"WHERE BIOMETRIC_ID = '{biometricID}' ")
+                        'Dim pagibig_totalCredit As Decimal = pagibig_credit + GetTotal("PAGIBIG_LOAN", "PAYROLL_PAYOUT", $"WHERE BIOMETRIC_ID = '{biometricID}' ")
+                        'Dim sss_principal As Decimal = GetTotal("PRINCIPAL", "PAYROLL_LOANS", $"WHERE BIOMETRIC_ID = '{biometricID}' and CATEGORY = 'SSS' ")
+                        'Dim pagibig_principal As Decimal = GetTotal("PRINCIPAL", "PAYROLL_LOANS", $"WHERE BIOMETRIC_ID = '{biometricID}' and CATEGORY = 'PAG-IBIG'")
+                        'Dim sss_balance As Decimal = sss_principal - sss_totalCredit
+                        'Dim pagibig_balance As Decimal = pagibig_principal - pagibig_totalCredit
+
+                        SSS_LOAN_BALANCE = GetBalance_Loan(biometricID, "SSS", "SSS_LOAN")
+                        PAGIBIG_LOAN_BALANCE = GetBalance_Loan(biometricID, "PAG-IBIG", "PAGIBIG_LOAN")
                         TOTAL_REGHOLIDAY = .Item("TOTAL_REGHOLIDAY")
                         TOTAL_SPECHOLIDAY = .Item("TOTAL_SPECHOLIDAY")
 
@@ -1070,7 +1085,7 @@ Public Class frmPayout
                                         CDbl(.Item("GROSS_AMOUNT")).ToString("N"), CDbl(.Item("SSS_COMP")).ToString("N"), CDbl(.Item("PAGIBIG_COMP")).ToString("N"),
                                         CDbl(.Item("PHILHEALTH_COMP")).ToString("N"), CDbl(.Item("SSS_LOAN")).ToString("N"),
                                         CDbl(.Item("PAGIBIG_LOAN")).ToString("N"), CDbl(.Item("NET_PAY")).ToString("N"), TOTAL_COMP.ToString("N"),
-                                        present_hours)
+                                        present_hours, SSS_LOAN_BALANCE.ToString("N"), PAGIBIG_LOAN_BALANCE.ToString("N"))
                     End With
                 End If
             End Using
@@ -1106,19 +1121,19 @@ Public Class frmPayout
                             With dr
                                 Dim amountt As Double = .item("AMOUNT")
 
-                                Dim toLower = .item("CATEGORY").ToLower()
-                                Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
-                                Dim toProper As String = info.ToTitleCase(toLower)
+                                'Dim toLower = .item("CATEGORY").ToLower()
+                                'Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
+                                'Dim toProper As String = info.ToTitleCase(toLower)
 
-                                If .item("CATEGORY") = "SIL" Then
-                                    toProper = "SIL"
-                                End If
+                                'If .item("CATEGORY") = "SIL" Then
+                                '    toProper = "SIL"
+                                'End If
 
-                                If .item("CATEGORY") = "13th Month Pay" Then
-                                    toProper = "13th Month Pay"
-                                End If
+                                'If .item("CATEGORY") = "13th Month Pay" Then
+                                '    toProper = "13th Month Pay"
+                                'End If
 
-                                dt_allowance.Rows.Add(toProper, amountt.ToString(”N”))
+                                dt_allowance.Rows.Add(.item("CATEGORY"), amountt.ToString(”N”))
                             End With
                         Next
                     End If
@@ -1134,6 +1149,7 @@ Public Class frmPayout
             With dt_deduction
                 .Columns.Add("CATEGORY")
                 .Columns.Add("AMOUNT_PER_GIVE")
+                .Columns.Add("BALANCE")
             End With
 
             Dim total_deduction As Decimal = 0
@@ -1150,15 +1166,17 @@ Public Class frmPayout
 
                                 Dim amountt As Double = .item("AMOUNT")
 
-                                Dim toLower = .item("CATEGORY").ToLower()
-                                Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
-                                Dim toProper As String = info.ToTitleCase(toLower)
+                                'Dim toLower = .item("CATEGORY").ToLower()
+                                'Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
+                                'Dim toProper As String = info.ToTitleCase(toLower)
 
-                                If .item("CATEGORY") = "SBU" Then
-                                    toProper = "SBU"
-                                End If
+                                'If .item("CATEGORY") = "SBU" Then
+                                '    toProper = "SBU"
+                                'End If
 
-                                dt_deduction.Rows.Add(toProper, amountt.ToString(”N”))
+                                Dim balance As Decimal = GetBalance_Deduction(biometricID, .item("CATEGORY"), .item("R_DEDUC_ID"))
+
+                                dt_deduction.Rows.Add(.item("CATEGORY"), amountt.ToString(”N”), balance.ToString(”N”))
 
                                 total_deduction += amountt
                             End With
