@@ -23,21 +23,18 @@ Partial Class frmReport
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim ReportDataSource23 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Dim ReportDataSource24 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Dim ReportDataSource25 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Dim ReportDataSource26 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Dim ReportDataSource27 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Dim ReportDataSource28 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Dim ReportDataSource29 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Dim ReportDataSource30 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Dim ReportDataSource31 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Dim ReportDataSource32 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Dim ReportDataSource33 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Me.NetPayBindingSource = New System.Windows.Forms.BindingSource(Me.components)
-        Me.reports = New WindowsApp1.reports()
-        Me.CommonDistributionBindingSource = New System.Windows.Forms.BindingSource(Me.components)
-        Me.CommonBindingSource = New System.Windows.Forms.BindingSource(Me.components)
+        Dim ReportDataSource1 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource2 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource3 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource4 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource5 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource6 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource7 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource8 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource9 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource10 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource11 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource12 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
         Me.Photo_GensanJRBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.payroll_summary = New WindowsApp1.payroll_summary()
         Me.Photo_DavaoBindingSource = New System.Windows.Forms.BindingSource(Me.components)
@@ -46,7 +43,6 @@ Partial Class frmReport
         Me.PG_UYBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.HouseholdBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.PG_RealtyBindingSource = New System.Windows.Forms.BindingSource(Me.components)
-        Me.RemittanceBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.Reports_Tab = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
         Me.Label31 = New System.Windows.Forms.Label()
@@ -180,10 +176,16 @@ Partial Class frmReport
         Me.ColumnHeader13 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Close_LBL = New System.Windows.Forms.Label()
-        CType(Me.NetPayBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.reports, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.CommonDistributionBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.CommonBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.TabPage11 = New System.Windows.Forms.TabPage()
+        Me.Rpt_PI = New Microsoft.Reporting.WinForms.ReportViewer()
+        Me.Label45 = New System.Windows.Forms.Label()
+        Me.PI_Paydate_Combo = New System.Windows.Forms.ComboBox()
+        Me.NetPayBindingSource = New System.Windows.Forms.BindingSource(Me.components)
+        Me.reports = New WindowsApp1.reports()
+        Me.CommonDistributionBindingSource = New System.Windows.Forms.BindingSource(Me.components)
+        Me.CommonBindingSource = New System.Windows.Forms.BindingSource(Me.components)
+        Me.RemittanceBindingSource = New System.Windows.Forms.BindingSource(Me.components)
+        Me.PerformanceIncentivesBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         CType(Me.Photo_GensanJRBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.payroll_summary, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Photo_DavaoBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -192,7 +194,6 @@ Partial Class frmReport
         CType(Me.PG_UYBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.HouseholdBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PG_RealtyBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.RemittanceBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Reports_Tab.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.TabPage3.SuspendLayout()
@@ -208,27 +209,14 @@ Partial Class frmReport
         Me.TabPage8.SuspendLayout()
         Me.TabPage9.SuspendLayout()
         Me.TabPage10.SuspendLayout()
+        Me.TabPage11.SuspendLayout()
+        CType(Me.NetPayBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.reports, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.CommonDistributionBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.CommonBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.RemittanceBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.PerformanceIncentivesBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
-        '
-        'NetPayBindingSource
-        '
-        Me.NetPayBindingSource.DataMember = "NetPay"
-        Me.NetPayBindingSource.DataSource = Me.reports
-        '
-        'reports
-        '
-        Me.reports.DataSetName = "reports"
-        Me.reports.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema
-        '
-        'CommonDistributionBindingSource
-        '
-        Me.CommonDistributionBindingSource.DataMember = "ComGensanPDistrib"
-        Me.CommonDistributionBindingSource.DataSource = Me.reports
-        '
-        'CommonBindingSource
-        '
-        Me.CommonBindingSource.DataMember = "Common"
-        Me.CommonBindingSource.DataSource = Me.reports
         '
         'Photo_GensanJRBindingSource
         '
@@ -270,11 +258,6 @@ Partial Class frmReport
         Me.PG_RealtyBindingSource.DataMember = "PG_Realty"
         Me.PG_RealtyBindingSource.DataSource = Me.payroll_summary
         '
-        'RemittanceBindingSource
-        '
-        Me.RemittanceBindingSource.DataMember = "Remittance"
-        Me.RemittanceBindingSource.DataSource = Me.reports
-        '
         'Reports_Tab
         '
         Me.Reports_Tab.Controls.Add(Me.TabPage1)
@@ -288,6 +271,7 @@ Partial Class frmReport
         Me.Reports_Tab.Controls.Add(Me.TabPage8)
         Me.Reports_Tab.Controls.Add(Me.TabPage9)
         Me.Reports_Tab.Controls.Add(Me.TabPage10)
+        Me.Reports_Tab.Controls.Add(Me.TabPage11)
         Me.Reports_Tab.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Reports_Tab.Location = New System.Drawing.Point(5, 30)
         Me.Reports_Tab.Name = "Reports_Tab"
@@ -367,9 +351,9 @@ Partial Class frmReport
         '
         'ReportV_NetPay
         '
-        ReportDataSource23.Name = "DataSet1"
-        ReportDataSource23.Value = Me.NetPayBindingSource
-        Me.ReportV_NetPay.LocalReport.DataSources.Add(ReportDataSource23)
+        ReportDataSource1.Name = "DataSet1"
+        ReportDataSource1.Value = Me.NetPayBindingSource
+        Me.ReportV_NetPay.LocalReport.DataSources.Add(ReportDataSource1)
         Me.ReportV_NetPay.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_NetPay.rdlc"
         Me.ReportV_NetPay.Location = New System.Drawing.Point(4, 67)
         Me.ReportV_NetPay.Name = "ReportV_NetPay"
@@ -456,9 +440,9 @@ Partial Class frmReport
         '
         'RptViewer_Common
         '
-        ReportDataSource24.Name = "DataSet1"
-        ReportDataSource24.Value = Me.CommonDistributionBindingSource
-        Me.RptViewer_Common.LocalReport.DataSources.Add(ReportDataSource24)
+        ReportDataSource2.Name = "DataSet1"
+        ReportDataSource2.Value = Me.CommonDistributionBindingSource
+        Me.RptViewer_Common.LocalReport.DataSources.Add(ReportDataSource2)
         Me.RptViewer_Common.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_CommonEmp.rdlc"
         Me.RptViewer_Common.Location = New System.Drawing.Point(6, 48)
         Me.RptViewer_Common.Name = "RptViewer_Common"
@@ -1057,9 +1041,9 @@ Partial Class frmReport
         '
         'RptViewer_Count
         '
-        ReportDataSource25.Name = "DataSet1"
-        ReportDataSource25.Value = Me.CommonBindingSource
-        Me.RptViewer_Count.LocalReport.DataSources.Add(ReportDataSource25)
+        ReportDataSource3.Name = "DataSet1"
+        ReportDataSource3.Value = Me.CommonBindingSource
+        Me.RptViewer_Count.LocalReport.DataSources.Add(ReportDataSource3)
         Me.RptViewer_Count.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_Common.rdlc"
         Me.RptViewer_Count.Location = New System.Drawing.Point(4, 61)
         Me.RptViewer_Count.Name = "RptViewer_Count"
@@ -1103,27 +1087,27 @@ Partial Class frmReport
         '
         'RptViewer_Summary
         '
-        ReportDataSource26.Name = "Photo_GensanJR"
-        ReportDataSource26.Value = Me.Photo_GensanJRBindingSource
-        ReportDataSource27.Name = "Photo_Davao"
-        ReportDataSource27.Value = Me.Photo_DavaoBindingSource
-        ReportDataSource28.Name = "Dalton"
-        ReportDataSource28.Value = Me.DaltonBindingSource
-        ReportDataSource29.Name = "Perfecom"
-        ReportDataSource29.Value = Me.PerfecomBindingSource
-        ReportDataSource30.Name = "PG_UY"
-        ReportDataSource30.Value = Me.PG_UYBindingSource
-        ReportDataSource31.Name = "Household"
-        ReportDataSource31.Value = Me.HouseholdBindingSource
-        ReportDataSource32.Name = "PG_Realty"
-        ReportDataSource32.Value = Me.PG_RealtyBindingSource
-        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource26)
-        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource27)
-        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource28)
-        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource29)
-        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource30)
-        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource31)
-        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource32)
+        ReportDataSource4.Name = "Photo_GensanJR"
+        ReportDataSource4.Value = Me.Photo_GensanJRBindingSource
+        ReportDataSource5.Name = "Photo_Davao"
+        ReportDataSource5.Value = Me.Photo_DavaoBindingSource
+        ReportDataSource6.Name = "Dalton"
+        ReportDataSource6.Value = Me.DaltonBindingSource
+        ReportDataSource7.Name = "Perfecom"
+        ReportDataSource7.Value = Me.PerfecomBindingSource
+        ReportDataSource8.Name = "PG_UY"
+        ReportDataSource8.Value = Me.PG_UYBindingSource
+        ReportDataSource9.Name = "Household"
+        ReportDataSource9.Value = Me.HouseholdBindingSource
+        ReportDataSource10.Name = "PG_Realty"
+        ReportDataSource10.Value = Me.PG_RealtyBindingSource
+        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource4)
+        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource5)
+        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource6)
+        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource7)
+        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource8)
+        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource9)
+        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource10)
         Me.RptViewer_Summary.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_PayrollSummary.rdlc"
         Me.RptViewer_Summary.Location = New System.Drawing.Point(1, 53)
         Me.RptViewer_Summary.Name = "RptViewer_Summary"
@@ -1192,9 +1176,9 @@ Partial Class frmReport
         '
         'Rpt_Distribution
         '
-        ReportDataSource33.Name = "DataSet1"
-        ReportDataSource33.Value = Me.RemittanceBindingSource
-        Me.Rpt_Distribution.LocalReport.DataSources.Add(ReportDataSource33)
+        ReportDataSource11.Name = "DataSet1"
+        ReportDataSource11.Value = Me.RemittanceBindingSource
+        Me.Rpt_Distribution.LocalReport.DataSources.Add(ReportDataSource11)
         Me.Rpt_Distribution.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_Remittance.rdlc"
         Me.Rpt_Distribution.Location = New System.Drawing.Point(4, 62)
         Me.Rpt_Distribution.Name = "Rpt_Distribution"
@@ -1655,6 +1639,80 @@ Partial Class frmReport
         Me.Close_LBL.TabIndex = 75
         Me.Close_LBL.Text = "Close"
         '
+        'TabPage11
+        '
+        Me.TabPage11.Controls.Add(Me.Rpt_PI)
+        Me.TabPage11.Controls.Add(Me.Label45)
+        Me.TabPage11.Controls.Add(Me.PI_Paydate_Combo)
+        Me.TabPage11.Location = New System.Drawing.Point(4, 36)
+        Me.TabPage11.Name = "TabPage11"
+        Me.TabPage11.Size = New System.Drawing.Size(1151, 596)
+        Me.TabPage11.TabIndex = 12
+        Me.TabPage11.Text = "     Perfermance Incentives     "
+        Me.TabPage11.UseVisualStyleBackColor = True
+        '
+        'Rpt_PI
+        '
+        ReportDataSource12.Name = "DataSet1"
+        ReportDataSource12.Value = Me.PerformanceIncentivesBindingSource
+        Me.Rpt_PI.LocalReport.DataSources.Add(ReportDataSource12)
+        Me.Rpt_PI.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_PI.rdlc"
+        Me.Rpt_PI.Location = New System.Drawing.Point(4, 62)
+        Me.Rpt_PI.Name = "Rpt_PI"
+        Me.Rpt_PI.ServerReport.BearerToken = Nothing
+        Me.Rpt_PI.Size = New System.Drawing.Size(1142, 520)
+        Me.Rpt_PI.TabIndex = 114
+        '
+        'Label45
+        '
+        Me.Label45.AutoSize = True
+        Me.Label45.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label45.Location = New System.Drawing.Point(6, 18)
+        Me.Label45.Name = "Label45"
+        Me.Label45.Size = New System.Drawing.Size(98, 25)
+        Me.Label45.TabIndex = 113
+        Me.Label45.Text = "Search Payroll"
+        '
+        'PI_Paydate_Combo
+        '
+        Me.PI_Paydate_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.PI_Paydate_Combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.PI_Paydate_Combo.FormattingEnabled = True
+        Me.PI_Paydate_Combo.Location = New System.Drawing.Point(111, 14)
+        Me.PI_Paydate_Combo.Name = "PI_Paydate_Combo"
+        Me.PI_Paydate_Combo.Size = New System.Drawing.Size(144, 33)
+        Me.PI_Paydate_Combo.TabIndex = 112
+        '
+        'NetPayBindingSource
+        '
+        Me.NetPayBindingSource.DataMember = "NetPay"
+        Me.NetPayBindingSource.DataSource = Me.reports
+        '
+        'reports
+        '
+        Me.reports.DataSetName = "reports"
+        Me.reports.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema
+        '
+        'CommonDistributionBindingSource
+        '
+        Me.CommonDistributionBindingSource.DataMember = "ComGensanPDistrib"
+        Me.CommonDistributionBindingSource.DataSource = Me.reports
+        '
+        'CommonBindingSource
+        '
+        Me.CommonBindingSource.DataMember = "Common"
+        Me.CommonBindingSource.DataSource = Me.reports
+        '
+        'RemittanceBindingSource
+        '
+        Me.RemittanceBindingSource.DataMember = "Remittance"
+        Me.RemittanceBindingSource.DataSource = Me.reports
+        '
+        'PerformanceIncentivesBindingSource
+        '
+        Me.PerformanceIncentivesBindingSource.DataMember = "PerformanceIncentives"
+        Me.PerformanceIncentivesBindingSource.DataSource = Me.reports
+        '
         'frmReport
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1666,10 +1724,6 @@ Partial Class frmReport
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Name = "frmReport"
         Me.Text = "frmReport"
-        CType(Me.NetPayBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.reports, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.CommonDistributionBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.CommonBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Photo_GensanJRBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.payroll_summary, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Photo_DavaoBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
@@ -1678,7 +1732,6 @@ Partial Class frmReport
         CType(Me.PG_UYBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.HouseholdBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PG_RealtyBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.RemittanceBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Reports_Tab.ResumeLayout(False)
         Me.TabPage1.ResumeLayout(False)
         Me.TabPage1.PerformLayout()
@@ -1707,6 +1760,14 @@ Partial Class frmReport
         Me.TabPage9.PerformLayout()
         Me.TabPage10.ResumeLayout(False)
         Me.TabPage10.PerformLayout()
+        Me.TabPage11.ResumeLayout(False)
+        Me.TabPage11.PerformLayout()
+        CType(Me.NetPayBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.reports, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.CommonDistributionBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.CommonBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.RemittanceBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.PerformanceIncentivesBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1858,4 +1919,9 @@ Partial Class frmReport
     Friend WithEvents Month_LV As ListView
     Friend WithEvents ColumnHeader1 As ColumnHeader
     Friend WithEvents ColumnHeader13 As ColumnHeader
+    Friend WithEvents TabPage11 As TabPage
+    Friend WithEvents Rpt_PI As Microsoft.Reporting.WinForms.ReportViewer
+    Friend WithEvents Label45 As Label
+    Friend WithEvents PI_Paydate_Combo As ComboBox
+    Friend WithEvents PerformanceIncentivesBindingSource As BindingSource
 End Class

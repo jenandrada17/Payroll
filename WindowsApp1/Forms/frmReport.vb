@@ -15,6 +15,7 @@ Public Class frmReport
         PopulateComboBox_Any(Rem_Paydate_Combo, "PAYROLL_PAYOUT", "PAYDATE")
         PopulateComboBox(CostPaydate_Combo, "PAYROLL_PAYOUT", "PAYDATE")
         PopulateComboBox(LoanPaydate_Combo, "PAYROLL_PAYOUT", "PAYDATE")
+        PopulateComboBox(PI_Paydate_Combo, "RECORDED_ALLOW_DEDUC", "PAYDATE")
         Lists_Deduction_History(SBUHistory_List, "SBU")
         Lists_Deduction_History(DeducHistory_List, "DEDUCTION")
 
@@ -1464,5 +1465,70 @@ Public Class frmReport
         If e.KeyChar = ChrW(Keys.Enter) Then
             Lists_13Month(Month_LV, Month_Search_txt.Text)
         End If
+    End Sub
+
+    Private Sub PI_Paydate_Combo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles PI_Paydate_Combo.SelectedIndexChanged
+        If PI_Paydate_Combo.SelectedIndex >= 0 Then
+            LoadPI()
+        End If
+    End Sub
+
+    Public Sub LoadPI()
+
+        Rpt_PI.LocalReport.DataSources.Clear()
+        Dim PAYDATE As DateTime = PI_Paydate_Combo.Text
+
+        Try
+
+            Dim str As String = ""
+
+            Dim dt_PI As New DataTable()
+            With dt_PI
+                .Columns.Add("NAME")
+                .Columns.Add("AMOUNT")
+            End With
+
+            Dim mysql As String = $"Select * From RECORDED_ALLOW_DEDUC A INNER JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIO_NO       
+                                        WHERE PAYDATE = '{PI_Paydate_Combo.Text}' AND UPPER(CATEGORY) = 'PERFORMANCE INCENTIVES' ORDER BY FULLNAME"
+
+            Using ds As DataSet = LoadSQL(mysql, "RECORDED_ALLOW_DEDUC")
+                If ds.Tables(0).Rows.Count > 0 Then
+
+                    progressBarStart(ds.Tables(0).Rows.Count)
+                    For Each dr In ds.Tables(0).Rows
+                        With dr
+
+                            '============================= NAME AND ATTENDANCE ============================  
+                            Dim FULLNAME As String = IIf(IsDBNull(.Item("FULLNAME")), "", .Item("FULLNAME"))
+                            Dim AMOUNT As String = FormatNumber(.Item("AMOUNT"))
+
+                            dt_PI.Rows.Add(FULLNAME, AMOUNT)
+
+                            frmMainForm.AppProgressBar.Value += 1
+                        End With
+
+                    Next
+                    progressBarEnd()
+                Else
+
+                End If
+            End Using
+
+            Dim DATASOURCE As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt_PI)
+            Dim FORMNAME As String = $"List of Performance Incentives - {PAYDATE.ToString("MMMM dd, yyyy")}"
+
+            Dim paramList As New List(Of Microsoft.Reporting.WinForms.ReportParameter) From {
+                    New Microsoft.Reporting.WinForms.ReportParameter("paramFormName", FORMNAME)
+                    }
+
+            Rpt_PI.LocalReport.DataSources.Add(DATASOURCE)
+            Rpt_PI.LocalReport.SetParameters(paramList)
+            Rpt_PI.RefreshReport()
+
+        Catch ex As Exception
+            Log_Report(ex.ToString)
+            MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+
     End Sub
 End Class
