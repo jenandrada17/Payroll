@@ -41,9 +41,6 @@ Module SaveUpdate
         RunCommand("DELETE FROM PAYROLL_HOLIDAY WHERE DATEE = '" & datee & "'")
     End Sub
 
-    'Friend Sub SaveAttendanceEE(biometric As Integer, paydate As String, days As String, overTime As String, late_total As String,
-    '                              under_total As String, regHoliday As String, specHoliday As String, Optional SIL As Double = 0, Optional NIGHT_RATE As String = "")
-
     Friend Sub SaveAttendanceEE(biometric As Integer, paydate As String, days As String, overTime As String, late_total As String,
                                       under_total As String, regHoliday As String, specHoliday As String, Optional SIL As Double = 0, Optional MORNING_OT As String = "", Optional NIGHT_RATE As String = "")
 
@@ -316,46 +313,6 @@ Module SaveUpdate
 
     End Sub
 
-    'Friend Sub SaveRATE(value As String, column As String, amount As String, moreThan As Boolean) '=========== BOOLEAN IF MORE THAN 1 ========== 
-
-    '    Dim mysql As String
-
-    '    If moreThan = True Then '============= PER BRANCH OR PER POSITION ==============
-
-    '        mysql = $"Select * FROM TBL_EMPLOYEE where {column} = '{value}'"
-    '        Dim dss As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
-    '        If dss.Tables(0).Rows.Count > 0 Then
-    '            For Each dr In dss.Tables(0).Rows
-    '                With dr
-
-    '                    .Item("DAILY_RATE") = amount
-
-    '                End With
-    '                SaveEntry(dss, False)
-    '            Next
-
-    '            MsgBox("Successfully Updated!", MsgBoxStyle.Information, "Information")
-    '        End If
-
-    '    Else  '============ PER EMPLOYEE (FOR THERE ARE SAME BIOMETRIC NUMBER BUT DIFFERENT NAME/EMPLOYEE) ===========
-
-    '        'mysql = $"Select * FROM TBL_EMPLOYEE where {column} = '{value}' and BRANCH_ID = '{branchID}'"
-
-    '        mysql = $"Select * FROM TBL_EMPLOYEE where {column} = '{value}'"
-    '        Dim dss As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
-    '        If dss.Tables(0).Rows.Count > 0 Then
-    '            With dss.Tables(0).Rows(0)
-
-    '                .Item("RATE") = amount
-
-    '            End With
-    '            SaveEntry(dss, False)
-
-    '            MsgBox("Successfully Updated!", MsgBoxStyle.Information, "Information")
-    '        End If 
-    '    End If
-    'End Sub 
-
     Friend Sub SaveRATE_City(column As String, value As String, daily_rate As String, Optional group As Boolean = False) '=========== BOOLEAN IF MORE THAN 1 ========== 
         If value = "" Then
             SaveRATE("BRANCH_CODE", "", daily_rate, False, True)
@@ -408,50 +365,6 @@ Module SaveUpdate
         End If
     End Sub
 
-    'Friend Sub SaveRATE(column As String, value As String, daily_rate As String, Optional group As Boolean = False) '=========== BOOLEAN IF MORE THAN 1 ========== 
-
-    '    'Dim mysql As String
-
-    '    If group <> False Then
-
-    '        Dim mysql As String = $"Select * FROM PAYROLL_EMPLOYEE A LEFT join PAYROLL_CITY_BRANCH B on BRANCH_CODE = BRANCHCODE AND {column} = '{value}'"
-    '        Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
-
-    '        'Dim mysql As String = $"Select * FROM PAYROLL_CITY_BRANCH A inner join PAYROLL_EMPLOYEE B on BRANCH_CODE = A.BRANCHCODE where {column} = '{value}'"
-    '        'Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_CITY_BRANCH")
-    '        If dss.Tables(0).Rows.Count > 0 Then
-    '            For Each dr In dss.Tables(0).Rows
-    '                With dr
-
-    '                    Dim existing_rate As Double = IIf(IsDBNull(.Item("RATE_DAILY")), 0, .Item("RATE_DAILY"))
-
-    '                    If existing_rate < daily_rate Then
-    '                        .Item("RATE_DAILY") = daily_rate
-    '                    End If
-
-    '                End With
-    '                SaveEntry(dss, False)
-    '            Next
-
-    '        End If
-    '    Else
-
-    '        Dim mysqll As String = $"Select * FROM PAYROLL_EMPLOYEE where {column} = '{value}'"
-    '        Dim ds As DataSet = LoadSQL(mysqll, "PAYROLL_EMPLOYEE")
-    '        If ds.Tables(0).Rows.Count > 0 Then
-
-    '            With ds.Tables(0).Rows(0)
-    '                Dim existing_rate As Double = IIf(IsDBNull(.Item("RATE_DAILY")), 0, .Item("RATE_DAILY"))
-
-    '                If existing_rate < daily_rate Then
-    '                    .Item("RATE_DAILY") = daily_rate
-    '                End If
-    '            End With
-    '            SaveEntry(ds, False)
-    '        End If 
-    '    End If
-    'End Sub
-
     Friend Sub SaveMinimum_RATE(value As String, MINIMUM_RATE As String, ECOLA As String) '=========== BOOLEAN IF MORE THAN 1 ========== 
         Dim mysql As String
 
@@ -493,8 +406,6 @@ Module SaveUpdate
         End If
 
     End Sub
-
-    'SaveDeductionS(DEDUCT_ID, PrincipalDeduc_txt.Text, DeductAmort_txt.Text, Schedule_Combo.Text, DateCharges_DTP.Value, Name_txt.Tag) 'Category_Combo.Tag (EMP_ID) | Name_TXT.Tag(Biometric) |  SearchEmp_BTN.Tag.Tag(Branch_id) |   
 
     Friend Sub SaveDeductionS(deduc_id As String, category As String, PRINCIPAL As String, AMORT As String, SCHEDULE As String, DATEE As String, bioNo As String)
         Dim mysql As String
@@ -543,36 +454,10 @@ Module SaveUpdate
         End If
     End Sub
 
-    'Friend Sub updateDeductionS(deduc_id As String, category As String, PRINCIPAL As String, AMORT As String, SCHEDULE As String, DATEE As String)
-
-    '    Dim mysql As String = $"Select * FROM PAYROLL_DEDUCTION where id = '{deduc_id}'"
-    '    Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_DEDUCTION")
-    '    If ds.Tables(0).Rows.Count > 0 Then
-
-    '        With ds.Tables(0).Rows(0)
-
-    '            .Item("CATEGORY") = category
-    '            .Item("PRINCIPAL") = PRINCIPAL
-    '            .Item("AMORT") = AMORT
-    '            .Item("SCHEDULE") = SCHEDULE
-    '            .Item("DATEE") = DATEE
-
-    '        End With
-    '        SaveEntry(ds, False)
-
-    '        MsgBox("Successfully Updated!", MsgBoxStyle.Information, "Information")
-    '    End If
-    'End Sub
-
     Friend Sub SavePayout(BIOMETRIC_ID As String, PAYDATE As String, TOTAL_BASIC As Decimal, TOTAL_OVERTIME As Decimal, TOTAL_LATE_UT As Decimal,
                           GROSS_AMOUNT As Decimal, SSS_COMP As Decimal, SSS_ER As Decimal, SSS_EC As Decimal, PAGIBIG_COMP As Decimal, PHILHEALTH_COMP As Decimal,
                           TOTAL_ALLOWANCE As Decimal, TOTAL_DEDUCTION As Decimal, NET_PAY As Decimal, REGHOLIDAY As Decimal, SPECHOLIDAY As Decimal,
                           TOTAL_NIGHT_RATE As Decimal, Optional all As String = "")
-
-        'Friend Sub SavePayout(BIOMETRIC_ID As String, PAYDATE As String, TOTAL_BASIC As Decimal, TOTAL_OVERTIME As Decimal, TOTAL_LATE_UT As Decimal,
-        '                      GROSS_AMOUNT As Decimal, SSS_COMP As Decimal, SSS_ER As Decimal, SSS_EC As Decimal, PAGIBIG_COMP As Decimal, PHILHEALTH_COMP As Decimal,
-        '                      SSS_LOAN As Decimal, PAGIBIG_LOAN As Decimal, TOTAL_ALLOWANCE As Decimal,
-        '                      TOTAL_DEDUCTION As Decimal, NET_PAY As Decimal, REGHOLIDAY As Decimal, SPECHOLIDAY As Decimal, TOTAL_NIGHT_RATE As Decimal, Optional all As String = "")
 
         Dim mysql As String = $"Select * FROM PAYROLL_PAYOUT where BIOMETRIC_ID = '{BIOMETRIC_ID}' and PAYDATE = '{PAYDATE}'"
         Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
@@ -1013,22 +898,6 @@ Module SaveUpdate
                         End Using
                     End If
 
-                    ''============================================= LOANS LIKE SSS/PAGIBIG LOAN ==================================================  
-
-                    'If sched = "CLOSE PAYROLL" Then
-                    '    Dim sql_4 As String = $"Select * From PAYROLL_LOANS WHERE BIO_NO = '{bioNo}' and STATUS is null"
-                    '    Using ds_4 As DataSet = LoadSQL(sql_4, "PAYROLL_LOANS")
-                    '        If ds_4.Tables(0).Rows.Count > 0 Then
-                    '            For Each dr_4 In ds_4.Tables(0).Rows
-                    '                With dr_4
-                    '                    Deduction = Deduction + .Item("AMORT")
-                    '                    Save_Recorded_Allow_Deduc(bioNo, paydate_, .Item("CATEGORY") & "LOAN", .Item("AMORT"), "DEDUCTION")
-                    '                End With
-                    '            Next
-                    '        End If
-                    '    End Using
-                    'End If
-
                     '============================================= OTHER DEDUCTION LIKE MP2, MAXICARE ==================================================  
                     Dim sql_5 As String = $"Select * From PAYROLL_OTHER_DEDUCTION WHERE BIO_NO = '{bioNo}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
                     Using ds_5 As DataSet = LoadSQL(sql_5, "PAYROLL_OTHER_DEDUCTION")
@@ -1120,14 +989,6 @@ Module SaveUpdate
                                   Allowances, Deduction, NetPay,
                                   TotalREGHol, TotalSPECHol, TotalNight)
 
-                    'SavePayout(bioNo, paydate_, TotalBasic, TotalOT,
-                    '              TotalLateUnder, GrossAmount,
-                    '              SSSComp, SSS_ER, SSS_EC,
-                    '              PagibigComp, PhilhealthComp,
-                    '              sssLoan, pagibigLoan,
-                    '              Allowances, Deduction, NetPay,
-                    '              TotalREGHol, TotalSPECHol, TotalNight)
-
                 End With
             End If
         End Using
@@ -1185,25 +1046,6 @@ Module SaveUpdate
         End Using
 
     End Sub
-
-    'Friend Sub Save_Recorded_Loan(emp_id As String, PAYDATE As String, CATEGORY As String, AMOUNT As String)
-
-    '    Dim sql As String = "Select * From RECORDED_DEDUCTION Rows 1"
-    '    Using ds As DataSet = LoadSQL(sql, "RECORDED_DEDUCTION")
-
-    '        Dim dsNewRow As DataRow = ds.Tables(0).NewRow
-    '        With dsNewRow
-
-    '            .Item("EMP_ID") = emp_id
-    '            .Item("PAYDATE") = PAYDATE
-    '            .Item("CATEGORY") = CATEGORY
-    '            .Item("AMOUNT") = AMOUNT
-
-    '        End With
-    '        ds.Tables(0).Rows.Add(dsNewRow)
-    '        SaveEntry(ds)
-    '    End Using
-    'End Sub
 
     Public Sub SaveSSS_Contribution(one As String, two As String, three As String, four As String, five As String, six As String, seven As String,
                                     eight As String, nine As String, ten As String, eleven As String, twelve As String, thirteen As String, fourteen As String,
@@ -1441,48 +1283,6 @@ Module SaveUpdate
         End If
     End Sub
 
-    'Friend Sub Save_PAGIBIGLoan(BIO_NO As String, amount As String, start_date As String, end_date As String, principal As String)
-    '    Dim mysql As String
-
-    '    mysql = $"Select * FROM PAYROLL_PAGIBIGLOAN where BIO_NO = '{BIO_NO}' and STATUS is null"
-    '    Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_PAGIBIGLOAN")
-    '    If ds.Tables(0).Rows.Count > 0 Then
-
-    '        With ds.Tables(0).Rows(0)
-
-    '            .Item("monthly_amort") = amount
-    '            .Item("first_date") = start_date
-    '            .Item("maturity_date") = end_date
-    '            .Item("PAGIBIG_PRINCIPAL") = principal
-
-    '        End With
-
-    '        SaveEntry(ds, False)
-    '        MsgBox("Successfully Updated!", MsgBoxStyle.Information, "Information")
-
-    '    Else
-    '        mysql = "Select * From PAYROLL_PAGIBIGLOAN Rows 1"
-    '        Using dss As DataSet = LoadSQL(mysql, "PAYROLL_PAGIBIGLOAN")
-
-    '            Dim dsNewRow As DataRow = dss.Tables(0).NewRow
-    '            With dsNewRow
-
-    '                .Item("BIO_NO") = BIO_NO
-    '                .Item("monthly_amort") = amount
-    '                .Item("first_date") = start_date
-    '                .Item("maturity_date") = end_date
-    '                .Item("PAGIBIG_PRINCIPAL") = principal
-
-    '            End With
-    '            dss.Tables(0).Rows.Add(dsNewRow)
-    '            SaveEntry(dss)
-
-    '            MsgBox("Successfully Saved!", MsgBoxStyle.Information, "Information")
-    '        End Using
-    '    End If
-
-    'End Sub
-
     Friend Sub SaveCATEGORY(category As String, table As String, coulumn As String)
 
         Dim mysql As String = $"Select * From {table} Rows 1"
@@ -1566,8 +1366,8 @@ Module SaveUpdate
                 Dim toProper As String = ""
 
                 If HO_CATEGORY <> "" Then
-                    If HO_CATEGORY = "PGC HEAD OFFICE" Then
-                        toProper = "PGC HEAD OFFICE"
+                    If HO_CATEGORY = "PGC Head Office" Then
+                        toProper = "PGC Head Office"
                     Else
                         toLower = HO_CATEGORY.ToLower()
                         Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
@@ -1575,9 +1375,16 @@ Module SaveUpdate
                     End If
                 End If
 
+                Dim val As Double
+                If Double.TryParse(TIME_IN, val) Then
+                    If TIME_IN <> "" Then .Item("TIME_IN") = DateTime.FromOADate(TIME_IN)
+                    If TIME_OUT <> "" Then .Item("TIME_OUT") = DateTime.FromOADate(TIME_OUT)
+                Else
+                    If TIME_IN <> "" Then .Item("TIME_IN") = TIME_IN
+                    If TIME_OUT <> "" Then .Item("TIME_OUT") = TIME_OUT
+                End If
+
                 If DATE_STARTED <> "" Then .Item("DATE_STARTED") = DATE_STARTED
-                If TIME_IN <> "" Then .Item("TIME_IN") = TIME_IN
-                If TIME_OUT <> "" Then .Item("TIME_OUT") = TIME_OUT
                 If EMP_NO <> "" Then .Item("EMP_NO") = EMP_NO
                 If TIN <> "" Then .Item("TINNO") = TIN
                 If SSS <> "" Then .Item("SSSNO") = SSS
@@ -1612,9 +1419,18 @@ Module SaveUpdate
                     .Item("EMP_STATUS") = EMP_STATUS
                     .Item("RATE_DAILY") = IIf(.Item("BRANCH_CODE") = Nothing, GetMinimumRate("CITY", "GENSAN"), GetMinimumRate("BRANCHCODE", .Item("BRANCH_CODE")))
 
+
+                    Dim val As Double
+                    If Double.TryParse(TIME_IN, val) Then
+                        If TIME_IN <> "" Then .Item("TIME_IN") = DateTime.FromOADate(TIME_IN)
+                        If TIME_OUT <> "" Then .Item("TIME_OUT") = DateTime.FromOADate(TIME_OUT)
+                    Else
+                        If TIME_IN <> "" Then .Item("TIME_IN") = TIME_IN
+                        If TIME_OUT <> "" Then .Item("TIME_OUT") = TIME_OUT
+                    End If
+
+
                     If DATE_STARTED <> "" Then .Item("DATE_STARTED") = DATE_STARTED
-                    If TIME_IN <> "" Then .Item("TIME_IN") = TIME_IN
-                    If TIME_OUT <> "" Then .Item("TIME_OUT") = TIME_OUT
                     If EMP_NO <> "" Then .Item("EMP_NO") = EMP_NO
                     If TIN <> "" Then .Item("TINNO") = TIN
                     If SSS <> "" Then .Item("SSSNO") = SSS
@@ -1677,9 +1493,7 @@ Module SaveUpdate
 
     Public Sub Save_BranchesName(code As String, name As String)
 
-        Dim mysql As String
-
-        mysql = $"Select * From PAYROLL_CITY_BRANCH  where BRANCHCODE = '{code}'"
+        Dim mysql As String = $"Select * From PAYROLL_CITY_BRANCH  where BRANCHCODE = '{code}'"
         Using dss As DataSet = LoadSQL(mysql, "PAYROLL_CITY_BRANCH")
             If dss.Tables(0).Rows.Count > 0 Then
 
@@ -1688,23 +1502,7 @@ Module SaveUpdate
                 End With
                 SaveEntry(dss)
 
-                'Else
-                '    mysql = "Select * From PAYROLL_CITY_BRANCH "
-                '    Using ds As DataSet = LoadSQL(mysql, "PAYROLL_CITY_BRANCH")
-                '        Dim dsNewRow As DataRow = ds.Tables(0).NewRow
-                '        With dsNewRow
-
-                '            .Item("BRANCHCODE") = code
-                '            .Item("BRANCHNAME") = name
-
-                '        End With
-
-                '        ds.Tables(0).Rows.Add(dsNewRow)
-                '        SaveEntry(ds)
-                '    End Using
-
             End If
-
         End Using
 
     End Sub
@@ -1770,52 +1568,6 @@ Module SaveUpdate
         Return New String(fullString.Where(Function(x) Not Char.IsWhiteSpace(x)).ToArray())
     End Function
 
-    'Public Sub SAVE_Emp_SBU_AMOUNT_PRINCIPAL_CREDIT_NAME(EMP_NO As String, CATEGORY As String, AMOUNT As String, PRINCIPAL As String, CREDIT As String, BALANCE As String, RowNo As Integer)
-    '    If EMP_NO.TrimEnd = "addt'l. cash bond" Then
-    '        Exit Sub
-    '    End If
-
-    '    If EMP_NO <> "" Or EMP_NO <> Nothing Then
-
-    '        Dim mysql As String
-    '        Dim BIO As String = ""
-
-    '        '====================== GET BIO_NO FOR SAVING TO PAYROLL_SBU  ==================
-    '        mysql = "Select * From PAYROLL_EMPLOYEE WHERE EMP_NO = '" & EMP_NO.TrimEnd & "'"
-    '        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
-    '            If ds.Tables(0).Rows.Count > 0 Then
-    '                Dim data As DataRow = ds.Tables(0).Rows(0)
-    '                With data
-    '                    BIO = .Item("BIO_NO")
-    '                End With
-    '            Else
-    '                Exit Sub
-    '            End If
-    '        End Using
-
-    '        '====================== ADD NEW PAYROLL_SBU ==================
-    '        mysql = "Select * From PAYROLL_SBU Rows 1"
-    '        Using dssS As DataSet = LoadSQL(mysql, "PAYROLL_SBU")
-
-    '            Dim dsNewRow As DataRow = dssS.Tables(0).NewRow
-    '            With dsNewRow
-
-    '                .Item("BIO_NO") = BIO
-    '                .Item("PRINCIPAL") = IIf(PRINCIPAL = Nothing, 0, PRINCIPAL)
-    '                .Item("CREDIT") = IIf(CREDIT = Nothing, 0, CREDIT)
-    '                .Item("BALANCE") = IIf(BALANCE = Nothing, PRINCIPAL, BALANCE)
-    '                .Item("CATEGORY") = CATEGORY
-    '                .Item("AMOUNT") = IIf(AMOUNT = Nothing, 250, AMOUNT)
-
-    '            End With
-    '            dssS.Tables(0).Rows.Add(dsNewRow)
-    '            SaveEntry(dssS)
-    '            Console.WriteLine("NEWWWW -" & EMP_NO & "- " & RowNo - 1)
-    '        End Using
-    '    End If
-
-    'End Sub
-
     Public Sub SAVE_13MONTH_EMPNO(EMP_NO As String, RowNo As Integer)
         Dim mysql As String = "Select * From PAYROLL_13MONTH Rows 1"
         Using dssS As DataSet = LoadSQL(mysql, "PAYROLL_13MONTH")
@@ -1848,62 +1600,6 @@ Module SaveUpdate
             Console.WriteLine("AMOUNTTTT-" & RowNo)
         End Using
     End Sub
-
-
-    'Public Sub SAVE_Emp_SBU_AMOUNT_PRINCIPAL_CREDIT_BIO(EMP_NO As String, SBU_AMOUNT As String, SBU_PRINCIPAL As String, SBU_CREDIT As String, SBU_BALANCE As String, RowNo As Integer)
-    '    If EMP_NO <> "" Then
-    '        Dim REMOVE_SPACE As String = RemoveWhitespace(EMP_NO)
-    '        Dim BIO As String() = REMOVE_SPACE.Split(New Char() {"-"c})
-
-    '        '====================== UPDATE OR ADD PAYROLL_SBU ==================
-    '        Dim mysql As String
-
-    '        If BIO.Length = 3 Then
-
-    '            If Match_Employee(BIO(2)) Then
-    '                mysql = $"Select * FROM PAYROLL_SBU where BIO_NO = '{BIO(2)}'"
-    '                Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_SBU")
-    '                If dss.Tables(0).Rows.Count > 0 Then
-
-    '                    With dss.Tables(0).Rows(0)
-
-    '                        .Item("SBU_AMOUNT") = SBU_AMOUNT
-    '                        .Item("SBU_PRINCIPAL") = SBU_PRINCIPAL
-    '                        .Item("SBU_CREDIT") = SBU_CREDIT
-    '                        .Item("SBU_BALANCE") = SBU_BALANCE
-
-    '                    End With
-
-    '                    SaveEntry(dss, False)
-
-    '                Else
-    '                    mysql = "Select * From PAYROLL_SBU Rows 1"
-    '                    Using dssS As DataSet = LoadSQL(mysql, "PAYROLL_SBU")
-
-    '                        Dim dsNewRow As DataRow = dssS.Tables(0).NewRow
-    '                        With dsNewRow
-
-    '                            .Item("BIO_NO") = BIO(2)
-    '                            .Item("SBU_AMOUNT") = SBU_AMOUNT
-    '                            .Item("SBU_PRINCIPAL") = SBU_PRINCIPAL
-    '                            .Item("SBU_CREDIT") = SBU_CREDIT
-    '                            .Item("SBU_BALANCE") = SBU_BALANCE
-
-    '                        End With
-    '                        dssS.Tables(0).Rows.Add(dsNewRow)
-    '                        SaveEntry(dssS)
-    '                    End Using
-    '                End If
-    '            Else
-    '                Console.WriteLine("ROWWW -" & REMOVE_SPACE & "- " & RowNo - 1)
-    '            End If
-
-    '        End If
-    '    End If
-    'End Sub
-
-
-    'Update_Emp_Benefits_DetailS_BY_NAME(fullname, eCell(row, 9).Value, eCell(row, 10).Value, eCell(row, 11).Value, eCell(row, 12).Value, eCell(row, 6).Value, eCell(row, 8).Value, eCell(row, 1).Value)
 
     Public Sub Update_Emp_Benefits_DetailS_BY_NAME(FULLNAME As String, TINNO As String, SSSNO As String, PHILHEALTHNO As String, PAGIBIGNO As String, DATE_STARTED As String, EMP_POSITION As String, empNo As String)
 
@@ -1999,9 +1695,6 @@ Module SaveUpdate
     Friend Sub Save_PERCENTAGE(DALTON As String, PHOTO As String, DAVAOP As String, PERFECOM As String, G3 As String,
                                   SEVEN11 As String, COMI_TO_FUJI As String, HOUSEHOLD As String, LEASING As String, CATEGORY As String)
 
-        'Friend Sub Save_PERCENTAGE(DALTON As Decimal, PHOTO As Decimal, DAVAOP As Decimal, PERFECOM As Decimal, G3 As Decimal,
-        '                              SEVEN11 As Decimal, COMI_TO_FUJI As Decimal, HOUSEHOLD As Decimal, LEASING As Decimal, CATEGORY As String)
-
         Dim mysql As String = "Select * From PAYROLL_PERCENTAGEE Rows 1"
         Using dss As DataSet = LoadSQL(mysql, "PAYROLL_PERCENTAGEE")
 
@@ -2019,70 +1712,11 @@ Module SaveUpdate
                 .Item("LEASING") = LEASING
                 .Item("CATEGORY") = CATEGORY
 
-                '.Item("DALTON") = IIf(Not DALTON.Contains("%"), DALTON, DALTON.Substring(0, DALTON.Length - 1))
-                '.Item("PHOTO") = IIf(Not PHOTO.Contains("%"), PHOTO, PHOTO.Substring(0, PHOTO.Length - 1))
-                '.Item("DAVAOP") = IIf(Not DAVAOP.Contains("%"), DAVAOP, DAVAOP.Substring(0, DAVAOP.Length - 1))
-                '.Item("PERFECOM") = IIf(Not PERFECOM.Contains("%"), PERFECOM, PERFECOM.Substring(0, PERFECOM.Length - 1))
-                '.Item("G3") = IIf(Not G3.Contains("%"), G3, G3.Substring(0, G3.Length - 1))
-                '.Item("SEVEN11") = IIf(Not SEVEN11.Contains("%"), SEVEN11, SEVEN11.Substring(0, SEVEN11.Length - 1))
-                '.Item("COMI_TO_FUJI") = IIf(Not COMI_TO_FUJI.Contains("%"), COMI_TO_FUJI, COMI_TO_FUJI.Substring(0, COMI_TO_FUJI.Length - 1))
-                '.Item("HOUSEHOLD") = IIf(Not HOUSEHOLD.Contains("%"), HOUSEHOLD, HOUSEHOLD.Substring(0, HOUSEHOLD.Length - 1))
-                '.Item("LEASING") = IIf(Not LEASING.Contains("%"), LEASING, LEASING.Substring(0, LEASING.Length - 1))
-                '.Item("CATEGORY") = CATEGORY
-
-                '.Item("DALTON") = Format(DALTON, "0.00")
-                '.Item("PHOTO") = Format(PHOTO, "0.00")
-                '.Item("DAVAOP") = Format(DAVAOP, "0.00")
-                '.Item("PERFECOM") = Format(PERFECOM, "0.00")
-                '.Item("G3") = Format(G3, "0.00")
-                '.Item("SEVEN11") = Format(SEVEN11, "0.00")
-                '.Item("COMI_TO_FUJI") = Format(COMI_TO_FUJI, "0.00")
-                '.Item("HOUSEHOLD") = Format(HOUSEHOLD, "0.00")
-                '.Item("LEASING") = Format(LEASING, "0.00")
-                '.Item("CATEGORY") = CATEGORY
             End With
             dss.Tables(0).Rows.Add(dsNewRow)
             SaveEntry(dss)
         End Using
     End Sub
-
-    'Friend Sub SaveCityBranch()
-
-    '    Dim mysql As String
-    '    Dim city As String = Nothing
-    '    Dim code As String = Nothing
-    '    Dim namee As String = Nothing
-
-    '    mysql = "Select * From PAYROLL_EMPLOYEE WHERE BRANCH_CITY = 'LAMBAYONG'"
-    '    Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
-    '        If ds.Tables(0).Rows.Count > 0 Then
-    '            For Each dr In ds.Tables(0).Rows
-    '                With dr
-    '                    city = 
-    '                End With
-    '            Next
-    '        End If
-    '    End Using
-
-    '    mysql = "Select * From PAYROLL_CITY_BRANCH Rows 1"
-    '    Using dss As DataSet = LoadSQL(mysql, "PAYROLL_CITY_BRANCH")
-
-    '        Dim dsNewRow As DataRow = dss.Tables(0).NewRow
-    '        With dsNewRow
-
-    '            .Item("CITY") = city
-    '            .Item("BRANCHCODE") = BRANCHCODE
-    '            .Item("BRANCHNAME") = BRANCHNAME
-
-    '        End With
-
-    '        dss.Tables(0).Rows.Add(dsNewRow)
-    '        SaveEntry(dss)
-
-    '        MsgBox("Successfully Saved!", MsgBoxStyle.Information, "Information")
-
-    '    End Using
-    'End Sub
 
     Friend Sub SaveCityBranch(BRANCHCODE As String, BRANCHNAME As String, CITY As String, CATEGORY As String, ADDRESS As String)
 
@@ -2184,4 +1818,5 @@ Module SaveUpdate
 
         End Using
     End Sub
+
 End Module

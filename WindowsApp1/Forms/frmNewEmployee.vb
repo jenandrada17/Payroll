@@ -71,6 +71,7 @@ Public Class frmNewEmployee
         'Import_Employee_DEDUCTION_2()
 
         'Import_Deduction() ''===== NAKACOMMENT ANG METHOD
+
     End Sub
 
 
@@ -264,8 +265,7 @@ Public Class frmNewEmployee
 
     '    Excel_Panel.Visible = False
 
-    'End Sub
-
+    'End Sub 
 
     Private Sub Import_13MONTH()
 
@@ -713,10 +713,10 @@ Public Class frmNewEmployee
                          ComCategory_Combo.Text, Position_Combo.Text, ComCompany_Cmbo.Text, PhotoCategory_Combo.Text)
 
             If btnSave.Tag = "UPDATE" Then
-                SaveLogs($"EDITED EMPLOYEE - Company({Add_Company_CB.Text}), Branch({Branch_ComboB.Text}), Email({Email_TXT.Text}), Status({stat}), Started({Started_DTP.Value.ToShortDateString}), Time in/out({TimeIn_Combo.Text}/{TimeOut_Combo.Text}), Emp No.({EmpNo_TXT.Text}), TIN({TIN_TXT.Text}), SSS({SSS_TXT.Text}), Philhealth({PHILH_TXT.Text}), Pagibig({HDMF_TXT.Text}), Position({Position_Combo.Text}), HO({HO_Category.Text}, {ComCategory_Combo.Text}, {ComCompany_Cmbo.Text})",
+                SaveLogs($"EDITED EMPLOYEE - Name({Fullname_TXT.Text}({Bio_TXT.Text})), Company({Add_Company_CB.Text}), Branch({Branch_ComboB.Text}), Email({Email_TXT.Text}), Status({stat}), Started({Started_DTP.Value.ToShortDateString}), Time in/out({TimeIn_Combo.Text}/{TimeOut_Combo.Text}), Emp No.({EmpNo_TXT.Text}), TIN({TIN_TXT.Text}), SSS({SSS_TXT.Text}), Philhealth({PHILH_TXT.Text}), Pagibig({HDMF_TXT.Text}), Position({Position_Combo.Text}), HO({HO_Category.Text}, {ComCategory_Combo.Text}, {ComCompany_Cmbo.Text})",
                      frmMainForm.UserName_LBL.Text)
             Else
-                SaveLogs($"ADDED EMPLOYEE - Company({Add_Company_CB.Text}), Branch({Branch_ComboB.Text}), Email({Email_TXT.Text}), Status({stat}), Started({Started_DTP.Value.ToShortDateString}), Time in/out({TimeIn_Combo.Text}/{TimeOut_Combo.Text}), Emp No.({EmpNo_TXT.Text}), TIN({TIN_TXT.Text}), SSS({SSS_TXT.Text}), Philhealth({PHILH_TXT.Text}), Pagibig({HDMF_TXT.Text}), Position({Position_Combo.Text}), HO({HO_Category.Text}, {ComCategory_Combo.Text}, {ComCompany_Cmbo.Text})",
+                SaveLogs($"ADDED EMPLOYEE - Name({Fullname_TXT.Text}({Bio_TXT.Text})), Company({Add_Company_CB.Text}), Branch({Branch_ComboB.Text}), Email({Email_TXT.Text}), Status({stat}), Started({Started_DTP.Value.ToShortDateString}), Time in/out({TimeIn_Combo.Text}/{TimeOut_Combo.Text}), Emp No.({EmpNo_TXT.Text}), TIN({TIN_TXT.Text}), SSS({SSS_TXT.Text}), Philhealth({PHILH_TXT.Text}), Pagibig({HDMF_TXT.Text}), Position({Position_Combo.Text}), HO({HO_Category.Text}, {ComCategory_Combo.Text}, {ComCompany_Cmbo.Text})",
                      frmMainForm.UserName_LBL.Text)
             End If
 
