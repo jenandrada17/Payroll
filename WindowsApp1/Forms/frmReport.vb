@@ -7,7 +7,6 @@ Public Class frmReport
     Dim PlusS As String = ""
 
     Private Sub frmReport_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        'Check_This()
 
         PopulateComboBox(PaydateNet_ComboB, "PAYROLL_PAYOUT", "PAYDATE")
         PopulateComboBox(PaydateCom_Combo, "PAYROLL_PAYOUT", "PAYDATE")
@@ -889,17 +888,6 @@ Public Class frmReport
                     progressBarEnd()
                 End If
             End Using
-
-            '========================================= PAYROLL_COSTDISTRIBUTION ================================================
-            'mysql = $"Select  BRANCH_CODE, HO_CATEGORY, NAMEE, NAME_CATEGORY, COMPANY, SUM(TOTAL_BASIC) AS BASIC, SUM(TOTAL_OVERTIME) AS OT,
-            '                            cast(sum(TOTAL_LATE_UT) as decimal(12,5)) AS LATE_UT ,
-            '                            SUM(SSS_COMP) AS SSS_EE , SUM(SSS_ER) AS SSS_ER , SUM(SSS_EC) AS SSS_EC , SUM(NET_PAY) AS NETPAY, 
-            '                            SUM(PAGIBIG_COMP) AS HDMF, SUM(PHILHEALTH_COMP) AS PHILH , SUM(SSS_LOAN) AS LOAN_SSS , SUM(PAGIBIG_LOAN) AS LOAN_HDMF, 
-            '                            SUM(TOTAL_REGHOLIDAY) AS REGHOLIDAY , SUM(TOTAL_SPECHOLIDAY) AS SPECHOLIDAY  
-            '                            From PAYROLL_PAYOUT B 
-            '                            INNER JOIN PAYROLL_EMPLOYEE A ON A.BIO_NO = B.BIOMETRIC_ID 
-            '                            LEFT JOIN PAYROLL_COSTDISTRIB ON 1 = 1 
-            '                            WHERE B.PAYDATE = '{PAYDATE}' GROUP BY BRANCH_CODE, HO_CATEGORY, NAMEE, NAME_CATEGORY, COMPANY"
 
             ''========================================= PAYROLL_COSTDISTRIBUTION ================================================
             mysql = $"Select  BRANCH_CODE, HO_CATEGORY, NAMEE, NAME_CATEGORY, COMPANY, SUM(TOTAL_BASIC) AS BASIC, SUM(TOTAL_OVERTIME) AS OT,

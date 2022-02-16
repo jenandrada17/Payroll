@@ -91,7 +91,9 @@ Public Class frmSchedule
     End Sub
 
     Private Sub TabControl1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles TabControl1.SelectedIndexChanged
-        If TabControl1.SelectedIndex = 1 Then
+        If TabControl1.SelectedIndex = 0 Then
+            PopulateComboBox(Paydate_ComboB, "PAYROLL_SCHEDULE", "PAYDATE")
+        ElseIf TabControl1.SelectedIndex = 1 Then
             Schedule_DG.ClearSelection()
         End If
     End Sub

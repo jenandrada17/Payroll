@@ -348,7 +348,7 @@ Partial Class frmMainForm
         '
         'Dashboard_BTN
         '
-        Me.Dashboard_BTN.AccessibleName = "Dashboard"
+        Me.Dashboard_BTN.AccessibleName = "DTR Schedule"
         Me.Dashboard_BTN.BackColor = System.Drawing.Color.Black
         Me.Dashboard_BTN.Cursor = System.Windows.Forms.Cursors.Hand
         Me.Dashboard_BTN.FlatAppearance.BorderSize = 0

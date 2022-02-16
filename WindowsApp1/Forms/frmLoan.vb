@@ -131,15 +131,15 @@
 
         Dim bioNo As String = Deduc_list.Items(Deduc_list.FocusedItem.Index).SubItems(1).Tag
         Dim IDX As Integer = Deduc_list.Items(Deduc_list.FocusedItem.Index).SubItems(4).Tag
-        Dim credit As Decimal = GetData("CREDIT", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'")
+        Dim credit As Decimal = GetData_Decimal("CREDIT", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'")
         Dim CollectedCredit As Decimal = GetTotal("AMOUNT", $" RECORDED_ALLOW_DEDUC WHERE R_DEDUC_ID = '{IDX}'")
         Dim totalCredit As Decimal = credit + CollectedCredit
         Dim balance As Decimal
 
         If CollectedCredit > 0 Then
-            balance = CDec(GetData("PRINCIPAL", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'")) - totalCredit
+            balance = CDec(GetData_Decimal("PRINCIPAL", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'")) - totalCredit
         Else
-            balance = CDec(GetData("BALANCE", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'"))
+            balance = CDec(GetData_Decimal("BALANCE", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'"))
         End If
 
         MsgBox("Balance               :  " & FormatNumber(balance), MsgBoxStyle.Information, "TOTAL")
@@ -374,11 +374,11 @@
     End Sub
 
     Private Sub PagSearch_BTN_Click(sender As Object, e As EventArgs) Handles PagSearch_BTN.Click
-        Load_Loans(Pagibig_List, "PAYROLL_LOANS", "PAG-IBIG", PagSearch_TXT.Text)
+        Load_Loans(Pagibig_List, "PAYROLL_DEDUCTION", "PAG-IBIG LOAN", PagSearch_TXT.Text)
     End Sub
 
     Private Sub SSS_Search_BTN_Click(sender As Object, e As EventArgs) Handles SSS_Search_BTN.Click
-        Load_Loans(SSSLoan_LV, "PAYROLL_LOANS", "SSS", SSS_Search_TXT.Text)
+        Load_Loans(SSSLoan_LV, "PAYROLL_DEDUCTION", "SSS LOAN", SSS_Search_TXT.Text)
     End Sub
 
     Private Sub SSS_Search_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles SSS_Search_TXT.KeyPress
@@ -435,15 +435,15 @@
 
         Dim bioNo As String = SSSLoan_LV.Items(SSSLoan_LV.FocusedItem.Index).SubItems(3).Tag
         Dim IDX As Integer = SSSLoan_LV.Items(SSSLoan_LV.FocusedItem.Index).SubItems(2).Tag
-        Dim credit As Decimal = GetData("CREDIT", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'")
+        Dim credit As Decimal = GetData_Decimal("CREDIT", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'")
         Dim CollectedCredit As Decimal = GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC WHERE BIO_NO = '{bioNo}' and CATEGORY = 'SSS LOAN'")
         Dim totalCredit As Decimal = credit + CollectedCredit
         Dim balance As Decimal
 
         If CollectedCredit > 0 Then
-            balance = CDec(GetData("PRINCIPAL", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'")) - totalCredit
+            balance = CDec(GetData_Decimal("PRINCIPAL", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'")) - totalCredit
         Else
-            balance = CDec(GetData("BALANCE", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'"))
+            balance = CDec(GetData_Decimal("BALANCE", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'"))
         End If
 
         MsgBox("Balance               :  " & FormatNumber(balance), MsgBoxStyle.Information, "TOTAL")
@@ -454,15 +454,15 @@
 
         Dim bioNo As String = Pagibig_List.Items(Pagibig_List.FocusedItem.Index).SubItems(3).Tag
         Dim IDX As Integer = Pagibig_List.Items(Pagibig_List.FocusedItem.Index).SubItems(2).Tag
-        Dim credit As Decimal = GetData("CREDIT", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'")
+        Dim credit As Decimal = GetData_Decimal("CREDIT", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'")
         Dim CollectedCredit As Decimal = GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC WHERE BIO_NO = '{bioNo}' and CATEGORY = 'PAG-IBIG LOAN'")
         Dim totalCredit As Decimal = credit + CollectedCredit
         Dim balance As Decimal
 
         If CollectedCredit > 0 Then
-            balance = CDec(GetData("PRINCIPAL", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'")) - totalCredit
+            balance = CDec(GetData_Decimal("PRINCIPAL", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'")) - totalCredit
         Else
-            balance = CDec(GetData("BALANCE", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'"))
+            balance = CDec(GetData_Decimal("BALANCE", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'"))
         End If
 
         MsgBox("Balance               :  " & FormatNumber(balance), MsgBoxStyle.Information, "TOTAL")

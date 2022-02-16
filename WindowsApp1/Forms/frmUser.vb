@@ -1,6 +1,8 @@
 ﻿Public Class frmUser
 
     Dim user_id As Integer = 0
+    Dim allowMove As Boolean = False
+    Dim movePosition As New Point
 
     Private Sub Label2_Click(sender As Object, e As EventArgs) Handles Label2.Click
         Close()
@@ -12,6 +14,9 @@
         NewUser_txt.Clear()
         NewPass_txt.Clear()
         Confirm_txt.Clear()
+        For i As Integer = 0 To Access_CheckB.Items.Count - 1
+            Access_CheckB.SetItemChecked(i, False)
+        Next
     End Sub
 
     Private Sub GunaSave_btn_Click(sender As Object, e As EventArgs) Handles GunaSave_btn.Click
@@ -26,7 +31,6 @@
             Dim oldUser As String = GetData("USERNAME", $"PAYROLL_USER where USERNAME = '{SampleUser_txt.Text}'")
             Dim oldPass As String = GetData("PASSWORD", $"PAYROLL_USER where USERNAME = '{SampleUser_txt.Text}'")
 
-            'RunCommand($"DELETE FROM PAYROLL_USER WHERE ID NOT IN  ( SELECT * FROM PAYROLL_USER where ID = '{user_id}')")  'TO DELETE DUPLICATE IN PAYROLL_USER 
             RunCommand($"DELETE FROM PAYROLL_USER WHERE USER_FULLNAME = '{namee}' and USERNAME = '{oldUser}'  and PASSWORD = '{oldPass}' and ID <> '{user_id}'")  'TO DELETE DUPLICATE IN PAYROLL_USER 
         Else
             Replacing($"PAYROLL_USER where USERNAME = '{SampleUser_txt.Text}' AND PASSWORD = '{EncryptString(SamplePass_txt.Text)}';")
@@ -67,4 +71,20 @@
         Return True
     End Function
 
+    Private Sub frmUser_MouseDown(sender As Object, e As MouseEventArgs) Handles MyBase.MouseDown
+        allowMove = True
+        movePosition = New Point(e.X, e.Y)
+        Cursor = Cursors.SizeAll
+    End Sub
+
+    Private Sub frmUser_MouseMove(sender As Object, e As MouseEventArgs) Handles MyBase.MouseMove
+        If allowMove = True Then
+            Me.Location = New Point(Me.Location.X + e.X - movePosition.X, Me.Location.Y + e.Y - movePosition.Y)
+        End If
+    End Sub
+
+    Private Sub frmUser_MouseUp(sender As Object, e As MouseEventArgs) Handles MyBase.MouseUp
+        allowMove = False
+        Cursor = Cursors.Default
+    End Sub
 End Class

@@ -59,9 +59,11 @@
 
                 If Regular_RB.Checked = True Then
                     SaveHoliday(customizeDate, Name_TXT.Text, "REGULAR")
+                    UpdateAttendance(frmMainForm.Paydate, "REGHOLIDAY")
                     REGULDARHolidayLists(lvHoliday)
                 Else
                     SaveHoliday(customizeDate, Name_TXT.Text, "SPECIAL")
+                    UpdateAttendance(frmMainForm.Paydate, "SPECHOLIDAY")
                     SPECIALHolidayLists(lvHoliday)
                 End If
 
@@ -69,13 +71,17 @@
 
                 If Regular_RB.Checked = True Then
                     UpdateHoliday(customizeDate, Name_TXT.Text, "REGULAR")
+                    UpdateAttendance(frmMainForm.Paydate, "REGHOLIDAY")
                     REGULDARHolidayLists(lvHoliday)
                 Else
                     UpdateHoliday(customizeDate, Name_TXT.Text, "SPECIAL")
+                    UpdateAttendance(frmMainForm.Paydate, "SPECHOLIDAY")
                     SPECIALHolidayLists(lvHoliday)
                 End If
 
             End If
+
+            UpdatePayout(frmMainForm.Paydate)
 
             SaveLogs($"ADDED HOLIDAY - Name({Name_TXT.Text}), Date({Date_DTP.Value.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
         Else
@@ -149,7 +155,6 @@
             MsgBox("Holiday Rate Saved!", MsgBoxStyle.Information, "Information")
             HolidayRate(RegularRate_TXT, SpecialRate_TXT)
         End If
-
     End Sub
 
     Private Sub Rate_EmpSelect_BTN_Click(sender As Object, e As EventArgs) Handles Rate_EmpSelect_BTN.Click
@@ -204,7 +209,6 @@
     End Sub
 
     Private Sub Rate_BioNo_TXT_TextChanged(sender As Object, e As EventArgs) Handles Rate_BioNo_TXT.TextChanged
-
         If Rate_BioNo_TXT.Text = "" Then
             Rate_Employee_TXT.Text = ""
             Rate_EmpAmount_TXT.Text = ""
@@ -213,7 +217,6 @@
         Else
             Payout_Details(Rate_BioNo_TXT.Text, Rate_Employee_TXT, Rate_EmpAmount_TXT, RateFixYes_RB, MonthlyRate_TXT)
         End If
-
     End Sub
 
     Private Sub Rate_Branch_BTN_Click(sender As Object, e As EventArgs) Handles Rate_Branch_BTN.Click
@@ -430,7 +433,6 @@
                 MsgBox("Please Complete the information!", MsgBoxStyle.Information, "Information")
             End If
         End If
-
     End Sub
 
     Private Sub Allow_Schedule_Combo_SelectedIndexChanged(sender As Object, e As EventArgs)
@@ -442,7 +444,6 @@
             A_EveryDate_Combo.Visible = False
         End If
     End Sub
-
 
     Private Sub FlowLayoutPanel1_Paint(sender As Object, e As PaintEventArgs) Handles FlowLayoutPanel1.Paint
         Dim txtbox As TextBox = Nothing
@@ -495,14 +496,12 @@
     End Sub
 
     Private Sub Rate_EmpAmount_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Rate_EmpAmount_TXT.KeyPress
-
         If e.KeyChar <> ChrW(Keys.Back) Then
 
             If Not Char.IsNumber(e.KeyChar) AndAlso Not Char.IsControl(e.KeyChar) AndAlso Not e.KeyChar = "." Then
                 e.Handled = True
             End If
         End If
-
     End Sub
 
     Private Sub Rate_EmpAmount_TXT_TextChanged(sender As Object, e As EventArgs) Handles Rate_EmpAmount_TXT.TextChanged

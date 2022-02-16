@@ -19,8 +19,6 @@ Module SaveUpdate
             ds.Tables(0).Rows.Add(dsNewRow)
             SaveEntry(ds)
         End Using
-
-        MsgBox("New Holiday Added!", MsgBoxStyle.Information, "Information")
     End Sub
 
     Friend Sub UpdateHoliday(datee As String, namee As String, kinds As String)
@@ -116,6 +114,50 @@ Module SaveUpdate
                 SaveEntry(ds)
             End Using
         End If
+    End Sub
+
+    Friend Sub UpdateAttendance(paydate As String, column As String)
+        Dim total_holiday As Integer
+        Dim startt As Date = frmMainForm.starting
+        Dim endd As Date = frmMainForm.ending
+
+        If column = "REGHOLIDAY" Then
+            total_holiday = REGHolidayCount(startt, endd)
+        Else
+            total_holiday = SPECHolidayCount(startt, endd)
+        End If
+
+        Dim mysql As String = $"Select * FROM PAYROLL_ATTENDANCE where PAYDATE = '{paydate}'"
+        Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
+        If dss.Tables(0).Rows.Count > 0 Then
+            For Each dr In dss.Tables(0).Rows
+                With dr
+                    .Item(column) = total_holiday
+                End With
+                SaveEntry(dss, False)
+            Next
+        End If
+    End Sub
+
+    Friend Sub UpdatePayout(paydate As String)
+        Dim startt As Date = frmMainForm.starting
+        Dim endd As Date = frmMainForm.ending
+
+        Dim mysql As String = $"Select * FROM PAYROLL_ATTENDANCE where PAYDATE = '{paydate}'"
+        Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
+        If dss.Tables(0).Rows.Count > 0 Then
+            progressBarStart(dss.Tables(0).Rows.Count)
+            For Each dr In dss.Tables(0).Rows
+                With dr
+                    SavePayout_IndividualL(.item("BIOMETRICID"), .item("PAYDATE"), startt, endd)
+                End With
+
+                frmMainForm.AppProgressBar.Value += 1
+            Next
+            progressBarEnd()
+        End If
+
+        MsgBox("New Holiday Added and Payout Updated!", MsgBoxStyle.Information, "Information")
     End Sub
 
     Friend Sub SaveHOLIDAY_RATE(HOLIDAY As String, RATE As String)
@@ -865,7 +907,7 @@ Module SaveUpdate
 
                     Else '=============== HEAD OFFICE (BY AMORT)
 
-                        Dim sql_3 As String = $"Select * From PAYROLL_DEDUCTION WHERE BIO_NO = '{bioNo}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
+                        Dim sql_3 As String = $"Select Z.*, Z.id as idd From PAYROLL_DEDUCTION Z WHERE BIO_NO = '{bioNo}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
                         Using ds_3 As DataSet = LoadSQL(sql_3, "PAYROLL_DEDUCTION")
                             If ds_3.Tables(0).Rows.Count > 0 Then
                                 For Each dr_3 In ds_3.Tables(0).Rows
@@ -890,7 +932,7 @@ Module SaveUpdate
 
                                         End If
 
-                                        Save_Recorded_Allow_Deduc(bioNo, paydate_, .Item("CATEGORY"), amountt, "DEDUCTION", .Item("ID"))
+                                        Save_Recorded_Allow_Deduc(bioNo, paydate_, .Item("CATEGORY"), amountt, "DEDUCTION", .Item("idd"))
 
                                     End With
                                 Next
@@ -914,9 +956,9 @@ Module SaveUpdate
                     '============================================= IF NOT TRAINEE CALCULATE SBU ==================================================  
                     If noOf_days_training = 0 Then
 
-                        If Not SBU_BioNo_Exist(bioNo) Then
-                            SaveNew_SBU(bioNo, Company)
-                        End If
+                        'If Not SBU_BioNo_Exist(bioNo) Then
+                        '    SaveNew_SBU(bioNo, Company)
+                        'End If
 
                         If SBU_With_Balance(bioNo) Then
 
@@ -1447,6 +1489,7 @@ Module SaveUpdate
                 dss.Tables(0).Rows.Add(dsNewRow)
                 SaveEntry(dss)
 
+                If HO_CATEGORY.Contains("Photo") Then COMPANY = "PHOTO"
                 SaveNew_SBU(BIO_NO, COMPANY)
 
                 If group = False Then
@@ -1455,7 +1498,6 @@ Module SaveUpdate
 
             End Using
         End If
-
     End Sub
 
     Public Sub SaveNew_SBU(BIO_NO As String, COMPANY As String)
@@ -1481,6 +1523,7 @@ Module SaveUpdate
                 .Item("AMOUNT") = 250
                 .Item("CATEGORY") = "SBU"
                 .Item("PRINCIPAL") = PRINCIPAL
+                .Item("DATE_ADDED") = Date.Now
 
             End With
 
@@ -1818,5 +1861,10 @@ Module SaveUpdate
 
         End Using
     End Sub
+
+    Friend Sub SaveAdditionalDays(NumOfDays As String, paydate As String)
+
+    End Sub
+
 
 End Module

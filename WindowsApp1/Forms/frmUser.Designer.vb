@@ -167,9 +167,9 @@ Partial Class frmUser
         Me.Label1.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label1.Location = New System.Drawing.Point(60, 101)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(126, 27)
+        Me.Label1.Size = New System.Drawing.Size(75, 27)
         Me.Label1.TabIndex = 12
-        Me.Label1.Text = "Sample Password"
+        Me.Label1.Text = "Password"
         '
         'SamplePass_txt
         '
@@ -230,9 +230,9 @@ Partial Class frmUser
         Me.Label6.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label6.Location = New System.Drawing.Point(60, 59)
         Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(128, 27)
+        Me.Label6.Size = New System.Drawing.Size(77, 27)
         Me.Label6.TabIndex = 21
-        Me.Label6.Text = "Sample Username"
+        Me.Label6.Text = "Username"
         '
         'SampleUser_txt
         '
@@ -312,13 +312,13 @@ Partial Class frmUser
         '
         'Access_CheckB
         '
-        Me.Access_CheckB.BackColor = System.Drawing.SystemColors.AppWorkspace
+        Me.Access_CheckB.BackColor = System.Drawing.SystemColors.ButtonFace
         Me.Access_CheckB.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.Access_CheckB.CheckOnClick = True
         Me.Access_CheckB.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Access_CheckB.ForeColor = System.Drawing.Color.Black
         Me.Access_CheckB.FormattingEnabled = True
-        Me.Access_CheckB.Items.AddRange(New Object() {"Dashboard", "Employee", "Attendance", "Payout", "Loans", "Contribution", "Settings", "Report"})
+        Me.Access_CheckB.Items.AddRange(New Object() {"DTR Schedule", "Employee", "Attendance", "Payout", "Loans", "Contribution", "Settings", "Report"})
         Me.Access_CheckB.Location = New System.Drawing.Point(553, 77)
         Me.Access_CheckB.Name = "Access_CheckB"
         Me.Access_CheckB.Size = New System.Drawing.Size(139, 224)
@@ -328,7 +328,7 @@ Partial Class frmUser
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.BackColor = System.Drawing.SystemColors.AppWorkspace
+        Me.BackColor = System.Drawing.SystemColors.ButtonFace
         Me.ClientSize = New System.Drawing.Size(757, 370)
         Me.Controls.Add(Me.Access_CheckB)
         Me.Controls.Add(Me.Label8)

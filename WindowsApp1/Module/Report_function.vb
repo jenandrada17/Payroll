@@ -672,7 +672,7 @@ Module Report_function
         End With
 
         mysql = $"Select * From PAYROLL_PAYOUT INNER JOIN PAYROLL_EMPLOYEE ON BIO_NO = BIOMETRIC_ID       
-                                        WHERE PAYDATE = '{paydate}' and {str} ORDER BY FULLNAME"
+                                        WHERE PAYDATE = '{paydate}' and {str} and SSS_COMP <> 0 ORDER BY FULLNAME"
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
             If ds.Tables(0).Rows.Count > 0 Then
@@ -765,7 +765,7 @@ Module Report_function
         End With
 
         mysql = $"Select * From PAYROLL_PAYOUT INNER JOIN PAYROLL_EMPLOYEE ON BIO_NO = BIOMETRIC_ID       
-                                        WHERE PAYDATE = '{paydate}' and {str}  ORDER BY FULLNAME"
+                                        WHERE PAYDATE = '{paydate}' and {str} and PAGIBIG_COMP <> 0 ORDER BY FULLNAME"
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
             If ds.Tables(0).Rows.Count > 0 Then
@@ -809,7 +809,7 @@ Module Report_function
         End With
 
         mysql = $"Select * From PAYROLL_PAYOUT INNER JOIN PAYROLL_EMPLOYEE ON BIO_NO = BIOMETRIC_ID       
-                                        WHERE PAYDATE = '{paydate}' and {str}  ORDER BY FULLNAME"
+                                        WHERE PAYDATE = '{paydate}' and {str} and PHILHEALTH_COMP <> 0 ORDER BY FULLNAME"
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
             If ds.Tables(0).Rows.Count > 0 Then
@@ -860,8 +860,6 @@ Module Report_function
 
         Return list_String
     End Function
-
-    'Has_Rows_Delete("PAYROLL_EMPLOYEE")
 
     Public Sub Check_This()
 
@@ -1075,7 +1073,6 @@ Module Report_function
 
             ds.Tables(0).Rows.Add(dsNew)
             SaveEntry(ds)
-
         End Using
     End Sub
 

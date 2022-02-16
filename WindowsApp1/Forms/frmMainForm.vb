@@ -8,6 +8,7 @@ Public Class frmMainForm
     Public Paydate As DateTime
     Public CommandLine As String
     Public DAYS_COUNT As Integer = 0
+    Public starting, ending As Date
 
     Private Sub frmMainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
@@ -32,10 +33,16 @@ Public Class frmMainForm
             Paydate = EndNineteen.AddDays(12)
             startt = StartNineteen.AddDays(1)
             endd = EndNineteen
+
+            starting = StartNineteen.AddDays(1)
+            ending = EndNineteen
         Else
             Paydate = New DateTime(EndFour.Year, EndFour.Month, DateTime.DaysInMonth(EndFour.Year, EndFour.Month))
             startt = StartFour.AddDays(1)
             endd = EndFour
+
+            starting = StartFour.AddDays(1)
+            ending = EndFour
         End If
 
         '=================== COUNT STANDARD DAYS ==================

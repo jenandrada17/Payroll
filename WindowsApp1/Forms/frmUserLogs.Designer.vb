@@ -28,6 +28,8 @@ Partial Class frmUserLogs
         Me.ColumnHeader3 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Close_LBL = New System.Windows.Forms.Label()
+        Me.Search_TXT = New System.Windows.Forms.TextBox()
+        Me.Search_BTN = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'lvLogs
@@ -40,10 +42,10 @@ Partial Class frmUserLogs
         Me.lvLogs.FullRowSelect = True
         Me.lvLogs.GridLines = True
         Me.lvLogs.HideSelection = False
-        Me.lvLogs.Location = New System.Drawing.Point(8, 44)
+        Me.lvLogs.Location = New System.Drawing.Point(8, 92)
         Me.lvLogs.MultiSelect = False
         Me.lvLogs.Name = "lvLogs"
-        Me.lvLogs.Size = New System.Drawing.Size(1155, 583)
+        Me.lvLogs.Size = New System.Drawing.Size(1155, 577)
         Me.lvLogs.TabIndex = 33
         Me.lvLogs.UseCompatibleStateImageBehavior = False
         Me.lvLogs.View = System.Windows.Forms.View.Details
@@ -83,11 +85,31 @@ Partial Class frmUserLogs
         Me.Close_LBL.TabIndex = 78
         Me.Close_LBL.Text = "Close"
         '
+        'Search_TXT
+        '
+        Me.Search_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Search_TXT.Location = New System.Drawing.Point(8, 53)
+        Me.Search_TXT.Name = "Search_TXT"
+        Me.Search_TXT.Size = New System.Drawing.Size(368, 33)
+        Me.Search_TXT.TabIndex = 105
+        '
+        'Search_BTN
+        '
+        Me.Search_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Search_BTN.Location = New System.Drawing.Point(382, 53)
+        Me.Search_BTN.Name = "Search_BTN"
+        Me.Search_BTN.Size = New System.Drawing.Size(108, 33)
+        Me.Search_BTN.TabIndex = 106
+        Me.Search_BTN.Text = "Search"
+        Me.Search_BTN.UseVisualStyleBackColor = True
+        '
         'frmUserLogs
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1175, 680)
+        Me.Controls.Add(Me.Search_TXT)
+        Me.Controls.Add(Me.Search_BTN)
         Me.Controls.Add(Me.Close_LBL)
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.lvLogs)
@@ -105,4 +127,6 @@ Partial Class frmUserLogs
     Friend WithEvents Label1 As Label
     Friend WithEvents Close_LBL As Label
     Friend WithEvents ColumnHeader3 As ColumnHeader
+    Friend WithEvents Search_TXT As TextBox
+    Friend WithEvents Search_BTN As Button
 End Class

@@ -36,6 +36,11 @@ Partial Class frmAttendance
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Attendance_Tab = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.Label36 = New System.Windows.Forms.Label()
+        Me.Panel4 = New System.Windows.Forms.Panel()
+        Me.AddDaysCancel_btn = New System.Windows.Forms.Button()
+        Me.AddDaysSavebtn = New System.Windows.Forms.Button()
+        Me.AddDays_Numeric = New System.Windows.Forms.NumericUpDown()
         Me.Biometric_LV = New System.Windows.Forms.ListView()
         Me.ColumnHeader17 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader18 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -180,6 +185,8 @@ Partial Class frmAttendance
         CType(Me.dtr_all, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Attendance_Tab.SuspendLayout()
         Me.TabPage1.SuspendLayout()
+        Me.Panel4.SuspendLayout()
+        CType(Me.AddDays_Numeric, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Manual_Tab.SuspendLayout()
         Me.Panel3.SuspendLayout()
         CType(Me.AM_OT_NUP, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -236,6 +243,8 @@ Partial Class frmAttendance
         '
         'TabPage1
         '
+        Me.TabPage1.Controls.Add(Me.Label36)
+        Me.TabPage1.Controls.Add(Me.Panel4)
         Me.TabPage1.Controls.Add(Me.Biometric_LV)
         Me.TabPage1.Controls.Add(Me.Search_TXT)
         Me.TabPage1.Controls.Add(Me.Search_BTN)
@@ -252,6 +261,61 @@ Partial Class frmAttendance
         Me.TabPage1.TabIndex = 1
         Me.TabPage1.Text = "    Biometric    "
         Me.TabPage1.UseVisualStyleBackColor = True
+        '
+        'Label36
+        '
+        Me.Label36.AutoSize = True
+        Me.Label36.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label36.Location = New System.Drawing.Point(991, 3)
+        Me.Label36.Name = "Label36"
+        Me.Label36.Size = New System.Drawing.Size(140, 25)
+        Me.Label36.TabIndex = 117
+        Me.Label36.Text = "Additional Day for PI"
+        Me.Label36.Visible = False
+        '
+        'Panel4
+        '
+        Me.Panel4.BackColor = System.Drawing.Color.LightSalmon
+        Me.Panel4.Controls.Add(Me.AddDaysCancel_btn)
+        Me.Panel4.Controls.Add(Me.AddDaysSavebtn)
+        Me.Panel4.Controls.Add(Me.AddDays_Numeric)
+        Me.Panel4.Location = New System.Drawing.Point(996, 31)
+        Me.Panel4.Name = "Panel4"
+        Me.Panel4.Size = New System.Drawing.Size(149, 48)
+        Me.Panel4.TabIndex = 116
+        Me.Panel4.Visible = False
+        '
+        'AddDaysCancel_btn
+        '
+        Me.AddDaysCancel_btn.Font = New System.Drawing.Font("Dubai", 8.249999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.AddDaysCancel_btn.Location = New System.Drawing.Point(66, 7)
+        Me.AddDaysCancel_btn.Name = "AddDaysCancel_btn"
+        Me.AddDaysCancel_btn.Size = New System.Drawing.Size(37, 34)
+        Me.AddDaysCancel_btn.TabIndex = 117
+        Me.AddDaysCancel_btn.Text = "✖"
+        Me.AddDaysCancel_btn.UseVisualStyleBackColor = True
+        '
+        'AddDaysSavebtn
+        '
+        Me.AddDaysSavebtn.Font = New System.Drawing.Font("Dubai", 8.249999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.AddDaysSavebtn.Location = New System.Drawing.Point(104, 7)
+        Me.AddDaysSavebtn.Name = "AddDaysSavebtn"
+        Me.AddDaysSavebtn.Size = New System.Drawing.Size(37, 34)
+        Me.AddDaysSavebtn.TabIndex = 116
+        Me.AddDaysSavebtn.Text = " ✔"
+        Me.AddDaysSavebtn.UseVisualStyleBackColor = True
+        '
+        'AddDays_Numeric
+        '
+        Me.AddDays_Numeric.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.AddDays_Numeric.Increment = New Decimal(New Integer() {5, 0, 0, 65536})
+        Me.AddDays_Numeric.Location = New System.Drawing.Point(7, 7)
+        Me.AddDays_Numeric.Maximum = New Decimal(New Integer() {5, 0, 0, 0})
+        Me.AddDays_Numeric.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
+        Me.AddDays_Numeric.Name = "AddDays_Numeric"
+        Me.AddDays_Numeric.Size = New System.Drawing.Size(49, 35)
+        Me.AddDays_Numeric.TabIndex = 0
+        Me.AddDays_Numeric.Value = New Decimal(New Integer() {1, 0, 0, 0})
         '
         'Biometric_LV
         '
@@ -304,17 +368,17 @@ Partial Class frmAttendance
         'Search_TXT
         '
         Me.Search_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Search_TXT.Location = New System.Drawing.Point(383, 87)
+        Me.Search_TXT.Location = New System.Drawing.Point(298, 98)
         Me.Search_TXT.Name = "Search_TXT"
-        Me.Search_TXT.Size = New System.Drawing.Size(368, 33)
+        Me.Search_TXT.Size = New System.Drawing.Size(281, 33)
         Me.Search_TXT.TabIndex = 103
         '
         'Search_BTN
         '
         Me.Search_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Search_BTN.Location = New System.Drawing.Point(759, 87)
+        Me.Search_BTN.Location = New System.Drawing.Point(585, 97)
         Me.Search_BTN.Name = "Search_BTN"
-        Me.Search_BTN.Size = New System.Drawing.Size(82, 33)
+        Me.Search_BTN.Size = New System.Drawing.Size(78, 33)
         Me.Search_BTN.TabIndex = 104
         Me.Search_BTN.Text = "Search"
         Me.Search_BTN.UseVisualStyleBackColor = True
@@ -323,7 +387,7 @@ Partial Class frmAttendance
         '
         Me.Label20.AutoSize = True
         Me.Label20.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label20.Location = New System.Drawing.Point(6, 91)
+        Me.Label20.Location = New System.Drawing.Point(6, 101)
         Me.Label20.Name = "Label20"
         Me.Label20.Size = New System.Drawing.Size(98, 25)
         Me.Label20.TabIndex = 11
@@ -332,9 +396,9 @@ Partial Class frmAttendance
         'Button1
         '
         Me.Button1.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button1.Location = New System.Drawing.Point(1046, 96)
+        Me.Button1.Location = New System.Drawing.Point(669, 97)
         Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(87, 33)
+        Me.Button1.Size = New System.Drawing.Size(82, 33)
         Me.Button1.TabIndex = 9
         Me.Button1.Text = "Refresh"
         Me.Button1.UseVisualStyleBackColor = True
@@ -343,9 +407,9 @@ Partial Class frmAttendance
         '
         Me.Paydate_ComboB.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Paydate_ComboB.FormattingEnabled = True
-        Me.Paydate_ComboB.Location = New System.Drawing.Point(111, 87)
+        Me.Paydate_ComboB.Location = New System.Drawing.Point(111, 97)
         Me.Paydate_ComboB.Name = "Paydate_ComboB"
-        Me.Paydate_ComboB.Size = New System.Drawing.Size(197, 33)
+        Me.Paydate_ComboB.Size = New System.Drawing.Size(153, 33)
         Me.Paydate_ComboB.TabIndex = 8
         '
         'Import_BTN
@@ -1719,6 +1783,8 @@ Partial Class frmAttendance
         Me.Attendance_Tab.ResumeLayout(False)
         Me.TabPage1.ResumeLayout(False)
         Me.TabPage1.PerformLayout()
+        Me.Panel4.ResumeLayout(False)
+        CType(Me.AddDays_Numeric, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Manual_Tab.ResumeLayout(False)
         Me.Manual_Tab.PerformLayout()
         Me.Panel3.ResumeLayout(False)
@@ -1898,4 +1964,9 @@ Partial Class frmAttendance
     Friend WithEvents Label35 As Label
     Friend WithEvents Panel3 As Panel
     Friend WithEvents Cancel_lbl As Label
+    Friend WithEvents Panel4 As Panel
+    Friend WithEvents AddDaysCancel_btn As Button
+    Friend WithEvents AddDaysSavebtn As Button
+    Friend WithEvents AddDays_Numeric As NumericUpDown
+    Friend WithEvents Label36 As Label
 End Class

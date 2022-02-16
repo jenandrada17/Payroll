@@ -975,42 +975,13 @@ Public Class frmNewEmployee
         End If
     End Sub
 
-    'Private Sub FlowLayoutPanel1_Paint(sender As Object, e As PaintEventArgs) Handles FlowLayoutPanel1.Paint
-    '    If Bio_TXT.Text = Nothing Then
-    '        Dim textbox As TextBox = Nothing
-    '        Dim combo As ComboBox = Nothing
-    '        Dim datepicker As DateTimePicker = Nothing
-    '        For Each xObject As Object In FlowLayoutPanel1.Controls
-    '            If TypeOf xObject Is TextBox Then
-    '                textbox = xObject
-    '                Dim p As New Pen(Color.Red, 2)
-    '                e.Graphics.DrawRectangle(p, New Rectangle(textbox.Location + New Size(1, 1), textbox.Size - New Size(2, 2)))
-    '                p.Dispose()
-    '            ElseIf TypeOf xObject Is ComboBox Then
-    '                If xObject.visible = True Then
-    '                    combo = xObject
-    '                    Dim p As New Pen(Color.Red, 2)
-    '                    e.Graphics.DrawRectangle(p, New Rectangle(combo.Location + New Size(1, 1), combo.Size - New Size(2, 2)))
-    '                    p.Dispose()
-    '                End If
-    '            ElseIf TypeOf xObject Is DateTimePicker Then
-    '                datepicker = xObject
-    '                Dim p As New Pen(Color.Red, 2)
-    '                e.Graphics.DrawRectangle(p, New Rectangle(datepicker.Location + New Size(1, 1), datepicker.Size - New Size(2, 2)))
-    '                p.Dispose()
-    '            End If
-    '        Next
-    '    End If
-    'End Sub
-
-
     Private Sub Add_Company_CB_TextChanged_1(sender As Object, e As EventArgs) Handles Position_Combo.TextChanged, HO_Category.TextChanged, ComCategory_Combo.TextChanged, Branch_ComboB.TextChanged, Add_Company_CB.TextChanged
         'Dim selectionStart As Integer = sender.SelectionStart
 
         'sender.Text = sender.Text.ToUpper()
         'sender.SelectionStart = selectionStart 
 
-        If Add_Company_CB.SelectedItem = "HEAD OFFICE" Then
+        If Add_Company_CB.SelectedIndex = 4 Then
 
             Label4.Visible = False
             Branch_ComboB.Visible = False
@@ -1024,7 +995,7 @@ Public Class frmNewEmployee
             HO_Category.Visible = True
 
 
-        ElseIf Add_Company_CB.SelectedItem = "PHOTO" Then
+        ElseIf Add_Company_CB.SelectedIndex = 0 Then
 
             Label19.Visible = False
             HO_Category.Visible = False

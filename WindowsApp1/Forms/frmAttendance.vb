@@ -23,6 +23,11 @@ Public Class frmAttendance
     Dim DtSet As System.Data.DataSet
     Dim MyCommand As System.Data.OleDb.OleDbDataAdapter
 
+    'eApp = New Excel.Application
+    '    eBook = eApp.Workbooks.Open(Path_TXT.Text)
+    '    eSheet = eBook.Worksheets(1)
+    '    eCell = eSheet.UsedRange
+
     Private Sub frmAttendance_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
         LoadDateTime()
@@ -1022,39 +1027,12 @@ Public Class frmAttendance
                     ElseIf time >= TIME_OUT.AddHours(-1).ToShortTimeString Then
                         list_hour(3) = time.ToString("t")
 
-                        '|||||||||||||||||||||||||||||||||||||||||||||||||||| REFER TO ELSE JANUARY 19, 2022  |||||||||||||||||||||||||||||||||||
-                        'ElseIf time >= TIME_IN.AddHours(5).ToShortTimeString And time <= TIME_IN.AddHours(7).AddMinutes(-1).ToShortTimeString Then
-                        '    If list_hour(2) = "" Then
-
-                        '        list_hour(2) = time.ToString("t")
-                        '    Else
-                        '        list_hour(3) = time.ToString("t")
-                        '    End If
-
                     ElseIf (time >= "12:00 PM" And time <= "12:59 PM") Or (time >= TIME_IN.AddHours(4).ToShortTimeString And time <= TIME_IN.AddHours(5).AddMinutes(-1).ToShortTimeString) Then
-                        'ElseIf (time >= "12:00 PM" Or time >= TIME_IN.AddHours(4).ToShortTimeString) And (time <= "12:59 PM" Or time <= TIME_IN.AddHours(5).AddMinutes(-1).ToShortTimeString) Then
-
-                        'Dim breaktime As DateTime = TIME_IN.AddHours(4)
-                        'Dim oldValuee As DateTime = dateTime
-                        'Dim newValuee As String = oldValuee.ToString("d") & " " & oldValuee..Hours
-                        'Dim val As String = oldValuee.ToString("d") & " " & breaktime.TimeOfDay.Hours
-
-                        'If time >= "12:00 PM" And time <= "12:59 PM" Then
-                        '    newValuee = oldValuee.ToString("d") & " " & oldValuee.TimeOfDay.Hours
-                        '    val = oldValuee.ToString("d") & " " & "12"
-                        'End If
 
                         Dim breaktime As DateTime = TIME_IN.AddHours(4)
                         Dim oldValuee As DateTime = dateTime
                         Dim newValuee As String = oldValuee.ToString("d") & " " & oldValuee.Hour
                         Dim val As String = oldValuee.ToString("d") & " " & breaktime.Hour
-
-                        Dim VALUE = oldValuee.Hour
-                        Dim VALUEE = breaktime.Hour
-
-                        'If time >= "12:00 PM" And time <= "12:59 PM" Then
-                        '    val = oldValuee.ToString("d") & " " & "12"
-                        'End If
 
                         If newValuee = val Then
 
@@ -1105,7 +1083,6 @@ Public Class frmAttendance
 
                         End If
                     Else
-                        'list_hour(1) = time.ToString("t")
 
                         '||||||||||||||||||||||||||||||||||||| NEWLY ADDED JANUARY 19, 2022 ||||||||||||||||||||||| 
                         If list_hour(1) = "" Then
@@ -1524,6 +1501,9 @@ Public Class frmAttendance
         End If
     End Sub
 
+    Private Sub AddDaysSavebtn_Click(sender As Object, e As EventArgs) Handles AddDaysSavebtn.Click
+
+    End Sub
 
     Private Sub Cancel_lbl_Click(sender As Object, e As EventArgs) Handles Cancel_lbl.Click
         AM_OT_NUP.Value = 0.0
