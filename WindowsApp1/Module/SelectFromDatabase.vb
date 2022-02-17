@@ -1158,6 +1158,22 @@ Module SelectFromDatabase
         End While
     End Sub
 
+    Public Sub PopulatePaydate_Monthly(combo As ComboBox, table As String, column As String)
+        combo.Items.Clear()
+
+        Dim sql As String = $"Select EXTRACT(MONTH from PAYDATE) as monthh,  EXTRACT(YEAR from PAYDATE) as yearr from {table} GROUP BY yearr, monthh"
+        Using ds As DataSet = LoadSQL(sql)
+            If ds.Tables(0).Rows.Count > 0 Then
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+                        Dim datee As New DateTime(.Item("yearr"), .Item("monthh"), 1)
+                        combo.Items.Add(datee.ToString("MMMM yyyy"))
+                    End With
+                Next
+            End If
+        End Using
+    End Sub
+
     Public Function CountCELL_Nothing(row As DataGridViewRow) As Integer
         Dim count As New Integer
         If Not row.DefaultCellStyle.ForeColor = Color.Red And row.Cells(5).Value = True Then
@@ -2443,7 +2459,7 @@ Module SelectFromDatabase
 
     Public Function GetCount_Common(whereString As String) As Integer
         Dim countt As Integer = 0
-        Dim mysql As String = $"Select Count(*) as Countt From PAYROLL_EMPLOYEE {whereString} where EMP_STATUS = 'ACTIVE'"
+        Dim mysql As String = $"Select Count(*) as Countt From PAYROLL_EMPLOYEE {whereString} and EMP_STATUS = 'ACTIVE'"
         Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
         If ds.Tables(0).Rows.Count > 0 Then
             Dim dr As DataRow = ds.Tables(0).Rows(0)
@@ -2456,7 +2472,7 @@ Module SelectFromDatabase
 
     Public Function GetDistinctCount(column As String, whereString As String) As Integer
         Dim countt As Integer = 0
-        Dim mysql As String = $"Select Count(distinct {column}) as Countt From PAYROLL_EMPLOYEE {whereString} where EMP_STATUS = 'ACTIVE'"
+        Dim mysql As String = $"Select Count(distinct {column}) as Countt From PAYROLL_EMPLOYEE {whereString} and EMP_STATUS = 'ACTIVE'"
         Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
         If ds.Tables(0).Rows.Count > 0 Then
             Dim dr As DataRow = ds.Tables(0).Rows(0)

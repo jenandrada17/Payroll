@@ -181,7 +181,7 @@ Public Class frmMainForm
     End Sub
 
 
-    Private Sub ConnectToDatabaseToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ConnectToDatabaseToolStripMenuItem.Click
+    Private Sub ConnectToDatabaseToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ConnectToDatabase_Menu.Click
         Using conSettings As New ServerSettings
             conSettings.ShowDialog()
         End Using
@@ -194,20 +194,20 @@ Public Class frmMainForm
         End Using
     End Sub
 
-    Private Sub UserLogsMenuItem_Click(sender As Object, e As EventArgs) Handles UserLogsMenuItem.Click
+    Private Sub UserLogsMenuItem_Click(sender As Object, e As EventArgs) Handles UserLogs_Menu.Click
         OpenWindowsForm("frmUserLogs")
     End Sub
 
-    Private Sub ExitToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ExitToolStripMenuItem.Click
+    Private Sub ExitToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles Exit_Menu.Click
         Close()
     End Sub
 
-    Private Sub ChangePasswordToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ChangePasswordToolStripMenuItem.Click
+    Private Sub ChangePasswordToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ChangeUserInfo_Menu.Click
         Dim form As New frmUser
         form.ShowDialog()
     End Sub
 
-    Private Sub ImportEmployeeScheduleHRToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ImportEmployeeScheduleHRToolStripMenuItem.Click
+    Private Sub ImportEmployeeScheduleHRToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles Schedule_Menu.Click
         'OpenWindowsForm("frmSchedule")
     End Sub
 
@@ -228,6 +228,7 @@ Public Class frmMainForm
     End Sub
 
     Friend Sub Accessibility(idx As String)
+
         For Each btn As Button In NavagationPanel.Controls.OfType(Of Button)()
             Dim mysql As String = $"Select * FROM PAYROLL_ACCESSIBILITY where USER_ID = '{idx}'"
             Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ACCESSIBILITY")
@@ -242,6 +243,24 @@ Public Class frmMainForm
                 End If
             End Using
         Next
+
+        Dim mysqll As String = $"Select * FROM PAYROLL_ACCESSIBILITY where USER_ID = '{idx}'"
+        Using dss As DataSet = LoadSQL(mysqll, "PAYROLL_ACCESSIBILITY")
+            If dss.Tables(0).Rows.Count > 0 Then
+                For Each drr In dss.Tables(0).Rows
+                    With drr
+
+                        If ChangeUserInfo_Menu.AccessibleName = .Item("FUNCTION") Then
+                            ChangeUserInfo_Menu.Visible = False
+                        ElseIf UserLogs_Menu.AccessibleName = .Item("FUNCTION") Then
+                            UserLogs_Menu.Visible = False
+                        End If
+
+                    End With
+                Next
+            End If
+        End Using
+
     End Sub
 
 End Class

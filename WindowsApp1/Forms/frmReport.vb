@@ -14,7 +14,8 @@ Public Class frmReport
         PopulateComboBox_Any(Rem_Paydate_Combo, "PAYROLL_PAYOUT", "PAYDATE")
         PopulateComboBox(CostPaydate_Combo, "PAYROLL_PAYOUT", "PAYDATE")
         PopulateComboBox(LoanPaydate_Combo, "PAYROLL_PAYOUT", "PAYDATE")
-        PopulateComboBox(PI_Paydate_Combo, "RECORDED_ALLOW_DEDUC", "PAYDATE")
+        'PopulateComboBox(PI_Paydate_Combo, "RECORDED_ALLOW_DEDUC", "PAYDATE")
+        PopulatePaydate_Monthly(PI_Paydate_Combo, "RECORDED_ALLOW_DEDUC", "PAYDATE")
         Lists_Deduction_History(SBUHistory_List, "SBU")
         Lists_Deduction_History(DeducHistory_List, "DEDUCTION")
 
@@ -511,7 +512,6 @@ Public Class frmReport
         Save_PERCENTAGE(0, 0, 0, 0, 0, 0, 0, 0, LEASING_P, "LEASING")
 
     End Sub
-
 
     Public Sub LoadCommonNETPAY_Print()
 
@@ -1464,7 +1464,8 @@ Public Class frmReport
     Public Sub LoadPI()
 
         Rpt_PI.LocalReport.DataSources.Clear()
-        Dim PAYDATE As DateTime = PI_Paydate_Combo.Text
+        Dim PAYDATE_start As DateTime = PI_Paydate_Combo.Text
+        Dim PAYDATE_end As New DateTime(PAYDATE_start.Year, PAYDATE_start.Month, System.DateTime.DaysInMonth(PAYDATE_start.Year, PAYDATE_start.Month))
 
         Try
 
@@ -1477,7 +1478,7 @@ Public Class frmReport
             End With
 
             Dim mysql As String = $"Select * From RECORDED_ALLOW_DEDUC A INNER JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIO_NO       
-                                        WHERE PAYDATE = '{PI_Paydate_Combo.Text}' AND UPPER(CATEGORY) = 'PERFORMANCE INCENTIVES' ORDER BY FULLNAME"
+                                        WHERE UPPER(CATEGORY) = 'PERFORMANCE INCENTIVES' AND  PAYDATE BETWEEN '{PAYDATE_start.AddDays(14).ToShortDateString}' AND '{PAYDATE_end.ToShortDateString}' ORDER BY FULLNAME, PAYDATE"
 
             Using ds As DataSet = LoadSQL(mysql, "RECORDED_ALLOW_DEDUC")
                 If ds.Tables(0).Rows.Count > 0 Then
@@ -1503,7 +1504,7 @@ Public Class frmReport
             End Using
 
             Dim DATASOURCE As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt_PI)
-            Dim FORMNAME As String = $"List of Performance Incentives - {PAYDATE.ToString("MMMM dd, yyyy")}"
+            Dim FORMNAME As String = $"List of Performance Incentives - {PI_Paydate_Combo.Text}"
 
             Dim paramList As New List(Of Microsoft.Reporting.WinForms.ReportParameter) From {
                     New Microsoft.Reporting.WinForms.ReportParameter("paramFormName", FORMNAME)

@@ -39,12 +39,12 @@ Partial Class frmMainForm
         Me.AppDateTime = New System.Windows.Forms.Label()
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.FileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ImportEmployeeScheduleHRToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ConnectToDatabaseToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ChangePasswordToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.UserLogsMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.Schedule_Menu = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ConnectToDatabase_Menu = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ChangeUserInfo_Menu = New System.Windows.Forms.ToolStripMenuItem()
+        Me.UserLogs_Menu = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
-        Me.ExitToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.Exit_Menu = New System.Windows.Forms.ToolStripMenuItem()
         Me.AboutUsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.UserName_LBL = New System.Windows.Forms.Label()
         Me.Dashboard_BTN = New System.Windows.Forms.Button()
@@ -281,53 +281,55 @@ Partial Class frmMainForm
         Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileToolStripMenuItem, Me.AboutUsToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(-5, 80)
         Me.MenuStrip1.Name = "MenuStrip1"
-        Me.MenuStrip1.Size = New System.Drawing.Size(113, 24)
+        Me.MenuStrip1.Size = New System.Drawing.Size(233, 24)
         Me.MenuStrip1.TabIndex = 3
         Me.MenuStrip1.Text = "MenuStrip1"
         '
         'FileToolStripMenuItem
         '
-        Me.FileToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ImportEmployeeScheduleHRToolStripMenuItem, Me.ConnectToDatabaseToolStripMenuItem, Me.ChangePasswordToolStripMenuItem, Me.UserLogsMenuItem, Me.ToolStripSeparator1, Me.ExitToolStripMenuItem})
+        Me.FileToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.Schedule_Menu, Me.ConnectToDatabase_Menu, Me.ChangeUserInfo_Menu, Me.UserLogs_Menu, Me.ToolStripSeparator1, Me.Exit_Menu})
         Me.FileToolStripMenuItem.ForeColor = System.Drawing.Color.White
         Me.FileToolStripMenuItem.Name = "FileToolStripMenuItem"
         Me.FileToolStripMenuItem.Size = New System.Drawing.Size(37, 20)
         Me.FileToolStripMenuItem.Text = "&File"
         '
-        'ImportEmployeeScheduleHRToolStripMenuItem
+        'Schedule_Menu
         '
-        Me.ImportEmployeeScheduleHRToolStripMenuItem.Name = "ImportEmployeeScheduleHRToolStripMenuItem"
-        Me.ImportEmployeeScheduleHRToolStripMenuItem.Size = New System.Drawing.Size(208, 22)
-        Me.ImportEmployeeScheduleHRToolStripMenuItem.Text = "Employee's DTR Schedule"
-        Me.ImportEmployeeScheduleHRToolStripMenuItem.Visible = False
+        Me.Schedule_Menu.Name = "Schedule_Menu"
+        Me.Schedule_Menu.Size = New System.Drawing.Size(208, 22)
+        Me.Schedule_Menu.Text = "Employee's DTR Schedule"
+        Me.Schedule_Menu.Visible = False
         '
-        'ConnectToDatabaseToolStripMenuItem
+        'ConnectToDatabase_Menu
         '
-        Me.ConnectToDatabaseToolStripMenuItem.Name = "ConnectToDatabaseToolStripMenuItem"
-        Me.ConnectToDatabaseToolStripMenuItem.Size = New System.Drawing.Size(208, 22)
-        Me.ConnectToDatabaseToolStripMenuItem.Text = "&Connect to Database"
+        Me.ConnectToDatabase_Menu.Name = "ConnectToDatabase_Menu"
+        Me.ConnectToDatabase_Menu.Size = New System.Drawing.Size(208, 22)
+        Me.ConnectToDatabase_Menu.Text = "&Connect to Database"
         '
-        'ChangePasswordToolStripMenuItem
+        'ChangeUserInfo_Menu
         '
-        Me.ChangePasswordToolStripMenuItem.Name = "ChangePasswordToolStripMenuItem"
-        Me.ChangePasswordToolStripMenuItem.Size = New System.Drawing.Size(208, 22)
-        Me.ChangePasswordToolStripMenuItem.Text = "Change User Details"
+        Me.ChangeUserInfo_Menu.AccessibleName = "Change User Details"
+        Me.ChangeUserInfo_Menu.Name = "ChangeUserInfo_Menu"
+        Me.ChangeUserInfo_Menu.Size = New System.Drawing.Size(208, 22)
+        Me.ChangeUserInfo_Menu.Text = "Change User Details"
         '
-        'UserLogsMenuItem
+        'UserLogs_Menu
         '
-        Me.UserLogsMenuItem.Name = "UserLogsMenuItem"
-        Me.UserLogsMenuItem.Size = New System.Drawing.Size(208, 22)
-        Me.UserLogsMenuItem.Text = "User Logs"
+        Me.UserLogs_Menu.AccessibleName = "User Logs"
+        Me.UserLogs_Menu.Name = "UserLogs_Menu"
+        Me.UserLogs_Menu.Size = New System.Drawing.Size(208, 22)
+        Me.UserLogs_Menu.Text = "User Logs"
         '
         'ToolStripSeparator1
         '
         Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
         Me.ToolStripSeparator1.Size = New System.Drawing.Size(205, 6)
         '
-        'ExitToolStripMenuItem
+        'Exit_Menu
         '
-        Me.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem"
-        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(208, 22)
-        Me.ExitToolStripMenuItem.Text = "&Exit"
+        Me.Exit_Menu.Name = "Exit_Menu"
+        Me.Exit_Menu.Size = New System.Drawing.Size(208, 22)
+        Me.Exit_Menu.Text = "&Exit"
         '
         'AboutUsToolStripMenuItem
         '
@@ -555,9 +557,9 @@ Partial Class frmMainForm
     Friend WithEvents PictureBox1 As PictureBox
     Friend WithEvents MenuStrip1 As MenuStrip
     Friend WithEvents FileToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents ConnectToDatabaseToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ConnectToDatabase_Menu As ToolStripMenuItem
     Friend WithEvents ToolStripSeparator1 As ToolStripSeparator
-    Friend WithEvents ExitToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents Exit_Menu As ToolStripMenuItem
     Friend WithEvents AboutUsToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents UserName_LBL As Label
     Friend WithEvents Dashboard_BTN As Button
@@ -585,7 +587,7 @@ Partial Class frmMainForm
     Friend WithEvents PictureBox9 As PictureBox
     Friend WithEvents PictureBox8 As PictureBox
     Friend WithEvents PictureBox7 As PictureBox
-    Friend WithEvents UserLogsMenuItem As ToolStripMenuItem
-    Friend WithEvents ChangePasswordToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents ImportEmployeeScheduleHRToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents UserLogs_Menu As ToolStripMenuItem
+    Friend WithEvents ChangeUserInfo_Menu As ToolStripMenuItem
+    Friend WithEvents Schedule_Menu As ToolStripMenuItem
 End Class

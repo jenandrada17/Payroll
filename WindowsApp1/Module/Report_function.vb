@@ -90,6 +90,7 @@ Module Report_function
         Dim PAYROLL As DateTime = paydate
         Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo ' === TITLE CASE ADDRESS
         Dim total_email As Decimal = 0
+        Dim COMPANY As String = "PHOTO"
 
         Dim dt_PhotoDavao As New DataTable()
         With dt_PhotoDavao
@@ -119,7 +120,6 @@ Module Report_function
                     With dr
 
                         '============================= NAME AND ATTENDANCE ============================  
-                        Dim COMPANY As String = "PHOTO"
                         Dim ADDRESS As String = IIf(IsDBNull(.Item("ADDRESS")), "", .Item("ADDRESS"))
                         Dim CATEGORY As String = IIf(IsDBNull(.Item("CATEGORY")), "", .Item("CATEGORY"))
                         Dim BRANCHCODE As String = IIf(IsDBNull(.Item("BRANCHCODE")), "", .Item("BRANCHCODE"))
@@ -146,6 +146,9 @@ Module Report_function
                     End With
                 Next
                 progressBarEnd()
+            Else
+                'COMPANY = $"PHOTO(DAVAO PERFECT)"
+                'dt_PhotoDavao.Rows.Add(PAYROLL.ToString("MMMM dd, yyyy").ToUpper(), COMPANY, Nothing, Nothing, 0, 0, 0)
             End If
         End Using
 
@@ -595,6 +598,11 @@ Module Report_function
     End Function
 
     Public Function Get_PGC(column As String, paydate As String) As Double
+
+        If column = "DAVAOP" Then
+            Console.WriteLine(column)
+        End If
+
         Dim TOTALS As Decimal = 0
         Dim G3_tot As Decimal = 0
         Dim Seven11_tot As Decimal = 0

@@ -304,7 +304,7 @@ Partial Class frmUser
         '
         Me.Label8.AutoSize = True
         Me.Label8.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label8.Location = New System.Drawing.Point(548, 47)
+        Me.Label8.Location = New System.Drawing.Point(548, 22)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(94, 27)
         Me.Label8.TabIndex = 29
@@ -312,16 +312,17 @@ Partial Class frmUser
         '
         'Access_CheckB
         '
+        Me.Access_CheckB.AccessibleName = "User Logs"
         Me.Access_CheckB.BackColor = System.Drawing.SystemColors.ButtonFace
         Me.Access_CheckB.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.Access_CheckB.CheckOnClick = True
         Me.Access_CheckB.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Access_CheckB.ForeColor = System.Drawing.Color.Black
         Me.Access_CheckB.FormattingEnabled = True
-        Me.Access_CheckB.Items.AddRange(New Object() {"DTR Schedule", "Employee", "Attendance", "Payout", "Loans", "Contribution", "Settings", "Report"})
-        Me.Access_CheckB.Location = New System.Drawing.Point(553, 77)
+        Me.Access_CheckB.Items.AddRange(New Object() {"DTR Schedule", "Employee", "Attendance", "Payout", "Loans", "Contribution", "Settings", "Report", "Change User Details", "User Logs"})
+        Me.Access_CheckB.Location = New System.Drawing.Point(553, 52)
         Me.Access_CheckB.Name = "Access_CheckB"
-        Me.Access_CheckB.Size = New System.Drawing.Size(139, 224)
+        Me.Access_CheckB.Size = New System.Drawing.Size(153, 280)
         Me.Access_CheckB.TabIndex = 30
         '
         'frmUser
