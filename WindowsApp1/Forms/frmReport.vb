@@ -14,8 +14,8 @@ Public Class frmReport
         PopulateComboBox_Any(Rem_Paydate_Combo, "PAYROLL_PAYOUT", "PAYDATE")
         PopulateComboBox(CostPaydate_Combo, "PAYROLL_PAYOUT", "PAYDATE")
         PopulateComboBox(LoanPaydate_Combo, "PAYROLL_PAYOUT", "PAYDATE")
-        'PopulateComboBox(PI_Paydate_Combo, "RECORDED_ALLOW_DEDUC", "PAYDATE")
         PopulatePaydate_Monthly(PI_Paydate_Combo, "RECORDED_ALLOW_DEDUC", "PAYDATE")
+        PopulatePaydate_Yearly(SILYear_Combo, "RECORDED_ALLOW_DEDUC", "PAYDATE")
         Lists_Deduction_History(SBUHistory_List, "SBU")
         Lists_Deduction_History(DeducHistory_List, "DEDUCTION")
 
@@ -23,12 +23,89 @@ Public Class frmReport
 
     Private Sub SearchSBU_BTN_Click(sender As Object, e As EventArgs) Handles SearchSBU_BTN.Click
         Lists_SBU(SBU_LV, SearchSBU_TXT.Text)
+        LoadSBU()
     End Sub
 
     Private Sub SearchSBU_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles SearchSBU_TXT.KeyPress
         If IsEnter(e) Then SearchSBU_BTN.PerformClick()
     End Sub
 
+    Friend Sub LoadSBU()
+        Rpt_SBU.LocalReport.DataSources.Clear()
+
+        Try
+            Dim dt As New DataTable()
+            With dt
+                .Columns.Add("NAME")
+                .Columns.Add("AMOUNT")
+                .Columns.Add("PRINCIPAL")
+                .Columns.Add("CREDIT")
+                .Columns.Add("BALANCE")
+                .Columns.Add("DATE")
+            End With
+
+            Dim secured_str As String = SearchSBU_TXT.Text
+            secured_str = DreadKnight(secured_str)
+            Dim strWords As String() = secured_str.Split(New Char() {" "c})
+            Dim name As String
+            Dim mysql As String
+
+            If SearchSBU_TXT.Text.Length <> 0 Then
+
+                mysql = "select  COALESCE(sum(C.AMOUNT), 0) AS TOTALS,  PAYDATE, FULLNAME, CREDIT, PRINCIPAL, B.AMOUNT, B.BIO_NO as bio  from PAYROLL_EMPLOYEE A 
+                            inner join PAYROLL_SBU B on B.BIO_NO = A.BIO_NO 
+                            left join RECORDED_ALLOW_DEDUC C on C.BIO_NO = A.BIO_NO and C.CATEGORY = 'SBU' WHERE "
+
+                For Each name In strWords
+                    mysql &= $"{vbCr}UPPER(B.BIO_NO) LIKE UPPER('%{name}%') OR "
+                    mysql &= $"{vbCr}UPPER(FULLNAME) LIKE UPPER('%{name}%') OR "
+                    mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%') OR "
+                    mysql &= $"{vbCr}UPPER(BRANCH_CODE) LIKE UPPER('%{name}%') 
+                        GROUP BY C.AMOUNT, PAYDATE,  FULLNAME, CREDIT, PRINCIPAL,  B.AMOUNT, B.BIO_NO ORDER BY FULLNAME ASC "
+                Next
+
+            Else
+                mysql = "select COALESCE(sum(C.AMOUNT), 0) AS TOTALS, PAYDATE, FULLNAME, CREDIT, PRINCIPAL, B.AMOUNT, B.BIO_NO as bio from PAYROLL_EMPLOYEE A 
+                                inner join PAYROLL_SBU B on B.BIO_NO = A.BIO_NO 
+                                left join RECORDED_ALLOW_DEDUC C on C.BIO_NO = A.BIO_NO and C.CATEGORY = 'SBU' and TRANSAC_NAME = 'DEDUCTION' 
+                                GROUP BY C.AMOUNT, PAYDATE, FULLNAME, CREDIT, PRINCIPAL,  B.AMOUNT, B.BIO_NO
+                                ORDER BY FULLNAME ASC "
+            End If
+
+            Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+                progressBarStart(ds.Tables(0).Rows.Count)
+                If ds.Tables(0).Rows.Count > 0 Then
+                    For Each dr In ds.Tables(0).Rows
+                        With dr
+
+                            Dim credit As Decimal = 0
+                            Dim totalCredit As Decimal = 0
+                            Dim principal As Decimal = 0
+                            Dim balance As Decimal = 0
+
+                            credit = IIf(IsDBNull(.Item("CREDIT")), 0, .Item("CREDIT"))
+                            totalCredit = credit + CDbl(.Item("TOTALS"))
+                            principal = IIf(IsDBNull(.Item("PRINCIPAL")), 0, .Item("PRINCIPAL"))
+                            balance = principal - totalCredit
+
+                            dt.Rows.Add(.Item("FULLNAME"), .Item("AMOUNT"), FormatNumber(.Item("PRINCIPAL")), FormatNumber(totalCredit), FormatNumber(balance), CDate(.Item("PAYDATE")).ToString("MMMM dd, yyyy"))
+
+                        End With
+                        frmMainForm.AppProgressBar.Value += 1
+                    Next
+                    progressBarEnd()
+                End If
+            End Using
+
+            Dim DATASET As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt)
+            Rpt_SBU.LocalReport.DataSources.Add(DATASET)
+            Rpt_SBU.RefreshReport()
+
+        Catch ex As Exception
+            MsgBox(ex.ToString)
+        End Try
+
+    End Sub
 
     Public Sub LoadNet_Print(mysqll As String)
         If PaydateNet_ComboB.SelectedIndex >= 0 Then
@@ -1498,8 +1575,6 @@ Public Class frmReport
 
                     Next
                     progressBarEnd()
-                Else
-
                 End If
             End Using
 
@@ -1520,4 +1595,21 @@ Public Class frmReport
         End Try
 
     End Sub
+
+    Private Sub SILYear_Combo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles SILYear_Combo.SelectedIndexChanged
+        If SILYear_Combo.SelectedIndex >= 0 Then
+            Lists_SIL(SIL_list, SILYear_Combo.Text)
+        End If
+    End Sub
+
+    Private Sub SILSeacrh_btn_Click(sender As Object, e As EventArgs) Handles SILSeacrh_btn.Click
+        Lists_SIL(SIL_list, SILYear_Combo.Text, SILSearch_txt.Text)
+    End Sub
+
+    Private Sub SILSearch_txt_KeyPress(sender As Object, e As KeyPressEventArgs) Handles SILSearch_txt.KeyPress
+        If e.KeyChar = ChrW(Keys.Enter) Then
+            SILSeacrh_btn.PerformClick()
+        End If
+    End Sub
+
 End Class

@@ -1174,6 +1174,22 @@ Module SelectFromDatabase
         End Using
     End Sub
 
+    Public Sub PopulatePaydate_Yearly(combo As ComboBox, table As String, column As String)
+        combo.Items.Clear()
+
+        Dim sql As String = $"Select EXTRACT(YEAR from PAYDATE) as yearr from {table} GROUP BY yearr"
+        Using ds As DataSet = LoadSQL(sql)
+            If ds.Tables(0).Rows.Count > 0 Then
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+                        Dim datee As New DateTime(.Item("yearr"), 1, 1)
+                        combo.Items.Add(datee.ToString("yyyy"))
+                    End With
+                Next
+            End If
+        End Using
+    End Sub
+
     Public Function CountCELL_Nothing(row As DataGridViewRow) As Integer
         Dim count As New Integer
         If Not row.DefaultCellStyle.ForeColor = Color.Red And row.Cells(5).Value = True Then
@@ -1332,20 +1348,20 @@ Module SelectFromDatabase
         End Using
     End Sub
 
-    Public Sub Get_SIL(BiometricID_TXT As String, SIL As Label)
-
-        Dim mysql As String = $"Select * From PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{BiometricID_TXT}'"
+    Public Function Get_SIL(Bio As String, paydate As String) As Double
+        Dim sil As Double = 0
+        Dim mysql As String = $"Select SIL From PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{Bio}' AND PAYDATE = '{paydate}' "
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
             If ds.Tables(0).Rows.Count > 0 Then
                 Dim data As DataRow = ds.Tables(0).Rows(0)
                 With data
-                    SIL.Text = IIf(IsDBNull(.Item("SIL")), 0, .Item("SIL"))
+                    sil = IIf(IsDBNull(.Item("SIL")), 0, .Item("SIL"))
                 End With
-            Else
-                SIL.Text = 0
             End If
         End Using
-    End Sub
+
+        Return sil
+    End Function
 
     Friend Sub Lists_Allowance(LV As ListView, Optional searchName As String = "")
 
@@ -1621,17 +1637,24 @@ Module SelectFromDatabase
 
         If searchName.Length <> 0 Then
 
-            mysql = "select  A.*, B.*, B.BIO_NO as bio  from PAYROLL_EMPLOYEE A inner join PAYROLL_SBU B on B.BIO_NO = A.BIO_NO WHERE "
+            mysql = "select  COALESCE(sum(C.AMOUNT), 0) AS TOTALS, FULLNAME, CREDIT, PRINCIPAL, B.AMOUNT, B.BIO_NO as bio  from PAYROLL_EMPLOYEE A 
+                            inner join PAYROLL_SBU B on B.BIO_NO = A.BIO_NO 
+                            left join RECORDED_ALLOW_DEDUC C on C.BIO_NO = A.BIO_NO and C.CATEGORY = 'SBU' WHERE "
 
             For Each name In strWords
                 mysql &= $"{vbCr}UPPER(B.BIO_NO) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(FULLNAME) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(BRANCH_CODE) LIKE UPPER('%{name}%') ORDER BY FULLNAME ASC "
+                mysql &= $"{vbCr}UPPER(BRANCH_CODE) LIKE UPPER('%{name}%') 
+                        GROUP BY C.AMOUNT, FULLNAME, CREDIT, PRINCIPAL,  B.AMOUNT, B.BIO_NO ORDER BY FULLNAME ASC "
             Next
 
         Else
-            mysql = "select A.*, B.*, B.BIO_NO as bio from PAYROLL_EMPLOYEE A inner join PAYROLL_SBU B on B.BIO_NO = A.BIO_NO ORDER BY FULLNAME ASC "
+            mysql = "select COALESCE(sum(C.AMOUNT), 0) AS TOTALS, FULLNAME, CREDIT, PRINCIPAL, B.AMOUNT, B.BIO_NO as bio from PAYROLL_EMPLOYEE A 
+                                inner join PAYROLL_SBU B on B.BIO_NO = A.BIO_NO 
+                                left join RECORDED_ALLOW_DEDUC C on C.BIO_NO = A.BIO_NO and C.CATEGORY = 'SBU' 
+                                GROUP BY C.AMOUNT, FULLNAME, CREDIT, PRINCIPAL,  B.AMOUNT, B.BIO_NO
+                                ORDER BY FULLNAME ASC "
         End If
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
@@ -1646,7 +1669,8 @@ Module SelectFromDatabase
                     Dim balance As Decimal = 0
 
                     credit = IIf(IsDBNull(.Item("CREDIT")), 0, .Item("CREDIT"))
-                    totalCredit = credit + GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC WHERE BIO_NO = '{ .Item("bio")}' and CATEGORY = 'SBU'")
+                    totalCredit = credit + CDbl(.Item("TOTALS"))
+                    'totalCredit = credit + GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC WHERE BIO_NO = '{ .Item("bio")}' and CATEGORY = 'SBU'")
                     principal = IIf(IsDBNull(.Item("PRINCIPAL")), 0, .Item("PRINCIPAL"))
                     balance = principal - totalCredit
 
@@ -1716,6 +1740,47 @@ Module SelectFromDatabase
 
     End Sub
 
+    Friend Sub Lists_SIL(LV As ListView, year As String, Optional searchName As String = "")
+
+        Dim startt As New Date(year, 1, 1)
+        Dim endd As New Date(year, 12, 31)
+
+        Dim secured_str As String = searchName
+        secured_str = DreadKnight(secured_str)
+        Dim strWords As String() = secured_str.Split(New Char() {" "c})
+        Dim name As String
+        Dim mysql As String
+
+        If searchName.Length <> 0 Then
+            mysql = $"select COALESCE(sum(SIL), 0) AS TOTALS, FULLNAME from PAYROLL_EMPLOYEE INNER JOIN PAYROLL_ATTENDANCE on BIOMETRICID = BIO_NO Where PAYDATE BETWEEN '{startt.ToShortDateString}' AND '{endd.ToShortDateString}' and ("
+
+            For Each name In strWords
+                mysql &= $"{vbCr}UPPER(BIO_NO) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(FULLNAME) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(BRANCH_CODE) LIKE UPPER('%{name}%'))  GROUP BY SIL, FULLNAME ORDER BY FULLNAME ASC "
+            Next
+        Else
+            mysql = $"select COALESCE(sum(SIL), 0) AS TOTALS, FULLNAME from PAYROLL_EMPLOYEE INNER JOIN PAYROLL_ATTENDANCE on BIOMETRICID = BIO_NO Where PAYDATE BETWEEN '{startt.ToShortDateString}' AND '{endd.ToShortDateString}' GROUP BY SIL, FULLNAME ORDER BY FULLNAME ASC "
+        End If
+
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+            LV.Items.Clear()
+            progressBarStart(ds.Tables(0).Rows.Count)
+            For Each dr In ds.Tables(0).Rows
+                With dr
+
+                    Dim i As ListViewItem = LV.Items.Add(.Item("FULLNAME"))
+                    i.SubItems.Add(.Item("TOTALS"))
+
+                End With
+                frmMainForm.AppProgressBar.Value += 1
+            Next
+            progressBarEnd()
+        End Using
+
+    End Sub
+
     Friend Sub Lists_13Month(LV As ListView, Optional searchName As String = "")
 
         Dim secured_str As String = searchName
@@ -1723,6 +1788,21 @@ Module SelectFromDatabase
         Dim strWords As String() = secured_str.Split(New Char() {" "c})
         Dim name As String
         Dim mysql As String
+
+        Dim datee As DateTime = Date.Now
+        Dim December_April As DateTime = New DateTime(datee.AddYears(-1).Year, 12, 1)
+        Dim May_Nov As DateTime = New DateTime(datee.Year, 5, 1)
+
+        Dim starting_date, ending_date As String
+
+        If datee.Month >= 4 And datee.Month <= 11 Then
+            starting_date = May_Nov.ToString("d")
+            ending_date = May_Nov.AddMonths(6).ToString("d")
+        Else
+            starting_date = December_April.ToString("d")
+            ending_date = December_April.AddMonths(4).ToString("d")
+        End If
+
 
         If searchName.Length <> 0 Then
 
@@ -1739,6 +1819,18 @@ Module SelectFromDatabase
 
             mysql = "select FULLNAME, BIOMETRIC_ID  from PAYROLL_EMPLOYEE A inner join PAYROLL_PAYOUT B on B.BIOMETRIC_ID = A.BIO_NO Group by FULLNAME, BIOMETRIC_ID ORDER BY FULLNAME ASC "
 
+            'mysql = $"Select
+            '        COALESCE(SUM(case when C.CATEGORY = 'ECOLA' then C.AMOUNT end), 0) AS ECOLAA, 
+            '        COALESCE(SUM(case when C.CATEGORY like '%SIL' then C.AMOUNT end), 0) AS SILL,
+            '        COALESCE(SUM(case when C.CATEGORY = 'PERFORMANCE INCENTIVES' then C.AMOUNT end), 0) AS PII ,
+            '        COALESCE(SUM(TOTAL_BASIC), 0) AS BASICC,
+            '        COALESCE(SUM(TOTAL_LATE_UT), 0) AS LATEUTT,
+            '        FULLNAME
+            '        from PAYROLL_EMPLOYEE A 
+            '        inner join PAYROLL_PAYOUT B on B.BIOMETRIC_ID = A.BIO_NO AND (B.PAYDATE BETWEEN '{starting_date}' AND '{ending_date}')
+            '        left join RECORDED_ALLOW_DEDUC C on C.BIO_NO = A.BIO_NO AND (C.PAYDATE BETWEEN '{starting_date}' AND '{ending_date}')
+            '        Group by FULLNAME 
+            '        ORDER BY FULLNAME ASC "
         End If
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
@@ -1747,22 +1839,16 @@ Module SelectFromDatabase
             For Each dr In ds.Tables(0).Rows
                 With dr
 
+                    'Console.WriteLine(.item("BIOMETRIC_ID"))
+
                     Dim TOTALS As Decimal = 0
                     Dim bio_no As String = .item("BIOMETRIC_ID")
 
-                    Dim datee As DateTime = Date.Now
-                    Dim December_April As DateTime = New DateTime(datee.AddYears(-1).Year, 12, 1)
-                    Dim May_Nov As DateTime = New DateTime(datee.Year, 5, 1)
-
-                    Dim starting_date, ending_date As String
-
-                    If datee.Month >= 4 And datee.Month <= 11 Then
-                        starting_date = May_Nov.ToString("d")
-                        ending_date = May_Nov.AddMonths(6).ToString("d")
-                    Else
-                        starting_date = December_April.ToString("d")
-                        ending_date = December_April.AddMonths(4).ToString("d")
-                    End If
+                    'Dim tOTAL_ECOLA As String = .item("ECOLAA")
+                    'Dim tOTAL_SIL As String = .item("SILL")
+                    'Dim tOTAL_PI As String = .item("PII")
+                    'Dim tOTAL_BASIC As String = .item("BASICC")
+                    'Dim tOTAL_LATE_UT As String = .item("LATEUTT")
 
                     Dim tOTAL_ECOLA As Decimal = GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC where BIO_NO = '{bio_no}' and CATEGORY = 'ECOLA' and PAYDATE BETWEEN '{starting_date}' AND '{ending_date}'")
                     Dim tOTAL_SIL As Decimal = GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC where BIO_NO = '{bio_no}' and CATEGORY like '%SIL' and PAYDATE BETWEEN '{starting_date}' AND '{ending_date}'")
@@ -1770,7 +1856,8 @@ Module SelectFromDatabase
                     Dim tOTAL_BASIC As Decimal = GetTotal("TOTAL_BASIC", $"PAYROLL_PAYOUT where BIOMETRIC_ID = '{bio_no}' and PAYDATE BETWEEN '{starting_date}' AND '{ending_date}'")
                     Dim tOTAL_LATE_UT As Decimal = GetTotal("TOTAL_LATE_UT", $"PAYROLL_PAYOUT where  BIOMETRIC_ID = '{bio_no}' and PAYDATE BETWEEN '{starting_date}' AND '{ending_date}'")
 
-                    TOTALS = ((tOTAL_SIL + tOTAL_PI + tOTAL_BASIC) - tOTAL_LATE_UT) / 12
+                    TOTALS = ((tOTAL_ECOLA + tOTAL_SIL + tOTAL_PI + tOTAL_BASIC) - tOTAL_LATE_UT) / 12
+                    'TOTALS = ((CDec(.item("ECOLAA")) + CDec(.item("SILL")) + CDec(.item("PII")) + CDec(.item("BASICC"))) - CDec(.item("LATEUTT"))) / 12
 
                     Dim i As ListViewItem = LV.Items.Add(.Item("FULLNAME"))
                     i.SubItems.Add(TOTALS.ToString("N"))

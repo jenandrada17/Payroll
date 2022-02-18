@@ -2104,6 +2104,13 @@ Public Class frmAttendance
 
     Private Sub BiometricID_TXT_TextChanged(sender As Object, e As EventArgs) Handles BiometricID_TXT.TextChanged
 
+        Dim PAYROLL As String
+        If Paydate_ComboB.SelectedIndex >= 0 Then
+            PAYROLL = Paydate_ComboB.SelectedItem
+        Else
+            PAYROLL = DataGridView1.Tag
+        End If
+
         If BiometricID_TXT.Text = "" Then
             Name_TXT.Text = ""
             SIL_Panel.Visible = False
@@ -2119,7 +2126,7 @@ Public Class frmAttendance
 
             GetName(BiometricID_TXT.Text, Name_TXT)
 
-            Get_SIL(BiometricID_TXT.Text, SIL_LBL)
+            SIL_LBL.Text = Get_SIL(BiometricID_TXT.Text, PAYROLL)
 
             If Not Name_TXT.Text = String.Empty Then
                 TIME_IN = GetTime_In(BiometricID_TXT.Text)
@@ -2131,16 +2138,12 @@ Public Class frmAttendance
 
 
             If Not Name_TXT.Text = "" Then
-                Attendance_Per_Employee(BiometricID_TXT.Text)
+                Attendance_Per_Employee(BiometricID_TXT.Text, PAYROLL)
             End If
 
-            '==========================  CHECK PAYDATE IF VALID FOR EDITING =========================   
-            If Paydate_ComboB.SelectedIndex >= 0 Then
-                If Paydate_ComboB.Text = frmMainForm.Paydate.ToString("d") Then
-                    Save_BTN.Enabled = True
-                Else
-                    Save_BTN.Enabled = False
-                End If
+            '==========================  CHECK PAYDATE IF VALID FOR EDITING =========================    
+            If Today.ToString("d") > PAYROLL Then
+                Save_BTN.Enabled = False
             Else
                 Save_BTN.Enabled = True
             End If
@@ -2148,14 +2151,7 @@ Public Class frmAttendance
 
     End Sub
 
-    Public Sub Attendance_Per_Employee(bioNo As String)
-
-        Dim PAYROLL As String
-        If Paydate_ComboB.SelectedIndex >= 0 Then
-            PAYROLL = Paydate_ComboB.SelectedItem
-        Else
-            PAYROLL = DataGridView1.Tag
-        End If
+    Public Sub Attendance_Per_Employee(bioNo As String, PAYROLL As String)
 
         For Each oRow As DataGridViewRow In DataGridView1.Rows
             oRow.Cells(5).Value = False

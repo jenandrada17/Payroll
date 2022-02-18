@@ -32,7 +32,6 @@ Public Class frmPayout
     End Sub
 
     Private Sub Select_BTN_Click(sender As Object, e As EventArgs) Handles Select_BTN.Click
-
         Try
 
             Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmEmployee").SingleOrDefault()
@@ -72,11 +71,11 @@ Public Class frmPayout
             DETAILS()
         End If
 
-        '==========================  IF VALID FOR EDITING =========================   
-        If paydate_ = frmMainForm.Paydate.ToString("d") Then
-            Details_Save_BTN.Enabled = True
-        Else
+        '==========================  IF VALID FOR EDITING =========================      
+        If Today.ToString("d") > paydate_ Then
             Details_Save_BTN.Enabled = False
+        Else
+            Details_Save_BTN.Enabled = True
         End If
 
     End Sub
