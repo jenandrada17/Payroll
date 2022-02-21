@@ -20,7 +20,7 @@ Public Class frmMainForm
 
         Login_Form.ShowDialog()
 
-        AppDateTime.Text = Date.Now.ToString("dddd, MMMM dd, yyyy hh:mm:ss tt", CultureInfo.CurrentCulture)
+        AppDateTime.Text = Date.Now.ToString("dddd, MMMM dd, yyyy hh: mm:ss tt", CultureInfo.CurrentCulture)
 
         StartFour = New DateTime(DateNow.Year, DateNow.Month, 4).AddDays(-1)
         EndFour = New DateTime(DateNow.Year, DateNow.Month, 18)
@@ -213,6 +213,10 @@ Public Class frmMainForm
 
     Private Sub Calculator_BTN_MouseLeave(sender As Object, e As EventArgs) Handles Contribution_BTN.MouseLeave
         Contribution_BTN.BackColor = Color.Black
+    End Sub
+
+    Private Sub Dashboard_lbl_Click(sender As Object, e As EventArgs) Handles Dashboard_lbl.Click
+        OpenWindowsForm("frmDashboard")
     End Sub
 
     Private Sub Dashboard_BTN_Click(sender As Object, e As EventArgs) Handles Dashboard_BTN.Click

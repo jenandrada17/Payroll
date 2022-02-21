@@ -1,4 +1,6 @@
-﻿Imports System.Globalization
+﻿Imports System.Drawing.Imaging
+Imports System.Globalization
+Imports System.IO
 Imports FirebirdSql.Data.FirebirdClient
 
 Module SelectFromDatabase
@@ -1627,67 +1629,6 @@ Module SelectFromDatabase
     End Sub
 
 
-    Friend Sub Lists_SBU(LV As ListView, Optional searchName As String = "")
-
-        Dim secured_str As String = searchName
-        secured_str = DreadKnight(secured_str)
-        Dim strWords As String() = secured_str.Split(New Char() {" "c})
-        Dim name As String
-        Dim mysql As String
-
-        If searchName.Length <> 0 Then
-
-            mysql = "select  COALESCE(sum(C.AMOUNT), 0) AS TOTALS, FULLNAME, CREDIT, PRINCIPAL, B.AMOUNT, B.BIO_NO as bio  from PAYROLL_EMPLOYEE A 
-                            inner join PAYROLL_SBU B on B.BIO_NO = A.BIO_NO 
-                            left join RECORDED_ALLOW_DEDUC C on C.BIO_NO = A.BIO_NO and C.CATEGORY = 'SBU' WHERE "
-
-            For Each name In strWords
-                mysql &= $"{vbCr}UPPER(B.BIO_NO) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(FULLNAME) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(BRANCH_CODE) LIKE UPPER('%{name}%') 
-                        GROUP BY C.AMOUNT, FULLNAME, CREDIT, PRINCIPAL,  B.AMOUNT, B.BIO_NO ORDER BY FULLNAME ASC "
-            Next
-
-        Else
-            mysql = "select COALESCE(sum(C.AMOUNT), 0) AS TOTALS, FULLNAME, CREDIT, PRINCIPAL, B.AMOUNT, B.BIO_NO as bio from PAYROLL_EMPLOYEE A 
-                                inner join PAYROLL_SBU B on B.BIO_NO = A.BIO_NO 
-                                left join RECORDED_ALLOW_DEDUC C on C.BIO_NO = A.BIO_NO and C.CATEGORY = 'SBU' 
-                                GROUP BY C.AMOUNT, FULLNAME, CREDIT, PRINCIPAL,  B.AMOUNT, B.BIO_NO
-                                ORDER BY FULLNAME ASC "
-        End If
-
-        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
-            LV.Items.Clear()
-            progressBarStart(ds.Tables(0).Rows.Count)
-            For Each dr In ds.Tables(0).Rows
-                With dr
-
-                    Dim credit As Decimal = 0
-                    Dim totalCredit As Decimal = 0
-                    Dim principal As Decimal = 0
-                    Dim balance As Decimal = 0
-
-                    credit = IIf(IsDBNull(.Item("CREDIT")), 0, .Item("CREDIT"))
-                    totalCredit = credit + CDbl(.Item("TOTALS"))
-                    'totalCredit = credit + GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC WHERE BIO_NO = '{ .Item("bio")}' and CATEGORY = 'SBU'")
-                    principal = IIf(IsDBNull(.Item("PRINCIPAL")), 0, .Item("PRINCIPAL"))
-                    balance = principal - totalCredit
-
-                    Dim i As ListViewItem = LV.Items.Add(.Item("FULLNAME"))
-                    i.SubItems.Add(FormatNumber(.Item("AMOUNT")))
-                    i.SubItems.Add(IIf(IsDBNull(.Item("PRINCIPAL")), "", FormatNumber(.Item("PRINCIPAL"))))
-                    i.SubItems.Add(FormatNumber(totalCredit))
-                    i.SubItems.Add(FormatNumber(balance))
-
-                End With
-                frmMainForm.AppProgressBar.Value += 1
-            Next
-            progressBarEnd()
-        End Using
-
-    End Sub
-
     Friend Sub Lists_Deduction_History(LV As ListView, categoryDeduction As String, Optional searchName As String = "")
 
         Dim secured_str As String = searchName
@@ -1758,10 +1699,10 @@ Module SelectFromDatabase
                 mysql &= $"{vbCr}UPPER(BIO_NO) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(FULLNAME) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(BRANCH_CODE) LIKE UPPER('%{name}%'))  GROUP BY SIL, FULLNAME ORDER BY FULLNAME ASC "
+                mysql &= $"{vbCr}UPPER(BRANCH_CODE) LIKE UPPER('%{name}%'))  GROUP BY FULLNAME ORDER BY FULLNAME ASC "
             Next
         Else
-            mysql = $"select COALESCE(sum(SIL), 0) AS TOTALS, FULLNAME from PAYROLL_EMPLOYEE INNER JOIN PAYROLL_ATTENDANCE on BIOMETRICID = BIO_NO Where PAYDATE BETWEEN '{startt.ToShortDateString}' AND '{endd.ToShortDateString}' GROUP BY SIL, FULLNAME ORDER BY FULLNAME ASC "
+            mysql = $"select COALESCE(sum(SIL), 0) AS TOTALS, FULLNAME from PAYROLL_EMPLOYEE INNER JOIN PAYROLL_ATTENDANCE on BIOMETRICID = BIO_NO Where PAYDATE BETWEEN '{startt.ToShortDateString}' AND '{endd.ToShortDateString}' GROUP BY FULLNAME ORDER BY FULLNAME ASC "
         End If
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
@@ -2136,12 +2077,13 @@ Module SelectFromDatabase
         End With
     End Sub
 
-    Public Sub GetFullname(bio_no As String, Add_Company_CB As ComboBox, Branch_ComboB As ComboBox, Fullname_TXT As TextBox,
+    Public Sub GetFullname(bio_no As String, Add_Company_CB As ComboBox, Branch_ComboB As ComboBox, Firstname As TextBox,
                            Email_TXT As TextBox, InActive_RB As RadioButton, Started_DTP As DateTimePicker,
                            TimeIn_Combo As ComboBox, TimeOut_Combo As ComboBox, EmoNo_TXT As TextBox, TIN_TXT As TextBox,
                            SSS_TXT As TextBox, PHILH_TXT As TextBox, HDMF_TXT As TextBox, HO_Category As ComboBox,
                            ComCategory_Combo As ComboBox, Position_Combo As ComboBox, ComCompany_Cmbo As ComboBox,
-                           PhotoCategory_Combo As ComboBox, Optional btnSave As Button = Nothing)
+                           PhotoCategory_Combo As ComboBox, Lastname As TextBox, Middlename As TextBox,
+                           BDate_dtp As DateTimePicker, Address_txt As TextBox, Optional btnSave As Button = Nothing)
 
         Dim mysql As String = $"select * from PAYROLL_EMPLOYEE where BIO_NO = '{bio_no}'"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
@@ -2158,7 +2100,6 @@ Module SelectFromDatabase
                     ComCategory_Combo.Text = IIf(IsDBNull(.Item("COMMON_CATEGORY")), Nothing, .Item("COMMON_CATEGORY"))
                     ComCompany_Cmbo.Text = IIf(IsDBNull(.Item("COMMON_COMPANY")), Nothing, .Item("COMMON_COMPANY"))
                     Branch_ComboB.Text = .Item("BRANCH_CODE")
-                    Fullname_TXT.Text = .Item("FULLNAME")
                     Email_TXT.Text = IIf(IsDBNull(.Item("EMAIL_ADD")), "", .Item("EMAIL_ADD"))
                     Position_Combo.Text = IIf(IsDBNull(.Item("EMP_POSITION")), "", .Item("EMP_POSITION"))
                     Started_DTP.Text = IIf(IsDBNull(.Item("DATE_STARTED")), "", .Item("DATE_STARTED"))
@@ -2169,6 +2110,8 @@ Module SelectFromDatabase
                     SSS_TXT.Text = IIf(IsDBNull(.Item("SSSNO")), "", .Item("SSSNO"))
                     PHILH_TXT.Text = IIf(IsDBNull(.Item("PHILHEALTHNO")), "", .Item("PHILHEALTHNO"))
                     HDMF_TXT.Text = IIf(IsDBNull(.Item("PAGIBIGNO")), "", .Item("PAGIBIGNO"))
+                    BDate_dtp.Value = IIf(IsDBNull(.Item("BDATE")), "12/31/1753", .Item("BDATE"))
+                    Address_txt.Text = IIf(IsDBNull(.Item("ADDRESS")), "", .Item("ADDRESS"))
 
                     If .Item("EMP_STATUS") = "INACTIVE" Then
                         InActive_RB.Checked = True
@@ -2178,6 +2121,24 @@ Module SelectFromDatabase
                         btnSave.Tag = "UPDATE" ' FOR USER_LOGS
                     End If
 
+                    '======================== FIRSTNAME, LASTNAME, MIDDLENAME ========================== 
+                    Dim firstt, middlee As String
+                    Dim fullname As String = .Item("FULLNAME")
+                    Dim name As String() = fullname.Split(",")
+                    Dim sobra As String = name(1).TrimStart
+
+                    If sobra.EndsWith(".") Then
+                        Dim index As Integer = sobra.Length - 2
+                        middlee = sobra.Substring(index, 2)
+                        firstt = sobra.Replace(middlee, "").TrimEnd
+                    Else
+                        firstt = sobra
+                        middlee = Nothing
+                    End If
+
+                    Lastname.Text = name(0)
+                    Firstname.Text = firstt
+                    Middlename.Text = middlee
                 End With
             Else
                 Add_Company_CB.Text = ""
@@ -2185,7 +2146,9 @@ Module SelectFromDatabase
                 ComCategory_Combo.Text = ""
                 Branch_ComboB.Text = ""
                 Started_DTP.Value = "1/1/2000"
-                Fullname_TXT.Text = ""
+                Firstname.Text = ""
+                Lastname.Text = ""
+                Middlename.Text = ""
                 Email_TXT.Text = ""
                 Position_Combo.Text = ""
                 TimeIn_Combo.Text = ""
@@ -2195,6 +2158,8 @@ Module SelectFromDatabase
                 SSS_TXT.Text = ""
                 PHILH_TXT.Text = ""
                 HDMF_TXT.Text = ""
+                BDate_dtp.Value = "12/31/1753"
+                Address_txt.Text = ""
 
                 If btnSave IsNot Nothing Then
                     btnSave.Tag = "SAVE" ' FOR USER_LOGS
@@ -2981,5 +2946,32 @@ Module SelectFromDatabase
         Return False
     End Function
 
+    Friend Function SaveProfilePic(image As Image) As Byte()
+        Dim tmp As Byte()
+        Dim ms As New MemoryStream()
+        image.Save(ms, ImageFormat.Jpeg)
+        tmp = ms.ToArray
+        Return tmp
+    End Function
+
+    Friend Sub GetPic(Bio_No As String, picbox As PictureBox)
+        Dim mysql As String = $"Select EMP_PIC from Employee_pic where BIO_NO = '{Bio_No}'"
+        Using ds As DataSet = LoadSQL(mysql, "Employee_pic")
+            If ds.Tables(0).Rows.Count > 0 Then
+                With ds.Tables(0).Rows(0)
+                    If IsDBNull(.Item("EMP_PIC")) Then
+                        picbox.Image = Nothing
+                    Else
+                        Dim bytee As Byte() = .Item("EMP_PIC")
+                        Dim mstream As New System.IO.MemoryStream(bytee)
+                        picbox.Image = Image.FromStream(mstream)
+                        picbox.SizeMode = PictureBoxSizeMode.StretchImage
+                    End If
+                End With
+            Else
+                picbox.Image = Nothing
+            End If
+        End Using
+    End Sub
 
 End Module

@@ -756,4 +756,7 @@
         GetAllowance_Details(idNo, Allow_Name_TXT, Allow_Category_Combo, Allow_Schedule_Combo, A_EveryDate_Combo, Allow_Amount_TXT, A_EffectiveDate_DTP, FixYes_RadioB, FixNo_RadioB)
     End Sub
 
+    Private Sub Allowance_LV_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Allowance_LV.SelectedIndexChanged
+
+    End Sub
 End Class

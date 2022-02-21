@@ -640,8 +640,6 @@ Module SaveUpdate
                     Dim SSS_EC As Decimal = 0
                     Dim PagibigComp As Decimal = 0
                     Dim PhilhealthComp As Decimal = 0
-                    'Dim sssLoan As Decimal = 0
-                    'Dim pagibigLoan As Decimal = 0
                     Dim rate As Decimal = 0
                     Dim SIL As Decimal = 0
                     Dim Allowances As Decimal = 0
@@ -1383,7 +1381,8 @@ Module SaveUpdate
                                 Optional TIME_IN As String = "", Optional TIME_OUT As String = "", Optional EMP_NO As String = "",
                                 Optional TIN As String = "", Optional SSS As String = "", Optional PHILH As String = "",
                                 Optional HDMF As String = "", Optional HO_CATEGORY As String = "", Optional COMMON_CATEGORY As String = "",
-                                Optional EMP_POSITION As String = "", Optional COMMON_COMPANY As String = "", Optional PhotoCategory As String = "")
+                                Optional EMP_POSITION As String = "", Optional COMMON_COMPANY As String = "", Optional PhotoCategory As String = "",
+                                Optional Middlename As String = "", Optional BDATE As String = "", Optional ADDRESS As String = "")
 
         Dim mysql As String
 
@@ -1438,6 +1437,10 @@ Module SaveUpdate
                 If COMMON_COMPANY <> "" Then .Item("COMMON_COMPANY") = COMMON_COMPANY
                 If PhotoCategory <> "" Then .Item("COMPANY_CATEGORY") = PhotoCategory
 
+                If Middlename <> "" Then .Item("MIDDLENAME") = Middlename
+                If BDATE <> "" Then .Item("BDATE") = BDATE
+                If ADDRESS <> "" Then .Item("ADDRESS") = ADDRESS
+
             End With
 
             SaveEntry(ds, False)
@@ -1484,6 +1487,10 @@ Module SaveUpdate
                     If COMMON_COMPANY <> "" Then .Item("COMMON_COMPANY") = COMMON_COMPANY
                     If PhotoCategory <> "" Then .Item("COMPANY_CATEGORY") = PhotoCategory
 
+                    If Middlename <> "" Then .Item("MIDDLENAME") = Middlename
+                    If BDATE <> "" Then .Item("BDATE") = BDATE
+                    If ADDRESS <> "" Then .Item("ADDRESS") = ADDRESS
+
                 End With
 
                 dss.Tables(0).Rows.Add(dsNewRow)
@@ -1498,6 +1505,32 @@ Module SaveUpdate
 
             End Using
         End If
+    End Sub
+
+    Friend Sub SavePic(BIO_NO As String, pic As Byte())
+
+        Dim mysql As String = $"Select * From EMPLOYEE_PIC WHERE BIO_NO = '{BIO_NO}'"
+        Using ds As DataSet = LoadSQL(mysql, "EMPLOYEE_PIC")
+            If ds.Tables(0).Rows.Count > 0 Then
+                With ds.Tables(0).Rows(0)
+                    .Item("EMP_PIC") = pic
+                End With
+                SaveEntry(ds, False)
+            Else
+                Dim mysqll As String = "Select * From EMPLOYEE_PIC Rows 1"
+                Using dss As DataSet = LoadSQL(mysqll, "EMPLOYEE_PIC")
+                    Dim dsNew As DataRow = ds.Tables(0).NewRow
+                    With dsNew
+                        .Item("BIO_NO") = BIO_NO
+                        .Item("EMP_PIC") = pic
+                    End With
+
+                    ds.Tables(0).Rows.Add(dsNew)
+                    SaveEntry(ds)
+                End Using
+            End If
+        End Using
+
     End Sub
 
     Public Sub SaveNew_SBU(BIO_NO As String, COMPANY As String)

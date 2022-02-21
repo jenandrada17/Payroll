@@ -1012,9 +1012,6 @@ Public Class frmAttendance
 
                     DATE_ONLY = dateTime.ToString("d")
 
-                    'If biometric_No = "3543" Then
-                    '    Console.WriteLine(DATE_ONLY)
-                    'End If
                     '============================== WORKED FINE ======================== 
                     If time >= TIME_IN.AddHours(-3).ToShortTimeString And time <= TIME_IN.AddHours(3).AddMinutes(-1).ToShortTimeString And Not time.Hour = 12 Then
                         If list_hour(0) = "" Then
@@ -1097,15 +1094,16 @@ Public Class frmAttendance
                     list_hour(1) = ""
                 End If
 
-                If list_hour(0) = "" And list_hour(3) <> "" Then '==== FOR HALFDAY ARRANGEMENT OF NOON BREAK
-                    list_hour(2) = list_hour(1)
-                    list_hour(1) = ""
-                End If
+                '================ FEB 28, 2022 (GICOMMENT AFTER IMPORTING)
+                'If list_hour(3) = "" And list_hour(0) <> "" And list_hour(2) <> "" And list_hour(1) <> "" Then '==== FOR HALFDAY(AM)
+                '    list_hour(1) = list_hour(2)
+                '    list_hour(2) = ""
+                'End If
 
-                If list_hour(3) = "" And list_hour(0) <> "" And list_hour(2) <> "" Then '==== FOR HALFDAY ARRANGEMENT OF NOON BREAK
-                    list_hour(1) = list_hour(2)
-                    list_hour(2) = ""
-                End If
+                'If list_hour(0) = "" And list_hour(3) <> "" Then '==== FOR HALFDAY(PM)
+                '    list_hour(2) = list_hour(1)
+                '    list_hour(1) = ""
+                'End If
 
                 '||||||||||||||||||||||||||||||||||||| NEWLY ADDED JANUARY 19, 2022 |||||||||||||||||||||||  
 
@@ -1742,25 +1740,11 @@ Public Class frmAttendance
 
                         list_hour(3) = time.ToString("t")
 
-                        '|||||||||||||||||||||||||||||||||||||||||||||||||||| REFER TO ELSE JANUARY 19, 2022  |||||||||||||||||||||||||||||||||||
-                        'ElseIf time >= TIME_IN.AddHours(5).ToShortTimeString And time <= TIME_OUT.AddHours(7).AddMinutes(-1).ToShortTimeString Then
-                        '    If list_hour(2) = "" Then
-
-                        '        list_hour(2) = time.ToString("t")
-                        '    Else
-                        '        list_hour(3) = time.ToString("t")
-                        '    End If
-
                     ElseIf (time >= "12:00 PM" And time <= "12:59 PM") Or (time >= TIME_IN.AddHours(4).ToShortTimeString And time <= TIME_IN.AddHours(5).AddMinutes(-1).ToShortTimeString) Then
-                        'ElseIf (time >= "12:00 PM" And time <= "12:59 PM") OrElse (time >= TIME_IN.AddHours(4).ToShortTimeString And time <= TIME_IN.AddHours(5).AddMinutes(-1).ToShortTimeString) Then
 
                         Dim newValuee As String = time.Hour
                         Dim breaktime As DateTime = TIME_IN.AddHours(4)
                         Dim break = breaktime.Hour
-
-                        'If time >= "1200 PM" And time <= "12:59 PM" Then
-                        '    break = "12"
-                        'End If
 
                         If newValuee = break Then
 
@@ -1801,7 +1785,7 @@ Public Class frmAttendance
                                 End If
                             End If
 
-                        Else '||||||||||||||||||||||||||||||||||||| NEWLY ADDED JANUARY 19, 2022 ||||||||||||||||||||||| 
+                        Else
 
                             If list_hour(1) = "" Then
                                 list_hour(1) = time.ToString("t")
@@ -1812,10 +1796,6 @@ Public Class frmAttendance
                         End If
 
                     Else
-
-                        'list_hour(1) = time.ToString("t")
-
-                        '||||||||||||||||||||||||||||||||||||| NEWLY ADDED JANUARY 19, 2022 ||||||||||||||||||||||| 
                         If list_hour(1) = "" Then
                             list_hour(1) = time.ToString("t")
                         Else
@@ -1835,15 +1815,16 @@ Public Class frmAttendance
                 list_hour(2) = ""
             End If
 
-            If list_hour(0) = "" And list_hour(3) <> "" Then '==== FOR HALFDAY ARRANGEMENT OF NOON BREAK
-                list_hour(2) = list_hour(1)
-                list_hour(1) = ""
-            End If
+            '================ FEB 28, 2022 (GICOMMENT AFTER IMPORTING)
+            'If list_hour(0) = "" And list_hour(3) <> "" Then '==== FOR HALFDAY ARRANGEMENT OF NOON BREAK
+            '    list_hour(2) = list_hour(1)
+            '    list_hour(1) = ""
+            'End If
 
-            If list_hour(3) = "" And list_hour(0) <> "" Then '==== FOR HALFDAY ARRANGEMENT OF NOON BREAK
-                list_hour(1) = list_hour(2)
-                list_hour(2) = ""
-            End If
+            'If list_hour(3) = "" And list_hour(0) <> "" Then '==== FOR HALFDAY ARRANGEMENT OF NOON BREAK
+            '    list_hour(1) = list_hour(2)
+            '    list_hour(2) = ""
+            'End If
 
             '||||||||||||||||||||||||||||||||||||| NEWLY ADDED JANUARY 19, 2022 |||||||||||||||||||||||  
             If list_hour(2) >= TIME_OUT.ToShortTimeString And list_hour(3) = "" Then

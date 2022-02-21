@@ -16,21 +16,20 @@ Public Class frmReport
         PopulateComboBox(LoanPaydate_Combo, "PAYROLL_PAYOUT", "PAYDATE")
         PopulatePaydate_Monthly(PI_Paydate_Combo, "RECORDED_ALLOW_DEDUC", "PAYDATE")
         PopulatePaydate_Yearly(SILYear_Combo, "RECORDED_ALLOW_DEDUC", "PAYDATE")
-        Lists_Deduction_History(SBUHistory_List, "SBU")
         Lists_Deduction_History(DeducHistory_List, "DEDUCTION")
+        LoadSBU()
 
     End Sub
 
     Private Sub SearchSBU_BTN_Click(sender As Object, e As EventArgs) Handles SearchSBU_BTN.Click
-        Lists_SBU(SBU_LV, SearchSBU_TXT.Text)
-        LoadSBU()
+        LoadSBU(SearchSBU_TXT.Text)
     End Sub
 
     Private Sub SearchSBU_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles SearchSBU_TXT.KeyPress
         If IsEnter(e) Then SearchSBU_BTN.PerformClick()
     End Sub
 
-    Friend Sub LoadSBU()
+    Friend Sub LoadSBU(Optional search As String = Nothing)
         Rpt_SBU.LocalReport.DataSources.Clear()
 
         Try
@@ -44,32 +43,26 @@ Public Class frmReport
                 .Columns.Add("DATE")
             End With
 
-            Dim secured_str As String = SearchSBU_TXT.Text
-            secured_str = DreadKnight(secured_str)
-            Dim strWords As String() = secured_str.Split(New Char() {" "c})
-            Dim name As String
             Dim mysql As String
 
-            If SearchSBU_TXT.Text.Length <> 0 Then
+            If search <> Nothing Then
 
-                mysql = "select  COALESCE(sum(C.AMOUNT), 0) AS TOTALS,  PAYDATE, FULLNAME, CREDIT, PRINCIPAL, B.AMOUNT, B.BIO_NO as bio  from PAYROLL_EMPLOYEE A 
-                            inner join PAYROLL_SBU B on B.BIO_NO = A.BIO_NO 
-                            left join RECORDED_ALLOW_DEDUC C on C.BIO_NO = A.BIO_NO and C.CATEGORY = 'SBU' WHERE "
-
-                For Each name In strWords
-                    mysql &= $"{vbCr}UPPER(B.BIO_NO) LIKE UPPER('%{name}%') OR "
-                    mysql &= $"{vbCr}UPPER(FULLNAME) LIKE UPPER('%{name}%') OR "
-                    mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%') OR "
-                    mysql &= $"{vbCr}UPPER(BRANCH_CODE) LIKE UPPER('%{name}%') 
-                        GROUP BY C.AMOUNT, PAYDATE,  FULLNAME, CREDIT, PRINCIPAL,  B.AMOUNT, B.BIO_NO ORDER BY FULLNAME ASC "
-                Next
-
-            Else
-                mysql = "select COALESCE(sum(C.AMOUNT), 0) AS TOTALS, PAYDATE, FULLNAME, CREDIT, PRINCIPAL, B.AMOUNT, B.BIO_NO as bio from PAYROLL_EMPLOYEE A 
+                mysql = $"select COALESCE(sum(C.AMOUNT), 0) AS TOTALS, PAYDATE, FULLNAME, CREDIT, PRINCIPAL, B.AMOUNT, B.BIO_NO as bio from PAYROLL_EMPLOYEE A 
                                 inner join PAYROLL_SBU B on B.BIO_NO = A.BIO_NO 
                                 left join RECORDED_ALLOW_DEDUC C on C.BIO_NO = A.BIO_NO and C.CATEGORY = 'SBU' and TRANSAC_NAME = 'DEDUCTION' 
-                                GROUP BY C.AMOUNT, PAYDATE, FULLNAME, CREDIT, PRINCIPAL,  B.AMOUNT, B.BIO_NO
-                                ORDER BY FULLNAME ASC "
+                                WHERE B.BIO_NO LIKE '%{search}%' OR
+                                UPPER(FULLNAME) LIKE UPPER('%{search}%') OR
+                                UPPER(COMPANY) LIKE UPPER('%{search}%') OR 
+                                UPPER(BRANCH_CODE) LIKE UPPER('%{search}%')  
+                                GROUP BY C.AMOUNT, PAYDATE,  FULLNAME, CREDIT, PRINCIPAL,  B.AMOUNT, B.BIO_NO ORDER BY FULLNAME ASC, PAYDATE DESC"
+
+            Else
+
+                mysql = $"select COALESCE(sum(C.AMOUNT), 0) AS TOTALS, PAYDATE, FULLNAME, CREDIT, PRINCIPAL, B.AMOUNT, B.BIO_NO as bio from PAYROLL_EMPLOYEE A 
+                                inner join PAYROLL_SBU B on B.BIO_NO = A.BIO_NO 
+                                left join RECORDED_ALLOW_DEDUC C on C.BIO_NO = A.BIO_NO and C.CATEGORY = 'SBU' and TRANSAC_NAME = 'DEDUCTION'  
+                                GROUP BY C.AMOUNT, PAYDATE,  FULLNAME, CREDIT, PRINCIPAL,  B.AMOUNT, B.BIO_NO ORDER BY FULLNAME ASC, PAYDATE DESC"
+
             End If
 
             Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
@@ -82,13 +75,18 @@ Public Class frmReport
                             Dim totalCredit As Decimal = 0
                             Dim principal As Decimal = 0
                             Dim balance As Decimal = 0
+                            Dim datee As String = IIf(IsDBNull(.Item("PAYDATE")), Nothing, .Item("PAYDATE"))
+
+                            If datee <> Nothing Then
+                                datee = CDate(.Item("PAYDATE")).ToString("MMMM dd, yyyy")
+                            End If
 
                             credit = IIf(IsDBNull(.Item("CREDIT")), 0, .Item("CREDIT"))
                             totalCredit = credit + CDbl(.Item("TOTALS"))
                             principal = IIf(IsDBNull(.Item("PRINCIPAL")), 0, .Item("PRINCIPAL"))
                             balance = principal - totalCredit
 
-                            dt.Rows.Add(.Item("FULLNAME"), .Item("AMOUNT"), FormatNumber(.Item("PRINCIPAL")), FormatNumber(totalCredit), FormatNumber(balance), CDate(.Item("PAYDATE")).ToString("MMMM dd, yyyy"))
+                            dt.Rows.Add(.Item("FULLNAME"), .Item("AMOUNT"), FormatNumber(.Item("PRINCIPAL")), FormatNumber(totalCredit), FormatNumber(balance), datee)
 
                         End With
                         frmMainForm.AppProgressBar.Value += 1
@@ -144,7 +142,6 @@ Public Class frmReport
                     .Columns.Add("BRANCH_CODE")
                     .Columns.Add("PAYDATE")
                     .Columns.Add("PERIOD")
-                    '.Columns.Add("RANGE")
                     .Columns.Add("COMPANY")
                     .Columns.Add("HO_CATEGORY")
                     .Columns.Add("PLUS")
@@ -1482,15 +1479,6 @@ Public Class frmReport
         End If
     End Sub
 
-    Private Sub SBUHistory_btn_Click(sender As Object, e As EventArgs) Handles SBUHistory_btn.Click
-        Lists_Deduction_History(SBUHistory_List, "SBU", SBUHistory_txt.Text)
-    End Sub
-
-    Private Sub SBUHistory_txt_KeyPress(sender As Object, e As KeyPressEventArgs) Handles SBUHistory_txt.KeyPress
-        If e.KeyChar = ChrW(Keys.Enter) Then
-            SBUHistory_btn.PerformClick()
-        End If
-    End Sub
 
     Private Sub DeducHistory_btn_Click(sender As Object, e As EventArgs) Handles DeducHistory_btn.Click
         Lists_Deduction_History(DeducHistory_List, "DEDUCTION", DeducHistory_txt.Text)
@@ -1503,9 +1491,7 @@ Public Class frmReport
     End Sub
 
     Private Sub Reports_Tab_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Reports_Tab.SelectedIndexChanged
-        If Reports_Tab.SelectedIndex = 7 Then
-            Lists_SBU(SBU_LV)
-        ElseIf Reports_Tab.SelectedIndex = 10 Then
+        If Reports_Tab.SelectedIndex = 9 Then
             Lists_13Month(Month_LV)
         End If
     End Sub

@@ -60,6 +60,7 @@ Partial Class frmMainForm
         Me.Exit_LBL = New System.Windows.Forms.Label()
         Me.PictureBox5 = New System.Windows.Forms.PictureBox()
         Me.pNavigate = New System.Windows.Forms.Panel()
+        Me.Dashboard_lbl = New System.Windows.Forms.Label()
         Me.NavagationPanel.SuspendLayout()
         CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox10, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -281,7 +282,7 @@ Partial Class frmMainForm
         Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileToolStripMenuItem, Me.AboutUsToolStripMenuItem})
         Me.MenuStrip1.Location = New System.Drawing.Point(-5, 80)
         Me.MenuStrip1.Name = "MenuStrip1"
-        Me.MenuStrip1.Size = New System.Drawing.Size(233, 24)
+        Me.MenuStrip1.Size = New System.Drawing.Size(113, 24)
         Me.MenuStrip1.TabIndex = 3
         Me.MenuStrip1.Text = "MenuStrip1"
         '
@@ -436,6 +437,7 @@ Partial Class frmMainForm
         'Panel1
         '
         Me.Panel1.BackColor = System.Drawing.Color.White
+        Me.Panel1.Controls.Add(Me.Dashboard_lbl)
         Me.Panel1.Controls.Add(Me.AppProgressBar)
         Me.Panel1.Controls.Add(Me.ProgressBar1)
         Me.Panel1.Controls.Add(Me.Question_lbl)
@@ -516,6 +518,18 @@ Partial Class frmMainForm
         Me.pNavigate.Size = New System.Drawing.Size(1169, 665)
         Me.pNavigate.TabIndex = 22
         '
+        'Dashboard_lbl
+        '
+        Me.Dashboard_lbl.AutoSize = True
+        Me.Dashboard_lbl.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Dashboard_lbl.ForeColor = System.Drawing.Color.MidnightBlue
+        Me.Dashboard_lbl.Location = New System.Drawing.Point(3, 3)
+        Me.Dashboard_lbl.Name = "Dashboard_lbl"
+        Me.Dashboard_lbl.Size = New System.Drawing.Size(82, 20)
+        Me.Dashboard_lbl.TabIndex = 20
+        Me.Dashboard_lbl.Text = "Dashboard"
+        Me.Dashboard_lbl.Visible = False
+        '
         'frmMainForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -590,4 +604,5 @@ Partial Class frmMainForm
     Friend WithEvents UserLogs_Menu As ToolStripMenuItem
     Friend WithEvents ChangeUserInfo_Menu As ToolStripMenuItem
     Friend WithEvents Schedule_Menu As ToolStripMenuItem
+    Friend WithEvents Dashboard_lbl As Label
 End Class

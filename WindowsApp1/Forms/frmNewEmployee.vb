@@ -666,9 +666,6 @@ Public Class frmNewEmployee
         clearAdd()
     End Sub
 
-    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
-        clearAdd()
-    End Sub
 
     Private Sub clearAdd()
         Bio_TXT.Clear()
@@ -681,7 +678,7 @@ Public Class frmNewEmployee
         Position_Combo.Text = ""
         TimeIn_Combo.Text = ""
         TimeOut_Combo.Text = ""
-        Fullname_TXT.Clear()
+        FirstName_TXT.Clear()
         Email_TXT.Clear()
         TIN_TXT.Clear()
         SSS_TXT.Clear()
@@ -695,7 +692,7 @@ Public Class frmNewEmployee
 
         If Not isValidSave() Then Exit Sub
 
-        Dim result As DialogResult = MsgBox($"Details for {Fullname_TXT.Text} will be Saved/Updated, proceed anyway?", MessageBoxButtons.YesNo)
+        Dim result As DialogResult = MsgBox($"Details for {FirstName_TXT.Text} will be Saved/Updated, proceed anyway?", MessageBoxButtons.YesNo)
         If result = DialogResult.Yes Then
 
             Dim stat As String ' User Logs
@@ -708,15 +705,27 @@ Public Class frmNewEmployee
                 stat = "Inactive"
             End If
 
-            SaveNew_Employee(Add_Company_CB.Text, Branch_ComboB.Text, Fullname_TXT.Text, Bio_TXT.Text, Email_TXT.Text, emp_status, Started_DTP.Value, False,
+            Dim fullname As String
+
+            If String.IsNullOrEmpty(MName_txt.Text) Then
+                fullname = $"{LastName_txt.Text}, {FirstName_TXT.Text} "
+            Else
+                fullname = $"{LastName_txt.Text}, {FirstName_TXT.Text} {MName_txt.Text.Substring(0, 1)}."
+            End If
+
+            SaveNew_Employee(Add_Company_CB.Text, Branch_ComboB.Text, fullname, Bio_TXT.Text, Email_TXT.Text, emp_status, Started_DTP.Value, False,
                          TimeIn_Combo.Text, TimeOut_Combo.Text, EmpNo_TXT.Text, TIN_TXT.Text, SSS_TXT.Text, PHILH_TXT.Text, HDMF_TXT.Text, HO_Category.Text,
-                         ComCategory_Combo.Text, Position_Combo.Text, ComCompany_Cmbo.Text, PhotoCategory_Combo.Text)
+                         ComCategory_Combo.Text, Position_Combo.Text, ComCompany_Cmbo.Text, PhotoCategory_Combo.Text, MName_txt.Text, BDate_dtp.Value, Address_txt.Text)
+
+            If Emp_Pic.Image IsNot Nothing Then
+                SavePic(Bio_TXT.Text, SaveProfilePic(Emp_Pic.Image))
+            End If
 
             If btnSave.Tag = "UPDATE" Then
-                SaveLogs($"EDITED EMPLOYEE - Name({Fullname_TXT.Text}({Bio_TXT.Text})), Company({Add_Company_CB.Text}), Branch({Branch_ComboB.Text}), Email({Email_TXT.Text}), Status({stat}), Started({Started_DTP.Value.ToShortDateString}), Time in/out({TimeIn_Combo.Text}/{TimeOut_Combo.Text}), Emp No.({EmpNo_TXT.Text}), TIN({TIN_TXT.Text}), SSS({SSS_TXT.Text}), Philhealth({PHILH_TXT.Text}), Pagibig({HDMF_TXT.Text}), Position({Position_Combo.Text}), HO({HO_Category.Text}, {ComCategory_Combo.Text}, {ComCompany_Cmbo.Text})",
+                SaveLogs($"EDITED EMPLOYEE - Name({FirstName_TXT.Text}({Bio_TXT.Text})), Company({Add_Company_CB.Text}), Branch({Branch_ComboB.Text}), Email({Email_TXT.Text}), Status({stat}), Started({Started_DTP.Value.ToShortDateString}), Time in/out({TimeIn_Combo.Text}/{TimeOut_Combo.Text}), Emp No.({EmpNo_TXT.Text}), TIN({TIN_TXT.Text}), SSS({SSS_TXT.Text}), Philhealth({PHILH_TXT.Text}), Pagibig({HDMF_TXT.Text}), Position({Position_Combo.Text}), HO({HO_Category.Text}, {ComCategory_Combo.Text}, {ComCompany_Cmbo.Text})",
                      frmMainForm.UserName_LBL.Text)
             Else
-                SaveLogs($"ADDED EMPLOYEE - Name({Fullname_TXT.Text}({Bio_TXT.Text})), Company({Add_Company_CB.Text}), Branch({Branch_ComboB.Text}), Email({Email_TXT.Text}), Status({stat}), Started({Started_DTP.Value.ToShortDateString}), Time in/out({TimeIn_Combo.Text}/{TimeOut_Combo.Text}), Emp No.({EmpNo_TXT.Text}), TIN({TIN_TXT.Text}), SSS({SSS_TXT.Text}), Philhealth({PHILH_TXT.Text}), Pagibig({HDMF_TXT.Text}), Position({Position_Combo.Text}), HO({HO_Category.Text}, {ComCategory_Combo.Text}, {ComCompany_Cmbo.Text})",
+                SaveLogs($"ADDED EMPLOYEE - Name({FirstName_TXT.Text}({Bio_TXT.Text})), Company({Add_Company_CB.Text}), Branch({Branch_ComboB.Text}), Email({Email_TXT.Text}), Status({stat}), Started({Started_DTP.Value.ToShortDateString}), Time in/out({TimeIn_Combo.Text}/{TimeOut_Combo.Text}), Emp No.({EmpNo_TXT.Text}), TIN({TIN_TXT.Text}), SSS({SSS_TXT.Text}), Philhealth({PHILH_TXT.Text}), Pagibig({HDMF_TXT.Text}), Position({Position_Combo.Text}), HO({HO_Category.Text}, {ComCategory_Combo.Text}, {ComCompany_Cmbo.Text})",
                      frmMainForm.UserName_LBL.Text)
             End If
 
@@ -771,8 +780,20 @@ Public Class frmNewEmployee
             MsgBox("Please Select Time Out!", MsgBoxStyle.Exclamation, "Error")
             Return False
 
-        ElseIf String.IsNullOrEmpty(Fullname_TXT.Text) Then
-            MsgBox("Please Indicate Employee's Fullname!", MsgBoxStyle.Exclamation, "Error")
+        ElseIf String.IsNullOrEmpty(FirstName_TXT.Text) Then
+            MsgBox("Please Indicate Employee's First Name!", MsgBoxStyle.Exclamation, "Error")
+            Return False
+
+        ElseIf String.IsNullOrEmpty(LastName_txt.Text) Then
+            MsgBox("Please Indicate Employee's Last Name!", MsgBoxStyle.Exclamation, "Error")
+            Return False
+
+        ElseIf BDate_dtp.Value = "12/31/1753" Then
+            MsgBox("Please Indicate Birth Date!", MsgBoxStyle.Exclamation, "Error")
+            Return False
+
+        ElseIf String.IsNullOrEmpty(Address_txt.Text) Then
+            MsgBox("Please Indicate Employee's Adress!", MsgBoxStyle.Exclamation, "Error")
             Return False
 
         ElseIf String.IsNullOrEmpty(Email_TXT.Text) Then
@@ -913,7 +934,7 @@ Public Class frmNewEmployee
 
     End Sub
 
-    Private Sub Add_Company_CB_TextChanged(sender As Object, e As EventArgs) Handles TimeOut_Combo.TextChanged, TimeIn_Combo.TextChanged, Fullname_TXT.TextChanged, EmpNo_TXT.TextChanged, Email_TXT.TextChanged
+    Private Sub Add_Company_CB_TextChanged(sender As Object, e As EventArgs) Handles TimeOut_Combo.TextChanged, TimeIn_Combo.TextChanged, FirstName_TXT.TextChanged, EmpNo_TXT.TextChanged, Email_TXT.TextChanged
 
         If sender.Text = "" Then
             sender.Region = New Region(New Rectangle(2, 2, sender.Width - 4, sender.Height - 4))
@@ -926,10 +947,11 @@ Public Class frmNewEmployee
     Private Sub Bio_TXT_TextChanged_1(sender As Object, e As EventArgs) Handles Bio_TXT.TextChanged
 
         If Bio_TXT.Text <> Nothing Then
-            GetFullname(Bio_TXT.Text, Add_Company_CB, Branch_ComboB, Fullname_TXT, Email_TXT, InActive_RB,
-                            Started_DTP, TimeIn_Combo, TimeOut_Combo, EmpNo_TXT, TIN_TXT, SSS_TXT, PHILH_TXT, HDMF_TXT, HO_Category,
-                            ComCategory_Combo, Position_Combo, ComCompany_Cmbo, PhotoCategory_Combo, btnSave)
+            GetFullname(Bio_TXT.Text, Add_Company_CB, Branch_ComboB, FirstName_TXT, Email_TXT, InActive_RB,
+                            Started_DTP, TimeIn_Combo, TimeOut_Combo, EmpNo_TXT, TIN_TXT, SSS_TXT, PHILH_TXT, HDMF_TXT, HO_Category, ComCategory_Combo,
+                            Position_Combo, ComCompany_Cmbo, PhotoCategory_Combo, LastName_txt, MName_txt, BDate_dtp, Address_txt, btnSave)
 
+            GetPic(Bio_TXT.Text, Emp_Pic)
         Else
             Add_Company_CB.Text = ""
             HO_Category.Text = ""
@@ -938,7 +960,7 @@ Public Class frmNewEmployee
             ComCompany_Cmbo.Text = ""
             Branch_ComboB.Text = ""
             Started_DTP.Value = "1/1/2000"
-            Fullname_TXT.Text = ""
+            FirstName_TXT.Text = ""
             Email_TXT.Text = ""
             Position_Combo.Text = ""
             TimeIn_Combo.Text = ""
@@ -949,6 +971,9 @@ Public Class frmNewEmployee
             PHILH_TXT.Text = ""
             HDMF_TXT.Text = ""
             Active_RB.Checked = True
+            BDate_dtp.Value = "12/31/1753"
+            Address_txt.Text = ""
+            Emp_Pic.Image = Nothing
         End If
 
     End Sub
@@ -975,17 +1000,14 @@ Public Class frmNewEmployee
         End If
     End Sub
 
-    Private Sub Add_Company_CB_TextChanged_1(sender As Object, e As EventArgs) Handles Position_Combo.TextChanged, HO_Category.TextChanged, ComCategory_Combo.TextChanged, Branch_ComboB.TextChanged, Add_Company_CB.TextChanged
-        'Dim selectionStart As Integer = sender.SelectionStart
-
-        'sender.Text = sender.Text.ToUpper()
-        'sender.SelectionStart = selectionStart 
+    'Private Sub Add_Company_CB_TextChanged_1(sender As Object, e As EventArgs) Handles Position_Combo.TextChanged, HO_Category.TextChanged, ComCategory_Combo.TextChanged, Branch_ComboB.TextChanged, Add_Company_CB.TextChanged
+    Private Sub Add_Company_CB_TextChanged_1(sender As Object, e As EventArgs) Handles Add_Company_CB.TextChanged
 
         If Add_Company_CB.SelectedIndex = 4 Then
 
             Label4.Visible = False
-            Branch_ComboB.Visible = False
             Branch_ComboB.Text = ""
+            Branch_ComboB.Visible = False
 
             Label24.Visible = False
             PhotoCategory_Combo.Visible = False
@@ -1052,13 +1074,33 @@ Public Class frmNewEmployee
         Dim bio_No As Integer = lvEmployee.Items(lvEmployee.FocusedItem.Index).SubItems(3).Text
 
         Bio_TXT.Text = bio_No
-        GetFullname(bio_No, Add_Company_CB, Branch_ComboB, Fullname_TXT, Email_TXT, InActive_RB, Started_DTP,
+        GetFullname(bio_No, Add_Company_CB, Branch_ComboB, FirstName_TXT, Email_TXT, InActive_RB, Started_DTP,
                     TimeIn_Combo, TimeOut_Combo, EmpNo_TXT, TIN_TXT, SSS_TXT, PHILH_TXT, HDMF_TXT, HO_Category,
-                    ComCategory_Combo, Position_Combo, ComCompany_Cmbo, PhotoCategory_Combo)
+                    ComCategory_Combo, Position_Combo, ComCompany_Cmbo, PhotoCategory_Combo, LastName_txt, MName_txt,
+                    BDate_dtp, Address_txt, btnSave)
 
         Add_Panel.Location = New Point(ClientSize.Width / 2 - Add_Panel.Size.Width / 2, ClientSize.Height / 2 - Add_Panel.Size.Height / 2)
         Add_Panel.Visible = True
 
+    End Sub
+
+    Private Sub Clear_btn_Click(sender As Object, e As EventArgs) Handles Clear_btn.Click
+        Dim result As DialogResult = MsgBox("Are you sure?", MsgBoxStyle.YesNo)
+        If result = DialogResult.Yes Then
+            clearAdd()
+        End If
+    End Sub
+
+    Private Sub ImportPic_btn_Click(sender As Object, e As EventArgs) Handles ImportPic_btn.Click
+        Using dlg As New OpenFileDialog()
+            dlg.Title = "Open Image"
+            dlg.Filter = "Image Files (*.bmp;*.jpg;*.jpeg,*.png)|*.BMP;*.JPG;*.JPEG;*.PNG"
+
+            If dlg.ShowDialog = DialogResult.OK Then
+                Emp_Pic.Image = New Bitmap(dlg.FileName)
+                Emp_Pic.SizeMode = PictureBoxSizeMode.StretchImage
+            End If
+        End Using
     End Sub
 
 End Class
