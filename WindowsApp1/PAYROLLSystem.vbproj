@@ -151,6 +151,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>dtr_all.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Dataset\Forms.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Forms.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Dataset\Forms.vb">
+      <DependentUpon>Forms.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Dataset\payroll_summary.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -377,6 +385,17 @@
     </None>
     <None Include="Dataset\dtr_all.xss">
       <DependentUpon>dtr_all.xsd</DependentUpon>
+    </None>
+    <None Include="Dataset\Forms.xsc">
+      <DependentUpon>Forms.xsd</DependentUpon>
+    </None>
+    <None Include="Dataset\Forms.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>Forms.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Dataset\Forms.xss">
+      <DependentUpon>Forms.xsd</DependentUpon>
     </None>
     <None Include="Dataset\payroll_summary.xsc">
       <DependentUpon>payroll_summary.xsd</DependentUpon>
