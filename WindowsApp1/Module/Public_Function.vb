@@ -39,6 +39,7 @@ Module Public_Function
         Loans
         Settings
         Schedule
+        Allowance
     End Enum
 
     Friend Sub SwitchForm_Attendance(ByVal gotoForm As FormName, emp As Employee, empNo As Integer, Optional btnSearch_tag As String = "")
@@ -125,6 +126,31 @@ Module Public_Function
 
                     If instForm_ Is Nothing Then
                         instForm_ = DirectCast(CreateObjectInstance("frmSettings"), Form)
+                        instForm_.MdiParent = frmMainForm
+                        frmMainForm.pNavigate.Controls.Add(instForm_)
+                        frmMainForm.pNavigate.Tag = instForm_
+                        instForm_.Show()
+                        instForm_.Dock = DockStyle.Fill
+                        instForm_.BringToFront()
+                    Else
+                        instForm_.BringToFront()
+                    End If
+
+                Catch ex As Exception
+
+                End Try
+        End Select
+    End Sub
+
+    Friend Sub SwitchForm_Allowance(ByVal gotoForm As FormName, emp As Employee, tabName As String)
+        Select Case gotoForm
+            Case FormName.Allowance
+                Try
+                    Dim instForm_ As frmAllowance = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmAllowance").SingleOrDefault()
+                    instForm_.Load_Allowance(emp, tabName)
+
+                    If instForm_ Is Nothing Then
+                        instForm_ = DirectCast(CreateObjectInstance("frmAllowance"), Form)
                         instForm_.MdiParent = frmMainForm
                         frmMainForm.pNavigate.Controls.Add(instForm_)
                         frmMainForm.pNavigate.Tag = instForm_

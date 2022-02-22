@@ -461,8 +461,8 @@ Module SaveUpdate
                 .Item("CATEGORY") = category
                 .Item("PRINCIPAL") = PRINCIPAL
                 .Item("AMORT") = AMORT
-                .Item("CREDIT") = 0
-                .Item("BALANCE") = PRINCIPAL
+                '.Item("CREDIT") = 0
+                '.Item("BALANCE") = PRINCIPAL
                 .Item("SCHEDULE") = SCHEDULE
                 .Item("DATEE") = DATEE
 

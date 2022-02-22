@@ -219,6 +219,10 @@ Public Class frmMainForm
         OpenWindowsForm("frmDashboard")
     End Sub
 
+    Private Sub Allowance_btn_Click(sender As Object, e As EventArgs) Handles Allowance_btn.Click
+        OpenWindowsForm("frmAllowance")
+    End Sub
+
     Private Sub Dashboard_BTN_Click(sender As Object, e As EventArgs) Handles Dashboard_BTN.Click
         OpenWindowsForm("frmSchedule")
     End Sub

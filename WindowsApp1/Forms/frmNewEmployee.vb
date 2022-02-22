@@ -860,9 +860,9 @@ Public Class frmNewEmployee
             SwitchForm_Settings(FormName.Settings, tmpEmp, "RATE")
             Close()
 
-        ElseIf txtSearch.Tag = "Settings-Allowance" Then
+        ElseIf txtSearch.Tag = "Allowance" Then
 
-            SwitchForm_Settings(FormName.Settings, tmpEmp, "ALLOWANCE")
+            SwitchForm_Allowance(FormName.Allowance, tmpEmp, "ALLOWANCE")
             Close()
 
         ElseIf txtSearch.Tag = "Settings-TimeInOUt" Then

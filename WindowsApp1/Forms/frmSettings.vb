@@ -640,14 +640,14 @@
                 Rate_Employee_TXT.Text = .Fullname
                 Rate_Employee_TXT.Tag = .EMP_ID
 
-            ElseIf tabName = "ALLOWANCE" Then
+                'ElseIf tabName = "ALLOWANCE" Then
 
-                Allow_Name_TXT.Text = .Fullname
-                Allow_Name_TXT.Tag = .BiometricID
-                Allow_SearchEmp_BTN.Tag = .BRANCH_CODE
-                Label14.Tag = .EMP_ID
-                Settings_Tab.SelectedIndex = 2
-                Allow_Category_Combo.SelectedItem = category
+                '    Allow_Name_TXT.Text = .Fullname
+                '    Allow_Name_TXT.Tag = .BiometricID
+                '    Allow_SearchEmp_BTN.Tag = .BRANCH_CODE
+                '    Label14.Tag = .EMP_ID
+                '    Settings_Tab.SelectedIndex = 2
+                '    Allow_Category_Combo.SelectedItem = category
 
             ElseIf tabName = "TIMEIN/OUT" Then
 
@@ -756,7 +756,4 @@
         GetAllowance_Details(idNo, Allow_Name_TXT, Allow_Category_Combo, Allow_Schedule_Combo, A_EveryDate_Combo, Allow_Amount_TXT, A_EffectiveDate_DTP, FixYes_RadioB, FixNo_RadioB)
     End Sub
 
-    Private Sub Allowance_LV_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Allowance_LV.SelectedIndexChanged
-
-    End Sub
 End Class
