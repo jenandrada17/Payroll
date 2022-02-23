@@ -865,6 +865,11 @@ Public Class frmNewEmployee
             SwitchForm_Allowance(FormName.Allowance, tmpEmp, "ALLOWANCE")
             Close()
 
+        ElseIf txtSearch.Tag = "Allowance-Form" Then
+
+            SwitchForm_Allowance(FormName.Allowance, tmpEmp, "FORM")
+            Close()
+
         ElseIf txtSearch.Tag = "Settings-TimeInOUt" Then
 
             SwitchForm_Settings(FormName.Settings, tmpEmp, "TIMEIN/OUT")
@@ -1081,7 +1086,6 @@ Public Class frmNewEmployee
 
         Add_Panel.Location = New Point(ClientSize.Width / 2 - Add_Panel.Size.Width / 2, ClientSize.Height / 2 - Add_Panel.Size.Height / 2)
         Add_Panel.Visible = True
-
     End Sub
 
     Private Sub Clear_btn_Click(sender As Object, e As EventArgs) Handles Clear_btn.Click

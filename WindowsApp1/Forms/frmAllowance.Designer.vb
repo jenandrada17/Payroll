@@ -23,6 +23,9 @@ Partial Class frmAllowance
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
+        Dim ReportDataSource1 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Me.PAFBindingSource = New System.Windows.Forms.BindingSource(Me.components)
+        Me.Forms = New WindowsApp1.Forms()
         Me.Close_LBL = New System.Windows.Forms.Label()
         Me.Allowance_Tab = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
@@ -55,15 +58,93 @@ Partial Class frmAllowance
         Me.Allow_Name_TXT = New System.Windows.Forms.TextBox()
         Me.Allow_Save_BTN = New System.Windows.Forms.Button()
         Me.Form_Tab = New System.Windows.Forms.TabPage()
+        Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.Label36 = New System.Windows.Forms.Label()
+        Me.Remarks_txt = New System.Windows.Forms.RichTextBox()
+        Me.Panel2 = New System.Windows.Forms.Panel()
+        Me.F_Calcel_btn = New System.Windows.Forms.Button()
+        Me.F_Save_btn = New System.Windows.Forms.Button()
+        Me.F_Preview_btn = New System.Windows.Forms.Button()
+        Me.PIEffectTo_dtp = New System.Windows.Forms.DateTimePicker()
+        Me.Label31 = New System.Windows.Forms.Label()
+        Me.PIEffectFrom_dtp = New System.Windows.Forms.DateTimePicker()
+        Me.Label33 = New System.Windows.Forms.Label()
+        Me.PITo_txt = New System.Windows.Forms.TextBox()
+        Me.Label34 = New System.Windows.Forms.Label()
+        Me.PIFrom_txt = New System.Windows.Forms.TextBox()
+        Me.Label35 = New System.Windows.Forms.Label()
+        Me.SalryEffectTo_dtp = New System.Windows.Forms.DateTimePicker()
+        Me.Label28 = New System.Windows.Forms.Label()
+        Me.SalryEffectFrom_dtp = New System.Windows.Forms.DateTimePicker()
+        Me.Label27 = New System.Windows.Forms.Label()
+        Me.SalaryTo_txt = New System.Windows.Forms.TextBox()
+        Me.Label24 = New System.Windows.Forms.Label()
+        Me.SalaryFrom_txt = New System.Windows.Forms.TextBox()
+        Me.Label26 = New System.Windows.Forms.Label()
+        Me.JobLevelTo_txt = New System.Windows.Forms.TextBox()
+        Me.Label22 = New System.Windows.Forms.Label()
+        Me.JobLevelFrom_txt = New System.Windows.Forms.TextBox()
+        Me.Label23 = New System.Windows.Forms.Label()
+        Me.JobTitleTo_txt = New System.Windows.Forms.TextBox()
+        Me.Label20 = New System.Windows.Forms.Label()
+        Me.JobTitleFrom_txt = New System.Windows.Forms.TextBox()
+        Me.Label21 = New System.Windows.Forms.Label()
+        Me.CompanyT0_txt = New System.Windows.Forms.TextBox()
+        Me.Label19 = New System.Windows.Forms.Label()
+        Me.CompanyFrom_txt = New System.Windows.Forms.TextBox()
+        Me.Label18 = New System.Windows.Forms.Label()
+        Me.SalesCharges_CB = New System.Windows.Forms.ComboBox()
+        Me.Label17 = New System.Windows.Forms.Label()
+        Me.Employment_CB = New System.Windows.Forms.ComboBox()
+        Me.Label15 = New System.Windows.Forms.Label()
+        Me.Marital_CB = New System.Windows.Forms.ComboBox()
+        Me.Label12 = New System.Windows.Forms.Label()
+        Me.Gender_CB = New System.Windows.Forms.ComboBox()
+        Me.Label11 = New System.Windows.Forms.Label()
+        Me.TIN_txt = New System.Windows.Forms.TextBox()
+        Me.Label10 = New System.Windows.Forms.Label()
+        Me.SSS_txt = New System.Windows.Forms.TextBox()
+        Me.Label9 = New System.Windows.Forms.Label()
+        Me.DateHire_txt = New System.Windows.Forms.TextBox()
+        Me.Bdate_txt = New System.Windows.Forms.TextBox()
+        Me.Label8 = New System.Windows.Forms.Label()
+        Me.Address_txt = New System.Windows.Forms.TextBox()
+        Me.DateTimePicker3 = New System.Windows.Forms.DateTimePicker()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.EmpNo_txt = New System.Windows.Forms.TextBox()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.SearchEMP_BTN = New System.Windows.Forms.Button()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.BiometricID_TXT = New System.Windows.Forms.TextBox()
+        Me.Name_TXT = New System.Windows.Forms.TextBox()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.ReportViewer1 = New Microsoft.Reporting.WinForms.ReportViewer()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Context_Allow = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.Edit_MenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        CType(Me.PAFBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.Forms, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Allowance_Tab.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.FlowLayoutPanel1.SuspendLayout()
+        Me.Form_Tab.SuspendLayout()
+        Me.Panel1.SuspendLayout()
+        Me.Panel2.SuspendLayout()
         Me.Context_Allow.SuspendLayout()
         Me.SuspendLayout()
+        '
+        'PAFBindingSource
+        '
+        Me.PAFBindingSource.DataMember = "PAF"
+        Me.PAFBindingSource.DataSource = Me.Forms
+        '
+        'Forms
+        '
+        Me.Forms.DataSetName = "Forms"
+        Me.Forms.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema
         '
         'Close_LBL
         '
@@ -383,6 +464,8 @@ Partial Class frmAllowance
         '
         'Form_Tab
         '
+        Me.Form_Tab.Controls.Add(Me.Panel1)
+        Me.Form_Tab.Controls.Add(Me.ReportViewer1)
         Me.Form_Tab.Location = New System.Drawing.Point(4, 41)
         Me.Form_Tab.Name = "Form_Tab"
         Me.Form_Tab.Padding = New System.Windows.Forms.Padding(3)
@@ -390,6 +473,666 @@ Partial Class frmAllowance
         Me.Form_Tab.TabIndex = 0
         Me.Form_Tab.Text = "      Form      "
         Me.Form_Tab.UseVisualStyleBackColor = True
+        '
+        'Panel1
+        '
+        Me.Panel1.AutoScroll = True
+        Me.Panel1.Controls.Add(Me.Label36)
+        Me.Panel1.Controls.Add(Me.Remarks_txt)
+        Me.Panel1.Controls.Add(Me.Panel2)
+        Me.Panel1.Controls.Add(Me.PIEffectTo_dtp)
+        Me.Panel1.Controls.Add(Me.Label31)
+        Me.Panel1.Controls.Add(Me.PIEffectFrom_dtp)
+        Me.Panel1.Controls.Add(Me.Label33)
+        Me.Panel1.Controls.Add(Me.PITo_txt)
+        Me.Panel1.Controls.Add(Me.Label34)
+        Me.Panel1.Controls.Add(Me.PIFrom_txt)
+        Me.Panel1.Controls.Add(Me.Label35)
+        Me.Panel1.Controls.Add(Me.SalryEffectTo_dtp)
+        Me.Panel1.Controls.Add(Me.Label28)
+        Me.Panel1.Controls.Add(Me.SalryEffectFrom_dtp)
+        Me.Panel1.Controls.Add(Me.Label27)
+        Me.Panel1.Controls.Add(Me.SalaryTo_txt)
+        Me.Panel1.Controls.Add(Me.Label24)
+        Me.Panel1.Controls.Add(Me.SalaryFrom_txt)
+        Me.Panel1.Controls.Add(Me.Label26)
+        Me.Panel1.Controls.Add(Me.JobLevelTo_txt)
+        Me.Panel1.Controls.Add(Me.Label22)
+        Me.Panel1.Controls.Add(Me.JobLevelFrom_txt)
+        Me.Panel1.Controls.Add(Me.Label23)
+        Me.Panel1.Controls.Add(Me.JobTitleTo_txt)
+        Me.Panel1.Controls.Add(Me.Label20)
+        Me.Panel1.Controls.Add(Me.JobTitleFrom_txt)
+        Me.Panel1.Controls.Add(Me.Label21)
+        Me.Panel1.Controls.Add(Me.CompanyT0_txt)
+        Me.Panel1.Controls.Add(Me.Label19)
+        Me.Panel1.Controls.Add(Me.CompanyFrom_txt)
+        Me.Panel1.Controls.Add(Me.Label18)
+        Me.Panel1.Controls.Add(Me.SalesCharges_CB)
+        Me.Panel1.Controls.Add(Me.Label17)
+        Me.Panel1.Controls.Add(Me.Employment_CB)
+        Me.Panel1.Controls.Add(Me.Label15)
+        Me.Panel1.Controls.Add(Me.Marital_CB)
+        Me.Panel1.Controls.Add(Me.Label12)
+        Me.Panel1.Controls.Add(Me.Gender_CB)
+        Me.Panel1.Controls.Add(Me.Label11)
+        Me.Panel1.Controls.Add(Me.TIN_txt)
+        Me.Panel1.Controls.Add(Me.Label10)
+        Me.Panel1.Controls.Add(Me.SSS_txt)
+        Me.Panel1.Controls.Add(Me.Label9)
+        Me.Panel1.Controls.Add(Me.DateHire_txt)
+        Me.Panel1.Controls.Add(Me.Bdate_txt)
+        Me.Panel1.Controls.Add(Me.Label8)
+        Me.Panel1.Controls.Add(Me.Address_txt)
+        Me.Panel1.Controls.Add(Me.DateTimePicker3)
+        Me.Panel1.Controls.Add(Me.Label7)
+        Me.Panel1.Controls.Add(Me.Label6)
+        Me.Panel1.Controls.Add(Me.Label5)
+        Me.Panel1.Controls.Add(Me.EmpNo_txt)
+        Me.Panel1.Controls.Add(Me.Label2)
+        Me.Panel1.Controls.Add(Me.SearchEMP_BTN)
+        Me.Panel1.Controls.Add(Me.Label3)
+        Me.Panel1.Controls.Add(Me.BiometricID_TXT)
+        Me.Panel1.Controls.Add(Me.Name_TXT)
+        Me.Panel1.Controls.Add(Me.Label4)
+        Me.Panel1.Location = New System.Drawing.Point(639, 6)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(506, 579)
+        Me.Panel1.TabIndex = 1
+        '
+        'Label36
+        '
+        Me.Label36.AutoSize = True
+        Me.Label36.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label36.Location = New System.Drawing.Point(25, 1105)
+        Me.Label36.Name = "Label36"
+        Me.Label36.Size = New System.Drawing.Size(65, 25)
+        Me.Label36.TabIndex = 65
+        Me.Label36.Text = "Remarks"
+        '
+        'Remarks_txt
+        '
+        Me.Remarks_txt.Location = New System.Drawing.Point(28, 1133)
+        Me.Remarks_txt.Name = "Remarks_txt"
+        Me.Remarks_txt.Size = New System.Drawing.Size(378, 96)
+        Me.Remarks_txt.TabIndex = 64
+        Me.Remarks_txt.Text = ""
+        '
+        'Panel2
+        '
+        Me.Panel2.Controls.Add(Me.F_Calcel_btn)
+        Me.Panel2.Controls.Add(Me.F_Save_btn)
+        Me.Panel2.Controls.Add(Me.F_Preview_btn)
+        Me.Panel2.Location = New System.Drawing.Point(9, 1304)
+        Me.Panel2.Name = "Panel2"
+        Me.Panel2.Size = New System.Drawing.Size(477, 61)
+        Me.Panel2.TabIndex = 63
+        '
+        'F_Calcel_btn
+        '
+        Me.F_Calcel_btn.BackColor = System.Drawing.Color.PeachPuff
+        Me.F_Calcel_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.F_Calcel_btn.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.F_Calcel_btn.Location = New System.Drawing.Point(3, 18)
+        Me.F_Calcel_btn.Name = "F_Calcel_btn"
+        Me.F_Calcel_btn.Size = New System.Drawing.Size(115, 40)
+        Me.F_Calcel_btn.TabIndex = 2
+        Me.F_Calcel_btn.Text = "Cancel"
+        Me.F_Calcel_btn.UseVisualStyleBackColor = False
+        '
+        'F_Save_btn
+        '
+        Me.F_Save_btn.BackColor = System.Drawing.Color.DarkSalmon
+        Me.F_Save_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.F_Save_btn.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.F_Save_btn.Location = New System.Drawing.Point(359, 18)
+        Me.F_Save_btn.Name = "F_Save_btn"
+        Me.F_Save_btn.Size = New System.Drawing.Size(115, 40)
+        Me.F_Save_btn.TabIndex = 1
+        Me.F_Save_btn.Text = "Save"
+        Me.F_Save_btn.UseVisualStyleBackColor = False
+        '
+        'F_Preview_btn
+        '
+        Me.F_Preview_btn.BackColor = System.Drawing.Color.MistyRose
+        Me.F_Preview_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.F_Preview_btn.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.F_Preview_btn.Location = New System.Drawing.Point(188, 21)
+        Me.F_Preview_btn.Name = "F_Preview_btn"
+        Me.F_Preview_btn.Size = New System.Drawing.Size(115, 40)
+        Me.F_Preview_btn.TabIndex = 0
+        Me.F_Preview_btn.Text = "Preview"
+        Me.F_Preview_btn.UseVisualStyleBackColor = False
+        '
+        'PIEffectTo_dtp
+        '
+        Me.PIEffectTo_dtp.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.PIEffectTo_dtp.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.PIEffectTo_dtp.Location = New System.Drawing.Point(218, 1027)
+        Me.PIEffectTo_dtp.Name = "PIEffectTo_dtp"
+        Me.PIEffectTo_dtp.Size = New System.Drawing.Size(188, 33)
+        Me.PIEffectTo_dtp.TabIndex = 62
+        '
+        'Label31
+        '
+        Me.Label31.AutoSize = True
+        Me.Label31.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label31.Location = New System.Drawing.Point(23, 1033)
+        Me.Label31.Name = "Label31"
+        Me.Label31.Size = New System.Drawing.Size(98, 25)
+        Me.Label31.TabIndex = 61
+        Me.Label31.Text = "Effective Date"
+        '
+        'PIEffectFrom_dtp
+        '
+        Me.PIEffectFrom_dtp.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.PIEffectFrom_dtp.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.PIEffectFrom_dtp.Location = New System.Drawing.Point(218, 947)
+        Me.PIEffectFrom_dtp.Name = "PIEffectFrom_dtp"
+        Me.PIEffectFrom_dtp.Size = New System.Drawing.Size(188, 33)
+        Me.PIEffectFrom_dtp.TabIndex = 60
+        '
+        'Label33
+        '
+        Me.Label33.AutoSize = True
+        Me.Label33.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label33.Location = New System.Drawing.Point(23, 953)
+        Me.Label33.Name = "Label33"
+        Me.Label33.Size = New System.Drawing.Size(98, 25)
+        Me.Label33.TabIndex = 59
+        Me.Label33.Text = "Effective Date"
+        '
+        'PITo_txt
+        '
+        Me.PITo_txt.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.PITo_txt.Location = New System.Drawing.Point(218, 989)
+        Me.PITo_txt.Name = "PITo_txt"
+        Me.PITo_txt.Size = New System.Drawing.Size(188, 29)
+        Me.PITo_txt.TabIndex = 58
+        '
+        'Label34
+        '
+        Me.Label34.AutoSize = True
+        Me.Label34.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label34.Location = New System.Drawing.Point(23, 992)
+        Me.Label34.Name = "Label34"
+        Me.Label34.Size = New System.Drawing.Size(170, 25)
+        Me.Label34.TabIndex = 57
+        Me.Label34.Text = "Performance Incentive To"
+        '
+        'PIFrom_txt
+        '
+        Me.PIFrom_txt.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.PIFrom_txt.Location = New System.Drawing.Point(218, 909)
+        Me.PIFrom_txt.Name = "PIFrom_txt"
+        Me.PIFrom_txt.Size = New System.Drawing.Size(188, 29)
+        Me.PIFrom_txt.TabIndex = 56
+        '
+        'Label35
+        '
+        Me.Label35.AutoSize = True
+        Me.Label35.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label35.Location = New System.Drawing.Point(23, 912)
+        Me.Label35.Name = "Label35"
+        Me.Label35.Size = New System.Drawing.Size(186, 25)
+        Me.Label35.TabIndex = 55
+        Me.Label35.Text = "Performance Incentive From"
+        '
+        'SalryEffectTo_dtp
+        '
+        Me.SalryEffectTo_dtp.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SalryEffectTo_dtp.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.SalryEffectTo_dtp.Location = New System.Drawing.Point(218, 842)
+        Me.SalryEffectTo_dtp.Name = "SalryEffectTo_dtp"
+        Me.SalryEffectTo_dtp.Size = New System.Drawing.Size(188, 33)
+        Me.SalryEffectTo_dtp.TabIndex = 54
+        '
+        'Label28
+        '
+        Me.Label28.AutoSize = True
+        Me.Label28.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label28.Location = New System.Drawing.Point(23, 848)
+        Me.Label28.Name = "Label28"
+        Me.Label28.Size = New System.Drawing.Size(98, 25)
+        Me.Label28.TabIndex = 53
+        Me.Label28.Text = "Effective Date"
+        '
+        'SalryEffectFrom_dtp
+        '
+        Me.SalryEffectFrom_dtp.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SalryEffectFrom_dtp.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
+        Me.SalryEffectFrom_dtp.Location = New System.Drawing.Point(218, 762)
+        Me.SalryEffectFrom_dtp.Name = "SalryEffectFrom_dtp"
+        Me.SalryEffectFrom_dtp.Size = New System.Drawing.Size(188, 33)
+        Me.SalryEffectFrom_dtp.TabIndex = 52
+        '
+        'Label27
+        '
+        Me.Label27.AutoSize = True
+        Me.Label27.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label27.Location = New System.Drawing.Point(23, 768)
+        Me.Label27.Name = "Label27"
+        Me.Label27.Size = New System.Drawing.Size(98, 25)
+        Me.Label27.TabIndex = 51
+        Me.Label27.Text = "Effective Date"
+        '
+        'SalaryTo_txt
+        '
+        Me.SalaryTo_txt.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SalaryTo_txt.Location = New System.Drawing.Point(218, 804)
+        Me.SalaryTo_txt.Name = "SalaryTo_txt"
+        Me.SalaryTo_txt.Size = New System.Drawing.Size(188, 29)
+        Me.SalaryTo_txt.TabIndex = 50
+        '
+        'Label24
+        '
+        Me.Label24.AutoSize = True
+        Me.Label24.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label24.Location = New System.Drawing.Point(23, 807)
+        Me.Label24.Name = "Label24"
+        Me.Label24.Size = New System.Drawing.Size(109, 25)
+        Me.Label24.TabIndex = 49
+        Me.Label24.Text = "Salary Wage To"
+        '
+        'SalaryFrom_txt
+        '
+        Me.SalaryFrom_txt.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SalaryFrom_txt.Location = New System.Drawing.Point(218, 724)
+        Me.SalaryFrom_txt.Name = "SalaryFrom_txt"
+        Me.SalaryFrom_txt.Size = New System.Drawing.Size(188, 29)
+        Me.SalaryFrom_txt.TabIndex = 48
+        '
+        'Label26
+        '
+        Me.Label26.AutoSize = True
+        Me.Label26.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label26.Location = New System.Drawing.Point(23, 727)
+        Me.Label26.Name = "Label26"
+        Me.Label26.Size = New System.Drawing.Size(125, 25)
+        Me.Label26.TabIndex = 47
+        Me.Label26.Text = "Salary Wage From"
+        '
+        'JobLevelTo_txt
+        '
+        Me.JobLevelTo_txt.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.JobLevelTo_txt.Location = New System.Drawing.Point(137, 670)
+        Me.JobLevelTo_txt.Name = "JobLevelTo_txt"
+        Me.JobLevelTo_txt.Size = New System.Drawing.Size(269, 29)
+        Me.JobLevelTo_txt.TabIndex = 46
+        '
+        'Label22
+        '
+        Me.Label22.AutoSize = True
+        Me.Label22.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label22.Location = New System.Drawing.Point(23, 673)
+        Me.Label22.Name = "Label22"
+        Me.Label22.Size = New System.Drawing.Size(92, 25)
+        Me.Label22.TabIndex = 45
+        Me.Label22.Text = "Job Level To"
+        '
+        'JobLevelFrom_txt
+        '
+        Me.JobLevelFrom_txt.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.JobLevelFrom_txt.Location = New System.Drawing.Point(137, 632)
+        Me.JobLevelFrom_txt.Name = "JobLevelFrom_txt"
+        Me.JobLevelFrom_txt.Size = New System.Drawing.Size(269, 29)
+        Me.JobLevelFrom_txt.TabIndex = 44
+        '
+        'Label23
+        '
+        Me.Label23.AutoSize = True
+        Me.Label23.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label23.Location = New System.Drawing.Point(23, 635)
+        Me.Label23.Name = "Label23"
+        Me.Label23.Size = New System.Drawing.Size(108, 25)
+        Me.Label23.TabIndex = 43
+        Me.Label23.Text = "Job Level From"
+        '
+        'JobTitleTo_txt
+        '
+        Me.JobTitleTo_txt.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.JobTitleTo_txt.Location = New System.Drawing.Point(137, 593)
+        Me.JobTitleTo_txt.Name = "JobTitleTo_txt"
+        Me.JobTitleTo_txt.Size = New System.Drawing.Size(269, 29)
+        Me.JobTitleTo_txt.TabIndex = 42
+        '
+        'Label20
+        '
+        Me.Label20.AutoSize = True
+        Me.Label20.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label20.Location = New System.Drawing.Point(23, 596)
+        Me.Label20.Name = "Label20"
+        Me.Label20.Size = New System.Drawing.Size(87, 25)
+        Me.Label20.TabIndex = 41
+        Me.Label20.Text = "Job Title To"
+        '
+        'JobTitleFrom_txt
+        '
+        Me.JobTitleFrom_txt.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.JobTitleFrom_txt.Location = New System.Drawing.Point(137, 555)
+        Me.JobTitleFrom_txt.Name = "JobTitleFrom_txt"
+        Me.JobTitleFrom_txt.Size = New System.Drawing.Size(269, 29)
+        Me.JobTitleFrom_txt.TabIndex = 40
+        '
+        'Label21
+        '
+        Me.Label21.AutoSize = True
+        Me.Label21.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label21.Location = New System.Drawing.Point(23, 558)
+        Me.Label21.Name = "Label21"
+        Me.Label21.Size = New System.Drawing.Size(103, 25)
+        Me.Label21.TabIndex = 39
+        Me.Label21.Text = "Job Title From"
+        '
+        'CompanyT0_txt
+        '
+        Me.CompanyT0_txt.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CompanyT0_txt.Location = New System.Drawing.Point(137, 519)
+        Me.CompanyT0_txt.Name = "CompanyT0_txt"
+        Me.CompanyT0_txt.Size = New System.Drawing.Size(269, 29)
+        Me.CompanyT0_txt.TabIndex = 38
+        '
+        'Label19
+        '
+        Me.Label19.AutoSize = True
+        Me.Label19.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label19.Location = New System.Drawing.Point(23, 522)
+        Me.Label19.Name = "Label19"
+        Me.Label19.Size = New System.Drawing.Size(92, 25)
+        Me.Label19.TabIndex = 37
+        Me.Label19.Text = "Company To"
+        '
+        'CompanyFrom_txt
+        '
+        Me.CompanyFrom_txt.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CompanyFrom_txt.Location = New System.Drawing.Point(137, 481)
+        Me.CompanyFrom_txt.Name = "CompanyFrom_txt"
+        Me.CompanyFrom_txt.Size = New System.Drawing.Size(269, 29)
+        Me.CompanyFrom_txt.TabIndex = 36
+        '
+        'Label18
+        '
+        Me.Label18.AutoSize = True
+        Me.Label18.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label18.Location = New System.Drawing.Point(23, 484)
+        Me.Label18.Name = "Label18"
+        Me.Label18.Size = New System.Drawing.Size(108, 25)
+        Me.Label18.TabIndex = 35
+        Me.Label18.Text = "Company From"
+        '
+        'SalesCharges_CB
+        '
+        Me.SalesCharges_CB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.SalesCharges_CB.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SalesCharges_CB.FormattingEnabled = True
+        Me.SalesCharges_CB.Items.AddRange(New Object() {"PERFORMANCE INCENTIVE", "MERIT INCREASE", "ADJUSTMENT", "OTHERS"})
+        Me.SalesCharges_CB.Location = New System.Drawing.Point(137, 441)
+        Me.SalesCharges_CB.Name = "SalesCharges_CB"
+        Me.SalesCharges_CB.Size = New System.Drawing.Size(269, 30)
+        Me.SalesCharges_CB.TabIndex = 34
+        '
+        'Label17
+        '
+        Me.Label17.AutoSize = True
+        Me.Label17.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label17.Location = New System.Drawing.Point(23, 443)
+        Me.Label17.Name = "Label17"
+        Me.Label17.Size = New System.Drawing.Size(102, 25)
+        Me.Label17.TabIndex = 33
+        Me.Label17.Text = "Salary Charges"
+        '
+        'Employment_CB
+        '
+        Me.Employment_CB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.Employment_CB.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Employment_CB.FormattingEnabled = True
+        Me.Employment_CB.Items.AddRange(New Object() {"INITIAL HIRE", "CONFIRMATION OF REGULAR EMPLOYMENT", "RE-HIRE", "OTHERS"})
+        Me.Employment_CB.Location = New System.Drawing.Point(137, 402)
+        Me.Employment_CB.Name = "Employment_CB"
+        Me.Employment_CB.Size = New System.Drawing.Size(269, 30)
+        Me.Employment_CB.TabIndex = 32
+        '
+        'Label15
+        '
+        Me.Label15.AutoSize = True
+        Me.Label15.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label15.Location = New System.Drawing.Point(23, 404)
+        Me.Label15.Name = "Label15"
+        Me.Label15.Size = New System.Drawing.Size(97, 25)
+        Me.Label15.TabIndex = 31
+        Me.Label15.Text = "Employement"
+        '
+        'Marital_CB
+        '
+        Me.Marital_CB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.Marital_CB.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Marital_CB.FormattingEnabled = True
+        Me.Marital_CB.Items.AddRange(New Object() {"SINGLE", "MARRIED", "SEPARATED", "WIDOWED"})
+        Me.Marital_CB.Location = New System.Drawing.Point(137, 363)
+        Me.Marital_CB.Name = "Marital_CB"
+        Me.Marital_CB.Size = New System.Drawing.Size(269, 30)
+        Me.Marital_CB.TabIndex = 30
+        '
+        'Label12
+        '
+        Me.Label12.AutoSize = True
+        Me.Label12.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label12.Location = New System.Drawing.Point(23, 365)
+        Me.Label12.Name = "Label12"
+        Me.Label12.Size = New System.Drawing.Size(97, 25)
+        Me.Label12.TabIndex = 29
+        Me.Label12.Text = "Marital Status"
+        '
+        'Gender_CB
+        '
+        Me.Gender_CB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.Gender_CB.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Gender_CB.FormattingEnabled = True
+        Me.Gender_CB.Items.AddRange(New Object() {"MALE", "FEMALE"})
+        Me.Gender_CB.Location = New System.Drawing.Point(137, 324)
+        Me.Gender_CB.Name = "Gender_CB"
+        Me.Gender_CB.Size = New System.Drawing.Size(269, 30)
+        Me.Gender_CB.TabIndex = 28
+        '
+        'Label11
+        '
+        Me.Label11.AutoSize = True
+        Me.Label11.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label11.Location = New System.Drawing.Point(23, 326)
+        Me.Label11.Name = "Label11"
+        Me.Label11.Size = New System.Drawing.Size(57, 25)
+        Me.Label11.TabIndex = 27
+        Me.Label11.Text = "Gender"
+        '
+        'TIN_txt
+        '
+        Me.TIN_txt.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TIN_txt.Location = New System.Drawing.Point(137, 285)
+        Me.TIN_txt.Name = "TIN_txt"
+        Me.TIN_txt.ReadOnly = True
+        Me.TIN_txt.Size = New System.Drawing.Size(269, 29)
+        Me.TIN_txt.TabIndex = 26
+        '
+        'Label10
+        '
+        Me.Label10.AutoSize = True
+        Me.Label10.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label10.Location = New System.Drawing.Point(23, 291)
+        Me.Label10.Name = "Label10"
+        Me.Label10.Size = New System.Drawing.Size(60, 25)
+        Me.Label10.TabIndex = 25
+        Me.Label10.Text = "TIN No."
+        '
+        'SSS_txt
+        '
+        Me.SSS_txt.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SSS_txt.Location = New System.Drawing.Point(137, 247)
+        Me.SSS_txt.Name = "SSS_txt"
+        Me.SSS_txt.ReadOnly = True
+        Me.SSS_txt.Size = New System.Drawing.Size(269, 29)
+        Me.SSS_txt.TabIndex = 24
+        '
+        'Label9
+        '
+        Me.Label9.AutoSize = True
+        Me.Label9.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label9.Location = New System.Drawing.Point(23, 253)
+        Me.Label9.Name = "Label9"
+        Me.Label9.Size = New System.Drawing.Size(61, 25)
+        Me.Label9.TabIndex = 23
+        Me.Label9.Text = "SSS No."
+        '
+        'DateHire_txt
+        '
+        Me.DateHire_txt.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DateHire_txt.Location = New System.Drawing.Point(137, 209)
+        Me.DateHire_txt.Name = "DateHire_txt"
+        Me.DateHire_txt.ReadOnly = True
+        Me.DateHire_txt.Size = New System.Drawing.Size(269, 29)
+        Me.DateHire_txt.TabIndex = 22
+        '
+        'Bdate_txt
+        '
+        Me.Bdate_txt.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Bdate_txt.Location = New System.Drawing.Point(137, 172)
+        Me.Bdate_txt.Name = "Bdate_txt"
+        Me.Bdate_txt.ReadOnly = True
+        Me.Bdate_txt.Size = New System.Drawing.Size(269, 29)
+        Me.Bdate_txt.TabIndex = 20
+        '
+        'Label8
+        '
+        Me.Label8.AutoSize = True
+        Me.Label8.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label8.Location = New System.Drawing.Point(23, 137)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(61, 25)
+        Me.Label8.TabIndex = 17
+        Me.Label8.Text = "Address"
+        '
+        'Address_txt
+        '
+        Me.Address_txt.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Address_txt.Location = New System.Drawing.Point(137, 137)
+        Me.Address_txt.Name = "Address_txt"
+        Me.Address_txt.ReadOnly = True
+        Me.Address_txt.Size = New System.Drawing.Size(269, 29)
+        Me.Address_txt.TabIndex = 18
+        '
+        'DateTimePicker3
+        '
+        Me.DateTimePicker3.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DateTimePicker3.Location = New System.Drawing.Point(137, 1237)
+        Me.DateTimePicker3.Name = "DateTimePicker3"
+        Me.DateTimePicker3.Size = New System.Drawing.Size(269, 33)
+        Me.DateTimePicker3.TabIndex = 16
+        '
+        'Label7
+        '
+        Me.Label7.AutoSize = True
+        Me.Label7.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label7.Location = New System.Drawing.Point(23, 1243)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(100, 25)
+        Me.Label7.TabIndex = 15
+        Me.Label7.Text = "Date Prepared"
+        '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label6.Location = New System.Drawing.Point(23, 215)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(88, 25)
+        Me.Label6.TabIndex = 13
+        Me.Label6.Text = "Date of Hire"
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label5.Location = New System.Drawing.Point(23, 100)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(97, 25)
+        Me.Label5.TabIndex = 11
+        Me.Label5.Text = "Employee No."
+        '
+        'EmpNo_txt
+        '
+        Me.EmpNo_txt.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.EmpNo_txt.Location = New System.Drawing.Point(137, 100)
+        Me.EmpNo_txt.Name = "EmpNo_txt"
+        Me.EmpNo_txt.ReadOnly = True
+        Me.EmpNo_txt.Size = New System.Drawing.Size(269, 29)
+        Me.EmpNo_txt.TabIndex = 12
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label2.Location = New System.Drawing.Point(23, 176)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(92, 25)
+        Me.Label2.TabIndex = 9
+        Me.Label2.Text = "Date of Birth"
+        '
+        'SearchEMP_BTN
+        '
+        Me.SearchEMP_BTN.Location = New System.Drawing.Point(428, 66)
+        Me.SearchEMP_BTN.Name = "SearchEMP_BTN"
+        Me.SearchEMP_BTN.Size = New System.Drawing.Size(35, 26)
+        Me.SearchEMP_BTN.TabIndex = 8
+        Me.SearchEMP_BTN.Text = "..."
+        Me.SearchEMP_BTN.UseVisualStyleBackColor = True
+        '
+        'Label3
+        '
+        Me.Label3.AutoSize = True
+        Me.Label3.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label3.Location = New System.Drawing.Point(23, 62)
+        Me.Label3.Name = "Label3"
+        Me.Label3.Size = New System.Drawing.Size(48, 25)
+        Me.Label3.TabIndex = 2
+        Me.Label3.Text = "Name"
+        '
+        'BiometricID_TXT
+        '
+        Me.BiometricID_TXT.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.BiometricID_TXT.Location = New System.Drawing.Point(137, 25)
+        Me.BiometricID_TXT.Name = "BiometricID_TXT"
+        Me.BiometricID_TXT.Size = New System.Drawing.Size(269, 29)
+        Me.BiometricID_TXT.TabIndex = 1
+        '
+        'Name_TXT
+        '
+        Me.Name_TXT.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Name_TXT.Location = New System.Drawing.Point(137, 62)
+        Me.Name_TXT.Name = "Name_TXT"
+        Me.Name_TXT.ReadOnly = True
+        Me.Name_TXT.Size = New System.Drawing.Size(269, 29)
+        Me.Name_TXT.TabIndex = 3
+        '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label4.Location = New System.Drawing.Point(23, 28)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(88, 25)
+        Me.Label4.TabIndex = 0
+        Me.Label4.Text = "Biometric ID"
+        '
+        'ReportViewer1
+        '
+        ReportDataSource1.Name = "DataSet1"
+        ReportDataSource1.Value = Me.PAFBindingSource
+        Me.ReportViewer1.LocalReport.DataSources.Add(ReportDataSource1)
+        Me.ReportViewer1.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_PAF.rdlc"
+        Me.ReportViewer1.Location = New System.Drawing.Point(6, 6)
+        Me.ReportViewer1.Name = "ReportViewer1"
+        Me.ReportViewer1.ServerReport.BearerToken = Nothing
+        Me.ReportViewer1.Size = New System.Drawing.Size(627, 576)
+        Me.ReportViewer1.TabIndex = 0
         '
         'TabPage2
         '
@@ -420,7 +1163,7 @@ Partial Class frmAllowance
         'Edit_MenuItem
         '
         Me.Edit_MenuItem.Name = "Edit_MenuItem"
-        Me.Edit_MenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.Edit_MenuItem.Size = New System.Drawing.Size(94, 22)
         Me.Edit_MenuItem.Text = "Edit"
         '
         'frmAllowance
@@ -434,11 +1177,17 @@ Partial Class frmAllowance
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Name = "frmAllowance"
         Me.Text = "frmAllowance"
+        CType(Me.PAFBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.Forms, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Allowance_Tab.ResumeLayout(False)
         Me.TabPage1.ResumeLayout(False)
         Me.TabPage1.PerformLayout()
         Me.FlowLayoutPanel1.ResumeLayout(False)
         Me.FlowLayoutPanel1.PerformLayout()
+        Me.Form_Tab.ResumeLayout(False)
+        Me.Panel1.ResumeLayout(False)
+        Me.Panel1.PerformLayout()
+        Me.Panel2.ResumeLayout(False)
         Me.Context_Allow.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
@@ -481,4 +1230,69 @@ Partial Class frmAllowance
     Friend WithEvents Allow_Search_BTN As Button
     Friend WithEvents Context_Allow As ContextMenuStrip
     Friend WithEvents Edit_MenuItem As ToolStripMenuItem
+    Friend WithEvents ReportViewer1 As Microsoft.Reporting.WinForms.ReportViewer
+    Friend WithEvents PAFBindingSource As BindingSource
+    Friend WithEvents Forms As Forms
+    Friend WithEvents Panel1 As Panel
+    Friend WithEvents SearchEMP_BTN As Button
+    Friend WithEvents Label3 As Label
+    Friend WithEvents Name_TXT As TextBox
+    Friend WithEvents Label4 As Label
+    Friend WithEvents BiometricID_TXT As TextBox
+    Friend WithEvents Label2 As Label
+    Friend WithEvents Label5 As Label
+    Friend WithEvents EmpNo_txt As TextBox
+    Friend WithEvents Label6 As Label
+    Friend WithEvents DateTimePicker3 As DateTimePicker
+    Friend WithEvents Label7 As Label
+    Friend WithEvents Label8 As Label
+    Friend WithEvents Address_txt As TextBox
+    Friend WithEvents DateHire_txt As TextBox
+    Friend WithEvents Bdate_txt As TextBox
+    Friend WithEvents TIN_txt As TextBox
+    Friend WithEvents Label10 As Label
+    Friend WithEvents SSS_txt As TextBox
+    Friend WithEvents Label9 As Label
+    Friend WithEvents Gender_CB As ComboBox
+    Friend WithEvents Label11 As Label
+    Friend WithEvents Marital_CB As ComboBox
+    Friend WithEvents Label12 As Label
+    Friend WithEvents Employment_CB As ComboBox
+    Friend WithEvents Label15 As Label
+    Friend WithEvents SalesCharges_CB As ComboBox
+    Friend WithEvents Label17 As Label
+    Friend WithEvents CompanyFrom_txt As TextBox
+    Friend WithEvents Label18 As Label
+    Friend WithEvents CompanyT0_txt As TextBox
+    Friend WithEvents Label19 As Label
+    Friend WithEvents JobTitleTo_txt As TextBox
+    Friend WithEvents Label20 As Label
+    Friend WithEvents JobTitleFrom_txt As TextBox
+    Friend WithEvents Label21 As Label
+    Friend WithEvents JobLevelTo_txt As TextBox
+    Friend WithEvents Label22 As Label
+    Friend WithEvents JobLevelFrom_txt As TextBox
+    Friend WithEvents Label23 As Label
+    Friend WithEvents SalaryTo_txt As TextBox
+    Friend WithEvents Label24 As Label
+    Friend WithEvents SalaryFrom_txt As TextBox
+    Friend WithEvents Label26 As Label
+    Friend WithEvents SalryEffectFrom_dtp As DateTimePicker
+    Friend WithEvents Label27 As Label
+    Friend WithEvents SalryEffectTo_dtp As DateTimePicker
+    Friend WithEvents Label28 As Label
+    Friend WithEvents PIEffectTo_dtp As DateTimePicker
+    Friend WithEvents Label31 As Label
+    Friend WithEvents PIEffectFrom_dtp As DateTimePicker
+    Friend WithEvents Label33 As Label
+    Friend WithEvents PITo_txt As TextBox
+    Friend WithEvents Label34 As Label
+    Friend WithEvents PIFrom_txt As TextBox
+    Friend WithEvents Label35 As Label
+    Friend WithEvents Panel2 As Panel
+    Friend WithEvents Label36 As Label
+    Friend WithEvents Remarks_txt As RichTextBox
+    Friend WithEvents F_Save_btn As Button
+    Friend WithEvents F_Preview_btn As Button
+    Friend WithEvents F_Calcel_btn As Button
 End Class

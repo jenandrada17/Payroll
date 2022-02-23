@@ -122,6 +122,7 @@
     Private Sub frmAllowance_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         PopulateComboBox(Allow_Category_Combo, "CATEGORY_ALLOWANCE", "ALLOWANCE_NAME")
         Lists_Allowance(Allowance_LV)
+        Me.ReportViewer1.RefreshReport()
     End Sub
 
     Private Sub Allowance_LV_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles Allowance_LV.MouseDoubleClick
@@ -141,6 +142,18 @@
                 Label14.Tag = .EMP_ID
                 Allowance_Tab.SelectedIndex = 0
                 Allow_Category_Combo.SelectedItem = category
+
+            ElseIf tabName = "FORM" Then
+                Name_TXT.Text = .Fullname
+                BiometricID_TXT.Text = .BiometricID
+                EmpNo_txt.Text = .EMP_NO
+                Address_txt.Text = .ADDRESS
+                Bdate_txt.Text = .BDATE
+                DateHire_txt.Text = .DATE_STARTED
+                SSS_txt.Text = .SSSNO
+                TIN_txt.Text = .TINNO
+                Allowance_Tab.SelectedIndex = 1
+
             End If
         End With
     End Sub
@@ -164,4 +177,39 @@
         GetAllowance_Details(idNo, Allow_Name_TXT, Allow_Category_Combo, Allow_Schedule_Combo, A_EveryDate_Combo, Allow_Amount_TXT, A_EffectiveDate_DTP, FixYes_RadioB, FixNo_RadioB)
     End Sub
 
+    Private Sub CompanyFrom_txt_TextChanged(sender As Object, e As EventArgs) Handles CompanyFrom_txt.TextChanged
+        CompanyT0_txt.Text = CompanyFrom_txt.Text
+    End Sub
+
+    Private Sub JobTitleFrom_txt_TextChanged(sender As Object, e As EventArgs) Handles JobTitleFrom_txt.TextChanged
+        JobTitleTo_txt.Text = JobTitleFrom_txt.Text
+    End Sub
+
+    Private Sub JobLevelFrom_txt_TextChanged(sender As Object, e As EventArgs) Handles JobLevelFrom_txt.TextChanged
+        JobLevelTo_txt.Text = JobLevelFrom_txt.Text
+    End Sub
+
+    Private Sub SearchEMP_BTN_Click(sender As Object, e As EventArgs) Handles SearchEMP_BTN.Click
+
+        Try
+
+            Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmNewEmployee").SingleOrDefault()
+            If instForm Is Nothing Then
+                Dim frm As frmNewEmployee
+                frm = DirectCast(CreateObjectInstance("frmNewEmployee"), Form)
+                frm.MdiParent = frmMainForm
+                frmMainForm.pNavigate.Controls.Add(frm)
+                frmMainForm.pNavigate.Tag = frm
+                frm.txtSearch.Tag = "Allowance-Form"
+                frm.Dock = DockStyle.Fill
+                frm.BringToFront()
+                frm.Show()
+            Else
+                instForm.BringToFront()
+            End If
+
+        Catch ex As Exception
+
+        End Try
+    End Sub
 End Class

@@ -311,14 +311,6 @@ Partial Public Class Forms
         
         Private columnSALARY_CHANGES As Global.System.Data.DataColumn
         
-        Private columnCOMPANY As Global.System.Data.DataColumn
-        
-        Private columnDEPARTMENT As Global.System.Data.DataColumn
-        
-        Private columnJOB_TITLE As Global.System.Data.DataColumn
-        
-        Private columnJOB_LEVEL As Global.System.Data.DataColumn
-        
         Private columnS_FROM As Global.System.Data.DataColumn
         
         Private columnS_TO As Global.System.Data.DataColumn
@@ -340,6 +332,22 @@ Partial Public Class Forms
         Private columnPI_SCHED_TO As Global.System.Data.DataColumn
         
         Private columnREMARKS As Global.System.Data.DataColumn
+        
+        Private columnCOMPANY_FROM As Global.System.Data.DataColumn
+        
+        Private columnCOMPANY_TO As Global.System.Data.DataColumn
+        
+        Private columnDEP_FROM As Global.System.Data.DataColumn
+        
+        Private columnDEP_TO As Global.System.Data.DataColumn
+        
+        Private columnJOBTITLE_FROM As Global.System.Data.DataColumn
+        
+        Private columnJOBTITLE_TO As Global.System.Data.DataColumn
+        
+        Private columnJOBLEVEL_FROM As Global.System.Data.DataColumn
+        
+        Private columnJOBLEVEL_TO As Global.System.Data.DataColumn
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
@@ -490,38 +498,6 @@ Partial Public Class Forms
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public ReadOnly Property COMPANYColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnCOMPANY
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public ReadOnly Property DEPARTMENTColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnDEPARTMENT
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public ReadOnly Property JOB_TITLEColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnJOB_TITLE
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public ReadOnly Property JOB_LEVELColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnJOB_LEVEL
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public ReadOnly Property S_FROMColumn() As Global.System.Data.DataColumn
             Get
                 Return Me.columnS_FROM
@@ -609,6 +585,70 @@ Partial Public Class Forms
         End Property
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property COMPANY_FROMColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnCOMPANY_FROM
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property COMPANY_TOColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnCOMPANY_TO
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property DEP_FROMColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnDEP_FROM
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property DEP_TOColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnDEP_TO
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property JOBTITLE_FROMColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnJOBTITLE_FROM
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property JOBTITLE_TOColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnJOBTITLE_TO
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property JOBLEVEL_FROMColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnJOBLEVEL_FROM
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property JOBLEVEL_TOColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnJOBLEVEL_TO
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0"),  _
          Global.System.ComponentModel.Browsable(false)>  _
         Public ReadOnly Property Count() As Integer
@@ -660,10 +700,6 @@ Partial Public Class Forms
                     ByVal MARITAL_STATUS As String,  _
                     ByVal EMPLOYMENT As String,  _
                     ByVal SALARY_CHANGES As String,  _
-                    ByVal COMPANY As String,  _
-                    ByVal DEPARTMENT As String,  _
-                    ByVal JOB_TITLE As String,  _
-                    ByVal JOB_LEVEL As String,  _
                     ByVal S_FROM As String,  _
                     ByVal S_TO As String,  _
                     ByVal S_EFFECTIVE_FROM As String,  _
@@ -674,9 +710,17 @@ Partial Public Class Forms
                     ByVal PI_EFFECTIVE_TO As String,  _
                     ByVal PI_SCHED_FROM As String,  _
                     ByVal PI_SCHED_TO As String,  _
-                    ByVal REMARKS As String) As PAFRow
+                    ByVal REMARKS As String,  _
+                    ByVal COMPANY_FROM As String,  _
+                    ByVal COMPANY_TO As String,  _
+                    ByVal DEP_FROM As String,  _
+                    ByVal DEP_TO As String,  _
+                    ByVal JOBTITLE_FROM As String,  _
+                    ByVal JOBTITLE_TO As String,  _
+                    ByVal JOBLEVEL_FROM As String,  _
+                    ByVal JOBLEVEL_TO As String) As PAFRow
             Dim rowPAFRow As PAFRow = CType(Me.NewRow,PAFRow)
-            Dim columnValuesArray() As Object = New Object() {LASTNAME, FIRSTNAME, MIDDLE, DATE_PREPARED, EMP_NO, BIRTH_DATE, DATE_HIRE, EMP_ADDRESS, SSS_NO, TAX_NO, SEX, MARITAL_STATUS, EMPLOYMENT, SALARY_CHANGES, COMPANY, DEPARTMENT, JOB_TITLE, JOB_LEVEL, S_FROM, S_TO, S_EFFECTIVE_FROM, S_EFFECTIVE_TO, PI_FROM, PI_TO, PI_EFFECTIVE_FROM, PI_EFFECTIVE_TO, PI_SCHED_FROM, PI_SCHED_TO, REMARKS}
+            Dim columnValuesArray() As Object = New Object() {LASTNAME, FIRSTNAME, MIDDLE, DATE_PREPARED, EMP_NO, BIRTH_DATE, DATE_HIRE, EMP_ADDRESS, SSS_NO, TAX_NO, SEX, MARITAL_STATUS, EMPLOYMENT, SALARY_CHANGES, S_FROM, S_TO, S_EFFECTIVE_FROM, S_EFFECTIVE_TO, PI_FROM, PI_TO, PI_EFFECTIVE_FROM, PI_EFFECTIVE_TO, PI_SCHED_FROM, PI_SCHED_TO, REMARKS, COMPANY_FROM, COMPANY_TO, DEP_FROM, DEP_TO, JOBTITLE_FROM, JOBTITLE_TO, JOBLEVEL_FROM, JOBLEVEL_TO}
             rowPAFRow.ItemArray = columnValuesArray
             Me.Rows.Add(rowPAFRow)
             Return rowPAFRow
@@ -713,10 +757,6 @@ Partial Public Class Forms
             Me.columnMARITAL_STATUS = MyBase.Columns("MARITAL_STATUS")
             Me.columnEMPLOYMENT = MyBase.Columns("EMPLOYMENT")
             Me.columnSALARY_CHANGES = MyBase.Columns("SALARY_CHANGES")
-            Me.columnCOMPANY = MyBase.Columns("COMPANY")
-            Me.columnDEPARTMENT = MyBase.Columns("DEPARTMENT")
-            Me.columnJOB_TITLE = MyBase.Columns("JOB_TITLE")
-            Me.columnJOB_LEVEL = MyBase.Columns("JOB_LEVEL")
             Me.columnS_FROM = MyBase.Columns("S_FROM")
             Me.columnS_TO = MyBase.Columns("S_TO")
             Me.columnS_EFFECTIVE_FROM = MyBase.Columns("S_EFFECTIVE_FROM")
@@ -728,6 +768,14 @@ Partial Public Class Forms
             Me.columnPI_SCHED_FROM = MyBase.Columns("PI_SCHED_FROM")
             Me.columnPI_SCHED_TO = MyBase.Columns("PI_SCHED_TO")
             Me.columnREMARKS = MyBase.Columns("REMARKS")
+            Me.columnCOMPANY_FROM = MyBase.Columns("COMPANY_FROM")
+            Me.columnCOMPANY_TO = MyBase.Columns("COMPANY_TO")
+            Me.columnDEP_FROM = MyBase.Columns("DEP_FROM")
+            Me.columnDEP_TO = MyBase.Columns("DEP_TO")
+            Me.columnJOBTITLE_FROM = MyBase.Columns("JOBTITLE_FROM")
+            Me.columnJOBTITLE_TO = MyBase.Columns("JOBTITLE_TO")
+            Me.columnJOBLEVEL_FROM = MyBase.Columns("JOBLEVEL_FROM")
+            Me.columnJOBLEVEL_TO = MyBase.Columns("JOBLEVEL_TO")
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -761,14 +809,6 @@ Partial Public Class Forms
             MyBase.Columns.Add(Me.columnEMPLOYMENT)
             Me.columnSALARY_CHANGES = New Global.System.Data.DataColumn("SALARY_CHANGES", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnSALARY_CHANGES)
-            Me.columnCOMPANY = New Global.System.Data.DataColumn("COMPANY", GetType(String), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnCOMPANY)
-            Me.columnDEPARTMENT = New Global.System.Data.DataColumn("DEPARTMENT", GetType(String), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnDEPARTMENT)
-            Me.columnJOB_TITLE = New Global.System.Data.DataColumn("JOB_TITLE", GetType(String), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnJOB_TITLE)
-            Me.columnJOB_LEVEL = New Global.System.Data.DataColumn("JOB_LEVEL", GetType(String), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnJOB_LEVEL)
             Me.columnS_FROM = New Global.System.Data.DataColumn("S_FROM", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnS_FROM)
             Me.columnS_TO = New Global.System.Data.DataColumn("S_TO", GetType(String), Nothing, Global.System.Data.MappingType.Element)
@@ -791,6 +831,22 @@ Partial Public Class Forms
             MyBase.Columns.Add(Me.columnPI_SCHED_TO)
             Me.columnREMARKS = New Global.System.Data.DataColumn("REMARKS", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnREMARKS)
+            Me.columnCOMPANY_FROM = New Global.System.Data.DataColumn("COMPANY_FROM", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnCOMPANY_FROM)
+            Me.columnCOMPANY_TO = New Global.System.Data.DataColumn("COMPANY_TO", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnCOMPANY_TO)
+            Me.columnDEP_FROM = New Global.System.Data.DataColumn("DEP_FROM", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnDEP_FROM)
+            Me.columnDEP_TO = New Global.System.Data.DataColumn("DEP_TO", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnDEP_TO)
+            Me.columnJOBTITLE_FROM = New Global.System.Data.DataColumn("JOBTITLE_FROM", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnJOBTITLE_FROM)
+            Me.columnJOBTITLE_TO = New Global.System.Data.DataColumn("JOBTITLE_TO", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnJOBTITLE_TO)
+            Me.columnJOBLEVEL_FROM = New Global.System.Data.DataColumn("JOBLEVEL_FROM", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnJOBLEVEL_FROM)
+            Me.columnJOBLEVEL_TO = New Global.System.Data.DataColumn("JOBLEVEL_TO", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnJOBLEVEL_TO)
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -1147,66 +1203,6 @@ Partial Public Class Forms
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Property COMPANY() As String
-            Get
-                Try 
-                    Return CType(Me(Me.tablePAF.COMPANYColumn),String)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'COMPANY' in table 'PAF' is DBNull.", e)
-                End Try
-            End Get
-            Set
-                Me(Me.tablePAF.COMPANYColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Property DEPARTMENT() As String
-            Get
-                Try 
-                    Return CType(Me(Me.tablePAF.DEPARTMENTColumn),String)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'DEPARTMENT' in table 'PAF' is DBNull.", e)
-                End Try
-            End Get
-            Set
-                Me(Me.tablePAF.DEPARTMENTColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Property JOB_TITLE() As String
-            Get
-                Try 
-                    Return CType(Me(Me.tablePAF.JOB_TITLEColumn),String)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'JOB_TITLE' in table 'PAF' is DBNull.", e)
-                End Try
-            End Get
-            Set
-                Me(Me.tablePAF.JOB_TITLEColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Property JOB_LEVEL() As String
-            Get
-                Try 
-                    Return CType(Me(Me.tablePAF.JOB_LEVELColumn),String)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'JOB_LEVEL' in table 'PAF' is DBNull.", e)
-                End Try
-            End Get
-            Set
-                Me(Me.tablePAF.JOB_LEVELColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Property S_FROM() As String
             Get
                 Try 
@@ -1367,6 +1363,126 @@ Partial Public Class Forms
             End Get
             Set
                 Me(Me.tablePAF.REMARKSColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property COMPANY_FROM() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tablePAF.COMPANY_FROMColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'COMPANY_FROM' in table 'PAF' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tablePAF.COMPANY_FROMColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property COMPANY_TO() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tablePAF.COMPANY_TOColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'COMPANY_TO' in table 'PAF' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tablePAF.COMPANY_TOColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property DEP_FROM() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tablePAF.DEP_FROMColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'DEP_FROM' in table 'PAF' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tablePAF.DEP_FROMColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property DEP_TO() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tablePAF.DEP_TOColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'DEP_TO' in table 'PAF' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tablePAF.DEP_TOColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property JOBTITLE_FROM() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tablePAF.JOBTITLE_FROMColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'JOBTITLE_FROM' in table 'PAF' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tablePAF.JOBTITLE_FROMColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property JOBTITLE_TO() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tablePAF.JOBTITLE_TOColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'JOBTITLE_TO' in table 'PAF' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tablePAF.JOBTITLE_TOColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property JOBLEVEL_FROM() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tablePAF.JOBLEVEL_FROMColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'JOBLEVEL_FROM' in table 'PAF' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tablePAF.JOBLEVEL_FROMColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property JOBLEVEL_TO() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tablePAF.JOBLEVEL_TOColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'JOBLEVEL_TO' in table 'PAF' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tablePAF.JOBLEVEL_TOColumn) = value
             End Set
         End Property
         
@@ -1540,54 +1656,6 @@ Partial Public Class Forms
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Function IsCOMPANYNull() As Boolean
-            Return Me.IsNull(Me.tablePAF.COMPANYColumn)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Sub SetCOMPANYNull()
-            Me(Me.tablePAF.COMPANYColumn) = Global.System.Convert.DBNull
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Function IsDEPARTMENTNull() As Boolean
-            Return Me.IsNull(Me.tablePAF.DEPARTMENTColumn)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Sub SetDEPARTMENTNull()
-            Me(Me.tablePAF.DEPARTMENTColumn) = Global.System.Convert.DBNull
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Function IsJOB_TITLENull() As Boolean
-            Return Me.IsNull(Me.tablePAF.JOB_TITLEColumn)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Sub SetJOB_TITLENull()
-            Me(Me.tablePAF.JOB_TITLEColumn) = Global.System.Convert.DBNull
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Function IsJOB_LEVELNull() As Boolean
-            Return Me.IsNull(Me.tablePAF.JOB_LEVELColumn)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Sub SetJOB_LEVELNull()
-            Me(Me.tablePAF.JOB_LEVELColumn) = Global.System.Convert.DBNull
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Function IsS_FROMNull() As Boolean
             Return Me.IsNull(Me.tablePAF.S_FROMColumn)
         End Function
@@ -1716,6 +1784,102 @@ Partial Public Class Forms
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Sub SetREMARKSNull()
             Me(Me.tablePAF.REMARKSColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsCOMPANY_FROMNull() As Boolean
+            Return Me.IsNull(Me.tablePAF.COMPANY_FROMColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetCOMPANY_FROMNull()
+            Me(Me.tablePAF.COMPANY_FROMColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsCOMPANY_TONull() As Boolean
+            Return Me.IsNull(Me.tablePAF.COMPANY_TOColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetCOMPANY_TONull()
+            Me(Me.tablePAF.COMPANY_TOColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsDEP_FROMNull() As Boolean
+            Return Me.IsNull(Me.tablePAF.DEP_FROMColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetDEP_FROMNull()
+            Me(Me.tablePAF.DEP_FROMColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsDEP_TONull() As Boolean
+            Return Me.IsNull(Me.tablePAF.DEP_TOColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetDEP_TONull()
+            Me(Me.tablePAF.DEP_TOColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsJOBTITLE_FROMNull() As Boolean
+            Return Me.IsNull(Me.tablePAF.JOBTITLE_FROMColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetJOBTITLE_FROMNull()
+            Me(Me.tablePAF.JOBTITLE_FROMColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsJOBTITLE_TONull() As Boolean
+            Return Me.IsNull(Me.tablePAF.JOBTITLE_TOColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetJOBTITLE_TONull()
+            Me(Me.tablePAF.JOBTITLE_TOColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsJOBLEVEL_FROMNull() As Boolean
+            Return Me.IsNull(Me.tablePAF.JOBLEVEL_FROMColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetJOBLEVEL_FROMNull()
+            Me(Me.tablePAF.JOBLEVEL_FROMColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsJOBLEVEL_TONull() As Boolean
+            Return Me.IsNull(Me.tablePAF.JOBLEVEL_TOColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetJOBLEVEL_TONull()
+            Me(Me.tablePAF.JOBLEVEL_TOColumn) = Global.System.Convert.DBNull
         End Sub
     End Class
     
