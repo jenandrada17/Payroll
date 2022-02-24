@@ -122,7 +122,7 @@
     Private Sub frmAllowance_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         PopulateComboBox(Allow_Category_Combo, "CATEGORY_ALLOWANCE", "ALLOWANCE_NAME")
         Lists_Allowance(Allowance_LV)
-        Me.ReportViewer1.RefreshReport()
+        Me.rpt_Allowance.RefreshReport()
     End Sub
 
     Private Sub Allowance_LV_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles Allowance_LV.MouseDoubleClick
@@ -207,6 +207,91 @@
             Else
                 instForm.BringToFront()
             End If
+
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    Private Sub F_Preview_btn_Click(sender As Object, e As EventArgs) Handles F_Preview_btn.Click
+
+        rpt_Allowance.LocalReport.DataSources.Clear()
+
+        Try
+            Dim dt As New DataTable()
+            With dt
+                .Columns.Add("LASTNAME")
+                .Columns.Add("FIRSTNAME")
+                .Columns.Add("MIDDLE")
+                .Columns.Add("DATE_PREPARED")
+                .Columns.Add("EMP_NO")
+                .Columns.Add("BIRTH_DATE")
+                .Columns.Add("DATE_HIRE")
+                .Columns.Add("EMP_ADDRESS")
+                .Columns.Add("SSS_NO")
+                .Columns.Add("TAX_NO")
+                .Columns.Add("SEX")
+                .Columns.Add("MARITAL_STATUS")
+                .Columns.Add("EMPLOYMENT")
+                .Columns.Add("SALARY_CHANGES")
+                .Columns.Add("COMPANY_FROM")
+                .Columns.Add("COMPANY_TO")
+                .Columns.Add("DEP_FROM")
+                .Columns.Add("DEP_TO")
+                .Columns.Add("JOBTITLE_FROM")
+                .Columns.Add("JOBTITLE_TO")
+                .Columns.Add("JOBLEVEL_FROM")
+                .Columns.Add("JOBLEVEL_TO")
+                .Columns.Add("S_FROM")
+                .Columns.Add("S_EFFECTIVE_FROM")
+                .Columns.Add("S_TO")
+                .Columns.Add("S_EFFECTIVE_TO")
+                .Columns.Add("PI_FROM")
+                .Columns.Add("PI_EFFECTIVE_FROM")
+                .Columns.Add("PI_SCHED_FROM")
+                .Columns.Add("PI_TO")
+                .Columns.Add("PI_EFFECTIVE_TO")
+                .Columns.Add("PI_SCHED_TO")
+                .Columns.Add("REMARKS")
+            End With
+
+
+            '======================== FIRSTNAME, LASTNAME, MIDDLENAME ========================== 
+            Dim firstt, middlee As String
+            Dim fullname As String = Name_TXT.Text
+            Dim name As String() = fullname.Split(",")
+            Dim sobra As String = name(1).TrimStart
+
+            If sobra.EndsWith(".") Then
+                Dim index As Integer = sobra.Length - 2
+                middlee = sobra.Substring(index, 2)
+                firstt = sobra.Replace(middlee, "").TrimEnd
+            Else
+                firstt = sobra
+                middlee = Nothing
+            End If
+
+            Dim datePrepared = Nothing, dateHire As String = Nothing
+
+            If DatePrepared_dtp.Value <> Nothing Then datePrepared = CDate(DatePrepared_dtp.Value).ToString("MMMM dd, yyyy")
+            If DateHire_txt.Text <> Nothing Then dateHire = CDate(DateHire_txt.Text).ToString("MMMM dd, yyyy")
+
+            dt.Rows.Add(name(0), firstt, middlee, datePrepared, EmpNo_txt.Text, Bdate_txt.Text, dateHire,
+                        Address_txt.Text, SSS_txt.Text, TIN_txt.Text, Gender_CB.Text, Marital_CB.Text,
+                        Employment_CB.Text, SalesCharges_CB.Text,
+                        CompanyFrom_txt.Text, CompanyT0_txt.Text,
+                        DeptFrom_txt.Text, DeptTo_txt.Text,
+                        JobTitleFrom_txt.Text, JobTitleTo_txt.Text,
+                        JobLevelFrom_txt.Text, JobLevelTo_txt.Text,
+                        SalaryFrom_txt.Text, SalryEffectFrom_dtp.Value,
+                        SalaryTo_txt.Text, SalryEffectTo_dtp.Value,
+                        PIFrom_txt.Text, PIEffectFrom_dtp.Value, PI_SchedFrom_CB.Text,
+                        PITo_txt.Text, PIEffectTo_dtp.Value, PI_SchedTo_CB.Text,
+                        Remarks_txt.Text)
+
+            Dim dataSource As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt)
+            rpt_Allowance.LocalReport.DataSources.Add(dataSource)
+            rpt_Allowance.RefreshReport()
 
         Catch ex As Exception
 

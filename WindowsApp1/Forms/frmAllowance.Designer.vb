@@ -24,8 +24,6 @@ Partial Class frmAllowance
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
         Dim ReportDataSource1 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Me.PAFBindingSource = New System.Windows.Forms.BindingSource(Me.components)
-        Me.Forms = New WindowsApp1.Forms()
         Me.Close_LBL = New System.Windows.Forms.Label()
         Me.Allowance_Tab = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
@@ -109,7 +107,7 @@ Partial Class frmAllowance
         Me.Bdate_txt = New System.Windows.Forms.TextBox()
         Me.Label8 = New System.Windows.Forms.Label()
         Me.Address_txt = New System.Windows.Forms.TextBox()
-        Me.DateTimePicker3 = New System.Windows.Forms.DateTimePicker()
+        Me.DatePrepared_dtp = New System.Windows.Forms.DateTimePicker()
         Me.Label7 = New System.Windows.Forms.Label()
         Me.Label6 = New System.Windows.Forms.Label()
         Me.Label5 = New System.Windows.Forms.Label()
@@ -120,13 +118,21 @@ Partial Class frmAllowance
         Me.BiometricID_TXT = New System.Windows.Forms.TextBox()
         Me.Name_TXT = New System.Windows.Forms.TextBox()
         Me.Label4 = New System.Windows.Forms.Label()
-        Me.ReportViewer1 = New Microsoft.Reporting.WinForms.ReportViewer()
+        Me.rpt_Allowance = New Microsoft.Reporting.WinForms.ReportViewer()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Context_Allow = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.Edit_MenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        CType(Me.PAFBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.Forms, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.PI_SchedFrom_CB = New System.Windows.Forms.ComboBox()
+        Me.Label37 = New System.Windows.Forms.Label()
+        Me.PI_SchedTo_CB = New System.Windows.Forms.ComboBox()
+        Me.Label38 = New System.Windows.Forms.Label()
+        Me.PAFBindingSource = New System.Windows.Forms.BindingSource(Me.components)
+        Me.Forms = New WindowsApp1.Forms()
+        Me.DeptTo_txt = New System.Windows.Forms.TextBox()
+        Me.Label39 = New System.Windows.Forms.Label()
+        Me.DeptFrom_txt = New System.Windows.Forms.TextBox()
+        Me.Label40 = New System.Windows.Forms.Label()
         Me.Allowance_Tab.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.FlowLayoutPanel1.SuspendLayout()
@@ -134,17 +140,9 @@ Partial Class frmAllowance
         Me.Panel1.SuspendLayout()
         Me.Panel2.SuspendLayout()
         Me.Context_Allow.SuspendLayout()
+        CType(Me.PAFBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.Forms, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
-        '
-        'PAFBindingSource
-        '
-        Me.PAFBindingSource.DataMember = "PAF"
-        Me.PAFBindingSource.DataSource = Me.Forms
-        '
-        'Forms
-        '
-        Me.Forms.DataSetName = "Forms"
-        Me.Forms.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema
         '
         'Close_LBL
         '
@@ -465,7 +463,7 @@ Partial Class frmAllowance
         'Form_Tab
         '
         Me.Form_Tab.Controls.Add(Me.Panel1)
-        Me.Form_Tab.Controls.Add(Me.ReportViewer1)
+        Me.Form_Tab.Controls.Add(Me.rpt_Allowance)
         Me.Form_Tab.Location = New System.Drawing.Point(4, 41)
         Me.Form_Tab.Name = "Form_Tab"
         Me.Form_Tab.Padding = New System.Windows.Forms.Padding(3)
@@ -477,6 +475,14 @@ Partial Class frmAllowance
         'Panel1
         '
         Me.Panel1.AutoScroll = True
+        Me.Panel1.Controls.Add(Me.DeptTo_txt)
+        Me.Panel1.Controls.Add(Me.Label39)
+        Me.Panel1.Controls.Add(Me.DeptFrom_txt)
+        Me.Panel1.Controls.Add(Me.Label40)
+        Me.Panel1.Controls.Add(Me.PI_SchedTo_CB)
+        Me.Panel1.Controls.Add(Me.Label38)
+        Me.Panel1.Controls.Add(Me.PI_SchedFrom_CB)
+        Me.Panel1.Controls.Add(Me.Label37)
         Me.Panel1.Controls.Add(Me.Label36)
         Me.Panel1.Controls.Add(Me.Remarks_txt)
         Me.Panel1.Controls.Add(Me.Panel2)
@@ -524,7 +530,7 @@ Partial Class frmAllowance
         Me.Panel1.Controls.Add(Me.Bdate_txt)
         Me.Panel1.Controls.Add(Me.Label8)
         Me.Panel1.Controls.Add(Me.Address_txt)
-        Me.Panel1.Controls.Add(Me.DateTimePicker3)
+        Me.Panel1.Controls.Add(Me.DatePrepared_dtp)
         Me.Panel1.Controls.Add(Me.Label7)
         Me.Panel1.Controls.Add(Me.Label6)
         Me.Panel1.Controls.Add(Me.Label5)
@@ -544,7 +550,7 @@ Partial Class frmAllowance
         '
         Me.Label36.AutoSize = True
         Me.Label36.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label36.Location = New System.Drawing.Point(25, 1105)
+        Me.Label36.Location = New System.Drawing.Point(25, 1285)
         Me.Label36.Name = "Label36"
         Me.Label36.Size = New System.Drawing.Size(65, 25)
         Me.Label36.TabIndex = 65
@@ -552,7 +558,7 @@ Partial Class frmAllowance
         '
         'Remarks_txt
         '
-        Me.Remarks_txt.Location = New System.Drawing.Point(28, 1133)
+        Me.Remarks_txt.Location = New System.Drawing.Point(28, 1313)
         Me.Remarks_txt.Name = "Remarks_txt"
         Me.Remarks_txt.Size = New System.Drawing.Size(378, 96)
         Me.Remarks_txt.TabIndex = 64
@@ -563,7 +569,7 @@ Partial Class frmAllowance
         Me.Panel2.Controls.Add(Me.F_Calcel_btn)
         Me.Panel2.Controls.Add(Me.F_Save_btn)
         Me.Panel2.Controls.Add(Me.F_Preview_btn)
-        Me.Panel2.Location = New System.Drawing.Point(9, 1304)
+        Me.Panel2.Location = New System.Drawing.Point(9, 1484)
         Me.Panel2.Name = "Panel2"
         Me.Panel2.Size = New System.Drawing.Size(477, 61)
         Me.Panel2.TabIndex = 63
@@ -608,7 +614,7 @@ Partial Class frmAllowance
         '
         Me.PIEffectTo_dtp.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.PIEffectTo_dtp.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.PIEffectTo_dtp.Location = New System.Drawing.Point(218, 1027)
+        Me.PIEffectTo_dtp.Location = New System.Drawing.Point(218, 1163)
         Me.PIEffectTo_dtp.Name = "PIEffectTo_dtp"
         Me.PIEffectTo_dtp.Size = New System.Drawing.Size(188, 33)
         Me.PIEffectTo_dtp.TabIndex = 62
@@ -617,7 +623,7 @@ Partial Class frmAllowance
         '
         Me.Label31.AutoSize = True
         Me.Label31.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label31.Location = New System.Drawing.Point(23, 1033)
+        Me.Label31.Location = New System.Drawing.Point(23, 1169)
         Me.Label31.Name = "Label31"
         Me.Label31.Size = New System.Drawing.Size(98, 25)
         Me.Label31.TabIndex = 61
@@ -627,7 +633,7 @@ Partial Class frmAllowance
         '
         Me.PIEffectFrom_dtp.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.PIEffectFrom_dtp.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.PIEffectFrom_dtp.Location = New System.Drawing.Point(218, 947)
+        Me.PIEffectFrom_dtp.Location = New System.Drawing.Point(218, 1017)
         Me.PIEffectFrom_dtp.Name = "PIEffectFrom_dtp"
         Me.PIEffectFrom_dtp.Size = New System.Drawing.Size(188, 33)
         Me.PIEffectFrom_dtp.TabIndex = 60
@@ -636,7 +642,7 @@ Partial Class frmAllowance
         '
         Me.Label33.AutoSize = True
         Me.Label33.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label33.Location = New System.Drawing.Point(23, 953)
+        Me.Label33.Location = New System.Drawing.Point(23, 1023)
         Me.Label33.Name = "Label33"
         Me.Label33.Size = New System.Drawing.Size(98, 25)
         Me.Label33.TabIndex = 59
@@ -645,7 +651,7 @@ Partial Class frmAllowance
         'PITo_txt
         '
         Me.PITo_txt.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.PITo_txt.Location = New System.Drawing.Point(218, 989)
+        Me.PITo_txt.Location = New System.Drawing.Point(218, 1125)
         Me.PITo_txt.Name = "PITo_txt"
         Me.PITo_txt.Size = New System.Drawing.Size(188, 29)
         Me.PITo_txt.TabIndex = 58
@@ -654,7 +660,7 @@ Partial Class frmAllowance
         '
         Me.Label34.AutoSize = True
         Me.Label34.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label34.Location = New System.Drawing.Point(23, 992)
+        Me.Label34.Location = New System.Drawing.Point(23, 1128)
         Me.Label34.Name = "Label34"
         Me.Label34.Size = New System.Drawing.Size(170, 25)
         Me.Label34.TabIndex = 57
@@ -663,7 +669,7 @@ Partial Class frmAllowance
         'PIFrom_txt
         '
         Me.PIFrom_txt.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.PIFrom_txt.Location = New System.Drawing.Point(218, 909)
+        Me.PIFrom_txt.Location = New System.Drawing.Point(218, 979)
         Me.PIFrom_txt.Name = "PIFrom_txt"
         Me.PIFrom_txt.Size = New System.Drawing.Size(188, 29)
         Me.PIFrom_txt.TabIndex = 56
@@ -672,7 +678,7 @@ Partial Class frmAllowance
         '
         Me.Label35.AutoSize = True
         Me.Label35.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label35.Location = New System.Drawing.Point(23, 912)
+        Me.Label35.Location = New System.Drawing.Point(23, 982)
         Me.Label35.Name = "Label35"
         Me.Label35.Size = New System.Drawing.Size(186, 25)
         Me.Label35.TabIndex = 55
@@ -682,7 +688,7 @@ Partial Class frmAllowance
         '
         Me.SalryEffectTo_dtp.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.SalryEffectTo_dtp.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.SalryEffectTo_dtp.Location = New System.Drawing.Point(218, 842)
+        Me.SalryEffectTo_dtp.Location = New System.Drawing.Point(218, 922)
         Me.SalryEffectTo_dtp.Name = "SalryEffectTo_dtp"
         Me.SalryEffectTo_dtp.Size = New System.Drawing.Size(188, 33)
         Me.SalryEffectTo_dtp.TabIndex = 54
@@ -691,7 +697,7 @@ Partial Class frmAllowance
         '
         Me.Label28.AutoSize = True
         Me.Label28.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label28.Location = New System.Drawing.Point(23, 848)
+        Me.Label28.Location = New System.Drawing.Point(23, 928)
         Me.Label28.Name = "Label28"
         Me.Label28.Size = New System.Drawing.Size(98, 25)
         Me.Label28.TabIndex = 53
@@ -701,7 +707,7 @@ Partial Class frmAllowance
         '
         Me.SalryEffectFrom_dtp.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.SalryEffectFrom_dtp.Format = System.Windows.Forms.DateTimePickerFormat.[Short]
-        Me.SalryEffectFrom_dtp.Location = New System.Drawing.Point(218, 762)
+        Me.SalryEffectFrom_dtp.Location = New System.Drawing.Point(218, 842)
         Me.SalryEffectFrom_dtp.Name = "SalryEffectFrom_dtp"
         Me.SalryEffectFrom_dtp.Size = New System.Drawing.Size(188, 33)
         Me.SalryEffectFrom_dtp.TabIndex = 52
@@ -710,7 +716,7 @@ Partial Class frmAllowance
         '
         Me.Label27.AutoSize = True
         Me.Label27.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label27.Location = New System.Drawing.Point(23, 768)
+        Me.Label27.Location = New System.Drawing.Point(23, 848)
         Me.Label27.Name = "Label27"
         Me.Label27.Size = New System.Drawing.Size(98, 25)
         Me.Label27.TabIndex = 51
@@ -719,7 +725,7 @@ Partial Class frmAllowance
         'SalaryTo_txt
         '
         Me.SalaryTo_txt.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.SalaryTo_txt.Location = New System.Drawing.Point(218, 804)
+        Me.SalaryTo_txt.Location = New System.Drawing.Point(218, 884)
         Me.SalaryTo_txt.Name = "SalaryTo_txt"
         Me.SalaryTo_txt.Size = New System.Drawing.Size(188, 29)
         Me.SalaryTo_txt.TabIndex = 50
@@ -728,7 +734,7 @@ Partial Class frmAllowance
         '
         Me.Label24.AutoSize = True
         Me.Label24.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label24.Location = New System.Drawing.Point(23, 807)
+        Me.Label24.Location = New System.Drawing.Point(23, 887)
         Me.Label24.Name = "Label24"
         Me.Label24.Size = New System.Drawing.Size(109, 25)
         Me.Label24.TabIndex = 49
@@ -737,7 +743,7 @@ Partial Class frmAllowance
         'SalaryFrom_txt
         '
         Me.SalaryFrom_txt.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.SalaryFrom_txt.Location = New System.Drawing.Point(218, 724)
+        Me.SalaryFrom_txt.Location = New System.Drawing.Point(218, 804)
         Me.SalaryFrom_txt.Name = "SalaryFrom_txt"
         Me.SalaryFrom_txt.Size = New System.Drawing.Size(188, 29)
         Me.SalaryFrom_txt.TabIndex = 48
@@ -746,7 +752,7 @@ Partial Class frmAllowance
         '
         Me.Label26.AutoSize = True
         Me.Label26.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label26.Location = New System.Drawing.Point(23, 727)
+        Me.Label26.Location = New System.Drawing.Point(23, 807)
         Me.Label26.Name = "Label26"
         Me.Label26.Size = New System.Drawing.Size(125, 25)
         Me.Label26.TabIndex = 47
@@ -755,7 +761,7 @@ Partial Class frmAllowance
         'JobLevelTo_txt
         '
         Me.JobLevelTo_txt.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.JobLevelTo_txt.Location = New System.Drawing.Point(137, 670)
+        Me.JobLevelTo_txt.Location = New System.Drawing.Point(137, 750)
         Me.JobLevelTo_txt.Name = "JobLevelTo_txt"
         Me.JobLevelTo_txt.Size = New System.Drawing.Size(269, 29)
         Me.JobLevelTo_txt.TabIndex = 46
@@ -764,7 +770,7 @@ Partial Class frmAllowance
         '
         Me.Label22.AutoSize = True
         Me.Label22.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label22.Location = New System.Drawing.Point(23, 673)
+        Me.Label22.Location = New System.Drawing.Point(23, 753)
         Me.Label22.Name = "Label22"
         Me.Label22.Size = New System.Drawing.Size(92, 25)
         Me.Label22.TabIndex = 45
@@ -773,7 +779,7 @@ Partial Class frmAllowance
         'JobLevelFrom_txt
         '
         Me.JobLevelFrom_txt.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.JobLevelFrom_txt.Location = New System.Drawing.Point(137, 632)
+        Me.JobLevelFrom_txt.Location = New System.Drawing.Point(137, 712)
         Me.JobLevelFrom_txt.Name = "JobLevelFrom_txt"
         Me.JobLevelFrom_txt.Size = New System.Drawing.Size(269, 29)
         Me.JobLevelFrom_txt.TabIndex = 44
@@ -782,7 +788,7 @@ Partial Class frmAllowance
         '
         Me.Label23.AutoSize = True
         Me.Label23.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label23.Location = New System.Drawing.Point(23, 635)
+        Me.Label23.Location = New System.Drawing.Point(23, 715)
         Me.Label23.Name = "Label23"
         Me.Label23.Size = New System.Drawing.Size(108, 25)
         Me.Label23.TabIndex = 43
@@ -791,7 +797,7 @@ Partial Class frmAllowance
         'JobTitleTo_txt
         '
         Me.JobTitleTo_txt.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.JobTitleTo_txt.Location = New System.Drawing.Point(137, 593)
+        Me.JobTitleTo_txt.Location = New System.Drawing.Point(137, 673)
         Me.JobTitleTo_txt.Name = "JobTitleTo_txt"
         Me.JobTitleTo_txt.Size = New System.Drawing.Size(269, 29)
         Me.JobTitleTo_txt.TabIndex = 42
@@ -800,7 +806,7 @@ Partial Class frmAllowance
         '
         Me.Label20.AutoSize = True
         Me.Label20.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label20.Location = New System.Drawing.Point(23, 596)
+        Me.Label20.Location = New System.Drawing.Point(23, 676)
         Me.Label20.Name = "Label20"
         Me.Label20.Size = New System.Drawing.Size(87, 25)
         Me.Label20.TabIndex = 41
@@ -809,7 +815,7 @@ Partial Class frmAllowance
         'JobTitleFrom_txt
         '
         Me.JobTitleFrom_txt.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.JobTitleFrom_txt.Location = New System.Drawing.Point(137, 555)
+        Me.JobTitleFrom_txt.Location = New System.Drawing.Point(137, 635)
         Me.JobTitleFrom_txt.Name = "JobTitleFrom_txt"
         Me.JobTitleFrom_txt.Size = New System.Drawing.Size(269, 29)
         Me.JobTitleFrom_txt.TabIndex = 40
@@ -818,7 +824,7 @@ Partial Class frmAllowance
         '
         Me.Label21.AutoSize = True
         Me.Label21.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label21.Location = New System.Drawing.Point(23, 558)
+        Me.Label21.Location = New System.Drawing.Point(23, 638)
         Me.Label21.Name = "Label21"
         Me.Label21.Size = New System.Drawing.Size(103, 25)
         Me.Label21.TabIndex = 39
@@ -1019,19 +1025,19 @@ Partial Class frmAllowance
         Me.Address_txt.Size = New System.Drawing.Size(269, 29)
         Me.Address_txt.TabIndex = 18
         '
-        'DateTimePicker3
+        'DatePrepared_dtp
         '
-        Me.DateTimePicker3.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.DateTimePicker3.Location = New System.Drawing.Point(137, 1237)
-        Me.DateTimePicker3.Name = "DateTimePicker3"
-        Me.DateTimePicker3.Size = New System.Drawing.Size(269, 33)
-        Me.DateTimePicker3.TabIndex = 16
+        Me.DatePrepared_dtp.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DatePrepared_dtp.Location = New System.Drawing.Point(137, 1414)
+        Me.DatePrepared_dtp.Name = "DatePrepared_dtp"
+        Me.DatePrepared_dtp.Size = New System.Drawing.Size(269, 33)
+        Me.DatePrepared_dtp.TabIndex = 16
         '
         'Label7
         '
         Me.Label7.AutoSize = True
         Me.Label7.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label7.Location = New System.Drawing.Point(23, 1243)
+        Me.Label7.Location = New System.Drawing.Point(23, 1420)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(100, 25)
         Me.Label7.TabIndex = 15
@@ -1122,17 +1128,17 @@ Partial Class frmAllowance
         Me.Label4.TabIndex = 0
         Me.Label4.Text = "Biometric ID"
         '
-        'ReportViewer1
+        'rpt_Allowance
         '
         ReportDataSource1.Name = "DataSet1"
         ReportDataSource1.Value = Me.PAFBindingSource
-        Me.ReportViewer1.LocalReport.DataSources.Add(ReportDataSource1)
-        Me.ReportViewer1.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_PAF.rdlc"
-        Me.ReportViewer1.Location = New System.Drawing.Point(6, 6)
-        Me.ReportViewer1.Name = "ReportViewer1"
-        Me.ReportViewer1.ServerReport.BearerToken = Nothing
-        Me.ReportViewer1.Size = New System.Drawing.Size(627, 576)
-        Me.ReportViewer1.TabIndex = 0
+        Me.rpt_Allowance.LocalReport.DataSources.Add(ReportDataSource1)
+        Me.rpt_Allowance.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_PAF.rdlc"
+        Me.rpt_Allowance.Location = New System.Drawing.Point(6, 6)
+        Me.rpt_Allowance.Name = "rpt_Allowance"
+        Me.rpt_Allowance.ServerReport.BearerToken = Nothing
+        Me.rpt_Allowance.Size = New System.Drawing.Size(627, 576)
+        Me.rpt_Allowance.TabIndex = 0
         '
         'TabPage2
         '
@@ -1166,6 +1172,94 @@ Partial Class frmAllowance
         Me.Edit_MenuItem.Size = New System.Drawing.Size(94, 22)
         Me.Edit_MenuItem.Text = "Edit"
         '
+        'PI_SchedFrom_CB
+        '
+        Me.PI_SchedFrom_CB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.PI_SchedFrom_CB.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.PI_SchedFrom_CB.FormattingEnabled = True
+        Me.PI_SchedFrom_CB.Items.AddRange(New Object() {"every 15th month", "every 30th month", "every month"})
+        Me.PI_SchedFrom_CB.Location = New System.Drawing.Point(218, 1060)
+        Me.PI_SchedFrom_CB.Name = "PI_SchedFrom_CB"
+        Me.PI_SchedFrom_CB.Size = New System.Drawing.Size(190, 30)
+        Me.PI_SchedFrom_CB.TabIndex = 67
+        '
+        'Label37
+        '
+        Me.Label37.AutoSize = True
+        Me.Label37.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label37.Location = New System.Drawing.Point(25, 1062)
+        Me.Label37.Name = "Label37"
+        Me.Label37.Size = New System.Drawing.Size(102, 25)
+        Me.Label37.TabIndex = 66
+        Me.Label37.Text = "PI Sched From"
+        '
+        'PI_SchedTo_CB
+        '
+        Me.PI_SchedTo_CB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.PI_SchedTo_CB.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.PI_SchedTo_CB.FormattingEnabled = True
+        Me.PI_SchedTo_CB.Items.AddRange(New Object() {"every 15th month", "every 30th month", "every month"})
+        Me.PI_SchedTo_CB.Location = New System.Drawing.Point(218, 1205)
+        Me.PI_SchedTo_CB.Name = "PI_SchedTo_CB"
+        Me.PI_SchedTo_CB.Size = New System.Drawing.Size(190, 30)
+        Me.PI_SchedTo_CB.TabIndex = 69
+        '
+        'Label38
+        '
+        Me.Label38.AutoSize = True
+        Me.Label38.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label38.Location = New System.Drawing.Point(25, 1207)
+        Me.Label38.Name = "Label38"
+        Me.Label38.Size = New System.Drawing.Size(86, 25)
+        Me.Label38.TabIndex = 68
+        Me.Label38.Text = "PI Sched To"
+        '
+        'PAFBindingSource
+        '
+        Me.PAFBindingSource.DataMember = "PAF"
+        Me.PAFBindingSource.DataSource = Me.Forms
+        '
+        'Forms
+        '
+        Me.Forms.DataSetName = "Forms"
+        Me.Forms.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema
+        '
+        'DeptTo_txt
+        '
+        Me.DeptTo_txt.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DeptTo_txt.Location = New System.Drawing.Point(137, 595)
+        Me.DeptTo_txt.Name = "DeptTo_txt"
+        Me.DeptTo_txt.Size = New System.Drawing.Size(269, 29)
+        Me.DeptTo_txt.TabIndex = 73
+        '
+        'Label39
+        '
+        Me.Label39.AutoSize = True
+        Me.Label39.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label39.Location = New System.Drawing.Point(23, 596)
+        Me.Label39.Name = "Label39"
+        Me.Label39.Size = New System.Drawing.Size(67, 25)
+        Me.Label39.TabIndex = 72
+        Me.Label39.Text = "Dep't To"
+        '
+        'DeptFrom_txt
+        '
+        Me.DeptFrom_txt.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DeptFrom_txt.Location = New System.Drawing.Point(137, 557)
+        Me.DeptFrom_txt.Name = "DeptFrom_txt"
+        Me.DeptFrom_txt.Size = New System.Drawing.Size(269, 29)
+        Me.DeptFrom_txt.TabIndex = 71
+        '
+        'Label40
+        '
+        Me.Label40.AutoSize = True
+        Me.Label40.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label40.Location = New System.Drawing.Point(23, 560)
+        Me.Label40.Name = "Label40"
+        Me.Label40.Size = New System.Drawing.Size(83, 25)
+        Me.Label40.TabIndex = 70
+        Me.Label40.Text = "Dep't From"
+        '
         'frmAllowance
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1177,8 +1271,6 @@ Partial Class frmAllowance
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Name = "frmAllowance"
         Me.Text = "frmAllowance"
-        CType(Me.PAFBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.Forms, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Allowance_Tab.ResumeLayout(False)
         Me.TabPage1.ResumeLayout(False)
         Me.TabPage1.PerformLayout()
@@ -1189,6 +1281,8 @@ Partial Class frmAllowance
         Me.Panel1.PerformLayout()
         Me.Panel2.ResumeLayout(False)
         Me.Context_Allow.ResumeLayout(False)
+        CType(Me.PAFBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.Forms, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1230,7 +1324,7 @@ Partial Class frmAllowance
     Friend WithEvents Allow_Search_BTN As Button
     Friend WithEvents Context_Allow As ContextMenuStrip
     Friend WithEvents Edit_MenuItem As ToolStripMenuItem
-    Friend WithEvents ReportViewer1 As Microsoft.Reporting.WinForms.ReportViewer
+    Friend WithEvents rpt_Allowance As Microsoft.Reporting.WinForms.ReportViewer
     Friend WithEvents PAFBindingSource As BindingSource
     Friend WithEvents Forms As Forms
     Friend WithEvents Panel1 As Panel
@@ -1243,7 +1337,7 @@ Partial Class frmAllowance
     Friend WithEvents Label5 As Label
     Friend WithEvents EmpNo_txt As TextBox
     Friend WithEvents Label6 As Label
-    Friend WithEvents DateTimePicker3 As DateTimePicker
+    Friend WithEvents DatePrepared_dtp As DateTimePicker
     Friend WithEvents Label7 As Label
     Friend WithEvents Label8 As Label
     Friend WithEvents Address_txt As TextBox
@@ -1295,4 +1389,12 @@ Partial Class frmAllowance
     Friend WithEvents F_Save_btn As Button
     Friend WithEvents F_Preview_btn As Button
     Friend WithEvents F_Calcel_btn As Button
+    Friend WithEvents PI_SchedFrom_CB As ComboBox
+    Friend WithEvents Label37 As Label
+    Friend WithEvents PI_SchedTo_CB As ComboBox
+    Friend WithEvents Label38 As Label
+    Friend WithEvents DeptTo_txt As TextBox
+    Friend WithEvents Label39 As Label
+    Friend WithEvents DeptFrom_txt As TextBox
+    Friend WithEvents Label40 As Label
 End Class

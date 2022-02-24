@@ -111,11 +111,11 @@
                     TIME_OUT = IIf(OUTT = Nothing, "", OUTT.ToShortTimeString)
 
                     EMP_NO = .Item("EMP_NO")
-                    ADDRESS = .Item("ADDRESS")
-                    BDATE = .Item("BDATE")
+                    ADDRESS = IIf(IsDBNull(.Item("ADDRESS")), Nothing, .Item("ADDRESS"))
+                    BDATE = IIf(IsDBNull(.Item("BDATE")), Nothing, .Item("BDATE"))
                     DATE_STARTED = .Item("DATE_STARTED")
-                    SSSNO = .Item("SSSNO")
-                    TINNO = .Item("TINNO")
+                    SSSNO = IIf(IsDBNull(.Item("SSSNO")), Nothing, .Item("SSSNO"))
+                    TINNO = IIf(IsDBNull(.Item("TINNO")), Nothing, .Item("TINNO"))
 
                 End With
             End If
