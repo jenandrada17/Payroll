@@ -167,9 +167,9 @@ Partial Class frmUser
         Me.Label1.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label1.Location = New System.Drawing.Point(60, 101)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(75, 27)
+        Me.Label1.Size = New System.Drawing.Size(102, 27)
         Me.Label1.TabIndex = 12
-        Me.Label1.Text = "Password"
+        Me.Label1.Text = "Old Password"
         '
         'SamplePass_txt
         '
@@ -230,9 +230,9 @@ Partial Class frmUser
         Me.Label6.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label6.Location = New System.Drawing.Point(60, 59)
         Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(77, 27)
+        Me.Label6.Size = New System.Drawing.Size(104, 27)
         Me.Label6.TabIndex = 21
-        Me.Label6.Text = "Username"
+        Me.Label6.Text = "Old Username"
         '
         'SampleUser_txt
         '

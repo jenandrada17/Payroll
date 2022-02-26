@@ -55,6 +55,33 @@
     Private Sub SampleUser_txt_TextChanged(sender As Object, e As EventArgs) Handles SampleUser_txt.TextChanged, SamplePass_txt.TextChanged
         If SampleUser_txt.Text <> Nothing And SamplePass_txt.Text <> Nothing Then
             user_id = GetData_Integer("ID", $"PAYROLL_USER where USERNAME = '{SampleUser_txt.Text}' AND PASSWORD = '{EncryptString(SamplePass_txt.Text)}'")
+
+            If user_id <> 0 Then
+
+                For i = 0 To Access_CheckB.Items.Count - 1
+                    Access_CheckB.SetItemChecked(i, True)
+
+                    Dim mysql As String = $"Select * FROM PAYROLL_ACCESSIBILITY where USER_ID = '{user_id}'"
+                    Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ACCESSIBILITY")
+                        If ds.Tables(0).Rows.Count > 0 Then
+                            For Each dr In ds.Tables(0).Rows
+                                With dr
+                                    If Access_CheckB.Items(i).ToString = .item("FUNCTION") Then
+                                        Access_CheckB.SetItemChecked(i, False)
+                                    End If
+                                End With
+                            Next
+                        End If
+                    End Using
+                Next
+            End If
+
+            If user_id = 5 Or user_id = 4 Then '====== CAN EDIT ACCESSIBILITY
+                Access_CheckB.Enabled = True
+            Else
+                Access_CheckB.Enabled = False
+            End If
+
         End If
     End Sub
 
@@ -87,4 +114,5 @@
         allowMove = False
         Cursor = Cursors.Default
     End Sub
+
 End Class
