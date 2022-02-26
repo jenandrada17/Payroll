@@ -34,6 +34,12 @@
         Load_Loans(Pagibig_List, "PAYROLL_DEDUCTION", "PAG-IBIG LOAN")
         Load_Other_Deduction(Mp2_List, "PAYROLL_OTHER_DEDUCTION", "MP2")
         Load_Other_Deduction(Maxicare_List, "PAYROLL_OTHER_DEDUCTION", "MAXICARE")
+
+        DateCharges_DTP.Value = Today
+        SSS_Date_DTP.Value = Today
+        PagDate_DTP.Value = Today
+        Mp2Date_dtp.Value = Today
+        MaxDate_dtp.Value = Today
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Cancel_btn.Click

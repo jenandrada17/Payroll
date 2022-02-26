@@ -122,7 +122,7 @@
     Private Sub frmAllowance_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         PopulateComboBox(Allow_Category_Combo, "CATEGORY_ALLOWANCE", "ALLOWANCE_NAME")
         Lists_Allowance(Allowance_LV)
-        Me.rpt_Allowance.RefreshReport()
+        DatePrepared_dtp.Value = Today
     End Sub
 
     Private Sub Allowance_LV_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles Allowance_LV.MouseDoubleClick
@@ -144,14 +144,8 @@
                 Allow_Category_Combo.SelectedItem = category
 
             ElseIf tabName = "FORM" Then
-                Name_TXT.Text = .Fullname
                 BiometricID_TXT.Text = .BiometricID
-                EmpNo_txt.Text = .EMP_NO
-                Address_txt.Text = .ADDRESS
-                Bdate_txt.Text = .BDATE
-                DateHire_txt.Text = .DATE_STARTED
-                SSS_txt.Text = .SSSNO
-                TIN_txt.Text = .TINNO
+                GetInfo_Form(.BiometricID, Name_TXT, EmpNo_txt, Address_txt, Bdate_txt, DateHire_txt, SSS_txt, TIN_txt, PIFrom_txt, PIEffectFrom_dtp, PI_SchedFrom_CB)
                 Allowance_Tab.SelectedIndex = 1
 
             End If
@@ -214,7 +208,6 @@
     End Sub
 
     Private Sub F_Preview_btn_Click(sender As Object, e As EventArgs) Handles F_Preview_btn.Click
-
         rpt_Allowance.LocalReport.DataSources.Clear()
 
         Try
@@ -271,10 +264,14 @@
                 middlee = Nothing
             End If
 
-            Dim datePrepared = Nothing, dateHire As String = Nothing
+            Dim datePrepared = Nothing, dateHire = Nothing, S_Effect_from = Nothing, S_Effect_to = Nothing, PI_Effect_from = Nothing, PI_Effect_to As String = Nothing
 
             If DatePrepared_dtp.Value <> Nothing Then datePrepared = CDate(DatePrepared_dtp.Value).ToString("MMMM dd, yyyy")
             If DateHire_txt.Text <> Nothing Then dateHire = CDate(DateHire_txt.Text).ToString("MMMM dd, yyyy")
+            If SalryEffectFrom_dtp.Value <> "1/1/1990" Then S_Effect_from = CDate(SalryEffectFrom_dtp.Value).ToString("dd-MMM-yyyy")
+            If SalryEffectTo_dtp.Value <> "1/1/1990" Then S_Effect_to = CDate(SalryEffectTo_dtp.Value).ToString("dd-MMM-yyyy")
+            If PIEffectFrom_dtp.Value <> "1/1/1990" Then PI_Effect_from = CDate(PIEffectFrom_dtp.Value).ToString("dd-MMM-yyyy")
+            If PIEffectTo_dtp.Value <> "1/1/1990" Then PI_Effect_to = CDate(PIEffectTo_dtp.Value).ToString("dd-MMM-yyyy")
 
             dt.Rows.Add(name(0), firstt, middlee, datePrepared, EmpNo_txt.Text, Bdate_txt.Text, dateHire,
                         Address_txt.Text, SSS_txt.Text, TIN_txt.Text, Gender_CB.Text, Marital_CB.Text,
@@ -283,10 +280,10 @@
                         DeptFrom_txt.Text, DeptTo_txt.Text,
                         JobTitleFrom_txt.Text, JobTitleTo_txt.Text,
                         JobLevelFrom_txt.Text, JobLevelTo_txt.Text,
-                        SalaryFrom_txt.Text, SalryEffectFrom_dtp.Value,
-                        SalaryTo_txt.Text, SalryEffectTo_dtp.Value,
-                        PIFrom_txt.Text, PIEffectFrom_dtp.Value, PI_SchedFrom_CB.Text,
-                        PITo_txt.Text, PIEffectTo_dtp.Value, PI_SchedTo_CB.Text,
+                        SalaryFrom_txt.Text, S_Effect_from,
+                        SalaryTo_txt.Text, S_Effect_to,
+                        PIFrom_txt.Text, PI_Effect_from, PI_SchedFrom_CB.Text,
+                        PITo_txt.Text, PI_Effect_to, PI_SchedTo_CB.Text,
                         Remarks_txt.Text)
 
             Dim dataSource As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt)
@@ -297,4 +294,21 @@
 
         End Try
     End Sub
+
+    Private Sub DeptFrom_txt_TextChanged(sender As Object, e As EventArgs) Handles DeptFrom_txt.TextChanged
+        DeptTo_txt.Text = DeptFrom_txt.Text
+    End Sub
+
+    Private Sub BiometricID_TXT_TextChanged(sender As Object, e As EventArgs) Handles BiometricID_TXT.TextChanged
+        GetInfo_Form(BiometricID_TXT.Text, Name_TXT, EmpNo_txt, Address_txt, Bdate_txt, DateHire_txt, SSS_txt, TIN_txt, PIFrom_txt, PIEffectFrom_dtp, PI_SchedFrom_CB)
+    End Sub
+
+    Private Sub SalaryFrom_txt_KeyPress(sender As Object, e As KeyPressEventArgs) Handles SalaryTo_txt.KeyPress, SalaryFrom_txt.KeyPress, PITo_txt.KeyPress, PIFrom_txt.KeyPress
+        If e.KeyChar <> ChrW(Keys.Back) Then
+            If Not Char.IsNumber(e.KeyChar) And Not Char.IsControl(e.KeyChar) And Not e.KeyChar = "." Then
+                e.Handled = True
+            End If
+        End If
+    End Sub
+
 End Class

@@ -23,7 +23,9 @@ Partial Class frmAllowance
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim ReportDataSource1 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource6 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Me.PAFBindingSource = New System.Windows.Forms.BindingSource(Me.components)
+        Me.Forms = New WindowsApp1.Forms()
         Me.Close_LBL = New System.Windows.Forms.Label()
         Me.Allowance_Tab = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
@@ -57,6 +59,14 @@ Partial Class frmAllowance
         Me.Allow_Save_BTN = New System.Windows.Forms.Button()
         Me.Form_Tab = New System.Windows.Forms.TabPage()
         Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.DeptTo_txt = New System.Windows.Forms.TextBox()
+        Me.Label39 = New System.Windows.Forms.Label()
+        Me.DeptFrom_txt = New System.Windows.Forms.TextBox()
+        Me.Label40 = New System.Windows.Forms.Label()
+        Me.PI_SchedTo_CB = New System.Windows.Forms.ComboBox()
+        Me.Label38 = New System.Windows.Forms.Label()
+        Me.PI_SchedFrom_CB = New System.Windows.Forms.ComboBox()
+        Me.Label37 = New System.Windows.Forms.Label()
         Me.Label36 = New System.Windows.Forms.Label()
         Me.Remarks_txt = New System.Windows.Forms.RichTextBox()
         Me.Panel2 = New System.Windows.Forms.Panel()
@@ -123,16 +133,8 @@ Partial Class frmAllowance
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Context_Allow = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.Edit_MenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.PI_SchedFrom_CB = New System.Windows.Forms.ComboBox()
-        Me.Label37 = New System.Windows.Forms.Label()
-        Me.PI_SchedTo_CB = New System.Windows.Forms.ComboBox()
-        Me.Label38 = New System.Windows.Forms.Label()
-        Me.PAFBindingSource = New System.Windows.Forms.BindingSource(Me.components)
-        Me.Forms = New WindowsApp1.Forms()
-        Me.DeptTo_txt = New System.Windows.Forms.TextBox()
-        Me.Label39 = New System.Windows.Forms.Label()
-        Me.DeptFrom_txt = New System.Windows.Forms.TextBox()
-        Me.Label40 = New System.Windows.Forms.Label()
+        CType(Me.PAFBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.Forms, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Allowance_Tab.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.FlowLayoutPanel1.SuspendLayout()
@@ -140,9 +142,17 @@ Partial Class frmAllowance
         Me.Panel1.SuspendLayout()
         Me.Panel2.SuspendLayout()
         Me.Context_Allow.SuspendLayout()
-        CType(Me.PAFBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.Forms, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
+        '
+        'PAFBindingSource
+        '
+        Me.PAFBindingSource.DataMember = "PAF"
+        Me.PAFBindingSource.DataSource = Me.Forms
+        '
+        'Forms
+        '
+        Me.Forms.DataSetName = "Forms"
+        Me.Forms.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema
         '
         'Close_LBL
         '
@@ -546,6 +556,84 @@ Partial Class frmAllowance
         Me.Panel1.Size = New System.Drawing.Size(506, 579)
         Me.Panel1.TabIndex = 1
         '
+        'DeptTo_txt
+        '
+        Me.DeptTo_txt.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DeptTo_txt.Location = New System.Drawing.Point(137, 595)
+        Me.DeptTo_txt.Name = "DeptTo_txt"
+        Me.DeptTo_txt.Size = New System.Drawing.Size(269, 29)
+        Me.DeptTo_txt.TabIndex = 40
+        '
+        'Label39
+        '
+        Me.Label39.AutoSize = True
+        Me.Label39.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label39.Location = New System.Drawing.Point(23, 596)
+        Me.Label39.Name = "Label39"
+        Me.Label39.Size = New System.Drawing.Size(67, 25)
+        Me.Label39.TabIndex = 72
+        Me.Label39.Text = "Dep't To"
+        '
+        'DeptFrom_txt
+        '
+        Me.DeptFrom_txt.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DeptFrom_txt.Location = New System.Drawing.Point(137, 557)
+        Me.DeptFrom_txt.Name = "DeptFrom_txt"
+        Me.DeptFrom_txt.Size = New System.Drawing.Size(269, 29)
+        Me.DeptFrom_txt.TabIndex = 39
+        '
+        'Label40
+        '
+        Me.Label40.AutoSize = True
+        Me.Label40.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label40.Location = New System.Drawing.Point(23, 560)
+        Me.Label40.Name = "Label40"
+        Me.Label40.Size = New System.Drawing.Size(83, 25)
+        Me.Label40.TabIndex = 70
+        Me.Label40.Text = "Dep't From"
+        '
+        'PI_SchedTo_CB
+        '
+        Me.PI_SchedTo_CB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.PI_SchedTo_CB.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.PI_SchedTo_CB.FormattingEnabled = True
+        Me.PI_SchedTo_CB.Items.AddRange(New Object() {"every 15th month", "every 30th month", "every month"})
+        Me.PI_SchedTo_CB.Location = New System.Drawing.Point(218, 1205)
+        Me.PI_SchedTo_CB.Name = "PI_SchedTo_CB"
+        Me.PI_SchedTo_CB.Size = New System.Drawing.Size(190, 30)
+        Me.PI_SchedTo_CB.TabIndex = 66
+        '
+        'Label38
+        '
+        Me.Label38.AutoSize = True
+        Me.Label38.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label38.Location = New System.Drawing.Point(25, 1207)
+        Me.Label38.Name = "Label38"
+        Me.Label38.Size = New System.Drawing.Size(86, 25)
+        Me.Label38.TabIndex = 65
+        Me.Label38.Text = "PI Sched To"
+        '
+        'PI_SchedFrom_CB
+        '
+        Me.PI_SchedFrom_CB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.PI_SchedFrom_CB.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.PI_SchedFrom_CB.FormattingEnabled = True
+        Me.PI_SchedFrom_CB.Items.AddRange(New Object() {"every 15th of the month", "every 30th of the month", "every month"})
+        Me.PI_SchedFrom_CB.Location = New System.Drawing.Point(218, 1060)
+        Me.PI_SchedFrom_CB.Name = "PI_SchedFrom_CB"
+        Me.PI_SchedFrom_CB.Size = New System.Drawing.Size(190, 30)
+        Me.PI_SchedFrom_CB.TabIndex = 60
+        '
+        'Label37
+        '
+        Me.Label37.AutoSize = True
+        Me.Label37.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label37.Location = New System.Drawing.Point(25, 1062)
+        Me.Label37.Name = "Label37"
+        Me.Label37.Size = New System.Drawing.Size(102, 25)
+        Me.Label37.TabIndex = 59
+        Me.Label37.Text = "PI Sched From"
+        '
         'Label36
         '
         Me.Label36.AutoSize = True
@@ -561,7 +649,7 @@ Partial Class frmAllowance
         Me.Remarks_txt.Location = New System.Drawing.Point(28, 1313)
         Me.Remarks_txt.Name = "Remarks_txt"
         Me.Remarks_txt.Size = New System.Drawing.Size(378, 96)
-        Me.Remarks_txt.TabIndex = 64
+        Me.Remarks_txt.TabIndex = 67
         Me.Remarks_txt.Text = ""
         '
         'Panel2
@@ -582,7 +670,7 @@ Partial Class frmAllowance
         Me.F_Calcel_btn.Location = New System.Drawing.Point(3, 18)
         Me.F_Calcel_btn.Name = "F_Calcel_btn"
         Me.F_Calcel_btn.Size = New System.Drawing.Size(115, 40)
-        Me.F_Calcel_btn.TabIndex = 2
+        Me.F_Calcel_btn.TabIndex = 70
         Me.F_Calcel_btn.Text = "Cancel"
         Me.F_Calcel_btn.UseVisualStyleBackColor = False
         '
@@ -594,7 +682,7 @@ Partial Class frmAllowance
         Me.F_Save_btn.Location = New System.Drawing.Point(359, 18)
         Me.F_Save_btn.Name = "F_Save_btn"
         Me.F_Save_btn.Size = New System.Drawing.Size(115, 40)
-        Me.F_Save_btn.TabIndex = 1
+        Me.F_Save_btn.TabIndex = 72
         Me.F_Save_btn.Text = "Save"
         Me.F_Save_btn.UseVisualStyleBackColor = False
         '
@@ -606,7 +694,7 @@ Partial Class frmAllowance
         Me.F_Preview_btn.Location = New System.Drawing.Point(188, 21)
         Me.F_Preview_btn.Name = "F_Preview_btn"
         Me.F_Preview_btn.Size = New System.Drawing.Size(115, 40)
-        Me.F_Preview_btn.TabIndex = 0
+        Me.F_Preview_btn.TabIndex = 71
         Me.F_Preview_btn.Text = "Preview"
         Me.F_Preview_btn.UseVisualStyleBackColor = False
         '
@@ -617,7 +705,8 @@ Partial Class frmAllowance
         Me.PIEffectTo_dtp.Location = New System.Drawing.Point(218, 1163)
         Me.PIEffectTo_dtp.Name = "PIEffectTo_dtp"
         Me.PIEffectTo_dtp.Size = New System.Drawing.Size(188, 33)
-        Me.PIEffectTo_dtp.TabIndex = 62
+        Me.PIEffectTo_dtp.TabIndex = 64
+        Me.PIEffectTo_dtp.Value = New Date(1990, 1, 1, 0, 0, 0, 0)
         '
         'Label31
         '
@@ -626,7 +715,7 @@ Partial Class frmAllowance
         Me.Label31.Location = New System.Drawing.Point(23, 1169)
         Me.Label31.Name = "Label31"
         Me.Label31.Size = New System.Drawing.Size(98, 25)
-        Me.Label31.TabIndex = 61
+        Me.Label31.TabIndex = 63
         Me.Label31.Text = "Effective Date"
         '
         'PIEffectFrom_dtp
@@ -636,7 +725,8 @@ Partial Class frmAllowance
         Me.PIEffectFrom_dtp.Location = New System.Drawing.Point(218, 1017)
         Me.PIEffectFrom_dtp.Name = "PIEffectFrom_dtp"
         Me.PIEffectFrom_dtp.Size = New System.Drawing.Size(188, 33)
-        Me.PIEffectFrom_dtp.TabIndex = 60
+        Me.PIEffectFrom_dtp.TabIndex = 58
+        Me.PIEffectFrom_dtp.Value = New Date(1990, 1, 1, 0, 0, 0, 0)
         '
         'Label33
         '
@@ -654,7 +744,7 @@ Partial Class frmAllowance
         Me.PITo_txt.Location = New System.Drawing.Point(218, 1125)
         Me.PITo_txt.Name = "PITo_txt"
         Me.PITo_txt.Size = New System.Drawing.Size(188, 29)
-        Me.PITo_txt.TabIndex = 58
+        Me.PITo_txt.TabIndex = 62
         '
         'Label34
         '
@@ -663,7 +753,7 @@ Partial Class frmAllowance
         Me.Label34.Location = New System.Drawing.Point(23, 1128)
         Me.Label34.Name = "Label34"
         Me.Label34.Size = New System.Drawing.Size(170, 25)
-        Me.Label34.TabIndex = 57
+        Me.Label34.TabIndex = 61
         Me.Label34.Text = "Performance Incentive To"
         '
         'PIFrom_txt
@@ -692,6 +782,7 @@ Partial Class frmAllowance
         Me.SalryEffectTo_dtp.Name = "SalryEffectTo_dtp"
         Me.SalryEffectTo_dtp.Size = New System.Drawing.Size(188, 33)
         Me.SalryEffectTo_dtp.TabIndex = 54
+        Me.SalryEffectTo_dtp.Value = New Date(1990, 1, 1, 0, 0, 0, 0)
         '
         'Label28
         '
@@ -710,7 +801,8 @@ Partial Class frmAllowance
         Me.SalryEffectFrom_dtp.Location = New System.Drawing.Point(218, 842)
         Me.SalryEffectFrom_dtp.Name = "SalryEffectFrom_dtp"
         Me.SalryEffectFrom_dtp.Size = New System.Drawing.Size(188, 33)
-        Me.SalryEffectFrom_dtp.TabIndex = 52
+        Me.SalryEffectFrom_dtp.TabIndex = 50
+        Me.SalryEffectFrom_dtp.Value = New Date(1990, 1, 1, 0, 0, 0, 0)
         '
         'Label27
         '
@@ -719,7 +811,7 @@ Partial Class frmAllowance
         Me.Label27.Location = New System.Drawing.Point(23, 848)
         Me.Label27.Name = "Label27"
         Me.Label27.Size = New System.Drawing.Size(98, 25)
-        Me.Label27.TabIndex = 51
+        Me.Label27.TabIndex = 49
         Me.Label27.Text = "Effective Date"
         '
         'SalaryTo_txt
@@ -728,7 +820,7 @@ Partial Class frmAllowance
         Me.SalaryTo_txt.Location = New System.Drawing.Point(218, 884)
         Me.SalaryTo_txt.Name = "SalaryTo_txt"
         Me.SalaryTo_txt.Size = New System.Drawing.Size(188, 29)
-        Me.SalaryTo_txt.TabIndex = 50
+        Me.SalaryTo_txt.TabIndex = 52
         '
         'Label24
         '
@@ -737,7 +829,7 @@ Partial Class frmAllowance
         Me.Label24.Location = New System.Drawing.Point(23, 887)
         Me.Label24.Name = "Label24"
         Me.Label24.Size = New System.Drawing.Size(109, 25)
-        Me.Label24.TabIndex = 49
+        Me.Label24.TabIndex = 51
         Me.Label24.Text = "Salary Wage To"
         '
         'SalaryFrom_txt
@@ -782,7 +874,7 @@ Partial Class frmAllowance
         Me.JobLevelFrom_txt.Location = New System.Drawing.Point(137, 712)
         Me.JobLevelFrom_txt.Name = "JobLevelFrom_txt"
         Me.JobLevelFrom_txt.Size = New System.Drawing.Size(269, 29)
-        Me.JobLevelFrom_txt.TabIndex = 44
+        Me.JobLevelFrom_txt.TabIndex = 43
         '
         'Label23
         '
@@ -818,7 +910,7 @@ Partial Class frmAllowance
         Me.JobTitleFrom_txt.Location = New System.Drawing.Point(137, 635)
         Me.JobTitleFrom_txt.Name = "JobTitleFrom_txt"
         Me.JobTitleFrom_txt.Size = New System.Drawing.Size(269, 29)
-        Me.JobTitleFrom_txt.TabIndex = 40
+        Me.JobTitleFrom_txt.TabIndex = 41
         '
         'Label21
         '
@@ -1031,7 +1123,7 @@ Partial Class frmAllowance
         Me.DatePrepared_dtp.Location = New System.Drawing.Point(137, 1414)
         Me.DatePrepared_dtp.Name = "DatePrepared_dtp"
         Me.DatePrepared_dtp.Size = New System.Drawing.Size(269, 33)
-        Me.DatePrepared_dtp.TabIndex = 16
+        Me.DatePrepared_dtp.TabIndex = 69
         '
         'Label7
         '
@@ -1040,7 +1132,7 @@ Partial Class frmAllowance
         Me.Label7.Location = New System.Drawing.Point(23, 1420)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(100, 25)
-        Me.Label7.TabIndex = 15
+        Me.Label7.TabIndex = 68
         Me.Label7.Text = "Date Prepared"
         '
         'Label6
@@ -1130,9 +1222,9 @@ Partial Class frmAllowance
         '
         'rpt_Allowance
         '
-        ReportDataSource1.Name = "DataSet1"
-        ReportDataSource1.Value = Me.PAFBindingSource
-        Me.rpt_Allowance.LocalReport.DataSources.Add(ReportDataSource1)
+        ReportDataSource6.Name = "DataSet1"
+        ReportDataSource6.Value = Me.PAFBindingSource
+        Me.rpt_Allowance.LocalReport.DataSources.Add(ReportDataSource6)
         Me.rpt_Allowance.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_PAF.rdlc"
         Me.rpt_Allowance.Location = New System.Drawing.Point(6, 6)
         Me.rpt_Allowance.Name = "rpt_Allowance"
@@ -1172,94 +1264,6 @@ Partial Class frmAllowance
         Me.Edit_MenuItem.Size = New System.Drawing.Size(94, 22)
         Me.Edit_MenuItem.Text = "Edit"
         '
-        'PI_SchedFrom_CB
-        '
-        Me.PI_SchedFrom_CB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.PI_SchedFrom_CB.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.PI_SchedFrom_CB.FormattingEnabled = True
-        Me.PI_SchedFrom_CB.Items.AddRange(New Object() {"every 15th month", "every 30th month", "every month"})
-        Me.PI_SchedFrom_CB.Location = New System.Drawing.Point(218, 1060)
-        Me.PI_SchedFrom_CB.Name = "PI_SchedFrom_CB"
-        Me.PI_SchedFrom_CB.Size = New System.Drawing.Size(190, 30)
-        Me.PI_SchedFrom_CB.TabIndex = 67
-        '
-        'Label37
-        '
-        Me.Label37.AutoSize = True
-        Me.Label37.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label37.Location = New System.Drawing.Point(25, 1062)
-        Me.Label37.Name = "Label37"
-        Me.Label37.Size = New System.Drawing.Size(102, 25)
-        Me.Label37.TabIndex = 66
-        Me.Label37.Text = "PI Sched From"
-        '
-        'PI_SchedTo_CB
-        '
-        Me.PI_SchedTo_CB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
-        Me.PI_SchedTo_CB.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.PI_SchedTo_CB.FormattingEnabled = True
-        Me.PI_SchedTo_CB.Items.AddRange(New Object() {"every 15th month", "every 30th month", "every month"})
-        Me.PI_SchedTo_CB.Location = New System.Drawing.Point(218, 1205)
-        Me.PI_SchedTo_CB.Name = "PI_SchedTo_CB"
-        Me.PI_SchedTo_CB.Size = New System.Drawing.Size(190, 30)
-        Me.PI_SchedTo_CB.TabIndex = 69
-        '
-        'Label38
-        '
-        Me.Label38.AutoSize = True
-        Me.Label38.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label38.Location = New System.Drawing.Point(25, 1207)
-        Me.Label38.Name = "Label38"
-        Me.Label38.Size = New System.Drawing.Size(86, 25)
-        Me.Label38.TabIndex = 68
-        Me.Label38.Text = "PI Sched To"
-        '
-        'PAFBindingSource
-        '
-        Me.PAFBindingSource.DataMember = "PAF"
-        Me.PAFBindingSource.DataSource = Me.Forms
-        '
-        'Forms
-        '
-        Me.Forms.DataSetName = "Forms"
-        Me.Forms.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema
-        '
-        'DeptTo_txt
-        '
-        Me.DeptTo_txt.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.DeptTo_txt.Location = New System.Drawing.Point(137, 595)
-        Me.DeptTo_txt.Name = "DeptTo_txt"
-        Me.DeptTo_txt.Size = New System.Drawing.Size(269, 29)
-        Me.DeptTo_txt.TabIndex = 73
-        '
-        'Label39
-        '
-        Me.Label39.AutoSize = True
-        Me.Label39.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label39.Location = New System.Drawing.Point(23, 596)
-        Me.Label39.Name = "Label39"
-        Me.Label39.Size = New System.Drawing.Size(67, 25)
-        Me.Label39.TabIndex = 72
-        Me.Label39.Text = "Dep't To"
-        '
-        'DeptFrom_txt
-        '
-        Me.DeptFrom_txt.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.DeptFrom_txt.Location = New System.Drawing.Point(137, 557)
-        Me.DeptFrom_txt.Name = "DeptFrom_txt"
-        Me.DeptFrom_txt.Size = New System.Drawing.Size(269, 29)
-        Me.DeptFrom_txt.TabIndex = 71
-        '
-        'Label40
-        '
-        Me.Label40.AutoSize = True
-        Me.Label40.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label40.Location = New System.Drawing.Point(23, 560)
-        Me.Label40.Name = "Label40"
-        Me.Label40.Size = New System.Drawing.Size(83, 25)
-        Me.Label40.TabIndex = 70
-        Me.Label40.Text = "Dep't From"
-        '
         'frmAllowance
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1271,6 +1275,8 @@ Partial Class frmAllowance
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Name = "frmAllowance"
         Me.Text = "frmAllowance"
+        CType(Me.PAFBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.Forms, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Allowance_Tab.ResumeLayout(False)
         Me.TabPage1.ResumeLayout(False)
         Me.TabPage1.PerformLayout()
@@ -1281,8 +1287,6 @@ Partial Class frmAllowance
         Me.Panel1.PerformLayout()
         Me.Panel2.ResumeLayout(False)
         Me.Context_Allow.ResumeLayout(False)
-        CType(Me.PAFBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.Forms, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

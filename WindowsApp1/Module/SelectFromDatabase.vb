@@ -35,6 +35,61 @@ Module SelectFromDatabase
         End Using
     End Sub
 
+    Public Sub GetInfo_Form(bioNo As String, Name_txt As TextBox, EmpNo_txt As TextBox, Address_txt As TextBox, Bdate_txt As TextBox,
+                            DateHire_txt As TextBox, SSS_txt As TextBox, TIN_txt As TextBox,
+                            PIFrom_txt As TextBox, PIEffectFrom_dtp As DateTimePicker, PI_SchedFrom_CB As ComboBox)
+
+        Dim mysql As String = "Select * From PAYROLL_EMPLOYEE where BIO_NO = '" & bioNo & "'"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+
+            If ds.Tables(0).Rows.Count > 0 Then
+                Dim dr As DataRow = ds.Tables(0).Rows(0)
+                With dr
+
+                    Name_txt.Text = .Item("Fullname")
+                    EmpNo_txt.Text = .Item("EMP_NO")
+                    Address_txt.Text = IIf(IsDBNull(.Item("ADDRESS")), Nothing, .Item("ADDRESS"))
+                    Bdate_txt.Text = IIf(IsDBNull(.Item("BDATE")), Nothing, .Item("BDATE"))
+                    DateHire_txt.Text = .Item("DATE_STARTED")
+                    SSS_txt.Text = IIf(IsDBNull(.Item("SSSNO")), Nothing, .Item("SSSNO"))
+                    TIN_txt.Text = IIf(IsDBNull(.Item("TINNO")), Nothing, .Item("TINNO"))
+
+                End With
+            Else
+                Name_txt.Text = ""
+                EmpNo_txt.Text = ""
+                Address_txt.Text = ""
+                Bdate_txt.Text = ""
+                DateHire_txt.Text = ""
+                SSS_txt.Text = ""
+                TIN_txt.Text = ""
+            End If
+        End Using
+
+        Dim mysqll As String = $"Select * From PAYROLL_ALLOWANCES where BIOMETRIC_NO = '{bioNo}' and category = 'PERFORMANCE INCENTIVES'"
+        Using dss As DataSet = LoadSQL(mysqll, "PAYROLL_ALLOWANCES")
+            If dss.Tables(0).Rows.Count > 0 Then
+                Dim drr As DataRow = dss.Tables(0).Rows(0)
+                With drr
+
+                    PIFrom_txt.Text = CDec(.Item("AMOUNT")).ToString("N")
+                    PIEffectFrom_dtp.Value = .Item("EFFECTIVE_DATE")
+
+                    If .Item("SCHEDULE") = "OPEN PAYROLL" Then
+                        PI_SchedFrom_CB.Text = "every 15th of the month"
+                    Else
+                        PI_SchedFrom_CB.Text = "every 30th of the month"
+                    End If
+
+                End With
+            Else
+                PIFrom_txt.Text = ""
+                PIEffectFrom_dtp.Value = "1/1/1990"
+                PIFrom_txt.Text = ""
+            End If
+        End Using
+    End Sub
+
     Public Function ThisHasRow(table As String)
         Dim mysql As String = "Select * FROM " & table & ""
         Dim ds As DataSet = LoadSQL(mysql, table)
