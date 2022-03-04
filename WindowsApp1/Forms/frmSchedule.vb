@@ -46,10 +46,16 @@ Public Class frmSchedule
                     SaveSchedule(BiometricID_TXT.Text, row.Tag, row.Cells(1).Value, row.Cells(2).Value, PAYROLL, row.Cells(3).Tag)
 
                     If row.Cells(3).Tag <> Nothing Then
-                        If Not File.Exists(row.Cells(3).Tag) And row.Cells(2).Tag <> Nothing Then
+
+                        If row.Cells(3).Tag <> Nothing Then
+                            If File.Exists(row.Cells(3).Tag) Then
+                                File.Delete(row.Cells(3).Tag)
+                            End If
+                        ElseIf Not File.Exists(row.Cells(3).Tag) And row.Cells(2).Tag <> Nothing Then
                             Dim newFile As New FileInfo(row.Cells(2).Tag)
                             newFile.CopyTo(row.Cells(3).Tag)
                         End If
+
                     End If
 
                 End If
@@ -128,7 +134,11 @@ Public Class frmSchedule
 
         If TypeOf grid.Columns(e.ColumnIndex) Is DataGridViewButtonColumn Then
             If row.Cells(3).Value = "View" Then
-                Process.Start(row.Cells(3).Tag)
+                If row.Cells(3).Tag = Nothing Then
+                    Process.Start(row.Cells(2).Tag)
+                Else
+                    Process.Start(row.Cells(3).Tag)
+                End If
             ElseIf row.Cells(3).Value = "Upload" Then
                 Attach_Panel.Visible = True
                 Attach_Panel.Location = New Point(345, 115)
@@ -152,8 +162,8 @@ Public Class frmSchedule
 
     Private Sub AttachSave_btn_Click(sender As Object, e As EventArgs) Handles AttachSave_btn.Click
 
-        Dim gridRow As Integer = Schedule_DG.CurrentRow.Index
-        Dim datee As Date = Schedule_DG.Item(0, gridRow).Tag
+        Dim row As DataGridViewRow = Schedule_DG.Rows(Schedule_DG.CurrentRow.Index)
+        Dim datee As Date = row.Cells(0).Tag
 
         Dim Nas_Folder As DirectoryInfo = New DirectoryInfo("\\Pgcnas_server\hr\COMMON FILES\Schedule Attachment")
         Dim Nas_Employee_Folder As DirectoryInfo = New DirectoryInfo($"\\Pgcnas_server\hr\COMMON FILES\Schedule Attachment\{Name_TXT.Text}")
@@ -161,11 +171,11 @@ Public Class frmSchedule
         If Not Nas_Folder.Exists Then Nas_Folder.Create()
         If Not Nas_Employee_Folder.Exists Then Nas_Employee_Folder.Create()
 
-        Dim newName As String = $"{Nas_Employee_Folder}\{Schedule_DG.Item(1, gridRow).Value} - {datee.ToString("MMM dd, yyyy")}.pdf"
+        Dim newName As String = $"{Nas_Employee_Folder}\{row.Cells(1).Value} - {datee.ToString("MMM dd, yyyy")}.pdf"
 
-        Schedule_DG.Item(2, gridRow).Tag = AttachPath_txt.Text
-        Schedule_DG.Item(3, gridRow).Tag = newName
-        Schedule_DG.Item(3, gridRow).Value = "View"
+        row.Cells(2).Tag = AttachPath_txt.Text
+        row.Cells(3).Tag = newName
+        row.Cells(3).Value = "View"
 
         AttachPath_txt.Clear()
         AttachSave_btn.Enabled = False

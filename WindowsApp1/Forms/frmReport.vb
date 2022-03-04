@@ -1519,8 +1519,10 @@ Public Class frmReport
     End Sub
 
     Private Sub PI_Paydate_Combo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles PI_Paydate_Combo.SelectedIndexChanged
-        If PI_Paydate_Combo.SelectedIndex >= 0 Then
+        If PI_Paydate_Combo.SelectedIndex >= 0 And PI_Company_CB.SelectedIndex >= 0 Then
             LoadPI()
+        Else
+            MsgBox("Paydate and Company must not be empty.", MsgBoxStyle.Exclamation)
         End If
     End Sub
 
@@ -1540,8 +1542,28 @@ Public Class frmReport
                 .Columns.Add("AMOUNT")
             End With
 
+            If PI_Company_CB.SelectedIndex = 0 Then
+                str = $"HO_CATEGORY LIKE '%Photo%'"
+            ElseIf PI_Company_CB.SelectedIndex = 1 Then
+                str = $"COMPANY_CATEGORY = 'GENSAN PERFECT'"
+            ElseIf PI_Company_CB.SelectedIndex = 2 Then
+                str = $"COMPANY_CATEGORY = 'DAVAO PERFECT'"
+            ElseIf PI_Company_CB.SelectedIndex = 3 Then
+                str = $"COMPANY_CATEGORY = 'JR PHOTO' "
+            ElseIf PI_Company_CB.SelectedIndex = 4 Then
+                str = $"(COMPANY = 'DALTON' OR HO_CATEGORY LIKE '%Dalton%')"
+            ElseIf PI_Company_CB.SelectedIndex = 5 Then
+                str = $"(COMPANY = 'PERFECOM' OR HO_CATEGORY LIKE '%Perfecom%')"
+            ElseIf PI_Company_CB.SelectedIndex = 6 Then
+                str = $"(COMPANY = 'P&G UY' OR HO_CATEGORY LIKE '%GHS%')"
+            ElseIf PI_Company_CB.SelectedIndex = 7 Then
+                str = $"HO_CATEGORY IN ('Leasing Admin Office','Construction')"
+            ElseIf PI_Company_CB.SelectedIndex = 8 Then
+                str = $"HO_CATEGORY = 'PGC Head Office'"
+            End If
+
             Dim mysql As String = $"Select * From RECORDED_ALLOW_DEDUC A INNER JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIO_NO       
-                                        WHERE UPPER(CATEGORY) = 'PERFORMANCE INCENTIVES' AND  PAYDATE BETWEEN '{PAYDATE_start.AddDays(14).ToShortDateString}' AND '{PAYDATE_end.ToShortDateString}' ORDER BY FULLNAME, PAYDATE"
+                                        WHERE UPPER(CATEGORY) = 'PERFORMANCE INCENTIVES' AND {str} AND PAYDATE BETWEEN '{PAYDATE_start.AddDays(14).ToShortDateString}' AND '{PAYDATE_end.ToShortDateString}' ORDER BY FULLNAME, PAYDATE"
 
             Using ds As DataSet = LoadSQL(mysql, "RECORDED_ALLOW_DEDUC")
                 If ds.Tables(0).Rows.Count > 0 Then
@@ -1598,4 +1620,11 @@ Public Class frmReport
         End If
     End Sub
 
+    Private Sub PI_Company_CB_SelectedIndexChanged(sender As Object, e As EventArgs) Handles PI_Company_CB.SelectedIndexChanged
+        If PI_Paydate_Combo.SelectedIndex >= 0 And PI_Company_CB.SelectedIndex >= 0 Then
+            LoadPI()
+        Else
+            MsgBox("Paydate and Company must not be empty.", MsgBoxStyle.Exclamation)
+        End If
+    End Sub
 End Class

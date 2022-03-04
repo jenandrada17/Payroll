@@ -1,4 +1,5 @@
 ﻿Imports System.Globalization
+Imports System.IO
 
 Module SaveUpdate
 
@@ -1521,34 +1522,23 @@ Module SaveUpdate
                 If group = False Then
                     MsgBox("Successfully Saved!", MsgBoxStyle.Information, "Information")
                 End If
-
             End Using
         End If
     End Sub
 
-    Friend Sub SavePic(BIO_NO As String, pic As Byte())
+    Friend Sub SavePic(name As String, pic As PictureBox)
 
-        Dim mysql As String = $"Select * From EMPLOYEE_PIC WHERE BIO_NO = '{BIO_NO}'"
-        Using ds As DataSet = LoadSQL(mysql, "EMPLOYEE_PIC")
-            If ds.Tables(0).Rows.Count > 0 Then
-                With ds.Tables(0).Rows(0)
-                    .Item("EMP_PIC") = pic
-                End With
-                SaveEntry(ds, False)
-            Else
-                Dim mysqll As String = "Select * From EMPLOYEE_PIC Rows 1"
-                Using dss As DataSet = LoadSQL(mysqll, "EMPLOYEE_PIC")
-                    Dim dsNew As DataRow = ds.Tables(0).NewRow
-                    With dsNew
-                        .Item("BIO_NO") = BIO_NO
-                        .Item("EMP_PIC") = pic
-                    End With
+        Dim Folderr As DirectoryInfo = New DirectoryInfo("\\Pgcnas_server\hr\COMMON FILES\Profile Picture")
 
-                    ds.Tables(0).Rows.Add(dsNew)
-                    SaveEntry(ds)
-                End Using
-            End If
-        End Using
+        If Not Folderr.Exists Then Folderr.Create()
+
+        Dim path As String = $"\\Pgcnas_server\hr\COMMON FILES\Profile Picture\{name}.jpeg"
+
+        If File.Exists(path) Then
+            File.Delete(path)
+        End If
+
+        pic.Image.Save(path)
 
     End Sub
 

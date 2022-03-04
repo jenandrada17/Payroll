@@ -137,15 +137,20 @@
 
         Dim bioNo As String = Deduc_list.Items(Deduc_list.FocusedItem.Index).SubItems(1).Tag
         Dim IDX As Integer = Deduc_list.Items(Deduc_list.FocusedItem.Index).SubItems(4).Tag
+        Dim STATUS As String = GetData("STATUS", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'")
         Dim credit As Decimal = GetData_Decimal("CREDIT", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'")
         Dim CollectedCredit As Decimal = GetTotal("AMOUNT", $" RECORDED_ALLOW_DEDUC WHERE R_DEDUC_ID = '{IDX}'")
         Dim totalCredit As Decimal = credit + CollectedCredit
         Dim balance As Decimal
 
-        If CollectedCredit > 0 Then
-            balance = CDec(GetData_Decimal("PRINCIPAL", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'")) - totalCredit
+        If STATUS = "PAID" Then
+            balance = 0
         Else
-            balance = CDec(GetData_Decimal("BALANCE", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'"))
+            If CollectedCredit > 0 Then
+                balance = CDec(GetData_Decimal("PRINCIPAL", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'")) - totalCredit
+            Else
+                balance = CDec(GetData_Decimal("BALANCE", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'"))
+            End If
         End If
 
         MsgBox("Balance               :  " & FormatNumber(balance), MsgBoxStyle.Information, "TOTAL")

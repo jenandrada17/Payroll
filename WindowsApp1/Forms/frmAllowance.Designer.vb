@@ -23,7 +23,7 @@ Partial Class frmAllowance
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim ReportDataSource1 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource2 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
         Me.PAFBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.Forms = New WindowsApp1.Forms()
         Me.Close_LBL = New System.Windows.Forms.Label()
@@ -130,9 +130,15 @@ Partial Class frmAllowance
         Me.Label4 = New System.Windows.Forms.Label()
         Me.rpt_Allowance = New Microsoft.Reporting.WinForms.ReportViewer()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.Button1 = New System.Windows.Forms.Button()
+        Me.TextBox1 = New System.Windows.Forms.TextBox()
+        Me.DataGridView1 = New System.Windows.Forms.DataGridView()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Context_Allow = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.Edit_MenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.SampleDatabaseDataSet = New WindowsApp1.SampleDatabaseDataSet()
+        Me.UserManagementBindingSource = New System.Windows.Forms.BindingSource(Me.components)
+        Me.User_ManagementTableAdapter = New WindowsApp1.SampleDatabaseDataSetTableAdapters.User_ManagementTableAdapter()
         CType(Me.PAFBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Forms, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Allowance_Tab.SuspendLayout()
@@ -141,7 +147,11 @@ Partial Class frmAllowance
         Me.Form_Tab.SuspendLayout()
         Me.Panel1.SuspendLayout()
         Me.Panel2.SuspendLayout()
+        Me.TabPage2.SuspendLayout()
+        CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Context_Allow.SuspendLayout()
+        CType(Me.SampleDatabaseDataSet, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.UserManagementBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'PAFBindingSource
@@ -1223,9 +1233,9 @@ Partial Class frmAllowance
         '
         'rpt_Allowance
         '
-        ReportDataSource1.Name = "DataSet1"
-        ReportDataSource1.Value = Me.PAFBindingSource
-        Me.rpt_Allowance.LocalReport.DataSources.Add(ReportDataSource1)
+        ReportDataSource2.Name = "DataSet1"
+        ReportDataSource2.Value = Me.PAFBindingSource
+        Me.rpt_Allowance.LocalReport.DataSources.Add(ReportDataSource2)
         Me.rpt_Allowance.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_PAF.rdlc"
         Me.rpt_Allowance.Location = New System.Drawing.Point(6, 6)
         Me.rpt_Allowance.Name = "rpt_Allowance"
@@ -1235,6 +1245,9 @@ Partial Class frmAllowance
         '
         'TabPage2
         '
+        Me.TabPage2.Controls.Add(Me.Button1)
+        Me.TabPage2.Controls.Add(Me.TextBox1)
+        Me.TabPage2.Controls.Add(Me.DataGridView1)
         Me.TabPage2.Location = New System.Drawing.Point(4, 41)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
@@ -1242,6 +1255,33 @@ Partial Class frmAllowance
         Me.TabPage2.TabIndex = 4
         Me.TabPage2.Text = "      Approval      "
         Me.TabPage2.UseVisualStyleBackColor = True
+        '
+        'Button1
+        '
+        Me.Button1.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button1.Location = New System.Drawing.Point(337, 25)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(110, 33)
+        Me.Button1.TabIndex = 137
+        Me.Button1.Text = "Search"
+        Me.Button1.UseVisualStyleBackColor = True
+        '
+        'TextBox1
+        '
+        Me.TextBox1.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBox1.Location = New System.Drawing.Point(5, 25)
+        Me.TextBox1.Name = "TextBox1"
+        Me.TextBox1.Size = New System.Drawing.Size(326, 33)
+        Me.TextBox1.TabIndex = 136
+        '
+        'DataGridView1
+        '
+        Me.DataGridView1.BackgroundColor = System.Drawing.SystemColors.ButtonHighlight
+        Me.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.DataGridView1.Location = New System.Drawing.Point(5, 64)
+        Me.DataGridView1.Name = "DataGridView1"
+        Me.DataGridView1.Size = New System.Drawing.Size(1140, 518)
+        Me.DataGridView1.TabIndex = 0
         '
         'Label1
         '
@@ -1257,13 +1297,27 @@ Partial Class frmAllowance
         '
         Me.Context_Allow.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.Edit_MenuItem})
         Me.Context_Allow.Name = "ContextMenuStrip1"
-        Me.Context_Allow.Size = New System.Drawing.Size(181, 48)
+        Me.Context_Allow.Size = New System.Drawing.Size(95, 26)
         '
         'Edit_MenuItem
         '
         Me.Edit_MenuItem.Name = "Edit_MenuItem"
-        Me.Edit_MenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.Edit_MenuItem.Size = New System.Drawing.Size(94, 22)
         Me.Edit_MenuItem.Text = "Edit"
+        '
+        'SampleDatabaseDataSet
+        '
+        Me.SampleDatabaseDataSet.DataSetName = "SampleDatabaseDataSet"
+        Me.SampleDatabaseDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema
+        '
+        'UserManagementBindingSource
+        '
+        Me.UserManagementBindingSource.DataMember = "User_Management"
+        Me.UserManagementBindingSource.DataSource = Me.SampleDatabaseDataSet
+        '
+        'User_ManagementTableAdapter
+        '
+        Me.User_ManagementTableAdapter.ClearBeforeFill = True
         '
         'frmAllowance
         '
@@ -1287,7 +1341,12 @@ Partial Class frmAllowance
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
         Me.Panel2.ResumeLayout(False)
+        Me.TabPage2.ResumeLayout(False)
+        Me.TabPage2.PerformLayout()
+        CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Context_Allow.ResumeLayout(False)
+        CType(Me.SampleDatabaseDataSet, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.UserManagementBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1402,4 +1461,10 @@ Partial Class frmAllowance
     Friend WithEvents Label39 As Label
     Friend WithEvents DeptFrom_txt As TextBox
     Friend WithEvents Label40 As Label
+    Friend WithEvents SampleDatabaseDataSet As SampleDatabaseDataSet
+    Friend WithEvents UserManagementBindingSource As BindingSource
+    Friend WithEvents User_ManagementTableAdapter As SampleDatabaseDataSetTableAdapters.User_ManagementTableAdapter
+    Friend WithEvents DataGridView1 As DataGridView
+    Friend WithEvents Button1 As Button
+    Friend WithEvents TextBox1 As TextBox
 End Class

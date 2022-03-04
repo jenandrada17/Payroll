@@ -718,7 +718,7 @@ Public Class frmNewEmployee
                          ComCategory_Combo.Text, Position_Combo.Text, ComCompany_Cmbo.Text, PhotoCategory_Combo.Text, MName_txt.Text, BDate_dtp.Value, Address_txt.Text)
 
             If Emp_Pic.Image IsNot Nothing Then
-                SavePic(Bio_TXT.Text, SaveProfilePic(Emp_Pic.Image))
+                SavePic(fullname, Emp_Pic)
             End If
 
             If btnSave.Tag = "UPDATE" Then
@@ -956,7 +956,14 @@ Public Class frmNewEmployee
                             Started_DTP, TimeIn_Combo, TimeOut_Combo, EmpNo_TXT, TIN_TXT, SSS_TXT, PHILH_TXT, HDMF_TXT, HO_Category, ComCategory_Combo,
                             Position_Combo, ComCompany_Cmbo, PhotoCategory_Combo, LastName_txt, MName_txt, BDate_dtp, Address_txt, btnSave)
 
-            GetPic(Bio_TXT.Text, Emp_Pic)
+            Dim fullname As String
+            If String.IsNullOrEmpty(MName_txt.Text) Then
+                fullname = $"{LastName_txt.Text}, {FirstName_TXT.Text} "
+            Else
+                fullname = $"{LastName_txt.Text}, {FirstName_TXT.Text} {MName_txt.Text.Substring(0, 1)}."
+            End If
+
+            GetPic(fullname, Emp_Pic)
         Else
             Add_Company_CB.Text = ""
             HO_Category.Text = ""

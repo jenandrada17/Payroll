@@ -11,13 +11,18 @@ Public Class frmMainForm
 
     Private Sub frmMainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
+        'Using conSettings As New ServerSettings
+        '    conSettings.ShowDialog()
+        'End Using
+
         'Check_This()
 
         'Loans_to_Deduction()
 
         'CheckDeduction_Loans_IfZeroBalance(3869)
+        '========================================
 
-        'Login_Form.ShowDialog()
+        Login_Form.ShowDialog()
 
         AppDateTime.Text = Date.Now.ToString("dddd, MMMM dd, yyyy hh: mm:ss tt", CultureInfo.CurrentCulture)
 

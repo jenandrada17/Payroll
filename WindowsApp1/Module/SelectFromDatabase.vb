@@ -3045,24 +3045,19 @@ Module SelectFromDatabase
         Return tmp
     End Function
 
-    Friend Sub GetPic(Bio_No As String, picbox As PictureBox)
-        Dim mysql As String = $"Select EMP_PIC from Employee_pic where BIO_NO = '{Bio_No}'"
-        Using ds As DataSet = LoadSQL(mysql, "Employee_pic")
-            If ds.Tables(0).Rows.Count > 0 Then
-                With ds.Tables(0).Rows(0)
-                    If IsDBNull(.Item("EMP_PIC")) Then
-                        picbox.Image = Nothing
-                    Else
-                        Dim bytee As Byte() = .Item("EMP_PIC")
-                        Dim mstream As New System.IO.MemoryStream(bytee)
-                        picbox.Image = Image.FromStream(mstream)
-                        picbox.SizeMode = PictureBoxSizeMode.StretchImage
-                    End If
-                End With
-            Else
-                picbox.Image = Nothing
-            End If
-        End Using
+    Friend Sub GetPic(name As String, picbox As PictureBox)
+
+        Dim Nas_Folder As DirectoryInfo = New DirectoryInfo($"\\Pgcnas_server\hr\COMMON FILES\Profile Picture")
+        Dim path As String = $"\\Pgcnas_server\hr\COMMON FILES\Profile Picture\{name}.jpeg"
+
+        If Not Nas_Folder.Exists Then Nas_Folder.Create()
+
+        If File.Exists(path) Then
+            picbox.Image = Image.FromFile(path)
+        Else
+            picbox.Image = Nothing
+        End If
+
     End Sub
 
 End Module

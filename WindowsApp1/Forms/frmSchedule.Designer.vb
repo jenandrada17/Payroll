@@ -22,12 +22,11 @@ Partial Class frmSchedule
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Close_LBL = New System.Windows.Forms.Label()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
@@ -44,6 +43,18 @@ Partial Class frmSchedule
         Me.btnSearch = New System.Windows.Forms.Button()
         Me.txtSearch = New System.Windows.Forms.TextBox()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.Attach_Panel = New System.Windows.Forms.Panel()
+        Me.Label75 = New System.Windows.Forms.Label()
+        Me.AttachClose_lbl = New System.Windows.Forms.Label()
+        Me.AttachPath_txt = New System.Windows.Forms.TextBox()
+        Me.AttachBrowse_btn = New System.Windows.Forms.Button()
+        Me.AttachSave_btn = New System.Windows.Forms.Button()
+        Me.Label6 = New System.Windows.Forms.Label()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.Panel3 = New System.Windows.Forms.Panel()
+        Me.Panel2 = New System.Windows.Forms.Panel()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.Panel1 = New System.Windows.Forms.Panel()
         Me.Cancel_BTN = New System.Windows.Forms.Button()
         Me.Save_BTN = New System.Windows.Forms.Button()
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
@@ -53,18 +64,6 @@ Partial Class frmSchedule
         Me.Label2 = New System.Windows.Forms.Label()
         Me.BiometricID_TXT = New System.Windows.Forms.TextBox()
         Me.Schedule_DG = New System.Windows.Forms.DataGridView()
-        Me.Panel1 = New System.Windows.Forms.Panel()
-        Me.Label4 = New System.Windows.Forms.Label()
-        Me.Label5 = New System.Windows.Forms.Label()
-        Me.Panel2 = New System.Windows.Forms.Panel()
-        Me.Label6 = New System.Windows.Forms.Label()
-        Me.Panel3 = New System.Windows.Forms.Panel()
-        Me.Attach_Panel = New System.Windows.Forms.Panel()
-        Me.Label75 = New System.Windows.Forms.Label()
-        Me.AttachClose_lbl = New System.Windows.Forms.Label()
-        Me.AttachPath_txt = New System.Windows.Forms.TextBox()
-        Me.AttachBrowse_btn = New System.Windows.Forms.Button()
-        Me.AttachSave_btn = New System.Windows.Forms.Button()
         Me.Date_DataGrid = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Time_In_DataGrid = New System.Windows.Forms.DataGridViewComboBoxColumn()
         Me.Time_Out_DataGrid = New System.Windows.Forms.DataGridViewComboBoxColumn()
@@ -72,9 +71,9 @@ Partial Class frmSchedule
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.TabPage2.SuspendLayout()
+        Me.Attach_Panel.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         CType(Me.Schedule_DG, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.Attach_Panel.SuspendLayout()
         Me.SuspendLayout()
         '
         'Label1
@@ -254,6 +253,126 @@ Partial Class frmSchedule
         Me.TabPage2.Text = "     Schedule Details     "
         Me.TabPage2.UseVisualStyleBackColor = True
         '
+        'Attach_Panel
+        '
+        Me.Attach_Panel.AutoSize = True
+        Me.Attach_Panel.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(64, Byte), Integer))
+        Me.Attach_Panel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.Attach_Panel.Controls.Add(Me.Label75)
+        Me.Attach_Panel.Controls.Add(Me.AttachClose_lbl)
+        Me.Attach_Panel.Controls.Add(Me.AttachPath_txt)
+        Me.Attach_Panel.Controls.Add(Me.AttachBrowse_btn)
+        Me.Attach_Panel.Controls.Add(Me.AttachSave_btn)
+        Me.Attach_Panel.Location = New System.Drawing.Point(12, 348)
+        Me.Attach_Panel.Name = "Attach_Panel"
+        Me.Attach_Panel.Size = New System.Drawing.Size(634, 90)
+        Me.Attach_Panel.TabIndex = 95
+        Me.Attach_Panel.Visible = False
+        '
+        'Label75
+        '
+        Me.Label75.AutoSize = True
+        Me.Label75.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label75.ForeColor = System.Drawing.Color.White
+        Me.Label75.Location = New System.Drawing.Point(5, 13)
+        Me.Label75.Name = "Label75"
+        Me.Label75.Size = New System.Drawing.Size(103, 16)
+        Me.Label75.TabIndex = 83
+        Me.Label75.Text = "Browse PDF file"
+        '
+        'AttachClose_lbl
+        '
+        Me.AttachClose_lbl.AutoSize = True
+        Me.AttachClose_lbl.ForeColor = System.Drawing.Color.White
+        Me.AttachClose_lbl.Location = New System.Drawing.Point(606, -1)
+        Me.AttachClose_lbl.Name = "AttachClose_lbl"
+        Me.AttachClose_lbl.Size = New System.Drawing.Size(23, 29)
+        Me.AttachClose_lbl.TabIndex = 82
+        Me.AttachClose_lbl.Text = "X"
+        '
+        'AttachPath_txt
+        '
+        Me.AttachPath_txt.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.AttachPath_txt.Location = New System.Drawing.Point(8, 32)
+        Me.AttachPath_txt.Name = "AttachPath_txt"
+        Me.AttachPath_txt.Size = New System.Drawing.Size(412, 26)
+        Me.AttachPath_txt.TabIndex = 81
+        '
+        'AttachBrowse_btn
+        '
+        Me.AttachBrowse_btn.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.AttachBrowse_btn.Location = New System.Drawing.Point(447, 31)
+        Me.AttachBrowse_btn.Name = "AttachBrowse_btn"
+        Me.AttachBrowse_btn.Size = New System.Drawing.Size(76, 31)
+        Me.AttachBrowse_btn.TabIndex = 80
+        Me.AttachBrowse_btn.Text = "Browse"
+        Me.AttachBrowse_btn.UseVisualStyleBackColor = True
+        '
+        'AttachSave_btn
+        '
+        Me.AttachSave_btn.Enabled = False
+        Me.AttachSave_btn.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.AttachSave_btn.Location = New System.Drawing.Point(529, 31)
+        Me.AttachSave_btn.Name = "AttachSave_btn"
+        Me.AttachSave_btn.Size = New System.Drawing.Size(80, 31)
+        Me.AttachSave_btn.TabIndex = 79
+        Me.AttachSave_btn.Text = "Save"
+        Me.AttachSave_btn.UseVisualStyleBackColor = True
+        '
+        'Label6
+        '
+        Me.Label6.AutoSize = True
+        Me.Label6.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label6.Location = New System.Drawing.Point(67, 530)
+        Me.Label6.Name = "Label6"
+        Me.Label6.Size = New System.Drawing.Size(70, 27)
+        Me.Label6.TabIndex = 94
+        Me.Label6.Text = "Rest Day"
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label5.Location = New System.Drawing.Point(67, 495)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(98, 27)
+        Me.Label5.TabIndex = 94
+        Me.Label5.Text = "Absent Leave"
+        '
+        'Panel3
+        '
+        Me.Panel3.BackColor = System.Drawing.Color.SlateGray
+        Me.Panel3.Location = New System.Drawing.Point(21, 532)
+        Me.Panel3.Name = "Panel3"
+        Me.Panel3.Size = New System.Drawing.Size(40, 25)
+        Me.Panel3.TabIndex = 93
+        '
+        'Panel2
+        '
+        Me.Panel2.BackColor = System.Drawing.Color.CadetBlue
+        Me.Panel2.Location = New System.Drawing.Point(21, 495)
+        Me.Panel2.Name = "Panel2"
+        Me.Panel2.Size = New System.Drawing.Size(40, 25)
+        Me.Panel2.TabIndex = 93
+        '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label4.Location = New System.Drawing.Point(67, 456)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(161, 27)
+        Me.Label4.TabIndex = 92
+        Me.Label4.Text = "Service Incentive Leave"
+        '
+        'Panel1
+        '
+        Me.Panel1.BackColor = System.Drawing.Color.RosyBrown
+        Me.Panel1.Location = New System.Drawing.Point(21, 456)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(40, 25)
+        Me.Panel1.TabIndex = 91
+        '
         'Cancel_BTN
         '
         Me.Cancel_BTN.BackColor = System.Drawing.Color.PeachPuff
@@ -347,157 +466,29 @@ Partial Class frmSchedule
         Me.Schedule_DG.BackgroundColor = System.Drawing.Color.White
         Me.Schedule_DG.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.Schedule_DG.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText
-        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle1.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.Schedule_DG.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
         Me.Schedule_DG.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.Schedule_DG.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Date_DataGrid, Me.Time_In_DataGrid, Me.Time_Out_DataGrid, Me.Attach_btn})
-        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.InactiveCaption
-        DataGridViewCellStyle5.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.Schedule_DG.DefaultCellStyle = DataGridViewCellStyle5
+        DataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.InactiveCaption
+        DataGridViewCellStyle9.Font = New System.Drawing.Font("Dubai", 12.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.Schedule_DG.DefaultCellStyle = DataGridViewCellStyle9
         Me.Schedule_DG.Location = New System.Drawing.Point(554, 8)
         Me.Schedule_DG.Name = "Schedule_DG"
         Me.Schedule_DG.RowHeadersVisible = False
-        DataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.Transparent
-        DataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.Transparent
-        Me.Schedule_DG.RowsDefaultCellStyle = DataGridViewCellStyle6
+        DataGridViewCellStyle10.SelectionBackColor = System.Drawing.Color.Transparent
+        DataGridViewCellStyle10.SelectionForeColor = System.Drawing.Color.Transparent
+        Me.Schedule_DG.RowsDefaultCellStyle = DataGridViewCellStyle10
         Me.Schedule_DG.Size = New System.Drawing.Size(592, 471)
         Me.Schedule_DG.TabIndex = 87
         '
-        'Panel1
-        '
-        Me.Panel1.BackColor = System.Drawing.Color.RosyBrown
-        Me.Panel1.Location = New System.Drawing.Point(553, 514)
-        Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(40, 25)
-        Me.Panel1.TabIndex = 91
-        '
-        'Label4
-        '
-        Me.Label4.AutoSize = True
-        Me.Label4.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label4.Location = New System.Drawing.Point(599, 514)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(161, 27)
-        Me.Label4.TabIndex = 92
-        Me.Label4.Text = "Service Incentive Leave"
-        '
-        'Label5
-        '
-        Me.Label5.AutoSize = True
-        Me.Label5.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label5.Location = New System.Drawing.Point(859, 514)
-        Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(98, 27)
-        Me.Label5.TabIndex = 94
-        Me.Label5.Text = "Absent Leave"
-        '
-        'Panel2
-        '
-        Me.Panel2.BackColor = System.Drawing.Color.CadetBlue
-        Me.Panel2.Location = New System.Drawing.Point(813, 514)
-        Me.Panel2.Name = "Panel2"
-        Me.Panel2.Size = New System.Drawing.Size(40, 25)
-        Me.Panel2.TabIndex = 93
-        '
-        'Label6
-        '
-        Me.Label6.AutoSize = True
-        Me.Label6.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label6.Location = New System.Drawing.Point(1075, 512)
-        Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(70, 27)
-        Me.Label6.TabIndex = 94
-        Me.Label6.Text = "Rest Day"
-        '
-        'Panel3
-        '
-        Me.Panel3.BackColor = System.Drawing.Color.SlateGray
-        Me.Panel3.Location = New System.Drawing.Point(1029, 514)
-        Me.Panel3.Name = "Panel3"
-        Me.Panel3.Size = New System.Drawing.Size(40, 25)
-        Me.Panel3.TabIndex = 93
-        '
-        'Attach_Panel
-        '
-        Me.Attach_Panel.AutoSize = True
-        Me.Attach_Panel.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(64, Byte), Integer))
-        Me.Attach_Panel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.Attach_Panel.Controls.Add(Me.Label75)
-        Me.Attach_Panel.Controls.Add(Me.AttachClose_lbl)
-        Me.Attach_Panel.Controls.Add(Me.AttachPath_txt)
-        Me.Attach_Panel.Controls.Add(Me.AttachBrowse_btn)
-        Me.Attach_Panel.Controls.Add(Me.AttachSave_btn)
-        Me.Attach_Panel.Location = New System.Drawing.Point(12, 389)
-        Me.Attach_Panel.Name = "Attach_Panel"
-        Me.Attach_Panel.Size = New System.Drawing.Size(634, 90)
-        Me.Attach_Panel.TabIndex = 95
-        Me.Attach_Panel.Visible = False
-        '
-        'Label75
-        '
-        Me.Label75.AutoSize = True
-        Me.Label75.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label75.ForeColor = System.Drawing.Color.White
-        Me.Label75.Location = New System.Drawing.Point(5, 13)
-        Me.Label75.Name = "Label75"
-        Me.Label75.Size = New System.Drawing.Size(103, 16)
-        Me.Label75.TabIndex = 83
-        Me.Label75.Text = "Browse PDF file"
-        '
-        'AttachClose_lbl
-        '
-        Me.AttachClose_lbl.AutoSize = True
-        Me.AttachClose_lbl.ForeColor = System.Drawing.Color.White
-        Me.AttachClose_lbl.Location = New System.Drawing.Point(606, -1)
-        Me.AttachClose_lbl.Name = "AttachClose_lbl"
-        Me.AttachClose_lbl.Size = New System.Drawing.Size(23, 29)
-        Me.AttachClose_lbl.TabIndex = 82
-        Me.AttachClose_lbl.Text = "X"
-        '
-        'AttachPath_txt
-        '
-        Me.AttachPath_txt.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.AttachPath_txt.Location = New System.Drawing.Point(8, 32)
-        Me.AttachPath_txt.Name = "AttachPath_txt"
-        Me.AttachPath_txt.Size = New System.Drawing.Size(412, 26)
-        Me.AttachPath_txt.TabIndex = 81
-        '
-        'AttachBrowse_btn
-        '
-        Me.AttachBrowse_btn.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.AttachBrowse_btn.Location = New System.Drawing.Point(447, 31)
-        Me.AttachBrowse_btn.Name = "AttachBrowse_btn"
-        Me.AttachBrowse_btn.Size = New System.Drawing.Size(76, 31)
-        Me.AttachBrowse_btn.TabIndex = 80
-        Me.AttachBrowse_btn.Text = "Browse"
-        Me.AttachBrowse_btn.UseVisualStyleBackColor = True
-        '
-        'AttachSave_btn
-        '
-        Me.AttachSave_btn.Enabled = False
-        Me.AttachSave_btn.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.AttachSave_btn.Location = New System.Drawing.Point(529, 31)
-        Me.AttachSave_btn.Name = "AttachSave_btn"
-        Me.AttachSave_btn.Size = New System.Drawing.Size(80, 31)
-        Me.AttachSave_btn.TabIndex = 79
-        Me.AttachSave_btn.Text = "Save"
-        Me.AttachSave_btn.UseVisualStyleBackColor = True
-        '
         'Date_DataGrid
         '
-        DataGridViewCellStyle2.NullValue = Nothing
-        Me.Date_DataGrid.DefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle6.NullValue = Nothing
+        Me.Date_DataGrid.DefaultCellStyle = DataGridViewCellStyle6
         Me.Date_DataGrid.HeaderText = "Date"
         Me.Date_DataGrid.Name = "Date_DataGrid"
         Me.Date_DataGrid.ReadOnly = True
@@ -507,9 +498,9 @@ Partial Class frmSchedule
         '
         'Time_In_DataGrid
         '
-        DataGridViewCellStyle3.Format = "t"
-        DataGridViewCellStyle3.NullValue = Nothing
-        Me.Time_In_DataGrid.DefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle7.Format = "t"
+        DataGridViewCellStyle7.NullValue = Nothing
+        Me.Time_In_DataGrid.DefaultCellStyle = DataGridViewCellStyle7
         Me.Time_In_DataGrid.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.[Nothing]
         Me.Time_In_DataGrid.HeaderText = "  Time in  "
         Me.Time_In_DataGrid.Name = "Time_In_DataGrid"
@@ -526,9 +517,9 @@ Partial Class frmSchedule
         '
         'Attach_btn
         '
-        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.InactiveCaption
-        Me.Attach_btn.DefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.InactiveCaption
+        Me.Attach_btn.DefaultCellStyle = DataGridViewCellStyle8
         Me.Attach_btn.HeaderText = "  Attach"
         Me.Attach_btn.Name = "Attach_btn"
         '
@@ -548,11 +539,11 @@ Partial Class frmSchedule
         Me.TabPage1.PerformLayout()
         Me.TabPage2.ResumeLayout(False)
         Me.TabPage2.PerformLayout()
+        Me.Attach_Panel.ResumeLayout(False)
+        Me.Attach_Panel.PerformLayout()
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
         CType(Me.Schedule_DG, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.Attach_Panel.ResumeLayout(False)
-        Me.Attach_Panel.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
