@@ -209,7 +209,7 @@ Module SaveUpdate
         End Using
     End Sub
 
-    Public Sub SaveSchedule(BIO_ID As String, DATEE As String, TIME_IN As String, TIME_OUT As String, PAYDATE As String)
+    Public Sub SaveSchedule(BIO_ID As String, DATEE As String, TIME_IN As String, TIME_OUT As String, PAYDATE As String, Optional CATEGORY As String = Nothing)
         Dim mysql As String
 
         mysql = $"Select * From PAYROLL_SCHEDULE WHERE BIO_NO = '{BIO_ID}' AND DATEE = '{DATEE}' AND PAYDATE = '{PAYDATE}'"
@@ -217,13 +217,9 @@ Module SaveUpdate
             If ds.Tables(0).Rows.Count > 0 Then
 
                 With ds.Tables(0).Rows(0)
-                    If TIME_IN <> Nothing Then
-                        .Item("TIME_IN") = TIME_IN
-                    End If
-
-                    If TIME_OUT <> Nothing Then
-                        .Item("TIME_OUT") = TIME_OUT
-                    End If
+                    If TIME_IN <> Nothing Then .Item("TIME_IN") = TIME_IN
+                    If TIME_OUT <> Nothing Then .Item("TIME_OUT") = TIME_OUT
+                    If CATEGORY <> Nothing Then .Item("CATEGORY") = CATEGORY
                 End With
 
                 SaveEntry(ds, False)
@@ -238,13 +234,9 @@ Module SaveUpdate
                         .Item("DATEE") = DATEE
                         .Item("PAYDATE") = PAYDATE
 
-                        If TIME_IN <> Nothing Then
-                            .Item("TIME_IN") = TIME_IN
-                        End If
-
-                        If TIME_OUT <> Nothing Then
-                            .Item("TIME_OUT") = TIME_OUT
-                        End If
+                        If TIME_IN <> Nothing Then .Item("TIME_IN") = TIME_IN
+                        If TIME_OUT <> Nothing Then .Item("TIME_OUT") = TIME_OUT
+                        If CATEGORY <> Nothing Then .Item("CATEGORY") = CATEGORY
 
                     End With
                     dsS.Tables(0).Rows.Add(dsNewRow)
@@ -1895,8 +1887,79 @@ Module SaveUpdate
         End Using
     End Sub
 
-    Friend Sub SaveAdditionalDays(NumOfDays As String, paydate As String)
+    Friend Sub SavePAF(PAF_NO As String, BIO_NO As String, SEX As String, MARITAL_STATUS As String, EMPLOYMENT As String, SALARY_CHANGES As String,
+                       DEPARTMENT As String, JOB_LEVEL As String,
+                       S_WAGE_FROM As String, S_EFFECT_FROM As String,
+                       S_WAGE_TO As String, S_EFFECT_TO As String,
+                       PI_FROM As String, PI_EFFECT_FROM As String,
+                       PI_TO As String, PI_EFFECT_TO As String, PI_SCHEd_TO As String,
+                       REMARKS As String)
 
+        Dim mysql As String = $"Select * From PAYROLL_PAF where PAF_NO = '{PAF_NO}' "
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAF")
+            If ds.Tables(0).Rows.Count > 0 Then
+                With ds.Tables(0).Rows(0)
+                    .Item("BIO_NO") = BIO_NO
+                    .Item("SEX") = SEX
+                    .Item("MARITAL_STATUS") = MARITAL_STATUS
+                    .Item("EMPLOYMENT") = EMPLOYMENT
+                    .Item("SALARY_CHANGES") = SALARY_CHANGES
+                    .Item("DEPARTMENT") = DEPARTMENT
+                    .Item("JOB_LEVEL") = JOB_LEVEL
+
+                    If S_WAGE_FROM <> Nothing Then .Item("S_WAGE_FROM") = S_WAGE_FROM
+                    If S_EFFECT_FROM <> "1/1/1990" Then .Item("S_EFFECT_FROM") = S_EFFECT_FROM
+
+                    If S_WAGE_TO <> Nothing Then .Item("S_WAGE_TO") = S_WAGE_TO
+                    If S_EFFECT_TO <> "1/1/1990" Then .Item("S_EFFECT_TO") = S_EFFECT_TO
+
+                    If PI_FROM <> Nothing Then .Item("PI_FROM") = PI_FROM
+                    If PI_EFFECT_FROM <> "1/1/1990" Then .Item("PI_EFFECT_FROM") = PI_EFFECT_FROM
+
+                    If PI_TO <> Nothing Then .Item("PI_TO") = PI_TO
+                    If PI_EFFECT_TO <> "1/1/1990" Then .Item("PI_EFFECT_TO") = PI_EFFECT_TO
+
+                    .Item("PI_SCHED_TO") = PI_SCHEd_TO
+                    .Item("REMARKS") = REMARKS
+                End With
+
+                SaveEntry(ds, False)
+                MsgBox("Successfully Updated!", MsgBoxStyle.Information)
+            Else
+                Dim mysqll As String = "Select * from PAYROLL_PAF"
+                Using dss As DataSet = LoadSQL(mysqll, "PAYROLL_PAF")
+                    Dim dsNew As DataRow = dss.Tables(0).NewRow
+                    With dsNew
+                        .Item("BIO_NO") = BIO_NO
+                        .Item("SEX") = SEX
+                        .Item("MARITAL_STATUS") = MARITAL_STATUS
+                        .Item("EMPLOYMENT") = EMPLOYMENT
+                        .Item("SALARY_CHANGES") = SALARY_CHANGES
+                        .Item("DEPARTMENT") = DEPARTMENT
+                        .Item("JOB_LEVEL") = JOB_LEVEL
+
+                        If S_WAGE_FROM <> Nothing Then .Item("S_WAGE_FROM") = S_WAGE_FROM
+                        If S_EFFECT_FROM <> "1/1/1990" Then .Item("S_EFFECT_FROM") = S_EFFECT_FROM
+
+                        If S_WAGE_TO <> Nothing Then .Item("S_WAGE_TO") = S_WAGE_TO
+                        If S_EFFECT_TO <> "1/1/1990" Then .Item("S_EFFECT_TO") = S_EFFECT_TO
+
+                        If PI_FROM <> Nothing Then .Item("PI_FROM") = PI_FROM
+                        If PI_EFFECT_FROM <> "1/1/1990" Then .Item("PI_EFFECT_FROM") = PI_EFFECT_FROM
+
+                        If PI_TO <> Nothing Then .Item("PI_TO") = PI_TO
+                        If PI_EFFECT_TO <> "1/1/1990" Then .Item("PI_EFFECT_TO") = PI_EFFECT_TO
+
+                        .Item("PI_SCHED_TO") = PI_SCHEd_TO
+                        .Item("REMARKS") = REMARKS
+                    End With
+
+                    dss.Tables(0).Rows.Add(dsNew)
+                    SaveEntry(dss)
+                    MsgBox("Successfully Saved!", MsgBoxStyle.Information)
+                End Using
+            End If
+        End Using
     End Sub
 
 

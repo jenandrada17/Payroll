@@ -37,7 +37,8 @@ Module SelectFromDatabase
 
     Public Sub GetInfo_Form(bioNo As String, Name_txt As TextBox, EmpNo_txt As TextBox, Address_txt As TextBox, Bdate_txt As TextBox,
                             DateHire_txt As TextBox, SSS_txt As TextBox, TIN_txt As TextBox,
-                            PIFrom_txt As TextBox, PIEffectFrom_dtp As DateTimePicker, PI_SchedFrom_CB As ComboBox)
+                            PIFrom_txt As TextBox, PIEffectFrom_dtp As DateTimePicker, PI_SchedFrom_CB As ComboBox,
+                            JobTitleFrom_txt As TextBox, SalaryFrom_txt As TextBox)
 
         Dim mysql As String = "Select * From PAYROLL_EMPLOYEE where BIO_NO = '" & bioNo & "'"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
@@ -53,6 +54,8 @@ Module SelectFromDatabase
                     DateHire_txt.Text = .Item("DATE_STARTED")
                     SSS_txt.Text = IIf(IsDBNull(.Item("SSSNO")), Nothing, .Item("SSSNO"))
                     TIN_txt.Text = IIf(IsDBNull(.Item("TINNO")), Nothing, .Item("TINNO"))
+                    JobTitleFrom_txt.Text = IIf(IsDBNull(.Item("EMP_POSITION")), Nothing, .Item("EMP_POSITION"))
+                    SalaryFrom_txt.Text = IIf(IsDBNull(.Item("RATE_MONTHLY")), Nothing, CDec(.Item("RATE_MONTHLY")).ToString("N"))
 
                 End With
             Else
@@ -63,6 +66,8 @@ Module SelectFromDatabase
                 DateHire_txt.Text = ""
                 SSS_txt.Text = ""
                 TIN_txt.Text = ""
+                JobTitleFrom_txt.Text = ""
+                SalaryFrom_txt.Text = ""
             End If
         End Using
 

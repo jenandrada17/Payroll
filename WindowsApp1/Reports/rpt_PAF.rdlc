@@ -4526,7 +4526,7 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="Textbox4331">
+                    <Textbox Name="Textbox1">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
@@ -4542,7 +4542,7 @@
                           <Style />
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>Textbox4331</rd:DefaultName>
+                      <rd:DefaultName>Textbox1</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -6101,7 +6101,7 @@
                 </TablixCell>
                 <TablixCell>
                   <CellContents>
-                    <Textbox Name="S_TO1">
+                    <Textbox Name="S_TO">
                       <CanGrow>true</CanGrow>
                       <KeepTogether>true</KeepTogether>
                       <Paragraphs>
@@ -6119,7 +6119,7 @@
                           </Style>
                         </Paragraph>
                       </Paragraphs>
-                      <rd:DefaultName>S_TO1</rd:DefaultName>
+                      <rd:DefaultName>S_TO</rd:DefaultName>
                       <Style>
                         <Border>
                           <Color>LightGrey</Color>
@@ -6127,7 +6127,6 @@
                         </Border>
                         <BottomBorder>
                           <Color>Black</Color>
-                          <Style>None</Style>
                         </BottomBorder>
                       </Style>
                     </Textbox>
@@ -6995,6 +6994,10 @@
                           <Color>Black</Color>
                           <Style>Solid</Style>
                         </BottomBorder>
+                        <RightBorder>
+                          <Color>Black</Color>
+                          <Style>Solid</Style>
+                        </RightBorder>
                       </Style>
                     </Textbox>
                     <ColSpan>3</ColSpan>
@@ -7071,6 +7074,10 @@
                           <Color>Black</Color>
                           <Style>Solid</Style>
                         </BottomBorder>
+                        <RightBorder>
+                          <Color>Black</Color>
+                          <Style>Solid</Style>
+                        </RightBorder>
                       </Style>
                     </Textbox>
                     <ColSpan>5</ColSpan>
@@ -7231,7 +7238,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=CDec(Fields!S_FROM.value) + CDec(Fields!PI_FROM.value)</Value>
+                              <Value>=FormatNumber(CDec(Fields!S_FROM.value) + CDec(Fields!PI_FROM.value))</Value>
                               <Style>
                                 <FontFamily>Calibri</FontFamily>
                               </Style>
@@ -7374,7 +7381,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=CDec(Fields!S_TO.value) + CDec(Fields!PI_TO.value)</Value>
+                              <Value>=FormatNumber(CDec(Fields!S_TO.value) + CDec(Fields!PI_TO.value))</Value>
                               <Style>
                                 <FontFamily>Calibri</FontFamily>
                               </Style>

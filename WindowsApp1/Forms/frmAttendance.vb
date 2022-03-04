@@ -1499,7 +1499,7 @@ Public Class frmAttendance
         End If
     End Sub
 
-    Private Sub AddDaysSavebtn_Click(sender As Object, e As EventArgs) Handles AddDaysSavebtn.Click
+    Private Sub AddDaysSavebtn_Click(sender As Object, e As EventArgs)
 
     End Sub
 
@@ -1978,7 +1978,9 @@ Public Class frmAttendance
 
                     If DateExist_IN_Schedule(biometric_No, DATEE.ToShortDateString) Then
                         TIME_IN = GetData("TIME_IN", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{biometric_No}' AND DATEE = '{DATEE.ToShortDateString}' ")
-                        TIME_OUT = TIME_IN.AddHours(9)
+                        TIME_OUT = GetData("TIME_OUT", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{biometric_No}' AND DATEE = '{DATEE.ToShortDateString}' ")
+
+                        If TIME_OUT > TIME_IN.AddHours(9) Then TIME_OUT = TIME_IN.AddHours(9)
                     Else
                         TIME_IN = GetData("VALUEE", $"PAYROLL_DEFAULT_TIMEIN")
                         TIME_OUT = TIME_IN.AddHours(9)
@@ -2117,13 +2119,12 @@ Public Class frmAttendance
                 TimeOut_TXT.Text = TIME_OUT.ToShortTimeString
             End If
 
-
             If Not Name_TXT.Text = "" Then
                 Attendance_Per_Employee(BiometricID_TXT.Text, PAYROLL)
             End If
 
-            '==========================  CHECK PAYDATE IF VALID FOR EDITING =========================    
-            If Today.ToString("d") > PAYROLL Then
+            '==========================  CHECK PAYDATE IF VALID FOR EDITING =========================   
+            If Today.ToString("d") > CDate(PAYROLL) Then
                 Save_BTN.Enabled = False
             Else
                 Save_BTN.Enabled = True

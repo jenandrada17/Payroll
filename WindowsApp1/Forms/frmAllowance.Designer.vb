@@ -23,7 +23,7 @@ Partial Class frmAllowance
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim ReportDataSource6 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource5 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
         Me.PAFBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.Forms = New WindowsApp1.Forms()
         Me.Close_LBL = New System.Windows.Forms.Label()
@@ -597,7 +597,7 @@ Partial Class frmAllowance
         Me.PI_SchedTo_CB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.PI_SchedTo_CB.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.PI_SchedTo_CB.FormattingEnabled = True
-        Me.PI_SchedTo_CB.Items.AddRange(New Object() {"every 15th month", "every 30th month", "every month"})
+        Me.PI_SchedTo_CB.Items.AddRange(New Object() {"every 15th of the month", "every 30th of the month", "every month"})
         Me.PI_SchedTo_CB.Location = New System.Drawing.Point(218, 1205)
         Me.PI_SchedTo_CB.Name = "PI_SchedTo_CB"
         Me.PI_SchedTo_CB.Size = New System.Drawing.Size(190, 30)
@@ -646,6 +646,7 @@ Partial Class frmAllowance
         '
         'Remarks_txt
         '
+        Me.Remarks_txt.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Remarks_txt.Location = New System.Drawing.Point(28, 1313)
         Me.Remarks_txt.Name = "Remarks_txt"
         Me.Remarks_txt.Size = New System.Drawing.Size(378, 96)
@@ -1222,9 +1223,9 @@ Partial Class frmAllowance
         '
         'rpt_Allowance
         '
-        ReportDataSource6.Name = "DataSet1"
-        ReportDataSource6.Value = Me.PAFBindingSource
-        Me.rpt_Allowance.LocalReport.DataSources.Add(ReportDataSource6)
+        ReportDataSource5.Name = "DataSet1"
+        ReportDataSource5.Value = Me.PAFBindingSource
+        Me.rpt_Allowance.LocalReport.DataSources.Add(ReportDataSource5)
         Me.rpt_Allowance.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_PAF.rdlc"
         Me.rpt_Allowance.Location = New System.Drawing.Point(6, 6)
         Me.rpt_Allowance.Name = "rpt_Allowance"

@@ -54,6 +54,8 @@ Partial Class frmSchedule
         Me.Date_DataGrid = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Time_In_DataGrid = New System.Windows.Forms.DataGridViewComboBoxColumn()
         Me.Time_Out_DataGrid = New System.Windows.Forms.DataGridViewComboBoxColumn()
+        Me.Category_CB = New System.Windows.Forms.DataGridViewComboBoxColumn()
+        Me.Attach_btn = New System.Windows.Forms.DataGridViewButtonColumn()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.TabPage2.SuspendLayout()
@@ -236,7 +238,7 @@ Partial Class frmSchedule
         Me.Cancel_BTN.BackColor = System.Drawing.Color.PeachPuff
         Me.Cancel_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.Cancel_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Cancel_BTN.Location = New System.Drawing.Point(56, 202)
+        Me.Cancel_BTN.Location = New System.Drawing.Point(44, 202)
         Me.Cancel_BTN.Name = "Cancel_BTN"
         Me.Cancel_BTN.Size = New System.Drawing.Size(130, 37)
         Me.Cancel_BTN.TabIndex = 90
@@ -248,7 +250,7 @@ Partial Class frmSchedule
         Me.Save_BTN.BackColor = System.Drawing.Color.DarkSalmon
         Me.Save_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.Save_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Save_BTN.Location = New System.Drawing.Point(313, 202)
+        Me.Save_BTN.Location = New System.Drawing.Point(301, 202)
         Me.Save_BTN.Name = "Save_BTN"
         Me.Save_BTN.Size = New System.Drawing.Size(115, 37)
         Me.Save_BTN.TabIndex = 89
@@ -263,7 +265,7 @@ Partial Class frmSchedule
         Me.GroupBox1.Controls.Add(Me.Label2)
         Me.GroupBox1.Controls.Add(Me.BiometricID_TXT)
         Me.GroupBox1.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GroupBox1.Location = New System.Drawing.Point(24, 30)
+        Me.GroupBox1.Location = New System.Drawing.Point(12, 30)
         Me.GroupBox1.Name = "GroupBox1"
         Me.GroupBox1.Size = New System.Drawing.Size(411, 120)
         Me.GroupBox1.TabIndex = 88
@@ -325,22 +327,22 @@ Partial Class frmSchedule
         Me.Schedule_DG.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.Schedule_DG.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText
         Me.Schedule_DG.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.Schedule_DG.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Date_DataGrid, Me.Time_In_DataGrid, Me.Time_Out_DataGrid})
+        Me.Schedule_DG.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Date_DataGrid, Me.Time_In_DataGrid, Me.Time_Out_DataGrid, Me.Category_CB, Me.Attach_btn})
         DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
         DataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.InactiveCaption
-        DataGridViewCellStyle3.Font = New System.Drawing.Font("Dubai", 12.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle3.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         DataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText
         DataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight
         DataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText
         DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
         Me.Schedule_DG.DefaultCellStyle = DataGridViewCellStyle3
-        Me.Schedule_DG.Location = New System.Drawing.Point(552, 8)
+        Me.Schedule_DG.Location = New System.Drawing.Point(472, 8)
         Me.Schedule_DG.Name = "Schedule_DG"
         Me.Schedule_DG.RowHeadersVisible = False
         DataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.Transparent
         DataGridViewCellStyle4.SelectionForeColor = System.Drawing.Color.Transparent
         Me.Schedule_DG.RowsDefaultCellStyle = DataGridViewCellStyle4
-        Me.Schedule_DG.Size = New System.Drawing.Size(594, 557)
+        Me.Schedule_DG.Size = New System.Drawing.Size(674, 557)
         Me.Schedule_DG.TabIndex = 87
         '
         'Date_DataGrid
@@ -352,7 +354,7 @@ Partial Class frmSchedule
         Me.Date_DataGrid.ReadOnly = True
         Me.Date_DataGrid.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
         Me.Date_DataGrid.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable
-        Me.Date_DataGrid.Width = 350
+        Me.Date_DataGrid.Width = 250
         '
         'Time_In_DataGrid
         '
@@ -360,18 +362,28 @@ Partial Class frmSchedule
         DataGridViewCellStyle2.NullValue = Nothing
         Me.Time_In_DataGrid.DefaultCellStyle = DataGridViewCellStyle2
         Me.Time_In_DataGrid.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.[Nothing]
-        Me.Time_In_DataGrid.HeaderText = "Time in"
+        Me.Time_In_DataGrid.HeaderText = "  Time in  "
         Me.Time_In_DataGrid.Name = "Time_In_DataGrid"
         Me.Time_In_DataGrid.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.Time_In_DataGrid.Width = 120
         '
         'Time_Out_DataGrid
         '
         Me.Time_Out_DataGrid.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.[Nothing]
-        Me.Time_Out_DataGrid.HeaderText = "Time Out"
+        Me.Time_Out_DataGrid.HeaderText = "  Time Out  "
         Me.Time_Out_DataGrid.Name = "Time_Out_DataGrid"
         Me.Time_Out_DataGrid.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.Time_Out_DataGrid.Width = 120
+        '
+        'Category_CB
+        '
+        Me.Category_CB.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.[Nothing]
+        Me.Category_CB.HeaderText = "  Category"
+        Me.Category_CB.Name = "Category_CB"
+        Me.Category_CB.Width = 120
+        '
+        'Attach_btn
+        '
+        Me.Attach_btn.HeaderText = "  Attach"
+        Me.Attach_btn.Name = "Attach_btn"
         '
         'frmSchedule
         '
@@ -423,4 +435,6 @@ Partial Class frmSchedule
     Friend WithEvents Date_DataGrid As DataGridViewTextBoxColumn
     Friend WithEvents Time_In_DataGrid As DataGridViewComboBoxColumn
     Friend WithEvents Time_Out_DataGrid As DataGridViewComboBoxColumn
+    Friend WithEvents Category_CB As DataGridViewComboBoxColumn
+    Friend WithEvents Attach_btn As DataGridViewButtonColumn
 End Class

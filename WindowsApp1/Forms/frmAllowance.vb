@@ -145,7 +145,7 @@
 
             ElseIf tabName = "FORM" Then
                 BiometricID_TXT.Text = .BiometricID
-                GetInfo_Form(.BiometricID, Name_TXT, EmpNo_txt, Address_txt, Bdate_txt, DateHire_txt, SSS_txt, TIN_txt, PIFrom_txt, PIEffectFrom_dtp, PI_SchedFrom_CB)
+                GetInfo_Form(.BiometricID, Name_TXT, EmpNo_txt, Address_txt, Bdate_txt, DateHire_txt, SSS_txt, TIN_txt, PIFrom_txt, PIEffectFrom_dtp, PI_SchedFrom_CB, JobTitleFrom_txt, SalaryFrom_txt)
                 Allowance_Tab.SelectedIndex = 1
 
             End If
@@ -248,7 +248,6 @@
                 .Columns.Add("REMARKS")
             End With
 
-
             '======================== FIRSTNAME, LASTNAME, MIDDLENAME ========================== 
             Dim firstt, middlee As String
             Dim fullname As String = Name_TXT.Text
@@ -280,10 +279,10 @@
                         DeptFrom_txt.Text, DeptTo_txt.Text,
                         JobTitleFrom_txt.Text, JobTitleTo_txt.Text,
                         JobLevelFrom_txt.Text, JobLevelTo_txt.Text,
-                        SalaryFrom_txt.Text, S_Effect_from,
-                        SalaryTo_txt.Text, S_Effect_to,
-                        PIFrom_txt.Text, PI_Effect_from, PI_SchedFrom_CB.Text,
-                        PITo_txt.Text, PI_Effect_to, PI_SchedTo_CB.Text,
+                        IIf(SalaryFrom_txt.Text = Nothing, "0.00", FormatNumber(SalaryFrom_txt.Text)), S_Effect_from,
+                        IIf(SalaryTo_txt.Text = Nothing, "0.00", FormatNumber(SalaryTo_txt.Text)), S_Effect_to,
+                        IIf(PIFrom_txt.Text = Nothing, "0.00", FormatNumber(PIFrom_txt.Text)), PI_Effect_from, PI_SchedFrom_CB.Text,
+                        IIf(PITo_txt.Text = Nothing, "0.00", FormatNumber(PITo_txt.Text)), PI_Effect_to, PI_SchedTo_CB.Text,
                         Remarks_txt.Text)
 
             Dim dataSource As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt)
@@ -300,7 +299,7 @@
     End Sub
 
     Private Sub BiometricID_TXT_TextChanged(sender As Object, e As EventArgs) Handles BiometricID_TXT.TextChanged
-        GetInfo_Form(BiometricID_TXT.Text, Name_TXT, EmpNo_txt, Address_txt, Bdate_txt, DateHire_txt, SSS_txt, TIN_txt, PIFrom_txt, PIEffectFrom_dtp, PI_SchedFrom_CB)
+        GetInfo_Form(BiometricID_TXT.Text, Name_TXT, EmpNo_txt, Address_txt, Bdate_txt, DateHire_txt, SSS_txt, TIN_txt, PIFrom_txt, PIEffectFrom_dtp, PI_SchedFrom_CB, JobTitleFrom_txt, SalaryFrom_txt)
     End Sub
 
     Private Sub SalaryFrom_txt_KeyPress(sender As Object, e As KeyPressEventArgs) Handles SalaryTo_txt.KeyPress, SalaryFrom_txt.KeyPress, PITo_txt.KeyPress, PIFrom_txt.KeyPress
@@ -310,5 +309,20 @@
             End If
         End If
     End Sub
+
+    Private Sub F_Save_btn_Click(sender As Object, e As EventArgs) Handles F_Save_btn.Click
+        If Name_TXT.Text <> Nothing Then
+
+            SavePAF(0, BiometricID_TXT.Text, Gender_CB.Text, Marital_CB.Text, Employment_CB.Text, SalesCharges_CB.Text,
+                       DeptFrom_txt.Text, JobLevelFrom_txt.Text,
+                       SalaryFrom_txt.Text, SalryEffectFrom_dtp.Value,
+                       SalaryTo_txt.Text, SalryEffectTo_dtp.Value,
+                       PIFrom_txt.Text, PIEffectFrom_dtp.Value,
+                       PITo_txt.Text, PIEffectTo_dtp.Value,
+                       PI_SchedTo_CB.Text, Remarks_txt.Text)
+
+        End If
+    End Sub
+
 
 End Class

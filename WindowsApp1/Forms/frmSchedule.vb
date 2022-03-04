@@ -106,6 +106,22 @@ Public Class frmSchedule
         End If
     End Sub
 
+    Private Sub Schedule_DG_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles Schedule_DG.CellContentClick
+
+        Dim grid = DirectCast(sender, DataGridView)
+        Dim row As DataGridViewRow = Schedule_DG.Rows(e.RowIndex)
+
+        Dim i As Integer = Schedule_DG.CurrentRow.Index
+
+        If TypeOf grid.Columns(e.ColumnIndex) Is DataGridViewButtonColumn Then
+
+            'If grid.Columns(e.ColumnIndex).Name = "IR_DGV" Then
+            '    Process.Start(row.Cells("IR_DGV").Tag)
+            'End If
+
+        End If
+    End Sub
+
     Public Sub LoadDateTime(Optional datee As DateTime = Nothing)
         Schedule_DG.Rows.Clear()
 
@@ -244,13 +260,27 @@ Public Class frmSchedule
                             Continue For
                         End If
 
-                        If eCell(row, columns).Value.Equals("RD") Then
+                        If eCell(row, columns).Value.Equals("") Then
+                            Continue For
+                        ElseIf eCell(row, columns).Value.Equals("RD") Then
+                            SaveSchedule(bio, datee, Nothing, Nothing, Paydate, "RD")
+                            Continue For
+                        ElseIf eCell(row, columns).Value.Equals("SIL") Then
+                            SaveSchedule(bio, datee, Nothing, Nothing, Paydate, "SIL")
+                            Continue For
+                        ElseIf eCell(row, columns).Value.Equals("AL") Then
+                            SaveSchedule(bio, datee, Nothing, Nothing, Paydate, "AL")
                             Continue For
                         Else
-                            time_in = (New DateTime()).AddDays(eCell(row, columns).Value)
-                            time_out = (New DateTime()).AddDays(eCell(row, columns + 1).Value)
 
-                            SaveSchedule(bio, datee, time_in, time_out, Paydate)
+                            If IsDate(eCell(row, columns).Value) Then
+
+                                time_in = (New DateTime()).AddDays(eCell(row, columns).Value)
+                                time_out = (New DateTime()).AddDays(eCell(row, columns + 1).Value)
+
+                                SaveSchedule(bio, datee, time_in, time_out, Paydate)
+                            End If
+
                         End If
 
                     End If
@@ -279,6 +309,11 @@ Public Class frmSchedule
 
         Time_In_DataGrid.Items.Insert(0, "")
         Time_Out_DataGrid.Items.Insert(0, "")
+
+        Category_CB.Items.Insert(0, "")
+        Category_CB.Items.Insert(1, "SIL")
+        Category_CB.Items.Insert(2, "AL")
+        Category_CB.Items.Insert(2, "RD")
     End Sub
 
     Private Sub Paydate_ComboB_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Paydate_ComboB.SelectedIndexChanged
@@ -296,7 +331,6 @@ Public Class frmSchedule
         Time_In_DataGrid.Items.Insert(0, "")
         Time_Out_DataGrid.Items.Insert(0, "")
     End Sub
-
 
     Public Sub Load_Schedule(emp As Employee)
         With emp

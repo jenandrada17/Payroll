@@ -1006,8 +1006,108 @@ Public Class frmNewEmployee
     End Sub
 
     'Private Sub Add_Company_CB_TextChanged_1(sender As Object, e As EventArgs) Handles Position_Combo.TextChanged, HO_Category.TextChanged, ComCategory_Combo.TextChanged, Branch_ComboB.TextChanged, Add_Company_CB.TextChanged
-    Private Sub Add_Company_CB_TextChanged_1(sender As Object, e As EventArgs) Handles Add_Company_CB.TextChanged
+    'Private Sub Add_Company_CB_TextChanged_1(sender As Object, e As EventArgs) Handles Add_Company_CB.TextChanged
 
+    '    If Add_Company_CB.SelectedIndex = 4 Then
+
+    '        Label4.Visible = False
+    '        Branch_ComboB.Text = ""
+    '        Branch_ComboB.Visible = False
+
+    '        Label24.Visible = False
+    '        PhotoCategory_Combo.Visible = False
+    '        PhotoCategory_Combo.Text = ""
+
+    '        Label19.Visible = True
+    '        HO_Category.Visible = True
+
+
+    '    ElseIf Add_Company_CB.SelectedIndex = 0 Then
+
+    '        Label19.Visible = False
+    '        HO_Category.Visible = False
+    '        HO_Category.Text = ""
+
+    '        Label20.Visible = False
+    '        ComCategory_Combo.Visible = False
+    '        ComCategory_Combo.Text = ""
+
+    '        Label23.Visible = False
+    '        ComCompany_Cmbo.Visible = False
+    '        ComCompany_Cmbo.Text = ""
+
+    '        Label24.Visible = True
+    '        PhotoCategory_Combo.Visible = True
+
+    '        Label4.Visible = True
+    '        Branch_ComboB.Visible = True
+
+    '    Else
+
+    '        Label4.Visible = True
+    '        Branch_ComboB.Visible = True
+
+    '        Label19.Visible = False
+    '        HO_Category.Visible = False
+    '        HO_Category.Text = ""
+
+    '        Label24.Visible = False
+    '        PhotoCategory_Combo.Visible = False
+    '        PhotoCategory_Combo.Text = ""
+
+    '        Label20.Visible = False
+    '        ComCategory_Combo.Visible = False
+    '        ComCategory_Combo.Text = ""
+
+    '        Label23.Visible = False
+    '        ComCompany_Cmbo.Visible = False
+    '        ComCompany_Cmbo.Text = ""
+
+    '    End If
+    'End Sub
+
+    Private Sub lvEmployee_MouseClick(sender As Object, e As MouseEventArgs) Handles lvEmployee.MouseClick
+        If e.Button = MouseButtons.Right Then
+            If lvEmployee.Items.Count > 0 Then
+                Context_Details.Show(lvEmployee, New Point(e.X, e.Y))
+            End If
+        End If
+    End Sub
+
+    Private Sub View_Menu_Click(sender As Object, e As EventArgs) Handles View_Menu.Click
+
+        Dim bio_No As Integer = lvEmployee.Items(lvEmployee.FocusedItem.Index).SubItems(3).Text
+
+        Bio_TXT.Text = bio_No
+        GetFullname(bio_No, Add_Company_CB, Branch_ComboB, FirstName_TXT, Email_TXT, InActive_RB, Started_DTP,
+                    TimeIn_Combo, TimeOut_Combo, EmpNo_TXT, TIN_TXT, SSS_TXT, PHILH_TXT, HDMF_TXT, HO_Category,
+                    ComCategory_Combo, Position_Combo, ComCompany_Cmbo, PhotoCategory_Combo, LastName_txt, MName_txt,
+                    BDate_dtp, Address_txt, btnSave)
+
+        Add_Panel.Location = New Point(ClientSize.Width / 2 - Add_Panel.Size.Width / 2, ClientSize.Height / 2 - Add_Panel.Size.Height / 2)
+        Add_Panel.Visible = True
+    End Sub
+
+    Private Sub Clear_btn_Click(sender As Object, e As EventArgs) Handles Clear_btn.Click
+        Dim result As DialogResult = MsgBox("Are you sure?", MsgBoxStyle.YesNo)
+        If result = DialogResult.Yes Then
+            clearAdd()
+        End If
+    End Sub
+
+    Private Sub ImportPic_btn_Click(sender As Object, e As EventArgs) Handles ImportPic_btn.Click
+        Using dlg As New OpenFileDialog()
+            dlg.Title = "Open Image"
+            dlg.Filter = "Image Files (*.bmp;*.jpg;*.jpeg,*.png)|*.BMP;*.JPG;*.JPEG;*.PNG"
+
+            If dlg.ShowDialog = DialogResult.OK Then
+                Emp_Pic.Image = New Bitmap(dlg.FileName)
+                Emp_Pic.SizeMode = PictureBoxSizeMode.StretchImage
+            End If
+        End Using
+    End Sub
+
+    Private Sub Add_Company_CB_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Add_Company_CB.SelectedIndexChanged
         If Add_Company_CB.SelectedIndex = 4 Then
 
             Label4.Visible = False
@@ -1064,47 +1164,6 @@ Public Class frmNewEmployee
             ComCompany_Cmbo.Text = ""
 
         End If
-    End Sub
-
-    Private Sub lvEmployee_MouseClick(sender As Object, e As MouseEventArgs) Handles lvEmployee.MouseClick
-        If e.Button = MouseButtons.Right Then
-            If lvEmployee.Items.Count > 0 Then
-                Context_Details.Show(lvEmployee, New Point(e.X, e.Y))
-            End If
-        End If
-    End Sub
-
-    Private Sub View_Menu_Click(sender As Object, e As EventArgs) Handles View_Menu.Click
-
-        Dim bio_No As Integer = lvEmployee.Items(lvEmployee.FocusedItem.Index).SubItems(3).Text
-
-        Bio_TXT.Text = bio_No
-        GetFullname(bio_No, Add_Company_CB, Branch_ComboB, FirstName_TXT, Email_TXT, InActive_RB, Started_DTP,
-                    TimeIn_Combo, TimeOut_Combo, EmpNo_TXT, TIN_TXT, SSS_TXT, PHILH_TXT, HDMF_TXT, HO_Category,
-                    ComCategory_Combo, Position_Combo, ComCompany_Cmbo, PhotoCategory_Combo, LastName_txt, MName_txt,
-                    BDate_dtp, Address_txt, btnSave)
-
-        Add_Panel.Location = New Point(ClientSize.Width / 2 - Add_Panel.Size.Width / 2, ClientSize.Height / 2 - Add_Panel.Size.Height / 2)
-        Add_Panel.Visible = True
-    End Sub
-
-    Private Sub Clear_btn_Click(sender As Object, e As EventArgs) Handles Clear_btn.Click
-        Dim result As DialogResult = MsgBox("Are you sure?", MsgBoxStyle.YesNo)
-        If result = DialogResult.Yes Then
-            clearAdd()
-        End If
-    End Sub
-
-    Private Sub ImportPic_btn_Click(sender As Object, e As EventArgs) Handles ImportPic_btn.Click
-        Using dlg As New OpenFileDialog()
-            dlg.Title = "Open Image"
-            dlg.Filter = "Image Files (*.bmp;*.jpg;*.jpeg,*.png)|*.BMP;*.JPG;*.JPEG;*.PNG"
-
-            If dlg.ShowDialog = DialogResult.OK Then
-                Emp_Pic.Image = New Bitmap(dlg.FileName)
-                Emp_Pic.SizeMode = PictureBoxSizeMode.StretchImage
-            End If
-        End Using
     End Sub
 
 End Class

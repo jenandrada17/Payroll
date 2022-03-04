@@ -6,7 +6,6 @@ Public Class frmMainForm
     Dim DateNow As DateTime = DateTime.Now
     Dim StartFour, EndFour, StartNineteen, EndNineteen As DateTime
     Public Paydate As DateTime
-    Public CommandLine As String
     Public DAYS_COUNT As Integer = 0
     Public starting, ending As Date
 
@@ -63,12 +62,11 @@ Public Class frmMainForm
             Dim result As DialogResult = MessageBox.Show($"New {GetVersion()} version of the program is available, do you want to upgrade?", "Question", MessageBoxButtons.YesNo)
             If result = DialogResult.Yes Then
                 Dim MyAutoUpdate As New Updater
-                If MyAutoUpdate.AutoUpdate(CommandLine) Then
+                If MyAutoUpdate.AutoUpdate() Then
                     Close()
                 End If
             End If
         End If
-
     End Sub
 
     '======================================Buttons==================================================  
@@ -79,7 +77,6 @@ Public Class frmMainForm
 
     Private Sub Attendance_BTN_Click(sender As Object, e As EventArgs) Handles Attendance_BTN.Click
         OpenWindowsForm("frmAttendance")
-
     End Sub
 
     Private Sub Payout_BTN_Click(sender As Object, e As EventArgs) Handles Payout_BTN.Click

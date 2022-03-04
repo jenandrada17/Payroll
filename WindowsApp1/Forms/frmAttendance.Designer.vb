@@ -36,11 +36,6 @@ Partial Class frmAttendance
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Attendance_Tab = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
-        Me.Label36 = New System.Windows.Forms.Label()
-        Me.Panel4 = New System.Windows.Forms.Panel()
-        Me.AddDaysCancel_btn = New System.Windows.Forms.Button()
-        Me.AddDaysSavebtn = New System.Windows.Forms.Button()
-        Me.AddDays_Numeric = New System.Windows.Forms.NumericUpDown()
         Me.Biometric_LV = New System.Windows.Forms.ListView()
         Me.ColumnHeader17 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader18 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -67,7 +62,6 @@ Partial Class frmAttendance
         Me.SIL_Panel = New System.Windows.Forms.Panel()
         Me.CancelSIL_BTN = New System.Windows.Forms.Button()
         Me.AddSIL_BTN = New System.Windows.Forms.Button()
-        Me.SIL_NUP = New System.Windows.Forms.NumericUpDown()
         Me.SIL_BTN = New System.Windows.Forms.Button()
         Me.UT_BTN = New System.Windows.Forms.Button()
         Me.Late_BTN = New System.Windows.Forms.Button()
@@ -181,17 +175,15 @@ Partial Class frmAttendance
         Me.RE_NAME_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.RE_BIO_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.RE_BRANCH_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.SIL_NUP = New System.Windows.Forms.NumericUpDown()
         CType(Me.overAllBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.dtr_all, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Attendance_Tab.SuspendLayout()
         Me.TabPage1.SuspendLayout()
-        Me.Panel4.SuspendLayout()
-        CType(Me.AddDays_Numeric, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Manual_Tab.SuspendLayout()
         Me.Panel3.SuspendLayout()
         CType(Me.AM_OT_NUP, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SIL_Panel.SuspendLayout()
-        CType(Me.SIL_NUP, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox3.SuspendLayout()
         CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
@@ -206,6 +198,7 @@ Partial Class frmAttendance
         Me.Employee2_GroupB.SuspendLayout()
         Me.Branch_group.SuspendLayout()
         CType(Me.printDTRBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.SIL_NUP, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'overAllBindingSource
@@ -243,8 +236,6 @@ Partial Class frmAttendance
         '
         'TabPage1
         '
-        Me.TabPage1.Controls.Add(Me.Label36)
-        Me.TabPage1.Controls.Add(Me.Panel4)
         Me.TabPage1.Controls.Add(Me.Biometric_LV)
         Me.TabPage1.Controls.Add(Me.Search_TXT)
         Me.TabPage1.Controls.Add(Me.Search_BTN)
@@ -261,61 +252,6 @@ Partial Class frmAttendance
         Me.TabPage1.TabIndex = 1
         Me.TabPage1.Text = "    Biometric    "
         Me.TabPage1.UseVisualStyleBackColor = True
-        '
-        'Label36
-        '
-        Me.Label36.AutoSize = True
-        Me.Label36.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label36.Location = New System.Drawing.Point(991, 3)
-        Me.Label36.Name = "Label36"
-        Me.Label36.Size = New System.Drawing.Size(140, 25)
-        Me.Label36.TabIndex = 117
-        Me.Label36.Text = "Additional Day for PI"
-        Me.Label36.Visible = False
-        '
-        'Panel4
-        '
-        Me.Panel4.BackColor = System.Drawing.Color.LightSalmon
-        Me.Panel4.Controls.Add(Me.AddDaysCancel_btn)
-        Me.Panel4.Controls.Add(Me.AddDaysSavebtn)
-        Me.Panel4.Controls.Add(Me.AddDays_Numeric)
-        Me.Panel4.Location = New System.Drawing.Point(996, 31)
-        Me.Panel4.Name = "Panel4"
-        Me.Panel4.Size = New System.Drawing.Size(149, 48)
-        Me.Panel4.TabIndex = 116
-        Me.Panel4.Visible = False
-        '
-        'AddDaysCancel_btn
-        '
-        Me.AddDaysCancel_btn.Font = New System.Drawing.Font("Dubai", 8.249999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.AddDaysCancel_btn.Location = New System.Drawing.Point(66, 7)
-        Me.AddDaysCancel_btn.Name = "AddDaysCancel_btn"
-        Me.AddDaysCancel_btn.Size = New System.Drawing.Size(37, 34)
-        Me.AddDaysCancel_btn.TabIndex = 117
-        Me.AddDaysCancel_btn.Text = "✖"
-        Me.AddDaysCancel_btn.UseVisualStyleBackColor = True
-        '
-        'AddDaysSavebtn
-        '
-        Me.AddDaysSavebtn.Font = New System.Drawing.Font("Dubai", 8.249999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.AddDaysSavebtn.Location = New System.Drawing.Point(104, 7)
-        Me.AddDaysSavebtn.Name = "AddDaysSavebtn"
-        Me.AddDaysSavebtn.Size = New System.Drawing.Size(37, 34)
-        Me.AddDaysSavebtn.TabIndex = 116
-        Me.AddDaysSavebtn.Text = " ✔"
-        Me.AddDaysSavebtn.UseVisualStyleBackColor = True
-        '
-        'AddDays_Numeric
-        '
-        Me.AddDays_Numeric.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.AddDays_Numeric.Increment = New Decimal(New Integer() {5, 0, 0, 65536})
-        Me.AddDays_Numeric.Location = New System.Drawing.Point(7, 7)
-        Me.AddDays_Numeric.Maximum = New Decimal(New Integer() {5, 0, 0, 0})
-        Me.AddDays_Numeric.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
-        Me.AddDays_Numeric.Name = "AddDays_Numeric"
-        Me.AddDays_Numeric.Size = New System.Drawing.Size(49, 35)
-        Me.AddDays_Numeric.TabIndex = 0
-        Me.AddDays_Numeric.Value = New Decimal(New Integer() {1, 0, 0, 0})
         '
         'Biometric_LV
         '
@@ -561,9 +497,9 @@ Partial Class frmAttendance
         'SIL_Panel
         '
         Me.SIL_Panel.BackColor = System.Drawing.Color.LightSalmon
+        Me.SIL_Panel.Controls.Add(Me.SIL_NUP)
         Me.SIL_Panel.Controls.Add(Me.CancelSIL_BTN)
         Me.SIL_Panel.Controls.Add(Me.AddSIL_BTN)
-        Me.SIL_Panel.Controls.Add(Me.SIL_NUP)
         Me.SIL_Panel.Location = New System.Drawing.Point(437, 537)
         Me.SIL_Panel.Name = "SIL_Panel"
         Me.SIL_Panel.Size = New System.Drawing.Size(149, 48)
@@ -589,18 +525,6 @@ Partial Class frmAttendance
         Me.AddSIL_BTN.TabIndex = 116
         Me.AddSIL_BTN.Text = " ✔"
         Me.AddSIL_BTN.UseVisualStyleBackColor = True
-        '
-        'SIL_NUP
-        '
-        Me.SIL_NUP.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.SIL_NUP.Increment = New Decimal(New Integer() {5, 0, 0, 65536})
-        Me.SIL_NUP.Location = New System.Drawing.Point(7, 7)
-        Me.SIL_NUP.Maximum = New Decimal(New Integer() {5, 0, 0, 0})
-        Me.SIL_NUP.Minimum = New Decimal(New Integer() {1, 0, 0, 0})
-        Me.SIL_NUP.Name = "SIL_NUP"
-        Me.SIL_NUP.Size = New System.Drawing.Size(49, 35)
-        Me.SIL_NUP.TabIndex = 0
-        Me.SIL_NUP.Value = New Decimal(New Integer() {1, 0, 0, 0})
         '
         'SIL_BTN
         '
@@ -1767,6 +1691,17 @@ Partial Class frmAttendance
         Me.RE_BRANCH_DGV.ReadOnly = True
         Me.RE_BRANCH_DGV.Width = 140
         '
+        'SIL_NUP
+        '
+        Me.SIL_NUP.DecimalPlaces = 1
+        Me.SIL_NUP.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SIL_NUP.Increment = New Decimal(New Integer() {5, 0, 0, 65536})
+        Me.SIL_NUP.Location = New System.Drawing.Point(11, 6)
+        Me.SIL_NUP.Maximum = New Decimal(New Integer() {50, 0, 0, 0})
+        Me.SIL_NUP.Name = "SIL_NUP"
+        Me.SIL_NUP.Size = New System.Drawing.Size(49, 35)
+        Me.SIL_NUP.TabIndex = 122
+        '
         'frmAttendance
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1783,15 +1718,12 @@ Partial Class frmAttendance
         Me.Attendance_Tab.ResumeLayout(False)
         Me.TabPage1.ResumeLayout(False)
         Me.TabPage1.PerformLayout()
-        Me.Panel4.ResumeLayout(False)
-        CType(Me.AddDays_Numeric, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Manual_Tab.ResumeLayout(False)
         Me.Manual_Tab.PerformLayout()
         Me.Panel3.ResumeLayout(False)
         Me.Panel3.PerformLayout()
         CType(Me.AM_OT_NUP, System.ComponentModel.ISupportInitialize).EndInit()
         Me.SIL_Panel.ResumeLayout(False)
-        CType(Me.SIL_NUP, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox3.ResumeLayout(False)
         Me.GroupBox3.PerformLayout()
         CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).EndInit()
@@ -1814,6 +1746,7 @@ Partial Class frmAttendance
         Me.Branch_group.ResumeLayout(False)
         Me.Branch_group.PerformLayout()
         CType(Me.printDTRBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.SIL_NUP, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1941,7 +1874,6 @@ Partial Class frmAttendance
     Friend WithEvents Paydate7_CB As ComboBox
     Friend WithEvents SIL_BTN As Button
     Friend WithEvents SIL_Panel As Panel
-    Friend WithEvents SIL_NUP As NumericUpDown
     Friend WithEvents CancelSIL_BTN As Button
     Friend WithEvents AddSIL_BTN As Button
     Friend WithEvents Label13 As Label
@@ -1964,9 +1896,5 @@ Partial Class frmAttendance
     Friend WithEvents Label35 As Label
     Friend WithEvents Panel3 As Panel
     Friend WithEvents Cancel_lbl As Label
-    Friend WithEvents Panel4 As Panel
-    Friend WithEvents AddDaysCancel_btn As Button
-    Friend WithEvents AddDaysSavebtn As Button
-    Friend WithEvents AddDays_Numeric As NumericUpDown
-    Friend WithEvents Label36 As Label
+    Friend WithEvents SIL_NUP As NumericUpDown
 End Class
