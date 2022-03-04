@@ -1,4 +1,5 @@
-﻿Imports Microsoft.Office.Interop
+﻿Imports System.IO
+Imports Microsoft.Office.Interop
 
 Public Class frmSchedule
 
@@ -14,6 +15,9 @@ Public Class frmSchedule
     Dim starting_date, ending_date As DateTime
     Dim StartFour, EndFour, StartNineteen, EndNineteen, Paydate, DateNow As DateTime
     Dim paydate_ As String
+
+    Dim allowMove As Boolean = False
+    Dim movePoint As New Point
 
     Private Sub lvEmployee_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles lvEmployee.MouseDoubleClick
 
@@ -39,7 +43,15 @@ Public Class frmSchedule
 
             For Each row As DataGridViewRow In Schedule_DG.Rows
                 If row.Cells(1).Value <> Nothing And row.Cells(2).Value <> Nothing Then
-                    SaveSchedule(BiometricID_TXT.Text, row.Tag, row.Cells(1).Value, row.Cells(2).Value, PAYROLL)
+                    SaveSchedule(BiometricID_TXT.Text, row.Tag, row.Cells(1).Value, row.Cells(2).Value, PAYROLL, row.Cells(3).Tag)
+
+                    If row.Cells(3).Tag <> Nothing Then
+                        If Not File.Exists(row.Cells(3).Tag) And row.Cells(2).Tag <> Nothing Then
+                            Dim newFile As New FileInfo(row.Cells(2).Tag)
+                            newFile.CopyTo(row.Cells(3).Tag)
+                        End If
+                    End If
+
                 End If
             Next
 
@@ -58,6 +70,7 @@ Public Class frmSchedule
             For Each oRow As DataGridViewRow In Schedule_DG.Rows
                 oRow.Cells(1).Value = Nothing
                 oRow.Cells(2).Value = Nothing
+                oRow.Cells(3).Value = Nothing
             Next
 
         Else
@@ -114,11 +127,66 @@ Public Class frmSchedule
         Dim i As Integer = Schedule_DG.CurrentRow.Index
 
         If TypeOf grid.Columns(e.ColumnIndex) Is DataGridViewButtonColumn Then
+            If row.Cells(3).Value = "View" Then
+                Process.Start(row.Cells(3).Tag)
+            ElseIf row.Cells(3).Value = "Upload" Then
+                Attach_Panel.Visible = True
+                Attach_Panel.Location = New Point(345, 115)
+            End If
+        End If
+    End Sub
 
-            'If grid.Columns(e.ColumnIndex).Name = "IR_DGV" Then
-            '    Process.Start(row.Cells("IR_DGV").Tag)
-            'End If
+    Private Sub AttachClose_lbl_Click(sender As Object, e As EventArgs) Handles AttachClose_lbl.Click
+        Attach_Panel.Hide()
+    End Sub
 
+    Private Sub AttachBrowse_btn_Click(sender As Object, e As EventArgs) Handles AttachBrowse_btn.Click
+        Using f As New OpenFileDialog
+            f.Filter = "PDF files|*.pdf"
+            If DialogResult.OK = f.ShowDialog() Then
+                AttachPath_txt.Text = f.FileName
+                AttachSave_btn.Enabled = True
+            End If
+        End Using
+    End Sub
+
+    Private Sub AttachSave_btn_Click(sender As Object, e As EventArgs) Handles AttachSave_btn.Click
+
+        Dim gridRow As Integer = Schedule_DG.CurrentRow.Index
+        Dim datee As Date = Schedule_DG.Item(0, gridRow).Tag
+
+        Dim Nas_Folder As DirectoryInfo = New DirectoryInfo("\\Pgcnas_server\hr\COMMON FILES\Schedule Attachment")
+        Dim Nas_Employee_Folder As DirectoryInfo = New DirectoryInfo($"\\Pgcnas_server\hr\COMMON FILES\Schedule Attachment\{Name_TXT.Text}")
+
+        If Not Nas_Folder.Exists Then Nas_Folder.Create()
+        If Not Nas_Employee_Folder.Exists Then Nas_Employee_Folder.Create()
+
+        Dim newName As String = $"{Nas_Employee_Folder}\{Schedule_DG.Item(1, gridRow).Value} - {datee.ToString("MMM dd, yyyy")}.pdf"
+
+        Schedule_DG.Item(2, gridRow).Tag = AttachPath_txt.Text
+        Schedule_DG.Item(3, gridRow).Tag = newName
+        Schedule_DG.Item(3, gridRow).Value = "View"
+
+        AttachPath_txt.Clear()
+        AttachSave_btn.Enabled = False
+        Attach_Panel.Hide()
+
+    End Sub
+
+    Private Sub Attach_Panel_MouseDown(sender As Object, e As MouseEventArgs) Handles Attach_Panel.MouseDown
+        allowMove = True
+        movePoint = New Point(e.X, e.Y)
+        Cursor = Cursors.SizeAll
+    End Sub
+
+    Private Sub Attach_Panel_MouseUp(sender As Object, e As MouseEventArgs) Handles Attach_Panel.MouseUp
+        allowMove = False
+        Cursor = Cursors.Default
+    End Sub
+
+    Private Sub Attach_Panel_MouseMove(sender As Object, e As MouseEventArgs) Handles Attach_Panel.MouseMove
+        If allowMove = True Then
+            Attach_Panel.Location = New Point(Attach_Panel.Location.X + e.X - movePoint.X, Attach_Panel.Location.Y + e.Y - movePoint.Y)
         End If
     End Sub
 
@@ -190,24 +258,6 @@ Public Class frmSchedule
         For i = 0 To Schedule_DG.Rows.Count - 1
             Dim r As DataGridViewRow = Schedule_DG.Rows(i)
             r.Height = 28
-
-            Dim asss As Date = Schedule_DG.Rows(i).Cells(0).Value
-
-            Dim customizeDate As String = asss.ToString("M")
-
-            If asss.DayOfWeek = DayOfWeek.Sunday Then
-
-                r.DefaultCellStyle.ForeColor = Color.Red
-
-            Else
-                'If HolidayExist(asss) Then
-
-                '    HolidayDetails(asss, i, Schedule_DG)
-
-                'End If
-            End If
-
-
         Next
     End Sub
 
@@ -245,6 +295,10 @@ Public Class frmSchedule
             Dim start As DateTime = starting_date
             Dim endd As DateTime = ending_date
 
+            If eCell(row, 1).Value = Nothing Then
+                Exit For
+            End If
+
             While (start <= endd)
                 For columns = 4 To DtSet.Tables(0).Columns.Count + 1
 
@@ -252,7 +306,7 @@ Public Class frmSchedule
 
                         Dim bio As String = eCell(row, 1).Value
                         Dim datee As DateTime = eCell(5, columns).Value
-                        Dim time_in, time_out As DateTime
+                        Dim time_in, time_out As String
 
                         Dim valuee As String = eCell(row, columns).Value
 
@@ -262,29 +316,16 @@ Public Class frmSchedule
 
                         If eCell(row, columns).Value.Equals("") Then
                             Continue For
-                        ElseIf eCell(row, columns).Value.Equals("RD") Then
-                            SaveSchedule(bio, datee, Nothing, Nothing, Paydate, "RD")
-                            Continue For
-                        ElseIf eCell(row, columns).Value.Equals("SIL") Then
-                            SaveSchedule(bio, datee, Nothing, Nothing, Paydate, "SIL")
-                            Continue For
-                        ElseIf eCell(row, columns).Value.Equals("AL") Then
-                            SaveSchedule(bio, datee, Nothing, Nothing, Paydate, "AL")
-                            Continue For
+
                         Else
 
-                            If IsDate(eCell(row, columns).Value) Then
+                            time_in = eCell(row, columns).Value
+                            time_out = eCell(row, columns + 1).Value
 
-                                time_in = (New DateTime()).AddDays(eCell(row, columns).Value)
-                                time_out = (New DateTime()).AddDays(eCell(row, columns + 1).Value)
-
-                                SaveSchedule(bio, datee, time_in, time_out, Paydate)
-                            End If
+                            SaveSchedule(bio, datee, time_in, time_out, Paydate)
 
                         End If
-
                     End If
-
                 Next
 
                 start = start.AddDays(1)
@@ -308,12 +349,14 @@ Public Class frmSchedule
         LoadDateTime()
 
         Time_In_DataGrid.Items.Insert(0, "")
-        Time_Out_DataGrid.Items.Insert(0, "")
+        Time_In_DataGrid.Items.Insert(1, "SIL")
+        Time_In_DataGrid.Items.Insert(2, "AL")
+        Time_In_DataGrid.Items.Insert(3, "RD")
 
-        Category_CB.Items.Insert(0, "")
-        Category_CB.Items.Insert(1, "SIL")
-        Category_CB.Items.Insert(2, "AL")
-        Category_CB.Items.Insert(2, "RD")
+        Time_Out_DataGrid.Items.Insert(0, "")
+        Time_Out_DataGrid.Items.Insert(1, "SIL")
+        Time_Out_DataGrid.Items.Insert(2, "AL")
+        Time_Out_DataGrid.Items.Insert(3, "RD")
     End Sub
 
     Private Sub Paydate_ComboB_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Paydate_ComboB.SelectedIndexChanged

@@ -2734,6 +2734,7 @@ Module SelectFromDatabase
                 Allow_Schedule_Combo.Text = .Item("SCHEDULE")
                 A_EveryDate_Combo.Text = .Item("DAY_DATE")
                 Allow_Amount_TXT.Text = .Item("AMOUNT")
+                Allow_Amount_TXT.Tag = idNo
                 A_EffectiveDate_DTP.Value = .Item("EFFECTIVE_DATE")
 
                 If .Item("fix") = "YES" Then
@@ -2780,6 +2781,19 @@ Module SelectFromDatabase
             If ds.Tables(0).Rows.Count > 0 Then
                 With ds.Tables(0).Rows(0)
                     dataa = IIf(IsDBNull(.Item(column)), 0, .Item(column))
+                End With
+            End If
+        End Using
+        Return dataa
+    End Function
+
+    Friend Function GetData_BLOB(column As String, str As String) As Byte()
+        Dim dataa As Byte() = Nothing
+        Dim mysql As String = $"Select {column} from {str}"
+        Using ds As DataSet = LoadSQL(mysql)
+            If ds.Tables(0).Rows.Count > 0 Then
+                With ds.Tables(0).Rows(0)
+                    dataa = IIf(IsDBNull(.Item(column)), Nothing, .Item(column))
                 End With
             End If
         End Using
@@ -2956,6 +2970,7 @@ Module SelectFromDatabase
         For Each oRow As DataGridViewRow In datagrid.Rows
             oRow.Cells(1).Value = Nothing
             oRow.Cells(2).Value = Nothing
+            oRow.Cells(3).Value = Nothing
         Next
 
         Dim mysql As String = $"Select * From PAYROLL_SCHEDULE WHERE BIO_NO = '{bioNo}' AND PAYDATE = '{PAYDATE}'"
@@ -2963,33 +2978,49 @@ Module SelectFromDatabase
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
                     With dr
-
                         Dim date_ As DateTime = .Item("DATEE")
 
                         For Each row As DataGridViewRow In datagrid.Rows
-
                             Dim rowIndex As Integer = row.Index
                             Dim asss As Date = datagrid.Rows(rowIndex).Tag
 
                             If asss = date_ Then
 
-                                Dim timeIN, timeOUT As DateTime
-
-                                timeIN = .item("TIME_IN")
-                                timeOUT = .item("TIME_OUT")
-
                                 row.Cells(0).Value = date_.ToString("D")
                                 row.Cells(0).Tag = date_.ToShortDateString
-                                row.Cells(1).Value = timeIN.ToShortTimeString
-                                row.Cells(2).Value = timeOUT.ToShortTimeString
+                                row.Cells(1).Value = IIf(IsDBNull(.item("TIME_IN")), Nothing, .item("TIME_IN"))
+                                row.Cells(2).Value = IIf(IsDBNull(.item("TIME_OUT")), Nothing, .item("TIME_OUT"))
 
-                            Else
 
+                                If row.Cells(1).Value = "AL" Or row.Cells(2).Value = "AL" Then
+                                    If IsDBNull(.item("PATH")) Then
+                                        row.Cells(3).Value = "Upload"
+                                    Else
+                                        row.Cells(3).Tag = .item("PATH")
+                                        row.Cells(3).Value = "View"
+                                    End If
+
+                                    row.DefaultCellStyle.BackColor = Color.CadetBlue
+
+                                ElseIf row.Cells(1).Value = "SIL" Or row.Cells(2).Value = "SIL" Then
+                                    If IsDBNull(.item("PATH")) Then
+                                        row.Cells(3).Value = "Upload"
+                                    Else
+                                        row.Cells(3).Tag = .item("PATH")
+                                        row.Cells(3).Value = "View"
+                                    End If
+
+                                    row.DefaultCellStyle.BackColor = Color.RosyBrown
+
+                                ElseIf row.Cells(1).Value = "RD" Or row.Cells(2).Value = "RD" Then
+                                    row.DefaultCellStyle.BackColor = Color.LightSlateGray
+
+                                Else
+                                    row.DefaultCellStyle.BackColor = SystemColors.InactiveCaption
+                                End If
 
                             End If
-
                         Next
-
                     End With
                 Next
             End If

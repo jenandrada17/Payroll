@@ -209,17 +209,31 @@ Module SaveUpdate
         End Using
     End Sub
 
-    Public Sub SaveSchedule(BIO_ID As String, DATEE As String, TIME_IN As String, TIME_OUT As String, PAYDATE As String, Optional CATEGORY As String = Nothing)
+    Public Sub SaveSchedule(BIO_ID As String, DATEE As String, TIME_IN As String, TIME_OUT As String, PAYDATE As String, Optional PATH As String = Nothing)
         Dim mysql As String
+        Dim val_in, val_out As Decimal
 
         mysql = $"Select * From PAYROLL_SCHEDULE WHERE BIO_NO = '{BIO_ID}' AND DATEE = '{DATEE}' AND PAYDATE = '{PAYDATE}'"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_SCHEDULE")
             If ds.Tables(0).Rows.Count > 0 Then
 
                 With ds.Tables(0).Rows(0)
-                    If TIME_IN <> Nothing Then .Item("TIME_IN") = TIME_IN
-                    If TIME_OUT <> Nothing Then .Item("TIME_OUT") = TIME_OUT
-                    If CATEGORY <> Nothing Then .Item("CATEGORY") = CATEGORY
+
+                    If Decimal.TryParse(TIME_IN, val_in) Then
+                        TIME_IN = (New DateTime()).AddDays(TIME_IN)
+                        .Item("TIME_IN") = CDate(TIME_IN).ToShortTimeString
+                    ElseIf TIME_IN <> Nothing Then
+                        .Item("TIME_IN") = TIME_IN
+                    End If
+
+                    If Decimal.TryParse(TIME_OUT, val_out) Then
+                        TIME_OUT = (New DateTime()).AddDays(TIME_OUT)
+                        .Item("TIME_OUT") = CDate(TIME_OUT).ToShortTimeString
+                    ElseIf TIME_OUT <> Nothing Then
+                        .Item("TIME_OUT") = TIME_OUT
+                    End If
+
+                    If PATH <> Nothing Then .Item("PATH") = PATH
                 End With
 
                 SaveEntry(ds, False)
@@ -233,10 +247,23 @@ Module SaveUpdate
                         .Item("BIO_NO") = BIO_ID
                         .Item("DATEE") = DATEE
                         .Item("PAYDATE") = PAYDATE
+                        .Item("PATH") = PATH
 
-                        If TIME_IN <> Nothing Then .Item("TIME_IN") = TIME_IN
-                        If TIME_OUT <> Nothing Then .Item("TIME_OUT") = TIME_OUT
-                        If CATEGORY <> Nothing Then .Item("CATEGORY") = CATEGORY
+                        If Decimal.TryParse(TIME_IN, val_in) Then
+                            TIME_IN = (New DateTime()).AddDays(TIME_IN)
+                            .Item("TIME_IN") = CDate(TIME_IN).ToShortTimeString
+                        ElseIf TIME_IN <> Nothing Then
+                            .Item("TIME_IN") = TIME_IN
+                        End If
+
+                        If Decimal.TryParse(TIME_OUT, val_out) Then
+                            TIME_OUT = (New DateTime()).AddDays(TIME_OUT)
+                            .Item("TIME_OUT") = CDate(TIME_OUT).ToShortTimeString
+                        ElseIf TIME_OUT <> Nothing Then
+                            .Item("TIME_OUT") = TIME_OUT
+                        End If
+
+                        If PATH <> Nothing Then .Item("PATH") = PATH
 
                     End With
                     dsS.Tables(0).Rows.Add(dsNewRow)

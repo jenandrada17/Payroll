@@ -37,13 +37,9 @@
 
     Private Sub Allow_Save_BTN_Click_1(sender As Object, e As EventArgs) Handles Allow_Save_BTN.Click
 
-        'If ThisHasRow($"PAYROLL_ALLOWANCES where BIOMETRIC_NO = '{Allow_Name_TXT.Tag}'") Then
-        '    MsgBox($"{Allow_Name_TXT.Text} has record already, right click to edit.", MsgBoxStyle.Critical)
-        'End If
-
         Dim fix As String = "NO"
         Dim everyThisDate As Integer = 0
-        Dim idNo As Integer = 0
+        Dim idNo As Integer = Allow_Amount_TXT.Tag
 
         If Not isValidSave_ALLOW() Then Exit Sub
 
@@ -132,7 +128,6 @@
         GetAllowance_Details(idNo, Allow_Name_TXT, Allow_Category_Combo, Allow_Schedule_Combo, A_EveryDate_Combo, Allow_Amount_TXT, A_EffectiveDate_DTP, FixYes_RadioB, FixNo_RadioB)
     End Sub
 
-
     Public Sub Load_Allowance(emp As Employee, tabName As String, Optional category As String = "")
         With emp
             If tabName = "ALLOWANCE" Then
@@ -184,9 +179,7 @@
     End Sub
 
     Private Sub SearchEMP_BTN_Click(sender As Object, e As EventArgs) Handles SearchEMP_BTN.Click
-
         Try
-
             Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmNewEmployee").SingleOrDefault()
             If instForm Is Nothing Then
                 Dim frm As frmNewEmployee
@@ -201,7 +194,6 @@
             Else
                 instForm.BringToFront()
             End If
-
         Catch ex As Exception
 
         End Try
@@ -279,19 +271,29 @@
                         DeptFrom_txt.Text, DeptTo_txt.Text,
                         JobTitleFrom_txt.Text, JobTitleTo_txt.Text,
                         JobLevelFrom_txt.Text, JobLevelTo_txt.Text,
-                        IIf(SalaryFrom_txt.Text = Nothing, "0.00", FormatNumber(SalaryFrom_txt.Text)), S_Effect_from,
-                        IIf(SalaryTo_txt.Text = Nothing, "0.00", FormatNumber(SalaryTo_txt.Text)), S_Effect_to,
-                        IIf(PIFrom_txt.Text = Nothing, "0.00", FormatNumber(PIFrom_txt.Text)), PI_Effect_from, PI_SchedFrom_CB.Text,
-                        IIf(PITo_txt.Text = Nothing, "0.00", FormatNumber(PITo_txt.Text)), PI_Effect_to, PI_SchedTo_CB.Text,
                         Remarks_txt.Text)
+
+            'dt.Rows.Add(name(0), firstt, middlee, datePrepared, EmpNo_txt.Text, Bdate_txt.Text, dateHire,
+            '            Address_txt.Text, SSS_txt.Text, TIN_txt.Text, Gender_CB.Text, Marital_CB.Text,
+            '            Employment_CB.Text, SalesCharges_CB.Text,
+            '            CompanyFrom_txt.Text, CompanyT0_txt.Text,
+            '            DeptFrom_txt.Text, DeptTo_txt.Text,
+            '            JobTitleFrom_txt.Text, JobTitleTo_txt.Text,
+            '            JobLevelFrom_txt.Text, JobLevelTo_txt.Text,
+            '            IIf(SalaryFrom_txt.Text = Nothing, 0, FormatNumber(SalaryFrom_txt.Text)), S_Effect_from,
+            '            IIf(SalaryTo_txt.Text = Nothing, 0, FormatNumber(SalaryTo_txt.Text)), S_Effect_to,
+            '            IIf(PIFrom_txt.Text = Nothing, 0, FormatNumber(PIFrom_txt.Text)), PI_Effect_from, PI_SchedFrom_CB.Text,
+            '            IIf(PITo_txt.Text = Nothing, 0, FormatNumber(PITo_txt.Text)), PI_Effect_to, PI_SchedTo_CB.Text,
+            '            Remarks_txt.Text)
 
             Dim dataSource As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt)
             rpt_Allowance.LocalReport.DataSources.Add(dataSource)
             rpt_Allowance.RefreshReport()
 
         Catch ex As Exception
-
+            MsgBox(ex.ToString)
         End Try
+
     End Sub
 
     Private Sub DeptFrom_txt_TextChanged(sender As Object, e As EventArgs) Handles DeptFrom_txt.TextChanged

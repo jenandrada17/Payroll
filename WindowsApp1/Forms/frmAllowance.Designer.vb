@@ -23,7 +23,7 @@ Partial Class frmAllowance
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim ReportDataSource5 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource1 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
         Me.PAFBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.Forms = New WindowsApp1.Forms()
         Me.Close_LBL = New System.Windows.Forms.Label()
@@ -1223,9 +1223,9 @@ Partial Class frmAllowance
         '
         'rpt_Allowance
         '
-        ReportDataSource5.Name = "DataSet1"
-        ReportDataSource5.Value = Me.PAFBindingSource
-        Me.rpt_Allowance.LocalReport.DataSources.Add(ReportDataSource5)
+        ReportDataSource1.Name = "DataSet1"
+        ReportDataSource1.Value = Me.PAFBindingSource
+        Me.rpt_Allowance.LocalReport.DataSources.Add(ReportDataSource1)
         Me.rpt_Allowance.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_PAF.rdlc"
         Me.rpt_Allowance.Location = New System.Drawing.Point(6, 6)
         Me.rpt_Allowance.Name = "rpt_Allowance"
@@ -1257,12 +1257,12 @@ Partial Class frmAllowance
         '
         Me.Context_Allow.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.Edit_MenuItem})
         Me.Context_Allow.Name = "ContextMenuStrip1"
-        Me.Context_Allow.Size = New System.Drawing.Size(95, 26)
+        Me.Context_Allow.Size = New System.Drawing.Size(181, 48)
         '
         'Edit_MenuItem
         '
         Me.Edit_MenuItem.Name = "Edit_MenuItem"
-        Me.Edit_MenuItem.Size = New System.Drawing.Size(94, 22)
+        Me.Edit_MenuItem.Size = New System.Drawing.Size(180, 22)
         Me.Edit_MenuItem.Text = "Edit"
         '
         'frmAllowance
