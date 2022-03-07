@@ -94,15 +94,17 @@ Public Class frmNewEmployee
         For row = 2 To DtSet.Tables(0).Rows.Count + 1
 
             'Public Sub SaveNew_Employee(COMPANY As String, BRANCH_CODE As String, FULLNAME As String, BIO_NO As String, EMAIL_ADD As String,
-            '                EMP_STATUS As String, Optional DATE_STARTED As String = "", Optional group As Boolean = False,
-            '                Optional TIME_IN As String = "", Optional TIME_OUT As String = "", Optional EMP_NO As String = "",
-            '                Optional TIN As String = "", Optional SSS As String = "", Optional PHILH As String = "",
-            '                Optional HDMF As String = "", Optional HO_CATEGORY As String = "", Optional COMMON_CATEGORY As String = "",
-            '                Optional EMP_POSITION As String = "", Optional COMMON_COMPANY As String = "", Optional PhotoCategory As String = "")
+            '                    EMP_STATUS As String, Optional DATE_STARTED As String = "", Optional group As Boolean = False,
+            '                    Optional TIME_IN As String = "", Optional TIME_OUT As String = "", Optional EMP_NO As String = "",
+            '                    Optional TIN As String = "", Optional SSS As String = "", Optional PHILH As String = "",
+            '                    Optional HDMF As String = "", Optional HO_CATEGORY As String = "", Optional COMMON_CATEGORY As String = "",
+            '                    Optional EMP_POSITION As String = "", Optional COMMON_COMPANY As String = "", Optional PhotoCategory As String = "",
+            '                    Optional Middlename As String = "", Optional BDATE As String = "", Optional ADDRESS As String = "")
 
-            SaveNew_Employee(eCell(row, 2).Value, eCell(row, 3).Value, eCell(row, 9).Value, eCell(row, 1).Value, eCell(row, 10).Value,
-                             "ACTIVE", eCell(row, 4).Value, True, eCell(row, 7).Value, eCell(row, 8).Value, eCell(row, 5).Value,
-                             eCell(row, 11).Value, eCell(row, 12).Value, eCell(row, 13).Value, eCell(row, 14).Value, "", "", eCell(row, 6).Value, "", eCell(row, 15).Value)
+            SaveNew_Employee(eCell(row, 2).Value, eCell(row, 3).Value, eCell(row, 9).Value, eCell(row, 1).Value, eCell(row, 12).Value,
+                         "ACTIVE", eCell(row, 4).Value, True, eCell(row, 7).Value, eCell(row, 8).Value, eCell(row, 5).Value,
+                         eCell(row, 13).Value, eCell(row, 14).Value, eCell(row, 15).Value, eCell(row, 16).Value, "", "", eCell(row, 6).Value, "", eCell(row, 17).Value,
+                         "", eCell(row, 11).Value, eCell(row, 10).Value)
 
             frmMainForm.AppProgressBar.Value += 1
 

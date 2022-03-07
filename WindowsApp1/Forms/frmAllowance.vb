@@ -263,6 +263,10 @@
             If SalryEffectTo_dtp.Value <> "1/1/1990" Then S_Effect_to = CDate(SalryEffectTo_dtp.Value).ToString("dd-MMM-yyyy")
             If PIEffectFrom_dtp.Value <> "1/1/1990" Then PI_Effect_from = CDate(PIEffectFrom_dtp.Value).ToString("dd-MMM-yyyy")
             If PIEffectTo_dtp.Value <> "1/1/1990" Then PI_Effect_to = CDate(PIEffectTo_dtp.Value).ToString("dd-MMM-yyyy")
+            If SalaryFrom_txt.Text = Nothing Then SalaryFrom_txt.Text = 0
+            If SalaryTo_txt.Text = Nothing Then SalaryTo_txt.Text = 0
+            If PIFrom_txt.Text = Nothing Then PIFrom_txt.Text = 0
+            If PITo_txt.Text = Nothing Then PITo_txt.Text = 0
 
             dt.Rows.Add(name(0), firstt, middlee, datePrepared, EmpNo_txt.Text, Bdate_txt.Text, dateHire,
                         Address_txt.Text, SSS_txt.Text, TIN_txt.Text, Gender_CB.Text, Marital_CB.Text,
@@ -271,20 +275,11 @@
                         DeptFrom_txt.Text, DeptTo_txt.Text,
                         JobTitleFrom_txt.Text, JobTitleTo_txt.Text,
                         JobLevelFrom_txt.Text, JobLevelTo_txt.Text,
+                        SalaryFrom_txt.Text, S_Effect_from,
+                        SalaryTo_txt.Text, S_Effect_to,
+                        PIFrom_txt.Text, PI_Effect_from, PI_SchedFrom_CB.Text,
+                        PITo_txt.Text, PI_Effect_to, PI_SchedTo_CB.Text,
                         Remarks_txt.Text)
-
-            'dt.Rows.Add(name(0), firstt, middlee, datePrepared, EmpNo_txt.Text, Bdate_txt.Text, dateHire,
-            '            Address_txt.Text, SSS_txt.Text, TIN_txt.Text, Gender_CB.Text, Marital_CB.Text,
-            '            Employment_CB.Text, SalesCharges_CB.Text,
-            '            CompanyFrom_txt.Text, CompanyT0_txt.Text,
-            '            DeptFrom_txt.Text, DeptTo_txt.Text,
-            '            JobTitleFrom_txt.Text, JobTitleTo_txt.Text,
-            '            JobLevelFrom_txt.Text, JobLevelTo_txt.Text,
-            '            IIf(SalaryFrom_txt.Text = Nothing, 0, FormatNumber(SalaryFrom_txt.Text)), S_Effect_from,
-            '            IIf(SalaryTo_txt.Text = Nothing, 0, FormatNumber(SalaryTo_txt.Text)), S_Effect_to,
-            '            IIf(PIFrom_txt.Text = Nothing, 0, FormatNumber(PIFrom_txt.Text)), PI_Effect_from, PI_SchedFrom_CB.Text,
-            '            IIf(PITo_txt.Text = Nothing, 0, FormatNumber(PITo_txt.Text)), PI_Effect_to, PI_SchedTo_CB.Text,
-            '            Remarks_txt.Text)
 
             Dim dataSource As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt)
             rpt_Allowance.LocalReport.DataSources.Add(dataSource)
@@ -326,5 +321,20 @@
         End If
     End Sub
 
+    Private Sub Allowance_Tab_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Allowance_Tab.SelectedIndexChanged
+        If Allowance_Tab.SelectedIndex = 2 Then
+            ListOF_PAF(Approve_grid)
+
+            Status_Combo.Items.Add("APPROVE")
+            Status_Combo.Items.Add("PENDING")
+        End If
+    End Sub
+
+    Private Sub Approve_grid_EditingControlShowing(sender As Object, e As DataGridViewEditingControlShowingEventArgs) Handles Approve_grid.EditingControlShowing
+        Dim row As DataGridViewRow = Approve_grid.Rows(Approve_grid.CurrentRow.Index)
+        If Status_Combo.Selected = "APPROVE" Then
+            UpdatePAF_Status(row.Cells(0).Tag)
+        End If
+    End Sub
 
 End Class

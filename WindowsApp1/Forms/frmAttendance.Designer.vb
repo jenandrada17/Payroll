@@ -60,6 +60,7 @@ Partial Class frmAttendance
         Me.Label33 = New System.Windows.Forms.Label()
         Me.Label19 = New System.Windows.Forms.Label()
         Me.SIL_Panel = New System.Windows.Forms.Panel()
+        Me.SIL_NUP = New System.Windows.Forms.NumericUpDown()
         Me.CancelSIL_BTN = New System.Windows.Forms.Button()
         Me.AddSIL_BTN = New System.Windows.Forms.Button()
         Me.SIL_BTN = New System.Windows.Forms.Button()
@@ -175,7 +176,6 @@ Partial Class frmAttendance
         Me.RE_NAME_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.RE_BIO_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.RE_BRANCH_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.SIL_NUP = New System.Windows.Forms.NumericUpDown()
         CType(Me.overAllBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.dtr_all, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Attendance_Tab.SuspendLayout()
@@ -184,6 +184,7 @@ Partial Class frmAttendance
         Me.Panel3.SuspendLayout()
         CType(Me.AM_OT_NUP, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SIL_Panel.SuspendLayout()
+        CType(Me.SIL_NUP, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox3.SuspendLayout()
         CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.GroupBox1.SuspendLayout()
@@ -198,7 +199,6 @@ Partial Class frmAttendance
         Me.Employee2_GroupB.SuspendLayout()
         Me.Branch_group.SuspendLayout()
         CType(Me.printDTRBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.SIL_NUP, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'overAllBindingSource
@@ -505,6 +505,17 @@ Partial Class frmAttendance
         Me.SIL_Panel.Size = New System.Drawing.Size(149, 48)
         Me.SIL_Panel.TabIndex = 115
         Me.SIL_Panel.Visible = False
+        '
+        'SIL_NUP
+        '
+        Me.SIL_NUP.DecimalPlaces = 1
+        Me.SIL_NUP.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SIL_NUP.Increment = New Decimal(New Integer() {5, 0, 0, 65536})
+        Me.SIL_NUP.Location = New System.Drawing.Point(11, 6)
+        Me.SIL_NUP.Maximum = New Decimal(New Integer() {50, 0, 0, 0})
+        Me.SIL_NUP.Name = "SIL_NUP"
+        Me.SIL_NUP.Size = New System.Drawing.Size(49, 35)
+        Me.SIL_NUP.TabIndex = 122
         '
         'CancelSIL_BTN
         '
@@ -1691,17 +1702,6 @@ Partial Class frmAttendance
         Me.RE_BRANCH_DGV.ReadOnly = True
         Me.RE_BRANCH_DGV.Width = 140
         '
-        'SIL_NUP
-        '
-        Me.SIL_NUP.DecimalPlaces = 1
-        Me.SIL_NUP.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.SIL_NUP.Increment = New Decimal(New Integer() {5, 0, 0, 65536})
-        Me.SIL_NUP.Location = New System.Drawing.Point(11, 6)
-        Me.SIL_NUP.Maximum = New Decimal(New Integer() {50, 0, 0, 0})
-        Me.SIL_NUP.Name = "SIL_NUP"
-        Me.SIL_NUP.Size = New System.Drawing.Size(49, 35)
-        Me.SIL_NUP.TabIndex = 122
-        '
         'frmAttendance
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1724,6 +1724,7 @@ Partial Class frmAttendance
         Me.Panel3.PerformLayout()
         CType(Me.AM_OT_NUP, System.ComponentModel.ISupportInitialize).EndInit()
         Me.SIL_Panel.ResumeLayout(False)
+        CType(Me.SIL_NUP, System.ComponentModel.ISupportInitialize).EndInit()
         Me.GroupBox3.ResumeLayout(False)
         Me.GroupBox3.PerformLayout()
         CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).EndInit()
@@ -1746,7 +1747,6 @@ Partial Class frmAttendance
         Me.Branch_group.ResumeLayout(False)
         Me.Branch_group.PerformLayout()
         CType(Me.printDTRBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.SIL_NUP, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

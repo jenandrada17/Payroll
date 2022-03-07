@@ -130,8 +130,6 @@ Public Class frmSchedule
         Dim grid = DirectCast(sender, DataGridView)
         Dim row As DataGridViewRow = Schedule_DG.Rows(e.RowIndex)
 
-        Dim i As Integer = Schedule_DG.CurrentRow.Index
-
         If TypeOf grid.Columns(e.ColumnIndex) Is DataGridViewButtonColumn Then
             If row.Cells(3).Value = "View" Then
                 If row.Cells(3).Tag = Nothing Then

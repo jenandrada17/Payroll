@@ -23,7 +23,13 @@ Partial Class frmAllowance
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim ReportDataSource2 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource1 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.PAFBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.Forms = New WindowsApp1.Forms()
         Me.Close_LBL = New System.Windows.Forms.Label()
@@ -130,15 +136,23 @@ Partial Class frmAllowance
         Me.Label4 = New System.Windows.Forms.Label()
         Me.rpt_Allowance = New Microsoft.Reporting.WinForms.ReportViewer()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
-        Me.Button1 = New System.Windows.Forms.Button()
-        Me.TextBox1 = New System.Windows.Forms.TextBox()
-        Me.DataGridView1 = New System.Windows.Forms.DataGridView()
+        Me.ApproveSearch_btn = New System.Windows.Forms.Button()
+        Me.ApproveSearch_txt = New System.Windows.Forms.TextBox()
+        Me.Approve_grid = New System.Windows.Forms.DataGridView()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Context_Allow = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.Edit_MenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.SampleDatabaseDataSet = New WindowsApp1.SampleDatabaseDataSet()
         Me.UserManagementBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.User_ManagementTableAdapter = New WindowsApp1.SampleDatabaseDataSetTableAdapters.User_ManagementTableAdapter()
+        Me.Column1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Column2 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Column3 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Column4 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Column5 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Column6 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Column7 = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Status_Combo = New System.Windows.Forms.DataGridViewComboBoxColumn()
         CType(Me.PAFBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Forms, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Allowance_Tab.SuspendLayout()
@@ -148,7 +162,7 @@ Partial Class frmAllowance
         Me.Panel1.SuspendLayout()
         Me.Panel2.SuspendLayout()
         Me.TabPage2.SuspendLayout()
-        CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.Approve_grid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Context_Allow.SuspendLayout()
         CType(Me.SampleDatabaseDataSet, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.UserManagementBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -1233,9 +1247,9 @@ Partial Class frmAllowance
         '
         'rpt_Allowance
         '
-        ReportDataSource2.Name = "DataSet1"
-        ReportDataSource2.Value = Me.PAFBindingSource
-        Me.rpt_Allowance.LocalReport.DataSources.Add(ReportDataSource2)
+        ReportDataSource1.Name = "DataSet1"
+        ReportDataSource1.Value = Me.PAFBindingSource
+        Me.rpt_Allowance.LocalReport.DataSources.Add(ReportDataSource1)
         Me.rpt_Allowance.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_PAF.rdlc"
         Me.rpt_Allowance.Location = New System.Drawing.Point(6, 6)
         Me.rpt_Allowance.Name = "rpt_Allowance"
@@ -1245,9 +1259,9 @@ Partial Class frmAllowance
         '
         'TabPage2
         '
-        Me.TabPage2.Controls.Add(Me.Button1)
-        Me.TabPage2.Controls.Add(Me.TextBox1)
-        Me.TabPage2.Controls.Add(Me.DataGridView1)
+        Me.TabPage2.Controls.Add(Me.ApproveSearch_btn)
+        Me.TabPage2.Controls.Add(Me.ApproveSearch_txt)
+        Me.TabPage2.Controls.Add(Me.Approve_grid)
         Me.TabPage2.Location = New System.Drawing.Point(4, 41)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
@@ -1256,32 +1270,55 @@ Partial Class frmAllowance
         Me.TabPage2.Text = "      Approval      "
         Me.TabPage2.UseVisualStyleBackColor = True
         '
-        'Button1
+        'ApproveSearch_btn
         '
-        Me.Button1.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button1.Location = New System.Drawing.Point(337, 25)
-        Me.Button1.Name = "Button1"
-        Me.Button1.Size = New System.Drawing.Size(110, 33)
-        Me.Button1.TabIndex = 137
-        Me.Button1.Text = "Search"
-        Me.Button1.UseVisualStyleBackColor = True
+        Me.ApproveSearch_btn.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ApproveSearch_btn.Location = New System.Drawing.Point(337, 25)
+        Me.ApproveSearch_btn.Name = "ApproveSearch_btn"
+        Me.ApproveSearch_btn.Size = New System.Drawing.Size(110, 33)
+        Me.ApproveSearch_btn.TabIndex = 137
+        Me.ApproveSearch_btn.Text = "Search"
+        Me.ApproveSearch_btn.UseVisualStyleBackColor = True
         '
-        'TextBox1
+        'ApproveSearch_txt
         '
-        Me.TextBox1.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.TextBox1.Location = New System.Drawing.Point(5, 25)
-        Me.TextBox1.Name = "TextBox1"
-        Me.TextBox1.Size = New System.Drawing.Size(326, 33)
-        Me.TextBox1.TabIndex = 136
+        Me.ApproveSearch_txt.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ApproveSearch_txt.Location = New System.Drawing.Point(5, 25)
+        Me.ApproveSearch_txt.Name = "ApproveSearch_txt"
+        Me.ApproveSearch_txt.Size = New System.Drawing.Size(326, 33)
+        Me.ApproveSearch_txt.TabIndex = 136
         '
-        'DataGridView1
+        'Approve_grid
         '
-        Me.DataGridView1.BackgroundColor = System.Drawing.SystemColors.ButtonHighlight
-        Me.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.DataGridView1.Location = New System.Drawing.Point(5, 64)
-        Me.DataGridView1.Name = "DataGridView1"
-        Me.DataGridView1.Size = New System.Drawing.Size(1140, 518)
-        Me.DataGridView1.TabIndex = 0
+        Me.Approve_grid.AllowUserToAddRows = False
+        Me.Approve_grid.AllowUserToDeleteRows = False
+        Me.Approve_grid.AllowUserToResizeRows = False
+        Me.Approve_grid.BackgroundColor = System.Drawing.SystemColors.ButtonHighlight
+        Me.Approve_grid.BorderStyle = System.Windows.Forms.BorderStyle.None
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle1.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.Approve_grid.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
+        Me.Approve_grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.Approve_grid.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Column1, Me.Column2, Me.Column3, Me.Column4, Me.Column5, Me.Column6, Me.Column7, Me.Status_Combo})
+        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle6.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.Approve_grid.DefaultCellStyle = DataGridViewCellStyle6
+        Me.Approve_grid.Location = New System.Drawing.Point(5, 64)
+        Me.Approve_grid.Name = "Approve_grid"
+        Me.Approve_grid.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
+        Me.Approve_grid.RowHeadersVisible = False
+        Me.Approve_grid.Size = New System.Drawing.Size(1140, 518)
+        Me.Approve_grid.TabIndex = 0
         '
         'Label1
         '
@@ -1319,6 +1356,60 @@ Partial Class frmAllowance
         '
         Me.User_ManagementTableAdapter.ClearBeforeFill = True
         '
+        'Column1
+        '
+        Me.Column1.HeaderText = "Fullname"
+        Me.Column1.Name = "Column1"
+        Me.Column1.Width = 260
+        '
+        'Column2
+        '
+        Me.Column2.HeaderText = "Salary Changes"
+        Me.Column2.Name = "Column2"
+        Me.Column2.Width = 170
+        '
+        'Column3
+        '
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.Column3.DefaultCellStyle = DataGridViewCellStyle2
+        Me.Column3.HeaderText = "Salary From"
+        Me.Column3.Name = "Column3"
+        Me.Column3.Width = 120
+        '
+        'Column4
+        '
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.Column4.DefaultCellStyle = DataGridViewCellStyle3
+        Me.Column4.HeaderText = "Salary To"
+        Me.Column4.Name = "Column4"
+        '
+        'Column5
+        '
+        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.Column5.DefaultCellStyle = DataGridViewCellStyle4
+        Me.Column5.HeaderText = "PI From"
+        Me.Column5.Name = "Column5"
+        '
+        'Column6
+        '
+        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.Column6.DefaultCellStyle = DataGridViewCellStyle5
+        Me.Column6.HeaderText = "PI To"
+        Me.Column6.Name = "Column6"
+        '
+        'Column7
+        '
+        Me.Column7.HeaderText = "Remarks"
+        Me.Column7.Name = "Column7"
+        Me.Column7.Width = 160
+        '
+        'Status_Combo
+        '
+        Me.Status_Combo.HeaderText = "Status"
+        Me.Status_Combo.MaxDropDownItems = 2
+        Me.Status_Combo.Name = "Status_Combo"
+        Me.Status_Combo.Width = 110
+        '
         'frmAllowance
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1343,7 +1434,7 @@ Partial Class frmAllowance
         Me.Panel2.ResumeLayout(False)
         Me.TabPage2.ResumeLayout(False)
         Me.TabPage2.PerformLayout()
-        CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.Approve_grid, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Context_Allow.ResumeLayout(False)
         CType(Me.SampleDatabaseDataSet, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.UserManagementBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
@@ -1464,7 +1555,15 @@ Partial Class frmAllowance
     Friend WithEvents SampleDatabaseDataSet As SampleDatabaseDataSet
     Friend WithEvents UserManagementBindingSource As BindingSource
     Friend WithEvents User_ManagementTableAdapter As SampleDatabaseDataSetTableAdapters.User_ManagementTableAdapter
-    Friend WithEvents DataGridView1 As DataGridView
-    Friend WithEvents Button1 As Button
-    Friend WithEvents TextBox1 As TextBox
+    Friend WithEvents Approve_grid As DataGridView
+    Friend WithEvents ApproveSearch_btn As Button
+    Friend WithEvents ApproveSearch_txt As TextBox
+    Friend WithEvents Column1 As DataGridViewTextBoxColumn
+    Friend WithEvents Column2 As DataGridViewTextBoxColumn
+    Friend WithEvents Column3 As DataGridViewTextBoxColumn
+    Friend WithEvents Column4 As DataGridViewTextBoxColumn
+    Friend WithEvents Column5 As DataGridViewTextBoxColumn
+    Friend WithEvents Column6 As DataGridViewTextBoxColumn
+    Friend WithEvents Column7 As DataGridViewTextBoxColumn
+    Friend WithEvents Status_Combo As DataGridViewComboBoxColumn
 End Class

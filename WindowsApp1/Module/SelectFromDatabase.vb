@@ -104,6 +104,15 @@ Module SelectFromDatabase
         Return False
     End Function
 
+    Public Function ThisIsNotNull(column As String, table As String)
+        Dim mysql As String = $"Select {column} FROM {table}"
+        Dim ds As DataSet = LoadSQL(mysql, table)
+        If ds.Tables(0).Rows.Count > 0 Then
+            Return True
+        End If
+        Return False
+    End Function
+
     Public Function isExist_String(table As String, str As String)
         Dim mysql As String = $"Select * FROM {table} {str}"
         Dim ds As DataSet = LoadSQL(mysql, table)
@@ -2991,7 +3000,6 @@ Module SelectFromDatabase
                                 row.Cells(1).Value = IIf(IsDBNull(.item("TIME_IN")), Nothing, .item("TIME_IN"))
                                 row.Cells(2).Value = IIf(IsDBNull(.item("TIME_OUT")), Nothing, .item("TIME_OUT"))
 
-
                                 If row.Cells(1).Value = "AL" Or row.Cells(2).Value = "AL" Then
                                     If IsDBNull(.item("PATH")) Then
                                         row.Cells(3).Value = "Upload"
@@ -3046,18 +3054,60 @@ Module SelectFromDatabase
     End Function
 
     Friend Sub GetPic(name As String, picbox As PictureBox)
+        Try
+            Dim Nas_Folder As DirectoryInfo = New DirectoryInfo($"\\Pgcnas_server\hr\COMMON FILES\Profile Picture")
+            Dim path As String = $"\\Pgcnas_server\hr\COMMON FILES\Profile Picture\{name}.jpeg"
 
-        Dim Nas_Folder As DirectoryInfo = New DirectoryInfo($"\\Pgcnas_server\hr\COMMON FILES\Profile Picture")
-        Dim path As String = $"\\Pgcnas_server\hr\COMMON FILES\Profile Picture\{name}.jpeg"
+            If Not Nas_Folder.Exists Then Nas_Folder.Create()
 
-        If Not Nas_Folder.Exists Then Nas_Folder.Create()
-
-        If File.Exists(path) Then
-            picbox.Image = Image.FromFile(path)
-        Else
-            picbox.Image = Nothing
-        End If
-
+            If File.Exists(path) Then
+                picbox.Image = Image.FromFile(path)
+            Else
+                picbox.Image = Nothing
+            End If
+        Catch ex As Exception
+            MsgBox($"PGCNAS_SERVER might not accessible to fetch/save profile pic.", MsgBoxStyle.Exclamation)
+        End Try
     End Sub
 
+    Friend Sub ListOF_PAF(grid As DataGridView, Optional search As String = Nothing)
+        grid.Rows.Clear()
+        Dim mysql As String
+
+        If search = Nothing Then
+            mysql = $"Select A.*, B.FULLNAME, B.BIO_NO as bioNo from PAYROLL_PAF A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIO_NO"
+        Else
+            If IsNumeric(search) Then
+                mysql = $"Select * from PAYROLL_PAF where PAF_NO = '{search}' Or BIO_NO = '{search}'"
+            Else
+                mysql = $"Select A.*, B.FULLNAME, B.BIO_NO as bioNo from PAYROLL_PAF A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIO_NO where upper(FULLNAME) = upper('%{search}%') Or upper(SALARY_CHANGES) = upper('{search}') Order by FULLNAME"
+            End If
+        End If
+
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAF")
+            If ds.Tables(0).Rows.Count > 0 Then
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+
+                        Dim rowId As Integer = grid.Rows.Add()
+
+                        Dim row As DataGridViewRow = grid.Rows(rowId)
+                        row.Cells(0).Tag = .item("PAF_NO")
+                        row.Cells(0).Value = .item("FULLNAME")
+                        row.Cells(1).Tag = .item("bioNo")
+                        row.Cells(1).Value = .item("SALARY_CHANGES")
+                        row.Cells(2).Value = .item("S_WAGE_FROM")
+                        row.Cells(3).Value = .item("S_WAGE_TO")
+                        row.Cells(4).Value = .item("PI_FROM")
+                        row.Cells(5).Value = .item("PI_TO")
+                        row.Cells(6).Value = .item("REMARKS")
+                        row.Cells(7).Value = IIf(IsDBNull(.item("STATUS")), "PENDING", .item("STATUS"))
+
+                        row.Height = 30
+                    End With
+                Next
+            End If
+        End Using
+
+    End Sub
 End Module

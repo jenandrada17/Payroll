@@ -5963,7 +5963,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!S_FROM.Value</Value>
+                              <Value>=iif(Fields!S_FROM.Value = "0" , "0.00", FormatNumber(Fields!S_FROM.Value))</Value>
                               <Style>
                                 <FontFamily>Calibri</FontFamily>
                               </Style>
@@ -6108,7 +6108,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!S_TO.Value</Value>
+                              <Value>=iif(Fields!S_TO.Value = "0" , "0.00", FormatNumber(Fields!S_TO.Value))</Value>
                               <Style>
                                 <FontFamily>Calibri</FontFamily>
                               </Style>
@@ -6641,7 +6641,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!PI_FROM.Value</Value>
+                              <Value>=iif(Fields!PI_FROM.Value = "0" , "0.00", FormatNumber(Fields!PI_FROM.Value))</Value>
                               <Style>
                                 <FontFamily>Calibri</FontFamily>
                               </Style>
@@ -6786,7 +6786,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!PI_TO.Value</Value>
+                              <Value>=iif(Fields!PI_TO.Value = "0", "0.00", FormatNumber(Fields!PI_TO.Value))</Value>
                               <Style>
                                 <FontFamily>Calibri</FontFamily>
                               </Style>

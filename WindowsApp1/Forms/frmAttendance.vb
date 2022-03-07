@@ -1499,10 +1499,6 @@ Public Class frmAttendance
         End If
     End Sub
 
-    Private Sub AddDaysSavebtn_Click(sender As Object, e As EventArgs)
-
-    End Sub
-
     Private Sub Cancel_lbl_Click(sender As Object, e As EventArgs) Handles Cancel_lbl.Click
         AM_OT_NUP.Value = 0.0
     End Sub

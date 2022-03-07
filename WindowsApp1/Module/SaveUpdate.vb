@@ -831,12 +831,20 @@ Module SaveUpdate
                                 Dim first_Basic As Decimal = GetFirst_Basic(bioNo, paydate_)
                                 Dim monthly_Basic As Decimal = TotalBasic + first_Basic
 
-                                SSSComp = Get_SSS(monthly_Basic).EE
-                                SSS_ER = Get_SSS(monthly_Basic).ER
-                                SSS_EC = Get_SSS(monthly_Basic).EC
-                                PagibigComp = Get_Pagibig(monthly_Basic)
-                                PhilhealthComp = Get_PhilHealth(monthly_Basic)
+                                If ThisIsNotNull("SSSNO", $"PAYROLL_EMPLOYEE where BIO_NO = '{bioNo}' and SSSNO is not null") Then 'IF HAS SSSNO DETAILS
+                                    SSSComp = Get_SSS(monthly_Basic).EE
+                                    SSS_ER = Get_SSS(monthly_Basic).ER
+                                    SSS_EC = Get_SSS(monthly_Basic).EC
+                                End If
 
+                                If ThisIsNotNull("PAGIBIGNO", $"PAYROLL_EMPLOYEE where BIO_NO = '{bioNo}' and PAGIBIGNO is not null") Then PagibigComp = Get_Pagibig(monthly_Basic)
+                                If ThisIsNotNull("PHILHEALTHNO", $"PAYROLL_EMPLOYEE where BIO_NO = '{bioNo}' and PHILHEALTHNO is not null") Then PhilhealthComp = Get_PhilHealth(monthly_Basic)
+
+                                'SSSComp = Get_SSS(monthly_Basic).EE
+                                'SSS_ER = Get_SSS(monthly_Basic).ER
+                                'SSS_EC = Get_SSS(monthly_Basic).EC
+                                'PagibigComp = Get_Pagibig(monthly_Basic)
+                                'PhilhealthComp = Get_PhilHealth(monthly_Basic) 
                                 'sssLoan = Get_LOAN_SSS(bioNo)
                                 'pagibigLoan = Get_LOAN_Pagibig(bioNo)
 
@@ -1979,5 +1987,16 @@ Module SaveUpdate
         End Using
     End Sub
 
+    Friend Sub UpdatePAF_Status(PAF_NO As Integer)
+        Dim mysql As String = $"Select * from PAYROLL_PAF where PAF_NO='{PAF_NO}'"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAF")
+            If ds.Tables(0).Rows.Count > 0 Then
+                With ds.Tables(0).Rows(0)
+                    .Item("STATUS") = "APPROVE"
+                End With
+                SaveEntry(ds, False)
+            End If
+        End Using
+    End Sub
 
 End Module
