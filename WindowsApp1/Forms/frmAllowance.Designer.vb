@@ -23,15 +23,13 @@ Partial Class frmAllowance
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim ReportDataSource1 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Me.PAFBindingSource = New System.Windows.Forms.BindingSource(Me.components)
-        Me.Forms = New WindowsApp1.Forms()
+        Dim ReportDataSource2 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle12 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle11 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.Close_LBL = New System.Windows.Forms.Label()
         Me.Allowance_Tab = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
@@ -139,12 +137,6 @@ Partial Class frmAllowance
         Me.ApproveSearch_btn = New System.Windows.Forms.Button()
         Me.ApproveSearch_txt = New System.Windows.Forms.TextBox()
         Me.Approve_grid = New System.Windows.Forms.DataGridView()
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.Context_Allow = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.Edit_MenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.SampleDatabaseDataSet = New WindowsApp1.SampleDatabaseDataSet()
-        Me.UserManagementBindingSource = New System.Windows.Forms.BindingSource(Me.components)
-        Me.User_ManagementTableAdapter = New WindowsApp1.SampleDatabaseDataSetTableAdapters.User_ManagementTableAdapter()
         Me.Column1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Column2 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Column3 = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -153,8 +145,9 @@ Partial Class frmAllowance
         Me.Column6 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Column7 = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Status_Combo = New System.Windows.Forms.DataGridViewComboBoxColumn()
-        CType(Me.PAFBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.Forms, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.Context_Allow = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.Edit_MenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.Allowance_Tab.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.FlowLayoutPanel1.SuspendLayout()
@@ -164,19 +157,7 @@ Partial Class frmAllowance
         Me.TabPage2.SuspendLayout()
         CType(Me.Approve_grid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Context_Allow.SuspendLayout()
-        CType(Me.SampleDatabaseDataSet, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.UserManagementBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
-        '
-        'PAFBindingSource
-        '
-        Me.PAFBindingSource.DataMember = "PAF"
-        Me.PAFBindingSource.DataSource = Me.Forms
-        '
-        'Forms
-        '
-        Me.Forms.DataSetName = "Forms"
-        Me.Forms.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema
         '
         'Close_LBL
         '
@@ -988,7 +969,7 @@ Partial Class frmAllowance
         Me.SalesCharges_CB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.SalesCharges_CB.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.SalesCharges_CB.FormattingEnabled = True
-        Me.SalesCharges_CB.Items.AddRange(New Object() {"PERFORMANCE INCENTIVE", "MERIT INCREASE", "ADJUSTMENT", "OTHERS"})
+        Me.SalesCharges_CB.Items.AddRange(New Object() {"PERFORMANCE INCENTIVES", "MERIT INCREASE", "ADJUSTMENT", "OTHERS"})
         Me.SalesCharges_CB.Location = New System.Drawing.Point(137, 441)
         Me.SalesCharges_CB.Name = "SalesCharges_CB"
         Me.SalesCharges_CB.Size = New System.Drawing.Size(269, 30)
@@ -1247,9 +1228,9 @@ Partial Class frmAllowance
         '
         'rpt_Allowance
         '
-        ReportDataSource1.Name = "DataSet1"
-        ReportDataSource1.Value = Me.PAFBindingSource
-        Me.rpt_Allowance.LocalReport.DataSources.Add(ReportDataSource1)
+        ReportDataSource2.Name = "DataSet1"
+        ReportDataSource2.Value = Nothing
+        Me.rpt_Allowance.LocalReport.DataSources.Add(ReportDataSource2)
         Me.rpt_Allowance.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_PAF.rdlc"
         Me.rpt_Allowance.Location = New System.Drawing.Point(6, 6)
         Me.rpt_Allowance.Name = "rpt_Allowance"
@@ -1295,30 +1276,87 @@ Partial Class frmAllowance
         Me.Approve_grid.AllowUserToResizeRows = False
         Me.Approve_grid.BackgroundColor = System.Drawing.SystemColors.ButtonHighlight
         Me.Approve_grid.BorderStyle = System.Windows.Forms.BorderStyle.None
-        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle1.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.Approve_grid.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle7.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.Approve_grid.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle7
         Me.Approve_grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.Approve_grid.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Column1, Me.Column2, Me.Column3, Me.Column4, Me.Column5, Me.Column6, Me.Column7, Me.Status_Combo})
-        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle6.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.Approve_grid.DefaultCellStyle = DataGridViewCellStyle6
+        DataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle12.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle12.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.Approve_grid.DefaultCellStyle = DataGridViewCellStyle12
         Me.Approve_grid.Location = New System.Drawing.Point(5, 64)
+        Me.Approve_grid.MultiSelect = False
         Me.Approve_grid.Name = "Approve_grid"
         Me.Approve_grid.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
         Me.Approve_grid.RowHeadersVisible = False
+        Me.Approve_grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.Approve_grid.Size = New System.Drawing.Size(1140, 518)
         Me.Approve_grid.TabIndex = 0
+        '
+        'Column1
+        '
+        Me.Column1.Frozen = True
+        Me.Column1.HeaderText = "Fullname"
+        Me.Column1.Name = "Column1"
+        Me.Column1.Width = 260
+        '
+        'Column2
+        '
+        Me.Column2.HeaderText = "Salary Changes"
+        Me.Column2.Name = "Column2"
+        Me.Column2.Width = 170
+        '
+        'Column3
+        '
+        DataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.Column3.DefaultCellStyle = DataGridViewCellStyle8
+        Me.Column3.HeaderText = "Salary From"
+        Me.Column3.Name = "Column3"
+        Me.Column3.Width = 120
+        '
+        'Column4
+        '
+        DataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.Column4.DefaultCellStyle = DataGridViewCellStyle9
+        Me.Column4.HeaderText = "Salary To"
+        Me.Column4.Name = "Column4"
+        '
+        'Column5
+        '
+        DataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.Column5.DefaultCellStyle = DataGridViewCellStyle10
+        Me.Column5.HeaderText = "PI From"
+        Me.Column5.Name = "Column5"
+        '
+        'Column6
+        '
+        DataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.Column6.DefaultCellStyle = DataGridViewCellStyle11
+        Me.Column6.HeaderText = "PI To"
+        Me.Column6.Name = "Column6"
+        '
+        'Column7
+        '
+        Me.Column7.HeaderText = "Remarks"
+        Me.Column7.Name = "Column7"
+        Me.Column7.Width = 160
+        '
+        'Status_Combo
+        '
+        Me.Status_Combo.HeaderText = "Status"
+        Me.Status_Combo.MaxDropDownItems = 2
+        Me.Status_Combo.Name = "Status_Combo"
+        Me.Status_Combo.Width = 110
         '
         'Label1
         '
@@ -1342,74 +1380,6 @@ Partial Class frmAllowance
         Me.Edit_MenuItem.Size = New System.Drawing.Size(94, 22)
         Me.Edit_MenuItem.Text = "Edit"
         '
-        'SampleDatabaseDataSet
-        '
-        Me.SampleDatabaseDataSet.DataSetName = "SampleDatabaseDataSet"
-        Me.SampleDatabaseDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema
-        '
-        'UserManagementBindingSource
-        '
-        Me.UserManagementBindingSource.DataMember = "User_Management"
-        Me.UserManagementBindingSource.DataSource = Me.SampleDatabaseDataSet
-        '
-        'User_ManagementTableAdapter
-        '
-        Me.User_ManagementTableAdapter.ClearBeforeFill = True
-        '
-        'Column1
-        '
-        Me.Column1.HeaderText = "Fullname"
-        Me.Column1.Name = "Column1"
-        Me.Column1.Width = 260
-        '
-        'Column2
-        '
-        Me.Column2.HeaderText = "Salary Changes"
-        Me.Column2.Name = "Column2"
-        Me.Column2.Width = 170
-        '
-        'Column3
-        '
-        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.Column3.DefaultCellStyle = DataGridViewCellStyle2
-        Me.Column3.HeaderText = "Salary From"
-        Me.Column3.Name = "Column3"
-        Me.Column3.Width = 120
-        '
-        'Column4
-        '
-        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.Column4.DefaultCellStyle = DataGridViewCellStyle3
-        Me.Column4.HeaderText = "Salary To"
-        Me.Column4.Name = "Column4"
-        '
-        'Column5
-        '
-        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.Column5.DefaultCellStyle = DataGridViewCellStyle4
-        Me.Column5.HeaderText = "PI From"
-        Me.Column5.Name = "Column5"
-        '
-        'Column6
-        '
-        DataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.Column6.DefaultCellStyle = DataGridViewCellStyle5
-        Me.Column6.HeaderText = "PI To"
-        Me.Column6.Name = "Column6"
-        '
-        'Column7
-        '
-        Me.Column7.HeaderText = "Remarks"
-        Me.Column7.Name = "Column7"
-        Me.Column7.Width = 160
-        '
-        'Status_Combo
-        '
-        Me.Status_Combo.HeaderText = "Status"
-        Me.Status_Combo.MaxDropDownItems = 2
-        Me.Status_Combo.Name = "Status_Combo"
-        Me.Status_Combo.Width = 110
-        '
         'frmAllowance
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1421,8 +1391,6 @@ Partial Class frmAllowance
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Name = "frmAllowance"
         Me.Text = "frmAllowance"
-        CType(Me.PAFBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.Forms, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Allowance_Tab.ResumeLayout(False)
         Me.TabPage1.ResumeLayout(False)
         Me.TabPage1.PerformLayout()
@@ -1436,8 +1404,6 @@ Partial Class frmAllowance
         Me.TabPage2.PerformLayout()
         CType(Me.Approve_grid, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Context_Allow.ResumeLayout(False)
-        CType(Me.SampleDatabaseDataSet, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.UserManagementBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1480,8 +1446,6 @@ Partial Class frmAllowance
     Friend WithEvents Context_Allow As ContextMenuStrip
     Friend WithEvents Edit_MenuItem As ToolStripMenuItem
     Friend WithEvents rpt_Allowance As Microsoft.Reporting.WinForms.ReportViewer
-    Friend WithEvents PAFBindingSource As BindingSource
-    Friend WithEvents Forms As Forms
     Friend WithEvents Panel1 As Panel
     Friend WithEvents SearchEMP_BTN As Button
     Friend WithEvents Label3 As Label
@@ -1552,9 +1516,6 @@ Partial Class frmAllowance
     Friend WithEvents Label39 As Label
     Friend WithEvents DeptFrom_txt As TextBox
     Friend WithEvents Label40 As Label
-    Friend WithEvents SampleDatabaseDataSet As SampleDatabaseDataSet
-    Friend WithEvents UserManagementBindingSource As BindingSource
-    Friend WithEvents User_ManagementTableAdapter As SampleDatabaseDataSetTableAdapters.User_ManagementTableAdapter
     Friend WithEvents Approve_grid As DataGridView
     Friend WithEvents ApproveSearch_btn As Button
     Friend WithEvents ApproveSearch_txt As TextBox

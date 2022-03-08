@@ -840,16 +840,8 @@ Module SaveUpdate
                                 If ThisIsNotNull("PAGIBIGNO", $"PAYROLL_EMPLOYEE where BIO_NO = '{bioNo}' and PAGIBIGNO is not null") Then PagibigComp = Get_Pagibig(monthly_Basic)
                                 If ThisIsNotNull("PHILHEALTHNO", $"PAYROLL_EMPLOYEE where BIO_NO = '{bioNo}' and PHILHEALTHNO is not null") Then PhilhealthComp = Get_PhilHealth(monthly_Basic)
 
-                                'SSSComp = Get_SSS(monthly_Basic).EE
-                                'SSS_ER = Get_SSS(monthly_Basic).ER
-                                'SSS_EC = Get_SSS(monthly_Basic).EC
-                                'PagibigComp = Get_Pagibig(monthly_Basic)
-                                'PhilhealthComp = Get_PhilHealth(monthly_Basic) 
-                                'sssLoan = Get_LOAN_SSS(bioNo)
-                                'pagibigLoan = Get_LOAN_Pagibig(bioNo)
-
-                                sched = "CLOSE PAYROLL"
                             End If
+                            sched = "CLOSE PAYROLL"
                         Else
                             sched = "OPEN PAYROLL"
                         End If
@@ -870,11 +862,11 @@ Module SaveUpdate
                         Save_Recorded_Allow_Deduc(bioNo, paydate_, "ECOLA", Ecola, "ALLOWANCE")
                     End If
 
-                    If paydate_ = "12/15/2021" Then ' FOR 13 MONTH DECEMBER 15 ONLY =============== 
-                        Dim Month13 As Decimal = Get_13Month(bioNo)
-                        Allowances = Allowances + Month13
-                        Save_Recorded_Allow_Deduc(bioNo, paydate_, "13th Month Pay", Month13, "ALLOWANCE")
-                    End If
+                    'If paydate_ = "12/15/2021" Then ' FOR 13 MONTH DECEMBER 15 ONLY =============== 
+                    '    Dim Month13 As Decimal = Get_13Month(bioNo)
+                    '    Allowances = Allowances + Month13
+                    '    Save_Recorded_Allow_Deduc(bioNo, paydate_, "13th Month Pay", Month13, "ALLOWANCE")
+                    'End If
 
                     '============================================= OTHER ALLOWANCES =========================================================
                     Dim sql_2 As String = $"Select * From PAYROLL_ALLOWANCES WHERE BIOMETRIC_NO = '{bioNo}' and ALLOWED = 'YES' and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
@@ -1259,10 +1251,8 @@ Module SaveUpdate
 
                     MsgBox("Successfully Saved!", MsgBoxStyle.Information, "Information")
                 End Using
-
             End If
         End Using
-
     End Sub
 
     Friend Sub Save_Loans(idx As String, BIO_NO As String, CATEGORY As String, principal As String, AMORT As String, DATEE As String)
@@ -1916,7 +1906,7 @@ Module SaveUpdate
                        DEPARTMENT As String, JOB_LEVEL As String,
                        S_WAGE_FROM As String, S_EFFECT_FROM As String,
                        S_WAGE_TO As String, S_EFFECT_TO As String,
-                       PI_FROM As String, PI_EFFECT_FROM As String,
+                       PI_FROM As String, PI_EFFECT_FROM As String, PI_SchedFrom As String,
                        PI_TO As String, PI_EFFECT_TO As String, PI_SCHEd_TO As String,
                        REMARKS As String)
 
@@ -1944,6 +1934,7 @@ Module SaveUpdate
                     If PI_TO <> Nothing Then .Item("PI_TO") = PI_TO
                     If PI_EFFECT_TO <> "1/1/1990" Then .Item("PI_EFFECT_TO") = PI_EFFECT_TO
 
+                    .Item("PI_SCHED_FROM") = PI_SchedFrom
                     .Item("PI_SCHED_TO") = PI_SCHEd_TO
                     .Item("REMARKS") = REMARKS
                 End With
@@ -1975,6 +1966,7 @@ Module SaveUpdate
                         If PI_TO <> Nothing Then .Item("PI_TO") = PI_TO
                         If PI_EFFECT_TO <> "1/1/1990" Then .Item("PI_EFFECT_TO") = PI_EFFECT_TO
 
+                        .Item("PI_SCHED_FROM") = PI_SchedFrom
                         .Item("PI_SCHED_TO") = PI_SCHEd_TO
                         .Item("REMARKS") = REMARKS
                     End With
@@ -1987,16 +1979,106 @@ Module SaveUpdate
         End Using
     End Sub
 
-    Friend Sub UpdatePAF_Status(PAF_NO As Integer)
+    Friend Sub UpdatePAF_Status(PAF_NO As Integer, status As String)
+        Dim bioNo, namee, allowed As String
+
         Dim mysql As String = $"Select * from PAYROLL_PAF where PAF_NO='{PAF_NO}'"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAF")
             If ds.Tables(0).Rows.Count > 0 Then
                 With ds.Tables(0).Rows(0)
-                    .Item("STATUS") = "APPROVE"
+
+                    bioNo = .Item("BIO_NO")
+                    namee = GetData("FULLNAME", $"PAYROLL_EMPLOYEE where BIO_NO='{ .Item("BIO_NO")}'")
+
+                    If status = "APPROVE" Then
+                        .Item("STATUS") = status
+                        allowed = "YES"
+                    Else
+                        .Item("STATUS") = DBNull.Value
+                        allowed = "NO"
+                    End If
+
                 End With
                 SaveEntry(ds, False)
+
+                SaveLogs($"UPDATED PAF - {namee} ({bioNo}), PAF_NO({PAF_NO}), Status({status})", frmMainForm.UserName_LBL.Text)
+
+                FromPAF(PAF_NO, allowed)
             End If
         End Using
+    End Sub
+
+    Friend Sub FromPAF(PAF_NO As Integer, allowed As String)
+        Dim mysql As String = $"Select * from PAYROLL_PAF where PAF_NO ='{PAF_NO}'"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAF")
+            If ds.Tables(0).Rows.Count > 0 Then
+                With ds.Tables(0).Rows(0)
+
+                    Dim bioNo As String = .Item("BIO_NO")
+                    Dim schedule As String = "EVERY PAYROLL"
+
+                    Dim namee As String = GetData("FULLNAME", $"PAYROLL_EMPLOYEE where BIO_NO='{bioNo}'")
+
+                    If .Item("SALARY_CHANGES") = "PERFORMANCE INCENTIVES" Then
+
+                        If .Item("PI_SCHED_TO") = "every 15th of the month" Then
+                            schedule = "OPEN PAYROLL"
+                        ElseIf .Item("PI_SCHED_TO") = "every 30th of the month" Then
+                            schedule = "CLOSE PAYROLL"
+                        End If
+
+                        UpdateAllowance_PAF(bioNo, .Item("SALARY_CHANGES"), .Item("PI_TO"), schedule, .Item("PI_EFFECT_TO"), allowed)
+
+                        SaveLogs($"ADDED/UPDATED ALLOWANCE - {namee} ({bioNo}), SALARY_CHANGES(PERFORMANCE INCENTIVES), PI_TO({ .Item("PI_TO")}), Schedule({schedule}), 
+                                Effectivity({ .Item("PI_EFFECT_TO")}), Allowed({allowed})", frmMainForm.UserName_LBL.Text)
+                    End If
+
+                End With
+            End If
+        End Using
+    End Sub
+
+    Friend Sub UpdateAllowance_PAF(bioNo As String, category As String, amount As String, SCHEDULE As String, EFFECTIVE_DATE As String, ALLOWED As String)
+        Dim mysql As String
+
+        mysql = $"Select * From PAYROLL_ALLOWANCES WHERE BIOMETRIC_NO = '{bioNo}' and CATEGORY='PERFORMANCE INCENTIVES' and SCHEDULE='{SCHEDULE}'"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ALLOWANCES")
+            If ds.Tables(0).Rows.Count > 0 Then
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+                        .Item("category") = category
+                        .Item("AMOUNT") = amount
+                        .Item("fix") = "NO"
+                        .Item("SCHEDULE") = SCHEDULE
+                        .Item("EFFECTIVE_DATE") = EFFECTIVE_DATE
+                        .Item("ALLOWED") = ALLOWED
+                    End With
+                    SaveEntry(ds, False)
+                Next
+            Else
+
+                mysql = "Select * From PAYROLL_ALLOWANCES Rows 1"
+                Using dss As DataSet = LoadSQL(mysql, "PAYROLL_ALLOWANCES")
+
+                    Dim dsNewRow As DataRow = dss.Tables(0).NewRow
+                    With dsNewRow
+
+                        .Item("BIOMETRIC_NO") = bioNo
+                        .Item("category") = category
+                        .Item("AMOUNT") = amount
+                        .Item("fix") = "NO"
+                        .Item("SCHEDULE") = SCHEDULE
+                        .Item("EFFECTIVE_DATE") = EFFECTIVE_DATE
+                        .Item("ALLOWED") = ALLOWED
+
+                    End With
+                    dss.Tables(0).Rows.Add(dsNewRow)
+                    SaveEntry(dss)
+                End Using
+
+            End If
+        End Using
+
     End Sub
 
 End Module

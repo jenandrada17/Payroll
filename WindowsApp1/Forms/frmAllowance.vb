@@ -296,7 +296,9 @@
     End Sub
 
     Private Sub BiometricID_TXT_TextChanged(sender As Object, e As EventArgs) Handles BiometricID_TXT.TextChanged
-        GetInfo_Form(BiometricID_TXT.Text, Name_TXT, EmpNo_txt, Address_txt, Bdate_txt, DateHire_txt, SSS_txt, TIN_txt, PIFrom_txt, PIEffectFrom_dtp, PI_SchedFrom_CB, JobTitleFrom_txt, SalaryFrom_txt)
+        If BiometricID_TXT.Text <> Nothing Then
+            GetInfo_Form(BiometricID_TXT.Text, Name_TXT, EmpNo_txt, Address_txt, Bdate_txt, DateHire_txt, SSS_txt, TIN_txt, PIFrom_txt, PIEffectFrom_dtp, PI_SchedFrom_CB, JobTitleFrom_txt, SalaryFrom_txt)
+        End If
     End Sub
 
     Private Sub SalaryFrom_txt_KeyPress(sender As Object, e As KeyPressEventArgs) Handles SalaryTo_txt.KeyPress, SalaryFrom_txt.KeyPress, PITo_txt.KeyPress, PIFrom_txt.KeyPress
@@ -314,10 +316,18 @@
                        DeptFrom_txt.Text, JobLevelFrom_txt.Text,
                        SalaryFrom_txt.Text, SalryEffectFrom_dtp.Value,
                        SalaryTo_txt.Text, SalryEffectTo_dtp.Value,
-                       PIFrom_txt.Text, PIEffectFrom_dtp.Value,
-                       PITo_txt.Text, PIEffectTo_dtp.Value,
-                       PI_SchedTo_CB.Text, Remarks_txt.Text)
+                       PIFrom_txt.Text, PIEffectFrom_dtp.Value, PI_SchedFrom_CB.Text,
+                       PITo_txt.Text, PIEffectTo_dtp.Value, PI_SchedTo_CB.Text,
+                       Remarks_txt.Text)
 
+            SaveLogs($"ADDED PAF- {Name_TXT.Text} ({BiometricID_TXT.Text}), Marital({Marital_CB.Text}), Employment({Employment_CB.Text}), Sales Charges({SalesCharges_CB.Text}), 
+                    Department({DeptFrom_txt.Text}), Job Level({JobLevelFrom_txt.Text}), Salary_Wage_From({SalaryFrom_txt.Text}), Salary_Wage_From_Effectivity({SalryEffectTo_dtp.Value}), 
+                    Salary_Wage_To({SalaryTo_txt.Text}), Salary_Wage_From_Effectivity({SalryEffectTo_dtp.Value}),
+                    PI_From({PIFrom_txt.Text}), PI_From_Effectivity({PIEffectFrom_dtp.Value}), PI_From_Schedule({PI_SchedFrom_CB.Text}) 
+                    PI_To({PITo_txt.Text}), PI_To_Effectivity({PIEffectTo_dtp.Value}), PI_To_Schedule({PI_SchedTo_CB.Text}), 
+                    Remarks({Remarks_txt.Text})", frmMainForm.UserName_LBL.Text)
+
+            F_Calcel_btn.PerformClick()
         End If
     End Sub
 
@@ -331,10 +341,56 @@
     End Sub
 
     Private Sub Approve_grid_EditingControlShowing(sender As Object, e As DataGridViewEditingControlShowingEventArgs) Handles Approve_grid.EditingControlShowing
-        Dim row As DataGridViewRow = Approve_grid.Rows(Approve_grid.CurrentRow.Index)
-        If Status_Combo.Selected = "APPROVE" Then
-            UpdatePAF_Status(row.Cells(0).Tag)
+        If Approve_grid.CurrentCell.ColumnIndex = 7 Then
+            Dim combo As ComboBox = CType(e.Control, ComboBox)
+
+            If (combo IsNot Nothing) Then
+                RemoveHandler combo.SelectionChangeCommitted, New EventHandler(AddressOf StatusComboBox_SelectionChangeCommitted)
+
+                AddHandler combo.SelectionChangeCommitted, New EventHandler(AddressOf StatusComboBox_SelectionChangeCommitted)
+            End If
         End If
     End Sub
 
+    Private Sub StatusComboBox_SelectionChangeCommitted(ByVal sender As Object, ByVal e As System.EventArgs)
+        Dim combo = CType(sender, ComboBox)
+        If combo.SelectedIndex >= 0 Then
+            Dim result As DialogResult = MsgBox("Are you sure you want to update record?", MsgBoxStyle.YesNo)
+            If result = DialogResult.Yes Then
+                Dim row As DataGridViewRow = Approve_grid.Rows(Approve_grid.CurrentRow.Index)
+                UpdatePAF_Status(row.Cells(0).Tag, combo.Text)
+            End If
+            ListOF_PAF(Approve_grid)
+        End If
+    End Sub
+
+    Private Sub F_Calcel_btn_Click(sender As Object, e As EventArgs) Handles F_Calcel_btn.Click
+        rpt_Allowance.Clear()
+        BiometricID_TXT.Clear()
+        Name_TXT.Clear()
+        EmpNo_txt.Clear()
+        Address_txt.Clear()
+        Bdate_txt.Clear()
+        DateHire_txt.Clear()
+        SSS_txt.Clear()
+        TIN_txt.Clear()
+        Gender_CB.SelectedIndex = -1
+        Marital_CB.SelectedIndex = -1
+        Employment_CB.SelectedIndex = -1
+        SalesCharges_CB.SelectedIndex = -1
+        CompanyFrom_txt.Clear()
+        DeptFrom_txt.Clear()
+        JobTitleFrom_txt.Clear()
+        JobLevelFrom_txt.Clear()
+        SalaryFrom_txt.Clear()
+        SalryEffectFrom_dtp.Value = "1/1/1990"
+        SalaryTo_txt.Clear()
+        SalryEffectTo_dtp.Value = "1/1/1990"
+        PIFrom_txt.Clear()
+        PIEffectFrom_dtp.Value = "1/1/1990"
+        PI_SchedFrom_CB.SelectedIndex = -1
+        PITo_txt.Clear()
+        PIEffectTo_dtp.Value = "1/1/1990"
+        PI_SchedTo_CB.SelectedIndex = -1
+    End Sub
 End Class

@@ -111,17 +111,9 @@ Public Class frmPayout
                         Dim monthly_Basic As Double = GetMonthly_Basic(BIO_NO, paydate_)
                         Prev_Amount_lbl.Text = (GetFirst_Basic(BIO_NO, paydate_)).ToString("N")
 
-                        SSSComp_LBL.Text = (Get_SSS(monthly_Basic).EE).ToString("N")
-                        SSS_ER = Get_SSS(monthly_Basic).EE
-                        SSS_EC = Get_SSS(monthly_Basic).EC
-                        HDMF_LBL.Text = (Get_Pagibig(monthly_Basic)).ToString("N")
-                        Philhealth_LBL.Text = (Get_PhilHealth(monthly_Basic)).ToString("N")
+                        Benifits(BIO_NO, monthly_Basic)
 
                         Previous_groupB.Visible = True
-
-                        'SSSLoan_LBL.Text = (Get_LOAN_SSS(BIO_NO)).ToString("N")
-                        'PagibigLoan_LBL.Text = (Get_LOAN_Pagibig(BIO_NO)).ToString("N") 
-                        'Remittance_LBL.Text = (CDbl(SSSComp_LBL.Text) + CDbl(HDMF_LBL.Text) + CDbl(Philhealth_LBL.Text) + CDbl(SSSLoan_LBL.Text) + CDbl(PagibigLoan_LBL.Text)).ToString(”N”)
 
                         Remittance_LBL.Text = (CDbl(SSSComp_LBL.Text) + CDbl(HDMF_LBL.Text) + CDbl(Philhealth_LBL.Text)).ToString(”N”)
 
@@ -132,8 +124,6 @@ Public Class frmPayout
                     SSSComp_LBL.Text = Zeroo
                     HDMF_LBL.Text = Zeroo
                     Philhealth_LBL.Text = Zeroo
-                    'SSSLoan_LBL.Text = Zeroo
-                    'PagibigLoan_LBL.Text = Zeroo
                     Previous_groupB.Visible = False
                     Remittance_LBL.Text = Zeroo
 
@@ -143,8 +133,6 @@ Public Class frmPayout
                 SSSComp_LBL.Text = Zeroo
                 HDMF_LBL.Text = Zeroo
                 Philhealth_LBL.Text = Zeroo
-                'SSSLoan_LBL.Text = Zeroo
-                'PagibigLoan_LBL.Text = Zeroo
                 Remittance_LBL.Text = Zeroo
                 Training_GB.Visible = True
             End If
@@ -209,7 +197,29 @@ Public Class frmPayout
         End If
     End Sub
 
+    Private Sub Benifits(BIO_NO As String, monthly_Basic As Double)
 
+        If ThisIsNotNull("SSSNO", $"PAYROLL_EMPLOYEE where BIO_NO = '{BIO_NO}' and SSSNO is not null") Then 'IF HAS SSSNO DETAILS
+            SSSComp_LBL.Text = (Get_SSS(monthly_Basic).EE).ToString("N")
+            SSS_ER = Get_SSS(monthly_Basic).EE
+            SSS_EC = Get_SSS(monthly_Basic).EC
+        Else
+            SSSComp_LBL.Text = Zeroo
+        End If
+
+        If ThisIsNotNull("PAGIBIGNO", $"PAYROLL_EMPLOYEE where BIO_NO = '{BIO_NO}' and PAGIBIGNO is not null") Then
+            HDMF_LBL.Text = (Get_Pagibig(monthly_Basic)).ToString("N")
+        Else
+            HDMF_LBL.Text = Zeroo
+        End If
+
+        If ThisIsNotNull("PHILHEALTHNO", $"PAYROLL_EMPLOYEE where BIO_NO = '{BIO_NO}' and PHILHEALTHNO is not null") Then
+            Philhealth_LBL.Text = (Get_PhilHealth(monthly_Basic)).ToString("N")
+        Else
+            Philhealth_LBL.Text = Zeroo
+        End If
+
+    End Sub
     Private Sub Checkgrid_Visible() ' ============== Allowance and Deduction
 
         '========================== Check if allowance grid has rows ===================== 
