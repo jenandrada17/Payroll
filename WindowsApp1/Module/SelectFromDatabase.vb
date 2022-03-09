@@ -444,7 +444,7 @@ Module SelectFromDatabase
     Friend Sub AttendanceDetails(biometric As String, paydate As String, NoOfDays_TXT As TextBox, RegularOT_TXT As TextBox,
                              SpecialHol_TXT As TextBox, RegularHol_TXT As TextBox, Late_TXT As TextBox,
                              UnderTime_TXT As TextBox, TrainingDays_LBL As Label, NightTime_TXT As TextBox,
-                             TrainingOT_LBL As Label, TrainningLate_LBL As Label, TrainingUT_LBL As Label)
+                             TrainingOT_LBL As Label, TrainningLate_LBL As Label, TrainingUT_LBL As Label, TrainingSHol_LBL As Label)
 
         Dim mysql As String = $"Select * From PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{biometric}' and paydate = '{paydate}'"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
@@ -458,7 +458,7 @@ Module SelectFromDatabase
                     RegularOT_TXT.Text = .Item("OVERTIME")
                     RegularHol_TXT.Text = .Item("REGHOLIDAY")
                     RegularHol_TXT.Tag = IIf(IsDBNull(.Item("TRAINING_REGHOLIDAY")), 0, .Item("TRAINING_REGHOLIDAY"))
-                    SpecialHol_TXT.Text = .Item("SPECHOLIDAY")
+                    SpecialHol_TXT.Text = IIf(IsDBNull(.Item("SPECHOLIDAY_HRS")), 0, .Item("SPECHOLIDAY_HRS"))
                     SpecialHol_TXT.Tag = IIf(IsDBNull(.Item("TRAINING_SPECHOLIDAY")), 0, .Item("TRAINING_SPECHOLIDAY"))
                     Late_TXT.Text = .Item("LATE")
                     UnderTime_TXT.Text = .Item("UNDERTIME")
@@ -469,6 +469,7 @@ Module SelectFromDatabase
                     TrainingOT_LBL.Text = IIf(IsDBNull(.Item("TRAINING_OVERTIME")), 0, .Item("TRAINING_OVERTIME"))
                     TrainningLate_LBL.Text = IIf(IsDBNull(.Item("TRAINING_LATE")), 0, .Item("TRAINING_LATE"))
                     TrainingUT_LBL.Text = IIf(IsDBNull(.Item("TRAINING_UNDERTIME")), 0, .Item("TRAINING_UNDERTIME"))
+                    TrainingSHol_LBL.Text = IIf(IsDBNull(.Item("TRAINING_SPECHOLIDAY")), 0, .Item("TRAINING_SPECHOLIDAY"))
                 End With
             End If
         End Using
@@ -2385,6 +2386,45 @@ Module SelectFromDatabase
         Return late_count
     End Function
 
+    Public Function Calculate_Training_SpecHoliday(BIO_NO As String, PAYDATE As String, datee As String) As Double
+
+        Dim specHoliday_hrs As Double = 0
+        Dim mysql As String = $"Select * From BIOMETRIC_DTR where BIO_ID = '{BIO_NO}' AND PAYDATE = '{PAYDATE}' and DATE_ONLY = '{datee}'"
+        Using dss As DataSet = LoadSQL(mysql, "BIOMETRIC_DTR")
+            If dss.Tables(0).Rows.Count > 0 Then
+                Dim data As DataRow = dss.Tables(0).Rows(0)
+                With data
+
+                    Dim list_ As New List(Of String)
+                    list_.Add(IIf(IsDBNull(.Item("AM_IN")), "", .Item("AM_IN")))
+                    list_.Add(IIf(IsDBNull(.Item("AM_OUT")), "", .Item("AM_OUT")))
+                    list_.Add(IIf(IsDBNull(.Item("PM_IN")), "", .Item("PM_IN")))
+                    list_.Add(IIf(IsDBNull(.Item("PM_OUT")), "", .Item("PM_OUT")))
+                    list_ = list_.Where(Function(s) Not String.IsNullOrEmpty(s)).ToList()
+
+                    specHoliday_hrs = GetSpecial_hrs(list_.First, list_.Last)
+                End With
+            End If
+        End Using
+
+        Return specHoliday_hrs
+    End Function
+
+    Friend Function GetSpecial_hrs(inn As String, outt As String) As Double
+        Dim specHoliday_hrs = 0, tot_hrs As Double = 0
+
+        Dim hrs As TimeSpan = DateTime.Parse(outt).Subtract(DateTime.Parse(inn))
+        tot_hrs = hrs.Hours
+
+        If tot_hrs > 4 Then
+            tot_hrs = tot_hrs - 1
+        End If
+
+        specHoliday_hrs = tot_hrs
+
+        Return specHoliday_hrs
+    End Function
+
     Friend Sub Lists_TimeInOut(listview As ListView, Optional searchName As String = "")
 
         Dim secured_str As String = searchName
@@ -2729,7 +2769,6 @@ Module SelectFromDatabase
 
         Return TOTALS
     End Function
-
 
     Public Sub GetAllowance_Details(idNo As Integer, Allow_Name_TXT As TextBox, Allow_Category_Combo As ComboBox, Allow_Schedule_Combo As ComboBox, A_EveryDate_Combo As ComboBox, Allow_Amount_TXT As TextBox, A_EffectiveDate_DTP As DateTimePicker, FixYes_RadioB As RadioButton, FixNo_RadioB As RadioButton)
         Dim mysql_ As String = $"Select * From PAYROLL_ALLOWANCES A inner join PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRIC_NO where A.ID = '{idNo}'"

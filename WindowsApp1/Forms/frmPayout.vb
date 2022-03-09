@@ -91,7 +91,7 @@ Public Class frmPayout
 
             AttendanceDetails(BIO_NO, paydate_, NoOfDays_TXT, RegularOT_TXT, SpecialHol_TXT, RegularHol_TXT,
                                         Late_TXT, UnderTime_TXT, TrainingDays_LBL, NightTime_TXT,
-                                        TrainingOT_LBL, TrainningLate_LBL, TrainingUT_LBL)
+                                        TrainingOT_LBL, TrainningLate_LBL, TrainingUT_LBL, TrainingSHol_LBL)
 
             If RateFixYes_RB.Checked = True Then
                 RegularOT_TXT.Text = 0
@@ -101,6 +101,7 @@ Public Class frmPayout
                 UnderTime_TXT.Text = 0
                 NightTime_TXT.Text = 0
             End If
+
             '============================ CHECK IF NOT TRAINEE ==================================  
             If TrainingDays_LBL.Text = 0 Or TrainingDays_LBL.Text = Nothing Then
                 Training_GB.Visible = False
@@ -416,8 +417,7 @@ Public Class frmPayout
 
     Private Sub Calculate_Gross()
 
-        If TrainingDays_LBL.Text <> 0 Then '================ BASE ON TRAINING DAYS COVERED =================
-
+        If TrainingDays_LBL.Text <> 0 Then '================ BASE ON TRAINING DAYS COVERED ================= 
             Dim rate As Decimal = Rate_TXT.Text
             Dim deduct_per_day As Decimal = 0
             Dim total_train As Decimal = 0
@@ -431,10 +431,10 @@ Public Class frmPayout
             Dim SpecialHol As Integer = CInt(SpecialHol_TXT.Text) - CInt(SpecialHol_TXT.Tag)
 
             Dim REG_STANDARD As Decimal = (RegularHol * CDec(Rate_TXT.Text)) * regHoliday_
-            Dim SPEC_STANDARD As Decimal = (SpecialHol * CDec(Rate_TXT.Text)) * specHoliday_
+            Dim SPEC_STANDARD As Decimal = ((SpecialHol / 8) * CDec(Rate_TXT.Text)) * specHoliday_
 
             Dim REG_TRAINEE As Decimal = (CDbl(RegularHol_TXT.Tag) * rate) * regHoliday_
-            Dim SPEC_TRAINEE As Decimal = (CDbl(SpecialHol_TXT.Tag) * rate) * specHoliday_
+            Dim SPEC_TRAINEE As Decimal = ((CDbl(SpecialHol_TXT.Tag) / 8) * rate) * specHoliday_
 
             TotalHol_LBL.Text = FormatNumber(REG_STANDARD + REG_TRAINEE + SPEC_STANDARD + SPEC_TRAINEE)
             TotalHol_LBL.Tag = REG_STANDARD + REG_TRAINEE + SPEC_STANDARD + SPEC_TRAINEE
@@ -478,8 +478,8 @@ Public Class frmPayout
             TotalBasic_LBL.Text = FormatNumber(CDbl(NoOfDays_TXT.Text) * RATEE)
             TotalBasic_LBL.Tag = CDbl(NoOfDays_TXT.Text) * RATEE
 
-            TotalHol_LBL.Text = FormatNumber(((CDbl(SpecialHol_TXT.Text) * RATEE) * specHoliday_) + ((CDbl(RegularHol_TXT.Text) * RATEE) * regHoliday_))
-            TotalHol_LBL.Tag = ((CInt(SpecialHol_TXT.Text) * RATEE) * specHoliday_) + ((CInt(RegularHol_TXT.Text) * RATEE) * regHoliday_)
+            TotalHol_LBL.Text = FormatNumber((((CDbl(SpecialHol_TXT.Text) / 8) * RATEE) * specHoliday_) + ((CDbl(RegularHol_TXT.Text) * RATEE) * regHoliday_))
+            TotalHol_LBL.Tag = (((CInt(SpecialHol_TXT.Text) / 8) * RATEE) * specHoliday_) + ((CInt(RegularHol_TXT.Text) * RATEE) * regHoliday_)
 
             TotalOT_LBL.Text = FormatNumber(((CDbl(Rate_TXT.Text) / 8) * 1.25) * CDbl(RegularOT_TXT.Text))
             TotalOT_LBL.Tag = ((CDbl(Rate_TXT.Text) / 8) * 1.25) * CDbl(RegularOT_TXT.Text)
@@ -1069,14 +1069,9 @@ Public Class frmPayout
                 .Columns.Add("SSS_COMP")
                 .Columns.Add("PAGIBIG_COMP")
                 .Columns.Add("PHILHEALTH_COMP")
-                '.Columns.Add("TAX_WHELD")
-                '.Columns.Add("SSS_LOAN")
-                '.Columns.Add("PAGIBIG_LOAN")
                 .Columns.Add("NET_PAY")
                 .Columns.Add("TOTAL_DEDUCTION")
                 .Columns.Add("present_hours")
-                '.Columns.Add("SSS_LOAN_BALANCE")
-                '.Columns.Add("PAGIBIG_LOAN_BALANCE")
             End With
 
             Dim PRESENT_DAYS As String = ""
@@ -1090,6 +1085,7 @@ Public Class frmPayout
             Dim SSS_LOAN_BALANCE As Decimal = 0
             Dim PAGIBIG_LOAN_BALANCE As Decimal = 0
             Dim total_Allowance As Double = 0
+            Dim SPECHOLIDAY_HRS As Double = 0
 
             Dim _mysql As String = $"select * from payroll_attendance where BIOMETRICID = '{biometricID}' and paydate = '{paydatee}';"
             Using ds As DataSet = LoadSQL(_mysql, "payroll_attendance")
@@ -1104,6 +1100,7 @@ Public Class frmPayout
                         SPECHOLIDAY = .Item("SPECHOLIDAY")
                         OVERTIME = .Item("OVERTIME")
                         LATE_UNDERTIME = CInt(.Item("LATE")) + CInt(.Item("UNDERTIME"))
+                        SPECHOLIDAY_HRS = IIf(IsDBNull(.Item("SPECHOLIDAY_HRS")), 0, .Item("SPECHOLIDAY_HRS"))
 
                     End With
                 End If
@@ -1126,13 +1123,6 @@ Public Class frmPayout
                                         CDbl(.Item("GROSS_AMOUNT")).ToString("N"), CDbl(.Item("SSS_COMP")).ToString("N"), CDbl(.Item("PAGIBIG_COMP")).ToString("N"),
                                         CDbl(.Item("PHILHEALTH_COMP")).ToString("N"), CDbl(.Item("NET_PAY")).ToString("N"), TOTAL_COMP.ToString("N"),
                                         present_hours)
-
-                        'dt_attendance.Rows.Add(PRESENT_DAYS, OVERTIME, REGHOLIDAY, SPECHOLIDAY, CDbl(.Item("TOTAL_LATE_UT")).ToString("N"),
-                        '                CDbl(.Item("TOTAL_BASIC")).ToString("N"), CDbl(.Item("TOTAL_OVERTIME")).ToString("N"), LATE_UNDERTIME,
-                        '                CDbl(.Item("GROSS_AMOUNT")).ToString("N"), CDbl(.Item("SSS_COMP")).ToString("N"), CDbl(.Item("PAGIBIG_COMP")).ToString("N"),
-                        '                CDbl(.Item("PHILHEALTH_COMP")).ToString("N"), CDbl(.Item("SSS_LOAN")).ToString("N"),
-                        '                CDbl(.Item("PAGIBIG_LOAN")).ToString("N"), CDbl(.Item("NET_PAY")).ToString("N"), TOTAL_COMP.ToString("N"),
-                        '                present_hours, SSS_LOAN_BALANCE.ToString("N"), PAGIBIG_LOAN_BALANCE.ToString("N"))
 
                     End With
                 End If
@@ -1234,7 +1224,7 @@ Public Class frmPayout
             New Microsoft.Reporting.WinForms.ReportParameter("paramRegRate", TOTAL_REGHOLIDAY.ToString(”N”)),
             New Microsoft.Reporting.WinForms.ReportParameter("paramSpecRate", TOTAL_SPECHOLIDAY.ToString(”N”)),
             New Microsoft.Reporting.WinForms.ReportParameter("paramRegHours", reg_hrs),
-            New Microsoft.Reporting.WinForms.ReportParameter("paramSpecHours", spec_hrs),
+            New Microsoft.Reporting.WinForms.ReportParameter("paramSpecHours", SPECHOLIDAY_HRS),
             New Microsoft.Reporting.WinForms.ReportParameter("paramDate", date_pay)
             }
 

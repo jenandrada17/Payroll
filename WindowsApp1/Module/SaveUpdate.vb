@@ -40,8 +40,10 @@ Module SaveUpdate
         RunCommand("DELETE FROM PAYROLL_HOLIDAY WHERE DATEE = '" & datee & "'")
     End Sub
 
+
     Friend Sub SaveAttendanceEE(biometric As Integer, paydate As String, days As String, overTime As String, late_total As String,
-                                      under_total As String, regHoliday As String, specHoliday As String, Optional SIL As Double = 0, Optional MORNING_OT As String = "", Optional NIGHT_RATE As String = "")
+                                      under_total As String, regHoliday As String, specHoliday As String, specHoliday_hrs As Double, Optional SIL As Double = 0,
+                                        Optional MORNING_OT As String = "", Optional NIGHT_RATE As String = "")
 
         Dim mysql As String
 
@@ -63,9 +65,7 @@ Module SaveUpdate
                     .Item("TRAINING_DAYS") = 0
                     .Item("TRAINING_REGHOLIDAY") = 0
                     .Item("TRAINING_SPECHOLIDAY") = 0
-                    '.Item("TRAINING_OVERTIME") = 0
-                    '.Item("TRAINING_LATE") = 0
-                    '.Item("TRAINING_UNDERTIME") = 0
+                    .Item("SPECHOLIDAY_HRS") = specHoliday_hrs ' ==== SPECIAL HOLIDAY COVERED HOURS
 
                     If NIGHT_RATE <> Nothing Then
                         .Item("NIGHT_RATE") = NIGHT_RATE
@@ -98,9 +98,7 @@ Module SaveUpdate
                     .Item("TRAINING_DAYS") = 0
                     .Item("TRAINING_REGHOLIDAY") = 0
                     .Item("TRAINING_SPECHOLIDAY") = 0
-                    '.Item("TRAINING_OVERTIME") = 0
-                    '.Item("TRAINING_LATE") = 0
-                    '.Item("TRAINING_UNDERTIME") = 0
+                    .Item("SPECHOLIDAY_HRS") = specHoliday_hrs ' ==== SPECIAL HOLIDAY COVERED HOURS
 
                     If NIGHT_RATE <> Nothing Then
                         .Item("NIGHT_RATE") = NIGHT_RATE
@@ -649,6 +647,7 @@ Module SaveUpdate
                     Dim UnderTime As String = ""
                     Dim RegularOT As String = ""
                     Dim nightRate As Decimal = 0
+                    Dim SpecialHol_hrs As Double = 0
                     Dim NoOfDays, SpecialHol, RegularHol As Double
                     Dim Deduction, SBU As Decimal
                     Dim Company As String
@@ -694,6 +693,7 @@ Module SaveUpdate
                                     Late = .Item("LATE")
                                     UnderTime = .Item("UNDERTIME")
                                     nightRate = IIf(IsDBNull(.Item("NIGHT_RATE")), 0, .Item("NIGHT_RATE"))
+                                    SpecialHol_hrs = IIf(IsDBNull(.Item("SPECHOLIDAY_HRS")), 0, .Item("SPECHOLIDAY_HRS"))
                                 End If
 
                                 SIL = IIf(IsDBNull(.Item("SIL")), 0, .Item("SIL"))
@@ -715,7 +715,7 @@ Module SaveUpdate
 
                         Dim days As Long = DateDiff(DateInterval.Day, Started, startingDate)
 
-                        Dim days_covred As Integer = training_days - days
+                        Dim days_covred As Integer = training_days - (days + 1) '====== KULANG UG 1 ANG COUNTING
 
                         If days_covred > 0 Then
 
@@ -755,7 +755,7 @@ Module SaveUpdate
                                     End If
 
                                     If DataeXIST($" PAYROLL_HOLIDAY WHERE DATEE = '{startingDate.ToString("M")}' AND KINDS = 'SPECIAL'") Then
-                                        Training_SPECHoliday += 1
+                                        Training_SPECHoliday += Calculate_Training_SpecHoliday(bioNo, paydate_, startingDate)
                                     End If
 
                                 End If
@@ -785,13 +785,13 @@ Module SaveUpdate
 
                         '===================== TRAINING HOLIDAY ==================  
                         RegularHol = RegularHol - Training_REGHoliday
-                        SpecialHol = SpecialHol - Training_SPECHoliday
+                        SpecialHol = SpecialHol_hrs - Training_SPECHoliday
 
                         Dim REG_STANDARD As Decimal = (RegularHol * rate) * regHoliday
-                        Dim SPEC_STANDARD As Decimal = (SpecialHol * rate) * specHoliday
+                        Dim SPEC_STANDARD As Decimal = ((SpecialHol / 8) * rate) * specHoliday
 
                         Dim REG_TRAINEE As Decimal = (Training_REGHoliday * trainee_rate) * regHoliday
-                        Dim SPEC_TRAINEE As Decimal = (Training_SPECHoliday * trainee_rate) * specHoliday
+                        Dim SPEC_TRAINEE As Decimal = ((Training_SPECHoliday / 8) * trainee_rate) * specHoliday
 
                         TotalREGHol = REG_STANDARD + REG_TRAINEE
                         TotalSPECHol = SPEC_STANDARD + SPEC_TRAINEE
@@ -800,7 +800,7 @@ Module SaveUpdate
 
                         TotalBasic = (NoOfDays * rate)
                         TotalREGHol = (RegularHol * rate) * regHoliday
-                        TotalSPECHol = (SpecialHol * rate) * specHoliday
+                        TotalSPECHol = ((SpecialHol_hrs / 8) * rate) * specHoliday
 
                     End If
 

@@ -76,35 +76,6 @@ Partial Class frmSettings
         Me.Regular_RB = New System.Windows.Forms.RadioButton()
         Me.Name_TXT = New System.Windows.Forms.TextBox()
         Me.Label2 = New System.Windows.Forms.Label()
-        Me.TabPage1 = New System.Windows.Forms.TabPage()
-        Me.FlowLayoutPanel1 = New System.Windows.Forms.FlowLayoutPanel()
-        Me.Label13 = New System.Windows.Forms.Label()
-        Me.Allow_Category_Combo = New System.Windows.Forms.ComboBox()
-        Me.Label30 = New System.Windows.Forms.Label()
-        Me.Allow_Schedule_Combo = New System.Windows.Forms.ComboBox()
-        Me.Label32 = New System.Windows.Forms.Label()
-        Me.A_EveryDate_Combo = New System.Windows.Forms.ComboBox()
-        Me.Label16 = New System.Windows.Forms.Label()
-        Me.Allow_Amount_TXT = New System.Windows.Forms.TextBox()
-        Me.Label29 = New System.Windows.Forms.Label()
-        Me.A_EffectiveDate_DTP = New System.Windows.Forms.DateTimePicker()
-        Me.Label25 = New System.Windows.Forms.Label()
-        Me.FixYes_RadioB = New System.Windows.Forms.RadioButton()
-        Me.FixNo_RadioB = New System.Windows.Forms.RadioButton()
-        Me.Allow_Cancel_BTN = New System.Windows.Forms.Button()
-        Me.Allow_Search_TXT = New System.Windows.Forms.TextBox()
-        Me.Allow_Search_BTN = New System.Windows.Forms.Button()
-        Me.Allowance_LV = New System.Windows.Forms.ListView()
-        Me.ColumnHeader4 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader5 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader3 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader9 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader6 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader7 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.Allow_SearchEmp_BTN = New System.Windows.Forms.Button()
-        Me.Label14 = New System.Windows.Forms.Label()
-        Me.Allow_Name_TXT = New System.Windows.Forms.TextBox()
-        Me.Allow_Save_BTN = New System.Windows.Forms.Button()
         Me.TabPage4 = New System.Windows.Forms.TabPage()
         Me.GroupBox8 = New System.Windows.Forms.GroupBox()
         Me.Cat_Deduc_List = New System.Windows.Forms.ListView()
@@ -178,9 +149,6 @@ Partial Class frmSettings
         Me.Holiday_Remove = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.RemoveToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.FileSystemWatcher1 = New System.IO.FileSystemWatcher()
-        Me.Allowance_Remove = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.ApproveToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.Allow_Disapprove = New System.Windows.Forms.ToolStripMenuItem()
         Me.Settings_Tab.SuspendLayout()
         Me.TabPage5.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
@@ -188,8 +156,6 @@ Partial Class frmSettings
         Me.Holiday_Tab.SuspendLayout()
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
-        Me.TabPage1.SuspendLayout()
-        Me.FlowLayoutPanel1.SuspendLayout()
         Me.TabPage4.SuspendLayout()
         Me.GroupBox8.SuspendLayout()
         Me.GroupBox7.SuspendLayout()
@@ -200,7 +166,6 @@ Partial Class frmSettings
         Me.TabPage3.SuspendLayout()
         Me.Holiday_Remove.SuspendLayout()
         CType(Me.FileSystemWatcher1, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.Allowance_Remove.SuspendLayout()
         Me.SuspendLayout()
         '
         'Close_LBL
@@ -217,7 +182,6 @@ Partial Class frmSettings
         '
         Me.Settings_Tab.Controls.Add(Me.TabPage5)
         Me.Settings_Tab.Controls.Add(Me.Holiday_Tab)
-        Me.Settings_Tab.Controls.Add(Me.TabPage1)
         Me.Settings_Tab.Controls.Add(Me.TabPage4)
         Me.Settings_Tab.Controls.Add(Me.TabPage7)
         Me.Settings_Tab.Controls.Add(Me.TabPage6)
@@ -241,7 +205,7 @@ Partial Class frmSettings
         Me.TabPage5.Padding = New System.Windows.Forms.Padding(3)
         Me.TabPage5.Size = New System.Drawing.Size(1147, 604)
         Me.TabPage5.TabIndex = 5
-        Me.TabPage5.Text = "  Rate  "
+        Me.TabPage5.Text = "     Rate     "
         Me.TabPage5.UseVisualStyleBackColor = True
         '
         'Rate_list
@@ -583,7 +547,7 @@ Partial Class frmSettings
         Me.Holiday_Tab.Padding = New System.Windows.Forms.Padding(3)
         Me.Holiday_Tab.Size = New System.Drawing.Size(1147, 604)
         Me.Holiday_Tab.TabIndex = 0
-        Me.Holiday_Tab.Text = "  Holiday  "
+        Me.Holiday_Tab.Text = "     Holiday     "
         Me.Holiday_Tab.UseVisualStyleBackColor = True
         '
         'GroupBox2
@@ -772,300 +736,6 @@ Partial Class frmSettings
         Me.Label2.TabIndex = 0
         Me.Label2.Text = "Date"
         '
-        'TabPage1
-        '
-        Me.TabPage1.Controls.Add(Me.FlowLayoutPanel1)
-        Me.TabPage1.Controls.Add(Me.Allow_Cancel_BTN)
-        Me.TabPage1.Controls.Add(Me.Allow_Search_TXT)
-        Me.TabPage1.Controls.Add(Me.Allow_Search_BTN)
-        Me.TabPage1.Controls.Add(Me.Allowance_LV)
-        Me.TabPage1.Controls.Add(Me.Allow_SearchEmp_BTN)
-        Me.TabPage1.Controls.Add(Me.Label14)
-        Me.TabPage1.Controls.Add(Me.Allow_Name_TXT)
-        Me.TabPage1.Controls.Add(Me.Allow_Save_BTN)
-        Me.TabPage1.Location = New System.Drawing.Point(4, 38)
-        Me.TabPage1.Name = "TabPage1"
-        Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(1147, 604)
-        Me.TabPage1.TabIndex = 1
-        Me.TabPage1.Text = "  Allowances  "
-        Me.TabPage1.UseVisualStyleBackColor = True
-        '
-        'FlowLayoutPanel1
-        '
-        Me.FlowLayoutPanel1.Controls.Add(Me.Label13)
-        Me.FlowLayoutPanel1.Controls.Add(Me.Allow_Category_Combo)
-        Me.FlowLayoutPanel1.Controls.Add(Me.Label30)
-        Me.FlowLayoutPanel1.Controls.Add(Me.Allow_Schedule_Combo)
-        Me.FlowLayoutPanel1.Controls.Add(Me.Label32)
-        Me.FlowLayoutPanel1.Controls.Add(Me.A_EveryDate_Combo)
-        Me.FlowLayoutPanel1.Controls.Add(Me.Label16)
-        Me.FlowLayoutPanel1.Controls.Add(Me.Allow_Amount_TXT)
-        Me.FlowLayoutPanel1.Controls.Add(Me.Label29)
-        Me.FlowLayoutPanel1.Controls.Add(Me.A_EffectiveDate_DTP)
-        Me.FlowLayoutPanel1.Controls.Add(Me.Label25)
-        Me.FlowLayoutPanel1.Controls.Add(Me.FixYes_RadioB)
-        Me.FlowLayoutPanel1.Controls.Add(Me.FixNo_RadioB)
-        Me.FlowLayoutPanel1.Location = New System.Drawing.Point(13, 116)
-        Me.FlowLayoutPanel1.Margin = New System.Windows.Forms.Padding(20)
-        Me.FlowLayoutPanel1.Name = "FlowLayoutPanel1"
-        Me.FlowLayoutPanel1.Size = New System.Drawing.Size(390, 243)
-        Me.FlowLayoutPanel1.TabIndex = 126
-        '
-        'Label13
-        '
-        Me.Label13.AutoSize = True
-        Me.Label13.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label13.Location = New System.Drawing.Point(3, 0)
-        Me.Label13.Name = "Label13"
-        Me.Label13.Size = New System.Drawing.Size(70, 27)
-        Me.Label13.TabIndex = 102
-        Me.Label13.Text = "Category"
-        '
-        'Allow_Category_Combo
-        '
-        Me.Allow_Category_Combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Allow_Category_Combo.FormattingEnabled = True
-        Me.Allow_Category_Combo.Location = New System.Drawing.Point(79, 3)
-        Me.Allow_Category_Combo.Name = "Allow_Category_Combo"
-        Me.Allow_Category_Combo.Size = New System.Drawing.Size(291, 33)
-        Me.Allow_Category_Combo.TabIndex = 34
-        Me.Allow_Category_Combo.Text = "Select "
-        '
-        'Label30
-        '
-        Me.Label30.AutoSize = True
-        Me.Label30.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label30.Location = New System.Drawing.Point(3, 39)
-        Me.Label30.Name = "Label30"
-        Me.Label30.Size = New System.Drawing.Size(70, 27)
-        Me.Label30.TabIndex = 127
-        Me.Label30.Text = "Schedule"
-        '
-        'Allow_Schedule_Combo
-        '
-        Me.Allow_Schedule_Combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Allow_Schedule_Combo.FormattingEnabled = True
-        Me.Allow_Schedule_Combo.Items.AddRange(New Object() {"OPEN PAYROLL", "CLOSE PAYROLL", "EVERY PAYROLL", "ONCE A MONTH", "ONCE"})
-        Me.Allow_Schedule_Combo.Location = New System.Drawing.Point(79, 42)
-        Me.Allow_Schedule_Combo.Name = "Allow_Schedule_Combo"
-        Me.Allow_Schedule_Combo.Size = New System.Drawing.Size(291, 33)
-        Me.Allow_Schedule_Combo.TabIndex = 35
-        Me.Allow_Schedule_Combo.Text = "Select "
-        '
-        'Label32
-        '
-        Me.Label32.AutoSize = True
-        Me.Label32.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label32.Location = New System.Drawing.Point(3, 78)
-        Me.Label32.Name = "Label32"
-        Me.Label32.Size = New System.Drawing.Size(72, 27)
-        Me.Label32.TabIndex = 131
-        Me.Label32.Text = "Every      "
-        Me.Label32.Visible = False
-        '
-        'A_EveryDate_Combo
-        '
-        Me.A_EveryDate_Combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.A_EveryDate_Combo.FormattingEnabled = True
-        Me.A_EveryDate_Combo.Items.AddRange(New Object() {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31"})
-        Me.A_EveryDate_Combo.Location = New System.Drawing.Point(81, 81)
-        Me.A_EveryDate_Combo.Name = "A_EveryDate_Combo"
-        Me.A_EveryDate_Combo.Size = New System.Drawing.Size(289, 33)
-        Me.A_EveryDate_Combo.TabIndex = 36
-        Me.A_EveryDate_Combo.Text = "Select date of the month"
-        Me.A_EveryDate_Combo.Visible = False
-        '
-        'Label16
-        '
-        Me.Label16.AutoSize = True
-        Me.Label16.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label16.Location = New System.Drawing.Point(3, 117)
-        Me.Label16.Name = "Label16"
-        Me.Label16.Size = New System.Drawing.Size(72, 27)
-        Me.Label16.TabIndex = 95
-        Me.Label16.Text = "Amount  "
-        '
-        'Allow_Amount_TXT
-        '
-        Me.Allow_Amount_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Allow_Amount_TXT.Location = New System.Drawing.Point(81, 120)
-        Me.Allow_Amount_TXT.Name = "Allow_Amount_TXT"
-        Me.Allow_Amount_TXT.Size = New System.Drawing.Size(289, 33)
-        Me.Allow_Amount_TXT.TabIndex = 37
-        '
-        'Label29
-        '
-        Me.Label29.AutoSize = True
-        Me.Label29.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label29.Location = New System.Drawing.Point(3, 156)
-        Me.Label29.Name = "Label29"
-        Me.Label29.Size = New System.Drawing.Size(73, 25)
-        Me.Label29.TabIndex = 125
-        Me.Label29.Text = "Effectivity"
-        '
-        'A_EffectiveDate_DTP
-        '
-        Me.A_EffectiveDate_DTP.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.A_EffectiveDate_DTP.Location = New System.Drawing.Point(82, 159)
-        Me.A_EffectiveDate_DTP.Name = "A_EffectiveDate_DTP"
-        Me.A_EffectiveDate_DTP.Size = New System.Drawing.Size(288, 33)
-        Me.A_EffectiveDate_DTP.TabIndex = 38
-        '
-        'Label25
-        '
-        Me.Label25.AutoSize = True
-        Me.Label25.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label25.Location = New System.Drawing.Point(3, 195)
-        Me.Label25.Name = "Label25"
-        Me.Label25.Size = New System.Drawing.Size(75, 27)
-        Me.Label25.TabIndex = 111
-        Me.Label25.Text = "Fix           "
-        '
-        'FixYes_RadioB
-        '
-        Me.FixYes_RadioB.AutoSize = True
-        Me.FixYes_RadioB.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.FixYes_RadioB.Location = New System.Drawing.Point(84, 198)
-        Me.FixYes_RadioB.Name = "FixYes_RadioB"
-        Me.FixYes_RadioB.Size = New System.Drawing.Size(86, 31)
-        Me.FixYes_RadioB.TabIndex = 39
-        Me.FixYes_RadioB.Text = "Yes        "
-        Me.FixYes_RadioB.UseVisualStyleBackColor = True
-        '
-        'FixNo_RadioB
-        '
-        Me.FixNo_RadioB.AutoSize = True
-        Me.FixNo_RadioB.Checked = True
-        Me.FixNo_RadioB.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.FixNo_RadioB.Location = New System.Drawing.Point(176, 198)
-        Me.FixNo_RadioB.Name = "FixNo_RadioB"
-        Me.FixNo_RadioB.Size = New System.Drawing.Size(49, 31)
-        Me.FixNo_RadioB.TabIndex = 30
-        Me.FixNo_RadioB.TabStop = True
-        Me.FixNo_RadioB.Text = "No"
-        Me.FixNo_RadioB.UseVisualStyleBackColor = True
-        '
-        'Allow_Cancel_BTN
-        '
-        Me.Allow_Cancel_BTN.BackColor = System.Drawing.Color.PeachPuff
-        Me.Allow_Cancel_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.Allow_Cancel_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Allow_Cancel_BTN.Location = New System.Drawing.Point(67, 479)
-        Me.Allow_Cancel_BTN.Name = "Allow_Cancel_BTN"
-        Me.Allow_Cancel_BTN.Size = New System.Drawing.Size(116, 33)
-        Me.Allow_Cancel_BTN.TabIndex = 110
-        Me.Allow_Cancel_BTN.Text = "Cancel"
-        Me.Allow_Cancel_BTN.UseVisualStyleBackColor = False
-        '
-        'Allow_Search_TXT
-        '
-        Me.Allow_Search_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Allow_Search_TXT.Location = New System.Drawing.Point(455, 20)
-        Me.Allow_Search_TXT.Name = "Allow_Search_TXT"
-        Me.Allow_Search_TXT.Size = New System.Drawing.Size(594, 33)
-        Me.Allow_Search_TXT.TabIndex = 31
-        '
-        'Allow_Search_BTN
-        '
-        Me.Allow_Search_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Allow_Search_BTN.Location = New System.Drawing.Point(1055, 20)
-        Me.Allow_Search_BTN.Name = "Allow_Search_BTN"
-        Me.Allow_Search_BTN.Size = New System.Drawing.Size(82, 33)
-        Me.Allow_Search_BTN.TabIndex = 32
-        Me.Allow_Search_BTN.Text = "Search"
-        Me.Allow_Search_BTN.UseVisualStyleBackColor = True
-        '
-        'Allowance_LV
-        '
-        Me.Allowance_LV.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Allowance_LV.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader4, Me.ColumnHeader5, Me.ColumnHeader3, Me.ColumnHeader9, Me.ColumnHeader6, Me.ColumnHeader7})
-        Me.Allowance_LV.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Allowance_LV.FullRowSelect = True
-        Me.Allowance_LV.GridLines = True
-        Me.Allowance_LV.HideSelection = False
-        Me.Allowance_LV.Location = New System.Drawing.Point(455, 59)
-        Me.Allowance_LV.MultiSelect = False
-        Me.Allowance_LV.Name = "Allowance_LV"
-        Me.Allowance_LV.Size = New System.Drawing.Size(689, 539)
-        Me.Allowance_LV.TabIndex = 33
-        Me.Allowance_LV.UseCompatibleStateImageBehavior = False
-        Me.Allowance_LV.View = System.Windows.Forms.View.Details
-        '
-        'ColumnHeader4
-        '
-        Me.ColumnHeader4.Text = "Fullname"
-        Me.ColumnHeader4.Width = 190
-        '
-        'ColumnHeader5
-        '
-        Me.ColumnHeader5.Text = "Category"
-        Me.ColumnHeader5.Width = 135
-        '
-        'ColumnHeader3
-        '
-        Me.ColumnHeader3.Text = "Schedule"
-        Me.ColumnHeader3.Width = 120
-        '
-        'ColumnHeader9
-        '
-        Me.ColumnHeader9.Text = "Effectivity Date"
-        Me.ColumnHeader9.Width = 120
-        '
-        'ColumnHeader6
-        '
-        Me.ColumnHeader6.Text = "Amount"
-        Me.ColumnHeader6.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.ColumnHeader6.Width = 100
-        '
-        'ColumnHeader7
-        '
-        Me.ColumnHeader7.Text = "Approve"
-        Me.ColumnHeader7.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        '
-        'Allow_SearchEmp_BTN
-        '
-        Me.Allow_SearchEmp_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Allow_SearchEmp_BTN.Location = New System.Drawing.Point(385, 47)
-        Me.Allow_SearchEmp_BTN.Name = "Allow_SearchEmp_BTN"
-        Me.Allow_SearchEmp_BTN.Size = New System.Drawing.Size(47, 31)
-        Me.Allow_SearchEmp_BTN.TabIndex = 33
-        Me.Allow_SearchEmp_BTN.Text = "..."
-        Me.Allow_SearchEmp_BTN.UseVisualStyleBackColor = True
-        '
-        'Label14
-        '
-        Me.Label14.AutoSize = True
-        Me.Label14.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label14.Location = New System.Drawing.Point(4, 49)
-        Me.Label14.Name = "Label14"
-        Me.Label14.Size = New System.Drawing.Size(49, 27)
-        Me.Label14.TabIndex = 103
-        Me.Label14.Text = "Name"
-        '
-        'Allow_Name_TXT
-        '
-        Me.Allow_Name_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Allow_Name_TXT.Location = New System.Drawing.Point(60, 45)
-        Me.Allow_Name_TXT.Name = "Allow_Name_TXT"
-        Me.Allow_Name_TXT.ReadOnly = True
-        Me.Allow_Name_TXT.Size = New System.Drawing.Size(319, 33)
-        Me.Allow_Name_TXT.TabIndex = 101
-        '
-        'Allow_Save_BTN
-        '
-        Me.Allow_Save_BTN.BackColor = System.Drawing.Color.DarkSalmon
-        Me.Allow_Save_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.Allow_Save_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Allow_Save_BTN.Location = New System.Drawing.Point(274, 479)
-        Me.Allow_Save_BTN.Name = "Allow_Save_BTN"
-        Me.Allow_Save_BTN.Size = New System.Drawing.Size(112, 33)
-        Me.Allow_Save_BTN.TabIndex = 85
-        Me.Allow_Save_BTN.Text = "Save"
-        Me.Allow_Save_BTN.UseVisualStyleBackColor = False
-        '
         'TabPage4
         '
         Me.TabPage4.Controls.Add(Me.GroupBox8)
@@ -1075,7 +745,7 @@ Partial Class frmSettings
         Me.TabPage4.Padding = New System.Windows.Forms.Padding(3)
         Me.TabPage4.Size = New System.Drawing.Size(1147, 604)
         Me.TabPage4.TabIndex = 7
-        Me.TabPage4.Text = "  Category  "
+        Me.TabPage4.Text = "     Category     "
         Me.TabPage4.UseVisualStyleBackColor = True
         '
         'GroupBox8
@@ -1222,7 +892,7 @@ Partial Class frmSettings
         Me.TabPage7.Padding = New System.Windows.Forms.Padding(3)
         Me.TabPage7.Size = New System.Drawing.Size(1147, 604)
         Me.TabPage7.TabIndex = 9
-        Me.TabPage7.Text = "    Time In/Out    "
+        Me.TabPage7.Text = "     Time In/Out     "
         Me.TabPage7.UseVisualStyleBackColor = True
         '
         'SearchTime_TXT
@@ -1515,7 +1185,7 @@ Partial Class frmSettings
         Me.TabPage6.Name = "TabPage6"
         Me.TabPage6.Size = New System.Drawing.Size(1147, 604)
         Me.TabPage6.TabIndex = 8
-        Me.TabPage6.Text = "    Email Sender   "
+        Me.TabPage6.Text = "     Email Sender     "
         Me.TabPage6.UseVisualStyleBackColor = True
         '
         'Password_TXT
@@ -1590,7 +1260,7 @@ Partial Class frmSettings
         Me.TabPage3.Name = "TabPage3"
         Me.TabPage3.Size = New System.Drawing.Size(1147, 604)
         Me.TabPage3.TabIndex = 10
-        Me.TabPage3.Text = "    City-Branch    "
+        Me.TabPage3.Text = "     City-Branch     "
         Me.TabPage3.UseVisualStyleBackColor = True
         '
         'Label43
@@ -1802,24 +1472,6 @@ Partial Class frmSettings
         Me.FileSystemWatcher1.EnableRaisingEvents = True
         Me.FileSystemWatcher1.SynchronizingObject = Me
         '
-        'Allowance_Remove
-        '
-        Me.Allowance_Remove.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ApproveToolStripMenuItem, Me.Allow_Disapprove})
-        Me.Allowance_Remove.Name = "ContextMenuStrip1"
-        Me.Allowance_Remove.Size = New System.Drawing.Size(134, 48)
-        '
-        'ApproveToolStripMenuItem
-        '
-        Me.ApproveToolStripMenuItem.Name = "ApproveToolStripMenuItem"
-        Me.ApproveToolStripMenuItem.Size = New System.Drawing.Size(133, 22)
-        Me.ApproveToolStripMenuItem.Text = "Approve"
-        '
-        'Allow_Disapprove
-        '
-        Me.Allow_Disapprove.Name = "Allow_Disapprove"
-        Me.Allow_Disapprove.Size = New System.Drawing.Size(133, 22)
-        Me.Allow_Disapprove.Text = "Disapprove"
-        '
         'frmSettings
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1843,10 +1495,6 @@ Partial Class frmSettings
         Me.GroupBox2.PerformLayout()
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
-        Me.TabPage1.ResumeLayout(False)
-        Me.TabPage1.PerformLayout()
-        Me.FlowLayoutPanel1.ResumeLayout(False)
-        Me.FlowLayoutPanel1.PerformLayout()
         Me.TabPage4.ResumeLayout(False)
         Me.GroupBox8.ResumeLayout(False)
         Me.GroupBox8.PerformLayout()
@@ -1864,7 +1512,6 @@ Partial Class frmSettings
         Me.TabPage3.PerformLayout()
         Me.Holiday_Remove.ResumeLayout(False)
         CType(Me.FileSystemWatcher1, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.Allowance_Remove.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1893,7 +1540,6 @@ Partial Class frmSettings
     Friend WithEvents SpecialRate_TXT As TextBox
     Friend WithEvents RegularRate_TXT As TextBox
     Friend WithEvents Label6 As Label
-    Friend WithEvents TabPage1 As TabPage
     Friend WithEvents TabPage5 As TabPage
     Friend WithEvents Rate_CityAmount_TXT As TextBox
     Friend WithEvents Rate_City_ComboB As ComboBox
@@ -1912,25 +1558,6 @@ Partial Class frmSettings
     Friend WithEvents Rate_EmpClear_BTN As Button
     Friend WithEvents Rate_Search_TXT As TextBox
     Friend WithEvents Rate_Search_BTN As Button
-    Friend WithEvents FixNo_RadioB As RadioButton
-    Friend WithEvents FixYes_RadioB As RadioButton
-    Friend WithEvents Label13 As Label
-    Friend WithEvents Allow_Name_TXT As TextBox
-    Friend WithEvents Label16 As Label
-    Friend WithEvents Allow_Save_BTN As Button
-    Friend WithEvents Allow_Category_Combo As ComboBox
-    Friend WithEvents Allow_Amount_TXT As TextBox
-    Friend WithEvents Label14 As Label
-    Friend WithEvents Allow_SearchEmp_BTN As Button
-    Friend WithEvents Allowance_LV As ListView
-    Friend WithEvents ColumnHeader4 As ColumnHeader
-    Friend WithEvents ColumnHeader5 As ColumnHeader
-    Friend WithEvents Allow_Search_TXT As TextBox
-    Friend WithEvents Allow_Search_BTN As Button
-    Friend WithEvents Allow_Cancel_BTN As Button
-    Friend WithEvents Allowance_Remove As ContextMenuStrip
-    Friend WithEvents Allow_Disapprove As ToolStripMenuItem
-    Friend WithEvents ColumnHeader6 As ColumnHeader
     Friend WithEvents Rate_list As ListView
     Friend WithEvents ColumnHeader17 As ColumnHeader
     Friend WithEvents ColumnHeader18 As ColumnHeader
@@ -1949,28 +1576,16 @@ Partial Class frmSettings
     Friend WithEvents DeducSave_BTN As Button
     Friend WithEvents Label24 As Label
     Friend WithEvents Deduct_TXT As TextBox
-    Friend WithEvents ColumnHeader3 As ColumnHeader
-    Friend WithEvents Label25 As Label
     Friend WithEvents TabPage6 As TabPage
     Friend WithEvents Email_TXT As TextBox
     Friend WithEvents Label26 As Label
     Friend WithEvents Email_Save_BTN As Button
     Friend WithEvents Password_TXT As TextBox
     Friend WithEvents Label27 As Label
-    Friend WithEvents Allow_Schedule_Combo As ComboBox
-    Friend WithEvents Label29 As Label
-    Friend WithEvents FlowLayoutPanel1 As FlowLayoutPanel
-    Friend WithEvents Label30 As Label
-    Friend WithEvents A_EffectiveDate_DTP As DateTimePicker
-    Friend WithEvents Label32 As Label
-    Friend WithEvents A_EveryDate_Combo As ComboBox
-    Friend WithEvents ColumnHeader9 As ColumnHeader
     Friend WithEvents Monthly_BTN As Button
     Friend WithEvents Daily_BTN As Button
     Friend WithEvents Label12 As Label
     Friend WithEvents MonthlyRate_TXT As TextBox
-    Friend WithEvents ColumnHeader7 As ColumnHeader
-    Friend WithEvents ApproveToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents TabPage7 As TabPage
     Friend WithEvents GroupBox4 As GroupBox
     Friend WithEvents ClockClear_BTN As Button

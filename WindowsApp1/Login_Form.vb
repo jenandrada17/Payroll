@@ -11,6 +11,7 @@
 
                 Dim idx As Integer = GetData_Integer("ID", $"PAYROLL_USER where USERNAME = '{txtUser.Text}' AND PASSWORD = '{EncryptString(txtPass.Text)}'")
                 frmMainForm.Accessibility(idx)
+                frmMainForm.UserName_LBL.Tag = idx
 
                 txtUser.Clear()
                 txtPass.Clear()

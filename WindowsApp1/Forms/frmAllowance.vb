@@ -116,6 +116,7 @@
     End Sub
 
     Private Sub frmAllowance_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        MonitorUser(Allowance_Tab)
         PopulateComboBox(Allow_Category_Combo, "CATEGORY_ALLOWANCE", "ALLOWANCE_NAME")
         Lists_Allowance(Allowance_LV)
         DatePrepared_dtp.Value = Today

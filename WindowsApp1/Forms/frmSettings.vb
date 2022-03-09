@@ -14,12 +14,10 @@
 
         PopulateComboBox_Any(Rate_City_ComboB, "PAYROLL_CITY_BRANCH", "CITY")
         PopulateComboBox_Any(ClockBranch_CB, "PAYROLL_EMPLOYEE", "BRANCH_CODE")
-        PopulateComboBox(Allow_Category_Combo, "CATEGORY_ALLOWANCE", "ALLOWANCE_NAME")
         PopulateComboBox_Any(City_Combo, "PAYROLL_CITY_BRANCH", "CITY")
         PopulateComboBox_Any(CityCode_Combo, "PAYROLL_EMPLOYEE", "BRANCH_CODE")
         PopulateComboBox_Any(Address_Combo, "PAYROLL_CITY_BRANCH", "ADDRESS")
         Lists_Rate(Rate_list)
-        Lists_Allowance(Allowance_LV)
         Lists_TimeInOut(TimeInOut_LV)
         Load_Category_LIST(Allowance_List, "CATEGORY_ALLOWANCE", "ALLOWANCE_NAME")
         Load_Category_LIST(Cat_Deduc_List, "CATEGORY_DEDUCTION", "DEDUCTION_NAME")
@@ -247,7 +245,7 @@
     End Sub
 
     Private Sub Rate_BranchAmount_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Rate_CityAmount_TXT.KeyPress,
-                                                Rate_BioNo_TXT.KeyPress, Allow_Amount_TXT.KeyPress
+                                                Rate_BioNo_TXT.KeyPress
 
         If e.KeyChar <> ChrW(Keys.Back) Then
             If Not Char.IsNumber(e.KeyChar) AndAlso Not Char.IsControl(e.KeyChar) AndAlso Not e.KeyChar = "." Then
@@ -264,118 +262,6 @@
     Private Sub Rate_Search_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Rate_Search_TXT.KeyPress
         If IsEnter(e) Then Rate_Search_BTN.PerformClick()
     End Sub
-
-    Private Sub Allow_Search_BTN_Click(sender As Object, e As EventArgs) Handles Allow_SearchEmp_BTN.Click
-        Try
-            Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmNewEmployee").SingleOrDefault()
-            If instForm Is Nothing Then
-                Dim frm As frmNewEmployee
-                frm = DirectCast(CreateObjectInstance("frmNewEmployee"), Form)
-                frm.MdiParent = frmMainForm
-                frmMainForm.pNavigate.Controls.Add(frm)
-                frmMainForm.pNavigate.Tag = frm
-                frm.txtSearch.Tag = "Settings-Allowance"
-                frm.btnSearch.Tag = Allow_Category_Combo.SelectedItem
-                frm.Dock = DockStyle.Fill
-                frm.BringToFront()
-                frm.Show()
-            Else
-                instForm.BringToFront()
-            End If
-
-        Catch ex As Exception
-
-        End Try
-    End Sub
-
-    Private Sub Allow_Save_BTN_Click(sender As Object, e As EventArgs) Handles Allow_Save_BTN.Click
-
-        Dim fix As String = "NO"
-        Dim everyThisDate As Integer = 0
-        Dim idNo As Integer = 0
-
-        If Not isValidSave_ALLOW() Then Exit Sub
-
-        If Not A_EveryDate_Combo.Text = "Select date of the month" Then everyThisDate = A_EveryDate_Combo.SelectedItem
-
-        If FixYes_RadioB.Checked Then fix = "YES"
-
-        Dim result As DialogResult = MsgBox($"Allowance for {Allow_Name_TXT.Text} will be Recorded, proceed anyway?", MessageBoxButtons.YesNo)
-        If result = DialogResult.Yes Then
-
-            If Allowance_LV.SelectedItems.Count > 0 Then
-                idNo = Allowance_LV.Items(Allowance_LV.FocusedItem.Index).SubItems(4).Tag
-            End If
-
-            SaveAllowance(idNo, Allow_Name_TXT.Tag, Allow_Category_Combo.Text, Allow_Amount_TXT.Text, fix, Allow_Schedule_Combo.SelectedItem, everyThisDate, A_EffectiveDate_DTP.Value) ' Label14 is EMP_ID
-
-            SaveLogs($"ADDED ALLOWANCE - {Allow_Name_TXT.Text} ({Allow_Name_TXT.Tag}), Category({Allow_Category_Combo.Text}), Amount({Allow_Amount_TXT.Text}), Sched({Allow_Schedule_Combo.Text}), Effectivity({A_EffectiveDate_DTP.Value.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
-
-            Lists_Allowance(Allowance_LV)
-            Allow_Cancel_BTN.PerformClick()
-        End If
-
-    End Sub
-
-    Private Function isValidSave_ALLOW()
-
-        Dim num2 = Val(Allow_Amount_TXT.Text)
-
-        If String.IsNullOrEmpty(Allow_Name_TXT.Text) Then
-            MsgBox("Please select a name.", MsgBoxStyle.Critical, "Error")
-            Return False
-
-        ElseIf Allow_Category_Combo.SelectedIndex < 0 Then
-            Allow_Category_Combo.Region = New Region(New Rectangle(2, 2, Allow_Category_Combo.Width - 4, Allow_Category_Combo.Height - 4))
-            Return False
-
-        ElseIf Allow_Schedule_Combo.SelectedIndex < 0 Then
-            Allow_Schedule_Combo.Region = New Region(New Rectangle(2, 2, Allow_Schedule_Combo.Width - 4, Allow_Schedule_Combo.Height - 4))
-            Return False
-
-        ElseIf Allow_Schedule_Combo.SelectedIndex = 3 Or Allow_Schedule_Combo.SelectedIndex = 4 Then
-
-            If A_EveryDate_Combo.SelectedIndex < 0 Then
-                A_EveryDate_Combo.Region = New Region(New Rectangle(2, 2, A_EveryDate_Combo.Width - 4, A_EveryDate_Combo.Height - 4))
-                Return False
-            End If
-
-        ElseIf String.IsNullOrEmpty(Allow_Amount_TXT.Text) Then
-            Allow_Amount_TXT.Region = New Region(New Rectangle(2, 2, Allow_Amount_TXT.Width - 4, Allow_Amount_TXT.Height - 4))
-            Return False
-
-        End If
-
-        Return True
-    End Function
-
-
-    Private Sub Allow_Cancel_BTN_Click(sender As Object, e As EventArgs) Handles Allow_Cancel_BTN.Click
-        Allow_Category_Combo.Text = "Select"
-        Allow_Name_TXT.Text = ""
-        Allow_Amount_TXT.Text = ""
-        FixNo_RadioB.Checked = False
-        Allow_Schedule_Combo.Text = "Select"
-        A_EveryDate_Combo.Text = "Select"
-        A_EffectiveDate_DTP.Value = Today
-    End Sub
-
-    Private Sub Allowance_LV_MouseClick(sender As Object, e As MouseEventArgs) Handles Allowance_LV.MouseClick
-        If e.Button = MouseButtons.Right Then
-            If Allowance_LV.Items.Count > 0 Then
-                Allowance_Remove.Show(Allowance_LV, New Point(e.X, e.Y))
-            End If
-        End If
-    End Sub
-
-    Private Sub Allow_Search_BTN_Click_1(sender As Object, e As EventArgs) Handles Allow_Search_BTN.Click
-        Lists_Allowance(Allowance_LV, Allow_Search_TXT.Text)
-    End Sub
-
-    Private Sub Allow_Search_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Allow_Search_TXT.KeyPress
-        If IsEnter(e) Then Allow_Search_BTN.PerformClick()
-    End Sub
-
 
     Private Sub Cat_Allow_Save_BTN_Click(sender As Object, e As EventArgs) Handles Cat_Allow_Save_BTN.Click
         If Not AllowCat_TXT.Text = "" Then
@@ -435,42 +321,10 @@
         End If
     End Sub
 
-    Private Sub Allow_Schedule_Combo_SelectedIndexChanged(sender As Object, e As EventArgs)
-        If Allow_Schedule_Combo.SelectedIndex = 3 Or Allow_Schedule_Combo.SelectedIndex = 4 Then
-            Label32.Visible = True
-            A_EveryDate_Combo.Visible = True
-        Else
-            Label32.Visible = False
-            A_EveryDate_Combo.Visible = False
-        End If
-    End Sub
-
-    Private Sub FlowLayoutPanel1_Paint(sender As Object, e As PaintEventArgs) Handles FlowLayoutPanel1.Paint
-        Dim txtbox As TextBox = Nothing
-        Dim comboB As ComboBox = Nothing
-        For Each xObject As Object In FlowLayoutPanel1.Controls
-            Dim p As New Pen(Color.Red, 2)
-            If TypeOf xObject Is TextBox Then
-                txtbox = xObject
-                e.Graphics.DrawRectangle(p, New Rectangle(txtbox.Location + New Size(1, 1), txtbox.Size - New Size(2, 2)))
-            ElseIf TypeOf xObject Is ComboBox Then
-                comboB = xObject
-                e.Graphics.DrawRectangle(p, New Rectangle(comboB.Location + New Size(1, 1), comboB.Size - New Size(2, 2)))
-            End If
-            p.Dispose()
-        Next
-    End Sub
-
-    Private Sub Allow_Category_Combo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Allow_Schedule_Combo.SelectedIndexChanged, Allow_Category_Combo.SelectedIndexChanged, A_EveryDate_Combo.SelectedIndexChanged
+    Private Sub Allow_Category_Combo_SelectedIndexChanged(sender As Object, e As EventArgs)
         Dim cmb As ComboBox = DirectCast(sender, ComboBox)
         If cmb.SelectedIndex >= 0 Then
             cmb.Region = Nothing
-        End If
-    End Sub
-
-    Private Sub Allow_Amount_TXT_TextChanged(sender As Object, e As EventArgs) Handles Allow_Amount_TXT.TextChanged
-        If Allow_Amount_TXT.Text <> Nothing Then
-            Allow_Amount_TXT.Region = Nothing
         End If
     End Sub
 
@@ -521,29 +375,6 @@
             Else
                 Rate_EmpAmount_TXT.Text = ""
             End If
-        End If
-    End Sub
-
-    Private Sub ApproveToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ApproveToolStripMenuItem.Click
-
-        If Allowance_LV.SelectedItems.Count > 0 Then
-
-            Dim bio_No As String = Allowance_LV.Items(Allowance_LV.FocusedItem.Index).SubItems(1).Tag
-
-            AllowanceRemove(bio_No, "YES") ' ===== ALLOWANCE ID =====
-            Lists_Allowance(Allowance_LV)
-
-        End If
-
-    End Sub
-
-    Private Sub Allow_Disapprove_Click(sender As Object, e As EventArgs) Handles Allow_Disapprove.Click
-        If Allowance_LV.SelectedItems.Count > 0 Then
-
-            Dim bio_No As String = Allowance_LV.Items(Allowance_LV.FocusedItem.Index).SubItems(1).Tag
-
-            AllowanceRemove(bio_No, "NO") ' ===== ALLOWANCE ID =====
-            Lists_Allowance(Allowance_LV)
         End If
     End Sub
 
@@ -747,13 +578,6 @@
                 e.Handled = True
             End If
         End If
-    End Sub
-
-    Private Sub Allowance_LV_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles Allowance_LV.MouseDoubleClick
-        If Allowance_LV.Items.Count = 0 Then Exit Sub
-        Dim idNo As Integer = Allowance_LV.Items(Allowance_LV.FocusedItem.Index).SubItems(4).Tag
-
-        GetAllowance_Details(idNo, Allow_Name_TXT, Allow_Category_Combo, Allow_Schedule_Combo, A_EveryDate_Combo, Allow_Amount_TXT, A_EffectiveDate_DTP, FixYes_RadioB, FixNo_RadioB)
     End Sub
 
 End Class

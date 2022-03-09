@@ -86,6 +86,7 @@ Public Class frmAttendance
 
             Paydate = EndNineteen.AddDays(12)
             DataGridView1.Tag = Paydate
+            paydate_ = Paydate
             starting_date = StartNineteen.AddDays(1)
             ending_date = EndNineteen
 
@@ -104,6 +105,7 @@ Public Class frmAttendance
 
             Paydate = New DateTime(EndFour.Year, EndFour.Month, DateTime.DaysInMonth(EndFour.Year, EndFour.Month))
             DataGridView1.Tag = Paydate
+            paydate_ = Paydate
             starting_date = StartFour.AddDays(1)
             ending_date = EndFour
 
@@ -167,24 +169,12 @@ Public Class frmAttendance
             Dim customizeDate As String = asss.ToString("M")
 
             If asss.DayOfWeek = DayOfWeek.Sunday Then
-
                 r.DefaultCellStyle.ForeColor = Color.Red
-
-                'DataGridView1.Rows(i).Cells(5) = New DataGridViewTextBoxCell()
-                'DataGridView1.Rows(i).Cells(1).Value = ""
-                'DataGridView1.Rows(i).Cells(2).Value = ""
-                'DataGridView1.Rows(i).Cells(3).Value = ""
-                'DataGridView1.Rows(i).Cells(4).Value = ""
-
             Else
                 If HolidayExist(asss) Then
-
                     HolidayDetails(asss, i, DataGridView1)
-
                 End If
             End If
-
-
         Next
     End Sub
 
@@ -294,6 +284,8 @@ Public Class frmAttendance
                         End If
 
                     ElseIf row.DefaultCellStyle.BackColor = Color.Plum Then
+
+                        If Paydate_ComboB.SelectedIndex >= 0 Then paydate_ = Paydate_ComboB.Text '======= IF PAYDATE SELECTED IN BIOMETRIC
 
                         If PRESENT_Date(bioNum, paydate_, row.Cells(0).Tag) Then
                             If row.Cells(0).Tag >= dateStarted Then
@@ -452,6 +444,7 @@ Public Class frmAttendance
             If result = DialogResult.Yes Then
 
                 Dim PAYROLL As String
+                Dim specHoliday_hrs As Double = 0
                 If Paydate_ComboB.SelectedIndex >= 0 Then
                     PAYROLL = Paydate_ComboB.SelectedItem
                 Else
@@ -470,11 +463,25 @@ Public Class frmAttendance
                     Else
                         SaveDTR(BiometricID_TXT.Text, Paydate, dateOnly.ToString("d"),
                             row.Cells(1).Value, row.Cells(2).Value, row.Cells(3).Value, row.Cells(4).Value)
+
+                        '============================== TOTAL SPECIAL HOLIDAY BASE ON TOTAL HOURS OF DUTY ====================
+                        If DataeXIST($" PAYROLL_HOLIDAY WHERE DATEE = '{dateOnly.ToString("MMMM d")}' AND KINDS = 'SPECIAL'") Then
+
+                            Dim list_ As New List(Of String)
+                            list_.Add(row.Cells(1).Value)
+                            list_.Add(row.Cells(2).Value)
+                            list_.Add(row.Cells(3).Value)
+                            list_.Add(row.Cells(4).Value)
+                            list_ = list_.Where(Function(s) Not String.IsNullOrEmpty(s)).ToList()
+
+                            specHoliday_hrs += GetSpecial_hrs(list_.First, list_.Last)
+                        End If
+
                     End If
                 Next
 
                 SaveAttendanceEE(BiometricID_TXT.Text, PAYROLL, TotalDays_LBL.Text, TotalOTHr_LBL.Text, TotalLateHR_LBL.Text, TotalUTHR_LBL.Text,
-                                 TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text, SIL_LBL.Text, AM_OT_NUP.Value)
+                                 TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text, specHoliday_hrs, SIL_LBL.Text, AM_OT_NUP.Value)
 
                 SavePayout_IndividualL(BiometricID_TXT.Text, PAYROLL, starting_date, ending_date)
 
@@ -487,7 +494,6 @@ Public Class frmAttendance
         Else
             MsgBox("Please Choose Employee's Name!", MsgBoxStyle.Critical, "Error")
         End If
-
     End Sub
 
     Private Sub OT_BTN_Click(sender As Object, e As EventArgs) Handles OT_BTN.Click
@@ -1388,9 +1394,10 @@ Public Class frmAttendance
                 Dim latee As Integer = IIf(Late7_TXT.Text = Nothing, 0, Late7_TXT.Text)
                 Dim undertimee As Integer = IIf(Undertime7_TXT.Text = Nothing, 0, Undertime7_TXT.Text)
                 Dim night7 As Integer = IIf(Night7_TXT.Text = Nothing, 0, Night7_TXT.Text)
+                Dim specHoliday_hrs As Double = 0
 
                 SaveAttendanceEE(Bio7_TXT.Text, PAYROLL, Days7_TXT.Text, Overtime7_TXT.Text, latee, undertimee,
-                             RHOLIDAY, SHOLIDAY, SIL7_NUP.Text, night7)
+                             RHOLIDAY, SHOLIDAY, specHoliday_hrs, SIL7_NUP.Text, 0, night7)
 
                 SavePayout_IndividualL(Bio7_TXT.Text, PAYROLL, starting_date, ending_date)
 
@@ -1964,6 +1971,7 @@ Public Class frmAttendance
 
             Dim Present As Integer = 0
             Dim halfday_Hour As Integer = 0
+            Dim specHoliday_hrs As Double = 0
 
             For Each row As DataGridViewRow In DataGridView1.Rows
 
@@ -1986,6 +1994,20 @@ Public Class frmAttendance
                     TIME_IN = GetTimeInOut(biometric_No).Time_in
                     TIME_OUT = GetTimeInOut(biometric_No).Time_out
                 End If
+
+                '============================== TOTAL SPECIAL HOLIDAY BASE ON TOTAL HOURS OF DUTY ====================
+                If DataeXIST($" PAYROLL_HOLIDAY WHERE DATEE = '{DATEE.ToString("MMMM d")}' AND KINDS = 'SPECIAL'") Then
+
+                    Dim list_ As New List(Of String)
+                    list_.Add(row.Cells(1).Value)
+                    list_.Add(row.Cells(2).Value)
+                    list_.Add(row.Cells(3).Value)
+                    list_.Add(row.Cells(4).Value)
+                    list_ = list_.Where(Function(s) Not String.IsNullOrEmpty(s)).ToList()
+
+                    specHoliday_hrs += GetSpecial_hrs(list_.First, list_.Last)
+                End If
+
 
                 CalculateLATE(row, TIME_IN)
 
@@ -2012,7 +2034,7 @@ Public Class frmAttendance
             TotalDays_LBL.Text = product
 
             SaveAttendanceEE(biometric_No, paydate_, TotalDays_LBL.Text, TotalOTHr_LBL.Text, late_count.TotalMinutes, under_count.TotalMinutes,
-                             RHOLIDAY, SHOLIDAY)
+                             RHOLIDAY, SHOLIDAY, specHoliday_hrs)
 
             InsertTempAttendance(biometric_No, paydate_, TotalDays_LBL.Text, TotalOTHr_LBL.Text,
                                     late_count.TotalMinutes, under_count.TotalMinutes, RHOLIDAY, SHOLIDAY)

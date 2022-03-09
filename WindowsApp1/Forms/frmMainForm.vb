@@ -11,10 +11,6 @@ Public Class frmMainForm
 
     Private Sub frmMainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
-        'Using conSettings As New ServerSettings
-        '    conSettings.ShowDialog()
-        'End Using
-
         'Check_This()
 
         'Loans_to_Deduction()
