@@ -16,6 +16,8 @@
     Friend Sub MonitorUser(tabb As TabControl)
         If frmMainForm.UserName_LBL.Tag <> 7 Then
             tabb.TabPages.Remove(tabb.TabPages("TabPage2"))
+        ElseIf frmMainForm.UserName_LBL.Tag = 7 Then
+            tabb.TabPages.Remove(tabb.TabPages("TabPage3"))
         End If
     End Sub
 

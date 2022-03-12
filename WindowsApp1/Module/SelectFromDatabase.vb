@@ -1455,7 +1455,7 @@ Module SelectFromDatabase
             Next
 
         Else
-            mysql = "select A.*, A.id as allow_id, B.* from PAYROLL_ALLOWANCES A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIOMETRIC_NO ORDER BY FULLNAME, allow_id ASC "
+            mysql = "select A.*, A.id as allow_id, B.* from PAYROLL_ALLOWANCES A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIOMETRIC_NO where ALLOWED = 'YES' ORDER BY FULLNAME, allow_id ASC "
         End If
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ALLOWANCES")
@@ -2410,10 +2410,10 @@ Module SelectFromDatabase
         Return specHoliday_hrs
     End Function
 
-    Friend Function GetSpecial_hrs(inn As String, outt As String) As Double
+    Friend Function GetSpecial_hrs(inn As DateTime, outt As DateTime) As Double
         Dim specHoliday_hrs = 0, tot_hrs As Double = 0
 
-        Dim hrs As TimeSpan = DateTime.Parse(outt).Subtract(DateTime.Parse(inn))
+        Dim hrs As TimeSpan = DateTime.Parse(outt.AddMinutes(inn.Minute)).Subtract(DateTime.Parse(inn))
         tot_hrs = hrs.Hours
 
         If tot_hrs > 4 Then
@@ -2780,7 +2780,7 @@ Module SelectFromDatabase
                 Allow_Name_TXT.Tag = .Item("BIOMETRIC_NO")
                 Allow_Category_Combo.Text = .Item("CATEGORY")
                 Allow_Schedule_Combo.Text = .Item("SCHEDULE")
-                A_EveryDate_Combo.Text = .Item("DAY_DATE")
+                A_EveryDate_Combo.Text = IIf(IsDBNull(.Item("DAY_DATE")), "", .Item("DAY_DATE"))
                 Allow_Amount_TXT.Text = .Item("AMOUNT")
                 Allow_Amount_TXT.Tag = idNo
                 A_EffectiveDate_DTP.Value = .Item("EFFECTIVE_DATE")
@@ -3119,7 +3119,7 @@ Module SelectFromDatabase
             If IsNumeric(search) Then
                 mysql = $"Select * from PAYROLL_PAF where PAF_NO = '{search}' Or BIO_NO = '{search}'"
             Else
-                mysql = $"Select A.*, B.FULLNAME, B.BIO_NO as bioNo from PAYROLL_PAF A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIO_NO where upper(FULLNAME) = upper('%{search}%') Or upper(SALARY_CHANGES) = upper('{search}') Order by FULLNAME"
+                mysql = $"Select A.*, B.FULLNAME, B.BIO_NO as bioNo from PAYROLL_PAF A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIO_NO where upper(FULLNAME) like upper('%{search}%') Or upper(SALARY_CHANGES) like upper('{search}') Order by FULLNAME"
             End If
         End If
 

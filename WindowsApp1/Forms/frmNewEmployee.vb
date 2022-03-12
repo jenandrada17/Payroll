@@ -54,8 +54,9 @@ Public Class frmNewEmployee
 
     Private Sub Save_BTN_Click(sender As Object, e As EventArgs) Handles Save_BTN.Click
 
-        Import_Employee_New()
+        Import_Employee_New() '=====ORIGINAL
 
+        '============================================
         'Import_BranchesName()
 
         'Import_Employee_Fullname_biometric_ActiveOnly()
@@ -72,8 +73,8 @@ Public Class frmNewEmployee
 
         'Import_Deduction() ''===== NAKACOMMENT ANG METHOD
 
+        'Import_Employee_SBU_DATE_ONLY(Path_TXT.Text)
     End Sub
-
 
     Private Sub Import_Employee_New()
 

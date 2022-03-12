@@ -20,22 +20,22 @@ Module Report_function
             .Columns.Add("TOTAL_AMOUNT")
         End With
 
-        mysql = $"Select * From PAYROLL_PAYOUT A  
+        mysql = $"Select A.*, B.*, C.*, C.ADDRESS as ADDRESS_ From PAYROLL_PAYOUT A  
                                         INNER JOIN PAYROLL_EMPLOYEE C ON BIO_NO = BIOMETRIC_ID    
                                         LEFT JOIN PAYROLL_CITY_BRANCH B ON BRANCHCODE = BRANCH_CODE    
                                         WHERE (BRANCHCODE IN ('DIG','ISU','M1','POL', 'ROG','ROX','FINEPIX','COT','MID','KID','SNP','GMA','SML','ZAM','SMD')
                                                 AND  PAYDATE = '{paydate}' AND COMPANY = 'PHOTO') OR (HO_CATEGORY LIKE 'Photo%' AND  PAYDATE = '{paydate}')
                                         ORDER BY CASE WHEN UPPER(HO_CATEGORY) LIKE UPPER('%Admin%') THEN 0  
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('GENSAN') THEN 1 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('POLOMOLOK') THEN 2 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('MARBEL') THEN 3 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('ISULAN') THEN 4 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('COTABATO') THEN 5 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('KIDAPAWAN') THEN 6 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('MIDSAYAP') THEN 7 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('DAVAO') THEN 8 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('SM SAN LAZARO') THEN 9 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('ZAMBOANGA') THEN 10  
+                                                WHEN UPPER(C.ADDRESS) LIKE UPPER('GENSAN') THEN 1 
+                                                WHEN UPPER(C.ADDRESS) LIKE UPPER('POLOMOLOK') THEN 2 
+                                                WHEN UPPER(C.ADDRESS) LIKE UPPER('MARBEL') THEN 3 
+                                                WHEN UPPER(C.ADDRESS) LIKE UPPER('ISULAN') THEN 4 
+                                                WHEN UPPER(C.ADDRESS) LIKE UPPER('COTABATO') THEN 5 
+                                                WHEN UPPER(C.ADDRESS) LIKE UPPER('KIDAPAWAN') THEN 6 
+                                                WHEN UPPER(C.ADDRESS) LIKE UPPER('MIDSAYAP') THEN 7 
+                                                WHEN UPPER(C.ADDRESS) LIKE UPPER('DAVAO') THEN 8 
+                                                WHEN UPPER(C.ADDRESS) LIKE UPPER('SM SAN LAZARO') THEN 9 
+                                                WHEN UPPER(ADC.ADDRESSDRESS) LIKE UPPER('ZAMBOANGA') THEN 10  
                                                 END"
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
@@ -47,7 +47,7 @@ Module Report_function
 
                         '============================= NAME AND ATTENDANCE ============================  
                         Dim COMPANY As String = "PHOTO"
-                        Dim ADDRESS As String = IIf(IsDBNull(.Item("ADDRESS")), "", .Item("ADDRESS"))
+                        Dim ADDRESS As String = IIf(IsDBNull(.Item("ADDRESS_")), "", .Item("ADDRESS_"))
                         Dim CATEGORY As String = IIf(IsDBNull(.Item("CATEGORY")), "", .Item("CATEGORY"))
                         Dim BRANCHCODE As String = IIf(IsDBNull(.Item("BRANCHCODE")), "", .Item("BRANCHCODE"))
                         Dim HO_CATEGORY As String = IIf(IsDBNull(.Item("HO_CATEGORY")), "", .Item("HO_CATEGORY"))
@@ -103,13 +103,13 @@ Module Report_function
             .Columns.Add("TOTAL_AMOUNT")
         End With
 
-        mysql = $"Select * From PAYROLL_PAYOUT A  
+        mysql = $"Select A.*, B.*, C.*, C.ADDRESS as ADDRESS_ From PAYROLL_PAYOUT A  
                                         INNER JOIN PAYROLL_EMPLOYEE C ON BIO_NO = BIOMETRIC_ID    
                                         LEFT JOIN PAYROLL_CITY_BRANCH B ON BRANCHCODE = BRANCH_CODE    
                                         WHERE PAYDATE = '{paydate}'  AND COMPANY = 'PHOTO'
                                             AND BRANCHCODE IN ('SMG','KCG','ACM','TAC')  
-                                        ORDER BY CASE WHEN ADDRESS = 'GENSAN' THEN 0  
-                                                WHEN ADDRESS = 'MARBEL' THEN 1    
+                                        ORDER BY CASE WHEN C.ADDRESS = 'GENSAN' THEN 0  
+                                                WHEN C.ADDRESS = 'MARBEL' THEN 1    
                                                 else 2 END"
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
@@ -120,7 +120,7 @@ Module Report_function
                     With dr
 
                         '============================= NAME AND ATTENDANCE ============================  
-                        Dim ADDRESS As String = IIf(IsDBNull(.Item("ADDRESS")), "", .Item("ADDRESS"))
+                        Dim ADDRESS As String = IIf(IsDBNull(.Item("ADDRESS_")), "", .Item("ADDRESS_"))
                         Dim CATEGORY As String = IIf(IsDBNull(.Item("CATEGORY")), "", .Item("CATEGORY"))
                         Dim BRANCHCODE As String = IIf(IsDBNull(.Item("BRANCHCODE")), "", .Item("BRANCHCODE"))
                         Dim HO_CATEGORY As String = IIf(IsDBNull(.Item("HO_CATEGORY")), "", .Item("HO_CATEGORY"))
@@ -173,44 +173,44 @@ Module Report_function
             .Columns.Add("TOTAL_AMOUNT")
         End With
 
-        mysql = $"Select * From PAYROLL_PAYOUT A  
+        mysql = $"Select A.*, B.*, C.*, C.ADDRESS as ADDRESS_  From PAYROLL_PAYOUT A  
                                         INNER JOIN PAYROLL_EMPLOYEE C ON BIO_NO = BIOMETRIC_ID    
                                         LEFT JOIN PAYROLL_CITY_BRANCH B ON BRANCHCODE = BRANCH_CODE    
                                         WHERE PAYDATE = '{paydate}' AND COMPANY  = 'DALTON'
                                             OR  (HO_CATEGORY LIKE 'Dalton%' AND PAYDATE = '{paydate}' )
                                         ORDER BY CASE WHEN UPPER(HO_CATEGORY) LIKE UPPER('%Admin%') THEN 0 
                                                 WHEN UPPER(HO_CATEGORY) LIKE UPPER('%Retail%') THEN 1 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('GENSAN') THEN 2  
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('POLOMOLOK') THEN 3 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('MARBEL') THEN 4 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('ISULAN') THEN 5 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('TACURONG') THEN 6 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('SURALLAH') THEN 7 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('BANGA') THEN 8 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('TBOLI') THEN 9 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('ESPERANZA') THEN 10 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('KALAMANSIG') THEN 11  
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('LAMBAYONG') THEN 12  
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('LEBAK') THEN 13  
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('AWANG') THEN 14  
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('DALICAN') THEN 15  
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('COTABATO') THEN 16  
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('KIDAPAWAN') THEN 17  
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('KIDAPAWAN') THEN 18   
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('MIDSAYAP') THEN 19 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('KABACAN') THEN 20 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('PIKIT') THEN 21 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('MLANG') THEN 22 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('TULUNAN') THEN 23 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('PARANG') THEN 24 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('BULUAN') THEN 25 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('UPI') THEN 26 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('SHARIFF') THEN 27 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('DAVAO') THEN 28 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('SARANGANI') THEN 29 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('SURIGAO') THEN 30 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('BUTUAN') THEN 31  
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('CAGAYAN') THEN 32  
+                                                WHEN UPPER(C.ADDRESS) LIKE UPPER('GENSAN') THEN 2  
+                                                WHEN UPPER(C.ADDRESS) LIKE UPPER('POLOMOLOK') THEN 3 
+                                                WHEN UPPER(C.ADDRESS) LIKE UPPER('MARBEL') THEN 4 
+                                                WHEN UPPER(C.ADDRESS) LIKE UPPER('ISULAN') THEN 5 
+                                                WHEN UPPER(C.ADDRESS) LIKE UPPER('TACURONG') THEN 6 
+                                                WHEN UPPER(C.ADDRESS) LIKE UPPER('SURALLAH') THEN 7 
+                                                WHEN UPPER(C.ADDRESS) LIKE UPPER('BANGA') THEN 8 
+                                                WHEN UPPER(C.ADDRESS) LIKE UPPER('TBOLI') THEN 9 
+                                                WHEN UPPER(C.ADDRESS) LIKE UPPER('ESPERANZA') THEN 10 
+                                                WHEN UPPER(C.ADDRESS) LIKE UPPER('KALAMANSIG') THEN 11  
+                                                WHEN UPPER(C.ADDRESS) LIKE UPPER('LAMBAYONG') THEN 12  
+                                                WHEN UPPER(C.ADDRESS) LIKE UPPER('LEBAK') THEN 13  
+                                                WHEN UPPER(C.ADDRESS) LIKE UPPER('AWANG') THEN 14  
+                                                WHEN UPPER(C.ADDRESS) LIKE UPPER('DALICAN') THEN 15  
+                                                WHEN UPPER(C.ADDRESS) LIKE UPPER('COTABATO') THEN 16  
+                                                WHEN UPPER(C.ADDRESS) LIKE UPPER('KIDAPAWAN') THEN 17  
+                                                WHEN UPPER(C.ADDRESS) LIKE UPPER('KIDAPAWAN') THEN 18   
+                                                WHEN UPPER(C.ADDRESS) LIKE UPPER('MIDSAYAP') THEN 19 
+                                                WHEN UPPER(C.ADDRESS) LIKE UPPER('KABACAN') THEN 20 
+                                                WHEN UPPER(C.ADDRESS) LIKE UPPER('PIKIT') THEN 21 
+                                                WHEN UPPER(C.ADDRESS) LIKE UPPER('MLANG') THEN 22 
+                                                WHEN UPPER(C.ADDRESS) LIKE UPPER('TULUNAN') THEN 23 
+                                                WHEN UPPER(C.ADDRESS) LIKE UPPER('PARANG') THEN 24 
+                                                WHEN UPPER(C.ADDRESS) LIKE UPPER('BULUAN') THEN 25 
+                                                WHEN UPPER(C.ADDRESS) LIKE UPPER('UPI') THEN 26 
+                                                WHEN UPPER(C.ADDRESS) LIKE UPPER('SHARIFF') THEN 27 
+                                                WHEN UPPER(C.ADDRESS) LIKE UPPER('DAVAO') THEN 28 
+                                                WHEN UPPER(C.ADDRESS) LIKE UPPER('SARANGANI') THEN 29 
+                                                WHEN UPPER(C.ADDRESS) LIKE UPPER('SURIGAO') THEN 30 
+                                                WHEN UPPER(C.ADDRESS) LIKE UPPER('BUTUAN') THEN 31  
+                                                WHEN UPPER(C.ADDRESS) LIKE UPPER('CAGAYAN') THEN 32  
                                                 ELSE 33 END"
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
@@ -222,7 +222,7 @@ Module Report_function
 
                         '============================= NAME AND ATTENDANCE ============================  
                         Dim COMPANY As String = "DALTON"
-                        Dim ADDRESS As String = IIf(IsDBNull(.Item("ADDRESS")), "", .Item("ADDRESS"))
+                        Dim ADDRESS As String = IIf(IsDBNull(.Item("ADDRESS_")), "", .Item("ADDRESS_"))
                         Dim CATEGORY As String = IIf(IsDBNull(.Item("CATEGORY")), "", .Item("CATEGORY"))
                         Dim BRANCHCODE As String = IIf(IsDBNull(.Item("BRANCHCODE")), "", .Item("BRANCHCODE"))
                         Dim HO_CATEGORY As String = IIf(IsDBNull(.Item("HO_CATEGORY")), "", .Item("HO_CATEGORY"))
@@ -277,15 +277,15 @@ Module Report_function
             .Columns.Add("TOTAL_AMOUNT")
         End With
 
-        mysql = $"Select * From PAYROLL_PAYOUT A  
+        mysql = $"Select  A.*, B.*, C.*, C.ADDRESS as ADDRESS_ From PAYROLL_PAYOUT A  
                                         INNER JOIN PAYROLL_EMPLOYEE C ON BIO_NO = BIOMETRIC_ID    
                                         LEFT JOIN PAYROLL_CITY_BRANCH B ON BRANCHCODE = BRANCH_CODE    
                                         WHERE PAYDATE = '{paydate}' AND COMPANY  = 'PERFECOM'
                                             OR (HO_CATEGORY LIKE 'Perfecom%' AND  PAYDATE = '{paydate}')
                                         ORDER BY CASE WHEN UPPER(HO_CATEGORY) LIKE UPPER('%Admin%') THEN 0  
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('GENSAN') THEN 1   
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('MARBEL') THEN 2 
-                                                WHEN UPPER(ADDRESS) LIKE UPPER('ZAMBOANGA') THEN 3 END"
+                                                WHEN UPPER(C.ADDRESS) LIKE UPPER('GENSAN') THEN 1   
+                                                WHEN UPPER(C.ADDRESS) LIKE UPPER('MARBEL') THEN 2 
+                                                WHEN UPPER(C.ADDRESS) LIKE UPPER('ZAMBOANGA') THEN 3 END"
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
             If ds.Tables(0).Rows.Count > 0 Then
@@ -296,7 +296,7 @@ Module Report_function
 
                         '============================= NAME AND ATTENDANCE ============================  
                         Dim COMPANY As String = "PERFECOM"
-                        Dim ADDRESS As String = IIf(IsDBNull(.Item("ADDRESS")), "", .Item("ADDRESS"))
+                        Dim ADDRESS As String = IIf(IsDBNull(.Item("ADDRESS_")), "", .Item("ADDRESS_"))
                         Dim CATEGORY As String = IIf(IsDBNull(.Item("CATEGORY")), "", .Item("CATEGORY"))
                         Dim BRANCHCODE As String = IIf(IsDBNull(.Item("BRANCHCODE")), "", .Item("BRANCHCODE"))
                         Dim HO_CATEGORY As String = IIf(IsDBNull(.Item("HO_CATEGORY")), "", .Item("HO_CATEGORY"))
@@ -349,7 +349,7 @@ Module Report_function
             .Columns.Add("TOTAL_AMOUNT")
         End With
 
-        mysql = $"Select * From PAYROLL_PAYOUT A  
+        mysql = $"Select A.*, B.*, C.*, C.ADDRESS as ADDRESS_ From PAYROLL_PAYOUT A  
                                         INNER JOIN PAYROLL_EMPLOYEE C ON BIO_NO = BIOMETRIC_ID     
                                         LEFT JOIN PAYROLL_CITY_BRANCH B ON BRANCHCODE = BRANCH_CODE      
                                         WHERE PAYDATE = '{paydate}' AND COMPANY  = 'P&G UY'
@@ -371,7 +371,7 @@ Module Report_function
 
                         '============================= NAME AND ATTENDANCE ============================  
                         Dim COMPANY As String = "P&G UY"
-                        Dim ADDRESS As String = IIf(IsDBNull(.Item("ADDRESS")), "", .Item("ADDRESS"))
+                        Dim ADDRESS As String = IIf(IsDBNull(.Item("ADDRESS_")), "", .Item("ADDRESS_"))
                         Dim BRANCHCODE As String = IIf(IsDBNull(.Item("BRANCH_CODE")), "", .Item("BRANCH_CODE"))
                         Dim HO_CATEGORY As String = IIf(IsDBNull(.Item("HO_CATEGORY")), "", .Item("HO_CATEGORY"))
                         Dim EMAIL As Decimal = GetSummary_Email(PAYROLL, $"BRANCH_CODE = '{BRANCHCODE}'")

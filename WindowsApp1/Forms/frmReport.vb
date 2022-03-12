@@ -17,81 +17,143 @@ Public Class frmReport
         PopulatePaydate_Monthly(PI_Paydate_Combo, "RECORDED_ALLOW_DEDUC", "PAYDATE")
         PopulatePaydate_Yearly(SILYear_Combo, "RECORDED_ALLOW_DEDUC", "PAYDATE")
         Lists_Deduction_History(DeducHistory_List, "DEDUCTION")
-        LoadSBU()
+        Lists_SBU(SBU_LV)
 
     End Sub
 
     Private Sub SearchSBU_BTN_Click(sender As Object, e As EventArgs) Handles SearchSBU_BTN.Click
-        LoadSBU(SearchSBU_TXT.Text)
+        'LoadSBU(SearchSBU_TXT.Text)
+        Lists_SBU(SBU_LV, SearchSBU_TXT.Text)
     End Sub
 
     Private Sub SearchSBU_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles SearchSBU_TXT.KeyPress
         If IsEnter(e) Then SearchSBU_BTN.PerformClick()
     End Sub
 
-    Friend Sub LoadSBU(Optional search As String = Nothing)
+    Friend Sub Lists_SBU(LV As ListView, Optional searchName As String = "")
+
+        Dim secured_str As String = searchName
+        secured_str = DreadKnight(secured_str)
+        Dim strWords As String() = secured_str.Split(New Char() {" "c})
+        Dim name As String
+        Dim mysql As String
+
+        If searchName.Length <> 0 Then
+
+            mysql = "select  COALESCE(sum(C.AMOUNT), 0) AS TOTALS, FULLNAME, CREDIT, PRINCIPAL, B.AMOUNT, B.BIO_NO as bio  from PAYROLL_EMPLOYEE A 
+                            inner join PAYROLL_SBU B on B.BIO_NO = A.BIO_NO 
+                            left join RECORDED_ALLOW_DEDUC C on C.BIO_NO = A.BIO_NO and C.CATEGORY = 'SBU' and PAYDATE <> '12/15/2021' WHERE "
+
+            For Each name In strWords
+                mysql &= $"{vbCr}UPPER(B.BIO_NO) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(FULLNAME) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(BRANCH_CODE) LIKE UPPER('%{name}%') 
+                        GROUP BY C.AMOUNT, FULLNAME, CREDIT, PRINCIPAL,  B.AMOUNT, B.BIO_NO ORDER BY FULLNAME ASC "
+            Next
+
+        Else
+            mysql = "select COALESCE(sum(C.AMOUNT), 0) AS TOTALS, FULLNAME, CREDIT, PRINCIPAL, B.AMOUNT, B.BIO_NO as bio from PAYROLL_EMPLOYEE A 
+                                inner join PAYROLL_SBU B on B.BIO_NO = A.BIO_NO 
+                                left join RECORDED_ALLOW_DEDUC C on C.BIO_NO = A.BIO_NO and C.CATEGORY = 'SBU'  and PAYDATE <> '12/15/2021' 
+                                GROUP BY C.AMOUNT, FULLNAME, CREDIT, PRINCIPAL,  B.AMOUNT, B.BIO_NO
+                                ORDER BY FULLNAME ASC "
+        End If
+
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+            LV.Items.Clear()
+            progressBarStart(ds.Tables(0).Rows.Count)
+            For Each dr In ds.Tables(0).Rows
+                With dr
+
+                    Dim credit As Decimal = 0
+                    Dim totalCredit As Decimal = 0
+                    Dim principal As Decimal = 0
+                    Dim balance As Decimal = 0
+
+                    credit = IIf(IsDBNull(.Item("CREDIT")), 0, .Item("CREDIT"))
+                    totalCredit = credit + CDbl(.Item("TOTALS"))
+                    principal = IIf(IsDBNull(.Item("PRINCIPAL")), 0, .Item("PRINCIPAL"))
+                    balance = principal - totalCredit
+
+                    Dim i As ListViewItem = LV.Items.Add(.Item("FULLNAME"))
+                    i.SubItems.Add(FormatNumber(.Item("AMOUNT")))
+                    i.SubItems.Add(IIf(IsDBNull(.Item("PRINCIPAL")), "", FormatNumber(.Item("PRINCIPAL"))))
+                    i.SubItems.Add(FormatNumber(totalCredit))
+                    i.SubItems.Add(FormatNumber(balance)).Tag = .item("bio")
+
+                End With
+                frmMainForm.AppProgressBar.Value += 1
+            Next
+            progressBarEnd()
+        End Using
+
+    End Sub
+
+    Friend Sub LoadSBU(Optional bioNo As Integer = 0)
         Rpt_SBU.LocalReport.DataSources.Clear()
 
         Try
             Dim dt As New DataTable()
             With dt
                 .Columns.Add("NAME")
-                .Columns.Add("AMOUNT")
+                .Columns.Add("P_AMOUNT")
+                .Columns.Add("A_AMOUNT")
                 .Columns.Add("PRINCIPAL")
                 .Columns.Add("CREDIT")
                 .Columns.Add("BALANCE")
                 .Columns.Add("DATE")
+                .Columns.Add("RECORDS_")
             End With
 
+
+            Dim credit As Decimal = 0
+            Dim totalCredit As Decimal = 0
+            Dim principal As Decimal = 0
+            Dim balance As Decimal = 0
+
             Dim mysql As String
+            Dim fullname As String = Nothing
 
-            If search <> Nothing Then
-
-                mysql = $"select COALESCE(sum(C.AMOUNT), 0) AS TOTALS, PAYDATE, FULLNAME, CREDIT, PRINCIPAL, B.AMOUNT, B.BIO_NO as bio from PAYROLL_EMPLOYEE A 
-                                inner join PAYROLL_SBU B on B.BIO_NO = A.BIO_NO 
-                                left join RECORDED_ALLOW_DEDUC C on C.BIO_NO = A.BIO_NO and C.CATEGORY = 'SBU' and TRANSAC_NAME = 'DEDUCTION' 
-                                WHERE B.BIO_NO LIKE '%{search}%' OR
-                                UPPER(FULLNAME) LIKE UPPER('%{search}%') OR
-                                UPPER(COMPANY) LIKE UPPER('%{search}%') OR 
-                                UPPER(BRANCH_CODE) LIKE UPPER('%{search}%')  
-                                GROUP BY C.AMOUNT, PAYDATE,  FULLNAME, CREDIT, PRINCIPAL,  B.AMOUNT, B.BIO_NO ORDER BY FULLNAME ASC, PAYDATE DESC"
-
-            Else
-
-                mysql = $"select COALESCE(sum(C.AMOUNT), 0) AS TOTALS, PAYDATE, FULLNAME, CREDIT, PRINCIPAL, B.AMOUNT, B.BIO_NO as bio from PAYROLL_EMPLOYEE A 
-                                inner join PAYROLL_SBU B on B.BIO_NO = A.BIO_NO 
-                                left join RECORDED_ALLOW_DEDUC C on C.BIO_NO = A.BIO_NO and C.CATEGORY = 'SBU' and TRANSAC_NAME = 'DEDUCTION'  
-                                GROUP BY C.AMOUNT, PAYDATE,  FULLNAME, CREDIT, PRINCIPAL,  B.AMOUNT, B.BIO_NO ORDER BY FULLNAME ASC, PAYDATE DESC"
-
-            End If
+            mysql = $"select  COALESCE(sum(C.AMOUNT), 0) AS TOTALS, FULLNAME, CREDIT, PRINCIPAL, A.DATE_STARTED, B.AMOUNT as amnt, DATE_ADDED, BALANCE  from PAYROLL_EMPLOYEE A 
+                            inner join PAYROLL_SBU B on B.BIO_NO = A.BIO_NO 
+                            left join RECORDED_ALLOW_DEDUC C on C.BIO_NO = A.BIO_NO and C.CATEGORY = 'SBU' and PAYDATE <> '12/15/2021' 
+                            WHERE  B.BIO_NO = '{bioNo}' GROUP BY C.AMOUNT, FULLNAME, CREDIT, PRINCIPAL, A.DATE_STARTED, B.AMOUNT, DATE_ADDED, BALANCE   ORDER BY FULLNAME ASC "
 
             Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
-                progressBarStart(ds.Tables(0).Rows.Count)
                 If ds.Tables(0).Rows.Count > 0 Then
-                    For Each dr In ds.Tables(0).Rows
+                    With ds.Tables(0).Rows(0)
+                        fullname = .Item("FULLNAME")
+                        credit = IIf(IsDBNull(.Item("CREDIT")), 0, .Item("CREDIT"))
+                        totalCredit = credit + CDbl(.Item("TOTALS"))
+                        principal = IIf(IsDBNull(.Item("PRINCIPAL")), 0, .Item("PRINCIPAL"))
+                        balance = principal - totalCredit
+
+                        Dim datee As Date = IIf(IsDBNull(.Item("DATE_ADDED")), .Item("DATE_STARTED"), .Item("DATE_ADDED"))
+                        dt.Rows.Add(fullname, principal, principal, FormatNumber(principal), FormatNumber(totalCredit), FormatNumber(balance), datee.ToString("MM/dd/yyyy"), "NO")
+                        dt.Rows.Add(fullname, credit, credit, FormatNumber(principal), FormatNumber(totalCredit), FormatNumber(balance), "12/15/2021", "YES")
+
+                    End With
+                End If
+            End Using
+
+
+            Dim mysqll As String = $"Select  PAYDATE, B.DATE_STARTED, AMOUNT  from RECORDED_ALLOW_DEDUC A  
+                            left join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIO_NO 
+                            WHERE  A.BIO_NO = '{bioNo}'  and A.CATEGORY = 'SBU' and PAYDATE <> '12/15/2021' ORDER BY PAYDATE ASC "
+
+            Using dss As DataSet = LoadSQL(mysqll, "RECORDED_ALLOW_DEDUC")
+                If dss.Tables(0).Rows.Count > 0 Then
+                    For Each dr In dss.Tables(0).Rows
                         With dr
 
-                            Dim credit As Decimal = 0
-                            Dim totalCredit As Decimal = 0
-                            Dim principal As Decimal = 0
-                            Dim balance As Decimal = 0
-                            Dim datee As String = IIf(IsDBNull(.Item("PAYDATE")), Nothing, .Item("PAYDATE"))
+                            Dim datee As Date = .Item("PAYDATE")
+                            Dim amount As Double = .Item("AMOUNT")
 
-                            If datee <> Nothing Then
-                                datee = CDate(.Item("PAYDATE")).ToString("MMMM dd, yyyy")
-                            End If
-
-                            credit = IIf(IsDBNull(.Item("CREDIT")), 0, .Item("CREDIT"))
-                            totalCredit = credit + CDbl(.Item("TOTALS"))
-                            principal = IIf(IsDBNull(.Item("PRINCIPAL")), 0, .Item("PRINCIPAL"))
-                            balance = principal - totalCredit
-
-                            dt.Rows.Add(.Item("FULLNAME"), .Item("AMOUNT"), FormatNumber(.Item("PRINCIPAL")), FormatNumber(totalCredit), FormatNumber(balance), datee)
+                            dt.Rows.Add(fullname, amount, amount, FormatNumber(principal), FormatNumber(totalCredit), FormatNumber(balance), Format(datee, "MM/dd/yyyy"), "YES")
 
                         End With
-                        frmMainForm.AppProgressBar.Value += 1
                     Next
-                    progressBarEnd()
                 End If
             End Using
 
@@ -1626,5 +1688,9 @@ Public Class frmReport
         Else
             MsgBox("Paydate and Company must not be empty.", MsgBoxStyle.Exclamation)
         End If
+    End Sub
+
+    Private Sub SBU_LV_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles SBU_LV.MouseDoubleClick
+        LoadSBU(SBU_LV.Items(SBU_LV.FocusedItem.Index).SubItems(4).Tag)
     End Sub
 End Class

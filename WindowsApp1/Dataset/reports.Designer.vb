@@ -3681,8 +3681,6 @@ Partial Public Class reports
         
         Private columnNAME As Global.System.Data.DataColumn
         
-        Private columnAMOUNT As Global.System.Data.DataColumn
-        
         Private columnPRINCIPAL As Global.System.Data.DataColumn
         
         Private columnCREDIT As Global.System.Data.DataColumn
@@ -3690,6 +3688,12 @@ Partial Public Class reports
         Private columnBALANCE As Global.System.Data.DataColumn
         
         Private columnDATE As Global.System.Data.DataColumn
+        
+        Private columnP_AMOUNT As Global.System.Data.DataColumn
+        
+        Private columnA_AMOUNT As Global.System.Data.DataColumn
+        
+        Private columnRECORDS_ As Global.System.Data.DataColumn
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
@@ -3736,14 +3740,6 @@ Partial Public Class reports
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public ReadOnly Property AMOUNTColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnAMOUNT
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public ReadOnly Property PRINCIPALColumn() As Global.System.Data.DataColumn
             Get
                 Return Me.columnPRINCIPAL
@@ -3771,6 +3767,30 @@ Partial Public Class reports
         Public ReadOnly Property DATEColumn() As Global.System.Data.DataColumn
             Get
                 Return Me.columnDATE
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property P_AMOUNTColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnP_AMOUNT
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property A_AMOUNTColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnA_AMOUNT
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property RECORDS_Column() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnRECORDS_
             End Get
         End Property
         
@@ -3811,9 +3831,9 @@ Partial Public Class reports
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Overloads Function AddSBURow(ByVal NAME As String, ByVal AMOUNT As String, ByVal PRINCIPAL As String, ByVal CREDIT As String, ByVal BALANCE As String, ByVal _DATE As String) As SBURow
+        Public Overloads Function AddSBURow(ByVal NAME As String, ByVal PRINCIPAL As String, ByVal CREDIT As String, ByVal BALANCE As String, ByVal _DATE As String, ByVal P_AMOUNT As String, ByVal A_AMOUNT As String, ByVal RECORDS_ As String) As SBURow
             Dim rowSBURow As SBURow = CType(Me.NewRow,SBURow)
-            Dim columnValuesArray() As Object = New Object() {NAME, AMOUNT, PRINCIPAL, CREDIT, BALANCE, _DATE}
+            Dim columnValuesArray() As Object = New Object() {NAME, PRINCIPAL, CREDIT, BALANCE, _DATE, P_AMOUNT, A_AMOUNT, RECORDS_}
             rowSBURow.ItemArray = columnValuesArray
             Me.Rows.Add(rowSBURow)
             Return rowSBURow
@@ -3837,11 +3857,13 @@ Partial Public Class reports
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Friend Sub InitVars()
             Me.columnNAME = MyBase.Columns("NAME")
-            Me.columnAMOUNT = MyBase.Columns("AMOUNT")
             Me.columnPRINCIPAL = MyBase.Columns("PRINCIPAL")
             Me.columnCREDIT = MyBase.Columns("CREDIT")
             Me.columnBALANCE = MyBase.Columns("BALANCE")
             Me.columnDATE = MyBase.Columns("DATE")
+            Me.columnP_AMOUNT = MyBase.Columns("P_AMOUNT")
+            Me.columnA_AMOUNT = MyBase.Columns("A_AMOUNT")
+            Me.columnRECORDS_ = MyBase.Columns("RECORDS_")
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -3849,8 +3871,6 @@ Partial Public Class reports
         Private Sub InitClass()
             Me.columnNAME = New Global.System.Data.DataColumn("NAME", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnNAME)
-            Me.columnAMOUNT = New Global.System.Data.DataColumn("AMOUNT", GetType(String), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnAMOUNT)
             Me.columnPRINCIPAL = New Global.System.Data.DataColumn("PRINCIPAL", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnPRINCIPAL)
             Me.columnCREDIT = New Global.System.Data.DataColumn("CREDIT", GetType(String), Nothing, Global.System.Data.MappingType.Element)
@@ -3862,6 +3882,12 @@ Partial Public Class reports
             Me.columnDATE.ExtendedProperties.Add("Generator_ColumnVarNameInTable", "columnDATE")
             Me.columnDATE.ExtendedProperties.Add("Generator_UserColumnName", "DATE")
             MyBase.Columns.Add(Me.columnDATE)
+            Me.columnP_AMOUNT = New Global.System.Data.DataColumn("P_AMOUNT", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnP_AMOUNT)
+            Me.columnA_AMOUNT = New Global.System.Data.DataColumn("A_AMOUNT", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnA_AMOUNT)
+            Me.columnRECORDS_ = New Global.System.Data.DataColumn("RECORDS_", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnRECORDS_)
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -7024,21 +7050,6 @@ Partial Public Class reports
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Property AMOUNT() As String
-            Get
-                Try 
-                    Return CType(Me(Me.tableSBU.AMOUNTColumn),String)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'AMOUNT' in table 'SBU' is DBNull.", e)
-                End Try
-            End Get
-            Set
-                Me(Me.tableSBU.AMOUNTColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Property PRINCIPAL() As String
             Get
                 Try 
@@ -7099,6 +7110,51 @@ Partial Public Class reports
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property P_AMOUNT() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableSBU.P_AMOUNTColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'P_AMOUNT' in table 'SBU' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableSBU.P_AMOUNTColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property A_AMOUNT() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableSBU.A_AMOUNTColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'A_AMOUNT' in table 'SBU' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableSBU.A_AMOUNTColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property RECORDS_() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableSBU.RECORDS_Column),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'RECORDS_' in table 'SBU' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableSBU.RECORDS_Column) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Function IsNAMENull() As Boolean
             Return Me.IsNull(Me.tableSBU.NAMEColumn)
         End Function
@@ -7107,18 +7163,6 @@ Partial Public Class reports
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Sub SetNAMENull()
             Me(Me.tableSBU.NAMEColumn) = Global.System.Convert.DBNull
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Function IsAMOUNTNull() As Boolean
-            Return Me.IsNull(Me.tableSBU.AMOUNTColumn)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Sub SetAMOUNTNull()
-            Me(Me.tableSBU.AMOUNTColumn) = Global.System.Convert.DBNull
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -7167,6 +7211,42 @@ Partial Public Class reports
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Sub Set_DATENull()
             Me(Me.tableSBU.DATEColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsP_AMOUNTNull() As Boolean
+            Return Me.IsNull(Me.tableSBU.P_AMOUNTColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetP_AMOUNTNull()
+            Me(Me.tableSBU.P_AMOUNTColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsA_AMOUNTNull() As Boolean
+            Return Me.IsNull(Me.tableSBU.A_AMOUNTColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetA_AMOUNTNull()
+            Me(Me.tableSBU.A_AMOUNTColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsRECORDS_Null() As Boolean
+            Return Me.IsNull(Me.tableSBU.RECORDS_Column)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetRECORDS_Null()
+            Me(Me.tableSBU.RECORDS_Column) = Global.System.Convert.DBNull
         End Sub
     End Class
     

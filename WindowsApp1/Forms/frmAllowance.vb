@@ -120,6 +120,9 @@
         PopulateComboBox(Allow_Category_Combo, "CATEGORY_ALLOWANCE", "ALLOWANCE_NAME")
         Lists_Allowance(Allowance_LV)
         DatePrepared_dtp.Value = Today
+
+        Status_Combo.Items.Add("APPROVE")
+        Status_Combo.Items.Add("PENDING")
     End Sub
 
     Private Sub Allowance_LV_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles Allowance_LV.MouseDoubleClick
@@ -333,11 +336,15 @@
     End Sub
 
     Private Sub Allowance_Tab_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Allowance_Tab.SelectedIndexChanged
-        If Allowance_Tab.SelectedIndex = 2 Then
+        If Allowance_Tab.SelectedTab.Equals(TabPage2) Then
             ListOF_PAF(Approve_grid)
 
-            Status_Combo.Items.Add("APPROVE")
-            Status_Combo.Items.Add("PENDING")
+        ElseIf Allowance_Tab.SelectedTab.Equals(TabPage3) Then
+            ListOF_PAF(Records_grid)
+
+        ElseIf Allowance_Tab.SelectedTab.Equals(TabPage1) Then
+            Lists_Allowance(Allowance_LV)
+
         End If
     End Sub
 
@@ -393,5 +400,25 @@
         PITo_txt.Clear()
         PIEffectTo_dtp.Value = "1/1/1990"
         PI_SchedTo_CB.SelectedIndex = -1
+    End Sub
+
+    Private Sub R_Search_btn_Click(sender As Object, e As EventArgs) Handles R_Search_btn.Click
+        ListOF_PAF(Records_grid, R_Search_txt.Text)
+    End Sub
+
+    Private Sub ApproveSearch_btn_Click(sender As Object, e As EventArgs) Handles ApproveSearch_btn.Click
+        ListOF_PAF(Approve_grid, ApproveSearch_txt.Text)
+    End Sub
+
+    Private Sub ApproveSearch_txt_KeyPress(sender As Object, e As KeyPressEventArgs) Handles ApproveSearch_txt.KeyPress
+        If e.KeyChar = ChrW(Keys.Enter) Then
+            ListOF_PAF(Approve_grid, ApproveSearch_txt.Text)
+        End If
+    End Sub
+
+    Private Sub R_Search_txt_KeyPress(sender As Object, e As KeyPressEventArgs) Handles R_Search_txt.KeyPress
+        If e.KeyChar = ChrW(Keys.Enter) Then
+            ListOF_PAF(Records_grid, R_Search_txt.Text)
+        End If
     End Sub
 End Class
