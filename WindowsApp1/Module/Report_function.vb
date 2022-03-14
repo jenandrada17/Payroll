@@ -35,7 +35,7 @@ Module Report_function
                                                 WHEN UPPER(C.ADDRESS) LIKE UPPER('MIDSAYAP') THEN 7 
                                                 WHEN UPPER(C.ADDRESS) LIKE UPPER('DAVAO') THEN 8 
                                                 WHEN UPPER(C.ADDRESS) LIKE UPPER('SM SAN LAZARO') THEN 9 
-                                                WHEN UPPER(ADC.ADDRESSDRESS) LIKE UPPER('ZAMBOANGA') THEN 10  
+                                                WHEN UPPER(C.ADDRESS) LIKE UPPER('ZAMBOANGA') THEN 10  
                                                 END"
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
@@ -231,7 +231,7 @@ Module Report_function
                         Dim BRANCH_LIST As String = GetList_Branch(ADDRESS, $"COMPANY = '{COMPANY}'")
 
                         If BRANCH_LIST <> Nothing Then
-                            EMAIL = GetSummary_Email(PAYROLL, $"BRANCH_CODE In ({BRANCH_LIST}) AND COMPANY = '{COMPANY}' AND ADDRESS = '{ADDRESS}'")
+                            EMAIL = GetSummary_Email(PAYROLL, $"BRANCH_CODE In ({BRANCH_LIST}) AND COMPANY = '{COMPANY}' AND C.ADDRESS = '{ADDRESS}'")
                         Else
                             EMAIL = GetSummary_Email(PAYROLL, $"BRANCH_CODE = '{BRANCHCODE}'")
                         End If
@@ -305,7 +305,7 @@ Module Report_function
                         Dim BRANCH_LIST As String = GetList_Branch(ADDRESS, $"COMPANY = '{COMPANY}'")
 
                         If BRANCH_LIST <> Nothing Then
-                            EMAIL = GetSummary_Email(PAYROLL, $"BRANCH_CODE In ({BRANCH_LIST}) AND COMPANY = '{COMPANY}' AND ADDRESS = '{ADDRESS}'")
+                            EMAIL = GetSummary_Email(PAYROLL, $"BRANCH_CODE In ({BRANCH_LIST}) AND COMPANY = '{COMPANY}' AND C.ADDRESS = '{ADDRESS}'")
                         Else
                             EMAIL = GetSummary_Email(PAYROLL, $"BRANCH_CODE = '{BRANCHCODE}'")
                         End If
@@ -849,9 +849,9 @@ Module Report_function
     Public Function GetList_Branch(address As String, str As String) As String
 
         Dim branch_group As New List(Of String)()
-        Dim mysql As String = $"Select BRANCHCODE from PAYROLL_CITY_BRANCH 
-                                inner join PAYROLL_EMPLOYEE ON BRANCHCODE = BRANCH_CODE 
-                                where address = '{address}' and {str}"
+        Dim mysql As String = $"Select BRANCHCODE from PAYROLL_CITY_BRANCH A
+                                inner join PAYROLL_EMPLOYEE B ON BRANCHCODE = BRANCH_CODE 
+                                where A.address = '{address}' and {str}"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_CITY_BRANCH")
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
