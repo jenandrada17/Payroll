@@ -304,7 +304,7 @@ Public Class frmPayout
             If TrainingDays_LBL.Text > 0 Then rate = rate * 0.75  '====== IF TRAINEE
 
             Dim reg_holiday As String = (CDbl(RegularHol_TXT.Text) * rate) * regHoliday_
-            Dim spec_holiday As String = (CDbl(SpecialHol_TXT.Text) * rate) * specHoliday_
+            Dim spec_holiday As String = ((CDbl(SpecialHol_TXT.Text) / 8) * rate) * specHoliday_
 
             Dim result As DialogResult = MessageBox.Show($"The record will be edited, do you want to proceed?", "Warning", MessageBoxButtons.YesNo)
             If result = DialogResult.Yes Then
@@ -313,11 +313,6 @@ Public Class frmPayout
                   TotalLateUnder_LBL.Tag, GrossAmount_LBL.Tag, SSSComp_LBL.Text, SSS_ER, SSS_EC,
                   HDMF_LBL.Text, Philhealth_LBL.Text, Allowances_LBL.Tag, Deduction_LBL.Tag, NetPay_LBL.Tag,
                   reg_holiday, spec_holiday, TotalNight_LBL.Tag, "")
-
-                'SavePayout(BIO_NO, paydate_, TotalBasic_LBL.Tag, TotalOT_LBL.Tag,
-                '  TotalLateUnder_LBL.Tag, GrossAmount_LBL.Tag, SSSComp_LBL.Text, SSS_ER, SSS_EC,
-                '  HDMF_LBL.Text, Philhealth_LBL.Text, SSSLoan_LBL.Text, PagibigLoan_LBL.Text,
-                '  Allowances_LBL.Tag, Deduction_LBL.Tag, NetPay_LBL.Tag, reg_holiday, spec_holiday, TotalNight_LBL.Tag, "")
 
                 '====================================== SAVE NEW ADDITIONAL ===================================================
                 If Allowance_grid.Rows.Count > 0 Then

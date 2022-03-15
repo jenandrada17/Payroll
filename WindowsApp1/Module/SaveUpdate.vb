@@ -534,8 +534,6 @@ Module SaveUpdate
                     .Item("SSS_EC") = SSS_EC
                     .Item("PAGIBIG_COMP") = PAGIBIG_COMP
                     .Item("PHILHEALTH_COMP") = PHILHEALTH_COMP
-                    '.Item("SSS_LOAN") = SSS_LOAN
-                    '.Item("PAGIBIG_LOAN") = PAGIBIG_LOAN
                     .Item("TOTAL_ALLOWANCE") = TOTAL_ALLOWANCE
                     .Item("TOTAL_DEDUCTION") = TOTAL_DEDUCTION
                     .Item("NET_PAY") = NET_PAY
@@ -562,11 +560,6 @@ Module SaveUpdate
                     .Item("SSS_EC") = SSS_EC
                     .Item("PAGIBIG_COMP") = PAGIBIG_COMP
                     .Item("PHILHEALTH_COMP") = PHILHEALTH_COMP
-                    '.Item("TAXABLE") = TAXABLE
-                    '.Item("TAX_WHELD") = TAX_WHELD
-                    '.Item("NET_TAX_COMP") = NET_TAX_COMP
-                    '.Item("SSS_LOAN") = SSS_LOAN
-                    '.Item("PAGIBIG_LOAN") = PAGIBIG_LOAN
                     .Item("TOTAL_ALLOWANCE") = TOTAL_ALLOWANCE
                     .Item("TOTAL_DEDUCTION") = TOTAL_DEDUCTION
                     .Item("PAYDATE") = PAYDATE

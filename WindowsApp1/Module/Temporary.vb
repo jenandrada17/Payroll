@@ -1,4 +1,5 @@
-﻿Imports Microsoft.Office.Interop
+﻿Imports System.IO
+Imports Microsoft.Office.Interop
 
 
 Module Temporary
@@ -68,5 +69,25 @@ Module Temporary
         End Using
     End Sub
 
+    Friend Sub GetHO_Category()
+        Dim mysql As String = $"Select BIO_NO from PAYROLL_EMPLOYEE where HO_CATEGORY = 'Dalton Admin Office'"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+            If ds.Tables(0).Rows.Count > 0 Then
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+                        Dim path As String = "D:\sample.txt"
+
+                        If Not File.Exists(path) Then
+                            File.Create(path).Close()
+                        End If
+
+                        Dim wr As New StreamWriter(path, FileMode.Append)
+                        wr.Write(.item("BIO_NO") & vbCrLf)
+                        wr.Close()
+                    End With
+                Next
+            End If
+        End Using
+    End Sub
 
 End Module
