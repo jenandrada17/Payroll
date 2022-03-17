@@ -198,6 +198,10 @@ Public Class frmSchedule
         End If
     End Sub
 
+    Private Sub Schedule_DG_DataError(sender As Object, e As DataGridViewDataErrorEventArgs) Handles Schedule_DG.DataError
+        '========================= Need para di magERROR ang Datagrid==============
+    End Sub
+
     Public Sub LoadDateTime(Optional datee As DateTime = Nothing)
         Schedule_DG.Rows.Clear()
 

@@ -23,6 +23,8 @@ Public Class frmAttendance
     Dim DtSet As System.Data.DataSet
     Dim MyCommand As System.Data.OleDb.OleDbDataAdapter
 
+    Dim ALLOW_OT As Boolean = True
+
     'eApp = New Excel.Application
     '    eBook = eApp.Workbooks.Open(Path_TXT.Text)
     '    eSheet = eBook.Worksheets(1)
@@ -127,7 +129,7 @@ Public Class frmAttendance
         Dim CurrD As DateTime = ss.AddDays(-1)
 
         '==============================================AM IN 5AM to 1PM==================================================
-        For y = 0 To 480
+        For y = 0 To 1440
 
             Dim myDate = New DateTime(CurrD.Year, CurrD.Month, CurrD.Day, 5, 0, 0, 0).AddMinutes(y)
             AM_In_DataGrid.Items.Add(myDate.ToString("t"))
@@ -136,7 +138,7 @@ Public Class frmAttendance
 
 
         '==============================================AM OUT 8AM to 6PM==================================================
-        For y = 0 To 600
+        For y = 0 To 1440
 
             Dim myDate = New DateTime(CurrD.Year, CurrD.Month, CurrD.Day, 8, 0, 0, 0).AddMinutes(y)
             AM_Out_DataGrid.Items.Add(myDate.ToString("t"))
@@ -144,7 +146,7 @@ Public Class frmAttendance
         Next
 
         '==============================================PM IN 12AM to 7PM==================================================
-        For y = 0 To 420
+        For y = 0 To 1440
 
             Dim myDate = New DateTime(CurrD.Year, CurrD.Month, CurrD.Day, 12, 0, 0, 0).AddMinutes(y)
             PM_IN_DataGrid.Items.Add(myDate.ToString("t"))
@@ -153,7 +155,7 @@ Public Class frmAttendance
 
 
         '==============================================PM OUT 12PM to 11PM==================================================
-        For y = 0 To 660
+        For y = 0 To 1440
 
             Dim myDate = New DateTime(CurrD.Year, CurrD.Month, CurrD.Day, 12, 0, 0, 0).AddMinutes(y)
             PM_Out_DataGrid.Items.Add(myDate.ToString("t"))
@@ -266,20 +268,18 @@ Public Class frmAttendance
 
             Dim bioNum = BiometricID_TXT.Text
             Dim branchCode = GetBranchCode(bioNum)
-            Dim timeIn = GetTime_In(bioNum)
-            Dim timeOut = GetTime_Out(bioNum)
             Dim dateStarted = GetData("DATE_STARTED", $"PAYROLL_EMPLOYEE WHERE BIO_NO = '{bioNum}'")
 
             For Each row As DataGridViewRow In DataGridView1.Rows
+
+                Dim DATEE As DateTime = row.Tag
 
                 If Not row.DefaultCellStyle.ForeColor = Color.Red Then
 
                     '================================= CALCULATE HOLIDAYS  ===============================
                     If row.DefaultCellStyle.BackColor = Color.MediumOrchid Then
 
-                        Dim datee = row.Cells(0).Tag
-
-                        If datee >= dateStarted Then
+                        If DATEE >= dateStarted Then
                             TotalRHoliday_LBL.Text = TotalRHoliday_LBL.Text + 1
                         End If
 
@@ -296,11 +296,46 @@ Public Class frmAttendance
                     End If
                 End If
 
-                CalculateLATE(row, timeIn)
+                '======================== GET TIME IN/OUT TO CALCULATE LATE UNDERTIME OVERTIME ============================ 
 
-                CalculateuNDERTIME(row, timeIn, timeOut)
+                If CheckData("BIO_NO", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{bioNum}'") Then
 
-                CalculateuOVERTIME(row, timeOut)
+                    If DateExist_IN_Schedule(bioNum, DATEE.ToShortDateString) Then
+                        Dim timeIN, timeOut As DateTime
+                        If DateTime.TryParse(GetData("TIME_IN", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{bioNum}' AND DATEE = '{DATEE.ToShortDateString}' "), timeIN) Then
+                            TIME_IN = timeIN
+                        Else
+                            Continue For
+                        End If
+
+                        If DateTime.TryParse(GetData("TIME_OUT", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{bioNum}' AND DATEE = '{DATEE.ToShortDateString}' "), timeOut) Then
+                            TIME_OUT = timeOut
+
+                            If TIME_OUT > TIME_IN.AddHours(9) Then
+                                TIME_OUT = TIME_IN.AddHours(9)
+                                ALLOW_OT = True
+                            Else
+                                ALLOW_OT = False
+                            End If
+                        Else
+                            Continue For
+                        End If
+
+                    Else
+                        TIME_IN = GetData("VALUEE", $"PAYROLL_DEFAULT_TIMEIN")
+                        TIME_OUT = TIME_IN.AddHours(9)
+                    End If
+
+                Else
+                    TIME_IN = GetTimeInOut(bioNum).Time_in
+                    TIME_OUT = GetTimeInOut(bioNum).Time_out
+                End If
+
+                CalculateLATE(row, TIME_IN)
+
+                CalculateuNDERTIME(row, TIME_IN, TIME_OUT)
+
+                CalculateuOVERTIME(row, TIME_OUT)
 
             Next
 
@@ -347,8 +382,6 @@ Public Class frmAttendance
         '========================================================================= CELL NUMBER AM IN ===========================================================
         If Not row.Cells(1).Value = Nothing Then
 
-            'If VALUEE.ToString("t") >= timeIn.ToString("t") Then
-
             Dim lateHour As TimeSpan = DateTime.Parse(row.Cells(1).Value).Subtract(DateTime.Parse(timeIn.ToShortTimeString))
 
             Dim cellValue As DateTime = row.Cells(1).Value
@@ -357,8 +390,6 @@ Public Class frmAttendance
             If cellValue > limit Then
                 late_count += lateHour
             End If
-
-            'End If
 
         End If
 
@@ -385,17 +416,17 @@ Public Class frmAttendance
     Private Sub CalculateuOVERTIME(row As DataGridViewRow, timeOut As DateTime)
         '========================================================================= CELL NUMBER PM OUT ===========================================================
         If Not row.Cells(4).Value = Nothing Then
+            If ALLOW_OT = True Then
+                Dim OTHour As TimeSpan = DateTime.Parse(row.Cells(4).Value).Subtract(DateTime.Parse(timeOut.ToShortTimeString))
 
-            Dim OTHour As TimeSpan = DateTime.Parse(row.Cells(4).Value).Subtract(DateTime.Parse(timeOut.ToShortTimeString))
+                If OTHour.Hours > 0 Then
+                    TotalOTHr_LBL.Text = CDbl(TotalOTHr_LBL.Text) + OTHour.Hours
 
-            If OTHour.Hours > 0 Then
-                TotalOTHr_LBL.Text = CDbl(TotalOTHr_LBL.Text) + OTHour.Hours
-
-                If OTHour.Minutes >= 30 Then
-                    TotalOTHr_LBL.Text = CDbl(TotalOTHr_LBL.Text) + 0.5
+                    If OTHour.Minutes >= 30 Then
+                        TotalOTHr_LBL.Text = CDbl(TotalOTHr_LBL.Text) + 0.5
+                    End If
                 End If
             End If
-
         End If
     End Sub
 
@@ -1674,7 +1705,6 @@ Public Class frmAttendance
         For row = 7 To DtSet.Tables(0).Rows.Count + 1
 
             Dim groups_time, list_hour As New List(Of String)()
-            'Dim list_hour(3) As String
 
             '=============== BIO NUMBER ================
             If eCell(row, 2).Value <> Nothing Then
@@ -1723,21 +1753,21 @@ Public Class frmAttendance
 
                 If time = "1/1/0001 12:00:00 AM" Then
 
-                    list_hour.Distinct.ToList
+                    list_hour = list_hour.Distinct.ToList
 
                     If list_hour.Count > 0 Then
 
                         Console.WriteLine("alll " & String.Join(vbTab, list_hour))
 
-                        For i = 0 To list_hour.Count - 1
-                            For x = 0 To i
-                                If x < list_hour.Count - 1 Then
-                                    If CDate(list_hour(x)).Hour = CDate(list_hour(x + 1)).Hour Then
-                                        list_hour.RemoveAt(x + 1)
-                                    End If
-                                End If
-                            Next
-                        Next
+                        'For i = 0 To list_hour.Count - 1
+                        '    For x = 0 To i
+                        '        If x < list_hour.Count - 1 Then
+                        '            If CDate(list_hour(x)).Hour = CDate(list_hour(x + 1)).Hour Then
+                        '                list_hour.RemoveAt(x + 1)
+                        '            End If
+                        '        End If
+                        '    Next
+                        'Next
 
                         Console.WriteLine("First " & list_hour.First)
                         Console.WriteLine("Last " & list_hour.Last)
@@ -1764,17 +1794,32 @@ Public Class frmAttendance
 
                                 If new_list(1) = "" Then
                                     new_list(1) = _time.ToString("t")
+                                ElseIf new_list(1) <> "" And new_list(2) <> "" Then
+                                    new_list(3) = _time.ToString("t")
                                 Else
                                     new_list(2) = _time.ToString("t")
                                 End If
 
                             Else
+
                                 If new_list(1) = "" Then
                                     new_list(1) = _time.ToString("t")
+                                ElseIf new_list(1) <> "" And new_list(2) <> "" Then
+                                    new_list(3) = _time.ToString("t")
                                 Else
                                     new_list(2) = _time.ToString("t")
                                 End If
 
+                            End If
+
+                            '=================== IF DISARRANGE BLANKS =================
+                            If new_list(0) = "" And new_list(1) <> "" And new_list(2) = "" And new_list(3) <> "" Then '== IF (0101)
+                                new_list(2) = new_list(1)
+                                new_list(1) = ""
+                            ElseIf new_list(0) <> "" And new_list(1) = "" And new_list(2) <> "" And new_list(3) = "" Then '== IF  (1010)
+                                Dim timeDiff As TimeSpan = DateTime.Parse(new_list(2)).Subtract(DateTime.Parse(new_list(0)))
+                                Console.WriteLine(timeDiff.ToString)
+                                If 
                             End If
                         Next
 
@@ -2057,7 +2102,13 @@ Public Class frmAttendance
 
                         If DateTime.TryParse(GetData("TIME_OUT", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{biometric_No}' AND DATEE = '{DATEE.ToShortDateString}' "), timeOut) Then
                             TIME_OUT = timeOut
-                            If TIME_OUT > TIME_IN.AddHours(9) Then TIME_OUT = TIME_IN.AddHours(9)
+
+                            If TIME_OUT > TIME_IN.AddHours(9) Then
+                                TIME_OUT = TIME_IN.AddHours(9)
+                                ALLOW_OT = True
+                            Else
+                                ALLOW_OT = False
+                            End If
                         Else
                             Continue For
                         End If
