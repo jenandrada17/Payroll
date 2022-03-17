@@ -178,6 +178,11 @@ Public Class frmAttendance
                 End If
             End If
         Next
+
+        AM_In_DataGrid.Items.Insert(0, "")
+        AM_Out_DataGrid.Items.Insert(0, "")
+        PM_IN_DataGrid.Items.Insert(0, "")
+        PM_Out_DataGrid.Items.Insert(0, "")
     End Sub
 
     Private Sub HourMinute(from_HR As Integer, To_HR As Integer, combo As DataGridViewComboBoxColumn)
@@ -400,7 +405,10 @@ Public Class frmAttendance
         '========================================================================= CELL NUMBER PM OUT ===========================================================
         If Not row.Cells(4).Value = Nothing Then
 
-            Dim underHour As TimeSpan = DateTime.Parse(timeOut.ToShortTimeString).Subtract(DateTime.Parse(row.Cells(4).Value))
+            Dim _out As DateTime = DateTime.Parse(row.Cells(4).Value).Subtract(New TimeSpan(0, DateTime.Parse(row.Cells(4).Value).Minute, 0))
+            Dim _timeOut As DateTime = timeOut.ToShortTimeString
+
+            Dim underHour As TimeSpan = _timeOut.Subtract(_out.ToShortTimeString)
 
             Dim cellValue As DateTime = row.Cells(4).Value
             Dim limit As DateTime = timeOut.ToShortTimeString
@@ -972,10 +980,6 @@ Public Class frmAttendance
     Private Sub forLoop_ALL_IMPORTED()   '================================ WORKS WELL- FOR ALL RECORDS ONLY (PARTNER WITH SAVE_DIRECT_Attendance()()) =============================   
 
         LoadDateTime()
-        AM_In_DataGrid.Items.Insert(0, "")
-        AM_Out_DataGrid.Items.Insert(0, "")
-        PM_IN_DataGrid.Items.Insert(0, "")
-        PM_Out_DataGrid.Items.Insert(0, "")
 
         Dim group_Empty, group_Save As New List(Of String)()
 
@@ -984,190 +988,152 @@ Public Class frmAttendance
 
         progressBarStart(distinct_bio.Count)
 
-        For Each biometric_No As String In distinct_bio
-            list_inOut.Clear()
+        Try
 
-            '======================== TO REPLACE EXISTING RECORD ========================================================
-            If ThisHasRow($"BIOMETRIC_DTR where BIO_ID = '{biometric_No}' and PAYDATE = '{paydate_}'") Then Replacing($"BIOMETRIC_DTR where BIO_ID = '{biometric_No}' and PAYDATE = '{paydate_}';")
-            '======================== GET TIME IN/OUT TO CALCULATE LATE UNDERTIME OVERTIME ============================
+            'For Each biometric_No In distinct_bio
+            For i = 0 To distinct_bio.Count - 1
+                Dim biometric_No As String = distinct_bio(i)
+                list_inOut.Clear()
 
-            Dim mysql As String = $"Select DATEANDTIME From IMPORT_DTR where BIO_ID = '{biometric_No}' and PAYDATE = '{paydate_}'"
-            Using ds As DataSet = LoadSQL(mysql, "IMPORT_DTR")
-                If ds.Tables(0).Rows.Count > 0 Then
-                    For Each dr In ds.Tables(0).Rows
-                        With dr
-                            Dim date_ As DateTime = .Item("DATEANDTIME")
+                '======================== TO REPLACE EXISTING RECORD ========================================================
+                If ThisHasRow($"BIOMETRIC_DTR where BIO_ID = '{biometric_No}' and PAYDATE = '{paydate_}'") Then Replacing($"BIOMETRIC_DTR where BIO_ID = '{biometric_No}' and PAYDATE = '{paydate_}';")
+                '======================== GET TIME IN/OUT TO CALCULATE LATE UNDERTIME OVERTIME ============================
 
-                            list_inOut.Add(date_.ToString("d") & " " & date_.ToShortTimeString)
-                        End With
+                Dim mysql As String = $"Select DATEANDTIME From IMPORT_DTR where BIO_ID = '{biometric_No}' and PAYDATE = '{paydate_}'"
+                Using ds As DataSet = LoadSQL(mysql, "IMPORT_DTR")
+                    If ds.Tables(0).Rows.Count > 0 Then
+                        For Each dr In ds.Tables(0).Rows
+                            With dr
+                                Dim date_ As DateTime = .Item("DATEANDTIME")
+
+                                list_inOut.Add(date_.ToString("d") & " " & date_.ToShortTimeString)
+                            End With
+                        Next
+                    End If
+                End Using
+
+                timee = list_inOut.Distinct().ToList
+
+                For Each row As DataGridViewRow In DataGridView1.Rows
+
+                    Dim list_hour(3) As String
+                    Dim DATE_ONLY As String = ""
+
+                    Dim rowIndex As Integer = row.Index
+                    Dim asss As DateTime = DataGridView1.Rows(rowIndex).Tag
+                    Dim groups_timee As New List(Of String)()
+
+                    For Each timme As String In timee
+                        If timme.StartsWith(asss.ToString("d")) Then
+                            groups_timee.Add(timme)
+                        End If
                     Next
-                End If
-            End Using
 
-            timee = list_inOut.Distinct().ToList
+                    '========================================= TIME IN/OUT =========================================
 
-            For Each row As DataGridViewRow In DataGridView1.Rows
+                    Dim DATEE As DateTime = row.Tag
 
-                Dim list_hour(3) As String
-                Dim DATE_ONLY As String = ""
+                    If CheckData("BIO_NO", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{biometric_No}'") Then
 
-                Dim rowIndex As Integer = row.Index
-                Dim asss As DateTime = DataGridView1.Rows(rowIndex).Tag
-                Dim groups_timee As New List(Of String)()
-
-                For Each timme As String In timee
-                    If timme.StartsWith(asss.ToString("d")) Then
-                        groups_timee.Add(timme)
-                    End If
-                Next
-
-                '========================================= TIME IN/OUT =========================================
-
-                Dim DATEE As DateTime = row.Tag
-
-                If CheckData("BIO_NO", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{biometric_No}'") Then
-
-                    If DateExist_IN_Schedule(biometric_No, DATEE.ToShortDateString) Then
-                        TIME_IN = GetData("TIME_IN", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{biometric_No}' AND DATEE = '{DATEE.ToShortDateString}'  ")
-                        TIME_OUT = TIME_IN.AddHours(9)
-                    Else
-
-                        TIME_IN = GetData("VALUEE", $"PAYROLL_DEFAULT_TIMEIN")
-                        TIME_OUT = TIME_IN.AddHours(9)
-
-                    End If
-
-                Else
-                    TIME_IN = GetTime_In(biometric_No)
-                    TIME_OUT = GetTime_Out(biometric_No)
-                End If
-
-
-                For Each dateTime As DateTime In groups_timee
-
-                    Dim time As DateTime = dateTime.ToString("t")
-
-                    DATE_ONLY = dateTime.ToString("d")
-
-                    '============================== WORKED FINE ======================== 
-                    If time >= TIME_IN.AddHours(-3).ToShortTimeString And time <= TIME_IN.AddHours(3).AddMinutes(-1).ToShortTimeString And Not time.Hour = 12 Then
-                        If list_hour(0) = "" Then
-
-                            list_hour(0) = time.ToString("t")
+                        If DateExist_IN_Schedule(biometric_No, DATEE.ToShortDateString) Then
+                            TIME_IN = GetData("TIME_IN", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{biometric_No}' AND DATEE = '{DATEE.ToShortDateString}'  ")
+                            TIME_OUT = TIME_IN.AddHours(9)
                         Else
-                            list_hour(1) = time.ToString("t")
+
+                            TIME_IN = GetData("VALUEE", $"PAYROLL_DEFAULT_TIMEIN")
+                            TIME_OUT = TIME_IN.AddHours(9)
+
                         End If
 
-                    ElseIf time >= TIME_OUT.AddHours(-1).ToShortTimeString Then
-                        list_hour(3) = time.ToString("t")
+                    Else
+                        TIME_IN = GetTime_In(biometric_No)
+                        TIME_OUT = GetTime_Out(biometric_No)
+                    End If
 
-                    ElseIf (time >= "12:00 PM" And time <= "12:59 PM") Or (time >= TIME_IN.AddHours(4).ToShortTimeString And time <= TIME_IN.AddHours(5).AddMinutes(-1).ToShortTimeString) Then
+                    Dim new_list(3) As String
 
-                        Dim breaktime As DateTime = TIME_IN.AddHours(4)
-                        Dim oldValuee As DateTime = dateTime
-                        Dim newValuee As String = oldValuee.ToString("d") & " " & oldValuee.Hour
-                        Dim val As String = oldValuee.ToString("d") & " " & breaktime.Hour
+                    If groups_timee.Count > 0 Then
 
-                        If newValuee = val Then
+                        groups_timee = groups_timee.Distinct.ToList
 
-                            If CountDate(groups_timee, val) >= 2 Then
-                                list_Group = SortCountedDATE(groups_timee, val)
-                            ElseIf CountDate(groups_timee, val) = 1 Then
-                                list_Group = SortCountedDATE(groups_timee, val)
-                            End If
+                        For Each dateTime As DateTime In groups_timee
+                            Try
+                                Dim time As DateTime = dateTime.ToString("t")
 
-                            '======================== PRINT 12 NOON ================ WORKED FINE
-                            If list_Group.Count >= 2 Then
+                                DATE_ONLY = dateTime.ToString("d")
 
-                                Dim list1 As DateTime = list_Group.Item(0)
-                                Dim list2 As DateTime = list_Group.Item(list_Group.Count - 1)
+                                If time >= TIME_IN.AddHours(-3).ToShortTimeString And time <= TIME_IN.AddHours(3).AddMinutes(-1).ToShortTimeString Then
+                                    If new_list(0) = "" Then
 
-                                list_hour(1) = list1.ToString("t")
-                                list_hour(2) = list2.ToString("t")
+                                        new_list(0) = time.ToString("t")
+                                    Else
+                                        new_list(1) = time.ToString("t")
+                                    End If
 
-                                list_Group.Clear()
+                                ElseIf time >= TIME_OUT.AddHours(-1).ToShortTimeString Then
 
-                            ElseIf list_Group.Count = 1 Then
+                                    new_list(3) = time.ToString("t")
 
-                                Dim list1 As DateTime = list_Group.Item(0)
+                                ElseIf (time >= "12:00 PM" And time <= "12:59 PM") Or (time >= TIME_IN.AddHours(4).ToShortTimeString And time <= TIME_IN.AddHours(5).AddMinutes(-1).ToShortTimeString) Then
 
-                                If list_hour(0) = "" Then
-                                    list_hour(0) = list1.ToString("t")
+                                    If new_list(1) = "" Then
+                                        new_list(1) = time.ToString("t")
+                                    ElseIf new_list(1) <> "" And new_list(2) <> "" Then
+                                        new_list(3) = time.ToString("t")
+                                    Else
+                                        new_list(2) = time.ToString("t")
+                                    End If
+
                                 Else
-                                    list_hour(1) = list1.ToString("t")
+
+                                    If new_list(1) = "" Then
+                                        new_list(1) = time.ToString("t")
+                                    ElseIf new_list(1) <> "" And new_list(2) <> "" Then
+                                        new_list(3) = time.ToString("t")
+                                    Else
+                                        new_list(2) = time.ToString("t")
+                                    End If
                                 End If
 
-                                list_Group.Clear()
+                            Catch ex As Exception
+                                MsgBox("2nd for each" & ex.ToString)
+                            End Try
+                        Next
 
-                            Else   ' =========== PRINT SINGLE 12:00 TO 12:59 ==========
-                                If list_hour(1) = "" Then
-
-                                    list_hour(1) = time.ToString("t")
-                                Else
-                                    list_hour(2) = time.ToString("t")
-                                End If
-                            End If
-                        Else '||||||||||||||||||||||||||||||||||||| NEWLY ADDED JANUARY 19, 2022 ||||||||||||||||||||||| 
-
-                            If list_hour(1) = "" Then
-                                list_hour(1) = time.ToString("t")
+                        '=================== IF DISARRANGE BLANKS =================
+                        If new_list(0) = "" And new_list(1) <> "" And new_list(2) = "" And new_list(3) <> "" Then '== IF (0101)
+                            new_list(2) = new_list(1)
+                            new_list(1) = ""
+                        ElseIf new_list(0) <> "" And new_list(1) = "" And new_list(2) <> "" And new_list(3) = "" Then '== IF  (1010)
+                            Dim timeDiff As TimeSpan = DateTime.Parse(new_list(2)).Subtract(DateTime.Parse(new_list(0)))
+                            If timeDiff.Hours > 5 Then
+                                new_list(3) = new_list(2)
+                                new_list(2) = ""
                             Else
-                                list_hour(2) = time.ToString("t")
+                                new_list(1) = new_list(2)
+                                new_list(2) = ""
                             End If
-
+                        ElseIf new_list(0) <> "" And new_list(1) <> "" And new_list(2) = "" And new_list(3) = "" Then '== IF  (1100)
+                            Dim timeDiff As TimeSpan = DateTime.Parse(new_list(1)).Subtract(DateTime.Parse(new_list(0)))
+                            If timeDiff.Hours > 5 Then
+                                new_list(3) = new_list(1)
+                                new_list(1) = ""
+                            End If
                         End If
-                    Else
 
-                        '||||||||||||||||||||||||||||||||||||| NEWLY ADDED JANUARY 19, 2022 ||||||||||||||||||||||| 
-                        If list_hour(1) = "" Then
-                            list_hour(1) = time.ToString("t")
-                        Else
-                            list_hour(2) = time.ToString("t")
-                        End If
+                        distinct_bio.Add(biometric_No)
+                        SaveDTR(biometric_No, Paydate, DATE_ONLY, new_list(0), new_list(1), new_list(2), new_list(3))
                     End If
                 Next
 
-                If list_hour(1) = list_hour(2) Then '==== CHECK IF SAME LUNCH TIME
-                    list_hour(1) = ""
-                End If
-
-                '================ FEB 28, 2022 (GICOMMENT AFTER IMPORTING)
-                'If list_hour(3) = "" And list_hour(0) <> "" And list_hour(2) <> "" And list_hour(1) <> "" Then '==== FOR HALFDAY(AM)
-                '    list_hour(1) = list_hour(2)
-                '    list_hour(2) = ""
-                'End If
-
-                'If list_hour(0) = "" And list_hour(3) <> "" Then '==== FOR HALFDAY(PM)
-                '    list_hour(2) = list_hour(1)
-                '    list_hour(1) = ""
-                'End If
-
-                '||||||||||||||||||||||||||||||||||||| NEWLY ADDED JANUARY 19, 2022 |||||||||||||||||||||||  
-
-                If list_hour(2) >= TIME_OUT.ToShortTimeString And list_hour(3) = "" Then
-                    list_hour(3) = list_hour(2)
-                    list_hour(2) = ""
-                End If
-
-                If list_hour(0) = "" And list_hour(1) = "" And list_hour(2) <> "" Then
-                    If Convert.ToDateTime(list_hour(2)).ToShortTimeString >= TIME_IN.ToShortTimeString Then
-                        list_hour(0) = list_hour(2)
-                        list_hour(2) = ""
-                    End If
-                End If
-                '|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-
-                If list_hour(0) = "" And list_hour(1) = "" And list_hour(2) = "" And list_hour(3) = "" Then
-                Else
-                    SaveDTR(biometric_No, Paydate, DATE_ONLY, list_hour(0), list_hour(1), list_hour(2), list_hour(3))
-                End If
-
+                frmMainForm.AppProgressBar.Value += 1
             Next
 
-            frmMainForm.AppProgressBar.Value += 1
-        Next
+            progressBarEnd()
+        Catch ex As Exception
+            MsgBox("1st for each" & ex.ToString)
+        End Try
 
-        progressBarEnd()
     End Sub
 
     Private Sub Search_BTN_Click(sender As Object, e As EventArgs) Handles Search_BTN.Click
@@ -1749,30 +1715,12 @@ Public Class frmAttendance
             For column = 5 To 11
                 Dim time As DateTime = (New DateTime()).AddDays(eCell(row, column).Value)
 
-                '============================== WORKED FINE ========================  
-
+                '============================== WORKED FINE ========================   
                 If time = "1/1/0001 12:00:00 AM" Then
 
                     list_hour = list_hour.Distinct.ToList
 
                     If list_hour.Count > 0 Then
-
-                        Console.WriteLine("alll " & String.Join(vbTab, list_hour))
-
-                        'For i = 0 To list_hour.Count - 1
-                        '    For x = 0 To i
-                        '        If x < list_hour.Count - 1 Then
-                        '            If CDate(list_hour(x)).Hour = CDate(list_hour(x + 1)).Hour Then
-                        '                list_hour.RemoveAt(x + 1)
-                        '            End If
-                        '        End If
-                        '    Next
-                        'Next
-
-                        Console.WriteLine("First " & list_hour.First)
-                        Console.WriteLine("Last " & list_hour.Last)
-                        Console.WriteLine("new alll " & String.Join(vbTab, list_hour))
-                        Console.WriteLine("count " & list_hour.Count)
 
                         Dim new_list(3) As String
 
@@ -1812,16 +1760,28 @@ Public Class frmAttendance
 
                             End If
 
-                            '=================== IF DISARRANGE BLANKS =================
-                            If new_list(0) = "" And new_list(1) <> "" And new_list(2) = "" And new_list(3) <> "" Then '== IF (0101)
-                                new_list(2) = new_list(1)
-                                new_list(1) = ""
-                            ElseIf new_list(0) <> "" And new_list(1) = "" And new_list(2) <> "" And new_list(3) = "" Then '== IF  (1010)
-                                Dim timeDiff As TimeSpan = DateTime.Parse(new_list(2)).Subtract(DateTime.Parse(new_list(0)))
-                                Console.WriteLine(timeDiff.ToString)
-                                If 
-                            End If
                         Next
+
+                        '=================== IF DISARRANGE BLANKS =================
+                        If new_list(0) = "" And new_list(1) <> "" And new_list(2) = "" And new_list(3) <> "" Then '== IF (0101)
+                            new_list(2) = new_list(1)
+                            new_list(1) = ""
+                        ElseIf new_list(0) <> "" And new_list(1) = "" And new_list(2) <> "" And new_list(3) = "" Then '== IF  (1010)
+                            Dim timeDiff As TimeSpan = DateTime.Parse(new_list(2)).Subtract(DateTime.Parse(new_list(0)))
+                            If timeDiff.Hours > 5 Then
+                                new_list(3) = new_list(2)
+                                new_list(2) = ""
+                            Else
+                                new_list(1) = new_list(2)
+                                new_list(2) = ""
+                            End If
+                        ElseIf new_list(0) <> "" And new_list(1) <> "" And new_list(2) = "" And new_list(3) = "" Then '== IF  (1100)
+                            Dim timeDiff As TimeSpan = DateTime.Parse(new_list(1)).Subtract(DateTime.Parse(new_list(0)))
+                            If timeDiff.Hours > 5 Then
+                                new_list(3) = new_list(1)
+                                new_list(1) = ""
+                            End If
+                        End If
 
                         distinct_bio.Add(bio_no)
                         SaveDTR(bio_no, Paydate, eCell(row, 3).Value, new_list(0), new_list(1), new_list(2), new_list(3))
@@ -1830,11 +1790,9 @@ Public Class frmAttendance
 
                     Exit For
                 Else
-                    If bio_no = "4695" Then
-                        Console.WriteLine(eCell(row, 3).Value)
-                    End If
 
                     list_hour.Add(time.ToString("t"))
+
                 End If
 
 
@@ -2016,11 +1974,6 @@ Public Class frmAttendance
     Public Sub SAVE_DIRECT_Attendance()
         LoadDateTime()
         TempAttendance()
-
-        AM_In_DataGrid.Items.Insert(0, "")
-        AM_Out_DataGrid.Items.Insert(0, "")
-        PM_IN_DataGrid.Items.Insert(0, "")
-        PM_Out_DataGrid.Items.Insert(0, "")
 
         Dim paydate_ As String = Paydate.ToString("d")
 
