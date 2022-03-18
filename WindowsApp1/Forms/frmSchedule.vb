@@ -303,20 +303,26 @@ Public Class frmSchedule
 
         Dim countOfColumns = DtSet.Tables(0).Columns.Count
 
+        Dim SIL, total_days, overTime As Double
         For row = 7 To DtSet.Tables(0).Rows.Count + 1
             Dim start As DateTime = starting_date
             Dim endd As DateTime = ending_date
+            Dim bio As String = ""
 
             If eCell(row, 1).Value = Nothing Then
                 Exit For
             End If
+
+            SIL = 0
+            total_days = 0
+            overTime = 0
 
             While (start <= endd)
                 For columns = 4 To DtSet.Tables(0).Columns.Count + 1
 
                     If start = eCell(5, columns).Value Then
 
-                        Dim bio As String = eCell(row, 1).Value
+                        bio = eCell(row, 1).Value
                         Dim datee As DateTime = eCell(5, columns).Value
                         Dim time_in, time_out As String
 
@@ -328,7 +334,6 @@ Public Class frmSchedule
 
                         If eCell(row, columns).Value.Equals("") Then
                             Continue For
-
                         Else
 
                             time_in = eCell(row, columns).Value
@@ -336,12 +341,50 @@ Public Class frmSchedule
 
                             SaveSchedule(bio, datee, time_in, time_out, Paydate)
 
+                            '========== COUNT SIL ==========
+                            If time_in = "SIL" Then SIL += 0.5
+                            If time_out = "SIL" Then SIL += 0.5
+
+
+                            '========== COUNT TOTAL_DAYS ==========
+                            Dim timeIn, timeOut As Double
+                            If Double.TryParse(time_in, timeIn) Then
+                                total_days += 0.5
+                            End If
+
+                            If Double.TryParse(time_out, timeOut) Then
+                                total_days += 0.5
+                            End If
+
+
+                            '==========
+                            If bio = 4398 Then
+                                Console.WriteLine("datee " & datee.ToShortDateString)
+                                Console.WriteLine("timein " & time_in)
+                                Console.WriteLine("timeout " & time_out)
+                            End If
+
+                            '========== COUNT OVERTIME ========== 
+                            Dim _timeOut As Double
+                            If Double.TryParse(time_out, _timeOut) Then
+                                Dim myTimeIn As DateTime = DateTime.FromOADate(time_in)
+                                Dim myTimeOut As DateTime = DateTime.FromOADate(_timeOut)
+
+                                If myTimeOut.Hour > myTimeIn.AddHours(9).Hour Then
+                                    Dim totMinus As TimeSpan = myTimeOut.Subtract(myTimeIn.AddHours(9))
+                                    overTime += totMinus.Hours
+                                    Console.WriteLine(overTime)
+                                End If
+                            End If
+
                         End If
                     End If
                 Next
 
                 start = start.AddDays(1)
             End While
+
+            SaveSCHED_COUNT(bio, Paydate, total_days, overTime, SIL)
 
             frmMainForm.AppProgressBar.Value += 1
 

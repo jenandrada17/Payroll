@@ -987,152 +987,149 @@ Public Class frmAttendance
         distinct_bio = distinct_bio.Distinct().ToList
 
         progressBarStart(distinct_bio.Count)
+        For i = 0 To distinct_bio.Count - 1
+            Dim biometric_No As String = distinct_bio(i)
+            list_inOut.Clear()
 
-        Try
+            '======================== TO REPLACE EXISTING RECORD ========================================================
+            If ThisHasRow($"BIOMETRIC_DTR where BIO_ID = '{biometric_No}' and PAYDATE = '{paydate_}'") Then Replacing($"BIOMETRIC_DTR where BIO_ID = '{biometric_No}' and PAYDATE = '{paydate_}';")
+            '======================== GET TIME IN/OUT TO CALCULATE LATE UNDERTIME OVERTIME ============================
 
-            'For Each biometric_No In distinct_bio
-            For i = 0 To distinct_bio.Count - 1
-                Dim biometric_No As String = distinct_bio(i)
-                list_inOut.Clear()
+            Dim mysql As String = $"Select DATEANDTIME From IMPORT_DTR where BIO_ID = '{biometric_No}' and PAYDATE = '{paydate_}'"
+            Using ds As DataSet = LoadSQL(mysql, "IMPORT_DTR")
+                If ds.Tables(0).Rows.Count > 0 Then
+                    For Each dr In ds.Tables(0).Rows
+                        With dr
+                            Dim date_ As DateTime = .Item("DATEANDTIME")
 
-                '======================== TO REPLACE EXISTING RECORD ========================================================
-                If ThisHasRow($"BIOMETRIC_DTR where BIO_ID = '{biometric_No}' and PAYDATE = '{paydate_}'") Then Replacing($"BIOMETRIC_DTR where BIO_ID = '{biometric_No}' and PAYDATE = '{paydate_}';")
-                '======================== GET TIME IN/OUT TO CALCULATE LATE UNDERTIME OVERTIME ============================
-
-                Dim mysql As String = $"Select DATEANDTIME From IMPORT_DTR where BIO_ID = '{biometric_No}' and PAYDATE = '{paydate_}'"
-                Using ds As DataSet = LoadSQL(mysql, "IMPORT_DTR")
-                    If ds.Tables(0).Rows.Count > 0 Then
-                        For Each dr In ds.Tables(0).Rows
-                            With dr
-                                Dim date_ As DateTime = .Item("DATEANDTIME")
-
-                                list_inOut.Add(date_.ToString("d") & " " & date_.ToShortTimeString)
-                            End With
-                        Next
-                    End If
-                End Using
-
-                timee = list_inOut.Distinct().ToList
-
-                For Each row As DataGridViewRow In DataGridView1.Rows
-
-                    Dim list_hour(3) As String
-                    Dim DATE_ONLY As String = ""
-
-                    Dim rowIndex As Integer = row.Index
-                    Dim asss As DateTime = DataGridView1.Rows(rowIndex).Tag
-                    Dim groups_timee As New List(Of String)()
-
-                    For Each timme As String In timee
-                        If timme.StartsWith(asss.ToString("d")) Then
-                            groups_timee.Add(timme)
-                        End If
+                            list_inOut.Add(date_.ToString("d") & " " & date_.ToShortTimeString)
+                        End With
                     Next
+                End If
+            End Using
 
-                    '========================================= TIME IN/OUT =========================================
+            list_inOut = list_inOut.Distinct().ToList
 
-                    Dim DATEE As DateTime = row.Tag
+            For Each row As DataGridViewRow In DataGridView1.Rows
 
-                    If CheckData("BIO_NO", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{biometric_No}'") Then
+                Dim list_hour(3) As String
+                Dim DATE_ONLY As String = ""
 
-                        If DateExist_IN_Schedule(biometric_No, DATEE.ToShortDateString) Then
-                            TIME_IN = GetData("TIME_IN", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{biometric_No}' AND DATEE = '{DATEE.ToShortDateString}'  ")
-                            TIME_OUT = TIME_IN.AddHours(9)
-                        Else
+                Dim rowIndex As Integer = row.Index
+                Dim asss As DateTime = DataGridView1.Rows(rowIndex).Tag
+                Dim groups_timee As New List(Of String)()
 
-                            TIME_IN = GetData("VALUEE", $"PAYROLL_DEFAULT_TIMEIN")
-                            TIME_OUT = TIME_IN.AddHours(9)
-
-                        End If
-
-                    Else
-                        TIME_IN = GetTime_In(biometric_No)
-                        TIME_OUT = GetTime_Out(biometric_No)
-                    End If
-
-                    Dim new_list(3) As String
-
-                    If groups_timee.Count > 0 Then
-
-                        groups_timee = groups_timee.Distinct.ToList
-
-                        For Each dateTime As DateTime In groups_timee
-                            Try
-                                Dim time As DateTime = dateTime.ToString("t")
-
-                                DATE_ONLY = dateTime.ToString("d")
-
-                                If time >= TIME_IN.AddHours(-3).ToShortTimeString And time <= TIME_IN.AddHours(3).AddMinutes(-1).ToShortTimeString Then
-                                    If new_list(0) = "" Then
-
-                                        new_list(0) = time.ToString("t")
-                                    Else
-                                        new_list(1) = time.ToString("t")
-                                    End If
-
-                                ElseIf time >= TIME_OUT.AddHours(-1).ToShortTimeString Then
-
-                                    new_list(3) = time.ToString("t")
-
-                                ElseIf (time >= "12:00 PM" And time <= "12:59 PM") Or (time >= TIME_IN.AddHours(4).ToShortTimeString And time <= TIME_IN.AddHours(5).AddMinutes(-1).ToShortTimeString) Then
-
-                                    If new_list(1) = "" Then
-                                        new_list(1) = time.ToString("t")
-                                    ElseIf new_list(1) <> "" And new_list(2) <> "" Then
-                                        new_list(3) = time.ToString("t")
-                                    Else
-                                        new_list(2) = time.ToString("t")
-                                    End If
-
-                                Else
-
-                                    If new_list(1) = "" Then
-                                        new_list(1) = time.ToString("t")
-                                    ElseIf new_list(1) <> "" And new_list(2) <> "" Then
-                                        new_list(3) = time.ToString("t")
-                                    Else
-                                        new_list(2) = time.ToString("t")
-                                    End If
-                                End If
-
-                            Catch ex As Exception
-                                MsgBox("2nd for each" & ex.ToString)
-                            End Try
-                        Next
-
-                        '=================== IF DISARRANGE BLANKS =================
-                        If new_list(0) = "" And new_list(1) <> "" And new_list(2) = "" And new_list(3) <> "" Then '== IF (0101)
-                            new_list(2) = new_list(1)
-                            new_list(1) = ""
-                        ElseIf new_list(0) <> "" And new_list(1) = "" And new_list(2) <> "" And new_list(3) = "" Then '== IF  (1010)
-                            Dim timeDiff As TimeSpan = DateTime.Parse(new_list(2)).Subtract(DateTime.Parse(new_list(0)))
-                            If timeDiff.Hours > 5 Then
-                                new_list(3) = new_list(2)
-                                new_list(2) = ""
-                            Else
-                                new_list(1) = new_list(2)
-                                new_list(2) = ""
-                            End If
-                        ElseIf new_list(0) <> "" And new_list(1) <> "" And new_list(2) = "" And new_list(3) = "" Then '== IF  (1100)
-                            Dim timeDiff As TimeSpan = DateTime.Parse(new_list(1)).Subtract(DateTime.Parse(new_list(0)))
-                            If timeDiff.Hours > 5 Then
-                                new_list(3) = new_list(1)
-                                new_list(1) = ""
-                            End If
-                        End If
-
-                        distinct_bio.Add(biometric_No)
-                        SaveDTR(biometric_No, Paydate, DATE_ONLY, new_list(0), new_list(1), new_list(2), new_list(3))
+                For x = 0 To list_inOut.Count - 1
+                    If list_inOut(x).StartsWith(asss.ToString("d")) Then
+                        groups_timee.Add(list_inOut(x))
                     End If
                 Next
 
-                frmMainForm.AppProgressBar.Value += 1
+                '========================================= TIME IN/OUT =========================================
+
+                Dim DATEE As DateTime = row.Tag
+
+                If CheckData("BIO_NO", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{biometric_No}'") Then
+                    Dim timeIn As DateTime
+                    If DateExist_IN_Schedule(biometric_No, DATEE.ToShortDateString) Then
+
+                        If DateTime.TryParse(GetData("TIME_IN", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{biometric_No}' AND DATEE = '{DATEE.ToShortDateString}'  "), timeIn) Then
+                            TIME_IN = timeIn
+                            TIME_OUT = timeIn.AddHours(9)
+                        Else
+                            Continue For
+                        End If
+
+                    Else
+
+                        TIME_IN = GetData("VALUEE", $"PAYROLL_DEFAULT_TIMEIN")
+                        TIME_OUT = TIME_IN.AddHours(9)
+
+                    End If
+
+                Else
+                    TIME_IN = GetTime_In(biometric_No)
+                    TIME_OUT = GetTime_Out(biometric_No)
+                End If
+
+                Dim new_list(3) As String
+
+                If groups_timee.Count > 0 Then
+
+                    groups_timee = groups_timee.Distinct.ToList
+
+                    For y = 0 To groups_timee.Count - 1
+
+                        Dim dateTime As DateTime = groups_timee(y)
+                        Dim time As DateTime = dateTime.ToString("t")
+
+                        DATE_ONLY = dateTime.ToString("d")
+
+                        If time >= TIME_IN.AddHours(-3).ToShortTimeString And time <= TIME_IN.AddHours(3).AddMinutes(-1).ToShortTimeString Then
+                            If new_list(0) = "" Then
+
+                                new_list(0) = time.ToString("t")
+                            ElseIf new_list(1) = "" Then
+                                new_list(1) = time.ToString("t")
+                            Else
+                                new_list(2) = time.ToString("t")
+                            End If
+
+                        ElseIf time >= TIME_OUT.AddHours(-1).ToShortTimeString Then
+
+                            new_list(3) = time.ToString("t")
+
+                        ElseIf (time >= "12:00 PM" And time <= "12:59 PM") Or (time >= TIME_IN.AddHours(4).ToShortTimeString And time <= TIME_IN.AddHours(5).AddMinutes(-1).ToShortTimeString) Then
+
+                            If new_list(1) = "" Then
+                                new_list(1) = time.ToString("t")
+                            ElseIf new_list(1) <> "" And new_list(2) <> "" Then
+                                new_list(3) = time.ToString("t")
+                            Else
+                                new_list(2) = time.ToString("t")
+                            End If
+
+                        Else
+
+                            If new_list(1) = "" Then
+                                new_list(1) = time.ToString("t")
+                            ElseIf new_list(1) <> "" And new_list(2) <> "" Then
+                                new_list(3) = time.ToString("t")
+                            Else
+                                new_list(2) = time.ToString("t")
+                            End If
+                        End If
+                    Next
+
+                    '=================== IF DISARRANGE BLANKS =================
+                    If new_list(0) = "" And new_list(1) <> "" And new_list(2) = "" And new_list(3) <> "" Then '== IF (0101)
+                        new_list(2) = new_list(1)
+                        new_list(1) = ""
+                    ElseIf new_list(0) <> "" And new_list(1) = "" And new_list(2) <> "" And new_list(3) = "" Then '== IF  (1010)
+                        Dim timeDiff As TimeSpan = DateTime.Parse(new_list(2)).Subtract(DateTime.Parse(new_list(0)))
+                        If timeDiff.Hours > 5 Then
+                            new_list(3) = new_list(2)
+                            new_list(2) = ""
+                        Else
+                            new_list(1) = new_list(2)
+                            new_list(2) = ""
+                        End If
+                    ElseIf new_list(0) <> "" And new_list(1) <> "" And new_list(2) = "" And new_list(3) = "" Then '== IF  (1100)
+                        Dim timeDiff As TimeSpan = DateTime.Parse(new_list(1)).Subtract(DateTime.Parse(new_list(0)))
+                        If timeDiff.Hours > 5 Then
+                            new_list(3) = new_list(1)
+                            new_list(1) = ""
+                        End If
+                    End If
+
+                    distinct_bio.Add(biometric_No)
+                    SaveDTR(biometric_No, Paydate, DATE_ONLY, new_list(0), new_list(1), new_list(2), new_list(3))
+                End If
             Next
 
-            progressBarEnd()
-        Catch ex As Exception
-            MsgBox("1st for each" & ex.ToString)
-        End Try
+            frmMainForm.AppProgressBar.Value += 1
+        Next
+        progressBarEnd()
 
     End Sub
 
@@ -2046,25 +2043,32 @@ Public Class frmAttendance
                 If CheckData("BIO_NO", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{biometric_No}'") Then
 
                     If DateExist_IN_Schedule(biometric_No, DATEE.ToShortDateString) Then
-                        Dim timeIN, timeOut As DateTime
-                        If DateTime.TryParse(GetData("TIME_IN", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{biometric_No}' AND DATEE = '{DATEE.ToShortDateString}' "), timeIN) Then
-                            TIME_IN = timeIN
-                        Else
-                            Continue For
-                        End If
 
-                        If DateTime.TryParse(GetData("TIME_OUT", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{biometric_No}' AND DATEE = '{DATEE.ToShortDateString}' "), timeOut) Then
-                            TIME_OUT = timeOut
+                        Try
 
-                            If TIME_OUT > TIME_IN.AddHours(9) Then
-                                TIME_OUT = TIME_IN.AddHours(9)
-                                ALLOW_OT = True
+                            Dim timeIN, timeOut As DateTime
+                            If DateTime.TryParse(GetData("TIME_IN", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{biometric_No}' AND DATEE = '{DATEE.ToShortDateString}' "), timeIN) Then
+                                TIME_IN = timeIN
                             Else
-                                ALLOW_OT = False
+                                Continue For
                             End If
-                        Else
-                            Continue For
-                        End If
+
+                            If DateTime.TryParse(GetData("TIME_OUT", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{biometric_No}' AND DATEE = '{DATEE.ToShortDateString}' "), timeOut) Then
+                                TIME_OUT = timeOut
+
+                                If TIME_OUT > TIME_IN.AddHours(9) Then
+                                    TIME_OUT = TIME_IN.AddHours(9)
+                                    ALLOW_OT = True
+                                Else
+                                    ALLOW_OT = False
+                                End If
+                            Else
+                                Continue For
+                            End If
+
+                        Catch ex As Exception
+                            MsgBox("invalid " & ex.ToString)
+                        End Try
 
                     Else
                         TIME_IN = GetData("VALUEE", $"PAYROLL_DEFAULT_TIMEIN")

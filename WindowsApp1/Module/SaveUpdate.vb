@@ -115,6 +115,44 @@ Module SaveUpdate
         End If
     End Sub
 
+    Friend Sub SaveSCHED_COUNT(BIO_NO As Integer, paydate As String, total_days As String, overTime As String, sil As String)
+
+        Dim mysql As String
+
+        mysql = $"Select * FROM PAYROLL_SCHED_COUNT  where BIO_NO = '{BIO_NO}' and PAYDATE = '{paydate}'"
+        Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_SCHED_COUNT")
+        If dss.Tables(0).Rows.Count > 0 Then
+            For Each dr In dss.Tables(0).Rows
+                With dr
+
+                    .Item("TOTAL_DAYS") = total_days
+                    .Item("OVERTIME") = overTime
+                    .Item("SIL") = sil
+
+                End With
+                SaveEntry(dss, False)
+            Next
+        Else
+
+            mysql = "Select * From PAYROLL_SCHED_COUNT Rows 1"
+            Using ds As DataSet = LoadSQL(mysql, "PAYROLL_SCHED_COUNT")
+
+                Dim dsNewRow As DataRow = ds.Tables(0).NewRow
+                With dsNewRow
+
+                    .Item("BIO_NO") = BIO_NO
+                    .Item("PAYDATE") = paydate
+                    .Item("TOTAL_DAYS") = total_days
+                    .Item("OVERTIME") = overTime
+                    .Item("SIL") = sil
+
+                End With
+                ds.Tables(0).Rows.Add(dsNewRow)
+                SaveEntry(ds)
+            End Using
+        End If
+    End Sub
+
     Friend Sub UpdateAttendance(paydate As String, column As String)
         Dim total_holiday As Integer
         Dim startt As Date = frmMainForm.starting

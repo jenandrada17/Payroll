@@ -245,7 +245,7 @@ Partial Class frmMainForm
         Me.Employee_BTN.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Employee_BTN.ForeColor = System.Drawing.Color.White
         Me.Employee_BTN.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Employee_BTN.Location = New System.Drawing.Point(0, 175)
+        Me.Employee_BTN.Location = New System.Drawing.Point(-1, 175)
         Me.Employee_BTN.Name = "Employee_BTN"
         Me.Employee_BTN.Size = New System.Drawing.Size(197, 67)
         Me.Employee_BTN.TabIndex = 2
