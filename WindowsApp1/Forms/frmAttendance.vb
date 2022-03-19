@@ -261,7 +261,7 @@ Public Class frmAttendance
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Calculate_BTN.Click
         If Name_TXT.Text <> Nothing Then
-            SIL_LBL.Text = 0
+            SIL_LBL.Text = Get_SIL("PAYROLL_ATTENDANCE", $"PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{BiometricID_TXT.Text}' AND PAYDATE = '{paydate_}'") + Get_SIL("PAYROLL_SCHED_COUNT", $"PAYROLL_SCHED_COUNT WHERE BIO_NO = '{BiometricID_TXT.Text}' AND PAYDATE = '{paydate_}'")
             TotalDays_LBL.Text = 0
             TotalRHoliday_LBL.Text = 0
             TotalSHoliday_LBL.Text = 0
@@ -2215,7 +2215,7 @@ Public Class frmAttendance
 
             GetName(BiometricID_TXT.Text, Name_TXT)
 
-            SIL_LBL.Text = Get_SIL(BiometricID_TXT.Text, PAYROLL)
+            SIL_LBL.Text = Get_SIL("PAYROLL_ATTENDANCE", $"PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{BiometricID_TXT.Text}' AND PAYDATE = '{PAYROLL}'") + Get_SIL("PAYROLL_SCHED_COUNT", $"PAYROLL_SCHED_COUNT WHERE BIO_NO = '{BiometricID_TXT.Text}' AND PAYDATE = '{PAYROLL}'")
 
             If Not Name_TXT.Text = String.Empty Then
                 TIME_IN = GetTime_In(BiometricID_TXT.Text)

@@ -115,10 +115,37 @@ Module SaveUpdate
         End If
     End Sub
 
-    Friend Sub SaveSCHED_COUNT(BIO_NO As Integer, paydate As String, total_days As String, overTime As String, sil As String)
+    Friend Sub SaveSCHED_COUNT(BIO_NO As Integer, paydate As String, total_days As String, overTime As String, sil As String, ending_date As DateTime)
+
+        '========== MONITOR SIL =============
+        Dim totalMonths As Integer = CountYear_SIL(BIO_NO, ending_date)
+        Dim new_sil As Double = sil
+        If sil <> 0 Then
+            If totalMonths >= 13 Then
+                Dim count_all_sil As Double = Count_SIL(BIO_NO)
+                Dim existingSIL As Double = Get_SIL("PAYROLL_SCHED_COUNT", $"PAYROLL_SCHED_COUNT WHERE BIO_NO = '{BIO_NO}' AND PAYDATE = '{paydate}'")
+
+                Dim total_minus_existing As Double
+
+                If existingSIL <> 0 And count_all_sil > existingSIL Then
+                    total_minus_existing = count_all_sil - existingSIL
+                End If
+
+
+                If (Count_SIL(BIO_NO) + new_sil) <= 5 Then
+                    new_sil = sil
+                Else
+                    new_sil = 5 - Count_SIL(BIO_NO)
+                    MsgBox($"{GetData("FULLNAME", $" PAYROLL_EMPLOYEE WHERE BIO_NO ='{BIO_NO}'")} already reached the maximum number of SIL for this year.", MsgBoxStyle.Exclamation, $"SIL Reduced to {new_sil}")
+                End If
+            Else
+                new_sil = 0
+                MsgBox($"{GetData("FULLNAME", $" PAYROLL_EMPLOYEE WHERE BIO_NO ='{BIO_NO}'")} is not yet allowed to avail SIL.", MsgBoxStyle.Exclamation, "Invalid")
+            End If
+        End If
+        '===================================
 
         Dim mysql As String
-
         mysql = $"Select * FROM PAYROLL_SCHED_COUNT  where BIO_NO = '{BIO_NO}' and PAYDATE = '{paydate}'"
         Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_SCHED_COUNT")
         If dss.Tables(0).Rows.Count > 0 Then
@@ -127,7 +154,7 @@ Module SaveUpdate
 
                     .Item("TOTAL_DAYS") = total_days
                     .Item("OVERTIME") = overTime
-                    .Item("SIL") = sil
+                    .Item("SIL") = new_sil
 
                 End With
                 SaveEntry(dss, False)
@@ -144,7 +171,7 @@ Module SaveUpdate
                     .Item("PAYDATE") = paydate
                     .Item("TOTAL_DAYS") = total_days
                     .Item("OVERTIME") = overTime
-                    .Item("SIL") = sil
+                    .Item("SIL") = new_sil
 
                 End With
                 ds.Tables(0).Rows.Add(dsNewRow)
@@ -727,7 +754,7 @@ Module SaveUpdate
                                     SpecialHol_hrs = IIf(IsDBNull(.Item("SPECHOLIDAY_HRS")), 0, .Item("SPECHOLIDAY_HRS"))
                                 End If
 
-                                SIL = IIf(IsDBNull(.Item("SIL")), 0, .Item("SIL"))
+                                SIL = .Item("SIL") + Get_SIL("PAYROLL_SCHED_COUNT", $"PAYROLL_SCHED_COUNT WHERE BIO_NO = '{bioNo}' AND PAYDATE = '{paydate_}'")
                             End With
                         End If
                     End Using

@@ -345,7 +345,6 @@ Public Class frmSchedule
                             If time_in = "SIL" Then SIL += 0.5
                             If time_out = "SIL" Then SIL += 0.5
 
-
                             '========== COUNT TOTAL_DAYS ==========
                             Dim timeIn, timeOut As Double
                             If Double.TryParse(time_in, timeIn) Then
@@ -354,14 +353,6 @@ Public Class frmSchedule
 
                             If Double.TryParse(time_out, timeOut) Then
                                 total_days += 0.5
-                            End If
-
-
-                            '==========
-                            If bio = 4398 Then
-                                Console.WriteLine("datee " & datee.ToShortDateString)
-                                Console.WriteLine("timein " & time_in)
-                                Console.WriteLine("timeout " & time_out)
                             End If
 
                             '========== COUNT OVERTIME ========== 
@@ -373,7 +364,6 @@ Public Class frmSchedule
                                 If myTimeOut.Hour > myTimeIn.AddHours(9).Hour Then
                                     Dim totMinus As TimeSpan = myTimeOut.Subtract(myTimeIn.AddHours(9))
                                     overTime += totMinus.Hours
-                                    Console.WriteLine(overTime)
                                 End If
                             End If
 
@@ -384,7 +374,7 @@ Public Class frmSchedule
                 start = start.AddDays(1)
             End While
 
-            SaveSCHED_COUNT(bio, Paydate, total_days, overTime, SIL)
+            SaveSCHED_COUNT(bio, Paydate, total_days, overTime, SIL, ending_date)
 
             frmMainForm.AppProgressBar.Value += 1
 

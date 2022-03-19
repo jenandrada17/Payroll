@@ -1420,10 +1420,10 @@ Module SelectFromDatabase
         End Using
     End Sub
 
-    Public Function Get_SIL(Bio As String, paydate As String) As Double
+    Public Function Get_SIL(table As String, str As String) As Double
         Dim sil As Double = 0
-        Dim mysql As String = $"Select SIL From PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{Bio}' AND PAYDATE = '{paydate}' "
-        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
+        Dim mysql As String = $"Select SIL From {str} "
+        Using ds As DataSet = LoadSQL(mysql, table)
             If ds.Tables(0).Rows.Count > 0 Then
                 Dim data As DataRow = ds.Tables(0).Rows(0)
                 With data
@@ -2615,6 +2615,7 @@ Module SelectFromDatabase
             End If
         End Using
 
+        cnt = cnt + Get_SIL("PAYROLL_SCHED_COUNT", $"PAYROLL_SCHED_COUNT WHERE BIO_NO = '{Bio_no}' AND EXTRACT (YEAR FROM PAYDATE) = '{Date.Now.Year}'")
         Return cnt
     End Function
 
@@ -2976,7 +2977,9 @@ Module SelectFromDatabase
 
         If searchName.Length <> 0 Then
 
-            mysql = $"Select * From PAYROLL_SCHEDULE A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIO_NO where PAYDATE = '{Paydate}' and ("
+            mysql = $"Select * From PAYROLL_SCHEDULE A 
+                    inner join PAYROLL_SCHED_COUNT B on B.BIO_NO = A.BIO_NO and  B.PAYDATE = A.PAYDATE
+                    inner join PAYROLL_EMPLOYEE C on C.BIO_NO = A.BIO_NO where PAYDATE = '{Paydate}' and ("
 
             For Each name In strWords
                 mysql &= $"{vbCr}UPPER(BIO_NO) LIKE UPPER('%{name}%') OR "
@@ -2984,8 +2987,9 @@ Module SelectFromDatabase
             Next
 
         Else
-            mysql = $"Select  PAYDATE, FULLNAME, A.BIO_NO AS IDD  From PAYROLL_SCHEDULE A
-                                        INNER JOIN PAYROLL_EMPLOYEE B ON A.BIO_NO = B.BIO_NO where PAYDATE = '{Paydate}' GROUP BY PAYDATE, FULLNAME, A.BIO_NO ORDER BY FULLNAME"
+            mysql = $"Select  A.PAYDATE, FULLNAME, TOTAL_DAYS, OVERTIME, SIL, A.BIO_NO AS IDD  From PAYROLL_SCHEDULE A
+                    inner join PAYROLL_SCHED_COUNT B on B.BIO_NO = A.BIO_NO and  B.PAYDATE = A.PAYDATE
+                    INNER JOIN PAYROLL_EMPLOYEE C ON A.BIO_NO = C.BIO_NO where A.PAYDATE = '{Paydate}' GROUP BY A.PAYDATE, FULLNAME, A.BIO_NO, TOTAL_DAYS, OVERTIME, SIL ORDER BY FULLNAME"
 
         End If
 
@@ -3002,6 +3006,9 @@ Module SelectFromDatabase
                         Dim i As ListViewItem = LV.Items.Add(.Item("IDD"))
                         i.SubItems.Add(.Item("FULLNAME"))
                         i.SubItems.Add(paydatee.ToString("MMM dd, yyyy"))
+                        i.SubItems.Add(.Item("TOTAL_DAYS"))
+                        i.SubItems.Add(.Item("OVERTIME"))
+                        i.SubItems.Add(.Item("SIL"))
 
                     End With
 
