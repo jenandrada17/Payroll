@@ -49,6 +49,10 @@
           <DataField>RECORDS_</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="AMOUNT">
+          <DataField>AMOUNT</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
       </Fields>
       <rd:DataSetInfo>
         <rd:DataSetName>reports</rd:DataSetName>
@@ -294,14 +298,14 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="P_AMOUNT">
+                        <Textbox Name="AMOUNT">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=FormatNumber(Fields!P_AMOUNT.Value)</Value>
+                                  <Value>=FormatNumber(Fields!AMOUNT.Value)</Value>
                                   <Style>
                                     <FontFamily>Leelawadee</FontFamily>
                                   </Style>
@@ -310,7 +314,7 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>P_AMOUNT</rd:DefaultName>
+                          <rd:DefaultName>AMOUNT</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -1457,7 +1461,7 @@
               <BreakLocation>End</BreakLocation>
             </PageBreak>
             <Height>2.4175in</Height>
-            <Width>3.83333in</Width>
+            <Width>3.83332in</Width>
             <Style>
               <Border>
                 <Style>None</Style>

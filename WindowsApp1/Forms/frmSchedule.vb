@@ -374,10 +374,26 @@ Public Class frmSchedule
                 start = start.AddDays(1)
             End While
 
+
+            '========== MONITOR SIL =============
+            Dim totalMonths As Integer = CountYear_SIL(bio, EndingDate)
+            If SIL <> 0 Then
+                If totalMonths >= 13 Then
+                    Dim count_all_sil As Double = Count_SIL(bio) '=== INCLUDES CURRENT PAYDATE 
+
+                    If count_all_sil > 5 Then
+                        SIL = 5 - (count_all_sil - SIL)
+                        MsgBox($"{GetData("FULLNAME", $" PAYROLL_EMPLOYEE WHERE BIO_NO ='{bio}'")} already reached the maximum number of SIL for this year. SIL Reduced to {SIL}.", MsgBoxStyle.Exclamation, $"INVALID")
+                    End If
+                Else
+                    SIL = 0
+                    MsgBox($"{GetData("FULLNAME", $" PAYROLL_EMPLOYEE WHERE BIO_NO ='{bio}'")} is not yet allowed to avail SIL. SIL Reduced to 0.", MsgBoxStyle.Exclamation, "Invalid")
+                End If
+            End If
+
             SaveSCHED_COUNT(bio, Paydate, total_days, overTime, SIL, ending_date)
 
             frmMainForm.AppProgressBar.Value += 1
-
         Next
 
         progressBarEnd()

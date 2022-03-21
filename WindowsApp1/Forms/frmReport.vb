@@ -104,6 +104,7 @@ Public Class frmReport
                 .Columns.Add("BALANCE")
                 .Columns.Add("DATE")
                 .Columns.Add("RECORDS_")
+                .Columns.Add("AMOUNT")
             End With
 
 
@@ -130,8 +131,8 @@ Public Class frmReport
                         balance = principal - totalCredit
 
                         Dim datee As Date = IIf(IsDBNull(.Item("DATE_ADDED")), .Item("DATE_STARTED"), .Item("DATE_ADDED"))
-                        dt.Rows.Add(fullname, principal, principal, FormatNumber(principal), FormatNumber(totalCredit), FormatNumber(balance), datee.ToString("MM/dd/yyyy"), "NO")
-                        dt.Rows.Add(fullname, credit, credit, FormatNumber(principal), FormatNumber(totalCredit), FormatNumber(balance), "12/15/2021", "YES")
+                        dt.Rows.Add(fullname, principal, principal, FormatNumber(principal), FormatNumber(totalCredit), FormatNumber(balance), datee.ToString("MM/dd/yyyy"), "NO", .Item("amnt"))
+                        dt.Rows.Add(fullname, credit, credit, FormatNumber(principal), FormatNumber(totalCredit), FormatNumber(balance), "12/15/2021", "YES", .Item("amnt"))
 
                     End With
                 End If
@@ -150,7 +151,7 @@ Public Class frmReport
                             Dim datee As Date = .Item("PAYDATE")
                             Dim amount As Double = .Item("AMOUNT")
 
-                            dt.Rows.Add(fullname, amount, amount, FormatNumber(principal), FormatNumber(totalCredit), FormatNumber(balance), Format(datee, "MM/dd/yyyy"), "YES")
+                            dt.Rows.Add(fullname, amount, amount, FormatNumber(principal), FormatNumber(totalCredit), FormatNumber(balance), Format(datee, "MM/dd/yyyy"), "YES", amount)
 
                         End With
                     Next

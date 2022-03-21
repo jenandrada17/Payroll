@@ -1763,16 +1763,16 @@ Module SelectFromDatabase
         Dim mysql As String
 
         If searchName.Length <> 0 Then
-            mysql = $"select COALESCE(sum(SIL), 0) AS TOTALS, FULLNAME from PAYROLL_EMPLOYEE INNER JOIN PAYROLL_ATTENDANCE on BIOMETRICID = BIO_NO Where PAYDATE BETWEEN '{startt.ToShortDateString}' AND '{endd.ToShortDateString}' and ("
+            mysql = $"select COALESCE(sum(SIL), 0) AS TOTALS, FULLNAME, BIO_NO from PAYROLL_EMPLOYEE INNER JOIN PAYROLL_ATTENDANCE on BIOMETRICID = BIO_NO Where PAYDATE BETWEEN '{startt.ToShortDateString}' AND '{endd.ToShortDateString}' and ("
 
             For Each name In strWords
                 mysql &= $"{vbCr}UPPER(BIO_NO) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(FULLNAME) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(BRANCH_CODE) LIKE UPPER('%{name}%'))  GROUP BY FULLNAME ORDER BY FULLNAME ASC "
+                mysql &= $"{vbCr}UPPER(BRANCH_CODE) LIKE UPPER('%{name}%'))  GROUP BY FULLNAME, BIO_NO ORDER BY FULLNAME ASC "
             Next
         Else
-            mysql = $"select COALESCE(sum(SIL), 0) AS TOTALS, FULLNAME from PAYROLL_EMPLOYEE INNER JOIN PAYROLL_ATTENDANCE on BIOMETRICID = BIO_NO Where PAYDATE BETWEEN '{startt.ToShortDateString}' AND '{endd.ToShortDateString}' GROUP BY FULLNAME ORDER BY FULLNAME ASC "
+            mysql = $"select COALESCE(sum(SIL), 0) AS TOTALS, FULLNAME, BIO_NO from PAYROLL_EMPLOYEE INNER JOIN PAYROLL_ATTENDANCE on BIOMETRICID = BIO_NO Where PAYDATE BETWEEN '{startt.ToShortDateString}' AND '{endd.ToShortDateString}' GROUP BY FULLNAME, BIO_NO ORDER BY FULLNAME ASC "
         End If
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
@@ -1782,7 +1782,7 @@ Module SelectFromDatabase
                 With dr
 
                     Dim i As ListViewItem = LV.Items.Add(.Item("FULLNAME"))
-                    i.SubItems.Add(.Item("TOTALS"))
+                    i.SubItems.Add(.Item("TOTALS") + Get_SIL("PAYROLL_SCHED_COUNT", $"PAYROLL_SCHED_COUNT WHERE BIO_NO = '{ .item("BIO_NO")}' AND PAYDATE BETWEEN '{startt.ToShortDateString}' AND '{endd.ToShortDateString}'"))
 
                 End With
                 frmMainForm.AppProgressBar.Value += 1

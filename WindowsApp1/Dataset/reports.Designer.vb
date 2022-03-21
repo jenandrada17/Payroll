@@ -3695,6 +3695,8 @@ Partial Public Class reports
         
         Private columnRECORDS_ As Global.System.Data.DataColumn
         
+        Private columnAMOUNT As Global.System.Data.DataColumn
+        
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Sub New()
@@ -3795,6 +3797,14 @@ Partial Public Class reports
         End Property
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property AMOUNTColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnAMOUNT
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0"),  _
          Global.System.ComponentModel.Browsable(false)>  _
         Public ReadOnly Property Count() As Integer
@@ -3831,9 +3841,9 @@ Partial Public Class reports
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Overloads Function AddSBURow(ByVal NAME As String, ByVal PRINCIPAL As String, ByVal CREDIT As String, ByVal BALANCE As String, ByVal _DATE As String, ByVal P_AMOUNT As String, ByVal A_AMOUNT As String, ByVal RECORDS_ As String) As SBURow
+        Public Overloads Function AddSBURow(ByVal NAME As String, ByVal PRINCIPAL As String, ByVal CREDIT As String, ByVal BALANCE As String, ByVal _DATE As String, ByVal P_AMOUNT As String, ByVal A_AMOUNT As String, ByVal RECORDS_ As String, ByVal AMOUNT As String) As SBURow
             Dim rowSBURow As SBURow = CType(Me.NewRow,SBURow)
-            Dim columnValuesArray() As Object = New Object() {NAME, PRINCIPAL, CREDIT, BALANCE, _DATE, P_AMOUNT, A_AMOUNT, RECORDS_}
+            Dim columnValuesArray() As Object = New Object() {NAME, PRINCIPAL, CREDIT, BALANCE, _DATE, P_AMOUNT, A_AMOUNT, RECORDS_, AMOUNT}
             rowSBURow.ItemArray = columnValuesArray
             Me.Rows.Add(rowSBURow)
             Return rowSBURow
@@ -3864,6 +3874,7 @@ Partial Public Class reports
             Me.columnP_AMOUNT = MyBase.Columns("P_AMOUNT")
             Me.columnA_AMOUNT = MyBase.Columns("A_AMOUNT")
             Me.columnRECORDS_ = MyBase.Columns("RECORDS_")
+            Me.columnAMOUNT = MyBase.Columns("AMOUNT")
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -3888,6 +3899,8 @@ Partial Public Class reports
             MyBase.Columns.Add(Me.columnA_AMOUNT)
             Me.columnRECORDS_ = New Global.System.Data.DataColumn("RECORDS_", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnRECORDS_)
+            Me.columnAMOUNT = New Global.System.Data.DataColumn("AMOUNT", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnAMOUNT)
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -7155,6 +7168,21 @@ Partial Public Class reports
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property AMOUNT() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableSBU.AMOUNTColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'AMOUNT' in table 'SBU' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableSBU.AMOUNTColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Function IsNAMENull() As Boolean
             Return Me.IsNull(Me.tableSBU.NAMEColumn)
         End Function
@@ -7247,6 +7275,18 @@ Partial Public Class reports
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Sub SetRECORDS_Null()
             Me(Me.tableSBU.RECORDS_Column) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsAMOUNTNull() As Boolean
+            Return Me.IsNull(Me.tableSBU.AMOUNTColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetAMOUNTNull()
+            Me(Me.tableSBU.AMOUNTColumn) = Global.System.Convert.DBNull
         End Sub
     End Class
     
