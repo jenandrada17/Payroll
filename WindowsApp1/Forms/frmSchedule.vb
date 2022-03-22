@@ -402,6 +402,8 @@ Public Class frmSchedule
         Import_BTN.Enabled = False
         Path_TXT.Clear()
         MyConnection.Close()
+        eBook.Close()
+        eApp.Quit()
 
     End Sub
 

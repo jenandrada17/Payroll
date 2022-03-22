@@ -105,7 +105,7 @@ Public Class frmNewEmployee
             SaveNew_Employee(eCell(row, 2).Value, eCell(row, 3).Value, eCell(row, 9).Value, eCell(row, 1).Value, eCell(row, 12).Value,
                          "ACTIVE", eCell(row, 4).Value, True, eCell(row, 7).Value, eCell(row, 8).Value, eCell(row, 5).Value,
                          eCell(row, 13).Value, eCell(row, 14).Value, eCell(row, 15).Value, eCell(row, 16).Value, "", "", eCell(row, 6).Value, "", eCell(row, 17).Value,
-                         "", eCell(row, 11).Value, eCell(row, 10).Value)
+                         eCell(row, 18).Value, eCell(row, 11).Value, eCell(row, 10).Value)
 
             frmMainForm.AppProgressBar.Value += 1
 
@@ -117,6 +117,8 @@ Public Class frmNewEmployee
 
         Path_TXT.Clear()
         MyConnection.Close()
+        eBook.Close()
+        eApp.Quit()
 
         Excel_Panel.Visible = False
 
@@ -200,8 +202,8 @@ Public Class frmNewEmployee
 
         Path_TXT.Clear()
         MyConnection.Close()
+        eBook.Close()
         eApp.Quit()
-        eApp.Application.DisplayAlerts = False
 
         Excel_Panel.Visible = False
 
@@ -261,10 +263,10 @@ Public Class frmNewEmployee
 
     '    progressBarEnd()
 
-    '    Path_TXT.Clear()
-    '    MyConnection.Close()
-    '    eApp.Quit()
-    '    eApp.Application.DisplayAlerts = False
+    'Path_TXT.Clear()
+    'MyConnection.Close()
+    'eBook.Close()
+    'eApp.Quit()
 
     '    Excel_Panel.Visible = False
 
@@ -320,8 +322,8 @@ Public Class frmNewEmployee
 
         Path_TXT.Clear()
         MyConnection.Close()
+        eBook.Close()
         eApp.Quit()
-        eApp.Application.DisplayAlerts = False
 
         Excel_Panel.Visible = False
 
@@ -392,8 +394,8 @@ Public Class frmNewEmployee
 
         Path_TXT.Clear()
         MyConnection.Close()
+        eBook.Close()
         eApp.Quit()
-        eApp.Application.DisplayAlerts = False
 
         Excel_Panel.Visible = False
 
@@ -446,6 +448,8 @@ Public Class frmNewEmployee
 
         Path_TXT.Clear()
         MyConnection.Close()
+        eBook.Close()
+        eApp.Quit()
 
         Excel_Panel.Visible = False
 
@@ -482,6 +486,8 @@ Public Class frmNewEmployee
 
     '    Path_TXT.Clear()
     '    MyConnection.Close()
+    'eBook.Close()
+    'eApp.Quit()
 
     '    Excel_Panel.Visible = False
 
@@ -517,6 +523,8 @@ Public Class frmNewEmployee
 
         Path_TXT.Clear()
         MyConnection.Close()
+        eBook.Close()
+        eApp.Quit()
 
         Excel_Panel.Visible = False
 
@@ -571,6 +579,8 @@ Public Class frmNewEmployee
 
             Path_TXT.Clear()
             MyConnection.Close()
+            eBook.Close()
+            eApp.Quit()
 
             Excel_Panel.Visible = False
         Else
@@ -608,6 +618,8 @@ Public Class frmNewEmployee
 
         Path_TXT.Clear()
         MyConnection.Close()
+        eBook.Close()
+        eApp.Quit()
 
         Excel_Panel.Visible = False
 

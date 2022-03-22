@@ -1570,6 +1570,9 @@ Public Class frmAttendance
             End If
         End If
 
+
+        eBook.Close()
+        eApp.Quit()
         '====================== TRANSACTION ==========================
         Dim listt As String = Nothing
         For Each bio As String In distinct_bio
@@ -1630,6 +1633,8 @@ Public Class frmAttendance
         Import_BTN.Enabled = False
         Path_TXT.Clear()
         MyConnection.Close()
+        eBook.Close()
+        eApp.Quit()
 
     End Sub
 
@@ -1653,6 +1658,8 @@ Public Class frmAttendance
         Import_BTN.Enabled = False
         Path_TXT.Clear()
         MyConnection.Close()
+        eBook.Close()
+        eApp.Quit()
 
         SAVE_DIRECT_Attendance() ' ===== DIRECT SAVE TO ATTENDANCE ==== 
         PopulateBiometricSHEET(Biometric_LV, Paydate) ' ===== POPULATE DATAGRIDVIEW FROM SHEET ====  
@@ -1791,132 +1798,10 @@ Public Class frmAttendance
                     list_hour.Add(time.ToString("t"))
 
                 End If
-
-
-                '        If time >= TIME_IN.AddHours(-3).ToShortTimeString And time <= TIME_IN.AddHours(3).AddMinutes(-1).ToShortTimeString Then
-                '            If list_hour(0) = "" Then
-
-                '                list_hour(0) = time.ToString("t")
-                '            Else
-                '                list_hour(1) = time.ToString("t")
-                '            End If
-
-                '        ElseIf time >= TIME_OUT.AddHours(-1).ToShortTimeString Then
-
-                '            list_hour(3) = time.ToString("t")
-
-                '        ElseIf (time >= "12:00 PM" And time <= "12:59 PM") Or (time >= TIME_IN.AddHours(4).ToShortTimeString And time <= TIME_IN.AddHours(5).AddMinutes(-1).ToShortTimeString) Then
-
-                '            Dim newValuee As String = time.Hour
-                '            Dim breaktime As DateTime = TIME_IN.AddHours(4)
-                '            Dim break = breaktime.Hour
-
-                '            If newValuee = break Then
-
-                '                If CountDate(groups_time, break) >= 2 Then
-                '                    list_Group = SortCountedDATE(groups_time, break)
-                '                ElseIf CountDate(groups_time, break) = 1 Then
-                '                    list_Group = SortCountedDATE(groups_time, break)
-                '                End If
-
-                '                '======================== PRINT 12 NOON ================ WORKED FINE
-                '                If list_Group.Count >= 2 Then
-
-                '                    Dim list1 As DateTime = list_Group.Item(0)
-                '                    Dim list2 As DateTime = list_Group.Item(list_Group.Count - 1)
-
-                '                    list_hour(1) = list1.ToString("t")
-                '                    list_hour(2) = list2.ToString("t")
-
-                '                    list_Group.Clear()
-                '                ElseIf list_Group.Count = 1 Then
-
-                '                    Dim list1 As DateTime = list_Group.Item(0)
-
-                '                    If list_hour(0) = "" Then
-                '                        list_hour(0) = list1.ToString("t")
-                '                    Else
-                '                        list_hour(1) = list1.ToString("t")
-                '                    End If
-
-                '                    list_Group.Clear()
-
-                '                Else   ' =========== PRINT SINGLE 12:00 TO 12:59 ==========
-                '                    If list_hour(1) = "" Then
-
-                '                        list_hour(1) = time.ToString("t")
-                '                    Else
-                '                        list_hour(2) = time.ToString("t")
-                '                    End If
-                '                End If
-
-                '            Else
-
-                '                If list_hour(1) = "" Then
-                '                    list_hour(1) = time.ToString("t")
-                '                Else
-                '                    list_hour(2) = time.ToString("t")
-                '                End If
-
-                '            End If
-
-                '        Else
-                '            If list_hour(1) = "" Then
-                '                list_hour(1) = time.ToString("t")
-                '            Else
-                '                list_hour(2) = time.ToString("t")
-                '            End If
-
-                '        End If
-
-                '    End If
             Next
 
 
             frmMainForm.AppProgressBar.Value += 1
-
-            'If list_hour(0) = list_hour(1) Then '==== CHECK IF SAME LUNCH TIME 
-            '    list_hour(0) = ""
-            'End If
-
-            'If list_hour(1) = list_hour(2) Then '==== CHECK IF SAME LUNCH TIME 
-            '    list_hour(2) = ""
-            'End If
-
-            ''================ FEB 28, 2022 (GICOMMENT AFTER IMPORTING)
-            ''If list_hour(0) = "" And list_hour(3) <> "" Then '==== FOR HALFDAY ARRANGEMENT OF NOON BREAK
-            ''    list_hour(2) = list_hour(1)
-            ''    list_hour(1) = ""
-            ''End If
-
-            ''If list_hour(3) = "" And list_hour(0) <> "" Then '==== FOR HALFDAY ARRANGEMENT OF NOON BREAK
-            ''    list_hour(1) = list_hour(2)
-            ''    list_hour(2) = ""
-            ''End If
-
-            ''||||||||||||||||||||||||||||||||||||| NEWLY ADDED JANUARY 19, 2022 |||||||||||||||||||||||  
-            'If list_hour(2) >= TIME_OUT.ToShortTimeString And list_hour(3) = "" Then
-            '    list_hour(3) = list_hour(2)
-            '    list_hour(2) = ""
-            'End If
-
-            'If list_hour(0) = "" And list_hour(1) = "" And list_hour(2) <> "" Then
-            '    If Convert.ToDateTime(list_hour(2)).ToShortTimeString >= TIME_IN.ToShortTimeString Then
-            '        list_hour(0) = list_hour(2)
-            '        list_hour(2) = ""
-            '    End If
-            'End If
-            ''|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-
-            'If list_hour(0) = "" And list_hour(1) = "" And list_hour(2) = "" And list_hour(3) = "" Then
-            'Else
-
-            '    distinct_bio.Add(bio_no)
-            '    SaveDTR(bio_no, Paydate, eCell(row, 3).Value, list_hour(0), list_hour(1), list_hour(2), list_hour(3))
-
-            '    frmMainForm.AppProgressBar.Value += 1
-            'End If
-
         Next
         progressBarEnd()
     End Sub
@@ -1962,6 +1847,8 @@ Public Class frmAttendance
 
             Path_TXT.Clear()
             MyConnection.Close()
+            eBook.Close()
+            eApp.Quit()
 
         Catch ex As Exception
             MsgBox("Excel is open or inaccessible!" & vbNewLine & ex.ToString, MsgBoxStyle.Critical, "Error")
