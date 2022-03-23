@@ -451,10 +451,14 @@
         Dim totalCredit As Decimal = credit + CollectedCredit
         Dim balance As Decimal
 
-        If CollectedCredit > 0 Then
-            balance = CDec(GetData_Decimal("PRINCIPAL", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'")) - totalCredit
+        If GetData("STATUS", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'") = "PAID" Then
+            balance = 0.00
         Else
-            balance = CDec(GetData_Decimal("BALANCE", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'"))
+            If CollectedCredit > 0 Then
+                balance = CDec(GetData_Decimal("PRINCIPAL", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'")) - totalCredit
+            Else
+                balance = CDec(GetData_Decimal("BALANCE", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'"))
+            End If
         End If
 
         MsgBox("Balance               :  " & FormatNumber(balance), MsgBoxStyle.Information, "TOTAL")
@@ -470,10 +474,14 @@
         Dim totalCredit As Decimal = credit + CollectedCredit
         Dim balance As Decimal
 
-        If CollectedCredit > 0 Then
-            balance = CDec(GetData_Decimal("PRINCIPAL", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'")) - totalCredit
+        If GetData("STATUS", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'") = "PAID" Then
+            balance = 0.00
         Else
-            balance = CDec(GetData_Decimal("BALANCE", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'"))
+            If CollectedCredit > 0 Then
+                balance = CDec(GetData_Decimal("PRINCIPAL", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'")) - totalCredit
+            Else
+                balance = CDec(GetData_Decimal("BALANCE", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'"))
+            End If
         End If
 
         MsgBox("Balance               :  " & FormatNumber(balance), MsgBoxStyle.Information, "TOTAL")
@@ -631,5 +639,4 @@
     Private Sub Mp2Search_txt_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Mp2Search_txt.KeyPress
         If e.KeyChar = ChrW(Keys.Enter) Then Mp2Search_btn.PerformClick()
     End Sub
-
 End Class

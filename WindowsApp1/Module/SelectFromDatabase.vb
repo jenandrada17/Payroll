@@ -746,39 +746,39 @@ Module SelectFromDatabase
         Return (ee, er, ec, total)
     End Function
 
-    Public Function Get_LOAN_SSS(bio_no As Decimal) As Decimal
-        Dim sssLoan As Decimal = 0
+    'Public Function Get_LOAN_SSS(bio_no As Decimal) As Decimal
+    '    Dim sssLoan As Decimal = 0
 
-        Dim mysql As String = $"Select * From PAYROLL_LOANS WHERE BIO_NO = '{bio_no}' and CATEGORY = 'SSS' AND STATUS IS NULL"
-        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_LOANS")
-            If ds.Tables(0).Rows.Count > 0 Then
-                For Each dr In ds.Tables(0).Rows
-                    With dr
-                        sssLoan = sssLoan + .Item("AMORT")
-                    End With
-                Next
-            End If
-        End Using
+    '    Dim mysql As String = $"Select * From PAYROLL_LOANS WHERE BIO_NO = '{bio_no}' and CATEGORY = 'SSS' AND STATUS IS NULL"
+    '    Using ds As DataSet = LoadSQL(mysql, "PAYROLL_LOANS")
+    '        If ds.Tables(0).Rows.Count > 0 Then
+    '            For Each dr In ds.Tables(0).Rows
+    '                With dr
+    '                    sssLoan = sssLoan + .Item("AMORT")
+    '                End With
+    '            Next
+    '        End If
+    '    End Using
 
-        Return sssLoan
-    End Function
+    '    Return sssLoan
+    'End Function
 
-    Public Function Get_LOAN_Pagibig(bio_no As Decimal) As Decimal
-        Dim pagibigLoan As Decimal = 0
+    'Public Function Get_LOAN_Pagibig(bio_no As Decimal) As Decimal
+    '    Dim pagibigLoan As Decimal = 0
 
-        Dim mysql As String = $"Select * From PAYROLL_LOANS WHERE BIO_NO = '{bio_no}' and CATEGORY = 'PAG-IBIG' AND STATUS IS NULL"
-        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_LOANS")
-            If ds.Tables(0).Rows.Count > 0 Then
-                For Each dr In ds.Tables(0).Rows
-                    With dr
-                        pagibigLoan = pagibigLoan + .Item("AMORT")
-                    End With
-                Next
-            End If
-        End Using
+    '    Dim mysql As String = $"Select * From PAYROLL_LOANS WHERE BIO_NO = '{bio_no}' and CATEGORY = 'PAG-IBIG' AND STATUS IS NULL"
+    '    Using ds As DataSet = LoadSQL(mysql, "PAYROLL_LOANS")
+    '        If ds.Tables(0).Rows.Count > 0 Then
+    '            For Each dr In ds.Tables(0).Rows
+    '                With dr
+    '                    pagibigLoan = pagibigLoan + .Item("AMORT")
+    '                End With
+    '            Next
+    '        End If
+    '    End Using
 
-        Return pagibigLoan
-    End Function
+    '    Return pagibigLoan
+    'End Function
 
     Public Function Get_Pagibig_ER(monthly_Basic As String) As Double
         Dim pagibig_ER As Double
