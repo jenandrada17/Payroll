@@ -255,7 +255,7 @@ Public Class frmAttendance
             End If
 
         End If
-        Calculate_BTN.PerformClick()
+        'Calculate_BTN.PerformClick()
     End Sub
 
 
@@ -479,6 +479,7 @@ Public Class frmAttendance
     Private Sub Save_BTN_Click(sender As Object, e As EventArgs) Handles Save_BTN.Click
 
         If Not BiometricID_TXT.Text = "" Then
+            Calculate_BTN.PerformClick()
             Dim result As DialogResult = MsgBox($"Record for {Name_TXT.Text} will be Save/Updated, proceed anyway?", MessageBoxButtons.YesNo)
             If result = DialogResult.Yes Then
 
