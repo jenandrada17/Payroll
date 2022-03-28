@@ -683,6 +683,7 @@ Module SaveUpdate
                     Dim Company As String
                     Dim sched As String = ""
                     Dim noOf_days_training As Double = 0
+                    Dim PI_ADD_DAYS As Double = 0
                     Dim TotalBasic As Decimal = 0
                     Dim SSSComp As Decimal = 0
                     Dim SSS_ER As Decimal = 0
@@ -715,6 +716,7 @@ Module SaveUpdate
                             Dim dr_11 As DataRow = ds_1.Tables(0).Rows(0)
                             With dr_11
                                 NoOfDays = .Item("PRESENT_DAYS")
+                                PI_ADD_DAYS = IIf(IsDBNull(.Item("PI_ADD_DAYS")), 0, .Item("PI_ADD_DAYS"))
 
                                 If fix_monthly_rate = False Then
                                     RegularOT = .Item("OVERTIME")
@@ -912,7 +914,7 @@ Module SaveUpdate
 
                                         If .item("CATEGORY") = "PERFORMANCE INCENTIVES" Then
                                             If fix_monthly_rate = False And .item("FIX") = "NO" Then
-                                                Dim PI_totalDays As Double = GetFirst_NoOfDays(bioNo, paydate_) + NoOfDays + RegularHol + SIL
+                                                Dim PI_totalDays As Double = GetFirst_NoOfDays(bioNo, paydate_) + NoOfDays + RegularHol + SIL + PI_ADD_DAYS
                                                 Dim absent As Double = 0
 
                                                 If PI_totalDays < 26 Then
@@ -1242,9 +1244,7 @@ Module SaveUpdate
     End Sub
 
     Friend Sub SaveAllowance(idNO As Integer, bioNo As String, category As String, amount As String, fix As String, SCHEDULE As String, DAY_DATE As String, EFFECTIVE_DATE As String)
-        Dim mysql As String
-
-        mysql = $"Select * From PAYROLL_ALLOWANCES WHERE ID = '{idNO}'"
+        Dim mysql As String = $"Select * From PAYROLL_ALLOWANCES WHERE ID = '{idNO}'"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ALLOWANCES")
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
@@ -1261,8 +1261,8 @@ Module SaveUpdate
                 Next
             Else
 
-                mysql = "Select * From PAYROLL_ALLOWANCES Rows 1"
-                Using dss As DataSet = LoadSQL(mysql, "PAYROLL_ALLOWANCES")
+                Dim mysqll As String = "Select * From PAYROLL_ALLOWANCES Rows 1"
+                Using dss As DataSet = LoadSQL(mysqll, "PAYROLL_ALLOWANCES")
 
                     Dim dsNewRow As DataRow = dss.Tables(0).NewRow
                     With dsNewRow

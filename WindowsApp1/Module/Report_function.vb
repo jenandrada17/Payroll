@@ -869,56 +869,76 @@ Module Report_function
         Return list_String
     End Function
 
-    Public Sub Check_This()
+    Public Sub RUN_This()
 
-        Dim mysql As String = $"Select Sum(TOTAL_DEDUCTION) as tots From payroll_payout B inner join payroll_employee A on B.BIOMETRIC_ID = A.bio_no 
-                                WHERE HO_CATEGORY = 'Dalton Admin Operation' and PAYDATE = '12/31/2021' "
-        Using ds As DataSet = LoadSQL(mysql, "payroll_employee")
+        'Dim mysql As String = $"Select * From payroll_attendance A 
+        '                               inner join RECORDED_ALLOW_DEDUC B on B.BIO_NO = A.BIOMETRICID 
+        '                                AND A.PAYDATE = '3/31/2022' and TRANSAC_NAME = 'ALLOWANCE' 
+        '                                AND CATEGORY = 'PERFORMANCE INCENTIVES'" 
+
+        Dim mysql As String = $"Select * From payroll_attendance A 
+                                       inner join RECORDED_ALLOW_DEDUC B on B.BIO_NO = A.BIOMETRICID 
+                                        AND A.PAYDATE = '3/31/2022' and TRANSAC_NAME = 'ALLOWANCE' 
+                                        AND CATEGORY = 'PERFORMANCE INCENTIVES' 
+                                        where A.PAYDATE = '3/31/2022' and TRANSAC_NAME = 'ALLOWANCE' 
+                                        AND CATEGORY = 'PERFORMANCE INCENTIVES'"
+
+        Using ds As DataSet = LoadSQL(mysql, "payroll_attendance")
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each DR In ds.Tables(0).Rows
                     With DR
-
-                        Dim asas As String = .Item("tots")
-                        MsgBox(asas)
-
-                        'MsgBox(asas.ToString("N"))
-
-                        'SAVEE(.item("BIOMETRIC_ID"), .item("TOTAL_LATE_UT"))
+                        .item("PI_ADD_DAYS") = DBNull.Value
                     End With
+                    SaveEntry(ds, False)
                 Next
             End If
         End Using
-        'Dim mysql As String = $"Select * FROM  RECORDED_ALLOW_DEDUC "
-
-        'Using ds As DataSet = LoadSQL(mysql, "RECORDED_ALLOW_DEDUC")
-        '    If ds.Tables(0).Rows.Count > 0 Then
-        '        For Each DR In ds.Tables(0).Rows
-        '            With DR
-        '                Dim AMOUNT As Decimal = .Item("AMOUNTT")
-        '                Dim CATEGORY As String = .Item("CATEGORY")
-
-        '                update_rECORD_ALLOW_DEDUC(.Item("BIO_NO"), AMOUNT, CATEGORY)
-        '            End With
-        '        Next
-        '    End If
-        'End Using
-
-        'Dim mysql As String = $"Select * FROM PAYROLL_EMPLOYEE B 
-        '                           INNER Join PAYROLL_13MONTH C ON C.EMP_NO = B.EMP_NO"
-
-        'Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
-        '    If ds.Tables(0).Rows.Count > 0 Then
-        '        For Each DR In ds.Tables(0).Rows
-        '            With DR
-        '                Dim AMOUNT As Decimal = .Item("AMOUNT")
-
-        '                update_13thMonth(.Item("BIO_NO"), AMOUNT, "13th Month Pay")
-        '            End With
-        '        Next
-        '    End If
-        'End Using 
 
     End Sub
+
+    'Friend Sub KKKKK(bioNo As String)
+    '    Dim paydate_ As DateTime = "3/31/2022"
+    '    Dim sql_2 As String = $"Select * From PAYROLL_ALLOWANCES inner join PAYROLL_EMPLOYEE on BIO_NO = BIOMETRIC_NO WHERE BIOMETRIC_NO = '{bioNo}' and ALLOWED = 'YES' and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
+    '    Using ds_2 As DataSet = LoadSQL(sql_2, "PAYROLL_ALLOWANCES")
+    '        If ds_2.Tables(0).Rows.Count > 0 Then
+    '            For Each dr_2 In ds_2.Tables(0).Rows
+    '                With dr_2
+
+    '                    If .item("EFFECTIVE_DATE") <= paydate_ Then
+
+    '                        Dim fix_monthly_rate As Boolean = IIf(IsDBNull(.Item("FIX_MONTHLY_RATE")), False, .Item("FIX_MONTHLY_RATE"))
+    '                        '============== PERFORMANCE INCENTIVES DEDUCTION IF EVER MAY ABSENT ===================
+    '                        Dim PI As Decimal = 0
+    '                        Dim deduc_to_PI As Decimal = 0
+
+    '                        If .item("CATEGORY") = "PERFORMANCE INCENTIVES" Then
+    '                            If fix_monthly_rate = False And .item("FIX") = "NO" Then
+    '                                Dim PI_totalDays As Double = GetFirst_NoOfDays(bioNo, paydate_) + NoOfDays + RegularHol + SIL + PI_ADD_DAYS
+    '                                Dim absent As Double = 0
+
+    '                                If PI_totalDays < 26 Then
+    '                                    absent = 26 - PI_totalDays
+    '                                    deduc_to_PI = (.Item("AMOUNT") / 26) * absent
+    '                                End If
+
+    '                                Allowances = (Allowances + .Item("AMOUNT")) - deduc_to_PI
+    '                                Save_Recorded_Allow_Deduc(bioNo, paydate_, .Item("CATEGORY"), .Item("AMOUNT") - deduc_to_PI, "ALLOWANCE")
+    '                                Continue For  '========= EXIT FOR (PARA DILI MAGDOUBLE SAVING ========
+    '                            Else
+    '                                Allowances = Allowances + .Item("AMOUNT")
+    '                                Save_Recorded_Allow_Deduc(bioNo, paydate_, .Item("CATEGORY"), .Item("AMOUNT"), "ALLOWANCE")
+    '                                Continue For  '========= EXIT FOR (PARA DILI MAGDOUBLE SAVING ========
+    '                            End If
+    '                        End If
+
+    '                        Allowances = Allowances + .Item("AMOUNT")
+    '                        Save_Recorded_Allow_Deduc(bioNo, paydate_, .Item("CATEGORY"), .Item("AMOUNT"), "ALLOWANCE")
+    '                    End If
+    '                End With
+    '            Next
+    '        End If
+    '    End Using
+    'End Sub
 
     Public Sub update_rECORD_ALLOW_DEDUC(BIO As String, AMOUNT As String, CATEGORY As String)
 

@@ -1830,18 +1830,6 @@ Module SelectFromDatabase
 
             mysql = "select FULLNAME, BIOMETRIC_ID  from PAYROLL_EMPLOYEE A inner join PAYROLL_PAYOUT B on B.BIOMETRIC_ID = A.BIO_NO Group by FULLNAME, BIOMETRIC_ID ORDER BY FULLNAME ASC "
 
-            'mysql = $"Select
-            '        COALESCE(SUM(case when C.CATEGORY = 'ECOLA' then C.AMOUNT end), 0) AS ECOLAA, 
-            '        COALESCE(SUM(case when C.CATEGORY like '%SIL' then C.AMOUNT end), 0) AS SILL,
-            '        COALESCE(SUM(case when C.CATEGORY = 'PERFORMANCE INCENTIVES' then C.AMOUNT end), 0) AS PII ,
-            '        COALESCE(SUM(TOTAL_BASIC), 0) AS BASICC,
-            '        COALESCE(SUM(TOTAL_LATE_UT), 0) AS LATEUTT,
-            '        FULLNAME
-            '        from PAYROLL_EMPLOYEE A 
-            '        inner join PAYROLL_PAYOUT B on B.BIOMETRIC_ID = A.BIO_NO AND (B.PAYDATE BETWEEN '{starting_date}' AND '{ending_date}')
-            '        left join RECORDED_ALLOW_DEDUC C on C.BIO_NO = A.BIO_NO AND (C.PAYDATE BETWEEN '{starting_date}' AND '{ending_date}')
-            '        Group by FULLNAME 
-            '        ORDER BY FULLNAME ASC "
         End If
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
@@ -1850,16 +1838,8 @@ Module SelectFromDatabase
             For Each dr In ds.Tables(0).Rows
                 With dr
 
-                    'Console.WriteLine(.item("BIOMETRIC_ID"))
-
                     Dim TOTALS As Decimal = 0
                     Dim bio_no As String = .item("BIOMETRIC_ID")
-
-                    'Dim tOTAL_ECOLA As String = .item("ECOLAA")
-                    'Dim tOTAL_SIL As String = .item("SILL")
-                    'Dim tOTAL_PI As String = .item("PII")
-                    'Dim tOTAL_BASIC As String = .item("BASICC")
-                    'Dim tOTAL_LATE_UT As String = .item("LATEUTT")
 
                     Dim tOTAL_ECOLA As Decimal = GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC where BIO_NO = '{bio_no}' and CATEGORY = 'ECOLA' and PAYDATE BETWEEN '{starting_date}' AND '{ending_date}'")
                     Dim tOTAL_SIL As Decimal = GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC where BIO_NO = '{bio_no}' and CATEGORY like '%SIL' and PAYDATE BETWEEN '{starting_date}' AND '{ending_date}'")
@@ -1868,7 +1848,6 @@ Module SelectFromDatabase
                     Dim tOTAL_LATE_UT As Decimal = GetTotal("TOTAL_LATE_UT", $"PAYROLL_PAYOUT where  BIOMETRIC_ID = '{bio_no}' and PAYDATE BETWEEN '{starting_date}' AND '{ending_date}'")
 
                     TOTALS = ((tOTAL_ECOLA + tOTAL_SIL + tOTAL_PI + tOTAL_BASIC) - tOTAL_LATE_UT) / 12
-                    'TOTALS = ((CDec(.item("ECOLAA")) + CDec(.item("SILL")) + CDec(.item("PII")) + CDec(.item("BASICC"))) - CDec(.item("LATEUTT"))) / 12
 
                     Dim i As ListViewItem = LV.Items.Add(.Item("FULLNAME"))
                     i.SubItems.Add(TOTALS.ToString("N"))

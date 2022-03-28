@@ -336,10 +336,10 @@
     End Sub
 
     Private Sub Allowance_Tab_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Allowance_Tab.SelectedIndexChanged
-        If Allowance_Tab.SelectedTab.Equals(TabPage2) Then
+        If Allowance_Tab.SelectedTab.Equals(Approval_Tab) Then
             ListOF_PAF(Approve_grid)
 
-        ElseIf Allowance_Tab.SelectedTab.Equals(TabPage3) Then
+        ElseIf Allowance_Tab.SelectedTab.Equals(Record_Tab) Then
             ListOF_PAF(Records_grid)
 
         ElseIf Allowance_Tab.SelectedTab.Equals(TabPage1) Then
