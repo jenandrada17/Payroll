@@ -482,28 +482,6 @@ Module SaveUpdate
         End If
     End Sub
 
-
-    Friend Sub AllowanceRemove(id As String, value As String)
-        Dim mysql As String
-
-        mysql = $"Select * FROM PAYROLL_ALLOWANCES where id = '{id}'"
-        Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_ALLOWANCES")
-        If ds.Tables(0).Rows.Count > 0 Then
-            For Each dr In ds.Tables(0).Rows
-                With dr
-
-                    .Item("ALLOWED") = value
-                    .Item("ALLOW_REMOVE_DATE") = Today
-
-                End With
-                SaveEntry(ds, False)
-            Next
-
-            MsgBox("Successfully Updated!", MsgBoxStyle.Information, "Information")
-        End If
-
-    End Sub
-
     Friend Sub SaveDeductionS(deduc_id As String, category As String, PRINCIPAL As String, AMORT As String, SCHEDULE As String, DATEE As String, bioNo As String)
         Dim mysql As String
 
@@ -901,11 +879,11 @@ Module SaveUpdate
                     'End If
 
                     '============================================= OTHER ALLOWANCES =========================================================
-                    Dim sql_2 As String = $"Select * From PAYROLL_ALLOWANCES WHERE BIOMETRIC_NO = '{bioNo}' and ALLOWED = 'YES' and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
-                    Using ds_2 As DataSet = LoadSQL(sql_2, "PAYROLL_ALLOWANCES")
-                        If ds_2.Tables(0).Rows.Count > 0 Then
-                            For Each dr_2 In ds_2.Tables(0).Rows
-                                With dr_2
+                    Dim sql_ As String = $"Select * From PAYROLL_ALLOWANCES WHERE BIOMETRIC_NO = '{bioNo}' and ALLOWED = 'YES' and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
+                    Using dss_ As DataSet = LoadSQL(sql_, "PAYROLL_ALLOWANCES")
+                        If dss_.Tables(0).Rows.Count > 0 Then
+                            For Each drr_ In dss_.Tables(0).Rows
+                                With drr_
                                     If .item("EFFECTIVE_DATE") <= paydate_ Then
 
                                         '============== PERFORMANCE INCENTIVES DEDUCTION IF EVER MAY ABSENT ===================
@@ -914,7 +892,7 @@ Module SaveUpdate
 
                                         If .item("CATEGORY") = "PERFORMANCE INCENTIVES" Then
                                             If fix_monthly_rate = False And .item("FIX") = "NO" Then
-                                                Dim PI_totalDays As Double = GetFirst_NoOfDays(bioNo, paydate_) + NoOfDays + RegularHol + SIL + PI_ADD_DAYS
+                                                Dim PI_totalDays As Double = GetFirst_NoOfDays(bioNo, paydate_) + NoOfDays + RegularHol + SIL + GetData_Decimal("NO_OF_DAYS", $"PAYROLL_PI_DAYS WHERE PAYDATE='{paydate_}'")
                                                 Dim absent As Double = 0
 
                                                 If PI_totalDays < 26 Then
@@ -1280,6 +1258,57 @@ Module SaveUpdate
                     SaveEntry(dss)
 
                     MsgBox("Successfully Saved!", MsgBoxStyle.Information, "Information")
+                End Using
+            End If
+        End Using
+    End Sub
+
+    Friend Sub SaveAllowance_UPDATE_HISTORY(bioNo As String, category As String, amount As String, fix As String, SCHEDULE As String, DAY_DATE As String, EFFECTIVE_DATE As String)
+        Dim mysql As String = "Select * From PAYROLL_PI_HISTORY"
+        Using dss As DataSet = LoadSQL(mysql, "PAYROLL_PI_HISTORY")
+
+            Dim dsNewRow As DataRow = dss.Tables(0).NewRow
+            With dsNewRow
+
+                .Item("BIOMETRIC_NO") = bioNo
+                .Item("category") = category
+                .Item("AMOUNT") = amount
+                .Item("fix") = fix
+                .Item("SCHEDULE") = SCHEDULE
+                .Item("EFFECTIVE_DATE") = EFFECTIVE_DATE
+                .Item("DATE_SAVED") = DateTime.Now
+
+            End With
+            dss.Tables(0).Rows.Add(dsNewRow)
+            SaveEntry(dss)
+        End Using
+    End Sub
+
+    Friend Sub SavePI_Additional_Days(NO_OF_DAYS As String, PAYDATE As String)
+        Dim mysql As String = $"Select * From PAYROLL_PI_DAYS WHERE PAYDATE ='{PAYDATE}'"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PI_DAYS")
+            If ds.Tables(0).Rows.Count > 0 Then
+                With ds.Tables(0).Rows(0)
+                    .Item("NO_OF_DAYS") = NO_OF_DAYS
+                End With
+                SaveEntry(ds, False)
+
+                MsgBox("Successfully Updated!", MsgBoxStyle.Information)
+            Else
+                Dim mysqlL As String = "Select * From PAYROLL_PI_DAYS"
+                Using dss As DataSet = LoadSQL(mysqlL, "PAYROLL_PI_DAYS")
+
+                    Dim dsNewRow As DataRow = dss.Tables(0).NewRow
+                    With dsNewRow
+
+                        .Item("PAYDATE") = PAYDATE
+                        .Item("NO_OF_DAYS") = NO_OF_DAYS
+
+                    End With
+                    dss.Tables(0).Rows.Add(dsNewRow)
+                    SaveEntry(dss)
+
+                    MsgBox("Successfully Saved!", MsgBoxStyle.Information)
                 End Using
             End If
         End Using

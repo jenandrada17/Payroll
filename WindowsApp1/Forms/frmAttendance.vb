@@ -25,18 +25,11 @@ Public Class frmAttendance
 
     Dim ALLOW_OT As Boolean = True
 
-    'eApp = New Excel.Application
-    '    eBook = eApp.Workbooks.Open(Path_TXT.Text)
-    '    eSheet = eBook.Worksheets(1)
-    '    eCell = eSheet.UsedRange
-
     Private Sub frmAttendance_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
         LoadDateTime()
 
-        'SAVE_ALLATTENDANCE()
-        'Replacing($"RECORDED_ALLOW_DEDUC where CATEGORY = '13th Month Pay' oR CATEGORY = 'SBU' OR TRANSAC_NAME = 'ALLOWANCE';")
-        'SavePayout_ALL(Paydate, starting_date, ending_date)
+        PIDays_lbl.Text = GetData_Decimal("NO_OF_DAYS", $"PAYROLL_PI_DAYS WHERE PAYDATE='{Paydate.ToString("d")}'")
 
         AM_In_DataGrid.Items.Insert(0, "")
         AM_Out_DataGrid.Items.Insert(0, "")
@@ -257,7 +250,6 @@ Public Class frmAttendance
         End If
         'Calculate_BTN.PerformClick()
     End Sub
-
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Calculate_BTN.Click
         If Name_TXT.Text <> Nothing Then
@@ -1501,6 +1493,33 @@ Public Class frmAttendance
         End If
     End Sub
 
+    Private Sub PIDaysX_btn_Click(sender As Object, e As EventArgs) Handles PIDaysX_btn.Click
+        P_Add_Panel.Visible = False
+        PI_Days.Value = 0.0
+        'PIDays_lbl.Text = 0.0
+    End Sub
+
+    Private Sub AddPIDays_btn_Click_1(sender As Object, e As EventArgs) Handles AddPIDays_btn.Click
+        If P_Add_Panel.Visible = True Then
+            P_Add_Panel.Visible = False
+            PI_Days.Value = 0.0
+        Else
+            P_Add_Panel.Visible = True
+            PI_Days.Value = PIDays_lbl.Text
+        End If
+    End Sub
+
+    Private Sub PIDaysCheck_btn_Click(sender As Object, e As EventArgs) Handles PIDaysCheck_btn.Click
+        Dim result As DialogResult = MsgBox("Additional days will be added for PI calculation, proceed anyway?", MsgBoxStyle.YesNo)
+        If result = DialogResult.Yes Then
+            PIDays_lbl.Text = PI_Days.Value
+            Dim paydatee As String = Paydate.ToShortDateString
+            SavePI_Additional_Days(PI_Days.Value, paydatee)
+        End If
+
+        P_Add_Panel.Visible = False
+    End Sub
+
     Private Sub Cancel_lbl_Click(sender As Object, e As EventArgs) Handles Cancel_lbl.Click
         AM_OT_NUP.Value = 0.0
     End Sub
@@ -2050,10 +2069,7 @@ Public Class frmAttendance
         Dim datee As DateTime = paydate_
         LoadDateTime(datee)
 
-        AM_In_DataGrid.Items.Insert(0, "")
-        AM_Out_DataGrid.Items.Insert(0, "")
-        PM_IN_DataGrid.Items.Insert(0, "")
-        PM_Out_DataGrid.Items.Insert(0, "")
+        PIDays_lbl.Text = GetData_Decimal("NO_OF_DAYS", $"PAYROLL_PI_DAYS WHERE PAYDATE='{paydate_}'")
     End Sub
 
     Private Sub Attendance_Tab_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Attendance_Tab.SelectedIndexChanged

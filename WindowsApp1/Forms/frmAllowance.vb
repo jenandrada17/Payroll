@@ -36,6 +36,7 @@
     End Function
 
     Private Sub Allow_Save_BTN_Click_1(sender As Object, e As EventArgs) Handles Allow_Save_BTN.Click
+        Dim SaveStat As String
 
         Dim fix As String = "NO"
         Dim everyThisDate As Integer = 0
@@ -54,9 +55,19 @@
                 idNo = Allowance_LV.Items(Allowance_LV.FocusedItem.Index).SubItems(4).Tag
             End If
 
-            SaveAllowance(idNo, Allow_Name_TXT.Tag, Allow_Category_Combo.Text, Allow_Amount_TXT.Text, fix, Allow_Schedule_Combo.SelectedItem, everyThisDate, A_EffectiveDate_DTP.Value) ' Label14 is EMP_ID
+            SaveAllowance(idNo, Allow_Name_TXT.Tag, Allow_Category_Combo.Text, Allow_Amount_TXT.Text, fix, Allow_Schedule_Combo.SelectedItem, everyThisDate, A_EffectiveDate_DTP.Value)
 
-            SaveLogs($"ADDED ALLOWANCE - {Allow_Name_TXT.Text} ({Allow_Name_TXT.Tag}), Category({Allow_Category_Combo.Text}), Amount({Allow_Amount_TXT.Text}), Sched({Allow_Schedule_Combo.Text}), Effectivity({A_EffectiveDate_DTP.Value.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
+            '================= SAVE PI HISTORY ================ 
+            If Name_lbl.Tag = "UPDATE" Then
+                SaveStat = "UPDATED"
+                If Allow_Category_Combo.Text = "PERFORMANCE INCENTIVES" Then
+                    SaveAllowance_UPDATE_HISTORY(Allow_Name_TXT.Tag, Allow_Category_Combo.Text, Allow_Amount_TXT.Text, fix, Allow_Schedule_Combo.SelectedItem, everyThisDate, A_EffectiveDate_DTP.Value)
+                End If
+            Else
+                SaveStat = "ADDED"
+            End If
+
+            SaveLogs($"{SaveStat} ALLOWANCE - {Allow_Name_TXT.Text} ({Allow_Name_TXT.Tag}), Category({Allow_Category_Combo.Text}), Amount({Allow_Amount_TXT.Text}), Sched({Allow_Schedule_Combo.Text}), Effectivity({A_EffectiveDate_DTP.Value.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
 
             Lists_Allowance(Allowance_LV)
             Allow_Cancel_BTN.PerformClick()
@@ -130,6 +141,7 @@
         Dim idNo As Integer = Allowance_LV.Items(Allowance_LV.FocusedItem.Index).SubItems(4).Tag
 
         GetAllowance_Details(idNo, Allow_Name_TXT, Allow_Category_Combo, Allow_Schedule_Combo, A_EveryDate_Combo, Allow_Amount_TXT, A_EffectiveDate_DTP, FixYes_RadioB, FixNo_RadioB)
+        Name_lbl.Tag = "UPDATE"
     End Sub
 
     Public Sub Load_Allowance(emp As Employee, tabName As String, Optional category As String = "")
@@ -138,7 +150,7 @@
                 Allow_Name_TXT.Text = .Fullname
                 Allow_Name_TXT.Tag = .BiometricID
                 Allow_SearchEmp_BTN.Tag = .BRANCH_CODE
-                Label14.Tag = .EMP_ID
+                Name_lbl.Tag = .EMP_ID
                 Allowance_Tab.SelectedIndex = 0
                 Allow_Category_Combo.SelectedItem = category
 

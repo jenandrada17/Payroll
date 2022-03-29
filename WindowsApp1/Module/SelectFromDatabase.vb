@@ -1029,7 +1029,10 @@ Module SelectFromDatabase
         If searchName.Length <> 0 Then
 
             mysql = $"Select * From PAYROLL_ATTENDANCE A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIOMETRICID 
-                                 where A.PAYDATE = '{Paydate}' and (BRANCH_CODE <> '711-POL' or BRANCH_CODE <> '711-ROX') and ("
+                                 where A.PAYDATE = '{Paydate}' and  BRANCH_CODE NOT IN ('711-POL','711-ROX') and ("
+
+            'mysql = $"Select * From PAYROLL_ATTENDANCE A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIOMETRICID 
+            '                     where A.PAYDATE = '{Paydate}' and (BRANCH_CODE <> '711-POL' or BRANCH_CODE <> '711-ROX') and ("
 
             For Each name In strWords
                 mysql &= $"{vbCr}UPPER(BIOMETRICID) LIKE UPPER('%{name}%') OR "
@@ -1038,7 +1041,10 @@ Module SelectFromDatabase
 
         Else
             mysql = $"Select * From PAYROLL_ATTENDANCE A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIOMETRICID where A.PAYDATE = '{Paydate}' 
-                                   and (BRANCH_CODE <> '711-POL' or BRANCH_CODE <> '711-ROX') ORDER BY FULLNAME ASC "
+                                   and BRANCH_CODE NOT IN ('711-POL','711-ROX') ORDER BY FULLNAME ASC "
+
+            'mysql = $"Select * From PAYROLL_ATTENDANCE A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIOMETRICID where A.PAYDATE = '{Paydate}' 
+            '                       and (BRANCH_CODE <> '711-POL' or BRANCH_CODE <> '711-ROX') ORDER BY FULLNAME ASC "
         End If
 
 
@@ -1850,7 +1856,7 @@ Module SelectFromDatabase
                     TOTALS = ((tOTAL_ECOLA + tOTAL_SIL + tOTAL_PI + tOTAL_BASIC) - tOTAL_LATE_UT) / 12
 
                     Dim i As ListViewItem = LV.Items.Add(.Item("FULLNAME"))
-                    i.SubItems.Add(TOTALS.ToString("N"))
+                    i.SubItems.Add(TOTALS.ToString("N")).Tag = bio_no
 
                 End With
                 frmMainForm.AppProgressBar.Value += 1

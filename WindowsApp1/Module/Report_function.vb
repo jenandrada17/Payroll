@@ -871,16 +871,9 @@ Module Report_function
 
     Public Sub RUN_This()
 
-        'Dim mysql As String = $"Select * From payroll_attendance A 
-        '                               inner join RECORDED_ALLOW_DEDUC B on B.BIO_NO = A.BIOMETRICID 
-        '                                AND A.PAYDATE = '3/31/2022' and TRANSAC_NAME = 'ALLOWANCE' 
-        '                                AND CATEGORY = 'PERFORMANCE INCENTIVES'" 
-
         Dim mysql As String = $"Select * From payroll_attendance A 
                                        inner join RECORDED_ALLOW_DEDUC B on B.BIO_NO = A.BIOMETRICID 
                                         AND A.PAYDATE = '3/31/2022' and TRANSAC_NAME = 'ALLOWANCE' 
-                                        AND CATEGORY = 'PERFORMANCE INCENTIVES' 
-                                        where A.PAYDATE = '3/31/2022' and TRANSAC_NAME = 'ALLOWANCE' 
                                         AND CATEGORY = 'PERFORMANCE INCENTIVES'"
 
         Using ds As DataSet = LoadSQL(mysql, "payroll_attendance")
@@ -1005,34 +998,6 @@ Module Report_function
         Return VALUEE
     End Function
 
-    Public Sub SAVE_ALLATTENDANCE()
-
-        Has_Rows_Delete("TEMP_ATTENDANCE")
-
-        Dim mysql As String = $"Select * From PAYROLL_ATTENDANCE"
-        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
-            If ds.Tables(0).Rows.Count > 0 Then
-                For Each dr In ds.Tables(0).Rows
-                    With dr
-
-                        Dim TRAINING_DAYS = IIf(IsDBNull(.Item("TRAINING_DAYS")), 0, .Item("TRAINING_DAYS"))
-                        Dim TRAINING_REGHOLIDAY = IIf(IsDBNull(.Item("TRAINING_REGHOLIDAY")), 0, .Item("TRAINING_REGHOLIDAY"))
-                        Dim TRAINING_SPECHOLIDAY = IIf(IsDBNull(.Item("TRAINING_SPECHOLIDAY")), 0, .Item("TRAINING_SPECHOLIDAY"))
-                        Dim NIGHT_RATE = IIf(IsDBNull(.Item("NIGHT_RATE")), 0, .Item("NIGHT_RATE"))
-
-                        GetTempAttendance(.Item("BIOMETRICID"), .Item("PAYDATE"), .Item("PRESENT_DAYS"), .Item("OVERTIME"),
-                                                .Item("LATE"), .Item("UNDERTIME"), .Item("REGHOLIDAY"), .Item("SPECHOLIDAY"),
-                                                TRAINING_DAYS, TRAINING_REGHOLIDAY, TRAINING_SPECHOLIDAY, NIGHT_RATE)
-
-                        frmMainForm.AppProgressBar.Value += 1
-                    End With
-                Next
-            End If
-        End Using
-
-        progressBarEnd()
-    End Sub
-
     Friend Sub GetTempAttendance(BIOMETRICID As String, paydate_ As String, TotalDays As String, TotalOTHr As String,
                                     Late_Total As String, Under_Total As String, TotalRHoliday As String, TotalSHoliday As String,
                                     TRAINING_DAYS As String, TRAINING_REGHOLIDAY As String, TRAINING_SPECHOLIDAY As String,
@@ -1061,25 +1026,6 @@ Module Report_function
         End Using
     End Sub
 
-    'Public Sub Loans_to_Deduction()
-    '    Dim sql As String = $"select * from PAYROLL_LOANS"
-    '    Using dsSs As DataSet = LoadSQL(sql, "PAYROLL_LOANS")
-    '        For Each drRr In dsSs.Tables(0).Rows
-    '            With drRr
-    '                Dim BIO_NO = .Item("BIO_NO")
-    '                Dim amort = .Item("AMORT")
-    '                Dim PRINCIPAL = .Item("PRINCIPAL")
-    '                Dim CREDIT = .Item("CREDIT")
-    '                Dim BALANCE = .Item("BALANCE")
-    '                Dim DATEE = .Item("DATEE")
-    '                Dim STATUS = IIf(IsDBNull(.Item("STATUS")), Nothing, .Item("STATUS"))
-
-    '                SAVE_TO_DEDUCTION(.Item("BIO_NO"), .Item("CATEGORY") & " LOAN", .Item("AMORT"), .Item("PRINCIPAL"), .Item("CREDIT"), .Item("BALANCE"), .Item("DATEE"), "CLOSE PAYROLL", STATUS)
-    '            End With
-    '        Next
-    '    End Using
-    'End Sub
-
     Private Sub SAVE_TO_DEDUCTION(BIO_NO As String, CATEGORY As String, AMORT As String, PRINCIPAL As String, CREDIT As String, BALANCE As String, DATEE As String, SCHEDULE As String, STATUS As String)
         Dim sql As String = $"select * from PAYROLL_DEDUCTION Rows 1"
         Using ds As DataSet = LoadSQL(sql, "PAYROLL_DEDUCTION")
@@ -1102,6 +1048,71 @@ Module Report_function
             ds.Tables(0).Rows.Add(dsNew)
             SaveEntry(ds)
         End Using
+    End Sub
+
+    Friend Sub Laod_13Month(bioNo As String, report As Microsoft.Reporting.WinForms.ReportViewer)
+
+        Dim datee As DateTime = Date.Now
+        Dim December_April As DateTime = New DateTime(datee.AddYears(-1).Year, 12, 1)
+        Dim May_Nov As DateTime = New DateTime(datee.Year, 5, 1)
+
+        Dim starting_date, ending_date As String
+
+        If datee.Month >= 4 And datee.Month <= 11 Then
+            starting_date = May_Nov.ToString("d")
+            ending_date = May_Nov.AddMonths(6).ToString("d")
+        Else
+            starting_date = December_April.ToString("d")
+            ending_date = December_April.AddMonths(4).ToString("d")
+        End If
+
+        report.LocalReport.DataSources.Clear()
+
+        Try
+            Dim dt As New DataTable()
+            With dt
+                .Columns.Add("EMP_NAME")
+                .Columns.Add("PAYROLL_PERIOD")
+                .Columns.Add("NO_OF_DAYS")
+                .Columns.Add("BASIC_PAY")
+                .Columns.Add("OTHER_INCOME")
+                .Columns.Add("REGULAR_PAY")
+            End With
+
+            Dim mysql As String = $"Select FULLNAME, BIOMETRIC_ID, PAYDATE  from PAYROLL_EMPLOYEE inner join PAYROLL_PAYOUT on BIOMETRIC_ID = BIO_NO where BIO_NO='{bioNo}'"
+            Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+                progressBarStart(ds.Tables(0).Rows.Count)
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+
+                        Dim OTHER_INCOME As Decimal = 0
+                        Dim FULLNAME As String = .item("FULLNAME")
+                        Dim PAYDATE As String = .item("PAYDATE")
+                        Dim NO_OF_DAYS As Decimal = GetData_Decimal("PRESENT_DAYS", $"PAYROLL_ATTENDANCE where BIOMETRICID = '{bioNo}' and PAYDATE = '{PAYDATE}'")
+                        Dim tOTAL_BASIC As Decimal = GetData_Decimal("TOTAL_BASIC", $"PAYROLL_PAYOUT where BIOMETRIC_ID = '{bioNo}' and PAYDATE  = '{PAYDATE}'")
+
+                        Dim tOTAL_ECOLA As Decimal = GetData_Decimal("AMOUNT", $"RECORDED_ALLOW_DEDUC where BIO_NO = '{bioNo}' and CATEGORY = 'ECOLA' and PAYDATE = '{PAYDATE}'")
+                        Dim tOTAL_SIL As Decimal = GetData_Decimal("AMOUNT", $"RECORDED_ALLOW_DEDUC where BIO_NO = '{bioNo}' and CATEGORY like '%SIL' and PAYDATE = '{PAYDATE}'")
+                        Dim tOTAL_PI As Decimal = GetData_Decimal("AMOUNT", $"RECORDED_ALLOW_DEDUC where BIO_NO = '{bioNo}' and CATEGORY = 'PERFORMANCE INCENTIVES' and PAYDATE = '{PAYDATE}'")
+                        Dim tOTAL_LATE_UT As Decimal = GetData_Decimal("TOTAL_LATE_UT", $"PAYROLL_PAYOUT where  BIOMETRIC_ID = '{bioNo}' and PAYDATE = '{PAYDATE}'")
+
+                        OTHER_INCOME = (tOTAL_ECOLA + tOTAL_SIL + tOTAL_PI) - tOTAL_LATE_UT
+                        Dim TOTALS As Decimal = tOTAL_BASIC + OTHER_INCOME
+
+                        dt.Rows.Add(FULLNAME, CDate(PAYDATE).ToString("MMMM dd, yyyy"), NO_OF_DAYS, tOTAL_BASIC.ToString("N"), OTHER_INCOME.ToString("N"), TOTALS.ToString("N"))
+
+                    End With
+                    frmMainForm.AppProgressBar.Value += 1
+                Next
+
+                Dim dataSource As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt)
+                report.LocalReport.DataSources.Add(dataSource)
+                report.RefreshReport()
+                progressBarEnd()
+            End Using
+        Catch ex As Exception
+            MsgBox(ex.ToString)
+        End Try
     End Sub
 
 End Module

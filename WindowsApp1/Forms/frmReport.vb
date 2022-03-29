@@ -19,6 +19,7 @@ Public Class frmReport
         Lists_Deduction_History(DeducHistory_List, "DEDUCTION")
         Lists_SBU(SBU_LV)
 
+        Me.rpt_13Month.RefreshReport()
     End Sub
 
     Private Sub SearchSBU_BTN_Click(sender As Object, e As EventArgs) Handles SearchSBU_BTN.Click
@@ -1692,6 +1693,14 @@ Public Class frmReport
     End Sub
 
     Private Sub SBU_LV_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles SBU_LV.MouseDoubleClick
-        LoadSBU(SBU_LV.Items(SBU_LV.FocusedItem.Index).SubItems(4).Tag)
+        If SBU_LV.Items.Count >= 0 Then
+            LoadSBU(SBU_LV.Items(SBU_LV.FocusedItem.Index).SubItems(4).Tag)
+        End If
+    End Sub
+
+    Private Sub Month_LV_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles Month_LV.MouseDoubleClick
+        If Month_LV.Items.Count >= 0 Then
+            Laod_13Month(Month_LV.Items(Month_LV.FocusedItem.Index).SubItems(1).Tag, rpt_13Month)
+        End If
     End Sub
 End Class
