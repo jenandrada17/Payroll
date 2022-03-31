@@ -867,16 +867,16 @@ Module SaveUpdate
                         Save_Recorded_Allow_Deduc(bioNo, paydate_, "SIL", SIL_Total, "ALLOWANCE")
                     End If
 
-                    If Ecola <> 0 Then ' FOR ECOLA ADDITIONAL ================================
+                    If Ecola <> 0 Then ' FOR ECOLA ADDITIONAL ================================ 
                         Allowances = Allowances + Ecola
                         Save_Recorded_Allow_Deduc(bioNo, paydate_, "ECOLA", Ecola, "ALLOWANCE")
                     End If
 
                     'If paydate_ = "12/15/2021" Then ' FOR 13 MONTH DECEMBER 15 ONLY =============== 
-                    '    Dim Month13 As Decimal = Get_13Month(bioNo)
-                    '    Allowances = Allowances + Month13
-                    '    Save_Recorded_Allow_Deduc(bioNo, paydate_, "13th Month Pay", Month13, "ALLOWANCE")
-                    'End If
+                    '    Dim Month13 As Decimal = Get_13Month(bioNo) 
+                    '    Allowances = Allowances + Month13 
+                    '    Save_Recorded_Allow_Deduc(bioNo, paydate_, "13th Month Pay", Month13, "ALLOWANCE") 
+                    'End If 
 
                     '============================================= OTHER ALLOWANCES =========================================================
                     Dim sql_ As String = $"Select * From PAYROLL_ALLOWANCES WHERE BIOMETRIC_NO = '{bioNo}' and ALLOWED = 'YES' and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
@@ -886,7 +886,7 @@ Module SaveUpdate
                                 With drr_
                                     If .item("EFFECTIVE_DATE") <= paydate_ Then
 
-                                        '============== PERFORMANCE INCENTIVES DEDUCTION IF EVER MAY ABSENT ===================
+                                        '============== PERFORMANCE INCENTIVES DEDUCTION IF EVER MAY ABSENT =================== 
                                         Dim PI As Decimal = 0
                                         Dim deduc_to_PI As Decimal = 0
 

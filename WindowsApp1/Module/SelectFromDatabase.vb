@@ -1725,7 +1725,7 @@ Module SelectFromDatabase
                 mysql &= $"{vbCr}UPPER(B.BIO_NO) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(FULLNAME) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(BRANCH_CODE) LIKE UPPER('%{name}%')) ORDER BY FULLNAME ASC "
+                mysql &= $"{vbCr}UPPER(BRANCH_CODE) LIKE UPPER('%{name}%')) ORDER BY FULLNAME, CATEGORY ASC "
             Next
 
         Else
@@ -1733,7 +1733,7 @@ Module SelectFromDatabase
             If categoryDeduction = "SBU" Then
                 mysql = "select * from PAYROLL_EMPLOYEE A inner join RECORDED_ALLOW_DEDUC B on B.BIO_NO = A.BIO_NO WHERE CATEGORY = 'SBU' ORDER BY FULLNAME ASC "
             Else
-                mysql = "select * from PAYROLL_EMPLOYEE A inner join RECORDED_ALLOW_DEDUC B on B.BIO_NO = A.BIO_NO WHERE CATEGORY <> 'SBU'  and TRANSAC_NAME = 'DEDUCTION' ORDER BY FULLNAME ASC "
+                mysql = "select * from PAYROLL_EMPLOYEE A inner join RECORDED_ALLOW_DEDUC B on B.BIO_NO = A.BIO_NO WHERE CATEGORY <> 'SBU'  and TRANSAC_NAME = 'DEDUCTION' ORDER BY FULLNAME, CATEGORY ASC "
             End If
 
         End If
