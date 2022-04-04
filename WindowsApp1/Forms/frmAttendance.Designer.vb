@@ -183,6 +183,7 @@ Partial Class frmAttendance
         Me.RE_NAME_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.RE_BIO_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.RE_BRANCH_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.PI_Panel = New System.Windows.Forms.Panel()
         CType(Me.overAllBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.dtr_all, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Attendance_Tab.SuspendLayout()
@@ -208,6 +209,7 @@ Partial Class frmAttendance
         Me.Employee2_GroupB.SuspendLayout()
         Me.Branch_group.SuspendLayout()
         CType(Me.printDTRBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.PI_Panel.SuspendLayout()
         Me.SuspendLayout()
         '
         'overAllBindingSource
@@ -245,10 +247,7 @@ Partial Class frmAttendance
         '
         'TabPage1
         '
-        Me.TabPage1.Controls.Add(Me.AddPIDays_btn)
-        Me.TabPage1.Controls.Add(Me.PIDays_lbl)
-        Me.TabPage1.Controls.Add(Me.Label38)
-        Me.TabPage1.Controls.Add(Me.P_Add_Panel)
+        Me.TabPage1.Controls.Add(Me.PI_Panel)
         Me.TabPage1.Controls.Add(Me.Biometric_LV)
         Me.TabPage1.Controls.Add(Me.Search_TXT)
         Me.TabPage1.Controls.Add(Me.Search_BTN)
@@ -269,7 +268,7 @@ Partial Class frmAttendance
         'AddPIDays_btn
         '
         Me.AddPIDays_btn.Font = New System.Drawing.Font("Dubai", 8.249999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.AddPIDays_btn.Location = New System.Drawing.Point(1093, 14)
+        Me.AddPIDays_btn.Location = New System.Drawing.Point(165, 7)
         Me.AddPIDays_btn.Name = "AddPIDays_btn"
         Me.AddPIDays_btn.Size = New System.Drawing.Size(44, 26)
         Me.AddPIDays_btn.TabIndex = 127
@@ -280,7 +279,7 @@ Partial Class frmAttendance
         '
         Me.PIDays_lbl.AutoSize = True
         Me.PIDays_lbl.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.PIDays_lbl.Location = New System.Drawing.Point(1059, 12)
+        Me.PIDays_lbl.Location = New System.Drawing.Point(131, 5)
         Me.PIDays_lbl.Name = "PIDays_lbl"
         Me.PIDays_lbl.Size = New System.Drawing.Size(21, 27)
         Me.PIDays_lbl.TabIndex = 125
@@ -290,7 +289,7 @@ Partial Class frmAttendance
         '
         Me.Label38.AutoSize = True
         Me.Label38.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label38.Location = New System.Drawing.Point(931, 13)
+        Me.Label38.Location = New System.Drawing.Point(3, 6)
         Me.Label38.Name = "Label38"
         Me.Label38.Size = New System.Drawing.Size(125, 25)
         Me.Label38.TabIndex = 124
@@ -302,7 +301,7 @@ Partial Class frmAttendance
         Me.P_Add_Panel.Controls.Add(Me.PI_Days)
         Me.P_Add_Panel.Controls.Add(Me.PIDaysX_btn)
         Me.P_Add_Panel.Controls.Add(Me.PIDaysCheck_btn)
-        Me.P_Add_Panel.Location = New System.Drawing.Point(996, 46)
+        Me.P_Add_Panel.Location = New System.Drawing.Point(68, 39)
         Me.P_Add_Panel.Name = "P_Add_Panel"
         Me.P_Add_Panel.Size = New System.Drawing.Size(149, 48)
         Me.P_Add_Panel.TabIndex = 116
@@ -1788,6 +1787,18 @@ Partial Class frmAttendance
         Me.RE_BRANCH_DGV.ReadOnly = True
         Me.RE_BRANCH_DGV.Width = 140
         '
+        'PI_Panel
+        '
+        Me.PI_Panel.Controls.Add(Me.Label38)
+        Me.PI_Panel.Controls.Add(Me.AddPIDays_btn)
+        Me.PI_Panel.Controls.Add(Me.P_Add_Panel)
+        Me.PI_Panel.Controls.Add(Me.PIDays_lbl)
+        Me.PI_Panel.Location = New System.Drawing.Point(923, 3)
+        Me.PI_Panel.Name = "PI_Panel"
+        Me.PI_Panel.Size = New System.Drawing.Size(227, 100)
+        Me.PI_Panel.TabIndex = 128
+        Me.PI_Panel.Visible = False
+        '
         'frmAttendance
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1835,6 +1846,8 @@ Partial Class frmAttendance
         Me.Branch_group.ResumeLayout(False)
         Me.Branch_group.PerformLayout()
         CType(Me.printDTRBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.PI_Panel.ResumeLayout(False)
+        Me.PI_Panel.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1992,4 +2005,5 @@ Partial Class frmAttendance
     Friend WithEvents AddPIDays_btn As Button
     Friend WithEvents PIDays_lbl As Label
     Friend WithEvents Label38 As Label
+    Friend WithEvents PI_Panel As Panel
 End Class

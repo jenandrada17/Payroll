@@ -19,7 +19,6 @@ Public Class frmReport
         Lists_Deduction_History(DeducHistory_List, "DEDUCTION")
         Lists_SBU(SBU_LV)
 
-        Me.rpt_13Month.RefreshReport()
     End Sub
 
     Private Sub SearchSBU_BTN_Click(sender As Object, e As EventArgs) Handles SearchSBU_BTN.Click

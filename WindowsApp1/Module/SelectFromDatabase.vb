@@ -1812,29 +1812,32 @@ Module SelectFromDatabase
 
         Dim starting_date, ending_date As String
 
-        If datee.Month >= 4 And datee.Month <= 11 Then
+        If datee.Month >= 5 And datee.Month <= 11 Then
             starting_date = May_Nov.ToString("d")
-            ending_date = May_Nov.AddMonths(6).ToString("d")
+
+            Dim days As Integer = System.DateTime.DaysInMonth(May_Nov.Year, May_Nov.Month)
+            ending_date = May_Nov.AddMonths(6).AddDays(days).AddDays(-1).ToString("d")
         Else
             starting_date = December_April.ToString("d")
-            ending_date = December_April.AddMonths(4).ToString("d")
-        End If
 
+            Dim days As Integer = System.DateTime.DaysInMonth(December_April.Year, December_April.Month)
+            ending_date = December_April.AddMonths(4).AddDays(days).AddDays(-1).ToString("d")
+        End If
 
         If searchName.Length <> 0 Then
 
-            mysql = "select * from PAYROLL_EMPLOYEE A inner join PAYROLL_PAYOUT B on B.BIOMETRIC_ID = A.BIO_NO WHERE "
+            mysql = $"select * from PAYROLL_EMPLOYEE A inner join PAYROLL_PAYOUT B on B.BIOMETRIC_ID = A.BIO_NO "
 
             For Each name In strWords
                 mysql &= $"{vbCr}UPPER(B.BIO_NO) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(FULLNAME) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(BRANCH_CODE) LIKE UPPER('%{name}%')  Group by FULLNAME, BIOMETRIC_ID ORDER BY FULLNAME ASC "
+                mysql &= $"{vbCr}UPPER(BRANCH_CODE) LIKE UPPER('%{name}%') Group by FULLNAME, BIOMETRIC_ID ORDER BY FULLNAME ASC "
             Next
 
         Else
 
-            mysql = "select FULLNAME, BIOMETRIC_ID  from PAYROLL_EMPLOYEE A inner join PAYROLL_PAYOUT B on B.BIOMETRIC_ID = A.BIO_NO Group by FULLNAME, BIOMETRIC_ID ORDER BY FULLNAME ASC "
+            mysql = $"select FULLNAME, BIOMETRIC_ID  from PAYROLL_EMPLOYEE A inner join PAYROLL_PAYOUT B on B.BIOMETRIC_ID = A.BIO_NO Group by FULLNAME, BIOMETRIC_ID ORDER BY FULLNAME ASC "
 
         End If
 

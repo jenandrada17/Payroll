@@ -45,6 +45,8 @@ Public Class frmAttendance
         PopulateComboBox(DTR_Branch_Combo, "PAYROLL_EMPLOYEE", "BRANCH_CODE")
         PopulateComboBox(Paydate7_CB, "BIOMETRIC_DTR", "PAYDATE")
 
+        If IsLastDay(Paydate.ToString("d")) Then PI_Panel.Visible = True
+
     End Sub
 
     Private Sub Close_LBL_Click(sender As Object, e As EventArgs) Handles Close_LBL.Click
@@ -1496,7 +1498,6 @@ Public Class frmAttendance
     Private Sub PIDaysX_btn_Click(sender As Object, e As EventArgs) Handles PIDaysX_btn.Click
         P_Add_Panel.Visible = False
         PI_Days.Value = 0.0
-        'PIDays_lbl.Text = 0.0
     End Sub
 
     Private Sub AddPIDays_btn_Click_1(sender As Object, e As EventArgs) Handles AddPIDays_btn.Click
@@ -1510,7 +1511,7 @@ Public Class frmAttendance
     End Sub
 
     Private Sub PIDaysCheck_btn_Click(sender As Object, e As EventArgs) Handles PIDaysCheck_btn.Click
-        Dim result As DialogResult = MsgBox("Additional days will be added for PI calculation, proceed anyway?", MsgBoxStyle.YesNo)
+        Dim result As DialogResult = MsgBox("Additional days will be save for PI calculation, proceed anyway?", MsgBoxStyle.YesNo)
         If result = DialogResult.Yes Then
             PIDays_lbl.Text = PI_Days.Value
             Dim paydatee As String = Paydate.ToShortDateString

@@ -369,6 +369,7 @@
 
                 AddHandler combo.SelectionChangeCommitted, New EventHandler(AddressOf StatusComboBox_SelectionChangeCommitted)
             End If
+
         End If
     End Sub
 
