@@ -1716,9 +1716,9 @@ Module SelectFromDatabase
         If searchName.Length <> 0 Then
 
             If categoryDeduction = "SBU" Then
-                mysql = "select * from PAYROLL_EMPLOYEE A inner join RECORDED_ALLOW_DEDUC B on B.BIO_NO = A.BIO_NO WHERE CATEGORY = 'SBU' and ("
+                mysql = "select  B.*, B.ID as deduc_idd, B.FULLNAME from PAYROLL_EMPLOYEE A inner join RECORDED_ALLOW_DEDUC B on B.BIO_NO = A.BIO_NO WHERE CATEGORY = 'SBU' and ("
             Else
-                mysql = "select * from PAYROLL_EMPLOYEE A inner join RECORDED_ALLOW_DEDUC B on B.BIO_NO = A.BIO_NO WHERE CATEGORY <> 'SBU' and TRANSAC_NAME = 'DEDUCTION' and ("
+                mysql = "select  B.*, B.ID as deduc_idd, B.FULLNAME from PAYROLL_EMPLOYEE A inner join RECORDED_ALLOW_DEDUC B on B.BIO_NO = A.BIO_NO WHERE CATEGORY <> 'SBU' and TRANSAC_NAME = 'DEDUCTION' and ("
             End If
 
             For Each name In strWords
@@ -1731,9 +1731,9 @@ Module SelectFromDatabase
         Else
 
             If categoryDeduction = "SBU" Then
-                mysql = "select * from PAYROLL_EMPLOYEE A inner join RECORDED_ALLOW_DEDUC B on B.BIO_NO = A.BIO_NO WHERE CATEGORY = 'SBU' ORDER BY FULLNAME ASC "
+                mysql = "select B.*, B.ID as deduc_idd, B.FULLNAME from PAYROLL_EMPLOYEE A inner join RECORDED_ALLOW_DEDUC B on B.BIO_NO = A.BIO_NO WHERE CATEGORY = 'SBU' ORDER BY FULLNAME ASC "
             Else
-                mysql = "select * from PAYROLL_EMPLOYEE A inner join RECORDED_ALLOW_DEDUC B on B.BIO_NO = A.BIO_NO WHERE CATEGORY <> 'SBU'  and TRANSAC_NAME = 'DEDUCTION' ORDER BY FULLNAME, CATEGORY ASC "
+                mysql = "select B.*, B.ID as deduc_idd, B.FULLNAME from PAYROLL_EMPLOYEE A inner join RECORDED_ALLOW_DEDUC B on B.BIO_NO = A.BIO_NO WHERE CATEGORY <> 'SBU'  and TRANSAC_NAME = 'DEDUCTION' ORDER BY FULLNAME, CATEGORY ASC "
             End If
 
         End If
@@ -1745,9 +1745,8 @@ Module SelectFromDatabase
                 With dr
 
                     Dim i As ListViewItem = LV.Items.Add(.Item("FULLNAME"))
-                    i.SubItems.Add(.Item("CATEGORY"))
+                    i.SubItems.Add(.Item("CATEGORY")).Tag = .Item("deduc_idd")
                     i.SubItems.Add(CDec(.Item("AMOUNT")).ToString("N"))
-                    i.SubItems.Add(CDate(.Item("PAYDATE")).ToString("MMM dd, yyyy"))
 
                 End With
                 frmMainForm.AppProgressBar.Value += 1

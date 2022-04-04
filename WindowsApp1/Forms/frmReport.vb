@@ -168,6 +168,98 @@ Public Class frmReport
 
     End Sub
 
+    Friend Sub LoadDeduction(bioNo As String, category As String)
+        Rpt_Deduction.LocalReport.DataSources.Clear()
+
+        Try
+
+            'Dim dt As New DataTable()
+            'With dt
+            '    .Columns.Add("NAME")
+            '    .Columns.Add("CATEGORY")
+            '    .Columns.Add("A_AMOUNT")
+            '    .Columns.Add("PRINCIPAL")
+            '    .Columns.Add("AMOUNT_PAID")
+            '    .Columns.Add("BALANCE")
+            '    .Columns.Add("DATE")
+            '    .Columns.Add("AMOUNT")
+            'End With
+
+            Dim dt As New DataTable()
+            With dt
+                .Columns.Add("PAYDATE")
+                .Columns.Add("AMOUNT")
+            End With
+
+            Dim a_amount As Decimal = 0
+            Dim credit As Decimal = 0
+            Dim totalCredit As Decimal = 0
+            Dim principal As Decimal = 0
+            Dim balance As Decimal = 0
+
+            Dim mysql As String
+            Dim fullname As String = Nothing
+
+            mysql = $"Select COALESCE(sum(C.AMOUNT), 0) AS TOTALS, FULLNAME, CREDIT, PRINCIPAL, B.AMOUNT as amnt, DATE_ADDED, BALANCE  from PAYROLL_EMPLOYEE A 
+                            inner join PAYROLL_DEDUCTION B on B.BIO_NO = A.BIO_NO
+                            left join RECORDED_ALLOW_DEDUC C on C.BIO_NO = A.BIO_NO and UPPER(C.CATEGORY) = UPPER('{category}') and PAYDATE <> '12/15/2021' 
+                            WHERE  B.BIO_NO = '{bioNo}' and UPPER(C.CATEGORY) = UPPER('{category}') GROUP BY C.AMOUNT, FULLNAME, CREDIT, PRINCIPAL, B.AMOUNT, DATE_ADDED, BALANCE ORDER BY FULLNAME ASC "
+
+            Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+                If ds.Tables(0).Rows.Count > 0 Then
+                    With ds.Tables(0).Rows(0)
+
+                        fullname = .Item("FULLNAME")
+                        credit = IIf(IsDBNull(.Item("CREDIT")), 0, .Item("CREDIT"))
+                        a_amount = .Item("amnt")
+                        totalCredit = credit + CDbl(.Item("TOTALS"))
+                        principal = IIf(IsDBNull(.Item("PRINCIPAL")), 0, .Item("PRINCIPAL"))
+                        balance = principal - totalCredit
+
+                    End With
+                End If
+            End Using
+
+            Dim mysqll As String = $"Select  PAYDATE, B.DATE_STARTED, AMOUNT  from RECORDED_ALLOW_DEDUC A  
+                            left join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIO_NO 
+                            WHERE  A.BIO_NO = '{bioNo}' and UPPER(C.CATEGORY) = UPPER('{category}') and PAYDATE <> '12/15/2021' ORDER BY PAYDATE ASC "
+
+            Using dss As DataSet = LoadSQL(mysqll, "RECORDED_ALLOW_DEDUC")
+                If dss.Tables(0).Rows.Count > 0 Then
+                    For Each dr In dss.Tables(0).Rows
+                        With dr
+
+                            Dim datee As Date = .Item("PAYDATE")
+                            Dim amount As Double = .Item("AMOUNT")
+
+                            dt.Rows.Add(Format(datee, "MMMM dd, yyyy"), amount)
+
+                        End With
+                    Next
+                End If
+            End Using
+
+            Dim parameter As New List(Of Microsoft.Reporting.WinForms.ReportParameter) From {
+                New Microsoft.Reporting.WinForms.ReportParameter("paramName", fullname),
+                New Microsoft.Reporting.WinForms.ReportParameter("paramCategory", category),
+                New Microsoft.Reporting.WinForms.ReportParameter("paramAmount", a_amount),
+                New Microsoft.Reporting.WinForms.ReportParameter("paramPrincipal", principal),
+                New Microsoft.Reporting.WinForms.ReportParameter("paramAmountPaid", credit),
+                New Microsoft.Reporting.WinForms.ReportParameter("paramCategory", category),
+                New Microsoft.Reporting.WinForms.ReportParameter("paramBalance", balance)
+                }
+
+            Dim DATASET As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt)
+            Rpt_Deduction.LocalReport.DataSources.Add(DATASET)
+            Rpt_Deduction.LocalReport.SetParameters(parameter)
+            Rpt_Deduction.RefreshReport()
+
+        Catch ex As Exception
+            MsgBox(ex.ToString)
+        End Try
+
+    End Sub
+
     Public Sub LoadNet_Print(mysqll As String)
         If PaydateNet_ComboB.SelectedIndex >= 0 Then
             ReportV_NetPay.LocalReport.DataSources.Clear()
@@ -1700,6 +1792,12 @@ Public Class frmReport
     Private Sub Month_LV_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles Month_LV.MouseDoubleClick
         If Month_LV.Items.Count >= 0 Then
             Laod_13Month(Month_LV.Items(Month_LV.FocusedItem.Index).SubItems(1).Tag, rpt_13Month)
+        End If
+    End Sub
+
+    Private Sub DeducHistory_List_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles DeducHistory_List.MouseDoubleClick
+        If DeducHistory_List.Items.Count > 0 Then
+            LoadDeduction()
         End If
     End Sub
 End Class

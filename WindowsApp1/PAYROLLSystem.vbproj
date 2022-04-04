@@ -376,6 +376,7 @@
     <EmbeddedResource Include="Reports\rpt_Common.rdlc" />
     <EmbeddedResource Include="Reports\rpt_CommonEmp.rdlc" />
     <EmbeddedResource Include="Reports\rpt_CostContribution.rdlc" />
+    <EmbeddedResource Include="Reports\rpt_Deduction.rdlc" />
     <EmbeddedResource Include="Reports\rpt_DTR_ByGroup.rdlc" />
     <EmbeddedResource Include="Reports\rpt_Loans.rdlc" />
     <EmbeddedResource Include="Reports\rpt_NetPay.rdlc" />
