@@ -1705,7 +1705,7 @@ Module SelectFromDatabase
     End Sub
 
 
-    Friend Sub Lists_Deduction_History(LV As ListView, categoryDeduction As String, Optional searchName As String = "")
+    Friend Sub Lists_Deduction_History(LV As ListView, Optional searchName As String = "")
 
         Dim secured_str As String = searchName
         secured_str = DreadKnight(secured_str)
@@ -1714,31 +1714,22 @@ Module SelectFromDatabase
         Dim mysql As String
 
         If searchName.Length <> 0 Then
-
-            If categoryDeduction = "SBU" Then
-                mysql = "select  B.*, B.ID as deduc_idd, B.FULLNAME from PAYROLL_EMPLOYEE A inner join RECORDED_ALLOW_DEDUC B on B.BIO_NO = A.BIO_NO WHERE CATEGORY = 'SBU' and ("
-            Else
-                mysql = "select  B.*, B.ID as deduc_idd, B.FULLNAME from PAYROLL_EMPLOYEE A inner join RECORDED_ALLOW_DEDUC B on B.BIO_NO = A.BIO_NO WHERE CATEGORY <> 'SBU' and TRANSAC_NAME = 'DEDUCTION' and ("
-            End If
+            mysql = "select B.*, B.ID as deduc_idd, A.FULLNAME, B.STATUS from PAYROLL_DEDUCTION B inner join  PAYROLL_EMPLOYEE A on B.BIO_NO = A.BIO_NO WHERE "
 
             For Each name In strWords
                 mysql &= $"{vbCr}UPPER(B.BIO_NO) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(FULLNAME) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(BRANCH_CODE) LIKE UPPER('%{name}%')) ORDER BY FULLNAME, CATEGORY ASC "
+                mysql &= $"{vbCr}UPPER(BRANCH_CODE) LIKE UPPER('%{name}%') ORDER BY FULLNAME, CATEGORY ASC "
             Next
 
         Else
 
-            If categoryDeduction = "SBU" Then
-                mysql = "select B.*, B.ID as deduc_idd, B.FULLNAME from PAYROLL_EMPLOYEE A inner join RECORDED_ALLOW_DEDUC B on B.BIO_NO = A.BIO_NO WHERE CATEGORY = 'SBU' ORDER BY FULLNAME ASC "
-            Else
-                mysql = "select B.*, B.ID as deduc_idd, B.FULLNAME from PAYROLL_EMPLOYEE A inner join RECORDED_ALLOW_DEDUC B on B.BIO_NO = A.BIO_NO WHERE CATEGORY <> 'SBU'  and TRANSAC_NAME = 'DEDUCTION' ORDER BY FULLNAME, CATEGORY ASC "
-            End If
+            mysql = "select B.*, B.ID as deduc_idd, A.FULLNAME, B.STATUS from PAYROLL_DEDUCTION B inner join  PAYROLL_EMPLOYEE A on B.BIO_NO = A.BIO_NO ORDER BY FULLNAME, CATEGORY ASC "
 
         End If
 
-        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_DEDUCTION")
             LV.Items.Clear()
             progressBarStart(ds.Tables(0).Rows.Count)
             For Each dr In ds.Tables(0).Rows
@@ -1746,7 +1737,11 @@ Module SelectFromDatabase
 
                     Dim i As ListViewItem = LV.Items.Add(.Item("FULLNAME"))
                     i.SubItems.Add(.Item("CATEGORY")).Tag = .Item("deduc_idd")
-                    i.SubItems.Add(CDec(.Item("AMOUNT")).ToString("N"))
+                    i.SubItems.Add(CDec(.Item("AMORT")).ToString("N"))
+
+                    If Not .Item("STATUS").Equals(DBNull.Value) Then
+                        i.BackColor = Color.LightCoral
+                    End If
 
                 End With
                 frmMainForm.AppProgressBar.Value += 1

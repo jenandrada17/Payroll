@@ -16,7 +16,7 @@ Public Class frmReport
         PopulateComboBox(LoanPaydate_Combo, "PAYROLL_PAYOUT", "PAYDATE")
         PopulatePaydate_Monthly(PI_Paydate_Combo, "RECORDED_ALLOW_DEDUC", "PAYDATE")
         PopulatePaydate_Yearly(SILYear_Combo, "RECORDED_ALLOW_DEDUC", "PAYDATE")
-        Lists_Deduction_History(DeducHistory_List, "DEDUCTION")
+        Lists_Deduction_History(DeducHistory_List)
         Lists_SBU(SBU_LV)
 
     End Sub
@@ -168,27 +168,16 @@ Public Class frmReport
 
     End Sub
 
-    Friend Sub LoadDeduction(bioNo As String, category As String)
+    Friend Sub LoadDeduction(deduct_id As Integer, category As String, fullname As String)
         Rpt_Deduction.LocalReport.DataSources.Clear()
 
         Try
-
-            'Dim dt As New DataTable()
-            'With dt
-            '    .Columns.Add("NAME")
-            '    .Columns.Add("CATEGORY")
-            '    .Columns.Add("A_AMOUNT")
-            '    .Columns.Add("PRINCIPAL")
-            '    .Columns.Add("AMOUNT_PAID")
-            '    .Columns.Add("BALANCE")
-            '    .Columns.Add("DATE")
-            '    .Columns.Add("AMOUNT")
-            'End With
 
             Dim dt As New DataTable()
             With dt
                 .Columns.Add("PAYDATE")
                 .Columns.Add("AMOUNT")
+                .Columns.Add("RECORDS_")
             End With
 
             Dim a_amount As Decimal = 0
@@ -196,33 +185,22 @@ Public Class frmReport
             Dim totalCredit As Decimal = 0
             Dim principal As Decimal = 0
             Dim balance As Decimal = 0
+            Dim status As String = ""
 
-            Dim mysql As String
-            Dim fullname As String = Nothing
+            a_amount = GetData_Decimal("AMORT", $"PAYROLL_DEDUCTION WHERE ID = '{deduct_id}'")
+            credit = GetData_Decimal("CREDIT", $"PAYROLL_DEDUCTION WHERE ID = '{deduct_id}'")
+            totalCredit = credit + GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC WHERE R_DEDUC_ID = '{deduct_id}' and PAYDATE <> '12/15/2021'")
+            principal = GetData_Decimal("PRINCIPAL", $"PAYROLL_DEDUCTION WHERE ID = '{deduct_id}'")
+            balance = principal - totalCredit
 
-            mysql = $"Select COALESCE(sum(C.AMOUNT), 0) AS TOTALS, FULLNAME, CREDIT, PRINCIPAL, B.AMOUNT as amnt, DATE_ADDED, BALANCE  from PAYROLL_EMPLOYEE A 
-                            inner join PAYROLL_DEDUCTION B on B.BIO_NO = A.BIO_NO
-                            left join RECORDED_ALLOW_DEDUC C on C.BIO_NO = A.BIO_NO and UPPER(C.CATEGORY) = UPPER('{category}') and PAYDATE <> '12/15/2021' 
-                            WHERE  B.BIO_NO = '{bioNo}' and UPPER(C.CATEGORY) = UPPER('{category}') GROUP BY C.AMOUNT, FULLNAME, CREDIT, PRINCIPAL, B.AMOUNT, DATE_ADDED, BALANCE ORDER BY FULLNAME ASC "
+            Dim datt As Date = GetData("DATEE", $"PAYROLL_DEDUCTION WHERE ID = '{deduct_id}'")
 
-            Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
-                If ds.Tables(0).Rows.Count > 0 Then
-                    With ds.Tables(0).Rows(0)
+            dt.Rows.Add(Format(datt, "MMMM dd, yyyy"), principal.ToString("N"), "NO")
+            dt.Rows.Add("December 15, 2021", credit.ToString("N"), "YES")
 
-                        fullname = .Item("FULLNAME")
-                        credit = IIf(IsDBNull(.Item("CREDIT")), 0, .Item("CREDIT"))
-                        a_amount = .Item("amnt")
-                        totalCredit = credit + CDbl(.Item("TOTALS"))
-                        principal = IIf(IsDBNull(.Item("PRINCIPAL")), 0, .Item("PRINCIPAL"))
-                        balance = principal - totalCredit
-
-                    End With
-                End If
-            End Using
-
-            Dim mysqll As String = $"Select  PAYDATE, B.DATE_STARTED, AMOUNT  from RECORDED_ALLOW_DEDUC A  
-                            left join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIO_NO 
-                            WHERE  A.BIO_NO = '{bioNo}' and UPPER(C.CATEGORY) = UPPER('{category}') and PAYDATE <> '12/15/2021' ORDER BY PAYDATE ASC "
+            Dim mysqll As String = $"Select  *  from RECORDED_ALLOW_DEDUC A  
+                            inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIO_NO 
+                            WHERE R_DEDUC_ID = '{deduct_id}' and PAYDATE <> '12/15/2021' ORDER BY PAYDATE ASC "
 
             Using dss As DataSet = LoadSQL(mysqll, "RECORDED_ALLOW_DEDUC")
                 If dss.Tables(0).Rows.Count > 0 Then
@@ -232,21 +210,26 @@ Public Class frmReport
                             Dim datee As Date = .Item("PAYDATE")
                             Dim amount As Double = .Item("AMOUNT")
 
-                            dt.Rows.Add(Format(datee, "MMMM dd, yyyy"), amount)
+                            dt.Rows.Add(Format(datee, "MMMM dd, yyyy"), amount.ToString("N"), "YES")
 
                         End With
                     Next
                 End If
             End Using
 
+            If GetData("STATUS", $"PAYROLL_DEDUCTION WHERE ID = '{deduct_id}'") <> "" And balance > 0 Then
+                dt.Rows.Add("Advance Payment", balance.ToString("N"), "YES")
+                balance = 0
+            End If
+
             Dim parameter As New List(Of Microsoft.Reporting.WinForms.ReportParameter) From {
                 New Microsoft.Reporting.WinForms.ReportParameter("paramName", fullname),
                 New Microsoft.Reporting.WinForms.ReportParameter("paramCategory", category),
-                New Microsoft.Reporting.WinForms.ReportParameter("paramAmount", a_amount),
-                New Microsoft.Reporting.WinForms.ReportParameter("paramPrincipal", principal),
-                New Microsoft.Reporting.WinForms.ReportParameter("paramAmountPaid", credit),
+                New Microsoft.Reporting.WinForms.ReportParameter("paramAmount", a_amount.ToString("N")),
+                New Microsoft.Reporting.WinForms.ReportParameter("paramPrincipal", principal.ToString("N")),
+                New Microsoft.Reporting.WinForms.ReportParameter("paramAmountPaid", totalCredit.ToString("N")),
                 New Microsoft.Reporting.WinForms.ReportParameter("paramCategory", category),
-                New Microsoft.Reporting.WinForms.ReportParameter("paramBalance", balance)
+                New Microsoft.Reporting.WinForms.ReportParameter("paramBalance", balance.ToString("N") & status)
                 }
 
             Dim DATASET As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt)
@@ -1636,7 +1619,7 @@ Public Class frmReport
 
 
     Private Sub DeducHistory_btn_Click(sender As Object, e As EventArgs) Handles DeducHistory_btn.Click
-        Lists_Deduction_History(DeducHistory_List, "DEDUCTION", DeducHistory_txt.Text)
+        Lists_Deduction_History(DeducHistory_List, DeducHistory_txt.Text)
     End Sub
 
     Private Sub DeducHistory_txt_KeyPress(sender As Object, e As KeyPressEventArgs) Handles DeducHistory_txt.KeyPress
@@ -1797,7 +1780,10 @@ Public Class frmReport
 
     Private Sub DeducHistory_List_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles DeducHistory_List.MouseDoubleClick
         If DeducHistory_List.Items.Count > 0 Then
-            LoadDeduction()
+            Dim deduct_id As Integer = DeducHistory_List.Items(DeducHistory_List.FocusedItem.Index).SubItems(1).Tag
+            Dim category As String = DeducHistory_List.Items(DeducHistory_List.FocusedItem.Index).SubItems(1).Text
+            Dim fullname As String = DeducHistory_List.Items(DeducHistory_List.FocusedItem.Index).SubItems(0).Text
+            LoadDeduction(deduct_id, category, fullname)
         End If
     End Sub
 End Class

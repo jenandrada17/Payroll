@@ -139,7 +139,7 @@
         Dim IDX As Integer = Deduc_list.Items(Deduc_list.FocusedItem.Index).SubItems(4).Tag
         Dim STATUS As String = GetData("STATUS", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'")
         Dim credit As Decimal = GetData_Decimal("CREDIT", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'")
-        Dim CollectedCredit As Decimal = GetTotal("AMOUNT", $" RECORDED_ALLOW_DEDUC WHERE R_DEDUC_ID = '{IDX}'")
+        Dim CollectedCredit As Decimal = GetTotal("AMOUNT", $" RECORDED_ALLOW_DEDUC WHERE R_DEDUC_ID = '{IDX}' and PAYDATE <> '12/15/2021'")
         Dim totalCredit As Decimal = credit + CollectedCredit
         Dim balance As Decimal
 
@@ -447,7 +447,7 @@
         Dim bioNo As String = SSSLoan_LV.Items(SSSLoan_LV.FocusedItem.Index).SubItems(3).Tag
         Dim IDX As Integer = SSSLoan_LV.Items(SSSLoan_LV.FocusedItem.Index).SubItems(2).Tag
         Dim credit As Decimal = GetData_Decimal("CREDIT", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'")
-        Dim CollectedCredit As Decimal = GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC WHERE BIO_NO = '{bioNo}' and CATEGORY = 'SSS LOAN'")
+        Dim CollectedCredit As Decimal = GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC WHERE BIO_NO = '{bioNo}' and CATEGORY = 'SSS LOAN' and PAYDATE <> '12/15/2021'")
         Dim totalCredit As Decimal = credit + CollectedCredit
         Dim balance As Decimal
 
@@ -470,7 +470,7 @@
         Dim bioNo As String = Pagibig_List.Items(Pagibig_List.FocusedItem.Index).SubItems(3).Tag
         Dim IDX As Integer = Pagibig_List.Items(Pagibig_List.FocusedItem.Index).SubItems(2).Tag
         Dim credit As Decimal = GetData_Decimal("CREDIT", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'")
-        Dim CollectedCredit As Decimal = GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC WHERE BIO_NO = '{bioNo}' and CATEGORY = 'PAG-IBIG LOAN'")
+        Dim CollectedCredit As Decimal = GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC WHERE BIO_NO = '{bioNo}' and CATEGORY = 'PAG-IBIG LOAN' and PAYDATE <> '12/15/2021'")
         Dim totalCredit As Decimal = credit + CollectedCredit
         Dim balance As Decimal
 

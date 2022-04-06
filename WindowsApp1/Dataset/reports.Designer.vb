@@ -4431,6 +4431,8 @@ Partial Public Class reports
         
         Private columnAMOUNT As Global.System.Data.DataColumn
         
+        Private columnRECORDS_ As Global.System.Data.DataColumn
+        
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Sub New()
@@ -4483,6 +4485,14 @@ Partial Public Class reports
         End Property
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property RECORDS_Column() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnRECORDS_
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0"),  _
          Global.System.ComponentModel.Browsable(false)>  _
         Public ReadOnly Property Count() As Integer
@@ -4519,9 +4529,9 @@ Partial Public Class reports
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Overloads Function AddDeductionRow(ByVal PAYDATE As String, ByVal AMOUNT As String) As DeductionRow
+        Public Overloads Function AddDeductionRow(ByVal PAYDATE As String, ByVal AMOUNT As String, ByVal RECORDS_ As String) As DeductionRow
             Dim rowDeductionRow As DeductionRow = CType(Me.NewRow,DeductionRow)
-            Dim columnValuesArray() As Object = New Object() {PAYDATE, AMOUNT}
+            Dim columnValuesArray() As Object = New Object() {PAYDATE, AMOUNT, RECORDS_}
             rowDeductionRow.ItemArray = columnValuesArray
             Me.Rows.Add(rowDeductionRow)
             Return rowDeductionRow
@@ -4546,6 +4556,7 @@ Partial Public Class reports
         Friend Sub InitVars()
             Me.columnPAYDATE = MyBase.Columns("PAYDATE")
             Me.columnAMOUNT = MyBase.Columns("AMOUNT")
+            Me.columnRECORDS_ = MyBase.Columns("RECORDS_")
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -4555,6 +4566,8 @@ Partial Public Class reports
             MyBase.Columns.Add(Me.columnPAYDATE)
             Me.columnAMOUNT = New Global.System.Data.DataColumn("AMOUNT", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnAMOUNT)
+            Me.columnRECORDS_ = New Global.System.Data.DataColumn("RECORDS_", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnRECORDS_)
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -8169,6 +8182,21 @@ Partial Public Class reports
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property RECORDS_() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableDeduction.RECORDS_Column),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'RECORDS_' in table 'Deduction' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableDeduction.RECORDS_Column) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Function IsPAYDATENull() As Boolean
             Return Me.IsNull(Me.tableDeduction.PAYDATEColumn)
         End Function
@@ -8189,6 +8217,18 @@ Partial Public Class reports
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Sub SetAMOUNTNull()
             Me(Me.tableDeduction.AMOUNTColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsRECORDS_Null() As Boolean
+            Return Me.IsNull(Me.tableDeduction.RECORDS_Column)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetRECORDS_Null()
+            Me(Me.tableDeduction.RECORDS_Column) = Global.System.Convert.DBNull
         End Sub
     End Class
     
