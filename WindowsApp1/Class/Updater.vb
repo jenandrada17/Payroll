@@ -12,6 +12,7 @@
                     Return True
                 End If
             End If
+
         Catch ex As Exception
             Return True
             MsgBox("There was a problem runing the Auto Update." & vbCr &

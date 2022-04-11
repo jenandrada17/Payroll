@@ -40,9 +40,8 @@ Module SaveUpdate
         RunCommand("DELETE FROM PAYROLL_HOLIDAY WHERE DATEE = '" & datee & "'")
     End Sub
 
-
-    Friend Sub SaveAttendanceEE(biometric As Integer, paydate As String, days As String, overTime As String, late_total As String,
-                                      under_total As String, regHoliday As String, specHoliday As String, specHoliday_hrs As Double, Optional SIL As Double = 0,
+    Friend Sub SaveAttendanceEE(biometric As Integer, paydate As String, days As String, overTime As String, late_total As String, under_total As String,
+                                regHoliday As String, specHoliday As String, specHoliday_hrs As Double, SIL As Double,
                                         Optional MORNING_OT As String = "", Optional NIGHT_RATE As String = "")
 
         Dim mysql As String
@@ -50,34 +49,32 @@ Module SaveUpdate
         mysql = $"Select * FROM PAYROLL_ATTENDANCE inner join payroll_employee on BIO_NO = BIOMETRICID where BIOMETRICID = '{biometric}' and PAYDATE = '{paydate}'"
         Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
         If dss.Tables(0).Rows.Count > 0 Then
-            For Each dr In dss.Tables(0).Rows
-                With dr
+            With dss.Tables(0).Rows(0)
 
-                    Dim fix_monthly As Boolean = IIf(IsDBNull(.item("FIX_MONTHLY_RATE")), False, .item("FIX_MONTHLY_RATE"))
+                Dim fix_monthly As Boolean = IIf(IsDBNull(.Item("FIX_MONTHLY_RATE")), False, .Item("FIX_MONTHLY_RATE"))
 
-                    .Item("PRESENT_DAYS") = days
-                    .Item("SIL") = SIL
-                    .Item("OVERTIME") = overTime
-                    .Item("LATE") = late_total
-                    .Item("UNDERTIME") = under_total
-                    .Item("REGHOLIDAY") = regHoliday
-                    .Item("SPECHOLIDAY") = specHoliday
-                    .Item("TRAINING_DAYS") = 0
-                    .Item("TRAINING_REGHOLIDAY") = 0
-                    .Item("TRAINING_SPECHOLIDAY") = 0
-                    .Item("SPECHOLIDAY_HRS") = specHoliday_hrs ' ==== SPECIAL HOLIDAY COVERED HOURS
+                .Item("PRESENT_DAYS") = days
+                .Item("SIL") = SIL
+                .Item("OVERTIME") = overTime
+                .Item("LATE") = late_total
+                .Item("UNDERTIME") = under_total
+                .Item("REGHOLIDAY") = regHoliday
+                .Item("SPECHOLIDAY") = specHoliday
+                .Item("TRAINING_DAYS") = 0
+                .Item("TRAINING_REGHOLIDAY") = 0
+                .Item("TRAINING_SPECHOLIDAY") = 0
+                .Item("SPECHOLIDAY_HRS") = specHoliday_hrs ' ==== SPECIAL HOLIDAY COVERED HOURS
 
-                    If NIGHT_RATE <> Nothing Then
-                        .Item("NIGHT_RATE") = NIGHT_RATE
-                    End If
+                If NIGHT_RATE <> Nothing Then
+                    .Item("NIGHT_RATE") = NIGHT_RATE
+                End If
 
-                    If MORNING_OT <> Nothing Then
-                        .Item("MORNING_OT") = MORNING_OT
-                    End If
+                If MORNING_OT <> Nothing Then
+                    .Item("MORNING_OT") = MORNING_OT
+                End If
 
-                End With
-                SaveEntry(dss, False)
-            Next
+            End With
+            SaveEntry(dss, False)
         Else
 
             mysql = "Select * From PAYROLL_ATTENDANCE Rows 1"

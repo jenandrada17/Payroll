@@ -250,12 +250,11 @@ Public Class frmAttendance
             End If
 
         End If
-        'Calculate_BTN.PerformClick()
+
     End Sub
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Calculate_BTN.Click
         If Name_TXT.Text <> Nothing Then
-            SIL_LBL.Text = Get_SIL("PAYROLL_ATTENDANCE", $"PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{BiometricID_TXT.Text}' AND PAYDATE = '{paydate_}'") + Get_SIL("PAYROLL_SCHED_COUNT", $"PAYROLL_SCHED_COUNT WHERE BIO_NO = '{BiometricID_TXT.Text}' AND PAYDATE = '{paydate_}'")
             TotalDays_LBL.Text = 0
             TotalRHoliday_LBL.Text = 0
             TotalSHoliday_LBL.Text = 0
@@ -2030,7 +2029,7 @@ Public Class frmAttendance
             TotalDays_LBL.Text = product
 
             SaveAttendanceEE(biometric_No, paydate_, TotalDays_LBL.Text, TotalOTHr_LBL.Text, late_count.TotalMinutes, under_count.TotalMinutes,
-                             RHOLIDAY, SHOLIDAY, specHoliday_hrs)
+                             RHOLIDAY, SHOLIDAY, specHoliday_hrs, 0)
 
             InsertTempAttendance(biometric_No, paydate_, TotalDays_LBL.Text, TotalOTHr_LBL.Text,
                                     late_count.TotalMinutes, under_count.TotalMinutes, RHOLIDAY, SHOLIDAY)
