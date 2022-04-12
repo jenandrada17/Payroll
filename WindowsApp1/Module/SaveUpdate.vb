@@ -981,10 +981,6 @@ Module SaveUpdate
                     '============================================= IF NOT TRAINEE CALCULATE SBU ==================================================  
                     If noOf_days_training = 0 Then
 
-                        'If Not SBU_BioNo_Exist(bioNo) Then
-                        '    SaveNew_SBU(bioNo, Company)
-                        'End If
-
                         If SBU_With_Balance(bioNo) Then
 
                             SBU = SBU_Amount(bioNo)
@@ -2131,10 +2127,25 @@ Module SaveUpdate
                     dss.Tables(0).Rows.Add(dsNewRow)
                     SaveEntry(dss)
                 End Using
-
             End If
         End Using
+    End Sub
 
+    Friend Sub SavePartialPayment(deduc_id As Integer, bio_no As Integer, amount As Decimal)
+        Dim mysql As String = $"Select * from PARTIAL_PAYMENT"
+        Using ds As DataSet = LoadSQL(mysql, "PARTIAL_PAYMENT")
+            Dim dsNew As DataRow = ds.Tables(0).NewRow
+            With dsNew
+                .Item("DEDUCT_ID") = deduc_id
+                .Item("BIO_NO") = bio_no
+                .Item("AMOUNT") = amount
+                .Item("DATEE") = Date.Now
+            End With
+
+            ds.Tables(0).Rows.Add(dsNew)
+            SaveEntry(ds)
+            MsgBox("Successfully Saved!", MsgBoxStyle.Information)
+        End Using
     End Sub
 
 End Module

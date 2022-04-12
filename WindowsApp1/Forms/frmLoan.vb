@@ -5,6 +5,9 @@
     Dim MP2_ID As String = 0
     Dim MAXICARE_ID As String = 0
 
+    Dim allowMove As Boolean = False
+    Dim moveLocation As New Point
+
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
         Try
             Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmNewEmployee").SingleOrDefault()
@@ -134,28 +137,31 @@
     End Sub
 
     Private Sub Balance_MenuItem_Click(sender As Object, e As EventArgs) Handles Balance_MenuItem.Click
+        MsgBox("Balance               :  " & FormatNumber(GetDeduction_Balance()), MsgBoxStyle.Information, "TOTAL")
+    End Sub
 
-        Dim bioNo As String = Deduc_list.Items(Deduc_list.FocusedItem.Index).SubItems(1).Tag
+    Private Function GetDeduction_Balance()
+
         Dim IDX As Integer = Deduc_list.Items(Deduc_list.FocusedItem.Index).SubItems(4).Tag
         Dim STATUS As String = GetData("STATUS", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'")
         Dim credit As Decimal = GetData_Decimal("CREDIT", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'")
         Dim CollectedCredit As Decimal = GetTotal("AMOUNT", $" RECORDED_ALLOW_DEDUC WHERE R_DEDUC_ID = '{IDX}' and PAYDATE <> '12/15/2021'")
-        Dim totalCredit As Decimal = credit + CollectedCredit
+        Dim PartialPayment As Decimal = GetTotal("AMOUNT", $"PARTIAL_PAYMENT WHERE DEDUCT_ID = '{IDX}';")
+        Dim totalCredit As Decimal = credit + CollectedCredit + PartialPayment
         Dim balance As Decimal
 
         If STATUS = "PAID" Then
             balance = 0
         Else
-            If CollectedCredit > 0 Then
+            If (CollectedCredit + PartialPayment) > 0 Then
                 balance = CDec(GetData_Decimal("PRINCIPAL", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'")) - totalCredit
             Else
                 balance = CDec(GetData_Decimal("BALANCE", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'"))
             End If
         End If
 
-        MsgBox("Balance               :  " & FormatNumber(balance), MsgBoxStyle.Information, "TOTAL")
-
-    End Sub
+        Return balance
+    End Function
 
     Private Sub menu_edit_Click(sender As Object, e As EventArgs) Handles menu_edit.Click
 
@@ -172,10 +178,13 @@
 
     End Sub
 
+    Dim panelLocation As New Point
+
     Private Sub Deduc_list_MouseClick(sender As Object, e As MouseEventArgs) Handles Deduc_list.MouseClick
         If e.Button = MouseButtons.Right Then
             If Deduc_list.Items.Count > 0 Then
                 Context_Deduct.Show(Deduc_list, New Point(e.X, e.Y))
+                'panelLocation = New Point(e.X + 100, e.Y + 50)
             End If
         End If
     End Sub
@@ -430,6 +439,7 @@
         If e.Button = MouseButtons.Right Then
             If SSSLoan_LV.Items.Count >= 0 Then
                 Context_SSS.Show(SSSLoan_LV, New Point(e.X, e.Y))
+                'panelLocation = New Point(200, e.Y + 100)
             End If
         End If
     End Sub
@@ -443,50 +453,60 @@
     End Sub
 
     Private Sub SSSBalance_Menu_Click(sender As Object, e As EventArgs) Handles SSSBalance_Menu.Click
+        MsgBox("Balance               :  " & FormatNumber(GetSSS_Balance()), MsgBoxStyle.Information, "TOTAL")
+    End Sub
+
+    Private Function GetSSS_Balance()
 
         Dim bioNo As String = SSSLoan_LV.Items(SSSLoan_LV.FocusedItem.Index).SubItems(3).Tag
         Dim IDX As Integer = SSSLoan_LV.Items(SSSLoan_LV.FocusedItem.Index).SubItems(2).Tag
         Dim credit As Decimal = GetData_Decimal("CREDIT", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'")
         Dim CollectedCredit As Decimal = GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC WHERE BIO_NO = '{bioNo}' and CATEGORY = 'SSS LOAN' and PAYDATE <> '12/15/2021'")
-        Dim totalCredit As Decimal = credit + CollectedCredit
+        Dim PartialPayment As Decimal = GetTotal("AMOUNT", $"PARTIAL_PAYMENT WHERE DEDUCT_ID = '{IDX}';")
+        Dim totalCredit As Decimal = credit + CollectedCredit + PartialPayment
         Dim balance As Decimal
 
         If GetData("STATUS", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'") = "PAID" Then
             balance = 0.00
         Else
-            If CollectedCredit > 0 Then
+            If (CollectedCredit + PartialPayment) > 0 Then
                 balance = CDec(GetData_Decimal("PRINCIPAL", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'")) - totalCredit
             Else
                 balance = CDec(GetData_Decimal("BALANCE", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'"))
             End If
         End If
 
-        MsgBox("Balance               :  " & FormatNumber(balance), MsgBoxStyle.Information, "TOTAL")
+        Return balance
+    End Function
+
+    Private Sub PagBalance_Menu_Click(sender As Object, e As EventArgs) Handles PagBalance_Menu.Click
+
+        MsgBox("Balance               :  " & FormatNumber(GetPagibig_Balance()), MsgBoxStyle.Information, "TOTAL")
 
     End Sub
 
-    Private Sub PagBalance_Menu_Click(sender As Object, e As EventArgs) Handles PagBalance_Menu.Click
+    Private Function GetPagibig_Balance()
 
         Dim bioNo As String = Pagibig_List.Items(Pagibig_List.FocusedItem.Index).SubItems(3).Tag
         Dim IDX As Integer = Pagibig_List.Items(Pagibig_List.FocusedItem.Index).SubItems(2).Tag
         Dim credit As Decimal = GetData_Decimal("CREDIT", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'")
         Dim CollectedCredit As Decimal = GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC WHERE BIO_NO = '{bioNo}' and CATEGORY = 'PAG-IBIG LOAN' and PAYDATE <> '12/15/2021'")
-        Dim totalCredit As Decimal = credit + CollectedCredit
+        Dim PartialPayment As Decimal = GetTotal("AMOUNT", $"PARTIAL_PAYMENT WHERE DEDUCT_ID = '{IDX}';")
+        Dim totalCredit As Decimal = credit + CollectedCredit + PartialPayment
         Dim balance As Decimal
 
         If GetData("STATUS", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'") = "PAID" Then
             balance = 0.00
         Else
-            If CollectedCredit > 0 Then
+            If (CollectedCredit + PartialPayment) > 0 Then
                 balance = CDec(GetData_Decimal("PRINCIPAL", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'")) - totalCredit
             Else
                 balance = CDec(GetData_Decimal("BALANCE", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'"))
             End If
         End If
 
-        MsgBox("Balance               :  " & FormatNumber(balance), MsgBoxStyle.Information, "TOTAL")
-
-    End Sub
+        Return balance
+    End Function
 
     Private Sub SSSSubtotal_Menu_Click(sender As Object, e As EventArgs) Handles SSSSubtotal_Menu.Click
 
@@ -638,5 +658,109 @@
 
     Private Sub Mp2Search_txt_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Mp2Search_txt.KeyPress
         If e.KeyChar = ChrW(Keys.Enter) Then Mp2Search_btn.PerformClick()
+    End Sub
+
+    Private Sub Partial_txt_KeyPress(sender As Object, e As KeyPressEventArgs) Handles PartialAmount_txt.KeyPress
+        If e.KeyChar <> ChrW(Keys.Back) Then
+            If Not Char.IsNumber(e.KeyChar) AndAlso Not Char.IsControl(e.KeyChar) AndAlso Not e.KeyChar = "." Then
+                e.Handled = True
+            End If
+        End If
+    End Sub
+
+    Private Sub PartialPaymentMenu_Click(sender As Object, e As EventArgs) Handles PartialPaymentDeducMenu.Click
+        Dim name As String = Deduc_list.Items(Deduc_list.FocusedItem.Index).SubItems(0).Text
+        Dim bioNo As String = Deduc_list.Items(Deduc_list.FocusedItem.Index).SubItems(1).Tag
+        Dim deduc_id As String = Deduc_list.Items(Deduc_list.FocusedItem.Index).SubItems(4).Tag
+        Dim category As String = Deduc_list.Items(Deduc_list.FocusedItem.Index).SubItems(1).Text
+        PartialPanel(name, bioNo, deduc_id, category, GetDeduction_Balance())
+    End Sub
+
+    Private Sub PartialPanel(name As String, bioNo As String, deduc_id As String, category As String, balance As String)
+        'Partial_Panel.Location = New Point(panelLocation.X + 220, panelLocation.Y + 50)
+        Partial_Panel.Visible = True
+        PartialAmount_txt.Text = balance
+        PartialName_txt.Text = name
+        PartialName_txt.Tag = deduc_id
+        PartialCat_txt.Text = category
+        Label52.Tag = bioNo
+        PartialAmount_txt.Focus()
+    End Sub
+
+    Private Sub Label50_Click(sender As Object, e As EventArgs) Handles Label50.Click
+        Partial_Panel.Visible = False
+    End Sub
+
+    Private Sub Partial_Panel_MouseDown(sender As Object, e As MouseEventArgs) Handles Partial_Panel.MouseDown
+        allowMove = True
+        Cursor = Cursors.SizeAll
+        moveLocation = New Point(e.X, e.Y)
+    End Sub
+
+    Private Sub Partial_Panel_MouseUp(sender As Object, e As MouseEventArgs) Handles Partial_Panel.MouseUp
+        allowMove = False
+        Cursor = Cursors.Default
+    End Sub
+
+    Private Sub Partial_Panel_MouseMove(sender As Object, e As MouseEventArgs) Handles Partial_Panel.MouseMove
+        If allowMove = True Then
+            Partial_Panel.Location = New Point(Partial_Panel.Location.X + e.X - moveLocation.X, Partial_Panel.Location.Y + e.Y - moveLocation.Y)
+        End If
+    End Sub
+
+    Private Sub PartialCheck_btn_Click(sender As Object, e As EventArgs) Handles PartialCheck_btn.Click
+        If PartialAmount_txt.Text = 0 Or PartialAmount_txt.Text = Nothing Then
+        Else
+
+            Dim result As DialogResult = MsgBox("Are you sure you want to save changes?", MsgBoxStyle.YesNo)
+
+            If result = DialogResult.Yes Then
+                SavePartialPayment(PartialName_txt.Tag, Label52.Tag, PartialAmount_txt.Text)
+                CheckDeduction_Loans_IfZeroBalance(Label52.Tag) 'BIO_NO
+
+                SaveLogs($"ADDED DEDUCTION PARTIAL PAYMENT - {PartialName_txt.Text} ({Label52.Tag}), Deduction_ID({PartialName_txt.Tag}),  Category({PartialCat_txt.Text}), Amount({PartialAmount_txt.Text})", frmMainForm.UserName_LBL.Text)
+
+                PartialName_txt.Clear()
+                PartialCat_txt.Clear()
+                PartialAmount_txt.Clear()
+                Partial_Panel.Visible = False
+                Lists_deduction(Deduc_list)
+                Load_Loans(SSSLoan_LV, "PAYROLL_DEDUCTION", "SSS LOAN")
+                Load_Loans(Pagibig_List, "PAYROLL_DEDUCTION", "PAG-IBIG LOAN")
+
+            End If
+        End If
+    End Sub
+
+    Private Sub PartialX_btn_Click(sender As Object, e As EventArgs) Handles PartialX_btn.Click
+        PartialName_txt.Clear()
+        PartialCat_txt.Clear()
+        PartialAmount_txt.Clear()
+        Partial_Panel.Visible = False
+        Lists_deduction(Deduc_list)
+    End Sub
+
+    Private Sub PartialPaymentSSSMenuItem_Click(sender As Object, e As EventArgs) Handles PartialPaymentSSSMenuItem.Click
+
+        Dim name As String = SSSLoan_LV.Items(SSSLoan_LV.FocusedItem.Index).SubItems(0).Text
+        Dim bioNo As String = SSSLoan_LV.Items(SSSLoan_LV.FocusedItem.Index).SubItems(3).Tag
+        Dim sss_id As String = SSSLoan_LV.Items(SSSLoan_LV.FocusedItem.Index).SubItems(2).Tag
+        Dim category As String = "SSS LOAN"
+        PartialPanel(name, bioNo, sss_id, category, GetSSS_Balance())
+
+    End Sub
+
+    Private Sub Loans_Tab_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Loans_Tab.SelectedIndexChanged
+        Partial_Panel.Visible = False
+    End Sub
+
+    Private Sub PartialPaymentPagMenuItem_Click(sender As Object, e As EventArgs) Handles PartialPaymentPagMenuItem.Click
+
+        Dim name As String = Pagibig_List.Items(Pagibig_List.FocusedItem.Index).SubItems(0).Text
+        Dim bioNo As String = Pagibig_List.Items(Pagibig_List.FocusedItem.Index).SubItems(3).Tag
+        Dim pagibig_id As String = Pagibig_List.Items(Pagibig_List.FocusedItem.Index).SubItems(2).Tag
+        Dim category As String = "PAG-IBIG LOAN"
+        PartialPanel(name, bioNo, pagibig_id, category, GetPagibig_Balance())
+
     End Sub
 End Class

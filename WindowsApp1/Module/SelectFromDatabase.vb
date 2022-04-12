@@ -1545,7 +1545,6 @@ Module SelectFromDatabase
             Next
             progressBarEnd()
         End Using
-
     End Sub
 
     Public Function GetDeduction_OverAll_Balance(BIO_NO As String) As String
@@ -1556,7 +1555,8 @@ Module SelectFromDatabase
         If dSs.Tables(0).Rows.Count > 0 Then
             Dim dr As DataRow = dSs.Tables(0).Rows(0)
             With dr
-                balance = .Item("princ_tots") - .Item("tots_credit")
+                Dim credit_plus_partial As Decimal = GetTotal("AMOUNT", $"PARTIAL_PAYMENT WHERE BIO_NO = '{ BIO_NO}';") + .Item("tots_credit")
+                balance = .Item("princ_tots") - credit_plus_partial
             End With
         End If
 
@@ -2531,6 +2531,7 @@ Module SelectFromDatabase
                 BRANCH_CODE = .Item("BRANCH_CODE")
             End With
         End If
+
         Return BRANCH_CODE
     End Function
 
@@ -2555,16 +2556,16 @@ Module SelectFromDatabase
         Return False
     End Function
 
-    Public Function SBU_BioNo_Exist(BIO_NO As String)
-        Dim mysql As String = $"Select * From PAYROLL_SBU where BIO_NO = '{BIO_NO}' "
-        Using dss As DataSet = LoadSQL(mysql, "PAYROLL_SBU")
-            If dss.Tables(0).Rows.Count > 0 Then
-                Return True
-            End If
-        End Using
+    'Public Function SBU_BioNo_Exist(BIO_NO As String)
+    '    Dim mysql As String = $"Select * From PAYROLL_SBU where BIO_NO = '{BIO_NO}' "
+    '    Using dss As DataSet = LoadSQL(mysql, "PAYROLL_SBU")
+    '        If dss.Tables(0).Rows.Count > 0 Then
+    '            Return True
+    '        End If
+    '    End Using
 
-        Return False
-    End Function
+    '    Return False
+    'End Function
 
     Public Function CountYear_SIL(Bio_no As String, endingDate As DateTime) As Integer
 
@@ -2891,11 +2892,12 @@ Module SelectFromDatabase
 
                         Dim credit As Decimal = .Item("CREDIT")
                         Dim CollectedCredit As Decimal = GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC WHERE BIO_NO = '{bioNo}' and R_DEDUC_ID = '{ .Item("id")}' and PAYDATE <> '12/15/2021';")
-                        Dim totalCredit As Decimal = credit + CollectedCredit
+                        Dim PartialPayment As Decimal = GetTotal("AMOUNT", $"PARTIAL_PAYMENT WHERE DEDUCT_ID = '{ .Item("id")}';")
+                        Dim totalCredit As Decimal = credit + CollectedCredit + PartialPayment
                         Dim balance As Decimal = .Item("BALANCE")
                         Dim principal As Decimal = .Item("PRINCIPAL")
 
-                        If CollectedCredit > 0 Then
+                        If (CollectedCredit + PartialPayment) > 0 Then
                             balance = principal - totalCredit
                         End If
 
