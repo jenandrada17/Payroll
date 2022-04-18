@@ -1091,6 +1091,10 @@ Public Class frmReport
                                 BRANCHNAME = toProper & " " & BRANCHNAME
                             End If
 
+                            If CATEGORY = "Basic Pay" Then
+                                CATEGORY = "Basic Refund"
+                            End If
+
                             dt_Cost.Rows.Add(BRANCHNAME, CATEGORY, DC_Amount, Debit_Credit)
 
                         End With

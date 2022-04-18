@@ -461,7 +461,7 @@
         Dim bioNo As String = SSSLoan_LV.Items(SSSLoan_LV.FocusedItem.Index).SubItems(3).Tag
         Dim IDX As Integer = SSSLoan_LV.Items(SSSLoan_LV.FocusedItem.Index).SubItems(2).Tag
         Dim credit As Decimal = GetData_Decimal("CREDIT", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'")
-        Dim CollectedCredit As Decimal = GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC WHERE BIO_NO = '{bioNo}' and CATEGORY = 'SSS LOAN' and PAYDATE <> '12/15/2021'")
+        Dim CollectedCredit As Decimal = GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC WHERE R_DEDUC_ID = '{IDX}' and PAYDATE <> '12/15/2021'")
         Dim PartialPayment As Decimal = GetTotal("AMOUNT", $"PARTIAL_PAYMENT WHERE DEDUCT_ID = '{IDX}';")
         Dim totalCredit As Decimal = credit + CollectedCredit + PartialPayment
         Dim balance As Decimal
@@ -490,7 +490,7 @@
         Dim bioNo As String = Pagibig_List.Items(Pagibig_List.FocusedItem.Index).SubItems(3).Tag
         Dim IDX As Integer = Pagibig_List.Items(Pagibig_List.FocusedItem.Index).SubItems(2).Tag
         Dim credit As Decimal = GetData_Decimal("CREDIT", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'")
-        Dim CollectedCredit As Decimal = GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC WHERE BIO_NO = '{bioNo}' and CATEGORY = 'PAG-IBIG LOAN' and PAYDATE <> '12/15/2021'")
+        Dim CollectedCredit As Decimal = GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC WHERE R_DEDUC_ID = '{IDX}' and PAYDATE <> '12/15/2021'")
         Dim PartialPayment As Decimal = GetTotal("AMOUNT", $"PARTIAL_PAYMENT WHERE DEDUCT_ID = '{IDX}';")
         Dim totalCredit As Decimal = credit + CollectedCredit + PartialPayment
         Dim balance As Decimal
@@ -713,7 +713,6 @@
         Else
 
             Dim result As DialogResult = MsgBox("Are you sure you want to save changes?", MsgBoxStyle.YesNo)
-
             If result = DialogResult.Yes Then
                 SavePartialPayment(PartialName_txt.Tag, Label52.Tag, PartialAmount_txt.Text)
                 CheckDeduction_Loans_IfZeroBalance(Label52.Tag) 'BIO_NO
@@ -729,6 +728,7 @@
                 Load_Loans(Pagibig_List, "PAYROLL_DEDUCTION", "PAG-IBIG LOAN")
 
             End If
+
         End If
     End Sub
 
