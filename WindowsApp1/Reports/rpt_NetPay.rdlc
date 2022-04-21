@@ -3025,6 +3025,9 @@ Fields!PLUS.Value = "PTU", "PTU REALTY")</Value>
                             <Border>
                               <Style>None</Style>
                             </Border>
+                            <RightBorder>
+                              <Style>None</Style>
+                            </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -3058,6 +3061,9 @@ Fields!PLUS.Value = "PTU", "PTU REALTY")</Value>
                             <Border>
                               <Style>None</Style>
                             </Border>
+                            <RightBorder>
+                              <Style>None</Style>
+                            </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -3091,6 +3097,9 @@ Fields!PLUS.Value = "PTU", "PTU REALTY")</Value>
                             <Border>
                               <Style>None</Style>
                             </Border>
+                            <RightBorder>
+                              <Style>None</Style>
+                            </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -3124,6 +3133,9 @@ Fields!PLUS.Value = "PTU", "PTU REALTY")</Value>
                             <Border>
                               <Style>None</Style>
                             </Border>
+                            <RightBorder>
+                              <Style>None</Style>
+                            </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -3157,6 +3169,9 @@ Fields!PLUS.Value = "PTU", "PTU REALTY")</Value>
                             <Border>
                               <Style>None</Style>
                             </Border>
+                            <RightBorder>
+                              <Style>None</Style>
+                            </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -3191,6 +3206,9 @@ Fields!PLUS.Value = "PTU", "PTU REALTY")</Value>
                             <Border>
                               <Style>None</Style>
                             </Border>
+                            <RightBorder>
+                              <Style>None</Style>
+                            </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -3225,6 +3243,9 @@ Fields!PLUS.Value = "PTU", "PTU REALTY")</Value>
                             <Border>
                               <Style>None</Style>
                             </Border>
+                            <RightBorder>
+                              <Style>None</Style>
+                            </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -3258,6 +3279,9 @@ Fields!PLUS.Value = "PTU", "PTU REALTY")</Value>
                             <Border>
                               <Style>None</Style>
                             </Border>
+                            <RightBorder>
+                              <Style>None</Style>
+                            </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -3291,6 +3315,9 @@ Fields!PLUS.Value = "PTU", "PTU REALTY")</Value>
                             <Border>
                               <Style>None</Style>
                             </Border>
+                            <RightBorder>
+                              <Style>None</Style>
+                            </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -3324,6 +3351,9 @@ Fields!PLUS.Value = "PTU", "PTU REALTY")</Value>
                             <Border>
                               <Style>None</Style>
                             </Border>
+                            <RightBorder>
+                              <Style>None</Style>
+                            </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -3357,6 +3387,9 @@ Fields!PLUS.Value = "PTU", "PTU REALTY")</Value>
                             <Border>
                               <Style>None</Style>
                             </Border>
+                            <RightBorder>
+                              <Style>None</Style>
+                            </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -3391,6 +3424,9 @@ Fields!PLUS.Value = "PTU", "PTU REALTY")</Value>
                             <Border>
                               <Style>None</Style>
                             </Border>
+                            <RightBorder>
+                              <Style>None</Style>
+                            </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -4490,6 +4526,7 @@ Fields!PLUS.Value = "PTU", "PTU REALTY")</Value>
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                     <TablixCell>
