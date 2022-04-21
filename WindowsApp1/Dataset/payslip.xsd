@@ -33,7 +33,7 @@
               <xs:element name="TOTAL_LATE_UT" msprop:Generator_ColumnVarNameInTable="columnTOTAL_LATE_UT" msprop:Generator_ColumnPropNameInRow="TOTAL_LATE_UT" msprop:Generator_ColumnPropNameInTable="TOTAL_LATE_UTColumn" msprop:Generator_UserColumnName="TOTAL_LATE_UT" type="xs:string" minOccurs="0" />
               <xs:element name="TOTAL_BASIC" msprop:Generator_ColumnVarNameInTable="columnTOTAL_BASIC" msprop:Generator_ColumnPropNameInRow="TOTAL_BASIC" msprop:Generator_ColumnPropNameInTable="TOTAL_BASICColumn" msprop:Generator_UserColumnName="TOTAL_BASIC" type="xs:string" minOccurs="0" />
               <xs:element name="TOTAL_OVERTIME" msprop:Generator_ColumnVarNameInTable="columnTOTAL_OVERTIME" msprop:Generator_ColumnPropNameInRow="TOTAL_OVERTIME" msprop:Generator_ColumnPropNameInTable="TOTAL_OVERTIMEColumn" msprop:Generator_UserColumnName="TOTAL_OVERTIME" type="xs:string" minOccurs="0" />
-              <xs:element name="LATE" msprop:Generator_ColumnVarNameInTable="columnLATE" msprop:Generator_ColumnPropNameInRow="LATE" msprop:Generator_ColumnPropNameInTable="LATEColumn" msprop:Generator_UserColumnName="LATE" type="xs:string" minOccurs="0" />
+              <xs:element name="LATE_UNDERTIME" msprop:Generator_ColumnVarNameInTable="columnLATE_UNDERTIME" msprop:Generator_ColumnPropNameInRow="LATE_UNDERTIME" msprop:Generator_ColumnPropNameInTable="LATE_UNDERTIMEColumn" msprop:Generator_UserColumnName="LATE_UNDERTIME" type="xs:string" minOccurs="0" />
               <xs:element name="GROSS_AMOUNT" msprop:Generator_ColumnVarNameInTable="columnGROSS_AMOUNT" msprop:Generator_ColumnPropNameInRow="GROSS_AMOUNT" msprop:Generator_ColumnPropNameInTable="GROSS_AMOUNTColumn" msprop:Generator_UserColumnName="GROSS_AMOUNT" type="xs:string" minOccurs="0" />
               <xs:element name="SSS_COMP" msprop:Generator_ColumnVarNameInTable="columnSSS_COMP" msprop:Generator_ColumnPropNameInRow="SSS_COMP" msprop:Generator_ColumnPropNameInTable="SSS_COMPColumn" msprop:Generator_UserColumnName="SSS_COMP" type="xs:string" minOccurs="0" />
               <xs:element name="PAGIBIG_COMP" msprop:Generator_ColumnVarNameInTable="columnPAGIBIG_COMP" msprop:Generator_ColumnPropNameInRow="PAGIBIG_COMP" msprop:Generator_ColumnPropNameInTable="PAGIBIG_COMPColumn" msprop:Generator_UserColumnName="PAGIBIG_COMP" type="xs:string" minOccurs="0" />
@@ -45,6 +45,8 @@
               <xs:element name="SBU" msprop:Generator_ColumnVarNameInTable="columnSBU" msprop:Generator_ColumnPropNameInRow="SBU" msprop:Generator_ColumnPropNameInTable="SBUColumn" msprop:Generator_UserColumnName="SBU" type="xs:string" minOccurs="0" />
               <xs:element name="TOTAL_DEDUCTION" msprop:Generator_ColumnVarNameInTable="columnTOTAL_DEDUCTION" msprop:Generator_ColumnPropNameInRow="TOTAL_DEDUCTION" msprop:Generator_ColumnPropNameInTable="TOTAL_DEDUCTIONColumn" msprop:Generator_UserColumnName="TOTAL_DEDUCTION" type="xs:string" minOccurs="0" />
               <xs:element name="present_hours" msprop:Generator_ColumnVarNameInTable="columnpresent_hours" msprop:Generator_ColumnPropNameInRow="present_hours" msprop:Generator_ColumnPropNameInTable="present_hoursColumn" msprop:Generator_UserColumnName="present_hours" type="xs:string" minOccurs="0" />
+              <xs:element name="SSS_LOAN_BALANCE" msprop:Generator_ColumnVarNameInTable="columnSSS_LOAN_BALANCE" msprop:Generator_ColumnPropNameInRow="SSS_LOAN_BALANCE" msprop:Generator_ColumnPropNameInTable="SSS_LOAN_BALANCEColumn" msprop:Generator_UserColumnName="SSS_LOAN_BALANCE" type="xs:string" minOccurs="0" />
+              <xs:element name="PAGIBIG_LOAN_BALANCE" msprop:Generator_ColumnVarNameInTable="columnPAGIBIG_LOAN_BALANCE" msprop:Generator_ColumnPropNameInRow="PAGIBIG_LOAN_BALANCE" msprop:Generator_ColumnPropNameInTable="PAGIBIG_LOAN_BALANCEColumn" msprop:Generator_UserColumnName="PAGIBIG_LOAN_BALANCE" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>
@@ -61,6 +63,7 @@
             <xs:sequence>
               <xs:element name="CATEGORY" msprop:Generator_ColumnVarNameInTable="columnCATEGORY" msprop:Generator_ColumnPropNameInRow="CATEGORY" msprop:Generator_ColumnPropNameInTable="CATEGORYColumn" msprop:Generator_UserColumnName="CATEGORY" type="xs:string" minOccurs="0" />
               <xs:element name="AMOUNT_PER_GIVE" msdata:Caption="AMOUNT" msprop:Generator_ColumnVarNameInTable="columnAMOUNT_PER_GIVE" msprop:Generator_ColumnPropNameInRow="AMOUNT_PER_GIVE" msprop:Generator_ColumnPropNameInTable="AMOUNT_PER_GIVEColumn" msprop:Generator_UserColumnName="AMOUNT_PER_GIVE" type="xs:string" minOccurs="0" />
+              <xs:element name="BALANCE" msprop:Generator_ColumnVarNameInTable="columnBALANCE" msprop:Generator_ColumnPropNameInRow="BALANCE" msprop:Generator_ColumnPropNameInTable="BALANCEColumn" msprop:Generator_UserColumnName="BALANCE" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

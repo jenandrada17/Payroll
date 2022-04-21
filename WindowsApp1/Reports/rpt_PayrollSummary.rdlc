@@ -358,7 +358,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>=Fields!COMPANY.Value</Value>
+                                      <Value>PHOTO(GENSAN PERFECT/JR PHOTO)</Value>
                                       <Style>
                                         <FontSize>8pt</FontSize>
                                       </Style>
@@ -1210,31 +1210,17 @@
                 <TablixRowHierarchy>
                   <TablixMembers>
                     <TablixMember>
-                      <Group Name="COMPANY">
+                      <KeepWithGroup>After</KeepWithGroup>
+                    </TablixMember>
+                    <TablixMember>
+                      <KeepWithGroup>After</KeepWithGroup>
+                    </TablixMember>
+                    <TablixMember>
+                      <Group Name="ADDRESS1">
                         <GroupExpressions>
-                          <GroupExpression>=Fields!COMPANY.Value</GroupExpression>
+                          <GroupExpression>=Fields!ADDRESS.Value</GroupExpression>
                         </GroupExpressions>
                       </Group>
-                      <SortExpressions>
-                        <SortExpression>
-                          <Value>=Fields!COMPANY.Value</Value>
-                        </SortExpression>
-                      </SortExpressions>
-                      <TablixMembers>
-                        <TablixMember>
-                          <KeepWithGroup>After</KeepWithGroup>
-                        </TablixMember>
-                        <TablixMember>
-                          <KeepWithGroup>After</KeepWithGroup>
-                        </TablixMember>
-                        <TablixMember>
-                          <Group Name="ADDRESS1">
-                            <GroupExpressions>
-                              <GroupExpression>=Fields!ADDRESS.Value</GroupExpression>
-                            </GroupExpressions>
-                          </Group>
-                        </TablixMember>
-                      </TablixMembers>
                     </TablixMember>
                     <TablixMember />
                   </TablixMembers>
@@ -1242,10 +1228,10 @@
                 <DataSetName>Photo_GensanJR</DataSetName>
                 <Top>0.53718in</Top>
                 <Left>0.01167in</Left>
-                <Height>0.74751in</Height>
+                <Height>0.74752in</Height>
                 <Width>6.9896in</Width>
                 <Visibility>
-                  <Hidden>=iif(Fields!COMPANY.Value = nothing, true, false)</Hidden>
+                  <Hidden>=iif(Parameters!paramPhotoG.Value = "0" AndAlso Fields!ADDRESS.Value = nothing, true, false)</Hidden>
                 </Visibility>
                 <Style>
                   <Border>
@@ -1285,9 +1271,13 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>=Fields!COMPANY.Value</Value>
+                                      <Value>PHOTO(DAVAO PERFECT)</Value>
                                       <Style>
-                                        <FontSize>8pt</FontSize>
+                                        <FontStyle>Normal</FontStyle>
+                                        <FontFamily>Consolas</FontFamily>
+                                        <FontSize>0.13542in</FontSize>
+                                        <FontWeight>Normal</FontWeight>
+                                        <TextDecoration>None</TextDecoration>
                                       </Style>
                                     </TextRun>
                                   </TextRuns>
@@ -2101,33 +2091,19 @@
                 <TablixRowHierarchy>
                   <TablixMembers>
                     <TablixMember>
-                      <Group Name="COMPANY2">
+                      <KeepWithGroup>After</KeepWithGroup>
+                    </TablixMember>
+                    <TablixMember>
+                      <KeepWithGroup>After</KeepWithGroup>
+                    </TablixMember>
+                    <TablixMember>
+                      <Group Name="ADDRESS8">
                         <GroupExpressions>
-                          <GroupExpression>=Fields!COMPANY.Value</GroupExpression>
+                          <GroupExpression>=Fields!ADDRESS.Value</GroupExpression>
                         </GroupExpressions>
                       </Group>
-                      <SortExpressions>
-                        <SortExpression>
-                          <Value>=Fields!COMPANY.Value</Value>
-                        </SortExpression>
-                      </SortExpressions>
                       <TablixMembers>
-                        <TablixMember>
-                          <KeepWithGroup>After</KeepWithGroup>
-                        </TablixMember>
-                        <TablixMember>
-                          <KeepWithGroup>After</KeepWithGroup>
-                        </TablixMember>
-                        <TablixMember>
-                          <Group Name="ADDRESS8">
-                            <GroupExpressions>
-                              <GroupExpression>=Fields!ADDRESS.Value</GroupExpression>
-                            </GroupExpressions>
-                          </Group>
-                          <TablixMembers>
-                            <TablixMember />
-                          </TablixMembers>
-                        </TablixMember>
+                        <TablixMember />
                       </TablixMembers>
                     </TablixMember>
                     <TablixMember />
@@ -2140,7 +2116,7 @@
                 <Width>6.9896in</Width>
                 <ZIndex>1</ZIndex>
                 <Visibility>
-                  <Hidden>=iif(Fields!COMPANY.Value = nothing, true, false)</Hidden>
+                  <Hidden>=iif(Parameters!paramPhotoD.Value = "0" AndAlso Fields!ADDRESS.Value = nothing, true, false)</Hidden>
                 </Visibility>
                 <Style>
                   <Border>
@@ -2180,7 +2156,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>=Fields!COMPANY.Value</Value>
+                                      <Value>DALTON</Value>
                                       <Style>
                                         <FontSize>8pt</FontSize>
                                       </Style>
@@ -3005,33 +2981,19 @@
                 <TablixRowHierarchy>
                   <TablixMembers>
                     <TablixMember>
-                      <Group Name="COMPANY3">
+                      <KeepWithGroup>After</KeepWithGroup>
+                    </TablixMember>
+                    <TablixMember>
+                      <KeepWithGroup>After</KeepWithGroup>
+                    </TablixMember>
+                    <TablixMember>
+                      <Group Name="ADDRESS9">
                         <GroupExpressions>
-                          <GroupExpression>=Fields!COMPANY.Value</GroupExpression>
+                          <GroupExpression>=Fields!ADDRESS.Value</GroupExpression>
                         </GroupExpressions>
                       </Group>
-                      <SortExpressions>
-                        <SortExpression>
-                          <Value>=Fields!COMPANY.Value</Value>
-                        </SortExpression>
-                      </SortExpressions>
                       <TablixMembers>
-                        <TablixMember>
-                          <KeepWithGroup>After</KeepWithGroup>
-                        </TablixMember>
-                        <TablixMember>
-                          <KeepWithGroup>After</KeepWithGroup>
-                        </TablixMember>
-                        <TablixMember>
-                          <Group Name="ADDRESS9">
-                            <GroupExpressions>
-                              <GroupExpression>=Fields!ADDRESS.Value</GroupExpression>
-                            </GroupExpressions>
-                          </Group>
-                          <TablixMembers>
-                            <TablixMember />
-                          </TablixMembers>
-                        </TablixMember>
+                        <TablixMember />
                       </TablixMembers>
                     </TablixMember>
                     <TablixMember />
@@ -3044,7 +3006,7 @@
                 <Width>6.9896in</Width>
                 <ZIndex>2</ZIndex>
                 <Visibility>
-                  <Hidden>=iif(Fields!COMPANY.Value = nothing, true, false)</Hidden>
+                  <Hidden>=iif(Parameters!paramDalton.Value = "0" AndAlso Fields!ADDRESS.Value = nothing, true, false)</Hidden>
                 </Visibility>
                 <Style>
                   <Border />
@@ -3082,7 +3044,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>=Fields!COMPANY.Value</Value>
+                                      <Value>PERFECOM</Value>
                                       <Style>
                                         <FontSize>8pt</FontSize>
                                       </Style>
@@ -3910,33 +3872,19 @@
                 <TablixRowHierarchy>
                   <TablixMembers>
                     <TablixMember>
-                      <Group Name="COMPANY4">
+                      <KeepWithGroup>After</KeepWithGroup>
+                    </TablixMember>
+                    <TablixMember>
+                      <KeepWithGroup>After</KeepWithGroup>
+                    </TablixMember>
+                    <TablixMember>
+                      <Group Name="ADDRESS10">
                         <GroupExpressions>
-                          <GroupExpression>=Fields!COMPANY.Value</GroupExpression>
+                          <GroupExpression>=Fields!ADDRESS.Value</GroupExpression>
                         </GroupExpressions>
                       </Group>
-                      <SortExpressions>
-                        <SortExpression>
-                          <Value>=Fields!COMPANY.Value</Value>
-                        </SortExpression>
-                      </SortExpressions>
                       <TablixMembers>
-                        <TablixMember>
-                          <KeepWithGroup>After</KeepWithGroup>
-                        </TablixMember>
-                        <TablixMember>
-                          <KeepWithGroup>After</KeepWithGroup>
-                        </TablixMember>
-                        <TablixMember>
-                          <Group Name="ADDRESS10">
-                            <GroupExpressions>
-                              <GroupExpression>=Fields!ADDRESS.Value</GroupExpression>
-                            </GroupExpressions>
-                          </Group>
-                          <TablixMembers>
-                            <TablixMember />
-                          </TablixMembers>
-                        </TablixMember>
+                        <TablixMember />
                       </TablixMembers>
                     </TablixMember>
                     <TablixMember />
@@ -3949,7 +3897,7 @@
                 <Width>6.9896in</Width>
                 <ZIndex>3</ZIndex>
                 <Visibility>
-                  <Hidden>=iif(Fields!COMPANY.Value = nothing, true, false)</Hidden>
+                  <Hidden>=iif(Parameters!paramPerfecom.Value = "0" AndAlso Fields!ADDRESS.Value = nothing, true, false)</Hidden>
                 </Visibility>
                 <Style>
                   <Border>
@@ -3992,7 +3940,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>=Fields!COMPANY.Value</Value>
+                                      <Value>P&amp;G UY</Value>
                                       <Style>
                                         <FontSize>8pt</FontSize>
                                       </Style>
@@ -4817,33 +4765,19 @@
                 <TablixRowHierarchy>
                   <TablixMembers>
                     <TablixMember>
-                      <Group Name="COMPANY5">
+                      <KeepWithGroup>After</KeepWithGroup>
+                    </TablixMember>
+                    <TablixMember>
+                      <KeepWithGroup>After</KeepWithGroup>
+                    </TablixMember>
+                    <TablixMember>
+                      <Group Name="ADDRESS11">
                         <GroupExpressions>
-                          <GroupExpression>=Fields!COMPANY.Value</GroupExpression>
+                          <GroupExpression>=Fields!ADDRESS.Value</GroupExpression>
                         </GroupExpressions>
                       </Group>
-                      <SortExpressions>
-                        <SortExpression>
-                          <Value>=Fields!COMPANY.Value</Value>
-                        </SortExpression>
-                      </SortExpressions>
                       <TablixMembers>
-                        <TablixMember>
-                          <KeepWithGroup>After</KeepWithGroup>
-                        </TablixMember>
-                        <TablixMember>
-                          <KeepWithGroup>After</KeepWithGroup>
-                        </TablixMember>
-                        <TablixMember>
-                          <Group Name="ADDRESS11">
-                            <GroupExpressions>
-                              <GroupExpression>=Fields!ADDRESS.Value</GroupExpression>
-                            </GroupExpressions>
-                          </Group>
-                          <TablixMembers>
-                            <TablixMember />
-                          </TablixMembers>
-                        </TablixMember>
+                        <TablixMember />
                       </TablixMembers>
                     </TablixMember>
                     <TablixMember />
@@ -4856,7 +4790,7 @@
                 <Width>6.9896in</Width>
                 <ZIndex>4</ZIndex>
                 <Visibility>
-                  <Hidden>=iif(Fields!COMPANY.Value = nothing, true, false)</Hidden>
+                  <Hidden>=iif(Parameters!paramPGUY.Value = "0" AndAlso Fields!ADDRESS.Value = nothing, true, false)</Hidden>
                 </Visibility>
                 <Style>
                   <Border />
@@ -4894,7 +4828,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>=Fields!COMPANY.Value</Value>
+                                      <Value>HOUSEHOLD</Value>
                                       <Style>
                                         <FontSize>8pt</FontSize>
                                       </Style>
@@ -5509,30 +5443,16 @@
                 <TablixRowHierarchy>
                   <TablixMembers>
                     <TablixMember>
-                      <Group Name="COMPANY6">
+                      <KeepWithGroup>After</KeepWithGroup>
+                    </TablixMember>
+                    <TablixMember>
+                      <Group Name="ADDRESS12">
                         <GroupExpressions>
-                          <GroupExpression>=Fields!COMPANY.Value</GroupExpression>
+                          <GroupExpression>=Fields!ADDRESS.Value</GroupExpression>
                         </GroupExpressions>
                       </Group>
-                      <SortExpressions>
-                        <SortExpression>
-                          <Value>=Fields!COMPANY.Value</Value>
-                        </SortExpression>
-                      </SortExpressions>
                       <TablixMembers>
-                        <TablixMember>
-                          <KeepWithGroup>After</KeepWithGroup>
-                        </TablixMember>
-                        <TablixMember>
-                          <Group Name="ADDRESS12">
-                            <GroupExpressions>
-                              <GroupExpression>=Fields!ADDRESS.Value</GroupExpression>
-                            </GroupExpressions>
-                          </Group>
-                          <TablixMembers>
-                            <TablixMember />
-                          </TablixMembers>
-                        </TablixMember>
+                        <TablixMember />
                       </TablixMembers>
                     </TablixMember>
                     <TablixMember />
@@ -5545,7 +5465,7 @@
                 <Width>6.9896in</Width>
                 <ZIndex>5</ZIndex>
                 <Visibility>
-                  <Hidden>=iif(Fields!COMPANY.Value = nothing, true, false)</Hidden>
+                  <Hidden>=iif(Fields!ADDRESS.Value = nothing, true, false)</Hidden>
                 </Visibility>
                 <Style>
                   <Border />
@@ -5583,7 +5503,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>=Fields!COMPANY.Value</Value>
+                                      <Value>P&amp;G REALTY</Value>
                                       <Style>
                                         <FontSize>8pt</FontSize>
                                       </Style>
@@ -6198,30 +6118,16 @@
                 <TablixRowHierarchy>
                   <TablixMembers>
                     <TablixMember>
-                      <Group Name="COMPANY7">
+                      <KeepWithGroup>After</KeepWithGroup>
+                    </TablixMember>
+                    <TablixMember>
+                      <Group Name="ADDRESS13">
                         <GroupExpressions>
-                          <GroupExpression>=Fields!COMPANY.Value</GroupExpression>
+                          <GroupExpression>=Fields!ADDRESS.Value</GroupExpression>
                         </GroupExpressions>
                       </Group>
-                      <SortExpressions>
-                        <SortExpression>
-                          <Value>=Fields!COMPANY.Value</Value>
-                        </SortExpression>
-                      </SortExpressions>
                       <TablixMembers>
-                        <TablixMember>
-                          <KeepWithGroup>After</KeepWithGroup>
-                        </TablixMember>
-                        <TablixMember>
-                          <Group Name="ADDRESS13">
-                            <GroupExpressions>
-                              <GroupExpression>=Fields!ADDRESS.Value</GroupExpression>
-                            </GroupExpressions>
-                          </Group>
-                          <TablixMembers>
-                            <TablixMember />
-                          </TablixMembers>
-                        </TablixMember>
+                        <TablixMember />
                       </TablixMembers>
                     </TablixMember>
                     <TablixMember />
@@ -6234,7 +6140,7 @@
                 <Width>6.9896in</Width>
                 <ZIndex>6</ZIndex>
                 <Visibility>
-                  <Hidden>=iif(Fields!COMPANY.Value = nothing, true, false)</Hidden>
+                  <Hidden>=iif(Fields!ADDRESS.Value = nothing, true, false)</Hidden>
                 </Visibility>
                 <Style>
                   <Border />

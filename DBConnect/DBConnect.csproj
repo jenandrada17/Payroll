@@ -41,6 +41,9 @@
     <Reference Include="FirebirdSql.Data.FirebirdClient, Version=6.7.0.0, Culture=neutral, PublicKeyToken=3750abcc3150b00c, processorArchitecture=MSIL">
       <HintPath>..\packages\FirebirdSql.Data.FirebirdClient.6.7.0\lib\net452\FirebirdSql.Data.FirebirdClient.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />

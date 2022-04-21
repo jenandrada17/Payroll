@@ -706,7 +706,7 @@ Partial Public Class payslip
         
         Private columnTOTAL_OVERTIME As Global.System.Data.DataColumn
         
-        Private columnLATE As Global.System.Data.DataColumn
+        Private columnLATE_UNDERTIME As Global.System.Data.DataColumn
         
         Private columnGROSS_AMOUNT As Global.System.Data.DataColumn
         
@@ -729,6 +729,10 @@ Partial Public Class payslip
         Private columnTOTAL_DEDUCTION As Global.System.Data.DataColumn
         
         Private columnpresent_hours As Global.System.Data.DataColumn
+        
+        Private columnSSS_LOAN_BALANCE As Global.System.Data.DataColumn
+        
+        Private columnPAGIBIG_LOAN_BALANCE As Global.System.Data.DataColumn
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
@@ -823,9 +827,9 @@ Partial Public Class payslip
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public ReadOnly Property LATEColumn() As Global.System.Data.DataColumn
+        Public ReadOnly Property LATE_UNDERTIMEColumn() As Global.System.Data.DataColumn
             Get
-                Return Me.columnLATE
+                Return Me.columnLATE_UNDERTIME
             End Get
         End Property
         
@@ -918,6 +922,22 @@ Partial Public Class payslip
         End Property
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property SSS_LOAN_BALANCEColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnSSS_LOAN_BALANCE
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property PAGIBIG_LOAN_BALANCEColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnPAGIBIG_LOAN_BALANCE
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0"),  _
          Global.System.ComponentModel.Browsable(false)>  _
         Public ReadOnly Property Count() As Integer
@@ -962,7 +982,7 @@ Partial Public Class payslip
                     ByVal TOTAL_LATE_UT As String,  _
                     ByVal TOTAL_BASIC As String,  _
                     ByVal TOTAL_OVERTIME As String,  _
-                    ByVal LATE As String,  _
+                    ByVal LATE_UNDERTIME As String,  _
                     ByVal GROSS_AMOUNT As String,  _
                     ByVal SSS_COMP As String,  _
                     ByVal PAGIBIG_COMP As String,  _
@@ -973,9 +993,11 @@ Partial Public Class payslip
                     ByVal NET_PAY As String,  _
                     ByVal SBU As String,  _
                     ByVal TOTAL_DEDUCTION As String,  _
-                    ByVal present_hours As String) As attendanceRow
+                    ByVal present_hours As String,  _
+                    ByVal SSS_LOAN_BALANCE As String,  _
+                    ByVal PAGIBIG_LOAN_BALANCE As String) As attendanceRow
             Dim rowattendanceRow As attendanceRow = CType(Me.NewRow,attendanceRow)
-            Dim columnValuesArray() As Object = New Object() {PRESENT_DAYS, OVERTIME, REGHOLIDAY, SPECHOLIDAY, TOTAL_LATE_UT, TOTAL_BASIC, TOTAL_OVERTIME, LATE, GROSS_AMOUNT, SSS_COMP, PAGIBIG_COMP, PHILHEALTH_COMP, TAX_WHELD, SSS_LOAN, PAGIBIG_LOAN, NET_PAY, SBU, TOTAL_DEDUCTION, present_hours}
+            Dim columnValuesArray() As Object = New Object() {PRESENT_DAYS, OVERTIME, REGHOLIDAY, SPECHOLIDAY, TOTAL_LATE_UT, TOTAL_BASIC, TOTAL_OVERTIME, LATE_UNDERTIME, GROSS_AMOUNT, SSS_COMP, PAGIBIG_COMP, PHILHEALTH_COMP, TAX_WHELD, SSS_LOAN, PAGIBIG_LOAN, NET_PAY, SBU, TOTAL_DEDUCTION, present_hours, SSS_LOAN_BALANCE, PAGIBIG_LOAN_BALANCE}
             rowattendanceRow.ItemArray = columnValuesArray
             Me.Rows.Add(rowattendanceRow)
             Return rowattendanceRow
@@ -1005,7 +1027,7 @@ Partial Public Class payslip
             Me.columnTOTAL_LATE_UT = MyBase.Columns("TOTAL_LATE_UT")
             Me.columnTOTAL_BASIC = MyBase.Columns("TOTAL_BASIC")
             Me.columnTOTAL_OVERTIME = MyBase.Columns("TOTAL_OVERTIME")
-            Me.columnLATE = MyBase.Columns("LATE")
+            Me.columnLATE_UNDERTIME = MyBase.Columns("LATE_UNDERTIME")
             Me.columnGROSS_AMOUNT = MyBase.Columns("GROSS_AMOUNT")
             Me.columnSSS_COMP = MyBase.Columns("SSS_COMP")
             Me.columnPAGIBIG_COMP = MyBase.Columns("PAGIBIG_COMP")
@@ -1017,6 +1039,8 @@ Partial Public Class payslip
             Me.columnSBU = MyBase.Columns("SBU")
             Me.columnTOTAL_DEDUCTION = MyBase.Columns("TOTAL_DEDUCTION")
             Me.columnpresent_hours = MyBase.Columns("present_hours")
+            Me.columnSSS_LOAN_BALANCE = MyBase.Columns("SSS_LOAN_BALANCE")
+            Me.columnPAGIBIG_LOAN_BALANCE = MyBase.Columns("PAGIBIG_LOAN_BALANCE")
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -1036,8 +1060,8 @@ Partial Public Class payslip
             MyBase.Columns.Add(Me.columnTOTAL_BASIC)
             Me.columnTOTAL_OVERTIME = New Global.System.Data.DataColumn("TOTAL_OVERTIME", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnTOTAL_OVERTIME)
-            Me.columnLATE = New Global.System.Data.DataColumn("LATE", GetType(String), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnLATE)
+            Me.columnLATE_UNDERTIME = New Global.System.Data.DataColumn("LATE_UNDERTIME", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnLATE_UNDERTIME)
             Me.columnGROSS_AMOUNT = New Global.System.Data.DataColumn("GROSS_AMOUNT", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnGROSS_AMOUNT)
             Me.columnSSS_COMP = New Global.System.Data.DataColumn("SSS_COMP", GetType(String), Nothing, Global.System.Data.MappingType.Element)
@@ -1060,6 +1084,10 @@ Partial Public Class payslip
             MyBase.Columns.Add(Me.columnTOTAL_DEDUCTION)
             Me.columnpresent_hours = New Global.System.Data.DataColumn("present_hours", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnpresent_hours)
+            Me.columnSSS_LOAN_BALANCE = New Global.System.Data.DataColumn("SSS_LOAN_BALANCE", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnSSS_LOAN_BALANCE)
+            Me.columnPAGIBIG_LOAN_BALANCE = New Global.System.Data.DataColumn("PAGIBIG_LOAN_BALANCE", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnPAGIBIG_LOAN_BALANCE)
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -1466,6 +1494,8 @@ Partial Public Class payslip
         
         Private columnAMOUNT_PER_GIVE As Global.System.Data.DataColumn
         
+        Private columnBALANCE As Global.System.Data.DataColumn
+        
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Sub New()
@@ -1518,6 +1548,14 @@ Partial Public Class payslip
         End Property
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property BALANCEColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnBALANCE
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0"),  _
          Global.System.ComponentModel.Browsable(false)>  _
         Public ReadOnly Property Count() As Integer
@@ -1554,9 +1592,9 @@ Partial Public Class payslip
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Overloads Function Addother_deductionRow(ByVal CATEGORY As String, ByVal AMOUNT_PER_GIVE As String) As other_deductionRow
+        Public Overloads Function Addother_deductionRow(ByVal CATEGORY As String, ByVal AMOUNT_PER_GIVE As String, ByVal BALANCE As String) As other_deductionRow
             Dim rowother_deductionRow As other_deductionRow = CType(Me.NewRow,other_deductionRow)
-            Dim columnValuesArray() As Object = New Object() {CATEGORY, AMOUNT_PER_GIVE}
+            Dim columnValuesArray() As Object = New Object() {CATEGORY, AMOUNT_PER_GIVE, BALANCE}
             rowother_deductionRow.ItemArray = columnValuesArray
             Me.Rows.Add(rowother_deductionRow)
             Return rowother_deductionRow
@@ -1581,6 +1619,7 @@ Partial Public Class payslip
         Friend Sub InitVars()
             Me.columnCATEGORY = MyBase.Columns("CATEGORY")
             Me.columnAMOUNT_PER_GIVE = MyBase.Columns("AMOUNT_PER_GIVE")
+            Me.columnBALANCE = MyBase.Columns("BALANCE")
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -1590,6 +1629,8 @@ Partial Public Class payslip
             MyBase.Columns.Add(Me.columnCATEGORY)
             Me.columnAMOUNT_PER_GIVE = New Global.System.Data.DataColumn("AMOUNT_PER_GIVE", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnAMOUNT_PER_GIVE)
+            Me.columnBALANCE = New Global.System.Data.DataColumn("BALANCE", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnBALANCE)
             Me.columnAMOUNT_PER_GIVE.Caption = "AMOUNT"
         End Sub
         
@@ -1993,16 +2034,16 @@ Partial Public Class payslip
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Property LATE() As String
+        Public Property LATE_UNDERTIME() As String
             Get
                 Try 
-                    Return CType(Me(Me.tableattendance.LATEColumn),String)
+                    Return CType(Me(Me.tableattendance.LATE_UNDERTIMEColumn),String)
                 Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'LATE' in table 'attendance' is DBNull.", e)
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'LATE_UNDERTIME' in table 'attendance' is DBNull.", e)
                 End Try
             End Get
             Set
-                Me(Me.tableattendance.LATEColumn) = value
+                Me(Me.tableattendance.LATE_UNDERTIMEColumn) = value
             End Set
         End Property
         
@@ -2173,6 +2214,36 @@ Partial Public Class payslip
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property SSS_LOAN_BALANCE() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableattendance.SSS_LOAN_BALANCEColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'SSS_LOAN_BALANCE' in table 'attendance' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableattendance.SSS_LOAN_BALANCEColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property PAGIBIG_LOAN_BALANCE() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableattendance.PAGIBIG_LOAN_BALANCEColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'PAGIBIG_LOAN_BALANCE' in table 'attendance' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableattendance.PAGIBIG_LOAN_BALANCEColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Function IsPRESENT_DAYSNull() As Boolean
             Return Me.IsNull(Me.tableattendance.PRESENT_DAYSColumn)
         End Function
@@ -2257,14 +2328,14 @@ Partial Public Class payslip
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Function IsLATENull() As Boolean
-            Return Me.IsNull(Me.tableattendance.LATEColumn)
+        Public Function IsLATE_UNDERTIMENull() As Boolean
+            Return Me.IsNull(Me.tableattendance.LATE_UNDERTIMEColumn)
         End Function
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Sub SetLATENull()
-            Me(Me.tableattendance.LATEColumn) = Global.System.Convert.DBNull
+        Public Sub SetLATE_UNDERTIMENull()
+            Me(Me.tableattendance.LATE_UNDERTIMEColumn) = Global.System.Convert.DBNull
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -2398,6 +2469,30 @@ Partial Public Class payslip
         Public Sub Setpresent_hoursNull()
             Me(Me.tableattendance.present_hoursColumn) = Global.System.Convert.DBNull
         End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsSSS_LOAN_BALANCENull() As Boolean
+            Return Me.IsNull(Me.tableattendance.SSS_LOAN_BALANCEColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetSSS_LOAN_BALANCENull()
+            Me(Me.tableattendance.SSS_LOAN_BALANCEColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsPAGIBIG_LOAN_BALANCENull() As Boolean
+            Return Me.IsNull(Me.tableattendance.PAGIBIG_LOAN_BALANCEColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetPAGIBIG_LOAN_BALANCENull()
+            Me(Me.tableattendance.PAGIBIG_LOAN_BALANCEColumn) = Global.System.Convert.DBNull
+        End Sub
     End Class
     
     '''<summary>
@@ -2517,6 +2612,21 @@ Partial Public Class payslip
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property BALANCE() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableother_deduction.BALANCEColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'BALANCE' in table 'other_deduction' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableother_deduction.BALANCEColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Function IsCATEGORYNull() As Boolean
             Return Me.IsNull(Me.tableother_deduction.CATEGORYColumn)
         End Function
@@ -2537,6 +2647,18 @@ Partial Public Class payslip
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Sub SetAMOUNT_PER_GIVENull()
             Me(Me.tableother_deduction.AMOUNT_PER_GIVEColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsBALANCENull() As Boolean
+            Return Me.IsNull(Me.tableother_deduction.BALANCEColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetBALANCENull()
+            Me(Me.tableother_deduction.BALANCEColumn) = Global.System.Convert.DBNull
         End Sub
     End Class
     

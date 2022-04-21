@@ -167,6 +167,12 @@
                                 <FontFamily>Berlin Sans FB</FontFamily>
                               </Style>
                             </TextRun>
+                            <TextRun>
+                              <Value>  day/s</Value>
+                              <Style>
+                                <FontFamily>Berlin Sans FB</FontFamily>
+                              </Style>
+                            </TextRun>
                           </TextRuns>
                           <Style />
                         </Paragraph>
@@ -245,6 +251,12 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!LATE.Value</Value>
+                              <Style>
+                                <FontFamily>Berlin Sans FB</FontFamily>
+                              </Style>
+                            </TextRun>
+                            <TextRun>
+                              <Value>  min/s</Value>
                               <Style>
                                 <FontFamily>Berlin Sans FB</FontFamily>
                               </Style>
@@ -331,6 +343,12 @@
                                 <FontFamily>Berlin Sans FB</FontFamily>
                               </Style>
                             </TextRun>
+                            <TextRun>
+                              <Value>  min/s</Value>
+                              <Style>
+                                <FontFamily>Berlin Sans FB</FontFamily>
+                              </Style>
+                            </TextRun>
                           </TextRuns>
                           <Style />
                         </Paragraph>
@@ -413,6 +431,12 @@
                                 <FontFamily>Berlin Sans FB</FontFamily>
                               </Style>
                             </TextRun>
+                            <TextRun>
+                              <Value> hour/s</Value>
+                              <Style>
+                                <FontFamily>Berlin Sans FB</FontFamily>
+                              </Style>
+                            </TextRun>
                           </TextRuns>
                           <Style />
                         </Paragraph>
@@ -426,6 +450,166 @@
                         <RightBorder>
                           <Style>Solid</Style>
                         </RightBorder>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                    <ColSpan>4</ColSpan>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell />
+                <TablixCell />
+                <TablixCell />
+              </TablixCells>
+            </TablixRow>
+            <TablixRow>
+              <Height>0.1875in</Height>
+              <TablixCells>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox203">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Reg. Holiday</Value>
+                              <Style>
+                                <FontFamily>Berlin Sans FB</FontFamily>
+                                <FontWeight>Normal</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox203</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Style>None</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>1pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                    <ColSpan>2</ColSpan>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell />
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="REGHOLIDAY">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!REGHOLIDAY.Value</Value>
+                              <Style>
+                                <FontFamily>Berlin Sans FB</FontFamily>
+                              </Style>
+                            </TextRun>
+                            <TextRun>
+                              <Value>  day/s</Value>
+                              <Style>
+                                <FontFamily>Berlin Sans FB</FontFamily>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>REGHOLIDAY</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Style>None</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                    <ColSpan>4</ColSpan>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell />
+                <TablixCell />
+                <TablixCell />
+              </TablixCells>
+            </TablixRow>
+            <TablixRow>
+              <Height>0.1875in</Height>
+              <TablixCells>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox188">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Spec. Holiday</Value>
+                              <Style>
+                                <FontFamily>Berlin Sans FB</FontFamily>
+                                <FontWeight>Normal</FontWeight>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox188</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Style>None</Style>
+                        </Border>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                    <ColSpan>2</ColSpan>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell />
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="SPECHOLIDAY">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>=Fields!SPECHOLIDAY.Value</Value>
+                              <Style>
+                                <FontFamily>Berlin Sans FB</FontFamily>
+                              </Style>
+                            </TextRun>
+                            <TextRun>
+                              <Value>  day/s</Value>
+                              <Style>
+                                <FontFamily>Berlin Sans FB</FontFamily>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style />
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>SPECHOLIDAY</rd:DefaultName>
+                      <Style>
+                        <Border>
+                          <Style>None</Style>
+                        </Border>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
@@ -1175,6 +1359,12 @@
                   <KeepWithGroup>After</KeepWithGroup>
                 </TablixMember>
                 <TablixMember>
+                  <KeepWithGroup>After</KeepWithGroup>
+                </TablixMember>
+                <TablixMember>
+                  <KeepWithGroup>After</KeepWithGroup>
+                </TablixMember>
+                <TablixMember>
                   <Group Name="Details1" />
                   <KeepTogether>true</KeepTogether>
                 </TablixMember>
@@ -1196,7 +1386,7 @@
         </PageBreak>
         <Top>0.01187in</Top>
         <Left>0.16896in</Left>
-        <Height>2.04916in</Height>
+        <Height>2.42416in</Height>
         <Width>3.61917in</Width>
         <Style>
           <Border>
@@ -1205,7 +1395,7 @@
         </Style>
       </Tablix>
     </ReportItems>
-    <Height>2.18603in</Height>
+    <Height>2.56103in</Height>
     <Style />
   </Body>
   <Width>4.25in</Width>

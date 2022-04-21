@@ -1,0 +1,93 @@
+﻿Imports System.IO
+Imports Microsoft.Office.Interop
+
+
+Module Temporary
+
+    Dim MyConnection As System.Data.OleDb.OleDbConnection
+    Dim DtSet As System.Data.DataSet
+    Dim MyCommand As System.Data.OleDb.OleDbDataAdapter
+
+    Dim eApp As New Excel.Application
+    Dim eBook As Excel.Workbook = Nothing
+    Dim eSheet As Excel.Worksheet = Nothing
+    Dim eCell As Excel.Range
+
+    Friend Sub Import_Employee_SBU_DATE_ONLY(Path As String)
+
+        eApp = New Excel.Application
+        eBook = eApp.Workbooks.Open(Path)
+        eSheet = eBook.Worksheets(1)
+        eCell = eSheet.UsedRange
+
+        MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path}';Extended Properties=Excel 8.0;")
+        MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
+        MyCommand.TableMappings.Add("Table", "Net-informations.com")
+        DtSet = New System.Data.DataSet
+        MyCommand.Fill(DtSet)
+
+        progressBarStart(DtSet.Tables(0).Rows.Count + 1)
+
+        Dim EMP_NO As String = Nothing
+
+        For row = 7 To DtSet.Tables(0).Rows.Count
+
+            If eCell(row, 1).Font.Bold = True Then
+                EMP_NO = eCell(row, 4).Value
+            End If
+
+            If EMP_NO <> Nothing And IsDate(eCell(row, 1).value) Then
+                Dim datee As DateTime = eCell(row, 1).Value
+                UPDATE_Emp_SBU_EXCEL_DATEONLY(EMP_NO, datee, row)
+
+                EMP_NO = Nothing
+            End If
+
+            frmMainForm.AppProgressBar.Value += 1
+        Next row
+
+        progressBarEnd()
+
+        MyConnection.Close()
+        eApp.Quit()
+        eApp.Application.DisplayAlerts = False
+
+    End Sub
+
+    Public Sub UPDATE_Emp_SBU_EXCEL_DATEONLY(emp_no As String, datee As String, RowNo As Integer)
+        Dim mysql As String = $"Select * From PAYROLL_SBU A inner join PAYROLL_EMPLOYEE B on B.BIO_NO=A.BIO_NO where EMP_NO='{emp_no}'"
+        Using dssS As DataSet = LoadSQL(mysql, "PAYROLL_SBU")
+            If dssS.Tables(0).Rows.Count > 0 Then
+                With dssS.Tables(0).Rows(0)
+                    Console.WriteLine("bioNOO " & .Item("BIO_NO"))
+                    Console.WriteLine("EMP_NO " & .Item("EMP_NO"))
+                    Console.WriteLine("RowNo " & RowNo)
+                    .Item("DATE_ADDED") = datee
+                End With
+                SaveEntry(dssS, False)
+            End If
+        End Using
+    End Sub
+
+    Friend Sub GetHO_Category()
+        Dim mysql As String = $"Select BIO_NO from PAYROLL_EMPLOYEE where HO_CATEGORY = 'Dalton Admin Office'"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+            If ds.Tables(0).Rows.Count > 0 Then
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+                        Dim path As String = "D:\sample.txt"
+
+                        If Not File.Exists(path) Then
+                            File.Create(path).Close()
+                        End If
+
+                        Dim wr As New StreamWriter(path, FileMode.Append)
+                        wr.Write(.item("BIO_NO") & vbCrLf)
+                        wr.Close()
+                    End With
+                Next
+            End If
+        End Using
+    End Sub
+
+End Module

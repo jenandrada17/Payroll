@@ -52,7 +52,7 @@
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>0.47917in</Width>
+                  <Width>0.3125in</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>1.16667in</Width>
@@ -62,6 +62,9 @@
                 </TablixColumn>
                 <TablixColumn>
                   <Width>0.87344in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>1in</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -98,9 +101,10 @@
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <ColSpan>4</ColSpan>
+                        <ColSpan>5</ColSpan>
                       </CellContents>
                     </TablixCell>
+                    <TablixCell />
                     <TablixCell />
                     <TablixCell />
                     <TablixCell />
@@ -147,9 +151,10 @@
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <ColSpan>4</ColSpan>
+                        <ColSpan>5</ColSpan>
                       </CellContents>
                     </TablixCell>
+                    <TablixCell />
                     <TablixCell />
                     <TablixCell />
                     <TablixCell />
@@ -255,6 +260,38 @@
                         </Textbox>
                       </CellContents>
                     </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox14">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value />
+                                  <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
+                                    <FontSize>8pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox14</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>None</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
@@ -299,6 +336,38 @@
                     <TablixCell />
                     <TablixCell />
                     <TablixCell />
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox15">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value />
+                                  <Style>
+                                    <FontFamily>Bahnschrift</FontFamily>
+                                    <FontSize>8pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox15</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>None</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
@@ -340,6 +409,39 @@
                     <TablixCell />
                     <TablixCell />
                     <TablixCell />
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox16">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value />
+                                  <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
+                                    <FontSize>8pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox16</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
@@ -385,7 +487,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=IIF(fIELDS!CATEGORY.Value = "ALLOWANCE" OR FIELDS!CATEGORY.Value = "DEBIT", FormatNumber(FIELDS!AMOUNT.Value), NOTHING)</Value>
+                                  <Value>=FORMATNUMBER(IIF(fIELDS!CATEGORY.Value = "ALLOWANCE" OR FIELDS!CATEGORY.Value = "DEBIT", FIELDS!AMOUNT.Value, 0))</Value>
                                   <Style>
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -431,6 +533,39 @@
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox64</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox17">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value />
+                                  <Style>
+                                    <FontFamily>Arial Narrow</FontFamily>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox17</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -550,7 +685,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=IIF(FIELDS!CATEGORY.Value = "DEDUCTION" OR FIELDS!CATEGORY.Value = "CREDIT", FormatNumber(FIELDS!AMOUNT.Value), NOTHING)</Value>
+                                  <Value>=FORMATNUMBER(IIF(FIELDS!CATEGORY.Value = "DEDUCTION" OR FIELDS!CATEGORY.Value = "CREDIT", FIELDS!AMOUNT.Value, 0))</Value>
                                   <Style>
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -563,6 +698,40 @@
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>AMOUNT</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox18">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value />
+                                  <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
+                                    <FontSize>8pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox18</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -690,7 +859,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=FormatNumber(Code.AddCredit(Sum(CDec(IIF(FIELDS!CATEGORY.Value = "DEDUCTION" OR FIELDS!CATEGORY.Value = "CREDIT", FIELDS!AMOUNT.Value, 0)))))</Value>
+                                  <Value>=FormatNumber(Code.AddCredit(Sum(CDec(IIF(fIELDS!CATEGORY.Value = "DEDUCTION" OR FIELDS!CATEGORY.Value = "CREDIT", FIELDS!AMOUNT.Value, 0)))))</Value>
                                   <Style>
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -710,6 +879,40 @@
                             <TopBorder>
                               <Style>Double</Style>
                             </TopBorder>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox19">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value />
+                                  <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
+                                    <FontSize>8pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox19</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Style>None</Style>
+                            </Border>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -758,6 +961,37 @@
                     <TablixCell />
                     <TablixCell />
                     <TablixCell />
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox20">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value />
+                                  <Style>
+                                    <FontFamily>Arial Narrow</FontFamily>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style />
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox20</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
@@ -836,7 +1070,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=FormatNumber(Code.GetDebit_Total())</Value>
+                                  <Value>=Code.GetDebit_Total()</Value>
                                   <Style>
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>9pt</FontSize>
@@ -871,7 +1105,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=FormatNumber(CODE.GetCredit_Total())</Value>
+                                  <Value>=CODE.GetCredit_Total()</Value>
                                   <Style>
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>9pt</FontSize>
@@ -897,12 +1131,48 @@
                         </Textbox>
                       </CellContents>
                     </TablixCell>
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox21">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value />
+                                  <Style>
+                                    <FontFamily>Book Antiqua</FontFamily>
+                                    <FontSize>9pt</FontSize>
+                                    <FontWeight>Bold</FontWeight>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox21</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>LightGrey</Color>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
                   </TablixCells>
                 </TablixRow>
               </TablixRows>
             </TablixBody>
             <TablixColumnHierarchy>
               <TablixMembers>
+                <TablixMember />
                 <TablixMember />
                 <TablixMember />
                 <TablixMember />
@@ -949,7 +1219,7 @@
                         </GroupExpressions>
                       </Group>
                       <Visibility>
-                        <Hidden>=IIF(REPORTITEMS!ALLOWANCES.VALUE = NOTHING, TRUE, FALSE)</Hidden>
+                        <Hidden>=IIF(REPORTITEMS!ALLOWANCES.VALUE = NOTHING or REPORTITEMS!AMOUNT1.VALUE = "0.00", TRUE, FALSE)</Hidden>
                       </Visibility>
                       <KeepTogether>true</KeepTogether>
                     </TablixMember>
@@ -959,7 +1229,7 @@
                         <TablixMember />
                       </TablixMembers>
                       <Visibility>
-                        <Hidden>=IIF(REPORTITEMS!DEDUCTION.VALUE = NOTHING, TRUE, FALSE)</Hidden>
+                        <Hidden>=IIF(REPORTITEMS!DEDUCTION.VALUE = NOTHING or REPORTITEMS!AMOUNT.VALUE = "0.00" , TRUE, FALSE)</Hidden>
                       </Visibility>
                     </TablixMember>
                     <TablixMember>
@@ -984,7 +1254,7 @@
               </SortExpression>
             </SortExpressions>
             <Height>2.04796in</Height>
-            <Width>3.39272in</Width>
+            <Width>4.22605in</Width>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -995,7 +1265,7 @@
         <Height>2.04796in</Height>
         <Style />
       </Body>
-      <Width>3.39272in</Width>
+      <Width>4.22605in</Width>
       <Page>
         <LeftMargin>0.5in</LeftMargin>
         <RightMargin>0.5in</RightMargin>
@@ -1026,25 +1296,25 @@
       </CellDefinitions>
     </GridLayoutDefinition>
   </ReportParametersLayout>
-  <Code>Dim totalDebit as Decimal
-Dim totalCredt as Decimal
+  <Code>Dim totalDebit as Double
+Dim totalCredt as Double
 
-Public Function AddDebit(Amount as Decimal ) as Decimal 
+Public Function AddDebit(Amount as Double) as Double
 	totalDebit = totalDebit + Amount
 	Return Amount 
 End Function
 
-Public Function AddCredit(Amount as Decimal ) as Decimal 
+Public Function AddCredit(Amount as Double) as Double
 	totalCredt = totalCredt +  Amount
 	Return Amount 
 End Function
 
 Public Function GetDebit_Total()
-	Return totalDebit
+	Return totalDebit.ToString("N")
 End Function
 
 Public Function GetCredit_Total()
-	Return totalCredt 
+	Return totalCredt.ToString("N")
 End Function
 
 </Code>

@@ -65,7 +65,15 @@
   <PropertyGroup>
     <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>PGC LOGO copy.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AxShockwaveFlashObjects, Version=1.0.0.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
+    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
+    <Reference Include="CrystalDecisions.Shared, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
+    <Reference Include="CrystalDecisions.Windows.Forms, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
     <Reference Include="DBConnect">
       <HintPath>..\..\..\HR-System Record\LATEST HRSystem\HRSystem - exx\DBConnect\obj\Release\DBConnect.dll</HintPath>
     </Reference>
@@ -81,9 +89,10 @@
     </Reference>
     <Reference Include="Guna.UI2, Version=2.0.2.5, Culture=neutral, PublicKeyToken=e4b9cdd7b4cde4b4, processorArchitecture=MSIL">
       <HintPath>..\packages\Guna.UI2.WinForms.2.0.2.5\lib\net40\Guna.UI2.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
-      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="Microsoft.ReportViewer.Common, Version=15.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.ReportingServices.ReportViewerControl.Winforms.150.1449.0\lib\net40\Microsoft.ReportViewer.Common.dll</HintPath>
@@ -147,6 +156,14 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>dtr_all.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Dataset\Forms.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Forms.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Dataset\Forms.vb">
+      <DependentUpon>Forms.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Dataset\payroll_summary.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -177,6 +194,12 @@
     <Compile Include="Forms\Developer.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Forms\frmAllowance.Designer.vb">
+      <DependentUpon>frmAllowance.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmAllowance.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\frmAttendance.Designer.vb">
       <DependentUpon>frmAttendance.vb</DependentUpon>
     </Compile>
@@ -189,10 +212,22 @@
     <Compile Include="Forms\frmContribution.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Forms\frmDashboard.Designer.vb">
+      <DependentUpon>frmDashboard.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmDashboard.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\frmEmployee.Designer.vb">
       <DependentUpon>frmEmployee.vb</DependentUpon>
     </Compile>
     <Compile Include="Forms\frmEmployee.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmLoan.Designer.vb">
+      <DependentUpon>frmLoan.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmLoan.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\frmMainForm.vb">
@@ -220,10 +255,22 @@
     <Compile Include="Forms\frmReport.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Forms\frmSchedule.Designer.vb">
+      <DependentUpon>frmSchedule.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmSchedule.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Forms\frmSettings.Designer.vb">
       <DependentUpon>frmSettings.vb</DependentUpon>
     </Compile>
     <Compile Include="Forms\frmSettings.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\frmUser.Designer.vb">
+      <DependentUpon>frmUser.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\frmUser.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\frmUserLogs.Designer.vb">
@@ -246,6 +293,7 @@
     <Compile Include="Module\Report_function.vb" />
     <Compile Include="Module\SaveUpdate.vb" />
     <Compile Include="Module\SelectFromDatabase.vb" />
+    <Compile Include="Module\Temporary.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>
@@ -262,10 +310,18 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="SampleDatabaseDataSet.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SampleDatabaseDataSet.xsd</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Forms\Developer.resx">
       <DependentUpon>Developer.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmAllowance.resx">
+      <DependentUpon>frmAllowance.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmAttendance.resx">
       <DependentUpon>frmAttendance.vb</DependentUpon>
@@ -273,8 +329,14 @@
     <EmbeddedResource Include="Forms\frmContribution.resx">
       <DependentUpon>frmContribution.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmDashboard.resx">
+      <DependentUpon>frmDashboard.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmEmployee.resx">
       <DependentUpon>frmEmployee.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmLoan.resx">
+      <DependentUpon>frmLoan.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmMainForm.resx">
       <DependentUpon>frmMainForm.vb</DependentUpon>
@@ -288,8 +350,14 @@
     <EmbeddedResource Include="Forms\frmReport.resx">
       <DependentUpon>frmReport.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmSchedule.resx">
+      <DependentUpon>frmSchedule.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmSettings.resx">
       <DependentUpon>frmSettings.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\frmUser.resx">
+      <DependentUpon>frmUser.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\frmUserLogs.resx">
       <DependentUpon>frmUserLogs.vb</DependentUpon>
@@ -304,14 +372,20 @@
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Reports\rptDTR_All.rdlc" />
+    <EmbeddedResource Include="Reports\rpt_13Month.rdlc" />
     <EmbeddedResource Include="Reports\rpt_Common.rdlc" />
     <EmbeddedResource Include="Reports\rpt_CommonEmp.rdlc" />
     <EmbeddedResource Include="Reports\rpt_CostContribution.rdlc" />
+    <EmbeddedResource Include="Reports\rpt_Deduction.rdlc" />
     <EmbeddedResource Include="Reports\rpt_DTR_ByGroup.rdlc" />
+    <EmbeddedResource Include="Reports\rpt_Loans.rdlc" />
     <EmbeddedResource Include="Reports\rpt_NetPay.rdlc" />
+    <EmbeddedResource Include="Reports\rpt_PAF.rdlc" />
     <EmbeddedResource Include="Reports\rpt_PayrollSummary.rdlc" />
     <EmbeddedResource Include="Reports\rpt_payslip.rdlc" />
+    <EmbeddedResource Include="Reports\rpt_PI.rdlc" />
     <EmbeddedResource Include="Reports\rpt_Remittance.rdlc" />
+    <EmbeddedResource Include="Reports\rpt_SBU.rdlc" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Dataset\dtr_all.xsc">
@@ -324,6 +398,17 @@
     </None>
     <None Include="Dataset\dtr_all.xss">
       <DependentUpon>dtr_all.xsd</DependentUpon>
+    </None>
+    <None Include="Dataset\Forms.xsc">
+      <DependentUpon>Forms.xsd</DependentUpon>
+    </None>
+    <None Include="Dataset\Forms.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>Forms.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Dataset\Forms.xss">
+      <DependentUpon>Forms.xsd</DependentUpon>
     </None>
     <None Include="Dataset\payroll_summary.xsc">
       <DependentUpon>payroll_summary.xsd</DependentUpon>
@@ -373,6 +458,17 @@
     <None Include="Resources\employee" />
     <None Include="Resources\employee1" />
     <None Include="Resources\new-employee" />
+    <None Include="SampleDatabaseDataSet.xsc">
+      <DependentUpon>SampleDatabaseDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="SampleDatabaseDataSet.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>SampleDatabaseDataSet.Designer.vb</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="SampleDatabaseDataSet.xss">
+      <DependentUpon>SampleDatabaseDataSet.xsd</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\dashboard.png" />
@@ -421,6 +517,11 @@
     <None Include="Resources\user12.png" />
     <None Include="Resources\pass21.png" />
     <None Include="Resources\sample31.png" />
+    <Content Include="PGC LOGO copy.ico" />
+    <None Include="Resources\sched 1.jpg" />
+    <None Include="Resources\sched 2.png" />
+    <None Include="Resources\allow1.png" />
+    <None Include="Resources\sched1.png" />
     <Content Include="SqlServerTypes\Loader.cs" />
     <Content Include="SqlServerTypes\readme.htm" />
   </ItemGroup>
@@ -435,6 +536,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

@@ -59,13 +59,10 @@
                   <Width>0.40417in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.92708in</Width>
+                  <Width>2.05208in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.46875in</Width>
-                </TablixColumn>
-                <TablixColumn>
-                  <Width>1.1in</Width>
+                  <Width>1.3in</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>1.1in</Width>
@@ -74,7 +71,10 @@
                   <Width>1.1in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.1in</Width>
+                  <Width>0.9in</Width>
+                </TablixColumn>
+                <TablixColumn>
+                  <Width>1in</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -137,7 +137,7 @@
                                   <Value>Count</Value>
                                   <Style>
                                     <FontFamily>Arial Rounded MT Bold</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>7.5pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -170,7 +170,7 @@
                                   <Value>Name</Value>
                                   <Style>
                                     <FontFamily>Arial Rounded MT Bold</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>7.5pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -203,7 +203,7 @@
                                   <Value>No.</Value>
                                   <Style>
                                     <FontFamily>Arial Rounded MT Bold</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>7.5pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -236,7 +236,7 @@
                                   <Value>Employee</Value>
                                   <Style>
                                     <FontFamily>Arial Rounded MT Bold</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>7.5pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -269,7 +269,7 @@
                                   <Value>Employer</Value>
                                   <Style>
                                     <FontFamily>Arial Rounded MT Bold</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>7.5pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -302,7 +302,7 @@
                                   <Value>EC</Value>
                                   <Style>
                                     <FontFamily>Arial Rounded MT Bold</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>7.5pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -335,7 +335,7 @@
                                   <Value>Total</Value>
                                   <Style>
                                     <FontFamily>Arial Rounded MT Bold</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>7.5pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -373,7 +373,7 @@
                                   <Value>=RowNumber(nothing)</Value>
                                   <Style>
                                     <FontFamily>Arial Rounded MT Bold</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>7.5pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -408,7 +408,7 @@
                                   <Value>=Fields!NAME.Value</Value>
                                   <Style>
                                     <FontFamily>Arial Rounded MT Bold</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>7.5pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -441,7 +441,7 @@
                                   <Value>=Fields!NO.Value</Value>
                                   <Style>
                                     <FontFamily>Arial Rounded MT Bold</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>7.5pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -474,7 +474,7 @@
                                   <Value>=Fields!EE.Value</Value>
                                   <Style>
                                     <FontFamily>Arial Rounded MT Bold</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>7.5pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -507,7 +507,7 @@
                                   <Value>=Fields!ER.Value</Value>
                                   <Style>
                                     <FontFamily>Arial Rounded MT Bold</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>7.5pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -540,7 +540,7 @@
                                   <Value>=Fields!EC.Value</Value>
                                   <Style>
                                     <FontFamily>Arial Rounded MT Bold</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>7.5pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -573,7 +573,7 @@
                                   <Value>=FormatNumber(CDec(Fields!EE.Value) + CDec(Fields!ER.Value) + CDec(Fields!EC.Value))</Value>
                                   <Style>
                                     <FontFamily>Arial Rounded MT Bold</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>7.5pt</FontSize>
                                   </Style>
                                 </TextRun>
                               </TextRuns>
@@ -681,7 +681,7 @@
                                   <Value>TOTAL</Value>
                                   <Style>
                                     <FontFamily>Arial Rounded MT Bold</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>7.5pt</FontSize>
                                     <FontWeight>Medium</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -717,7 +717,7 @@
                                   <Value>=FormatNumber(Sum(CDec(Fields!EE.Value)))</Value>
                                   <Style>
                                     <FontFamily>Arial Rounded MT Bold</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>7.5pt</FontSize>
                                     <FontWeight>Medium</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -751,7 +751,7 @@
                                   <Value>=FormatNumber(Sum(CDec(Fields!ER.Value)))</Value>
                                   <Style>
                                     <FontFamily>Arial Rounded MT Bold</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>7.5pt</FontSize>
                                     <FontWeight>Medium</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -785,7 +785,7 @@
                                   <Value>=FormatNumber(Sum(CDec(Fields!EC.Value)))</Value>
                                   <Style>
                                     <FontFamily>Arial Rounded MT Bold</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>7.5pt</FontSize>
                                     <FontWeight>Medium</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -819,7 +819,7 @@
                                   <Value>=FormatNumber(Sum(CDec(Fields!EE.Value) + CDec(Fields!ER.Value) + CDec(Fields!EC.Value)))</Value>
                                   <Style>
                                     <FontFamily>Arial Rounded MT Bold</FontFamily>
-                                    <FontSize>8pt</FontSize>
+                                    <FontSize>7.5pt</FontSize>
                                     <FontWeight>Medium</FontWeight>
                                   </Style>
                                 </TextRun>
@@ -878,7 +878,7 @@
             </TablixRowHierarchy>
             <DataSetName>DataSet1</DataSetName>
             <Height>0.91666in</Height>
-            <Width>8.2in</Width>
+            <Width>7.85625in</Width>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -889,10 +889,9 @@
         <Height>1.2in</Height>
         <Style />
       </Body>
-      <Width>8.2in</Width>
+      <Width>7.85625in</Width>
       <Page>
-        <LeftMargin>0.5in</LeftMargin>
-        <RightMargin>0.5in</RightMargin>
+        <LeftMargin>0.3in</LeftMargin>
         <TopMargin>0.3in</TopMargin>
         <BottomMargin>0.3in</BottomMargin>
         <Style />

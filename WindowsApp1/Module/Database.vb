@@ -91,8 +91,6 @@ Module Database
                     Dim colName As String = dsTable.Columns(0).ColumnName
                     Dim idx As Integer = dsTable.Rows(0).Item(0)
                     mySql &= String.Format(" WHERE {0} = {1}", colName, idx)
-
-                    Console.WriteLine("ModifySQL: " & mySql)
                 End If
 
                 da = New FbDataAdapter(mySql, con)

@@ -49,6 +49,7 @@ Module security
     End Function
 
     Friend Function GetFileMD5(ByVal url As String) As String
+
         Dim fileByte() As Byte
         Dim fs As FileStream = File.OpenRead(url)
         fs.Position = 0

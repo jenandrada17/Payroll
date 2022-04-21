@@ -4,13 +4,15 @@ Imports System.Text.RegularExpressions
 Public Class frmPayout
 
     Dim rowCount As Integer
+    Dim STANDARD_DAYS As Integer = frmMainForm.DAYS_COUNT
     Dim regHoliday_, specHoliday_ As Double
     Public paydate_ As String = frmMainForm.Paydate.ToString("d")
-    Dim SBU, Charges, Loan, CashAdvance, other As Double
-    Dim SBUUU, Chargesss, Loannn, CashAdvanceee, otherrr As Double
-    Dim gross, netTax, sssLoan, pagibigLoan, allowance, deduction As Double
-    Dim emp_id, sched_deduc As String
-    Dim SSS_ER, SSS_EC As Double
+    Dim SBU, Charges, Loan, CashAdvance, other As Decimal
+    Dim SBUUU, Chargesss, Loannn, CashAdvanceee, otherrr As Decimal
+    Dim gross, netTax, sssLoan, pagibigLoan, allowance, deduction As Decimal
+    Dim sched_deduc As String
+    Dim SSS_ER, SSS_EC As Decimal
+    Dim Zeroo As String = "0.00"
 
     Private allowCoolMove As Boolean = False
     Private myCoolPoint As New Point
@@ -30,7 +32,6 @@ Public Class frmPayout
     End Sub
 
     Private Sub Select_BTN_Click(sender As Object, e As EventArgs) Handles Select_BTN.Click
-
         Try
 
             Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmEmployee").SingleOrDefault()
@@ -66,15 +67,15 @@ Public Class frmPayout
         If BiometricID_TXT.Text = "" Then
             Cancel_BTN.PerformClick()
         Else
-            Payout_Details(BiometricID_TXT.Text, Name_TXT, Rate_TXT)
+            Payout_Details(BiometricID_TXT.Text, Name_TXT, Rate_TXT, RateFixYes_RB)
             DETAILS()
         End If
 
-        '==========================  IF VALID FOR EDITING =========================   
-        If paydate_ = frmMainForm.Paydate.ToString("d") Then
-            Details_Save_BTN.Enabled = True
-        Else
+        '==========================  IF VALID FOR EDITING =========================      
+        If Today.ToString("d") > paydate_ Then
             Details_Save_BTN.Enabled = False
+        Else
+            Details_Save_BTN.Enabled = True
         End If
 
     End Sub
@@ -89,55 +90,85 @@ Public Class frmPayout
         If Bio_Exist_Attendance(BIO_NO, paydate_) Then
 
             AttendanceDetails(BIO_NO, paydate_, NoOfDays_TXT, RegularOT_TXT, SpecialHol_TXT, RegularHol_TXT,
-                                        Late_TXT, UnderTime_TXT, TrainingDays_LBL, NightTime_TXT)
+                                        Late_TXT, UnderTime_TXT, TrainingDays_LBL, NightTime_TXT,
+                                        TrainingOT_LBL, TrainningLate_LBL, TrainingUT_LBL, TrainingSHol_LBL)
+
+            If RateFixYes_RB.Checked = True Then
+                RegularOT_TXT.Text = 0
+                SpecialHol_TXT.Text = 0
+                RegularHol_TXT.Text = 0
+                Late_TXT.Text = 0
+                UnderTime_TXT.Text = 0
+                NightTime_TXT.Text = 0
+            End If
 
             '============================ CHECK IF NOT TRAINEE ==================================  
             If TrainingDays_LBL.Text = 0 Or TrainingDays_LBL.Text = Nothing Then
                 Training_GB.Visible = False
                 '============================ CHECK IF CLOSE PAYROLL ==================================  
                 If IsLastDay(paydate_) Then
+                    If BIO_NO <> 58 Then
 
-                    Dim monthly_Basic As Double = GetMonthly_Basic(BIO_NO, paydate_)
-                    Prev_Amount_lbl.Text = (GetFirst_Basic(BIO_NO, paydate_)).ToString("N")
+                        Dim monthly_Basic As Double = GetMonthly_Basic(BIO_NO, paydate_)
+                        Prev_Amount_lbl.Text = (GetFirst_Basic(BIO_NO, paydate_)).ToString("N")
 
-                    SSSComp_LBL.Text = (Get_SSS(monthly_Basic).EE).ToString("N")
-                    SSS_ER = Get_SSS(monthly_Basic).EE
-                    SSS_EC = Get_SSS(monthly_Basic).EC
-                    HDMF_LBL.Text = (Get_Pagibig(monthly_Basic)).ToString("N")
-                    Philhealth_LBL.Text = (Get_PhilHealth(monthly_Basic)).ToString("N")
-                    Tax_Wheld_LBL.Text = (Get_WHolding(monthly_Basic)).ToString("N")
+                        Benifits(BIO_NO, monthly_Basic)
 
-                    NetTax_LBL.Text = (monthly_Basic - (CDbl(SSSComp_LBL.Text) + CDbl(HDMF_LBL.Text) + CDbl(Philhealth_LBL.Text) + CDbl(Tax_Wheld_LBL.Text))).ToString(”N”)
+                        Previous_groupB.Visible = True
 
-                    Previous_groupB.Visible = True
+                        Remittance_LBL.Text = (CDbl(SSSComp_LBL.Text) + CDbl(HDMF_LBL.Text) + CDbl(Philhealth_LBL.Text)).ToString(”N”)
 
-                    SSSLoan_LBL.Text = (Get_LOAN_SSS(BIO_NO)).ToString("N")
-                    PagibigLoan_LBL.Text = (Get_LOAN_Pagibig(BIO_NO)).ToString("N")
+                        sched_deduc = "CLOSE PAYROLL"
+                    End If
 
-                    sched_deduc = "CLOSE PAYROLL"
                 Else
-                    SSSComp_LBL.Text = 0.00
-                    HDMF_LBL.Text = 0.00
-                    Philhealth_LBL.Text = 0.00
-                    Tax_Wheld_LBL.Text = 0.00
-                    SSSLoan_LBL.Text = 0.00
-                    PagibigLoan_LBL.Text = 0.00
+                    SSSComp_LBL.Text = Zeroo
+                    HDMF_LBL.Text = Zeroo
+                    Philhealth_LBL.Text = Zeroo
                     Previous_groupB.Visible = False
+                    Remittance_LBL.Text = Zeroo
 
                     sched_deduc = "OPEN PAYROLL"
                 End If
             Else
+                SSSComp_LBL.Text = Zeroo
+                HDMF_LBL.Text = Zeroo
+                Philhealth_LBL.Text = Zeroo
+                Remittance_LBL.Text = Zeroo
                 Training_GB.Visible = True
             End If
 
             '================ FETCHING ALLOWANCE RECORDED WHEN ATTENDANCE BIOMETRIC IMPORTED ================== 
             If isExist_String("RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{BIO_NO}' AND PAYDATE = '{paydate_}' AND TRANSAC_NAME = 'ALLOWANCE'") Then
                 Recorded_Details(BIO_NO, Allowance_grid, paydate_, "ALLOWANCE")
+
+                If Allowance_grid.Rows.Count >= 0 Then
+                    Dim totalRowHeight As Integer = Allowance_grid.ColumnHeadersHeight
+                    For Each row As DataGridViewRow In Allowance_grid.Rows
+                        totalRowHeight += row.Height
+                        row.Height = 25
+                    Next
+                    Allowance_grid.Height = totalRowHeight
+                    Allowance_grid.DefaultCellStyle.Font = New Font("Dubai", 11)
+                End If
+
             End If
 
             '================ FETCHING ALLOWANCE RECORDED WHEN ATTENDANCE BIOMETRIC IMPORTED ==================
             If isExist_String("RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{BIO_NO}' AND PAYDATE = '{paydate_}' AND TRANSAC_NAME = 'DEDUCTION'") Then         '=========m RECORDED DEDUCTION IMPORTING ATTENDANCE
                 Recorded_Details(BIO_NO, Deduction_grid, paydate_, "DEDUCTION")
+
+                If Deduction_grid.Rows.Count >= 0 Then
+                    Dim totalRowHeight As Integer = Deduction_grid.ColumnHeadersHeight
+                    Dim totalColumnHeight As Integer = Deduction_grid.RowHeadersWidth
+                    For Each row As DataGridViewRow In Deduction_grid.Rows
+                        totalRowHeight += row.Height
+                        row.Height = 25
+                    Next
+                    Deduction_grid.Height = totalRowHeight
+                    Deduction_grid.DefaultCellStyle.Font = New Font("Dubai", 11)
+                End If
+
             End If
 
             '==========================  CHECK PAYDATE IF VALID FOR EDITING (DEDUCTION) =========================   
@@ -158,17 +189,44 @@ Public Class frmPayout
             Calculate_NetPay()
 
             Checkgrid_Visible()
+        Else
+
+            For Each Ctl In GroupBox1.Controls
+                If TypeOf Ctl Is TextBox Then Ctl.Text = ""
+            Next
+
         End If
     End Sub
 
+    Private Sub Benifits(BIO_NO As String, monthly_Basic As Double)
+
+        If ThisIsNotNull("SSSNO", $"PAYROLL_EMPLOYEE where BIO_NO = '{BIO_NO}' and SSSNO is not null") Then 'IF HAS SSSNO DETAILS
+            SSSComp_LBL.Text = (Get_SSS(monthly_Basic).EE).ToString("N")
+            SSS_ER = Get_SSS(monthly_Basic).EE
+            SSS_EC = Get_SSS(monthly_Basic).EC
+        Else
+            SSSComp_LBL.Text = Zeroo
+        End If
+
+        If ThisIsNotNull("PAGIBIGNO", $"PAYROLL_EMPLOYEE where BIO_NO = '{BIO_NO}' and PAGIBIGNO is not null") Then
+            HDMF_LBL.Text = (Get_Pagibig(monthly_Basic)).ToString("N")
+        Else
+            HDMF_LBL.Text = Zeroo
+        End If
+
+        If ThisIsNotNull("PHILHEALTHNO", $"PAYROLL_EMPLOYEE where BIO_NO = '{BIO_NO}' and PHILHEALTHNO is not null") Then
+            Philhealth_LBL.Text = (Get_PhilHealth(monthly_Basic)).ToString("N")
+        Else
+            Philhealth_LBL.Text = Zeroo
+        End If
+
+    End Sub
     Private Sub Checkgrid_Visible() ' ============== Allowance and Deduction
 
         '========================== Check if allowance grid has rows ===================== 
 
         If Allowance_grid.RowCount > 0 Then
-            Label18.Visible = True
             Allowance_grid.Visible = True
-            Undo_BTN.Visible = True
         Else
             Allowance_grid.Visible = False
         End If
@@ -176,11 +234,8 @@ Public Class frmPayout
         '========================== Check if deduction grid has rows ===================== 
 
         If Deduction_grid.RowCount > 0 Then
-            Label22.Visible = True
             Deduction_grid.Visible = True
-            Undo_BTN.Visible = True
         Else
-            Label22.Visible = False
             Deduction_grid.Visible = False
         End If
 
@@ -199,7 +254,7 @@ Public Class frmPayout
 
             ElseIf row.Cells(3).Value = "ON" Then
                 row.Cells(3).Value = "OFF"
-                row.Cells(1).Value = row.Cells(0).Tag
+                row.Cells(1).Value = CDec(row.Cells(0).Tag).ToString("N")
             End If
 
             Calculate_Deduction()
@@ -232,8 +287,6 @@ Public Class frmPayout
             End If
         Next
 
-        Label18.Visible = False
-        Label22.Visible = False
         Deduction_grid.Rows.Clear()
         Allowance_grid.Rows.Clear()
         Prev_Amount_lbl.Text = "-"
@@ -244,31 +297,32 @@ Public Class frmPayout
 
         If Not Name_TXT.Text = String.Empty Then
             Dim BIO_NO As String = BiometricID_TXT.Text
+
             Dim allow_list = Nothing, deduc_list As String = Nothing
 
             Dim rate As Double = Rate_TXT.Text
             If TrainingDays_LBL.Text > 0 Then rate = rate * 0.75  '====== IF TRAINEE
 
             Dim reg_holiday As String = (CDbl(RegularHol_TXT.Text) * rate) * regHoliday_
-            Dim spec_holiday As String = (CDbl(SpecialHol_TXT.Text) * rate) * specHoliday_
+            Dim spec_holiday As String = ((CDbl(SpecialHol_TXT.Text) / 8) * rate) * specHoliday_
 
             Dim result As DialogResult = MessageBox.Show($"The record will be edited, do you want to proceed?", "Warning", MessageBoxButtons.YesNo)
             If result = DialogResult.Yes Then
 
                 SavePayout(BIO_NO, paydate_, TotalBasic_LBL.Tag, TotalOT_LBL.Tag,
                   TotalLateUnder_LBL.Tag, GrossAmount_LBL.Tag, SSSComp_LBL.Text, SSS_ER, SSS_EC,
-                  HDMF_LBL.Text, Philhealth_LBL.Text, Tax_Wheld_LBL.Text, NetTax_LBL.Text, SSSLoan_LBL.Text, PagibigLoan_LBL.Text,
-                  Allowances_LBL.Tag, Deduction_LBL.Tag, NetPay_LBL.Tag, reg_holiday, spec_holiday, TotalNight_LBL.Tag, "")
+                  HDMF_LBL.Text, Philhealth_LBL.Text, Allowances_LBL.Tag, Deduction_LBL.Tag, NetPay_LBL.Tag,
+                  reg_holiday, spec_holiday, TotalNight_LBL.Tag, "")
 
                 '====================================== SAVE NEW ADDITIONAL ===================================================
                 If Allowance_grid.Rows.Count > 0 Then
 
                     If isExist_String("RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{BIO_NO}' AND PAYDATE = '{paydate_}' AND TRANSAC_NAME = 'ALLOWANCE'") Then
-                        RunCommand($"DELETE FROM RECORDED_ALLOW_DEDUC WHERE BIO_NO = '{BIO_NO}' and PAYDATE = '{paydate_}';")
+                        RunCommand($"DELETE FROM RECORDED_ALLOW_DEDUC WHERE BIO_NO = '{BIO_NO}' and PAYDATE = '{paydate_}' AND TRANSAC_NAME = 'ALLOWANCE';")
                     End If
 
                     For Each row As DataGridViewRow In Allowance_grid.Rows
-                        Save_Recorded_Allow_Deduc(BiometricID_TXT.Text, paydate_, row.Cells(0).Value, row.Cells(1).Value, "ALLOWANCE")
+                        Save_Recorded_Allow_Deduc(BiometricID_TXT.Text, paydate_, row.Cells(0).Value, row.Cells(0).Tag, "ALLOWANCE")
 
                         '======================== SAVING TRANSACTION ========================
                         If allow_list <> Nothing Then
@@ -285,7 +339,7 @@ Public Class frmPayout
                 If Deduction_grid.Rows.Count > 0 Then
 
                     If isExist_String("RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{BIO_NO}' AND PAYDATE = '{paydate_}' AND TRANSAC_NAME = 'DEDUCTION'") Then
-                        RunCommand($"DELETE FROM RECORDED_ALLOW_DEDUC WHERE BIO_NO = '{BIO_NO}' and PAYDATE = '{paydate_}';")
+                        RunCommand($"DELETE FROM RECORDED_ALLOW_DEDUC WHERE BIO_NO = '{BIO_NO}' and PAYDATE = '{paydate_}' AND TRANSAC_NAME = 'DEDUCTION';")
                     End If
 
                     For Each row As DataGridViewRow In Deduction_grid.Rows
@@ -293,7 +347,7 @@ Public Class frmPayout
                         Dim deduct_id As String = IIf(IsDBNull(row.Cells(2).Tag), Nothing, row.Cells(2).Tag)
 
                         If row.Cells(1).Value <> 0 Then
-                            Save_Recorded_Allow_Deduc(BiometricID_TXT.Text, paydate_, row.Cells(0).Value, row.Cells(1).Value, "DEDUCTION", deduct_id)
+                            Save_Recorded_Allow_Deduc(BiometricID_TXT.Text, paydate_, row.Cells(0).Value, row.Cells(0).Tag, "DEDUCTION", deduct_id)
 
                             '======================== SAVING TRANSACTION ========================
                             If deduc_list <> Nothing Then
@@ -307,19 +361,24 @@ Public Class frmPayout
 
                 End If
 
-                SaveLogs($"UPDATED PAYOUT {Name_TXT.Text}({BiometricID_TXT.Text}), Basic({TotalBasic_LBL.Text}), OT({TotalOT_LBL.Text}), Late/UT({TotalLateUnder_LBL.Text}), Gross Amount({GrossAmount_LBL.Text}), SSS({SSSComp_LBL.Text}), Pagibig({HDMF_LBL.Text}), Philhealth({Philhealth_LBL.Text}), Tax Wheld({Tax_Wheld_LBL.Text}), SSS Loan({SSSLoan_LBL.Text}), Pagibig Loan({PagibigLoan_LBL.Text}), Allowance({allow_list}), Deduction({deduc_list}), Net Pay({NetPay_LBL.Text}), Total Holiday({TotalHol_LBL.Text}), Total Night Rate({TotalNight_LBL.Text})", frmMainForm.UserName_LBL.Text)
+                SaveLogs($"UPDATED PAYOUT {Name_TXT.Text}({BiometricID_TXT.Text}), Basic({TotalBasic_LBL.Text}), OT({TotalOT_LBL.Text}), Late/UT({TotalLateUnder_LBL.Text}), Gross Amount({GrossAmount_LBL.Text}), SSS({SSSComp_LBL.Text}), Pagibig({HDMF_LBL.Text}), Philhealth({Philhealth_LBL.Text}), Remittance({Remittance_LBL.Text}), Allowance({allow_list}), Deduction({deduc_list}), Net Pay({NetPay_LBL.Text}), Total Holiday({TotalHol_LBL.Text}), Total Night Rate({TotalNight_LBL.Text})", frmMainForm.UserName_LBL.Text)
 
                 Cancel_BTN.PerformClick()
 
+                MsgBox("Successfully Saved!", MsgBoxStyle.Information, "Information")
             End If
         End If
     End Sub
 
     Private Sub Pay_Refresh_BTN_Click(sender As Object, e As EventArgs) Handles Pay_Refresh_BTN.Click
-        Lists_Payout(Payout_list, paydate_)
+        If ThisHasRow($"PAYROLL_PAYOUT WHERE PAYDATE = '{paydate_}'") Then
+            Lists_Payout(Payout_list, paydate_)
 
-        GetPayout_TOTALS(paydate_, P_GrossAmount_LBL, P_SSSComp_LBL, P_PagibigComp_LBL, P_PhilHComp_LBL, P_TaxWH_LBL,
-                         P_SSSLoan_LBL, P_PagibigLoan_LBL, P_Allowance_LBL, P_Deduction_LBL, P_NetPay_LBL)
+            GetPayout_TOTALS(paydate_, P_GrossAmount_LBL, P_SSSComp_LBL, P_PagibigComp_LBL, P_PhilHComp_LBL,
+                             P_Allowance_LBL, P_Deduction_LBL, P_NetPay_LBL)
+        Else
+            MsgBox($"NO RECORD FOR {paydate_} PAYROLL .", MsgBoxStyle.Exclamation, "INVALID")
+        End If
     End Sub
 
     Private Sub Paydate_ComboB_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Paydate_ComboB.SelectedIndexChanged
@@ -327,8 +386,8 @@ Public Class frmPayout
 
         Lists_Payout(Payout_list, paydate_)
 
-        GetPayout_TOTALS(paydate_, P_GrossAmount_LBL, P_SSSComp_LBL, P_PagibigComp_LBL, P_PhilHComp_LBL, P_TaxWH_LBL,
-                         P_SSSLoan_LBL, P_PagibigLoan_LBL, P_Allowance_LBL, P_Deduction_LBL, P_NetPay_LBL)
+        GetPayout_TOTALS(paydate_, P_GrossAmount_LBL, P_SSSComp_LBL, P_PagibigComp_LBL, P_PhilHComp_LBL,
+                          P_Allowance_LBL, P_Deduction_LBL, P_NetPay_LBL)
     End Sub
 
     Private Sub Payout_list_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles Payout_list.MouseDoubleClick
@@ -338,8 +397,8 @@ Public Class frmPayout
             Name_TXT.Clear()
 
             BiometricID_TXT.Text = Payout_list.FocusedItem.SubItems(1).Tag
-            emp_id = Payout_list.FocusedItem.SubItems(11).Tag
             TabControl1.SelectedIndex = 1
+            Additional_Panel.Visible = False
         End If
     End Sub
 
@@ -353,77 +412,118 @@ Public Class frmPayout
 
     Private Sub Calculate_Gross()
 
-        If TrainingDays_LBL.Text <> 0 Then '================ BASE ON TRAINING DAYS COVERED =================
-
-            Dim rate As Double = Rate_TXT.Text
-            Dim deduct_per_day As Double = 0
-            Dim total_train As Double = 0
+        If TrainingDays_LBL.Text <> 0 Then '================ BASE ON TRAINING DAYS COVERED ================= 
+            Dim rate As Decimal = Rate_TXT.Text
+            Dim deduct_per_day As Decimal = 0
+            Dim total_train As Decimal = 0
 
             rate = rate * 0.75
             deduct_per_day = Convert.ToDouble(Rate_TXT.Text) - rate
             total_train = deduct_per_day * Convert.ToDouble(TrainingDays_LBL.Text)
 
-            TotalBasic_LBL.Text = ((CDbl(NoOfDays_TXT.Text) * CDbl(Rate_TXT.Text)) - total_train).ToString("N")
-            TotalBasic_LBL.Tag = (CDbl(NoOfDays_TXT.Text) * CDbl(Rate_TXT.Text)) - total_train
+            ''===================== TRAINING HOLIDAY ==================  
+            Dim RegularHol As Integer = CInt(RegularHol_TXT.Text) - CInt(RegularHol_TXT.Tag)
+            Dim SpecialHol As Integer = CInt(SpecialHol_TXT.Text) - CInt(SpecialHol_TXT.Tag)
 
-            TotalHol_LBL.Text = (((CDbl(SpecialHol_TXT.Text) * CDbl(rate)) * specHoliday_) + ((CDbl(RegularHol_TXT.Text) * CDbl(rate)) * regHoliday_)).ToString("N") ' =========== CALCULATE hOLIDAY TO PESO ===========
-            TotalHol_LBL.Tag = ((CDbl(SpecialHol_TXT.Text) * CDbl(rate)) * specHoliday_) + ((CDbl(RegularHol_TXT.Text) * CDbl(rate)) * regHoliday_) ' =========== CALCULATE hOLIDAY TO PESO ===========
+            Dim REG_STANDARD As Decimal = (RegularHol * CDec(Rate_TXT.Text)) * regHoliday_
+            Dim SPEC_STANDARD As Decimal = ((SpecialHol / 8) * CDec(Rate_TXT.Text)) * specHoliday_
 
-            TotalOT_LBL.Text = (((CDbl(rate) / 8) * 1.25) * CDbl(RegularOT_TXT.Tag)).ToString("N") ' =========== CALCULATE OVERTIME TO PESO ===========
-            TotalOT_LBL.Tag = ((CDbl(rate) / 8) * 1.25) * CDbl(RegularOT_TXT.Tag) ' =========== CALCULATE OVERTIME TO PESO ===========
+            Dim REG_TRAINEE As Decimal = (CDbl(RegularHol_TXT.Tag) * rate) * regHoliday_
+            Dim SPEC_TRAINEE As Decimal = ((CDbl(SpecialHol_TXT.Tag) / 8) * rate) * specHoliday_
 
-            TotalNight_LBL.Text = (((CDbl(rate) / 8) * 0.1) * CDbl(NightTime_TXT.Tag)).ToString("N") ' =========== CALCULATE OVERTIME TO PESO ===========
-            TotalNight_LBL.Tag = ((CDbl(rate) / 8) * 0.1) * CDbl(NightTime_TXT.Tag) ' =========== CALCULATE OVERTIME TO PESO ===========
+            TotalHol_LBL.Text = FormatNumber(REG_STANDARD + REG_TRAINEE + SPEC_STANDARD + SPEC_TRAINEE)
+            TotalHol_LBL.Tag = REG_STANDARD + REG_TRAINEE + SPEC_STANDARD + SPEC_TRAINEE
 
-            Dim late_split() As String, under_split() As String, lateTOMinute, underToMinute As Double
+            TotalBasic_LBL.Text = FormatNumber((CDbl(NoOfDays_TXT.Text) * CDec(Rate_TXT.Text)) - total_train)
+            TotalBasic_LBL.Tag = (CDbl(NoOfDays_TXT.Text) * CDec(Rate_TXT.Text)) - total_train
 
-            late_split = Split(Late_TXT.Tag, ":")
-            under_split = Split(UnderTime_TXT.Tag, ":")
+            TotalNight_LBL.Text = FormatNumber(((rate / 8) * 0.1) * CDbl(NightTime_TXT.Tag))
+            TotalNight_LBL.Tag = ((rate / 8) * 0.1) * CDbl(NightTime_TXT.Tag)
 
-            lateTOMinute = CDbl(late_split(0)) * 60 + CDbl(late_split(1)) + CDbl(late_split(2)) / 60
-            underToMinute = (CDbl(under_split(0)) * 60 + CDbl(under_split(1)) + CDbl(under_split(2)) / 60) / 60
+            Dim LATEE, LATE_TRAIN, UNDERTIMEE, UNDERTIMEE_TRAIN, OVERTIMEE, OVERTIMEE_TRAIN As Decimal
+            LATEE = ((CDec(Rate_TXT.Text) / 8) / 60) * (CDbl(Late_TXT.Text) - CDbl(TrainningLate_LBL.Text))
+            UNDERTIMEE = ((CDec(Rate_TXT.Text) / 8) / 60) * (CDbl(UnderTime_TXT.Text) - CDbl(TrainingUT_LBL.Text))
+            OVERTIMEE = ((CDec(Rate_TXT.Text) / 8) * 1.25) * (CDbl(RegularOT_TXT.Text) - CDbl(TrainingOT_LBL.Text))
 
-            Dim LATEE, UNDERTIMEE As Double
-            LATEE = ((CDbl(rate) / 8) / 60) * lateTOMinute
-            UNDERTIMEE = (CDbl(rate) / 8) * underToMinute
+            LATE_TRAIN = ((rate / 8) / 60) * CDbl(TrainningLate_LBL.Text)
+            UNDERTIMEE_TRAIN = ((rate / 8) / 60) * CDbl(TrainingUT_LBL.Text)
+            OVERTIMEE_TRAIN = ((rate / 8) * 1.25) * CDbl(TrainingOT_LBL.Text)
 
-            TotalLateUnder_LBL.Text = (LATEE + UNDERTIMEE).ToString("N")
+            LATEE = LATEE + LATE_TRAIN
+            UNDERTIMEE = UNDERTIMEE + UNDERTIMEE_TRAIN
+            OVERTIMEE = OVERTIMEE + OVERTIMEE_TRAIN
+
+            Dim late_ut As String = LATEE + UNDERTIMEE
+
+            TotalLateUnder_LBL.Text = FormatNumber(late_ut)
             TotalLateUnder_LBL.Tag = LATEE + UNDERTIMEE
 
-            GrossAmount_LBL.Text = ((CDbl(TotalBasic_LBL.Text) + CDbl(TotalHol_LBL.Text) + CDbl(TotalOT_LBL.Text) + CDbl(TotalNight_LBL.Text)) - CDbl(TotalLateUnder_LBL.Text)).ToString("N")
-            GrossAmount_LBL.Tag = (CDbl(TotalBasic_LBL.Text) + CDbl(TotalHol_LBL.Text) + CDbl(TotalOT_LBL.Text) + CDbl(TotalNight_LBL.Text)) - CDbl(TotalLateUnder_LBL.Text)
+            TotalOT_LBL.Text = FormatNumber(OVERTIMEE)
+            TotalOT_LBL.Tag = OVERTIMEE
+
+            TotalNight_LBL.Text = FormatNumber(((CDec(Rate_TXT.Text) / 8) * 0.1) * CDbl(NightTime_TXT.Tag))
+            TotalNight_LBL.Tag = ((CDec(Rate_TXT.Text) / 8) * 0.1) * CDbl(NightTime_TXT.Tag)
+
+            GrossAmount_LBL.Text = ((CDbl(TotalBasic_LBL.Tag) + CDbl(TotalHol_LBL.Tag) + CDbl(TotalOT_LBL.Tag) + CDbl(TotalNight_LBL.Tag)) - CDbl(TotalLateUnder_LBL.Tag)).ToString("N")
+            GrossAmount_LBL.Tag = (CDbl(TotalBasic_LBL.Tag) + CDbl(TotalHol_LBL.Tag) + CDbl(TotalOT_LBL.Tag) + CDbl(TotalNight_LBL.Tag)) - CDbl(TotalLateUnder_LBL.Tag)
 
         Else '========================================= NOT A TRAINEE ===========================================
 
-            TotalBasic_LBL.Text = (CDbl(NoOfDays_TXT.Text) * CDbl(Rate_TXT.Text)).ToString("N")
-            TotalBasic_LBL.Tag = CDbl(NoOfDays_TXT.Text) * CDbl(Rate_TXT.Text)
+            Dim RATEE As Decimal = Rate_TXT.Text
+            TotalBasic_LBL.Text = FormatNumber(CDbl(NoOfDays_TXT.Text) * RATEE)
+            TotalBasic_LBL.Tag = CDbl(NoOfDays_TXT.Text) * RATEE
 
-            TotalHol_LBL.Text = (((CDbl(SpecialHol_TXT.Text) * CDbl(Rate_TXT.Text)) * specHoliday_) + ((CDbl(RegularHol_TXT.Text) * CDbl(Rate_TXT.Text)) * regHoliday_)).ToString("N") ' =========== CALCULATE hOLIDAY TO PESO ===========
-            TotalHol_LBL.Tag = ((CDbl(SpecialHol_TXT.Text) * CDbl(Rate_TXT.Text)) * specHoliday_) + ((CDbl(RegularHol_TXT.Text) * CDbl(Rate_TXT.Text)) * regHoliday_) ' =========== CALCULATE hOLIDAY TO PESO ===========
+            TotalHol_LBL.Text = FormatNumber((((CDbl(SpecialHol_TXT.Text) / 8) * RATEE) * specHoliday_) + ((CDbl(RegularHol_TXT.Text) * RATEE) * regHoliday_))
+            TotalHol_LBL.Tag = (((CInt(SpecialHol_TXT.Text) / 8) * RATEE) * specHoliday_) + ((CInt(RegularHol_TXT.Text) * RATEE) * regHoliday_)
 
-            TotalOT_LBL.Text = (((CDbl(Rate_TXT.Text) / 8) * 1.25) * CDbl(RegularOT_TXT.Tag)).ToString("N") ' =========== CALCULATE OVERTIME TO PESO ===========
-            TotalOT_LBL.Tag = ((CDbl(Rate_TXT.Text) / 8) * 1.25) * CDbl(RegularOT_TXT.Tag) ' =========== CALCULATE OVERTIME TO PESO ===========
+            TotalOT_LBL.Text = FormatNumber(((CDbl(Rate_TXT.Text) / 8) * 1.25) * CDbl(RegularOT_TXT.Text))
+            TotalOT_LBL.Tag = ((CDbl(Rate_TXT.Text) / 8) * 1.25) * CDbl(RegularOT_TXT.Text)
 
-            TotalNight_LBL.Text = (((CDbl(Rate_TXT.Text) / 8) * 0.1) * CDbl(NightTime_TXT.Tag)).ToString("N") ' =========== CALCULATE OVERTIME TO PESO ===========
-            TotalNight_LBL.Tag = ((CDbl(Rate_TXT.Text) / 8) * 0.1) * CDbl(NightTime_TXT.Tag) ' =========== CALCULATE OVERTIME TO PESO ===========
+            TotalNight_LBL.Text = FormatNumber(((RATEE / 8) * 0.1) * CDbl(NightTime_TXT.Tag))
+            TotalNight_LBL.Tag = ((RATEE / 8) * 0.1) * CDbl(NightTime_TXT.Tag)
 
-            Dim late_split() As String, under_split() As String, lateTOMinute, underToMinute As Double
+            Dim LATEE, UNDERTIMEE As Decimal
+            LATEE = ((RATEE / 8) / 60) * CDbl(Late_TXT.Text)
+            UNDERTIMEE = ((RATEE / 8) / 60) * CDbl(UnderTime_TXT.Text)
 
-            late_split = Split(Late_TXT.Tag, ":")
-            under_split = Split(UnderTime_TXT.Tag, ":")
-
-            lateTOMinute = CDbl(late_split(0)) * 60 + CDbl(late_split(1)) + CDbl(late_split(2)) / 60
-            underToMinute = (CDbl(under_split(0)) * 60 + CDbl(under_split(1)) + CDbl(under_split(2)) / 60) / 60
-
-            Dim LATEE, UNDERTIMEE As Double
-            LATEE = ((CDbl(Rate_TXT.Text) / 8) / 60) * lateTOMinute
-            UNDERTIMEE = (CDbl(Rate_TXT.Text) / 8) * underToMinute
-
-            TotalLateUnder_LBL.Text = (LATEE + UNDERTIMEE).ToString("N")
+            TotalLateUnder_LBL.Text = FormatNumber(LATEE + UNDERTIMEE)
             TotalLateUnder_LBL.Tag = LATEE + UNDERTIMEE
 
-            GrossAmount_LBL.Text = ((CDbl(TotalBasic_LBL.Text) + CDbl(TotalHol_LBL.Text) + CDbl(TotalOT_LBL.Text) + CDbl(TotalNight_LBL.Text)) - CDbl(TotalLateUnder_LBL.Text)).ToString("N")
-            GrossAmount_LBL.Tag = (CDbl(TotalBasic_LBL.Text) + CDbl(TotalHol_LBL.Text) + CDbl(TotalOT_LBL.Text) + CDbl(TotalNight_LBL.Text)) - CDbl(TotalLateUnder_LBL.Text)
+            ''============================= FOR MONTHLY RATE/FIXED RATE (IF ABOVE MINIMUM) ==================================   
+
+            If Rate_TXT.Text > Rate_TXT.Tag Then '=== TAG(MINIMUM DAILY RATE) 
+                Dim BASICC As Decimal = CDec(RateFixYes_RB.Tag) / 2
+
+                If RateFixYes_RB.Checked = True Then '=== TAG(MINIMUM DAILY RATE) 
+                    BASICC = CDec(RateFixYes_RB.Tag) / 2
+                    TotalBasic_LBL.Text = FormatNumber(BASICC)
+                    TotalBasic_LBL.Tag = BASICC
+
+                    TotalHol_LBL.Text = Zeroo
+                    TotalHol_LBL.Tag = Zeroo
+                    TotalOT_LBL.Text = Zeroo
+                    TotalOT_LBL.Tag = Zeroo
+                    TotalLateUnder_LBL.Text = Zeroo
+                    TotalLateUnder_LBL.Tag = Zeroo
+                    TotalNight_LBL.Text = Zeroo
+                    TotalNight_LBL.Tag = Zeroo
+
+                Else
+
+                    If CDbl(NoOfDays_TXT.Text) >= STANDARD_DAYS Then  '=== CHECK IF ABOVE MINIMUM 
+                        TotalBasic_LBL.Text = FormatNumber(BASICC)
+                        TotalBasic_LBL.Tag = BASICC
+                    Else
+                        Dim MINUS_DAYS As Double = STANDARD_DAYS - CDbl(NoOfDays_TXT.Text)
+                        TotalBasic_LBL.Text = FormatNumber(BASICC - (MINUS_DAYS * RATEE))
+                        TotalBasic_LBL.Tag = BASICC - (MINUS_DAYS * RATEE)
+                    End If
+
+                End If
+            End If
+
+            GrossAmount_LBL.Text = FormatNumber((CDbl(TotalBasic_LBL.Tag) + CDbl(TotalHol_LBL.Tag) + CDbl(TotalOT_LBL.Tag) + CDbl(TotalNight_LBL.Tag)) - CDbl(TotalLateUnder_LBL.Tag))
+            GrossAmount_LBL.Tag = (CDbl(TotalBasic_LBL.Tag) + CDbl(TotalHol_LBL.Tag) + CDbl(TotalOT_LBL.Tag) + CDbl(TotalNight_LBL.Tag)) - CDbl(TotalLateUnder_LBL.Tag)
 
         End If
 
@@ -448,25 +548,63 @@ Public Class frmPayout
 
     Private Sub SaveAdd_BTN_Click(sender As Object, e As EventArgs) Handles SaveAdd_BTN.Click
         If CategoryAdd_TXT.Text <> String.Empty And AmountAdd_TXT.Text <> String.Empty Then
-            Allowance_grid.Visible = True
-            Dim rowId As Integer = Allowance_grid.Rows.Add()
-            Dim row As DataGridViewRow = Allowance_grid.Rows(rowId)
 
-            Dim toProper As String
-            Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
+            If TransacAdd_lbl.Text = "Allowance" Then
 
-            toProper = info.ToTitleCase(CategoryAdd_TXT.Text)
-            Dim amountt As Double = AmountAdd_TXT.Text
+                Dim result As DialogResult = MsgBox($"Additional Allowance for {Name_TXT.Text} will be added, proceed anyway?", MessageBoxButtons.YesNo)
+                If result = DialogResult.Yes Then
 
-            row.Cells(0).Value = toProper
-            row.Cells(1).Value = amountt.ToString("N")
+                    Allowance_grid.Visible = True
+                    Dim rowId As Integer = Allowance_grid.Rows.Add()
+                    Dim row As DataGridViewRow = Allowance_grid.Rows(rowId)
 
-            CancelAdd_BTN.PerformClick()
-            Additional_Panel.Visible = False
+                    Dim toProper As String
+                    Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
 
-            AdjustHeightOfGridBasedOnRows(Allowance_grid, 25)
+                    toProper = info.ToTitleCase(CategoryAdd_TXT.Text)
+                    Dim amountt As Double = AmountAdd_TXT.Text
 
-            Calculate_Allowance()
+                    row.Cells(0).Value = toProper
+                    row.Cells(0).Tag = amountt
+                    row.Cells(1).Value = amountt.ToString("N")
+
+                    CancelAdd_BTN.PerformClick()
+                    Additional_Panel.Visible = False
+
+                    AdjustHeightOfGridBasedOnRows(Allowance_grid)
+
+                    Calculate_Allowance()
+                End If
+
+            ElseIf TransacAdd_lbl.Text = "Deduction" Then
+
+                Dim result As DialogResult = MsgBox($"Additional Deduction for {Name_TXT.Text} will be added, proceed anyway?", MessageBoxButtons.YesNo)
+                If result = DialogResult.Yes Then
+
+                    Deduction_grid.Visible = True
+                    Dim rowId As Integer = Deduction_grid.Rows.Add()
+                    Dim row As DataGridViewRow = Deduction_grid.Rows(rowId)
+
+                    Dim toProper As String
+                    Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
+
+                    toProper = info.ToTitleCase(CategoryAdd_TXT.Text)
+                    Dim amountt As Double = AmountAdd_TXT.Text
+
+                    row.Cells(0).Value = toProper
+                    row.Cells(0).Tag = amountt
+                    row.Cells(1).Value = amountt.ToString("N")
+                    row.Cells(3).Value = "OFF"
+
+                    CancelAdd_BTN.PerformClick()
+                    Additional_Panel.Visible = False
+
+                    AdjustHeightOfGridBasedOnRows(Deduction_grid)
+
+                    Calculate_Deduction()
+                End If
+            End If
+
             Calculate_NetPay()
 
         End If
@@ -482,35 +620,45 @@ Public Class frmPayout
         If IsEnter(e) Then SaveAdd_BTN.PerformClick()
     End Sub
 
-    Private Sub Refresh_BTN_Click(sender As Object, e As EventArgs) Handles Undo_BTN.Click
+    Private Sub Refresh_BTN_Click(sender As Object, e As EventArgs)
+        If Name_TXT.Text <> Nothing Then
+            Dim PAYROLL As String
+            If Paydate_ComboB.SelectedIndex >= 0 Then
+                PAYROLL = Paydate_ComboB.SelectedItem
+            Else
+                PAYROLL = paydate_
+            End If
 
-        Recorded_Details(BiometricID_TXT.Text, Allowance_grid, paydate_, "ALLOWANCE")
+            Recorded_Details(BiometricID_TXT.Text, Allowance_grid, paydate_, "ALLOWANCE")
 
-        'AllowanceDetails(BiometricID_TXT.Text, Allowance_grid, sched_deduc)
+            'AllowanceDetails(BiometricID_TXT.Text, Allowance_grid, sched_deduc)
 
-        DeductioneDetails_ORIG(BiometricID_TXT.Text, Deduction_grid, sched_deduc)
+            'DeductioneDetails_ORIG(BiometricID_TXT.Text, Deduction_grid, sched_deduc, PAYROLL)
 
-        Calculate_Gross()
+            Calculate_Gross()
 
-        Calculate_Allowance()
+            Calculate_Allowance()
 
-        Calculate_Deduction()
+            Calculate_Deduction()
 
-        Calculate_NetPay()
+            Calculate_NetPay()
 
-        Checkgrid_Visible()
+            Checkgrid_Visible()
 
-        If paydate_ = frmMainForm.Paydate.ToString("d") Then     '======== CHECK IF VALID FOR EDITING IF NOT DISABLE SAVING
-            Details_Save_BTN.Enabled = True
-        Else
-            Details_Save_BTN.Enabled = False
+            If paydate_ = frmMainForm.Paydate.ToString("d") Then     '======== CHECK IF VALID FOR EDITING IF NOT DISABLE SAVING
+                Details_Save_BTN.Enabled = True
+            Else
+                Details_Save_BTN.Enabled = False
+            End If
         End If
 
     End Sub
 
     Private Sub Additional_BTN_Click(sender As Object, e As EventArgs) Handles Additional_BTN.Click
-        Additional_Panel.Location = New Point(ClientSize.Width / 2 - Additional_Panel.Size.Width / 2, ClientSize.Height / 2 - Additional_Panel.Size.Height / 2)
+        Additional_Panel.Location = New Point(175, 200)
         Additional_Panel.Visible = True
+        TransacAdd_lbl.Text = "Allowance"
+        Additional_Panel.BackColor = Color.LightCoral
     End Sub
 
     Private Sub Additional_Panel_MouseDown(sender As Object, e As MouseEventArgs) Handles Additional_Panel.MouseDown
@@ -525,6 +673,65 @@ Public Class frmPayout
         End If
     End Sub
 
+    Private Sub Deduction_BTN_Click(sender As Object, e As EventArgs) Handles Deduction_BTN.Click
+        Additional_Panel.Location = New Point(175, 340)
+        Additional_Panel.Visible = True
+        TransacAdd_lbl.Text = "Deduction"
+        Additional_Panel.BackColor = Color.Chocolate
+    End Sub
+
+    Private Sub RateFixYes_RB_CheckedChanged(sender As Object, e As EventArgs) Handles RateFixYes_RB.CheckedChanged
+        If RateFixYes_RB.Checked = False Then
+            RateFixNo_RB.Checked = True
+        End If
+    End Sub
+
+    'Private Sub ConfirmDeduc_btn_Click(sender As Object, e As EventArgs) Handles ConfirmDeduc_btn.Click
+    '    If Payslip_paydate_Combo.SelectedIndex >= 0 Then
+    '        Dim mysqll As String = $"select * from payroll_payout where paydate = '{Payslip_paydate_Combo.Text}';"
+    '        Using ds As DataSet = LoadSQL(mysqll, "payroll_payout")
+    '            If ds.Tables(0).Rows.Count > 0 Then
+    '                progressBarStart(ds.Tables(0).Rows.Count)
+    '                For Each dr In ds.Tables(0).Rows
+    '                    With dr
+    '                        Deduct_ifExist(.Item("BIOMETRIC_ID"), Payslip_paydate_Combo.Text)
+    '                    End With
+
+    '                    frmMainForm.AppProgressBar.Value += 1
+    '                Next
+    '                progressBarEnd()
+    '            End If
+    '        End Using
+    '    Else
+    '        MsgBox("Please Select Paydate.", MsgBoxStyle.Exclamation, "INVALID")
+    '    End If
+    'End Sub
+
+    Private Sub TrainingDays_LBL_TextChanged(sender As Object, e As EventArgs) Handles TrainingDays_LBL.TextChanged
+        If TrainingDays_LBL.Text > 0 Then
+            Training_GB.Visible = True
+        End If
+    End Sub
+
+    Private Sub ConfirmDeduc_btn_Click(sender As Object, e As EventArgs) Handles ConfirmDeduc_btn.Click
+
+        Dim mysqll As String = $"select distinct(BIOMETRIC_ID) from payroll_payout;"
+        Using ds As DataSet = LoadSQL(mysqll, "payroll_payout")
+            If ds.Tables(0).Rows.Count > 0 Then
+                progressBarStart(ds.Tables(0).Rows.Count)
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+                        CheckDeduction_Loans_IfZeroBalance(.item("BIOMETRIC_ID"))
+                    End With
+                    frmMainForm.AppProgressBar.Value += 1
+                Next
+                progressBarEnd()
+                MsgBox("Successfully updated!", MsgBoxStyle.Information)
+            End If
+        End Using
+
+    End Sub
+
     Private Sub Additional_Panel_MouseUp(sender As Object, e As MouseEventArgs) Handles Additional_Panel.MouseUp
         allowCoolMove = False
         Cursor = Cursors.Default
@@ -534,11 +741,11 @@ Public Class frmPayout
         Dim totals As Double = 0
         If Allowance_grid.Rows.Count > 0 Then
             For Each row As DataGridViewRow In Allowance_grid.Rows
-                totals = totals + row.Cells(1).Value
+                totals = totals + row.Cells(0).Tag
             Next
         End If
 
-        Allowances_LBL.Text = totals.ToString("N")
+        Allowances_LBL.Text = FormatNumber(totals)
         Allowances_LBL.Tag = totals
     End Sub
 
@@ -547,48 +754,35 @@ Public Class frmPayout
         Dim totals As Double = 0
         If Deduction_grid.Rows.Count > 0 Then
             For Each row As DataGridViewRow In Deduction_grid.Rows
-                totals = totals + row.Cells(1).Value
+                If row.Cells(3).Value = "OFF" Then
+                    totals = totals + row.Cells(0).Tag
+                End If
             Next
         End If
 
-        Deduction_LBL.Text = totals.ToString("N")
+        Deduction_LBL.Text = FormatNumber(totals)
         Deduction_LBL.Tag = totals
 
     End Sub
 
     Private Sub Calculate_NetPay()
 
-        'netTax = If(Not (NetTax_LBL.Text = String.Empty), NetTax_LBL.Text, 0)
-        gross = If(Not (GrossAmount_LBL.Text = String.Empty), GrossAmount_LBL.Text, 0)
-        sssLoan = If(Not (SSSLoan_LBL.Text = String.Empty), SSSLoan_LBL.Text, 0)
-        pagibigLoan = If(Not (PagibigLoan_LBL.Text = String.Empty), PagibigLoan_LBL.Text, 0)
-        allowance = If(Not (Allowances_LBL.Text = String.Empty), Allowances_LBL.Text, 0)
-        deduction = If(Not (Deduction_LBL.Text = String.Empty), Deduction_LBL.Text, 0)
+        Dim CONTRIB As Decimal = CDbl(SSSComp_LBL.Text) + CDbl(HDMF_LBL.Text) + CDbl(Philhealth_LBL.Text)
 
-        Dim CONTRIB As Double = CDbl(SSSComp_LBL.Text) + CDbl(HDMF_LBL.Text) + CDbl(Philhealth_LBL.Text) + CDbl(Tax_Wheld_LBL.Text)
-
-        Dim positive, negative As Double
+        Dim positive, negative As Decimal
         If IsLastDay(paydate_) Then
-            positive = gross + allowance
-            negative = CONTRIB + sssLoan + pagibigLoan + deduction
+            positive = CDec(GrossAmount_LBL.Tag) + CDec(Allowances_LBL.Tag)
+            negative = CONTRIB + CDec(Deduction_LBL.Tag)
+            'negative = CONTRIB + CDec(SSSLoan_LBL.Text) + CDec(PagibigLoan_LBL.Text) + CDec(Deduction_LBL.Tag)
         Else
-            NetTax_LBL.Text = 0
-            positive = gross + allowance
-            negative = deduction
+            Remittance_LBL.Text = 0.00
+            positive = CDec(GrossAmount_LBL.Tag) + CDec(Allowances_LBL.Tag)
+            negative = CDec(Deduction_LBL.Tag)
         End If
 
-        NetPay_LBL.Text = (positive - negative).ToString("N")
+        NetPay_LBL.Text = FormatNumber(positive - negative)
         NetPay_LBL.Tag = positive - negative
 
-    End Sub
-
-    Private Sub OtherDeduction_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles BiometricID_TXT.KeyPress
-        If e.KeyChar <> ChrW(Keys.Back) Then
-            If Char.IsNumber(e.KeyChar) Then
-            Else
-                e.Handled = True
-            End If
-        End If
     End Sub
 
     '====================================================== PAYSLIP ==========================================================
@@ -625,59 +819,10 @@ Public Class frmPayout
         End If
     End Sub
 
-    'Dim hours, sss_comp, pagibig_comp, philh_comp, tax_WH As Double
-    'Dim sbu, otherLoan_perGive, charges_perGive, cash_advance_perGive, total_deduction As Double
-    'Dim sss_loan, pagibig_loan, net_pay As Double
-    'Dim thirteen_month As Double = 0
-
     Private Sub Close_LBL_Click(sender As Object, e As EventArgs) Handles Close_LBL.Click
         Close()
     End Sub
 
-    'Public Sub Send_Email(byteViewer As Byte(), recipient_Email As String, recipient_Name As String, Optional FOR_single As Boolean = False)
-    '    Try
-    '        Dim FoundMatch As Boolean = Regex.IsMatch(recipient_Email, "\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase)
-
-    '        If Not FoundMatch Then
-    '            MsgBox(recipient_Name & " has an INVALID EMAIL ADDRESS.", MsgBoxStyle.Exclamation, "INVALID")
-    '            Exit Sub
-    '        End If
-
-    '        Dim email As String = GetEmail()
-    '        Dim password As String = GetPassword()
-    '        Dim datee As DateTime = Payslip_paydate_Combo.Text
-
-    '        Dim Smtp_Server As New SmtpClient
-    '        Dim e_mail As New MailMessage()
-    '        Smtp_Server.UseDefaultCredentials = False
-    '        Smtp_Server.Credentials = New Net.NetworkCredential(email, password)
-    '        Smtp_Server.Port = 587
-    '        Smtp_Server.EnableSsl = True
-    '        Smtp_Server.Host = "smtp.gmail.com"
-
-    '        e_mail = New MailMessage()
-    '        e_mail.From = New MailAddress(email)
-    '        e_mail.To.Add(recipient_Email)
-    '        e_mail.Subject = datee.ToString("MMMM dd, yyyy") & " PAYROLL"
-    '        e_mail.IsBodyHtml = False
-
-    '        Dim memoryStream = New MemoryStream(byteViewer)
-    '        memoryStream.Seek(0, SeekOrigin.Begin)
-
-    '        Dim attachment = New Attachment(memoryStream, recipient_Name & ".pdf")
-    '        e_mail.Attachments.Add(attachment)
-
-    '        e_mail.Body = BodyText_RichB.Text
-    '        Smtp_Server.Send(e_mail)
-
-    '        If FOR_single Then
-    '            MsgBox("Email Sent!")
-    '        End If
-
-    '    Catch error_t As Exception
-    '        MsgBox(error_t.ToString)
-    '    End Try
-    'End Sub
 
     Private Sub Rate_EmpSelect_BTN_Click(sender As Object, e As EventArgs) Handles EmpSelect_BTN.Click
         If Payslip_paydate_Combo.SelectedIndex < 0 Then
@@ -704,69 +849,69 @@ Public Class frmPayout
             Catch ex As Exception
 
             End Try
+
         End If
     End Sub
 
     Private Sub Send_BTN_Click(sender As Object, e As EventArgs) Handles Send_BTN.Click
 
-        Dim datee As DateTime
+        Dim result As DialogResult = MessageBox.Show($"Are you sure?", "Warning", MessageBoxButtons.YesNo)
+        If result = DialogResult.Yes Then
 
-        If Payslip_paydate_Combo.SelectedIndex >= 0 Then
-            datee = Payslip_paydate_Combo.Text
-        Else
-            MsgBox("Please Select Payroll.", MsgBoxStyle.Exclamation, "INVALID")
-            Exit Sub
-        End If
+            Dim datee As DateTime
 
-        If All_RadioB.Checked = True Then
-
-            Payslip_All()
-
-            SaveLogs($"PAYSLIP EMAILED TO ALL EMPLOYEES, Payroll({datee.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
-
-        ElseIf Company_RadioB.Checked = True Then
-
-            If Company_ComboB.SelectedIndex >= 0 Then
-                Payslip_By("COMPANY", Company_ComboB.Text)
-
-                SaveLogs($"PAYSLIP EMAILED PER COMPANY - {Company_ComboB.Text}, Payroll({datee.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
+            If Payslip_paydate_Combo.SelectedIndex >= 0 Then
+                datee = Payslip_paydate_Combo.Text
             Else
-                MsgBox("Please Select Branch.", MsgBoxStyle.Exclamation, "INVALID")
-            End If
-
-        ElseIf Branch_RadioB.Checked = True Then
-
-            If Branch_ComboB.SelectedIndex >= 0 Then
-                Payslip_By("BRANCH_CODE", Branch_ComboB.Text)
-
-                SaveLogs($"PAYSLIP EMAILED PER BRANCH - {Branch_ComboB.Text}, Payroll({datee.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
-            Else
-                MsgBox("Please Select Branch.", MsgBoxStyle.Exclamation, "INVALID")
-            End If
-
-        Else
-
-            LoadPayslip(Employee_TXT.Tag, Payslip_paydate_Combo.Text)
-
-            Deduct_ifExist(Employee_TXT.Tag, Payslip_paydate_Combo.Text)
-
-            '================================ CHECK IF VALID EMAIL ADDRESS ============================
-            Dim FoundMatch As Boolean = Regex.IsMatch(Email_TXT.Text, "\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase)
-
-            If Not FoundMatch Then
-                MsgBox(Employee_TXT.Text & " has an invalid email address.", MsgBoxStyle.Exclamation, "INVALID")
+                MsgBox("Please Select Payroll.", MsgBoxStyle.Exclamation, "INVALID")
                 Exit Sub
-            Else
-                '================================ SEND TO EMAIL ADDRESS IF VALID ============================
-                'Send_Email(ReportViewer_payslip.LocalReport.Render("PDF"), Email_TXT.Text, Employee_TXT.Text, Payslip_paydate_Combo.Text, BodyText_RichB.Text, datee.ToString("MMMM dd, yyyy") & " PAYROLL")
-
-                MsgBox("Email sent to " & Employee_TXT.Text, MsgBoxStyle.Information, "Information")
             End If
 
-            SaveLogs($"PAYSLIP EMAILED TO {Employee_TXT.Text}({Employee_TXT.Tag})", frmMainForm.UserName_LBL.Text)
+            If All_RadioB.Checked = True Then
 
+                Payslip_All()
+
+            ElseIf Company_RadioB.Checked = True Then
+
+                If Company_ComboB.SelectedIndex >= 0 Then
+                    Payslip_By("COMPANY", Company_ComboB.Text)
+                Else
+                    MsgBox("Please Select Branch.", MsgBoxStyle.Exclamation, "INVALID")
+                End If
+
+            ElseIf Branch_RadioB.Checked = True Then
+
+                If Branch_ComboB.SelectedIndex >= 0 Then
+                    Payslip_By("BRANCH_CODE", Branch_ComboB.Text)
+
+                    SaveLogs($"PAYSLIP EMAILED PER BRANCH - {Branch_ComboB.Text}, Payroll({datee.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
+                Else
+                    MsgBox("Please Select Branch.", MsgBoxStyle.Exclamation, "INVALID")
+                End If
+
+            Else
+
+                LoadPayslip(Employee_TXT.Tag, Payslip_paydate_Combo.Text)
+
+                CheckDeduction_Loans_IfZeroBalance(Employee_TXT.Tag)
+
+                '================================ CHECK IF VALID EMAIL ADDRESS ============================
+                Dim FoundMatch As Boolean = Regex.IsMatch(Email_TXT.Text, "\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase)
+
+                If Not FoundMatch Then
+                    MsgBox(Employee_TXT.Text & " has an invalid email address.", MsgBoxStyle.Exclamation, "INVALID")
+                    Exit Sub
+                Else
+                    '================================ SEND TO EMAIL ADDRESS IF VALID ============================
+                    Send_Email(ReportViewer_payslip.LocalReport.Render("PDF"), Email_TXT.Text, Employee_TXT.Text, Payslip_paydate_Combo.Text, BodyText_RichB.Text, datee.ToString("MMMM dd, yyyy") & " PAYROLL")
+
+                    MsgBox("Email sent to " & Employee_TXT.Text, MsgBoxStyle.Information, "Information")
+                End If
+
+                SaveLogs($"PAYSLIP EMAILED TO {Employee_TXT.Text}({Employee_TXT.Tag})", frmMainForm.UserName_LBL.Text)
+
+            End If
         End If
-
 
     End Sub
 
@@ -789,7 +934,7 @@ Public Class frmPayout
 
                         recipient = GetEmail_recipient(.item("BIOMETRIC_ID"))
 
-                        Deduct_ifExist(.Item("BIOMETRIC_ID"), Payslip_paydate_Combo.Text)             '======= REFLECT DEDUCTION IF EXIST
+                        CheckDeduction_Loans_IfZeroBalance(.item("BIOMETRIC_ID"))
 
                         Dim FoundMatch As Boolean = Regex.IsMatch(recipient, "\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase)
 
@@ -802,6 +947,9 @@ Public Class frmPayout
                         End If
 
                         frmMainForm.AppProgressBar.Value += 1
+
+                        SaveLogs($"PAYSLIP EMAILED TO {namee}({ .item("BIOMETRIC_ID")}), Payroll({datee.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
+
                     End With
                 Next
                 MsgBox("Email successfully sent!", MsgBoxStyle.Information, "Information")
@@ -815,8 +963,8 @@ Public Class frmPayout
         Dim recipient As String
         Dim datee As DateTime = Payslip_paydate_Combo.Text
 
-        Dim mysqll As String = $"select A.*, B.*, B.id as emp_id from payroll_payout A 
-                                                inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIOMETRIC_ID   
+        Dim mysqll As String = $"Select A.*, B.*, B.id as emp_id from payroll_payout A 
+                                                inner Join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIOMETRIC_ID   
                                                 where paydate = '{Payslip_paydate_Combo.Text}' and B.{tbl_column} = '{column_value}';"
 
         Using ds As DataSet = LoadSQL(mysqll, "payroll_payout")
@@ -831,7 +979,7 @@ Public Class frmPayout
 
                         recipient = GetEmail_recipient(.item("BIOMETRIC_ID"))
 
-                        Deduct_ifExist(.Item("BIOMETRIC_ID"), Payslip_paydate_Combo.Text)             '======= REFLECT DEDUCTION IF EXIST
+                        CheckDeduction_Loans_IfZeroBalance(.item("BIOMETRIC_ID"))
 
                         Dim FoundMatch As Boolean = Regex.IsMatch(recipient, "\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase)
 
@@ -846,6 +994,8 @@ Public Class frmPayout
                         End If
 
                         frmMainForm.AppProgressBar.Value += 1
+
+                        SaveLogs($"PAYSLIP EMAILED TO {namee}({ .item("BIOMETRIC_ID")}), Payroll({datee.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
                     End With
                 Next
 
@@ -899,7 +1049,7 @@ Public Class frmPayout
             Dim rds_employee As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt_employee)
             ReportViewer_payslip.LocalReport.DataSources.Add(rds_employee)
 
-            '============================================ EMPLOYEE ATTENDANCE AND PAYOUT ================================================
+            '============================================ EMPLOYEE ATTENDANCE AND PAYOUT =======================================
             Dim dt_attendance As New DataTable()
             With dt_attendance
                 .Columns.Add("PRESENT_DAYS")
@@ -909,14 +1059,11 @@ Public Class frmPayout
                 .Columns.Add("TOTAL_LATE_UT")
                 .Columns.Add("TOTAL_BASIC")
                 .Columns.Add("TOTAL_OVERTIME")
-                .Columns.Add("LATE")
+                .Columns.Add("LATE_UNDERTIME")
                 .Columns.Add("GROSS_AMOUNT")
                 .Columns.Add("SSS_COMP")
                 .Columns.Add("PAGIBIG_COMP")
                 .Columns.Add("PHILHEALTH_COMP")
-                .Columns.Add("TAX_WHELD")
-                .Columns.Add("SSS_LOAN")
-                .Columns.Add("PAGIBIG_LOAN")
                 .Columns.Add("NET_PAY")
                 .Columns.Add("TOTAL_DEDUCTION")
                 .Columns.Add("present_hours")
@@ -926,8 +1073,14 @@ Public Class frmPayout
             Dim OVERTIME As String = ""
             Dim REGHOLIDAY As Integer = 0
             Dim SPECHOLIDAY As Integer = 0
-            Dim LATE As String = ""
+            Dim TOTAL_REGHOLIDAY As Decimal = 0
+            Dim TOTAL_SPECHOLIDAY As Decimal = 0
+            Dim LATE_UNDERTIME As String = ""
             Dim present_hours As Double = 0
+            Dim SSS_LOAN_BALANCE As Decimal = 0
+            Dim PAGIBIG_LOAN_BALANCE As Decimal = 0
+            Dim total_Allowance As Double = 0
+            Dim SPECHOLIDAY_HRS As Double = 0
 
             Dim _mysql As String = $"select * from payroll_attendance where BIOMETRICID = '{biometricID}' and paydate = '{paydatee}';"
             Using ds As DataSet = LoadSQL(_mysql, "payroll_attendance")
@@ -940,8 +1093,9 @@ Public Class frmPayout
                         PRESENT_DAYS = .Item("PRESENT_DAYS")
                         REGHOLIDAY = .Item("REGHOLIDAY")
                         SPECHOLIDAY = .Item("SPECHOLIDAY")
-                        OVERTIME = IIf(.Item("OVERTIME") = 0, 0, .Item("OVERTIME") & ":00")
-                        LATE = IIf(.Item("LATE").Equals("00:00:00"), "00:00:00", .Item("LATE").Substring(0, 5))
+                        OVERTIME = .Item("OVERTIME")
+                        LATE_UNDERTIME = CInt(.Item("LATE")) + CInt(.Item("UNDERTIME"))
+                        SPECHOLIDAY_HRS = IIf(IsDBNull(.Item("SPECHOLIDAY_HRS")), 0, .Item("SPECHOLIDAY_HRS"))
 
                     End With
                 End If
@@ -953,14 +1107,18 @@ Public Class frmPayout
                     Dim data As DataRow = ds.Tables(0).Rows(0)
                     With data
 
-                        Dim TOTAL_COMP As Double = .Item("SSS_COMP") + .Item("PAGIBIG_COMP") + .Item("PHILHEALTH_COMP") + .Item("TAX_WHELD") + .Item("SSS_LOAN") + .Item("PAGIBIG_LOAN")
+                        TOTAL_REGHOLIDAY = .Item("TOTAL_REGHOLIDAY")
+                        TOTAL_SPECHOLIDAY = .Item("TOTAL_SPECHOLIDAY")
+                        total_Allowance = .Item("TOTAL_ALLOWANCE")
+
+                        Dim TOTAL_COMP As Double = .Item("SSS_COMP") + .Item("PAGIBIG_COMP") + .Item("PHILHEALTH_COMP")
 
                         dt_attendance.Rows.Add(PRESENT_DAYS, OVERTIME, REGHOLIDAY, SPECHOLIDAY, CDbl(.Item("TOTAL_LATE_UT")).ToString("N"),
-                                        CDbl(.Item("TOTAL_BASIC")).ToString("N"), CDbl(.Item("TOTAL_OVERTIME")).ToString("N"), LATE,
+                                        CDbl(.Item("TOTAL_BASIC")).ToString("N"), CDbl(.Item("TOTAL_OVERTIME")).ToString("N"), LATE_UNDERTIME,
                                         CDbl(.Item("GROSS_AMOUNT")).ToString("N"), CDbl(.Item("SSS_COMP")).ToString("N"), CDbl(.Item("PAGIBIG_COMP")).ToString("N"),
-                                        CDbl(.Item("PHILHEALTH_COMP")).ToString("N"), CDbl(.Item("TAX_WHELD")).ToString("N"), CDbl(.Item("SSS_LOAN")).ToString("N"),
-                                        CDbl(.Item("PAGIBIG_LOAN")).ToString("N"), CDbl(.Item("NET_PAY")).ToString("N"), TOTAL_COMP.ToString("N"),
+                                        CDbl(.Item("PHILHEALTH_COMP")).ToString("N"), CDbl(.Item("NET_PAY")).ToString("N"), TOTAL_COMP.ToString("N"),
                                         present_hours)
+
                     End With
                 End If
             End Using
@@ -975,19 +1133,7 @@ Public Class frmPayout
                 .Columns.Add("AMOUNT")
             End With
 
-            Dim total_Allowance As Double = 0
             If isExist_String("RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{biometricID}' AND PAYDATE = '{paydatee}' AND TRANSAC_NAME = 'ALLOWANCE'") Then
-
-                Dim mysql_allow As String = $"select * from RECORDED_ALLOW_DEDUC WHERE BIO_NO = '{biometricID}' AND PAYDATE = '{paydatee}' AND TRANSAC_NAME = 'ALLOWANCE'"
-                Using ds As DataSet = LoadSQL(mysql_allow, "RECORDED_ALLOW_DEDUC")
-                    If ds.Tables(0).Rows.Count > 0 Then
-                        For Each drr In ds.Tables(0).Rows
-                            With drr
-                                total_Allowance = total_Allowance + .Item("AMOUNT")
-                            End With
-                        Next
-                    End If
-                End Using
 
                 Dim mysql_1 As String = $"select * from RECORDED_ALLOW_DEDUC WHERE BIO_NO = '{biometricID}' AND PAYDATE = '{paydatee}' AND TRANSAC_NAME = 'ALLOWANCE'"
                 Using ds As DataSet = LoadSQL(mysql_1, "RECORDED_ALLOW_DEDUC")
@@ -996,15 +1142,7 @@ Public Class frmPayout
                             With dr
                                 Dim amountt As Double = .item("AMOUNT")
 
-                                Dim toLower = .item("CATEGORY").ToLower()
-                                Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
-                                Dim toProper As String = info.ToTitleCase(toLower)
-
-                                If .item("CATEGORY") = "SIL" Then
-                                    toProper = "SIL"
-                                End If
-
-                                dt_allowance.Rows.Add(toProper, amountt.ToString(”N”))
+                                dt_allowance.Rows.Add(.item("CATEGORY"), amountt.ToString(”N”))
                             End With
                         Next
                     End If
@@ -1020,31 +1158,45 @@ Public Class frmPayout
             With dt_deduction
                 .Columns.Add("CATEGORY")
                 .Columns.Add("AMOUNT_PER_GIVE")
+                .Columns.Add("BALANCE")
             End With
 
-            Dim total_deduction As Double = 0
+            Dim total_deduction As Decimal = 0
             Dim mysql_ As String
 
-            '================================================ DEDUCTIONS -  MODIFIED_DEDUCTION================================================ 
+            '================================================ DEDUCTIONS ================================================ 
             If isExist_String("RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{biometricID}' AND PAYDATE = '{paydatee}' and TRANSAC_NAME = 'DEDUCTION'") Then  '=======m MDIFIED DEDUCTION (ON/OFF) 
 
-                mysql_ = $"select * from RECORDED_ALLOW_DEDUC  where BIO_NO = '{biometricID}' and PAYDATE = '{paydatee}' and TRANSAC_NAME = 'DEDUCTION'"
+                mysql_ = $"select  * FROM RECORDED_ALLOW_DEDUC   where BIO_NO = '{biometricID}' and PAYDATE = '{paydatee}' and TRANSAC_NAME = 'DEDUCTION'"
                 Using ds As DataSet = LoadSQL(mysql_, "RECORDED_ALLOW_DEDUC")
                     If ds.Tables(0).Rows.Count > 0 Then
                         For Each dr In ds.Tables(0).Rows
                             With dr
 
-                                Dim amountt As Double = .item("AMOUNT")
+                                Dim category As String = .item("CATEGORY")
+                                Dim amountt As Decimal = .item("AMOUNT")
+                                Dim balance As Decimal = 0
 
-                                Dim toLower = .item("CATEGORY").ToLower()
-                                Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
-                                Dim toProper As String = info.ToTitleCase(toLower)
+                                Dim R_DEDUCT_ID As Integer = IIf(IsDBNull(.item("R_DEDUC_ID")), 0, .item("R_DEDUC_ID"))
 
-                                If .item("CATEGORY") = "SBU" Then
-                                    toProper = "SBU"
+                                If category.Contains("MP2") Or category.Contains("MAXICARE") Then
+                                ElseIf .item("CATEGORY") = "SSS LOAN" Then
+                                    balance = GetBalance_Deduction(biometricID, .item("CATEGORY"), R_DEDUCT_ID)
+                                ElseIf .item("CATEGORY") = "PAG-IBIG LOAN" Then
+                                    balance = GetBalance_Deduction(biometricID, .item("CATEGORY"), R_DEDUCT_ID)
+                                Else
+                                    If R_DEDUCT_ID = 0 And category <> "SBU" Then
+                                        balance = 0
+                                    ElseIf category = "Charges" Then
+                                        'balance = GetBalance_Deduction(biometricID, .item("CATEGORY"), R_DEDUCT_ID)
+                                    Else
+                                        balance = GetBalance_Deduction(biometricID, .item("CATEGORY"), R_DEDUCT_ID)
+                                    End If
                                 End If
 
-                                dt_deduction.Rows.Add(toProper, amountt.ToString(”N”))
+                                dt_deduction.Rows.Add(category.TrimEnd, amountt.ToString(”N”), balance.ToString(”N”))
+
+                                total_deduction += amountt
 
                             End With
                         Next
@@ -1055,31 +1207,19 @@ Public Class frmPayout
             Dim rds_deduction As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet4", dt_deduction)
             ReportViewer_payslip.LocalReport.DataSources.Add(rds_deduction)
 
-            '============================================ PAYDATE, REGHOLIDAY AND SPECHOLIDAY ================================
-            Dim reg_rate As Double = 0
-            Dim spec_rate As Double = 0
-            Dim reg_hrs As Double = 0
-            Dim spec_hrs As Double = 0
-
-            If REGHOLIDAY <> 0 Then
-                reg_rate = (((REGHOLIDAY * Convert.ToInt32(rate)) * regHoliday_) / regHoliday_).ToString(”N”)
-                reg_hrs = REGHOLIDAY * 8
-            End If
-
-            If SPECHOLIDAY <> 0 Then
-                spec_rate = (((SPECHOLIDAY * Convert.ToInt32(rate)) * specHoliday_) / specHoliday_).ToString("N")
-                spec_hrs = SPECHOLIDAY * 8
-            End If
+            '============================================ PAYDATE, REGHOLIDAY AND SPECHOLIDAY ================================ 
+            Dim reg_hrs As Decimal = REGHOLIDAY * 8
+            Dim spec_hrs As Decimal = SPECHOLIDAY * 8
 
             date_pay = date_pay.ToString("MMMM dd, yyyy")
 
             Dim paramList As New List(Of Microsoft.Reporting.WinForms.ReportParameter) From {
             New Microsoft.Reporting.WinForms.ReportParameter("paramDeducTotal", total_deduction.ToString(”N”)),
             New Microsoft.Reporting.WinForms.ReportParameter("paramAllowTotal", total_Allowance.ToString(”N”)),
-            New Microsoft.Reporting.WinForms.ReportParameter("paramRegRate", reg_rate.ToString(”N”)),
-            New Microsoft.Reporting.WinForms.ReportParameter("paramSpecRate", spec_rate.ToString(”N”)),
+            New Microsoft.Reporting.WinForms.ReportParameter("paramRegRate", TOTAL_REGHOLIDAY.ToString(”N”)),
+            New Microsoft.Reporting.WinForms.ReportParameter("paramSpecRate", TOTAL_SPECHOLIDAY.ToString(”N”)),
             New Microsoft.Reporting.WinForms.ReportParameter("paramRegHours", reg_hrs),
-            New Microsoft.Reporting.WinForms.ReportParameter("paramSpecHours", spec_hrs),
+            New Microsoft.Reporting.WinForms.ReportParameter("paramSpecHours", SPECHOLIDAY_HRS),
             New Microsoft.Reporting.WinForms.ReportParameter("paramDate", date_pay)
             }
 

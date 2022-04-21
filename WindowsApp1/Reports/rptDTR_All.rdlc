@@ -357,6 +357,12 @@
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                   </Style>
                                 </TextRun>
+                                <TextRun>
+                                  <Value>  day/s</Value>
+                                  <Style>
+                                    <FontFamily>Berlin Sans FB</FontFamily>
+                                  </Style>
+                                </TextRun>
                               </TextRuns>
                               <Style />
                             </Paragraph>
@@ -427,6 +433,12 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!LATE.Value</Value>
+                                  <Style>
+                                    <FontFamily>Berlin Sans FB</FontFamily>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>   min/s</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                   </Style>
@@ -505,6 +517,12 @@
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                   </Style>
                                 </TextRun>
+                                <TextRun>
+                                  <Value>  min/s</Value>
+                                  <Style>
+                                    <FontFamily>Berlin Sans FB</FontFamily>
+                                  </Style>
+                                </TextRun>
                               </TextRuns>
                               <Style />
                             </Paragraph>
@@ -567,7 +585,7 @@
                     <TablixCell />
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="OVERTIME2">
+                        <Textbox Name="OVERTIME">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -579,11 +597,17 @@
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                   </Style>
                                 </TextRun>
+                                <TextRun>
+                                  <Value>  hour/s</Value>
+                                  <Style>
+                                    <FontFamily>Berlin Sans FB</FontFamily>
+                                  </Style>
+                                </TextRun>
                               </TextRuns>
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>OVERTIME2</rd:DefaultName>
+                          <rd:DefaultName>OVERTIME</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>
@@ -649,6 +673,12 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!REGHOLIDAY.Value</Value>
+                                  <Style>
+                                    <FontFamily>Berlin Sans FB</FontFamily>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>  day/s</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                   </Style>
@@ -723,6 +753,12 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!SPECHOLIDAY.Value</Value>
+                                  <Style>
+                                    <FontFamily>Berlin Sans FB</FontFamily>
+                                  </Style>
+                                </TextRun>
+                                <TextRun>
+                                  <Value>  day/s</Value>
                                   <Style>
                                     <FontFamily>Berlin Sans FB</FontFamily>
                                   </Style>
@@ -1843,19 +1879,19 @@
                     </TablixMember>
                     <TablixMember>
                       <Visibility>
-                        <Hidden>=iif(fields!LATE.Value = "00:00:00", True, False)</Hidden>
+                        <Hidden>=iif(fields!LATE.Value = "0" Or fields!LATE.Value = nothing, True, False)</Hidden>
                       </Visibility>
                       <KeepWithGroup>After</KeepWithGroup>
                     </TablixMember>
                     <TablixMember>
                       <Visibility>
-                        <Hidden>=iif(fields!UNDERTIME.Value = "00:00:00", True, False)</Hidden>
+                        <Hidden>=iif(fields!UNDERTIME.Value = "0" Or fields!UNDERTIME.Value = nothing, True, False)</Hidden>
                       </Visibility>
                       <KeepWithGroup>After</KeepWithGroup>
                     </TablixMember>
                     <TablixMember>
                       <Visibility>
-                        <Hidden>=iif(fields!OVERTIME.Value = "0", True, False)</Hidden>
+                        <Hidden>=iif(fields!OVERTIME.Value = "0" Or fields!OVERTIME.Value = nothing, True, False)</Hidden>
                       </Visibility>
                       <KeepWithGroup>After</KeepWithGroup>
                     </TablixMember>

@@ -23,25 +23,21 @@ Partial Class frmReport
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
+        Dim ReportDataSource1 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource2 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource3 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource4 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource5 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource6 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource7 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource8 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource9 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource10 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource11 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
         Dim ReportDataSource12 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Dim ReportDataSource13 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Dim ReportDataSource14 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Dim ReportDataSource15 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Dim ReportDataSource16 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Dim ReportDataSource17 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Dim ReportDataSource18 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Dim ReportDataSource19 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Dim ReportDataSource20 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Dim ReportDataSource21 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Dim ReportDataSource22 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Me.Photo_GensanJRBindingSource = New System.Windows.Forms.BindingSource(Me.components)
-        Me.payroll_summary = New WindowsApp1.payroll_summary()
-        Me.Photo_DavaoBindingSource = New System.Windows.Forms.BindingSource(Me.components)
-        Me.DaltonBindingSource = New System.Windows.Forms.BindingSource(Me.components)
-        Me.PerfecomBindingSource = New System.Windows.Forms.BindingSource(Me.components)
-        Me.PG_UYBindingSource = New System.Windows.Forms.BindingSource(Me.components)
-        Me.HouseholdBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.PG_RealtyBindingSource = New System.Windows.Forms.BindingSource(Me.components)
+        Me.RemittanceBindingSource = New System.Windows.Forms.BindingSource(Me.components)
+        Me.PerformanceIncentivesBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.Reports_Tab = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
         Me.Label31 = New System.Windows.Forms.Label()
@@ -53,6 +49,8 @@ Partial Class frmReport
         Me.Label20 = New System.Windows.Forms.Label()
         Me.PaydateNet_ComboB = New System.Windows.Forms.ComboBox()
         Me.TabPage3 = New System.Windows.Forms.TabPage()
+        Me.Label40 = New System.Windows.Forms.Label()
+        Me.CommonCat_Combo = New System.Windows.Forms.ComboBox()
         Me.Label27 = New System.Windows.Forms.Label()
         Me.PaydateCom_Combo = New System.Windows.Forms.ComboBox()
         Me.RptViewer_Common = New Microsoft.Reporting.WinForms.ReportViewer()
@@ -120,41 +118,70 @@ Partial Class frmReport
         Me.SumPaydate_Combo = New System.Windows.Forms.ComboBox()
         Me.RptViewer_Summary = New Microsoft.Reporting.WinForms.ReportViewer()
         Me.TabPage5 = New System.Windows.Forms.TabPage()
+        Me.Label41 = New System.Windows.Forms.Label()
+        Me.RemCompany_Combo = New System.Windows.Forms.ComboBox()
         Me.Label37 = New System.Windows.Forms.Label()
         Me.RemCat_Combo = New System.Windows.Forms.ComboBox()
         Me.Rpt_Distribution = New Microsoft.Reporting.WinForms.ReportViewer()
         Me.Label36 = New System.Windows.Forms.Label()
         Me.Rem_Paydate_Combo = New System.Windows.Forms.ComboBox()
-        Me.TabPage4 = New System.Windows.Forms.TabPage()
-        Me.SearchSBU_TXT = New System.Windows.Forms.TextBox()
-        Me.SearchSBU_BTN = New System.Windows.Forms.Button()
-        Me.SBU_LV = New System.Windows.Forms.ListView()
-        Me.ColumnHeader10 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader2 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader29 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader30 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader23 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader28 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.Label1 = New System.Windows.Forms.Label()
-        Me.Close_LBL = New System.Windows.Forms.Label()
         Me.TabPage6 = New System.Windows.Forms.TabPage()
         Me.Rpt_CostContrib = New Microsoft.Reporting.WinForms.ReportViewer()
         Me.Label38 = New System.Windows.Forms.Label()
         Me.CostPaydate_Combo = New System.Windows.Forms.ComboBox()
-        Me.NetPayBindingSource = New System.Windows.Forms.BindingSource(Me.components)
-        Me.reports = New WindowsApp1.reports()
-        Me.CommonDistributionBindingSource = New System.Windows.Forms.BindingSource(Me.components)
-        Me.CommonBindingSource = New System.Windows.Forms.BindingSource(Me.components)
-        Me.RemittanceBindingSource = New System.Windows.Forms.BindingSource(Me.components)
-        CType(Me.Photo_GensanJRBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.payroll_summary, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.Photo_DavaoBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.DaltonBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.PerfecomBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.PG_UYBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.HouseholdBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.TabPage7 = New System.Windows.Forms.TabPage()
+        Me.Rpt_Deduction = New Microsoft.Reporting.WinForms.ReportViewer()
+        Me.DeducHistory_txt = New System.Windows.Forms.TextBox()
+        Me.DeducHistory_btn = New System.Windows.Forms.Button()
+        Me.DeducHistory_List = New System.Windows.Forms.ListView()
+        Me.ColumnHeader3 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader4 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader5 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.TabPage4 = New System.Windows.Forms.TabPage()
+        Me.SBU_LV = New System.Windows.Forms.ListView()
+        Me.ColumnHeader2 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader10 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader7 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader8 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader9 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.Rpt_SBU = New Microsoft.Reporting.WinForms.ReportViewer()
+        Me.SearchSBU_TXT = New System.Windows.Forms.TextBox()
+        Me.SearchSBU_BTN = New System.Windows.Forms.Button()
+        Me.TabPage9 = New System.Windows.Forms.TabPage()
+        Me.Label42 = New System.Windows.Forms.Label()
+        Me.LoanCompany_Combo = New System.Windows.Forms.ComboBox()
+        Me.Label43 = New System.Windows.Forms.Label()
+        Me.LoanCat_Combo = New System.Windows.Forms.ComboBox()
+        Me.Rpt_Loans = New Microsoft.Reporting.WinForms.ReportViewer()
+        Me.Label44 = New System.Windows.Forms.Label()
+        Me.LoanPaydate_Combo = New System.Windows.Forms.ComboBox()
+        Me.TabPage10 = New System.Windows.Forms.TabPage()
+        Me.rpt_13Month = New Microsoft.Reporting.WinForms.ReportViewer()
+        Me.Month_Search_txt = New System.Windows.Forms.TextBox()
+        Me.Month_Search_btn = New System.Windows.Forms.Button()
+        Me.Month_LV = New System.Windows.Forms.ListView()
+        Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader13 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.TabPage11 = New System.Windows.Forms.TabPage()
+        Me.Label47 = New System.Windows.Forms.Label()
+        Me.PI_Company_CB = New System.Windows.Forms.ComboBox()
+        Me.Rpt_PI = New Microsoft.Reporting.WinForms.ReportViewer()
+        Me.Label45 = New System.Windows.Forms.Label()
+        Me.PI_Paydate_Combo = New System.Windows.Forms.ComboBox()
+        Me.TabPage12 = New System.Windows.Forms.TabPage()
+        Me.Label46 = New System.Windows.Forms.Label()
+        Me.SILYear_Combo = New System.Windows.Forms.ComboBox()
+        Me.SILSearch_txt = New System.Windows.Forms.TextBox()
+        Me.SILSeacrh_btn = New System.Windows.Forms.Button()
+        Me.SIL_list = New System.Windows.Forms.ListView()
+        Me.ColumnHeader12 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader14 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.Close_LBL = New System.Windows.Forms.Label()
+        Me.Reports1 = New WindowsApp1.reports()
         CType(Me.PG_RealtyBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.RemittanceBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.PerformanceIncentivesBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Reports_Tab.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.TabPage3.SuspendLayout()
@@ -164,54 +191,15 @@ Partial Class frmReport
         Me.GroupBox1.SuspendLayout()
         Me.TabPage2.SuspendLayout()
         Me.TabPage5.SuspendLayout()
-        Me.TabPage4.SuspendLayout()
         Me.TabPage6.SuspendLayout()
-        CType(Me.NetPayBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.reports, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.CommonDistributionBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.CommonBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.RemittanceBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.TabPage7.SuspendLayout()
+        Me.TabPage4.SuspendLayout()
+        Me.TabPage9.SuspendLayout()
+        Me.TabPage10.SuspendLayout()
+        Me.TabPage11.SuspendLayout()
+        Me.TabPage12.SuspendLayout()
+        CType(Me.Reports1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
-        '
-        'Photo_GensanJRBindingSource
-        '
-        Me.Photo_GensanJRBindingSource.DataMember = "Photo_GensanJR"
-        Me.Photo_GensanJRBindingSource.DataSource = Me.payroll_summary
-        '
-        'payroll_summary
-        '
-        Me.payroll_summary.DataSetName = "payroll_summary"
-        Me.payroll_summary.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema
-        '
-        'Photo_DavaoBindingSource
-        '
-        Me.Photo_DavaoBindingSource.DataMember = "Photo_Davao"
-        Me.Photo_DavaoBindingSource.DataSource = Me.payroll_summary
-        '
-        'DaltonBindingSource
-        '
-        Me.DaltonBindingSource.DataMember = "Dalton"
-        Me.DaltonBindingSource.DataSource = Me.payroll_summary
-        '
-        'PerfecomBindingSource
-        '
-        Me.PerfecomBindingSource.DataMember = "Perfecom"
-        Me.PerfecomBindingSource.DataSource = Me.payroll_summary
-        '
-        'PG_UYBindingSource
-        '
-        Me.PG_UYBindingSource.DataMember = "PG_UY"
-        Me.PG_UYBindingSource.DataSource = Me.payroll_summary
-        '
-        'HouseholdBindingSource
-        '
-        Me.HouseholdBindingSource.DataMember = "Household"
-        Me.HouseholdBindingSource.DataSource = Me.payroll_summary
-        '
-        'PG_RealtyBindingSource
-        '
-        Me.PG_RealtyBindingSource.DataMember = "PG_Realty"
-        Me.PG_RealtyBindingSource.DataSource = Me.payroll_summary
         '
         'Reports_Tab
         '
@@ -221,8 +209,13 @@ Partial Class frmReport
         Me.Reports_Tab.Controls.Add(Me.TabPage2)
         Me.Reports_Tab.Controls.Add(Me.TabPage5)
         Me.Reports_Tab.Controls.Add(Me.TabPage6)
+        Me.Reports_Tab.Controls.Add(Me.TabPage7)
         Me.Reports_Tab.Controls.Add(Me.TabPage4)
-        Me.Reports_Tab.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Reports_Tab.Controls.Add(Me.TabPage9)
+        Me.Reports_Tab.Controls.Add(Me.TabPage10)
+        Me.Reports_Tab.Controls.Add(Me.TabPage11)
+        Me.Reports_Tab.Controls.Add(Me.TabPage12)
+        Me.Reports_Tab.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Reports_Tab.Location = New System.Drawing.Point(5, 30)
         Me.Reports_Tab.Name = "Reports_Tab"
         Me.Reports_Tab.SelectedIndex = 0
@@ -239,10 +232,11 @@ Partial Class frmReport
         Me.TabPage1.Controls.Add(Me.ReportV_NetPay)
         Me.TabPage1.Controls.Add(Me.Label20)
         Me.TabPage1.Controls.Add(Me.PaydateNet_ComboB)
-        Me.TabPage1.Location = New System.Drawing.Point(4, 41)
+        Me.TabPage1.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TabPage1.Location = New System.Drawing.Point(4, 36)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(1151, 591)
+        Me.TabPage1.Size = New System.Drawing.Size(1151, 596)
         Me.TabPage1.TabIndex = 1
         Me.TabPage1.Text = "    Net Pay   "
         Me.TabPage1.UseVisualStyleBackColor = True
@@ -292,7 +286,7 @@ Partial Class frmReport
         Me.Company_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.Company_Combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Company_Combo.FormattingEnabled = True
-        Me.Company_Combo.Items.AddRange(New Object() {"PHOTO", "P&G UY", "DALTON", "PERFECOM", "PTU REALTY", "PGC HEAD OFFICE"})
+        Me.Company_Combo.Items.AddRange(New Object() {"ALL", "PHOTO", "P&G UY", "DALTON", "PERFECOM", "PTU REALTY", "PGC HEAD OFFICE"})
         Me.Company_Combo.Location = New System.Drawing.Point(366, 14)
         Me.Company_Combo.Name = "Company_Combo"
         Me.Company_Combo.Size = New System.Drawing.Size(221, 33)
@@ -300,9 +294,9 @@ Partial Class frmReport
         '
         'ReportV_NetPay
         '
-        ReportDataSource12.Name = "DataSet1"
-        ReportDataSource12.Value = Me.NetPayBindingSource
-        Me.ReportV_NetPay.LocalReport.DataSources.Add(ReportDataSource12)
+        ReportDataSource1.Name = "DataSet1"
+        ReportDataSource1.Value = Nothing
+        Me.ReportV_NetPay.LocalReport.DataSources.Add(ReportDataSource1)
         Me.ReportV_NetPay.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_NetPay.rdlc"
         Me.ReportV_NetPay.Location = New System.Drawing.Point(4, 67)
         Me.ReportV_NetPay.Name = "ReportV_NetPay"
@@ -332,16 +326,40 @@ Partial Class frmReport
         '
         'TabPage3
         '
+        Me.TabPage3.Controls.Add(Me.Label40)
+        Me.TabPage3.Controls.Add(Me.CommonCat_Combo)
         Me.TabPage3.Controls.Add(Me.Label27)
         Me.TabPage3.Controls.Add(Me.PaydateCom_Combo)
         Me.TabPage3.Controls.Add(Me.RptViewer_Common)
-        Me.TabPage3.Location = New System.Drawing.Point(4, 41)
+        Me.TabPage3.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TabPage3.Location = New System.Drawing.Point(4, 36)
         Me.TabPage3.Name = "TabPage3"
         Me.TabPage3.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage3.Size = New System.Drawing.Size(1151, 591)
+        Me.TabPage3.Size = New System.Drawing.Size(1151, 596)
         Me.TabPage3.TabIndex = 3
         Me.TabPage3.Text = "    Common    "
         Me.TabPage3.UseVisualStyleBackColor = True
+        '
+        'Label40
+        '
+        Me.Label40.AutoSize = True
+        Me.Label40.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label40.Location = New System.Drawing.Point(401, 13)
+        Me.Label40.Name = "Label40"
+        Me.Label40.Size = New System.Drawing.Size(67, 25)
+        Me.Label40.TabIndex = 110
+        Me.Label40.Text = "Category"
+        '
+        'CommonCat_Combo
+        '
+        Me.CommonCat_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.CommonCat_Combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.CommonCat_Combo.FormattingEnabled = True
+        Me.CommonCat_Combo.Items.AddRange(New Object() {"Gross", "Net Pay", "Deduction"})
+        Me.CommonCat_Combo.Location = New System.Drawing.Point(475, 10)
+        Me.CommonCat_Combo.Name = "CommonCat_Combo"
+        Me.CommonCat_Combo.Size = New System.Drawing.Size(129, 33)
+        Me.CommonCat_Combo.TabIndex = 109
         '
         'Label27
         '
@@ -365,9 +383,9 @@ Partial Class frmReport
         '
         'RptViewer_Common
         '
-        ReportDataSource13.Name = "DataSet1"
-        ReportDataSource13.Value = Me.CommonDistributionBindingSource
-        Me.RptViewer_Common.LocalReport.DataSources.Add(ReportDataSource13)
+        ReportDataSource2.Name = "DataSet1"
+        ReportDataSource2.Value = Nothing
+        Me.RptViewer_Common.LocalReport.DataSources.Add(ReportDataSource2)
         Me.RptViewer_Common.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_CommonEmp.rdlc"
         Me.RptViewer_Common.Location = New System.Drawing.Point(6, 48)
         Me.RptViewer_Common.Name = "RptViewer_Common"
@@ -381,9 +399,10 @@ Partial Class frmReport
         Me.d.Controls.Add(Me.Modify_BTN)
         Me.d.Controls.Add(Me.ComPrev_BTN)
         Me.d.Controls.Add(Me.RptViewer_Count)
-        Me.d.Location = New System.Drawing.Point(4, 41)
+        Me.d.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.d.Location = New System.Drawing.Point(4, 36)
         Me.d.Name = "d"
-        Me.d.Size = New System.Drawing.Size(1151, 591)
+        Me.d.Size = New System.Drawing.Size(1151, 596)
         Me.d.TabIndex = 2
         Me.d.Text = "    Percentage   "
         Me.d.UseVisualStyleBackColor = True
@@ -965,9 +984,9 @@ Partial Class frmReport
         '
         'RptViewer_Count
         '
-        ReportDataSource14.Name = "DataSet1"
-        ReportDataSource14.Value = Me.CommonBindingSource
-        Me.RptViewer_Count.LocalReport.DataSources.Add(ReportDataSource14)
+        ReportDataSource3.Name = "DataSet1"
+        ReportDataSource3.Value = Nothing
+        Me.RptViewer_Count.LocalReport.DataSources.Add(ReportDataSource3)
         Me.RptViewer_Count.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_Common.rdlc"
         Me.RptViewer_Count.Location = New System.Drawing.Point(4, 61)
         Me.RptViewer_Count.Name = "RptViewer_Count"
@@ -980,10 +999,11 @@ Partial Class frmReport
         Me.TabPage2.Controls.Add(Me.Label28)
         Me.TabPage2.Controls.Add(Me.SumPaydate_Combo)
         Me.TabPage2.Controls.Add(Me.RptViewer_Summary)
-        Me.TabPage2.Location = New System.Drawing.Point(4, 41)
+        Me.TabPage2.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TabPage2.Location = New System.Drawing.Point(4, 36)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(1151, 591)
+        Me.TabPage2.Size = New System.Drawing.Size(1151, 596)
         Me.TabPage2.TabIndex = 5
         Me.TabPage2.Text = "    Payroll Summary    "
         Me.TabPage2.UseVisualStyleBackColor = True
@@ -1010,27 +1030,27 @@ Partial Class frmReport
         '
         'RptViewer_Summary
         '
-        ReportDataSource15.Name = "Photo_GensanJR"
-        ReportDataSource15.Value = Me.Photo_GensanJRBindingSource
-        ReportDataSource16.Name = "Photo_Davao"
-        ReportDataSource16.Value = Me.Photo_DavaoBindingSource
-        ReportDataSource17.Name = "Dalton"
-        ReportDataSource17.Value = Me.DaltonBindingSource
-        ReportDataSource18.Name = "Perfecom"
-        ReportDataSource18.Value = Me.PerfecomBindingSource
-        ReportDataSource19.Name = "PG_UY"
-        ReportDataSource19.Value = Me.PG_UYBindingSource
-        ReportDataSource20.Name = "Household"
-        ReportDataSource20.Value = Me.HouseholdBindingSource
-        ReportDataSource21.Name = "PG_Realty"
-        ReportDataSource21.Value = Me.PG_RealtyBindingSource
-        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource15)
-        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource16)
-        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource17)
-        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource18)
-        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource19)
-        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource20)
-        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource21)
+        ReportDataSource4.Name = "Photo_GensanJR"
+        ReportDataSource4.Value = Nothing
+        ReportDataSource5.Name = "Photo_Davao"
+        ReportDataSource5.Value = Nothing
+        ReportDataSource6.Name = "Dalton"
+        ReportDataSource6.Value = Nothing
+        ReportDataSource7.Name = "Perfecom"
+        ReportDataSource7.Value = Nothing
+        ReportDataSource8.Name = "PG_UY"
+        ReportDataSource8.Value = Nothing
+        ReportDataSource9.Name = "Household"
+        ReportDataSource9.Value = Nothing
+        ReportDataSource10.Name = "PG_Realty"
+        ReportDataSource10.Value = Me.PG_RealtyBindingSource
+        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource4)
+        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource5)
+        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource6)
+        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource7)
+        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource8)
+        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource9)
+        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource10)
         Me.RptViewer_Summary.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_PayrollSummary.rdlc"
         Me.RptViewer_Summary.Location = New System.Drawing.Point(1, 53)
         Me.RptViewer_Summary.Name = "RptViewer_Summary"
@@ -1040,23 +1060,47 @@ Partial Class frmReport
         '
         'TabPage5
         '
+        Me.TabPage5.Controls.Add(Me.Label41)
+        Me.TabPage5.Controls.Add(Me.RemCompany_Combo)
         Me.TabPage5.Controls.Add(Me.Label37)
         Me.TabPage5.Controls.Add(Me.RemCat_Combo)
         Me.TabPage5.Controls.Add(Me.Rpt_Distribution)
         Me.TabPage5.Controls.Add(Me.Label36)
         Me.TabPage5.Controls.Add(Me.Rem_Paydate_Combo)
-        Me.TabPage5.Location = New System.Drawing.Point(4, 41)
+        Me.TabPage5.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TabPage5.Location = New System.Drawing.Point(4, 36)
         Me.TabPage5.Name = "TabPage5"
-        Me.TabPage5.Size = New System.Drawing.Size(1151, 591)
+        Me.TabPage5.Size = New System.Drawing.Size(1151, 596)
         Me.TabPage5.TabIndex = 6
         Me.TabPage5.Text = "     Remittance     "
         Me.TabPage5.UseVisualStyleBackColor = True
+        '
+        'Label41
+        '
+        Me.Label41.AutoSize = True
+        Me.Label41.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label41.Location = New System.Drawing.Point(698, 21)
+        Me.Label41.Name = "Label41"
+        Me.Label41.Size = New System.Drawing.Size(71, 25)
+        Me.Label41.TabIndex = 108
+        Me.Label41.Text = "Company"
+        '
+        'RemCompany_Combo
+        '
+        Me.RemCompany_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.RemCompany_Combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.RemCompany_Combo.FormattingEnabled = True
+        Me.RemCompany_Combo.Items.AddRange(New Object() {"Photo Head Office", "Gensan Perfect", "Davao Perfect", "JR Photo", "Dalton", "Perfecom", "P&G", "PTU Realty", "PGC Head Office"})
+        Me.RemCompany_Combo.Location = New System.Drawing.Point(796, 18)
+        Me.RemCompany_Combo.Name = "RemCompany_Combo"
+        Me.RemCompany_Combo.Size = New System.Drawing.Size(221, 33)
+        Me.RemCompany_Combo.TabIndex = 107
         '
         'Label37
         '
         Me.Label37.AutoSize = True
         Me.Label37.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label37.Location = New System.Drawing.Point(351, 18)
+        Me.Label37.Location = New System.Drawing.Point(334, 18)
         Me.Label37.Name = "Label37"
         Me.Label37.Size = New System.Drawing.Size(67, 25)
         Me.Label37.TabIndex = 106
@@ -1068,16 +1112,16 @@ Partial Class frmReport
         Me.RemCat_Combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.RemCat_Combo.FormattingEnabled = True
         Me.RemCat_Combo.Items.AddRange(New Object() {"SSS", "PAGIBIG", "PHILHEALTH"})
-        Me.RemCat_Combo.Location = New System.Drawing.Point(425, 15)
+        Me.RemCat_Combo.Location = New System.Drawing.Point(408, 15)
         Me.RemCat_Combo.Name = "RemCat_Combo"
         Me.RemCat_Combo.Size = New System.Drawing.Size(221, 33)
         Me.RemCat_Combo.TabIndex = 105
         '
         'Rpt_Distribution
         '
-        ReportDataSource22.Name = "DataSet1"
-        ReportDataSource22.Value = Me.RemittanceBindingSource
-        Me.Rpt_Distribution.LocalReport.DataSources.Add(ReportDataSource22)
+        ReportDataSource11.Name = "DataSet1"
+        ReportDataSource11.Value = Me.RemittanceBindingSource
+        Me.Rpt_Distribution.LocalReport.DataSources.Add(ReportDataSource11)
         Me.Rpt_Distribution.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_Remittance.rdlc"
         Me.Rpt_Distribution.Location = New System.Drawing.Point(4, 62)
         Me.Rpt_Distribution.Name = "Rpt_Distribution"
@@ -1105,118 +1149,14 @@ Partial Class frmReport
         Me.Rem_Paydate_Combo.Size = New System.Drawing.Size(144, 33)
         Me.Rem_Paydate_Combo.TabIndex = 102
         '
-        'TabPage4
-        '
-        Me.TabPage4.Controls.Add(Me.SearchSBU_TXT)
-        Me.TabPage4.Controls.Add(Me.SearchSBU_BTN)
-        Me.TabPage4.Controls.Add(Me.SBU_LV)
-        Me.TabPage4.Location = New System.Drawing.Point(4, 41)
-        Me.TabPage4.Name = "TabPage4"
-        Me.TabPage4.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage4.Size = New System.Drawing.Size(1151, 591)
-        Me.TabPage4.TabIndex = 4
-        Me.TabPage4.Text = "    SBU    "
-        Me.TabPage4.UseVisualStyleBackColor = True
-        '
-        'SearchSBU_TXT
-        '
-        Me.SearchSBU_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.SearchSBU_TXT.Location = New System.Drawing.Point(6, 30)
-        Me.SearchSBU_TXT.Name = "SearchSBU_TXT"
-        Me.SearchSBU_TXT.Size = New System.Drawing.Size(395, 33)
-        Me.SearchSBU_TXT.TabIndex = 122
-        '
-        'SearchSBU_BTN
-        '
-        Me.SearchSBU_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.SearchSBU_BTN.Location = New System.Drawing.Point(407, 30)
-        Me.SearchSBU_BTN.Name = "SearchSBU_BTN"
-        Me.SearchSBU_BTN.Size = New System.Drawing.Size(82, 33)
-        Me.SearchSBU_BTN.TabIndex = 123
-        Me.SearchSBU_BTN.Text = "Search"
-        Me.SearchSBU_BTN.UseVisualStyleBackColor = True
-        '
-        'SBU_LV
-        '
-        Me.SBU_LV.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.SBU_LV.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader10, Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader29, Me.ColumnHeader30, Me.ColumnHeader23, Me.ColumnHeader28})
-        Me.SBU_LV.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.SBU_LV.FullRowSelect = True
-        Me.SBU_LV.GridLines = True
-        Me.SBU_LV.HideSelection = False
-        Me.SBU_LV.Location = New System.Drawing.Point(6, 69)
-        Me.SBU_LV.MultiSelect = False
-        Me.SBU_LV.Name = "SBU_LV"
-        Me.SBU_LV.Size = New System.Drawing.Size(1139, 519)
-        Me.SBU_LV.TabIndex = 121
-        Me.SBU_LV.UseCompatibleStateImageBehavior = False
-        Me.SBU_LV.View = System.Windows.Forms.View.Details
-        '
-        'ColumnHeader10
-        '
-        Me.ColumnHeader10.Text = "Name"
-        Me.ColumnHeader10.Width = 400
-        '
-        'ColumnHeader1
-        '
-        Me.ColumnHeader1.Text = "Category"
-        Me.ColumnHeader1.Width = 130
-        '
-        'ColumnHeader2
-        '
-        Me.ColumnHeader2.Text = "Amount"
-        Me.ColumnHeader2.Width = 100
-        '
-        'ColumnHeader29
-        '
-        Me.ColumnHeader29.Text = "Principal"
-        Me.ColumnHeader29.Width = 110
-        '
-        'ColumnHeader30
-        '
-        Me.ColumnHeader30.Text = "Credit"
-        Me.ColumnHeader30.Width = 110
-        '
-        'ColumnHeader23
-        '
-        Me.ColumnHeader23.Text = "Balance"
-        Me.ColumnHeader23.Width = 110
-        '
-        'ColumnHeader28
-        '
-        Me.ColumnHeader28.Text = "Last Update"
-        Me.ColumnHeader28.Width = 155
-        '
-        'Label1
-        '
-        Me.Label1.AutoSize = True
-        Me.Label1.Font = New System.Drawing.Font("Dubai", 15.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label1.Location = New System.Drawing.Point(4, -2)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(85, 36)
-        Me.Label1.TabIndex = 68
-        Me.Label1.Text = "Reports"
-        '
-        'Close_LBL
-        '
-        Me.Close_LBL.AutoSize = True
-        Me.Close_LBL.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Close_LBL.Location = New System.Drawing.Point(1116, -2)
-        Me.Close_LBL.Name = "Close_LBL"
-        Me.Close_LBL.Size = New System.Drawing.Size(57, 32)
-        Me.Close_LBL.TabIndex = 75
-        Me.Close_LBL.Text = "Close"
-        '
         'TabPage6
         '
         Me.TabPage6.Controls.Add(Me.Rpt_CostContrib)
         Me.TabPage6.Controls.Add(Me.Label38)
         Me.TabPage6.Controls.Add(Me.CostPaydate_Combo)
-        Me.TabPage6.Location = New System.Drawing.Point(4, 41)
+        Me.TabPage6.Location = New System.Drawing.Point(4, 36)
         Me.TabPage6.Name = "TabPage6"
-        Me.TabPage6.Size = New System.Drawing.Size(1151, 591)
+        Me.TabPage6.Size = New System.Drawing.Size(1151, 596)
         Me.TabPage6.TabIndex = 7
         Me.TabPage6.Text = "    Cost Contribution    "
         Me.TabPage6.UseVisualStyleBackColor = True
@@ -1250,30 +1190,499 @@ Partial Class frmReport
         Me.CostPaydate_Combo.Size = New System.Drawing.Size(144, 33)
         Me.CostPaydate_Combo.TabIndex = 105
         '
-        'NetPayBindingSource
+        'TabPage7
         '
-        Me.NetPayBindingSource.DataMember = "NetPay"
-        Me.NetPayBindingSource.DataSource = Me.reports
+        Me.TabPage7.Controls.Add(Me.Rpt_Deduction)
+        Me.TabPage7.Controls.Add(Me.DeducHistory_txt)
+        Me.TabPage7.Controls.Add(Me.DeducHistory_btn)
+        Me.TabPage7.Controls.Add(Me.DeducHistory_List)
+        Me.TabPage7.Location = New System.Drawing.Point(4, 36)
+        Me.TabPage7.Name = "TabPage7"
+        Me.TabPage7.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage7.Size = New System.Drawing.Size(1151, 596)
+        Me.TabPage7.TabIndex = 8
+        Me.TabPage7.Text = "     Deduction History     "
+        Me.TabPage7.UseVisualStyleBackColor = True
         '
-        'reports
+        'Rpt_Deduction
         '
-        Me.reports.DataSetName = "reports"
-        Me.reports.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema
+        Me.Rpt_Deduction.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_Deduction.rdlc"
+        Me.Rpt_Deduction.Location = New System.Drawing.Point(499, 56)
+        Me.Rpt_Deduction.Name = "Rpt_Deduction"
+        Me.Rpt_Deduction.ServerReport.BearerToken = Nothing
+        Me.Rpt_Deduction.Size = New System.Drawing.Size(652, 520)
+        Me.Rpt_Deduction.TabIndex = 127
         '
-        'CommonDistributionBindingSource
+        'DeducHistory_txt
         '
-        Me.CommonDistributionBindingSource.DataMember = "ComGensanPDistrib"
-        Me.CommonDistributionBindingSource.DataSource = Me.reports
+        Me.DeducHistory_txt.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DeducHistory_txt.Location = New System.Drawing.Point(6, 18)
+        Me.DeducHistory_txt.Name = "DeducHistory_txt"
+        Me.DeducHistory_txt.Size = New System.Drawing.Size(395, 33)
+        Me.DeducHistory_txt.TabIndex = 125
         '
-        'CommonBindingSource
+        'DeducHistory_btn
         '
-        Me.CommonBindingSource.DataMember = "Common"
-        Me.CommonBindingSource.DataSource = Me.reports
+        Me.DeducHistory_btn.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DeducHistory_btn.Location = New System.Drawing.Point(407, 17)
+        Me.DeducHistory_btn.Name = "DeducHistory_btn"
+        Me.DeducHistory_btn.Size = New System.Drawing.Size(82, 33)
+        Me.DeducHistory_btn.TabIndex = 126
+        Me.DeducHistory_btn.Text = "Search"
+        Me.DeducHistory_btn.UseVisualStyleBackColor = True
         '
-        'RemittanceBindingSource
+        'DeducHistory_List
         '
-        Me.RemittanceBindingSource.DataMember = "Remittance"
-        Me.RemittanceBindingSource.DataSource = Me.reports
+        Me.DeducHistory_List.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.DeducHistory_List.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader3, Me.ColumnHeader4, Me.ColumnHeader5})
+        Me.DeducHistory_List.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DeducHistory_List.FullRowSelect = True
+        Me.DeducHistory_List.GridLines = True
+        Me.DeducHistory_List.HideSelection = False
+        Me.DeducHistory_List.Location = New System.Drawing.Point(6, 56)
+        Me.DeducHistory_List.MultiSelect = False
+        Me.DeducHistory_List.Name = "DeducHistory_List"
+        Me.DeducHistory_List.Size = New System.Drawing.Size(483, 524)
+        Me.DeducHistory_List.Sorting = System.Windows.Forms.SortOrder.Ascending
+        Me.DeducHistory_List.TabIndex = 124
+        Me.DeducHistory_List.UseCompatibleStateImageBehavior = False
+        Me.DeducHistory_List.View = System.Windows.Forms.View.Details
+        '
+        'ColumnHeader3
+        '
+        Me.ColumnHeader3.Text = "Name"
+        Me.ColumnHeader3.Width = 220
+        '
+        'ColumnHeader4
+        '
+        Me.ColumnHeader4.Text = "Category"
+        Me.ColumnHeader4.Width = 135
+        '
+        'ColumnHeader5
+        '
+        Me.ColumnHeader5.Text = "Amount"
+        Me.ColumnHeader5.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.ColumnHeader5.Width = 100
+        '
+        'TabPage4
+        '
+        Me.TabPage4.Controls.Add(Me.SBU_LV)
+        Me.TabPage4.Controls.Add(Me.Rpt_SBU)
+        Me.TabPage4.Controls.Add(Me.SearchSBU_TXT)
+        Me.TabPage4.Controls.Add(Me.SearchSBU_BTN)
+        Me.TabPage4.Location = New System.Drawing.Point(4, 36)
+        Me.TabPage4.Name = "TabPage4"
+        Me.TabPage4.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage4.Size = New System.Drawing.Size(1151, 596)
+        Me.TabPage4.TabIndex = 4
+        Me.TabPage4.Text = "        SBU       "
+        Me.TabPage4.UseVisualStyleBackColor = True
+        '
+        'SBU_LV
+        '
+        Me.SBU_LV.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.SBU_LV.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader2, Me.ColumnHeader10, Me.ColumnHeader7, Me.ColumnHeader8, Me.ColumnHeader9})
+        Me.SBU_LV.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SBU_LV.FullRowSelect = True
+        Me.SBU_LV.GridLines = True
+        Me.SBU_LV.HideSelection = False
+        Me.SBU_LV.Location = New System.Drawing.Point(3, 68)
+        Me.SBU_LV.MultiSelect = False
+        Me.SBU_LV.Name = "SBU_LV"
+        Me.SBU_LV.Size = New System.Drawing.Size(589, 524)
+        Me.SBU_LV.TabIndex = 125
+        Me.SBU_LV.UseCompatibleStateImageBehavior = False
+        Me.SBU_LV.View = System.Windows.Forms.View.Details
+        '
+        'ColumnHeader2
+        '
+        Me.ColumnHeader2.Text = "Name"
+        Me.ColumnHeader2.Width = 200
+        '
+        'ColumnHeader10
+        '
+        Me.ColumnHeader10.Text = "Amount"
+        Me.ColumnHeader10.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.ColumnHeader10.Width = 90
+        '
+        'ColumnHeader7
+        '
+        Me.ColumnHeader7.Text = "Principal"
+        Me.ColumnHeader7.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.ColumnHeader7.Width = 90
+        '
+        'ColumnHeader8
+        '
+        Me.ColumnHeader8.Text = "Amount Paid"
+        Me.ColumnHeader8.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.ColumnHeader8.Width = 90
+        '
+        'ColumnHeader9
+        '
+        Me.ColumnHeader9.Text = "Balance"
+        Me.ColumnHeader9.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.ColumnHeader9.Width = 90
+        '
+        'Rpt_SBU
+        '
+        Me.Rpt_SBU.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_SBU.rdlc"
+        Me.Rpt_SBU.Location = New System.Drawing.Point(609, 67)
+        Me.Rpt_SBU.Name = "Rpt_SBU"
+        Me.Rpt_SBU.ServerReport.BearerToken = Nothing
+        Me.Rpt_SBU.Size = New System.Drawing.Size(536, 520)
+        Me.Rpt_SBU.TabIndex = 124
+        '
+        'SearchSBU_TXT
+        '
+        Me.SearchSBU_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SearchSBU_TXT.Location = New System.Drawing.Point(4, 30)
+        Me.SearchSBU_TXT.Name = "SearchSBU_TXT"
+        Me.SearchSBU_TXT.Size = New System.Drawing.Size(298, 33)
+        Me.SearchSBU_TXT.TabIndex = 122
+        '
+        'SearchSBU_BTN
+        '
+        Me.SearchSBU_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SearchSBU_BTN.Location = New System.Drawing.Point(310, 29)
+        Me.SearchSBU_BTN.Name = "SearchSBU_BTN"
+        Me.SearchSBU_BTN.Size = New System.Drawing.Size(114, 33)
+        Me.SearchSBU_BTN.TabIndex = 123
+        Me.SearchSBU_BTN.Text = "Search"
+        Me.SearchSBU_BTN.UseVisualStyleBackColor = True
+        '
+        'TabPage9
+        '
+        Me.TabPage9.Controls.Add(Me.Label42)
+        Me.TabPage9.Controls.Add(Me.LoanCompany_Combo)
+        Me.TabPage9.Controls.Add(Me.Label43)
+        Me.TabPage9.Controls.Add(Me.LoanCat_Combo)
+        Me.TabPage9.Controls.Add(Me.Rpt_Loans)
+        Me.TabPage9.Controls.Add(Me.Label44)
+        Me.TabPage9.Controls.Add(Me.LoanPaydate_Combo)
+        Me.TabPage9.Location = New System.Drawing.Point(4, 36)
+        Me.TabPage9.Name = "TabPage9"
+        Me.TabPage9.Size = New System.Drawing.Size(1151, 596)
+        Me.TabPage9.TabIndex = 10
+        Me.TabPage9.Text = "     Loans    "
+        Me.TabPage9.UseVisualStyleBackColor = True
+        '
+        'Label42
+        '
+        Me.Label42.AutoSize = True
+        Me.Label42.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label42.Location = New System.Drawing.Point(698, 21)
+        Me.Label42.Name = "Label42"
+        Me.Label42.Size = New System.Drawing.Size(71, 25)
+        Me.Label42.TabIndex = 115
+        Me.Label42.Text = "Company"
+        '
+        'LoanCompany_Combo
+        '
+        Me.LoanCompany_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.LoanCompany_Combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LoanCompany_Combo.FormattingEnabled = True
+        Me.LoanCompany_Combo.Items.AddRange(New Object() {"Photo Head Office", "Gensan Perfect", "Davao Perfect", "JR Photo", "Dalton", "Perfecom", "P&G", "PTU Realty", "PGC Head Office"})
+        Me.LoanCompany_Combo.Location = New System.Drawing.Point(796, 18)
+        Me.LoanCompany_Combo.Name = "LoanCompany_Combo"
+        Me.LoanCompany_Combo.Size = New System.Drawing.Size(221, 33)
+        Me.LoanCompany_Combo.TabIndex = 114
+        '
+        'Label43
+        '
+        Me.Label43.AutoSize = True
+        Me.Label43.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label43.Location = New System.Drawing.Point(334, 18)
+        Me.Label43.Name = "Label43"
+        Me.Label43.Size = New System.Drawing.Size(67, 25)
+        Me.Label43.TabIndex = 113
+        Me.Label43.Text = "Category"
+        '
+        'LoanCat_Combo
+        '
+        Me.LoanCat_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.LoanCat_Combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LoanCat_Combo.FormattingEnabled = True
+        Me.LoanCat_Combo.Items.AddRange(New Object() {"SSS", "PAGIBIG"})
+        Me.LoanCat_Combo.Location = New System.Drawing.Point(408, 15)
+        Me.LoanCat_Combo.Name = "LoanCat_Combo"
+        Me.LoanCat_Combo.Size = New System.Drawing.Size(221, 33)
+        Me.LoanCat_Combo.TabIndex = 112
+        '
+        'Rpt_Loans
+        '
+        Me.Rpt_Loans.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_Loans.rdlc"
+        Me.Rpt_Loans.Location = New System.Drawing.Point(4, 62)
+        Me.Rpt_Loans.Name = "Rpt_Loans"
+        Me.Rpt_Loans.ServerReport.BearerToken = Nothing
+        Me.Rpt_Loans.Size = New System.Drawing.Size(1142, 520)
+        Me.Rpt_Loans.TabIndex = 111
+        '
+        'Label44
+        '
+        Me.Label44.AutoSize = True
+        Me.Label44.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label44.Location = New System.Drawing.Point(6, 18)
+        Me.Label44.Name = "Label44"
+        Me.Label44.Size = New System.Drawing.Size(98, 25)
+        Me.Label44.TabIndex = 110
+        Me.Label44.Text = "Search Payroll"
+        '
+        'LoanPaydate_Combo
+        '
+        Me.LoanPaydate_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.LoanPaydate_Combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.LoanPaydate_Combo.FormattingEnabled = True
+        Me.LoanPaydate_Combo.Location = New System.Drawing.Point(111, 14)
+        Me.LoanPaydate_Combo.Name = "LoanPaydate_Combo"
+        Me.LoanPaydate_Combo.Size = New System.Drawing.Size(144, 33)
+        Me.LoanPaydate_Combo.TabIndex = 109
+        '
+        'TabPage10
+        '
+        Me.TabPage10.Controls.Add(Me.rpt_13Month)
+        Me.TabPage10.Controls.Add(Me.Month_Search_txt)
+        Me.TabPage10.Controls.Add(Me.Month_Search_btn)
+        Me.TabPage10.Controls.Add(Me.Month_LV)
+        Me.TabPage10.Location = New System.Drawing.Point(4, 36)
+        Me.TabPage10.Name = "TabPage10"
+        Me.TabPage10.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage10.Size = New System.Drawing.Size(1151, 596)
+        Me.TabPage10.TabIndex = 11
+        Me.TabPage10.Text = "     13th Month     "
+        Me.TabPage10.UseVisualStyleBackColor = True
+        '
+        'rpt_13Month
+        '
+        Me.rpt_13Month.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_13Month.rdlc"
+        Me.rpt_13Month.Location = New System.Drawing.Point(491, 56)
+        Me.rpt_13Month.Name = "rpt_13Month"
+        Me.rpt_13Month.ServerReport.BearerToken = Nothing
+        Me.rpt_13Month.Size = New System.Drawing.Size(657, 524)
+        Me.rpt_13Month.TabIndex = 133
+        '
+        'Month_Search_txt
+        '
+        Me.Month_Search_txt.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Month_Search_txt.Location = New System.Drawing.Point(6, 18)
+        Me.Month_Search_txt.Name = "Month_Search_txt"
+        Me.Month_Search_txt.Size = New System.Drawing.Size(348, 33)
+        Me.Month_Search_txt.TabIndex = 131
+        '
+        'Month_Search_btn
+        '
+        Me.Month_Search_btn.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Month_Search_btn.Location = New System.Drawing.Point(369, 17)
+        Me.Month_Search_btn.Name = "Month_Search_btn"
+        Me.Month_Search_btn.Size = New System.Drawing.Size(95, 33)
+        Me.Month_Search_btn.TabIndex = 132
+        Me.Month_Search_btn.Text = "Search"
+        Me.Month_Search_btn.UseVisualStyleBackColor = True
+        '
+        'Month_LV
+        '
+        Me.Month_LV.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Month_LV.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader13})
+        Me.Month_LV.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Month_LV.FullRowSelect = True
+        Me.Month_LV.GridLines = True
+        Me.Month_LV.HideSelection = False
+        Me.Month_LV.Location = New System.Drawing.Point(6, 56)
+        Me.Month_LV.MultiSelect = False
+        Me.Month_LV.Name = "Month_LV"
+        Me.Month_LV.Size = New System.Drawing.Size(458, 524)
+        Me.Month_LV.TabIndex = 130
+        Me.Month_LV.UseCompatibleStateImageBehavior = False
+        Me.Month_LV.View = System.Windows.Forms.View.Details
+        '
+        'ColumnHeader1
+        '
+        Me.ColumnHeader1.Text = "Name"
+        Me.ColumnHeader1.Width = 295
+        '
+        'ColumnHeader13
+        '
+        Me.ColumnHeader13.Text = "Amount"
+        Me.ColumnHeader13.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.ColumnHeader13.Width = 135
+        '
+        'TabPage11
+        '
+        Me.TabPage11.Controls.Add(Me.Label47)
+        Me.TabPage11.Controls.Add(Me.PI_Company_CB)
+        Me.TabPage11.Controls.Add(Me.Rpt_PI)
+        Me.TabPage11.Controls.Add(Me.Label45)
+        Me.TabPage11.Controls.Add(Me.PI_Paydate_Combo)
+        Me.TabPage11.Location = New System.Drawing.Point(4, 36)
+        Me.TabPage11.Name = "TabPage11"
+        Me.TabPage11.Size = New System.Drawing.Size(1151, 596)
+        Me.TabPage11.TabIndex = 12
+        Me.TabPage11.Text = "     Perfermance Incentives     "
+        Me.TabPage11.UseVisualStyleBackColor = True
+        '
+        'Label47
+        '
+        Me.Label47.AutoSize = True
+        Me.Label47.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label47.Location = New System.Drawing.Point(379, 21)
+        Me.Label47.Name = "Label47"
+        Me.Label47.Size = New System.Drawing.Size(71, 25)
+        Me.Label47.TabIndex = 116
+        Me.Label47.Text = "Company"
+        '
+        'PI_Company_CB
+        '
+        Me.PI_Company_CB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.PI_Company_CB.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.PI_Company_CB.FormattingEnabled = True
+        Me.PI_Company_CB.Items.AddRange(New Object() {"Photo Head Office", "Gensan Perfect", "Davao Perfect", "JR Photo", "Dalton", "Perfecom", "P&G", "PTU Realty", "PGC Head Office"})
+        Me.PI_Company_CB.Location = New System.Drawing.Point(477, 18)
+        Me.PI_Company_CB.Name = "PI_Company_CB"
+        Me.PI_Company_CB.Size = New System.Drawing.Size(192, 33)
+        Me.PI_Company_CB.TabIndex = 115
+        '
+        'Rpt_PI
+        '
+        ReportDataSource12.Name = "DataSet1"
+        ReportDataSource12.Value = Me.PerformanceIncentivesBindingSource
+        Me.Rpt_PI.LocalReport.DataSources.Add(ReportDataSource12)
+        Me.Rpt_PI.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_PI.rdlc"
+        Me.Rpt_PI.Location = New System.Drawing.Point(4, 62)
+        Me.Rpt_PI.Name = "Rpt_PI"
+        Me.Rpt_PI.ServerReport.BearerToken = Nothing
+        Me.Rpt_PI.Size = New System.Drawing.Size(1142, 520)
+        Me.Rpt_PI.TabIndex = 114
+        '
+        'Label45
+        '
+        Me.Label45.AutoSize = True
+        Me.Label45.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label45.Location = New System.Drawing.Point(6, 18)
+        Me.Label45.Name = "Label45"
+        Me.Label45.Size = New System.Drawing.Size(98, 25)
+        Me.Label45.TabIndex = 113
+        Me.Label45.Text = "Search Payroll"
+        '
+        'PI_Paydate_Combo
+        '
+        Me.PI_Paydate_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.PI_Paydate_Combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.PI_Paydate_Combo.FormattingEnabled = True
+        Me.PI_Paydate_Combo.Location = New System.Drawing.Point(111, 14)
+        Me.PI_Paydate_Combo.Name = "PI_Paydate_Combo"
+        Me.PI_Paydate_Combo.Size = New System.Drawing.Size(160, 33)
+        Me.PI_Paydate_Combo.TabIndex = 112
+        '
+        'TabPage12
+        '
+        Me.TabPage12.Controls.Add(Me.Label46)
+        Me.TabPage12.Controls.Add(Me.SILYear_Combo)
+        Me.TabPage12.Controls.Add(Me.SILSearch_txt)
+        Me.TabPage12.Controls.Add(Me.SILSeacrh_btn)
+        Me.TabPage12.Controls.Add(Me.SIL_list)
+        Me.TabPage12.Location = New System.Drawing.Point(4, 36)
+        Me.TabPage12.Name = "TabPage12"
+        Me.TabPage12.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage12.Size = New System.Drawing.Size(1151, 596)
+        Me.TabPage12.TabIndex = 13
+        Me.TabPage12.Text = "     SIL Monitoring     "
+        Me.TabPage12.UseVisualStyleBackColor = True
+        '
+        'Label46
+        '
+        Me.Label46.AutoSize = True
+        Me.Label46.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label46.Location = New System.Drawing.Point(4, 17)
+        Me.Label46.Name = "Label46"
+        Me.Label46.Size = New System.Drawing.Size(85, 25)
+        Me.Label46.TabIndex = 134
+        Me.Label46.Text = "Search Year"
+        '
+        'SILYear_Combo
+        '
+        Me.SILYear_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.SILYear_Combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SILYear_Combo.FormattingEnabled = True
+        Me.SILYear_Combo.Location = New System.Drawing.Point(95, 14)
+        Me.SILYear_Combo.Name = "SILYear_Combo"
+        Me.SILYear_Combo.Size = New System.Drawing.Size(144, 33)
+        Me.SILYear_Combo.TabIndex = 133
+        '
+        'SILSearch_txt
+        '
+        Me.SILSearch_txt.Font = New System.Drawing.Font("Dubai", 12.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SILSearch_txt.Location = New System.Drawing.Point(6, 73)
+        Me.SILSearch_txt.Name = "SILSearch_txt"
+        Me.SILSearch_txt.Size = New System.Drawing.Size(331, 36)
+        Me.SILSearch_txt.TabIndex = 131
+        '
+        'SILSeacrh_btn
+        '
+        Me.SILSeacrh_btn.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SILSeacrh_btn.Location = New System.Drawing.Point(343, 74)
+        Me.SILSeacrh_btn.Name = "SILSeacrh_btn"
+        Me.SILSeacrh_btn.Size = New System.Drawing.Size(94, 33)
+        Me.SILSeacrh_btn.TabIndex = 132
+        Me.SILSeacrh_btn.Text = "Search"
+        Me.SILSeacrh_btn.UseVisualStyleBackColor = True
+        '
+        'SIL_list
+        '
+        Me.SIL_list.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.SIL_list.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader12, Me.ColumnHeader14})
+        Me.SIL_list.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SIL_list.FullRowSelect = True
+        Me.SIL_list.GridLines = True
+        Me.SIL_list.HideSelection = False
+        Me.SIL_list.Location = New System.Drawing.Point(6, 115)
+        Me.SIL_list.MultiSelect = False
+        Me.SIL_list.Name = "SIL_list"
+        Me.SIL_list.Size = New System.Drawing.Size(613, 465)
+        Me.SIL_list.TabIndex = 130
+        Me.SIL_list.UseCompatibleStateImageBehavior = False
+        Me.SIL_list.View = System.Windows.Forms.View.Details
+        '
+        'ColumnHeader12
+        '
+        Me.ColumnHeader12.Text = "Name"
+        Me.ColumnHeader12.Width = 430
+        '
+        'ColumnHeader14
+        '
+        Me.ColumnHeader14.Text = "Total SIL"
+        Me.ColumnHeader14.Width = 150
+        '
+        'Label1
+        '
+        Me.Label1.AutoSize = True
+        Me.Label1.Font = New System.Drawing.Font("Dubai", 15.75!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label1.Location = New System.Drawing.Point(4, -2)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(85, 36)
+        Me.Label1.TabIndex = 68
+        Me.Label1.Text = "Reports"
+        '
+        'Close_LBL
+        '
+        Me.Close_LBL.AutoSize = True
+        Me.Close_LBL.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Close_LBL.Location = New System.Drawing.Point(1116, -2)
+        Me.Close_LBL.Name = "Close_LBL"
+        Me.Close_LBL.Size = New System.Drawing.Size(57, 32)
+        Me.Close_LBL.TabIndex = 75
+        Me.Close_LBL.Text = "Close"
+        '
+        'Reports1
+        '
+        Me.Reports1.DataSetName = "reports"
+        Me.Reports1.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema
         '
         'frmReport
         '
@@ -1286,14 +1695,9 @@ Partial Class frmReport
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Name = "frmReport"
         Me.Text = "frmReport"
-        CType(Me.Photo_GensanJRBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.payroll_summary, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.Photo_DavaoBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.DaltonBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.PerfecomBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.PG_UYBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.HouseholdBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PG_RealtyBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.RemittanceBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.PerformanceIncentivesBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Reports_Tab.ResumeLayout(False)
         Me.TabPage1.ResumeLayout(False)
         Me.TabPage1.PerformLayout()
@@ -1310,15 +1714,21 @@ Partial Class frmReport
         Me.TabPage2.PerformLayout()
         Me.TabPage5.ResumeLayout(False)
         Me.TabPage5.PerformLayout()
-        Me.TabPage4.ResumeLayout(False)
-        Me.TabPage4.PerformLayout()
         Me.TabPage6.ResumeLayout(False)
         Me.TabPage6.PerformLayout()
-        CType(Me.NetPayBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.reports, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.CommonDistributionBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.CommonBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.RemittanceBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.TabPage7.ResumeLayout(False)
+        Me.TabPage7.PerformLayout()
+        Me.TabPage4.ResumeLayout(False)
+        Me.TabPage4.PerformLayout()
+        Me.TabPage9.ResumeLayout(False)
+        Me.TabPage9.PerformLayout()
+        Me.TabPage10.ResumeLayout(False)
+        Me.TabPage10.PerformLayout()
+        Me.TabPage11.ResumeLayout(False)
+        Me.TabPage11.PerformLayout()
+        Me.TabPage12.ResumeLayout(False)
+        Me.TabPage12.PerformLayout()
+        CType(Me.Reports1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1332,25 +1742,14 @@ Partial Class frmReport
     Friend WithEvents Close_LBL As Label
     Friend WithEvents d As TabPage
     Friend WithEvents ReportV_NetPay As Microsoft.Reporting.WinForms.ReportViewer
-    Friend WithEvents NetPayBindingSource As BindingSource
-    Friend WithEvents reports As reports
     Friend WithEvents Label2 As Label
     Friend WithEvents Company_Combo As ComboBox
     Friend WithEvents TabPage3 As TabPage
     Friend WithEvents TabPage4 As TabPage
     Friend WithEvents SearchSBU_TXT As TextBox
     Friend WithEvents SearchSBU_BTN As Button
-    Friend WithEvents SBU_LV As ListView
-    Friend WithEvents ColumnHeader10 As ColumnHeader
-    Friend WithEvents ColumnHeader29 As ColumnHeader
-    Friend WithEvents ColumnHeader30 As ColumnHeader
-    Friend WithEvents ColumnHeader23 As ColumnHeader
-    Friend WithEvents ColumnHeader28 As ColumnHeader
-    Friend WithEvents ColumnHeader1 As ColumnHeader
-    Friend WithEvents ColumnHeader2 As ColumnHeader
     Friend WithEvents RptViewer_Count As Microsoft.Reporting.WinForms.ReportViewer
     Friend WithEvents Button1 As Button
-    Friend WithEvents CommonBindingSource As BindingSource
     Friend WithEvents ComPrev_BTN As Button
     Friend WithEvents Modify_BTN As Button
     Friend WithEvents Modify_Panel As Panel
@@ -1402,7 +1801,6 @@ Partial Class frmReport
     Friend WithEvents DTR_Dalton_TXT As TextBox
     Friend WithEvents Label27 As Label
     Friend WithEvents PaydateCom_Combo As ComboBox
-    Friend WithEvents CommonDistributionBindingSource As BindingSource
     Friend WithEvents Label30 As Label
     Friend WithEvents LeasingP_TXT As TextBox
     Friend WithEvents TabPage2 As TabPage
@@ -1418,13 +1816,6 @@ Partial Class frmReport
     Friend WithEvents RptViewer_Summary As Microsoft.Reporting.WinForms.ReportViewer
     Friend WithEvents Label28 As Label
     Friend WithEvents SumPaydate_Combo As ComboBox
-    Friend WithEvents Photo_GensanJRBindingSource As BindingSource
-    Friend WithEvents payroll_summary As payroll_summary
-    Friend WithEvents Photo_DavaoBindingSource As BindingSource
-    Friend WithEvents DaltonBindingSource As BindingSource
-    Friend WithEvents PerfecomBindingSource As BindingSource
-    Friend WithEvents PG_UYBindingSource As BindingSource
-    Friend WithEvents HouseholdBindingSource As BindingSource
     Friend WithEvents PG_RealtyBindingSource As BindingSource
     Friend WithEvents TabPage5 As TabPage
     Friend WithEvents Rpt_Distribution As Microsoft.Reporting.WinForms.ReportViewer
@@ -1437,4 +1828,54 @@ Partial Class frmReport
     Friend WithEvents Rpt_CostContrib As Microsoft.Reporting.WinForms.ReportViewer
     Friend WithEvents Label38 As Label
     Friend WithEvents CostPaydate_Combo As ComboBox
+    Friend WithEvents Label40 As Label
+    Friend WithEvents CommonCat_Combo As ComboBox
+    Friend WithEvents Label41 As Label
+    Friend WithEvents RemCompany_Combo As ComboBox
+    Friend WithEvents TabPage7 As TabPage
+    Friend WithEvents DeducHistory_txt As TextBox
+    Friend WithEvents DeducHistory_btn As Button
+    Friend WithEvents DeducHistory_List As ListView
+    Friend WithEvents ColumnHeader3 As ColumnHeader
+    Friend WithEvents ColumnHeader4 As ColumnHeader
+    Friend WithEvents ColumnHeader5 As ColumnHeader
+    Friend WithEvents TabPage9 As TabPage
+    Friend WithEvents Label42 As Label
+    Friend WithEvents LoanCompany_Combo As ComboBox
+    Friend WithEvents Label43 As Label
+    Friend WithEvents LoanCat_Combo As ComboBox
+    Friend WithEvents Rpt_Loans As Microsoft.Reporting.WinForms.ReportViewer
+    Friend WithEvents Label44 As Label
+    Friend WithEvents LoanPaydate_Combo As ComboBox
+    Friend WithEvents TabPage10 As TabPage
+    Friend WithEvents Month_Search_txt As TextBox
+    Friend WithEvents Month_Search_btn As Button
+    Friend WithEvents Month_LV As ListView
+    Friend WithEvents ColumnHeader1 As ColumnHeader
+    Friend WithEvents ColumnHeader13 As ColumnHeader
+    Friend WithEvents TabPage11 As TabPage
+    Friend WithEvents Rpt_PI As Microsoft.Reporting.WinForms.ReportViewer
+    Friend WithEvents Label45 As Label
+    Friend WithEvents PI_Paydate_Combo As ComboBox
+    Friend WithEvents PerformanceIncentivesBindingSource As BindingSource
+    Friend WithEvents TabPage12 As TabPage
+    Friend WithEvents SILSearch_txt As TextBox
+    Friend WithEvents SILSeacrh_btn As Button
+    Friend WithEvents SIL_list As ListView
+    Friend WithEvents ColumnHeader12 As ColumnHeader
+    Friend WithEvents ColumnHeader14 As ColumnHeader
+    Friend WithEvents Label46 As Label
+    Friend WithEvents SILYear_Combo As ComboBox
+    Friend WithEvents Rpt_SBU As Microsoft.Reporting.WinForms.ReportViewer
+    Friend WithEvents Label47 As Label
+    Friend WithEvents PI_Company_CB As ComboBox
+    Friend WithEvents SBU_LV As ListView
+    Friend WithEvents ColumnHeader2 As ColumnHeader
+    Friend WithEvents ColumnHeader7 As ColumnHeader
+    Friend WithEvents ColumnHeader8 As ColumnHeader
+    Friend WithEvents ColumnHeader9 As ColumnHeader
+    Friend WithEvents ColumnHeader10 As ColumnHeader
+    Friend WithEvents Reports1 As reports
+    Friend WithEvents rpt_13Month As Microsoft.Reporting.WinForms.ReportViewer
+    Friend WithEvents Rpt_Deduction As Microsoft.Reporting.WinForms.ReportViewer
 End Class

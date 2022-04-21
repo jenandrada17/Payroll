@@ -29,7 +29,7 @@ Module Public_Function
             End If
 
         Catch ex As Exception
-
+            MsgBox(ex.ToString)
         End Try
     End Sub
 
@@ -38,6 +38,8 @@ Module Public_Function
         Payout
         Loans
         Settings
+        Schedule
+        Allowance
     End Enum
 
     Friend Sub SwitchForm_Attendance(ByVal gotoForm As FormName, emp As Employee, empNo As Integer, Optional btnSearch_tag As String = "")
@@ -49,6 +51,31 @@ Module Public_Function
 
                     If instForm Is Nothing Then
                         instForm = DirectCast(CreateObjectInstance("frmAttendance"), Form)
+                        instForm.MdiParent = frmMainForm
+                        frmMainForm.pNavigate.Controls.Add(instForm)
+                        frmMainForm.pNavigate.Tag = instForm
+                        instForm.Show()
+                        instForm.Dock = DockStyle.Fill
+                        instForm.BringToFront()
+                    Else
+                        instForm.BringToFront()
+                    End If
+
+                Catch ex As Exception
+
+                End Try
+        End Select
+    End Sub
+
+    Friend Sub SwitchForm_Scheduling(ByVal gotoForm As FormName, emp As Employee)
+        Select Case gotoForm
+            Case FormName.Schedule
+                Try
+                    Dim instForm As frmSchedule = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmSchedule").SingleOrDefault()
+                    instForm.Load_Schedule(emp)
+
+                    If instForm Is Nothing Then
+                        instForm = DirectCast(CreateObjectInstance("frmSchedule"), Form)
                         instForm.MdiParent = frmMainForm
                         frmMainForm.pNavigate.Controls.Add(instForm)
                         frmMainForm.pNavigate.Tag = instForm
@@ -115,15 +142,15 @@ Module Public_Function
         End Select
     End Sub
 
-    Friend Sub SwitchForm_Loans(ByVal gotoForm As FormName, emp As Employee, tabName As String)
+    Friend Sub SwitchForm_Allowance(ByVal gotoForm As FormName, emp As Employee, tabName As String)
         Select Case gotoForm
-            Case FormName.Loans
+            Case FormName.Allowance
                 Try
-                    Dim instForm_ As frmContribution = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmContribution").SingleOrDefault()
-                    instForm_.Load_Contrib_Loan(emp, tabName)
+                    Dim instForm_ As frmAllowance = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmAllowance").SingleOrDefault()
+                    instForm_.Load_Allowance(emp, tabName)
 
                     If instForm_ Is Nothing Then
-                        instForm_ = DirectCast(CreateObjectInstance("frmContribution"), Form)
+                        instForm_ = DirectCast(CreateObjectInstance("frmAllowance"), Form)
                         instForm_.MdiParent = frmMainForm
                         frmMainForm.pNavigate.Controls.Add(instForm_)
                         frmMainForm.pNavigate.Tag = instForm_
@@ -138,6 +165,54 @@ Module Public_Function
 
                 End Try
         End Select
+    End Sub
+
+    Friend Sub SwitchForm_Loans(ByVal gotoForm As FormName, emp As Employee, tabName As String)
+        Select Case gotoForm
+            Case FormName.Loans
+                Try
+                    Dim instForm_ As frmLoan = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmLoan").SingleOrDefault()
+                    instForm_.Load_Contrib_Loan(emp, tabName)
+
+                    If instForm_ Is Nothing Then
+                        instForm_ = DirectCast(CreateObjectInstance("frmLoan"), Form)
+                        instForm_.MdiParent = frmMainForm
+                        frmMainForm.pNavigate.Controls.Add(instForm_)
+                        frmMainForm.pNavigate.Tag = instForm_
+                        instForm_.Show()
+                        instForm_.Dock = DockStyle.Fill
+                        instForm_.BringToFront()
+                    Else
+                        instForm_.BringToFront()
+                    End If
+
+                Catch ex As Exception
+
+                End Try
+        End Select
+
+        'Select Case gotoForm
+        '    Case FormName.Loans
+        '        Try
+        '            Dim instForm_ As frmContribution = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmContribution").SingleOrDefault()
+        '            instForm_.Load_Contrib_Loan(emp, tabName)
+
+        '            If instForm_ Is Nothing Then
+        '                instForm_ = DirectCast(CreateObjectInstance("frmContribution"), Form)
+        '                instForm_.MdiParent = frmMainForm
+        '                frmMainForm.pNavigate.Controls.Add(instForm_)
+        '                frmMainForm.pNavigate.Tag = instForm_
+        '                instForm_.Show()
+        '                instForm_.Dock = DockStyle.Fill
+        '                instForm_.BringToFront()
+        '            Else
+        '                instForm_.BringToFront()
+        '            End If
+
+        '        Catch ex As Exception
+
+        '        End Try
+        'End Select
     End Sub
 
     Public Function CreateObjectInstance(ByVal objectName As String) As Object
@@ -272,5 +347,274 @@ Module Public_Function
 
         Return toProper
     End Function
+
+#Region "FOR IMPORT ONLY frmNewEmployee"
+
+    Friend Sub Save_Recorded_Allow_Deduc_13month(bio_no As String, PAYDATE As String, CATEGORY As String, AMOUNT As String, TRANSAC_NAME As String)
+        Dim sql As String
+        sql = $"Select * From RECORDED_ALLOW_DEDUC where BIO_NO = '{bio_no}' and PAYDATE = '{PAYDATE}' and CATEGORY = '13th Month Pay'"
+        Using dss As DataSet = LoadSQL(sql, "RECORDED_ALLOW_DEDUC")
+            If dss.Tables(0).Rows.Count > 0 Then
+                Dim dsRow As DataRow = dss.Tables(0).Rows(0)
+                With dsRow
+                    .Item("BIO_NO") = bio_no
+                    .Item("PAYDATE") = PAYDATE
+                    .Item("CATEGORY") = CATEGORY
+                    .Item("AMOUNT") = AMOUNT
+                    .Item("TRANSAC_NAME") = TRANSAC_NAME
+                End With
+
+                SaveEntry(dss, False)
+            Else
+
+                sql = "Select * From RECORDED_ALLOW_DEDUC Rows 1"
+                Using ds As DataSet = LoadSQL(sql, "RECORDED_ALLOW_DEDUC")
+
+                    Dim dsNewRow As DataRow = ds.Tables(0).NewRow
+                    With dsNewRow
+
+                        .Item("BIO_NO") = bio_no
+                        .Item("PAYDATE") = PAYDATE
+                        .Item("CATEGORY") = CATEGORY
+                        .Item("AMOUNT") = AMOUNT
+                        .Item("TRANSAC_NAME") = TRANSAC_NAME
+
+                    End With
+                    ds.Tables(0).Rows.Add(dsNewRow)
+                    SaveEntry(ds)
+                End Using
+            End If
+        End Using
+
+    End Sub
+
+    Public Sub UPDATENETPAY(BIO_NO As String, PAYDATE As String, AMOUNT As String)
+        Dim total_allowance As Decimal
+        Dim mysql As String = $"Select SUM(AMOUNT) AS TOTS FROM RECORDED_ALLOW_DEDUC where BIO_NO = '{BIO_NO}' and PAYDATE = '{PAYDATE}' and TRANSAC_NAME = 'ALLOWANCE'"
+        Dim dss As DataSet = LoadSQL(mysql, "RECORDED_ALLOW_DEDUC")
+        If dss.Tables(0).Rows.Count > 0 Then
+            For Each dr In dss.Tables(0).Rows()
+                With dr
+                    total_allowance = .Item("TOTS")
+                End With
+            Next
+        End If
+
+        mysql = $"Select * FROM PAYROLL_PAYOUT where BIOMETRIC_ID = '{BIO_NO}' and PAYDATE = '{PAYDATE}'"
+        Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
+        If ds.Tables(0).Rows.Count > 0 Then
+            With ds.Tables(0).Rows(0)
+
+                Dim positive, negative As Decimal
+                positive = .Item("GROSS_AMOUNT") + total_allowance
+                negative = .Item("TOTAL_DEDUCTION")
+
+                .Item("NET_PAY") = positive - negative
+
+            End With
+
+            SaveEntry(ds, False)
+        End If
+
+    End Sub
+
+    Public Function Get_13Month(BIO_NO As String)
+        Dim THIRTEEN_MONTH As Decimal = 0
+        Dim mysql As String = $"Select * FROM PAYROLL_13MONTH A inner join PAYROLL_EMPLOYEE B ON B.EMP_NO = A.EMP_NO where B.BIO_NO = '{BIO_NO}' and B.EMP_NO = A.EMP_NO"
+        Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_13MONTH")
+        If dss.Tables(0).Rows.Count > 0 Then
+            For Each dr In dss.Tables(0).Rows()
+                With dr
+                    THIRTEEN_MONTH = .Item("AMOUNT")
+                End With
+            Next
+        End If
+
+        Return THIRTEEN_MONTH
+    End Function
+
+    Public Function Get_13MontHHHH(EMP_NO As String)
+        Dim THIRTEEN_MONTH As Decimal = 0
+        Dim mysql As String = $"Select * FROM PAYROLL_13MONTH where EMP_NO = '{EMP_NO}'"
+        Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_13MONTH")
+        If dss.Tables(0).Rows.Count > 0 Then
+            For Each dr In dss.Tables(0).Rows()
+                With dr
+                    THIRTEEN_MONTH = .Item("AMOUNT")
+                End With
+            Next
+        End If
+
+        Return THIRTEEN_MONTH
+    End Function
+
+    Public Sub SAVE_Emp_SBU_EXCEL(EMP_NO As String, RowNo As Integer)
+        Dim mysql As String
+        Dim BIO As String = ""
+
+        '====================== GET BIO_NO FOR SAVING TO PAYROLL_SBU  ==================
+        mysql = "Select * From PAYROLL_EMPLOYEE WHERE EMP_NO = '" & EMP_NO.TrimEnd & "'"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+            If ds.Tables(0).Rows.Count > 0 Then
+                Dim data As DataRow = ds.Tables(0).Rows(0)
+                With data
+                    BIO = .Item("BIO_NO")
+                End With
+            Else
+                Exit Sub
+            End If
+        End Using
+
+        '====================== ADD NEW PAYROLL_SBU ==================
+        mysql = "Select * From PAYROLL_SBU Rows 1"
+        Using dssS As DataSet = LoadSQL(mysql, "PAYROLL_SBU")
+
+            Dim dsNewRow As DataRow = dssS.Tables(0).NewRow
+            With dsNewRow
+
+                .Item("BIO_NO") = BIO
+
+            End With
+            dssS.Tables(0).Rows.Add(dsNewRow)
+            SaveEntry(dssS)
+        End Using
+
+    End Sub
+
+    Public Sub UPDATE_Emp_SBU_EXCEL(CATEGORY As String, AMOUNT As String, PRINCIPAL As String, CREDIT As String, BALANCE As String, RowNo As Integer)
+
+        Dim mysql As String = "Select * From PAYROLL_SBU ORDER BY ID DESC Rows 1"
+        Using dssS As DataSet = LoadSQL(mysql, "PAYROLL_SBU")
+            If dssS.Tables(0).Rows.Count > 0 Then
+                Dim data As DataRow = dssS.Tables(0).Rows(0)
+                With data
+
+                    If IsDBNull(.Item("PRINCIPAL")) Then .Item("PRINCIPAL") = IIf(PRINCIPAL = Nothing, 0, PRINCIPAL)
+                    If IsDBNull(.Item("CREDIT")) Then .Item("CREDIT") = IIf(CREDIT = Nothing, 0, CREDIT)
+                    If IsDBNull(.Item("BALANCE")) Then .Item("BALANCE") = IIf(BALANCE = Nothing, PRINCIPAL, BALANCE)
+                    If IsDBNull(.Item("CATEGORY")) Then .Item("CATEGORY") = CATEGORY
+                    If IsDBNull(.Item("AMOUNT")) Then .Item("AMOUNT") = IIf(AMOUNT = Nothing, 250, AMOUNT)
+
+                End With
+                SaveEntry(dssS, False)
+            End If
+        End Using
+    End Sub
+
+    Public Sub SAVE_EmpNo_Deduction_EXCEL(EMP_NO As String, RowNo As Integer)
+        Dim mysql As String
+        Dim BIO As String = ""
+
+        '====================== GET BIO_NO FOR SAVING TO PAYROLL_SBU  ==================
+        mysql = "Select * From PAYROLL_EMPLOYEE WHERE EMP_NO = '" & EMP_NO.TrimEnd & "'"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+            If ds.Tables(0).Rows.Count > 0 Then
+                Dim data As DataRow = ds.Tables(0).Rows(0)
+                With data
+                    BIO = .Item("BIO_NO")
+                End With
+            Else
+                Exit Sub
+            End If
+        End Using
+
+        '====================== ADD NEW PAYROLL_SBU ==================
+        mysql = "Select * From PAYROLL_DEDUCTION Rows 1"
+        Using dssS As DataSet = LoadSQL(mysql, "PAYROLL_DEDUCTION")
+
+            Dim dsNewRow As DataRow = dssS.Tables(0).NewRow
+            With dsNewRow
+
+                .Item("BIO_NO") = BIO
+
+            End With
+            dssS.Tables(0).Rows.Add(dsNewRow)
+            SaveEntry(dssS)
+        End Using
+
+    End Sub
+
+    Public Sub SAVE_Deduction_EXCEL(CATEGORY As String, AMOUNT As String, PRINCIPAL As String, CREDIT As String, BALANCE As String, DATEE As String, RowNo As Integer)
+
+        Dim bio_no As String = ""
+        '=============================== GET LAST BIO_NO =============================
+        Dim mysql As String = "Select * From PAYROLL_DEDUCTION ORDER BY ID DESC Rows 1"
+        Using dssS As DataSet = LoadSQL(mysql, "PAYROLL_DEDUCTION")
+            If dssS.Tables(0).Rows.Count > 0 Then
+                With dssS.Tables(0).Rows(0)
+                    bio_no = .Item("BIO_NO")
+                End With
+            End If
+        End Using
+
+        '=============================== SAVE NEW ROW =============================
+        Dim mysqlL As String = $"Select * From PAYROLL_DEDUCTION"
+        Using dssS As DataSet = LoadSQL(mysqlL, "PAYROLL_DEDUCTION")
+            If dssS.Tables(0).Rows.Count > 0 Then
+
+                Dim dataA As DataRow = dssS.Tables(0).NewRow
+                With dataA
+
+                    .Item("BIO_NO") = bio_no
+                    .Item("CATEGORY") = CATEGORY
+                    .Item("PRINCIPAL") = PRINCIPAL
+                    .Item("AMORT") = AMOUNT
+                    .Item("CREDIT") = CREDIT
+                    .Item("BALANCE") = BALANCE
+                    .Item("DATEE") = DATEE
+                    .Item("SCHEDULE") = "EVERY PAYROLL"
+
+                End With
+
+                dssS.Tables(0).Rows.Add(dataA)
+                SaveEntry(dssS)
+            End If
+        End Using
+
+        Console.WriteLine("ROWWW " & RowNo)
+    End Sub
+
+    Public Sub SAVE_LOANS_EXCEL(CATEGORY As String, AMOUNT As String, PRINCIPAL As String, CREDIT As String, BALANCE As String, DATEE As String, RowNo As Integer)
+
+        Dim bio_no As String = ""
+        '=============================== GET LAST BIO_NO =============================
+        Dim mysql As String = "Select * From PAYROLL_DEDUCTION ORDER BY ID DESC Rows 1"
+        Using dssS As DataSet = LoadSQL(mysql, "PAYROLL_DEDUCTION")
+            If dssS.Tables(0).Rows.Count > 0 Then
+                With dssS.Tables(0).Rows(0)
+                    bio_no = .Item("BIO_NO")
+                End With
+            End If
+        End Using
+
+        '=============================== SAVE NEW ROW =============================
+        Dim mysqlL As String = $"Select * From PAYROLL_LOANS"
+        Using dssS As DataSet = LoadSQL(mysqlL, "PAYROLL_LOANS")
+            Dim dataA As DataRow = dssS.Tables(0).NewRow
+            With dataA
+
+                .Item("BIO_NO") = bio_no
+                .Item("CATEGORY") = CATEGORY
+                .Item("PRINCIPAL") = PRINCIPAL
+                .Item("AMORT") = AMOUNT
+                .Item("CREDIT") = CREDIT
+                .Item("BALANCE") = BALANCE
+                .Item("DATEE") = DATEE
+
+            End With
+
+            dssS.Tables(0).Rows.Add(dataA)
+            SaveEntry(dssS)
+        End Using
+
+        Console.WriteLine("ROWWW " & RowNo)
+    End Sub
+
+
+    Public Sub DeleteDuplicate(table As String)
+        'RunCommand($"DELETE FROM {table} WHERE ID NOT IN  ( SELECT MAX(ID) FROM {table} GROUP BY CATEGORY ) and CATEGORY = 'SBU'  and PAYDATE = '12/31/2021' ")  'THIS IS TO DELETE DUPLICATE IN TBLMANNING 
+    End Sub
+
+#End Region
 
 End Module

@@ -23,6 +23,8 @@ Partial Class frmMainForm
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.NavagationPanel = New System.Windows.Forms.Panel()
+        Me.PictureBox11 = New System.Windows.Forms.PictureBox()
+        Me.Allowance_btn = New System.Windows.Forms.Button()
         Me.PictureBox7 = New System.Windows.Forms.PictureBox()
         Me.Paysilp_BTN = New System.Windows.Forms.Button()
         Me.PictureBox10 = New System.Windows.Forms.PictureBox()
@@ -39,10 +41,12 @@ Partial Class frmMainForm
         Me.AppDateTime = New System.Windows.Forms.Label()
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.FileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ConnectToDatabaseToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.UserLogsMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.Schedule_Menu = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ConnectToDatabase_Menu = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ChangeUserInfo_Menu = New System.Windows.Forms.ToolStripMenuItem()
+        Me.UserLogs_Menu = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
-        Me.ExitToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.Exit_Menu = New System.Windows.Forms.ToolStripMenuItem()
         Me.AboutUsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.UserName_LBL = New System.Windows.Forms.Label()
         Me.Dashboard_BTN = New System.Windows.Forms.Button()
@@ -51,6 +55,7 @@ Partial Class frmMainForm
         Me.Settings_BTN = New System.Windows.Forms.Button()
         Me.Contribution_BTN = New System.Windows.Forms.Button()
         Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.Dashboard_lbl = New System.Windows.Forms.Label()
         Me.AppProgressBar = New System.Windows.Forms.ProgressBar()
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
         Me.Question_lbl = New System.Windows.Forms.Label()
@@ -59,6 +64,7 @@ Partial Class frmMainForm
         Me.PictureBox5 = New System.Windows.Forms.PictureBox()
         Me.pNavigate = New System.Windows.Forms.Panel()
         Me.NavagationPanel.SuspendLayout()
+        CType(Me.PictureBox11, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox10, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox8, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -77,6 +83,8 @@ Partial Class frmMainForm
         'NavagationPanel
         '
         Me.NavagationPanel.BackColor = System.Drawing.Color.White
+        Me.NavagationPanel.Controls.Add(Me.PictureBox11)
+        Me.NavagationPanel.Controls.Add(Me.Allowance_btn)
         Me.NavagationPanel.Controls.Add(Me.PictureBox7)
         Me.NavagationPanel.Controls.Add(Me.Paysilp_BTN)
         Me.NavagationPanel.Controls.Add(Me.PictureBox10)
@@ -99,11 +107,39 @@ Partial Class frmMainForm
         Me.NavagationPanel.Size = New System.Drawing.Size(196, 715)
         Me.NavagationPanel.TabIndex = 2
         '
+        'PictureBox11
+        '
+        Me.PictureBox11.BackColor = System.Drawing.Color.Black
+        Me.PictureBox11.Image = Global.WindowsApp1.My.Resources.Resources.allow1
+        Me.PictureBox11.Location = New System.Drawing.Point(12, 466)
+        Me.PictureBox11.Name = "PictureBox11"
+        Me.PictureBox11.Size = New System.Drawing.Size(42, 38)
+        Me.PictureBox11.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.PictureBox11.TabIndex = 31
+        Me.PictureBox11.TabStop = False
+        '
+        'Allowance_btn
+        '
+        Me.Allowance_btn.AccessibleName = "Loans"
+        Me.Allowance_btn.BackColor = System.Drawing.Color.Black
+        Me.Allowance_btn.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.Allowance_btn.FlatAppearance.BorderSize = 0
+        Me.Allowance_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.Allowance_btn.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Allowance_btn.ForeColor = System.Drawing.Color.White
+        Me.Allowance_btn.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
+        Me.Allowance_btn.Location = New System.Drawing.Point(0, 447)
+        Me.Allowance_btn.Name = "Allowance_btn"
+        Me.Allowance_btn.Size = New System.Drawing.Size(197, 66)
+        Me.Allowance_btn.TabIndex = 30
+        Me.Allowance_btn.Text = "         Allowance"
+        Me.Allowance_btn.UseVisualStyleBackColor = False
+        '
         'PictureBox7
         '
         Me.PictureBox7.BackColor = System.Drawing.Color.Black
         Me.PictureBox7.Image = Global.WindowsApp1.My.Resources.Resources.dtr
-        Me.PictureBox7.Location = New System.Drawing.Point(10, 657)
+        Me.PictureBox7.Location = New System.Drawing.Point(10, 666)
         Me.PictureBox7.Name = "PictureBox7"
         Me.PictureBox7.Size = New System.Drawing.Size(42, 38)
         Me.PictureBox7.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
@@ -112,6 +148,7 @@ Partial Class frmMainForm
         '
         'Paysilp_BTN
         '
+        Me.Paysilp_BTN.AccessibleName = "Report"
         Me.Paysilp_BTN.BackColor = System.Drawing.Color.Black
         Me.Paysilp_BTN.Cursor = System.Windows.Forms.Cursors.Hand
         Me.Paysilp_BTN.FlatAppearance.BorderSize = 0
@@ -119,9 +156,9 @@ Partial Class frmMainForm
         Me.Paysilp_BTN.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Paysilp_BTN.ForeColor = System.Drawing.Color.White
         Me.Paysilp_BTN.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Paysilp_BTN.Location = New System.Drawing.Point(-1, 640)
+        Me.Paysilp_BTN.Location = New System.Drawing.Point(-1, 648)
         Me.Paysilp_BTN.Name = "Paysilp_BTN"
-        Me.Paysilp_BTN.Size = New System.Drawing.Size(197, 75)
+        Me.Paysilp_BTN.Size = New System.Drawing.Size(197, 66)
         Me.Paysilp_BTN.TabIndex = 8
         Me.Paysilp_BTN.Text = "      &Reports"
         Me.Paysilp_BTN.UseVisualStyleBackColor = False
@@ -130,7 +167,7 @@ Partial Class frmMainForm
         '
         Me.PictureBox10.BackColor = System.Drawing.Color.Black
         Me.PictureBox10.Image = Global.WindowsApp1.My.Resources.Resources.settings
-        Me.PictureBox10.Location = New System.Drawing.Point(14, 583)
+        Me.PictureBox10.Location = New System.Drawing.Point(14, 598)
         Me.PictureBox10.Name = "PictureBox10"
         Me.PictureBox10.Size = New System.Drawing.Size(42, 38)
         Me.PictureBox10.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
@@ -141,7 +178,7 @@ Partial Class frmMainForm
         '
         Me.PictureBox8.BackColor = System.Drawing.Color.Black
         Me.PictureBox8.Image = Global.WindowsApp1.My.Resources.Resources.loans
-        Me.PictureBox8.Location = New System.Drawing.Point(11, 431)
+        Me.PictureBox8.Location = New System.Drawing.Point(11, 398)
         Me.PictureBox8.Name = "PictureBox8"
         Me.PictureBox8.Size = New System.Drawing.Size(42, 38)
         Me.PictureBox8.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
@@ -150,6 +187,7 @@ Partial Class frmMainForm
         '
         'Loan_BTN
         '
+        Me.Loan_BTN.AccessibleName = "Loans"
         Me.Loan_BTN.BackColor = System.Drawing.Color.Black
         Me.Loan_BTN.Cursor = System.Windows.Forms.Cursors.Hand
         Me.Loan_BTN.FlatAppearance.BorderSize = 0
@@ -157,18 +195,18 @@ Partial Class frmMainForm
         Me.Loan_BTN.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Loan_BTN.ForeColor = System.Drawing.Color.White
         Me.Loan_BTN.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Loan_BTN.Location = New System.Drawing.Point(-1, 412)
+        Me.Loan_BTN.Location = New System.Drawing.Point(-1, 379)
         Me.Loan_BTN.Name = "Loan_BTN"
-        Me.Loan_BTN.Size = New System.Drawing.Size(197, 75)
+        Me.Loan_BTN.Size = New System.Drawing.Size(197, 67)
         Me.Loan_BTN.TabIndex = 7
-        Me.Loan_BTN.Text = "           ......................."
+        Me.Loan_BTN.Text = "     Loans"
         Me.Loan_BTN.UseVisualStyleBackColor = False
         '
         'PictureBox9
         '
         Me.PictureBox9.BackColor = System.Drawing.Color.Black
         Me.PictureBox9.Image = Global.WindowsApp1.My.Resources.Resources.calculator
-        Me.PictureBox9.Location = New System.Drawing.Point(14, 508)
+        Me.PictureBox9.Location = New System.Drawing.Point(14, 527)
         Me.PictureBox9.Name = "PictureBox9"
         Me.PictureBox9.Size = New System.Drawing.Size(42, 38)
         Me.PictureBox9.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
@@ -179,7 +217,7 @@ Partial Class frmMainForm
         '
         Me.PictureBox3.BackColor = System.Drawing.Color.Black
         Me.PictureBox3.Image = Global.WindowsApp1.My.Resources.Resources.employee1
-        Me.PictureBox3.Location = New System.Drawing.Point(10, 199)
+        Me.PictureBox3.Location = New System.Drawing.Point(10, 189)
         Me.PictureBox3.Name = "PictureBox3"
         Me.PictureBox3.Size = New System.Drawing.Size(46, 43)
         Me.PictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
@@ -190,7 +228,7 @@ Partial Class frmMainForm
         '
         Me.PictureBox2.BackColor = System.Drawing.Color.Black
         Me.PictureBox2.Image = Global.WindowsApp1.My.Resources.Resources.new_employee
-        Me.PictureBox2.Location = New System.Drawing.Point(9, 276)
+        Me.PictureBox2.Location = New System.Drawing.Point(9, 259)
         Me.PictureBox2.Name = "PictureBox2"
         Me.PictureBox2.Size = New System.Drawing.Size(42, 37)
         Me.PictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
@@ -199,6 +237,7 @@ Partial Class frmMainForm
         '
         'Employee_BTN
         '
+        Me.Employee_BTN.AccessibleName = "Employee"
         Me.Employee_BTN.BackColor = System.Drawing.Color.Black
         Me.Employee_BTN.Cursor = System.Windows.Forms.Cursors.Hand
         Me.Employee_BTN.FlatAppearance.BorderSize = 0
@@ -206,9 +245,9 @@ Partial Class frmMainForm
         Me.Employee_BTN.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Employee_BTN.ForeColor = System.Drawing.Color.White
         Me.Employee_BTN.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Employee_BTN.Location = New System.Drawing.Point(0, 184)
+        Me.Employee_BTN.Location = New System.Drawing.Point(-1, 175)
         Me.Employee_BTN.Name = "Employee_BTN"
-        Me.Employee_BTN.Size = New System.Drawing.Size(198, 75)
+        Me.Employee_BTN.Size = New System.Drawing.Size(197, 67)
         Me.Employee_BTN.TabIndex = 2
         Me.Employee_BTN.Text = "         &Employees"
         Me.Employee_BTN.UseVisualStyleBackColor = False
@@ -217,7 +256,7 @@ Partial Class frmMainForm
         '
         Me.PictureBox6.BackColor = System.Drawing.Color.Black
         Me.PictureBox6.Image = Global.WindowsApp1.My.Resources.Resources.payout
-        Me.PictureBox6.Location = New System.Drawing.Point(10, 351)
+        Me.PictureBox6.Location = New System.Drawing.Point(10, 322)
         Me.PictureBox6.Name = "PictureBox6"
         Me.PictureBox6.Size = New System.Drawing.Size(46, 41)
         Me.PictureBox6.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
@@ -227,8 +266,8 @@ Partial Class frmMainForm
         'PictureBox4
         '
         Me.PictureBox4.BackColor = System.Drawing.Color.Black
-        Me.PictureBox4.Image = Global.WindowsApp1.My.Resources.Resources.dashboard
-        Me.PictureBox4.Location = New System.Drawing.Point(11, 124)
+        Me.PictureBox4.Image = Global.WindowsApp1.My.Resources.Resources.sched1
+        Me.PictureBox4.Location = New System.Drawing.Point(11, 123)
         Me.PictureBox4.Name = "PictureBox4"
         Me.PictureBox4.Size = New System.Drawing.Size(37, 36)
         Me.PictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
@@ -282,34 +321,49 @@ Partial Class frmMainForm
         '
         'FileToolStripMenuItem
         '
-        Me.FileToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ConnectToDatabaseToolStripMenuItem, Me.UserLogsMenuItem, Me.ToolStripSeparator1, Me.ExitToolStripMenuItem})
+        Me.FileToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.Schedule_Menu, Me.ConnectToDatabase_Menu, Me.ChangeUserInfo_Menu, Me.UserLogs_Menu, Me.ToolStripSeparator1, Me.Exit_Menu})
         Me.FileToolStripMenuItem.ForeColor = System.Drawing.Color.White
         Me.FileToolStripMenuItem.Name = "FileToolStripMenuItem"
         Me.FileToolStripMenuItem.Size = New System.Drawing.Size(37, 20)
         Me.FileToolStripMenuItem.Text = "&File"
         '
-        'ConnectToDatabaseToolStripMenuItem
+        'Schedule_Menu
         '
-        Me.ConnectToDatabaseToolStripMenuItem.Name = "ConnectToDatabaseToolStripMenuItem"
-        Me.ConnectToDatabaseToolStripMenuItem.Size = New System.Drawing.Size(184, 22)
-        Me.ConnectToDatabaseToolStripMenuItem.Text = "&Connect to Database"
+        Me.Schedule_Menu.Name = "Schedule_Menu"
+        Me.Schedule_Menu.Size = New System.Drawing.Size(208, 22)
+        Me.Schedule_Menu.Text = "Employee's DTR Schedule"
+        Me.Schedule_Menu.Visible = False
         '
-        'UserLogsMenuItem
+        'ConnectToDatabase_Menu
         '
-        Me.UserLogsMenuItem.Name = "UserLogsMenuItem"
-        Me.UserLogsMenuItem.Size = New System.Drawing.Size(184, 22)
-        Me.UserLogsMenuItem.Text = "User Logs"
+        Me.ConnectToDatabase_Menu.Name = "ConnectToDatabase_Menu"
+        Me.ConnectToDatabase_Menu.Size = New System.Drawing.Size(208, 22)
+        Me.ConnectToDatabase_Menu.Text = "&Connect to Database"
+        '
+        'ChangeUserInfo_Menu
+        '
+        Me.ChangeUserInfo_Menu.AccessibleName = "Change User Details"
+        Me.ChangeUserInfo_Menu.Name = "ChangeUserInfo_Menu"
+        Me.ChangeUserInfo_Menu.Size = New System.Drawing.Size(208, 22)
+        Me.ChangeUserInfo_Menu.Text = "Change User Details"
+        '
+        'UserLogs_Menu
+        '
+        Me.UserLogs_Menu.AccessibleName = "User Logs"
+        Me.UserLogs_Menu.Name = "UserLogs_Menu"
+        Me.UserLogs_Menu.Size = New System.Drawing.Size(208, 22)
+        Me.UserLogs_Menu.Text = "User Logs"
         '
         'ToolStripSeparator1
         '
         Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-        Me.ToolStripSeparator1.Size = New System.Drawing.Size(181, 6)
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(205, 6)
         '
-        'ExitToolStripMenuItem
+        'Exit_Menu
         '
-        Me.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem"
-        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(184, 22)
-        Me.ExitToolStripMenuItem.Text = "&Exit"
+        Me.Exit_Menu.Name = "Exit_Menu"
+        Me.Exit_Menu.Size = New System.Drawing.Size(208, 22)
+        Me.Exit_Menu.Text = "&Exit"
         '
         'AboutUsToolStripMenuItem
         '
@@ -320,17 +374,17 @@ Partial Class frmMainForm
         '
         'UserName_LBL
         '
-        Me.UserName_LBL.AutoSize = True
         Me.UserName_LBL.Font = New System.Drawing.Font("Segoe UI", 9.0!, CType((System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Underline), System.Drawing.FontStyle), System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.UserName_LBL.ForeColor = System.Drawing.Color.White
-        Me.UserName_LBL.Location = New System.Drawing.Point(53, 28)
+        Me.UserName_LBL.Location = New System.Drawing.Point(53, 22)
         Me.UserName_LBL.Name = "UserName_LBL"
-        Me.UserName_LBL.Size = New System.Drawing.Size(16, 15)
+        Me.UserName_LBL.Size = New System.Drawing.Size(126, 46)
         Me.UserName_LBL.TabIndex = 17
         Me.UserName_LBL.Text = "   "
         '
         'Dashboard_BTN
         '
+        Me.Dashboard_BTN.AccessibleName = "DTR Schedule"
         Me.Dashboard_BTN.BackColor = System.Drawing.Color.Black
         Me.Dashboard_BTN.Cursor = System.Windows.Forms.Cursors.Hand
         Me.Dashboard_BTN.FlatAppearance.BorderSize = 0
@@ -338,15 +392,16 @@ Partial Class frmMainForm
         Me.Dashboard_BTN.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Dashboard_BTN.ForeColor = System.Drawing.Color.White
         Me.Dashboard_BTN.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Dashboard_BTN.Location = New System.Drawing.Point(0, 108)
+        Me.Dashboard_BTN.Location = New System.Drawing.Point(0, 107)
         Me.Dashboard_BTN.Name = "Dashboard_BTN"
-        Me.Dashboard_BTN.Size = New System.Drawing.Size(197, 75)
+        Me.Dashboard_BTN.Size = New System.Drawing.Size(197, 67)
         Me.Dashboard_BTN.TabIndex = 3
-        Me.Dashboard_BTN.Text = "         &Dashboard"
+        Me.Dashboard_BTN.Text = "               &DTR Schedule"
         Me.Dashboard_BTN.UseVisualStyleBackColor = False
         '
         'Attendance_BTN
         '
+        Me.Attendance_BTN.AccessibleName = "Attendance"
         Me.Attendance_BTN.BackColor = System.Drawing.Color.Black
         Me.Attendance_BTN.Cursor = System.Windows.Forms.Cursors.Hand
         Me.Attendance_BTN.FlatAppearance.BorderSize = 0
@@ -354,15 +409,16 @@ Partial Class frmMainForm
         Me.Attendance_BTN.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Attendance_BTN.ForeColor = System.Drawing.Color.White
         Me.Attendance_BTN.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Attendance_BTN.Location = New System.Drawing.Point(0, 260)
+        Me.Attendance_BTN.Location = New System.Drawing.Point(0, 243)
         Me.Attendance_BTN.Name = "Attendance_BTN"
-        Me.Attendance_BTN.Size = New System.Drawing.Size(197, 75)
+        Me.Attendance_BTN.Size = New System.Drawing.Size(197, 67)
         Me.Attendance_BTN.TabIndex = 4
         Me.Attendance_BTN.Text = "          &Attendance"
         Me.Attendance_BTN.UseVisualStyleBackColor = False
         '
         'Payout_BTN
         '
+        Me.Payout_BTN.AccessibleName = "Payout"
         Me.Payout_BTN.BackColor = System.Drawing.Color.Black
         Me.Payout_BTN.Cursor = System.Windows.Forms.Cursors.Hand
         Me.Payout_BTN.FlatAppearance.BorderSize = 0
@@ -370,15 +426,16 @@ Partial Class frmMainForm
         Me.Payout_BTN.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Payout_BTN.ForeColor = System.Drawing.Color.White
         Me.Payout_BTN.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Payout_BTN.Location = New System.Drawing.Point(0, 336)
+        Me.Payout_BTN.Location = New System.Drawing.Point(0, 311)
         Me.Payout_BTN.Name = "Payout_BTN"
-        Me.Payout_BTN.Size = New System.Drawing.Size(197, 75)
+        Me.Payout_BTN.Size = New System.Drawing.Size(197, 67)
         Me.Payout_BTN.TabIndex = 13
         Me.Payout_BTN.Text = "    &Payout"
         Me.Payout_BTN.UseVisualStyleBackColor = False
         '
         'Settings_BTN
         '
+        Me.Settings_BTN.AccessibleName = "Settings"
         Me.Settings_BTN.BackColor = System.Drawing.Color.Black
         Me.Settings_BTN.Cursor = System.Windows.Forms.Cursors.Hand
         Me.Settings_BTN.FlatAppearance.BorderSize = 0
@@ -386,15 +443,16 @@ Partial Class frmMainForm
         Me.Settings_BTN.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Settings_BTN.ForeColor = System.Drawing.Color.White
         Me.Settings_BTN.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Settings_BTN.Location = New System.Drawing.Point(0, 564)
+        Me.Settings_BTN.Location = New System.Drawing.Point(0, 581)
         Me.Settings_BTN.Name = "Settings_BTN"
-        Me.Settings_BTN.Size = New System.Drawing.Size(197, 75)
+        Me.Settings_BTN.Size = New System.Drawing.Size(197, 66)
         Me.Settings_BTN.TabIndex = 10
         Me.Settings_BTN.Text = "        &Settings"
         Me.Settings_BTN.UseVisualStyleBackColor = False
         '
         'Contribution_BTN
         '
+        Me.Contribution_BTN.AccessibleName = "Contribution"
         Me.Contribution_BTN.BackColor = System.Drawing.Color.Black
         Me.Contribution_BTN.Cursor = System.Windows.Forms.Cursors.Hand
         Me.Contribution_BTN.FlatAppearance.BorderSize = 0
@@ -402,9 +460,9 @@ Partial Class frmMainForm
         Me.Contribution_BTN.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Contribution_BTN.ForeColor = System.Drawing.Color.White
         Me.Contribution_BTN.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Contribution_BTN.Location = New System.Drawing.Point(0, 488)
+        Me.Contribution_BTN.Location = New System.Drawing.Point(0, 514)
         Me.Contribution_BTN.Name = "Contribution_BTN"
-        Me.Contribution_BTN.Size = New System.Drawing.Size(197, 75)
+        Me.Contribution_BTN.Size = New System.Drawing.Size(197, 66)
         Me.Contribution_BTN.TabIndex = 12
         Me.Contribution_BTN.Text = "            &Contribution"
         Me.Contribution_BTN.UseVisualStyleBackColor = False
@@ -412,6 +470,7 @@ Partial Class frmMainForm
         'Panel1
         '
         Me.Panel1.BackColor = System.Drawing.Color.White
+        Me.Panel1.Controls.Add(Me.Dashboard_lbl)
         Me.Panel1.Controls.Add(Me.AppProgressBar)
         Me.Panel1.Controls.Add(Me.ProgressBar1)
         Me.Panel1.Controls.Add(Me.Question_lbl)
@@ -422,6 +481,18 @@ Partial Class frmMainForm
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(1169, 52)
         Me.Panel1.TabIndex = 21
+        '
+        'Dashboard_lbl
+        '
+        Me.Dashboard_lbl.AutoSize = True
+        Me.Dashboard_lbl.Font = New System.Drawing.Font("Segoe UI", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Dashboard_lbl.ForeColor = System.Drawing.Color.MidnightBlue
+        Me.Dashboard_lbl.Location = New System.Drawing.Point(3, 3)
+        Me.Dashboard_lbl.Name = "Dashboard_lbl"
+        Me.Dashboard_lbl.Size = New System.Drawing.Size(82, 20)
+        Me.Dashboard_lbl.TabIndex = 20
+        Me.Dashboard_lbl.Text = "Dashboard"
+        Me.Dashboard_lbl.Visible = False
         '
         'AppProgressBar
         '
@@ -507,6 +578,7 @@ Partial Class frmMainForm
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Form1"
         Me.NavagationPanel.ResumeLayout(False)
+        CType(Me.PictureBox11, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox10, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox8, System.ComponentModel.ISupportInitialize).EndInit()
@@ -533,9 +605,9 @@ Partial Class frmMainForm
     Friend WithEvents PictureBox1 As PictureBox
     Friend WithEvents MenuStrip1 As MenuStrip
     Friend WithEvents FileToolStripMenuItem As ToolStripMenuItem
-    Friend WithEvents ConnectToDatabaseToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ConnectToDatabase_Menu As ToolStripMenuItem
     Friend WithEvents ToolStripSeparator1 As ToolStripSeparator
-    Friend WithEvents ExitToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents Exit_Menu As ToolStripMenuItem
     Friend WithEvents AboutUsToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents UserName_LBL As Label
     Friend WithEvents Dashboard_BTN As Button
@@ -563,5 +635,10 @@ Partial Class frmMainForm
     Friend WithEvents PictureBox9 As PictureBox
     Friend WithEvents PictureBox8 As PictureBox
     Friend WithEvents PictureBox7 As PictureBox
-    Friend WithEvents UserLogsMenuItem As ToolStripMenuItem
+    Friend WithEvents UserLogs_Menu As ToolStripMenuItem
+    Friend WithEvents ChangeUserInfo_Menu As ToolStripMenuItem
+    Friend WithEvents Schedule_Menu As ToolStripMenuItem
+    Friend WithEvents Dashboard_lbl As Label
+    Friend WithEvents PictureBox11 As PictureBox
+    Friend WithEvents Allowance_btn As Button
 End Class

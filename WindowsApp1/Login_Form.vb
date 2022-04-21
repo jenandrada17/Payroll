@@ -7,9 +7,14 @@
             Dim user As String = validLogin(txtUser.Text, txtPass.Text)
             If user <> Nothing Then
                 frmMainForm.UserName_LBL.Text = user
+                loginNo = 0
+
+                Dim idx As Integer = GetData_Integer("ID", $"PAYROLL_USER where USERNAME = '{txtUser.Text}' AND PASSWORD = '{EncryptString(txtPass.Text)}'")
+                frmMainForm.Accessibility(idx)
+                frmMainForm.UserName_LBL.Tag = idx
+
                 txtUser.Clear()
                 txtPass.Clear()
-                loginNo = 0
                 Close()
             Else
                 loginNo += 1
@@ -23,12 +28,10 @@
 
     Friend Function validLogin(user As String, pass As String) As String
         Dim username As String = Nothing
-
-        Dim mysql As String = $"Select * from PAYROLL_USER where USERNAME = '{user}' and PASSWORD = '{pass}'"
+        Dim mysql As String = $"Select * from PAYROLL_USER where USERNAME = '{user}' and PASSWORD = '{EncryptString(pass)}'"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_USER")
             If ds.Tables(0).Rows.Count > 0 Then
-                Dim dsRow As DataRow = ds.Tables(0).Rows(0)
-                With dsRow
+                With ds.Tables(0).Rows(0)
                     username = .Item("USER_FULLNAME")
                 End With
             End If
@@ -45,6 +48,8 @@
 
     Private Sub Login_Form_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.CenterToScreen()
+
+        Console.WriteLine(EncryptString("jen"))
     End Sub
 
     Private Sub Box_X_Click(sender As Object, e As EventArgs) Handles Box_X.Click
