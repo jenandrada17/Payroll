@@ -1731,7 +1731,6 @@ Public Class frmAttendance
                     TIMEEE = DateTime.FromOADate(eCell(row, column).Value)
 
                     groups_time.Add(VALUEE.Add(TIMEEE.TimeOfDay))
-                    Console.WriteLine(VALUEE.Add(TIMEEE.TimeOfDay))
                 End If
             Next
 

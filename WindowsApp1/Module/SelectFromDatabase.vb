@@ -1800,24 +1800,6 @@ Module SelectFromDatabase
         Dim name As String
         Dim mysql As String
 
-        Dim datee As DateTime = Date.Now
-        Dim December_April As DateTime = New DateTime(datee.AddYears(-1).Year, 12, 1)
-        Dim May_Nov As DateTime = New DateTime(datee.Year, 5, 1)
-
-        Dim starting_date, ending_date As String
-
-        If datee.Month >= 5 And datee.Month <= 11 Then
-            starting_date = May_Nov.ToString("d")
-
-            Dim days As Integer = System.DateTime.DaysInMonth(May_Nov.Year, May_Nov.Month)
-            ending_date = May_Nov.AddMonths(6).AddDays(days).AddDays(-1).ToString("d")
-        Else
-            starting_date = December_April.ToString("d")
-
-            Dim days As Integer = System.DateTime.DaysInMonth(December_April.Year, December_April.Month)
-            ending_date = December_April.AddMonths(4).AddDays(days).AddDays(-1).ToString("d")
-        End If
-
         If searchName.Length <> 0 Then
 
             mysql = $"select * from PAYROLL_EMPLOYEE A inner join PAYROLL_PAYOUT B on B.BIOMETRIC_ID = A.BIO_NO "
@@ -1841,19 +1823,10 @@ Module SelectFromDatabase
             For Each dr In ds.Tables(0).Rows
                 With dr
 
-                    Dim TOTALS As Decimal = 0
-                    Dim bio_no As String = .item("BIOMETRIC_ID")
-
-                    Dim tOTAL_ECOLA As Decimal = GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC where BIO_NO = '{bio_no}' and CATEGORY = 'ECOLA' and PAYDATE BETWEEN '{starting_date}' AND '{ending_date}'")
-                    Dim tOTAL_SIL As Decimal = GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC where BIO_NO = '{bio_no}' and CATEGORY like '%SIL' and PAYDATE BETWEEN '{starting_date}' AND '{ending_date}'")
-                    Dim tOTAL_PI As Decimal = GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC where BIO_NO = '{bio_no}' and CATEGORY = 'PERFORMANCE INCENTIVES' and PAYDATE BETWEEN '{starting_date}' AND '{ending_date}'")
-                    Dim tOTAL_BASIC As Decimal = GetTotal("TOTAL_BASIC", $"PAYROLL_PAYOUT where BIOMETRIC_ID = '{bio_no}' and PAYDATE BETWEEN '{starting_date}' AND '{ending_date}'")
-                    Dim tOTAL_LATE_UT As Decimal = GetTotal("TOTAL_LATE_UT", $"PAYROLL_PAYOUT where  BIOMETRIC_ID = '{bio_no}' and PAYDATE BETWEEN '{starting_date}' AND '{ending_date}'")
-
-                    TOTALS = ((tOTAL_ECOLA + tOTAL_SIL + tOTAL_PI + tOTAL_BASIC) - tOTAL_LATE_UT) / 12
+                    Dim TOTALS As Decimal = Get13Month(.item("BIOMETRIC_ID"))
 
                     Dim i As ListViewItem = LV.Items.Add(.Item("FULLNAME"))
-                    i.SubItems.Add(TOTALS.ToString("N")).Tag = bio_no
+                    i.SubItems.Add(TOTALS.ToString("N")).Tag = .item("BIOMETRIC_ID")
 
                 End With
                 frmMainForm.AppProgressBar.Value += 1
@@ -1862,6 +1835,42 @@ Module SelectFromDatabase
         End Using
 
     End Sub
+
+    Friend Function Get13Month(bio_no As String)
+
+        Dim datee As DateTime = Date.Now
+        Dim December_April As DateTime = New DateTime(datee.AddYears(-1).Year, 12, 1)
+        Dim May_Nov As DateTime = New DateTime(datee.Year, 5, 1)
+
+        Dim starting_date, ending_date As String
+        Dim startt As New DateTime(datee.Year, 5, 16)
+        Dim endd As New DateTime(datee.Year, 12, 15)
+
+        If (datee >= startt AndAlso datee <= endd) Then
+            starting_date = May_Nov.ToString("d")
+
+            Dim days As Integer = System.DateTime.DaysInMonth(May_Nov.Year, May_Nov.Month)
+            ending_date = May_Nov.AddMonths(6).AddDays(days).AddDays(-1).ToString("d")
+        Else
+            starting_date = December_April.ToString("d")
+
+            Dim days As Integer = System.DateTime.DaysInMonth(December_April.Year, December_April.Month)
+            ending_date = December_April.AddMonths(4).AddDays(days).AddDays(-1).ToString("d")
+        End If
+
+        Dim tOTAL_ECOLA As Decimal = GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC where BIO_NO = '{bio_no}' and CATEGORY = 'ECOLA' and PAYDATE BETWEEN '{starting_date}' AND '{ending_date}'")
+        Dim tOTAL_SIL As Decimal = GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC where BIO_NO = '{bio_no}' and CATEGORY like '%SIL' and PAYDATE BETWEEN '{starting_date}' AND '{ending_date}'")
+        Dim tOTAL_PI As Decimal = GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC where BIO_NO = '{bio_no}' and CATEGORY = 'PERFORMANCE INCENTIVES' and PAYDATE BETWEEN '{starting_date}' AND '{ending_date}'")
+        Dim tOTAL_BASIC As Decimal = GetTotal("TOTAL_BASIC", $"PAYROLL_PAYOUT where BIOMETRIC_ID = '{bio_no}' and PAYDATE BETWEEN '{starting_date}' AND '{ending_date}'")
+        'Dim tOTAL_REGHOLIDAY As Decimal = GetTotal("TOTAL_REGHOLIDAY", $"PAYROLL_PAYOUT where  BIOMETRIC_ID = '{bio_no}' and PAYDATE BETWEEN '{starting_date}' AND '{ending_date}'")
+        'Dim tOTAL_SPECHOLIDAY As Decimal = GetTotal("TOTAL_SPECHOLIDAY", $"PAYROLL_PAYOUT where  BIOMETRIC_ID = '{bio_no}' and PAYDATE BETWEEN '{starting_date}' AND '{ending_date}'")
+        Dim tOTAL_LATE_UT As Decimal = GetTotal("TOTAL_LATE_UT", $"PAYROLL_PAYOUT where  BIOMETRIC_ID = '{bio_no}' and PAYDATE BETWEEN '{starting_date}' AND '{ending_date}'")
+
+        Dim TOTALS As Decimal = ((tOTAL_ECOLA + tOTAL_SIL + tOTAL_PI + tOTAL_BASIC) - tOTAL_LATE_UT) / 12
+        'TOTALS = ((tOTAL_ECOLA + tOTAL_SIL + tOTAL_PI + tOTAL_BASIC + tOTAL_REGHOLIDAY + tOTAL_SPECHOLIDAY) - tOTAL_LATE_UT) / 12
+
+        Return TOTALS
+    End Function
 
     Friend Sub Lists_Payout(LV As ListView, paydate As String, Optional searchName As String = "")
 

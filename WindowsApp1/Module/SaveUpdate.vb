@@ -869,11 +869,11 @@ Module SaveUpdate
                         Save_Recorded_Allow_Deduc(bioNo, paydate_, "ECOLA", Ecola, "ALLOWANCE")
                     End If
 
-                    'If paydate_ = "12/15/2021" Then ' FOR 13 MONTH DECEMBER 15 ONLY =============== 
-                    '    Dim Month13 As Decimal = Get_13Month(bioNo) 
-                    '    Allowances = Allowances + Month13 
-                    '    Save_Recorded_Allow_Deduc(bioNo, paydate_, "13th Month Pay", Month13, "ALLOWANCE") 
-                    'End If 
+                    If (CDate(paydate_).Month = 5 Or CDate(paydate_).Month = 12) And CDate(paydate_).Day = 15 Then ' FOR 13 MONTH PAY (MAY & DECEMBER)=============== 
+                        Dim Month13 As Decimal = Get13Month(bioNo)
+                        Allowances = Allowances + Month13
+                        Save_Recorded_Allow_Deduc(bioNo, paydate_, "13th Month Pay", Month13, "ALLOWANCE")
+                    End If
 
                     '============================================= OTHER ALLOWANCES =========================================================
                     Dim sql_ As String = $"Select * From PAYROLL_ALLOWANCES WHERE BIOMETRIC_NO = '{bioNo}' and ALLOWED = 'YES' and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
