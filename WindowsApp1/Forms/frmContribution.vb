@@ -134,35 +134,4 @@ Public Class frmContribution
         Close()
     End Sub
 
-    Private Sub SSS_SearchEmp_BTN_Click(sender As Object, e As EventArgs)
-
-        Try
-            Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmNewEmployee").SingleOrDefault()
-            If instForm Is Nothing Then
-                Dim frm As frmNewEmployee
-                frm = DirectCast(CreateObjectInstance("frmNewEmployee"), Form)
-                frm.MdiParent = frmMainForm
-                frmMainForm.pNavigate.Controls.Add(frm)
-                frmMainForm.pNavigate.Tag = frm
-                frm.txtSearch.Tag = "SSS Loan"
-                frm.Dock = DockStyle.Fill
-                frm.BringToFront()
-                frm.Show()
-            Else
-                instForm.BringToFront()
-            End If
-
-        Catch ex As Exception
-
-        End Try
-    End Sub
-
-    Private Sub SSS_Amount_TXT_KeyPress(sender As Object, e As KeyPressEventArgs)
-        If e.KeyChar <> ChrW(Keys.Back) Then
-            If Not Char.IsNumber(e.KeyChar) AndAlso Not Char.IsControl(e.KeyChar) Then
-                e.Handled = True
-            End If
-        End If
-    End Sub
-
 End Class

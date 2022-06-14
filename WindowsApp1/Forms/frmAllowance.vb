@@ -1,4 +1,5 @@
 ﻿Public Class frmAllowance
+
     Private Sub Close_LBL_Click(sender As Object, e As EventArgs) Handles Close_LBL.Click
         Close()
     End Sub
@@ -434,4 +435,5 @@
             ListOF_PAF(Records_grid, R_Search_txt.Text)
         End If
     End Sub
+
 End Class

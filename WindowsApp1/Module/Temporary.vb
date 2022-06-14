@@ -1,6 +1,4 @@
-﻿Imports System.IO
-Imports Microsoft.Office.Interop
-
+﻿Imports Microsoft.Office.Interop
 
 Module Temporary
 
@@ -69,25 +67,42 @@ Module Temporary
         End Using
     End Sub
 
-    Friend Sub GetHO_Category()
-        Dim mysql As String = $"Select BIO_NO from PAYROLL_EMPLOYEE where HO_CATEGORY = 'Dalton Admin Office'"
-        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+    Friend Sub SaveTemporary(BIO_NO As String, old_days As Double, new_days As Double, OLD_OVERTIME As Double, NEW_OVERTIME As Double, OLD_LATE As Double, NEW_LATE As Double, OLD_UNDERTIME As Double, NEW_UNDERTIME As Double)
+        Dim mysql As String = $"Select * from TEMP_TABLE where BIO_NO = '{BIO_NO}'"
+        Using ds As DataSet = LoadSQL(mysql, "TEMP_TABLE")
             If ds.Tables(0).Rows.Count > 0 Then
-                For Each dr In ds.Tables(0).Rows
-                    With dr
-                        Dim path As String = "D:\sample.txt"
-
-                        If Not File.Exists(path) Then
-                            File.Create(path).Close()
-                        End If
-
-                        Dim wr As New StreamWriter(path, FileMode.Append)
-                        wr.Write(.item("BIO_NO") & vbCrLf)
-                        wr.Close()
+                With ds.Tables(0).Rows(0)
+                    .Item("OLD_DAYS") = old_days
+                    .Item("NEW_DAYS") = new_days
+                    .Item("OLD_OVERTIME") = OLD_OVERTIME
+                    .Item("NEW_OVERTIME") = NEW_OVERTIME
+                    .Item("OLD_LATE") = OLD_LATE
+                    .Item("NEW_LATE") = NEW_LATE
+                    .Item("OLD_UNDERTIME") = OLD_UNDERTIME
+                    .Item("NEW_UNDERTIME") = NEW_UNDERTIME
+                End With
+                SaveEntry(ds, False)
+            Else
+                mysql = "Select * From TEMP_TABLE Rows 1"
+                Using dss As DataSet = LoadSQL(mysql, "TEMP_TABLE")
+                    Dim dsNew As DataRow = dss.Tables(0).NewRow
+                    With dsNew
+                        .Item("BIO_NO") = BIO_NO
+                        .Item("OLD_DAYS") = old_days
+                        .Item("NEW_DAYS") = new_days
+                        .Item("OLD_OVERTIME") = OLD_OVERTIME
+                        .Item("NEW_OVERTIME") = NEW_OVERTIME
+                        .Item("OLD_LATE") = OLD_LATE
+                        .Item("NEW_LATE") = NEW_LATE
+                        .Item("OLD_UNDERTIME") = OLD_UNDERTIME
+                        .Item("NEW_UNDERTIME") = NEW_UNDERTIME
                     End With
-                Next
+                    dss.Tables(0).Rows.Add(dsNew)
+                    SaveEntry(dss)
+                End Using
             End If
         End Using
     End Sub
 
+    Friend Sub 
 End Module

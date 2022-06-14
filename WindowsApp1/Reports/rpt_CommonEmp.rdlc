@@ -3106,7 +3106,8 @@ Fields!REPORT_CATEGORY.Value = "Deduction" , "DEDUCTION")</Value>
                             <TextRun>
                               <Value>=Switch(Fields!REPORT_CATEGORY.Value = "Gross" , "GROSS", 
 Fields!REPORT_CATEGORY.Value = "Net Pay" , "NET", 
-Fields!REPORT_CATEGORY.Value = "Deduction" , "DEDUCTION")</Value>
+Fields!REPORT_CATEGORY.Value = "Deduction" , "DEDUCTION", 
+Fields!REPORT_CATEGORY.Value = "13th Month" , "13TH MONTH")</Value>
                               <Style>
                                 <FontFamily>Bahnschrift</FontFamily>
                                 <FontSize>7pt</FontSize>

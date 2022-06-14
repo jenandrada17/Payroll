@@ -90,7 +90,6 @@
             Close()
 
         End If
-
     End Sub
 
     Private Sub Close_Modify_BTN_Click(sender As Object, e As EventArgs) Handles Close_Modify_BTN.Click
@@ -106,7 +105,6 @@
     End Sub
 
     Public Sub UpdateRateDetails()
-
         Dim idx As Integer = lvEmployee.FocusedItem.SubItems(2).Tag
 
         Dim mysql As String = "Select * From tbl_employee Where id = '" & idx & "'"
@@ -125,7 +123,6 @@
                 End With
             End If
         End Using
-
     End Sub
 
     Private Sub GroupBox1_Paint(sender As Object, e As PaintEventArgs) Handles GroupBox1.Paint
@@ -146,22 +143,6 @@
         If e.KeyChar = ChrW(Keys.Enter) Then
             Check_BTN.PerformClick()
         End If
-    End Sub
-
-    Private Sub View_Context_Click(sender As Object, e As EventArgs) Handles View_Context.Click
-        'If frmEmployeeInfo Is Nothing Then
-        '    Dim frm As New frmEmployeeInfo With {
-        '        .MdiParent = frmMainForm
-        '    }
-        '    frmMainForm.pNavigate.Controls.Add(frm)
-        '    frmMainForm.pNavigate.Tag = frm
-        '    frm.Biometric_TXT.Text = lvEmployee.FocusedItem.SubItems(0).Text
-        '    frm.Show()
-        '    frm.Dock = DockStyle.Fill
-        '    frm.BringToFront()
-        'Else
-        '    frmEmployeeInfo.BringToFront()
-        'End If
     End Sub
 
     Private Sub txtSearch_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtSearch.KeyPress

@@ -26,13 +26,6 @@ Partial Class frmLoan
         Me.Close_LBL = New System.Windows.Forms.Label()
         Me.Loans_Tab = New System.Windows.Forms.TabControl()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
-        Me.Partial_Panel = New System.Windows.Forms.Panel()
-        Me.Label50 = New System.Windows.Forms.Label()
-        Me.PartialX_btn = New System.Windows.Forms.Button()
-        Me.PartialCheck_btn = New System.Windows.Forms.Button()
-        Me.PartialAmount_txt = New System.Windows.Forms.TextBox()
-        Me.Label49 = New System.Windows.Forms.Label()
-        Me.Label48 = New System.Windows.Forms.Label()
         Me.Label40 = New System.Windows.Forms.Label()
         Me.Label41 = New System.Windows.Forms.Label()
         Me.GroupBox6 = New System.Windows.Forms.GroupBox()
@@ -59,6 +52,11 @@ Partial Class frmLoan
         Me.ColumnHeader3 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader6 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader5 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.Context_Deduct = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.PartialPaymentDeducMenu = New System.Windows.Forms.ToolStripMenuItem()
+        Me.menu_subtotal = New System.Windows.Forms.ToolStripMenuItem()
+        Me.Balance_MenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.menu_edit = New System.Windows.Forms.ToolStripMenuItem()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
         Me.Label38 = New System.Windows.Forms.Label()
         Me.Label39 = New System.Windows.Forms.Label()
@@ -76,6 +74,11 @@ Partial Class frmLoan
         Me.ColumnHeader10 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader17 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader18 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.Context_SSS = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.PartialPaymentSSSMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.SSSSubtotal_Menu = New System.Windows.Forms.ToolStripMenuItem()
+        Me.SSSBalance_Menu = New System.Windows.Forms.ToolStripMenuItem()
+        Me.SSSEdit_Menu = New System.Windows.Forms.ToolStripMenuItem()
         Me.SSS_SearchEmp_BTN = New System.Windows.Forms.Button()
         Me.Label14 = New System.Windows.Forms.Label()
         Me.SSS_Name_TXT = New System.Windows.Forms.TextBox()
@@ -89,6 +92,11 @@ Partial Class frmLoan
         Me.ColumnHeader31 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader32 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader33 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.Context_Pagibg = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.PartialPaymentPagMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.PagSubTotal_Menu = New System.Windows.Forms.ToolStripMenuItem()
+        Me.PagBalance_Menu = New System.Windows.Forms.ToolStripMenuItem()
+        Me.PagEdit_Menu = New System.Windows.Forms.ToolStripMenuItem()
         Me.Label27 = New System.Windows.Forms.Label()
         Me.Label26 = New System.Windows.Forms.Label()
         Me.PagPrincipal_TXT = New System.Windows.Forms.TextBox()
@@ -122,6 +130,8 @@ Partial Class frmLoan
         Me.ColumnHeader24 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader25 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader26 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.Context_Mp2 = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.Mp2Edit_Menu = New System.Windows.Forms.ToolStripMenuItem()
         Me.Mp2Emp_btn = New System.Windows.Forms.Button()
         Me.Label29 = New System.Windows.Forms.Label()
         Me.Mp2Emp_txt = New System.Windows.Forms.TextBox()
@@ -151,6 +161,17 @@ Partial Class frmLoan
         Me.MaxEmp_txt = New System.Windows.Forms.TextBox()
         Me.Label36 = New System.Windows.Forms.Label()
         Me.MaxAmort_txt = New System.Windows.Forms.TextBox()
+        Me.Partial_Panel = New System.Windows.Forms.Panel()
+        Me.PartialName_txt = New System.Windows.Forms.TextBox()
+        Me.Label52 = New System.Windows.Forms.Label()
+        Me.PartialCat_txt = New System.Windows.Forms.TextBox()
+        Me.Label51 = New System.Windows.Forms.Label()
+        Me.Label50 = New System.Windows.Forms.Label()
+        Me.PartialX_btn = New System.Windows.Forms.Button()
+        Me.PartialCheck_btn = New System.Windows.Forms.Button()
+        Me.PartialAmount_txt = New System.Windows.Forms.TextBox()
+        Me.Label49 = New System.Windows.Forms.Label()
+        Me.Label48 = New System.Windows.Forms.Label()
         Me.ColumnHeader19 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader20 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader21 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -181,41 +202,20 @@ Partial Class frmLoan
         Me.Label31 = New System.Windows.Forms.Label()
         Me.DE_Effectivity_DTP = New System.Windows.Forms.DateTimePicker()
         Me.lblAdd = New System.Windows.Forms.Label()
-        Me.Context_Deduct = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.PartialPaymentDeducMenu = New System.Windows.Forms.ToolStripMenuItem()
-        Me.menu_subtotal = New System.Windows.Forms.ToolStripMenuItem()
-        Me.Balance_MenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.menu_edit = New System.Windows.Forms.ToolStripMenuItem()
-        Me.Context_SSS = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.SSSSubtotal_Menu = New System.Windows.Forms.ToolStripMenuItem()
-        Me.SSSBalance_Menu = New System.Windows.Forms.ToolStripMenuItem()
-        Me.SSSEdit_Menu = New System.Windows.Forms.ToolStripMenuItem()
-        Me.Context_Pagibg = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.PagSubTotal_Menu = New System.Windows.Forms.ToolStripMenuItem()
-        Me.PagBalance_Menu = New System.Windows.Forms.ToolStripMenuItem()
-        Me.PagEdit_Menu = New System.Windows.Forms.ToolStripMenuItem()
-        Me.Context_Mp2 = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.Mp2Edit_Menu = New System.Windows.Forms.ToolStripMenuItem()
         Me.Context_Maxicare = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.MaxEdit_Menu = New System.Windows.Forms.ToolStripMenuItem()
-        Me.PartialCat_txt = New System.Windows.Forms.TextBox()
-        Me.Label51 = New System.Windows.Forms.Label()
-        Me.PartialName_txt = New System.Windows.Forms.TextBox()
-        Me.Label52 = New System.Windows.Forms.Label()
-        Me.PartialPaymentSSSMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.PartialPaymentPagMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.Loans_Tab.SuspendLayout()
         Me.TabPage2.SuspendLayout()
-        Me.Partial_Panel.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
-        Me.TabPage1.SuspendLayout()
-        Me.TabPage3.SuspendLayout()
-        Me.TabPage4.SuspendLayout()
-        Me.TabPage5.SuspendLayout()
         Me.Context_Deduct.SuspendLayout()
+        Me.TabPage1.SuspendLayout()
         Me.Context_SSS.SuspendLayout()
+        Me.TabPage3.SuspendLayout()
         Me.Context_Pagibg.SuspendLayout()
+        Me.TabPage4.SuspendLayout()
         Me.Context_Mp2.SuspendLayout()
+        Me.TabPage5.SuspendLayout()
+        Me.Partial_Panel.SuspendLayout()
         Me.Context_Maxicare.SuspendLayout()
         Me.SuspendLayout()
         '
@@ -257,83 +257,6 @@ Partial Class frmLoan
         Me.TabPage2.TabIndex = 2
         Me.TabPage2.Text = "  Deductions  "
         Me.TabPage2.UseVisualStyleBackColor = True
-        '
-        'Partial_Panel
-        '
-        Me.Partial_Panel.BackColor = System.Drawing.Color.LightSalmon
-        Me.Partial_Panel.Controls.Add(Me.PartialName_txt)
-        Me.Partial_Panel.Controls.Add(Me.Label52)
-        Me.Partial_Panel.Controls.Add(Me.PartialCat_txt)
-        Me.Partial_Panel.Controls.Add(Me.Label51)
-        Me.Partial_Panel.Controls.Add(Me.Label50)
-        Me.Partial_Panel.Controls.Add(Me.PartialX_btn)
-        Me.Partial_Panel.Controls.Add(Me.PartialCheck_btn)
-        Me.Partial_Panel.Controls.Add(Me.PartialAmount_txt)
-        Me.Partial_Panel.Controls.Add(Me.Label49)
-        Me.Partial_Panel.Controls.Add(Me.Label48)
-        Me.Partial_Panel.Location = New System.Drawing.Point(660, 12)
-        Me.Partial_Panel.Name = "Partial_Panel"
-        Me.Partial_Panel.Size = New System.Drawing.Size(405, 189)
-        Me.Partial_Panel.TabIndex = 164
-        Me.Partial_Panel.Visible = False
-        '
-        'Label50
-        '
-        Me.Label50.AutoSize = True
-        Me.Label50.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label50.Location = New System.Drawing.Point(361, 0)
-        Me.Label50.Name = "Label50"
-        Me.Label50.Size = New System.Drawing.Size(38, 22)
-        Me.Label50.TabIndex = 120
-        Me.Label50.Text = "Close"
-        '
-        'PartialX_btn
-        '
-        Me.PartialX_btn.Font = New System.Drawing.Font("Dubai", 8.249999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.PartialX_btn.Location = New System.Drawing.Point(333, 80)
-        Me.PartialX_btn.Name = "PartialX_btn"
-        Me.PartialX_btn.Size = New System.Drawing.Size(52, 38)
-        Me.PartialX_btn.TabIndex = 119
-        Me.PartialX_btn.Text = "✖"
-        Me.PartialX_btn.UseVisualStyleBackColor = True
-        '
-        'PartialCheck_btn
-        '
-        Me.PartialCheck_btn.Font = New System.Drawing.Font("Dubai", 8.249999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.PartialCheck_btn.Location = New System.Drawing.Point(334, 130)
-        Me.PartialCheck_btn.Name = "PartialCheck_btn"
-        Me.PartialCheck_btn.Size = New System.Drawing.Size(52, 38)
-        Me.PartialCheck_btn.TabIndex = 118
-        Me.PartialCheck_btn.Text = " ✔"
-        Me.PartialCheck_btn.UseVisualStyleBackColor = True
-        '
-        'PartialAmount_txt
-        '
-        Me.PartialAmount_txt.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.PartialAmount_txt.Location = New System.Drawing.Point(89, 126)
-        Me.PartialAmount_txt.Name = "PartialAmount_txt"
-        Me.PartialAmount_txt.Size = New System.Drawing.Size(238, 40)
-        Me.PartialAmount_txt.TabIndex = 2
-        '
-        'Label49
-        '
-        Me.Label49.AutoSize = True
-        Me.Label49.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label49.Location = New System.Drawing.Point(13, 134)
-        Me.Label49.Name = "Label49"
-        Me.Label49.Size = New System.Drawing.Size(62, 25)
-        Me.Label49.TabIndex = 1
-        Me.Label49.Text = "Amount"
-        '
-        'Label48
-        '
-        Me.Label48.AutoSize = True
-        Me.Label48.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label48.Location = New System.Drawing.Point(138, 11)
-        Me.Label48.Name = "Label48"
-        Me.Label48.Size = New System.Drawing.Size(115, 27)
-        Me.Label48.TabIndex = 0
-        Me.Label48.Text = "Partial Payment"
         '
         'Label40
         '
@@ -551,6 +474,7 @@ Partial Class frmLoan
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Deduc_list.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader1, Me.ColumnHeader2, Me.ColumnHeader3, Me.ColumnHeader6, Me.ColumnHeader5})
+        Me.Deduc_list.ContextMenuStrip = Me.Context_Deduct
         Me.Deduc_list.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Deduc_list.FullRowSelect = True
         Me.Deduc_list.GridLines = True
@@ -591,6 +515,36 @@ Partial Class frmLoan
         Me.ColumnHeader5.Text = "Schedule"
         Me.ColumnHeader5.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
         Me.ColumnHeader5.Width = 110
+        '
+        'Context_Deduct
+        '
+        Me.Context_Deduct.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.PartialPaymentDeducMenu, Me.menu_subtotal, Me.Balance_MenuItem, Me.menu_edit})
+        Me.Context_Deduct.Name = "Context_deduct"
+        Me.Context_Deduct.Size = New System.Drawing.Size(158, 92)
+        '
+        'PartialPaymentDeducMenu
+        '
+        Me.PartialPaymentDeducMenu.Name = "PartialPaymentDeducMenu"
+        Me.PartialPaymentDeducMenu.Size = New System.Drawing.Size(157, 22)
+        Me.PartialPaymentDeducMenu.Text = "Partial Payment"
+        '
+        'menu_subtotal
+        '
+        Me.menu_subtotal.Name = "menu_subtotal"
+        Me.menu_subtotal.Size = New System.Drawing.Size(157, 22)
+        Me.menu_subtotal.Text = "View Subtotal"
+        '
+        'Balance_MenuItem
+        '
+        Me.Balance_MenuItem.Name = "Balance_MenuItem"
+        Me.Balance_MenuItem.Size = New System.Drawing.Size(157, 22)
+        Me.Balance_MenuItem.Text = "Balance"
+        '
+        'menu_edit
+        '
+        Me.menu_edit.Name = "menu_edit"
+        Me.menu_edit.Size = New System.Drawing.Size(157, 22)
+        Me.menu_edit.Text = "Edit"
         '
         'TabPage1
         '
@@ -734,6 +688,7 @@ Partial Class frmLoan
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.SSSLoan_LV.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader9, Me.ColumnHeader10, Me.ColumnHeader17, Me.ColumnHeader18})
+        Me.SSSLoan_LV.ContextMenuStrip = Me.Context_SSS
         Me.SSSLoan_LV.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.SSSLoan_LV.FullRowSelect = True
         Me.SSSLoan_LV.GridLines = True
@@ -767,6 +722,36 @@ Partial Class frmLoan
         '
         Me.ColumnHeader18.Text = "Date"
         Me.ColumnHeader18.Width = 130
+        '
+        'Context_SSS
+        '
+        Me.Context_SSS.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.PartialPaymentSSSMenuItem, Me.SSSSubtotal_Menu, Me.SSSBalance_Menu, Me.SSSEdit_Menu})
+        Me.Context_SSS.Name = "Context_deduct"
+        Me.Context_SSS.Size = New System.Drawing.Size(158, 92)
+        '
+        'PartialPaymentSSSMenuItem
+        '
+        Me.PartialPaymentSSSMenuItem.Name = "PartialPaymentSSSMenuItem"
+        Me.PartialPaymentSSSMenuItem.Size = New System.Drawing.Size(157, 22)
+        Me.PartialPaymentSSSMenuItem.Text = "Partial Payment"
+        '
+        'SSSSubtotal_Menu
+        '
+        Me.SSSSubtotal_Menu.Name = "SSSSubtotal_Menu"
+        Me.SSSSubtotal_Menu.Size = New System.Drawing.Size(157, 22)
+        Me.SSSSubtotal_Menu.Text = "View Subtotal"
+        '
+        'SSSBalance_Menu
+        '
+        Me.SSSBalance_Menu.Name = "SSSBalance_Menu"
+        Me.SSSBalance_Menu.Size = New System.Drawing.Size(157, 22)
+        Me.SSSBalance_Menu.Text = "Balance"
+        '
+        'SSSEdit_Menu
+        '
+        Me.SSSEdit_Menu.Name = "SSSEdit_Menu"
+        Me.SSSEdit_Menu.Size = New System.Drawing.Size(157, 22)
+        Me.SSSEdit_Menu.Text = "Edit"
         '
         'SSS_SearchEmp_BTN
         '
@@ -868,6 +853,7 @@ Partial Class frmLoan
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Pagibig_List.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader30, Me.ColumnHeader31, Me.ColumnHeader32, Me.ColumnHeader33})
+        Me.Pagibig_List.ContextMenuStrip = Me.Context_Pagibg
         Me.Pagibig_List.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Pagibig_List.FullRowSelect = True
         Me.Pagibig_List.GridLines = True
@@ -901,6 +887,36 @@ Partial Class frmLoan
         '
         Me.ColumnHeader33.Text = "Date"
         Me.ColumnHeader33.Width = 130
+        '
+        'Context_Pagibg
+        '
+        Me.Context_Pagibg.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.PartialPaymentPagMenuItem, Me.PagSubTotal_Menu, Me.PagBalance_Menu, Me.PagEdit_Menu})
+        Me.Context_Pagibg.Name = "Context_deduct"
+        Me.Context_Pagibg.Size = New System.Drawing.Size(158, 92)
+        '
+        'PartialPaymentPagMenuItem
+        '
+        Me.PartialPaymentPagMenuItem.Name = "PartialPaymentPagMenuItem"
+        Me.PartialPaymentPagMenuItem.Size = New System.Drawing.Size(157, 22)
+        Me.PartialPaymentPagMenuItem.Text = "Partial Payment"
+        '
+        'PagSubTotal_Menu
+        '
+        Me.PagSubTotal_Menu.Name = "PagSubTotal_Menu"
+        Me.PagSubTotal_Menu.Size = New System.Drawing.Size(157, 22)
+        Me.PagSubTotal_Menu.Text = "View Subtotal"
+        '
+        'PagBalance_Menu
+        '
+        Me.PagBalance_Menu.Name = "PagBalance_Menu"
+        Me.PagBalance_Menu.Size = New System.Drawing.Size(157, 22)
+        Me.PagBalance_Menu.Text = "Balance"
+        '
+        'PagEdit_Menu
+        '
+        Me.PagEdit_Menu.Name = "PagEdit_Menu"
+        Me.PagEdit_Menu.Size = New System.Drawing.Size(157, 22)
+        Me.PagEdit_Menu.Text = "Edit"
         '
         'Label27
         '
@@ -1206,6 +1222,7 @@ Partial Class frmLoan
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Mp2_List.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader7, Me.ColumnHeader24, Me.ColumnHeader25, Me.ColumnHeader26})
+        Me.Mp2_List.ContextMenuStrip = Me.Context_Mp2
         Me.Mp2_List.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Mp2_List.FullRowSelect = True
         Me.Mp2_List.GridLines = True
@@ -1237,6 +1254,18 @@ Partial Class frmLoan
         '
         Me.ColumnHeader26.Text = "Schedule"
         Me.ColumnHeader26.Width = 130
+        '
+        'Context_Mp2
+        '
+        Me.Context_Mp2.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.Mp2Edit_Menu})
+        Me.Context_Mp2.Name = "Context_deduct"
+        Me.Context_Mp2.Size = New System.Drawing.Size(95, 26)
+        '
+        'Mp2Edit_Menu
+        '
+        Me.Mp2Edit_Menu.Name = "Mp2Edit_Menu"
+        Me.Mp2Edit_Menu.Size = New System.Drawing.Size(94, 22)
+        Me.Mp2Edit_Menu.Text = "Edit"
         '
         'Mp2Emp_btn
         '
@@ -1453,6 +1482,7 @@ Partial Class frmLoan
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Maxicare_List.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader22, Me.ColumnHeader27, Me.ColumnHeader28, Me.ColumnHeader29})
+        Me.Maxicare_List.ContextMenuStrip = Me.Context_Maxicare
         Me.Maxicare_List.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Maxicare_List.FullRowSelect = True
         Me.Maxicare_List.GridLines = True
@@ -1531,6 +1561,121 @@ Partial Class frmLoan
         Me.MaxAmort_txt.Name = "MaxAmort_txt"
         Me.MaxAmort_txt.Size = New System.Drawing.Size(194, 33)
         Me.MaxAmort_txt.TabIndex = 170
+        '
+        'Partial_Panel
+        '
+        Me.Partial_Panel.BackColor = System.Drawing.Color.LightSalmon
+        Me.Partial_Panel.Controls.Add(Me.PartialName_txt)
+        Me.Partial_Panel.Controls.Add(Me.Label52)
+        Me.Partial_Panel.Controls.Add(Me.PartialCat_txt)
+        Me.Partial_Panel.Controls.Add(Me.Label51)
+        Me.Partial_Panel.Controls.Add(Me.Label50)
+        Me.Partial_Panel.Controls.Add(Me.PartialX_btn)
+        Me.Partial_Panel.Controls.Add(Me.PartialCheck_btn)
+        Me.Partial_Panel.Controls.Add(Me.PartialAmount_txt)
+        Me.Partial_Panel.Controls.Add(Me.Label49)
+        Me.Partial_Panel.Controls.Add(Me.Label48)
+        Me.Partial_Panel.Location = New System.Drawing.Point(660, 12)
+        Me.Partial_Panel.Name = "Partial_Panel"
+        Me.Partial_Panel.Size = New System.Drawing.Size(405, 189)
+        Me.Partial_Panel.TabIndex = 164
+        Me.Partial_Panel.Visible = False
+        '
+        'PartialName_txt
+        '
+        Me.PartialName_txt.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.PartialName_txt.Location = New System.Drawing.Point(88, 39)
+        Me.PartialName_txt.Name = "PartialName_txt"
+        Me.PartialName_txt.ReadOnly = True
+        Me.PartialName_txt.Size = New System.Drawing.Size(239, 33)
+        Me.PartialName_txt.TabIndex = 124
+        '
+        'Label52
+        '
+        Me.Label52.AutoSize = True
+        Me.Label52.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label52.Location = New System.Drawing.Point(12, 47)
+        Me.Label52.Name = "Label52"
+        Me.Label52.Size = New System.Drawing.Size(48, 25)
+        Me.Label52.TabIndex = 123
+        Me.Label52.Text = "Name"
+        '
+        'PartialCat_txt
+        '
+        Me.PartialCat_txt.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.PartialCat_txt.Location = New System.Drawing.Point(88, 83)
+        Me.PartialCat_txt.Name = "PartialCat_txt"
+        Me.PartialCat_txt.ReadOnly = True
+        Me.PartialCat_txt.Size = New System.Drawing.Size(239, 33)
+        Me.PartialCat_txt.TabIndex = 122
+        '
+        'Label51
+        '
+        Me.Label51.AutoSize = True
+        Me.Label51.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label51.Location = New System.Drawing.Point(12, 91)
+        Me.Label51.Name = "Label51"
+        Me.Label51.Size = New System.Drawing.Size(67, 25)
+        Me.Label51.TabIndex = 121
+        Me.Label51.Text = "Category"
+        '
+        'Label50
+        '
+        Me.Label50.AutoSize = True
+        Me.Label50.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label50.Location = New System.Drawing.Point(361, 0)
+        Me.Label50.Name = "Label50"
+        Me.Label50.Size = New System.Drawing.Size(38, 22)
+        Me.Label50.TabIndex = 120
+        Me.Label50.Text = "Close"
+        '
+        'PartialX_btn
+        '
+        Me.PartialX_btn.Font = New System.Drawing.Font("Dubai", 8.249999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.PartialX_btn.Location = New System.Drawing.Point(333, 80)
+        Me.PartialX_btn.Name = "PartialX_btn"
+        Me.PartialX_btn.Size = New System.Drawing.Size(52, 38)
+        Me.PartialX_btn.TabIndex = 119
+        Me.PartialX_btn.Text = "✖"
+        Me.PartialX_btn.UseVisualStyleBackColor = True
+        '
+        'PartialCheck_btn
+        '
+        Me.PartialCheck_btn.Font = New System.Drawing.Font("Dubai", 8.249999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.PartialCheck_btn.Location = New System.Drawing.Point(334, 130)
+        Me.PartialCheck_btn.Name = "PartialCheck_btn"
+        Me.PartialCheck_btn.Size = New System.Drawing.Size(52, 38)
+        Me.PartialCheck_btn.TabIndex = 118
+        Me.PartialCheck_btn.Text = " ✔"
+        Me.PartialCheck_btn.UseVisualStyleBackColor = True
+        '
+        'PartialAmount_txt
+        '
+        Me.PartialAmount_txt.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.PartialAmount_txt.Location = New System.Drawing.Point(89, 126)
+        Me.PartialAmount_txt.Name = "PartialAmount_txt"
+        Me.PartialAmount_txt.Size = New System.Drawing.Size(238, 40)
+        Me.PartialAmount_txt.TabIndex = 2
+        '
+        'Label49
+        '
+        Me.Label49.AutoSize = True
+        Me.Label49.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label49.Location = New System.Drawing.Point(13, 134)
+        Me.Label49.Name = "Label49"
+        Me.Label49.Size = New System.Drawing.Size(62, 25)
+        Me.Label49.TabIndex = 1
+        Me.Label49.Text = "Amount"
+        '
+        'Label48
+        '
+        Me.Label48.AutoSize = True
+        Me.Label48.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label48.Location = New System.Drawing.Point(138, 11)
+        Me.Label48.Name = "Label48"
+        Me.Label48.Size = New System.Drawing.Size(115, 27)
+        Me.Label48.TabIndex = 0
+        Me.Label48.Text = "Partial Payment"
         '
         'ColumnHeader19
         '
@@ -1776,96 +1921,6 @@ Partial Class frmLoan
         Me.lblAdd.Size = New System.Drawing.Size(32, 22)
         Me.lblAdd.TabIndex = 125
         '
-        'Context_Deduct
-        '
-        Me.Context_Deduct.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.PartialPaymentDeducMenu, Me.menu_subtotal, Me.Balance_MenuItem, Me.menu_edit})
-        Me.Context_Deduct.Name = "Context_deduct"
-        Me.Context_Deduct.Size = New System.Drawing.Size(158, 92)
-        '
-        'PartialPaymentDeducMenu
-        '
-        Me.PartialPaymentDeducMenu.Name = "PartialPaymentDeducMenu"
-        Me.PartialPaymentDeducMenu.Size = New System.Drawing.Size(157, 22)
-        Me.PartialPaymentDeducMenu.Text = "Partial Payment"
-        '
-        'menu_subtotal
-        '
-        Me.menu_subtotal.Name = "menu_subtotal"
-        Me.menu_subtotal.Size = New System.Drawing.Size(157, 22)
-        Me.menu_subtotal.Text = "View Subtotal"
-        '
-        'Balance_MenuItem
-        '
-        Me.Balance_MenuItem.Name = "Balance_MenuItem"
-        Me.Balance_MenuItem.Size = New System.Drawing.Size(157, 22)
-        Me.Balance_MenuItem.Text = "Balance"
-        '
-        'menu_edit
-        '
-        Me.menu_edit.Name = "menu_edit"
-        Me.menu_edit.Size = New System.Drawing.Size(157, 22)
-        Me.menu_edit.Text = "Edit"
-        '
-        'Context_SSS
-        '
-        Me.Context_SSS.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.PartialPaymentSSSMenuItem, Me.SSSSubtotal_Menu, Me.SSSBalance_Menu, Me.SSSEdit_Menu})
-        Me.Context_SSS.Name = "Context_deduct"
-        Me.Context_SSS.Size = New System.Drawing.Size(158, 92)
-        '
-        'SSSSubtotal_Menu
-        '
-        Me.SSSSubtotal_Menu.Name = "SSSSubtotal_Menu"
-        Me.SSSSubtotal_Menu.Size = New System.Drawing.Size(157, 22)
-        Me.SSSSubtotal_Menu.Text = "View Subtotal"
-        '
-        'SSSBalance_Menu
-        '
-        Me.SSSBalance_Menu.Name = "SSSBalance_Menu"
-        Me.SSSBalance_Menu.Size = New System.Drawing.Size(157, 22)
-        Me.SSSBalance_Menu.Text = "Balance"
-        '
-        'SSSEdit_Menu
-        '
-        Me.SSSEdit_Menu.Name = "SSSEdit_Menu"
-        Me.SSSEdit_Menu.Size = New System.Drawing.Size(157, 22)
-        Me.SSSEdit_Menu.Text = "Edit"
-        '
-        'Context_Pagibg
-        '
-        Me.Context_Pagibg.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.PartialPaymentPagMenuItem, Me.PagSubTotal_Menu, Me.PagBalance_Menu, Me.PagEdit_Menu})
-        Me.Context_Pagibg.Name = "Context_deduct"
-        Me.Context_Pagibg.Size = New System.Drawing.Size(181, 114)
-        '
-        'PagSubTotal_Menu
-        '
-        Me.PagSubTotal_Menu.Name = "PagSubTotal_Menu"
-        Me.PagSubTotal_Menu.Size = New System.Drawing.Size(180, 22)
-        Me.PagSubTotal_Menu.Text = "View Subtotal"
-        '
-        'PagBalance_Menu
-        '
-        Me.PagBalance_Menu.Name = "PagBalance_Menu"
-        Me.PagBalance_Menu.Size = New System.Drawing.Size(180, 22)
-        Me.PagBalance_Menu.Text = "Balance"
-        '
-        'PagEdit_Menu
-        '
-        Me.PagEdit_Menu.Name = "PagEdit_Menu"
-        Me.PagEdit_Menu.Size = New System.Drawing.Size(180, 22)
-        Me.PagEdit_Menu.Text = "Edit"
-        '
-        'Context_Mp2
-        '
-        Me.Context_Mp2.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.Mp2Edit_Menu})
-        Me.Context_Mp2.Name = "Context_deduct"
-        Me.Context_Mp2.Size = New System.Drawing.Size(95, 26)
-        '
-        'Mp2Edit_Menu
-        '
-        Me.Mp2Edit_Menu.Name = "Mp2Edit_Menu"
-        Me.Mp2Edit_Menu.Size = New System.Drawing.Size(94, 22)
-        Me.Mp2Edit_Menu.Text = "Edit"
-        '
         'Context_Maxicare
         '
         Me.Context_Maxicare.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MaxEdit_Menu})
@@ -1877,56 +1932,6 @@ Partial Class frmLoan
         Me.MaxEdit_Menu.Name = "MaxEdit_Menu"
         Me.MaxEdit_Menu.Size = New System.Drawing.Size(94, 22)
         Me.MaxEdit_Menu.Text = "Edit"
-        '
-        'PartialCat_txt
-        '
-        Me.PartialCat_txt.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.PartialCat_txt.Location = New System.Drawing.Point(88, 83)
-        Me.PartialCat_txt.Name = "PartialCat_txt"
-        Me.PartialCat_txt.ReadOnly = True
-        Me.PartialCat_txt.Size = New System.Drawing.Size(239, 33)
-        Me.PartialCat_txt.TabIndex = 122
-        '
-        'Label51
-        '
-        Me.Label51.AutoSize = True
-        Me.Label51.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label51.Location = New System.Drawing.Point(12, 91)
-        Me.Label51.Name = "Label51"
-        Me.Label51.Size = New System.Drawing.Size(67, 25)
-        Me.Label51.TabIndex = 121
-        Me.Label51.Text = "Category"
-        '
-        'PartialName_txt
-        '
-        Me.PartialName_txt.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.PartialName_txt.Location = New System.Drawing.Point(88, 39)
-        Me.PartialName_txt.Name = "PartialName_txt"
-        Me.PartialName_txt.ReadOnly = True
-        Me.PartialName_txt.Size = New System.Drawing.Size(239, 33)
-        Me.PartialName_txt.TabIndex = 124
-        '
-        'Label52
-        '
-        Me.Label52.AutoSize = True
-        Me.Label52.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label52.Location = New System.Drawing.Point(12, 47)
-        Me.Label52.Name = "Label52"
-        Me.Label52.Size = New System.Drawing.Size(48, 25)
-        Me.Label52.TabIndex = 123
-        Me.Label52.Text = "Name"
-        '
-        'PartialPaymentSSSMenuItem
-        '
-        Me.PartialPaymentSSSMenuItem.Name = "PartialPaymentSSSMenuItem"
-        Me.PartialPaymentSSSMenuItem.Size = New System.Drawing.Size(180, 22)
-        Me.PartialPaymentSSSMenuItem.Text = "Partial Payment"
-        '
-        'PartialPaymentPagMenuItem
-        '
-        Me.PartialPaymentPagMenuItem.Name = "PartialPaymentPagMenuItem"
-        Me.PartialPaymentPagMenuItem.Size = New System.Drawing.Size(180, 22)
-        Me.PartialPaymentPagMenuItem.Text = "Partial Payment"
         '
         'frmLoan
         '
@@ -1943,22 +1948,22 @@ Partial Class frmLoan
         Me.Loans_Tab.ResumeLayout(False)
         Me.TabPage2.ResumeLayout(False)
         Me.TabPage2.PerformLayout()
-        Me.Partial_Panel.ResumeLayout(False)
-        Me.Partial_Panel.PerformLayout()
         Me.GroupBox6.ResumeLayout(False)
         Me.GroupBox6.PerformLayout()
+        Me.Context_Deduct.ResumeLayout(False)
         Me.TabPage1.ResumeLayout(False)
         Me.TabPage1.PerformLayout()
+        Me.Context_SSS.ResumeLayout(False)
         Me.TabPage3.ResumeLayout(False)
         Me.TabPage3.PerformLayout()
+        Me.Context_Pagibg.ResumeLayout(False)
         Me.TabPage4.ResumeLayout(False)
         Me.TabPage4.PerformLayout()
+        Me.Context_Mp2.ResumeLayout(False)
         Me.TabPage5.ResumeLayout(False)
         Me.TabPage5.PerformLayout()
-        Me.Context_Deduct.ResumeLayout(False)
-        Me.Context_SSS.ResumeLayout(False)
-        Me.Context_Pagibg.ResumeLayout(False)
-        Me.Context_Mp2.ResumeLayout(False)
+        Me.Partial_Panel.ResumeLayout(False)
+        Me.Partial_Panel.PerformLayout()
         Me.Context_Maxicare.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()

@@ -23,7 +23,6 @@ Public Class frmReport
     End Sub
 
     Private Sub SearchSBU_BTN_Click(sender As Object, e As EventArgs) Handles SearchSBU_BTN.Click
-        'LoadSBU(SearchSBU_TXT.Text)
         Lists_SBU(SBU_LV, SearchSBU_TXT.Text)
     End Sub
 
@@ -365,8 +364,8 @@ Public Class frmReport
                                 '======================= 13 MONTH ================
                                 Dim MONTH_13 As Decimal = 0
 
-                                If paydatee = "12/15/2021" Then
-                                    MONTH_13 = Get_13MontHHHH(EMP_NO)
+                                If paydatee = $"5/15/{Today.Year}" Or paydatee = $"12/15/{Today.Year}" Then
+                                    MONTH_13 = GetData_Decimal("AMOUNT", $"RECORDED_ALLOW_DEDUC WHERE BIO_NO ='{BIO_NO}' AND CATEGORY='13th Month Pay' AND PAYDATE='{paydatee}'")
                                 End If
 
                                 dt_NetPay.Rows.Add(EMP_NO, namee, BASIC.ToString("n"), OVERTIME.ToString("n"), HOLIDAY.ToString("n"), N_DIFF.ToString("n"),
@@ -429,7 +428,6 @@ Public Class frmReport
                 MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
         End If
-
     End Sub
 
     Public Sub LoadCommon_Print()
@@ -792,6 +790,8 @@ Public Class frmReport
                                 TOTALS = .Item("NET_PAY")
                             ElseIf CommonCat_Combo.SelectedIndex = 2 Then
                                 TOTALS = .Item("TOTAL_DEDUCTION")
+                            ElseIf CommonCat_Combo.SelectedIndex = 3 Then
+                                TOTALS = GetData_Decimal("AMOUNT", $"RECORDED_ALLOW_DEDUC WHERE BIO_NO ='{ .ITEM("BIO_NO")}' AND CATEGORY='13th Month Pay' AND PAYDATE='{PAYROLL.ToShortDateString}'")
                             End If
 
                             dt_CommonDis.Rows.Add(namee, CATEGORY, TOTALS.ToString("n"), DALTON, PHOTO, DAVAOP,
@@ -852,6 +852,8 @@ Public Class frmReport
                                 TOTALS = .Item("NET_PAY")
                             ElseIf CommonCat_Combo.SelectedIndex = 2 Then
                                 TOTALS = .Item("TOTAL_DEDUCTION")
+                            ElseIf CommonCat_Combo.SelectedIndex = 3 Then
+                                TOTALS = GetData_Decimal("AMOUNT", $"RECORDED_ALLOW_DEDUC WHERE BIO_NO ='{ .ITEM("BIO_NO")}' AND CATEGORY='13th Month Pay' AND PAYDATE='{dateStarted.ToShortDateString}'")
                             End If
 
                             dt_ComLeasingDis.Rows.Add(namee, CATEGORY, TOTALS.ToString("n"), DALTON, PHOTO, DAVAOP,
@@ -924,26 +926,30 @@ Public Class frmReport
 
             Dim FORMNAME As String = ""
             Dim str As String = ""
+            Dim report As String = "WindowsApp1.rpt_Remittance.rdlc"
             Dim DATASOURCE As Microsoft.Reporting.WinForms.ReportDataSource = Nothing
 
             If RemCompany_Combo.SelectedIndex = 0 Then
-                str = $"HO_CATEGORY LIKE '%Photo%'"
+                str = $"AND HO_CATEGORY LIKE '%Photo%'"
             ElseIf RemCompany_Combo.SelectedIndex = 1 Then
-                str = $"COMPANY_CATEGORY = 'GENSAN PERFECT'"
+                str = $"AND COMPANY_CATEGORY = 'GENSAN PERFECT'"
             ElseIf RemCompany_Combo.SelectedIndex = 2 Then
-                str = $"COMPANY_CATEGORY = 'DAVAO PERFECT'"
+                str = $"AND COMPANY_CATEGORY = 'DAVAO PERFECT'"
             ElseIf RemCompany_Combo.SelectedIndex = 3 Then
-                str = $"COMPANY_CATEGORY = 'JR PHOTO' "
+                str = $"AND COMPANY_CATEGORY = 'JR PHOTO' "
             ElseIf RemCompany_Combo.SelectedIndex = 4 Then
-                str = $"(COMPANY = 'DALTON' OR HO_CATEGORY LIKE '%Dalton%')"
+                str = $"AND (COMPANY = 'DALTON' OR HO_CATEGORY LIKE '%Dalton%')"
             ElseIf RemCompany_Combo.SelectedIndex = 5 Then
-                str = $"(COMPANY = 'PERFECOM' OR HO_CATEGORY LIKE '%Perfecom%')"
+                str = $"AND (COMPANY = 'PERFECOM' OR HO_CATEGORY LIKE '%Perfecom%')"
             ElseIf RemCompany_Combo.SelectedIndex = 6 Then
-                str = $"(COMPANY = 'P&G UY' OR HO_CATEGORY LIKE '%GHS%')"
+                str = $"AND (COMPANY = 'P&G UY' OR HO_CATEGORY LIKE '%GHS%')"
             ElseIf RemCompany_Combo.SelectedIndex = 7 Then
-                str = $"HO_CATEGORY IN ('Leasing Admin Office','Construction')"
+                str = $"AND HO_CATEGORY IN ('Leasing Admin Office','Construction')"
             ElseIf RemCompany_Combo.SelectedIndex = 8 Then
-                str = $"HO_CATEGORY = 'PGC Head Office'"
+                str = $"AND HO_CATEGORY = 'PGC Head Office'"
+            ElseIf RemCompany_Combo.SelectedIndex = 9 Then
+                str = ""
+                report = "WindowsApp1.rpt_RemittanceALL.rdlc"
             End If
 
             If RemCat_Combo.SelectedIndex = 0 Then
@@ -967,6 +973,7 @@ Public Class frmReport
                         New Microsoft.Reporting.WinForms.ReportParameter("paramFormName", FORMNAME)
                         }
 
+            Rpt_Distribution.LocalReport.ReportEmbeddedResource = report
             Rpt_Distribution.LocalReport.DataSources.Add(DATASOURCE)
             Rpt_Distribution.LocalReport.SetParameters(paramList)
             Rpt_Distribution.RefreshReport()
@@ -987,26 +994,30 @@ Public Class frmReport
 
             Dim FORMNAME As String = ""
             Dim str As String = ""
+            Dim report As String = "WindowsApp1.rpt_Loans.rdlc"
             Dim DATASOURCE As Microsoft.Reporting.WinForms.ReportDataSource = Nothing
 
             If LoanCompany_Combo.SelectedIndex = 0 Then
-                str = $"HO_CATEGORY LIKE '%Photo%'"
+                str = $"AND HO_CATEGORY LIKE '%Photo%'"
             ElseIf LoanCompany_Combo.SelectedIndex = 1 Then
-                str = $"COMPANY_CATEGORY = 'GENSAN PERFECT'"
+                str = $"AND COMPANY_CATEGORY = 'GENSAN PERFECT'"
             ElseIf LoanCompany_Combo.SelectedIndex = 2 Then
-                str = $"COMPANY_CATEGORY = 'DAVAO PERFECT'"
+                str = $"AND COMPANY_CATEGORY = 'DAVAO PERFECT'"
             ElseIf LoanCompany_Combo.SelectedIndex = 3 Then
-                str = $"COMPANY_CATEGORY = 'JR PHOTO' "
+                str = $"AND COMPANY_CATEGORY = 'JR PHOTO' "
             ElseIf LoanCompany_Combo.SelectedIndex = 4 Then
-                str = $"(COMPANY = 'DALTON' OR HO_CATEGORY LIKE '%Dalton%')"
+                str = $"AND (COMPANY = 'DALTON' OR HO_CATEGORY LIKE '%Dalton%')"
             ElseIf LoanCompany_Combo.SelectedIndex = 5 Then
-                str = $"(COMPANY = 'PERFECOM' OR HO_CATEGORY LIKE '%Perfecom%')"
+                str = $"AND (COMPANY = 'PERFECOM' OR HO_CATEGORY LIKE '%Perfecom%')"
             ElseIf LoanCompany_Combo.SelectedIndex = 6 Then
-                str = $"(COMPANY = 'P&G UY' OR HO_CATEGORY LIKE '%GHS%')"
+                str = $"AND (COMPANY = 'P&G UY' OR HO_CATEGORY LIKE '%GHS%')"
             ElseIf LoanCompany_Combo.SelectedIndex = 7 Then
-                str = $"HO_CATEGORY IN ('Leasing Admin Office','Construction')"
+                str = $"AND HO_CATEGORY IN ('Leasing Admin Office','Construction')"
             ElseIf LoanCompany_Combo.SelectedIndex = 8 Then
-                str = $"HO_CATEGORY = 'PGC Head Office'"
+                str = $"AND HO_CATEGORY = 'PGC Head Office'"
+            Else
+                str = ""
+                report = "WindowsApp1.rpt_LoansALL.rdlc"
             End If
 
             If LoanCat_Combo.SelectedIndex = 0 Then
@@ -1025,6 +1036,7 @@ Public Class frmReport
                         New Microsoft.Reporting.WinForms.ReportParameter("paramFormName", FORMNAME)
                         }
 
+            Rpt_Loans.LocalReport.ReportEmbeddedResource = report
             Rpt_Loans.LocalReport.DataSources.Add(DATASOURCE)
             Rpt_Loans.LocalReport.SetParameters(paramList)
             Rpt_Loans.RefreshReport()
@@ -1085,13 +1097,18 @@ Public Class frmReport
                             Dim Debit_Credit As String = IIf(IsDBNull(.Item("TRANSAC_NAME")), "", .Item("TRANSAC_NAME"))
 
                             If BRANCHCODE = Nothing Then
-                                BRANCHNAME = .Item("HO_CATEGORY")
+                                BRANCHNAME = CStr(.Item("HO_CATEGORY")).TrimEnd
+
                             ElseIf BRANCHCODE = "ROG" Or BRANCHCODE = "ROX" Or BRANCHCODE = "MID" Or BRANCHCODE = "ACM" Or BRANCHCODE = "ACM " Or BRANCHCODE = "KID" Or BRANCHCODE = "POL" Or BRANCHCODE = "KCG" Then
                                 BRANCHNAME = toProper & " " & BRANCHNAME
                             End If
 
                             If CATEGORY = "Basic Pay" Then
                                 CATEGORY = "Basic Refund"
+                            End If
+
+                            If CATEGORY = "13Th Month Pay" Then
+                                DC_Amount = GetTotal("AMOUNT", $"PAYROLL_EMPLOYEE B inner join RECORDED_ALLOW_DEDUC A on A.BIO_NO = B.BIO_NO and B.HO_CATEGORY = 'PGC Head Office' and A.CATEGORY = '13th Month Pay' and A.PAYDATE = '{PAYDATE}'")
                             End If
 
                             dt_Cost.Rows.Add(BRANCHNAME, CATEGORY, DC_Amount, Debit_Credit)
@@ -1107,7 +1124,7 @@ Public Class frmReport
             ''========================================= PAYROLL_COSTDISTRIBUTION ================================================
             mysql = $"Select  BRANCH_CODE, HO_CATEGORY, NAMEE, NAME_CATEGORY, COMPANY, SUM(TOTAL_BASIC) AS BASIC, SUM(TOTAL_OVERTIME) AS OT,
                                         SUM(TOTAL_LATE_UT) AS LATE_UT , SUM(SSS_COMP) AS SSS_EE , SUM(SSS_ER) AS SSS_ER , SUM(SSS_EC) AS SSS_EC, 
-                                        SUM(NET_PAY) AS NETPAY, SUM(PAGIBIG_COMP) AS HDMF, SUM(PHILHEALTH_COMP) AS PHILH, SUM(TOTAL_REGHOLIDAY) AS REGHOLIDAY , SUM(TOTAL_SPECHOLIDAY) AS SPECHOLIDAY  
+                                        SUM(NET_PAY) AS NETPAY, SUM(PAGIBIG_COMP) AS HDMF, SUM(PHILHEALTH_COMP) AS PHILH, SUM(TOTAL_REGHOLIDAY) AS REGHOLIDAY, SUM(TOTAL_SPECHOLIDAY) AS SPECHOLIDAY  
                                         From PAYROLL_PAYOUT B 
                                         INNER JOIN PAYROLL_EMPLOYEE A ON A.BIO_NO = B.BIOMETRIC_ID 
                                         LEFT JOIN PAYROLL_COSTDISTRIB ON 1 = 1 
@@ -1132,7 +1149,7 @@ Public Class frmReport
                             Dim DC_Amount As Decimal = 0
 
                             If BRANCHCODE = Nothing Then
-                                BRANCHNAME = .Item("HO_CATEGORY")
+                                BRANCHNAME = CStr(.Item("HO_CATEGORY")).TrimEnd
                             ElseIf BRANCHCODE = "ROG" Or BRANCHCODE = "ROX" Or BRANCHCODE = "MID" Or BRANCHCODE = "ACM" Or BRANCHCODE = "ACM " Or BRANCHCODE = "KID" Or BRANCHCODE = "POL" Or BRANCHCODE = "KCG" Then
                                 BRANCHNAME = toProper & " " & BRANCHNAME
                             End If
@@ -1204,7 +1221,6 @@ Public Class frmReport
                 End If
             End Using
 
-
             Dim paramList As New List(Of Microsoft.Reporting.WinForms.ReportParameter) From {
                     New Microsoft.Reporting.WinForms.ReportParameter("paramPaydate", FORMNAME)
                     }
@@ -1218,6 +1234,7 @@ Public Class frmReport
             Log_Report(ex.ToString)
             MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
+
     End Sub
 
     Private Sub SumPaydate_Combo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles SumPaydate_Combo.SelectedIndexChanged
@@ -1230,21 +1247,17 @@ Public Class frmReport
     End Sub
 
     Private Sub DaltonP_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles M_Photo_TXT.KeyPress, M_Perfecom_TXT.KeyPress, M_DavaoP_TXT.KeyPress, M_DaltonP_TXT.KeyPress
-
         If e.KeyChar <> ChrW(Keys.Back) Then
-
             If Not Char.IsNumber(e.KeyChar) AndAlso Not Char.IsControl(e.KeyChar) Then
                 e.Handled = True
             End If
         End If
-
     End Sub
 
     Private Sub Modify_BTN_Click(sender As Object, e As EventArgs) Handles Modify_BTN.Click
         GetModify_Report(M_DaltonP_TXT, M_Photo_TXT, M_DavaoP_TXT, M_Perfecom_TXT, D_DaltonP_TXT, D_Photo_TXT, D_DavaoP_TXT, D_Perfecom_TXT, L_Dalton_TXT, L_PG711_TXT,
                                 DR_Dalton_TXT, DR_Photo_TXT, DR_House_TXT, ConDalton_TXT, ConPhoto_TXT, ConHouse_TXT, LeasingBR_TXT, DTR_Dalton_TXT, DTR_Photo_TXT, LeasingP_TXT)
         Modify_Panel.Visible = True
-        'Modify_Panel.Location = New Point(ClientSize.Width / 2 - Modify_Panel.Size.Width / 2, ClientSize.Height / 2 - Modify_Panel.Size.Height / 2)
     End Sub
 
     Private Sub Label14_Click(sender As Object, e As EventArgs) Handles Label14.Click
@@ -1620,7 +1633,6 @@ Public Class frmReport
         End If
     End Sub
 
-
     Private Sub DeducHistory_btn_Click(sender As Object, e As EventArgs) Handles DeducHistory_btn.Click
         Lists_Deduction_History(DeducHistory_List, DeducHistory_txt.Text)
     End Sub
@@ -1628,12 +1640,6 @@ Public Class frmReport
     Private Sub DeducHistory_txt_KeyPress(sender As Object, e As KeyPressEventArgs) Handles DeducHistory_txt.KeyPress
         If e.KeyChar = ChrW(Keys.Enter) Then
             DeducHistory_btn.PerformClick()
-        End If
-    End Sub
-
-    Private Sub Reports_Tab_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Reports_Tab.SelectedIndexChanged
-        If Reports_Tab.SelectedIndex = 9 Then
-            Lists_13Month(Month_LV)
         End If
     End Sub
 
@@ -1776,8 +1782,17 @@ Public Class frmReport
     End Sub
 
     Private Sub Month_LV_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles Month_LV.MouseDoubleClick
+        Dim range As DateTime
         If Month_LV.Items.Count >= 0 Then
-            Laod_13Month(Month_LV.Items(Month_LV.FocusedItem.Index).SubItems(1).Tag, rpt_13Month)
+            If Range_Combo.SelectedIndex = 0 Then
+                range = $"5/15/{Today.Year}"
+            ElseIf Range_Combo.SelectedIndex = 1 Then
+                range = $"12/15/{Today.Year}"
+            Else
+                range = Nothing
+            End If
+
+            Laod_13Month(Month_LV.Items(Month_LV.FocusedItem.Index).SubItems(1).Tag, rpt_13Month, range)
         End If
     End Sub
 
@@ -2009,43 +2024,8 @@ Public Class frmReport
             LoadRows_NetPay(mysql_PTU_REALTY, paydatee, "PTU")
             LoadRows_NetPay(mysql_PGC_HEADOFFICE, paydatee)
 
-            '    Dim TOTAL_EMP As Integer = GetOVERALL_COUNT("ID", paydatee)
-            '    Dim TOTAL_BASIC As Decimal = GetOVERALL_SUM("TOTAL_BASIC", paydatee)
-            '    Dim TOTAL_OT As Decimal = GetOVERALL_SUM("TOTAL_OVERTIME", paydatee)
-
-            '    Dim TOTAL_REGHOLIDAY As Decimal = GetOVERALL_SUM("TOTAL_REGHOLIDAY", paydatee)
-            '    Dim TOTAL_SPECHOLIDAY As Decimal = GetOVERALL_SUM("TOTAL_SPECHOLIDAY", paydatee)
-            '    Dim TOTAL_HOLIDAY As Decimal = TOTAL_REGHOLIDAY + TOTAL_SPECHOLIDAY
-
-            '    Dim TOTAL_NDIFF As Double = GetOVERALL_SUM("TOTAL_NIGHT_RATE", paydatee)
-            '    Dim TOTAL_PI_ECOLA_SIL As Double = Get_PI_ECOLA_SIL_TOTAL(paydatee)
-            '    Dim TOTAL_TARDINESS As Double = GetOVERALL_SUM("TOTAL_LATE_UT", paydatee)
-            '    Dim TOTAL_SSS As Double = GetOVERALL_SUM("SSS_COMP", paydatee)
-            '    Dim TOTAL_PHIC As Double = GetOVERALL_SUM("PHILHEALTH_COMP", paydatee)
-            '    Dim TOTAL_PAGIBIG As Double = GetOVERALL_SUM("PAGIBIG_COMP", paydatee)
-            '    Dim TOTAL_SBU_CHARGES As Double = GetOVERALL_SUM("TOTAL_DEDUCTION", paydatee)
-            '    Dim TOTAL_NET_PAY As Double = GetOVERALL_SUM("NET_PAY", paydatee)
-            '    Dim TOTAL_13MONTH As Double = Get13MONTH_TOTAL(paydatee)
-
-            '    Dim paramList As New List(Of Microsoft.Reporting.WinForms.ReportParameter) From {
-            'New Microsoft.Reporting.WinForms.ReportParameter("paramEmployees", TOTAL_EMP),
-            'New Microsoft.Reporting.WinForms.ReportParameter("paramBasic", TOTAL_BASIC.ToString(”N”)),
-            'New Microsoft.Reporting.WinForms.ReportParameter("paramOvertime", TOTAL_OT.ToString(”N”)),
-            'New Microsoft.Reporting.WinForms.ReportParameter("paramHoliday", TOTAL_HOLIDAY.ToString(”N”)),
-            'New Microsoft.Reporting.WinForms.ReportParameter("paramNDiff", TOTAL_NDIFF.ToString(”N”)),
-            'New Microsoft.Reporting.WinForms.ReportParameter("paramPI_Ecola_SIL", TOTAL_PI_ECOLA_SIL.ToString(”N”)),
-            'New Microsoft.Reporting.WinForms.ReportParameter("paramTardiness", TOTAL_TARDINESS.ToString(”N”)),
-            'New Microsoft.Reporting.WinForms.ReportParameter("paramSSS", TOTAL_SSS.ToString(”N”)),
-            'New Microsoft.Reporting.WinForms.ReportParameter("paramPHIC", TOTAL_PHIC.ToString(”N”)),
-            'New Microsoft.Reporting.WinForms.ReportParameter("paramPagibig", TOTAL_PAGIBIG.ToString(”N”)),
-            'New Microsoft.Reporting.WinForms.ReportParameter("paramSBU_Charges", TOTAL_SBU_CHARGES.ToString(”N”)),
-            'New Microsoft.Reporting.WinForms.ReportParameter("paramNetPay", TOTAL_NET_PAY.ToString(”N”)),
-            'New Microsoft.Reporting.WinForms.ReportParameter("param13Month", TOTAL_13MONTH.ToString(”N”))
-            '}
-
             Dim rds_DTR As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt_NetPay)
             ReportV_NetPay.LocalReport.DataSources.Add(rds_DTR)
-            'ReportV_NetPay.LocalReport.SetParameters(paramList)
             ReportV_NetPay.RefreshReport()
 
             PlusS = Nothing
@@ -2054,6 +2034,7 @@ Public Class frmReport
             Log_Report(ex.ToString)
             MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
+
     End Sub
 
     Private Sub LoadRows_NetPay(mysql As String, paydatee As String, Optional plus_ As String = Nothing)
@@ -2140,8 +2121,8 @@ Public Class frmReport
                             '======================= 13 MONTH ================
                             Dim MONTH_13 As Decimal = 0
 
-                            If paydatee = "12/15/2021" Then
-                                MONTH_13 = Get_13MontHHHH(EMP_NO)
+                            If paydatee = $"5/15/{Today.Year}" Or paydatee = $"12/15/{Today.Year}" Then
+                                MONTH_13 = Get13Month(BIO_NO, paydatee)
                             End If
 
                             COMPANY = "ALL COMPANY"
@@ -2158,10 +2139,59 @@ Public Class frmReport
                 End If
             End Using
 
+        Catch ex As Exception
+            MsgBox(ex.ToString)
+        End Try
+    End Sub
+
+    Private Sub Range_Combo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Range_Combo.SelectedIndexChanged
+        rpt_13Month.Clear()
+
+        If Range_Combo.SelectedIndex = 0 Then
+            Lists_13Month(Month_LV, "", $"5/15/{Today.Year}")
+        Else
+            Lists_13Month(Month_LV, "", $"12/15/{Today.Year}")
+        End If
+    End Sub
+
+    Private Sub PrintList_btn_Click(sender As Object, e As EventArgs) Handles PrintList_btn.Click
+        Dim range As DateTime
+        If Month_LV.Items.Count >= 0 Then
+            If Range_Combo.SelectedIndex = 0 Then
+                range = $"5/15/{Today.Year}"
+
+            ElseIf Range_Combo.SelectedIndex = 1 Then
+                range = $"12/15/{Today.Year}"
+            Else
+                range = Nothing
+            End If
+
+            Print_13Month_LIST(range)
+        End If
+    End Sub
+
+    Friend Sub Print_13Month_LIST(Optional range As DateTime = Nothing)
+        rpt_13Month.LocalReport.DataSources.Clear()
+        Try
+
+            Dim dt As New DataTable()
+            With dt
+                .Columns.Add("NAME")
+                .Columns.Add("AMOUNT")
+            End With
+
+            For row = 0 To Month_LV.Items.Count - 1
+                dt.Rows.Add(Month_LV.Items(row).SubItems(0).Text, Month_LV.Items(row).SubItems(1).Text)
+            Next
+
+            Dim dataSource As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt)
+            rpt_13Month.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_PI.rdlc"
+            rpt_13Month.LocalReport.DataSources.Add(dataSource)
+            rpt_13Month.RefreshReport()
 
         Catch ex As Exception
             MsgBox(ex.ToString)
         End Try
-
     End Sub
+
 End Class

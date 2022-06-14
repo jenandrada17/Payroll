@@ -12,17 +12,14 @@ Public Class frmAttendance
     Dim eSheet As Excel.Worksheet = Nothing
     Dim eCell As Excel.Range
     Dim late_count, under_count, over_count As New TimeSpan
-    'Dim late_count, under_count, over_count As New List(Of TimeSpan)()
     Dim list_dateHour, list_inOut, list_hourMin, list_Group, list_count, list_bio, distinct_bio As New List(Of String)()
     Dim hourMinn, timee, bio_list As List(Of String)
     Dim dateee, starting_date, ending_date, TIME_IN, TIME_OUT As DateTime
     Dim DATE_ONLY, am_in, am_out, pm_in, pm_out As String
     Public branchID, Branch_Name, paydate_, paydate_Records As String
-
     Dim MyConnection As System.Data.OleDb.OleDbConnection
     Dim DtSet As System.Data.DataSet
     Dim MyCommand As System.Data.OleDb.OleDbDataAdapter
-
     Dim ALLOW_OT As Boolean = True
 
     Private Sub frmAttendance_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -78,7 +75,6 @@ Public Class frmAttendance
         StartNineteen = New DateTime(DateNow.Year, DateNow.Month, 19).AddMonths(-1).AddDays(-1)
         EndNineteen = New DateTime(StartNineteen.Year, StartNineteen.Month, 3).AddMonths(1)
 
-
         If DateNow.Day - 16 <= 2 And DateNow.Day - 16 >= -12 Then
 
             Paydate = EndNineteen.AddDays(12)
@@ -131,7 +127,6 @@ Public Class frmAttendance
 
         Next
 
-
         '==============================================AM OUT 8AM to 6PM==================================================
         For y = 0 To 1440
 
@@ -148,7 +143,6 @@ Public Class frmAttendance
 
         Next
 
-
         '==============================================PM OUT 12PM to 11PM==================================================
         For y = 0 To 1440
 
@@ -158,6 +152,7 @@ Public Class frmAttendance
         Next
 
         For i = 0 To DataGridView1.Rows.Count - 1
+
             Dim r As DataGridViewRow = DataGridView1.Rows(i)
             r.Height = 28
 
@@ -165,35 +160,20 @@ Public Class frmAttendance
 
             Dim customizeDate As String = asss.ToString("M")
 
-            If asss.DayOfWeek = DayOfWeek.Sunday Then
-                r.DefaultCellStyle.ForeColor = Color.Red
-            Else
-                If HolidayExist(asss) Then
-                    HolidayDetails(asss, i, DataGridView1)
-                End If
+            If asss.DayOfWeek = DayOfWeek.Sunday Then r.DefaultCellStyle.ForeColor = Color.Red
+
+            If HolidayExist(asss) Then
+                HolidayDetails(asss, i, DataGridView1)
+                r.DefaultCellStyle.ForeColor = Color.Black
             End If
+
         Next
 
         AM_In_DataGrid.Items.Insert(0, "")
         AM_Out_DataGrid.Items.Insert(0, "")
         PM_IN_DataGrid.Items.Insert(0, "")
         PM_Out_DataGrid.Items.Insert(0, "")
-    End Sub
 
-    Private Sub HourMinute(from_HR As Integer, To_HR As Integer, combo As DataGridViewComboBoxColumn)
-
-        combo.Items.Clear()
-
-        Dim i As Integer
-        Dim ii As Integer
-
-        For i = from_HR To To_HR
-            For ii = 0 To 59
-                Dim ass As String = Format(i, "00")
-                Dim asss As String = Format(ii, "00")
-                combo.Items.Add((ass & ":" & asss))
-            Next
-        Next
     End Sub
 
     Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles CheckALL_CheckBox.CheckedChanged
@@ -229,6 +209,7 @@ Public Class frmAttendance
                 DataGridView1.Rows(i).Cells(4).Value = ""
             Next
         End If
+
     End Sub
 
     Private Sub DataGridView1_CurrentCellDirtyStateChanged(sender As Object, e As EventArgs) Handles DataGridView1.CurrentCellDirtyStateChanged
@@ -376,8 +357,7 @@ Public Class frmAttendance
     End Sub
 
     Private Sub CalculateLATE(row As DataGridViewRow, timeIn As DateTime)
-
-        '========================================================================= CELL NUMBER AM IN ===========================================================
+        '================================  CELL NUMBER AM IN =================================== 
         If Not row.Cells(1).Value = Nothing Then
 
             Dim lateHour As TimeSpan = DateTime.Parse(row.Cells(1).Value).Subtract(DateTime.Parse(timeIn.ToShortTimeString))
@@ -394,8 +374,7 @@ Public Class frmAttendance
     End Sub
 
     Private Sub CalculateuNDERTIME(row As DataGridViewRow, timeIn As DateTime, timeOut As DateTime)
-
-        '========================================================================= CELL NUMBER PM OUT ===========================================================
+        '=================================  CELL NUMBER PM OUT ==================================== 
         If Not row.Cells(4).Value = Nothing Then
 
             Dim _out As DateTime = DateTime.Parse(row.Cells(4).Value).Subtract(New TimeSpan(0, DateTime.Parse(row.Cells(4).Value).Minute, 0))
@@ -411,11 +390,10 @@ Public Class frmAttendance
             End If
 
         End If
-
     End Sub
 
     Private Sub CalculateuOVERTIME(row As DataGridViewRow, timeOut As DateTime)
-        '========================================================================= CELL NUMBER PM OUT ===========================================================
+        '====================================  CELL NUMBER PM OUT ==================================== 
         If Not row.Cells(4).Value = Nothing Then
             If ALLOW_OT = True Then
                 Dim OTHour As TimeSpan = DateTime.Parse(row.Cells(4).Value).Subtract(DateTime.Parse(timeOut.ToShortTimeString))
@@ -446,7 +424,6 @@ Public Class frmAttendance
     End Sub
 
     Private Sub SearchEMP_BTN_Click(sender As Object, e As EventArgs) Handles SearchEMP_BTN.Click
-
         Try
 
             Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmNewEmployee").SingleOrDefault()
@@ -470,7 +447,6 @@ Public Class frmAttendance
     End Sub
 
     Private Sub Save_BTN_Click(sender As Object, e As EventArgs) Handles Save_BTN.Click
-
         If Not BiometricID_TXT.Text = "" Then
             Calculate_BTN.PerformClick()
             Dim result As DialogResult = MsgBox($"Record for {Name_TXT.Text} will be Save/Updated, proceed anyway?", MessageBoxButtons.YesNo)
@@ -509,7 +485,6 @@ Public Class frmAttendance
 
                             specHoliday_hrs += GetSpecial_hrs(list_.First, list_.Last)
                         End If
-
                     End If
                 Next
 
@@ -549,58 +524,6 @@ Public Class frmAttendance
         End If
     End Sub
 
-    Private Sub LoadEmployeeDetails()
-
-        'Dim source As New AutoCompleteStringCollection()
-        'Dim sql As String = $"SELECT * FROM payroll_employee Where Upper(FULLNAME) = Upper('{Name_TXT.Text}')"
-        'Using ds As DataSet = LoadSQL(sql, "payroll_employee")
-        '    If ds.Tables(0).Rows.Count > 0 Then
-        '        For Each dr In ds.Tables(0).Rows
-        '            With dr
-        '                Dim name As String = .Item("FULLNAME")
-        '                source.Add(name.ToString)
-        '            End With
-        '        Next
-        '    End If
-        'End Using
-
-        'Name_TXT.AutoCompleteCustomSource = source
-        'Name_TXT.AutoCompleteMode = AutoCompleteMode.Suggest
-        'Name_TXT.AutoCompleteSource = AutoCompleteSource.CustomSource
-
-        ''============================================================== OLD
-        'Dim source As New AutoCompleteStringCollection()
-        'Dim sql As String = "SELECT * FROM tbl_employee Where Upper(LASTNAME) = Upper('" & Name_TXT.Text & "') or Upper(FIRSTNAME) = Upper('" & Name_TXT.Text & "')"
-
-        'DbReaderOpen()
-        'Using rd As FbDataReader = LoadSQL_byDataReader(sql)
-
-        '    While rd.Read()
-        '        If rd.HasRows Then
-        '            With rd
-        '                Dim MI As String
-
-        '                If String.IsNullOrEmpty(.Item("MIDDLENAME")) Then
-        '                    MI = ""
-        '                Else
-        '                    MI = .Item("MIDDLENAME").Substring(0, 1) & "."
-        '                End If
-
-        '                Dim name As String = $"{ .Item("FIRSTNAME")} { MI } { .Item("LASTNAME")} { .Item("SUFFIX")}"
-
-        '                source.Add(name.ToString)
-
-        '            End With
-        '        End If
-        '    End While
-        '    rd.Close()
-        'End Using
-        'Name_TXT.AutoCompleteCustomSource = source
-        'Name_TXT.AutoCompleteMode = AutoCompleteMode.Suggest
-        'Name_TXT.AutoCompleteSource = AutoCompleteSource.CustomSource
-
-    End Sub
-
     Private Sub Path_TXT_TextChanged(sender As Object, e As EventArgs) Handles Path_TXT.TextChanged
         If Not Path_TXT.Text = Nothing Then
             Import_BTN.Enabled = True
@@ -610,26 +533,14 @@ Public Class frmAttendance
     End Sub
 
     Private Sub OpenFile_BTN_Click(sender As Object, e As EventArgs) Handles OpenFile_BTN.Click
-
         Dim dialog = New OpenFileDialog
         If dialog.ShowDialog() = DialogResult.OK Then
             Path_TXT.Text = dialog.FileName
         End If
-
-        'Using f As New OpenFileDialog
-        '    f.Filter = "Excel 2003|*.xls|Excel 2007|*.xlsx"
-        '    If DialogResult.OK = f.ShowDialog() Then
-        '        Path_TXT.Text = f.FileName
-        '        ExcelFilePath(Path_TXT.Text)
-        '        Import_BTN.Enabled = True
-        '    End If
-        'End Using
     End Sub
 
     Private Sub Preview_BTN_Click(sender As Object, e As EventArgs) Handles Preview_BTN.Click
-
         If Payslip_DTR_Combo.SelectedIndex >= 0 Then
-
             If GroupBranch_RadioB.Checked Then
                 If DTR_Branch_Combo.SelectedIndex >= 0 Then
                     LoadDTR_Print_Group()
@@ -639,11 +550,9 @@ Public Class frmAttendance
             Else
                 LoadDTR_Print()
             End If
-
         Else
             MsgBox("Please select date of payroll.", MsgBoxStyle.Exclamation, "Error")
         End If
-
     End Sub
 
     Public Sub LoadDTR_Print()
@@ -759,7 +668,6 @@ Public Class frmAttendance
             '==============================================================================  
 
             Using ds As DataSet = LoadSQL(mysqll, "PAYROLL_ATTENDANCE")
-
                 If ds.Tables(0).Rows.Count > 0 Then
                     For Each dr In ds.Tables(0).Rows
                         With dr
@@ -794,8 +702,6 @@ Public Class frmAttendance
 
                         End With
                     Next
-
-
                 End If
             End Using
 
@@ -864,11 +770,11 @@ Public Class frmAttendance
                                         inner join BIOMETRIC_DTR C ON C.BIO_ID = B.BIO_NO  AND C.PAYDATE  = A.PAYDATE 
                                         where A.PAYDATE  = '{paydatee}' and B.BRANCH_CODE = '{DTR_Branch_Combo.Text}'  ORDER BY DATE_ONLY"
 
-            '=========================== LIST OF BIO (COMPLETE DATE) ==================================
+            '=========================== LIST OF BIO (COMPLETE DATE) ==========================
             LIST_BIOO.Clear()
             LIST_BIOO = ListOfBio(LIST_BIOO, mysqll)
             LIST_BIOO = LIST_BIOO.Distinct().ToList
-            '============================= SAVING ALL DATE ============================  
+            '=========================== SAVING ALL DATE ====================================== 
             For Each VALUE_BIO As String In LIST_BIOO
 
                 EXIST_DATE.Clear()
@@ -884,7 +790,6 @@ Public Class frmAttendance
             '==================================================================================
 
             Using ds As DataSet = LoadSQL(mysqll, "PAYROLL_ATTENDANCE")
-
                 If ds.Tables(0).Rows.Count > 0 Then
 
                     For Each dr In ds.Tables(0).Rows
@@ -930,27 +835,20 @@ Public Class frmAttendance
     End Sub
 
     Private Sub EmpSelect_BTN_Click(sender As Object, e As EventArgs) Handles EmpSelect1_BTN.Click
-
-        Try
-
-            Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmNewEmployee").SingleOrDefault()
-            If instForm Is Nothing Then
-                Dim frm As frmNewEmployee
-                frm = DirectCast(CreateObjectInstance("frmNewEmployee"), Form)
-                frm.MdiParent = frmMainForm
-                frmMainForm.pNavigate.Controls.Add(frm)
-                frmMainForm.pNavigate.Tag = frm
-                frm.txtSearch.Tag = "Attendance-PrintDTR_1"
-                frm.Dock = DockStyle.Fill
-                frm.BringToFront()
-                frm.Show()
-            Else
-                instForm.BringToFront()
-            End If
-
-        Catch ex As Exception
-
-        End Try
+        Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmNewEmployee").SingleOrDefault()
+        If instForm Is Nothing Then
+            Dim frm As frmNewEmployee
+            frm = DirectCast(CreateObjectInstance("frmNewEmployee"), Form)
+            frm.MdiParent = frmMainForm
+            frmMainForm.pNavigate.Controls.Add(frm)
+            frmMainForm.pNavigate.Tag = frm
+            frm.txtSearch.Tag = "Attendance-PrintDTR_1"
+            frm.Dock = DockStyle.Fill
+            frm.BringToFront()
+            frm.Show()
+        Else
+            instForm.BringToFront()
+        End If
     End Sub
 
     Private Sub Employee_RadioB_CheckedChanged(sender As Object, e As EventArgs) Handles Employee_RadioB.CheckedChanged
@@ -1019,8 +917,7 @@ Public Class frmAttendance
                     End If
                 Next
 
-                '========================================= TIME IN/OUT =========================================
-
+                '========================================= TIME IN/OUT ========================================= 
                 Dim DATEE As DateTime = row.Tag
 
                 If CheckData("BIO_NO", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{biometric_No}'") Then
@@ -1144,26 +1041,20 @@ Public Class frmAttendance
     End Sub
 
     Private Sub EmpSelect2_BTN_Click(sender As Object, e As EventArgs) Handles EmpSelect2_BTN.Click
-
-        Try
-            Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmNewEmployee").SingleOrDefault()
-            If instForm Is Nothing Then
-                Dim frm As frmNewEmployee
-                frm = DirectCast(CreateObjectInstance("frmNewEmployee"), Form)
-                frm.MdiParent = frmMainForm
-                frmMainForm.pNavigate.Controls.Add(frm)
-                frmMainForm.pNavigate.Tag = frm
-                frm.txtSearch.Tag = "Attendance-PrintDTR_2"
-                frm.Dock = DockStyle.Fill
-                frm.BringToFront()
-                frm.Show()
-            Else
-                instForm.BringToFront()
-            End If
-
-        Catch ex As Exception
-
-        End Try
+        Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmNewEmployee").SingleOrDefault()
+        If instForm Is Nothing Then
+            Dim frm As frmNewEmployee
+            frm = DirectCast(CreateObjectInstance("frmNewEmployee"), Form)
+            frm.MdiParent = frmMainForm
+            frmMainForm.pNavigate.Controls.Add(frm)
+            frmMainForm.pNavigate.Tag = frm
+            frm.txtSearch.Tag = "Attendance-PrintDTR_2"
+            frm.Dock = DockStyle.Fill
+            frm.BringToFront()
+            frm.Show()
+        Else
+            instForm.BringToFront()
+        End If
     End Sub
 
     Private Sub CancelDTR_BTN_Click(sender As Object, e As EventArgs) Handles CancelDTR_BTN.Click
@@ -1186,113 +1077,21 @@ Public Class frmAttendance
         End If
     End Sub
 
-    Private Sub Button3_Click(sender As Object, e As EventArgs)
-
-        Dim dialog = New OpenFileDialog
-        If dialog.ShowDialog() = DialogResult.OK Then
-            Emp7_TXT.Text = dialog.FileName
-        End If
-    End Sub
-
-    Private Sub IMPORTED_7eleven()   '================================ WORKS WELL- FOR ALL RECORDS ONLY (PARTNER WITH SAVE_DIRECT_Attendance()()) =============================   
-
-        'LoadDateTime()
-        'AM_In_DataGrid.Items.Insert(0, "")
-        'AM_Out_DataGrid.Items.Insert(0, "")
-        'PM_IN_DataGrid.Items.Insert(0, "")
-        'PM_Out_DataGrid.Items.Insert(0, "")
-
-        Dim timee_ As List(Of DateTime) = Nothing
-        Dim list_inOut_ As List(Of DateTime) = Nothing
-
-        Dim paydate_ As String = Paydate.ToString("d")
-        distinct_bio = distinct_bio.Distinct().ToList
-
-        For Each biometric_No As String In distinct_bio
-            list_inOut_.Clear()
-
-            Dim mysql As String = $"Select * From IMPORT_DTR where BIO_ID = '{biometric_No}' and PAYDATE = '{paydate_}'"
-            Using ds As DataSet = LoadSQL(mysql, "IMPORT_DTR")
-                If ds.Tables(0).Rows.Count > 0 Then
-                    For Each dr In ds.Tables(0).Rows
-                        With dr
-                            Dim date_ As DateTime = .Item("DATEANDTIME")
-
-                            list_inOut_.Add(date_.ToString("d") & " " & date_.ToShortTimeString)
-                        End With
-                    Next
-                End If
-            End Using
-
-
-            timee_ = list_inOut_.Distinct().ToList
-
-
-            'For i = 0 To timee_.Count
-
-            '    Dim timePeriod As TimeSpan
-            '    Dim time1 As DateTime = timee.Item(i)
-            '    Dim time2 As DateTime = timee.Item(i + 1)
-
-            'Next
-
-
-            'For Each row As DataGridViewRow In DataGridView1.Rows
-
-            '    Dim list_hour(3) As String
-            '    Dim DATE_ONLY As String = ""
-
-            '    Dim rowIndex As Integer = row.Index
-            '    Dim asss As DateTime = DataGridView1.Rows(rowIndex).Tag
-            '    Dim groups_timee As New List(Of DateTime)()
-
-            'For Each timme As String In timee
-            '    If timme.StartsWith(asss.ToString("d")) Then
-            '        groups_timee.Add(timme)
-
-            '    End If
-            'Next
-
-            'groups_timee.Sort(New Comparison(Of Date)(Function(x As Date, y As Date) y.CompareTo(x)))
-            'groups_timee.Reverse()
-
-            'For Each dateTime As String In groups_timee
-            '    Console.WriteLine("Sorted dateTime  " & dateTime)
-            'Next
-
-            'Console.WriteLine("tOTAL HOUR " & )
-            'Console.WriteLine()
-
-            'If list_hour(0) = "" And list_hour(1) = "" And list_hour(2) = "" And list_hour(3) = "" Then
-            'Else
-            '    SaveDTR(biometric_No, Paydate, DATE_ONLY, list_hour(0), list_hour(1), list_hour(2), list_hour(3))
-            'End If
-            'Next
-        Next
-    End Sub
-
     Private Sub SearchEmp7_BTN_Click(sender As Object, e As EventArgs) Handles SearchEmp7_BTN.Click
-
-        Try
-
-            Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmNewEmployee").SingleOrDefault()
-            If instForm Is Nothing Then
-                Dim frm As frmNewEmployee
-                frm = DirectCast(CreateObjectInstance("frmNewEmployee"), Form)
-                frm.MdiParent = frmMainForm
-                frmMainForm.pNavigate.Controls.Add(frm)
-                frmMainForm.pNavigate.Tag = frm
-                frm.txtSearch.Tag = "Attendance-7Eleven"
-                frm.Dock = DockStyle.Fill
-                frm.BringToFront()
-                frm.Show()
-            Else
-                instForm.BringToFront()
-            End If
-
-        Catch ex As Exception
-
-        End Try
+        Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmNewEmployee").SingleOrDefault()
+        If instForm Is Nothing Then
+            Dim frm As frmNewEmployee
+            frm = DirectCast(CreateObjectInstance("frmNewEmployee"), Form)
+            frm.MdiParent = frmMainForm
+            frmMainForm.pNavigate.Controls.Add(frm)
+            frmMainForm.pNavigate.Tag = frm
+            frm.txtSearch.Tag = "Attendance-7Eleven"
+            frm.Dock = DockStyle.Fill
+            frm.BringToFront()
+            frm.Show()
+        Else
+            instForm.BringToFront()
+        End If
     End Sub
 
     Private Sub Bio7_TXT_TextChanged(sender As Object, e As EventArgs) Handles Bio7_TXT.TextChanged
@@ -1327,7 +1126,6 @@ Public Class frmAttendance
     End Sub
 
     Public Sub GetAttendance_Shifting(bioNo As String, PAYROLL As String)
-
         Dim mysql As String = $"Select * From  PAYROLL_ATTENDANCE where BIOMETRICID = '{bioNo}' and PAYDATE = '{PAYROLL}'"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
             If ds.Tables(0).Rows.Count > 0 Then
@@ -1358,12 +1156,9 @@ Public Class frmAttendance
                 Save7_BTN.Tag = "ADDED"
             End If
         End Using
-
     End Sub
 
-
     Private Sub Save7_BTN_Click(sender As Object, e As EventArgs) Handles Save7_BTN.Click
-
         If Not Bio7_TXT.Text = "" And Not Days7_TXT.Text = "" Then
 
             Dim result As DialogResult = MsgBox($"Record for {Emp7_TXT.Text} will be Save/Updated, proceed anyway?", MessageBoxButtons.YesNo)
@@ -1399,18 +1194,14 @@ Public Class frmAttendance
         Else
             MsgBox("Please Ensure that Employee's Name and No. of days are inputed!", MsgBoxStyle.Critical, "Error")
         End If
-
     End Sub
 
     Private Sub Hours7_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Undertime7_TXT.KeyPress, Overtime7_TXT.KeyPress, Night7_TXT.KeyPress, Late7_TXT.KeyPress, Days7_TXT.KeyPress
-
         If e.KeyChar <> ChrW(Keys.Back) Then
-
             If Not Char.IsNumber(e.KeyChar) AndAlso Not Char.IsControl(e.KeyChar) Then
                 e.Handled = True
             End If
         End If
-
     End Sub
 
     Private Sub Cancel7_BTN_Click(sender As Object, e As EventArgs) Handles Cancel7_BTN.Click
@@ -1421,7 +1212,6 @@ Public Class frmAttendance
         Late7_TXT.Clear()
         Undertime7_TXT.Clear()
         Night7_TXT.Clear()
-
     End Sub
 
     Private Sub SIL_BTN_Click(sender As Object, e As EventArgs) Handles SIL_BTN.Click
@@ -1453,10 +1243,6 @@ Public Class frmAttendance
         End If
     End Sub
 
-    Private Sub Label37_Click(sender As Object, e As EventArgs)
-        SIL_Panel.Visible = False
-    End Sub
-
     Private Sub AddSIL_BTN_Click(sender As Object, e As EventArgs) Handles AddSIL_BTN.Click
         SIL_LBL.Text = SIL_NUP.Text
         SIL_BTN.Text = "Clear"
@@ -1464,34 +1250,12 @@ Public Class frmAttendance
     End Sub
 
     Private Sub Biometric_LV_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles Biometric_LV.MouseDoubleClick
-
         CheckALL_CheckBox.Checked = False
-
 
         If Biometric_LV.Items.Count = 0 Then Exit Sub
         BiometricID_TXT.Text = Biometric_LV.Items(Biometric_LV.FocusedItem.Index).SubItems(0).Text
 
-        'Attendance_Per_Employee(BiometricID_TXT.Text)
         Attendance_Tab.SelectedIndex = 1
-
-    End Sub
-
-    Private Sub Button4_Click(sender As Object, e As EventArgs)
-
-        Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmNewEmployee").SingleOrDefault()
-        If instForm Is Nothing Then
-            Dim frm As frmNewEmployee
-            frm = DirectCast(CreateObjectInstance("frmNewEmployee"), Form)
-            frm.MdiParent = frmMainForm
-            frmMainForm.pNavigate.Controls.Add(frm)
-            frmMainForm.pNavigate.Tag = frm
-            frm.txtSearch.Tag = "Attendance-Scheduling"
-            frm.Dock = DockStyle.Fill
-            frm.BringToFront()
-            frm.Show()
-        Else
-            instForm.BringToFront()
-        End If
     End Sub
 
     Private Sub PIDaysX_btn_Click(sender As Object, e As EventArgs) Handles PIDaysX_btn.Click
@@ -1524,11 +1288,6 @@ Public Class frmAttendance
         AM_OT_NUP.Value = 0.0
     End Sub
 
-    Private Sub AM_OT_NUP_ValueChanged(sender As Object, e As EventArgs) Handles AM_OT_NUP.ValueChanged
-        'Calculate_BTN.PerformClick()
-        'TotalOTHr_LBL.Text = CDbl(TotalOTHr_LBL.Text) + AM_OT_NUP.Value
-    End Sub
-
     Private Sub CancelSIL_BTN_Click(sender As Object, e As EventArgs) Handles CancelSIL_BTN.Click
         SIL_NUP.Text = 1
         SIL_Panel.Visible = False
@@ -1543,7 +1302,6 @@ Public Class frmAttendance
     End Sub
 
     Private Sub Paydate7_CB_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Paydate7_CB.SelectedIndexChanged
-
         If Paydate7_CB.SelectedIndex >= 0 Then
             paydate_ = Paydate7_CB.SelectedItem
         Else
@@ -1551,7 +1309,6 @@ Public Class frmAttendance
         End If
 
         Populate_S7ELVEN(Seven_Grid, paydate_)
-
     End Sub
 
     Private Sub Search7_BTN_Click(sender As Object, e As EventArgs) Handles Search7_BTN.Click
@@ -1570,7 +1327,7 @@ Public Class frmAttendance
 
     Private Sub Import_BTN_Click(sender As Object, e As EventArgs) Handles Import_BTN.Click
 
-        '====================================================== ORIGIINAL ====================================== 
+        '=====================  ORIGIINAL ==============================
         eApp = New Excel.Application
         eBook = eApp.Workbooks.Open(Path_TXT.Text)
         eSheet = eBook.Worksheets(1)
@@ -1590,9 +1347,6 @@ Public Class frmAttendance
             End If
         End If
 
-
-        eBook.Close()
-        eApp.Quit()
         '====================== TRANSACTION ==========================
         Dim listt As String = Nothing
         For Each bio As String In distinct_bio
@@ -1607,9 +1361,7 @@ Public Class frmAttendance
 
         '=============================================================
         PopulateComboBox(Paydate_ComboB, "BIOMETRIC_DTR", "PAYDATE")
-
     End Sub
-
 
     Private Sub bio_White()
         eApp = New Excel.Application
@@ -1706,11 +1458,22 @@ Public Class frmAttendance
             If eCell(row, 3).Value <> Nothing Then
 
                 Dim DATEE As DateTime = eCell(row, 3).Value
+
                 If CheckData("BIO_NO", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{bio_no}'") Then
 
                     If DateExist_IN_Schedule(bio_no, DATEE.ToShortDateString) Then
-                        TIME_IN = GetData("TIME_IN", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{bio_no}' AND DATEE = '{DATEE.ToShortDateString}' ")
-                        TIME_OUT = TIME_IN.AddHours(9)
+                        Dim valuee_in As String = GetData("TIME_IN", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{bio_no}' AND DATEE = '{DATEE.ToShortDateString}' ")
+
+                        If valuee_in = "RD" Or valuee_in = "AL" Or valuee_in = "SIL" Then
+
+                            TIME_IN = GetData("VALUEE", $"PAYROLL_DEFAULT_TIMEIN")
+                            TIME_OUT = TIME_IN.AddHours(9)
+
+                        Else
+                            TIME_IN = GetData("TIME_IN", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{bio_no}' AND DATEE = '{DATEE.ToShortDateString}' ")
+                            TIME_OUT = TIME_IN.AddHours(9)
+                        End If
+
                     Else
                         TIME_IN = GetData("VALUEE", $"PAYROLL_DEFAULT_TIMEIN")
                         TIME_OUT = TIME_IN.AddHours(9)
@@ -1819,12 +1582,10 @@ Public Class frmAttendance
                 End If
             Next
 
-
             frmMainForm.AppProgressBar.Value += 1
         Next
         progressBarEnd()
     End Sub
-
 
     Private Sub bio_OURCOMPANY()
         Try
@@ -1846,7 +1607,8 @@ Public Class frmAttendance
 
             progressBarStart(DtSet.Tables(0).Rows.Count)
 
-            For row = 1 To DtSet.Tables(0).Rows.Count + 1
+            For row = 1 To DtSet.Tables(0).Rows.Count
+                'For row = 1 To DtSet.Tables(0).Rows.Count + 1
                 If IsNumeric(eCell(row, 3).Value) Then
                     SaveBiometricSheet(Paydate, eCell(row, 3).Value, eCell(row, 4).Value)
                     distinct_bio.Add(eCell(row, 3).Value)
@@ -1941,6 +1703,13 @@ Public Class frmAttendance
             Dim halfday_Hour As Integer = 0
             Dim specHoliday_hrs As Double = 0
 
+            '========= TEMPORARY FOR PAYDATE 6/30/2022 ===========  
+            Dim temp_present As Double = 0
+            Dim temp_half As Double = 0
+            Dim temp_overtime As Double = 0
+            Dim temp_late As Double = 0
+            Dim temp_undertime As Double = 0
+
             For Each row As DataGridViewRow In DataGridView1.Rows
 
                 '======================== GET TIME IN/OUT TO CALCULATE LATE UNDERTIME OVERTIME ============================ 
@@ -2002,22 +1771,34 @@ Public Class frmAttendance
 
                 End If
 
-
                 CalculateLATE(row, TIME_IN)
 
                 CalculateuNDERTIME(row, TIME_IN, TIME_OUT)
 
                 CalculateuOVERTIME(row, TIME_OUT)
 
-                ''===================================== SUM UP PRESENT AND ABSENT ========================== 
+                ''===================================== SUM UP PRESENT AND ABSENT =================== 
                 If row.Cells(5).Value = True Then
                     Present += 1
                 End If
 
-                ''===================================== SUM UP HALF DAY ====================================  
+                ''===================================== SUM UP HALF DAY ============================= 
                 If CountCELL_Nothing(row) = 3 Or CountCELL_Consecutive(row) = "HALFDAY" Then
                     halfday_Hour += 4
                 End If
+
+                ''===========================  TEMPORARYYYYYYY JUNE 30, 2022 ONLY===================== 
+                If paydate_ = "6/30/2022" Then
+                    Dim short_date As String = DATEE.ToShortDateString
+                    If short_date = "6/8/2022" Then
+                        temp_present = Present
+                        temp_half = halfday_Hour
+                        temp_overtime = TotalOTHr_LBL.Text
+                        temp_late = late_count.TotalMinutes
+                        temp_undertime = under_count.TotalMinutes
+                    End If
+                End If
+
             Next
 
             TotalDays_LBL.Text = Present
@@ -2032,6 +1813,18 @@ Public Class frmAttendance
 
             InsertTempAttendance(biometric_No, paydate_, TotalDays_LBL.Text, TotalOTHr_LBL.Text,
                                     late_count.TotalMinutes, under_count.TotalMinutes, RHOLIDAY, SHOLIDAY)
+
+            ''===================================== TEMPORARYYYYYYY =================================  
+            If paydate_ = "6/30/2022" Then
+                Dim old_days As Double
+                old_days = (temp_present * 8) - temp_half
+                old_days = old_days / 8
+                Dim new_days As Double = product - old_days
+                Dim new_overtime As Double = CDbl(TotalOTHr_LBL.Text) - temp_overtime
+                Dim new_late As Double = CDbl(late_count.TotalMinutes) - temp_late
+                Dim new_undertime As Double = CDbl(under_count.TotalMinutes) - temp_undertime
+                SaveTemporary(biometric_No, old_days, new_days, temp_overtime, new_overtime, temp_late, new_late, temp_undertime, new_undertime)
+            End If
 
             frmMainForm.AppProgressBar.Value += 1
         Next
@@ -2069,6 +1862,13 @@ Public Class frmAttendance
         LoadDateTime(datee)
 
         PIDays_lbl.Text = GetData_Decimal("NO_OF_DAYS", $"PAYROLL_PI_DAYS WHERE PAYDATE='{paydate_}'")
+
+        '==========================  CHECK PAYDATE IF VALID FOR EDITING =========================   
+        If Today.ToString("d") > CDate(paydate_) Then
+            AddPIDays_btn.Enabled = False
+        Else
+            AddPIDays_btn.Enabled = True
+        End If
     End Sub
 
     Private Sub Attendance_Tab_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Attendance_Tab.SelectedIndexChanged
@@ -2084,10 +1884,6 @@ Public Class frmAttendance
                 e.Handled = True
             End If
         End If
-    End Sub
-
-    Private Sub Name_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Name_TXT.KeyPress
-        LoadEmployeeDetails()
     End Sub
 
     Private Sub DataGridView1_DataError(sender As Object, e As DataGridViewDataErrorEventArgs) Handles DataGridView1.DataError
@@ -2138,6 +1934,7 @@ Public Class frmAttendance
             Else
                 Save_BTN.Enabled = True
             End If
+
         End If
 
     End Sub

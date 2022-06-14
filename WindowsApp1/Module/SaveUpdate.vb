@@ -307,25 +307,6 @@ Module SaveUpdate
         End Using
     End Sub
 
-    Public Sub SaveSheet_FC200(payDate As String, bioID As String, datee As String, BRANCHNAME As String)
-
-        Dim mysql As String = "Select * From IMPORT_DTR Rows 1"
-        Using ds As DataSet = LoadSQL(mysql, "IMPORT_DTR")
-
-            Dim dsNewRow As DataRow = ds.Tables(0).NewRow
-            With dsNewRow
-
-                .Item("BIO_ID") = bioID
-                .Item("DATEANDTIME") = datee
-                .Item("PAYDATE") = payDate
-                .Item("BRANCH") = BRANCHNAME
-
-            End With
-            ds.Tables(0).Rows.Add(dsNewRow)
-            SaveEntry(ds)
-        End Using
-    End Sub
-
     Public Sub SaveDTR(bioID As String, payDate As String, DATE_ONLY As String, AM_IN As String, AM_OUT As String, PM_IN As String, PM_OUT As String, Optional dtr As Boolean = False)
 
         If dtr = False Then
@@ -350,61 +331,6 @@ Module SaveUpdate
             dss.Tables(0).Rows.Add(dsNewRow)
             SaveEntry(dss)
         End Using
-    End Sub
-
-    Public Sub UpdateDTR(bioID As String, payDate As String, DATE_ONLY As String, BRANCH As String, AM_IN As String, AM_OUT As String, PM_IN As String, PM_OUT As String)
-
-        Dim mysql As String = $"Select * FROM BIOMETRIC_DTR where BRANCH = '{BRANCH}' and PAYDATE = '{payDate}'"
-        Dim dss As DataSet = LoadSQL(mysql, "BIOMETRIC_DTR")
-        If dss.Tables(0).Rows.Count > 0 Then
-            With dss.Tables(0).Rows(0)
-
-                .Item("BIO_ID") = bioID
-                .Item("DATE_ONLY") = DATE_ONLY
-                .Item("AM_IN") = AM_IN
-                .Item("AM_OUT") = AM_OUT
-                .Item("PM_IN") = PM_IN
-                .Item("PM_OUT") = PM_OUT
-
-            End With
-            SaveEntry(dss, False)
-        End If
-    End Sub
-
-    Public Sub SaveIndividual(bioID As String, payDate As String, DATE_ONLY As String, BRANCH As String, hour As String, column As String)
-        Dim mysql As String
-
-        mysql = $"Select * FROM BIOMETRIC_DTR where BIO_ID = '{bioID}' and DATE_ONLY = '{DATE_ONLY}' and BRANCH = '{BRANCH}' and PAYDATE = '{payDate}'"
-        Dim ds As DataSet = LoadSQL(mysql, "BIOMETRIC_DTR")
-        If ds.Tables(0).Rows.Count > 0 Then
-
-            With ds.Tables(0).Rows(0)
-
-                .Item(column) = hour
-
-            End With
-            SaveEntry(ds, False)
-
-        Else
-
-            mysql = "Select * From BIOMETRIC_DTR Rows 1"
-            Using dss As DataSet = LoadSQL(mysql, "BIOMETRIC_DTR")
-
-                Dim dsNewRow As DataRow = dss.Tables(0).NewRow
-                With dsNewRow
-
-                    .Item("BIO_ID") = bioID
-                    .Item("PAYDATE") = payDate
-                    .Item("DATE_ONLY") = DATE_ONLY
-                    .Item("BRANCH") = BRANCH
-                    .Item(column) = hour
-
-                End With
-                dss.Tables(0).Rows.Add(dsNewRow)
-                SaveEntry(dss)
-            End Using
-        End If
-
     End Sub
 
     Friend Sub SaveRATE_City(column As String, value As String, daily_rate As String, Optional group As Boolean = False) '=========== BOOLEAN IF MORE THAN 1 ========== 
@@ -491,8 +417,6 @@ Module SaveUpdate
                 .Item("CATEGORY") = category
                 .Item("PRINCIPAL") = PRINCIPAL
                 .Item("AMORT") = AMORT
-                '.Item("CREDIT") = 0
-                '.Item("BALANCE") = PRINCIPAL
                 .Item("SCHEDULE") = SCHEDULE
                 .Item("DATEE") = DATEE
 
@@ -588,37 +512,9 @@ Module SaveUpdate
         End If
     End Sub
 
-    Friend Sub SavePayout_MODIFIED_DEDUCTION(BIO_NO As String, PAYDATE As String, CATEGORY As String, M_Amount As String, AMOUNT_PER_GIVE As String, DATE_CREATED As String, M_DEDUC_ID As String)
-
-        Dim mysql As String = "Select * From MODIFIED_DEDUCTION Rows 1"
-        Using ds As DataSet = LoadSQL(mysql, "MODIFIED_DEDUCTION")
-            Dim dsNewRow As DataRow = ds.Tables(0).NewRow
-            With dsNewRow
-
-                Dim toUpper = CATEGORY.ToUpper()
-
-                .Item("BIO_NO") = BIO_NO
-                .Item("PAYDATE") = PAYDATE
-                .Item("M_CATEGORY") = toUpper
-                .Item("M_Amount") = M_Amount
-                .Item("AMOUNT_PER_GIVE") = AMOUNT_PER_GIVE
-                .Item("DATE_CREATED") = DATE_CREATED
-
-                If M_DEDUC_ID = Nothing Then
-                    .Item("M_DEDUC_ID") = DBNull.Value
-                Else
-                    .Item("M_DEDUC_ID") = M_DEDUC_ID
-                End If
-
-            End With
-
-            ds.Tables(0).Rows.Add(dsNewRow)
-            SaveEntry(ds)
-        End Using
-    End Sub
-
     Friend Sub SaveTraining_days(BIO_NO As String, PAYDATE As String, TRAINING_DAYS As String, TRAINING_REGHOLIDAY As String, TRAINING_SPECHOLIDAY As String,
                                    TRAINING_OVERTIME As Double, TRAINING_LATE As Double, TRAINING_UNDERTIME As Double)
+
         Dim mysql As String = $"Select * FROM PAYROLL_ATTENDANCE where BIOMETRICID = '{BIO_NO}' and PAYDATE = '{PAYDATE}'"
         Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
         If dss.Tables(0).Rows.Count > 0 Then
@@ -635,7 +531,36 @@ Module SaveUpdate
         End If
     End Sub
 
+
+    '===================== TRAINING HOLIDAY ==================  
+    Dim old_days = 0, new_days As Double = 0
+    Dim old_overtime = 0, new_overtime As Double = 0
+    Dim old_late = 0, new_late As Double = 0
+    Dim old_undertime = 0, new_undertime As Double = 0
+
+    Private Sub OLD_NEW_RATE(BIO_NO As String)
+        Dim temp_days As Double = 0
+        Dim _mysql As String = $"Select * from TEMP_TABLE where BIO_NO = '{BIO_NO}'"
+        Using _ds As DataSet = LoadSQL(_mysql, "TEMP_TABLE")
+            If _ds.Tables(0).Rows.Count > 0 Then
+                With _ds.Tables(0).Rows(0)
+                    old_days = .Item("OLD_DAYS")
+                    new_days = .Item("NEW_DAYS")
+                    old_overtime = .Item("OLD_OVERTIME")
+                    new_overtime = .Item("NEW_OVERTIME")
+                    old_late = .Item("OLD_LATE")
+                    new_late = .Item("NEW_LATE")
+                    old_undertime = .Item("OLD_UNDERTIME")
+                    new_undertime = .Item("NEW_UNDERTIME")
+                End With
+            End If
+        End Using
+    End Sub
+    '=========================================================
+
+
     Friend Sub SavePayout_IndividualL(bioNo As String, paydate_ As String, startingDate As DateTime, EndingDate As DateTime) '========== AUTO SAVE TO PAYOUT ============  
+
         Dim regHoliday = Holiday_Rate("REGULAR")
         Dim specHoliday = Holiday_Rate("SPECIAL")
 
@@ -782,7 +707,6 @@ Module SaveUpdate
                     End If
 
                     '============================================= BENIFITS CONTRIBUTION =========================================================  
-
                     Dim trainee_rate As Decimal = rate * 0.75
 
                     If noOf_days_training <> 0 Then '================ IF TRAINEE BASE CALCULATE NEW RATE =================
@@ -803,15 +727,28 @@ Module SaveUpdate
                         TotalREGHol = REG_STANDARD + REG_TRAINEE
                         TotalSPECHol = SPEC_STANDARD + SPEC_TRAINEE
 
+                        '===================== TEMPORARY LANGSSSSS =============== 
+                        If paydate_ = "6/30/2022" Then
+                            OLD_NEW_RATE(bioNo)
+                            Dim tot_days As Double = (old_days * 336) + (new_days * rate)
+                            TotalBasic = tot_days - total_train
+                        End If
+
                     Else
 
                         TotalBasic = (NoOfDays * rate)
                         TotalREGHol = (RegularHol * rate) * regHoliday
                         TotalSPECHol = ((SpecialHol_hrs / 8) * rate) * specHoliday
 
+                        '===================== TEMPORARY LANGSSSSS =============== 
+                        If paydate_ = "6/30/2022" Then
+                            OLD_NEW_RATE(bioNo)
+                            TotalBasic = (old_days * 336) + (new_days * rate)
+                        End If
+
                     End If
 
-                    ''============================= FOR MONTHLY RATE (IF ABOVE MINIMUM RATE)================================== 
+                    ''============================= FOR MONTHLY RATE (IF ABOVE MINIMUM RATE)=============== 
                     If rate > Minimum_rate Then
                         Monthly_rate = Monthly_rate / 2
 
@@ -820,16 +757,18 @@ Module SaveUpdate
                         Else
                             If NoOfDays >= STANDARD_DAYS Then  '=== CHECK IF ABOVE MINIMUM
                                 TotalBasic = Monthly_rate
+
                             Else
                                 Dim MINUS_DAYS As Double = STANDARD_DAYS - NoOfDays
                                 TotalBasic = Monthly_rate - (MINUS_DAYS * rate)
                             End If
                         End If
+
                     End If
 
-                    '============================ CHECK WITH TRAINING DAYS COVERED ==================================   
+                    '============================ CHECK WITH TRAINING DAYS COVERED ======================== 
                     If noOf_days_training = 0 Then
-                        '============================ CHECK IF CLOSE PAYROLL ==================================   
+                        '======================== CHECK IF CLOSE PAYROLL ==================================   
                         Dim date_pay As DateTime = Convert.ToDateTime(paydate_)
                         date_pay = date_pay.ToString("d")
 
@@ -918,52 +857,87 @@ Module SaveUpdate
                     '============================================= DEDUCTION =========================================================  
                     Deduction = 0
 
-                    If BranchCode <> Nothing Then '=============== BRANCHES (BY RANGE)
+                    Dim sql_3 As String = $"Select Z.*, Z.id as idd From PAYROLL_DEDUCTION Z WHERE BIO_NO = '{bioNo}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
+                    Using ds_3 As DataSet = LoadSQL(sql_3, "PAYROLL_DEDUCTION")
+                        If ds_3.Tables(0).Rows.Count > 0 Then
+                            For Each dr_3 In ds_3.Tables(0).Rows
+                                With dr_3
 
-                        Dim balance As Decimal = GetDeduction_OverAll_Balance(bioNo)
-                        Dim Amount_perPayroll As Decimal = GetDeduction_ChargesRange(bioNo, balance)
+                                    Dim amountt As Decimal = 0
+                                    Dim idd As String = .Item("idd")
 
-                        If Amount_perPayroll > balance Then
-                            Amount_perPayroll = balance
-                        End If
+                                    If IsDBNull(.Item("BALANCE")) Then
 
-                        Deduction = Deduction + Amount_perPayroll
-                        Save_Recorded_Allow_Deduc(bioNo, paydate_, "Charges", Amount_perPayroll, "DEDUCTION", 0)
+                                        Deduction = Deduction + .Item("AMORT")
+                                        amountt = .Item("AMORT")
 
-                    Else '=============== HEAD OFFICE (BY AMORT)
+                                    Else
 
-                        Dim sql_3 As String = $"Select Z.*, Z.id as idd From PAYROLL_DEDUCTION Z WHERE BIO_NO = '{bioNo}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
-                        Using ds_3 As DataSet = LoadSQL(sql_3, "PAYROLL_DEDUCTION")
-                            If ds_3.Tables(0).Rows.Count > 0 Then
-                                For Each dr_3 In ds_3.Tables(0).Rows
-                                    With dr_3
+                                        Dim balance As Decimal = GetDeduction_Balance(idd)
 
-                                        Dim amountt As Decimal = 0
-
-                                        If IsDBNull(.Item("BALANCE")) Then
-
+                                        If balance < .Item("AMORT") Then
+                                            Deduction = Deduction + balance
+                                            amountt = balance
+                                        Else
                                             Deduction = Deduction + .Item("AMORT")
                                             amountt = .Item("AMORT")
-
-                                        Else
-
-                                            If .Item("AMORT") > .Item("BALANCE") Then
-                                                Deduction = Deduction + .Item("BALANCE")
-                                                amountt = .Item("BALANCE")
-                                            Else
-                                                Deduction = Deduction + .Item("AMORT")
-                                                amountt = .Item("AMORT")
-                                            End If
-
                                         End If
 
-                                        Save_Recorded_Allow_Deduc(bioNo, paydate_, .Item("CATEGORY"), amountt, "DEDUCTION", .Item("idd"))
+                                    End If
 
-                                    End With
-                                Next
-                            End If
-                        End Using
-                    End If
+                                    Save_Recorded_Allow_Deduc(bioNo, paydate_, .Item("CATEGORY"), amountt, "DEDUCTION", idd)
+
+                                End With
+                            Next
+                        End If
+                    End Using
+
+                    'If BranchCode <> Nothing Then '=============== BRANCHES (BY RANGE)
+
+                    '    Dim balance As Decimal = GetDeduction_OverAll_Balance(bioNo)
+                    '    Dim Amount_perPayroll As Decimal = GetDeduction_ChargesRange(bioNo, balance)
+
+                    '    If Amount_perPayroll > balance Then
+                    '        Amount_perPayroll = balance
+                    '    End If
+
+                    '    Deduction = Deduction + Amount_perPayroll
+                    '    Save_Recorded_Allow_Deduc(bioNo, paydate_, "Charges", Amount_perPayroll, "DEDUCTION", 0)
+
+                    'Else '=============== HEAD OFFICE (BY AMORT)
+
+                    'Dim sql_3 As String = $"Select Z.*, Z.id as idd From PAYROLL_DEDUCTION Z WHERE BIO_NO = '{bioNo}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
+                    'Using ds_3 As DataSet = LoadSQL(sql_3, "PAYROLL_DEDUCTION")
+                    '    If ds_3.Tables(0).Rows.Count > 0 Then
+                    '        For Each dr_3 In ds_3.Tables(0).Rows
+                    '            With dr_3
+
+                    '                Dim amountt As Decimal = 0
+
+                    '                If IsDBNull(.Item("BALANCE")) Then
+                    '                    Deduction = Deduction + .Item("AMORT")
+                    '                    amountt = .Item("AMORT")
+                    '                Else
+
+                    '                    Dim balance As Decimal = GetDeduction_Balance(.Item("idd"))
+
+                    '                    If balance < .Item("AMORT") Then
+                    '                        Deduction = Deduction + .Item("BALANCE")
+                    '                        amountt = balance
+                    '                    Else
+                    '                        Deduction = Deduction + .Item("AMORT")
+                    '                        amountt = .Item("AMORT")
+                    '                    End If
+
+                    '                End If
+
+                    '                Save_Recorded_Allow_Deduc(bioNo, paydate_, .Item("CATEGORY"), amountt, "DEDUCTION", .Item("idd"))
+
+                    '            End With
+                    '        Next
+                    '    End If
+                    'End Using
+                    'End If
 
                     '============================================= OTHER DEDUCTION LIKE MP2, MAXICARE ==================================================  
                     Dim sql_5 As String = $"Select * From PAYROLL_OTHER_DEDUCTION WHERE BIO_NO = '{bioNo}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
@@ -996,15 +970,15 @@ Module SaveUpdate
                             End If
 
                         End If
+
                     End If
 
                     '============================================= Calculate_Gross() ========================================================= 
-
                     If fix_monthly_rate = True Then
                         GrossAmount = TotalBasic
                     Else
 
-                        '===================== STANDARD AND TRAINING OVERTIME/LATE/UNDERTIME ==================   
+                        '===================== STANDARD AND TRAINING OVERTIME/LATE/UNDERTIME ==================    
                         Dim LATEE, LATE_TRAIN, UNDERTIMEE, UNDERTIMEE_TRAIN, OVERTIMEE, OVERTIMEE_TRAIN As Decimal
                         LATEE = ((rate / 8) / 60) * (Late - training_late.TotalMinutes)
                         UNDERTIMEE = ((rate / 8) / 60) * (UnderTime - training_undertime.TotalMinutes)
@@ -1024,6 +998,40 @@ Module SaveUpdate
 
                         TotalLateUnder = LATEE + UNDERTIMEE
 
+                        '===================== TEMPORARY LANGSSSSS =============== 
+                        If paydate_ = "6/30/2022" Then
+                            OLD_NEW_RATE(bioNo)
+                            'old_days = .Item("OLD_DAYS")
+                            'new_days = .Item("NEW_DAYS")
+                            'old_overtime = .Item("OLD_OVERTIME")
+                            'new_overtime = .Item("NEW_OVERTIME")
+                            'old_late = .Item("OLD_LATE")
+                            'new_late = .Item("NEW_LATE")
+                            'old_undertime = .Item("OLD_UNDERTIME")
+                            'new_undertime = .Item("NEW_UNDERTIME") 
+
+                            '==================== OVERTIMEEEEEEEE =====================================
+                            Dim percentOT_training As Double = old_late / training_overtime
+                            Dim percentOT_old As Double = old_late / RegularOT
+                            Dim percentOT_new As Double = new_late / RegularOT
+
+                            Dim OT_training As Double = ((trainee_rate / 8) / 60) * (RegularOT * percentOT_training)
+                            Dim OT_old As Double = ((336 / 8) / 60) * (RegularOT * percentOT_old)
+                            Dim OT_new As Double = ((rate / 8) / 60) * (RegularOT * percentOT_new)
+
+                            OVERTIMEE = OT_training + OT_old + OT_new
+                            '==================== LATEEEEEEEEEEE =====================================
+                            Dim percentLate_training As Double = training_late.TotalMinutes / Late
+                            Dim percentLate_old As Double = old_late / Late
+                            Dim percentLate_new As Double = new_late / Late
+
+                            Dim Late_training As Double = ((trainee_rate / 8) / 60) * (Late * percentLate_training)
+                            Dim Late_old As Double = ((336 / 8) / 60) * (Late * percentLate_old)
+                            Dim Late_new As Double = ((rate / 8) / 60) * (Late * percentLate_new)
+
+                            LATEE = Late_training + Late_old + Late_new
+                        End If
+
                         GrossAmount = (TotalBasic + TotalREGHol + TotalSPECHol + TotalOT + TotalNight) - TotalLateUnder
 
                     End If
@@ -1037,7 +1045,6 @@ Module SaveUpdate
                     If IsLastDay(paydate_) Then
                         positive = GrossAmount + Allowances
                         negative = CONTRIB + Deduction
-                        'negative = CONTRIB + sssLoan + pagibigLoan + Deduction
                     Else
                         positive = GrossAmount + Allowances
                         negative = Deduction
@@ -1077,6 +1084,7 @@ Module SaveUpdate
                 MsgBox("Successfully saved!", MsgBoxStyle.Information, "Information")
             End If
         End Using
+
         progressBarEnd()
     End Sub
 
@@ -1103,6 +1111,7 @@ Module SaveUpdate
                 End If
 
             End With
+
             ds.Tables(0).Rows.Add(dsNewRow)
             SaveEntry(ds)
 
@@ -1138,6 +1147,7 @@ Module SaveUpdate
                 .Item("total_total") = sixteen
 
             End With
+
             ds.Tables(0).Rows.Add(dsNewRow)
             SaveEntry(ds)
         End Using
@@ -1307,47 +1317,6 @@ Module SaveUpdate
         End Using
     End Sub
 
-    Friend Sub Save_Loans(idx As String, BIO_NO As String, CATEGORY As String, principal As String, AMORT As String, DATEE As String)
-        Dim mysql As String
-
-        mysql = $"Select * FROM PAYROLL_LOANS where id = '{idx}'"
-        Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_LOANS")
-        If ds.Tables(0).Rows.Count > 0 Then
-
-            With ds.Tables(0).Rows(0)
-
-                .Item("CATEGORY") = CATEGORY
-                .Item("PRINCIPAL") = principal
-                .Item("AMORT") = AMORT
-                .Item("DATEE") = DATEE
-
-            End With
-
-            SaveEntry(ds, False)
-            MsgBox("Successfully Updated!", MsgBoxStyle.Information, "Information")
-
-        Else
-            mysql = "Select * From PAYROLL_LOANS Rows 1"
-            Using dss As DataSet = LoadSQL(mysql, "PAYROLL_LOANS")
-
-                Dim dsNewRow As DataRow = dss.Tables(0).NewRow
-                With dsNewRow
-
-                    .Item("BIO_NO") = BIO_NO
-                    .Item("CATEGORY") = CATEGORY
-                    .Item("PRINCIPAL") = principal
-                    .Item("AMORT") = AMORT
-                    .Item("DATEE") = DATEE
-
-                End With
-                dss.Tables(0).Rows.Add(dsNewRow)
-                SaveEntry(dss)
-
-                MsgBox("Successfully Saved!", MsgBoxStyle.Information, "Information")
-            End Using
-        End If
-    End Sub
-
     Friend Sub Save_OtherDeduction(idx As String, BIO_NO As String, CATEGORY As String, schedule As String, AMORT As String, DATEE As String, STATUS As String)
         Dim mysql As String
 
@@ -1433,7 +1402,6 @@ Module SaveUpdate
                 Dim dsNewRow As DataRow = dss.Tables(0).NewRow
                 With dsNewRow
 
-
                     .Item("email") = email
                     .Item("pass") = pass
 
@@ -1459,7 +1427,6 @@ Module SaveUpdate
         mysql = $"Select * FROM PAYROLL_EMPLOYEE  where BIO_NO = '{BIO_NO}'"
         Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE ")
         If ds.Tables(0).Rows.Count > 0 Then
-
             With ds.Tables(0).Rows(0)
 
                 .Item("COMPANY") = COMPANY
@@ -1520,6 +1487,7 @@ Module SaveUpdate
             End If
 
         Else
+
             mysql = "Select * From PAYROLL_EMPLOYEE Rows 1"
             Using dss As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
 
@@ -1572,6 +1540,7 @@ Module SaveUpdate
                 If group = False Then
                     MsgBox("Successfully Saved!", MsgBoxStyle.Information, "Information")
                 End If
+
             End Using
         End If
     End Sub
@@ -1664,45 +1633,6 @@ Module SaveUpdate
 
     End Sub
 
-    Public Sub Update_Emp_Benefits_Details(BIO_NO As String, TINNO As String, SSSNO As String, PHILHEALTHNO As String, PAGIBIGNO As String, DATE_STARTED As String, EMP_POSITION As String, empNo As String)
-
-        Dim id_no As String() = BIO_NO.Split(New Char() {"-"c})
-
-
-        Console.WriteLine("empNo " & empNo)
-
-        If id_no.Length >= 3 Then
-
-            Dim mysql As String = $"Select * FROM PAYROLL_EMPLOYEE  where BIO_NO = '{id_no(2)}'"
-            Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE ")
-            If ds.Tables(0).Rows.Count > 0 Then
-
-                With ds.Tables(0).Rows(0)
-
-                    .Item("DATE_STARTED") = DATE_STARTED
-                    .Item("EMP_POSITION") = EMP_POSITION
-                    .Item("TINNO") = TINNO
-                    .Item("SSSNO") = SSSNO
-                    .Item("PHILHEALTHNO") = PHILHEALTHNO
-                    .Item("PAGIBIGNO") = PAGIBIGNO
-
-                End With
-
-                SaveEntry(ds, False)
-            End If
-
-        Else
-
-            MsgBox(empNo)
-
-        End If
-
-    End Sub
-
-    Function RemoveWhitespace(fullString As String) As String
-        Return New String(fullString.Where(Function(x) Not Char.IsWhiteSpace(x)).ToArray())
-    End Function
-
     Public Sub SAVE_13MONTH_EMPNO(EMP_NO As String, RowNo As Integer)
         Dim mysql As String = "Select * From PAYROLL_13MONTH Rows 1"
         Using dssS As DataSet = LoadSQL(mysql, "PAYROLL_13MONTH")
@@ -1713,6 +1643,7 @@ Module SaveUpdate
                 .Item("EMP_NO") = EMP_NO
 
             End With
+
             dssS.Tables(0).Rows.Add(dsNewRow)
             SaveEntry(dssS)
             Console.WriteLine("EMP_NOOO-" & RowNo)
@@ -1734,6 +1665,7 @@ Module SaveUpdate
 
             Console.WriteLine("AMOUNTTTT-" & RowNo)
         End Using
+
     End Sub
 
     Public Sub Update_Emp_Benefits_DetailS_BY_NAME(FULLNAME As String, TINNO As String, SSSNO As String, PHILHEALTHNO As String, PAGIBIGNO As String, DATE_STARTED As String, EMP_POSITION As String, empNo As String)
@@ -1760,7 +1692,6 @@ Module SaveUpdate
 
             SaveEntry(ds, False)
         End If
-
     End Sub
 
     Friend Sub Save_ClockINOUT(column As String, columnValue As String, TIME_IN As String, TIME_OUT As String)
@@ -2134,6 +2065,7 @@ Module SaveUpdate
     Friend Sub SavePartialPayment(deduc_id As Integer, bio_no As Integer, amount As Decimal)
         Dim mysql As String = $"Select * from PARTIAL_PAYMENT"
         Using ds As DataSet = LoadSQL(mysql, "PARTIAL_PAYMENT")
+
             Dim dsNew As DataRow = ds.Tables(0).NewRow
             With dsNew
                 .Item("DEDUCT_ID") = deduc_id
@@ -2144,6 +2076,7 @@ Module SaveUpdate
 
             ds.Tables(0).Rows.Add(dsNew)
             SaveEntry(ds)
+
             MsgBox("Successfully Saved!", MsgBoxStyle.Information)
         End Using
     End Sub

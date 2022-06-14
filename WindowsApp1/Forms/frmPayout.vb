@@ -18,6 +18,7 @@ Public Class frmPayout
     Private myCoolPoint As New Point
 
     Private Sub frmPayout_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
         regHoliday_ = Holiday_Rate("REGULAR")
         specHoliday_ = Holiday_Rate("SPECIAL")
         PopulateComboBox(Paydate_ComboB, "PAYROLL_PAYOUT", "PAYDATE")
@@ -32,6 +33,7 @@ Public Class frmPayout
     End Sub
 
     Private Sub Select_BTN_Click(sender As Object, e As EventArgs) Handles Select_BTN.Click
+
         Try
 
             Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmEmployee").SingleOrDefault()
@@ -60,6 +62,7 @@ Public Class frmPayout
         Catch ex As Exception
 
         End Try
+
     End Sub
 
     Private Sub BiometricID_TXT_TextChanged(sender As Object, e As EventArgs) Handles BiometricID_TXT.TextChanged
@@ -72,7 +75,18 @@ Public Class frmPayout
         End If
 
         '==========================  IF VALID FOR EDITING =========================      
-        If Today.ToString("d") > paydate_ Then
+        'If Today.ToString("d") > paydate_ Then
+        '    Details_Save_BTN.Enabled = False
+        'Else
+        '    Details_Save_BTN.Enabled = True
+        'End If
+
+        Dim dateNow As DateTime = Date.Now
+
+        Console.WriteLine(dateNow.ToString("d"))
+        Console.WriteLine(paydate_)
+
+        If dateNow.ToString("d") > paydate_ Then
             Details_Save_BTN.Enabled = False
         Else
             Details_Save_BTN.Enabled = True
@@ -221,18 +235,17 @@ Public Class frmPayout
         End If
 
     End Sub
+
     Private Sub Checkgrid_Visible() ' ============== Allowance and Deduction
 
-        '========================== Check if allowance grid has rows ===================== 
-
+        '========================== Check if allowance grid has rows =====================  
         If Allowance_grid.RowCount > 0 Then
             Allowance_grid.Visible = True
         Else
             Allowance_grid.Visible = False
         End If
 
-        '========================== Check if deduction grid has rows ===================== 
-
+        '========================== Check if deduction grid has rows =====================  
         If Deduction_grid.RowCount > 0 Then
             Deduction_grid.Visible = True
         Else
@@ -259,7 +272,9 @@ Public Class frmPayout
 
             Calculate_Deduction()
             Calculate_NetPay()
+
         End If
+
     End Sub
 
     Private Sub Close_LBL_Click_1(sender As Object, e As EventArgs) Handles Close_LBL.Click
@@ -620,40 +635,6 @@ Public Class frmPayout
         If IsEnter(e) Then SaveAdd_BTN.PerformClick()
     End Sub
 
-    Private Sub Refresh_BTN_Click(sender As Object, e As EventArgs)
-        If Name_TXT.Text <> Nothing Then
-            Dim PAYROLL As String
-            If Paydate_ComboB.SelectedIndex >= 0 Then
-                PAYROLL = Paydate_ComboB.SelectedItem
-            Else
-                PAYROLL = paydate_
-            End If
-
-            Recorded_Details(BiometricID_TXT.Text, Allowance_grid, paydate_, "ALLOWANCE")
-
-            'AllowanceDetails(BiometricID_TXT.Text, Allowance_grid, sched_deduc)
-
-            'DeductioneDetails_ORIG(BiometricID_TXT.Text, Deduction_grid, sched_deduc, PAYROLL)
-
-            Calculate_Gross()
-
-            Calculate_Allowance()
-
-            Calculate_Deduction()
-
-            Calculate_NetPay()
-
-            Checkgrid_Visible()
-
-            If paydate_ = frmMainForm.Paydate.ToString("d") Then     '======== CHECK IF VALID FOR EDITING IF NOT DISABLE SAVING
-                Details_Save_BTN.Enabled = True
-            Else
-                Details_Save_BTN.Enabled = False
-            End If
-        End If
-
-    End Sub
-
     Private Sub Additional_BTN_Click(sender As Object, e As EventArgs) Handles Additional_BTN.Click
         Additional_Panel.Location = New Point(175, 200)
         Additional_Panel.Visible = True
@@ -685,27 +666,6 @@ Public Class frmPayout
             RateFixNo_RB.Checked = True
         End If
     End Sub
-
-    'Private Sub ConfirmDeduc_btn_Click(sender As Object, e As EventArgs) Handles ConfirmDeduc_btn.Click
-    '    If Payslip_paydate_Combo.SelectedIndex >= 0 Then
-    '        Dim mysqll As String = $"select * from payroll_payout where paydate = '{Payslip_paydate_Combo.Text}';"
-    '        Using ds As DataSet = LoadSQL(mysqll, "payroll_payout")
-    '            If ds.Tables(0).Rows.Count > 0 Then
-    '                progressBarStart(ds.Tables(0).Rows.Count)
-    '                For Each dr In ds.Tables(0).Rows
-    '                    With dr
-    '                        Deduct_ifExist(.Item("BIOMETRIC_ID"), Payslip_paydate_Combo.Text)
-    '                    End With
-
-    '                    frmMainForm.AppProgressBar.Value += 1
-    '                Next
-    '                progressBarEnd()
-    '            End If
-    '        End Using
-    '    Else
-    '        MsgBox("Please Select Paydate.", MsgBoxStyle.Exclamation, "INVALID")
-    '    End If
-    'End Sub
 
     Private Sub TrainingDays_LBL_TextChanged(sender As Object, e As EventArgs) Handles TrainingDays_LBL.TextChanged
         If TrainingDays_LBL.Text > 0 Then
@@ -773,7 +733,6 @@ Public Class frmPayout
         If IsLastDay(paydate_) Then
             positive = CDec(GrossAmount_LBL.Tag) + CDec(Allowances_LBL.Tag)
             negative = CONTRIB + CDec(Deduction_LBL.Tag)
-            'negative = CONTRIB + CDec(SSSLoan_LBL.Text) + CDec(PagibigLoan_LBL.Text) + CDec(Deduction_LBL.Tag)
         Else
             Remittance_LBL.Text = 0.00
             positive = CDec(GrossAmount_LBL.Tag) + CDec(Allowances_LBL.Tag)
@@ -794,7 +753,6 @@ Public Class frmPayout
         Else
             MsgBox("Please Select Employee.", MsgBoxStyle.Exclamation, "INVALID")
         End If
-
     End Sub
 
     Private Sub Branch_ComboB_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Branch_ComboB.SelectedIndexChanged
@@ -822,7 +780,6 @@ Public Class frmPayout
     Private Sub Close_LBL_Click(sender As Object, e As EventArgs) Handles Close_LBL.Click
         Close()
     End Sub
-
 
     Private Sub Rate_EmpSelect_BTN_Click(sender As Object, e As EventArgs) Handles EmpSelect_BTN.Click
         If Payslip_paydate_Combo.SelectedIndex < 0 Then
@@ -943,7 +900,6 @@ Public Class frmPayout
                             Continue For
                         Else                    '============== SEND TO EMAIL ADDRESS IF VALID ============================
                             Send_Email(ReportViewer_payslip.LocalReport.Render("PDF"), recipient, namee, Payslip_paydate_Combo.Text, BodyText_RichB.Text, datee.ToString("MMMM dd, yyyy") & " PAYROLL")
-
                         End If
 
                         frmMainForm.AppProgressBar.Value += 1
@@ -952,6 +908,7 @@ Public Class frmPayout
 
                     End With
                 Next
+
                 MsgBox("Email successfully sent!", MsgBoxStyle.Information, "Information")
                 progressBarEnd()
             End If
@@ -1007,6 +964,7 @@ Public Class frmPayout
     End Sub
 
     Public Sub LoadPayslip(biometricID As String, paydatee As String)
+
         ReportViewer_payslip.LocalReport.DataSources.Clear()
 
         Dim sched As String
@@ -1167,7 +1125,7 @@ Public Class frmPayout
             '================================================ DEDUCTIONS ================================================ 
             If isExist_String("RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{biometricID}' AND PAYDATE = '{paydatee}' and TRANSAC_NAME = 'DEDUCTION'") Then  '=======m MDIFIED DEDUCTION (ON/OFF) 
 
-                mysql_ = $"select  * FROM RECORDED_ALLOW_DEDUC   where BIO_NO = '{biometricID}' and PAYDATE = '{paydatee}' and TRANSAC_NAME = 'DEDUCTION'"
+                mysql_ = $"select * FROM RECORDED_ALLOW_DEDUC where BIO_NO = '{biometricID}' and PAYDATE = '{paydatee}' and TRANSAC_NAME = 'DEDUCTION'"
                 Using ds As DataSet = LoadSQL(mysql_, "RECORDED_ALLOW_DEDUC")
                     If ds.Tables(0).Rows.Count > 0 Then
                         For Each dr In ds.Tables(0).Rows
@@ -1176,21 +1134,22 @@ Public Class frmPayout
                                 Dim category As String = .item("CATEGORY")
                                 Dim amountt As Decimal = .item("AMOUNT")
                                 Dim balance As Decimal = 0
+                                Dim partial_payment As Decimal = GetTotal("AMOUNT", $" PARTIAL_PAYMENT WHERE BIO_NO = '{ .item("BIO_NO")}'")
 
                                 Dim R_DEDUCT_ID As Integer = IIf(IsDBNull(.item("R_DEDUC_ID")), 0, .item("R_DEDUC_ID"))
 
                                 If category.Contains("MP2") Or category.Contains("MAXICARE") Then
                                 ElseIf .item("CATEGORY") = "SSS LOAN" Then
-                                    balance = GetBalance_Deduction(biometricID, .item("CATEGORY"), R_DEDUCT_ID)
+                                    balance = GetBalance_Deduction(biometricID, .item("CATEGORY"), R_DEDUCT_ID) - partial_payment
                                 ElseIf .item("CATEGORY") = "PAG-IBIG LOAN" Then
-                                    balance = GetBalance_Deduction(biometricID, .item("CATEGORY"), R_DEDUCT_ID)
+                                    balance = GetBalance_Deduction(biometricID, .item("CATEGORY"), R_DEDUCT_ID) - partial_payment
                                 Else
                                     If R_DEDUCT_ID = 0 And category <> "SBU" Then
                                         balance = 0
                                     ElseIf category = "Charges" Then
                                         'balance = GetBalance_Deduction(biometricID, .item("CATEGORY"), R_DEDUCT_ID)
                                     Else
-                                        balance = GetBalance_Deduction(biometricID, .item("CATEGORY"), R_DEDUCT_ID)
+                                        balance = GetBalance_Deduction(biometricID, .item("CATEGORY"), R_DEDUCT_ID) - partial_payment
                                     End If
                                 End If
 
@@ -1254,6 +1213,5 @@ Public Class frmPayout
             End If
         End With
     End Sub
-
 
 End Class

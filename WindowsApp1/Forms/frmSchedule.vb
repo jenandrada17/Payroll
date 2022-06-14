@@ -307,7 +307,9 @@ Public Class frmSchedule
         For row = 7 To DtSet.Tables(0).Rows.Count + 1
             Dim start As DateTime = starting_date
             Dim endd As DateTime = ending_date
-            Dim bio As String = ""
+            Dim bio As String = eCell(row, 1).Value
+
+            If bio <> Nothing Then RunCommand($"Delete From PAYROLL_SCHEDULE where bio_no = '{bio}'")
 
             If eCell(row, 1).Value = Nothing Then
                 Exit For
@@ -322,7 +324,6 @@ Public Class frmSchedule
 
                     If start = eCell(5, columns).Value Then
 
-                        bio = eCell(row, 1).Value
                         Dim datee As DateTime = eCell(5, columns).Value
                         Dim time_in, time_out As String
 
@@ -368,6 +369,8 @@ Public Class frmSchedule
                             End If
 
                         End If
+                    Else
+                        Continue For
                     End If
                 Next
 

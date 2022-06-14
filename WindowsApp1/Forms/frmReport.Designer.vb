@@ -156,6 +156,9 @@ Partial Class frmReport
         Me.Label44 = New System.Windows.Forms.Label()
         Me.LoanPaydate_Combo = New System.Windows.Forms.ComboBox()
         Me.TabPage10 = New System.Windows.Forms.TabPage()
+        Me.PrintList_btn = New System.Windows.Forms.Button()
+        Me.Label48 = New System.Windows.Forms.Label()
+        Me.Range_Combo = New System.Windows.Forms.ComboBox()
         Me.rpt_13Month = New Microsoft.Reporting.WinForms.ReportViewer()
         Me.Month_Search_txt = New System.Windows.Forms.TextBox()
         Me.Month_Search_btn = New System.Windows.Forms.Button()
@@ -355,7 +358,7 @@ Partial Class frmReport
         Me.CommonCat_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.CommonCat_Combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CommonCat_Combo.FormattingEnabled = True
-        Me.CommonCat_Combo.Items.AddRange(New Object() {"Gross", "Net Pay", "Deduction"})
+        Me.CommonCat_Combo.Items.AddRange(New Object() {"Gross", "Net Pay", "Deduction", "13th Month"})
         Me.CommonCat_Combo.Location = New System.Drawing.Point(475, 10)
         Me.CommonCat_Combo.Name = "CommonCat_Combo"
         Me.CommonCat_Combo.Size = New System.Drawing.Size(129, 33)
@@ -1090,7 +1093,7 @@ Partial Class frmReport
         Me.RemCompany_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.RemCompany_Combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.RemCompany_Combo.FormattingEnabled = True
-        Me.RemCompany_Combo.Items.AddRange(New Object() {"Photo Head Office", "Gensan Perfect", "Davao Perfect", "JR Photo", "Dalton", "Perfecom", "P&G", "PTU Realty", "PGC Head Office"})
+        Me.RemCompany_Combo.Items.AddRange(New Object() {"Photo Head Office", "Gensan Perfect", "Davao Perfect", "JR Photo", "Dalton", "Perfecom", "P&G", "PTU Realty", "PGC Head Office", "All"})
         Me.RemCompany_Combo.Location = New System.Drawing.Point(796, 18)
         Me.RemCompany_Combo.Name = "RemCompany_Combo"
         Me.RemCompany_Combo.Size = New System.Drawing.Size(221, 33)
@@ -1385,7 +1388,7 @@ Partial Class frmReport
         Me.LoanCompany_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.LoanCompany_Combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LoanCompany_Combo.FormattingEnabled = True
-        Me.LoanCompany_Combo.Items.AddRange(New Object() {"Photo Head Office", "Gensan Perfect", "Davao Perfect", "JR Photo", "Dalton", "Perfecom", "P&G", "PTU Realty", "PGC Head Office"})
+        Me.LoanCompany_Combo.Items.AddRange(New Object() {"Photo Head Office", "Gensan Perfect", "Davao Perfect", "JR Photo", "Dalton", "Perfecom", "P&G", "PTU Realty", "PGC Head Office", "All"})
         Me.LoanCompany_Combo.Location = New System.Drawing.Point(796, 18)
         Me.LoanCompany_Combo.Name = "LoanCompany_Combo"
         Me.LoanCompany_Combo.Size = New System.Drawing.Size(221, 33)
@@ -1443,6 +1446,9 @@ Partial Class frmReport
         '
         'TabPage10
         '
+        Me.TabPage10.Controls.Add(Me.PrintList_btn)
+        Me.TabPage10.Controls.Add(Me.Label48)
+        Me.TabPage10.Controls.Add(Me.Range_Combo)
         Me.TabPage10.Controls.Add(Me.rpt_13Month)
         Me.TabPage10.Controls.Add(Me.Month_Search_txt)
         Me.TabPage10.Controls.Add(Me.Month_Search_btn)
@@ -1454,6 +1460,39 @@ Partial Class frmReport
         Me.TabPage10.TabIndex = 11
         Me.TabPage10.Text = "     13th Month     "
         Me.TabPage10.UseVisualStyleBackColor = True
+        '
+        'PrintList_btn
+        '
+        Me.PrintList_btn.BackColor = System.Drawing.Color.LightGray
+        Me.PrintList_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.PrintList_btn.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.PrintList_btn.Location = New System.Drawing.Point(491, 17)
+        Me.PrintList_btn.Name = "PrintList_btn"
+        Me.PrintList_btn.Size = New System.Drawing.Size(126, 33)
+        Me.PrintList_btn.TabIndex = 136
+        Me.PrintList_btn.Text = "Print List"
+        Me.PrintList_btn.UseVisualStyleBackColor = False
+        '
+        'Label48
+        '
+        Me.Label48.AutoSize = True
+        Me.Label48.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label48.Location = New System.Drawing.Point(939, 20)
+        Me.Label48.Name = "Label48"
+        Me.Label48.Size = New System.Drawing.Size(50, 25)
+        Me.Label48.TabIndex = 135
+        Me.Label48.Text = "Range"
+        '
+        'Range_Combo
+        '
+        Me.Range_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.Range_Combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Range_Combo.FormattingEnabled = True
+        Me.Range_Combo.Items.AddRange(New Object() {"May 15", "December 15"})
+        Me.Range_Combo.Location = New System.Drawing.Point(995, 17)
+        Me.Range_Combo.Name = "Range_Combo"
+        Me.Range_Combo.Size = New System.Drawing.Size(150, 33)
+        Me.Range_Combo.TabIndex = 134
         '
         'rpt_13Month
         '
@@ -1878,4 +1917,7 @@ Partial Class frmReport
     Friend WithEvents Reports1 As reports
     Friend WithEvents rpt_13Month As Microsoft.Reporting.WinForms.ReportViewer
     Friend WithEvents Rpt_Deduction As Microsoft.Reporting.WinForms.ReportViewer
+    Friend WithEvents Range_Combo As ComboBox
+    Friend WithEvents Label48 As Label
+    Friend WithEvents PrintList_btn As Button
 End Class

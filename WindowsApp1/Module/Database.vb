@@ -1,6 +1,8 @@
 ﻿Imports System.Configuration
 Imports FirebirdSql.Data.FirebirdClient
+
 Module Database
+
     Public con As FbConnection
     Public ReaderCon As FbConnection
     Private reader As FbDataReader = Nothing
@@ -46,8 +48,6 @@ Module Database
     End Sub
 
     Public Sub DbOpen()
-        'conStr = "DRIVER=Firebird/InterBase(r) driver; User=" & fbUser & ";Password=" & fbPass & ";Database=" & dbName & ";"
-
         conStr = ConfigurationManager.ConnectionStrings("FbConString").ConnectionString.ToString
 
         Try

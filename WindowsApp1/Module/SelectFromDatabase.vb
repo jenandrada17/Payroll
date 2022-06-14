@@ -1,6 +1,4 @@
-﻿Imports System.Drawing.Imaging
-Imports System.Globalization
-Imports System.IO
+﻿Imports System.IO
 Imports FirebirdSql.Data.FirebirdClient
 
 Module SelectFromDatabase
@@ -93,6 +91,7 @@ Module SelectFromDatabase
                 PIFrom_txt.Text = ""
             End If
         End Using
+
     End Sub
 
     Public Function ThisHasRow(table As String)
@@ -289,7 +288,6 @@ Module SelectFromDatabase
     End Sub
 
     Public Sub Load_Loans(listview As ListView, tablee As String, category As String, Optional ByVal str As String = "")
-
         Try
 
             Dim secured_str As String = str
@@ -408,7 +406,6 @@ Module SelectFromDatabase
     End Sub
 
     Friend Sub REGULDARHolidayLists(LV As ListView)
-
         LV.Items.Clear()
         Dim sql As String = "select * from PAYROLL_HOLIDAY where KINDS = 'REGULAR' "
         Using ds As DataSet = LoadSQL(sql, "PAYROLL_HOLIDAY")
@@ -419,13 +416,11 @@ Module SelectFromDatabase
                         i.SubItems.Add(.Item("NAME"))
                     End With
                 Next
-
             End If
         End Using
     End Sub
 
     Friend Sub SPECIALHolidayLists(LV As ListView)
-
         LV.Items.Clear()
         Dim sql As String = "select * from PAYROLL_HOLIDAY where KINDS = 'SPECIAL' "
         Using ds As DataSet = LoadSQL(sql, "PAYROLL_HOLIDAY")
@@ -436,7 +431,6 @@ Module SelectFromDatabase
                         i.SubItems.Add(.Item("NAME"))
                     End With
                 Next
-
             End If
         End Using
     End Sub
@@ -485,12 +479,6 @@ Module SelectFromDatabase
                 For Each dr In ds.Tables(0).Rows
                     With dr
 
-                        'Dim toLower, toProper As String 
-                        'toLower = .item("CATEGORY").ToLower()
-                        'Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
-                        'toProper = info.ToTitleCase(toLower)
-                        'row.Cells(0).Value = toProper
-
                         Dim amountt As Decimal = IIf(IsDBNull(.item("AMOUNT")), 0, .item("AMOUNT"))
 
                         Dim rowId As Integer = datagrid.Rows.Add()
@@ -524,123 +512,6 @@ Module SelectFromDatabase
         End Using
     End Sub
 
-    Friend Sub DeductioneDetails_ORIG(BIO_NO As String, datagrid As DataGridView, sched As String, paydate As String)
-
-        datagrid.Rows.Clear()
-
-        Dim mysql_1 As String = $"Select * From PAYROLL_DEDUCTIONS WHERE BIONO = '{BIO_NO}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
-        Using ds As DataSet = LoadSQL(mysql_1, "PAYROLL_DEDUCTIONS")
-
-            If ds.Tables(0).Rows.Count > 0 Then
-                For Each dr In ds.Tables(0).Rows
-                    With dr
-                        Dim amountt As Double = .item("AMOUNT_PER_GIVE")
-
-                        Dim toLower = .item("CATEGORY").ToLower()
-                        Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
-                        Dim toProper As String = info.ToTitleCase(toLower)
-
-                        If .item("EFFECTIVE_DATE") <= paydate Then
-                            Dim rowId As Integer = datagrid.Rows.Add()
-                            Dim row As DataGridViewRow = datagrid.Rows(rowId)
-
-                            row.Cells(0).Value = toProper
-                            row.Cells(0).Tag = amountt.ToString(”N”)
-                            row.Cells(1).Value = amountt.ToString(”N”)
-                            row.Cells(3).Value = "OFF"
-                            row.Cells(2).Tag = .item("ID")
-                        End If
-                    End With
-                Next
-
-            End If
-
-            ' ================ SBU DEDUCTION  ================  
-
-            Dim sbu As Double = SBU_Amount(BIO_NO)
-
-            Dim rowIdd As Integer = datagrid.Rows.Add()
-            Dim roww As DataGridViewRow = datagrid.Rows(rowIdd)
-
-            roww.Cells(0).Value = "SBU"
-            roww.Cells(0).Tag = sbu.ToString(”N”)
-            roww.Cells(1).Value = sbu.ToString(”N”)
-            roww.Cells(3).Value = "OFF"
-
-            AdjustHeightOfGridBasedOnRows(datagrid)
-        End Using
-    End Sub
-
-    Friend Sub DeductioneDetails_MODIFIED(BIO_NO As String, PAYDATE As String, datagrid As DataGridView, sched As String)
-
-        datagrid.Rows.Clear()
-        Dim mysql_1 As String = $"Select * From MODIFIED_DEDUCTION A inner join PAYROLL_DEDUCTIONS B on (A.m_deduc_id = B.id or A.m_deduc_id is null ) 
-                                            and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')
-                                            WHERE A.BIO_NO = '{BIO_NO}' and PAYDATE = '{PAYDATE}'"
-
-        Using ds As DataSet = LoadSQL(mysql_1, "MODIFIED_DEDUCTION")
-
-            If ds.Tables(0).Rows.Count > 0 Then
-
-                For Each dr In ds.Tables(0).Rows
-
-                    With dr
-                        Dim toLower, toProper As String
-
-                        Dim amountt_modif As Double = .item("M_AMOUNT")
-                        Dim amountt_orig As Double = .item("AMOUNT_PER_GIVE")
-
-                        If .item("M_CATEGORY") <> "SBU" Then
-                            toLower = .item("M_CATEGORY").ToLower()
-                            Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
-                            toProper = info.ToTitleCase(toLower)
-                        Else
-                            toProper = .item("M_CATEGORY")
-                        End If
-
-                        Dim rowId As Integer = datagrid.Rows.Add()
-                        Dim row As DataGridViewRow = datagrid.Rows(rowId)
-
-                        row.Cells(0).Value = toProper
-                        row.Cells(0).Tag = amountt_orig.ToString(”N”)
-                        row.Cells(1).Value = amountt_modif.ToString(”N”)
-                        row.Cells(2).Tag = .item("M_DEDUC_ID")
-
-                        If .item("M_AMOUNT") = 0.00 Or .item("M_AMOUNT") = 0 Then
-                            row.Cells(3).Value = "ON"
-                        Else
-                            row.Cells(3).Value = "OFF"
-                        End If
-                    End With
-                Next
-
-            End If
-            AdjustHeightOfGridBasedOnRows(datagrid)
-        End Using
-
-
-    End Sub
-
-    Friend Sub OtherDetails(biometric As String, branchID As String, PAYDATE As String, Savings_TXT As TextBox, OtherAllowance_TXT As TextBox, OtherDeduction_TXT As TextBox)
-
-        OtherAllowance_TXT.Clear()
-        OtherDeduction_TXT.Clear()
-        Savings_TXT.Clear()
-
-        Dim mysql As String = $"Select * FROM PAYROLL_PAYOUT where BIOMETRIC_ID = '{biometric}' and BRANCH_ID = '{branchID}' and PAYDATE = '{PAYDATE}'"
-        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
-            If ds.Tables(0).Rows.Count > 0 Then
-                For Each dr In ds.Tables(0).Rows
-                    With dr
-                        Savings_TXT.Text = IIf(IsDBNull(.Item("SBU")), "", .Item("SBU"))
-                        OtherAllowance_TXT.Text = IIf(IsDBNull(.Item("OTHER_ALLOWANCE")), "", .Item("OTHER_ALLOWANCE"))
-                        OtherDeduction_TXT.Text = IIf(IsDBNull(.Item("OTHER_DEDUCTION")), "", .Item("OTHER_DEDUCTION"))
-                    End With
-                Next
-            End If
-        End Using
-    End Sub
-
     Public Function GetFirst_Basic(BIO_NO As String, paydate As String) As Decimal
         Dim first_Basic As Decimal
 
@@ -661,6 +532,7 @@ Module SelectFromDatabase
                 first_Basic = 0
             End If
         End Using
+
         Return first_Basic
     End Function
 
@@ -746,56 +618,6 @@ Module SelectFromDatabase
         Return (ee, er, ec, total)
     End Function
 
-    'Public Function Get_LOAN_SSS(bio_no As Decimal) As Decimal
-    '    Dim sssLoan As Decimal = 0
-
-    '    Dim mysql As String = $"Select * From PAYROLL_LOANS WHERE BIO_NO = '{bio_no}' and CATEGORY = 'SSS' AND STATUS IS NULL"
-    '    Using ds As DataSet = LoadSQL(mysql, "PAYROLL_LOANS")
-    '        If ds.Tables(0).Rows.Count > 0 Then
-    '            For Each dr In ds.Tables(0).Rows
-    '                With dr
-    '                    sssLoan = sssLoan + .Item("AMORT")
-    '                End With
-    '            Next
-    '        End If
-    '    End Using
-
-    '    Return sssLoan
-    'End Function
-
-    'Public Function Get_LOAN_Pagibig(bio_no As Decimal) As Decimal
-    '    Dim pagibigLoan As Decimal = 0
-
-    '    Dim mysql As String = $"Select * From PAYROLL_LOANS WHERE BIO_NO = '{bio_no}' and CATEGORY = 'PAG-IBIG' AND STATUS IS NULL"
-    '    Using ds As DataSet = LoadSQL(mysql, "PAYROLL_LOANS")
-    '        If ds.Tables(0).Rows.Count > 0 Then
-    '            For Each dr In ds.Tables(0).Rows
-    '                With dr
-    '                    pagibigLoan = pagibigLoan + .Item("AMORT")
-    '                End With
-    '            Next
-    '        End If
-    '    End Using
-
-    '    Return pagibigLoan
-    'End Function
-
-    Public Function Get_Pagibig_ER(monthly_Basic As String) As Double
-        Dim pagibig_ER As Double
-
-        Dim mysql As String = $"Select * FROM PAYROLL_PAGIBIG"
-        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAGIBIG")
-            If ds.Tables(0).Rows.Count > 0 Then
-                Dim dr As DataRow = ds.Tables(0).Rows(0)
-                With dr
-                    pagibig_ER = .Item("EMPLOYER")
-                End With
-            End If
-        End Using
-
-        Return pagibig_ER
-    End Function
-
     Public Function Get_Pagibig(monthly_Basic As Decimal) As Decimal
         Dim pagibig As Decimal
 
@@ -820,7 +642,6 @@ Module SelectFromDatabase
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
                     With dr
-
                         Dim convertTopercent As Decimal = .Item("PREMIUM_RATE") / 100
                         Dim total As Decimal
 
@@ -831,7 +652,6 @@ Module SelectFromDatabase
                             total = monthly_Basic * convertTopercent
                             philhealth = total / 2
                         End If
-
                     End With
                 Next
             End If
@@ -972,7 +792,6 @@ Module SelectFromDatabase
     End Function
 
     Friend Sub HolidayRate(regularRate As TextBox, SpecialRate As TextBox)
-
         Dim mysql As String = "Select * From PAYROLL_HOLIDAY_RATE"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_HOLIDAY_RATE")
 
@@ -991,33 +810,7 @@ Module SelectFromDatabase
         End Using
     End Sub
 
-    Public Function File_Exist(branch As String, PAYDATE As String)
-        Dim mysql As String = $"Select * FROM BIOMETRIC_DTR where BRANCH = '{branch}' and PAYDATE = '{PAYDATE}'"
-        Dim ds As DataSet = LoadSQL(mysql, "BIOMETRIC_DTR")
-        If ds.Tables(0).Rows.Count > 0 Then
-            Dim result As DialogResult = MessageBox.Show("You have already imported biometric data for this branch, do you want to modify?", "Warning", MessageBoxButtons.YesNo)
-            If result = DialogResult.Yes Then
-                RunCommand("DELETE FROM BIOMETRIC_DTR WHERE BRANCH = '" & branch & "' and PAYDATE = '" & PAYDATE & "';")  'THIS IS TO DELETE EXISTING ATTENDANCE IN BIOMETRIC_DTR 
-                RunCommand("DELETE FROM RECORDED_ALLOW_DEDUC WHERE BRANCH = '" & branch & "' and PAYDATE = '" & PAYDATE & "';")  'THIS IS TO DELETE EXISTING ATTENDANCE IN BIOMETRIC_DTR 
-                Return True
-            End If
-        End If
-        Return False
-    End Function
-
-    Public Function File_NOT_Exist(branch As String, PAYDATE As String)
-        Dim mysql As String = $"Select * FROM IMPORT_DTR where BRANCH = '{branch}' and PAYDATE = '{PAYDATE}'"
-        Dim ds As DataSet = LoadSQL(mysql, "IMPORT_DTR")
-        If ds.Tables(0).Rows.Count > 0 Then
-            Return False
-        Else
-            Return True
-        End If
-        Return False
-    End Function
-
     Friend Sub PopulateBiometricSHEET(LV As ListView, Paydate As String, Optional searchName As String = "")
-
         LV.Items.Clear()
 
         Dim secured_str As String = searchName
@@ -1031,9 +824,6 @@ Module SelectFromDatabase
             mysql = $"Select * From PAYROLL_ATTENDANCE A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIOMETRICID 
                                  where A.PAYDATE = '{Paydate}' and  BRANCH_CODE NOT IN ('711-POL','711-ROX') and ("
 
-            'mysql = $"Select * From PAYROLL_ATTENDANCE A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIOMETRICID 
-            '                     where A.PAYDATE = '{Paydate}' and (BRANCH_CODE <> '711-POL' or BRANCH_CODE <> '711-ROX') and ("
-
             For Each name In strWords
                 mysql &= $"{vbCr}UPPER(BIOMETRICID) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(FULLNAME) LIKE UPPER('%{name}%')) ORDER BY FULLNAME ASC "
@@ -1042,9 +832,6 @@ Module SelectFromDatabase
         Else
             mysql = $"Select * From PAYROLL_ATTENDANCE A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIOMETRICID where A.PAYDATE = '{Paydate}' 
                                    and BRANCH_CODE NOT IN ('711-POL','711-ROX') ORDER BY FULLNAME ASC "
-
-            'mysql = $"Select * From PAYROLL_ATTENDANCE A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIOMETRICID where A.PAYDATE = '{Paydate}' 
-            '                       and (BRANCH_CODE <> '711-POL' or BRANCH_CODE <> '711-ROX') ORDER BY FULLNAME ASC "
         End If
 
 
@@ -1070,7 +857,6 @@ Module SelectFromDatabase
                 progressBarEnd()
             End If
         End Using
-
     End Sub
 
     Friend Sub Populate_S7ELVEN(datagrid As DataGridView, Paydate As String, Optional searchName As String = "")
@@ -1144,41 +930,6 @@ Module SelectFromDatabase
         End Using
 
     End Sub
-
-    Public Function CountDate(list As List(Of String), datee As String) As Integer
-        Dim cnt As Integer = 0
-        For Each c As DateTime In list
-
-            Dim convertDate As String = c.ToString("M/dd/yyyy HH:mm:ss")
-
-            If convertDate.StartsWith(datee) Then
-                cnt = cnt + 1
-            End If
-
-            Console.WriteLine("c " & c)
-            Console.WriteLine("datee " & datee)
-
-        Next
-
-        Return cnt
-    End Function
-
-    Public Function SortCountedDATE(list As List(Of String), datee As String) As List(Of String)
-
-        Dim HourGroup As New List(Of String)()
-        For Each c As DateTime In list
-
-            Dim convertDate As String = c.ToString("M/dd/yyyy HH:mm:ss")
-
-            If convertDate.StartsWith(datee) Then
-                Dim AAA As DateTime = c
-                AAA = AAA.ToString("t")
-                HourGroup.Add(AAA)
-            End If
-        Next
-        HourGroup.Distinct().ToList
-        Return HourGroup
-    End Function
 
     Public Sub AdjustHeightOfGridBasedOnRows(ByVal dataGrid As DataGridView)
 
@@ -1271,29 +1022,24 @@ Module SelectFromDatabase
     Public Function CountCELL_Nothing(row As DataGridViewRow) As Integer
         Dim count As New Integer
         If Not row.DefaultCellStyle.ForeColor = Color.Red And row.Cells(5).Value = True Then
-
             For cell As Integer = 1 To 4
                 If row.Cells(cell).Value = Nothing Then
                     count += 1
                 End If
             Next
-
         End If
 
         Return count
     End Function
 
     Public Function CountCELL_Consecutive(row As DataGridViewRow) As String
-
         Dim status As String = ""
         If Not row.DefaultCellStyle.ForeColor = Color.Red And row.Cells(5).Value = True Then
-
             If row.Cells(1).Value = Nothing And row.Cells(2).Value = Nothing Then
                 status = "HALFDAY"
             ElseIf row.Cells(3).Value = Nothing And row.Cells(4).Value = Nothing Then
                 status = "HALFDAY"
             End If
-
         End If
 
         Return status
@@ -1332,11 +1078,11 @@ Module SelectFromDatabase
                 ratee.Text = 0
                 RateFixYes_RB.Checked = False
             End If
+
         End Using
     End Sub
 
     Public Sub Clock_IN_Details(bioNo As String, name As TextBox, ClockEmp_IN_CB As ComboBox, ClockEmp_OUT_CB As ComboBox)
-
         Dim mysql As String = "Select * From PAYROLL_EMPLOYEE WHERE BIO_NO = '" & bioNo & "'"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
             If ds.Tables(0).Rows.Count > 0 Then
@@ -1396,20 +1142,11 @@ Module SelectFromDatabase
         If ds.Tables(0).Rows.Count > 0 Then
             Return True
         End If
-        Return False
-    End Function
 
-    Public Function Match_Employee(BIO_NO As String)
-        Dim mysql As String = $"Select * FROM PAYROLL_EMPLOYEE where BIO_NO = '{BIO_NO}' "
-        Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
-        If ds.Tables(0).Rows.Count > 0 Then
-            Return True
-        End If
         Return False
     End Function
 
     Public Sub GetName(BiometricID_TXT As String, name As TextBox)
-
         Dim mysql As String = "Select * From PAYROLL_EMPLOYEE WHERE BIO_NO= '" & BiometricID_TXT & "'"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
             If ds.Tables(0).Rows.Count > 0 Then
@@ -1473,7 +1210,6 @@ Module SelectFromDatabase
             Next
             progressBarEnd()
         End Using
-
     End Sub
 
     Private Sub AddRow_Allowance(ByVal dr As DataRow, LV As ListView)
@@ -1563,22 +1299,6 @@ Module SelectFromDatabase
         Return balance
     End Function
 
-    Public Function GetDeduction_Balance(BIO_NO As String) As String
-        Dim balance As Decimal = 0
-
-        Dim mysql_ As String = $"Select COALESCE(sum(PRINCIPAL), 0) as princ_tots, COALESCE(sum(CREDIT), 0) as tots_credit From  PAYROLL_DEDUCTION  where BIO_NO = '{BIO_NO}' AND STATUS IS NULL"
-        Dim dSs As DataSet = LoadSQL(mysql_, "PAYROLL_DEDUCTION")
-
-        If dSs.Tables(0).Rows.Count > 0 Then
-            Dim dr As DataRow = dSs.Tables(0).Rows(0)
-            With dr
-                balance = .Item("princ_tots") - .Item("tots_credit")
-            End With
-        End If
-
-        Return balance
-    End Function
-
     Public Function GetDeduction_ChargesRange(BIO_NO As String, Balance As Decimal) As Decimal
         Dim AMOUNT As Decimal = 0
 
@@ -1659,7 +1379,6 @@ Module SelectFromDatabase
         progressBarEnd()
     End Sub
 
-
     Friend Sub Lists_City_Branch(listview As ListView, Optional searchName As String = "")
 
         Dim secured_str As String = searchName
@@ -1704,7 +1423,6 @@ Module SelectFromDatabase
         progressBarEnd()
     End Sub
 
-
     Friend Sub Lists_Deduction_History(LV As ListView, Optional searchName As String = "")
 
         Dim secured_str As String = searchName
@@ -1748,10 +1466,10 @@ Module SelectFromDatabase
             Next
             progressBarEnd()
         End Using
-
     End Sub
 
     Friend Sub Lists_SIL(LV As ListView, year As String, Optional searchName As String = "")
+        If year = Nothing Then year = Date.Now.Year
 
         Dim startt As New Date(year, 1, 1)
         Dim endd As New Date(year, 12, 31)
@@ -1789,10 +1507,9 @@ Module SelectFromDatabase
             Next
             progressBarEnd()
         End Using
-
     End Sub
 
-    Friend Sub Lists_13Month(LV As ListView, Optional searchName As String = "")
+    Friend Sub Lists_13Month(LV As ListView, Optional searchName As String = "", Optional range As DateTime = Nothing)
 
         Dim secured_str As String = searchName
         secured_str = DreadKnight(secured_str)
@@ -1823,7 +1540,7 @@ Module SelectFromDatabase
             For Each dr In ds.Tables(0).Rows
                 With dr
 
-                    Dim TOTALS As Decimal = Get13Month(.item("BIOMETRIC_ID"))
+                    Dim TOTALS As Decimal = IIf(range = Nothing, Get13Month(.item("BIOMETRIC_ID")), Get13Month(.item("BIOMETRIC_ID"), range))
 
                     Dim i As ListViewItem = LV.Items.Add(.Item("FULLNAME"))
                     i.SubItems.Add(TOTALS.ToString("N")).Tag = .item("BIOMETRIC_ID")
@@ -1833,12 +1550,11 @@ Module SelectFromDatabase
             Next
             progressBarEnd()
         End Using
-
     End Sub
 
-    Friend Function Get13Month(bio_no As String)
+    Friend Function Get13Month(bio_no As String, Optional paydatee As DateTime = Nothing)
 
-        Dim datee As DateTime = Date.Now
+        Dim datee As DateTime = IIf(paydatee = Nothing, Date.Now, paydatee)
         Dim December_April As DateTime = New DateTime(datee.AddYears(-1).Year, 12, 1)
         Dim May_Nov As DateTime = New DateTime(datee.Year, 5, 1)
 
@@ -1862,12 +1578,9 @@ Module SelectFromDatabase
         Dim tOTAL_SIL As Decimal = GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC where BIO_NO = '{bio_no}' and CATEGORY like '%SIL' and PAYDATE BETWEEN '{starting_date}' AND '{ending_date}'")
         Dim tOTAL_PI As Decimal = GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC where BIO_NO = '{bio_no}' and CATEGORY = 'PERFORMANCE INCENTIVES' and PAYDATE BETWEEN '{starting_date}' AND '{ending_date}'")
         Dim tOTAL_BASIC As Decimal = GetTotal("TOTAL_BASIC", $"PAYROLL_PAYOUT where BIOMETRIC_ID = '{bio_no}' and PAYDATE BETWEEN '{starting_date}' AND '{ending_date}'")
-        'Dim tOTAL_REGHOLIDAY As Decimal = GetTotal("TOTAL_REGHOLIDAY", $"PAYROLL_PAYOUT where  BIOMETRIC_ID = '{bio_no}' and PAYDATE BETWEEN '{starting_date}' AND '{ending_date}'")
-        'Dim tOTAL_SPECHOLIDAY As Decimal = GetTotal("TOTAL_SPECHOLIDAY", $"PAYROLL_PAYOUT where  BIOMETRIC_ID = '{bio_no}' and PAYDATE BETWEEN '{starting_date}' AND '{ending_date}'")
         Dim tOTAL_LATE_UT As Decimal = GetTotal("TOTAL_LATE_UT", $"PAYROLL_PAYOUT where  BIOMETRIC_ID = '{bio_no}' and PAYDATE BETWEEN '{starting_date}' AND '{ending_date}'")
 
         Dim TOTALS As Decimal = ((tOTAL_ECOLA + tOTAL_SIL + tOTAL_PI + tOTAL_BASIC) - tOTAL_LATE_UT) / 12
-        'TOTALS = ((tOTAL_ECOLA + tOTAL_SIL + tOTAL_PI + tOTAL_BASIC + tOTAL_REGHOLIDAY + tOTAL_SPECHOLIDAY) - tOTAL_LATE_UT) / 12
 
         Return TOTALS
     End Function
@@ -1910,26 +1623,18 @@ Module SelectFromDatabase
     End Sub
 
     Private Sub AddRow_PAYOUT(ByVal dr As DataRow, listview As ListView)
-
         With dr
-
             Dim i As ListViewItem = listview.Items.Add(.Item("FULLNAME"))
             i.SubItems.Add(FormatNumber(.Item("TOTAL_BASIC"))).Tag = .Item("BIOMETRIC_ID")
             i.SubItems.Add(FormatNumber(.Item("GROSS_AMOUNT")))
             i.SubItems.Add(FormatNumber(.Item("SSS_COMP")))
             i.SubItems.Add(FormatNumber(.Item("PAGIBIG_COMP")))
             i.SubItems.Add(FormatNumber(.Item("PHILHEALTH_COMP")))
-            'i.SubItems.Add(FormatNumber(.Item("TAX_WHELD")))
-            'i.SubItems.Add(FormatNumber(.Item("NET_TAX_COMP")))
-            'i.SubItems.Add(FormatNumber(.Item("SSS_LOAN")))
-            'i.SubItems.Add(FormatNumber(.Item("PAGIBIG_LOAN")))
             i.SubItems.Add(FormatNumber(.Item("TOTAL_ALLOWANCE")))
             i.SubItems.Add(FormatNumber(.Item("TOTAL_DEDUCTION")))
             i.SubItems.Add(FormatNumber(.Item("NET_PAY")))
         End With
-
     End Sub
-
 
     Friend Sub progressBarStart(ByVal objectt As Integer)
         frmMainForm.AppProgressBar.Maximum = objectt
@@ -1937,17 +1642,14 @@ Module SelectFromDatabase
     End Sub
 
     Friend Sub progressBarEnd()
-
         frmMainForm.AppProgressBar.Value = 0
         frmMainForm.AppProgressBar.Maximum = 1000
         frmMainForm.AppProgressBar.Visible = False
-
     End Sub
 
     Friend Sub Populate_Pagibig(HMDF_EE_TXT As TextBox, HMDF_ER_TXT As TextBox)
 
         Dim mysql As String = $"Select * From PAYROLL_Pagibig"
-
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_Pagibig")
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
@@ -1975,12 +1677,10 @@ Module SelectFromDatabase
 
     End Sub
 
-
     Friend Sub Populate_SSS(datagrid As DataGridView)
 
         datagrid.Rows.Clear()
         Dim mysql As String = $"Select * From PAYROLL_SSS "
-
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_SSS")
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
@@ -2041,22 +1741,20 @@ Module SelectFromDatabase
         Dim mysql As String = $"Select * FROM {table}"
         Dim dss As DataSet = LoadSQL(mysql, table)
         If dss.Tables(0).Rows.Count > 0 Then
-            RunCommand($"DELETE FROM {table};")  'THIS IS TO DELETE EXISTING DATA 
+            RunCommand($"DELETE FROM {table};")  'TO DELETE EXISTING DATA 
         End If
+
     End Sub
 
     Public Sub Load_Category_LIST(LIST As ListView, table As String, coulumn As String)
-
         LIST.Items.Clear()
         Dim mysql As String = $"Select * From {table}"
         Using ds As DataSet = LoadSQL(mysql, table)
-
             For Each dr As DataRow In ds.Tables(0).Rows
                 With dr
                     Dim lvitem As ListViewItem = LIST.Items.Add(.Item(coulumn))
                 End With
             Next
-
         End Using
     End Sub
 
@@ -2105,9 +1803,7 @@ Module SelectFromDatabase
     End Sub
 
     Private Sub AddRow_Payroll_Employee(ByVal dr As DataRow, LV As ListView)
-
         With dr
-
             Dim datee As DateTime
 
             If Not IsDBNull(.Item("DATE_STARTED")) Then
@@ -2134,7 +1830,6 @@ Module SelectFromDatabase
             i.SubItems.Add(IIf(IsDBNull(.Item("SSSNO")), "", .Item("SSSNO")))
             i.SubItems.Add(IIf(IsDBNull(.Item("PHILHEALTHNO")), "", .Item("PHILHEALTHNO")))
             i.SubItems.Add(IIf(IsDBNull(.Item("PAGIBIGNO")), "", .Item("PAGIBIGNO")))
-
         End With
     End Sub
 
@@ -2229,7 +1924,6 @@ Module SelectFromDatabase
             End If
         End Using
     End Sub
-
 
     Public Function Halfday_Training(BIO_NO As String, PAYDATE As String, datee As String)
 
@@ -2526,6 +2220,7 @@ Module SelectFromDatabase
                 outt = IIf(IsDBNull(.Item("TIME_OUT")), "9/15/2021 5:00:00 PM", .Item("TIME_OUT"))
             End With
         End If
+
         Return outt
     End Function
 
@@ -2558,23 +2253,13 @@ Module SelectFromDatabase
                     If balance > 0 Then
                         Return True
                     End If
+
                 End With
             End If
         End Using
 
         Return False
     End Function
-
-    'Public Function SBU_BioNo_Exist(BIO_NO As String)
-    '    Dim mysql As String = $"Select * From PAYROLL_SBU where BIO_NO = '{BIO_NO}' "
-    '    Using dss As DataSet = LoadSQL(mysql, "PAYROLL_SBU")
-    '        If dss.Tables(0).Rows.Count > 0 Then
-    '            Return True
-    '        End If
-    '    End Using
-
-    '    Return False
-    'End Function
 
     Public Function CountYear_SIL(Bio_no As String, endingDate As DateTime) As Integer
 
@@ -2621,6 +2306,7 @@ Module SelectFromDatabase
                 countt = .Item("Countt")
             End With
         End If
+
         Return countt
     End Function
 
@@ -2647,6 +2333,7 @@ Module SelectFromDatabase
                 value = IIf(IsDBNull(.Item(column)), Nothing, .Item(column))
             End With
         End If
+
         Return value
     End Function
 
@@ -2787,9 +2474,7 @@ Module SelectFromDatabase
                 End If
             End With
         End If
-
     End Sub
-
 
     Public Function validSampleUser(username As String, password As String)
         Dim mysql As String = $"Select * from PAYROLL_USER where USERNAME = '{username}' and PASSWORD = '{password}'"
@@ -2822,19 +2507,6 @@ Module SelectFromDatabase
             If ds.Tables(0).Rows.Count > 0 Then
                 With ds.Tables(0).Rows(0)
                     dataa = IIf(IsDBNull(.Item(column)), 0, .Item(column))
-                End With
-            End If
-        End Using
-        Return dataa
-    End Function
-
-    Friend Function GetData_BLOB(column As String, str As String) As Byte()
-        Dim dataa As Byte() = Nothing
-        Dim mysql As String = $"Select {column} from {str}"
-        Using ds As DataSet = LoadSQL(mysql)
-            If ds.Tables(0).Rows.Count > 0 Then
-                With ds.Tables(0).Rows(0)
-                    dataa = IIf(IsDBNull(.Item(column)), Nothing, .Item(column))
                 End With
             End If
         End Using
@@ -3084,14 +2756,6 @@ Module SelectFromDatabase
         Return False
     End Function
 
-    Friend Function SaveProfilePic(image As Image) As Byte()
-        Dim tmp As Byte()
-        Dim ms As New MemoryStream()
-        image.Save(ms, ImageFormat.Jpeg)
-        tmp = ms.ToArray
-        Return tmp
-    End Function
-
     Friend Sub GetPic(name As String, picbox As PictureBox)
         Try
             Dim Nas_Folder As DirectoryInfo = New DirectoryInfo($"\\Pgcnas_server\hr\COMMON FILES\Profile Picture")
@@ -3146,6 +2810,28 @@ Module SelectFromDatabase
                 Next
             End If
         End Using
-
     End Sub
+
+    Public Function GetDeduction_Balance(IDX As String)
+
+        Dim STATUS As String = GetData("STATUS", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'")
+        Dim credit As Decimal = GetData_Decimal("CREDIT", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'")
+        Dim CollectedCredit As Decimal = GetTotal("AMOUNT", $" RECORDED_ALLOW_DEDUC WHERE R_DEDUC_ID = '{IDX}' and PAYDATE <> '12/15/2021'")
+        Dim PartialPayment As Decimal = GetTotal("AMOUNT", $"PARTIAL_PAYMENT WHERE DEDUCT_ID = '{IDX}';")
+        Dim totalCredit As Decimal = credit + CollectedCredit + PartialPayment
+        Dim balance As Decimal
+
+        If STATUS = "PAID" Then
+            balance = 0
+        Else
+            If (CollectedCredit + PartialPayment) > 0 Then
+                balance = CDec(GetData_Decimal("PRINCIPAL", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'")) - totalCredit
+            Else
+                balance = CDec(GetData_Decimal("BALANCE", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'"))
+            End If
+        End If
+
+        Return balance
+    End Function
+
 End Module
