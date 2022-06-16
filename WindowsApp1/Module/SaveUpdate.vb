@@ -531,34 +531,6 @@ Module SaveUpdate
         End If
     End Sub
 
-
-    '===================== TRAINING HOLIDAY ==================  
-    Dim old_days = 0, new_days As Double = 0
-    Dim old_overtime = 0, new_overtime As Double = 0
-    Dim old_late = 0, new_late As Double = 0
-    Dim old_undertime = 0, new_undertime As Double = 0
-
-    Private Sub OLD_NEW_RATE(BIO_NO As String)
-        Dim temp_days As Double = 0
-        Dim _mysql As String = $"Select * from TEMP_TABLE where BIO_NO = '{BIO_NO}'"
-        Using _ds As DataSet = LoadSQL(_mysql, "TEMP_TABLE")
-            If _ds.Tables(0).Rows.Count > 0 Then
-                With _ds.Tables(0).Rows(0)
-                    old_days = .Item("OLD_DAYS")
-                    new_days = .Item("NEW_DAYS")
-                    old_overtime = .Item("OLD_OVERTIME")
-                    new_overtime = .Item("NEW_OVERTIME")
-                    old_late = .Item("OLD_LATE")
-                    new_late = .Item("NEW_LATE")
-                    old_undertime = .Item("OLD_UNDERTIME")
-                    new_undertime = .Item("NEW_UNDERTIME")
-                End With
-            End If
-        End Using
-    End Sub
-    '=========================================================
-
-
     Friend Sub SavePayout_IndividualL(bioNo As String, paydate_ As String, startingDate As DateTime, EndingDate As DateTime) '========== AUTO SAVE TO PAYOUT ============  
 
         Dim regHoliday = Holiday_Rate("REGULAR")
@@ -729,7 +701,9 @@ Module SaveUpdate
 
                         '===================== TEMPORARY LANGSSSSS =============== 
                         If paydate_ = "6/30/2022" Then
-                            OLD_NEW_RATE(bioNo)
+                            Dim old_days As Double = OLD_NEW_RATE(bioNo).old_days
+                            Dim new_days As Double = OLD_NEW_RATE(bioNo).new_days
+
                             Dim tot_days As Double = (old_days * 336) + (new_days * rate)
                             TotalBasic = tot_days - total_train
                         End If
@@ -742,7 +716,9 @@ Module SaveUpdate
 
                         '===================== TEMPORARY LANGSSSSS =============== 
                         If paydate_ = "6/30/2022" Then
-                            OLD_NEW_RATE(bioNo)
+                            Dim old_days As Double = OLD_NEW_RATE(bioNo).old_days
+                            Dim new_days As Double = OLD_NEW_RATE(bioNo).new_days
+
                             TotalBasic = (old_days * 336) + (new_days * rate)
                         End If
 
@@ -756,7 +732,8 @@ Module SaveUpdate
                             TotalBasic = Monthly_rate
                         Else
                             If NoOfDays >= STANDARD_DAYS Then  '=== CHECK IF ABOVE MINIMUM
-                                TotalBasic = Monthly_rate
+                                'TotalBasic = Monthly_rate
+                                TotalBasic = NoOfDays * rate
 
                             Else
                                 Dim MINUS_DAYS As Double = STANDARD_DAYS - NoOfDays
@@ -791,6 +768,7 @@ Module SaveUpdate
                         Else
                             sched = "OPEN PAYROLL"
                         End If
+
                     End If
 
                     '============================================= DELETE ALLOWANCE AND DEDUCTION TO REPLACE =================================================
@@ -994,43 +972,59 @@ Module SaveUpdate
 
                         TotalNight = ((rate / 8) * 0.1) * nightRate ' =========== CALCULATE NIGHT RATE TO PESO ===========
 
+                        '===================== TEMPORARY LANGSSSSS =============== 
+                        If paydate_ = "6/30/2022" Then
+                            '==================== OVERTIMEEEEEEEE =====================================
+                            If RegularOT <> 0 Then
+                                Dim old_OT As Double = OLD_NEW_RATE(bioNo).old_overtime
+                                Dim new_OT As Double = OLD_NEW_RATE(bioNo).new_overtime
+
+                                Dim percentOT_training As Double = training_overtime / RegularOT
+                                Dim percentOT_old As Double = old_OT / RegularOT
+                                Dim percentOT_new As Double = new_OT / RegularOT
+
+                                Dim OT_training As Double = ((trainee_rate / 8) / 60) * (RegularOT * percentOT_training)
+                                Dim OT_old As Double = ((336 / 8) * 1.25) * (RegularOT * percentOT_old)
+                                Dim OT_new As Double = ((rate / 8) * 1.25) * (RegularOT * percentOT_new)
+
+                                OVERTIMEE = OT_training + OT_old + OT_new
+                            End If
+                            '==================== LATEEEEEEEEEEE =====================================
+                            If Late <> 0 Then
+                                Dim old_late As Double = OLD_NEW_RATE(bioNo).old_late
+                                Dim new_late As Double = OLD_NEW_RATE(bioNo).new_late
+
+                                Dim percentLate_training As Double = training_late.TotalMinutes / Late
+                                Dim percentLate_old As Double = old_late / Late
+                                Dim percentLate_new As Double = new_late / Late
+
+                                Dim Late_training As Double = ((trainee_rate / 8) / 60) * (Late * percentLate_training)
+                                Dim Late_old As Double = ((336 / 8) / 60) * (Late * percentLate_old)
+                                Dim Late_new As Double = ((rate / 8) / 60) * (Late * percentLate_new)
+
+                                LATEE = Late_training + Late_old + Late_new
+                            End If
+                            '==================== UNDERTIMEEEEEEEEEEEE =============================== 
+                            If UNDERTIMEE <> 0 Then
+                                Dim old_undertime As Double = OLD_NEW_RATE(bioNo).old_late
+                                Dim new_undertime As Double = OLD_NEW_RATE(bioNo).new_late
+
+                                Dim percentUT_training As Double = training_undertime.TotalMinutes / UNDERTIMEE
+                                Dim percentUT_old As Double = old_undertime / UNDERTIMEE
+                                Dim percentUT_new As Double = new_undertime / UNDERTIMEE
+
+                                Dim UT_training As Double = ((trainee_rate / 8) / 60) * (UNDERTIMEE * percentUT_training)
+                                Dim UT_old As Double = ((336 / 8) / 60) * (UNDERTIMEE * percentUT_old)
+                                Dim UT_new As Double = ((rate / 8) / 60) * (UNDERTIMEE * percentUT_new)
+
+                                UNDERTIMEE = UT_training + UT_old + UT_new
+                            End If
+                        End If
+                        '===================================================================================
+
                         TotalOT = OVERTIMEE
 
                         TotalLateUnder = LATEE + UNDERTIMEE
-
-                        '===================== TEMPORARY LANGSSSSS =============== 
-                        If paydate_ = "6/30/2022" Then
-                            OLD_NEW_RATE(bioNo)
-                            'old_days = .Item("OLD_DAYS")
-                            'new_days = .Item("NEW_DAYS")
-                            'old_overtime = .Item("OLD_OVERTIME")
-                            'new_overtime = .Item("NEW_OVERTIME")
-                            'old_late = .Item("OLD_LATE")
-                            'new_late = .Item("NEW_LATE")
-                            'old_undertime = .Item("OLD_UNDERTIME")
-                            'new_undertime = .Item("NEW_UNDERTIME") 
-
-                            '==================== OVERTIMEEEEEEEE =====================================
-                            Dim percentOT_training As Double = old_late / training_overtime
-                            Dim percentOT_old As Double = old_late / RegularOT
-                            Dim percentOT_new As Double = new_late / RegularOT
-
-                            Dim OT_training As Double = ((trainee_rate / 8) / 60) * (RegularOT * percentOT_training)
-                            Dim OT_old As Double = ((336 / 8) / 60) * (RegularOT * percentOT_old)
-                            Dim OT_new As Double = ((rate / 8) / 60) * (RegularOT * percentOT_new)
-
-                            OVERTIMEE = OT_training + OT_old + OT_new
-                            '==================== LATEEEEEEEEEEE =====================================
-                            Dim percentLate_training As Double = training_late.TotalMinutes / Late
-                            Dim percentLate_old As Double = old_late / Late
-                            Dim percentLate_new As Double = new_late / Late
-
-                            Dim Late_training As Double = ((trainee_rate / 8) / 60) * (Late * percentLate_training)
-                            Dim Late_old As Double = ((336 / 8) / 60) * (Late * percentLate_old)
-                            Dim Late_new As Double = ((rate / 8) / 60) * (Late * percentLate_new)
-
-                            LATEE = Late_training + Late_old + Late_new
-                        End If
 
                         GrossAmount = (TotalBasic + TotalREGHol + TotalSPECHol + TotalOT + TotalNight) - TotalLateUnder
 

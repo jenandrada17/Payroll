@@ -427,120 +427,142 @@ Public Class frmPayout
 
     Private Sub Calculate_Gross()
 
-        If TrainingDays_LBL.Text <> 0 Then '================ BASE ON TRAINING DAYS COVERED ================= 
-            Dim rate As Decimal = Rate_TXT.Text
-            Dim deduct_per_day As Decimal = 0
-            Dim total_train As Decimal = 0
+        'If TrainingDays_LBL.Text <> 0 Then '================ BASE ON TRAINING DAYS COVERED ================= 
+        '    Dim rate As Decimal = Rate_TXT.Text
+        '    Dim deduct_per_day As Decimal = 0
+        '    Dim total_train As Decimal = 0
 
-            rate = rate * 0.75
-            deduct_per_day = Convert.ToDouble(Rate_TXT.Text) - rate
-            total_train = deduct_per_day * Convert.ToDouble(TrainingDays_LBL.Text)
+        '    rate = rate * 0.75
+        '    deduct_per_day = Convert.ToDouble(Rate_TXT.Text) - rate
+        '    total_train = deduct_per_day * Convert.ToDouble(TrainingDays_LBL.Text)
 
-            ''===================== TRAINING HOLIDAY ==================  
-            Dim RegularHol As Integer = CInt(RegularHol_TXT.Text) - CInt(RegularHol_TXT.Tag)
-            Dim SpecialHol As Integer = CInt(SpecialHol_TXT.Text) - CInt(SpecialHol_TXT.Tag)
+        '    ''===================== TRAINING HOLIDAY ==================  
+        '    Dim RegularHol As Integer = CInt(RegularHol_TXT.Text) - CInt(RegularHol_TXT.Tag)
+        '    Dim SpecialHol As Integer = CInt(SpecialHol_TXT.Text) - CInt(SpecialHol_TXT.Tag)
 
-            Dim REG_STANDARD As Decimal = (RegularHol * CDec(Rate_TXT.Text)) * regHoliday_
-            Dim SPEC_STANDARD As Decimal = ((SpecialHol / 8) * CDec(Rate_TXT.Text)) * specHoliday_
+        '    Dim REG_STANDARD As Decimal = (RegularHol * CDec(Rate_TXT.Text)) * regHoliday_
+        '    Dim SPEC_STANDARD As Decimal = ((SpecialHol / 8) * CDec(Rate_TXT.Text)) * specHoliday_
 
-            Dim REG_TRAINEE As Decimal = (CDbl(RegularHol_TXT.Tag) * rate) * regHoliday_
-            Dim SPEC_TRAINEE As Decimal = ((CDbl(SpecialHol_TXT.Tag) / 8) * rate) * specHoliday_
+        '    Dim REG_TRAINEE As Decimal = (CDbl(RegularHol_TXT.Tag) * rate) * regHoliday_
+        '    Dim SPEC_TRAINEE As Decimal = ((CDbl(SpecialHol_TXT.Tag) / 8) * rate) * specHoliday_
 
-            TotalHol_LBL.Text = FormatNumber(REG_STANDARD + REG_TRAINEE + SPEC_STANDARD + SPEC_TRAINEE)
-            TotalHol_LBL.Tag = REG_STANDARD + REG_TRAINEE + SPEC_STANDARD + SPEC_TRAINEE
+        '    TotalHol_LBL.Text = FormatNumber(REG_STANDARD + REG_TRAINEE + SPEC_STANDARD + SPEC_TRAINEE)
+        '    TotalHol_LBL.Tag = REG_STANDARD + REG_TRAINEE + SPEC_STANDARD + SPEC_TRAINEE
 
-            TotalBasic_LBL.Text = FormatNumber((CDbl(NoOfDays_TXT.Text) * CDec(Rate_TXT.Text)) - total_train)
-            TotalBasic_LBL.Tag = (CDbl(NoOfDays_TXT.Text) * CDec(Rate_TXT.Text)) - total_train
+        '    TotalBasic_LBL.Text = FormatNumber((CDbl(NoOfDays_TXT.Text) * CDec(Rate_TXT.Text)) - total_train)
+        '    TotalBasic_LBL.Tag = (CDbl(NoOfDays_TXT.Text) * CDec(Rate_TXT.Text)) - total_train
 
-            TotalNight_LBL.Text = FormatNumber(((rate / 8) * 0.1) * CDbl(NightTime_TXT.Tag))
-            TotalNight_LBL.Tag = ((rate / 8) * 0.1) * CDbl(NightTime_TXT.Tag)
+        '    TotalNight_LBL.Text = FormatNumber(((rate / 8) * 0.1) * CDbl(NightTime_TXT.Tag))
+        '    TotalNight_LBL.Tag = ((rate / 8) * 0.1) * CDbl(NightTime_TXT.Tag)
 
-            Dim LATEE, LATE_TRAIN, UNDERTIMEE, UNDERTIMEE_TRAIN, OVERTIMEE, OVERTIMEE_TRAIN As Decimal
-            LATEE = ((CDec(Rate_TXT.Text) / 8) / 60) * (CDbl(Late_TXT.Text) - CDbl(TrainningLate_LBL.Text))
-            UNDERTIMEE = ((CDec(Rate_TXT.Text) / 8) / 60) * (CDbl(UnderTime_TXT.Text) - CDbl(TrainingUT_LBL.Text))
-            OVERTIMEE = ((CDec(Rate_TXT.Text) / 8) * 1.25) * (CDbl(RegularOT_TXT.Text) - CDbl(TrainingOT_LBL.Text))
+        '    Dim LATEE, LATE_TRAIN, UNDERTIMEE, UNDERTIMEE_TRAIN, OVERTIMEE, OVERTIMEE_TRAIN As Decimal
+        '    LATEE = ((CDec(Rate_TXT.Text) / 8) / 60) * (CDbl(Late_TXT.Text) - CDbl(TrainningLate_LBL.Text))
+        '    UNDERTIMEE = ((CDec(Rate_TXT.Text) / 8) / 60) * (CDbl(UnderTime_TXT.Text) - CDbl(TrainingUT_LBL.Text))
+        '    OVERTIMEE = ((CDec(Rate_TXT.Text) / 8) * 1.25) * (CDbl(RegularOT_TXT.Text) - CDbl(TrainingOT_LBL.Text))
 
-            LATE_TRAIN = ((rate / 8) / 60) * CDbl(TrainningLate_LBL.Text)
-            UNDERTIMEE_TRAIN = ((rate / 8) / 60) * CDbl(TrainingUT_LBL.Text)
-            OVERTIMEE_TRAIN = ((rate / 8) * 1.25) * CDbl(TrainingOT_LBL.Text)
+        '    LATE_TRAIN = ((rate / 8) / 60) * CDbl(TrainningLate_LBL.Text)
+        '    UNDERTIMEE_TRAIN = ((rate / 8) / 60) * CDbl(TrainingUT_LBL.Text)
+        '    OVERTIMEE_TRAIN = ((rate / 8) * 1.25) * CDbl(TrainingOT_LBL.Text)
 
-            LATEE = LATEE + LATE_TRAIN
-            UNDERTIMEE = UNDERTIMEE + UNDERTIMEE_TRAIN
-            OVERTIMEE = OVERTIMEE + OVERTIMEE_TRAIN
+        '    LATEE = LATEE + LATE_TRAIN
+        '    UNDERTIMEE = UNDERTIMEE + UNDERTIMEE_TRAIN
+        '    OVERTIMEE = OVERTIMEE + OVERTIMEE_TRAIN
 
-            Dim late_ut As String = LATEE + UNDERTIMEE
+        '    Dim late_ut As String = LATEE + UNDERTIMEE
 
-            TotalLateUnder_LBL.Text = FormatNumber(late_ut)
-            TotalLateUnder_LBL.Tag = LATEE + UNDERTIMEE
+        '    TotalLateUnder_LBL.Text = FormatNumber(late_ut)
+        '    TotalLateUnder_LBL.Tag = LATEE + UNDERTIMEE
 
-            TotalOT_LBL.Text = FormatNumber(OVERTIMEE)
-            TotalOT_LBL.Tag = OVERTIMEE
+        '    TotalOT_LBL.Text = FormatNumber(OVERTIMEE)
+        '    TotalOT_LBL.Tag = OVERTIMEE
 
-            TotalNight_LBL.Text = FormatNumber(((CDec(Rate_TXT.Text) / 8) * 0.1) * CDbl(NightTime_TXT.Tag))
-            TotalNight_LBL.Tag = ((CDec(Rate_TXT.Text) / 8) * 0.1) * CDbl(NightTime_TXT.Tag)
+        '    TotalNight_LBL.Text = FormatNumber(((CDec(Rate_TXT.Text) / 8) * 0.1) * CDbl(NightTime_TXT.Tag))
+        '    TotalNight_LBL.Tag = ((CDec(Rate_TXT.Text) / 8) * 0.1) * CDbl(NightTime_TXT.Tag)
 
-            GrossAmount_LBL.Text = ((CDbl(TotalBasic_LBL.Tag) + CDbl(TotalHol_LBL.Tag) + CDbl(TotalOT_LBL.Tag) + CDbl(TotalNight_LBL.Tag)) - CDbl(TotalLateUnder_LBL.Tag)).ToString("N")
-            GrossAmount_LBL.Tag = (CDbl(TotalBasic_LBL.Tag) + CDbl(TotalHol_LBL.Tag) + CDbl(TotalOT_LBL.Tag) + CDbl(TotalNight_LBL.Tag)) - CDbl(TotalLateUnder_LBL.Tag)
+        '    GrossAmount_LBL.Text = ((CDbl(TotalBasic_LBL.Tag) + CDbl(TotalHol_LBL.Tag) + CDbl(TotalOT_LBL.Tag) + CDbl(TotalNight_LBL.Tag)) - CDbl(TotalLateUnder_LBL.Tag)).ToString("N")
+        '    GrossAmount_LBL.Tag = (CDbl(TotalBasic_LBL.Tag) + CDbl(TotalHol_LBL.Tag) + CDbl(TotalOT_LBL.Tag) + CDbl(TotalNight_LBL.Tag)) - CDbl(TotalLateUnder_LBL.Tag)
 
-        Else '========================================= NOT A TRAINEE ===========================================
+        'Else '========================================= NOT A TRAINEE ===========================================
 
-            Dim RATEE As Decimal = Rate_TXT.Text
-            TotalBasic_LBL.Text = FormatNumber(CDbl(NoOfDays_TXT.Text) * RATEE)
-            TotalBasic_LBL.Tag = CDbl(NoOfDays_TXT.Text) * RATEE
+        '    Dim RATEE As Decimal = Rate_TXT.Text
+        '    TotalBasic_LBL.Text = FormatNumber(CDbl(NoOfDays_TXT.Text) * RATEE)
+        '    TotalBasic_LBL.Tag = CDbl(NoOfDays_TXT.Text) * RATEE
 
-            TotalHol_LBL.Text = FormatNumber((((CDbl(SpecialHol_TXT.Text) / 8) * RATEE) * specHoliday_) + ((CDbl(RegularHol_TXT.Text) * RATEE) * regHoliday_))
-            TotalHol_LBL.Tag = (((CInt(SpecialHol_TXT.Text) / 8) * RATEE) * specHoliday_) + ((CInt(RegularHol_TXT.Text) * RATEE) * regHoliday_)
+        '    TotalOT_LBL.Text = FormatNumber(((CDbl(Rate_TXT.Text) / 8) * 1.25) * CDbl(RegularOT_TXT.Text))
+        '    TotalOT_LBL.Tag = ((CDbl(Rate_TXT.Text) / 8) * 1.25) * CDbl(RegularOT_TXT.Text)
 
-            TotalOT_LBL.Text = FormatNumber(((CDbl(Rate_TXT.Text) / 8) * 1.25) * CDbl(RegularOT_TXT.Text))
-            TotalOT_LBL.Tag = ((CDbl(Rate_TXT.Text) / 8) * 1.25) * CDbl(RegularOT_TXT.Text)
+        '    Dim LATEE, UNDERTIMEE As Decimal
+        '    LATEE = ((RATEE / 8) / 60) * CDbl(Late_TXT.Text)
+        '    UNDERTIMEE = ((RATEE / 8) / 60) * CDbl(UnderTime_TXT.Text)
 
-            TotalNight_LBL.Text = FormatNumber(((RATEE / 8) * 0.1) * CDbl(NightTime_TXT.Tag))
-            TotalNight_LBL.Tag = ((RATEE / 8) * 0.1) * CDbl(NightTime_TXT.Tag)
+        '    TotalLateUnder_LBL.Text = FormatNumber(LATEE + UNDERTIMEE)
+        '    TotalLateUnder_LBL.Tag = LATEE + UNDERTIMEE
 
-            Dim LATEE, UNDERTIMEE As Decimal
-            LATEE = ((RATEE / 8) / 60) * CDbl(Late_TXT.Text)
-            UNDERTIMEE = ((RATEE / 8) / 60) * CDbl(UnderTime_TXT.Text)
+        '    TotalHol_LBL.Text = FormatNumber((((CDbl(SpecialHol_TXT.Text) / 8) * RATEE) * specHoliday_) + ((CDbl(RegularHol_TXT.Text) * RATEE) * regHoliday_))
+        '    TotalHol_LBL.Tag = (((CInt(SpecialHol_TXT.Text) / 8) * RATEE) * specHoliday_) + ((CInt(RegularHol_TXT.Text) * RATEE) * regHoliday_)
 
-            TotalLateUnder_LBL.Text = FormatNumber(LATEE + UNDERTIMEE)
-            TotalLateUnder_LBL.Tag = LATEE + UNDERTIMEE
+        '    TotalNight_LBL.Text = FormatNumber(((RATEE / 8) * 0.1) * CDbl(NightTime_TXT.Tag))
+        '    TotalNight_LBL.Tag = ((RATEE / 8) * 0.1) * CDbl(NightTime_TXT.Tag)
 
-            ''============================= FOR MONTHLY RATE/FIXED RATE (IF ABOVE MINIMUM) ==================================   
+        '    ''============================= FOR MONTHLY RATE/FIXED RATE (IF ABOVE MINIMUM) ==================================    
+        '    If Rate_TXT.Text > Rate_TXT.Tag Then '=== TAG(MINIMUM DAILY RATE) 
+        '        Dim BASICC As Decimal = CDec(RateFixYes_RB.Tag) / 2
 
-            If Rate_TXT.Text > Rate_TXT.Tag Then '=== TAG(MINIMUM DAILY RATE) 
-                Dim BASICC As Decimal = CDec(RateFixYes_RB.Tag) / 2
+        '        If RateFixYes_RB.Checked = True Then '=== TAG(MINIMUM DAILY RATE) 
+        '            BASICC = CDec(RateFixYes_RB.Tag) / 2
+        '            TotalBasic_LBL.Text = FormatNumber(BASICC)
+        '            TotalBasic_LBL.Tag = BASICC
 
-                If RateFixYes_RB.Checked = True Then '=== TAG(MINIMUM DAILY RATE) 
-                    BASICC = CDec(RateFixYes_RB.Tag) / 2
-                    TotalBasic_LBL.Text = FormatNumber(BASICC)
-                    TotalBasic_LBL.Tag = BASICC
+        '            TotalHol_LBL.Text = Zeroo
+        '            TotalHol_LBL.Tag = Zeroo
+        '            TotalOT_LBL.Text = Zeroo
+        '            TotalOT_LBL.Tag = Zeroo
+        '            TotalLateUnder_LBL.Text = Zeroo
+        '            TotalLateUnder_LBL.Tag = Zeroo
+        '            TotalNight_LBL.Text = Zeroo
+        '            TotalNight_LBL.Tag = Zeroo
 
-                    TotalHol_LBL.Text = Zeroo
-                    TotalHol_LBL.Tag = Zeroo
-                    TotalOT_LBL.Text = Zeroo
-                    TotalOT_LBL.Tag = Zeroo
-                    TotalLateUnder_LBL.Text = Zeroo
-                    TotalLateUnder_LBL.Tag = Zeroo
-                    TotalNight_LBL.Text = Zeroo
-                    TotalNight_LBL.Tag = Zeroo
+        '        Else
 
-                Else
+        '            If CDbl(NoOfDays_TXT.Text) >= STANDARD_DAYS Then  '=== CHECK IF ABOVE MINIMUM 
+        '                'TotalBasic_LBL.Text = FormatNumber(BASICC)
+        '                'TotalBasic_LBL.Tag = BASICC
+        '                TotalBasic_LBL.Text = FormatNumber(CDbl(NoOfDays_TXT.Text) * RATEE)
+        '                TotalBasic_LBL.Tag = CDbl(NoOfDays_TXT.Text) * RATEE
+        '            Else
+        '                Dim MINUS_DAYS As Double = STANDARD_DAYS - CDbl(NoOfDays_TXT.Text)
+        '                TotalBasic_LBL.Text = FormatNumber(BASICC - (MINUS_DAYS * RATEE))
+        '                TotalBasic_LBL.Tag = BASICC - (MINUS_DAYS * RATEE)
+        '            End If
 
-                    If CDbl(NoOfDays_TXT.Text) >= STANDARD_DAYS Then  '=== CHECK IF ABOVE MINIMUM 
-                        TotalBasic_LBL.Text = FormatNumber(BASICC)
-                        TotalBasic_LBL.Tag = BASICC
-                    Else
-                        Dim MINUS_DAYS As Double = STANDARD_DAYS - CDbl(NoOfDays_TXT.Text)
-                        TotalBasic_LBL.Text = FormatNumber(BASICC - (MINUS_DAYS * RATEE))
-                        TotalBasic_LBL.Tag = BASICC - (MINUS_DAYS * RATEE)
-                    End If
+        '        End If
+        '    End If
 
-                End If
-            End If
+        '    GrossAmount_LBL.Text = FormatNumber((CDbl(TotalBasic_LBL.Tag) + CDbl(TotalHol_LBL.Tag) + CDbl(TotalOT_LBL.Tag) + CDbl(TotalNight_LBL.Tag)) - CDbl(TotalLateUnder_LBL.Tag))
+        '    GrossAmount_LBL.Tag = (CDbl(TotalBasic_LBL.Tag) + CDbl(TotalHol_LBL.Tag) + CDbl(TotalOT_LBL.Tag) + CDbl(TotalNight_LBL.Tag)) - CDbl(TotalLateUnder_LBL.Tag)
 
-            GrossAmount_LBL.Text = FormatNumber((CDbl(TotalBasic_LBL.Tag) + CDbl(TotalHol_LBL.Tag) + CDbl(TotalOT_LBL.Tag) + CDbl(TotalNight_LBL.Tag)) - CDbl(TotalLateUnder_LBL.Tag))
-            GrossAmount_LBL.Tag = (CDbl(TotalBasic_LBL.Tag) + CDbl(TotalHol_LBL.Tag) + CDbl(TotalOT_LBL.Tag) + CDbl(TotalNight_LBL.Tag)) - CDbl(TotalLateUnder_LBL.Tag)
+        'End If 
 
-        End If
+        TotalBasic_LBL.Text = FormatNumber(GetData_Decimal("TOTAL_BASIC", $"PAYROLL_PAYOUT WHERE BIOMETRIC_ID = '{BiometricID_TXT.Text}' and PAYDATE = '{paydate_}'"))
+        TotalBasic_LBL.Tag = GetData_Decimal("TOTAL_BASIC", $"PAYROLL_PAYOUT WHERE BIOMETRIC_ID = '{BiometricID_TXT.Text}' and PAYDATE = '{paydate_}'")
+
+        Dim reg_holiday As Decimal = GetData_Decimal("TOTAL_REGHOLIDAY", $"PAYROLL_PAYOUT WHERE BIOMETRIC_ID = '{BiometricID_TXT.Text}' and PAYDATE = '{paydate_}'")
+        Dim spec_holiday As Decimal = GetData_Decimal("TOTAL_SPECHOLIDAY", $"PAYROLL_PAYOUT WHERE BIOMETRIC_ID = '{BiometricID_TXT.Text}' and PAYDATE = '{paydate_}'")
+
+        TotalHol_LBL.Text = FormatNumber(reg_holiday + spec_holiday)
+        TotalHol_LBL.Tag = reg_holiday + spec_holiday
+
+        TotalOT_LBL.Text = FormatNumber(GetData_Decimal("TOTAL_OVERTIME", $"PAYROLL_PAYOUT WHERE BIOMETRIC_ID = '{BiometricID_TXT.Text}' and PAYDATE = '{paydate_}'"))
+        TotalOT_LBL.Tag = GetData_Decimal("TOTAL_OVERTIME", $"PAYROLL_PAYOUT WHERE BIOMETRIC_ID = '{BiometricID_TXT.Text}' and PAYDATE = '{paydate_}'")
+
+        TotalLateUnder_LBL.Text = FormatNumber(GetData_Decimal("TOTAL_LATE_UT", $"PAYROLL_PAYOUT WHERE BIOMETRIC_ID = '{BiometricID_TXT.Text}' and PAYDATE = '{paydate_}'"))
+        TotalLateUnder_LBL.Tag = GetData_Decimal("TOTAL_LATE_UT", $"PAYROLL_PAYOUT WHERE BIOMETRIC_ID = '{BiometricID_TXT.Text}' and PAYDATE = '{paydate_}'")
+
+        TotalNight_LBL.Text = FormatNumber(GetData_Decimal("TOTAL_NIGHT_RATE", $"PAYROLL_PAYOUT WHERE BIOMETRIC_ID = '{BiometricID_TXT.Text}' and PAYDATE = '{paydate_}'"))
+        TotalNight_LBL.Tag = GetData_Decimal("TOTAL_NIGHT_RATE", $"PAYROLL_PAYOUT WHERE BIOMETRIC_ID = '{BiometricID_TXT.Text}' and PAYDATE = '{paydate_}'")
+
+        GrossAmount_LBL.Text = FormatNumber((CDbl(TotalBasic_LBL.Tag) + CDbl(TotalHol_LBL.Tag) + CDbl(TotalOT_LBL.Tag) + CDbl(TotalNight_LBL.Tag)) - CDbl(TotalLateUnder_LBL.Tag))
+        GrossAmount_LBL.Tag = (CDbl(TotalBasic_LBL.Tag) + CDbl(TotalHol_LBL.Tag) + CDbl(TotalOT_LBL.Tag) + CDbl(TotalNight_LBL.Tag)) - CDbl(TotalLateUnder_LBL.Tag)
 
     End Sub
 

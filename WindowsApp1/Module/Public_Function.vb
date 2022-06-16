@@ -237,7 +237,6 @@ Module Public_Function
         Return False
     End Function
 
-
 #Region "Log Module"
 
     Const LOG_FILE As String = "syslog.txt"
@@ -248,7 +247,6 @@ Module Public_Function
     End Sub
 
 #End Region
-
 
     Friend Sub Send_Email(byteViewer As Byte(), recipient_Email As String, recipient_Name As String, paydate As String, BodyText As String, subjectt As String)
         Try

@@ -104,5 +104,34 @@ Module Temporary
         End Using
     End Sub
 
-    Friend Sub 
+    '===================== TRAINING HOLIDAY ==================    
+    Friend Function OLD_NEW_RATE(BIO_NO As String) As (old_days As Double, new_days As Double, old_overtime As Double,
+                    new_overtime As Double, old_late As Double, new_late As Double, old_undertime As Double, new_undertime As Double)
+
+        Dim old_days = 0, new_days As Double = 0
+        Dim old_overtime = 0, new_overtime As Double = 0
+        Dim old_late = 0, new_late As Double = 0
+        Dim old_undertime = 0, new_undertime As Double = 0
+        Dim temp_days As Double = 0
+
+        Dim _mysql As String = $"Select * from TEMP_TABLE where BIO_NO = '{BIO_NO}'"
+        Using _ds As DataSet = LoadSQL(_mysql, "TEMP_TABLE")
+            If _ds.Tables(0).Rows.Count > 0 Then
+                With _ds.Tables(0).Rows(0)
+                    old_days = .Item("OLD_DAYS")
+                    new_days = .Item("NEW_DAYS")
+                    old_overtime = .Item("OLD_OVERTIME")
+                    new_overtime = .Item("NEW_OVERTIME")
+                    old_late = .Item("OLD_LATE")
+                    new_late = .Item("NEW_LATE")
+                    old_undertime = .Item("OLD_UNDERTIME")
+                    new_undertime = .Item("NEW_UNDERTIME")
+                End With
+            End If
+        End Using
+
+        Return (old_days, new_days, old_overtime, new_overtime, old_late, new_late, old_undertime, new_undertime)
+    End Function
+    '========================================================= 
+
 End Module
