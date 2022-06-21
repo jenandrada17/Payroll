@@ -385,6 +385,7 @@
     <EmbeddedResource Include="Reports\rpt_PayrollSummary.rdlc" />
     <EmbeddedResource Include="Reports\rpt_payslip.rdlc" />
     <EmbeddedResource Include="Reports\rpt_PI.rdlc" />
+    <EmbeddedResource Include="Reports\rpt_PI_All.rdlc" />
     <EmbeddedResource Include="Reports\rpt_Remittance.rdlc" />
     <EmbeddedResource Include="Reports\rpt_RemittanceALL.rdlc" />
     <EmbeddedResource Include="Reports\rpt_SBU.rdlc" />

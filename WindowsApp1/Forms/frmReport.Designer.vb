@@ -1579,7 +1579,7 @@ Partial Class frmReport
         Me.PI_Company_CB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.PI_Company_CB.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.PI_Company_CB.FormattingEnabled = True
-        Me.PI_Company_CB.Items.AddRange(New Object() {"Photo Head Office", "Gensan Perfect", "Davao Perfect", "JR Photo", "Dalton", "Perfecom", "P&G", "PTU Realty", "PGC Head Office"})
+        Me.PI_Company_CB.Items.AddRange(New Object() {"Photo Head Office", "Gensan Perfect", "Davao Perfect", "JR Photo", "Dalton", "Perfecom", "P&G", "PTU Realty", "PGC Head Office", "All"})
         Me.PI_Company_CB.Location = New System.Drawing.Point(477, 18)
         Me.PI_Company_CB.Name = "PI_Company_CB"
         Me.PI_Company_CB.Size = New System.Drawing.Size(192, 33)

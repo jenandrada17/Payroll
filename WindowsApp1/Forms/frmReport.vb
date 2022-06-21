@@ -1682,35 +1682,41 @@ Public Class frmReport
         Try
 
             Dim str As String = ""
+            Dim report As String = "WindowsApp1.rpt_PI.rdlc"
 
             Dim dt_PI As New DataTable()
             With dt_PI
                 .Columns.Add("NAME")
                 .Columns.Add("AMOUNT")
+                .Columns.Add("BRANCH")
             End With
 
             If PI_Company_CB.SelectedIndex = 0 Then
-                str = $"HO_CATEGORY LIKE '%Photo%'"
+                str = $" AND HO_CATEGORY LIKE '%Photo%'"
             ElseIf PI_Company_CB.SelectedIndex = 1 Then
-                str = $"COMPANY_CATEGORY = 'GENSAN PERFECT'"
+                str = $" AND COMPANY_CATEGORY = 'GENSAN PERFECT'"
             ElseIf PI_Company_CB.SelectedIndex = 2 Then
-                str = $"COMPANY_CATEGORY = 'DAVAO PERFECT'"
+                str = $" AND COMPANY_CATEGORY = 'DAVAO PERFECT'"
             ElseIf PI_Company_CB.SelectedIndex = 3 Then
-                str = $"COMPANY_CATEGORY = 'JR PHOTO' "
+                str = $" AND COMPANY_CATEGORY = 'JR PHOTO' "
             ElseIf PI_Company_CB.SelectedIndex = 4 Then
-                str = $"(COMPANY = 'DALTON' OR HO_CATEGORY LIKE '%Dalton%')"
+                str = $" AND (COMPANY = 'DALTON' OR HO_CATEGORY LIKE '%Dalton%')"
             ElseIf PI_Company_CB.SelectedIndex = 5 Then
-                str = $"(COMPANY = 'PERFECOM' OR HO_CATEGORY LIKE '%Perfecom%')"
+                str = $" AND  (COMPANY = 'PERFECOM' OR HO_CATEGORY LIKE '%Perfecom%')"
             ElseIf PI_Company_CB.SelectedIndex = 6 Then
-                str = $"(COMPANY = 'P&G UY' OR HO_CATEGORY LIKE '%GHS%')"
+                str = $" AND  (COMPANY = 'P&G UY' OR HO_CATEGORY LIKE '%GHS%')"
             ElseIf PI_Company_CB.SelectedIndex = 7 Then
-                str = $"HO_CATEGORY IN ('Leasing Admin Office','Construction')"
+                str = $" AND  HO_CATEGORY IN ('Leasing Admin Office','Construction')"
             ElseIf PI_Company_CB.SelectedIndex = 8 Then
-                str = $"HO_CATEGORY = 'PGC Head Office'"
+                str = $" AND  HO_CATEGORY = 'PGC Head Office'"
+            Else
+                str = ""
+                report = "WindowsApp1.rpt_PI_All.rdlc"
             End If
 
-            Dim mysql As String = $"Select * From RECORDED_ALLOW_DEDUC A INNER JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIO_NO       
-                                        WHERE UPPER(CATEGORY) = 'PERFORMANCE INCENTIVES' AND {str} AND PAYDATE BETWEEN '{PAYDATE_start.AddDays(14).ToShortDateString}' AND '{PAYDATE_end.ToShortDateString}' ORDER BY FULLNAME, PAYDATE"
+            Dim mysql As String = $"Select * From RECORDED_ALLOW_DEDUC A INNER JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIO_NO   
+                                        LEFT JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCH_CODE           
+                                        WHERE UPPER(A.CATEGORY) = 'PERFORMANCE INCENTIVES' {str} AND PAYDATE BETWEEN '{PAYDATE_start.AddDays(14).ToShortDateString}' AND '{PAYDATE_end.ToShortDateString}' ORDER BY FULLNAME, PAYDATE"
 
             Using ds As DataSet = LoadSQL(mysql, "RECORDED_ALLOW_DEDUC")
                 If ds.Tables(0).Rows.Count > 0 Then
@@ -1723,7 +1729,31 @@ Public Class frmReport
                             Dim FULLNAME As String = IIf(IsDBNull(.Item("FULLNAME")), "", .Item("FULLNAME"))
                             Dim AMOUNT As String = FormatNumber(.Item("AMOUNT"))
 
-                            dt_PI.Rows.Add(FULLNAME, AMOUNT)
+                            '===================================== BRANCHES ===============================
+                            Dim BRANCH_CODE As String = IIf(.Item("BRANCH_CODE") = "" Or IsDBNull(.Item("BRANCH_CODE")), .Item("HO_CATEGORY"), .Item("BRANCHNAME"))
+                            Dim COMPANY As String = .Item("COMPANY")
+                            Dim HO_CATEGORY As String = IIf(IsDBNull(.Item("HO_CATEGORY")), "", .Item("HO_CATEGORY"))
+                            Dim COMPANY_CATEGORY As String = IIf(IsDBNull(.Item("COMPANY_CATEGORY")), "", .Item("COMPANY_CATEGORY"))
+
+                            If COMPANY = "DALTON" Then
+                                BRANCH_CODE = IIf(.Item("BRANCH_CODE") = "" Or IsDBNull(.Item("BRANCH_CODE")), .Item("HO_CATEGORY"), TitleCase(.Item("COMPANY")) & "-" & .Item("BRANCHNAME"))
+                            End If
+
+                            If HO_CATEGORY = "GHS/P&G UY Admin Office" Or HO_CATEGORY = "GHS/P&G UY Admin Operation" Then
+                                BRANCH_CODE = HO_CATEGORY
+
+                            ElseIf HO_CATEGORY.Contains("Dalton") Then
+                                BRANCH_CODE = HO_CATEGORY
+
+                            ElseIf HO_CATEGORY.Contains("Photo") Or HO_CATEGORY.Contains("PGC") Then
+                                BRANCH_CODE = HO_CATEGORY
+                            End If
+
+                            If COMPANY_CATEGORY <> "" Then
+                                BRANCH_CODE = COMPANY_CATEGORY
+                            End If
+
+                            dt_PI.Rows.Add(FULLNAME, AMOUNT, BRANCH_CODE)
 
                             frmMainForm.AppProgressBar.Value += 1
                         End With
@@ -1740,6 +1770,7 @@ Public Class frmReport
                     New Microsoft.Reporting.WinForms.ReportParameter("paramFormName", FORMNAME)
                     }
 
+            Rpt_PI.LocalReport.ReportEmbeddedResource = report
             Rpt_PI.LocalReport.DataSources.Add(DATASOURCE)
             Rpt_PI.LocalReport.SetParameters(paramList)
             Rpt_PI.RefreshReport()

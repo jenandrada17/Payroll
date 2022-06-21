@@ -3501,6 +3501,8 @@ Partial Public Class reports
         
         Private columnAMOUNT As Global.System.Data.DataColumn
         
+        Private columnBRANCH As Global.System.Data.DataColumn
+        
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Sub New()
@@ -3553,6 +3555,14 @@ Partial Public Class reports
         End Property
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public ReadOnly Property BRANCHColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnBRANCH
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0"),  _
          Global.System.ComponentModel.Browsable(false)>  _
         Public ReadOnly Property Count() As Integer
@@ -3589,9 +3599,9 @@ Partial Public Class reports
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
-        Public Overloads Function AddPerformanceIncentivesRow(ByVal NAME As String, ByVal AMOUNT As Decimal) As PerformanceIncentivesRow
+        Public Overloads Function AddPerformanceIncentivesRow(ByVal NAME As String, ByVal AMOUNT As Decimal, ByVal BRANCH As String) As PerformanceIncentivesRow
             Dim rowPerformanceIncentivesRow As PerformanceIncentivesRow = CType(Me.NewRow,PerformanceIncentivesRow)
-            Dim columnValuesArray() As Object = New Object() {NAME, AMOUNT}
+            Dim columnValuesArray() As Object = New Object() {NAME, AMOUNT, BRANCH}
             rowPerformanceIncentivesRow.ItemArray = columnValuesArray
             Me.Rows.Add(rowPerformanceIncentivesRow)
             Return rowPerformanceIncentivesRow
@@ -3616,6 +3626,7 @@ Partial Public Class reports
         Friend Sub InitVars()
             Me.columnNAME = MyBase.Columns("NAME")
             Me.columnAMOUNT = MyBase.Columns("AMOUNT")
+            Me.columnBRANCH = MyBase.Columns("BRANCH")
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -3625,6 +3636,8 @@ Partial Public Class reports
             MyBase.Columns.Add(Me.columnNAME)
             Me.columnAMOUNT = New Global.System.Data.DataColumn("AMOUNT", GetType(Decimal), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnAMOUNT)
+            Me.columnBRANCH = New Global.System.Data.DataColumn("BRANCH", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnBRANCH)
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -7715,6 +7728,21 @@ Partial Public Class reports
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Property BRANCH() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tablePerformanceIncentives.BRANCHColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'BRANCH' in table 'PerformanceIncentives' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tablePerformanceIncentives.BRANCHColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Function IsNAMENull() As Boolean
             Return Me.IsNull(Me.tablePerformanceIncentives.NAMEColumn)
         End Function
@@ -7735,6 +7763,18 @@ Partial Public Class reports
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
         Public Sub SetAMOUNTNull()
             Me(Me.tablePerformanceIncentives.AMOUNTColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Function IsBRANCHNull() As Boolean
+            Return Me.IsNull(Me.tablePerformanceIncentives.BRANCHColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")>  _
+        Public Sub SetBRANCHNull()
+            Me(Me.tablePerformanceIncentives.BRANCHColumn) = Global.System.Convert.DBNull
         End Sub
     End Class
     
