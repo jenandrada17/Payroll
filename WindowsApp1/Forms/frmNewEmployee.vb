@@ -100,6 +100,10 @@ Public Class frmNewEmployee
             '                    Optional EMP_POSITION As String = "", Optional COMMON_COMPANY As String = "", Optional PhotoCategory As String = "",
             '                    Optional Middlename As String = "", Optional BDATE As String = "", Optional ADDRESS As String = "")
 
+            Console.WriteLine(eCell(row, 1).Value)
+            Console.WriteLine(eCell(row, 9).Value)
+            Console.WriteLine(eCell(row, 11).Value)
+
             SaveNew_Employee(eCell(row, 2).Value, eCell(row, 3).Value, eCell(row, 9).Value, eCell(row, 1).Value, eCell(row, 12).Value,
                          "ACTIVE", eCell(row, 4).Value, True, eCell(row, 7).Value, eCell(row, 8).Value, eCell(row, 5).Value,
                          eCell(row, 13).Value, eCell(row, 14).Value, eCell(row, 15).Value, eCell(row, 16).Value, "", "", eCell(row, 6).Value, "", eCell(row, 17).Value,

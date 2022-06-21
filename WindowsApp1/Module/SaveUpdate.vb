@@ -17,6 +17,7 @@ Module SaveUpdate
                 .Item("KINDS") = kinds
 
             End With
+
             ds.Tables(0).Rows.Add(dsNewRow)
             SaveEntry(ds)
         End Using
@@ -714,7 +715,7 @@ Module SaveUpdate
                         TotalREGHol = (RegularHol * rate) * regHoliday
                         TotalSPECHol = ((SpecialHol_hrs / 8) * rate) * specHoliday
 
-                        '===================== TEMPORARY LANGSSSSS =============== 
+                        '===================== TEMPORARY LANGSSSSS ===================== 
                         If paydate_ = "6/30/2022" Then
                             Dim old_days As Double = OLD_NEW_RATE(bioNo).old_days
                             Dim new_days As Double = OLD_NEW_RATE(bioNo).new_days
@@ -972,7 +973,7 @@ Module SaveUpdate
 
                         TotalNight = ((rate / 8) * 0.1) * nightRate ' =========== CALCULATE NIGHT RATE TO PESO ===========
 
-                        '===================== TEMPORARY LANGSSSSS =============== 
+                        '===================== TEMPORARY LANGSSSSS ==========================================================
                         If paydate_ = "6/30/2022" Then
                             '==================== OVERTIMEEEEEEEE =====================================
                             If RegularOT <> 0 Then
