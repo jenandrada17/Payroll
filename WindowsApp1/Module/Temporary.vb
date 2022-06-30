@@ -57,9 +57,6 @@ Module Temporary
         Using dssS As DataSet = LoadSQL(mysql, "PAYROLL_SBU")
             If dssS.Tables(0).Rows.Count > 0 Then
                 With dssS.Tables(0).Rows(0)
-                    Console.WriteLine("bioNOO " & .Item("BIO_NO"))
-                    Console.WriteLine("EMP_NO " & .Item("EMP_NO"))
-                    Console.WriteLine("RowNo " & RowNo)
                     .Item("DATE_ADDED") = datee
                 End With
                 SaveEntry(dssS, False)
@@ -108,10 +105,14 @@ Module Temporary
     Friend Function OLD_NEW_RATE(BIO_NO As String) As (old_days As Double, new_days As Double, old_overtime As Double,
                     new_overtime As Double, old_late As Double, new_late As Double, old_undertime As Double, new_undertime As Double)
 
-        Dim old_days = 0, new_days As Double = 0
-        Dim old_overtime = 0, new_overtime As Double = 0
-        Dim old_late = 0, new_late As Double = 0
-        Dim old_undertime = 0, new_undertime As Double = 0
+        Dim old_days As Double = 0
+        Dim new_days As Double = 0
+        Dim old_overtime As Double = 0
+        Dim new_overtime As Double = 0
+        Dim old_late As Double = 0
+        Dim new_late As Double = 0
+        Dim old_undertime As Double = 0
+        Dim new_undertime As Double = 0
         Dim temp_days As Double = 0
 
         Dim _mysql As String = $"Select * from TEMP_TABLE where BIO_NO = '{BIO_NO}'"

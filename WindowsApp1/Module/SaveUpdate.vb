@@ -1007,8 +1007,8 @@ Module SaveUpdate
                             End If
                             '==================== UNDERTIMEEEEEEEEEEEE =============================== 
                             If UNDERTIMEE <> 0 Then
-                                Dim old_undertime As Double = OLD_NEW_RATE(bioNo).old_late
-                                Dim new_undertime As Double = OLD_NEW_RATE(bioNo).new_late
+                                Dim old_undertime As Double = OLD_NEW_RATE(bioNo).old_undertime
+                                Dim new_undertime As Double = OLD_NEW_RATE(bioNo).new_undertime
 
                                 Dim percentUT_training As Double = training_undertime.TotalMinutes / UNDERTIMEE
                                 Dim percentUT_old As Double = old_undertime / UNDERTIMEE

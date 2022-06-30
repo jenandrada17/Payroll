@@ -234,6 +234,13 @@ Public Class frmAttendance
 
     End Sub
 
+    '========= TEMPORARY FOR PAYDATE 6/30/2022 ===========  
+    Dim temp_present As Double = 0
+    Dim temp_half As Double = 0
+    Dim temp_overtime As Double = 0
+    Dim temp_late As Double = 0
+    Dim temp_undertime As Double = 0
+
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Calculate_BTN.Click
         If Name_TXT.Text <> Nothing Then
             TotalDays_LBL.Text = 0
@@ -316,40 +323,80 @@ Public Class frmAttendance
 
                 CalculateuOVERTIME(row, TIME_OUT)
 
+
+                ''===========================  TEMPORARYYYYYYY JUNE 30, 2022 ONLY===================== 
+                If paydate_ = "6/30/2022" Then
+                    Dim short_date As String = DATEE.ToShortDateString
+                    If short_date = "6/8/2022" Then
+                        temp_overtime = TotalOTHr_LBL.Text
+                        temp_late = late_count.TotalMinutes
+                        temp_undertime = under_count.TotalMinutes
+                    End If
+                End If
+
             Next
 
             TotalLateHR_LBL.Text = late_count.TotalMinutes
-            late_count = New TimeSpan(0, 0, 0, 0, 0)
 
             TotalUTHR_LBL.Text = under_count.TotalMinutes
-            under_count = New TimeSpan(0, 0, 0, 0, 0)
 
             TotalOTHr_LBL.Text = CDbl(TotalOTHr_LBL.Text) + AM_OT_NUP.Value
+
             '===================================== SUM UP PRESENT AND ABSENT ==================================== 
             Dim Present As Integer = 0
+            Dim halfday_Hour As Integer = 0
             For Each oRow As DataGridViewRow In DataGridView1.Rows
 
                 If oRow.Cells(5).Value = True Then
                     Present += 1
                 End If
+
+                If CountCELL_Nothing(oRow) = 3 Or CountCELL_Consecutive(oRow) = "HALFDAY" Then
+                    halfday_Hour += 4
+                End If
+
+                ''===========================  TEMPORARYYYYYYY JUNE 30, 2022 ONLY===================== 
+                If paydate_ = "6/30/2022" Then
+                    Dim DATEE As DateTime = oRow.Tag
+                    Dim short_date As String = DATEE.ToShortDateString
+                    If short_date = "6/8/2022" Then
+                        temp_present = Present
+                        temp_half = halfday_Hour
+                    End If
+                End If
+
             Next
 
             TotalDays_LBL.Text = Present
 
             '===================================== SUM UP HALF DAY ====================================  
-            Dim halfday_Hour As Integer = 0
-            For Each oRow As DataGridViewRow In DataGridView1.Rows
+            'Dim halfday_Hour As Integer = 0
+            'For Each oRow As DataGridViewRow In DataGridView1.Rows
 
-                If CountCELL_Nothing(oRow) = 3 Or CountCELL_Consecutive(oRow) = "HALFDAY" Then
-                    halfday_Hour += 4
-                End If
-            Next
+            '    If CountCELL_Nothing(oRow) = 3 Or CountCELL_Consecutive(oRow) = "HALFDAY" Then
+            '        halfday_Hour += 4
+            '    End If
+            'Next
 
             Dim product As Double
             product = ((Convert.ToInt32(TotalDays_LBL.Text) * 8)) - halfday_Hour
             product = product / 8
             TotalDays_LBL.Text = product
 
+            ''===================================== TEMPORARYYYYYYY =================================  
+            If paydate_ = "6/30/2022" Then
+                Dim old_days As Double
+                old_days = (temp_present * 8) - temp_half
+                old_days = old_days / 8
+                Dim new_days As Double = product - old_days
+                Dim new_overtime As Double = CDbl(TotalOTHr_LBL.Text) - temp_overtime
+                Dim new_late As Double = CDbl(late_count.TotalMinutes) - temp_late
+                Dim new_undertime As Double = CDbl(under_count.TotalMinutes) - temp_undertime
+                SaveTemporary(bioNum, old_days, new_days, temp_overtime, new_overtime, temp_late, new_late, temp_undertime, new_undertime)
+            End If
+
+            late_count = New TimeSpan(0, 0, 0, 0, 0)
+            under_count = New TimeSpan(0, 0, 0, 0, 0)
         Else
             MsgBox("Please Enter Employee's Name.", MsgBoxStyle.Critical, "Error")
         End If
@@ -484,6 +531,10 @@ Public Class frmAttendance
                             list_ = list_.Where(Function(s) Not String.IsNullOrEmpty(s)).ToList()
 
                             specHoliday_hrs += GetSpecial_hrs(list_.First, list_.Last)
+
+                            If specHoliday_hrs > 8 Then
+                                specHoliday_hrs = 8
+                            End If
                         End If
                     End If
                 Next
@@ -1767,6 +1818,10 @@ Public Class frmAttendance
                         list_ = list_.Where(Function(s) Not String.IsNullOrEmpty(s)).ToList()
 
                         specHoliday_hrs += GetSpecial_hrs(list_.First, list_.Last)
+
+                        If specHoliday_hrs > 8 Then
+                            specHoliday_hrs = 8
+                        End If
                     End If
 
                 End If
