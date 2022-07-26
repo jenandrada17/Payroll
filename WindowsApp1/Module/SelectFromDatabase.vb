@@ -214,7 +214,6 @@ Module SelectFromDatabase
     End Function
 
     Public Sub LoadEmployee(listview As ListView, Optional ByVal str As String = "")
-
         Try
 
             Dim secured_str As String = str
@@ -256,11 +255,9 @@ Module SelectFromDatabase
         Catch ex As Exception
             Log_Report(ex.ToString())
         End Try
-
     End Sub
 
     Private Sub AddItem(ByVal dr As DataRow, listview As ListView)
-
         With dr
             Dim a As Date = .Item("DATEHIRED")
             Dim datee As String
@@ -464,6 +461,57 @@ Module SelectFromDatabase
                     TrainningLate_LBL.Text = IIf(IsDBNull(.Item("TRAINING_LATE")), 0, .Item("TRAINING_LATE"))
                     TrainingUT_LBL.Text = IIf(IsDBNull(.Item("TRAINING_UNDERTIME")), 0, .Item("TRAINING_UNDERTIME"))
                     TrainingSHol_LBL.Text = IIf(IsDBNull(.Item("TRAINING_SPECHOLIDAY")), 0, .Item("TRAINING_SPECHOLIDAY"))
+                End With
+            End If
+        End Using
+    End Sub
+
+    Friend Sub PayoutDetails(biometric As String, paydate As String, Rate_TXT As TextBox, Name_TXT As TextBox, RateFixYes_RB As RadioButton,
+                             TotalBasic_LBL As Label, TotalOT_LBL As Label, TotalHol_LBL As Label, TotalNight_LBL As Label,
+                             TotalLateUnder_LBL As Label, SSSComp_LBL As Label, HDMF_LBL As Label, Philhealth_LBL As Label, GrossAmount_LBL As Label)
+
+        Dim mysql As String = $"Select * From PAYROLL_PAYOUT inner join PAYROLL_EMPLOYEE on BIO_NO = BIOMETRIC_ID WHERE BIOMETRIC_ID = '{biometric}' and PAYDATE = '{paydate}'"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
+            If ds.Tables(0).Rows.Count > 0 Then
+
+                Dim dr As DataRow = ds.Tables(0).Rows(0)
+                With dr
+
+                    '=========================================== EMPLOYEE ===============================================  
+                    Name_TXT.Text = .Item("FULLNAME")
+
+                    RateFixYes_RB.Checked = IIf(IsDBNull(.Item("FIX_MONTHLY_RATE")), False, .Item("FIX_MONTHLY_RATE"))
+
+                    '=========================================== PAYOUT =================================================  
+                    Rate_TXT.Text = IIf(IsDBNull(.Item("RATE")), 0, .Item("RATE"))
+
+                    TotalBasic_LBL.Text = FormatNumber(.Item("TOTAL_BASIC"))
+                    TotalBasic_LBL.Tag = .Item("TOTAL_BASIC")
+
+                    TotalOT_LBL.Text = FormatNumber(.Item("TOTAL_OVERTIME"))
+                    TotalOT_LBL.Tag = .Item("TOTAL_OVERTIME")
+
+                    TotalHol_LBL.Text = FormatNumber(CDec(.Item("TOTAL_REGHOLIDAY")) + CDec(.Item("TOTAL_SPECHOLIDAY")))
+                    TotalHol_LBL.Tag = CDec(.Item("TOTAL_REGHOLIDAY")) + CDec(.Item("TOTAL_SPECHOLIDAY"))
+
+                    TotalNight_LBL.Text = FormatNumber(.Item("TOTAL_NIGHT_RATE"))
+                    TotalNight_LBL.Tag = .Item("TOTAL_NIGHT_RATE")
+
+                    TotalLateUnder_LBL.Text = FormatNumber(.Item("TOTAL_LATE_UT"))
+                    TotalLateUnder_LBL.Tag = .Item("TOTAL_LATE_UT")
+
+                    SSSComp_LBL.Text = FormatNumber(.Item("SSS_COMP"))
+                    SSSComp_LBL.Tag = .Item("SSS_COMP")
+
+                    HDMF_LBL.Text = FormatNumber(.Item("PAGIBIG_COMP"))
+                    HDMF_LBL.Tag = .Item("PAGIBIG_COMP")
+
+                    Philhealth_LBL.Text = FormatNumber(.Item("PHILHEALTH_COMP"))
+                    Philhealth_LBL.Tag = .Item("PHILHEALTH_COMP")
+
+                    GrossAmount_LBL.Text = FormatNumber(.Item("GROSS_AMOUNT"))
+                    GrossAmount_LBL.Tag = .Item("GROSS_AMOUNT")
+
                 End With
             End If
         End Using

@@ -133,6 +133,54 @@ Module Temporary
 
         Return (old_days, new_days, old_overtime, new_overtime, old_late, new_late, old_undertime, new_undertime)
     End Function
-    '========================================================= 
+    '=========================================================
+
+    Friend Sub PayoutRate()
+        Dim mysql As String = "Select BIOMETRIC_ID, PRESENT_DAYS, TOTAL_BASIC, FIX_MONTHLY_RATE, RATE_MONTHLY, A.PAYDATE  from Payroll_Payout A 
+                                  inner join payroll_employee B on B.BIO_NO = A.BIOMETRIC_ID 
+                                  inner join payroll_attendance C on C.BIOMETRICID = A.BIOMETRIC_ID and C.PAYDATE = A.PAYDATE"
+
+        Using ds As DataSet = LoadSQL(mysql, "Payroll_Payout")
+            For Each dr In ds.Tables(0).Rows
+                With dr
+
+                    Dim ratee As String = CDec(.item("TOTAL_BASIC")) / CDbl(.item("PRESENT_DAYS"))
+
+                    If .item("BIOMETRIC_ID") = 3888 Then
+                        Console.WriteLine("TOTAL_BASIC  " & .item("TOTAL_BASIC"))
+                    End If
+
+                    If .item("TOTAL_BASIC") = "0" Then
+                        ratee = 0
+                    ElseIf IsDBNull(.item("FIX_MONTHLY_RATE")) Then
+
+                    ElseIf .item("FIX_MONTHLY_RATE") = "True" Then
+                        ratee = CDec(.item("RATE_MONTHLY")) / 26
+                    End If
+
+                    Console.WriteLine(.item("BIOMETRIC_ID"))
+                    Console.WriteLine(ratee)
+                    Console.WriteLine(.item("PAYDATE"))
+                    UpdateRate(.item("BIOMETRIC_ID"), ratee, .item("PAYDATE"))
+                End With
+            Next
+        End Using
+    End Sub
+
+    Friend Sub UpdateRate(bio As String, rate As String, paydate As String)
+        Dim mysql As String = $"Select * from Payroll_Payout where BIOMETRIC_ID ='{bio}' and paydate = '{paydate}'"
+        Using ds As DataSet = LoadSQL(mysql, "Payroll_Payout")
+            If ds.Tables(0).Rows.Count > 0 Then
+                With ds.Tables(0).Rows(0)
+
+                    If paydate = "6/30/2022" Then rate = 352
+
+                    .Item("RATE") = rate
+
+                End With
+                SaveEntry(ds, False)
+            End If
+        End Using
+    End Sub
 
 End Module
