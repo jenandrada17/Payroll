@@ -22,6 +22,7 @@ Partial Class frmUserLogs
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Me.lvLogs = New System.Windows.Forms.ListView()
         Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader2 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -30,6 +31,7 @@ Partial Class frmUserLogs
         Me.Close_LBL = New System.Windows.Forms.Label()
         Me.Search_TXT = New System.Windows.Forms.TextBox()
         Me.Search_BTN = New System.Windows.Forms.Button()
+        Me.ToolTip1 = New System.Windows.Forms.ToolTip(Me.components)
         Me.SuspendLayout()
         '
         'lvLogs
@@ -129,4 +131,5 @@ Partial Class frmUserLogs
     Friend WithEvents ColumnHeader3 As ColumnHeader
     Friend WithEvents Search_TXT As TextBox
     Friend WithEvents Search_BTN As Button
+    Friend WithEvents ToolTip1 As ToolTip
 End Class

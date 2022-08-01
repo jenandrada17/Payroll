@@ -190,29 +190,6 @@ Module Public_Function
 
                 End Try
         End Select
-
-        'Select Case gotoForm
-        '    Case FormName.Loans
-        '        Try
-        '            Dim instForm_ As frmContribution = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmContribution").SingleOrDefault()
-        '            instForm_.Load_Contrib_Loan(emp, tabName)
-
-        '            If instForm_ Is Nothing Then
-        '                instForm_ = DirectCast(CreateObjectInstance("frmContribution"), Form)
-        '                instForm_.MdiParent = frmMainForm
-        '                frmMainForm.pNavigate.Controls.Add(instForm_)
-        '                frmMainForm.pNavigate.Tag = instForm_
-        '                instForm_.Show()
-        '                instForm_.Dock = DockStyle.Fill
-        '                instForm_.BringToFront()
-        '            Else
-        '                instForm_.BringToFront()
-        '            End If
-
-        '        Catch ex As Exception
-
-        '        End Try
-        'End Select
     End Sub
 
     Public Function CreateObjectInstance(ByVal objectName As String) As Object
@@ -226,8 +203,8 @@ Module Public_Function
         Catch ex As Exception
             obj = Nothing
         End Try
-        Return obj
 
+        Return obj
     End Function
 
     Friend Function DreadKnight(ByVal str As String, Optional ByVal special As String = Nothing) As String
@@ -260,7 +237,6 @@ Module Public_Function
         Return False
     End Function
 
-
 #Region "Log Module"
 
     Const LOG_FILE As String = "syslog.txt"
@@ -272,7 +248,6 @@ Module Public_Function
 
 #End Region
 
-    'Friend Sub Send_Email(byteViewer As Byte(), recipient_Email As String, recipient_Name As String, paydate As String, BodyText As String, subjectt As String, Optional FOR_single As Boolean = False)
     Friend Sub Send_Email(byteViewer As Byte(), recipient_Email As String, recipient_Name As String, paydate As String, BodyText As String, subjectt As String)
         Try
 
@@ -417,36 +392,6 @@ Module Public_Function
         End If
 
     End Sub
-
-    Public Function Get_13Month(BIO_NO As String)
-        Dim THIRTEEN_MONTH As Decimal = 0
-        Dim mysql As String = $"Select * FROM PAYROLL_13MONTH A inner join PAYROLL_EMPLOYEE B ON B.EMP_NO = A.EMP_NO where B.BIO_NO = '{BIO_NO}' and B.EMP_NO = A.EMP_NO"
-        Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_13MONTH")
-        If dss.Tables(0).Rows.Count > 0 Then
-            For Each dr In dss.Tables(0).Rows()
-                With dr
-                    THIRTEEN_MONTH = .Item("AMOUNT")
-                End With
-            Next
-        End If
-
-        Return THIRTEEN_MONTH
-    End Function
-
-    Public Function Get_13MontHHHH(EMP_NO As String)
-        Dim THIRTEEN_MONTH As Decimal = 0
-        Dim mysql As String = $"Select * FROM PAYROLL_13MONTH where EMP_NO = '{EMP_NO}'"
-        Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_13MONTH")
-        If dss.Tables(0).Rows.Count > 0 Then
-            For Each dr In dss.Tables(0).Rows()
-                With dr
-                    THIRTEEN_MONTH = .Item("AMOUNT")
-                End With
-            Next
-        End If
-
-        Return THIRTEEN_MONTH
-    End Function
 
     Public Sub SAVE_Emp_SBU_EXCEL(EMP_NO As String, RowNo As Integer)
         Dim mysql As String
@@ -608,11 +553,6 @@ Module Public_Function
         End Using
 
         Console.WriteLine("ROWWW " & RowNo)
-    End Sub
-
-
-    Public Sub DeleteDuplicate(table As String)
-        'RunCommand($"DELETE FROM {table} WHERE ID NOT IN  ( SELECT MAX(ID) FROM {table} GROUP BY CATEGORY ) and CATEGORY = 'SBU'  and PAYDATE = '12/31/2021' ")  'THIS IS TO DELETE DUPLICATE IN TBLMANNING 
     End Sub
 
 #End Region

@@ -9,7 +9,19 @@ Public Class frmMainForm
     Public DAYS_COUNT As Integer = 0
     Public starting, ending As Date
 
+
     Private Sub frmMainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+        'PayoutRate()
+
+        'RunCommand("Delete from Payroll_Attendance where BIOMETRICID IN (4732,
+        '            4600, 4456, 4733, 4742, 4710, 4717, 4317, 4226,  4430) ")
+
+        'RunCommand("Delete from Payroll_Payout where BIOMETRIC_ID IN (4732,
+        '            4600, 4456, 4733, 4742, 4710, 4717, 4317, 4226,  4430) ")
+
+        'RunCommand("Delete from RECORDED_ALLOW_DEDUC where BIO_NO IN (4732,
+        '            4600, 4456, 4733, 4742, 4710, 4717, 4317, 4226,  4430) ")
 
         'GetHO_Category()
 
@@ -179,7 +191,6 @@ Public Class frmMainForm
     Private Sub Loan_BTN_Click(sender As Object, e As EventArgs) Handles Loan_BTN.Click
         OpenWindowsForm("frmLoan")
     End Sub
-
 
     Private Sub ConnectToDatabaseToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ConnectToDatabase_Menu.Click
         Using conSettings As New ServerSettings

@@ -7,7 +7,7 @@
         <DataProvider>System.Data.DataSet</DataProvider>
         <ConnectString>/* Local Connection */</ConnectString>
       </ConnectionProperties>
-      <rd:DataSourceID>bb4af2a2-777e-4a76-97cb-e444010a0631</rd:DataSourceID>
+      <rd:DataSourceID>c5b0f8f8-7510-4dd0-98dc-628edb320cda</rd:DataSourceID>
     </DataSource>
   </DataSources>
   <DataSets>
@@ -21,21 +21,9 @@
           <DataField>NAME</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="NO">
-          <DataField>NO</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="EE">
-          <DataField>EE</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="ER">
-          <DataField>ER</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="EC">
-          <DataField>EC</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+        <Field Name="AMOUNT">
+          <DataField>AMOUNT</DataField>
+          <rd:TypeName>System.Decimal</rd:TypeName>
         </Field>
         <Field Name="BRANCH">
           <DataField>BRANCH</DataField>
@@ -45,7 +33,7 @@
       <rd:DataSetInfo>
         <rd:DataSetName>reports</rd:DataSetName>
         <rd:SchemaPath>G:\Payroll-System\PAYROLL\WindowsApp1\Dataset\reports.xsd</rd:SchemaPath>
-        <rd:TableName>Remittance</rd:TableName>
+        <rd:TableName>PerformanceIncentives</rd:TableName>
         <rd:TableAdapterFillMethod />
         <rd:TableAdapterGetDataMethod />
         <rd:TableAdapterName />
@@ -221,6 +209,83 @@
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
+                        <Textbox Name="BRANCH">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value>=Fields!BRANCH.Value</Value>
+                                  <Style>
+                                    <FontFamily>Arial Rounded MT Bold</FontFamily>
+                                    <FontSize>7.5pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Left</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>BRANCH</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>Silver</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                        <ColSpan>2</ColSpan>
+                      </CellContents>
+                    </TablixCell>
+                    <TablixCell />
+                    <TablixCell>
+                      <CellContents>
+                        <Textbox Name="Textbox17">
+                          <CanGrow>true</CanGrow>
+                          <KeepTogether>true</KeepTogether>
+                          <Paragraphs>
+                            <Paragraph>
+                              <TextRuns>
+                                <TextRun>
+                                  <Value />
+                                  <Style>
+                                    <FontFamily>Arial Rounded MT Bold</FontFamily>
+                                    <FontSize>7.5pt</FontSize>
+                                  </Style>
+                                </TextRun>
+                              </TextRuns>
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
+                            </Paragraph>
+                          </Paragraphs>
+                          <rd:DefaultName>Textbox17</rd:DefaultName>
+                          <Style>
+                            <Border>
+                              <Color>Silver</Color>
+                              <Style>Solid</Style>
+                            </Border>
+                            <PaddingLeft>2pt</PaddingLeft>
+                            <PaddingRight>2pt</PaddingRight>
+                            <PaddingTop>2pt</PaddingTop>
+                            <PaddingBottom>2pt</PaddingBottom>
+                          </Style>
+                        </Textbox>
+                      </CellContents>
+                    </TablixCell>
+                  </TablixCells>
+                </TablixRow>
+                <TablixRow>
+                  <Height>0.21094in</Height>
+                  <TablixCells>
+                    <TablixCell>
+                      <CellContents>
                         <Textbox Name="Textbox27">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
@@ -289,14 +354,14 @@
                     </TablixCell>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="EE">
+                        <Textbox Name="AMOUNT">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!EE.Value</Value>
+                                  <Value>=Fields!AMOUNT.Value</Value>
                                   <Style>
                                     <FontFamily>Arial Rounded MT Bold</FontFamily>
                                     <FontSize>7.5pt</FontSize>
@@ -308,7 +373,7 @@
                               </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>EE</rd:DefaultName>
+                          <rd:DefaultName>AMOUNT</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>Silver</Color>
@@ -407,7 +472,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=FormatNumber(Sum(CDec(Fields!EE.Value)))</Value>
+                                  <Value>=FormatNumber(Sum(CDec(Fields!AMOUNT.Value)))</Value>
                                   <Style>
                                     <FontFamily>Arial Rounded MT Bold</FontFamily>
                                     <FontSize>7.5pt</FontSize>
@@ -447,22 +512,33 @@
             </TablixColumnHierarchy>
             <TablixRowHierarchy>
               <TablixMembers>
+                <TablixMember />
+                <TablixMember />
                 <TablixMember>
-                  <KeepWithGroup>After</KeepWithGroup>
+                  <Group Name="BRANCH">
+                    <GroupExpressions>
+                      <GroupExpression>=Fields!BRANCH.Value</GroupExpression>
+                    </GroupExpressions>
+                  </Group>
+                  <SortExpressions>
+                    <SortExpression>
+                      <Value>=Fields!BRANCH.Value</Value>
+                    </SortExpression>
+                  </SortExpressions>
+                  <TablixMembers>
+                    <TablixMember>
+                      <KeepWithGroup>After</KeepWithGroup>
+                    </TablixMember>
+                    <TablixMember>
+                      <Group Name="Details" />
+                    </TablixMember>
+                  </TablixMembers>
                 </TablixMember>
-                <TablixMember>
-                  <KeepWithGroup>After</KeepWithGroup>
-                </TablixMember>
-                <TablixMember>
-                  <Group Name="Details" />
-                </TablixMember>
-                <TablixMember>
-                  <KeepWithGroup>Before</KeepWithGroup>
-                </TablixMember>
+                <TablixMember />
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>DataSet1</DataSetName>
-            <Height>1.01042in</Height>
+            <Height>1.22136in</Height>
             <Width>3.92084in</Width>
             <Style>
               <Border>
@@ -471,15 +547,15 @@
             </Style>
           </Tablix>
         </ReportItems>
-        <Height>1.01042in</Height>
+        <Height>1.22136in</Height>
         <Style />
       </Body>
       <Width>3.92084in</Width>
       <Page>
-        <LeftMargin>0.5in</LeftMargin>
-        <RightMargin>0.5in</RightMargin>
-        <TopMargin>0.5in</TopMargin>
-        <BottomMargin>0.5in</BottomMargin>
+        <LeftMargin>1in</LeftMargin>
+        <RightMargin>1in</RightMargin>
+        <TopMargin>1in</TopMargin>
+        <BottomMargin>1in</BottomMargin>
         <Style />
       </Page>
     </ReportSection>
@@ -506,5 +582,5 @@
     </GridLayoutDefinition>
   </ReportParametersLayout>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
-  <rd:ReportID>d3e8a1c0-891c-46a8-aa32-d1cc9b4f41b8</rd:ReportID>
+  <rd:ReportID>e491f5a8-6118-4b3e-97ba-9ea6d026944d</rd:ReportID>
 </Report>

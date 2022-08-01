@@ -17,13 +17,10 @@ Public Class frmNewEmployee
     Private allowCoolMove As Boolean = False
     Private myCoolPoint As New Point
 
-
     Private Sub frmNewEmployee_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
         Lists_Employees(lvEmployee)
-        'ListViewGrouping(lvEmployee, 0) 
         PopulateComboBox(Branch_ComboB, "PAYROLL_EMPLOYEE", "BRANCH_CODE")
-        'PopulateComboBox(Position_Combo, "PAYROLL_EMPLOYEE", "EMP_POSITION")
         PopulateComboBox_Any(Position_Combo, "PAYROLL_EMPLOYEE", "EMP_POSITION")
 
         For x = 0 To 23
@@ -31,6 +28,7 @@ Public Class frmNewEmployee
             TimeIn_Combo.Items.Add(tm.ToShortTimeString)
             TimeOut_Combo.Items.Add(tm.ToShortTimeString)
         Next
+
     End Sub
 
     Private Sub Close_LBL_Click(sender As Object, e As EventArgs) Handles Close_LBL.Click
@@ -101,6 +99,10 @@ Public Class frmNewEmployee
             '                    Optional HDMF As String = "", Optional HO_CATEGORY As String = "", Optional COMMON_CATEGORY As String = "",
             '                    Optional EMP_POSITION As String = "", Optional COMMON_COMPANY As String = "", Optional PhotoCategory As String = "",
             '                    Optional Middlename As String = "", Optional BDATE As String = "", Optional ADDRESS As String = "")
+
+            Console.WriteLine(eCell(row, 1).Value)
+            Console.WriteLine(eCell(row, 9).Value)
+            Console.WriteLine(eCell(row, 11).Value)
 
             SaveNew_Employee(eCell(row, 2).Value, eCell(row, 3).Value, eCell(row, 9).Value, eCell(row, 1).Value, eCell(row, 12).Value,
                          "ACTIVE", eCell(row, 4).Value, True, eCell(row, 7).Value, eCell(row, 8).Value, eCell(row, 5).Value,
@@ -406,7 +408,6 @@ Public Class frmNewEmployee
         Return DateTime.TryParse(input, result)
     End Function
 
-
     Private Sub Import_Employee_Benifits_Details_BY_NAME()
 
         eApp = New Excel.Application
@@ -646,7 +647,6 @@ Public Class frmNewEmployee
 
     Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
         Lists_Employees(lvEmployee, txtSearch.Text)
-        'ListViewGrouping(lvEmployee, 0)
     End Sub
 
     Private Sub txtSearch_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtSearch.KeyPress
@@ -680,7 +680,6 @@ Public Class frmNewEmployee
         Add_Panel.Visible = False
         clearAdd()
     End Sub
-
 
     Private Sub clearAdd()
         Bio_TXT.Clear()
@@ -1005,12 +1004,9 @@ Public Class frmNewEmployee
 
     End Sub
 
-
     Private Sub HO_Category_SelectedValueChanged(sender As Object, e As EventArgs) Handles HO_Category.SelectedValueChanged
 
         ComCategory_Combo.Text = ""
-
-        'If HO_Category.SelectedIndex = 12 Or HO_Category.SelectedIndex = 10 Or HO_Category.SelectedIndex = 11 Then
 
         If HO_Category.SelectedIndex = 12 Then '================ PGC COMMON EMPLOYESS
             Label20.Visible = True
@@ -1026,67 +1022,6 @@ Public Class frmNewEmployee
             ComCompany_Cmbo.Visible = False
         End If
     End Sub
-
-    'Private Sub Add_Company_CB_TextChanged_1(sender As Object, e As EventArgs) Handles Position_Combo.TextChanged, HO_Category.TextChanged, ComCategory_Combo.TextChanged, Branch_ComboB.TextChanged, Add_Company_CB.TextChanged
-    'Private Sub Add_Company_CB_TextChanged_1(sender As Object, e As EventArgs) Handles Add_Company_CB.TextChanged
-
-    '    If Add_Company_CB.SelectedIndex = 4 Then
-
-    '        Label4.Visible = False
-    '        Branch_ComboB.Text = ""
-    '        Branch_ComboB.Visible = False
-
-    '        Label24.Visible = False
-    '        PhotoCategory_Combo.Visible = False
-    '        PhotoCategory_Combo.Text = ""
-
-    '        Label19.Visible = True
-    '        HO_Category.Visible = True
-
-
-    '    ElseIf Add_Company_CB.SelectedIndex = 0 Then
-
-    '        Label19.Visible = False
-    '        HO_Category.Visible = False
-    '        HO_Category.Text = ""
-
-    '        Label20.Visible = False
-    '        ComCategory_Combo.Visible = False
-    '        ComCategory_Combo.Text = ""
-
-    '        Label23.Visible = False
-    '        ComCompany_Cmbo.Visible = False
-    '        ComCompany_Cmbo.Text = ""
-
-    '        Label24.Visible = True
-    '        PhotoCategory_Combo.Visible = True
-
-    '        Label4.Visible = True
-    '        Branch_ComboB.Visible = True
-
-    '    Else
-
-    '        Label4.Visible = True
-    '        Branch_ComboB.Visible = True
-
-    '        Label19.Visible = False
-    '        HO_Category.Visible = False
-    '        HO_Category.Text = ""
-
-    '        Label24.Visible = False
-    '        PhotoCategory_Combo.Visible = False
-    '        PhotoCategory_Combo.Text = ""
-
-    '        Label20.Visible = False
-    '        ComCategory_Combo.Visible = False
-    '        ComCategory_Combo.Text = ""
-
-    '        Label23.Visible = False
-    '        ComCompany_Cmbo.Visible = False
-    '        ComCompany_Cmbo.Text = ""
-
-    '    End If
-    'End Sub
 
     Private Sub lvEmployee_MouseClick(sender As Object, e As MouseEventArgs) Handles lvEmployee.MouseClick
         If e.Button = MouseButtons.Right Then

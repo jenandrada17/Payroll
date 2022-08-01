@@ -61,7 +61,7 @@ Module Report_function
                             EMAIL = GetSummary_Email(PAYROLL, $"BRANCH_CODE = '{BRANCHCODE}'")
                         End If
 
-                        Dim HO_array As String() = HO_CATEGORY.Split(New Char() {" "c}) '=== ADMIN   
+                        Dim HO_array As String() = HO_CATEGORY.TrimEnd.Split(New Char() {" "c}) '=== ADMIN   
                         ADDRESS = ADDRESS.ToLower()
 
                         If HO_CATEGORY.Contains("Photo") Then
@@ -134,7 +134,7 @@ Module Report_function
                             EMAIL = GetSummary_Email(PAYROLL, $"BRANCH_CODE = '{BRANCHCODE}'")
                         End If
 
-                        Dim HO_array As String() = HO_CATEGORY.Split(New Char() {" "c}) '=== ADMIN   
+                        Dim HO_array As String() = HO_CATEGORY.Split(New Char() {" "c}) '=== ADMIN    
                         ADDRESS = ADDRESS.ToLower()
 
                         COMPANY = $"PHOTO(DAVAO PERFECT)"
@@ -146,9 +146,6 @@ Module Report_function
                     End With
                 Next
                 progressBarEnd()
-            Else
-                'COMPANY = $"PHOTO(DAVAO PERFECT)"
-                'dt_PhotoDavao.Rows.Add(PAYROLL.ToString("MMMM dd, yyyy").ToUpper(), COMPANY, Nothing, Nothing, 0, 0, 0)
             End If
         End Using
 
@@ -407,7 +404,6 @@ Module Report_function
 
         Return dt_Dalton
     End Function
-
 
     Friend Function LoadDataTable_Household(paydate As String) As DataTable
 
@@ -677,10 +673,12 @@ Module Report_function
             .Columns.Add("EE")
             .Columns.Add("ER")
             .Columns.Add("EC")
+            .Columns.Add("BRANCH")
         End With
 
-        mysql = $"Select * From PAYROLL_PAYOUT INNER JOIN PAYROLL_EMPLOYEE ON BIO_NO = BIOMETRIC_ID       
-                                        WHERE PAYDATE = '{paydate}' and {str} and SSS_COMP <> 0 ORDER BY FULLNAME"
+        mysql = $"Select * From PAYROLL_PAYOUT INNER JOIN PAYROLL_EMPLOYEE ON BIO_NO = BIOMETRIC_ID 
+                                        LEFT JOIN PAYROLL_CITY_BRANCH ON BRANCHCODE = BRANCH_CODE 
+                                        WHERE PAYDATE = '{paydate}' {str} and SSS_COMP <> 0 ORDER BY FULLNAME"
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
             If ds.Tables(0).Rows.Count > 0 Then
@@ -698,7 +696,31 @@ Module Report_function
                         Dim ER As String = Get_SSS(monthly_Basic).ER
                         Dim EC As String = Get_SSS(monthly_Basic).EC
 
-                        dt_Remittance.Rows.Add(FULLNAME, NOO, EE, ER, EC)
+                        '===================================== BRANCHES ===============================
+                        Dim BRANCH_CODE As String = IIf(.Item("BRANCH_CODE") = "" Or IsDBNull(.Item("BRANCH_CODE")), .Item("HO_CATEGORY"), .Item("BRANCHNAME"))
+                        Dim COMPANY As String = .Item("COMPANY")
+                        Dim HO_CATEGORY As String = IIf(IsDBNull(.Item("HO_CATEGORY")), "", .Item("HO_CATEGORY"))
+                        Dim COMPANY_CATEGORY As String = IIf(IsDBNull(.Item("COMPANY_CATEGORY")), "", .Item("COMPANY_CATEGORY"))
+
+                        If COMPANY = "DALTON" Then
+                            BRANCH_CODE = IIf(.Item("BRANCH_CODE") = "" Or IsDBNull(.Item("BRANCH_CODE")), .Item("HO_CATEGORY"), TitleCase(.Item("COMPANY")) & "-" & .Item("BRANCHNAME"))
+                        End If
+
+                        If HO_CATEGORY = "GHS/P&G UY Admin Office" Or HO_CATEGORY = "GHS/P&G UY Admin Operation" Then
+                            BRANCH_CODE = HO_CATEGORY
+
+                        ElseIf HO_CATEGORY.Contains("Dalton") Then
+                            BRANCH_CODE = HO_CATEGORY
+
+                        ElseIf HO_CATEGORY.Contains("Photo") Or HO_CATEGORY.Contains("PGC") Then
+                            BRANCH_CODE = HO_CATEGORY
+                        End If
+
+                        If COMPANY_CATEGORY <> "" Then
+                            BRANCH_CODE = COMPANY_CATEGORY
+                        End If
+
+                        dt_Remittance.Rows.Add(FULLNAME, NOO, EE, ER, EC, BRANCH_CODE)
 
                         frmMainForm.AppProgressBar.Value += 1
                     End With
@@ -722,14 +744,17 @@ Module Report_function
         With dt_Loans
             .Columns.Add("NAME")
             .Columns.Add("EE")
+            .Columns.Add("BRANCH")
         End With
 
         If category = "SSS" Then
-            mysql = $"Select * From RECORDED_ALLOW_DEDUC A INNER JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIO_NO       
-                                        WHERE PAYDATE = '{paydate}' AND TRANSAC_NAME = 'DEDUCTION' AND UPPER(CATEGORY) LIKE UPPER('%SSS%') AND {str} ORDER BY FULLNAME"
+            mysql = $"Select * From RECORDED_ALLOW_DEDUC A INNER JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIO_NO 
+                                        LEFT JOIN PAYROLL_CITY_BRANCH ON BRANCHCODE = BRANCH_CODE       
+                                        WHERE PAYDATE = '{paydate}' AND TRANSAC_NAME = 'DEDUCTION' AND UPPER(A.CATEGORY) LIKE UPPER('%SSS%') {str} ORDER BY FULLNAME"
         Else
-            mysql = $"Select * From RECORDED_ALLOW_DEDUC A INNER JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIO_NO         
-                                        WHERE PAYDATE = '{paydate}' AND TRANSAC_NAME = 'DEDUCTION' AND (UPPER(CATEGORY) LIKE UPPER('%PAG IBIG%') oR UPPER(CATEGORY) LIKE UPPER('%PAG-IBIG%')) AND {str} ORDER BY FULLNAME"
+            mysql = $"Select * From RECORDED_ALLOW_DEDUC A INNER JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIO_NO  
+                                        LEFT JOIN PAYROLL_CITY_BRANCH ON BRANCHCODE = BRANCH_CODE        
+                                        WHERE PAYDATE = '{paydate}' AND TRANSAC_NAME = 'DEDUCTION' AND (UPPER(A.CATEGORY) LIKE UPPER('%PAG IBIG%') oR UPPER(A.CATEGORY) LIKE UPPER('%PAG-IBIG%')) {str} ORDER BY FULLNAME"
         End If
 
         Using ds As DataSet = LoadSQL(mysql, "RECORDED_ALLOW_DEDUC")
@@ -743,7 +768,31 @@ Module Report_function
                         Dim FULLNAME As String = IIf(IsDBNull(.Item("FULLNAME")), "", .Item("FULLNAME"))
                         Dim AMOUNT As String = FormatNumber(.Item("AMOUNT"))
 
-                        dt_Loans.Rows.Add(FULLNAME, AMOUNT)
+                        '===================================== BRANCHES ===============================
+                        Dim BRANCH_CODE As String = IIf(.Item("BRANCH_CODE") = "" Or IsDBNull(.Item("BRANCH_CODE")), .Item("HO_CATEGORY"), .Item("BRANCHNAME"))
+                        Dim COMPANY As String = .Item("COMPANY")
+                        Dim HO_CATEGORY As String = IIf(IsDBNull(.Item("HO_CATEGORY")), "", .Item("HO_CATEGORY"))
+                        Dim COMPANY_CATEGORY As String = IIf(IsDBNull(.Item("COMPANY_CATEGORY")), "", .Item("COMPANY_CATEGORY"))
+
+                        If COMPANY = "DALTON" Then
+                            BRANCH_CODE = IIf(.Item("BRANCH_CODE") = "" Or IsDBNull(.Item("BRANCH_CODE")), .Item("HO_CATEGORY"), TitleCase(.Item("COMPANY")) & "-" & .Item("BRANCHNAME"))
+                        End If
+
+                        If HO_CATEGORY = "GHS/P&G UY Admin Office" Or HO_CATEGORY = "GHS/P&G UY Admin Operation" Then
+                            BRANCH_CODE = HO_CATEGORY
+
+                        ElseIf HO_CATEGORY.Contains("Dalton") Then
+                            BRANCH_CODE = HO_CATEGORY
+
+                        ElseIf HO_CATEGORY.Contains("Photo") Or HO_CATEGORY.Contains("PGC") Then
+                            BRANCH_CODE = HO_CATEGORY
+                        End If
+
+                        If COMPANY_CATEGORY <> "" Then
+                            BRANCH_CODE = COMPANY_CATEGORY
+                        End If
+
+                        dt_Loans.Rows.Add(FULLNAME, AMOUNT, BRANCH_CODE)
 
                         frmMainForm.AppProgressBar.Value += 1
                     End With
@@ -770,10 +819,12 @@ Module Report_function
             .Columns.Add("EE")
             .Columns.Add("ER")
             .Columns.Add("EC")
+            .Columns.Add("BRANCH")
         End With
 
-        mysql = $"Select * From PAYROLL_PAYOUT INNER JOIN PAYROLL_EMPLOYEE ON BIO_NO = BIOMETRIC_ID       
-                                        WHERE PAYDATE = '{paydate}' and {str} and PAGIBIG_COMP <> 0 ORDER BY FULLNAME"
+        mysql = $"Select * From PAYROLL_PAYOUT INNER JOIN PAYROLL_EMPLOYEE ON BIO_NO = BIOMETRIC_ID   
+                                        LEFT JOIN PAYROLL_CITY_BRANCH ON BRANCHCODE = BRANCH_CODE     
+                                        WHERE PAYDATE = '{paydate}' {str} and PAGIBIG_COMP <> 0 ORDER BY FULLNAME"
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
             If ds.Tables(0).Rows.Count > 0 Then
@@ -788,8 +839,33 @@ Module Report_function
 
                         Dim NOO As String = IIf(IsDBNull(.Item("PAGIBIGNO")), "", .Item("PAGIBIGNO"))
                         Dim EE As String = Get_Pagibig(monthly_Basic)
+                        Dim BRANCH As String = ""
 
-                        dt_Remittance.Rows.Add(FULLNAME, NOO, EE, EE)
+                        '===================================== BRANCHES ===============================
+                        Dim BRANCH_CODE As String = IIf(.Item("BRANCH_CODE") = "" Or IsDBNull(.Item("BRANCH_CODE")), .Item("HO_CATEGORY"), .Item("BRANCHNAME"))
+                        Dim COMPANY As String = .Item("COMPANY")
+                        Dim HO_CATEGORY As String = IIf(IsDBNull(.Item("HO_CATEGORY")), "", .Item("HO_CATEGORY"))
+                        Dim COMPANY_CATEGORY As String = IIf(IsDBNull(.Item("COMPANY_CATEGORY")), "", .Item("COMPANY_CATEGORY"))
+
+                        If COMPANY = "DALTON" Then
+                            BRANCH_CODE = IIf(.Item("BRANCH_CODE") = "" Or IsDBNull(.Item("BRANCH_CODE")), .Item("HO_CATEGORY"), TitleCase(.Item("COMPANY")) & "-" & .Item("BRANCHNAME"))
+                        End If
+
+                        If HO_CATEGORY = "GHS/P&G UY Admin Office" Or HO_CATEGORY = "GHS/P&G UY Admin Operation" Then
+                            BRANCH_CODE = HO_CATEGORY
+
+                        ElseIf HO_CATEGORY.Contains("Dalton") Then
+                            BRANCH_CODE = HO_CATEGORY
+
+                        ElseIf HO_CATEGORY.Contains("Photo") Or HO_CATEGORY.Contains("PGC") Then
+                            BRANCH_CODE = HO_CATEGORY
+                        End If
+
+                        If COMPANY_CATEGORY <> "" Then
+                            BRANCH_CODE = COMPANY_CATEGORY
+                        End If
+
+                        dt_Remittance.Rows.Add(FULLNAME, NOO, EE, EE, Nothing, BRANCH_CODE)
 
                         frmMainForm.AppProgressBar.Value += 1
                     End With
@@ -814,10 +890,12 @@ Module Report_function
             .Columns.Add("EE")
             .Columns.Add("ER")
             .Columns.Add("EC")
+            .Columns.Add("BRANCH")
         End With
 
-        mysql = $"Select * From PAYROLL_PAYOUT INNER JOIN PAYROLL_EMPLOYEE ON BIO_NO = BIOMETRIC_ID       
-                                        WHERE PAYDATE = '{paydate}' and {str} and PHILHEALTH_COMP <> 0 ORDER BY FULLNAME"
+        mysql = $"Select * From PAYROLL_PAYOUT INNER JOIN PAYROLL_EMPLOYEE ON BIO_NO = BIOMETRIC_ID   
+                                        LEFT JOIN PAYROLL_CITY_BRANCH ON BRANCHCODE = BRANCH_CODE     
+                                        WHERE PAYDATE = '{paydate}' {str} and PHILHEALTH_COMP <> 0 ORDER BY FULLNAME"
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
             If ds.Tables(0).Rows.Count > 0 Then
@@ -832,8 +910,33 @@ Module Report_function
 
                         Dim NOO As String = IIf(IsDBNull(.Item("PHILHEALTHNO")), "", .Item("PHILHEALTHNO"))
                         Dim EE As String = Get_PhilHealth(monthly_Basic)
+                        Dim BRANCH As String = ""
 
-                        dt_Remittance.Rows.Add(FULLNAME, NOO, EE, EE)
+                        '===================================== BRANCHES ===============================
+                        Dim BRANCH_CODE As String = IIf(.Item("BRANCH_CODE") = "" Or IsDBNull(.Item("BRANCH_CODE")), .Item("HO_CATEGORY"), .Item("BRANCHNAME"))
+                        Dim COMPANY As String = .Item("COMPANY")
+                        Dim HO_CATEGORY As String = IIf(IsDBNull(.Item("HO_CATEGORY")), "", .Item("HO_CATEGORY"))
+                        Dim COMPANY_CATEGORY As String = IIf(IsDBNull(.Item("COMPANY_CATEGORY")), "", .Item("COMPANY_CATEGORY"))
+
+                        If COMPANY = "DALTON" Then
+                            BRANCH_CODE = IIf(.Item("BRANCH_CODE") = "" Or IsDBNull(.Item("BRANCH_CODE")), .Item("HO_CATEGORY"), TitleCase(.Item("COMPANY")) & "-" & .Item("BRANCHNAME"))
+                        End If
+
+                        If HO_CATEGORY = "GHS/P&G UY Admin Office" Or HO_CATEGORY = "GHS/P&G UY Admin Operation" Then
+                            BRANCH_CODE = HO_CATEGORY
+
+                        ElseIf HO_CATEGORY.Contains("Dalton") Then
+                            BRANCH_CODE = HO_CATEGORY
+
+                        ElseIf HO_CATEGORY.Contains("Photo") Or HO_CATEGORY.Contains("PGC") Then
+                            BRANCH_CODE = HO_CATEGORY
+                        End If
+
+                        If COMPANY_CATEGORY <> "" Then
+                            BRANCH_CODE = COMPANY_CATEGORY
+                        End If
+
+                        dt_Remittance.Rows.Add(FULLNAME, NOO, EE, EE, Nothing, BRANCH_CODE)
 
                         frmMainForm.AppProgressBar.Value += 1
                     End With
@@ -869,120 +972,6 @@ Module Report_function
         Return list_String
     End Function
 
-    Public Sub RUN_This()
-
-        Dim mysql As String = $"Select * From payroll_attendance A 
-                                       inner join RECORDED_ALLOW_DEDUC B on B.BIO_NO = A.BIOMETRICID 
-                                        AND A.PAYDATE = '3/31/2022' and TRANSAC_NAME = 'ALLOWANCE' 
-                                        AND CATEGORY = 'PERFORMANCE INCENTIVES'"
-
-        Using ds As DataSet = LoadSQL(mysql, "payroll_attendance")
-            If ds.Tables(0).Rows.Count > 0 Then
-                For Each DR In ds.Tables(0).Rows
-                    With DR
-                        .item("PI_ADD_DAYS") = DBNull.Value
-                    End With
-                    SaveEntry(ds, False)
-                Next
-            End If
-        End Using
-
-    End Sub
-
-    'Friend Sub KKKKK(bioNo As String)
-    '    Dim paydate_ As DateTime = "3/31/2022"
-    '    Dim sql_2 As String = $"Select * From PAYROLL_ALLOWANCES inner join PAYROLL_EMPLOYEE on BIO_NO = BIOMETRIC_NO WHERE BIOMETRIC_NO = '{bioNo}' and ALLOWED = 'YES' and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
-    '    Using ds_2 As DataSet = LoadSQL(sql_2, "PAYROLL_ALLOWANCES")
-    '        If ds_2.Tables(0).Rows.Count > 0 Then
-    '            For Each dr_2 In ds_2.Tables(0).Rows
-    '                With dr_2
-
-    '                    If .item("EFFECTIVE_DATE") <= paydate_ Then
-
-    '                        Dim fix_monthly_rate As Boolean = IIf(IsDBNull(.Item("FIX_MONTHLY_RATE")), False, .Item("FIX_MONTHLY_RATE"))
-    '                        '============== PERFORMANCE INCENTIVES DEDUCTION IF EVER MAY ABSENT ===================
-    '                        Dim PI As Decimal = 0
-    '                        Dim deduc_to_PI As Decimal = 0
-
-    '                        If .item("CATEGORY") = "PERFORMANCE INCENTIVES" Then
-    '                            If fix_monthly_rate = False And .item("FIX") = "NO" Then
-    '                                Dim PI_totalDays As Double = GetFirst_NoOfDays(bioNo, paydate_) + NoOfDays + RegularHol + SIL + PI_ADD_DAYS
-    '                                Dim absent As Double = 0
-
-    '                                If PI_totalDays < 26 Then
-    '                                    absent = 26 - PI_totalDays
-    '                                    deduc_to_PI = (.Item("AMOUNT") / 26) * absent
-    '                                End If
-
-    '                                Allowances = (Allowances + .Item("AMOUNT")) - deduc_to_PI
-    '                                Save_Recorded_Allow_Deduc(bioNo, paydate_, .Item("CATEGORY"), .Item("AMOUNT") - deduc_to_PI, "ALLOWANCE")
-    '                                Continue For  '========= EXIT FOR (PARA DILI MAGDOUBLE SAVING ========
-    '                            Else
-    '                                Allowances = Allowances + .Item("AMOUNT")
-    '                                Save_Recorded_Allow_Deduc(bioNo, paydate_, .Item("CATEGORY"), .Item("AMOUNT"), "ALLOWANCE")
-    '                                Continue For  '========= EXIT FOR (PARA DILI MAGDOUBLE SAVING ========
-    '                            End If
-    '                        End If
-
-    '                        Allowances = Allowances + .Item("AMOUNT")
-    '                        Save_Recorded_Allow_Deduc(bioNo, paydate_, .Item("CATEGORY"), .Item("AMOUNT"), "ALLOWANCE")
-    '                    End If
-    '                End With
-    '            Next
-    '        End If
-    '    End Using
-    'End Sub
-
-    Public Sub update_rECORD_ALLOW_DEDUC(BIO As String, AMOUNT As String, CATEGORY As String)
-
-        Dim sql As String = $"Select * From RECORDED_ALLOW_DEDUC where BIO_NO = '{BIO}' AND CATEGORY = '{CATEGORY}'"
-        Using ds As DataSet = LoadSQL(sql, "RECORDED_ALLOW_DEDUC")
-            If ds.Tables(0).Rows.Count > 0 Then
-                Dim dsNewRow As DataRow = ds.Tables(0).Rows(0)
-                With dsNewRow
-
-                    .Item("AMOUNT") = AMOUNT
-
-                End With
-                SaveEntry(ds, False)
-            End If
-        End Using
-
-    End Sub
-
-    Public Sub update_13thMonth(BIO As String, AMOUNT As String, CATEGORY As String)
-
-        Dim sql As String = $"Select * From RECORDED_ALLOW_DEDUC where BIO_NO = '{BIO}' AND CATEGORY = '{CATEGORY}'"
-        Using ds As DataSet = LoadSQL(sql, "RECORDED_ALLOW_DEDUC")
-            If ds.Tables(0).Rows.Count > 0 Then
-                Dim dsNewRow As DataRow = ds.Tables(0).Rows(0)
-                With dsNewRow
-
-                    .Item("AMOUNT") = AMOUNT
-
-                End With
-                SaveEntry(ds, False)
-            End If
-        End Using
-
-    End Sub
-
-    'Public Sub SAVEE(BIO As String, LASTE As String)
-
-    '    Dim mysqlL As String = $"Select * FROM PAYROLL_PAYOUT where BIOMETRIC_ID = '{BIO}' and PAYDATE = '9/15/2021'"
-    '    Dim dss As DataSet = LoadSQL(mysqlL, "PAYROLL_PAYOUT")
-    '    If dss.Tables(0).Rows.Count > 0 Then
-    '        For Each dr In dss.Tables(0).Rows
-    '            With dr
-
-    '                .Item("TOTAL_LATE_UTT") = LASTE
-
-    '    End With
-    '    dss.Tables(0).Rows.Add(DSnEW)
-    '    SaveEntry(dss)
-
-    'End Sub
-
     Friend Function GET_STRING(TABLE As String, column As String, STR As String)
         Dim VALUEE As String = ""
         Dim MYSQL = $"SELECT {column} FROM {TABLE} WHERE {STR}"
@@ -998,77 +987,31 @@ Module Report_function
         Return VALUEE
     End Function
 
-    Friend Sub GetTempAttendance(BIOMETRICID As String, paydate_ As String, TotalDays As String, TotalOTHr As String,
-                                    Late_Total As String, Under_Total As String, TotalRHoliday As String, TotalSHoliday As String,
-                                    TRAINING_DAYS As String, TRAINING_REGHOLIDAY As String, TRAINING_SPECHOLIDAY As String,
-                                    NIGHT_RATE As String)
+    Friend Sub Laod_13Month(bioNo As String, report As Microsoft.Reporting.WinForms.ReportViewer, Optional range As DateTime = Nothing)
 
-        Dim mysql As String = "Select * From TEMP_ATTENDANCE Rows 1"
-        Using ds As DataSet = LoadSQL(mysql, "TEMP_ATTENDANCE")
-
-            Dim dsNewRow As DataRow = ds.Tables(0).NewRow
-            With dsNewRow
-                .Item("BIOMETRICID") = BIOMETRICID
-                .Item("PAYDATE") = paydate_
-                .Item("PRESENT_DAYS") = TotalDays
-                .Item("OVERTIME") = TotalOTHr
-                .Item("LATE") = Late_Total
-                .Item("UNDERTIME") = Under_Total
-                .Item("REGHOLIDAY") = TotalRHoliday
-                .Item("SPECHOLIDAY") = TotalSHoliday
-                .Item("TRAINING_DAYS") = TRAINING_DAYS
-                .Item("TRAINING_REGHOLIDAY") = TRAINING_REGHOLIDAY
-                .Item("TRAINING_SPECHOLIDAY") = TRAINING_SPECHOLIDAY
-                .Item("NIGHT_RATE") = NIGHT_RATE
-            End With
-            ds.Tables(0).Rows.Add(dsNewRow)
-            SaveEntry(ds)
-        End Using
-    End Sub
-
-    Private Sub SAVE_TO_DEDUCTION(BIO_NO As String, CATEGORY As String, AMORT As String, PRINCIPAL As String, CREDIT As String, BALANCE As String, DATEE As String, SCHEDULE As String, STATUS As String)
-        Dim sql As String = $"select * from PAYROLL_DEDUCTION Rows 1"
-        Using ds As DataSet = LoadSQL(sql, "PAYROLL_DEDUCTION")
-            Dim dsNew As DataRow = ds.Tables(0).NewRow
-            With dsNew
-                .Item("BIO_NO") = BIO_NO
-                .Item("CATEGORY") = CATEGORY
-                .Item("AMORT") = AMORT
-                .Item("PRINCIPAL") = PRINCIPAL
-                .Item("CREDIT") = CREDIT
-                .Item("BALANCE") = BALANCE
-                .Item("DATEE") = DATEE
-                .Item("SCHEDULE") = SCHEDULE
-
-                If STATUS <> Nothing Then
-                    .Item("STATUS") = STATUS
-                End If
-            End With
-
-            ds.Tables(0).Rows.Add(dsNew)
-            SaveEntry(ds)
-        End Using
-    End Sub
-
-    Friend Sub Laod_13Month(bioNo As String, report As Microsoft.Reporting.WinForms.ReportViewer)
-
-        Dim datee As DateTime = Date.Now
+        Dim datee As DateTime = IIf(range = Nothing, Date.Now, range)
         Dim December_April As DateTime = New DateTime(datee.AddYears(-1).Year, 12, 1)
         Dim May_Nov As DateTime = New DateTime(datee.Year, 5, 1)
 
         Dim starting_date, ending_date As String
-
-        If datee.Month >= 4 And datee.Month <= 11 Then
+        Dim startt As New DateTime(datee.Year, 5, 16)
+        Dim endd As New DateTime(datee.Year, 12, 15)
+        If (datee >= startt AndAlso datee <= endd) Then
             starting_date = May_Nov.ToString("d")
-            ending_date = May_Nov.AddMonths(6).ToString("d")
+
+            Dim days As Integer = System.DateTime.DaysInMonth(May_Nov.Year, May_Nov.Month)
+            ending_date = May_Nov.AddMonths(6).AddDays(days).AddDays(-1).ToString("d")
         Else
             starting_date = December_April.ToString("d")
-            ending_date = December_April.AddMonths(4).ToString("d")
+
+            Dim days As Integer = System.DateTime.DaysInMonth(December_April.Year, December_April.Month)
+            ending_date = December_April.AddMonths(4).AddDays(days).AddDays(-1).ToString("d")
         End If
 
         report.LocalReport.DataSources.Clear()
 
         Try
+
             Dim dt As New DataTable()
             With dt
                 .Columns.Add("EMP_NAME")
@@ -1079,7 +1022,7 @@ Module Report_function
                 .Columns.Add("REGULAR_PAY")
             End With
 
-            Dim mysql As String = $"Select FULLNAME, BIOMETRIC_ID, PAYDATE  from PAYROLL_EMPLOYEE inner join PAYROLL_PAYOUT on BIOMETRIC_ID = BIO_NO where BIO_NO='{bioNo}'"
+            Dim mysql As String = $"Select FULLNAME, BIOMETRIC_ID, PAYDATE from PAYROLL_EMPLOYEE inner join PAYROLL_PAYOUT on BIOMETRIC_ID = BIO_NO where BIO_NO='{bioNo}' and PAYDATE BETWEEN '{starting_date}' AND '{ending_date}'"
             Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
                 progressBarStart(ds.Tables(0).Rows.Count)
                 For Each dr In ds.Tables(0).Rows
@@ -1106,10 +1049,12 @@ Module Report_function
                 Next
 
                 Dim dataSource As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt)
+                report.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_13Month.rdlc"
                 report.LocalReport.DataSources.Add(dataSource)
                 report.RefreshReport()
                 progressBarEnd()
             End Using
+
         Catch ex As Exception
             MsgBox(ex.ToString)
         End Try

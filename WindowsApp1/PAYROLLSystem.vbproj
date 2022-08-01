@@ -379,12 +379,15 @@
     <EmbeddedResource Include="Reports\rpt_Deduction.rdlc" />
     <EmbeddedResource Include="Reports\rpt_DTR_ByGroup.rdlc" />
     <EmbeddedResource Include="Reports\rpt_Loans.rdlc" />
+    <EmbeddedResource Include="Reports\rpt_LoansALL.rdlc" />
     <EmbeddedResource Include="Reports\rpt_NetPay.rdlc" />
     <EmbeddedResource Include="Reports\rpt_PAF.rdlc" />
     <EmbeddedResource Include="Reports\rpt_PayrollSummary.rdlc" />
     <EmbeddedResource Include="Reports\rpt_payslip.rdlc" />
     <EmbeddedResource Include="Reports\rpt_PI.rdlc" />
+    <EmbeddedResource Include="Reports\rpt_PI_All.rdlc" />
     <EmbeddedResource Include="Reports\rpt_Remittance.rdlc" />
+    <EmbeddedResource Include="Reports\rpt_RemittanceALL.rdlc" />
     <EmbeddedResource Include="Reports\rpt_SBU.rdlc" />
   </ItemGroup>
   <ItemGroup>
