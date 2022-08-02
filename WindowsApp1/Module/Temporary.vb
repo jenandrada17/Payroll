@@ -183,4 +183,43 @@ Module Temporary
         End Using
     End Sub
 
+    Friend Sub Update_Recorded_Allow_Deduct_ID()
+
+        Dim mysql As String = "Select A.*, B.ID as idd from RECORDED_ALLOW_DEDUC A 
+                                  inner join payroll_deduction B on B.BIO_NO = A.BIO_NO and B.CATEGORY = A.CATEGORY 
+                                  where A.PAYDATE = '7/31/2022'"
+
+        Using ds As DataSet = LoadSQL(mysql, "RECORDED_ALLOW_DEDUC")
+            For Each dr In ds.Tables(0).Rows
+                With dr
+
+                    Dim bio_no As String = .item("BIO_NO")
+                    Dim category As String = .item("CATEGORY")
+                    Dim paydate As String = .item("PAYDATE")
+                    Dim r_deduct_id As String = .item("idd")
+
+                    Console.WriteLine(bio_no)
+                    Console.WriteLine(category)
+                    Console.WriteLine(paydate)
+                    Console.WriteLine(r_deduct_id)
+                    UpdateDeduct_ID(bio_no, category, r_deduct_id, paydate)
+                End With
+            Next
+        End Using
+    End Sub
+
+    Friend Sub UpdateDeduct_ID(BIO As String, category As String, R_DEDUC_ID As String, PAYDATE As String)
+        Dim mysql As String = $"Select * from RECORDED_ALLOW_DEDUC where BIO_NO ='{BIO}' and category = '{category}' and paydate = '{PAYDATE}'"
+        Using ds As DataSet = LoadSQL(mysql, "RECORDED_ALLOW_DEDUC")
+            If ds.Tables(0).Rows.Count > 0 Then
+                With ds.Tables(0).Rows(0)
+
+                    .Item("R_DEDUC_ID") = R_DEDUC_ID
+
+                End With
+                SaveEntry(ds, False)
+            End If
+        End Using
+    End Sub
+
 End Module

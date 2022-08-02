@@ -838,14 +838,14 @@ Module SaveUpdate
                     '============================================= DEDUCTION =========================================================  
                     Deduction = 0
 
-                    Dim sql_3 As String = $"Select Z.*, Z.id as idd From PAYROLL_DEDUCTION Z WHERE BIO_NO = '{bioNo}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
+                    Dim sql_3 As String = $"Select Z.*, Z.id as idddd From PAYROLL_DEDUCTION Z WHERE BIO_NO = '{bioNo}' and STATUS is null and SCHEDULE IN ('{sched}', 'EVERY PAYROLL')"
                     Using ds_3 As DataSet = LoadSQL(sql_3, "PAYROLL_DEDUCTION")
                         If ds_3.Tables(0).Rows.Count > 0 Then
                             For Each dr_3 In ds_3.Tables(0).Rows
                                 With dr_3
 
                                     Dim amountt As Decimal = 0
-                                    Dim idd As String = .Item("idd")
+                                    Dim idddd As String = .Item("idddd")
 
                                     If IsDBNull(.Item("BALANCE")) Then
 
@@ -854,7 +854,7 @@ Module SaveUpdate
 
                                     Else
 
-                                        Dim balance As Decimal = GetDeduction_Balance(idd)
+                                        Dim balance As Decimal = GetDeduction_Balance(idddd)
 
                                         If balance < .Item("AMORT") Then
                                             Deduction = Deduction + balance
@@ -866,7 +866,7 @@ Module SaveUpdate
 
                                     End If
 
-                                    Save_Recorded_Allow_Deduc(bioNo, paydate_, .Item("CATEGORY"), amountt, "DEDUCTION", idd)
+                                    Save_Recorded_Allow_Deduc(bioNo, paydate_, .Item("CATEGORY"), amountt, "DEDUCTION", idddd)
 
                                 End With
                             Next
@@ -1227,12 +1227,15 @@ Module SaveUpdate
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
                     With dr
+
                         .Item("category") = category
                         .Item("AMOUNT") = amount
                         .Item("fix") = fix
                         .Item("SCHEDULE") = SCHEDULE
                         .Item("DAY_DATE") = DAY_DATE
                         .Item("EFFECTIVE_DATE") = EFFECTIVE_DATE
+                        .Item("ALLOWED") = "YES" '======== DIRECT APPROVED ======== 
+
                     End With
                     SaveEntry(ds, False)
                     MsgBox("Successfully Updated!", MsgBoxStyle.Information, "Information")
@@ -1252,6 +1255,7 @@ Module SaveUpdate
                         .Item("SCHEDULE") = SCHEDULE
                         .Item("DAY_DATE") = DAY_DATE
                         .Item("EFFECTIVE_DATE") = EFFECTIVE_DATE
+                        .Item("ALLOWED") = "YES" '======== DIRECT APPROVED ======== 
 
                     End With
                     dss.Tables(0).Rows.Add(dsNewRow)
@@ -1263,7 +1267,7 @@ Module SaveUpdate
         End Using
     End Sub
 
-    Friend Sub SaveAllowance_UPDATE_HISTORY(bioNo As String, category As String, amount As String, fix As String, SCHEDULE As String, DAY_DATE As String, EFFECTIVE_DATE As String)
+    Friend Sub SaveAllowance_HISTORY(bioNo As String, category As String, amount As String, fix As String, SCHEDULE As String, DAY_DATE As String, EFFECTIVE_DATE As String)
         Dim mysql As String = "Select * From PAYROLL_PI_HISTORY"
         Using dss As DataSet = LoadSQL(mysql, "PAYROLL_PI_HISTORY")
 

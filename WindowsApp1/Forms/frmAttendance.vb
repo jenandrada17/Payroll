@@ -417,18 +417,18 @@ Public Class frmAttendance
 
         End If
 
-        '================================  CELL NUMBER PM IN =================================== 
-        If Not row.Cells(3).Value = Nothing Then
-            Dim lateHour As TimeSpan = DateTime.Parse(row.Cells(3).Value).Subtract(DateTime.Parse(timeIn.AddHours(5).ToShortTimeString))
+        ''================================  CELL NUMBER PM IN =================================== 
+        'If Not row.Cells(3).Value = Nothing Then
+        '    Dim lateHour As TimeSpan = DateTime.Parse(row.Cells(3).Value).Subtract(DateTime.Parse(timeIn.AddHours(5).ToShortTimeString))
 
-            Dim cellValue As DateTime = row.Cells(3).Value
-            Dim limit As DateTime = (timeIn.AddMinutes(-1)).ToShortTimeString
+        '    Dim cellValue As DateTime = row.Cells(3).Value
+        '    Dim limit As DateTime = (timeIn.AddMinutes(-1)).ToShortTimeString
 
-            If cellValue > limit Then
-                late_count += lateHour
-            End If
+        '    If cellValue > limit Then
+        '        late_count += lateHour
+        '    End If
 
-        End If
+        'End If
 
     End Sub
 
@@ -436,10 +436,15 @@ Public Class frmAttendance
         '=================================  CELL NUMBER PM OUT ==================================== 
         If Not row.Cells(4).Value = Nothing Then
 
-            Dim _out As DateTime = DateTime.Parse(row.Cells(4).Value).Subtract(New TimeSpan(0, DateTime.Parse(row.Cells(4).Value).Minute, 0))
-            Dim _timeOut As DateTime = timeOut.ToShortTimeString
+            'Dim _out As DateTime = DateTime.Parse(row.Cells(4).Value).Subtract(New TimeSpan(0, DateTime.Parse(row.Cells(4).Value).Minute, 0))  
+            'Dim _timeOut As DateTime = timeOut.ToShortTimeString 
+            'Dim underHour As TimeSpan = _timeOut.Subtract(_out.ToShortTimeString)
 
-            Dim underHour As TimeSpan = _timeOut.Subtract(_out.ToShortTimeString)
+            Dim convert_out As DateTime = DateTime.Parse(row.Cells(4).Value)
+            Dim orig_outt As TimeSpan = New TimeSpan(timeOut.Hour, timeOut.Minute, 0)
+            Dim outt As TimeSpan = New TimeSpan(convert_out.Hour, convert_out.Minute, 0)
+
+            Dim underHour As TimeSpan = orig_outt - outt
 
             Dim cellValue As DateTime = row.Cells(4).Value
             Dim limit As DateTime = timeOut.ToShortTimeString
