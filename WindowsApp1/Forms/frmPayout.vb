@@ -977,16 +977,16 @@ Public Class frmPayout
 
                                 If category.Contains("MP2") Or category.Contains("MAXICARE") Then
                                 ElseIf .item("CATEGORY") = "SSS LOAN" Then
-                                    balance = GetBalance_Deduction(biometricID, .item("CATEGORY"), R_DEDUCT_ID) - partial_payment
+                                    balance = GetBalance_Deduction(biometricID, .item("CATEGORY"), R_DEDUCT_ID, paydatee) - partial_payment
                                 ElseIf .item("CATEGORY") = "PAG-IBIG LOAN" Then
-                                    balance = GetBalance_Deduction(biometricID, .item("CATEGORY"), R_DEDUCT_ID) - partial_payment
+                                    balance = GetBalance_Deduction(biometricID, .item("CATEGORY"), R_DEDUCT_ID, paydatee) - partial_payment
                                 Else
                                     If R_DEDUCT_ID = 0 And category <> "SBU" Then
                                         balance = 0
                                     ElseIf category = "Charges" Then
                                         'balance = GetBalance_Deduction(biometricID, .item("CATEGORY"), R_DEDUCT_ID)
                                     Else
-                                        balance = GetBalance_Deduction(biometricID, .item("CATEGORY"), R_DEDUCT_ID) - partial_payment
+                                        balance = GetBalance_Deduction(biometricID, .item("CATEGORY"), R_DEDUCT_ID, paydatee) - partial_payment
                                     End If
                                 End If
 

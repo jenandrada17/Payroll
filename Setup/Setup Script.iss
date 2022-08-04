@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Payroll System"
-#define MyAppVersion "1.1.0.9"
+#define MyAppVersion "1.1.1.1"
 #define MyAppPublisher "Perfecto Group of Companies"
 #define MyAppURL "https://www.example.com/"
 #define MyAppExeName "WindowsApp1.exe"

@@ -2654,7 +2654,7 @@ Module SelectFromDatabase
 
     End Sub
 
-    Public Function GetBalance_Deduction(bioNo As String, CATEGORY As String, R_DEDUC_ID As String)
+    Public Function GetBalance_Deduction(bioNo As String, CATEGORY As String, R_DEDUC_ID As String, PAYDATE As String)
 
         Dim balance As Decimal = 0
         Dim fromRecorded As Decimal = 0
@@ -2663,11 +2663,11 @@ Module SelectFromDatabase
         Dim principal As Decimal = 0
 
         If CATEGORY = "SBU" Then
-            fromRecorded = GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC WHERE BIO_NO = '{bioNo}' and CATEGORY = 'SBU' ")
+            fromRecorded = GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC WHERE BIO_NO = '{bioNo}' and CATEGORY = 'SBU' and PAYDATE between '12/31/2021' and '{PAYDATE}'")
             credit = GetData_Decimal("CREDIT", $"PAYROLL_SBU WHERE BIO_NO = '{bioNo}' ")
             principal = GetData_Decimal("PRINCIPAL", $"PAYROLL_SBU WHERE BIO_NO = '{bioNo}' ")
         Else
-            fromRecorded = GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC WHERE BIO_NO = '{bioNo}' and R_DEDUC_ID = '{R_DEDUC_ID}' and PAYDATE <> '12/15/2021'")
+            fromRecorded = GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC WHERE BIO_NO = '{bioNo}' and R_DEDUC_ID = '{R_DEDUC_ID}' and PAYDATE between '12/31/2021' and '{PAYDATE}'")
             credit = GetData_Decimal("CREDIT", $"PAYROLL_DEDUCTION WHERE BIO_NO = '{bioNo}' and  ID = '{R_DEDUC_ID}'")
             principal = GetData_Decimal("PRINCIPAL", $"PAYROLL_DEDUCTION WHERE BIO_NO = '{bioNo}' and ID = '{R_DEDUC_ID}'")
         End If
