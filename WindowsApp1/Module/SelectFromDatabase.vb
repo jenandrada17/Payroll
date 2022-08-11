@@ -2294,7 +2294,7 @@ Module SelectFromDatabase
                 With dss.Tables(0).Rows(0)
 
                     Dim credit As Decimal = IIf(IsDBNull(.Item("CREDIT")), 0, .Item("CREDIT"))
-                    Dim totalCredit As Decimal = credit + GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC WHERE BIO_NO = '{ .Item("BIO_NO")}' and CATEGORY = 'SBU'")
+                    Dim totalCredit As Decimal = credit + GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC WHERE BIO_NO = '{ .Item("BIO_NO")}' and CATEGORY = 'SBU' and PAYDATE <> '12/15/2021'")
                     Dim principal As Decimal = IIf(IsDBNull(.Item("PRINCIPAL")), 0, .Item("PRINCIPAL"))
                     Dim balance As Decimal = principal - totalCredit
 

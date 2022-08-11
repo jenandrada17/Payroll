@@ -534,6 +534,11 @@ Public Class frmPayout
         Cursor = Cursors.Default
     End Sub
 
+    Private Sub Late_TXT_TextChanged(sender As Object, e As EventArgs) Handles Late_TXT.TextChanged
+        Calculate_Late()
+        Calculate_NetPay()
+    End Sub
+
     Private Sub Calculate_Allowance()
         Dim totals As Double = 0
         If Allowance_grid.Rows.Count > 0 Then
@@ -560,6 +565,16 @@ Public Class frmPayout
         Deduction_LBL.Text = FormatNumber(totals)
         Deduction_LBL.Tag = totals
 
+    End Sub
+
+    Private Sub Calculate_Late()
+        Dim late As Decimal = ((CDec(Rate_TXT.Text) / 8) / 60) * CDec(Late_TXT.Text)
+        Late_TXT.Text = FormatNumber(late)
+        Late_TXT.Tag = late
+        Dim gross As Decimal = CDec(TotalBasic_LBL.Tag) + CDec(TotalOT_LBL.Tag) + CDec(TotalHol_LBL.Tag) + CDec(TotalNight_LBL.Tag) + CDec(TotalLateUnder_LBL.Tag)
+
+        GrossAmount_LBL.Text = FormatNumber(gross)
+        GrossAmount_LBL.Tag = gross
     End Sub
 
     Private Sub Calculate_NetPay()
