@@ -534,11 +534,6 @@ Public Class frmPayout
         Cursor = Cursors.Default
     End Sub
 
-    Private Sub Late_TXT_TextChanged(sender As Object, e As EventArgs) Handles Late_TXT.TextChanged
-        Calculate_Late()
-        Calculate_NetPay()
-    End Sub
-
     Private Sub Calculate_Allowance()
         Dim totals As Double = 0
         If Allowance_grid.Rows.Count > 0 Then
@@ -549,6 +544,38 @@ Public Class frmPayout
 
         Allowances_LBL.Text = FormatNumber(totals)
         Allowances_LBL.Tag = totals
+    End Sub
+
+    Private Sub Late_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Late_TXT.KeyPress
+        If e.KeyChar <> ChrW(Keys.Back) Then
+            If Char.IsNumber(e.KeyChar) Then
+            Else
+                e.Handled = True
+            End If
+        End If
+    End Sub
+
+    Private Sub Late_TXT_TextChanged(sender As Object, e As EventArgs) Handles Late_TXT.TextChanged
+        If Late_TXT.Text = Nothing Then
+            TotalLateUnder_LBL.Text = 0
+        Else
+            Calculate_Late(Late_TXT.Text)
+            Calculate_NetPay()
+        End If
+
+    End Sub
+
+    Private Sub Calculate_Late(latee As Integer)
+        Dim ratee As Decimal = GetData_Decimal("RATE_DAILY", $"PAYROLL_EMPLOYEE WHERE BIO_NO = '{BiometricID_TXT.Text}'")
+        Dim late As Decimal = ((ratee / 8) / 60) * latee
+
+        TotalLateUnder_LBL.Text = FormatNumber(late)
+        TotalLateUnder_LBL.Tag = late
+
+        Dim gross As Decimal = CDec(TotalBasic_LBL.Tag) + CDec(TotalOT_LBL.Tag) + CDec(TotalHol_LBL.Tag) + CDec(TotalNight_LBL.Tag) - CDec(TotalLateUnder_LBL.Tag)
+
+        GrossAmount_LBL.Text = FormatNumber(gross)
+        GrossAmount_LBL.Tag = gross
     End Sub
 
     Private Sub Calculate_Deduction()
@@ -565,16 +592,6 @@ Public Class frmPayout
         Deduction_LBL.Text = FormatNumber(totals)
         Deduction_LBL.Tag = totals
 
-    End Sub
-
-    Private Sub Calculate_Late()
-        Dim late As Decimal = ((CDec(Rate_TXT.Text) / 8) / 60) * CDec(Late_TXT.Text)
-        Late_TXT.Text = FormatNumber(late)
-        Late_TXT.Tag = late
-        Dim gross As Decimal = CDec(TotalBasic_LBL.Tag) + CDec(TotalOT_LBL.Tag) + CDec(TotalHol_LBL.Tag) + CDec(TotalNight_LBL.Tag) + CDec(TotalLateUnder_LBL.Tag)
-
-        GrossAmount_LBL.Text = FormatNumber(gross)
-        GrossAmount_LBL.Tag = gross
     End Sub
 
     Private Sub Calculate_NetPay()
