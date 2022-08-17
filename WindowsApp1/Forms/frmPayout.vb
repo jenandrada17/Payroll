@@ -1003,7 +1003,14 @@ Public Class frmPayout
                                 Dim category As String = .item("CATEGORY")
                                 Dim amountt As Decimal = .item("AMOUNT")
                                 Dim balance As Decimal = 0
-                                Dim partial_payment As Decimal = GetTotal("AMOUNT", $" PARTIAL_PAYMENT WHERE BIO_NO = '{ .item("BIO_NO")}'")
+                                Dim partial_payment As Decimal = 0
+
+                                '=================== IF HAS PARTIAL PAYMENT SA DEDUCTION ==============
+                                If IsDBNull(.item("R_DEDUC_ID")) Then
+                                    Console.WriteLine("NO PARTIAL PAYMENT")
+                                Else
+                                    partial_payment = GetTotal("AMOUNT", $" PARTIAL_PAYMENT WHERE DEDUCT_ID = '{ .item("R_DEDUC_ID")}'")
+                                End If
 
                                 Dim R_DEDUCT_ID As Integer = IIf(IsDBNull(.item("R_DEDUC_ID")), 0, .item("R_DEDUC_ID"))
 

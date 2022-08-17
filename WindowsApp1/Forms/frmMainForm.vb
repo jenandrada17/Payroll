@@ -9,8 +9,13 @@ Public Class frmMainForm
     Public DAYS_COUNT As Integer = 0
     Public starting, ending As Date
 
-
     Private Sub frmMainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+        '=== PHILHEALTH ADJUSTMENTS (NAERASE) ====== 
+        'CopyPhilhealthAdjustment() 
+        'CopyPAYOUT() 
+        'MsgBox("SuccessFully Updated!")
+        '=========================================== 
 
         'Update_Recorded_Allow_Deduct_ID()
 
