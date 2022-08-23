@@ -1567,10 +1567,10 @@ Module SelectFromDatabase
 
         If searchName.Length <> 0 Then
 
-            mysql = $"select * from PAYROLL_EMPLOYEE A inner join PAYROLL_PAYOUT B on B.BIOMETRIC_ID = A.BIO_NO "
+            mysql = $"select FULLNAME, BIOMETRIC_ID from PAYROLL_EMPLOYEE A inner join PAYROLL_PAYOUT B on B.BIOMETRIC_ID = A.BIO_NO  where "
 
             For Each name In strWords
-                mysql &= $"{vbCr}UPPER(B.BIO_NO) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(A.BIO_NO) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(FULLNAME) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(BRANCH_CODE) LIKE UPPER('%{name}%') Group by FULLNAME, BIOMETRIC_ID ORDER BY FULLNAME ASC "
@@ -1635,6 +1635,7 @@ Module SelectFromDatabase
 
     Friend Sub Lists_Payout(LV As ListView, paydate As String, Optional searchName As String = "")
 
+        LV.Items.Clear()
         Dim secured_str As String = searchName
         secured_str = DreadKnight(secured_str)
         Dim strWords As String() = secured_str.Split(New Char() {" "c})
@@ -1659,29 +1660,24 @@ Module SelectFromDatabase
         End If
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
-            LV.Items.Clear()
             progressBarStart(ds.Tables(0).Rows.Count)
             For Each dr In ds.Tables(0).Rows
-                AddRow_PAYOUT(dr, LV)
+                With dr
+                    Dim i As ListViewItem = LV.Items.Add(.Item("FULLNAME"))
+                    i.SubItems.Add(FormatNumber(.Item("TOTAL_BASIC"))).Tag = .Item("BIOMETRIC_ID")
+                    i.SubItems.Add(FormatNumber(.Item("GROSS_AMOUNT")))
+                    i.SubItems.Add(FormatNumber(.Item("SSS_COMP")))
+                    i.SubItems.Add(FormatNumber(.Item("PAGIBIG_COMP")))
+                    i.SubItems.Add(FormatNumber(.Item("PHILHEALTH_COMP")))
+                    i.SubItems.Add(FormatNumber(.Item("TOTAL_ALLOWANCE")))
+                    i.SubItems.Add(FormatNumber(.Item("TOTAL_DEDUCTION")))
+                    i.SubItems.Add(FormatNumber(.Item("NET_PAY")))
+                End With
 
                 frmMainForm.AppProgressBar.Value += 1
             Next
             progressBarEnd()
         End Using
-    End Sub
-
-    Private Sub AddRow_PAYOUT(ByVal dr As DataRow, listview As ListView)
-        With dr
-            Dim i As ListViewItem = listview.Items.Add(.Item("FULLNAME"))
-            i.SubItems.Add(FormatNumber(.Item("TOTAL_BASIC"))).Tag = .Item("BIOMETRIC_ID")
-            i.SubItems.Add(FormatNumber(.Item("GROSS_AMOUNT")))
-            i.SubItems.Add(FormatNumber(.Item("SSS_COMP")))
-            i.SubItems.Add(FormatNumber(.Item("PAGIBIG_COMP")))
-            i.SubItems.Add(FormatNumber(.Item("PHILHEALTH_COMP")))
-            i.SubItems.Add(FormatNumber(.Item("TOTAL_ALLOWANCE")))
-            i.SubItems.Add(FormatNumber(.Item("TOTAL_DEDUCTION")))
-            i.SubItems.Add(FormatNumber(.Item("NET_PAY")))
-        End With
     End Sub
 
     Friend Sub progressBarStart(ByVal objectt As Integer)
@@ -2701,7 +2697,7 @@ Module SelectFromDatabase
 
         Else
             mysql = $"Select  A.PAYDATE, FULLNAME, TOTAL_DAYS, OVERTIME, SIL, A.BIO_NO AS IDD  From PAYROLL_SCHEDULE A
-                    inner join PAYROLL_SCHED_COUNT B on B.BIO_NO = A.BIO_NO and  B.PAYDATE = A.PAYDATE
+                    inner join PAYROLL_SCHED_COUNT B on B.BIO_NO = A.BIO_NO 
                     INNER JOIN PAYROLL_EMPLOYEE C ON A.BIO_NO = C.BIO_NO where A.PAYDATE = '{Paydate}' GROUP BY A.PAYDATE, FULLNAME, A.BIO_NO, TOTAL_DAYS, OVERTIME, SIL ORDER BY FULLNAME"
 
         End If
@@ -2799,6 +2795,13 @@ Module SelectFromDatabase
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_SCHEDULE")
             If ds.Tables(0).Rows.Count > 0 Then
                 Return True
+                'With ds.Tables(0).Rows(0)
+                '    Dim dateTime_in, dateTime_out As DateTime
+
+                '    If DateTime.TryParse($"{datee} { .Item("TIME_IN")}", dateTime_in) And DateTime.TryParse($"{datee} { .Item("TIME_OUT")}", dateTime_out) Then
+                '        Return True
+                '    End If
+                'End With
             End If
         End Using
         Return False
