@@ -2795,13 +2795,6 @@ Module SelectFromDatabase
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_SCHEDULE")
             If ds.Tables(0).Rows.Count > 0 Then
                 Return True
-                'With ds.Tables(0).Rows(0)
-                '    Dim dateTime_in, dateTime_out As DateTime
-
-                '    If DateTime.TryParse($"{datee} { .Item("TIME_IN")}", dateTime_in) And DateTime.TryParse($"{datee} { .Item("TIME_OUT")}", dateTime_out) Then
-                '        Return True
-                '    End If
-                'End With
             End If
         End Using
         Return False

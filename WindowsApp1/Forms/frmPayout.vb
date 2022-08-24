@@ -36,22 +36,14 @@ Public Class frmPayout
 
         Try
 
-            Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmEmployee").SingleOrDefault()
+            Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmNewEmployee").SingleOrDefault()
             If instForm Is Nothing Then
-                Dim frm As frmEmployee
-                frm = DirectCast(CreateObjectInstance("frmEmployee"), Form)
+                Dim frm As frmNewEmployee
+                frm = DirectCast(CreateObjectInstance("frmNewEmployee"), Form)
                 frm.MdiParent = frmMainForm
                 frmMainForm.pNavigate.Controls.Add(frm)
                 frmMainForm.pNavigate.Tag = frm
-
                 frm.txtSearch.Tag = "Payout"
-
-                If Paydate_ComboB.SelectedIndex >= 0 Then
-                    frm.btnSearch.Tag = Paydate_ComboB.SelectedItem
-                Else
-                    frm.btnSearch.Tag = paydate_
-                End If
-
                 frm.Dock = DockStyle.Fill
                 frm.BringToFront()
                 frm.Show()
