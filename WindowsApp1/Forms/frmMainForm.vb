@@ -9,18 +9,19 @@ Public Class frmMainForm
     Public DAYS_COUNT As Integer = 0
     Public starting, ending As Date
 
-
     Private Sub frmMainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+        '=== PHILHEALTH ADJUSTMENTS (NAERASE) ====== 
+        'CopyPhilhealthAdjustment() 
+        'CopyPAYOUT() 
+        'MsgBox("SuccessFully Updated!")
+        '=========================================== 
+
+        'Update_Recorded_Allow_Deduct_ID()
 
         'PayoutRate()
 
         'RunCommand("Delete from Payroll_Attendance where BIOMETRICID IN (4732,
-        '            4600, 4456, 4733, 4742, 4710, 4717, 4317, 4226,  4430) ")
-
-        'RunCommand("Delete from Payroll_Payout where BIOMETRIC_ID IN (4732,
-        '            4600, 4456, 4733, 4742, 4710, 4717, 4317, 4226,  4430) ")
-
-        'RunCommand("Delete from RECORDED_ALLOW_DEDUC where BIO_NO IN (4732,
         '            4600, 4456, 4733, 4742, 4710, 4717, 4317, 4226,  4430) ")
 
         'GetHO_Category()

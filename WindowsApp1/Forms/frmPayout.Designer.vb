@@ -498,7 +498,6 @@ Partial Class frmPayout
         Me.Late_TXT.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Late_TXT.Location = New System.Drawing.Point(147, 171)
         Me.Late_TXT.Name = "Late_TXT"
-        Me.Late_TXT.ReadOnly = True
         Me.Late_TXT.Size = New System.Drawing.Size(108, 29)
         Me.Late_TXT.TabIndex = 27
         Me.Late_TXT.TextAlign = System.Windows.Forms.HorizontalAlignment.Right

@@ -61,6 +61,8 @@ Public Class frmSchedule
                 End If
             Next
 
+            'SaveSCHED_COUNT(bio, Paydate, total_days, overTime, SIL, ending_date)
+
             MsgBox("Successfully Saved!", MsgBoxStyle.Information)
             Cancel_BTN.PerformClick()
         Else
@@ -142,6 +144,7 @@ Public Class frmSchedule
                 Attach_Panel.Location = New Point(345, 115)
             End If
         End If
+
     End Sub
 
     Private Sub AttachClose_lbl_Click(sender As Object, e As EventArgs) Handles AttachClose_lbl.Click
@@ -170,6 +173,9 @@ Public Class frmSchedule
         If Not Nas_Employee_Folder.Exists Then Nas_Employee_Folder.Create()
 
         Dim newName As String = $"{Nas_Employee_Folder}\{row.Cells(1).Value} - {datee.ToString("MMM dd, yyyy")}.pdf"
+
+        Dim filee As New FileInfo(AttachPath_txt.Text)
+        filee.CopyTo(newName)
 
         row.Cells(2).Tag = AttachPath_txt.Text
         row.Cells(3).Tag = newName
@@ -377,7 +383,6 @@ Public Class frmSchedule
                 start = start.AddDays(1)
             End While
 
-
             '========== MONITOR SIL =============
             Dim totalMonths As Integer = CountYear_SIL(bio, EndingDate)
             If SIL <> 0 Then
@@ -418,11 +423,13 @@ Public Class frmSchedule
         Time_In_DataGrid.Items.Insert(1, "SIL")
         Time_In_DataGrid.Items.Insert(2, "AL")
         Time_In_DataGrid.Items.Insert(3, "RD")
+        Time_In_DataGrid.Items.Insert(4, "AWOP")
 
         Time_Out_DataGrid.Items.Insert(0, "")
         Time_Out_DataGrid.Items.Insert(1, "SIL")
         Time_Out_DataGrid.Items.Insert(2, "AL")
         Time_Out_DataGrid.Items.Insert(3, "RD")
+        Time_Out_DataGrid.Items.Insert(4, "AWOP")
     End Sub
 
     Private Sub Paydate_ComboB_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Paydate_ComboB.SelectedIndexChanged

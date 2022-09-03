@@ -249,12 +249,23 @@ Public Class frmAttendance
             TotalLateHR_LBL.Text = 0
             TotalUTHR_LBL.Text = 0
             TotalOTHr_LBL.Text = 0
+            SIL_LBL.Text = 0
             under_count = New TimeSpan(0, 0, 0, 0, 0)
             late_count = New TimeSpan(0, 0, 0, 0, 0)
+            Dim sil As Double = 0
+            Dim Present_FromWorkingSched As Double = 0
 
             Dim bioNum = BiometricID_TXT.Text
             Dim branchCode = GetBranchCode(bioNum)
             Dim dateStarted = GetData("DATE_STARTED", $"PAYROLL_EMPLOYEE WHERE BIO_NO = '{bioNum}'")
+
+            Dim PAYROLL As String
+            If Paydate_ComboB.SelectedIndex >= 0 Then
+                PAYROLL = Paydate_ComboB.SelectedItem
+            Else
+                PAYROLL = DataGridView1.Tag
+            End If
+
 
             For Each row As DataGridViewRow In DataGridView1.Rows
 
@@ -282,36 +293,59 @@ Public Class frmAttendance
                     End If
                 End If
 
-                '======================== GET TIME IN/OUT TO CALCULATE LATE UNDERTIME OVERTIME ============================ 
+                '======================== GET TIME IN/OUT TO CALCULATE LATE UNDERTIME OVERTIME ============================  
+                If CheckData("BIO_NO", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{bioNum}' AND PAYDATE = '{PAYROLL}'") Then
+                    If row.Cells(5).Value = True Then
+                        If DateExist_IN_Schedule(bioNum, DATEE.ToShortDateString) Then
 
-                If CheckData("BIO_NO", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{bioNum}'") Then
-
-                    If DateExist_IN_Schedule(bioNum, DATEE.ToShortDateString) Then
-                        Dim timeIN, timeOut As DateTime
-                        If DateTime.TryParse(GetData("TIME_IN", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{bioNum}' AND DATEE = '{DATEE.ToShortDateString}' "), timeIN) Then
-                            TIME_IN = timeIN
-                        Else
-                            Continue For
-                        End If
-
-                        If DateTime.TryParse(GetData("TIME_OUT", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{bioNum}' AND DATEE = '{DATEE.ToShortDateString}' "), timeOut) Then
-                            TIME_OUT = timeOut
-
-                            If TIME_OUT > TIME_IN.AddHours(9) Then
-                                TIME_OUT = TIME_IN.AddHours(9)
-                                ALLOW_OT = True
-                            Else
-                                ALLOW_OT = False
+                            Dim timeIN As DateTime = Nothing
+                            Dim timeOut As DateTime = Nothing
+                            If DateTime.TryParse(GetData("TIME_IN", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{bioNum}' AND DATEE = '{DATEE.ToShortDateString}' "), timeIN) Then
+                                TIME_IN = timeIN
+                            ElseIf GetData("TIME_IN", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{bioNum}' AND DATEE = '{DATEE.ToShortDateString}' ") = "SIL" Then
+                                sil += 0.5
                             End If
+
+                            If DateTime.TryParse(GetData("TIME_OUT", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{bioNum}' AND DATEE = '{DATEE.ToShortDateString}' "), timeOut) Then
+                                TIME_OUT = timeOut
+
+                                If TIME_OUT > TIME_IN.AddHours(9) Then
+                                    TIME_OUT = TIME_IN.AddHours(9)
+                                    ALLOW_OT = True
+                                Else
+                                    ALLOW_OT = False
+                                End If
+                            ElseIf GetData("TIME_OUT", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{bioNum}' AND DATEE = '{DATEE.ToShortDateString}' ") = "SIL" Then
+                                sil += 0.5
+                            End If
+
+                            '=================== IF HALFDAY LANG ANG RD, AL, SIL ===============
+                            If timeIN = Nothing And timeOut = Nothing Then
+                                Continue For
+                            ElseIf timeIN <> Nothing And timeOut = Nothing Then
+                                TIME_IN = timeIN
+                                TIME_OUT = timeIN.AddHours(4)
+
+                                If row.Cells(1).Value <> Nothing Then '======== IF PRESENT AM IN
+                                    Present_FromWorkingSched += 0.5
+                                End If
+                            ElseIf timeIN = Nothing And timeOut <> Nothing Then
+                                TIME_IN = timeOut
+                                TIME_OUT = timeOut.AddHours(4)
+
+                                If row.Cells(3).Value <> Nothing Then  '======== IF PRESENT PM IN
+                                    Present_FromWorkingSched += 0.5
+                                End If
+                            Else
+                                Present_FromWorkingSched += 1
+                            End If
+
                         Else
-                            Continue For
+                            TIME_IN = GetData("VALUEE", $"PAYROLL_DEFAULT_TIMEIN")
+                            TIME_OUT = TIME_IN.AddHours(9)
                         End If
 
-                    Else
-                        TIME_IN = GetData("VALUEE", $"PAYROLL_DEFAULT_TIMEIN")
-                        TIME_OUT = TIME_IN.AddHours(9)
                     End If
-
                 Else
                     TIME_IN = GetTimeInOut(bioNum).Time_in
                     TIME_OUT = GetTimeInOut(bioNum).Time_out
@@ -335,52 +369,53 @@ Public Class frmAttendance
 
             Next
 
+            SIL_LBL.Text = sil
+
             TotalLateHR_LBL.Text = late_count.TotalMinutes
 
             TotalUTHR_LBL.Text = under_count.TotalMinutes
 
             TotalOTHr_LBL.Text = CDbl(TotalOTHr_LBL.Text) + AM_OT_NUP.Value
 
-            '===================================== SUM UP PRESENT AND ABSENT ==================================== 
-            Dim Present As Integer = 0
-            Dim halfday_Hour As Integer = 0
-            For Each oRow As DataGridViewRow In DataGridView1.Rows
+            '===================================== SUM UP PRESENT AND ABSENT ====================================    
+            If Present_FromWorkingSched = 0 Then '=============== HEAD OFFICE
 
-                If oRow.Cells(5).Value = True Then
-                    Present += 1
-                End If
+                Dim Present As Integer = 0
+                Dim halfday_Hour As Integer = 0
 
-                If CountCELL_Nothing(oRow) = 3 Or CountCELL_Consecutive(oRow) = "HALFDAY" Then
-                    halfday_Hour += 4
-                End If
+                For Each oRow As DataGridViewRow In DataGridView1.Rows
 
-                ''===========================  TEMPORARYYYYYYY JUNE 30, 2022 ONLY===================== 
-                'If paydate_ = "6/30/2022" Then
-                '    Dim DATEE As DateTime = oRow.Tag
-                '    Dim short_date As String = DATEE.ToShortDateString
-                '    If short_date = "6/8/2022" Then
-                '        temp_present = Present
-                '        temp_half = halfday_Hour
-                '    End If
-                'End If
+                    If oRow.Cells(5).Value = True Then
+                        Present += 1
+                    End If
 
-            Next
+                    If CountCELL_Nothing(oRow) = 3 Or CountCELL_Consecutive(oRow) = "HALFDAY" Then
+                        halfday_Hour += 4
+                    End If
 
-            TotalDays_LBL.Text = Present
+                    ''===========================  TEMPORARYYYYYYY JUNE 30, 2022 ONLY===================== 
+                    'If paydate_ = "6/30/2022" Then
+                    '    Dim DATEE As DateTime = oRow.Tag
+                    '    Dim short_date As String = DATEE.ToShortDateString
+                    '    If short_date = "6/8/2022" Then
+                    '        temp_present = Present
+                    '        temp_half = halfday_Hour
+                    '    End If
+                    'End If
 
-            '===================================== SUM UP HALF DAY ====================================  
-            'Dim halfday_Hour As Integer = 0
-            'For Each oRow As DataGridViewRow In DataGridView1.Rows
+                Next
 
-            '    If CountCELL_Nothing(oRow) = 3 Or CountCELL_Consecutive(oRow) = "HALFDAY" Then
-            '        halfday_Hour += 4
-            '    End If
-            'Next
+                TotalDays_LBL.Text = Present
 
-            Dim product As Double
-            product = ((Convert.ToInt32(TotalDays_LBL.Text) * 8)) - halfday_Hour
-            product = product / 8
-            TotalDays_LBL.Text = product
+                '===================================== SUM UP HALF DAY ====================================   
+                Dim product As Double
+                product = ((Convert.ToInt32(TotalDays_LBL.Text) * 8)) - halfday_Hour
+                product = product / 8
+                TotalDays_LBL.Text = product
+
+            Else '=============== BRANCHES WITH WORKING SCHEDULE
+                TotalDays_LBL.Text = Present_FromWorkingSched
+            End If
 
             ''===================================== TEMPORARYYYYYYY =================================  
             'If paydate_ = "6/30/2022" Then
@@ -417,18 +452,18 @@ Public Class frmAttendance
 
         End If
 
-        '================================  CELL NUMBER PM IN =================================== 
-        If Not row.Cells(3).Value = Nothing Then
-            Dim lateHour As TimeSpan = DateTime.Parse(row.Cells(3).Value).Subtract(DateTime.Parse(timeIn.AddHours(5).ToShortTimeString))
+        ''================================  CELL NUMBER PM IN =================================== 
+        'If Not row.Cells(3).Value = Nothing Then
+        '    Dim lateHour As TimeSpan = DateTime.Parse(row.Cells(3).Value).Subtract(DateTime.Parse(timeIn.AddHours(5).ToShortTimeString))
 
-            Dim cellValue As DateTime = row.Cells(3).Value
-            Dim limit As DateTime = (timeIn.AddMinutes(-1)).ToShortTimeString
+        '    Dim cellValue As DateTime = row.Cells(3).Value
+        '    Dim limit As DateTime = (timeIn.AddMinutes(-1)).ToShortTimeString
 
-            If cellValue > limit Then
-                late_count += lateHour
-            End If
+        '    If cellValue > limit Then
+        '        late_count += lateHour
+        '    End If
 
-        End If
+        'End If
 
     End Sub
 
@@ -436,10 +471,15 @@ Public Class frmAttendance
         '=================================  CELL NUMBER PM OUT ==================================== 
         If Not row.Cells(4).Value = Nothing Then
 
-            Dim _out As DateTime = DateTime.Parse(row.Cells(4).Value).Subtract(New TimeSpan(0, DateTime.Parse(row.Cells(4).Value).Minute, 0))
-            Dim _timeOut As DateTime = timeOut.ToShortTimeString
+            'Dim _out As DateTime = DateTime.Parse(row.Cells(4).Value).Subtract(New TimeSpan(0, DateTime.Parse(row.Cells(4).Value).Minute, 0))  
+            'Dim _timeOut As DateTime = timeOut.ToShortTimeString 
+            'Dim underHour As TimeSpan = _timeOut.Subtract(_out.ToShortTimeString)
 
-            Dim underHour As TimeSpan = _timeOut.Subtract(_out.ToShortTimeString)
+            Dim convert_out As DateTime = DateTime.Parse(row.Cells(4).Value)
+            Dim orig_outt As TimeSpan = New TimeSpan(timeOut.Hour, timeOut.Minute, 0)
+            Dim outt As TimeSpan = New TimeSpan(convert_out.Hour, convert_out.Minute, 0)
+
+            Dim underHour As TimeSpan = orig_outt - outt
 
             Dim cellValue As DateTime = row.Cells(4).Value
             Dim limit As DateTime = timeOut.ToShortTimeString
@@ -469,6 +509,7 @@ Public Class frmAttendance
     End Sub
 
     Private Sub Cancel_BTN_Click(sender As Object, e As EventArgs) Handles Cancel_BTN.Click
+
         BiometricID_TXT.Clear()
         Name_TXT.Clear()
         SIL_LBL.Text = 0
@@ -480,9 +521,11 @@ Public Class frmAttendance
         TotalOTHr_LBL.Text = 0
         AM_OT_NUP.Text = 0
         CheckALL_CheckBox.Checked = False
+
     End Sub
 
     Private Sub SearchEMP_BTN_Click(sender As Object, e As EventArgs) Handles SearchEMP_BTN.Click
+
         Try
 
             Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmNewEmployee").SingleOrDefault()
@@ -503,6 +546,7 @@ Public Class frmAttendance
         Catch ex As Exception
 
         End Try
+
     End Sub
 
     Private Sub Save_BTN_Click(sender As Object, e As EventArgs) Handles Save_BTN.Click

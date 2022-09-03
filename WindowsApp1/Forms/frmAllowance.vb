@@ -41,7 +41,7 @@
 
         Dim fix As String = "NO"
         Dim everyThisDate As Integer = 0
-        Dim idNo As Integer = Allow_Amount_TXT.Tag
+        Dim idNo As Integer = 0
 
         If Not isValidSave_ALLOW() Then Exit Sub
 
@@ -52,20 +52,18 @@
         Dim result As DialogResult = MsgBox($"Allowance for {Allow_Name_TXT.Text} will be Recorded, proceed anyway?", MessageBoxButtons.YesNo)
         If result = DialogResult.Yes Then
 
-            If Allowance_LV.SelectedItems.Count > 0 Then
+            If Name_lbl.Tag = "UPDATE" Then
+                SaveStat = "UPDATED"
                 idNo = Allowance_LV.Items(Allowance_LV.FocusedItem.Index).SubItems(4).Tag
+            Else
+                SaveStat = "ADDED"
             End If
 
             SaveAllowance(idNo, Allow_Name_TXT.Tag, Allow_Category_Combo.Text, Allow_Amount_TXT.Text, fix, Allow_Schedule_Combo.SelectedItem, everyThisDate, A_EffectiveDate_DTP.Value)
 
             '================= SAVE PI HISTORY ================ 
-            If Name_lbl.Tag = "UPDATE" Then
-                SaveStat = "UPDATED"
-                If Allow_Category_Combo.Text = "PERFORMANCE INCENTIVES" Then
-                    SaveAllowance_UPDATE_HISTORY(Allow_Name_TXT.Tag, Allow_Category_Combo.Text, Allow_Amount_TXT.Text, fix, Allow_Schedule_Combo.SelectedItem, everyThisDate, A_EffectiveDate_DTP.Value)
-                End If
-            Else
-                SaveStat = "ADDED"
+            If Allow_Category_Combo.Text = "PERFORMANCE INCENTIVES" Then
+                SaveAllowance_HISTORY(Allow_Name_TXT.Tag, Allow_Category_Combo.Text, Allow_Amount_TXT.Text, fix, Allow_Schedule_Combo.SelectedItem, everyThisDate, A_EffectiveDate_DTP.Value)
             End If
 
             SaveLogs($"{SaveStat} ALLOWANCE - {Allow_Name_TXT.Text} ({Allow_Name_TXT.Tag}), Category({Allow_Category_Combo.Text}), Amount({Allow_Amount_TXT.Text}), Sched({Allow_Schedule_Combo.Text}), Effectivity({A_EffectiveDate_DTP.Value.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
@@ -81,7 +79,8 @@
         Allow_Category_Combo.Text = "Select"
         Allow_Name_TXT.Text = ""
         Allow_Amount_TXT.Text = ""
-        FixNo_RadioB.Checked = False
+        FixYes_RadioB.Checked = False
+        FixNo_RadioB.Checked = True
         Allow_Schedule_Combo.Text = "Select"
         A_EveryDate_Combo.Text = "Select"
         A_EffectiveDate_DTP.Value = Today
@@ -132,6 +131,7 @@
         PopulateComboBox(Allow_Category_Combo, "CATEGORY_ALLOWANCE", "ALLOWANCE_NAME")
         Lists_Allowance(Allowance_LV)
         DatePrepared_dtp.Value = Today
+        A_EffectiveDate_DTP.Value = Today
 
         Status_Combo.Items.Add("APPROVE")
         Status_Combo.Items.Add("PENDING")

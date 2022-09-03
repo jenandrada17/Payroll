@@ -36,22 +36,14 @@ Public Class frmPayout
 
         Try
 
-            Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmEmployee").SingleOrDefault()
+            Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmNewEmployee").SingleOrDefault()
             If instForm Is Nothing Then
-                Dim frm As frmEmployee
-                frm = DirectCast(CreateObjectInstance("frmEmployee"), Form)
+                Dim frm As frmNewEmployee
+                frm = DirectCast(CreateObjectInstance("frmNewEmployee"), Form)
                 frm.MdiParent = frmMainForm
                 frmMainForm.pNavigate.Controls.Add(frm)
                 frmMainForm.pNavigate.Tag = frm
-
                 frm.txtSearch.Tag = "Payout"
-
-                If Paydate_ComboB.SelectedIndex >= 0 Then
-                    frm.btnSearch.Tag = Paydate_ComboB.SelectedItem
-                Else
-                    frm.btnSearch.Tag = paydate_
-                End If
-
                 frm.Dock = DockStyle.Fill
                 frm.BringToFront()
                 frm.Show()
@@ -546,6 +538,38 @@ Public Class frmPayout
         Allowances_LBL.Tag = totals
     End Sub
 
+    Private Sub Late_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Late_TXT.KeyPress
+        If e.KeyChar <> ChrW(Keys.Back) Then
+            If Char.IsNumber(e.KeyChar) Then
+            Else
+                e.Handled = True
+            End If
+        End If
+    End Sub
+
+    Private Sub Late_TXT_TextChanged(sender As Object, e As EventArgs) Handles Late_TXT.TextChanged
+        If Late_TXT.Text = Nothing Then
+            TotalLateUnder_LBL.Text = 0
+        Else
+            Calculate_Late(Late_TXT.Text)
+            Calculate_NetPay()
+        End If
+
+    End Sub
+
+    Private Sub Calculate_Late(latee As Integer)
+        Dim ratee As Decimal = GetData_Decimal("RATE_DAILY", $"PAYROLL_EMPLOYEE WHERE BIO_NO = '{BiometricID_TXT.Text}'")
+        Dim late As Decimal = ((ratee / 8) / 60) * latee
+
+        TotalLateUnder_LBL.Text = FormatNumber(late)
+        TotalLateUnder_LBL.Tag = late
+
+        Dim gross As Decimal = CDec(TotalBasic_LBL.Tag) + CDec(TotalOT_LBL.Tag) + CDec(TotalHol_LBL.Tag) + CDec(TotalNight_LBL.Tag) - CDec(TotalLateUnder_LBL.Tag)
+
+        GrossAmount_LBL.Text = FormatNumber(gross)
+        GrossAmount_LBL.Tag = gross
+    End Sub
+
     Private Sub Calculate_Deduction()
 
         Dim totals As Double = 0
@@ -971,22 +995,29 @@ Public Class frmPayout
                                 Dim category As String = .item("CATEGORY")
                                 Dim amountt As Decimal = .item("AMOUNT")
                                 Dim balance As Decimal = 0
-                                Dim partial_payment As Decimal = GetTotal("AMOUNT", $" PARTIAL_PAYMENT WHERE BIO_NO = '{ .item("BIO_NO")}'")
+                                Dim partial_payment As Decimal = 0
+
+                                '=================== IF HAS PARTIAL PAYMENT SA DEDUCTION ==============
+                                If IsDBNull(.item("R_DEDUC_ID")) Then
+                                    Console.WriteLine("NO PARTIAL PAYMENT")
+                                Else
+                                    partial_payment = GetTotal("AMOUNT", $" PARTIAL_PAYMENT WHERE DEDUCT_ID = '{ .item("R_DEDUC_ID")}'")
+                                End If
 
                                 Dim R_DEDUCT_ID As Integer = IIf(IsDBNull(.item("R_DEDUC_ID")), 0, .item("R_DEDUC_ID"))
 
                                 If category.Contains("MP2") Or category.Contains("MAXICARE") Then
                                 ElseIf .item("CATEGORY") = "SSS LOAN" Then
-                                    balance = GetBalance_Deduction(biometricID, .item("CATEGORY"), R_DEDUCT_ID) - partial_payment
+                                    balance = GetBalance_Deduction(biometricID, .item("CATEGORY"), R_DEDUCT_ID, paydatee) - partial_payment
                                 ElseIf .item("CATEGORY") = "PAG-IBIG LOAN" Then
-                                    balance = GetBalance_Deduction(biometricID, .item("CATEGORY"), R_DEDUCT_ID) - partial_payment
+                                    balance = GetBalance_Deduction(biometricID, .item("CATEGORY"), R_DEDUCT_ID, paydatee) - partial_payment
                                 Else
                                     If R_DEDUCT_ID = 0 And category <> "SBU" Then
                                         balance = 0
                                     ElseIf category = "Charges" Then
                                         'balance = GetBalance_Deduction(biometricID, .item("CATEGORY"), R_DEDUCT_ID)
                                     Else
-                                        balance = GetBalance_Deduction(biometricID, .item("CATEGORY"), R_DEDUCT_ID) - partial_payment
+                                        balance = GetBalance_Deduction(biometricID, .item("CATEGORY"), R_DEDUCT_ID, paydatee) - partial_payment
                                     End If
                                 End If
 
