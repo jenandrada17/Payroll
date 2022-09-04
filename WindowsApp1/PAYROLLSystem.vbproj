@@ -75,17 +75,17 @@
     <Reference Include="CrystalDecisions.Shared, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304" />
     <Reference Include="CrystalDecisions.Windows.Forms, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
     <Reference Include="DBConnect">
-      <HintPath>..\..\..\HR-System Record\LATEST HRSystem\HRSystem - exx\DBConnect\obj\Release\DBConnect.dll</HintPath>
+      <HintPath>D:\FROM GITHUB\HRSystem-June29-master\DBConnect\bin\Debug\DBConnect.dll</HintPath>
     </Reference>
     <Reference Include="DeathCodez, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>.\DeathCodez.dll</HintPath>
     </Reference>
     <Reference Include="DotNetZip">
-      <HintPath>..\..\..\HR-System Record\LATEST HRSystem\HRSystem - exx\packages\DotNetZip.1.13.4\lib\net40\DotNetZip.dll</HintPath>
+      <HintPath>D:\FROM GITHUB\HRSystem-June29-master\DBConnect\bin\Debug\DotNetZip.dll</HintPath>
     </Reference>
     <Reference Include="FirebirdSql.Data.FirebirdClient">
-      <HintPath>..\..\..\HRSystem\DBConnect\bin\Debug\FirebirdSql.Data.FirebirdClient.dll</HintPath>
+      <HintPath>D:\FirebirdSql.Data.FirebirdClient.6.7.0\lib\netstandard2.0\FirebirdSql.Data.FirebirdClient.dll</HintPath>
     </Reference>
     <Reference Include="Guna.UI2, Version=2.0.2.5, Culture=neutral, PublicKeyToken=e4b9cdd7b4cde4b4, processorArchitecture=MSIL">
       <HintPath>..\packages\Guna.UI2.WinForms.2.0.2.5\lib\net40\Guna.UI2.dll</HintPath>
