@@ -5,6 +5,12 @@ Public Class frmLoan
     Dim PAGIBIG_ID As String = 0
     Dim MP2_ID As String = 0
     Dim MAXICARE_ID As String = 0
+    Dim Editing_DEDUCT As Boolean = False
+    Dim Editing_SSS As Boolean = False
+    Dim Editing_PAGIBIG As Boolean = False
+    Dim OrigAmount_DEDUCT As Decimal = 0
+    Dim OrigAmount_SSS As Decimal = 0
+    Dim OrigAmount_PAGIBIG As Decimal = 0
 
     Dim allowMove As Boolean = False
     Dim moveLocation As New Point
@@ -64,7 +70,12 @@ Public Class frmLoan
 
             SaveDeductionS(DEDUCT_ID, CategoryDeduc_txt.Text, PrincipalDeduc_txt.Text, DeductAmort_txt.Text, Schedule_Combo.Text, DateCharges_DTP.Value, Name_txt.Tag) 'Category_Combo.Tag (EMP_ID) | Name_TXT.Tag(Biometric) |  SearchEmp_BTN.Tag.Tag(Branch_id) |   
 
-            SaveLogs($"{DE_Save_BTN.Tag} DEDUCTION - {Name_txt.Text} ({Name_txt.Tag}), Category({CategoryDeduc_txt.Text}), Total({PrincipalDeduc_txt.Text}), Schedule({Schedule_Combo.Text}), Date({DateCharges_DTP.Value.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
+            If Editing_DEDUCT = True Then
+                SaveLogs($"DEDUCTION ALTERED (From {OrigAmount_DEDUCT} to {PrincipalDeduc_txt.Text})- {Name_txt.Text} ({Name_txt.Tag}), Category({CategoryDeduc_txt.Text}), Total({PrincipalDeduc_txt.Text}), Schedule({Schedule_Combo.Text}), Date({DateCharges_DTP.Value.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
+                Editing_DEDUCT = False
+            Else
+                SaveLogs($"DEDUCTION ADDED - {Name_txt.Text} ({Name_txt.Tag}), Category({CategoryDeduc_txt.Text}), Total({PrincipalDeduc_txt.Text}), Schedule({Schedule_Combo.Text}), Date({DateCharges_DTP.Value.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
+            End If
 
             Lists_deduction(Deduc_list)
             Cancel_btn.PerformClick()
@@ -148,6 +159,8 @@ Public Class frmLoan
         CategoryDeduc_txt.Tag = DEDUCT_ID
 
         DateCharges_DTP.Value = GetDeduction_Datee(DEDUCT_ID)
+        Editing_DEDUCT = True
+        OrigAmount_DEDUCT = PrincipalDeduc_txt.Text
     End Sub
 
     Dim panelLocation As New Point
@@ -253,7 +266,13 @@ Public Class frmLoan
             SaveDeductionS(PAGIBIG_ID, "PAG-IBIG LOAN", PagPrincipal_TXT.Text, PagAmort_TXT.Text, "CLOSE PAYROLL", PagDate_DTP.Value, PagEmp_TXT.Tag)
             Load_Loans(Pagibig_List, "PAYROLL_DEDUCTION", "PAG-IBIG LOAN")
 
-            SaveLogs($"ADDED PAGIBIG LOAN {PagEmp_TXT.Text} ({PagEmp_TXT.Tag}), Amount({PagAmort_TXT.Text}), Date({PagDate_DTP.Value.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
+            If Editing_PAGIBIG = True Then
+                SaveLogs($"ALTERED DEDUCTION - PAGIBIG LOAN (From {OrigAmount_PAGIBIG} to {PagPrincipal_TXT.Text}) - {PagEmp_TXT.Text} ({PagEmp_TXT.Tag}), Amount({PagAmort_TXT.Text}), Principal({PagPrincipal_TXT.Text}), Date({PagDate_DTP.Value.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
+                Editing_PAGIBIG = False
+            Else
+                SaveLogs($"ADDED PAGIBIG LOAN - {PagEmp_TXT.Text} ({PagEmp_TXT.Tag}), Amount({PagAmort_TXT.Text}), Principal({PagPrincipal_TXT.Text}), Date({PagDate_DTP.Value.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
+            End If
+
             Pag_Cancel_BTN.PerformClick()
         End If
     End Sub
@@ -329,9 +348,14 @@ Public Class frmLoan
             SaveDeductionS(SSS_ID, "SSS LOAN", SSSPrincipal_TXT.Text, SSS_Amort_TXT.Text, "CLOSE PAYROLL", SSS_Date_DTP.Value, SSS_Name_TXT.Tag)
             Load_Loans(SSSLoan_LV, "PAYROLL_DEDUCTION", "SSS LOAN")
 
-            SaveLogs($"ADDED DEDUCTION - SSS LOAN {SSS_Name_TXT.Text} ({SSS_Name_TXT.Tag}), Amort({SSS_Amort_TXT.Text}), Principal({SSSPrincipal_TXT.Text}), Date({SSS_Date_DTP.Value.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
-            SSSCancel_BTN.PerformClick()
+            If Editing_SSS = True Then
+                SaveLogs($"ALTERED DEDUCTION - SSS LOAN (From {OrigAmount_SSS} to {SSSPrincipal_TXT.Text}) {SSS_Name_TXT.Text} ({SSS_Name_TXT.Tag}), Amort({SSS_Amort_TXT.Text}), Principal({SSSPrincipal_TXT.Text}), Date({SSS_Date_DTP.Value.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
+                Editing_SSS = False
+            Else
+                SaveLogs($"ADDED DEDUCTION - SSS LOAN {SSS_Name_TXT.Text} ({SSS_Name_TXT.Tag}), Amort({SSS_Amort_TXT.Text}), Principal({SSSPrincipal_TXT.Text}), Date({SSS_Date_DTP.Value.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
+            End If
 
+            SSSCancel_BTN.PerformClick()
         End If
     End Sub
 
@@ -370,6 +394,8 @@ Public Class frmLoan
         SSSPrincipal_TXT.Text = SSSLoan_LV.Items(SSSLoan_LV.FocusedItem.Index).SubItems(1).Text
         SSS_Amort_TXT.Text = SSSLoan_LV.Items(SSSLoan_LV.FocusedItem.Index).SubItems(2).Text
         SSS_Date_DTP.Value = SSSLoan_LV.Items(SSSLoan_LV.FocusedItem.Index).SubItems(3).Text
+        Editing_SSS = True
+        OrigAmount_SSS = SSSPrincipal_TXT.Text
     End Sub
 
     Private Sub PagEdit_Menu_Click(sender As Object, e As EventArgs) Handles PagEdit_Menu.Click
@@ -379,6 +405,8 @@ Public Class frmLoan
         PagPrincipal_TXT.Text = Pagibig_List.Items(Pagibig_List.FocusedItem.Index).SubItems(1).Text
         PagAmort_TXT.Text = Pagibig_List.Items(Pagibig_List.FocusedItem.Index).SubItems(2).Text
         PagDate_DTP.Value = Pagibig_List.Items(Pagibig_List.FocusedItem.Index).SubItems(3).Text
+        Editing_PAGIBIG = True
+        OrigAmount_PAGIBIG = PagPrincipal_TXT.Text
     End Sub
 
     Private Sub SSSBalance_Menu_Click(sender As Object, e As EventArgs) Handles SSSBalance_Menu.Click
@@ -472,6 +500,7 @@ Public Class frmLoan
     End Sub
 
     Private Sub Mp2Save_btn_Click(sender As Object, e As EventArgs) Handles Mp2Save_btn.Click
+
         Dim result As DialogResult = MsgBox($"MP2 for {Mp2Emp_txt.Text} will be recorded, proceed anyway?", MessageBoxButtons.YesNo)
         If result = DialogResult.Yes Then
 
@@ -486,6 +515,7 @@ Public Class frmLoan
             SaveLogs($"ADDED MP2 {Mp2Emp_txt.Text} ({Mp2Emp_txt.Tag}), Amort({Mp2Amort_txt.Text}), Date({Mp2Date_dtp.Value.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
             Mp2Cancel_btn.PerformClick()
         End If
+
     End Sub
 
     Private Sub Mp2Cancel_btn_Click(sender As Object, e As EventArgs) Handles Mp2Cancel_btn.Click

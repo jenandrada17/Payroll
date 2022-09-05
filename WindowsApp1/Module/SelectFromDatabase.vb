@@ -2778,6 +2778,16 @@ Module SelectFromDatabase
                                 ElseIf row.Cells(1).Value = "RD" Or row.Cells(2).Value = "RD" Then
                                     row.DefaultCellStyle.BackColor = Color.LightSlateGray
 
+                                ElseIf row.Cells(1).Value = "RD" Or row.Cells(2).Value = "AWOP" Then
+                                    If IsDBNull(.item("PATH")) Then
+                                        row.Cells(3).Value = "Upload"
+                                    Else
+                                        row.Cells(3).Tag = .item("PATH")
+                                        row.Cells(3).Value = "View"
+                                    End If
+
+                                    row.DefaultCellStyle.BackColor = Color.Sienna
+
                                 Else
                                     row.DefaultCellStyle.BackColor = SystemColors.InactiveCaption
                                 End If

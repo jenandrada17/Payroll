@@ -174,6 +174,8 @@ Public Class frmSchedule
 
         Dim newName As String = $"{Nas_Employee_Folder}\{row.Cells(1).Value} - {datee.ToString("MMM dd, yyyy")}.pdf"
 
+        If File.Exists(newName) Then File.Delete(newName)
+
         Dim filee As New FileInfo(AttachPath_txt.Text)
         filee.CopyTo(newName)
 
@@ -185,6 +187,7 @@ Public Class frmSchedule
         AttachSave_btn.Enabled = False
         Attach_Panel.Hide()
 
+        SaveWorkingSched_Path(BiometricID_TXT.Text, row.Cells(0).Tag, newName)
     End Sub
 
     Private Sub Attach_Panel_MouseDown(sender As Object, e As MouseEventArgs) Handles Attach_Panel.MouseDown
@@ -206,6 +209,16 @@ Public Class frmSchedule
 
     Private Sub Schedule_DG_DataError(sender As Object, e As DataGridViewDataErrorEventArgs) Handles Schedule_DG.DataError
         '========================= Need para di magERROR ang Datagrid==============
+    End Sub
+
+    Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
+        PopulateShedule(lvEmployee, Paydate, txtSearch.Text)
+    End Sub
+
+    Private Sub txtSearch_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtSearch.KeyPress
+        If e.KeyChar = ChrW(Keys.Enter) Then
+            btnSearch.PerformClick()
+        End If
     End Sub
 
     Public Sub LoadDateTime(Optional datee As DateTime = Nothing)
@@ -293,6 +306,7 @@ Public Class frmSchedule
     End Sub
 
     Private Sub Import_BTN_Click(sender As Object, e As EventArgs) Handles Import_BTN.Click
+
         eApp = New Excel.Application
         eBook = eApp.Workbooks.Open(Path_TXT.Text)
         eSheet = eBook.Worksheets(1)
@@ -315,11 +329,16 @@ Public Class frmSchedule
             Dim endd As DateTime = ending_date
             Dim bio As String = eCell(row, 1).Value
 
-            If bio <> Nothing Then RunCommand($"Delete From PAYROLL_SCHEDULE where bio_no = '{bio}'")
-
             If eCell(row, 1).Value = Nothing Then
                 Exit For
             End If
+
+            If Not Integer.TryParse(bio, Nothing) Then
+                MsgBox($"Biometric Number of {eCell(row, 2).Value} is not valid!", MsgBoxStyle.Exclamation)
+                Continue For
+            End If
+
+            If bio <> Nothing Then RunCommand($"Delete From PAYROLL_SCHEDULE where bio_no = '{bio}'")
 
             SIL = 0
             total_days = 0
@@ -368,10 +387,19 @@ Public Class frmSchedule
                                 Dim myTimeIn As DateTime = DateTime.FromOADate(time_in)
                                 Dim myTimeOut As DateTime = DateTime.FromOADate(_timeOut)
 
-                                If myTimeOut.Hour > myTimeIn.AddHours(9).Hour Then
-                                    Dim totMinus As TimeSpan = myTimeOut.Subtract(myTimeIn.AddHours(9))
-                                    overTime += totMinus.Hours
+                                Dim totalHrs As TimeSpan = DateTime.Parse(myTimeOut).Subtract(DateTime.Parse(myTimeIn))
+
+                                If totalHrs.Hours > 8 Then
+                                    If myTimeOut.Hour > myTimeIn.AddHours(9).Hour Then
+                                        Dim totMinus As TimeSpan = myTimeOut.Subtract(myTimeIn.AddHours(9))
+                                        overTime += totMinus.Hours
+                                    End If
                                 End If
+
+                                If totalHrs.Minutes >= 30 Then
+                                    overTime = overTime + 0.5
+                                End If
+
                             End If
 
                         End If
@@ -393,6 +421,7 @@ Public Class frmSchedule
                         SIL = 5 - (count_all_sil - SIL)
                         MsgBox($"{GetData("FULLNAME", $" PAYROLL_EMPLOYEE WHERE BIO_NO ='{bio}'")} already reached the maximum number of SIL for this year. SIL Reduced to {SIL}.", MsgBoxStyle.Exclamation, $"INVALID")
                     End If
+
                 Else
                     SIL = 0
                     MsgBox($"{GetData("FULLNAME", $" PAYROLL_EMPLOYEE WHERE BIO_NO ='{bio}'")} is not yet allowed to avail SIL. SIL Reduced to 0.", MsgBoxStyle.Exclamation, "Invalid")
@@ -405,13 +434,14 @@ Public Class frmSchedule
         Next
 
         progressBarEnd()
-        PopulateShedule(lvEmployee, Paydate) ' ===== POPULATE DATAGRIDVIEW FROM SHEET ====  
 
         Import_BTN.Enabled = False
         Path_TXT.Clear()
         MyConnection.Close()
         eBook.Close()
         eApp.Quit()
+
+        PopulateShedule(lvEmployee, Paydate) ' ===== POPULATE DATAGRIDVIEW FROM SHEET ====  
 
     End Sub
 

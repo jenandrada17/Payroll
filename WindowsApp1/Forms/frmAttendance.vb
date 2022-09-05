@@ -357,7 +357,7 @@ Public Class frmAttendance
 
                 CalculateuOVERTIME(row, TIME_OUT)
 
-                ''===========================  TEMPORARYYYYYYY JUNE 30, 2022 ONLY===================== 
+                ''=========================== MINIMUM RATE CHANGED STARTED SEPTEMBER 1, 2022 ONLY ===================== 
                 'If paydate_ = "6/30/2022" Then
                 '    Dim short_date As String = DATEE.ToShortDateString
                 '    If short_date = "6/8/2022" Then
@@ -393,7 +393,7 @@ Public Class frmAttendance
                         halfday_Hour += 4
                     End If
 
-                    ''===========================  TEMPORARYYYYYYY JUNE 30, 2022 ONLY===================== 
+                    ''===========================  MINIMUM RATE CHANGED STARTED SEPTEMBER 1, 2022 ONLY ===================== 
                     'If paydate_ = "6/30/2022" Then
                     '    Dim DATEE As DateTime = oRow.Tag
                     '    Dim short_date As String = DATEE.ToShortDateString
@@ -1027,27 +1027,53 @@ Public Class frmAttendance
                 '========================================= TIME IN/OUT ========================================= 
                 Dim DATEE As DateTime = row.Tag
 
-                If CheckData("BIO_NO", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{biometric_No}'") Then
-                    Dim timeIn As DateTime
-                    If DateExist_IN_Schedule(biometric_No, DATEE.ToShortDateString) Then
+                'If CheckData("BIO_NO", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{biometric_No}'") Then
+                '    Dim timeIn As DateTime
+                '    If DateExist_IN_Schedule(biometric_No, DATEE.ToShortDateString) Then
 
-                        If DateTime.TryParse(GetData("TIME_IN", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{biometric_No}' AND DATEE = '{DATEE.ToShortDateString}'  "), timeIn) Then
-                            TIME_IN = timeIn
-                            TIME_OUT = timeIn.AddHours(9)
+                '        If DateTime.TryParse(GetData("TIME_IN", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{biometric_No}' AND DATEE = '{DATEE.ToShortDateString}'  "), timeIn) Then
+                '            TIME_IN = timeIn
+                '            TIME_OUT = timeIn.AddHours(9)
+                '        Else
+                '            Continue For
+                '        End If
+
+                '    Else
+
+                '        TIME_IN = GetData("VALUEE", $"PAYROLL_DEFAULT_TIMEIN")
+                '        TIME_OUT = TIME_IN.AddHours(9)
+
+                '    End If
+
+                'Else
+                '    TIME_IN = GetTime_In(biometric_No)
+                '    TIME_OUT = GetTime_Out(biometric_No)
+                'End If
+
+
+                If CheckData("BIO_NO", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{biometric_No}'") Then
+
+                    If DateExist_IN_Schedule(biometric_No, DATEE.ToShortDateString) Then
+                        Dim valuee_in As String = GetData("TIME_IN", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{biometric_No}' AND DATEE = '{DATEE.ToShortDateString}' ")
+
+                        If valuee_in = "RD" Or valuee_in = "AL" Or valuee_in = "SIL" Or valuee_in = "AWOP" Then
+
+                            TIME_IN = GetData("VALUEE", $"PAYROLL_DEFAULT_TIMEIN")
+                            TIME_OUT = TIME_IN.AddHours(9)
+
                         Else
-                            Continue For
+                            TIME_IN = GetData("TIME_IN", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{biometric_No}' AND DATEE = '{DATEE.ToShortDateString}' ")
+                            TIME_OUT = TIME_IN.AddHours(9)
                         End If
 
                     Else
-
                         TIME_IN = GetData("VALUEE", $"PAYROLL_DEFAULT_TIMEIN")
                         TIME_OUT = TIME_IN.AddHours(9)
-
                     End If
 
                 Else
-                    TIME_IN = GetTime_In(biometric_No)
-                    TIME_OUT = GetTime_Out(biometric_No)
+                    TIME_IN = GetTimeInOut(biometric_No).Time_in
+                    TIME_OUT = GetTimeInOut(biometric_No).Time_out
                 End If
 
                 Dim new_list(3) As String
@@ -1495,7 +1521,8 @@ Public Class frmAttendance
                     SaveBiometricSheet(Paydate, eCell(row, 1).Value, eCell(row, 2).Value)
                     distinct_bio.Add(eCell(row, 1).Value)
 
-                    frmMainForm.AppProgressBar.Value += 1
+                    If frmMainForm.AppProgressBar.Value <> DtSet.Tables(0).Rows.Count Then frmMainForm.AppProgressBar.Value += 1
+
                 Else
                     MsgBox("row 1 Column 1 is empty or not a valid Biometric No.!", MsgBoxStyle.Exclamation)
                 End If
@@ -1564,14 +1591,29 @@ Public Class frmAttendance
             '======================== GET TIME IN/OUT TO CALCULATE LATE UNDERTIME OVERTIME ============================
             If eCell(row, 3).Value <> Nothing Then
 
-                Dim DATEE As DateTime = eCell(row, 3).Value
+                Dim DATEE As DateTime
+
+                For column_ = 3 To 5
+
+                    Dim date_ As DateTime
+                    If DateTime.TryParse(eCell(row, column_).Value, date_) Then
+                        DATEE = date_
+                        Exit For
+                    Else
+                        DATEE = eCell(row, column_).Value
+                        Exit For
+                    End If
+
+                Next
+
+                'Dim DATEE As DateTime = eCell(row, 3).Value
 
                 If CheckData("BIO_NO", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{bio_no}'") Then
 
                     If DateExist_IN_Schedule(bio_no, DATEE.ToShortDateString) Then
                         Dim valuee_in As String = GetData("TIME_IN", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{bio_no}' AND DATEE = '{DATEE.ToShortDateString}' ")
 
-                        If valuee_in = "RD" Or valuee_in = "AL" Or valuee_in = "SIL" Then
+                        If valuee_in = "RD" Or valuee_in = "AL" Or valuee_in = "SIL" Or valuee_in = "AWOP" Then
 
                             TIME_IN = GetData("VALUEE", $"PAYROLL_DEFAULT_TIMEIN")
                             TIME_OUT = TIME_IN.AddHours(9)
@@ -1590,6 +1632,7 @@ Public Class frmAttendance
                     TIME_IN = GetTimeInOut(bio_no).Time_in
                     TIME_OUT = GetTimeInOut(bio_no).Time_out
                 End If
+
             End If
 
             '=============== GROUP 4 TIME IN ============= 

@@ -22,11 +22,11 @@ Partial Class frmSchedule
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle14 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle15 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle11 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle12 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle13 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle34 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle35 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle31 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle32 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle33 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Close_LBL = New System.Windows.Forms.Label()
         Me.TabControl1 = New System.Windows.Forms.TabControl()
@@ -40,20 +40,21 @@ Partial Class frmSchedule
         Me.ColumnHeader3 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader2 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader1 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader4 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader5 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader6 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.btnSearch = New System.Windows.Forms.Button()
         Me.txtSearch = New System.Windows.Forms.TextBox()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.Panel4 = New System.Windows.Forms.Panel()
         Me.Attach_Panel = New System.Windows.Forms.Panel()
         Me.Label75 = New System.Windows.Forms.Label()
         Me.AttachClose_lbl = New System.Windows.Forms.Label()
         Me.AttachPath_txt = New System.Windows.Forms.TextBox()
         Me.AttachBrowse_btn = New System.Windows.Forms.Button()
         Me.AttachSave_btn = New System.Windows.Forms.Button()
-        Me.Label6 = New System.Windows.Forms.Label()
-        Me.Label5 = New System.Windows.Forms.Label()
         Me.Panel3 = New System.Windows.Forms.Panel()
         Me.Panel2 = New System.Windows.Forms.Panel()
-        Me.Label4 = New System.Windows.Forms.Label()
         Me.Panel1 = New System.Windows.Forms.Panel()
         Me.Cancel_BTN = New System.Windows.Forms.Button()
         Me.Save_BTN = New System.Windows.Forms.Button()
@@ -68,9 +69,10 @@ Partial Class frmSchedule
         Me.Time_In_DataGrid = New System.Windows.Forms.DataGridViewComboBoxColumn()
         Me.Time_Out_DataGrid = New System.Windows.Forms.DataGridViewComboBoxColumn()
         Me.Attach_btn = New System.Windows.Forms.DataGridViewButtonColumn()
-        Me.ColumnHeader4 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader5 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader6 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.Label8 = New System.Windows.Forms.Label()
+        Me.Label9 = New System.Windows.Forms.Label()
+        Me.Label10 = New System.Windows.Forms.Label()
+        Me.Label11 = New System.Windows.Forms.Label()
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.TabPage2.SuspendLayout()
@@ -214,6 +216,24 @@ Partial Class frmSchedule
         Me.ColumnHeader1.Text = "Payroll Date"
         Me.ColumnHeader1.Width = 180
         '
+        'ColumnHeader4
+        '
+        Me.ColumnHeader4.Text = "Total Days"
+        Me.ColumnHeader4.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.ColumnHeader4.Width = 140
+        '
+        'ColumnHeader5
+        '
+        Me.ColumnHeader5.Text = "Overtime"
+        Me.ColumnHeader5.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.ColumnHeader5.Width = 140
+        '
+        'ColumnHeader6
+        '
+        Me.ColumnHeader6.Text = "SIL"
+        Me.ColumnHeader6.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.ColumnHeader6.Width = 140
+        '
         'btnSearch
         '
         Me.btnSearch.Anchor = CType((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
@@ -237,12 +257,14 @@ Partial Class frmSchedule
         '
         'TabPage2
         '
+        Me.TabPage2.Controls.Add(Me.Label8)
+        Me.TabPage2.Controls.Add(Me.Label9)
+        Me.TabPage2.Controls.Add(Me.Label10)
+        Me.TabPage2.Controls.Add(Me.Label11)
+        Me.TabPage2.Controls.Add(Me.Panel4)
         Me.TabPage2.Controls.Add(Me.Attach_Panel)
-        Me.TabPage2.Controls.Add(Me.Label6)
-        Me.TabPage2.Controls.Add(Me.Label5)
         Me.TabPage2.Controls.Add(Me.Panel3)
         Me.TabPage2.Controls.Add(Me.Panel2)
-        Me.TabPage2.Controls.Add(Me.Label4)
         Me.TabPage2.Controls.Add(Me.Panel1)
         Me.TabPage2.Controls.Add(Me.Cancel_BTN)
         Me.TabPage2.Controls.Add(Me.Save_BTN)
@@ -256,6 +278,14 @@ Partial Class frmSchedule
         Me.TabPage2.Text = "     Schedule Details     "
         Me.TabPage2.UseVisualStyleBackColor = True
         '
+        'Panel4
+        '
+        Me.Panel4.BackColor = System.Drawing.Color.Sienna
+        Me.Panel4.Location = New System.Drawing.Point(21, 430)
+        Me.Panel4.Name = "Panel4"
+        Me.Panel4.Size = New System.Drawing.Size(40, 25)
+        Me.Panel4.TabIndex = 96
+        '
         'Attach_Panel
         '
         Me.Attach_Panel.AutoSize = True
@@ -266,7 +296,7 @@ Partial Class frmSchedule
         Me.Attach_Panel.Controls.Add(Me.AttachPath_txt)
         Me.Attach_Panel.Controls.Add(Me.AttachBrowse_btn)
         Me.Attach_Panel.Controls.Add(Me.AttachSave_btn)
-        Me.Attach_Panel.Location = New System.Drawing.Point(12, 348)
+        Me.Attach_Panel.Location = New System.Drawing.Point(12, 285)
         Me.Attach_Panel.Name = "Attach_Panel"
         Me.Attach_Panel.Size = New System.Drawing.Size(634, 90)
         Me.Attach_Panel.TabIndex = 95
@@ -322,26 +352,6 @@ Partial Class frmSchedule
         Me.AttachSave_btn.Text = "Save"
         Me.AttachSave_btn.UseVisualStyleBackColor = True
         '
-        'Label6
-        '
-        Me.Label6.AutoSize = True
-        Me.Label6.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label6.Location = New System.Drawing.Point(67, 530)
-        Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(70, 27)
-        Me.Label6.TabIndex = 94
-        Me.Label6.Text = "Rest Day"
-        '
-        'Label5
-        '
-        Me.Label5.AutoSize = True
-        Me.Label5.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label5.Location = New System.Drawing.Point(67, 495)
-        Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(98, 27)
-        Me.Label5.TabIndex = 94
-        Me.Label5.Text = "Absent Leave"
-        '
         'Panel3
         '
         Me.Panel3.BackColor = System.Drawing.Color.SlateGray
@@ -353,25 +363,15 @@ Partial Class frmSchedule
         'Panel2
         '
         Me.Panel2.BackColor = System.Drawing.Color.CadetBlue
-        Me.Panel2.Location = New System.Drawing.Point(21, 495)
+        Me.Panel2.Location = New System.Drawing.Point(21, 500)
         Me.Panel2.Name = "Panel2"
         Me.Panel2.Size = New System.Drawing.Size(40, 25)
         Me.Panel2.TabIndex = 93
         '
-        'Label4
-        '
-        Me.Label4.AutoSize = True
-        Me.Label4.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label4.Location = New System.Drawing.Point(67, 456)
-        Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(161, 27)
-        Me.Label4.TabIndex = 92
-        Me.Label4.Text = "Service Incentive Leave"
-        '
         'Panel1
         '
         Me.Panel1.BackColor = System.Drawing.Color.RosyBrown
-        Me.Panel1.Location = New System.Drawing.Point(21, 456)
+        Me.Panel1.Location = New System.Drawing.Point(21, 464)
         Me.Panel1.Name = "Panel1"
         Me.Panel1.Size = New System.Drawing.Size(40, 25)
         Me.Panel1.TabIndex = 91
@@ -471,27 +471,27 @@ Partial Class frmSchedule
         Me.Schedule_DG.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText
         Me.Schedule_DG.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.Schedule_DG.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Date_DataGrid, Me.Time_In_DataGrid, Me.Time_Out_DataGrid, Me.Attach_btn})
-        DataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle14.BackColor = System.Drawing.SystemColors.InactiveCaption
-        DataGridViewCellStyle14.Font = New System.Drawing.Font("Dubai", 12.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle14.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle14.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle14.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.Schedule_DG.DefaultCellStyle = DataGridViewCellStyle14
-        Me.Schedule_DG.Location = New System.Drawing.Point(554, 8)
+        DataGridViewCellStyle34.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle34.BackColor = System.Drawing.SystemColors.InactiveCaption
+        DataGridViewCellStyle34.Font = New System.Drawing.Font("Dubai", 12.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle34.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle34.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle34.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle34.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.Schedule_DG.DefaultCellStyle = DataGridViewCellStyle34
+        Me.Schedule_DG.Location = New System.Drawing.Point(542, 8)
         Me.Schedule_DG.Name = "Schedule_DG"
         Me.Schedule_DG.RowHeadersVisible = False
-        DataGridViewCellStyle15.SelectionBackColor = System.Drawing.Color.Transparent
-        DataGridViewCellStyle15.SelectionForeColor = System.Drawing.Color.Transparent
-        Me.Schedule_DG.RowsDefaultCellStyle = DataGridViewCellStyle15
-        Me.Schedule_DG.Size = New System.Drawing.Size(592, 471)
+        DataGridViewCellStyle35.SelectionBackColor = System.Drawing.Color.Transparent
+        DataGridViewCellStyle35.SelectionForeColor = System.Drawing.Color.Transparent
+        Me.Schedule_DG.RowsDefaultCellStyle = DataGridViewCellStyle35
+        Me.Schedule_DG.Size = New System.Drawing.Size(604, 501)
         Me.Schedule_DG.TabIndex = 87
         '
         'Date_DataGrid
         '
-        DataGridViewCellStyle11.NullValue = Nothing
-        Me.Date_DataGrid.DefaultCellStyle = DataGridViewCellStyle11
+        DataGridViewCellStyle31.NullValue = Nothing
+        Me.Date_DataGrid.DefaultCellStyle = DataGridViewCellStyle31
         Me.Date_DataGrid.HeaderText = "Date"
         Me.Date_DataGrid.Name = "Date_DataGrid"
         Me.Date_DataGrid.ReadOnly = True
@@ -501,9 +501,9 @@ Partial Class frmSchedule
         '
         'Time_In_DataGrid
         '
-        DataGridViewCellStyle12.Format = "t"
-        DataGridViewCellStyle12.NullValue = Nothing
-        Me.Time_In_DataGrid.DefaultCellStyle = DataGridViewCellStyle12
+        DataGridViewCellStyle32.Format = "t"
+        DataGridViewCellStyle32.NullValue = Nothing
+        Me.Time_In_DataGrid.DefaultCellStyle = DataGridViewCellStyle32
         Me.Time_In_DataGrid.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.[Nothing]
         Me.Time_In_DataGrid.HeaderText = "  Time in  "
         Me.Time_In_DataGrid.Name = "Time_In_DataGrid"
@@ -520,29 +520,51 @@ Partial Class frmSchedule
         '
         'Attach_btn
         '
-        DataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle13.BackColor = System.Drawing.SystemColors.InactiveCaption
-        Me.Attach_btn.DefaultCellStyle = DataGridViewCellStyle13
+        DataGridViewCellStyle33.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle33.BackColor = System.Drawing.SystemColors.InactiveCaption
+        Me.Attach_btn.DefaultCellStyle = DataGridViewCellStyle33
         Me.Attach_btn.HeaderText = "  Attach"
         Me.Attach_btn.Name = "Attach_btn"
         '
-        'ColumnHeader4
+        'Label8
         '
-        Me.ColumnHeader4.Text = "Total Days"
-        Me.ColumnHeader4.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.ColumnHeader4.Width = 140
+        Me.Label8.AutoSize = True
+        Me.Label8.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label8.Location = New System.Drawing.Point(67, 430)
+        Me.Label8.Name = "Label8"
+        Me.Label8.Size = New System.Drawing.Size(254, 27)
+        Me.Label8.TabIndex = 101
+        Me.Label8.Text = "Absent Without Permission (AWOP)"
         '
-        'ColumnHeader5
+        'Label9
         '
-        Me.ColumnHeader5.Text = "Overtime"
-        Me.ColumnHeader5.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.ColumnHeader5.Width = 140
+        Me.Label9.AutoSize = True
+        Me.Label9.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label9.Location = New System.Drawing.Point(67, 530)
+        Me.Label9.Name = "Label9"
+        Me.Label9.Size = New System.Drawing.Size(106, 27)
+        Me.Label9.TabIndex = 99
+        Me.Label9.Text = "Rest Day (RD)"
         '
-        'ColumnHeader6
+        'Label10
         '
-        Me.ColumnHeader6.Text = "SIL"
-        Me.ColumnHeader6.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.ColumnHeader6.Width = 140
+        Me.Label10.AutoSize = True
+        Me.Label10.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label10.Location = New System.Drawing.Point(67, 500)
+        Me.Label10.Name = "Label10"
+        Me.Label10.Size = New System.Drawing.Size(132, 27)
+        Me.Label10.TabIndex = 100
+        Me.Label10.Text = "Absent Leave (AL)"
+        '
+        'Label11
+        '
+        Me.Label11.AutoSize = True
+        Me.Label11.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label11.Location = New System.Drawing.Point(67, 464)
+        Me.Label11.Name = "Label11"
+        Me.Label11.Size = New System.Drawing.Size(198, 27)
+        Me.Label11.TabIndex = 98
+        Me.Label11.Text = "Service Incentive Leave (SIL)"
         '
         'frmSchedule
         '
@@ -594,10 +616,7 @@ Partial Class frmSchedule
     Friend WithEvents Path_TXT As TextBox
     Friend WithEvents Browse_BTN As Button
     Friend WithEvents ColumnHeader3 As ColumnHeader
-    Friend WithEvents Label4 As Label
     Friend WithEvents Panel1 As Panel
-    Friend WithEvents Label6 As Label
-    Friend WithEvents Label5 As Label
     Friend WithEvents Panel3 As Panel
     Friend WithEvents Panel2 As Panel
     Friend WithEvents Attach_Panel As Panel
@@ -613,4 +632,9 @@ Partial Class frmSchedule
     Friend WithEvents ColumnHeader4 As ColumnHeader
     Friend WithEvents ColumnHeader5 As ColumnHeader
     Friend WithEvents ColumnHeader6 As ColumnHeader
+    Friend WithEvents Panel4 As Panel
+    Friend WithEvents Label8 As Label
+    Friend WithEvents Label9 As Label
+    Friend WithEvents Label10 As Label
+    Friend WithEvents Label11 As Label
 End Class

@@ -2082,4 +2082,15 @@ Module SaveUpdate
         End Using
     End Sub
 
+    Friend Sub SaveWorkingSched_Path(bio As String, datee As String, path As String)
+        Dim mysql As String = $"Select * from PAYROLL_SCHEDULE Where BIO_NO = '{bio}' and DATEE = '{datee}'"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_SCHEDULE")
+            If ds.Tables(0).Rows.Count > 0 Then
+                ds.Tables(0).Rows(0).Item("PATH") = path
+                SaveEntry(ds, False)
+
+                MsgBox("Successfully Uploaded!", MsgBoxStyle.Information)
+            End If
+        End Using
+    End Sub
 End Module
