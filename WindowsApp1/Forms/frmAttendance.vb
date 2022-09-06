@@ -214,6 +214,15 @@ Public Class frmAttendance
 
     Private Sub DataGridView1_CurrentCellDirtyStateChanged(sender As Object, e As EventArgs) Handles DataGridView1.CurrentCellDirtyStateChanged
 
+        If TypeOf DataGridView1.CurrentCell Is DataGridViewComboBoxCell Then '========== IF EMPTY ROW 
+            Dim row As DataGridViewRow = DataGridView1.Rows(DataGridView1.CurrentRow.Index)
+
+            If row.Cells(1).Value = Nothing And row.Cells(2).Value = Nothing And row.Cells(3).Value = Nothing And row.Cells(4).Value = Nothing Then
+                row.Cells(5).Value = False
+            End If
+        End If
+
+
         If TypeOf DataGridView1.CurrentCell Is DataGridViewCheckBoxCell Then
             DataGridView1.EndEdit()
             Dim Checked As Boolean = CType(DataGridView1.CurrentCell.Value, Boolean)
@@ -234,12 +243,12 @@ Public Class frmAttendance
 
     End Sub
 
-    ''========= TEMPORARY FOR PAYDATE 6/30/2022 ===========  
-    'Dim temp_present As Double = 0
-    'Dim temp_half As Double = 0
-    'Dim temp_overtime As Double = 0
-    'Dim temp_late As Double = 0
-    'Dim temp_undertime As Double = 0
+    '========= TEMPORARY FOR PAYDATE 6/30/2022 (CHANGED MINIMUM RATE)===========  
+    Dim temp_present As Double = 0
+    Dim temp_half As Double = 0
+    Dim temp_overtime As Double = 0
+    Dim temp_late As Double = 0
+    Dim temp_undertime As Double = 0
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Calculate_BTN.Click
         If Name_TXT.Text <> Nothing Then
@@ -252,6 +261,7 @@ Public Class frmAttendance
             SIL_LBL.Text = 0
             under_count = New TimeSpan(0, 0, 0, 0, 0)
             late_count = New TimeSpan(0, 0, 0, 0, 0)
+            Dim product As Double = 0
             Dim sil As Double = 0
             Dim Present_FromWorkingSched As Double = 0
 
@@ -270,6 +280,11 @@ Public Class frmAttendance
             For Each row As DataGridViewRow In DataGridView1.Rows
 
                 Dim DATEE As DateTime = row.Tag
+                Dim am_in As String = row.Cells(1).Value
+                Dim am_out As String = row.Cells(2).Value
+                Dim pm_in As String = row.Cells(3).Value
+                Dim pm_out As String = row.Cells(4).Value
+
 
                 If Not row.DefaultCellStyle.ForeColor = Color.Red Then
 
@@ -300,6 +315,7 @@ Public Class frmAttendance
 
                             Dim timeIN As DateTime = Nothing
                             Dim timeOut As DateTime = Nothing
+
                             If DateTime.TryParse(GetData("TIME_IN", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{bioNum}' AND DATEE = '{DATEE.ToShortDateString}' "), timeIN) Then
                                 TIME_IN = timeIN
                             ElseIf GetData("TIME_IN", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{bioNum}' AND DATEE = '{DATEE.ToShortDateString}' ") = "SIL" Then
@@ -319,6 +335,7 @@ Public Class frmAttendance
                                 sil += 0.5
                             End If
 
+                            Dim forTempHalfDay As Integer = 0
                             '=================== IF HALFDAY LANG ANG RD, AL, SIL ===============
                             If timeIN = Nothing And timeOut = Nothing Then
                                 Continue For
@@ -326,18 +343,35 @@ Public Class frmAttendance
                                 TIME_IN = timeIN
                                 TIME_OUT = timeIN.AddHours(4)
 
-                                If row.Cells(1).Value <> Nothing Then '======== IF PRESENT AM IN
+                                If am_in <> Nothing Then '======== IF PRESENT AM IN
                                     Present_FromWorkingSched += 0.5
+                                    forTempHalfDay += 4
                                 End If
                             ElseIf timeIN = Nothing And timeOut <> Nothing Then
                                 TIME_IN = timeOut
                                 TIME_OUT = timeOut.AddHours(4)
 
-                                If row.Cells(3).Value <> Nothing Then  '======== IF PRESENT PM IN
+                                If pm_in <> Nothing Then  '======== IF PRESENT PM IN
                                     Present_FromWorkingSched += 0.5
+                                    forTempHalfDay += 4
                                 End If
                             Else
-                                Present_FromWorkingSched += 1
+                                If am_in <> Nothing And am_out <> Nothing And pm_in <> Nothing And pm_out <> Nothing Then
+                                    Present_FromWorkingSched += 1
+                                Else
+                                    Present_FromWorkingSched += 0.5 '======== IF HALFDAY EXAMPLE AM_IN AND AM_OUT LANG
+                                    forTempHalfDay += 4
+                                End If
+                            End If
+
+
+                            '=========================== MINIMUM RATE CHANGED STARTED SEPTEMBER 1, 2022 ONLY (JUNE 30, 2022)=====================  
+                            If paydate_ = "9/15/2022" Then
+                                Dim short_date As String = DATEE.ToShortDateString
+                                If short_date = "8/31/2022" Then
+                                    temp_present = Present_FromWorkingSched
+                                    temp_half = forTempHalfDay
+                                End If
                             End If
 
                         Else
@@ -357,15 +391,15 @@ Public Class frmAttendance
 
                 CalculateuOVERTIME(row, TIME_OUT)
 
-                ''=========================== MINIMUM RATE CHANGED STARTED SEPTEMBER 1, 2022 ONLY ===================== 
-                'If paydate_ = "6/30/2022" Then
-                '    Dim short_date As String = DATEE.ToShortDateString
-                '    If short_date = "6/8/2022" Then
-                '        temp_overtime = TotalOTHr_LBL.Text
-                '        temp_late = late_count.TotalMinutes
-                '        temp_undertime = under_count.TotalMinutes
-                '    End If
-                'End If
+                '=========================== MINIMUM RATE CHANGED STARTED SEPTEMBER 1, 2022 ONLY (JUNE 30, 2022)=====================  
+                If paydate_ = "9/15/2022" Then
+                    Dim short_date As String = DATEE.ToShortDateString
+                    If short_date = "8/31/2022" Then
+                        temp_overtime = TotalOTHr_LBL.Text
+                        temp_late = late_count.TotalMinutes
+                        temp_undertime = under_count.TotalMinutes
+                    End If
+                End If
 
             Next
 
@@ -393,23 +427,20 @@ Public Class frmAttendance
                         halfday_Hour += 4
                     End If
 
-                    ''===========================  MINIMUM RATE CHANGED STARTED SEPTEMBER 1, 2022 ONLY ===================== 
-                    'If paydate_ = "6/30/2022" Then
-                    '    Dim DATEE As DateTime = oRow.Tag
-                    '    Dim short_date As String = DATEE.ToShortDateString
-                    '    If short_date = "6/8/2022" Then
-                    '        temp_present = Present
-                    '        temp_half = halfday_Hour
-                    '    End If
-                    'End If
+                    '=========================== MINIMUM RATE CHANGED STARTED SEPTEMBER 1, 2022 ONLY (JUNE 30, 2022)=====================  
+                    If paydate_ = "9/15/2022" Then
+                        Dim DATEE As DateTime = oRow.Tag
+                        Dim short_date As String = DATEE.ToShortDateString
+                        If short_date = "8/31/2022" Then
+                            temp_present = Present
+                            temp_half = halfday_Hour
+                        End If
+                    End If
 
                 Next
 
-                TotalDays_LBL.Text = Present
-
-                '===================================== SUM UP HALF DAY ====================================   
-                Dim product As Double
-                product = ((Convert.ToInt32(TotalDays_LBL.Text) * 8)) - halfday_Hour
+                '===================================== SUM UP HALF DAY ==================================== 
+                product = ((Convert.ToInt32(Present) * 8)) - halfday_Hour
                 product = product / 8
                 TotalDays_LBL.Text = product
 
@@ -417,17 +448,18 @@ Public Class frmAttendance
                 TotalDays_LBL.Text = Present_FromWorkingSched
             End If
 
-            ''===================================== TEMPORARYYYYYYY =================================  
+            '===================================== MINIMUM CHANGED STARTING SEPTEMBER 1, 2022 =================================  
             'If paydate_ = "6/30/2022" Then
-            '    Dim old_days As Double
-            '    old_days = (temp_present * 8) - temp_half
-            '    old_days = old_days / 8
-            '    Dim new_days As Double = product - old_days
-            '    Dim new_overtime As Double = CDbl(TotalOTHr_LBL.Text) - temp_overtime
-            '    Dim new_late As Double = CDbl(late_count.TotalMinutes) - temp_late
-            '    Dim new_undertime As Double = CDbl(under_count.TotalMinutes) - temp_undertime
-            '    SaveTemporary(bioNum, old_days, new_days, temp_overtime, new_overtime, temp_late, new_late, temp_undertime, new_undertime)
-            'End If
+            If paydate_ = "9/15/2022" Then
+                Dim old_days As Double
+                old_days = (temp_present * 8) - temp_half
+                old_days = old_days / 8
+                Dim new_days As Double = CDbl(TotalDays_LBL.Text) - old_days
+                Dim new_overtime As Double = CDbl(TotalOTHr_LBL.Text) - temp_overtime
+                Dim new_late As Double = CDbl(late_count.TotalMinutes) - temp_late
+                Dim new_undertime As Double = CDbl(under_count.TotalMinutes) - temp_undertime
+                SaveTemporary(bioNum, old_days, new_days, temp_overtime, new_overtime, temp_late, new_late, temp_undertime, new_undertime, paydate_)
+            End If
 
             late_count = New TimeSpan(0, 0, 0, 0, 0)
             under_count = New TimeSpan(0, 0, 0, 0, 0)
@@ -1396,6 +1428,14 @@ Public Class frmAttendance
         PI_Days.Value = 0.0
     End Sub
 
+    Private Sub Combobox_SelectedItem(sender As Object, e As EventArgs)
+        Dim combo As ComboBox = DirectCast(sender, ComboBox)
+
+        If combo.SelectedItem = "" Then
+
+        End If
+    End Sub
+
     Private Sub AddPIDays_btn_Click_1(sender As Object, e As EventArgs) Handles AddPIDays_btn.Click
         If P_Add_Panel.Visible = True Then
             P_Add_Panel.Visible = False
@@ -1580,6 +1620,7 @@ Public Class frmAttendance
 
         For row = 7 To DtSet.Tables(0).Rows.Count + 1
 
+            Dim DATEE As DateTime = Nothing
             Dim groups_time, list_hour As New List(Of String)()
 
             '=============== BIO NUMBER ================
@@ -1589,67 +1630,64 @@ Public Class frmAttendance
             End If
 
             '======================== GET TIME IN/OUT TO CALCULATE LATE UNDERTIME OVERTIME ============================
-            If eCell(row, 3).Value <> Nothing Then
+            'If eCell(row, 3).Value <> Nothing Then
 
-                Dim DATEE As DateTime
+            Dim column_ As Integer = 3
 
-                For column_ = 3 To 5
+            '========================= IF NOT VALID DATE ==================
+            While (column_ <= 5)
+                Dim date_ As DateTime
+                If DateTime.TryParse(eCell(row, column_).Value, date_) Then
+                    DATEE = date_
+                    Exit While
+                Else
+                    column_ += 1
+                End If
+            End While
 
-                    Dim date_ As DateTime
-                    If DateTime.TryParse(eCell(row, column_).Value, date_) Then
-                        DATEE = date_
-                        Exit For
-                    Else
-                        DATEE = eCell(row, column_).Value
-                        Exit For
-                    End If
+            Console.WriteLine(DATEE.ToShortDateString)
 
-                Next
+            'Dim DATEE As DateTime = eCell(row, 3).Value
 
-                'Dim DATEE As DateTime = eCell(row, 3).Value
+            If CheckData("BIO_NO", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{bio_no}'") Then
 
-                If CheckData("BIO_NO", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{bio_no}'") Then
+                If DateExist_IN_Schedule(bio_no, DATEE.ToShortDateString) Then
+                    Dim valuee_in As String = GetData("TIME_IN", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{bio_no}' AND DATEE = '{DATEE.ToShortDateString}' ")
 
-                    If DateExist_IN_Schedule(bio_no, DATEE.ToShortDateString) Then
-                        Dim valuee_in As String = GetData("TIME_IN", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{bio_no}' AND DATEE = '{DATEE.ToShortDateString}' ")
+                    If valuee_in = "RD" Or valuee_in = "AL" Or valuee_in = "SIL" Or valuee_in = "AWOP" Then
 
-                        If valuee_in = "RD" Or valuee_in = "AL" Or valuee_in = "SIL" Or valuee_in = "AWOP" Then
-
-                            TIME_IN = GetData("VALUEE", $"PAYROLL_DEFAULT_TIMEIN")
-                            TIME_OUT = TIME_IN.AddHours(9)
-
-                        Else
-                            TIME_IN = GetData("TIME_IN", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{bio_no}' AND DATEE = '{DATEE.ToShortDateString}' ")
-                            TIME_OUT = TIME_IN.AddHours(9)
-                        End If
-
-                    Else
                         TIME_IN = GetData("VALUEE", $"PAYROLL_DEFAULT_TIMEIN")
+                        TIME_OUT = TIME_IN.AddHours(9)
+
+                    Else
+                        TIME_IN = GetData("TIME_IN", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{bio_no}' AND DATEE = '{DATEE.ToShortDateString}' ")
                         TIME_OUT = TIME_IN.AddHours(9)
                     End If
 
                 Else
-                    TIME_IN = GetTimeInOut(bio_no).Time_in
-                    TIME_OUT = GetTimeInOut(bio_no).Time_out
+                    TIME_IN = GetData("VALUEE", $"PAYROLL_DEFAULT_TIMEIN")
+                    TIME_OUT = TIME_IN.AddHours(9)
                 End If
 
+            Else
+                TIME_IN = GetTimeInOut(bio_no).Time_in
+                TIME_OUT = GetTimeInOut(bio_no).Time_out
             End If
 
-            '=============== GROUP 4 TIME IN ============= 
-            For column = 6 To 11
-                If eCell(row, column).Value <> Nothing Then
-                    Dim VALUEE, TIMEEE As New DateTime
-
-                    VALUEE = eCell(row, 3).Value
-                    TIMEEE = DateTime.FromOADate(eCell(row, column).Value)
-
-                    groups_time.Add(VALUEE.Add(TIMEEE.TimeOfDay))
-                End If
-            Next
+            'End If
 
             '=============== CHECK PER CELL IN A ROW ============= 
-            For column = 5 To 11
-                Dim time As DateTime = (New DateTime()).AddDays(eCell(row, column).Value)
+            For column = 5 To 13
+
+                Dim time As DateTime
+
+                '========================= IF NOT VALID TIME ==================  
+                Try
+                    time = (New DateTime()).AddDays(eCell(row, column).Value)
+                Catch ex As Exception
+                    Continue For
+                End Try
+
 
                 '============================== WORKED FINE ========================   
                 If time = "1/1/0001 12:00:00 AM" Then
@@ -1720,7 +1758,7 @@ Public Class frmAttendance
                         End If
 
                         distinct_bio.Add(bio_no)
-                        SaveDTR(bio_no, Paydate, eCell(row, 3).Value, new_list(0), new_list(1), new_list(2), new_list(3))
+                        SaveDTR(bio_no, Paydate, DATEE.ToShortDateString, new_list(0), new_list(1), new_list(2), new_list(3))
 
                     End If
 
@@ -1728,7 +1766,6 @@ Public Class frmAttendance
                 Else
 
                     list_hour.Add(time.ToString("t"))
-
                 End If
             Next
 

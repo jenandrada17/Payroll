@@ -64,8 +64,8 @@ Module Temporary
         End Using
     End Sub
 
-    Friend Sub SaveTemporary(BIO_NO As String, old_days As Double, new_days As Double, OLD_OVERTIME As Double, NEW_OVERTIME As Double, OLD_LATE As Double, NEW_LATE As Double, OLD_UNDERTIME As Double, NEW_UNDERTIME As Double)
-        Dim mysql As String = $"Select * from TEMP_TABLE where BIO_NO = '{BIO_NO}'"
+    Friend Sub SaveTemporary(BIO_NO As String, old_days As Double, new_days As Double, OLD_OVERTIME As Double, NEW_OVERTIME As Double, OLD_LATE As Double, NEW_LATE As Double, OLD_UNDERTIME As Double, NEW_UNDERTIME As Double, PAYDATE As String)
+        Dim mysql As String = $"Select * from TEMP_TABLE where BIO_NO = '{BIO_NO}' and PAYDATE = '{PAYDATE}'"
         Using ds As DataSet = LoadSQL(mysql, "TEMP_TABLE")
             If ds.Tables(0).Rows.Count > 0 Then
                 With ds.Tables(0).Rows(0)
@@ -77,6 +77,7 @@ Module Temporary
                     .Item("NEW_LATE") = NEW_LATE
                     .Item("OLD_UNDERTIME") = OLD_UNDERTIME
                     .Item("NEW_UNDERTIME") = NEW_UNDERTIME
+                    .Item("PAYDATE") = PAYDATE
                 End With
                 SaveEntry(ds, False)
             Else
@@ -93,6 +94,7 @@ Module Temporary
                         .Item("NEW_LATE") = NEW_LATE
                         .Item("OLD_UNDERTIME") = OLD_UNDERTIME
                         .Item("NEW_UNDERTIME") = NEW_UNDERTIME
+                        .Item("PAYDATE") = PAYDATE
                     End With
                     dss.Tables(0).Rows.Add(dsNew)
                     SaveEntry(dss)

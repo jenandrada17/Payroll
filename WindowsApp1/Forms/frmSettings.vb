@@ -190,7 +190,7 @@
 
                 SaveRATE("BIO_NO", Rate_BioNo_TXT.Text, Rate_EmpAmount_TXT.Text, fix_monthly)
 
-                SaveLogs($"UPDATED RATE - {Rate_Employee_TXT.Text} ({Rate_BioNo_TXT.Text}), Rate({Rate_EmpAmount_TXT.Text})", frmMainForm.UserName_LBL.Text)
+                SaveLogs($"UPDATED RATE - {Rate_Employee_TXT.Text} ({Rate_BioNo_TXT.Text}), Rate( from {Rate_EmpAmount_TXT.Tag} to {Rate_EmpAmount_TXT.Text} )", frmMainForm.UserName_LBL.Text)
 
                 Rate_EmpClear_BTN.PerformClick()
                 Lists_Rate(Rate_list)
@@ -220,14 +220,14 @@
     Private Sub Rate_Branch_BTN_Click(sender As Object, e As EventArgs) Handles Rate_Branch_BTN.Click
         If Rate_City_ComboB.SelectedIndex >= 0 And Not Rate_CityAmount_TXT.Text = "" Then
 
-            Dim result As DialogResult = MsgBox($"Minimum rate will be Save/Updated, proceed anyway?", MessageBoxButtons.YesNo)
+            Dim result As DialogResult = MsgBox($"Minimum rate will be updated, proceed anyway?", MessageBoxButtons.YesNo)
             If result = DialogResult.Yes Then
 
                 SaveRATE_City("CITY", Rate_City_ComboB.Text, Rate_CityAmount_TXT.Text, True)
 
                 SaveMinimum_RATE(Rate_City_ComboB.Text, Rate_CityAmount_TXT.Text, Ecola_TXT.Text)
 
-                SaveLogs($"UPDATED MINIMUM RATE - City({Rate_City_ComboB.Text}), Rate({Rate_CityAmount_TXT.Text})", frmMainForm.UserName_LBL.Text)
+                SaveLogs($"UPDATED MINIMUM RATE - City({Rate_City_ComboB.Text}), Rate( from {Rate_CityAmount_TXT.Tag} to {Rate_CityAmount_TXT.Text} )", frmMainForm.UserName_LBL.Text)
 
                 CityClear_BTN.PerformClick()
 
@@ -569,6 +569,7 @@
     Private Sub Rate_City_ComboB_SelectedValueChanged(sender As Object, e As EventArgs) Handles Rate_City_ComboB.SelectedValueChanged
         Dim ecola = GetEcola("CITY", Rate_City_ComboB.SelectedItem)
         Rate_CityAmount_TXT.Text = GetMinimumRate("CITY", Rate_City_ComboB.SelectedItem)
+        Rate_CityAmount_TXT.Tag = Rate_CityAmount_TXT.Text
         Ecola_TXT.Text = IIf(ecola = 0, Nothing, ecola)
     End Sub
 

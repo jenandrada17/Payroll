@@ -368,6 +368,7 @@ Module SaveUpdate
                     If existing_rate <= daily_rate Then
                         .Item("RATE_DAILY") = daily_rate
                         .Item("RATE_MONTHLY") = daily_rate * 26
+                        .Item("OLD_RATE") = existing_rate
                     End If
 
                     If fix_monthly = True Then
@@ -394,7 +395,11 @@ Module SaveUpdate
         If dss.Tables(0).Rows.Count > 0 Then
             For Each dr In dss.Tables(0).Rows
                 With dr
+
+                    Dim old_rate As String = .Item("MINIMUM_RATE")
+
                     .Item("MINIMUM_RATE") = MINIMUM_RATE
+                    .Item("OLD_MINIMUM_RATE") = old_rate
 
                     If ECOLA <> Nothing Then
                         .Item("ECOLA") = ECOLA
@@ -578,6 +583,7 @@ Module SaveUpdate
                     Company = IIf(IsDBNull(.Item("COMPANY")), "", .Item("COMPANY"))
                     Dim BranchCode As String = .Item("BRANCH_CODE")
                     Dim Training_REGHoliday = 0, Training_SPECHoliday As Integer = 0
+                    Dim Old_Rate As Decimal = IIf(IsDBNull(.Item("OLD_RATE")), rate, .Item("OLD_RATE"))
 
                     Dim training_overtime As Double = 0
                     Dim training_late As TimeSpan = New TimeSpan(0, 0, 0, 0, 0)
@@ -702,14 +708,14 @@ Module SaveUpdate
                         TotalREGHol = REG_STANDARD + REG_TRAINEE
                         TotalSPECHol = SPEC_STANDARD + SPEC_TRAINEE
 
-                        ''===================== TEMPORARY LANGSSSSS =============== 
-                        'If paydate_ = "6/30/2022" Then
-                        '    Dim old_days As Double = OLD_NEW_RATE(bioNo).old_days
-                        '    Dim new_days As Double = OLD_NEW_RATE(bioNo).new_days
+                        '===================== MINIMUM RATE CHANGED STARTING SEPTEMBER 1, 2022 =============== 
+                        If paydate_ = "9/15/2022" Then
+                            Dim old_days As Double = OLD_NEW_RATE(bioNo).old_days
+                            Dim new_days As Double = OLD_NEW_RATE(bioNo).new_days
 
-                        '    Dim tot_days As Double = (old_days * 336) + (new_days * rate)
-                        '    TotalBasic = tot_days - total_train
-                        'End If
+                            Dim tot_days As Double = (old_days * Old_Rate) + (new_days * rate)
+                            TotalBasic = tot_days - total_train
+                        End If
 
                     Else
 
@@ -717,13 +723,13 @@ Module SaveUpdate
                         TotalREGHol = (RegularHol * rate) * regHoliday
                         TotalSPECHol = ((SpecialHol_hrs / 8) * rate) * specHoliday
 
-                        ''===================== TEMPORARY LANGSSSSS ===================== 
-                        'If paydate_ = "6/30/2022" Then
-                        '    Dim old_days As Double = OLD_NEW_RATE(bioNo).old_days
-                        '    Dim new_days As Double = OLD_NEW_RATE(bioNo).new_days
+                        '===================== MINIMUM RATE CHANGED STARTING SEPTEMBER 1, 2022 ===================== 
+                        If paydate_ = "9/15/2022" Then
+                            Dim old_days As Double = OLD_NEW_RATE(bioNo).old_days
+                            Dim new_days As Double = OLD_NEW_RATE(bioNo).new_days
 
-                        '    TotalBasic = (old_days * 336) + (new_days * rate)
-                        'End If
+                            TotalBasic = (old_days * Old_Rate) + (new_days * rate)
+                        End If
 
                     End If
 
@@ -975,55 +981,55 @@ Module SaveUpdate
 
                         TotalNight = ((rate / 8) * 0.1) * nightRate ' =========== CALCULATE NIGHT RATE TO PESO ===========
 
-                        ''===================== TEMPORARY LANGSSSSS ==========================================================
-                        'If paydate_ = "6/30/2022" Then
-                        '    '==================== OVERTIMEEEEEEEE =====================================
-                        '    If RegularOT <> 0 Then
-                        '        Dim old_OT As Double = OLD_NEW_RATE(bioNo).old_overtime
-                        '        Dim new_OT As Double = OLD_NEW_RATE(bioNo).new_overtime
+                        '===================== MINIMUM RATE CHANGED STARTING SEPTEMBER 1, 2022 =========================== 
+                        If paydate_ = "9/15/2022" Then
+                            '==================== OVERTIMEEEEEEEE =====================================
+                            If RegularOT <> 0 Then
+                                Dim old_OT As Double = OLD_NEW_RATE(bioNo).old_overtime
+                                Dim new_OT As Double = OLD_NEW_RATE(bioNo).new_overtime
 
-                        '        Dim percentOT_training As Double = training_overtime / RegularOT
-                        '        Dim percentOT_old As Double = old_OT / RegularOT
-                        '        Dim percentOT_new As Double = new_OT / RegularOT
+                                Dim percentOT_training As Double = training_overtime / RegularOT
+                                Dim percentOT_old As Double = old_OT / RegularOT
+                                Dim percentOT_new As Double = new_OT / RegularOT
 
-                        '        Dim OT_training As Double = ((trainee_rate / 8) / 60) * (RegularOT * percentOT_training)
-                        '        Dim OT_old As Double = ((336 / 8) * 1.25) * (RegularOT * percentOT_old)
-                        '        Dim OT_new As Double = ((rate / 8) * 1.25) * (RegularOT * percentOT_new)
+                                Dim OT_training As Double = ((trainee_rate / 8) / 60) * (RegularOT * percentOT_training)
+                                Dim OT_old As Double = ((Old_Rate / 8) * 1.25) * (RegularOT * percentOT_old)
+                                Dim OT_new As Double = ((rate / 8) * 1.25) * (RegularOT * percentOT_new)
 
-                        '        OVERTIMEE = OT_training + OT_old + OT_new
-                        '    End If
-                        '    '==================== LATEEEEEEEEEEE =====================================
-                        '    If Late <> 0 Then
-                        '        Dim old_late As Double = OLD_NEW_RATE(bioNo).old_late
-                        '        Dim new_late As Double = OLD_NEW_RATE(bioNo).new_late
+                                OVERTIMEE = OT_training + OT_old + OT_new
+                            End If
+                            '==================== LATEEEEEEEEEEE =====================================
+                            If Late <> 0 Then
+                                Dim old_late As Double = OLD_NEW_RATE(bioNo).old_late
+                                Dim new_late As Double = OLD_NEW_RATE(bioNo).new_late
 
-                        '        Dim percentLate_training As Double = training_late.TotalMinutes / Late
-                        '        Dim percentLate_old As Double = old_late / Late
-                        '        Dim percentLate_new As Double = new_late / Late
+                                Dim percentLate_training As Double = training_late.TotalMinutes / Late
+                                Dim percentLate_old As Double = old_late / Late
+                                Dim percentLate_new As Double = new_late / Late
 
-                        '        Dim Late_training As Double = ((trainee_rate / 8) / 60) * (Late * percentLate_training)
-                        '        Dim Late_old As Double = ((336 / 8) / 60) * (Late * percentLate_old)
-                        '        Dim Late_new As Double = ((rate / 8) / 60) * (Late * percentLate_new)
+                                Dim Late_training As Double = ((trainee_rate / 8) / 60) * (Late * percentLate_training)
+                                Dim Late_old As Double = ((Old_Rate / 8) / 60) * (Late * percentLate_old)
+                                Dim Late_new As Double = ((rate / 8) / 60) * (Late * percentLate_new)
 
-                        '        LATEE = Late_training + Late_old + Late_new
-                        '    End If
-                        '    '==================== UNDERTIMEEEEEEEEEEEE =============================== 
-                        '    If UNDERTIMEE <> 0 Then
-                        '        Dim old_undertime As Double = OLD_NEW_RATE(bioNo).old_undertime
-                        '        Dim new_undertime As Double = OLD_NEW_RATE(bioNo).new_undertime
+                                LATEE = Late_training + Late_old + Late_new
+                            End If
+                            '==================== UNDERTIMEEEEEEEEEEEE =============================== 
+                            If UNDERTIMEE <> 0 Then
+                                Dim old_undertime As Double = OLD_NEW_RATE(bioNo).old_undertime
+                                Dim new_undertime As Double = OLD_NEW_RATE(bioNo).new_undertime
 
-                        '        Dim percentUT_training As Double = training_undertime.TotalMinutes / UNDERTIMEE
-                        '        Dim percentUT_old As Double = old_undertime / UNDERTIMEE
-                        '        Dim percentUT_new As Double = new_undertime / UNDERTIMEE
+                                Dim percentUT_training As Double = training_undertime.TotalMinutes / UNDERTIMEE
+                                Dim percentUT_old As Double = old_undertime / UNDERTIMEE
+                                Dim percentUT_new As Double = new_undertime / UNDERTIMEE
 
-                        '        Dim UT_training As Double = ((trainee_rate / 8) / 60) * (UNDERTIMEE * percentUT_training)
-                        '        Dim UT_old As Double = ((336 / 8) / 60) * (UNDERTIMEE * percentUT_old)
-                        '        Dim UT_new As Double = ((rate / 8) / 60) * (UNDERTIMEE * percentUT_new)
+                                Dim UT_training As Double = ((trainee_rate / 8) / 60) * (UNDERTIMEE * percentUT_training)
+                                Dim UT_old As Double = ((Old_Rate / 8) / 60) * (UNDERTIMEE * percentUT_old)
+                                Dim UT_new As Double = ((rate / 8) / 60) * (UNDERTIMEE * percentUT_new)
 
-                        '        UNDERTIMEE = UT_training + UT_old + UT_new
-                        '    End If
-                        'End If
-                        ''===================================================================================
+                                UNDERTIMEE = UT_training + UT_old + UT_new
+                            End If
+                        End If
+                        '===================================================================================
 
                         TotalOT = OVERTIMEE
 
