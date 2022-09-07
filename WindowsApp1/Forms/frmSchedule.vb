@@ -24,6 +24,7 @@ Public Class frmSchedule
         BiometricID_TXT.Text = lvEmployee.Items(lvEmployee.FocusedItem.Index).SubItems(0).Text
         Paydate = lvEmployee.Items(lvEmployee.FocusedItem.Index).SubItems(2).Text
 
+        WorkingSched_Details(BiometricID_TXT.Text, Paydate, Days_lbl, Overtime_lbl, AWOP_lbl, SIL_lbl, AL_lbl, RD_lbl)
         ListSchedule(Schedule_DG, BiometricID_TXT.Text, Paydate)
 
         TabControl1.SelectedIndex = 1
@@ -221,6 +222,20 @@ Public Class frmSchedule
         End If
     End Sub
 
+    Private Sub Calculate_btn_Click(sender As Object, e As EventArgs) Handles Calculate_btn.Click
+        For Each row As DataGridViewRow In Schedule_DG.Rows
+
+            Dim DATEE As DateTime = row.Tag
+            Dim _in As String = row.Cells(1).Value
+            Dim _out As String = row.Cells(2).Value
+
+            If Not row.DefaultCellStyle.ForeColor = Color.Red Then
+
+            End If
+
+        Next
+    End Sub
+
     Public Sub LoadDateTime(Optional datee As DateTime = Nothing)
         Schedule_DG.Rows.Clear()
 
@@ -323,7 +338,7 @@ Public Class frmSchedule
 
         Dim countOfColumns = DtSet.Tables(0).Columns.Count
 
-        Dim SIL, total_days, overTime As Double
+        Dim total_days, overTime, SIL, AWOP, AL, RD As Double
         For row = 7 To DtSet.Tables(0).Rows.Count + 1
             Dim start As DateTime = starting_date
             Dim endd As DateTime = ending_date
@@ -340,9 +355,13 @@ Public Class frmSchedule
 
             If bio <> Nothing Then RunCommand($"Delete From PAYROLL_SCHEDULE where bio_no = '{bio}'")
 
-            SIL = 0
             total_days = 0
             overTime = 0
+            AWOP = 0
+            SIL = 0
+            AL = 0
+            RD = 0
+            Dim fullname As String = GetData("FULLNAME", $" PAYROLL_EMPLOYEE WHERE BIO_NO ='{bio}'")
 
             While (start <= endd)
                 For columns = 4 To DtSet.Tables(0).Columns.Count + 1
@@ -367,19 +386,21 @@ Public Class frmSchedule
 
                             SaveSchedule(bio, datee, time_in, time_out, Paydate)
 
+                            '========== COUNT AWOP ==========
+                            If time_in = "AWOP" Then AWOP += 0.5
+                            If time_out = "AWOP" Then AWOP += 0.5
+
                             '========== COUNT SIL ==========
                             If time_in = "SIL" Then SIL += 0.5
                             If time_out = "SIL" Then SIL += 0.5
 
-                            '========== COUNT TOTAL_DAYS ==========
-                            Dim timeIn, timeOut As Double
-                            If Double.TryParse(time_in, timeIn) Then
-                                total_days += 0.5
-                            End If
+                            '========== COUNT AL ==========
+                            If time_in = "AL" Then AL += 0.5
+                            If time_out = "AL" Then AL += 0.5
 
-                            If Double.TryParse(time_out, timeOut) Then
-                                total_days += 0.5
-                            End If
+                            '========== COUNT RD ==========
+                            If time_in = "RD" Then RD += 0.5
+                            If time_out = "RD" Then RD += 0.5
 
                             '========== COUNT OVERTIME ========== 
                             Dim _timeOut As Double
@@ -390,10 +411,16 @@ Public Class frmSchedule
                                 Dim totalHrs As TimeSpan = DateTime.Parse(myTimeOut).Subtract(DateTime.Parse(myTimeIn))
 
                                 If totalHrs.Hours > 8 Then
+                                    total_days += 1
+
                                     If myTimeOut.Hour > myTimeIn.AddHours(9).Hour Then
                                         Dim totMinus As TimeSpan = myTimeOut.Subtract(myTimeIn.AddHours(9))
                                         overTime += totMinus.Hours
                                     End If
+                                ElseIf totalHrs.Hours <= 0 Then
+                                    MsgBox($"Please check time IN/OUT of {fullname},{vbCrLf}total hours must not be negative.", MsgBoxStyle.Exclamation)
+                                Else
+                                    total_days += 0.5
                                 End If
 
                                 If totalHrs.Minutes >= 30 Then
@@ -424,11 +451,11 @@ Public Class frmSchedule
 
                 Else
                     SIL = 0
-                    MsgBox($"{GetData("FULLNAME", $" PAYROLL_EMPLOYEE WHERE BIO_NO ='{bio}'")} is not yet allowed to avail SIL. SIL Reduced to 0.", MsgBoxStyle.Exclamation, "Invalid")
+                    MsgBox($"{fullname} is not yet allowed to avail SIL. SIL Reduced to 0.", MsgBoxStyle.Exclamation, "Invalid")
                 End If
             End If
 
-            SaveSCHED_COUNT(bio, Paydate, total_days, overTime, SIL, ending_date)
+            SaveSCHED_COUNT(bio, Paydate, total_days, overTime, AWOP, SIL, AL, RD, ending_date)
 
             frmMainForm.AppProgressBar.Value += 1
         Next

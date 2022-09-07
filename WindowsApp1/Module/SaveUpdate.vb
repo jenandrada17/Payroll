@@ -113,7 +113,8 @@ Module SaveUpdate
         End If
     End Sub
 
-    Friend Sub SaveSCHED_COUNT(BIO_NO As Integer, paydate As String, total_days As String, overTime As String, sil As String, ending_date As DateTime)
+    Friend Sub SaveSCHED_COUNT(BIO_NO As Integer, paydate As String, total_days As String, overTime As String,
+                               AWOP As String, SIL As String, AL As String, RD As String, ending_date As DateTime)
 
         Dim mysql As String
         mysql = $"Select * FROM PAYROLL_SCHED_COUNT  where BIO_NO = '{BIO_NO}' and PAYDATE = '{paydate}'"
@@ -124,7 +125,10 @@ Module SaveUpdate
 
                     .Item("TOTAL_DAYS") = total_days
                     .Item("OVERTIME") = overTime
-                    .Item("SIL") = sil
+                    .Item("AWOP") = AWOP
+                    .Item("SIL") = SIL
+                    .Item("AL") = AL
+                    .Item("RD") = RD
 
                 End With
                 SaveEntry(dss, False)
@@ -141,7 +145,10 @@ Module SaveUpdate
                     .Item("PAYDATE") = paydate
                     .Item("TOTAL_DAYS") = total_days
                     .Item("OVERTIME") = overTime
-                    .Item("SIL") = sil
+                    .Item("AWOP") = AWOP
+                    .Item("SIL") = SIL
+                    .Item("AL") = AL
+                    .Item("RD") = RD
 
                 End With
                 ds.Tables(0).Rows.Add(dsNewRow)

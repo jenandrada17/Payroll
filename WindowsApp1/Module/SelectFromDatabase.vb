@@ -2888,4 +2888,20 @@ Module SelectFromDatabase
         Return balance
     End Function
 
+    Friend Sub WorkingSched_Details(BIO_NO As String, PAYDATE As String, Days_lbl As Label, Overtime_lbl As Label, AWOP_lbl As Label, SIL_lbl As Label, AL_lbl As Label, RD_lbl As Label)
+        Dim mysql As String = $"Select * from PAYROLL_SCHED_COUNT where BIO_NO = '{BIO_NO}' and PAYDATE = '{PAYDATE}'"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_SCHED_COUNT")
+            If ds.Tables(0).Rows.Count > 0 Then
+                With ds.Tables(0).Rows(0)
+                    Days_lbl.Text = IIf(IsDBNull(.Item("TOTAL_DAYS")), 0, .Item("TOTAL_DAYS"))
+                    Overtime_lbl.Text = IIf(IsDBNull(.Item("OVERTIME")), 0, .Item("OVERTIME"))
+                    AWOP_lbl.Text = IIf(IsDBNull(.Item("AWOP")), 0, .Item("AWOP"))
+                    SIL_lbl.Text = IIf(IsDBNull(.Item("SIL")), 0, .Item("SIL"))
+                    AL_lbl.Text = IIf(IsDBNull(.Item("AL")), 0, .Item("AL"))
+                    RD_lbl.Text = IIf(IsDBNull(.Item("RD")), 0, .Item("RD"))
+                End With
+            End If
+        End Using
+    End Sub
+
 End Module

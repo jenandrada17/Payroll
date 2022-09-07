@@ -792,6 +792,7 @@ Public Class frmAttendance
             End If
 
             '============================= SAVING ALL DATE ============================  
+
             For Each VALUE_BIO As String In LIST_BIOO
 
                 EXIST_DATE.Clear()
@@ -808,6 +809,7 @@ Public Class frmAttendance
 
             Using ds As DataSet = LoadSQL(mysqll, "PAYROLL_ATTENDANCE")
                 If ds.Tables(0).Rows.Count > 0 Then
+                    progressBarStart(ds.Tables(0).Rows.Count)
                     For Each dr In ds.Tables(0).Rows
                         With dr
 
@@ -839,8 +841,10 @@ Public Class frmAttendance
                                 Replacing($"BIOMETRIC_DTR WHERE BIO_ID = '{bioNo}' AND  PAYDATE = '{paydatee}' AND DATE_ONLY = '{dateE.ToString("d")}'")
                             End If
 
+                            frmMainForm.AppProgressBar.Value += 1
                         End With
                     Next
+                    progressBarEnd()
                 End If
             End Using
 
@@ -1080,8 +1084,7 @@ Public Class frmAttendance
                 'Else
                 '    TIME_IN = GetTime_In(biometric_No)
                 '    TIME_OUT = GetTime_Out(biometric_No)
-                'End If
-
+                'End If 
 
                 If CheckData("BIO_NO", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{biometric_No}'") Then
 
