@@ -22,6 +22,13 @@ Public Class frmAttendance
     Dim MyCommand As System.Data.OleDb.OleDbDataAdapter
     Dim ALLOW_OT As Boolean = True
 
+    '========= TEMPORARY FOR PAYDATE 6/30/2022 (CHANGED MINIMUM RATE)===========  
+    Dim temp_present As Double = 0
+    Dim temp_half As Double = 0
+    Dim temp_overtime As Double = 0
+    Dim temp_late As Double = 0
+    Dim temp_undertime As Double = 0
+
     Private Sub frmAttendance_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
         LoadDateTime()
@@ -238,17 +245,9 @@ Public Class frmAttendance
                 DataGridView1.Rows(DataGridView1.CurrentCell.RowIndex).Cells(3).Value = ""
                 DataGridView1.Rows(DataGridView1.CurrentCell.RowIndex).Cells(4).Value = ""
             End If
-
         End If
-
     End Sub
 
-    '========= TEMPORARY FOR PAYDATE 6/30/2022 (CHANGED MINIMUM RATE)===========  
-    Dim temp_present As Double = 0
-    Dim temp_half As Double = 0
-    Dim temp_overtime As Double = 0
-    Dim temp_late As Double = 0
-    Dim temp_undertime As Double = 0
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Calculate_BTN.Click
         If Name_TXT.Text <> Nothing Then
@@ -275,7 +274,6 @@ Public Class frmAttendance
             Else
                 PAYROLL = DataGridView1.Tag
             End If
-
 
             For Each row As DataGridViewRow In DataGridView1.Rows
 
@@ -364,7 +362,6 @@ Public Class frmAttendance
                                 End If
                             End If
 
-
                             '=========================== MINIMUM RATE CHANGED STARTED SEPTEMBER 1, 2022 ONLY (JUNE 30, 2022)=====================  
                             If paydate_ = "9/15/2022" Then
                                 Dim short_date As String = DATEE.ToShortDateString
@@ -446,19 +443,6 @@ Public Class frmAttendance
 
             Else '=============== BRANCHES WITH WORKING SCHEDULE
                 TotalDays_LBL.Text = Present_FromWorkingSched
-            End If
-
-            '===================================== MINIMUM CHANGED STARTING SEPTEMBER 1, 2022 =================================  
-            'If paydate_ = "6/30/2022" Then
-            If paydate_ = "9/15/2022" Then
-                Dim old_days As Double
-                old_days = (temp_present * 8) - temp_half
-                old_days = old_days / 8
-                Dim new_days As Double = CDbl(TotalDays_LBL.Text) - old_days
-                Dim new_overtime As Double = CDbl(TotalOTHr_LBL.Text) - temp_overtime
-                Dim new_late As Double = CDbl(late_count.TotalMinutes) - temp_late
-                Dim new_undertime As Double = CDbl(under_count.TotalMinutes) - temp_undertime
-                SaveTemporary(bioNum, old_days, new_days, temp_overtime, new_overtime, temp_late, new_late, temp_undertime, new_undertime, paydate_)
             End If
 
             late_count = New TimeSpan(0, 0, 0, 0, 0)
@@ -626,6 +610,18 @@ Public Class frmAttendance
                         End If
                     End If
                 Next
+
+                '===================================== MINIMUM CHANGED STARTING SEPTEMBER 1, 2022 =================================   
+                If PAYROLL = "9/15/2022" Then
+                    Dim old_days As Double
+                    old_days = (temp_present * 8) - temp_half
+                    old_days = old_days / 8
+                    Dim new_days As Double = CDbl(TotalDays_LBL.Text) - old_days
+                    Dim new_overtime As Double = CDbl(TotalOTHr_LBL.Text) - temp_overtime
+                    Dim new_late As Double = CDbl(TotalLateHR_LBL.Text) - temp_late
+                    Dim new_undertime As Double = CDbl(TotalUTHR_LBL.Text) - temp_undertime
+                    SaveTemporary(BiometricID_TXT.Text, old_days, new_days, temp_overtime, new_overtime, temp_late, new_late, temp_undertime, new_undertime, PAYROLL)
+                End If
 
                 SaveAttendanceEE(BiometricID_TXT.Text, PAYROLL, TotalDays_LBL.Text, TotalOTHr_LBL.Text, TotalLateHR_LBL.Text, TotalUTHR_LBL.Text,
                                  TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text, specHoliday_hrs, SIL_LBL.Text, AM_OT_NUP.Value)
@@ -1893,12 +1889,12 @@ Public Class frmAttendance
             Dim halfday_Hour As Integer = 0
             Dim specHoliday_hrs As Double = 0
 
-            ''========= TEMPORARY FOR PAYDATE 6/30/2022 ===========  
-            'Dim temp_present As Double = 0
-            'Dim temp_half As Double = 0
-            'Dim temp_overtime As Double = 0
-            'Dim temp_late As Double = 0
-            'Dim temp_undertime As Double = 0
+            '========= TEMPORARY FOR PAYDATE 6/30/2022 ===========  
+            temp_present = 0
+            temp_half = 0
+            temp_overtime = 0
+            temp_late = 0
+            temp_undertime = 0
 
             For Each row As DataGridViewRow In DataGridView1.Rows
 
@@ -1981,17 +1977,17 @@ Public Class frmAttendance
                     halfday_Hour += 4
                 End If
 
-                ''===========================  TEMPORARYYYYYYY JUNE 30, 2022 ONLY===================== 
-                'If paydate_ = "6/30/2022" Then
-                '    Dim short_date As String = DATEE.ToShortDateString
-                '    If short_date = "6/8/2022" Then
-                '        temp_present = Present
-                '        temp_half = halfday_Hour
-                '        temp_overtime = TotalOTHr_LBL.Text
-                '        temp_late = late_count.TotalMinutes
-                '        temp_undertime = under_count.TotalMinutes
-                '    End If
-                'End If
+                '=========================== MINIMUM RATE CHANGED =====================  
+                If paydate_ = "9/15/2022" Then
+                    Dim short_date As String = DATEE.ToShortDateString
+                    If short_date = "8/31/2022" Then
+                        temp_present = Present
+                        temp_half = halfday_Hour
+                        temp_overtime = TotalOTHr_LBL.Text
+                        temp_late = late_count.TotalMinutes
+                        temp_undertime = under_count.TotalMinutes
+                    End If
+                End If
 
             Next
 
@@ -2008,17 +2004,19 @@ Public Class frmAttendance
             InsertTempAttendance(biometric_No, paydate_, TotalDays_LBL.Text, TotalOTHr_LBL.Text,
                                     late_count.TotalMinutes, under_count.TotalMinutes, RHOLIDAY, SHOLIDAY)
 
-            ''===================================== TEMPORARYYYYYYY =================================  
-            'If paydate_ = "6/30/2022" Then
-            '    Dim old_days As Double
-            '    old_days = (temp_present * 8) - temp_half
-            '    old_days = old_days / 8
-            '    Dim new_days As Double = product - old_days
-            '    Dim new_overtime As Double = CDbl(TotalOTHr_LBL.Text) - temp_overtime
-            '    Dim new_late As Double = CDbl(late_count.TotalMinutes) - temp_late
-            '    Dim new_undertime As Double = CDbl(under_count.TotalMinutes) - temp_undertime
-            '    SaveTemporary(biometric_No, old_days, new_days, temp_overtime, new_overtime, temp_late, new_late, temp_undertime, new_undertime)
-            'End If
+            '===================================== TEMPORARYYYYYYY =================================  
+            If paydate_ = "9/15/2022" Then
+                If biometric_No <> Nothing Then
+                    Dim old_days As Double
+                    old_days = (temp_present * 8) - temp_half
+                    old_days = old_days / 8
+                    Dim new_days As Double = product - old_days
+                    Dim new_overtime As Double = CDbl(TotalOTHr_LBL.Text) - temp_overtime
+                    Dim new_late As Double = CDbl(late_count.TotalMinutes) - temp_late
+                    Dim new_undertime As Double = CDbl(under_count.TotalMinutes) - temp_undertime
+                    SaveTemporary(biometric_No, old_days, new_days, temp_overtime, new_overtime, temp_late, new_late, temp_undertime, new_undertime, paydate_)
+                End If
+            End If
 
             frmMainForm.AppProgressBar.Value += 1
         Next

@@ -313,7 +313,7 @@ Partial Class frmUser
         'Access_CheckB
         '
         Me.Access_CheckB.AccessibleName = "User Logs"
-        Me.Access_CheckB.BackColor = System.Drawing.SystemColors.ButtonFace
+        Me.Access_CheckB.BackColor = System.Drawing.SystemColors.ControlDark
         Me.Access_CheckB.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.Access_CheckB.CheckOnClick = True
         Me.Access_CheckB.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -329,7 +329,7 @@ Partial Class frmUser
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.BackColor = System.Drawing.SystemColors.ButtonFace
+        Me.BackColor = System.Drawing.SystemColors.ControlDark
         Me.ClientSize = New System.Drawing.Size(757, 370)
         Me.Controls.Add(Me.Access_CheckB)
         Me.Controls.Add(Me.Label8)
