@@ -1022,10 +1022,6 @@ Public Class frmAttendance
             Dim biometric_No As String = distinct_bio(i)
             list_inOut.Clear()
 
-            '======================== TO REPLACE EXISTING RECORD ========================================================
-            If ThisHasRow($"BIOMETRIC_DTR where BIO_ID = '{biometric_No}' and PAYDATE = '{paydate_}'") Then Replacing($"BIOMETRIC_DTR where BIO_ID = '{biometric_No}' and PAYDATE = '{paydate_}';")
-            '======================== GET TIME IN/OUT TO CALCULATE LATE UNDERTIME OVERTIME ============================
-
             Dim mysql As String = $"Select DATEANDTIME From IMPORT_DTR where BIO_ID = '{biometric_No}' and PAYDATE = '{paydate_}'"
             Using ds As DataSet = LoadSQL(mysql, "IMPORT_DTR")
                 If ds.Tables(0).Rows.Count > 0 Then
@@ -1176,6 +1172,10 @@ Public Class frmAttendance
                             new_list(1) = ""
                         End If
                     End If
+
+                    '======================== TO REPLACE EXISTING RECORD ========================================================
+                    If ThisHasRow($"BIOMETRIC_DTR where BIO_ID = '{biometric_No}' and PAYDATE = '{paydate_}' and DATE_ONLY = '{DATE_ONLY}'") Then Replacing($"BIOMETRIC_DTR where BIO_ID = '{biometric_No}' and PAYDATE = '{paydate_}' and DATE_ONLY = '{DATE_ONLY}';")
+                    '======================== GET TIME IN/OUT TO CALCULATE LATE UNDERTIME OVERTIME ============================
 
                     distinct_bio.Add(biometric_No)
                     SaveDTR(biometric_No, Paydate, DATE_ONLY, new_list(0), new_list(1), new_list(2), new_list(3))
@@ -1507,7 +1507,7 @@ Public Class frmAttendance
 
         Dim FirstColumn As String = eCell(2, 1).Value
 
-        Has_Rows_Delete("IMPORT_DTR") '===== EMPTY THIS TABLE
+        Has_Rows_Delete($"IMPORT_DTR where PAYDATE <> '{Paydate}'") '===== EMPTY THIS TABLE
 
         If Integer.TryParse(FirstColumn, vbNull) Then
             bio_White()
