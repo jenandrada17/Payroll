@@ -28,6 +28,8 @@ Public Class frmAttendance
     Dim temp_overtime As Double = 0
     Dim temp_late As Double = 0
     Dim temp_undertime As Double = 0
+    Dim temp_Rholiday As Double = 0
+    Dim temp_Sholiday As Double = 0
 
     Private Sub frmAttendance_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
@@ -257,7 +259,6 @@ Public Class frmAttendance
             TotalLateHR_LBL.Text = 0
             TotalUTHR_LBL.Text = 0
             TotalOTHr_LBL.Text = 0
-            SIL_LBL.Text = 0
             under_count = New TimeSpan(0, 0, 0, 0, 0)
             late_count = New TimeSpan(0, 0, 0, 0, 0)
             Dim product As Double = 0
@@ -282,7 +283,6 @@ Public Class frmAttendance
                 Dim am_out As String = row.Cells(2).Value
                 Dim pm_in As String = row.Cells(3).Value
                 Dim pm_out As String = row.Cells(4).Value
-
 
                 If Not row.DefaultCellStyle.ForeColor = Color.Red Then
 
@@ -318,6 +318,7 @@ Public Class frmAttendance
                                 TIME_IN = timeIN
                             ElseIf GetData("TIME_IN", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{bioNum}' AND DATEE = '{DATEE.ToShortDateString}' ") = "SIL" Then
                                 sil += 0.5
+                                SIL_LBL.Text = sil
                             End If
 
                             If DateTime.TryParse(GetData("TIME_OUT", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{bioNum}' AND DATEE = '{DATEE.ToShortDateString}' "), timeOut) Then
@@ -331,6 +332,7 @@ Public Class frmAttendance
                                 End If
                             ElseIf GetData("TIME_OUT", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{bioNum}' AND DATEE = '{DATEE.ToShortDateString}' ") = "SIL" Then
                                 sil += 0.5
+                                SIL_LBL.Text = sil
                             End If
 
                             Dim forTempHalfDay As Integer = 0
@@ -363,9 +365,11 @@ Public Class frmAttendance
                             End If
 
                             '=========================== MINIMUM RATE CHANGED STARTED SEPTEMBER 1, 2022 ONLY (JUNE 30, 2022)=====================  
-                            If paydate_ = "9/15/2022" Then
+                            If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
+                                Dim newMin_startingDate As Date = GetData("STARTING_DATE", $"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'")
                                 Dim short_date As String = DATEE.ToShortDateString
-                                If short_date = "8/31/2022" Then
+
+                                If short_date = newMin_startingDate.AddDays(-1) Then
                                     temp_present = Present_FromWorkingSched
                                     temp_half = forTempHalfDay
                                 End If
@@ -389,9 +393,10 @@ Public Class frmAttendance
                 CalculateuOVERTIME(row, TIME_OUT)
 
                 '=========================== MINIMUM RATE CHANGED STARTED SEPTEMBER 1, 2022 ONLY (JUNE 30, 2022)=====================  
-                If paydate_ = "9/15/2022" Then
+                If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
+                    Dim newMin_startingDate As Date = GetData("STARTING_DATE", $"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'")
                     Dim short_date As String = DATEE.ToShortDateString
-                    If short_date = "8/31/2022" Then
+                    If short_date = newMin_startingDate.AddDays(-1) Then
                         temp_overtime = TotalOTHr_LBL.Text
                         temp_late = late_count.TotalMinutes
                         temp_undertime = under_count.TotalMinutes
@@ -400,13 +405,18 @@ Public Class frmAttendance
 
             Next
 
-            SIL_LBL.Text = sil
-
             TotalLateHR_LBL.Text = late_count.TotalMinutes
 
             TotalUTHR_LBL.Text = under_count.TotalMinutes
 
             TotalOTHr_LBL.Text = CDbl(TotalOTHr_LBL.Text) + AM_OT_NUP.Value
+
+            '=========================== MINIMUM RATE CHANGED STARTED SEPTEMBER 1, 2022 ONLY (JUNE 30, 2022)===================== 
+            If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
+                Dim newMin_startingDate As Date = GetData("STARTING_DATE", $"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'")
+                temp_Rholiday = REGHolidayCount(newMin_startingDate.AddDays(-1), ending_date)
+                temp_Sholiday = SPECHolidayCount(newMin_startingDate.AddDays(-1), ending_date)
+            End If
 
             '===================================== SUM UP PRESENT AND ABSENT ====================================    
             If Present_FromWorkingSched = 0 Then '=============== HEAD OFFICE
@@ -425,10 +435,12 @@ Public Class frmAttendance
                     End If
 
                     '=========================== MINIMUM RATE CHANGED STARTED SEPTEMBER 1, 2022 ONLY (JUNE 30, 2022)=====================  
-                    If paydate_ = "9/15/2022" Then
+                    If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
+                        Dim newMin_startingDate As Date = GetData("STARTING_DATE", $"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'")
                         Dim DATEE As DateTime = oRow.Tag
                         Dim short_date As String = DATEE.ToShortDateString
-                        If short_date = "8/31/2022" Then
+
+                        If short_date = newMin_startingDate.AddDays(-1) Then
                             temp_present = Present
                             temp_half = halfday_Hour
                         End If
@@ -611,8 +623,8 @@ Public Class frmAttendance
                     End If
                 Next
 
-                '===================================== MINIMUM CHANGED STARTING SEPTEMBER 1, 2022 =================================   
-                If PAYROLL = "9/15/2022" Then
+                '===================================== MINIMUM CHANGED STARTING SEPTEMBER 1, 2022 =================================
+                If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{PAYROLL}'") Then
                     Dim old_days As Double
                     old_days = (temp_present * 8) - temp_half
                     old_days = old_days / 8
@@ -620,7 +632,7 @@ Public Class frmAttendance
                     Dim new_overtime As Double = CDbl(TotalOTHr_LBL.Text) - temp_overtime
                     Dim new_late As Double = CDbl(TotalLateHR_LBL.Text) - temp_late
                     Dim new_undertime As Double = CDbl(TotalUTHR_LBL.Text) - temp_undertime
-                    SaveTemporary(BiometricID_TXT.Text, old_days, new_days, temp_overtime, new_overtime, temp_late, new_late, temp_undertime, new_undertime, PAYROLL)
+                    SaveTemporary(BiometricID_TXT.Text, old_days, new_days, temp_overtime, new_overtime, temp_late, new_late, temp_undertime, new_undertime, temp_Rholiday, temp_Sholiday, PAYROLL)
                 End If
 
                 SaveAttendanceEE(BiometricID_TXT.Text, PAYROLL, TotalDays_LBL.Text, TotalOTHr_LBL.Text, TotalLateHR_LBL.Text, TotalUTHR_LBL.Text,
@@ -1978,9 +1990,9 @@ Public Class frmAttendance
                 End If
 
                 '=========================== MINIMUM RATE CHANGED =====================  
-                If paydate_ = "9/15/2022" Then
-                    Dim short_date As String = DATEE.ToShortDateString
-                    If short_date = "8/31/2022" Then
+                If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
+                    Dim newMin_startingDate As Date = GetData("STARTING_DATE", $"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'")
+                    If DATEE.ToShortDateString = newMin_startingDate.AddDays(-1) Then
                         temp_present = Present
                         temp_half = halfday_Hour
                         temp_overtime = TotalOTHr_LBL.Text
@@ -2005,7 +2017,8 @@ Public Class frmAttendance
                                     late_count.TotalMinutes, under_count.TotalMinutes, RHOLIDAY, SHOLIDAY)
 
             '===================================== TEMPORARYYYYYYY =================================  
-            If paydate_ = "9/15/2022" Then
+            If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
+                Dim newMin_startingDate As Date = GetData("STARTING_DATE", $"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'")
                 If biometric_No <> Nothing Then
                     Dim old_days As Double
                     old_days = (temp_present * 8) - temp_half
@@ -2014,7 +2027,9 @@ Public Class frmAttendance
                     Dim new_overtime As Double = CDbl(TotalOTHr_LBL.Text) - temp_overtime
                     Dim new_late As Double = CDbl(late_count.TotalMinutes) - temp_late
                     Dim new_undertime As Double = CDbl(under_count.TotalMinutes) - temp_undertime
-                    SaveTemporary(biometric_No, old_days, new_days, temp_overtime, new_overtime, temp_late, new_late, temp_undertime, new_undertime, paydate_)
+                    temp_Rholiday = REGHolidayCount(newMin_startingDate.AddDays(-1), ending_date) '================= CALCULATE HOLIDAYS COVERED  
+                    temp_Sholiday = SPECHolidayCount(newMin_startingDate.AddDays(-1), ending_date) '================= CALCULATE HOLIDAYS COVERED  
+                    SaveTemporary(biometric_No, old_days, new_days, temp_overtime, new_overtime, temp_late, new_late, temp_undertime, new_undertime, temp_Rholiday, temp_Sholiday, paydate_)
                 End If
             End If
 

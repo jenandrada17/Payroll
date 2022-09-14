@@ -64,7 +64,7 @@ Module Temporary
         End Using
     End Sub
 
-    Friend Sub SaveTemporary(BIO_NO As String, old_days As Double, new_days As Double, OLD_OVERTIME As Double, NEW_OVERTIME As Double, OLD_LATE As Double, NEW_LATE As Double, OLD_UNDERTIME As Double, NEW_UNDERTIME As Double, PAYDATE As String)
+    Friend Sub SaveTemporary(BIO_NO As String, old_days As Double, new_days As Double, OLD_OVERTIME As Double, NEW_OVERTIME As Double, OLD_LATE As Double, NEW_LATE As Double, OLD_UNDERTIME As Double, NEW_UNDERTIME As Double, RHOLIDAY As Double, SHOLIDAY As Double, PAYDATE As String)
         Dim mysql As String = $"Select * from TEMP_TABLE where BIO_NO = '{BIO_NO}' and PAYDATE = '{PAYDATE}'"
         Using ds As DataSet = LoadSQL(mysql, "TEMP_TABLE")
             If ds.Tables(0).Rows.Count > 0 Then
@@ -77,6 +77,8 @@ Module Temporary
                     .Item("NEW_LATE") = NEW_LATE
                     .Item("OLD_UNDERTIME") = OLD_UNDERTIME
                     .Item("NEW_UNDERTIME") = NEW_UNDERTIME
+                    .Item("RHOLIDAY") = RHOLIDAY
+                    .Item("SHOLIDAY") = SHOLIDAY
                     .Item("PAYDATE") = PAYDATE
                 End With
                 SaveEntry(ds, False)
@@ -94,6 +96,8 @@ Module Temporary
                         .Item("NEW_LATE") = NEW_LATE
                         .Item("OLD_UNDERTIME") = OLD_UNDERTIME
                         .Item("NEW_UNDERTIME") = NEW_UNDERTIME
+                        .Item("RHOLIDAY") = RHOLIDAY
+                        .Item("SHOLIDAY") = SHOLIDAY
                         .Item("PAYDATE") = PAYDATE
                     End With
                     dss.Tables(0).Rows.Add(dsNew)
@@ -134,6 +138,26 @@ Module Temporary
         End Using
 
         Return (old_days, new_days, old_overtime, new_overtime, old_late, new_late, old_undertime, new_undertime)
+    End Function
+    '=========================================================
+
+    '===================== MINIMUM HOLIDAY COVERED==================    
+    Friend Function REG_SPEC_HOLIDAY(BIO_NO As String) As (rholiday As Integer, sholiday As Integer)
+
+        Dim Rdays As Integer = 0
+        Dim Sdays As Integer = 0
+
+        Dim _mysql As String = $"Select * from TEMP_TABLE where BIO_NO = '{BIO_NO}'"
+        Using _ds As DataSet = LoadSQL(_mysql, "TEMP_TABLE")
+            If _ds.Tables(0).Rows.Count > 0 Then
+                With _ds.Tables(0).Rows(0)
+                    Rdays = .Item("RHOLIDAY")
+                    Sdays = .Item("SHOLIDAY")
+                End With
+            End If
+        End Using
+
+        Return (Rdays, Sdays)
     End Function
     '=========================================================
 

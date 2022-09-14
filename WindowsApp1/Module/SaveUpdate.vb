@@ -161,6 +161,16 @@ Module SaveUpdate
         Dim total_holiday As Integer
         Dim startt As Date = frmMainForm.starting
         Dim endd As Date = frmMainForm.ending
+        Dim newMin_startingDate As Date = Nothing
+        Dim temp_Rholiday As Integer = 0
+        Dim temp_Sholiday As Integer = 0
+
+        '=========================== MINIMUM RATE CHANGED STARTED SEPTEMBER 1, 2022 ONLY (JUNE 30, 2022)===================== 
+        If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate}'") Then
+            newMin_startingDate = GetData("STARTING_DATE", $"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate}'")
+            temp_Rholiday = REGHolidayCount(newMin_startingDate.AddDays(-1), endd)
+            temp_Sholiday = SPECHolidayCount(newMin_startingDate.AddDays(-1), endd)
+        End If
 
         If column = "REGHOLIDAY" Then
             total_holiday = REGHolidayCount(startt, endd)
@@ -174,10 +184,18 @@ Module SaveUpdate
             For Each dr In dss.Tables(0).Rows
                 With dr
                     .Item(column) = total_holiday
+
+                    '============================================= UPDATE REGULAR HOLIDAY COVERED IN NEW MINIMUM ================================== 
+                    If newMin_startingDate <> Nothing Then
+                        UpdateData_Single("RHOLIDAY", temp_Rholiday, $"TEMP_TABLE WHERE BIO_NO = '{ .Item("BIOMETRICID")}' AND PAYDATE = '{paydate}'")
+                        UpdateData_Single("SHOLIDAY", temp_Sholiday, $"TEMP_TABLE WHERE BIO_NO = '{ .Item("BIOMETRICID")}' AND PAYDATE = '{paydate}'")
+                    End If
+
                 End With
                 SaveEntry(dss, False)
             Next
         End If
+
     End Sub
 
     Friend Sub UpdatePayout(paydate As String)
@@ -595,6 +613,9 @@ Module SaveUpdate
                     Dim training_overtime As Double = 0
                     Dim training_late As TimeSpan = New TimeSpan(0, 0, 0, 0, 0)
                     Dim training_undertime As TimeSpan = New TimeSpan(0, 0, 0, 0, 0)
+                    '============================= MINIMUM RATE CHANGE (DAYS COVERED) ==============================
+                    Dim Rholiday_newMin_covred_training As Integer = 0
+                    Dim Sholiday_newMin_covred_training As Integer = 0
 
                     ''============================================= ATTENDANCE (TOTAL DAYS) =========================================================
                     Dim sql_1 As String = $"Select * From PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{bioNo}' and paydate = '{paydate_}'"
@@ -676,6 +697,15 @@ Module SaveUpdate
 
                                     If DataeXIST($" PAYROLL_HOLIDAY WHERE DATEE = '{startingDate.ToString("M")}' AND KINDS = 'SPECIAL'") Then
                                         Training_SPECHoliday += Calculate_Training_SpecHoliday(bioNo, paydate_, startingDate)
+
+                                        '===================== MINIMUM RATE CHANGED STARTING SEPTEMBER 1, 2022 =============== 
+                                        If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
+                                            Dim newMin_startingDate As Date = GetData("STARTING_DATE", $"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'")
+                                            If startingDate = newMin_startingDate.AddDays(-1) Then
+                                                Sholiday_newMin_covred_training += 1
+                                            End If
+                                        End If
+
                                     End If
 
                                 End If
@@ -684,6 +714,15 @@ Module SaveUpdate
                                 If DataeXIST($" PAYROLL_HOLIDAY WHERE DATEE = '{startingDate.ToString("M")}' AND KINDS = 'REGULAR'") Then
                                     If startingDate >= Started Then
                                         Training_REGHoliday += 1
+
+                                        '===================== MINIMUM RATE CHANGED STARTING SEPTEMBER 1, 2022 =============== 
+                                        If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
+                                            Dim newMin_startingDate As Date = GetData("STARTING_DATE", $"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'")
+                                            If startingDate = newMin_startingDate.AddDays(-1) Then
+                                                Rholiday_newMin_covred_training += 1
+                                            End If
+                                        End If
+
                                     End If
                                 End If
 
@@ -716,12 +755,30 @@ Module SaveUpdate
                         TotalSPECHol = SPEC_STANDARD + SPEC_TRAINEE
 
                         '===================== MINIMUM RATE CHANGED STARTING SEPTEMBER 1, 2022 =============== 
-                        If paydate_ = "9/15/2022" Then
+                        If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
                             Dim old_days As Double = OLD_NEW_RATE(bioNo).old_days
                             Dim new_days As Double = OLD_NEW_RATE(bioNo).new_days
 
                             Dim tot_days As Double = (old_days * Old_Rate) + (new_days * rate)
                             TotalBasic = tot_days - total_train
+
+                            Dim newMin_rholiday As Integer = REG_SPEC_HOLIDAY(bioNo).rholiday
+                            Dim newMin_sholiday As Integer = REG_SPEC_HOLIDAY(bioNo).sholiday
+
+                            Dim old_rholiday As Decimal = (RegularHol * Old_Rate) * regHoliday
+                            Dim new_rholiday As Decimal = (newMin_rholiday * rate) * regHoliday
+
+                            Dim old_sholiday As Decimal = ((SpecialHol / 8) * Old_Rate) * specHoliday
+                            Dim new_sholiday As Decimal = ((newMin_sholiday / 8) * rate) * specHoliday
+
+                            Dim old_training_rholiday As Decimal = (Training_REGHoliday * (Old_Rate * 0.75)) * regHoliday
+                            Dim new_training_rholiday As Decimal = (Rholiday_newMin_covred_training * trainee_rate) * regHoliday
+
+                            Dim old_training_sholiday As Decimal = (Training_SPECHoliday * (Old_Rate * 0.75)) * specHoliday
+                            Dim new_training_sholiday As Decimal = ((Sholiday_newMin_covred_training / 8) * trainee_rate) * specHoliday
+
+                            TotalREGHol = (old_rholiday + new_rholiday) + (old_training_rholiday + new_training_rholiday)
+                            TotalSPECHol = (old_sholiday + new_sholiday) + (old_training_sholiday + new_training_sholiday)
                         End If
 
                     Else
@@ -731,11 +788,23 @@ Module SaveUpdate
                         TotalSPECHol = ((SpecialHol_hrs / 8) * rate) * specHoliday
 
                         '===================== MINIMUM RATE CHANGED STARTING SEPTEMBER 1, 2022 ===================== 
-                        If paydate_ = "9/15/2022" Then
+                        If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
                             Dim old_days As Double = OLD_NEW_RATE(bioNo).old_days
                             Dim new_days As Double = OLD_NEW_RATE(bioNo).new_days
 
                             TotalBasic = (old_days * Old_Rate) + (new_days * rate)
+
+                            Dim newMin_rholiday As Integer = REG_SPEC_HOLIDAY(bioNo).rholiday
+                            Dim newMin_sholiday As Integer = REG_SPEC_HOLIDAY(bioNo).sholiday
+
+                            Dim old_rholiday As Decimal = (RegularHol * Old_Rate) * regHoliday
+                            Dim new_rholiday As Decimal = (newMin_rholiday * rate) * regHoliday
+
+                            Dim old_sholiday As Decimal = ((SpecialHol / 8) * Old_Rate) * specHoliday
+                            Dim new_sholiday As Decimal = ((newMin_sholiday / 8) * rate) * specHoliday
+
+                            TotalREGHol = old_rholiday + new_rholiday
+                            TotalSPECHol = old_sholiday + new_sholiday
                         End If
 
                     End If
@@ -989,7 +1058,7 @@ Module SaveUpdate
                         TotalNight = ((rate / 8) * 0.1) * nightRate ' =========== CALCULATE NIGHT RATE TO PESO ===========
 
                         '===================== MINIMUM RATE CHANGED STARTING SEPTEMBER 1, 2022 =========================== 
-                        If paydate_ = "9/15/2022" Then
+                        If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
                             '==================== OVERTIMEEEEEEEE =====================================
                             If RegularOT <> 0 Then
                                 Dim old_OT As Double = OLD_NEW_RATE(bioNo).old_overtime
@@ -2103,6 +2172,18 @@ Module SaveUpdate
                 SaveEntry(ds, False)
 
                 MsgBox("Successfully Uploaded!", MsgBoxStyle.Information)
+            End If
+        End Using
+    End Sub
+
+    Friend Sub UpdateData_Single(column As String, value As String, str As String)
+        Dim mysql As String = $"Select {column} from {str}"
+        Using ds As DataSet = LoadSQL(mysql)
+            If ds.Tables(0).Rows.Count > 0 Then
+                With ds.Tables(0).Rows(0)
+                    .Item(column) = value
+                End With
+                SaveEntry(ds, False)
             End If
         End Using
     End Sub

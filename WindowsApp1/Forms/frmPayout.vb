@@ -269,6 +269,23 @@ Public Class frmPayout
             Dim reg_holiday As String = (CDbl(RegularHol_TXT.Text) * rate) * regHoliday_
             Dim spec_holiday As String = ((CDbl(SpecialHol_TXT.Text) / 8) * rate) * specHoliday_
 
+            '===================== MINIMUM RATE CHANGED STARTING SEPTEMBER 1, 2022 ===================== 
+            If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
+                Dim Old_Rate As Decimal = GetData_Decimal("OLD_RATE", $"PAYROLL_EMPLOYEE WHERE BIO_NO = '{BIO_NO}'")
+                Dim newMin_rholiday As Integer = REG_SPEC_HOLIDAY(BIO_NO).rholiday
+                Dim newMin_sholiday As Integer = REG_SPEC_HOLIDAY(BIO_NO).sholiday
+
+                Dim old_rholiday As Decimal = (CDbl(RegularHol_TXT.Text) * Old_Rate) * regHoliday_
+                Dim new_rholiday As Decimal = (newMin_rholiday * rate) * regHoliday_
+
+                Dim old_sholiday As Decimal = ((CDbl(SpecialHol_TXT.Text) / 8) * Old_Rate) * specHoliday_
+                Dim new_sholiday As Decimal = ((newMin_sholiday / 8) * rate) * specHoliday_
+
+                reg_holiday = old_rholiday + new_rholiday
+                spec_holiday = old_sholiday + new_sholiday
+
+            End If
+
             Dim result As DialogResult = MessageBox.Show($"The record will be edited, do you want to proceed?", "Warning", MessageBoxButtons.YesNo)
             If result = DialogResult.Yes Then
 
