@@ -324,7 +324,7 @@ Public Class frmPayout
 
                     For Each row As DataGridViewRow In Deduction_grid.Rows
 
-                        Dim deduct_id As String = IIf(IsDBNull(row.Cells(2).Tag), Nothing, row.Cells(2).Tag)
+                        Dim deduct_id As String = IIf(IsDBNull(row.Cells(1).Tag), Nothing, row.Cells(1).Tag)
 
                         If row.Cells(1).Value <> 0 Then
                             Save_Recorded_Allow_Deduc(BiometricID_TXT.Text, paydate_, row.Cells(0).Value, row.Cells(0).Tag, "DEDUCTION", deduct_id)

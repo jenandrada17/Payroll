@@ -856,7 +856,7 @@ Module SaveUpdate
 
                     End If
 
-                    '============================================= DELETE ALLOWANCE AND DEDUCTION TO REPLACE =================================================
+                    ''============================================= DELETE ALLOWANCE AND DEDUCTION TO REPLACE =================================================
                     Replacing($"RECORDED_ALLOW_DEDUC where BIO_NO = '{bioNo}' and PAYDATE = '{paydate_}';")
                     '============================================= ALLOWANCE ========================================================= 
 
@@ -946,8 +946,23 @@ Module SaveUpdate
                                             amountt = .Item("AMORT")
                                         End If
 
+                                        'If balance < .Item("AMORT") Then
+                                        '    Deduction = Deduction + balance
+                                        '    amountt = balance
+                                        'ElseIf balance > 0 Then
+
+                                        '    If balance < .Item("AMORT") Then
+                                        '        Deduction = Deduction + balance
+                                        '        amountt = balance
+                                        '    End If
+
+                                        '    Deduction = Deduction + .Item("AMORT")
+                                        '    amountt = .Item("AMORT")
+                                        'End If
+
                                     End If
 
+                                    'Save_Recorded_Allow_Deduc(bio_no, PAYDATE, CATEGORY, AMOUNT, TRANSAC_NAME, Optional R_DEDUC_ID = 0, Optional R_LOAN_ID)
                                     Save_Recorded_Allow_Deduc(bioNo, paydate_, .Item("CATEGORY"), amountt, "DEDUCTION", idddd)
 
                                 End With
@@ -1184,18 +1199,12 @@ Module SaveUpdate
                 If R_DEDUC_ID <> 0 Then
                     .Item("R_DEDUC_ID") = R_DEDUC_ID
                 End If
-
-                'If R_LOAN_ID <> 0 Then
-                '    .Item("R_LOAN_ID") = R_LOAN_ID
-                'End If
-
             End With
 
             ds.Tables(0).Rows.Add(dsNewRow)
             SaveEntry(ds)
 
         End Using
-
     End Sub
 
     Public Sub SaveSSS_Contribution(one As String, two As String, three As String, four As String, five As String, six As String, seven As String,

@@ -557,4 +557,46 @@ Module Public_Function
 
 #End Region
 
+#Region "UPDATE_DEDUCTION"
+    Friend Sub CheckDeduction_inRecorded() '============== NO R_DEDUC_ID IN RECORDED_ALLOW_DEDUC
+        Dim mysql As String = $"Select A.*, B.ID as deduct_id from RECORDED_ALLOW_DEDUC A 
+                                              inner join PAYROLL_DEDUCTION B on B.BIO_NO = A.BIO_NO AND B.CATEGORY = A.CATEGORY 
+                                              Where TRANSAC_NAME = 'DEDUCTION' and R_DEDUC_ID is null"
+        Using ds As DataSet = LoadSQL(mysql, "RECORDED_ALLOW_DEDUC")
+            If ds.Tables(0).Rows.Count > 0 Then
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+                        Dim deduct_id As String = .item("deduct_id")
+
+                        Console.WriteLine(.item("PAYDATE"))
+                        Console.WriteLine(.item("BIO_NO"))
+                        Console.WriteLine(deduct_id)
+                        Console.WriteLine(.item("CATEGORY"))
+                        Console.WriteLine(.item("AMOUNT"))
+
+                        .item("R_DEDUC_ID") = deduct_id
+                    End With
+                    SaveEntry(ds, False)
+                Next
+            End If
+        End Using
+    End Sub
+
+    'Friend Sub UpdateDeduction(BIO_NO As String, CATEGORY As String, AMOUNT As Decimal) '============== NO R_DEDUC_ID IN RECORDED_ALLOW_DEDUC
+    '    Dim mysql As String = $"Select * from RECORDED_ALLOW_DEDUC Where BIO_NO = '{BIO_NO}' and CATEGORY ='{CATEGORY}' and AMORT ='{AMOUNT}'"
+    '    Using ds As DataSet = LoadSQL(mysql, "PAYROLL_DEDUCTION")
+    '        If ds.Tables(0).Rows.Count > 0 Then
+    '            With ds.Tables(0).Rows(0)
+    '                Dim bio_no As String = .Item("BIO_NO")
+    '                Dim category As String = .Item("CATEGORY")
+
+
+    '            End With
+    '        End If
+    '    End Using
+    'End Sub
+
+
+#End Region
+
 End Module

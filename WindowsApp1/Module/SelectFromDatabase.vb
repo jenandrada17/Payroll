@@ -536,6 +536,10 @@ Module SelectFromDatabase
                         row.Cells(0).Tag = amountt
                         row.Cells(1).Value = amountt.ToString(”N”)
 
+                        If transac_name = "DEDUCTION" Then
+                            row.Cells(1).Tag = .item("R_DEDUC_ID")
+                        End If
+
                         If .item("CATEGORY") = "SBU" Then
                             row.Cells(0).Value = "SBU"
                         End If
@@ -2614,7 +2618,6 @@ Module SelectFromDatabase
                     With dr
 
                         Dim category As String = .Item("CATEGORY")
-
                         Dim credit As Decimal = .Item("CREDIT")
                         Dim CollectedCredit As Decimal = GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC WHERE BIO_NO = '{bioNo}' and R_DEDUC_ID = '{ .Item("id")}' and PAYDATE <> '12/15/2021';")
                         Dim PartialPayment As Decimal = GetTotal("AMOUNT", $"PARTIAL_PAYMENT WHERE DEDUCT_ID = '{ .Item("id")}';")

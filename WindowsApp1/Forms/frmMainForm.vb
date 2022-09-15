@@ -11,6 +11,9 @@ Public Class frmMainForm
 
     Private Sub frmMainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
+        '========= DEDUCTION ID IN RECORDED_ALLOW_DEDUC ===
+        'CheckDeduction_inRecorded()
+
         '=== PHILHEALTH ADJUSTMENTS (NAERASE) ====== 
         'CopyPhilhealthAdjustment() 
         'CopyPAYOUT() 
