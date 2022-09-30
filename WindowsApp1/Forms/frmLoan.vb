@@ -8,6 +8,7 @@ Public Class frmLoan
     Dim Editing_DEDUCT As Boolean = False
     Dim Editing_SSS As Boolean = False
     Dim Editing_PAGIBIG As Boolean = False
+    'Dim Editing_SBU As Boolean = False
     Dim OrigAmount_DEDUCT As Decimal = 0
     Dim OrigAmount_SSS As Decimal = 0
     Dim OrigAmount_PAGIBIG As Decimal = 0
@@ -43,12 +44,14 @@ Public Class frmLoan
         Load_Loans(Pagibig_List, "PAYROLL_DEDUCTION", "PAG-IBIG LOAN")
         Load_Other_Deduction(Mp2_List, "PAYROLL_OTHER_DEDUCTION", "MP2")
         Load_Other_Deduction(Maxicare_List, "PAYROLL_OTHER_DEDUCTION", "MAXICARE")
+        Lists_SBU(SBU_LV)
 
         DateCharges_DTP.Value = Today
         SSS_Date_DTP.Value = Today
         PagDate_DTP.Value = Today
         Mp2Date_dtp.Value = Today
         MaxDate_dtp.Value = Today
+        SBU_Date_dtp.Value = Today
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Cancel_btn.Click
@@ -71,7 +74,7 @@ Public Class frmLoan
             SaveDeductionS(DEDUCT_ID, CategoryDeduc_txt.Text, PrincipalDeduc_txt.Text, DeductAmort_txt.Text, Schedule_Combo.Text, DateCharges_DTP.Value, Name_txt.Tag) 'Category_Combo.Tag (EMP_ID) | Name_TXT.Tag(Biometric) |  SearchEmp_BTN.Tag.Tag(Branch_id) |   
 
             If Editing_DEDUCT = True Then
-                SaveLogs($"DEDUCTION ALTERED (From {OrigAmount_DEDUCT} to {PrincipalDeduc_txt.Text})- {Name_txt.Text} ({Name_txt.Tag}), Category({CategoryDeduc_txt.Text}), Total({PrincipalDeduc_txt.Text}), Schedule({Schedule_Combo.Text}), Date({DateCharges_DTP.Value.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
+                SaveLogs($"DEDUCTION ALTERED (From {OrigAmount_DEDUCT} to {PrincipalDeduc_txt.Text})- {Name_txt.Text} ({Name_txt.Tag}), Category({CategoryDeduc_txt.Text}), Total({PrincipalDeduc_txt.Text}), Amort(from {DeductAmort_txt.Tag} to {DeductAmort_txt.Text}), Schedule({Schedule_Combo.Text}), Date({DateCharges_DTP.Value.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
                 Editing_DEDUCT = False
             Else
                 SaveLogs($"DEDUCTION ADDED - {Name_txt.Text} ({Name_txt.Tag}), Category({CategoryDeduc_txt.Text}), Total({PrincipalDeduc_txt.Text}), Schedule({Schedule_Combo.Text}), Date({DateCharges_DTP.Value.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
@@ -155,6 +158,7 @@ Public Class frmLoan
         CategoryDeduc_txt.Text = Deduc_list.Items(Deduc_list.FocusedItem.Index).SubItems(1).Text
         PrincipalDeduc_txt.Text = Deduc_list.Items(Deduc_list.FocusedItem.Index).SubItems(2).Text
         DeductAmort_txt.Text = Deduc_list.Items(Deduc_list.FocusedItem.Index).SubItems(3).Text
+        DeductAmort_txt.Tag = Deduc_list.Items(Deduc_list.FocusedItem.Index).SubItems(3).Text
         Schedule_Combo.Text = Deduc_list.Items(Deduc_list.FocusedItem.Index).SubItems(4).Text
         CategoryDeduc_txt.Tag = DEDUCT_ID
 
@@ -196,6 +200,11 @@ Public Class frmLoan
                 Loans_Tab.SelectedIndex = 4
                 MaxEmp_txt.Text = .Fullname
                 MaxEmp_txt.Tag = .BiometricID
+
+            ElseIf tabName = "SBU" Then
+                Loans_Tab.SelectedIndex = 5
+                SBU_Name_txt.Text = .Fullname
+                SBU_Name_txt.Tag = .BiometricID
 
             End If
         End With
@@ -393,6 +402,7 @@ Public Class frmLoan
         SSS_Name_TXT.Tag = SSSLoan_LV.Items(SSSLoan_LV.FocusedItem.Index).SubItems(3).Tag
         SSSPrincipal_TXT.Text = SSSLoan_LV.Items(SSSLoan_LV.FocusedItem.Index).SubItems(1).Text
         SSS_Amort_TXT.Text = SSSLoan_LV.Items(SSSLoan_LV.FocusedItem.Index).SubItems(2).Text
+        SSS_Amort_TXT.Tag = SSSLoan_LV.Items(SSSLoan_LV.FocusedItem.Index).SubItems(2).Text
         SSS_Date_DTP.Value = SSSLoan_LV.Items(SSSLoan_LV.FocusedItem.Index).SubItems(3).Text
         Editing_SSS = True
         OrigAmount_SSS = SSSPrincipal_TXT.Text
@@ -404,6 +414,7 @@ Public Class frmLoan
         PagEmp_TXT.Tag = Pagibig_List.Items(Pagibig_List.FocusedItem.Index).SubItems(3).Tag
         PagPrincipal_TXT.Text = Pagibig_List.Items(Pagibig_List.FocusedItem.Index).SubItems(1).Text
         PagAmort_TXT.Text = Pagibig_List.Items(Pagibig_List.FocusedItem.Index).SubItems(2).Text
+        PagAmort_TXT.Tag = Pagibig_List.Items(Pagibig_List.FocusedItem.Index).SubItems(2).Text
         PagDate_DTP.Value = Pagibig_List.Items(Pagibig_List.FocusedItem.Index).SubItems(3).Text
         Editing_PAGIBIG = True
         OrigAmount_PAGIBIG = PagPrincipal_TXT.Text
@@ -559,6 +570,7 @@ Public Class frmLoan
         MaxEmp_txt.Tag = Maxicare_List.Items(Maxicare_List.FocusedItem.Index).SubItems(3).Tag
         MaxSched_Combo.Text = Maxicare_List.Items(Maxicare_List.FocusedItem.Index).SubItems(3).Text
         MaxAmort_txt.Text = Maxicare_List.Items(Maxicare_List.FocusedItem.Index).SubItems(1).Text
+        MaxAmort_txt.Tag = Maxicare_List.Items(Maxicare_List.FocusedItem.Index).SubItems(1).Text
         MaxDate_dtp.Value = Maxicare_List.Items(Maxicare_List.FocusedItem.Index).SubItems(2).Text
         MaxStatus_Combo.Text = IIf(GetData("STATUS", $"PAYROLL_OTHER_DEDUCTION WHERE ID = '{MAXICARE_ID}'") = Nothing, "ON", "OFF")
     End Sub
@@ -569,6 +581,7 @@ Public Class frmLoan
         Mp2Emp_txt.Tag = Mp2_List.Items(Mp2_List.FocusedItem.Index).SubItems(3).Tag
         Mp2Sched_Combo.Text = Mp2_List.Items(Mp2_List.FocusedItem.Index).SubItems(3).Text
         Mp2Amort_txt.Text = Mp2_List.Items(Mp2_List.FocusedItem.Index).SubItems(1).Text
+        Mp2Amort_txt.Tag = Mp2_List.Items(Mp2_List.FocusedItem.Index).SubItems(1).Text
         Mp2Date_dtp.Value = Mp2_List.Items(Mp2_List.FocusedItem.Index).SubItems(2).Text
         Mp2Status_Combo.Text = IIf(GetData("STATUS", $"PAYROLL_OTHER_DEDUCTION WHERE ID = '{MP2_ID}'") = Nothing, "ON", "OFF")
     End Sub
@@ -685,4 +698,66 @@ Public Class frmLoan
         PartialPanel(name, bioNo, pagibig_id, category, GetPagibig_Balance())
     End Sub
 
+    Private Sub SBU_Cancel_btn_Click(sender As Object, e As EventArgs) Handles SBU_Cancel_btn.Click
+        SBU_Name_txt.Clear()
+        SBU_Date_dtp.Value = Today
+        SBU_Principal_txt.Clear()
+        SBU_Amort_txt.Clear()
+    End Sub
+
+    Private Sub SBU_Save_btn_Click(sender As Object, e As EventArgs) Handles SBU_Save_btn.Click
+        If SBU_Name_txt.Text = Nothing Then
+            MsgBox("Please select employee.", MsgBoxStyle.Exclamation)
+        ElseIf SBU_Principal_txt.Text = Nothing Then
+            MsgBox("Please indicate the principal amount.", MsgBoxStyle.Exclamation)
+        ElseIf SBU_Principal_txt.Text = Nothing Then
+            MsgBox("Please indicate the amort.", MsgBoxStyle.Exclamation)
+        Else
+            SaveNewSBU(SBU_Name_txt.Text, SBU_Name_txt.Tag, SBU_Amort_txt.Text, SBU_Principal_txt.Text)
+            Lists_SBU(SBU_LV)
+            SBU_Cancel_btn.PerformClick()
+        End If
+    End Sub
+
+    Private Sub SBU_Search_btn_Click(sender As Object, e As EventArgs) Handles SBU_SearchEmp_btn.Click
+        Try
+            Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmNewEmployee").SingleOrDefault()
+            If instForm Is Nothing Then
+                Dim frm As frmNewEmployee
+                frm = DirectCast(CreateObjectInstance("frmNewEmployee"), Form)
+                frm.MdiParent = frmMainForm
+                frmMainForm.pNavigate.Controls.Add(frm)
+                frmMainForm.pNavigate.Tag = frm
+                frm.txtSearch.Tag = "Loan-SBU"
+                frm.Dock = DockStyle.Fill
+                frm.BringToFront()
+                frm.Show()
+            Else
+                instForm.BringToFront()
+            End If
+
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    Private Sub SBU_Search_btn_Click_1(sender As Object, e As EventArgs) Handles SBU_Search_btn.Click
+        Lists_SBU(SBU_LV, SBU_Search_txt.Text)
+    End Sub
+
+    Private Sub SBU_Search_txt_KeyPress(sender As Object, e As KeyPressEventArgs) Handles SBU_Search_txt.KeyPress
+        If e.KeyChar = ChrW(Keys.Enter) Then
+            SBU_Search_btn.PerformClick()
+        End If
+    End Sub
+
+    Private Sub SBUEdit_Menu_Click(sender As Object, e As EventArgs) Handles SBUEdit_Menu.Click
+        SBU_Name_txt.Text = SBU_LV.Items(SBU_LV.FocusedItem.Index).SubItems(0).Text
+        SBU_Name_txt.Tag = SBU_LV.Items(SBU_LV.FocusedItem.Index).SubItems(4).Tag
+        SBU_Principal_txt.Text = SBU_LV.Items(SBU_LV.FocusedItem.Index).SubItems(2).Text
+        SBU_Amort_txt.Text = SBU_LV.Items(SBU_LV.FocusedItem.Index).SubItems(1).Text
+
+        Dim datee As String = GetData("DATE_ADDED", $"PAYROLL_SBU where BIO_NO ='{SBU_Name_txt.Tag}'")
+        SBU_Date_dtp.Value = IIf(datee = "", Today, datee)
+    End Sub
 End Class

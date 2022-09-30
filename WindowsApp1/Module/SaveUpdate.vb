@@ -1389,6 +1389,7 @@ Module SaveUpdate
                 SaveEntry(ds, False)
 
                 MsgBox("Successfully Updated!", MsgBoxStyle.Information)
+                SaveLogs($"UPDATED PI ADDITIONAL DAY/S ({NO_OF_DAYS}) PAYROLL DATE ({PAYDATE})", frmMainForm.UserName_LBL.Text)
             Else
                 Dim mysqlL As String = "Select * From PAYROLL_PI_DAYS"
                 Using dss As DataSet = LoadSQL(mysqlL, "PAYROLL_PI_DAYS")
@@ -1404,6 +1405,7 @@ Module SaveUpdate
                     SaveEntry(dss)
 
                     MsgBox("Successfully Saved!", MsgBoxStyle.Information)
+                    SaveLogs($"ADDED PI ADDITIONAL DAY/S ({NO_OF_DAYS}) PAYROLL DATE ({PAYDATE})", frmMainForm.UserName_LBL.Text)
                 End Using
             End If
         End Using
@@ -2196,4 +2198,50 @@ Module SaveUpdate
             End If
         End Using
     End Sub
+
+    Friend Sub SaveNewSBU(NAMEE As String, BIO_NO As String, AMOUNT As String, PRINCIPAL As String)
+        Dim old_principal = 0, old_amort As Decimal = 0
+        Dim mysql As String = $"Select * from PAYROLL_SBU where BIO_NO ='{BIO_NO}' and CATEGORY ='SBU'"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_SBU")
+            If ds.Tables(0).Rows.Count > 0 Then
+                With ds.Tables(0).Rows(0)
+                    old_principal = .Item("PRINCIPAL")
+                    old_amort = .Item("AMOUNT")
+
+                    .Item("AMOUNT") = AMOUNT
+                    .Item("PRINCIPAL") = PRINCIPAL
+                    .Item("BALANCE") = PRINCIPAL
+                    .Item("CATEGORY") = "SBU"
+                    .Item("DATE_ADDED") = Today
+                End With
+                SaveEntry(ds, False)
+
+                SaveLogs($"UPDATED SBU - {NAMEE}({BIO_NO}) Principal(from {FormatNumber(old_principal)} to {FormatNumber(PRINCIPAL)}) Amort(from {FormatNumber(old_amort)} to {FormatNumber(AMOUNT)})", frmMainForm.UserName_LBL.Text)
+
+                MsgBox("Successfully updated.", MsgBoxStyle.Information)
+            Else
+                mysql = "Select * from PAYROLL_SBU Rows 1"
+                Using dss As DataSet = LoadSQL(mysql, "PAYROLL_SBU")
+                    Dim dsNew As DataRow = dss.Tables(0).NewRow
+                    With dsNew
+                        .Item("BIO_NO") = BIO_NO
+                        .Item("AMOUNT") = AMOUNT
+                        .Item("PRINCIPAL") = PRINCIPAL
+                        .Item("BALANCE") = PRINCIPAL
+                        .Item("CATEGORY") = "SBU"
+                        .Item("DATE_ADDED") = Today
+                    End With
+
+                    dss.Tables(0).Rows.Add(dsNew)
+                    SaveEntry(dss)
+
+                    SaveLogs($"ADDED NEW SBU - {NAMEE}({BIO_NO}) Principal({FormatNumber(PRINCIPAL)}) Amort({FormatNumber(AMOUNT)})", frmMainForm.UserName_LBL.Text)
+
+                    MsgBox("Successfully saved.", MsgBoxStyle.Information)
+                End Using
+            End If
+        End Using
+    End Sub
+
+
 End Module

@@ -156,11 +156,32 @@ Partial Class frmLoan
         Me.ColumnHeader27 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader28 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader29 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.Context_Maxicare = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.MaxEdit_Menu = New System.Windows.Forms.ToolStripMenuItem()
         Me.MaxEmp_btn = New System.Windows.Forms.Button()
         Me.Label35 = New System.Windows.Forms.Label()
         Me.MaxEmp_txt = New System.Windows.Forms.TextBox()
         Me.Label36 = New System.Windows.Forms.Label()
         Me.MaxAmort_txt = New System.Windows.Forms.TextBox()
+        Me.TabPage6 = New System.Windows.Forms.TabPage()
+        Me.SBU_LV = New System.Windows.Forms.ListView()
+        Me.ColumnHeader34 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader35 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader36 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader37 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader38 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.GroupBox1 = New System.Windows.Forms.GroupBox()
+        Me.Label53 = New System.Windows.Forms.Label()
+        Me.SBU_Amort_txt = New System.Windows.Forms.TextBox()
+        Me.Label54 = New System.Windows.Forms.Label()
+        Me.SBU_Date_dtp = New System.Windows.Forms.DateTimePicker()
+        Me.SBU_Save_btn = New System.Windows.Forms.Button()
+        Me.SBU_Cancel_btn = New System.Windows.Forms.Button()
+        Me.SBU_Name_txt = New System.Windows.Forms.TextBox()
+        Me.Label57 = New System.Windows.Forms.Label()
+        Me.SBU_Principal_txt = New System.Windows.Forms.TextBox()
+        Me.Label58 = New System.Windows.Forms.Label()
+        Me.SBU_SearchEmp_btn = New System.Windows.Forms.Button()
         Me.Partial_Panel = New System.Windows.Forms.Panel()
         Me.PartialName_txt = New System.Windows.Forms.TextBox()
         Me.Label52 = New System.Windows.Forms.Label()
@@ -202,8 +223,10 @@ Partial Class frmLoan
         Me.Label31 = New System.Windows.Forms.Label()
         Me.DE_Effectivity_DTP = New System.Windows.Forms.DateTimePicker()
         Me.lblAdd = New System.Windows.Forms.Label()
-        Me.Context_Maxicare = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.MaxEdit_Menu = New System.Windows.Forms.ToolStripMenuItem()
+        Me.Context_SBU = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.SBUEdit_Menu = New System.Windows.Forms.ToolStripMenuItem()
+        Me.SBU_Search_txt = New System.Windows.Forms.TextBox()
+        Me.SBU_Search_btn = New System.Windows.Forms.Button()
         Me.Loans_Tab.SuspendLayout()
         Me.TabPage2.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
@@ -215,8 +238,11 @@ Partial Class frmLoan
         Me.TabPage4.SuspendLayout()
         Me.Context_Mp2.SuspendLayout()
         Me.TabPage5.SuspendLayout()
-        Me.Partial_Panel.SuspendLayout()
         Me.Context_Maxicare.SuspendLayout()
+        Me.TabPage6.SuspendLayout()
+        Me.GroupBox1.SuspendLayout()
+        Me.Partial_Panel.SuspendLayout()
+        Me.Context_SBU.SuspendLayout()
         Me.SuspendLayout()
         '
         'Close_LBL
@@ -236,6 +262,7 @@ Partial Class frmLoan
         Me.Loans_Tab.Controls.Add(Me.TabPage3)
         Me.Loans_Tab.Controls.Add(Me.TabPage4)
         Me.Loans_Tab.Controls.Add(Me.TabPage5)
+        Me.Loans_Tab.Controls.Add(Me.TabPage6)
         Me.Loans_Tab.Font = New System.Drawing.Font("Dubai", 12.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Loans_Tab.Location = New System.Drawing.Point(6, 32)
         Me.Loans_Tab.Name = "Loans_Tab"
@@ -1515,6 +1542,18 @@ Partial Class frmLoan
         Me.ColumnHeader29.Text = "Schedule"
         Me.ColumnHeader29.Width = 130
         '
+        'Context_Maxicare
+        '
+        Me.Context_Maxicare.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MaxEdit_Menu})
+        Me.Context_Maxicare.Name = "Context_deduct"
+        Me.Context_Maxicare.Size = New System.Drawing.Size(95, 26)
+        '
+        'MaxEdit_Menu
+        '
+        Me.MaxEdit_Menu.Name = "MaxEdit_Menu"
+        Me.MaxEdit_Menu.Size = New System.Drawing.Size(94, 22)
+        Me.MaxEdit_Menu.Text = "Edit"
+        '
         'MaxEmp_btn
         '
         Me.MaxEmp_btn.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -1561,6 +1600,196 @@ Partial Class frmLoan
         Me.MaxAmort_txt.Name = "MaxAmort_txt"
         Me.MaxAmort_txt.Size = New System.Drawing.Size(194, 33)
         Me.MaxAmort_txt.TabIndex = 170
+        '
+        'TabPage6
+        '
+        Me.TabPage6.ContextMenuStrip = Me.Context_SBU
+        Me.TabPage6.Controls.Add(Me.SBU_Search_txt)
+        Me.TabPage6.Controls.Add(Me.SBU_Search_btn)
+        Me.TabPage6.Controls.Add(Me.SBU_LV)
+        Me.TabPage6.Controls.Add(Me.GroupBox1)
+        Me.TabPage6.Location = New System.Drawing.Point(4, 38)
+        Me.TabPage6.Name = "TabPage6"
+        Me.TabPage6.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage6.Size = New System.Drawing.Size(1147, 604)
+        Me.TabPage6.TabIndex = 12
+        Me.TabPage6.Text = "        SBU        "
+        Me.TabPage6.UseVisualStyleBackColor = True
+        '
+        'SBU_LV
+        '
+        Me.SBU_LV.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.SBU_LV.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader34, Me.ColumnHeader35, Me.ColumnHeader36, Me.ColumnHeader37, Me.ColumnHeader38})
+        Me.SBU_LV.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SBU_LV.FullRowSelect = True
+        Me.SBU_LV.GridLines = True
+        Me.SBU_LV.HideSelection = False
+        Me.SBU_LV.Location = New System.Drawing.Point(466, 76)
+        Me.SBU_LV.MultiSelect = False
+        Me.SBU_LV.Name = "SBU_LV"
+        Me.SBU_LV.Size = New System.Drawing.Size(675, 483)
+        Me.SBU_LV.TabIndex = 128
+        Me.SBU_LV.UseCompatibleStateImageBehavior = False
+        Me.SBU_LV.View = System.Windows.Forms.View.Details
+        '
+        'ColumnHeader34
+        '
+        Me.ColumnHeader34.Text = "Name"
+        Me.ColumnHeader34.Width = 250
+        '
+        'ColumnHeader35
+        '
+        Me.ColumnHeader35.Text = "Amount"
+        Me.ColumnHeader35.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.ColumnHeader35.Width = 100
+        '
+        'ColumnHeader36
+        '
+        Me.ColumnHeader36.Text = "Principal"
+        Me.ColumnHeader36.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.ColumnHeader36.Width = 100
+        '
+        'ColumnHeader37
+        '
+        Me.ColumnHeader37.Text = "Amount Paid"
+        Me.ColumnHeader37.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.ColumnHeader37.Width = 100
+        '
+        'ColumnHeader38
+        '
+        Me.ColumnHeader38.Text = "Balance"
+        Me.ColumnHeader38.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.ColumnHeader38.Width = 100
+        '
+        'GroupBox1
+        '
+        Me.GroupBox1.Controls.Add(Me.Label53)
+        Me.GroupBox1.Controls.Add(Me.SBU_Amort_txt)
+        Me.GroupBox1.Controls.Add(Me.Label54)
+        Me.GroupBox1.Controls.Add(Me.SBU_Date_dtp)
+        Me.GroupBox1.Controls.Add(Me.SBU_Save_btn)
+        Me.GroupBox1.Controls.Add(Me.SBU_Cancel_btn)
+        Me.GroupBox1.Controls.Add(Me.SBU_Name_txt)
+        Me.GroupBox1.Controls.Add(Me.Label57)
+        Me.GroupBox1.Controls.Add(Me.SBU_Principal_txt)
+        Me.GroupBox1.Controls.Add(Me.Label58)
+        Me.GroupBox1.Controls.Add(Me.SBU_SearchEmp_btn)
+        Me.GroupBox1.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GroupBox1.Location = New System.Drawing.Point(16, 22)
+        Me.GroupBox1.Name = "GroupBox1"
+        Me.GroupBox1.Size = New System.Drawing.Size(429, 382)
+        Me.GroupBox1.TabIndex = 127
+        Me.GroupBox1.TabStop = False
+        Me.GroupBox1.Text = "Information"
+        '
+        'Label53
+        '
+        Me.Label53.AutoSize = True
+        Me.Label53.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label53.Location = New System.Drawing.Point(-1, 207)
+        Me.Label53.Name = "Label53"
+        Me.Label53.Size = New System.Drawing.Size(51, 25)
+        Me.Label53.TabIndex = 130
+        Me.Label53.Text = "Amort"
+        '
+        'SBU_Amort_txt
+        '
+        Me.SBU_Amort_txt.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SBU_Amort_txt.Location = New System.Drawing.Point(122, 203)
+        Me.SBU_Amort_txt.Name = "SBU_Amort_txt"
+        Me.SBU_Amort_txt.Size = New System.Drawing.Size(238, 33)
+        Me.SBU_Amort_txt.TabIndex = 39
+        '
+        'Label54
+        '
+        Me.Label54.AutoSize = True
+        Me.Label54.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label54.Location = New System.Drawing.Point(-1, 99)
+        Me.Label54.Name = "Label54"
+        Me.Label54.Size = New System.Drawing.Size(41, 25)
+        Me.Label54.TabIndex = 127
+        Me.Label54.Text = "Date"
+        '
+        'SBU_Date_dtp
+        '
+        Me.SBU_Date_dtp.Location = New System.Drawing.Point(122, 95)
+        Me.SBU_Date_dtp.Name = "SBU_Date_dtp"
+        Me.SBU_Date_dtp.Size = New System.Drawing.Size(238, 29)
+        Me.SBU_Date_dtp.TabIndex = 37
+        Me.SBU_Date_dtp.Value = New Date(2022, 1, 6, 0, 0, 0, 0)
+        '
+        'SBU_Save_btn
+        '
+        Me.SBU_Save_btn.BackColor = System.Drawing.Color.DarkSalmon
+        Me.SBU_Save_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.SBU_Save_btn.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SBU_Save_btn.Location = New System.Drawing.Point(288, 296)
+        Me.SBU_Save_btn.Name = "SBU_Save_btn"
+        Me.SBU_Save_btn.Size = New System.Drawing.Size(102, 38)
+        Me.SBU_Save_btn.TabIndex = 41
+        Me.SBU_Save_btn.Text = "Save"
+        Me.SBU_Save_btn.UseVisualStyleBackColor = False
+        '
+        'SBU_Cancel_btn
+        '
+        Me.SBU_Cancel_btn.BackColor = System.Drawing.Color.MistyRose
+        Me.SBU_Cancel_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.SBU_Cancel_btn.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SBU_Cancel_btn.Location = New System.Drawing.Point(77, 296)
+        Me.SBU_Cancel_btn.Name = "SBU_Cancel_btn"
+        Me.SBU_Cancel_btn.Size = New System.Drawing.Size(105, 38)
+        Me.SBU_Cancel_btn.TabIndex = 40
+        Me.SBU_Cancel_btn.Text = "Cancel"
+        Me.SBU_Cancel_btn.UseVisualStyleBackColor = False
+        '
+        'SBU_Name_txt
+        '
+        Me.SBU_Name_txt.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SBU_Name_txt.Location = New System.Drawing.Point(75, 35)
+        Me.SBU_Name_txt.Name = "SBU_Name_txt"
+        Me.SBU_Name_txt.ReadOnly = True
+        Me.SBU_Name_txt.Size = New System.Drawing.Size(285, 33)
+        Me.SBU_Name_txt.TabIndex = 109
+        '
+        'Label57
+        '
+        Me.Label57.AutoSize = True
+        Me.Label57.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label57.Location = New System.Drawing.Point(-1, 150)
+        Me.Label57.Name = "Label57"
+        Me.Label57.Size = New System.Drawing.Size(117, 25)
+        Me.Label57.TabIndex = 108
+        Me.Label57.Text = "Principal Amount"
+        '
+        'SBU_Principal_txt
+        '
+        Me.SBU_Principal_txt.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SBU_Principal_txt.Location = New System.Drawing.Point(122, 146)
+        Me.SBU_Principal_txt.Name = "SBU_Principal_txt"
+        Me.SBU_Principal_txt.Size = New System.Drawing.Size(238, 33)
+        Me.SBU_Principal_txt.TabIndex = 38
+        '
+        'Label58
+        '
+        Me.Label58.AutoSize = True
+        Me.Label58.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label58.Location = New System.Drawing.Point(-1, 37)
+        Me.Label58.Name = "Label58"
+        Me.Label58.Size = New System.Drawing.Size(48, 25)
+        Me.Label58.TabIndex = 111
+        Me.Label58.Text = "Name"
+        '
+        'SBU_SearchEmp_btn
+        '
+        Me.SBU_SearchEmp_btn.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SBU_SearchEmp_btn.Location = New System.Drawing.Point(372, 35)
+        Me.SBU_SearchEmp_btn.Name = "SBU_SearchEmp_btn"
+        Me.SBU_SearchEmp_btn.Size = New System.Drawing.Size(47, 31)
+        Me.SBU_SearchEmp_btn.TabIndex = 34
+        Me.SBU_SearchEmp_btn.Text = "..."
+        Me.SBU_SearchEmp_btn.UseVisualStyleBackColor = True
         '
         'Partial_Panel
         '
@@ -1921,17 +2150,35 @@ Partial Class frmLoan
         Me.lblAdd.Size = New System.Drawing.Size(32, 22)
         Me.lblAdd.TabIndex = 125
         '
-        'Context_Maxicare
+        'Context_SBU
         '
-        Me.Context_Maxicare.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MaxEdit_Menu})
-        Me.Context_Maxicare.Name = "Context_deduct"
-        Me.Context_Maxicare.Size = New System.Drawing.Size(95, 26)
+        Me.Context_SBU.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SBUEdit_Menu})
+        Me.Context_SBU.Name = "Context_deduct"
+        Me.Context_SBU.Size = New System.Drawing.Size(95, 26)
         '
-        'MaxEdit_Menu
+        'SBUEdit_Menu
         '
-        Me.MaxEdit_Menu.Name = "MaxEdit_Menu"
-        Me.MaxEdit_Menu.Size = New System.Drawing.Size(94, 22)
-        Me.MaxEdit_Menu.Text = "Edit"
+        Me.SBUEdit_Menu.Name = "SBUEdit_Menu"
+        Me.SBUEdit_Menu.Size = New System.Drawing.Size(180, 22)
+        Me.SBUEdit_Menu.Text = "Edit"
+        '
+        'SBU_Search_txt
+        '
+        Me.SBU_Search_txt.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SBU_Search_txt.Location = New System.Drawing.Point(466, 33)
+        Me.SBU_Search_txt.Name = "SBU_Search_txt"
+        Me.SBU_Search_txt.Size = New System.Drawing.Size(358, 33)
+        Me.SBU_Search_txt.TabIndex = 129
+        '
+        'SBU_Search_btn
+        '
+        Me.SBU_Search_btn.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SBU_Search_btn.Location = New System.Drawing.Point(830, 32)
+        Me.SBU_Search_btn.Name = "SBU_Search_btn"
+        Me.SBU_Search_btn.Size = New System.Drawing.Size(82, 33)
+        Me.SBU_Search_btn.TabIndex = 130
+        Me.SBU_Search_btn.Text = "Search"
+        Me.SBU_Search_btn.UseVisualStyleBackColor = True
         '
         'frmLoan
         '
@@ -1962,9 +2209,14 @@ Partial Class frmLoan
         Me.Context_Mp2.ResumeLayout(False)
         Me.TabPage5.ResumeLayout(False)
         Me.TabPage5.PerformLayout()
+        Me.Context_Maxicare.ResumeLayout(False)
+        Me.TabPage6.ResumeLayout(False)
+        Me.TabPage6.PerformLayout()
+        Me.GroupBox1.ResumeLayout(False)
+        Me.GroupBox1.PerformLayout()
         Me.Partial_Panel.ResumeLayout(False)
         Me.Partial_Panel.PerformLayout()
-        Me.Context_Maxicare.ResumeLayout(False)
+        Me.Context_SBU.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -2155,4 +2407,27 @@ Partial Class frmLoan
     Friend WithEvents Label52 As Label
     Friend WithEvents PartialPaymentSSSMenuItem As ToolStripMenuItem
     Friend WithEvents PartialPaymentPagMenuItem As ToolStripMenuItem
+    Friend WithEvents TabPage6 As TabPage
+    Friend WithEvents GroupBox1 As GroupBox
+    Friend WithEvents Label53 As Label
+    Friend WithEvents SBU_Amort_txt As TextBox
+    Friend WithEvents Label54 As Label
+    Friend WithEvents SBU_Date_dtp As DateTimePicker
+    Friend WithEvents SBU_Save_btn As Button
+    Friend WithEvents SBU_Cancel_btn As Button
+    Friend WithEvents SBU_Name_txt As TextBox
+    Friend WithEvents Label57 As Label
+    Friend WithEvents SBU_Principal_txt As TextBox
+    Friend WithEvents Label58 As Label
+    Friend WithEvents SBU_SearchEmp_btn As Button
+    Friend WithEvents SBU_LV As ListView
+    Friend WithEvents ColumnHeader34 As ColumnHeader
+    Friend WithEvents ColumnHeader35 As ColumnHeader
+    Friend WithEvents ColumnHeader36 As ColumnHeader
+    Friend WithEvents ColumnHeader37 As ColumnHeader
+    Friend WithEvents ColumnHeader38 As ColumnHeader
+    Friend WithEvents Context_SBU As ContextMenuStrip
+    Friend WithEvents SBUEdit_Menu As ToolStripMenuItem
+    Friend WithEvents SBU_Search_txt As TextBox
+    Friend WithEvents SBU_Search_btn As Button
 End Class

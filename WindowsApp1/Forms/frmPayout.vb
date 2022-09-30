@@ -743,7 +743,7 @@ Public Class frmPayout
                     MsgBox("Email sent to " & Employee_TXT.Text, MsgBoxStyle.Information, "Information")
                 End If
 
-                SaveLogs($"PAYSLIP EMAILED TO {Employee_TXT.Text}({Employee_TXT.Tag})", frmMainForm.UserName_LBL.Text)
+                SaveLogs($"PAYSLIP EMAILED TO {Employee_TXT.Text}({Employee_TXT.Tag}), Payroll({datee.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
 
             End If
         End If

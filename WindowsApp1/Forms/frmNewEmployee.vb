@@ -914,6 +914,11 @@ Public Class frmNewEmployee
             SwitchForm_Loans(FormName.Loans, tmpEmp, "MAXICARE")
             Close()
 
+        ElseIf txtSearch.Tag = "Loan-SBU" Then
+
+            SwitchForm_Loans(FormName.Loans, tmpEmp, "SBU")
+            Close()
+
         ElseIf txtSearch.Tag = "Scheduling" Then
 
             SwitchForm_Scheduling(FormName.Schedule, tmpEmp)
