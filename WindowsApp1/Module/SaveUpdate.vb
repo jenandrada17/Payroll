@@ -42,7 +42,7 @@ Module SaveUpdate
     End Sub
 
     Friend Sub SaveAttendanceEE(biometric As Integer, paydate As String, days As String, overTime As String, late_total As String, under_total As String,
-                                regHoliday As String, specHoliday As String, specHoliday_hrs As Double, SIL As Double,
+                                regHoliday As String, specHoliday As String, specHoliday_hrs As Double, SIL As Double, LATE_ADJUSTMENT As String,
                                         Optional MORNING_OT As String = "", Optional NIGHT_RATE As String = "")
 
         Dim mysql As String
@@ -64,7 +64,11 @@ Module SaveUpdate
                 .Item("TRAINING_DAYS") = 0
                 .Item("TRAINING_REGHOLIDAY") = 0
                 .Item("TRAINING_SPECHOLIDAY") = 0
-                .Item("SPECHOLIDAY_HRS") = specHoliday_hrs ' ==== SPECIAL HOLIDAY COVERED HOURS
+                .Item("SPECHOLIDAY_HRS") = specHoliday_hrs ' ==== SPECIAL HOLIDAY COVERED HOURS 
+
+                If LATE_ADJUSTMENT <> Nothing Then
+                    .Item("LATE_ADJUSTMENT") = LATE_ADJUSTMENT
+                End If
 
                 If NIGHT_RATE <> Nothing Then
                     .Item("NIGHT_RATE") = NIGHT_RATE
@@ -96,7 +100,11 @@ Module SaveUpdate
                     .Item("TRAINING_DAYS") = 0
                     .Item("TRAINING_REGHOLIDAY") = 0
                     .Item("TRAINING_SPECHOLIDAY") = 0
-                    .Item("SPECHOLIDAY_HRS") = specHoliday_hrs ' ==== SPECIAL HOLIDAY COVERED HOURS
+                    .Item("SPECHOLIDAY_HRS") = specHoliday_hrs ' ==== SPECIAL HOLIDAY COVERED HOURS 
+
+                    If LATE_ADJUSTMENT <> Nothing Then
+                        .Item("LATE_ADJUSTMENT") = LATE_ADJUSTMENT
+                    End If
 
                     If NIGHT_RATE <> Nothing Then
                         .Item("NIGHT_RATE") = NIGHT_RATE
@@ -598,6 +606,7 @@ Module SaveUpdate
                     Dim rate As Decimal = 0
                     Dim SIL As Decimal = 0
                     Dim Allowances As Decimal = 0
+                    Dim Late_Adjustment As Decimal = 0
                     Dim TotalREGHol, TotalSPECHol, TotalOT, TotalLateUnder, TotalNight, GrossAmount As Decimal
                     Dim Minimum_rate As Decimal = IIf(IsDBNull(.Item("BRANCH_CODE")) Or .Item("BRANCH_CODE").Equals(""), GetMinimumRate("CITY", "GENSAN"), GetMinimumRate("BRANCHCODE", .Item("BRANCH_CODE")))
                     Dim Ecola As Double = GetEcola("BRANCHCODE", .Item("BRANCH_CODE"))
@@ -635,6 +644,7 @@ Module SaveUpdate
                                     UnderTime = .Item("UNDERTIME")
                                     nightRate = IIf(IsDBNull(.Item("NIGHT_RATE")), 0, .Item("NIGHT_RATE"))
                                     SpecialHol_hrs = IIf(IsDBNull(.Item("SPECHOLIDAY_HRS")), 0, .Item("SPECHOLIDAY_HRS"))
+                                    Late_Adjustment = IIf(IsDBNull(.Item("LATE_ADJUSTMENT")), 0, .Item("LATE_ADJUSTMENT"))
                                 End If
 
                                 SIL = .Item("SIL") + Get_SIL("PAYROLL_SCHED_COUNT", $"PAYROLL_SCHED_COUNT WHERE BIO_NO = '{bioNo}' AND PAYDATE = '{paydate_}'")
@@ -1127,6 +1137,13 @@ Module SaveUpdate
                         TotalLateUnder = LATEE + UNDERTIMEE
 
                         GrossAmount = (TotalBasic + TotalREGHol + TotalSPECHol + TotalOT + TotalNight) - TotalLateUnder
+
+                        '============================================= LATE ADJUSTMENT ==================================================
+                        If Late_Adjustment <> 0 Then
+                            Dim total_adjustment As Decimal = (LATEE * Late_Adjustment) - LATEE
+                            Deduction += total_adjustment
+                            Save_Recorded_Allow_Deduc(bioNo, paydate_, "Late Adjustment", total_adjustment, "DEDUCTION")
+                        End If
 
                     End If
 
@@ -2242,6 +2259,18 @@ Module SaveUpdate
             End If
         End Using
     End Sub
+
+    'Friend Sub UpdateLate_Adjustment(bioNum As String, paydate_ As String, percentage As String)
+    '    Dim mysql As String = $"Select * from PAYROLL_ATTENDANCE where biometricid = '{bioNum}' and PAYDATE = '{paydate_}'"
+    '    Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
+    '        If ds.Tables(0).Rows.Count > 0 Then
+    '            With ds.Tables(0).Rows(0)
+    '                .Item("LATE_ADJUSTMENT") = percentage
+    '            End With
+    '            SaveEntry(ds, False)
+    '        End If
+    '    End Using
+    'End Sub
 
 
 End Module

@@ -1785,13 +1785,11 @@ Module SelectFromDatabase
     End Sub
 
     Public Sub Has_Rows_Delete(table As String)
-
         Dim mysql As String = $"Select * FROM {table}"
         Dim dss As DataSet = LoadSQL(mysql, table)
         If dss.Tables(0).Rows.Count > 0 Then
             RunCommand($"DELETE FROM {table};")  'TO DELETE EXISTING DATA 
         End If
-
     End Sub
 
     Public Sub Load_Category_LIST(LIST As ListView, table As String, coulumn As String)
@@ -1816,7 +1814,7 @@ Module SelectFromDatabase
 
         If searchName.Length <> 0 Then
 
-            mysql = "select * from PAYROLL_EMPLOYEE where "
+            mysql = $"select * from PAYROLL_EMPLOYEE where "
 
             For Each name In strWords
                 mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%') OR "
@@ -2966,5 +2964,27 @@ Module SelectFromDatabase
         End Using
 
     End Sub
+
+    Friend Function LatePercentage(bioNum As String, paydate_ As String, total_late As Integer)
+        Dim percentage As String = Nothing
+        Dim mysql As String = "Select * FROM LATE_DEDUCTION"
+        Using ds As DataSet = LoadSQL(mysql, "LATE_DEDUCTION")
+            If ds.Tables(0).Rows.Count Then
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+                        Dim range As String = .Item("RANGE_")
+                        Dim strWords As String() = range.Split(New Char() {" "c})
+
+                        If (Enumerable.Range(strWords.First, strWords.Last).Contains(total_late)) Then
+                            percentage = .Item("PERCENTAGE_")
+                            Exit For
+                        End If
+                    End With
+                Next
+            End If
+
+            Return percentage
+        End Using
+    End Function
 
 End Module

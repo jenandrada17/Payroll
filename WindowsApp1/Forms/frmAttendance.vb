@@ -31,6 +31,11 @@ Public Class frmAttendance
     Dim temp_Rholiday As Double = 0
     Dim temp_Sholiday As Double = 0
 
+    '========= COUNT DAYS OF LATE TO APPLY LATE_DEDUCTION MULTIPLICATION =========
+    Dim Late_days As Double = 0
+    Dim Late_applied As Boolean = False
+    Dim Late_percentage As String = Nothing
+
     Private Sub frmAttendance_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
         LoadDateTime()
@@ -261,6 +266,8 @@ Public Class frmAttendance
             TotalOTHr_LBL.Text = 0
             under_count = New TimeSpan(0, 0, 0, 0, 0)
             late_count = New TimeSpan(0, 0, 0, 0, 0)
+            Late_days = 0
+            Late_applied = False
             Dim product As Double = 0
             Dim sil As Double = 0
             Dim Present_FromWorkingSched As Double = 0
@@ -472,10 +479,18 @@ Public Class frmAttendance
             Dim lateHour As TimeSpan = DateTime.Parse(row.Cells(1).Value).Subtract(DateTime.Parse(timeIn.ToShortTimeString))
 
             Dim cellValue As DateTime = row.Cells(1).Value
-            Dim limit As DateTime = (timeIn.AddMinutes(-1)).ToShortTimeString
+            'Dim limit As DateTime = (timeIn.AddMinutes(-1)).ToShortTimeString
+            Dim limit As DateTime = (timeIn).ToShortTimeString
 
             If cellValue > limit Then
                 late_count += lateHour
+
+
+                '========= COUNT DAYS OF LATE TO APPLY LATE_DEDUCTION MULTIPLICATION =========
+                Late_days += 1
+                If Late_days >= 3 And late_count.TotalMinutes > 120 Then
+                    Late_applied = True
+                End If
             End If
 
         End If
@@ -624,7 +639,7 @@ Public Class frmAttendance
                 Next
 
                 '===================================== MINIMUM CHANGED STARTING SEPTEMBER 1, 2022 =================================
-                If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{PAYROLL}'") Then
+                If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
                     Dim old_days As Double
                     old_days = (temp_present * 8) - temp_half
                     old_days = old_days / 8
@@ -635,8 +650,15 @@ Public Class frmAttendance
                     SaveTemporary(BiometricID_TXT.Text, old_days, new_days, temp_overtime, new_overtime, temp_late, new_late, temp_undertime, new_undertime, temp_Rholiday, temp_Sholiday, PAYROLL)
                 End If
 
+                '========== FOR EXCEEDING DAYS OF LATE (MORE THAN 2 DAYS OF LATE THIS WILL APPLIED)==========
+                If Late_applied = True Then
+                    Late_percentage = LatePercentage(BiometricID_TXT.Text, PAYROLL, TotalLateHR_LBL.Text)
+                Else
+                    Late_percentage = Nothing
+                End If
+
                 SaveAttendanceEE(BiometricID_TXT.Text, PAYROLL, TotalDays_LBL.Text, TotalOTHr_LBL.Text, TotalLateHR_LBL.Text, TotalUTHR_LBL.Text,
-                                 TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text, specHoliday_hrs, SIL_LBL.Text, AM_OT_NUP.Value)
+                                 TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text, specHoliday_hrs, SIL_LBL.Text, Late_percentage, AM_OT_NUP.Value)
 
                 SavePayout_IndividualL(BiometricID_TXT.Text, PAYROLL, starting_date, ending_date)
 
@@ -1439,14 +1461,6 @@ Public Class frmAttendance
         PI_Days.Value = 0.0
     End Sub
 
-    Private Sub Combobox_SelectedItem(sender As Object, e As EventArgs)
-        Dim combo As ComboBox = DirectCast(sender, ComboBox)
-
-        If combo.SelectedItem = "" Then
-
-        End If
-    End Sub
-
     Private Sub AddPIDays_btn_Click_1(sender As Object, e As EventArgs) Handles AddPIDays_btn.Click
         If P_Add_Panel.Visible = True Then
             P_Add_Panel.Visible = False
@@ -2010,8 +2024,13 @@ Public Class frmAttendance
             product = product / 8
             TotalDays_LBL.Text = product
 
+            '========== FOR EXCEEDING DAYS OF LATE (MORE THAN 2 DAYS OF LATE THIS WILL APPLIED)==========
+            If Late_applied = True Then
+                Late_percentage = LatePercentage(BiometricID_TXT.Text, paydate_, TotalLateHR_LBL.Text)
+            End If
+
             SaveAttendanceEE(biometric_No, paydate_, TotalDays_LBL.Text, TotalOTHr_LBL.Text, late_count.TotalMinutes, under_count.TotalMinutes,
-                             RHOLIDAY, SHOLIDAY, specHoliday_hrs, 0)
+                             RHOLIDAY, SHOLIDAY, specHoliday_hrs, 0, Late_percentage)
 
             InsertTempAttendance(biometric_No, paydate_, TotalDays_LBL.Text, TotalOTHr_LBL.Text,
                                     late_count.TotalMinutes, under_count.TotalMinutes, RHOLIDAY, SHOLIDAY)
