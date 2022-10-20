@@ -35,6 +35,8 @@ Public Class frmAttendance
     Dim Late_days As Double = 0
     Dim Late_applied As Boolean = False
     Dim Late_percentage As String = Nothing
+    Dim Late_total As Integer = 0
+    Dim Late_approved As Integer = 0
 
     Private Sub frmAttendance_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
@@ -255,223 +257,6 @@ Public Class frmAttendance
         End If
     End Sub
 
-
-    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Calculate_BTN.Click
-        If Name_TXT.Text <> Nothing Then
-            TotalDays_LBL.Text = 0
-            TotalRHoliday_LBL.Text = 0
-            TotalSHoliday_LBL.Text = 0
-            TotalLateHR_LBL.Text = 0
-            TotalUTHR_LBL.Text = 0
-            TotalOTHr_LBL.Text = 0
-            under_count = New TimeSpan(0, 0, 0, 0, 0)
-            late_count = New TimeSpan(0, 0, 0, 0, 0)
-            Late_days = 0
-            Late_applied = False
-            Dim product As Double = 0
-            Dim sil As Double = 0
-            Dim Present_FromWorkingSched As Double = 0
-
-            Dim bioNum = BiometricID_TXT.Text
-            Dim branchCode = GetBranchCode(bioNum)
-            Dim dateStarted = GetData("DATE_STARTED", $"PAYROLL_EMPLOYEE WHERE BIO_NO = '{bioNum}'")
-
-            Dim PAYROLL As String
-            If Paydate_ComboB.SelectedIndex >= 0 Then
-                PAYROLL = Paydate_ComboB.SelectedItem
-            Else
-                PAYROLL = DataGridView1.Tag
-            End If
-
-            For Each row As DataGridViewRow In DataGridView1.Rows
-
-                Dim DATEE As DateTime = row.Tag
-                Dim am_in As String = row.Cells(1).Value
-                Dim am_out As String = row.Cells(2).Value
-                Dim pm_in As String = row.Cells(3).Value
-                Dim pm_out As String = row.Cells(4).Value
-
-                If Not row.DefaultCellStyle.ForeColor = Color.Red Then
-
-                    '================================= CALCULATE HOLIDAYS  ===============================
-                    If row.DefaultCellStyle.BackColor = Color.MediumOrchid Then
-
-                        If DATEE >= dateStarted Then
-                            TotalRHoliday_LBL.Text = TotalRHoliday_LBL.Text + 1
-                        End If
-
-                    ElseIf row.DefaultCellStyle.BackColor = Color.Plum Then
-
-                        If Paydate_ComboB.SelectedIndex >= 0 Then paydate_ = Paydate_ComboB.Text '======= IF PAYDATE SELECTED IN BIOMETRIC
-
-                        If PRESENT_Date(bioNum, paydate_, row.Cells(0).Tag) Then
-                            If row.Cells(0).Tag >= dateStarted Then
-                                TotalSHoliday_LBL.Text = TotalSHoliday_LBL.Text + 1
-                            End If
-                        End If
-
-                    End If
-                End If
-
-                '======================== GET TIME IN/OUT TO CALCULATE LATE UNDERTIME OVERTIME ============================  
-                If CheckData("BIO_NO", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{bioNum}' AND PAYDATE = '{PAYROLL}'") Then
-                    If row.Cells(5).Value = True Then
-                        If DateExist_IN_Schedule(bioNum, DATEE.ToShortDateString) Then
-
-                            Dim timeIN As DateTime = Nothing
-                            Dim timeOut As DateTime = Nothing
-
-                            If DateTime.TryParse(GetData("TIME_IN", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{bioNum}' AND DATEE = '{DATEE.ToShortDateString}' "), timeIN) Then
-                                TIME_IN = timeIN
-                            ElseIf GetData("TIME_IN", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{bioNum}' AND DATEE = '{DATEE.ToShortDateString}' ") = "SIL" Then
-                                sil += 0.5
-                                SIL_LBL.Text = sil
-                            End If
-
-                            If DateTime.TryParse(GetData("TIME_OUT", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{bioNum}' AND DATEE = '{DATEE.ToShortDateString}' "), timeOut) Then
-                                TIME_OUT = timeOut
-
-                                If TIME_OUT > TIME_IN.AddHours(9) Then
-                                    TIME_OUT = TIME_IN.AddHours(9)
-                                    ALLOW_OT = True
-                                Else
-                                    ALLOW_OT = False
-                                End If
-                            ElseIf GetData("TIME_OUT", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{bioNum}' AND DATEE = '{DATEE.ToShortDateString}' ") = "SIL" Then
-                                sil += 0.5
-                                SIL_LBL.Text = sil
-                            End If
-
-                            Dim forTempHalfDay As Integer = 0
-                            '=================== IF HALFDAY LANG ANG RD, AL, SIL ===============
-                            If timeIN = Nothing And timeOut = Nothing Then
-                                Continue For
-                            ElseIf timeIN <> Nothing And timeOut = Nothing Then
-                                TIME_IN = timeIN
-                                TIME_OUT = timeIN.AddHours(4)
-
-                                If am_in <> Nothing Then '======== IF PRESENT AM IN
-                                    Present_FromWorkingSched += 0.5
-                                    forTempHalfDay += 4
-                                End If
-                            ElseIf timeIN = Nothing And timeOut <> Nothing Then
-                                TIME_IN = timeOut
-                                TIME_OUT = timeOut.AddHours(4)
-
-                                If pm_in <> Nothing Then  '======== IF PRESENT PM IN
-                                    Present_FromWorkingSched += 0.5
-                                    forTempHalfDay += 4
-                                End If
-                            Else
-                                If am_in <> Nothing And am_out <> Nothing And pm_in <> Nothing And pm_out <> Nothing Then
-                                    Present_FromWorkingSched += 1
-                                Else
-                                    Present_FromWorkingSched += 0.5 '======== IF HALFDAY EXAMPLE AM_IN AND AM_OUT LANG
-                                    forTempHalfDay += 4
-                                End If
-                            End If
-
-                            '=========================== MINIMUM RATE CHANGED STARTED SEPTEMBER 1, 2022 ONLY (JUNE 30, 2022)=====================  
-                            If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
-                                Dim newMin_startingDate As Date = GetData("STARTING_DATE", $"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'")
-                                Dim short_date As String = DATEE.ToShortDateString
-
-                                If short_date = newMin_startingDate.AddDays(-1) Then
-                                    temp_present = Present_FromWorkingSched
-                                    temp_half = forTempHalfDay
-                                End If
-                            End If
-
-                        Else
-                            TIME_IN = GetData("VALUEE", $"PAYROLL_DEFAULT_TIMEIN")
-                            TIME_OUT = TIME_IN.AddHours(9)
-                        End If
-
-                    End If
-                Else
-                    TIME_IN = GetTimeInOut(bioNum).Time_in
-                    TIME_OUT = GetTimeInOut(bioNum).Time_out
-                End If
-
-                CalculateLATE(row, TIME_IN)
-
-                CalculateuNDERTIME(row, TIME_IN, TIME_OUT)
-
-                CalculateuOVERTIME(row, TIME_OUT)
-
-                '=========================== MINIMUM RATE CHANGED STARTED SEPTEMBER 1, 2022 ONLY (JUNE 30, 2022)=====================  
-                If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
-                    Dim newMin_startingDate As Date = GetData("STARTING_DATE", $"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'")
-                    Dim short_date As String = DATEE.ToShortDateString
-                    If short_date = newMin_startingDate.AddDays(-1) Then
-                        temp_overtime = TotalOTHr_LBL.Text
-                        temp_late = late_count.TotalMinutes
-                        temp_undertime = under_count.TotalMinutes
-                    End If
-                End If
-
-            Next
-
-            TotalLateHR_LBL.Text = late_count.TotalMinutes
-
-            TotalUTHR_LBL.Text = under_count.TotalMinutes
-
-            TotalOTHr_LBL.Text = CDbl(TotalOTHr_LBL.Text) + AM_OT_NUP.Value
-
-            '=========================== MINIMUM RATE CHANGED STARTED SEPTEMBER 1, 2022 ONLY (JUNE 30, 2022)===================== 
-            If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
-                Dim newMin_startingDate As Date = GetData("STARTING_DATE", $"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'")
-                temp_Rholiday = REGHolidayCount(newMin_startingDate.AddDays(-1), ending_date)
-                temp_Sholiday = SPECHolidayCount(newMin_startingDate.AddDays(-1), ending_date)
-            End If
-
-            '===================================== SUM UP PRESENT AND ABSENT ====================================    
-            If Present_FromWorkingSched = 0 Then '=============== HEAD OFFICE
-
-                Dim Present As Integer = 0
-                Dim halfday_Hour As Integer = 0
-
-                For Each oRow As DataGridViewRow In DataGridView1.Rows
-
-                    If oRow.Cells(5).Value = True Then
-                        Present += 1
-                    End If
-
-                    If CountCELL_Nothing(oRow) = 3 Or CountCELL_Consecutive(oRow) = "HALFDAY" Then
-                        halfday_Hour += 4
-                    End If
-
-                    '=========================== MINIMUM RATE CHANGED STARTED SEPTEMBER 1, 2022 ONLY (JUNE 30, 2022)=====================  
-                    If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
-                        Dim newMin_startingDate As Date = GetData("STARTING_DATE", $"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'")
-                        Dim DATEE As DateTime = oRow.Tag
-                        Dim short_date As String = DATEE.ToShortDateString
-
-                        If short_date = newMin_startingDate.AddDays(-1) Then
-                            temp_present = Present
-                            temp_half = halfday_Hour
-                        End If
-                    End If
-
-                Next
-
-                '===================================== SUM UP HALF DAY ==================================== 
-                product = ((Convert.ToInt32(Present) * 8)) - halfday_Hour
-                product = product / 8
-                TotalDays_LBL.Text = product
-
-            Else '=============== BRANCHES WITH WORKING SCHEDULE
-                TotalDays_LBL.Text = Present_FromWorkingSched
-            End If
-
-            late_count = New TimeSpan(0, 0, 0, 0, 0)
-            under_count = New TimeSpan(0, 0, 0, 0, 0)
-        Else
-            MsgBox("Please Enter Employee's Name.", MsgBoxStyle.Critical, "Error")
-        End If
-
-    End Sub
-
     Private Sub CalculateLATE(row As DataGridViewRow, timeIn As DateTime)
         '================================  CELL NUMBER AM IN =================================== 
         If Not row.Cells(1).Value = Nothing Then
@@ -485,6 +270,7 @@ Public Class frmAttendance
             If cellValue > limit Then
                 late_count += lateHour
 
+                row.Cells(1).Tag = lateHour.TotalMinutes
 
                 '========= COUNT DAYS OF LATE TO APPLY LATE_DEDUCTION MULTIPLICATION =========
                 Late_days += 1
@@ -616,8 +402,13 @@ Public Class frmAttendance
 
                     If row.Cells(1).Value = "" And row.Cells(2).Value = "" And row.Cells(3).Value = "" And row.Cells(4).Value = "" Then
                     Else
+
+                        '============================ LATE APPROVED ================================
+                        Dim LateApproved As Boolean = False
+                        If row.Cells(1).Style.ForeColor = Color.Blue Then LateApproved = True
+
                         SaveDTR(BiometricID_TXT.Text, Paydate, dateOnly.ToString("d"),
-                            row.Cells(1).Value, row.Cells(2).Value, row.Cells(3).Value, row.Cells(4).Value)
+                            row.Cells(1).Value, row.Cells(2).Value, row.Cells(3).Value, row.Cells(4).Value, LateApproved)
 
                         '============================== TOTAL SPECIAL HOLIDAY BASE ON TOTAL HOURS OF DUTY ====================
                         If DataeXIST($" PAYROLL_HOLIDAY WHERE DATEE = '{dateOnly.ToString("MMMM d")}' AND KINDS = 'SPECIAL'") Then
@@ -652,7 +443,8 @@ Public Class frmAttendance
 
                 '========== FOR EXCEEDING DAYS OF LATE (MORE THAN 2 DAYS OF LATE THIS WILL APPLIED)==========
                 If Late_applied = True Then
-                    Late_percentage = LatePercentage(BiometricID_TXT.Text, PAYROLL, TotalLateHR_LBL.Text)
+                    Dim total_latee As Integer = CInt(TotalLateHR_LBL.Text) - Late_approved
+                    Late_percentage = LatePercentage(BiometricID_TXT.Text, PAYROLL, total_latee)
                 Else
                     Late_percentage = Nothing
                 End If
@@ -831,7 +623,7 @@ Public Class frmAttendance
                 Dim NEW_LIST_DATE As IEnumerable(Of String) = LIST_DATE.Except(EXIST_DATE)
 
                 For Each OtherD As String In NEW_LIST_DATE
-                    SaveDTR(VALUE_BIO, paydatee, OtherD, Nothing, Nothing, Nothing, Nothing, True)
+                    SaveDTR(VALUE_BIO, paydatee, OtherD, Nothing, Nothing, Nothing, Nothing, False, True)
                 Next
 
             Next
@@ -1454,12 +1246,317 @@ Public Class frmAttendance
         BiometricID_TXT.Text = Biometric_LV.Items(Biometric_LV.FocusedItem.Index).SubItems(0).Text
 
         Attendance_Tab.SelectedIndex = 1
+
+        '============= FOR LATE_APPROVED CALCULATION ==================
+        Late_approved = 0
+        Calculate_BTN.PerformClick()
     End Sub
 
     Private Sub PIDaysX_btn_Click(sender As Object, e As EventArgs) Handles PIDaysX_btn.Click
         P_Add_Panel.Visible = False
         PI_Days.Value = 0.0
     End Sub
+
+    Private Sub Menu_Approve_Click(sender As Object, e As EventArgs) Handles Menu_Approve.Click
+        Dim row As DataGridViewRow = DataGridView1.Rows(DataGridView1.CurrentRow.Index)
+
+        If Menu_Approve.Text = "Approved" Then
+            row.Cells(1).Style.ForeColor = Color.Blue
+            Menu_Approve.Text = "Disapproved"
+            Late_approved += CInt(row.Cells(1).Tag)
+        Else
+            row.Cells(1).Style.ForeColor = Color.Black
+            Menu_Approve.Text = "Approved"
+            If Late_approved <> 0 Then Late_approved -= CInt(row.Cells(1).Tag)
+        End If
+    End Sub
+
+    Private Sub DataGridView1_MouseClick(sender As Object, e As MouseEventArgs) Handles DataGridView1.MouseClick
+        Dim row As DataGridViewRow = DataGridView1.Rows(DataGridView1.CurrentRow.Index)
+        If e.Button = MouseButtons.Right Then
+
+            If row.Cells(1).Style.ForeColor = Color.Blue Then
+                Menu_Approve.Text = "Disapproved"
+            Else
+                Menu_Approve.Text = "Approved"
+            End If
+
+            ContextMenu_Late.Show(DataGridView1, New Point(e.X, e.Y))
+
+        End If
+    End Sub
+
+    Private Sub Calculate_BTN_Click(sender As Object, e As EventArgs) Handles Calculate_BTN.Click
+        If Name_TXT.Text <> Nothing Then
+            TotalDays_LBL.Text = 0
+            TotalRHoliday_LBL.Text = 0
+            TotalSHoliday_LBL.Text = 0
+            TotalLateHR_LBL.Text = 0
+            TotalUTHR_LBL.Text = 0
+            TotalOTHr_LBL.Text = 0
+            under_count = New TimeSpan(0, 0, 0, 0, 0)
+            late_count = New TimeSpan(0, 0, 0, 0, 0)
+            Late_days = 0
+            Late_applied = False
+            Dim product As Double = 0
+            Dim sil As Double = 0
+            Dim Present_FromWorkingSched As Double = 0
+
+            Dim bioNum = BiometricID_TXT.Text
+            Dim branchCode = GetBranchCode(bioNum)
+            Dim dateStarted = GetData("DATE_STARTED", $"PAYROLL_EMPLOYEE WHERE BIO_NO = '{bioNum}'")
+
+            Dim PAYROLL As String
+            If Paydate_ComboB.SelectedIndex >= 0 Then
+                PAYROLL = Paydate_ComboB.SelectedItem
+            Else
+                PAYROLL = DataGridView1.Tag
+            End If
+
+            For Each row As DataGridViewRow In DataGridView1.Rows
+
+                Dim DATEE As DateTime = row.Tag
+                Dim am_in As String = row.Cells(1).Value
+                Dim am_out As String = row.Cells(2).Value
+                Dim pm_in As String = row.Cells(3).Value
+                Dim pm_out As String = row.Cells(4).Value
+
+                If Not row.DefaultCellStyle.ForeColor = Color.Red Then
+
+                    '================================= CALCULATE HOLIDAYS  ===============================
+                    If row.DefaultCellStyle.BackColor = Color.MediumOrchid Then
+
+                        If DATEE >= dateStarted Then
+                            TotalRHoliday_LBL.Text = TotalRHoliday_LBL.Text + 1
+                        End If
+
+                    ElseIf row.DefaultCellStyle.BackColor = Color.Plum Then
+
+                        If Paydate_ComboB.SelectedIndex >= 0 Then paydate_ = Paydate_ComboB.Text '======= IF PAYDATE SELECTED IN BIOMETRIC
+
+                        If PRESENT_Date(bioNum, paydate_, row.Cells(0).Tag) Then
+                            If row.Cells(0).Tag >= dateStarted Then
+                                TotalSHoliday_LBL.Text = TotalSHoliday_LBL.Text + 1
+                            End If
+                        End If
+
+                    End If
+                End If
+
+                '======================== GET TIME IN/OUT TO CALCULATE LATE UNDERTIME OVERTIME ============================  
+                If CheckData("BIO_NO", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{bioNum}' AND PAYDATE = '{PAYROLL}'") Then
+                    If row.Cells(5).Value = True Then
+                        If DateExist_IN_Schedule(bioNum, DATEE.ToShortDateString) Then
+
+                            Dim timeIN As DateTime = Nothing
+                            Dim timeOut As DateTime = Nothing
+
+                            If DateTime.TryParse(GetData("TIME_IN", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{bioNum}' AND DATEE = '{DATEE.ToShortDateString}' "), timeIN) Then
+                                TIME_IN = timeIN
+                            ElseIf GetData("TIME_IN", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{bioNum}' AND DATEE = '{DATEE.ToShortDateString}' ") = "SIL" Then
+                                sil += 0.5
+                                SIL_LBL.Text = sil
+                            End If
+
+                            If DateTime.TryParse(GetData("TIME_OUT", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{bioNum}' AND DATEE = '{DATEE.ToShortDateString}' "), timeOut) Then
+                                TIME_OUT = timeOut
+
+                                If TIME_OUT > TIME_IN.AddHours(9) Then
+                                    TIME_OUT = TIME_IN.AddHours(9)
+                                    ALLOW_OT = True
+                                Else
+                                    ALLOW_OT = False
+                                End If
+                            ElseIf GetData("TIME_OUT", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{bioNum}' AND DATEE = '{DATEE.ToShortDateString}' ") = "SIL" Then
+                                sil += 0.5
+                                SIL_LBL.Text = sil
+                            End If
+
+                            Dim forTempHalfDay As Integer = 0
+                            '=================== IF HALFDAY LANG ANG RD, AL, SIL ===============
+                            If timeIN = Nothing And timeOut = Nothing Then
+                                Continue For
+                            ElseIf timeIN <> Nothing And timeOut = Nothing Then
+                                TIME_IN = timeIN
+                                TIME_OUT = timeIN.AddHours(4)
+
+                                If am_in <> Nothing Then '======== IF PRESENT AM IN
+                                    Present_FromWorkingSched += 0.5
+                                    forTempHalfDay += 4
+                                End If
+                            ElseIf timeIN = Nothing And timeOut <> Nothing Then
+                                TIME_IN = timeOut
+                                TIME_OUT = timeOut.AddHours(4)
+
+                                If pm_in <> Nothing Then  '======== IF PRESENT PM IN
+                                    Present_FromWorkingSched += 0.5
+                                    forTempHalfDay += 4
+                                End If
+                            Else
+                                If am_in <> Nothing And am_out <> Nothing And pm_in <> Nothing And pm_out <> Nothing Then
+                                    Present_FromWorkingSched += 1
+                                Else
+                                    Present_FromWorkingSched += 0.5 '======== IF HALFDAY EXAMPLE AM_IN AND AM_OUT LANG
+                                    forTempHalfDay += 4
+                                End If
+                            End If
+
+                            '=========================== MINIMUM RATE CHANGED STARTED SEPTEMBER 1, 2022 ONLY (JUNE 30, 2022)=====================  
+                            If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
+                                Dim newMin_startingDate As Date = GetData("STARTING_DATE", $"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'")
+                                Dim short_date As String = DATEE.ToShortDateString
+
+                                If short_date = newMin_startingDate.AddDays(-1) Then
+                                    temp_present = Present_FromWorkingSched
+                                    temp_half = forTempHalfDay
+                                End If
+                            End If
+
+                        Else
+                            TIME_IN = GetData("VALUEE", $"PAYROLL_DEFAULT_TIMEIN")
+                            TIME_OUT = TIME_IN.AddHours(9)
+                        End If
+
+                    End If
+                Else
+                    TIME_IN = GetTimeInOut(bioNum).Time_in
+                    TIME_OUT = GetTimeInOut(bioNum).Time_out
+                End If
+
+                CalculateLATE(row, TIME_IN)
+
+                CalculateuNDERTIME(row, TIME_IN, TIME_OUT)
+
+                CalculateuOVERTIME(row, TIME_OUT)
+
+                '=========================== MINIMUM RATE CHANGED STARTED SEPTEMBER 1, 2022 ONLY (JUNE 30, 2022)=====================  
+                If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
+                    Dim newMin_startingDate As Date = GetData("STARTING_DATE", $"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'")
+                    Dim short_date As String = DATEE.ToShortDateString
+                    If short_date = newMin_startingDate.AddDays(-1) Then
+                        temp_overtime = TotalOTHr_LBL.Text
+                        temp_late = late_count.TotalMinutes
+                        temp_undertime = under_count.TotalMinutes
+                    End If
+                End If
+
+            Next
+
+            TotalLateHR_LBL.Text = late_count.TotalMinutes
+
+            TotalUTHR_LBL.Text = under_count.TotalMinutes
+
+            TotalOTHr_LBL.Text = CDbl(TotalOTHr_LBL.Text) + AM_OT_NUP.Value
+
+            '=========================== MINIMUM RATE CHANGED STARTED SEPTEMBER 1, 2022 ONLY (JUNE 30, 2022)===================== 
+            If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
+                Dim newMin_startingDate As Date = GetData("STARTING_DATE", $"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'")
+                temp_Rholiday = REGHolidayCount(newMin_startingDate.AddDays(-1), ending_date)
+                temp_Sholiday = SPECHolidayCount(newMin_startingDate.AddDays(-1), ending_date)
+            End If
+
+            '===================================== SUM UP PRESENT AND ABSENT ====================================    
+            If Present_FromWorkingSched = 0 Then '=============== HEAD OFFICE
+
+                Dim Present As Integer = 0
+                Dim halfday_Hour As Integer = 0
+
+                For Each oRow As DataGridViewRow In DataGridView1.Rows
+
+                    If oRow.Cells(5).Value = True Then
+                        Present += 1
+                    End If
+
+                    If CountCELL_Nothing(oRow) = 3 Or CountCELL_Consecutive(oRow) = "HALFDAY" Then
+                        halfday_Hour += 4
+                    End If
+
+                    '=========================== MINIMUM RATE CHANGED STARTED SEPTEMBER 1, 2022 ONLY (JUNE 30, 2022)=====================  
+                    If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
+                        Dim newMin_startingDate As Date = GetData("STARTING_DATE", $"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'")
+                        Dim DATEE As DateTime = oRow.Tag
+                        Dim short_date As String = DATEE.ToShortDateString
+
+                        If short_date = newMin_startingDate.AddDays(-1) Then
+                            temp_present = Present
+                            temp_half = halfday_Hour
+                        End If
+                    End If
+
+                Next
+
+                '===================================== SUM UP HALF DAY ==================================== 
+                product = ((Convert.ToInt32(Present) * 8)) - halfday_Hour
+                product = product / 8
+                TotalDays_LBL.Text = product
+
+            Else '=============== BRANCHES WITH WORKING SCHEDULE
+                TotalDays_LBL.Text = Present_FromWorkingSched
+            End If
+
+            late_count = New TimeSpan(0, 0, 0, 0, 0)
+            under_count = New TimeSpan(0, 0, 0, 0, 0)
+        Else
+            MsgBox("Please Enter Employee's Name.", MsgBoxStyle.Critical, "Error")
+        End If
+
+    End Sub
+
+    'Private Sub DTR_Details(BioNo As TextBox, Namee As TextBox, grid As DataGridView, SaveBTN As Button)
+
+    '    Dim PAYROLL As String
+    '    If Paydate_ComboB.SelectedIndex >= 0 Then
+    '        PAYROLL = Paydate_ComboB.SelectedItem
+    '    Else
+    '        PAYROLL = DataGridView1.Tag
+    '    End If
+
+    '    If BioNo.Text = "" Then
+    '        Namee.Text = ""
+
+    '        If BioNo.Name = "BiometricID_TXT" Then SIL_Panel.Visible = False
+
+    '        For Each oRow As DataGridViewRow In grid.Rows
+    '            oRow.Cells(5).Value = False
+    '            For cell As Integer = 1 To 4
+    '                oRow.Cells(cell).Value = Nothing
+    '            Next
+    '        Next
+
+    '    Else
+
+    '        GetName(BioNo.Text, Namee)
+
+    '        If BioNo.Name = "BiometricID_TXT" Then
+    '            SIL_LBL.Text = Get_SIL("PAYROLL_ATTENDANCE", $"PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{BioNo.Text}' AND PAYDATE = '{PAYROLL}'") + Get_SIL("PAYROLL_SCHED_COUNT", $"PAYROLL_SCHED_COUNT WHERE BIO_NO = '{BioNo.Text}' AND PAYDATE = '{PAYROLL}'")
+
+    '            If Not Namee.Text = String.Empty Then
+    '                TIME_IN = GetTime_In(BioNo.Text)
+    '                TIME_OUT = GetTime_Out(BioNo.Text)
+
+    '                TimeIn_TXT.Text = TIME_IN.ToShortTimeString
+    '                TimeOut_TXT.Text = TIME_OUT.ToShortTimeString
+    '            End If
+
+    '            If Not Namee.Text = "" Then
+    '                Attendance_Per_Employee(BioNo.Text, PAYROLL)
+    '            End If
+
+    '        Else
+
+
+    '        End If
+
+    '        '==========================  CHECK PAYDATE IF VALID FOR EDITING =========================   
+    '        If Today.ToString("d") > CDate(PAYROLL) Then
+    '            SaveBTN.Enabled = False
+    '        Else
+    '            SaveBTN.Enabled = True
+    '        End If
+
+    '    End If
+
+    'End Sub
 
     Private Sub AddPIDays_btn_Click_1(sender As Object, e As EventArgs) Handles AddPIDays_btn.Click
         If P_Add_Panel.Visible = True Then
@@ -2026,7 +2123,7 @@ Public Class frmAttendance
 
             '========== FOR EXCEEDING DAYS OF LATE (MORE THAN 2 DAYS OF LATE THIS WILL APPLIED)==========
             If Late_applied = True Then
-                Late_percentage = LatePercentage(BiometricID_TXT.Text, paydate_, TotalLateHR_LBL.Text)
+                Late_percentage = LatePercentage(biometric_No, paydate_, late_count.TotalMinutes)
             End If
 
             SaveAttendanceEE(biometric_No, paydate_, TotalDays_LBL.Text, TotalOTHr_LBL.Text, late_count.TotalMinutes, under_count.TotalMinutes,
@@ -2162,7 +2259,6 @@ Public Class frmAttendance
             End If
 
         End If
-
     End Sub
 
     Public Sub Attendance_Per_Employee(bioNo As String, PAYROLL As String)
@@ -2190,6 +2286,7 @@ Public Class frmAttendance
                             Dim asss As Date = DataGridView1.Rows(rowIndex).Tag
 
                             If asss = date_ Then
+                                row.Cells(1).Style.ForeColor = IIf(IsDBNull(.Item("LATE_APPROVED")), Color.Black, Color.Blue)
                                 row.Cells(1).Value = IIf(IsDBNull(.Item("AM_IN")), "", .Item("AM_IN"))
                                 row.Cells(2).Value = IIf(IsDBNull(.Item("AM_OUT")), "", .Item("AM_OUT"))
                                 row.Cells(3).Value = IIf(IsDBNull(.Item("PM_IN")), "", .Item("PM_IN"))
@@ -2203,6 +2300,7 @@ Public Class frmAttendance
 
                     frmMainForm.AppProgressBar.Value += 1
                 Next
+
                 progressBarEnd()
             End If
         End Using
@@ -2210,21 +2308,22 @@ Public Class frmAttendance
         Dim mysqlL As String = $"Select * From  PAYROLL_ATTENDANCE where BIOMETRICID = '{bioNo}' and PAYDATE = '{PAYROLL}'"
         Using dsS As DataSet = LoadSQL(mysqlL, "PAYROLL_ATTENDANCE")
             If dsS.Tables(0).Rows.Count > 0 Then
-
                 progressBarStart(dsS.Tables(0).Rows.Count)
-                For Each drR In dsS.Tables(0).Rows
-                    With drR
+                With dsS.Tables(0).Rows(0)
 
-                        TotalDays_LBL.Text = .Item("PRESENT_DAYS")
-                        TotalRHoliday_LBL.Text = .Item("REGHOLIDAY")
-                        TotalSHoliday_LBL.Text = .Item("SPECHOLIDAY")
-                        TotalLateHR_LBL.Text = .Item("LATE")
-                        TotalUTHR_LBL.Text = .Item("UNDERTIME")
-                        TotalOTHr_LBL.Text = .Item("OVERTIME")
-                        AM_OT_NUP.Value = IIf(IsDBNull(.Item("MORNING_OT")), 0, .Item("MORNING_OT"))
+                    TotalDays_LBL.Text = .Item("PRESENT_DAYS")
+                    TotalRHoliday_LBL.Text = .Item("REGHOLIDAY")
+                    TotalSHoliday_LBL.Text = .Item("SPECHOLIDAY")
+                    TotalLateHR_LBL.Text = .Item("LATE")
+                    TotalUTHR_LBL.Text = .Item("UNDERTIME")
+                    TotalOTHr_LBL.Text = .Item("OVERTIME")
+                    AM_OT_NUP.Value = IIf(IsDBNull(.Item("MORNING_OT")), 0, .Item("MORNING_OT"))
 
-                    End With
-                Next
+                End With
+
+                '============= FOR LATE_APPROVED CALCULATION ==================
+                Late_approved = 0
+                Calculate_BTN.PerformClick()
 
                 Save_BTN.Tag = "UPDATED"
             Else

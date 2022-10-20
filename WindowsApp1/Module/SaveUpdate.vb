@@ -341,7 +341,7 @@ Module SaveUpdate
         End Using
     End Sub
 
-    Public Sub SaveDTR(bioID As String, payDate As String, DATE_ONLY As String, AM_IN As String, AM_OUT As String, PM_IN As String, PM_OUT As String, Optional dtr As Boolean = False)
+    Public Sub SaveDTR(bioID As String, payDate As String, DATE_ONLY As String, AM_IN As String, AM_OUT As String, PM_IN As String, PM_OUT As String, Optional LATE_APPROVED As Boolean = False, Optional dtr As Boolean = False)
 
         If dtr = False Then
             RunCommand($"DELETE FROM BIOMETRIC_DTR WHERE BIO_ID = '{bioID}' AND  PAYDATE = '{payDate}' AND DATE_ONLY = '{DATE_ONLY}'")
@@ -360,6 +360,8 @@ Module SaveUpdate
                 .Item("AM_OUT") = AM_OUT
                 .Item("PM_IN") = PM_IN
                 .Item("PM_OUT") = PM_OUT
+
+                If LATE_APPROVED = True Then .Item("LATE_APPROVED") = "YES"
 
             End With
             dss.Tables(0).Rows.Add(dsNewRow)
@@ -1139,10 +1141,13 @@ Module SaveUpdate
                         GrossAmount = (TotalBasic + TotalREGHol + TotalSPECHol + TotalOT + TotalNight) - TotalLateUnder
 
                         '============================================= LATE ADJUSTMENT ==================================================
-                        If Late_Adjustment <> 0 Then
+                        If Late_Adjustment > 1 Then
                             Dim total_adjustment As Decimal = (LATEE * Late_Adjustment) - LATEE
                             Deduction += total_adjustment
-                            Save_Recorded_Allow_Deduc(bioNo, paydate_, "Late Adjustment", total_adjustment, "DEDUCTION")
+
+                            If Not ThisHasRow($"LATE_EXEMPTED WHERE BIONO = '{bioNo}'") Then
+                                Save_Recorded_Allow_Deduc(bioNo, paydate_, "Late Adjustment", total_adjustment, "DEDUCTION")
+                            End If
                         End If
 
                     End If

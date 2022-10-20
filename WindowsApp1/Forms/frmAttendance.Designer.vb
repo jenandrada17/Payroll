@@ -175,6 +175,8 @@ Partial Class frmAttendance
         Me.Email_BTN = New System.Windows.Forms.Button()
         Me.Label22 = New System.Windows.Forms.Label()
         Me.Payslip_DTR_Combo = New System.Windows.Forms.ComboBox()
+        Me.ContextMenu_Late = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.Menu_Approve = New System.Windows.Forms.ToolStripMenuItem()
         Me.Close_LBL = New System.Windows.Forms.Label()
         Me.printDTRBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.RE_UT_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -209,6 +211,7 @@ Partial Class frmAttendance
         Me.Employee1_GroupB.SuspendLayout()
         Me.Employee2_GroupB.SuspendLayout()
         Me.Branch_group.SuspendLayout()
+        Me.ContextMenu_Late.SuspendLayout()
         CType(Me.printDTRBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
@@ -1740,6 +1743,18 @@ Partial Class frmAttendance
         Me.Payslip_DTR_Combo.TabIndex = 107
         Me.Payslip_DTR_Combo.Text = "   Select Date"
         '
+        'ContextMenu_Late
+        '
+        Me.ContextMenu_Late.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.Menu_Approve})
+        Me.ContextMenu_Late.Name = "ContextMenu_Late"
+        Me.ContextMenu_Late.Size = New System.Drawing.Size(127, 26)
+        '
+        'Menu_Approve
+        '
+        Me.Menu_Approve.Name = "Menu_Approve"
+        Me.Menu_Approve.Size = New System.Drawing.Size(126, 22)
+        Me.Menu_Approve.Text = "Approved"
+        '
         'Close_LBL
         '
         Me.Close_LBL.AutoSize = True
@@ -1847,6 +1862,7 @@ Partial Class frmAttendance
         Me.Employee2_GroupB.PerformLayout()
         Me.Branch_group.ResumeLayout(False)
         Me.Branch_group.PerformLayout()
+        Me.ContextMenu_Late.ResumeLayout(False)
         CType(Me.printDTRBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
@@ -2006,4 +2022,6 @@ Partial Class frmAttendance
     Friend WithEvents PIDays_lbl As Label
     Friend WithEvents Label38 As Label
     Friend WithEvents PI_Panel As Panel
+    Friend WithEvents ContextMenu_Late As ContextMenuStrip
+    Friend WithEvents Menu_Approve As ToolStripMenuItem
 End Class
