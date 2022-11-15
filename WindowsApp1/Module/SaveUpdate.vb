@@ -42,7 +42,7 @@ Module SaveUpdate
     End Sub
 
     Friend Sub SaveAttendanceEE(biometric As Integer, paydate As String, days As String, overTime As String, late_total As String, under_total As String,
-                                regHoliday As String, specHoliday As String, specHoliday_hrs As Double, SIL As Double, LATE_ADJUSTMENT As String,
+                                regHoliday As String, specHoliday As String, specHoliday_hrs As Double, SIL As Double, LATE_ADJUSTMENT As String, Optional LATE_APPROVED As String = "",
                                         Optional MORNING_OT As String = "", Optional NIGHT_RATE As String = "")
 
         Dim mysql As String
@@ -68,6 +68,10 @@ Module SaveUpdate
 
                 If LATE_ADJUSTMENT <> Nothing Then
                     .Item("LATE_ADJUSTMENT") = LATE_ADJUSTMENT
+                End If
+
+                If LATE_APPROVED <> Nothing Then
+                    .Item("LATE_APPROVED") = LATE_APPROVED
                 End If
 
                 If NIGHT_RATE <> Nothing Then
@@ -104,6 +108,10 @@ Module SaveUpdate
 
                     If LATE_ADJUSTMENT <> Nothing Then
                         .Item("LATE_ADJUSTMENT") = LATE_ADJUSTMENT
+                    End If
+
+                    If LATE_APPROVED <> Nothing Then
+                        .Item("LATE_APPROVED") = LATE_APPROVED
                     End If
 
                     If NIGHT_RATE <> Nothing Then
@@ -341,7 +349,7 @@ Module SaveUpdate
         End Using
     End Sub
 
-    Public Sub SaveDTR(bioID As String, payDate As String, DATE_ONLY As String, AM_IN As String, AM_OUT As String, PM_IN As String, PM_OUT As String, Optional LATE_APPROVED As Boolean = False, Optional dtr As Boolean = False)
+    Public Sub SaveDTR(bioID As String, payDate As String, DATE_ONLY As String, AM_IN As String, AM_OUT As String, PM_IN As String, PM_OUT As String, Optional LATE_APPROVED As Boolean = False, Optional LATE_MIN_APPROVED As String = "", Optional dtr As Boolean = False)
 
         If dtr = False Then
             RunCommand($"DELETE FROM BIOMETRIC_DTR WHERE BIO_ID = '{bioID}' AND  PAYDATE = '{payDate}' AND DATE_ONLY = '{DATE_ONLY}'")
@@ -361,7 +369,10 @@ Module SaveUpdate
                 .Item("PM_IN") = PM_IN
                 .Item("PM_OUT") = PM_OUT
 
-                If LATE_APPROVED = True Then .Item("LATE_APPROVED") = "YES"
+                If LATE_APPROVED = True Then
+                    .Item("LATE_APPROVED") = "YES"
+                    .Item("LATE_MIN_APPROVED") = LATE_MIN_APPROVED
+                End If
 
             End With
             dss.Tables(0).Rows.Add(dsNewRow)
@@ -609,6 +620,7 @@ Module SaveUpdate
                     Dim SIL As Decimal = 0
                     Dim Allowances As Decimal = 0
                     Dim Late_Adjustment As Decimal = 0
+                    Dim Late_Approved As Integer = 0
                     Dim TotalREGHol, TotalSPECHol, TotalOT, TotalLateUnder, TotalNight, GrossAmount As Decimal
                     Dim Minimum_rate As Decimal = IIf(IsDBNull(.Item("BRANCH_CODE")) Or .Item("BRANCH_CODE").Equals(""), GetMinimumRate("CITY", "GENSAN"), GetMinimumRate("BRANCHCODE", .Item("BRANCH_CODE")))
                     Dim Ecola As Double = GetEcola("BRANCHCODE", .Item("BRANCH_CODE"))
@@ -647,6 +659,7 @@ Module SaveUpdate
                                     nightRate = IIf(IsDBNull(.Item("NIGHT_RATE")), 0, .Item("NIGHT_RATE"))
                                     SpecialHol_hrs = IIf(IsDBNull(.Item("SPECHOLIDAY_HRS")), 0, .Item("SPECHOLIDAY_HRS"))
                                     Late_Adjustment = IIf(IsDBNull(.Item("LATE_ADJUSTMENT")), 0, .Item("LATE_ADJUSTMENT"))
+                                    Late_Approved = IIf(IsDBNull(.Item("LATE_APPROVED")), 0, .Item("LATE_APPROVED"))
                                 End If
 
                                 SIL = .Item("SIL") + Get_SIL("PAYROLL_SCHED_COUNT", $"PAYROLL_SCHED_COUNT WHERE BIO_NO = '{bioNo}' AND PAYDATE = '{paydate_}'")
@@ -1142,7 +1155,7 @@ Module SaveUpdate
 
                         '============================================= LATE ADJUSTMENT ==================================================
                         If Late_Adjustment > 1 Then
-                            Dim total_adjustment As Decimal = (LATEE * Late_Adjustment) - LATEE
+                            Dim total_adjustment As Decimal = ((Late - Late_Approved) * Late_Adjustment) - LATEE
                             Deduction += total_adjustment
 
                             If Not ThisHasRow($"LATE_EXEMPTED WHERE BIONO = '{bioNo}'") Then

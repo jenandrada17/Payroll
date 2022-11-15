@@ -371,6 +371,7 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Rate.rdlc" />
     <EmbeddedResource Include="Reports\rptDTR_All.rdlc" />
     <EmbeddedResource Include="Reports\rpt_13Month.rdlc" />
     <EmbeddedResource Include="Reports\rpt_Common.rdlc" />

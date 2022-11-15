@@ -328,4 +328,32 @@ Module Temporary
     End Sub
     '==========================================================================================
 
+    Friend Sub EMAIL_SENT()
+        For Each bio As String In IO.File.ReadAllLines("D:\Users\ItsYou\Desktop\Payslip.txt")
+            Console.WriteLine(bio)
+            Dim mysql As String = $"select * from payroll_payout where paydate = '10/31/2022' and BIOMETRIC_ID = '{bio}'"
+            Using ds As DataSet = LoadSQL(mysql, "payroll_payout")
+                If ds.Tables(0).Rows.Count > 0 Then
+                    With ds.Tables(0).Rows(0)
+                        .Item("EMAIL_SENT") = 1
+                    End With
+                    SaveEntry(ds, False)
+                End If
+            End Using
+        Next
+    End Sub
+
+
+    Friend Sub UpdateEMAIL_SENT(bio As String, paydate As String)
+        Dim mysql As String = $"select * from payroll_payout where paydate = '{paydate}' and BIOMETRIC_ID = '{bio}'"
+        Using ds As DataSet = LoadSQL(mysql, "payroll_payout")
+            If ds.Tables(0).Rows.Count > 0 Then
+                With ds.Tables(0).Rows(0)
+                    .Item("EMAIL_SENT") = 1
+                End With
+                SaveEntry(ds, False)
+            End If
+        End Using
+    End Sub
+
 End Module

@@ -1722,6 +1722,121 @@ Public Class frmReport
 
     End Sub
 
+    Public Sub LoadEmployeeRate(Optional search As String = Nothing)
+        Rpt_Rate.LocalReport.DataSources.Clear()
+
+        Try
+
+            Dim dt_Rate As New DataTable()
+            With dt_Rate
+                .Columns.Add("NAME")
+                .Columns.Add("RATE")
+                .Columns.Add("MONTHLY")
+                .Columns.Add("BRANCH")
+            End With
+
+            Dim str As String = ""
+            If RateCompany_CB.SelectedIndex = 0 Then
+                str = $"WHERE HO_CATEGORY LIKE '%Photo%'"
+            ElseIf RateCompany_CB.SelectedIndex = 1 Then
+                str = $"WHERE COMPANY_CATEGORY = 'GENSAN PERFECT'"
+            ElseIf RateCompany_CB.SelectedIndex = 2 Then
+                str = $"WHERE COMPANY_CATEGORY = 'DAVAO PERFECT'"
+            ElseIf RateCompany_CB.SelectedIndex = 3 Then
+                str = $"WHERE COMPANY_CATEGORY = 'JR PHOTO' "
+            ElseIf RateCompany_CB.SelectedIndex = 4 Then
+                str = $"WHERE (COMPANY = 'DALTON' OR HO_CATEGORY LIKE '%Dalton%')"
+            ElseIf RateCompany_CB.SelectedIndex = 5 Then
+                str = $"WHERE  (COMPANY = 'PERFECOM' OR HO_CATEGORY LIKE '%Perfecom%')"
+            ElseIf RateCompany_CB.SelectedIndex = 6 Then
+                str = $"WHERE  (COMPANY = 'P&G UY' OR HO_CATEGORY LIKE '%GHS%')"
+            ElseIf RateCompany_CB.SelectedIndex = 7 Then
+                str = $"WHERE  HO_CATEGORY IN ('Leasing Admin Office','Construction')"
+            ElseIf RateCompany_CB.SelectedIndex = 8 Then
+                str = $"WHERE  HO_CATEGORY = 'PGC Head Office'"
+            End If
+
+            Dim mysql As String = $"Select * From PAYROLL_EMPLOYEE A LEFT JOIN PAYROLL_CITY_BRANCH B ON B.BRANCHCODE = A.BRANCH_CODE {str} ORDER BY FULLNAME"
+
+            If search <> Nothing Then
+                If IsNumeric(search) Then
+                    mysql = $"Select * From PAYROLL_EMPLOYEE A 
+                                        LEFT JOIN PAYROLL_CITY_BRANCH B ON B.BRANCHCODE = A.BRANCH_CODE 
+                                        where BIO_NO ='{search}' or EMP_NO ='{search}' or RATE_DAILY ='{search}' or RATE_MONTHLY ='{search}'  
+                                        ORDER BY FULLNAME"
+                Else
+                    mysql = $"Select * From PAYROLL_EMPLOYEE A 
+                                        LEFT JOIN PAYROLL_CITY_BRANCH B ON B.BRANCHCODE = A.BRANCH_CODE 
+                                        where upper(FULLNAME) like upper('%{search}%') or upper(COMPANY) like upper('%{search}%') or upper(BRANCH_CODE) like upper('%{search}%') 
+                                        ORDER BY FULLNAME"
+                End If
+            End If
+
+
+            Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+                If ds.Tables(0).Rows.Count > 0 Then
+
+                    progressBarStart(ds.Tables(0).Rows.Count)
+                    For Each dr In ds.Tables(0).Rows
+                        With dr
+
+                            '============================= NAME AND ATTENDANCE ============================  
+                            Dim FULLNAME As String = IIf(IsDBNull(.Item("FULLNAME")), "", .Item("FULLNAME"))
+                            Dim RATE As Decimal = IIf(IsDBNull(.Item("RATE_DAILY")), 0, .Item("RATE_DAILY"))
+                            Dim MONTHLY As Decimal = IIf(IsDBNull(.Item("RATE_MONTHLY")), 0, .Item("RATE_MONTHLY"))
+
+                            '===================================== BRANCHES ===============================
+                            Dim BRANCH_CODE As String = IIf(.Item("BRANCH_CODE") = "" Or IsDBNull(.Item("BRANCH_CODE")), .Item("HO_CATEGORY"), .Item("BRANCHNAME"))
+                            Dim COMPANY As String = .Item("COMPANY")
+                            Dim HO_CATEGORY As String = IIf(IsDBNull(.Item("HO_CATEGORY")), "", .Item("HO_CATEGORY"))
+                            Dim COMPANY_CATEGORY As String = IIf(IsDBNull(.Item("COMPANY_CATEGORY")), "", .Item("COMPANY_CATEGORY"))
+
+                            If COMPANY = "DALTON" Then
+                                BRANCH_CODE = IIf(.Item("BRANCH_CODE") = "" Or IsDBNull(.Item("BRANCH_CODE")), .Item("HO_CATEGORY"), TitleCase(.Item("COMPANY")) & "-" & .Item("BRANCHNAME"))
+                            End If
+
+                            If HO_CATEGORY = "GHS/P&G UY Admin Office" Or HO_CATEGORY = "GHS/P&G UY Admin Operation" Then
+                                BRANCH_CODE = HO_CATEGORY
+
+                            ElseIf HO_CATEGORY.Contains("Dalton") Then
+                                BRANCH_CODE = HO_CATEGORY
+
+                            ElseIf HO_CATEGORY.Contains("Photo") Or HO_CATEGORY.Contains("PGC") Then
+                                BRANCH_CODE = HO_CATEGORY
+                            End If
+
+                            If COMPANY_CATEGORY <> "" Then
+                                BRANCH_CODE = COMPANY_CATEGORY
+                            End If
+
+                            dt_Rate.Rows.Add(FULLNAME, FormatNumber(RATE), FormatNumber(MONTHLY), BRANCH_CODE)
+
+                            frmMainForm.AppProgressBar.Value += 1
+                        End With
+
+                    Next
+                    progressBarEnd()
+                End If
+            End Using
+
+            Dim DATASOURCE As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt_Rate)
+            Dim FORMNAME As String = "List of Employee's Rate"
+
+            Dim paramList As New List(Of Microsoft.Reporting.WinForms.ReportParameter) From {
+                    New Microsoft.Reporting.WinForms.ReportParameter("paramFormName", FORMNAME)
+                    }
+
+            Rpt_Rate.LocalReport.DataSources.Add(DATASOURCE)
+            Rpt_Rate.LocalReport.SetParameters(paramList)
+            Rpt_Rate.RefreshReport()
+
+        Catch ex As Exception
+            Log_Report(ex.ToString)
+            MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+
+    End Sub
+
     Private Sub SILYear_Combo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles SILYear_Combo.SelectedIndexChanged
         If SILYear_Combo.SelectedIndex >= 0 Then
             Lists_SIL(SIL_list, SILYear_Combo.Text)
@@ -2165,4 +2280,17 @@ Public Class frmReport
         End Try
     End Sub
 
+    Private Sub RateSearch_btn_Click(sender As Object, e As EventArgs) Handles RateSearch_btn.Click
+        LoadEmployeeRate(RateSearch_txt.Text)
+    End Sub
+
+    Private Sub RateSearch_txt_KeyPress(sender As Object, e As KeyPressEventArgs) Handles RateSearch_txt.KeyPress
+        If e.KeyChar = ChrW(Keys.Enter) Then
+            RateSearch_btn.PerformClick()
+        End If
+    End Sub
+
+    Private Sub ComboBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles RateCompany_CB.SelectedIndexChanged
+        LoadEmployeeRate()
+    End Sub
 End Class
