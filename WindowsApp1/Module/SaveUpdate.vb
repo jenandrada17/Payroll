@@ -1155,7 +1155,8 @@ Module SaveUpdate
 
                         '============================================= LATE ADJUSTMENT ==================================================
                         If Late_Adjustment > 1 Then
-                            Dim total_adjustment As Decimal = ((Late - Late_Approved) * Late_Adjustment) - LATEE
+                            Dim late_rate As Decimal = (rate / 8) / 60
+                            Dim total_adjustment As Decimal = ((Late - Late_Approved) * (Late_Adjustment - 1)) * late_rate
                             Deduction += total_adjustment
 
                             If Not ThisHasRow($"LATE_EXEMPTED WHERE BIONO = '{bioNo}'") Then
