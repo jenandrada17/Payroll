@@ -354,7 +354,6 @@ Public Class frmAttendance
     End Sub
 
     Private Sub SearchEMP_BTN_Click(sender As Object, e As EventArgs) Handles SearchEMP_BTN.Click
-
         Try
 
             Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmNewEmployee").SingleOrDefault()
@@ -375,7 +374,6 @@ Public Class frmAttendance
         Catch ex As Exception
 
         End Try
-
     End Sub
 
     Private Sub Save_BTN_Click(sender As Object, e As EventArgs) Handles Save_BTN.Click
@@ -408,7 +406,7 @@ Public Class frmAttendance
                         If row.Cells(1).Style.ForeColor = Color.Blue Then LateApproved = True
 
                         SaveDTR(BiometricID_TXT.Text, Paydate, dateOnly.ToString("d"),
-                            row.Cells(1).Value, row.Cells(2).Value, row.Cells(3).Value, row.Cells(4).Value, LateApproved)
+                            row.Cells(1).Value, row.Cells(2).Value, row.Cells(3).Value, row.Cells(4).Value, LateApproved, row.Cells(1).Tag)
 
                         '============================== TOTAL SPECIAL HOLIDAY BASE ON TOTAL HOURS OF DUTY ====================
                         If DataeXIST($" PAYROLL_HOLIDAY WHERE DATEE = '{dateOnly.ToString("MMMM d")}' AND KINDS = 'SPECIAL'") Then
@@ -450,7 +448,7 @@ Public Class frmAttendance
                 End If
 
                 SaveAttendanceEE(BiometricID_TXT.Text, PAYROLL, TotalDays_LBL.Text, TotalOTHr_LBL.Text, TotalLateHR_LBL.Text, TotalUTHR_LBL.Text,
-                                 TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text, specHoliday_hrs, SIL_LBL.Text, Late_percentage, AM_OT_NUP.Value)
+                                 TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text, specHoliday_hrs, SIL_LBL.Text, Late_percentage, Late_approved, AM_OT_NUP.Value)
 
                 SavePayout_IndividualL(BiometricID_TXT.Text, PAYROLL, starting_date, ending_date)
 
@@ -611,6 +609,7 @@ Public Class frmAttendance
                 LIST_BIOO.Clear()
                 LIST_BIOO = ListOfBio(LIST_BIOO, mysqll)
                 LIST_BIOO = LIST_BIOO.Distinct().ToList
+
             End If
 
             '============================= SAVING ALL DATE ============================  
@@ -1243,12 +1242,11 @@ Public Class frmAttendance
         CheckALL_CheckBox.Checked = False
 
         If Biometric_LV.Items.Count = 0 Then Exit Sub
+        Late_approved = 0 '============= FOR LATE_APPROVED CALCULATION ==================
         BiometricID_TXT.Text = Biometric_LV.Items(Biometric_LV.FocusedItem.Index).SubItems(0).Text
 
         Attendance_Tab.SelectedIndex = 1
 
-        '============= FOR LATE_APPROVED CALCULATION ==================
-        Late_approved = 0
         Calculate_BTN.PerformClick()
     End Sub
 
@@ -1264,10 +1262,12 @@ Public Class frmAttendance
             row.Cells(1).Style.ForeColor = Color.Blue
             Menu_Approve.Text = "Disapproved"
             Late_approved += CInt(row.Cells(1).Tag)
+            MsgBox("Total Late Approved: " & Late_approved)
         Else
             row.Cells(1).Style.ForeColor = Color.Black
             Menu_Approve.Text = "Approved"
             If Late_approved <> 0 Then Late_approved -= CInt(row.Cells(1).Tag)
+            MsgBox("Total Late Approved: " & Late_approved)
         End If
     End Sub
 
@@ -2286,7 +2286,16 @@ Public Class frmAttendance
                             Dim asss As Date = DataGridView1.Rows(rowIndex).Tag
 
                             If asss = date_ Then
-                                row.Cells(1).Style.ForeColor = IIf(IsDBNull(.Item("LATE_APPROVED")), Color.Black, Color.Blue)
+                                'row.Cells(1).Style.ForeColor = IIf(IsDBNull(.Item("LATE_APPROVED")), Color.Black, Color.Blue)
+                                'row.Cells(1).Tag = IIf(IsDBNull(.Item("LATE_MIN_APPROVED")), 0, .Item("LATE_MIN_APPROVED"))
+
+                                If IsDBNull(.Item("LATE_APPROVED")) Then
+                                    row.Cells(1).Style.ForeColor = Color.Black
+                                Else
+                                    row.Cells(1).Style.ForeColor = Color.Blue
+                                    Late_approved += IIf(IsDBNull(.Item("LATE_MIN_APPROVED")), 0, .Item("LATE_MIN_APPROVED"))
+                                End If
+
                                 row.Cells(1).Value = IIf(IsDBNull(.Item("AM_IN")), "", .Item("AM_IN"))
                                 row.Cells(2).Value = IIf(IsDBNull(.Item("AM_OUT")), "", .Item("AM_OUT"))
                                 row.Cells(3).Value = IIf(IsDBNull(.Item("PM_IN")), "", .Item("PM_IN"))
@@ -2318,11 +2327,10 @@ Public Class frmAttendance
                     TotalUTHR_LBL.Text = .Item("UNDERTIME")
                     TotalOTHr_LBL.Text = .Item("OVERTIME")
                     AM_OT_NUP.Value = IIf(IsDBNull(.Item("MORNING_OT")), 0, .Item("MORNING_OT"))
+                    TotalLateHR_LBL.Tag = IIf(IsDBNull(.Item("LATE_APPROVED")), 0, .Item("LATE_APPROVED"))
 
                 End With
 
-                '============= FOR LATE_APPROVED CALCULATION ==================
-                Late_approved = 0
                 Calculate_BTN.PerformClick()
 
                 Save_BTN.Tag = "UPDATED"

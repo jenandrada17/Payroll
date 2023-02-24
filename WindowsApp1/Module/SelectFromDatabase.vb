@@ -642,6 +642,7 @@ Module SelectFromDatabase
         Dim er As Decimal = 0
         Dim ec As Decimal = 0
         Dim total As Decimal = 0
+        Dim in_range As Boolean = False
 
         Dim mysql As String = $"Select * FROM PAYROLL_SSS"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_SSS")
@@ -660,12 +661,29 @@ Module SelectFromDatabase
                             er = .Item("RSS_ER")
                             ec = .Item("EC_TOTAL")
                             total = .Item("TOTAL_TOTAL")
+                            in_range = True
                         End If
-
                     End With
                 Next
             End If
         End Using
+
+        If in_range = False Then 'IF ABOVE MAXIMUM RATE
+            Dim dss As DataSet = LoadSQL("SELECT MAX(ID) as idd FROM PAYROLL_SSS", "PAYROLL_SSS")
+            Dim lastID As String = dss.Tables(0).Rows(0).Item("idd")
+
+            Dim mysqll As String = $"SELECT * FROM PAYROLL_SSS where ID = '{lastID}'"  '$"Select MAX(ID) AS Greatest FROM PAYROLL_SSS"
+            Using dsss As DataSet = LoadSQL(mysqll, "PAYROLL_SSS")
+                If dsss.Tables(0).Rows.Count > 0 Then
+                    With dsss.Tables(0).Rows(0)
+                        ee = .Item("RSS_EE")
+                        er = .Item("RSS_ER")
+                        ec = .Item("EC_TOTAL")
+                        total = .Item("TOTAL_TOTAL")
+                    End With
+                End If
+            End Using
+        End If
 
         Return (ee, er, ec, total)
     End Function

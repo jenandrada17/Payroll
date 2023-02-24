@@ -755,13 +755,15 @@ Public Class frmPayout
         Dim datee As DateTime = Payslip_paydate_Combo.Text
         Dim mysqll As String = $"select * from payroll_payout A 
                                                 inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIOMETRIC_ID  
-                                                where paydate = '{Payslip_paydate_Combo.Text}';"
+                                                where paydate = '{Payslip_paydate_Combo.Text}' and EMAIL_SENT is null;"
 
         Using ds As DataSet = LoadSQL(mysqll, "payroll_payout")
             If ds.Tables(0).Rows.Count > 0 Then
                 progressBarStart(ds.Tables(0).Rows.Count)
                 For Each dr In ds.Tables(0).Rows
                     With dr
+
+                        Console.WriteLine(.item("BIOMETRIC_ID"))
 
                         Dim namee = .Item("FULLNAME")
 
@@ -778,6 +780,8 @@ Public Class frmPayout
                             Continue For
                         Else                    '============== SEND TO EMAIL ADDRESS IF VALID ============================
                             Send_Email(ReportViewer_payslip.LocalReport.Render("PDF"), recipient, namee, Payslip_paydate_Combo.Text, BodyText_RichB.Text, datee.ToString("MMMM dd, yyyy") & " PAYROLL")
+
+                            UpdateEMAIL_SENT(.item("BIOMETRIC_ID"), Payslip_paydate_Combo.Text)
                         End If
 
                         frmMainForm.AppProgressBar.Value += 1

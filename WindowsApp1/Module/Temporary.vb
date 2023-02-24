@@ -1,4 +1,5 @@
-﻿Imports Microsoft.Office.Interop
+﻿Imports System.IO
+Imports Microsoft.Office.Interop
 
 Module Temporary
 
@@ -327,5 +328,78 @@ Module Temporary
         End Using
     End Sub
     '==========================================================================================
+
+    Friend Sub EMAIL_SENT()
+        For Each bio As String In IO.File.ReadAllLines("D:\Users\ItsYou\Desktop\Payslip.txt")
+            Console.WriteLine(bio)
+            Dim mysql As String = $"select * from payroll_payout where paydate = '10/31/2022' and BIOMETRIC_ID = '{bio}'"
+            Using ds As DataSet = LoadSQL(mysql, "payroll_payout")
+                If ds.Tables(0).Rows.Count > 0 Then
+                    With ds.Tables(0).Rows(0)
+                        .Item("EMAIL_SENT") = 1
+                    End With
+                    SaveEntry(ds, False)
+                End If
+            End Using
+        Next
+    End Sub
+
+    Friend Sub UpdateEMAIL_SENT(bio As String, paydate As String)
+        Dim mysql As String = $"select * from payroll_payout where paydate = '{paydate}' and BIOMETRIC_ID = '{bio}'"
+        Using ds As DataSet = LoadSQL(mysql, "payroll_payout")
+            If ds.Tables(0).Rows.Count > 0 Then
+                With ds.Tables(0).Rows(0)
+                    .Item("EMAIL_SENT") = 1
+                End With
+                SaveEntry(ds, False)
+            End If
+        End Using
+    End Sub
+
+    Friend Sub CostDistrib_ToTextFile(BRANCHNAME As String, CATEGORY As String, DC_AMOUNT As String)
+        Dim path As String = "D:\Users\ItsYou\Desktop\CostDistrib.txt"
+
+        Dim filee As New FileInfo(path)
+
+        If Not filee.Exists Then filee.Create.Close()
+
+        Dim writer As New StreamWriter(path)
+        writer.Write("BRANCHNAME - " & BRANCHNAME & vbCrLf)
+        writer.Write("CATEGORY - " & CATEGORY & vbCrLf)
+        writer.Write("DC_AMOUNT - " & DC_AMOUNT & vbCrLf)
+        writer.Close()
+    End Sub
+
+    Friend Sub SelectFrom_InsertTo()
+        Dim sql As String = "Select * from IMPORT_DTR where BIO_ID = '606'"
+        Using ds As DataSet = LoadSQL(sql, "IMPORT_DTR")
+            If ds.Tables(0).Rows.Count > 0 Then
+                For Each dr In ds.Tables(0).Rows
+                    'InsertTo_From()
+                Next
+            End If
+        End Using
+    End Sub
+
+    Friend Sub InsertTo_From(DATE_ONLY As String, AM_IN As String, AM_OUT As String, PM_IN As String, PM_OUT As String)
+        Dim mysql As String = "INSERT INTO BIOMETRIC_DTR (BIO_ID, PAYDATE, DATE_ONLY, AM_IN, AM_OUT, PM_IN, PM_OUT)"
+        Using ds As DataSet = LoadSQL(mysql, "BIOMETRIC_DTR")
+            If ds.Tables(0).Rows.Count > 0 Then
+                With ds.Tables(0).NewRow
+                    .Item("BIO_ID") = 606
+                    .Item("PAYDATE") = "1/31/2023"
+                    .Item("DATE_ONLY") = DATE_ONLY
+                    .Item("AM_IN") = AM_IN
+                    .Item("AM_OUT") = AM_OUT
+                    .Item("PM_IN") = PM_IN
+                    .Item("PM_OUT") = PM_OUT
+                    .Item("LATE_APPROVED") = PM_OUT
+                    .Item("LATE_MIN_APPROVED") = PM_OUT
+                End With
+                SaveEntry(ds)
+            End If
+        End Using
+    End Sub
+
 
 End Module

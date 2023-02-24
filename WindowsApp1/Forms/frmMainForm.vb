@@ -11,6 +11,12 @@ Public Class frmMainForm
 
     Private Sub frmMainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
+        'Using conSettings As New ServerSettings
+        '    conSettings.ShowDialog()
+        'End Using
+
+        'EMAIL_SENT()
+
         '========= DEDUCTION ID IN RECORDED_ALLOW_DEDUC ===
         'CheckDeduction_inRecorded()
 
@@ -34,7 +40,7 @@ Public Class frmMainForm
         'Loans_to_Deduction()
 
         'CheckDeduction_Loans_IfZeroBalance(3869)
-        '========================================
+        '======================================== 
 
         Login_Form.ShowDialog()
 
