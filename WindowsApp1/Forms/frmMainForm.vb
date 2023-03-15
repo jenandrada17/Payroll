@@ -11,6 +11,8 @@ Public Class frmMainForm
 
     Private Sub frmMainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
+        'CostGetDetails()
+
         'Using conSettings As New ServerSettings
         '    conSettings.ShowDialog()
         'End Using

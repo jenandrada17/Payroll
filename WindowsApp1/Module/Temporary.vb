@@ -1,4 +1,5 @@
-﻿Imports System.IO
+﻿Imports System.Data.Common
+Imports System.IO
 Imports Microsoft.Office.Interop
 
 Module Temporary
@@ -356,20 +357,6 @@ Module Temporary
         End Using
     End Sub
 
-    Friend Sub CostDistrib_ToTextFile(BRANCHNAME As String, CATEGORY As String, DC_AMOUNT As String)
-        Dim path As String = "D:\Users\ItsYou\Desktop\CostDistrib.txt"
-
-        Dim filee As New FileInfo(path)
-
-        If Not filee.Exists Then filee.Create.Close()
-
-        Dim writer As New StreamWriter(path)
-        writer.Write("BRANCHNAME - " & BRANCHNAME & vbCrLf)
-        writer.Write("CATEGORY - " & CATEGORY & vbCrLf)
-        writer.Write("DC_AMOUNT - " & DC_AMOUNT & vbCrLf)
-        writer.Close()
-    End Sub
-
     Friend Sub SelectFrom_InsertTo()
         Dim sql As String = "Select * from IMPORT_DTR where BIO_ID = '606'"
         Using ds As DataSet = LoadSQL(sql, "IMPORT_DTR")
@@ -401,5 +388,143 @@ Module Temporary
         End Using
     End Sub
 
+#Region "Cost Distribution Error"
 
+    Dim appXL As Excel.Application
+    Dim wbXl As Excel.Workbook
+    Dim shXL As Excel.Worksheet
+    Dim raXL As Excel.Range
+    Dim row As Integer = 2
+
+    Friend Sub CostGetDetails()
+        ' Start Excel and get Application object.
+        appXL = CreateObject("Excel.Application")
+        appXL.Visible = True
+
+        ' Add a new workbook.
+        wbXl = appXL.Workbooks.Add
+        shXL = wbXl.ActiveSheet
+
+        ' Add table headers going cell by cell.
+        shXL.Cells(1, 1).Value = "BIOMETRIC_ID"
+        shXL.Cells(1, 2).Value = "FULLNAME"
+        shXL.Cells(1, 3).Value = "TOTAL_BASIC"
+        shXL.Cells(1, 4).Value = "TOTAL_OVERTIME"
+        shXL.Cells(1, 5).Value = "TOTAL_LATE_UT"
+        shXL.Cells(1, 6).Value = "TOTAL_REGHOLIDAY"
+        shXL.Cells(1, 7).Value = "TOTAL_SPECHOLIDAY"
+        shXL.Cells(1, 8).Value = "GROSS_AMOUNT"
+        shXL.Cells(1, 9).Value = "SSS_COMP"
+        shXL.Cells(1, 10).Value = "SSS_ER"
+        shXL.Cells(1, 11).Value = "SSS_EC"
+        shXL.Cells(1, 12).Value = "PAGIBIG_COMP"
+        shXL.Cells(1, 13).Value = "PHILHEALTH_COMP"
+        shXL.Cells(1, 14).Value = "TOTAL_ALLOWANCE"
+        shXL.Cells(1, 15).Value = "TOTAL_DEDUCTION"
+        shXL.Cells(1, 16).Value = "NET_PAY"
+
+        'Dim mysql As String = $"Select * from PAYROLL_PAYOUT A
+        '                        inner join PAYROLL_EMPLOYEE B on A.BIOMETRIC_ID = B.BIO_NO  
+        '                        where upper(HO_CATEGORY)  LIKE upper('%Dalton Admin Office%') and A.PAYDATE = '3/15/2023'"
+
+        Dim mysql As String = $"Select * from PAYROLL_PAYOUT A
+                                inner join PAYROLL_EMPLOYEE B on A.BIOMETRIC_ID = B.BIO_NO  
+                                where A.PAYDATE = '3/15/2023' Order by HO_CATEGORY, FULLNAME"
+
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
+            If ds.Tables(0).Rows.Count > 0 Then
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+
+                        shXL.Cells(row, 1).Value = .item("BIOMETRIC_ID")
+                        shXL.Cells(row, 2).Value = .item("FULLNAME")
+                        shXL.Cells(row, 3).Value = .item("TOTAL_BASIC")
+                        shXL.Cells(row, 4).Value = .item("TOTAL_OVERTIME")
+                        shXL.Cells(row, 5).Value = .item("TOTAL_LATE_UT")
+                        shXL.Cells(row, 6).Value = .item("TOTAL_REGHOLIDAY")
+                        shXL.Cells(row, 7).Value = .item("TOTAL_SPECHOLIDAY")
+                        shXL.Cells(row, 8).Value = .item("GROSS_AMOUNT")
+                        shXL.Cells(row, 9).Value = .item("SSS_COMP")
+                        shXL.Cells(row, 10).Value = .item("SSS_ER")
+                        shXL.Cells(row, 11).Value = .item("SSS_EC")
+                        shXL.Cells(row, 12).Value = .item("PAGIBIG_COMP")
+                        shXL.Cells(row, 13).Value = .item("PHILHEALTH_COMP")
+                        shXL.Cells(row, 14).Value = .item("TOTAL_ALLOWANCE")
+                        shXL.Cells(row, 15).Value = .item("TOTAL_DEDUCTION")
+                        shXL.Cells(row, 16).Value = .item("NET_PAY")
+                        shXL.Cells(row, 17).Value = .item("HO_CATEGORY")
+
+                        row += 1
+                    End With
+                Next
+            End If
+        End Using
+
+        GetRecordedAllowanceDeduction()
+    End Sub
+
+    Friend Sub GetRecordedAllowanceDeduction()
+        row += 3
+
+        shXL.Cells(row, 1).Value = "BIOMETRIC_ID"
+        shXL.Cells(row, 2).Value = "FULLNAME"
+        shXL.Cells(row, 3).Value = "HO_CATEGORY"
+        shXL.Cells(row, 4).Value = "ADDITIONAL"
+        shXL.Cells(row, 5).Value = "AMOUNT"
+        shXL.Cells(row, 6).Value = "DEDUCTION"
+        shXL.Cells(row, 7).Value = "AMOUNT"
+
+        row += 1
+        'Dim mysql As String = $"Select * from PAYROLL_PAYOUT A
+        '                        inner join PAYROLL_EMPLOYEE B on A.BIOMETRIC_ID = B.BIO_NO  
+        '                        where upper(HO_CATEGORY) like upper('%Dalton Admin Office%') and A.PAYDATE = '3/15/2023'"
+
+        Dim mysql As String = $"Select * from PAYROLL_PAYOUT A
+                                inner join PAYROLL_EMPLOYEE B on A.BIOMETRIC_ID = B.BIO_NO  
+                                where A.PAYDATE = '3/15/2023'  Order by HO_CATEGORY, FULLNAME"
+
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
+            If ds.Tables(0).Rows.Count > 0 Then
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+
+                        shXL.Cells(row, 1).Value = .item("BIOMETRIC_ID")
+                        shXL.Cells(row, 2).Value = .item("FULLNAME")
+                        shXL.Cells(row, 3).Value = .item("HO_CATEGORY")
+                        GetRecorded_Allow_Deduc(.item("BIOMETRIC_ID"))
+                    End With
+                Next
+            End If
+        End Using
+
+        raXL = Nothing
+        shXL = Nothing
+        wbXl = Nothing
+        appXL.Quit()
+        appXL = Nothing
+    End Sub
+
+    Friend Sub GetRecorded_Allow_Deduc(bio As String)
+        Dim mysql As String = $"Select * from RECORDED_ALLOW_DEDUC where BIO_NO={bio} and PAYDATE = '3/15/2023'"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
+            If ds.Tables(0).Rows.Count > 0 Then
+                Dim column As Integer = 4
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+                        If .item("TRANSAC_NAME") = "DEDUCTION" Then
+                            column = 6
+                        End If
+
+                        shXL.Cells(row, column).Value = .item("CATEGORY")
+                        shXL.Cells(row, column + 1).Value = .item("AMOUNT")
+
+                        row += 1
+                    End With
+                Next
+            End If
+        End Using
+
+    End Sub
+
+#End Region
 End Module
