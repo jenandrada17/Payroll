@@ -656,6 +656,10 @@ Module SelectFromDatabase
                             strWords(0) = 1
                         End If
 
+                        If strWords.Last.Contains("Over") Then
+                            strWords(2) = 200000 '200,000 Monthly income
+                        End If
+
                         If (Enumerable.Range(strWords(0), strWords.Last).Contains(monthly_Basic)) Then
                             ee = .Item("RSS_EE")
                             er = .Item("RSS_ER")
@@ -903,7 +907,6 @@ Module SelectFromDatabase
             mysql = $"Select * From PAYROLL_ATTENDANCE A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIOMETRICID where A.PAYDATE = '{Paydate}' 
                                    and BRANCH_CODE NOT IN ('711-POL','711-ROX') ORDER BY FULLNAME ASC "
         End If
-
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
             If ds.Tables(0).Rows.Count > 0 Then
@@ -1745,8 +1748,10 @@ Module SelectFromDatabase
 
     Friend Sub Populate_SSS(datagrid As DataGridView)
 
+        Dim yearNow As String = Date.Now.ToString("yyyy")
+
         datagrid.Rows.Clear()
-        Dim mysql As String = $"Select * From PAYROLL_SSS "
+        Dim mysql As String = $"Select * From PAYROLL_SSS where YEAR_COVERED >= '{yearNow}'"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_SSS")
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
@@ -2162,14 +2167,19 @@ Module SelectFromDatabase
     Friend Function GetSpecial_hrs(inn As DateTime, outt As DateTime) As Double
         Dim specHoliday_hrs = 0, tot_hrs As Double = 0
 
-        Dim hrs As TimeSpan = DateTime.Parse(outt.AddMinutes(inn.Minute)).Subtract(DateTime.Parse(inn))
-        tot_hrs = hrs.Hours
+        Try
+            Dim hrs As TimeSpan = DateTime.Parse(outt.AddMinutes(inn.Minute)).Subtract(DateTime.Parse(inn))
+            tot_hrs = hrs.Hours
 
-        If tot_hrs > 4 Then
-            tot_hrs = tot_hrs - 1
-        End If
+            If tot_hrs > 4 Then
+                tot_hrs = tot_hrs - 1
+            End If
 
-        specHoliday_hrs = tot_hrs
+            specHoliday_hrs = tot_hrs
+
+        Catch ex As Exception
+            specHoliday_hrs = 0
+        End Try
 
         Return specHoliday_hrs
     End Function

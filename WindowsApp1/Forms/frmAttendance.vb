@@ -669,7 +669,7 @@ Public Class frmAttendance
                 End If
             End Using
 
-            Dim rds_DTR As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt_DTR)
+            Dim rds_DTR As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", RemoveDuplicateRows(dt_DTR))
             RptViewer_DTR.LocalReport.DataSources.Add(rds_DTR)
             RptViewer_DTR.RefreshReport()
 
@@ -679,6 +679,30 @@ Public Class frmAttendance
         End Try
 
     End Sub
+
+    Public Function RemoveDuplicateRows(ByRef rDataTable As DataTable)
+        Dim pNewDataTable As DataTable
+        Dim pCurrentRowCopy As DataRow
+        Dim pColumnList As New List(Of String)
+        Dim pColumn As DataColumn
+
+        'Build column list
+        For Each pColumn In rDataTable.Columns
+            pColumnList.Add(pColumn.ColumnName)
+        Next
+
+        'Filter by all columns
+        pNewDataTable = rDataTable.DefaultView.ToTable(True, pColumnList.ToArray)
+
+        rDataTable = rDataTable.Clone
+
+        'Import rows into original table structure
+        For Each pCurrentRowCopy In pNewDataTable.Rows
+            rDataTable.ImportRow(pCurrentRowCopy)
+        Next
+
+        Return rDataTable
+    End Function
 
     Public Sub LoadDTR_Print_Group()
 
@@ -1630,7 +1654,7 @@ Public Class frmAttendance
 
         Dim FirstColumn As String = eCell(2, 1).Value
 
-        Has_Rows_Delete($"IMPORT_DTR where PAYDATE <> '{Paydate}'") '===== EMPTY THIS TABLE
+        Has_Rows_Delete($"IMPORT_DTR where PAYDATE <> '{Paydate.ToShortDateString}'") '===== EMPTY THIS TABLE
 
         If Integer.TryParse(FirstColumn, vbNull) Then
             bio_White()
@@ -1915,6 +1939,8 @@ Public Class frmAttendance
             list_inOut.Clear()
 
             progressBarStart(DtSet.Tables(0).Rows.Count)
+
+            Console.WriteLine(DtSet.Tables(0).Rows.Count)
 
             For row = 1 To DtSet.Tables(0).Rows.Count
                 'For row = 1 To DtSet.Tables(0).Rows.Count + 1

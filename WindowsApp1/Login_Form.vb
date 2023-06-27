@@ -20,7 +20,6 @@
                 loginNo += 1
                 MsgBox("Invalid Username or password", MsgBoxStyle.Critical, "Error")
             End If
-
         Else
             MsgBox("Please complete username and password", MsgBoxStyle.Exclamation, "Error")
         End If

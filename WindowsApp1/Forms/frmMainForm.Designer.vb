@@ -330,39 +330,39 @@ Partial Class frmMainForm
         'Schedule_Menu
         '
         Me.Schedule_Menu.Name = "Schedule_Menu"
-        Me.Schedule_Menu.Size = New System.Drawing.Size(208, 22)
+        Me.Schedule_Menu.Size = New System.Drawing.Size(207, 22)
         Me.Schedule_Menu.Text = "Employee's DTR Schedule"
         Me.Schedule_Menu.Visible = False
         '
         'ConnectToDatabase_Menu
         '
         Me.ConnectToDatabase_Menu.Name = "ConnectToDatabase_Menu"
-        Me.ConnectToDatabase_Menu.Size = New System.Drawing.Size(208, 22)
+        Me.ConnectToDatabase_Menu.Size = New System.Drawing.Size(207, 22)
         Me.ConnectToDatabase_Menu.Text = "&Connect to Database"
         '
         'ChangeUserInfo_Menu
         '
         Me.ChangeUserInfo_Menu.AccessibleName = "Change User Details"
         Me.ChangeUserInfo_Menu.Name = "ChangeUserInfo_Menu"
-        Me.ChangeUserInfo_Menu.Size = New System.Drawing.Size(208, 22)
+        Me.ChangeUserInfo_Menu.Size = New System.Drawing.Size(207, 22)
         Me.ChangeUserInfo_Menu.Text = "Change User Details"
         '
         'UserLogs_Menu
         '
         Me.UserLogs_Menu.AccessibleName = "User Logs"
         Me.UserLogs_Menu.Name = "UserLogs_Menu"
-        Me.UserLogs_Menu.Size = New System.Drawing.Size(208, 22)
+        Me.UserLogs_Menu.Size = New System.Drawing.Size(207, 22)
         Me.UserLogs_Menu.Text = "User Logs"
         '
         'ToolStripSeparator1
         '
         Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-        Me.ToolStripSeparator1.Size = New System.Drawing.Size(205, 6)
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(204, 6)
         '
         'Exit_Menu
         '
         Me.Exit_Menu.Name = "Exit_Menu"
-        Me.Exit_Menu.Size = New System.Drawing.Size(208, 22)
+        Me.Exit_Menu.Size = New System.Drawing.Size(207, 22)
         Me.Exit_Menu.Text = "&Exit"
         '
         'AboutUsToolStripMenuItem
@@ -517,7 +517,7 @@ Partial Class frmMainForm
         Me.Question_lbl.ForeColor = System.Drawing.Color.Black
         Me.Question_lbl.Location = New System.Drawing.Point(1097, -6)
         Me.Question_lbl.Name = "Question_lbl"
-        Me.Question_lbl.Size = New System.Drawing.Size(28, 32)
+        Me.Question_lbl.Size = New System.Drawing.Size(27, 32)
         Me.Question_lbl.TabIndex = 6
         Me.Question_lbl.Text = "?"
         '
@@ -568,7 +568,7 @@ Partial Class frmMainForm
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
-        Me.ClientSize = New System.Drawing.Size(1367, 730)
+        Me.ClientSize = New System.Drawing.Size(1367, 718)
         Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.pNavigate)
         Me.Controls.Add(Me.NavagationPanel)

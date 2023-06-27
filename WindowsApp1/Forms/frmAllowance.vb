@@ -137,14 +137,6 @@
         Status_Combo.Items.Add("PENDING")
     End Sub
 
-    Private Sub Allowance_LV_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles Allowance_LV.MouseDoubleClick
-        If Allowance_LV.Items.Count = 0 Then Exit Sub
-        Dim idNo As Integer = Allowance_LV.Items(Allowance_LV.FocusedItem.Index).SubItems(4).Tag
-
-        GetAllowance_Details(idNo, Allow_Name_TXT, Allow_Category_Combo, Allow_Schedule_Combo, A_EveryDate_Combo, Allow_Amount_TXT, A_EffectiveDate_DTP, FixYes_RadioB, FixNo_RadioB)
-        Name_lbl.Tag = "UPDATE"
-    End Sub
-
     Public Sub Load_Allowance(emp As Employee, tabName As String, Optional category As String = "")
         With emp
             If tabName = "ALLOWANCE" Then
@@ -181,6 +173,7 @@
         Dim idNo As Integer = Allowance_LV.Items(Allowance_LV.FocusedItem.Index).SubItems(4).Tag
 
         GetAllowance_Details(idNo, Allow_Name_TXT, Allow_Category_Combo, Allow_Schedule_Combo, A_EveryDate_Combo, Allow_Amount_TXT, A_EffectiveDate_DTP, FixYes_RadioB, FixNo_RadioB)
+        Name_lbl.Tag = "UPDATE"
     End Sub
 
     Private Sub CompanyFrom_txt_TextChanged(sender As Object, e As EventArgs) Handles CompanyFrom_txt.TextChanged
@@ -436,4 +429,11 @@
         End If
     End Sub
 
+    Private Sub Allowance_LV_DoubleClick(sender As Object, e As EventArgs) Handles Allowance_LV.DoubleClick
+        If Allowance_LV.Items.Count = 0 Then Exit Sub
+        Dim idNo As Integer = Allowance_LV.Items(Allowance_LV.FocusedItem.Index).SubItems(4).Tag
+
+        GetAllowance_Details(idNo, Allow_Name_TXT, Allow_Category_Combo, Allow_Schedule_Combo, A_EveryDate_Combo, Allow_Amount_TXT, A_EffectiveDate_DTP, FixYes_RadioB, FixNo_RadioB)
+        Name_lbl.Tag = "UPDATE"
+    End Sub
 End Class

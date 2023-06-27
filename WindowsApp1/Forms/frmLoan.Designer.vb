@@ -164,6 +164,10 @@ Partial Class frmLoan
         Me.Label36 = New System.Windows.Forms.Label()
         Me.MaxAmort_txt = New System.Windows.Forms.TextBox()
         Me.TabPage6 = New System.Windows.Forms.TabPage()
+        Me.Context_SBU = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.SBUEdit_Menu = New System.Windows.Forms.ToolStripMenuItem()
+        Me.SBU_Search_txt = New System.Windows.Forms.TextBox()
+        Me.SBU_Search_btn = New System.Windows.Forms.Button()
         Me.SBU_LV = New System.Windows.Forms.ListView()
         Me.ColumnHeader34 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader35 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -223,10 +227,6 @@ Partial Class frmLoan
         Me.Label31 = New System.Windows.Forms.Label()
         Me.DE_Effectivity_DTP = New System.Windows.Forms.DateTimePicker()
         Me.lblAdd = New System.Windows.Forms.Label()
-        Me.Context_SBU = New System.Windows.Forms.ContextMenuStrip(Me.components)
-        Me.SBUEdit_Menu = New System.Windows.Forms.ToolStripMenuItem()
-        Me.SBU_Search_txt = New System.Windows.Forms.TextBox()
-        Me.SBU_Search_btn = New System.Windows.Forms.Button()
         Me.Loans_Tab.SuspendLayout()
         Me.TabPage2.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
@@ -240,9 +240,9 @@ Partial Class frmLoan
         Me.TabPage5.SuspendLayout()
         Me.Context_Maxicare.SuspendLayout()
         Me.TabPage6.SuspendLayout()
+        Me.Context_SBU.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.Partial_Panel.SuspendLayout()
-        Me.Context_SBU.SuspendLayout()
         Me.SuspendLayout()
         '
         'Close_LBL
@@ -251,7 +251,7 @@ Partial Class frmLoan
         Me.Close_LBL.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Close_LBL.Location = New System.Drawing.Point(1117, 2)
         Me.Close_LBL.Name = "Close_LBL"
-        Me.Close_LBL.Size = New System.Drawing.Size(57, 32)
+        Me.Close_LBL.Size = New System.Drawing.Size(56, 32)
         Me.Close_LBL.TabIndex = 80
         Me.Close_LBL.Text = "Close"
         '
@@ -547,30 +547,30 @@ Partial Class frmLoan
         '
         Me.Context_Deduct.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.PartialPaymentDeducMenu, Me.menu_subtotal, Me.Balance_MenuItem, Me.menu_edit})
         Me.Context_Deduct.Name = "Context_deduct"
-        Me.Context_Deduct.Size = New System.Drawing.Size(158, 92)
+        Me.Context_Deduct.Size = New System.Drawing.Size(157, 92)
         '
         'PartialPaymentDeducMenu
         '
         Me.PartialPaymentDeducMenu.Name = "PartialPaymentDeducMenu"
-        Me.PartialPaymentDeducMenu.Size = New System.Drawing.Size(157, 22)
+        Me.PartialPaymentDeducMenu.Size = New System.Drawing.Size(156, 22)
         Me.PartialPaymentDeducMenu.Text = "Partial Payment"
         '
         'menu_subtotal
         '
         Me.menu_subtotal.Name = "menu_subtotal"
-        Me.menu_subtotal.Size = New System.Drawing.Size(157, 22)
+        Me.menu_subtotal.Size = New System.Drawing.Size(156, 22)
         Me.menu_subtotal.Text = "View Subtotal"
         '
         'Balance_MenuItem
         '
         Me.Balance_MenuItem.Name = "Balance_MenuItem"
-        Me.Balance_MenuItem.Size = New System.Drawing.Size(157, 22)
+        Me.Balance_MenuItem.Size = New System.Drawing.Size(156, 22)
         Me.Balance_MenuItem.Text = "Balance"
         '
         'menu_edit
         '
         Me.menu_edit.Name = "menu_edit"
-        Me.menu_edit.Size = New System.Drawing.Size(157, 22)
+        Me.menu_edit.Size = New System.Drawing.Size(156, 22)
         Me.menu_edit.Text = "Edit"
         '
         'TabPage1
@@ -754,30 +754,30 @@ Partial Class frmLoan
         '
         Me.Context_SSS.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.PartialPaymentSSSMenuItem, Me.SSSSubtotal_Menu, Me.SSSBalance_Menu, Me.SSSEdit_Menu})
         Me.Context_SSS.Name = "Context_deduct"
-        Me.Context_SSS.Size = New System.Drawing.Size(158, 92)
+        Me.Context_SSS.Size = New System.Drawing.Size(157, 92)
         '
         'PartialPaymentSSSMenuItem
         '
         Me.PartialPaymentSSSMenuItem.Name = "PartialPaymentSSSMenuItem"
-        Me.PartialPaymentSSSMenuItem.Size = New System.Drawing.Size(157, 22)
+        Me.PartialPaymentSSSMenuItem.Size = New System.Drawing.Size(156, 22)
         Me.PartialPaymentSSSMenuItem.Text = "Partial Payment"
         '
         'SSSSubtotal_Menu
         '
         Me.SSSSubtotal_Menu.Name = "SSSSubtotal_Menu"
-        Me.SSSSubtotal_Menu.Size = New System.Drawing.Size(157, 22)
+        Me.SSSSubtotal_Menu.Size = New System.Drawing.Size(156, 22)
         Me.SSSSubtotal_Menu.Text = "View Subtotal"
         '
         'SSSBalance_Menu
         '
         Me.SSSBalance_Menu.Name = "SSSBalance_Menu"
-        Me.SSSBalance_Menu.Size = New System.Drawing.Size(157, 22)
+        Me.SSSBalance_Menu.Size = New System.Drawing.Size(156, 22)
         Me.SSSBalance_Menu.Text = "Balance"
         '
         'SSSEdit_Menu
         '
         Me.SSSEdit_Menu.Name = "SSSEdit_Menu"
-        Me.SSSEdit_Menu.Size = New System.Drawing.Size(157, 22)
+        Me.SSSEdit_Menu.Size = New System.Drawing.Size(156, 22)
         Me.SSSEdit_Menu.Text = "Edit"
         '
         'SSS_SearchEmp_BTN
@@ -919,30 +919,30 @@ Partial Class frmLoan
         '
         Me.Context_Pagibg.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.PartialPaymentPagMenuItem, Me.PagSubTotal_Menu, Me.PagBalance_Menu, Me.PagEdit_Menu})
         Me.Context_Pagibg.Name = "Context_deduct"
-        Me.Context_Pagibg.Size = New System.Drawing.Size(158, 92)
+        Me.Context_Pagibg.Size = New System.Drawing.Size(157, 92)
         '
         'PartialPaymentPagMenuItem
         '
         Me.PartialPaymentPagMenuItem.Name = "PartialPaymentPagMenuItem"
-        Me.PartialPaymentPagMenuItem.Size = New System.Drawing.Size(157, 22)
+        Me.PartialPaymentPagMenuItem.Size = New System.Drawing.Size(156, 22)
         Me.PartialPaymentPagMenuItem.Text = "Partial Payment"
         '
         'PagSubTotal_Menu
         '
         Me.PagSubTotal_Menu.Name = "PagSubTotal_Menu"
-        Me.PagSubTotal_Menu.Size = New System.Drawing.Size(157, 22)
+        Me.PagSubTotal_Menu.Size = New System.Drawing.Size(156, 22)
         Me.PagSubTotal_Menu.Text = "View Subtotal"
         '
         'PagBalance_Menu
         '
         Me.PagBalance_Menu.Name = "PagBalance_Menu"
-        Me.PagBalance_Menu.Size = New System.Drawing.Size(157, 22)
+        Me.PagBalance_Menu.Size = New System.Drawing.Size(156, 22)
         Me.PagBalance_Menu.Text = "Balance"
         '
         'PagEdit_Menu
         '
         Me.PagEdit_Menu.Name = "PagEdit_Menu"
-        Me.PagEdit_Menu.Size = New System.Drawing.Size(157, 22)
+        Me.PagEdit_Menu.Size = New System.Drawing.Size(156, 22)
         Me.PagEdit_Menu.Text = "Edit"
         '
         'Label27
@@ -1616,6 +1616,36 @@ Partial Class frmLoan
         Me.TabPage6.Text = "        SBU        "
         Me.TabPage6.UseVisualStyleBackColor = True
         '
+        'Context_SBU
+        '
+        Me.Context_SBU.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SBUEdit_Menu})
+        Me.Context_SBU.Name = "Context_deduct"
+        Me.Context_SBU.Size = New System.Drawing.Size(95, 26)
+        '
+        'SBUEdit_Menu
+        '
+        Me.SBUEdit_Menu.Name = "SBUEdit_Menu"
+        Me.SBUEdit_Menu.Size = New System.Drawing.Size(94, 22)
+        Me.SBUEdit_Menu.Text = "Edit"
+        '
+        'SBU_Search_txt
+        '
+        Me.SBU_Search_txt.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SBU_Search_txt.Location = New System.Drawing.Point(466, 33)
+        Me.SBU_Search_txt.Name = "SBU_Search_txt"
+        Me.SBU_Search_txt.Size = New System.Drawing.Size(358, 33)
+        Me.SBU_Search_txt.TabIndex = 129
+        '
+        'SBU_Search_btn
+        '
+        Me.SBU_Search_btn.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SBU_Search_btn.Location = New System.Drawing.Point(830, 32)
+        Me.SBU_Search_btn.Name = "SBU_Search_btn"
+        Me.SBU_Search_btn.Size = New System.Drawing.Size(82, 33)
+        Me.SBU_Search_btn.TabIndex = 130
+        Me.SBU_Search_btn.Text = "Search"
+        Me.SBU_Search_btn.UseVisualStyleBackColor = True
+        '
         'SBU_LV
         '
         Me.SBU_LV.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
@@ -2150,36 +2180,6 @@ Partial Class frmLoan
         Me.lblAdd.Size = New System.Drawing.Size(32, 22)
         Me.lblAdd.TabIndex = 125
         '
-        'Context_SBU
-        '
-        Me.Context_SBU.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SBUEdit_Menu})
-        Me.Context_SBU.Name = "Context_deduct"
-        Me.Context_SBU.Size = New System.Drawing.Size(95, 26)
-        '
-        'SBUEdit_Menu
-        '
-        Me.SBUEdit_Menu.Name = "SBUEdit_Menu"
-        Me.SBUEdit_Menu.Size = New System.Drawing.Size(180, 22)
-        Me.SBUEdit_Menu.Text = "Edit"
-        '
-        'SBU_Search_txt
-        '
-        Me.SBU_Search_txt.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.SBU_Search_txt.Location = New System.Drawing.Point(466, 33)
-        Me.SBU_Search_txt.Name = "SBU_Search_txt"
-        Me.SBU_Search_txt.Size = New System.Drawing.Size(358, 33)
-        Me.SBU_Search_txt.TabIndex = 129
-        '
-        'SBU_Search_btn
-        '
-        Me.SBU_Search_btn.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.SBU_Search_btn.Location = New System.Drawing.Point(830, 32)
-        Me.SBU_Search_btn.Name = "SBU_Search_btn"
-        Me.SBU_Search_btn.Size = New System.Drawing.Size(82, 33)
-        Me.SBU_Search_btn.TabIndex = 130
-        Me.SBU_Search_btn.Text = "Search"
-        Me.SBU_Search_btn.UseVisualStyleBackColor = True
-        '
         'frmLoan
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -2212,11 +2212,11 @@ Partial Class frmLoan
         Me.Context_Maxicare.ResumeLayout(False)
         Me.TabPage6.ResumeLayout(False)
         Me.TabPage6.PerformLayout()
+        Me.Context_SBU.ResumeLayout(False)
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
         Me.Partial_Panel.ResumeLayout(False)
         Me.Partial_Panel.PerformLayout()
-        Me.Context_SBU.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

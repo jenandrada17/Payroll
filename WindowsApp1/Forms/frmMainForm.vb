@@ -11,6 +11,12 @@ Public Class frmMainForm
 
     Private Sub frmMainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
+        'SSS_Contribution_2023()
+
+        'GetTotalOF() 'COST DISTRIBUTION DISBALANCE TRACING
+
+        'MergeData()
+
         'CostGetDetails()
 
         'Using conSettings As New ServerSettings
@@ -94,6 +100,8 @@ Public Class frmMainForm
                 End If
             End If
         End If
+
+        'UpdatePayout("6/30/2023")
     End Sub
 
     '======================================Buttons==================================================  

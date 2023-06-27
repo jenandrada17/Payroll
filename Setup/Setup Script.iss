@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Payroll System"
-#define MyAppVersion "1.1.3.4"
+#define MyAppVersion "1.1.4.1"
 #define MyAppPublisher "Perfecto Group of Companies"
 #define MyAppURL "https://www.example.com/"
 #define MyAppExeName "WindowsApp1.exe"
@@ -26,9 +26,9 @@ ChangesAssociations=yes
 DisableProgramGroupPage=yes
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
 ;PrivilegesRequired=lowest
-OutputDir=D:\Users\ItsYou\Documents\payroll
+OutputDir=D:\Installer
 OutputBaseFilename=PayrollSystem
-SetupIconFile=G:\HR-System Record\LATEST HRSystem\HRSystem - exx\HRSystem\PGC LOGO copy.ico
+SetupIconFile="D:\PGC APPS\PAYROLL\WindowsApp1\PGC LOGO copy.ico"
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
@@ -39,14 +39,9 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
-[Files]  
-Source: "G:\Payroll-System\PAYROLL\WindowsApp1\bin\Debug\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "G:\Payroll-System\PAYROLL\WindowsApp1\bin\Debug\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "G:\Payroll-System\PAYROLL\WindowsApp1\bin\Debug\DBConnect.dll.config"; DestDir: "{app}"; Flags: deleteafterinstall
-Source: "G:\Payroll-System\PAYROLL\WindowsApp1\bin\Debug\DotNetZip.pdb"; DestDir: "{app}"; Flags: deleteafterinstall
-Source: "G:\Payroll-System\PAYROLL\WindowsApp1\bin\Debug\DotNetZip.xml"; DestDir: "{app}"; Flags: deleteafterinstall
-Source: "G:\Payroll-System\PAYROLL\WindowsApp1\bin\Debug\WindowsApp1.xml"; DestDir: "{app}"; Flags: deleteafterinstall 
-Source: "G:\Payroll-System\PAYROLL\WindowsApp1\bin\Debug\Guna.UI2.dll"; DestDir: "{app}"; Flags: ignoreversion
+[Files] 
+Source: "D:\PGC APPS\PAYROLL\WindowsApp1\bin\Release\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\PGC APPS\PAYROLL\WindowsApp1\bin\Release\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Registry]

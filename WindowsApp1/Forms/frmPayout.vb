@@ -6,7 +6,7 @@ Public Class frmPayout
     Dim rowCount As Integer
     Dim STANDARD_DAYS As Integer = frmMainForm.DAYS_COUNT
     Dim regHoliday_, specHoliday_ As Double
-    Public paydate_ As String = frmMainForm.Paydate.ToString("d")
+    Public paydate_ As String = frmMainForm.Paydate.ToShortDateString
     Dim SBU, Charges, Loan, CashAdvance, other As Decimal
     Dim SBUUU, Chargesss, Loannn, CashAdvanceee, otherrr As Decimal
     Dim gross, netTax, sssLoan, pagibigLoan, allowance, deduction As Decimal
@@ -65,8 +65,9 @@ Public Class frmPayout
             DETAILS()
         End If
 
-        Dim dateNow As DateTime = Date.Now
-        If dateNow.ToString("d") > paydate_ Then
+        Dim dateNow As DateTime = Date.Today
+        Dim _paydate_ As DateTime = paydate_
+        If dateNow > _paydate_ Then
             Details_Save_BTN.Enabled = False
         Else
             Details_Save_BTN.Enabled = True

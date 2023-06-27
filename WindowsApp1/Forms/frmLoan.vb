@@ -752,6 +752,14 @@ Public Class frmLoan
     End Sub
 
     Private Sub SBUEdit_Menu_Click(sender As Object, e As EventArgs) Handles SBUEdit_Menu.Click
+        GetSBU_Details()
+    End Sub
+
+    Private Sub SBU_LV_DoubleClick(sender As Object, e As EventArgs) Handles SBU_LV.DoubleClick
+        GetSBU_Details()
+    End Sub
+
+    Private Sub GetSBU_Details()
         SBU_Name_txt.Text = SBU_LV.Items(SBU_LV.FocusedItem.Index).SubItems(0).Text
         SBU_Name_txt.Tag = SBU_LV.Items(SBU_LV.FocusedItem.Index).SubItems(4).Tag
         SBU_Principal_txt.Text = SBU_LV.Items(SBU_LV.FocusedItem.Index).SubItems(2).Text

@@ -54,6 +54,81 @@ Module Temporary
 
     End Sub
 
+    Friend Sub SSS_Contribution_2023()
+
+        Dim Path As String = "C:\Users\MISPC1\Desktop\SSS Contribution 2023.txt"
+
+        For Each line As String In IO.File.ReadAllLines(Path)
+            Dim slices As String() = line.Split(vbTab)
+
+            'SaveToSSS_Table(slices(0), slices(1), slices(2), slices(3), slices(4), slices(5), slices(6), slices(7), slices(8), slices(9), slices(10), slices(11), slices(12), slices(13), slices(14), slices(15), 2023)
+            UpdateSSS_Table(slices(0), slices(1), slices(2), slices(3), slices(4), slices(5), slices(6), slices(7), slices(8), slices(9), slices(10), slices(11), slices(12), slices(13), slices(14), slices(15), 2023)
+        Next
+
+    End Sub
+
+    Public Sub UpdateSSS_Table(RANGECOMP As String, RSS_EC As String, MPF As String, TOTAL As String,
+                               RSS_ER As String, RSS_EE As String, RSS_TOTAL As String,
+                               EC_ER As String, EC_EE As String, EC_TOTAL As String,
+                               MPF_ER As String, MPF_EE As String, MPF_TOTAL As String,
+                               TOTAL_ER As String, TOTAL_EE As String, TOTAL_TOTAL As String, YEAR_COVERED As Integer)
+
+        Dim mysql As String = $"Select * From PAYROLL_SSS where RANGECOMP = '{RANGECOMP}'"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_SSS")
+            With ds.Tables(0).Rows(0)
+                .Item("RANGECOMP") = RANGECOMP
+                .Item("RSS_EC") = RSS_EC
+                .Item("MPF") = MPF
+                .Item("TOTAL") = TOTAL
+                .Item("RSS_ER") = RSS_ER
+                .Item("RSS_EE") = RSS_EE
+                .Item("RSS_TOTAL") = RSS_TOTAL
+                .Item("EC_ER") = EC_ER
+                .Item("EC_EE") = EC_EE
+                .Item("EC_TOTAL") = EC_TOTAL
+                .Item("MPF_ER") = MPF_ER
+                .Item("MPF_EE") = MPF_EE
+                .Item("MPF_TOTAL") = MPF_TOTAL
+                .Item("TOTAL_ER") = TOTAL_ER
+                .Item("TOTAL_EE") = TOTAL_EE
+                .Item("TOTAL_TOTAL") = TOTAL_TOTAL
+                .Item("YEAR_COVERED") = YEAR_COVERED
+            End With
+            SaveEntry(ds, False)
+        End Using
+    End Sub
+
+    Public Sub SaveToSSS_Table(RANGECOMP As String, RSS_EC As String, MPF As String, TOTAL As String,
+                               RSS_ER As String, RSS_EE As String, RSS_TOTAL As String,
+                               EC_ER As String, EC_EE As String, EC_TOTAL As String,
+                               MPF_ER As String, MPF_EE As String, MPF_TOTAL As String,
+                               TOTAL_ER As String, TOTAL_EE As String, TOTAL_TOTAL As String, YEAR_COVERED As Integer)
+
+        Dim mysql As String = $"Select * From PAYROLL_SSS Rows 1"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_SSS")
+            Dim dsNew As DataRow = ds.Tables(0).NewRow
+            With dsNew
+                .Item("RANGECOMP") = RANGECOMP
+                .Item("RSS_EC") = RSS_EC
+                .Item("MPF") = MPF
+                .Item("TOTAL") = TOTAL
+                .Item("RSS_ER") = RSS_ER
+                .Item("EC_ER") = EC_ER
+                .Item("EC_EE") = EC_EE
+                .Item("EC_EE") = EC_TOTAL
+                .Item("MPF_ER") = MPF_ER
+                .Item("MPF_EE") = MPF_EE
+                .Item("MPF_TOTAL") = MPF_TOTAL
+                .Item("TOTAL_ER") = TOTAL_ER
+                .Item("TOTAL_EE") = TOTAL_EE
+                .Item("TOTAL_TOTAL") = TOTAL_TOTAL
+                .Item("YEAR_COVERED") = YEAR_COVERED
+            End With
+            ds.Tables(0).Rows.Add(dsNew)
+            SaveEntry(ds)
+        End Using
+    End Sub
+
     Public Sub UPDATE_Emp_SBU_EXCEL_DATEONLY(emp_no As String, datee As String, RowNo As Integer)
         Dim mysql As String = $"Select * From PAYROLL_SBU A inner join PAYROLL_EMPLOYEE B on B.BIO_NO=A.BIO_NO where EMP_NO='{emp_no}'"
         Using dssS As DataSet = LoadSQL(mysql, "PAYROLL_SBU")
@@ -527,4 +602,59 @@ Module Temporary
     End Sub
 
 #End Region
+
+    Public Sub MergeData()
+        Dim mysql As String = $"Select * from RECORDED_ALLOW_DEDUC1 where PAYDATE in ('3/31/2023','4/15/2023')"
+        Using ds As DataSet = LoadSQL(mysql, "RECORDED_ALLOW_DEDUC1")
+            If ds.Tables(0).Rows.Count > 0 Then
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+                        Dim BIO_NO As String = IIf(IsDBNull(.Item("BIO_NO")), "", .Item("BIO_NO"))
+                        Dim TRANSAC_NAME As String = IIf(IsDBNull(.Item("TRANSAC_NAME")), "", .Item("TRANSAC_NAME"))
+                        Dim AMOUNT As String = IIf(IsDBNull(.Item("AMOUNT")), "", .Item("AMOUNT"))
+                        Dim CATEGORY As String = IIf(IsDBNull(.Item("CATEGORY")), "", .Item("CATEGORY"))
+                        Dim PAYDATE As String = IIf(IsDBNull(.Item("PAYDATE")), "", .Item("PAYDATE"))
+                        Dim R_DEDUC_ID As String = IIf(IsDBNull(.Item("R_DEDUC_ID")), "", .Item("R_DEDUC_ID"))
+                        MergeData_Recorded_Allow_Deduc(BIO_NO, TRANSAC_NAME, AMOUNT, CATEGORY, PAYDATE, R_DEDUC_ID)
+                    End With
+                Next
+            End If
+        End Using
+    End Sub
+
+    Friend Sub MergeData_Recorded_Allow_Deduc(BIO_NO As String, TRANSAC_NAME As String, AMOUNT As String, CATEGORY As String, PAYDATE As String, R_DEDUC_ID As String)
+        Dim mysql As String = $"Select * from RECORDED_ALLOW_DEDUC where BIO_NO = '{BIO_NO}' and TRANSAC_NAME = '{TRANSAC_NAME}' and AMOUNT = '{AMOUNT}' and CATEGORY = '{CATEGORY}' and PAYDATE = '{PAYDATE}'"
+        Using ds As DataSet = LoadSQL(mysql, "RECORDED_ALLOW_DEDUC")
+            If ds.Tables(0).Rows.Count > 0 Then
+                MsgBox($"Exist! {PAYDATE} {BIO_NO} {TRANSAC_NAME}")
+            Else
+                mysql = "Select * From RECORDED_ALLOW_DEDUC Rows 1"
+                Using dss As DataSet = LoadSQL(mysql, "RECORDED_ALLOW_DEDUC")
+                    Dim dsNew As DataRow = dss.Tables(0).NewRow
+                    With dsNew
+                        .Item("BIO_NO") = BIO_NO
+                        .Item("TRANSAC_NAME") = TRANSAC_NAME
+                        .Item("AMOUNT") = AMOUNT
+                        .Item("CATEGORY") = CATEGORY
+                        .Item("PAYDATE") = PAYDATE
+
+                        If R_DEDUC_ID <> Nothing Then .Item("R_DEDUC_ID") = R_DEDUC_ID
+                    End With
+                    dss.Tables(0).Rows.Add(dsNew)
+                    SaveEntry(dss)
+                End Using
+            End If
+        End Using
+    End Sub
+
+    Friend Sub GetTotalOF()
+        Dim mysql As String = "Select SUM(AMOUNT) as total from RECORDED_ALLOW_DEDUC where PAYDATE='6/15/2023' and TRANSAC_NAME = 'DEDUCTION' and CATEGORY = 'SBU'"
+        Using ds As DataSet = LoadSQL(mysql, "RECORDED_ALLOW_DEDUC")
+            If ds.Tables(0).Rows.Count > 0 Then
+                Console.WriteLine(ds.Tables(0).Rows(0).Item("total"))
+            End If
+        End Using
+    End Sub
+
+
 End Module

@@ -224,6 +224,8 @@ Module SaveUpdate
             progressBarStart(dss.Tables(0).Rows.Count)
             For Each dr In dss.Tables(0).Rows
                 With dr
+                    Console.WriteLine(.item("BIOMETRICID"))
+                    Console.WriteLine(.item("PAYDATE"))
                     SavePayout_IndividualL(.item("BIOMETRICID"), .item("PAYDATE"), startt, endd)
                 End With
 
@@ -760,15 +762,18 @@ Module SaveUpdate
 
                     '============================================= BENIFITS CONTRIBUTION =========================================================  
                     Dim trainee_rate As Decimal = rate * 0.75
+                    Dim programmer_trainee As Double = 0
 
-                    If noOf_days_training <> 0 Then '================ IF TRAINEE BASE CALCULATE NEW RATE =================
+                    If .Item("EMP_POSITION") = "PROGRAMMER" Then programmer_trainee = noOf_days_training
+
+                    If noOf_days_training <> 0 And programmer_trainee = 0 Then '================ IF TRAINEE BASE CALCULATE NEW RATE =================
 
                         Dim total_train As Decimal = (Convert.ToDouble(rate) - trainee_rate) * Convert.ToDouble(noOf_days_training)
                         TotalBasic = (NoOfDays * rate) - total_train
 
                         '===================== TRAINING HOLIDAY ==================  
-                        RegularHol = RegularHol - Training_REGHoliday
-                        SpecialHol = SpecialHol_hrs - Training_SPECHoliday
+                        RegularHol = Math.Abs(RegularHol - Training_REGHoliday)
+                        SpecialHol = Math.Abs(SpecialHol_hrs - Training_SPECHoliday)
 
                         Dim REG_STANDARD As Decimal = (RegularHol * rate) * regHoliday
                         Dim SPEC_STANDARD As Decimal = ((SpecialHol / 8) * rate) * specHoliday
@@ -2220,7 +2225,7 @@ Module SaveUpdate
 
     Friend Sub SaveNewSBU(NAMEE As String, BIO_NO As String, AMOUNT As String, PRINCIPAL As String)
         Dim old_principal = 0, old_amort As Decimal = 0
-        Dim mysql As String = $"Select * from PAYROLL_SBU where BIO_NO ='{BIO_NO}' and CATEGORY ='SBU'"
+        Dim mysql As String = $"Select * from PAYROLL_SBU where BIO_NO ='{BIO_NO}'"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_SBU")
             If ds.Tables(0).Rows.Count > 0 Then
                 With ds.Tables(0).Rows(0)
