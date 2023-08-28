@@ -846,10 +846,8 @@ Module SaveUpdate
                         If fix_monthly_rate = True Then
                             TotalBasic = Monthly_rate
                         Else
-                            If NoOfDays >= STANDARD_DAYS Then  '=== CHECK IF ABOVE MINIMUM
-                                'TotalBasic = Monthly_rate
+                            If NoOfDays >= STANDARD_DAYS Then  '=== CHECK IF ABOVE MINIMUM 
                                 TotalBasic = NoOfDays * rate
-
                             Else
                                 Dim MINUS_DAYS As Double = STANDARD_DAYS - NoOfDays
                                 TotalBasic = Monthly_rate - (MINUS_DAYS * rate)
@@ -1142,15 +1140,12 @@ Module SaveUpdate
 
                         GrossAmount = (TotalBasic + TotalREGHol + TotalSPECHol + TotalOT + TotalNight) - TotalLateUnder
 
-                        '============================================= LATE ADJUSTMENT ==================================================
-                        If Late_Adjustment > 1 Then
+                        '======================================= LATE ADJUSTMENT IF NOT EXEMPTED ====================================== 
+                        If Late_Adjustment > 1 And Not ThisHasRow($"LATE_EXEMPTED WHERE BIONO = {bioNo}") Then
                             Dim late_rate As Decimal = (rate / 8) / 60
                             Dim total_adjustment As Decimal = ((Late - Late_Approved) * (Late_Adjustment - 1)) * late_rate
                             Deduction += total_adjustment
-
-                            If Not ThisHasRow($"LATE_EXEMPTED WHERE BIONO = '{bioNo}'") Then
-                                Save_Recorded_Allow_Deduc(bioNo, paydate_, "Late Adjustment", total_adjustment, "DEDUCTION")
-                            End If
+                            Save_Recorded_Allow_Deduc(bioNo, paydate_, "Late Adjustment", total_adjustment, "DEDUCTION")
                         End If
 
                     End If
