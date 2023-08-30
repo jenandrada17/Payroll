@@ -2,8 +2,11 @@
 Imports System.IO
 Imports System.Net.Mail
 Imports System.Reflection
+Imports System.Text.RegularExpressions
 
 Module Public_Function
+
+    Friend trimmer As New Regex("\s\s+")
 
     Friend Function ExcelFilePath(ByVal filePath As String) As String
         DefaultFolder = Path.GetDirectoryName(filePath)
@@ -321,6 +324,22 @@ Module Public_Function
         toProper = info.ToTitleCase(toLower)
 
         Return toProper
+    End Function
+
+    Friend Function ColumnChecker(table As String, col As String) As Boolean
+        Dim alreadyExist = False
+        Dim sql As String = String.Format("SELECT * FROM RDB$RELATION_FIELDS WHERE (RDB$RELATION_NAME = '{0}' AND RDB$FIELD_NAME = '{1}');", table, col)
+        Try
+            Dim ds = LoadSQL(trimmer.Replace(sql, ""))
+            If ds.Tables(0).Rows.Count > 0 Then
+                alreadyExist = True
+            Else
+                alreadyExist = False
+            End If
+        Catch ex As Exception
+            MsgBox(ex.Message, MsgBoxStyle.Critical, "Autopatch")
+        End Try
+        Return alreadyExist
     End Function
 
 #Region "FOR IMPORT ONLY frmNewEmployee"

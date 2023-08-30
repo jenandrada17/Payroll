@@ -656,5 +656,170 @@ Module Temporary
         End Using
     End Sub
 
+    Friend Sub AddColumn_TBL_EMPLOYEE()
+        If Not ColumnChecker("TBL_EMPLOYEE", "EMP_NO") Then
+            RunCommand("ALTER TABLE TBL_EMPLOYEE ADD EMP_NO VARCHAR(50);")
+        End If
+        If Not ColumnChecker("TBL_EMPLOYEE", "COMPANY_CATEGORY") Then
+            RunCommand("ALTER TABLE TBL_EMPLOYEE ADD COMPANY_CATEGORY VARCHAR(50);")
+        End If
+        If Not ColumnChecker("TBL_EMPLOYEE", "OLD_RATE") Then
+            RunCommand("ALTER TABLE TBL_EMPLOYEE ADD OLD_RATE DECIMAL(12, 12);")
+        End If
+        If Not ColumnChecker("TBL_EMPLOYEE", "RATE_DAILY") Then
+            RunCommand("ALTER TABLE TBL_EMPLOYEE ADD RATE_DAILY DECIMAL(12, 12);")
+        End If
+        If Not ColumnChecker("TBL_EMPLOYEE", "RATE_MONTHLY") Then
+            RunCommand("ALTER TABLE TBL_EMPLOYEE ADD RATE_MONTHLY DECIMAL(12, 12);")
+        End If
+        If Not ColumnChecker("TBL_EMPLOYEE", "FIX_MONTHLY_RATE") Then
+            RunCommand("ALTER TABLE TBL_EMPLOYEE ADD FIX_MONTHLY_RATE DECIMAL(12, 12);")
+        End If
+        If Not ColumnChecker("TBL_EMPLOYEE", "TIME_IN") Then
+            RunCommand("ALTER TABLE TBL_EMPLOYEE ADD TIME_IN DECIMAL(12, 12);")
+        End If
+        If Not ColumnChecker("TBL_EMPLOYEE", "TIME_OUT") Then
+            RunCommand("ALTER TABLE TBL_EMPLOYEE ADD TIME_OUT DECIMAL(12, 12);")
+        End If
+        If Not ColumnChecker("TBL_EMPLOYEE", "COMMON_CATEGORY") Then
+            RunCommand("ALTER TABLE TBL_EMPLOYEE ADD COMMON_CATEGORY DECIMAL(12, 12);")
+        End If
+        If Not ColumnChecker("TBL_EMPLOYEE", "COMMON_COMPANY") Then
+            RunCommand("ALTER TABLE TBL_EMPLOYEE ADD COMMON_COMPANY DECIMAL(12, 12);")
+        End If
+        If Not ColumnChecker("TBL_EMPLOYEE", "HO_CATEGORY") Then
+            RunCommand("ALTER TABLE TBL_EMPLOYEE ADD HO_CATEGORY DECIMAL(12, 12);")
+        End If
+
+        'RunCommand("UPDATE TBL_EMPLOYEE
+        '            SET TBL_EMPLOYEE.column1 = PAYROLL_EMPLOYEE.column1,
+        '                TBL_EMPLOYEE.column2 = PAYROLL_EMPLOYEE.column2, 
+        '            FROM TBL_EMPLOYEE
+        '            JOIN PAYROLL_EMPLOYEE ON TBL_EMPLOYEE.employee_id = PAYROLL_EMPLOYEE.employee_id 
+        '            WHERE TBL_EMPLOYEE.BIOMETRICID = PAYROLL_EMPLOYEE.BIO_NO;")
+    End Sub
+
+    Friend Sub GetPositions()
+        ''FROM PAYROLL_EMPLOYEE TO TEXTFILE
+        'Dim mysql As String = "Select DISTINCT  EMP_POSITION from PAYROLL_EMPLOYEE"
+        'Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+        '    If ds.Tables(0).Rows.Count > 0 Then
+        '        Dim path As String = "C:\Users\MISPC1\Desktop\Employee's Position.txt"
+        '        Dim filee As New FileInfo(path)
+
+        '        If Not filee.Exists Then
+        '            filee.Create().Close()
+        '        End If
+
+        '        For Each dr In ds.Tables(0).Rows
+        '            With dr
+        '                Dim writer As New StreamWriter(path, FileMode.Append)
+        '                writer.WriteLine(.item("EMP_POSITION"))
+        '                writer.Close()
+        '            End With
+        '        Next
+        '    End If
+        'End Using 
+
+        'FROM TEXTFILE TO CATEGORIES
+        Dim path As String = "C:\Users\MISPC1\Desktop\Employee's Position.txt"
+        For Each line As String In IO.File.ReadAllLines(path)
+            If Not IsEntryExist("CATEGORIES", "CATEGORY", line) Then
+                SavePositionsToCategories(line)
+            End If
+        Next
+    End Sub
+
+    Friend Sub SavePositionsToCategories(line As String)
+        Dim mysql As String = "Select * from CATEGORIES ROWS 1"
+        Using ds As DataSet = LoadSQL(mysql, "CATEGORIES")
+            Dim dsNew As DataRow = ds.Tables(0).NewRow
+            With dsNew
+                .Item("CATEGORY") = line
+                .Item("NAME") = "POSITION"
+            End With
+            ds.Tables(0).Rows.Add(dsNew)
+            SaveEntry(ds)
+        End Using
+    End Sub
+
+    Friend Sub GetBranchCodeInTBL_EMPLOYEE()
+        ''FROM TBL_EMPLOYEE BRANCH_ID TO TEXTFILE 
+        'Dim mysql As String = "Select A.ID as empID, BRANCH_ID, B.BRANCHCODE as tblcode, C.BRANCHCODE as citycode from TBL_EMPLOYEE A inner join TBL_BRANCH B on B.ID=A.BRANCH_ID left join PAYROLL_CITY_BRANCH C on C.BRANCHCODE=B.BRANCHCODE"
+        'Using ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
+        '    If ds.Tables(0).Rows.Count > 0 Then
+        '        Dim path As String = "C:\Users\MISPC1\Desktop\Employee's BranchID.txt"
+        '        Dim filee As New FileInfo(path)
+
+        '        If Not filee.Exists Then
+        '            filee.Create().Close()
+        '        End If
+
+        '        For Each dr In ds.Tables(0).Rows
+        '            With dr
+        '                Dim writer As New StreamWriter(path, FileMode.Append)
+        '                writer.WriteLine(.item("empID") & vbTab & .item("BRANCH_ID") & vbTab & .item("tblcode") & vbTab & .item("citycode"))
+        '                writer.Close()
+        '            End With
+        '        Next
+        '    End If
+        'End Using
+
+        'FROM TEXTFILE TO TBL_EMPLOYEE
+        Dim path As String = "C:\Users\MISPC1\Desktop\Employee's BranchID.txt"
+        For Each line As String In IO.File.ReadAllLines(path)
+            Dim slices As String() = line.Split(vbTab)
+            Dim empID As Integer = slices(0)
+            Dim brachCode As String = slices(3)
+            UpdateBranchCodeEmployee(empID, brachCode)
+            Console.WriteLine($"EmpID-{empID}  BranchCode-{brachCode}")
+        Next
+    End Sub
+
+    Friend Sub UpdateBranchCodeEmployee(empId As Integer, brachCode As String)
+        Dim mysql As String = $"Select * from TBL_EMPLOYEE where ID = {empId}"
+        Using ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
+            If ds.Tables(0).Rows.Count > 0 Then
+                With ds.Tables(0).Rows(0)
+                    .Item("BRANCHCODE") = brachCode
+                End With
+                SaveEntry(ds, False)
+            End If
+        End Using
+    End Sub
+
+    Friend Function IsEntryExist(table As String, ColName As String, entry As String) As Boolean
+        Dim mysql = $"SELECT * FROM {table} WHERE {ColName} = '{entry}'"
+        Dim ds = LoadSQL(mysql)
+        Dim st As Boolean
+        If ds.Tables(0).Rows.Count <= 0 Then
+            st = False
+        Else
+            st = True
+        End If
+        Return st
+    End Function
+
+    Private Sub GetNotEqual_BIONO()
+        Dim mysql As String = "Select * from PAYROLL_EMPLOYEE B inner join TBL_EMPLOYEE A on B.BIO_NO = A.BIOMETRICID"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+            If ds.Tables(0).Rows.Count > 0 Then
+                Dim path As String = "C:\Users\MISPC1\Desktop\Employees Equal BIONO.txt"
+                Dim filee As New FileInfo(path)
+
+                If Not filee.Exists Then
+                    filee.Create().Close()
+                End If
+
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+                        Dim writer As New StreamWriter(path)
+                        writer.WriteLine(.item("FULLNAME"))
+                        writer.Close()
+                    End With
+                Next
+            End If
+        End Using
+    End Sub
 
 End Module

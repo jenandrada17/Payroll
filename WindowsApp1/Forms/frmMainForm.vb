@@ -11,6 +11,14 @@ Public Class frmMainForm
 
     Private Sub frmMainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
+        'GetBranchCodeInTBL_EMPLOYEE()
+
+        'GetBranchCodeInTBL()
+
+        'GetPositions()
+
+        'AddColumn_TBL_EMPLOYEE()
+
         'SSS_Contribution_2023()
 
         'GetTotalOF() 'COST DISTRIBUTION DISBALANCE TRACING

@@ -769,35 +769,39 @@ Public Class frmReport
                 If dss.Tables(0).Rows.Count > 0 Then
                     For Each drR In dss.Tables(0).Rows
                         With drR
+                            Try
 
-                            Dim dateStarted As DateTime = PaydateCom_Combo.Text
+                                Dim dateStarted As DateTime = PaydateCom_Combo.Text
 
-                            '============================= NAME AND ATTENDANCE ============================  
-                            Dim namee As String = .Item("FULLNAME")
-                            Dim CATEGORY As String = .Item("CATEGORY")
-                            Dim TOTALS As Decimal = 0
-                            Dim DALTON As Double = .Item("DALTON")
-                            Dim PHOTO As Double = .Item("PHOTO")
-                            Dim DAVAOP As Double = .Item("DAVAOP")
-                            Dim PERFECOM As Double = .Item("PERFECOM")
-                            Dim G3 As Double = .Item("G3")
-                            Dim Seven11 As Double = .Item("Seven11")
-                            Dim COMI_TO_FUJI As Double = .Item("COMI_TO_FUJI")
-                            Dim HOUSEHOLD As Double = .Item("HOUSEHOLD")
-                            Dim LEASING As Double = .Item("LEASING")
+                                '============================= NAME AND ATTENDANCE ============================  
+                                Dim namee As String = .Item("FULLNAME")
+                                Dim CATEGORY As String = IIf(IsDBNull(.Item("CATEGORY")), Nothing, .Item("CATEGORY"))
+                                Dim TOTALS As Decimal = 0
+                                Dim DALTON As Double = IIf(IsDBNull(.Item("DALTON")), 0, .Item("DALTON"))
+                                Dim PHOTO As Double = IIf(IsDBNull(.Item("PHOTO")), 0, .Item("PHOTO"))
+                                Dim DAVAOP As Double = IIf(IsDBNull(.Item("DAVAOP")), 0, .Item("DAVAOP"))
+                                Dim PERFECOM As Double = IIf(IsDBNull(.Item("PERFECOM")), 0, .Item("PERFECOM"))
+                                Dim G3 As Double = IIf(IsDBNull(.Item("G3")), 0, .Item("G3"))
+                                Dim Seven11 As Double = IIf(IsDBNull(.Item("Seven11")), 0, .Item("Seven11"))
+                                Dim COMI_TO_FUJI As Double = IIf(IsDBNull(.Item("COMI_TO_FUJI")), 0, .Item("COMI_TO_FUJI"))
+                                Dim HOUSEHOLD As Double = IIf(IsDBNull(.Item("HOUSEHOLD")), 0, .Item("HOUSEHOLD"))
+                                Dim LEASING As Double = IIf(IsDBNull(.Item("LEASING")), 0, .Item("LEASING"))
 
-                            If CommonCat_Combo.SelectedIndex = 0 Then
-                                TOTALS = .Item("GROSS_AMOUNT")
-                            ElseIf CommonCat_Combo.SelectedIndex = 1 Then
-                                TOTALS = .Item("NET_PAY")
-                            ElseIf CommonCat_Combo.SelectedIndex = 2 Then
-                                TOTALS = .Item("TOTAL_DEDUCTION")
-                            ElseIf CommonCat_Combo.SelectedIndex = 3 Then
-                                TOTALS = GetData_Decimal("AMOUNT", $"RECORDED_ALLOW_DEDUC WHERE BIO_NO ='{ .ITEM("BIO_NO")}' AND CATEGORY='13th Month Pay' AND PAYDATE='{dateStarted.ToShortDateString}'")
-                            End If
+                                If CommonCat_Combo.SelectedIndex = 0 Then
+                                    TOTALS = .Item("GROSS_AMOUNT")
+                                ElseIf CommonCat_Combo.SelectedIndex = 1 Then
+                                    TOTALS = .Item("NET_PAY")
+                                ElseIf CommonCat_Combo.SelectedIndex = 2 Then
+                                    TOTALS = .Item("TOTAL_DEDUCTION")
+                                ElseIf CommonCat_Combo.SelectedIndex = 3 Then
+                                    TOTALS = GetData_Decimal("AMOUNT", $"RECORDED_ALLOW_DEDUC WHERE BIO_NO ='{ .ITEM("BIO_NO")}' AND CATEGORY='13th Month Pay' AND PAYDATE='{dateStarted.ToShortDateString}'")
+                                End If
 
-                            dt_ComLeasingDis.Rows.Add(namee, CATEGORY, TOTALS.ToString("n"), DALTON, PHOTO, DAVAOP,
-                                               PERFECOM, G3, Seven11, COMI_TO_FUJI, HOUSEHOLD, LEASING)
+                                dt_ComLeasingDis.Rows.Add(namee, CATEGORY, TOTALS.ToString("n"), DALTON, PHOTO, DAVAOP,
+                                                   PERFECOM, G3, Seven11, COMI_TO_FUJI, HOUSEHOLD, LEASING)
+                            Catch ex As Exception
+                                Console.WriteLine(ex.ToString)
+                            End Try
 
                         End With
                     Next

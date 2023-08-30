@@ -21,7 +21,7 @@ Public Class frmNewEmployee
 
         Lists_Employees(lvEmployee)
         PopulateComboBox(Branch_ComboB, "PAYROLL_EMPLOYEE", "BRANCH_CODE")
-        PopulateComboBox_Any(Position_Combo, "PAYROLL_EMPLOYEE", "EMP_POSITION")
+        PopulateComboBox_Any(Position_Combo, "CATEGORIES WHERE NAME = 'POSITION'", "CATEGORY")
 
         For x = 0 To 23
             Dim tm As New Date(1, 1, 1, x, 0, 0)
