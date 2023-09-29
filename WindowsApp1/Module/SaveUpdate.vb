@@ -688,8 +688,9 @@ Module SaveUpdate
                         If days_covred > 0 Then
 
                             Dim ending As DateTime = startingDate.AddDays(days_covred)
-
                             While (startingDate <= ending)
+
+                                'While (startingDate <= EndingDate)
 
                                 If PRESENT_Date(bioNo, paydate_, startingDate) Then
 
@@ -738,18 +739,20 @@ Module SaveUpdate
                                 End If
 
                                 '=============== IF HOLIDAY TRAINING COVERED ================
-                                If DataeXIST($" PAYROLL_HOLIDAY WHERE DATEE = '{startingDate.ToString("M")}' AND KINDS = 'REGULAR'") Then
-                                    If startingDate >= Started Then
-                                        Training_REGHoliday += 1
+                                If startingDate <= EndingDate Then
+                                    If DataeXIST($" PAYROLL_HOLIDAY WHERE DATEE = '{startingDate.ToString("M")}' AND KINDS = 'REGULAR'") Then
+                                        If startingDate >= Started Then
+                                            Training_REGHoliday += 1
 
-                                        '===================== MINIMUM RATE CHANGED STARTING SEPTEMBER 1, 2022 =============== 
-                                        If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
-                                            Dim newMin_startingDate As Date = GetData("STARTING_DATE", $"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'")
-                                            If startingDate = newMin_startingDate.AddDays(-1) Then
-                                                Rholiday_newMin_covred_training += 1
+                                            '===================== MINIMUM RATE CHANGED STARTING SEPTEMBER 1, 2022 =============== 
+                                            If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
+                                                Dim newMin_startingDate As Date = GetData("STARTING_DATE", $"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'")
+                                                If startingDate = newMin_startingDate.AddDays(-1) Then
+                                                    Rholiday_newMin_covred_training += 1
+                                                End If
                                             End If
-                                        End If
 
+                                        End If
                                     End If
                                 End If
 
