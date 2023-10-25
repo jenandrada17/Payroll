@@ -444,7 +444,7 @@ Module SaveUpdate
             For Each dr In dss.Tables(0).Rows
                 With dr
 
-                    Dim old_rate As String = .Item("MINIMUM_RATE")
+                    Dim old_rate As String = IIf(IsDBNull(.Item("MINIMUM_RATE")), 0, .Item("MINIMUM_RATE"))
 
                     .Item("MINIMUM_RATE") = MINIMUM_RATE
                     .Item("OLD_MINIMUM_RATE") = old_rate
@@ -789,8 +789,8 @@ Module SaveUpdate
 
                         '===================== MINIMUM RATE CHANGED STARTING SEPTEMBER 1, 2022 =============== 
                         If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
-                            Dim old_days As Double = OLD_NEW_RATE(bioNo).old_days
-                            Dim new_days As Double = OLD_NEW_RATE(bioNo).new_days
+                            Dim old_days As Double = OLD_NEW_RATE(bioNo, paydate_).old_days
+                            Dim new_days As Double = OLD_NEW_RATE(bioNo, paydate_).new_days
 
                             Dim tot_days As Double = (old_days * Old_Rate) + (new_days * rate)
                             TotalBasic = tot_days - total_train
@@ -822,8 +822,8 @@ Module SaveUpdate
 
                         '===================== MINIMUM RATE CHANGED STARTING SEPTEMBER 1, 2022 ===================== 
                         If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
-                            Dim old_days As Double = OLD_NEW_RATE(bioNo).old_days
-                            Dim new_days As Double = OLD_NEW_RATE(bioNo).new_days
+                            Dim old_days As Double = OLD_NEW_RATE(bioNo, paydate_).old_days
+                            Dim new_days As Double = OLD_NEW_RATE(bioNo, paydate_).new_days
 
                             TotalBasic = (old_days * Old_Rate) + (new_days * rate)
 
@@ -1091,8 +1091,8 @@ Module SaveUpdate
                         If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
                             '==================== OVERTIMEEEEEEEE =====================================
                             If RegularOT <> 0 Then
-                                Dim old_OT As Double = OLD_NEW_RATE(bioNo).old_overtime
-                                Dim new_OT As Double = OLD_NEW_RATE(bioNo).new_overtime
+                                Dim old_OT As Double = OLD_NEW_RATE(bioNo, paydate_).old_overtime
+                                Dim new_OT As Double = OLD_NEW_RATE(bioNo, paydate_).new_overtime
 
                                 Dim percentOT_training As Double = training_overtime / RegularOT
                                 Dim percentOT_old As Double = old_OT / RegularOT
@@ -1106,8 +1106,8 @@ Module SaveUpdate
                             End If
                             '==================== LATEEEEEEEEEEE =====================================
                             If Late <> 0 Then
-                                Dim old_late As Double = OLD_NEW_RATE(bioNo).old_late
-                                Dim new_late As Double = OLD_NEW_RATE(bioNo).new_late
+                                Dim old_late As Double = OLD_NEW_RATE(bioNo, paydate_).old_late
+                                Dim new_late As Double = OLD_NEW_RATE(bioNo, paydate_).new_late
 
                                 Dim percentLate_training As Double = training_late.TotalMinutes / Late
                                 Dim percentLate_old As Double = old_late / Late
@@ -1118,11 +1118,27 @@ Module SaveUpdate
                                 Dim Late_new As Double = ((rate / 8) / 60) * (Late * percentLate_new)
 
                                 LATEE = Late_training + Late_old + Late_new
+
+
+                                '=================  LATE ADJUSTMENT IF NOT EXEMPTED ==================== 
+                                If Late_Adjustment > 1 And Not ThisHasRow($"LATE_EXEMPTED WHERE BIONO = {bioNo}") Then
+                                    'Dim late_rate As Decimal = (rate / 8) / 60
+                                    'Dim total_adjustment As Decimal = ((Late - Late_Approved) * (Late_Adjustment - 1)) * late_rate
+
+                                    Dim t1 As Decimal = (Old_Rate / 8) / 60
+                                    Dim t2 As Decimal = (rate / 8) / 60
+                                    Dim lateMinusApprove As Decimal = Late - Late_Approved
+                                    Dim total_adjustment1 As Decimal = ((lateMinusApprove * percentLate_old) * (Late_Adjustment - 1)) * t1
+                                    Dim total_adjustment2 As Decimal = ((lateMinusApprove * percentLate_new) * (Late_Adjustment - 1)) * t2
+                                    Dim total_adjustment As Decimal = total_adjustment1 + total_adjustment2
+                                    Deduction += total_adjustment
+                                    Save_Recorded_Allow_Deduc(bioNo, paydate_, "Late Adjustment", total_adjustment, "DEDUCTION")
+                                End If
                             End If
                             '==================== UNDERTIMEEEEEEEEEEEE =============================== 
                             If UNDERTIMEE <> 0 Then
-                                Dim old_undertime As Double = OLD_NEW_RATE(bioNo).old_undertime
-                                Dim new_undertime As Double = OLD_NEW_RATE(bioNo).new_undertime
+                                Dim old_undertime As Double = OLD_NEW_RATE(bioNo, paydate_).old_undertime
+                                Dim new_undertime As Double = OLD_NEW_RATE(bioNo, paydate_).new_undertime
 
                                 Dim percentUT_training As Double = training_undertime.TotalMinutes / UNDERTIMEE
                                 Dim percentUT_old As Double = old_undertime / UNDERTIMEE
@@ -1144,13 +1160,16 @@ Module SaveUpdate
                         GrossAmount = (TotalBasic + TotalREGHol + TotalSPECHol + TotalOT + TotalNight) - TotalLateUnder
 
                         '======================================= LATE ADJUSTMENT IF NOT EXEMPTED ====================================== 
-                        If Late_Adjustment > 1 And Not ThisHasRow($"LATE_EXEMPTED WHERE BIONO = {bioNo}") Then
-                            Dim late_rate As Decimal = (rate / 8) / 60
-                            Dim total_adjustment As Decimal = ((Late - Late_Approved) * (Late_Adjustment - 1)) * late_rate
-                            Deduction += total_adjustment
-                            Save_Recorded_Allow_Deduc(bioNo, paydate_, "Late Adjustment", total_adjustment, "DEDUCTION")
-                        End If
+                        If Not ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
+                            If Late_Adjustment > 1 And Not ThisHasRow($"LATE_EXEMPTED WHERE BIONO = {bioNo}") Then
 
+                                Dim late_rate As Decimal = (rate / 8) / 60
+                                Dim total_adjustment As Decimal = ((Late - Late_Approved) * (Late_Adjustment - 1)) * late_rate
+                                Deduction += total_adjustment
+                                Save_Recorded_Allow_Deduc(bioNo, paydate_, "Late Adjustment", total_adjustment, "DEDUCTION")
+
+                            End If
+                        End If
                     End If
 
                     '============================================= Calculate =========================================================  

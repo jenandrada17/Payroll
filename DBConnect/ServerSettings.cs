@@ -16,7 +16,7 @@ namespace DBConnect
             OnLoad();
         }
 
-        private void OnLoad()
+        public void OnLoad()
         {
             if (!string.IsNullOrWhiteSpace(Database_TXT.Text))
             {
@@ -71,7 +71,7 @@ namespace DBConnect
             }
         }
 
-        private void TestCon_BTN_Click(object sender, EventArgs e)
+        public void TestCon_BTN_Click(object sender, EventArgs e)
         {
             try
             {
@@ -94,7 +94,7 @@ namespace DBConnect
             }
         }
 
-        private string FBConnectionString()
+        public string FBConnectionString()
         {
             var cs = new FbConnectionStringBuilder()
             {
@@ -114,7 +114,7 @@ namespace DBConnect
             return cs.ConnectionString;
         }
 
-        private void SaveCon_BTN_Click(object sender, EventArgs e)
+        public void SaveCon_BTN_Click(object sender, EventArgs e)
         {
             try
             {
@@ -150,7 +150,7 @@ namespace DBConnect
             }
         }
 
-        private void Change_BTN_Click(object sender, EventArgs e)
+        public void Change_BTN_Click(object sender, EventArgs e)
         {
             foreach (object obj in Controls)
             {
@@ -168,7 +168,7 @@ namespace DBConnect
             }
         }
 
-        private void CancelCon_BTN_Click(object sender, EventArgs e)
+        public void CancelCon_BTN_Click(object sender, EventArgs e)
         {
             Close();
         }

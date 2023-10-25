@@ -3,8 +3,8 @@ Imports DBConnect
 
 Public Class frmMainForm
 
-    Dim DateNow As DateTime = DateTime.Now
-    Dim StartFour, EndFour, StartNineteen, EndNineteen As DateTime
+    Public DateNow As DateTime = DateTime.Now
+    Public StartFour, EndFour, StartNineteen, EndNineteen As DateTime
     Public Paydate As DateTime
     Public DAYS_COUNT As Integer = 0
     Public starting, ending As Date
