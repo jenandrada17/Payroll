@@ -411,16 +411,18 @@ Module SaveUpdate
             For Each dr In dss.Tables(0).Rows
                 With dr
 
-                    Dim existing_rate As Decimal = IIf(IsDBNull(.Item("RATE_DAILY")), 0, .Item("RATE_DAILY"))
+                    If IsDBNull(.Item("FIX_MONTHLY_RATE")) Or .Item("FIX_MONTHLY_RATE").Equals(False) Then 
+                        Dim existing_rate As Decimal = IIf(IsDBNull(.Item("RATE_DAILY")), 0, .Item("RATE_DAILY"))
 
-                    If existing_rate <= daily_rate Then
-                        .Item("RATE_DAILY") = daily_rate
-                        .Item("RATE_MONTHLY") = daily_rate * 26
-                        .Item("OLD_RATE") = existing_rate
-                    End If
+                        If existing_rate <= daily_rate Then
+                            .Item("RATE_DAILY") = daily_rate
+                            .Item("RATE_MONTHLY") = daily_rate * 26
+                            .Item("OLD_RATE") = existing_rate
+                        End If
 
-                    If fix_monthly = True Then
-                        .item("FIX_MONTHLY_RATE") = fix_monthly
+                        If fix_monthly = True Then
+                            .item("FIX_MONTHLY_RATE") = fix_monthly
+                        End If
                     End If
 
                 End With
@@ -439,7 +441,7 @@ Module SaveUpdate
         Dim mysql As String
 
         mysql = $"Select * FROM PAYROLL_CITY_BRANCH where CITY = '{value}'"
-        Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_CITY_BRANCH")
+                        Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_CITY_BRANCH")
         If dss.Tables(0).Rows.Count > 0 Then
             For Each dr In dss.Tables(0).Rows
                 With dr
@@ -842,21 +844,38 @@ Module SaveUpdate
 
                     End If
 
-                    ''============================= FOR MONTHLY RATE (IF ABOVE MINIMUM RATE)=============== 
+                    '''============================= IF ABOVE MINIMUM RATE=============== 
+                    'If rate > Minimum_rate Then
+                    '    Monthly_rate = Monthly_rate / 2
+
+                    '    If fix_monthly_rate = True Then
+                    '        TotalBasic = Monthly_rate
+                    '    Else
+                    '        If NoOfDays >= STANDARD_DAYS Then  '=== CHECK IF ABOVE MINIMUM 
+                    '            TotalBasic = NoOfDays * rate
+                    '        Else
+                    '            Dim MINUS_DAYS As Double = STANDARD_DAYS - NoOfDays
+                    '            TotalBasic = Monthly_rate - (MINUS_DAYS * rate)
+                    '        End If
+                    '    End If
+                    'End If
+
+                    ''============================= IF ABOVE MINIMUM RATE=============== 
                     If rate > Minimum_rate Then
                         Monthly_rate = Monthly_rate / 2
 
-                        If fix_monthly_rate = True Then
-                            TotalBasic = Monthly_rate
+                        If NoOfDays >= STANDARD_DAYS Then  '=== CHECK IF ABOVE MINIMUM 
+                            TotalBasic = NoOfDays * rate
                         Else
-                            If NoOfDays >= STANDARD_DAYS Then  '=== CHECK IF ABOVE MINIMUM 
-                                TotalBasic = NoOfDays * rate
-                            Else
-                                Dim MINUS_DAYS As Double = STANDARD_DAYS - NoOfDays
-                                TotalBasic = Monthly_rate - (MINUS_DAYS * rate)
-                            End If
+                            Dim MINUS_DAYS As Double = STANDARD_DAYS - NoOfDays
+                            TotalBasic = Monthly_rate - (MINUS_DAYS * rate)
                         End If
+                    End If
 
+                    ''============================= FIX MONTHLY RATE===============  
+                    If fix_monthly_rate = True Then
+                        Monthly_rate = Monthly_rate / 2
+                        TotalBasic = Monthly_rate
                     End If
 
                     '============================ CHECK WITH TRAINING DAYS COVERED ======================== 
