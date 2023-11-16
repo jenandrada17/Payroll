@@ -219,12 +219,12 @@ Module Temporary
     '=========================================================
 
     '===================== MINIMUM HOLIDAY COVERED==================    
-    Friend Function REG_SPEC_HOLIDAY(BIO_NO As String) As (rholiday As Integer, sholiday As Integer)
+    Friend Function REG_SPEC_HOLIDAY(BIO_NO As String, paydate As String) As (rholiday As Integer, sholiday As Integer)
 
         Dim Rdays As Integer = 0
         Dim Sdays As Integer = 0
 
-        Dim _mysql As String = $"Select * from TEMP_TABLE where BIO_NO = '{BIO_NO}'"
+        Dim _mysql As String = $"Select * from TEMP_TABLE where BIO_NO = '{BIO_NO}' AND PAYDATE = '{paydate}'"
         Using _ds As DataSet = LoadSQL(_mysql, "TEMP_TABLE")
             If _ds.Tables(0).Rows.Count > 0 Then
                 With _ds.Tables(0).Rows(0)

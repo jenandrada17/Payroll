@@ -273,8 +273,8 @@ Public Class frmPayout
             '===================== MINIMUM RATE CHANGED STARTING SEPTEMBER 1, 2022 ===================== 
             If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
                 Dim Old_Rate As Decimal = GetData_Decimal("OLD_RATE", $"PAYROLL_EMPLOYEE WHERE BIO_NO = '{BIO_NO}'")
-                Dim newMin_rholiday As Integer = REG_SPEC_HOLIDAY(BIO_NO).rholiday
-                Dim newMin_sholiday As Integer = REG_SPEC_HOLIDAY(BIO_NO).sholiday
+                Dim newMin_rholiday As Integer = REG_SPEC_HOLIDAY(BIO_NO, paydate_).rholiday
+                Dim newMin_sholiday As Integer = REG_SPEC_HOLIDAY(BIO_NO, paydate_).sholiday
 
                 Dim old_rholiday As Decimal = (CDbl(RegularHol_TXT.Text) * Old_Rate) * regHoliday_
                 Dim new_rholiday As Decimal = (newMin_rholiday * rate) * regHoliday_

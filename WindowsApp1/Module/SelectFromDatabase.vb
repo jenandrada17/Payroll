@@ -1094,7 +1094,8 @@ Module SelectFromDatabase
 
     Public Function CountCELL_Nothing(row As DataGridViewRow) As Integer
         Dim count As New Integer
-        If Not row.DefaultCellStyle.ForeColor = Color.Red And row.Cells(5).Value = True Then
+        'If Not row.DefaultCellStyle.ForeColor = Color.Red And row.Cells(5).Value = True Then
+        If row.DefaultCellStyle.ForeColor = Color.Red And row.Cells(5).Value = True Then
             For cell As Integer = 1 To 4
                 If row.Cells(cell).Value = Nothing Then
                     count += 1

@@ -795,8 +795,8 @@ Module SaveUpdate
                             Dim tot_days As Double = (old_days * Old_Rate) + (new_days * rate)
                             TotalBasic = tot_days - total_train
 
-                            Dim newMin_rholiday As Integer = REG_SPEC_HOLIDAY(bioNo).rholiday
-                            Dim newMin_sholiday As Integer = REG_SPEC_HOLIDAY(bioNo).sholiday
+                            Dim newMin_rholiday As Integer = REG_SPEC_HOLIDAY(bioNo, paydate_).rholiday
+                            Dim newMin_sholiday As Integer = REG_SPEC_HOLIDAY(bioNo, paydate_).sholiday
 
                             Dim old_rholiday As Decimal = (RegularHol * Old_Rate) * regHoliday
                             Dim new_rholiday As Decimal = (newMin_rholiday * rate) * regHoliday
@@ -827,8 +827,8 @@ Module SaveUpdate
 
                             TotalBasic = (old_days * Old_Rate) + (new_days * rate)
 
-                            Dim newMin_rholiday As Integer = REG_SPEC_HOLIDAY(bioNo).rholiday
-                            Dim newMin_sholiday As Integer = REG_SPEC_HOLIDAY(bioNo).sholiday
+                            Dim newMin_rholiday As Integer = REG_SPEC_HOLIDAY(bioNo, paydate_).rholiday
+                            Dim newMin_sholiday As Integer = REG_SPEC_HOLIDAY(bioNo, paydate_).sholiday
 
                             Dim old_rholiday As Decimal = (RegularHol * Old_Rate) * regHoliday
                             Dim new_rholiday As Decimal = (newMin_rholiday * rate) * regHoliday
