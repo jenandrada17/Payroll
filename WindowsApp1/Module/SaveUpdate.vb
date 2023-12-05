@@ -862,13 +862,11 @@ Module SaveUpdate
 
                     ''============================= IF ABOVE MINIMUM RATE=============== 
                     If rate > Minimum_rate Then
-                        Monthly_rate = Monthly_rate / 2
-
                         If NoOfDays >= STANDARD_DAYS Then  '=== CHECK IF ABOVE MINIMUM 
                             TotalBasic = NoOfDays * rate
                         Else
                             Dim MINUS_DAYS As Double = STANDARD_DAYS - NoOfDays
-                            TotalBasic = Monthly_rate - (MINUS_DAYS * rate)
+                            TotalBasic = (Monthly_rate / 2) - (MINUS_DAYS * rate)
                         End If
                     End If
 
