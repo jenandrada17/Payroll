@@ -400,7 +400,7 @@ Module SaveUpdate
             Next
         End If
     End Sub
-
+    'SaveRATE("BIO_NO", Rate_BioNo_TXT.Text, Rate_EmpAmount_TXT.Text, fix_monthly)
     Friend Sub SaveRATE(column As String, value As String, daily_rate As String, Optional fix_monthly As Boolean = False, Optional group As Boolean = False) '=========== BOOLEAN IF MORE THAN 1 ========== 
 
         Dim mysql As String = $"Select * FROM  PAYROLL_EMPLOYEE WHERE {column} = '{value}'"
@@ -411,18 +411,25 @@ Module SaveUpdate
             For Each dr In dss.Tables(0).Rows
                 With dr
 
-                    If IsDBNull(.Item("FIX_MONTHLY_RATE")) Or .Item("FIX_MONTHLY_RATE").Equals(False) Then 
-                        Dim existing_rate As Decimal = IIf(IsDBNull(.Item("RATE_DAILY")), 0, .Item("RATE_DAILY"))
+                    Dim existing_rate As Decimal = IIf(IsDBNull(.Item("RATE_DAILY")), 0, .Item("RATE_DAILY"))
 
-                        If existing_rate <= daily_rate Then
-                            .Item("RATE_DAILY") = daily_rate
-                            .Item("RATE_MONTHLY") = daily_rate * 26
-                            .Item("OLD_RATE") = existing_rate
-                        End If
+                    If group Then
+                        If IsDBNull(.Item("FIX_MONTHLY_RATE")) Or .Item("FIX_MONTHLY_RATE").Equals(False) Then
+                            If existing_rate <= daily_rate Then
+                                .Item("RATE_DAILY") = daily_rate
+                                .Item("RATE_MONTHLY") = daily_rate * 26
+                                .Item("OLD_RATE") = existing_rate
+                            End If
 
-                        If fix_monthly = True Then
-                            .item("FIX_MONTHLY_RATE") = fix_monthly
+                            If fix_monthly = True Then
+                                .item("FIX_MONTHLY_RATE") = fix_monthly
+                            End If
                         End If
+                    Else
+                        .Item("RATE_DAILY") = daily_rate
+                        .Item("RATE_MONTHLY") = daily_rate * 26
+                        .Item("OLD_RATE") = existing_rate
+                        .item("FIX_MONTHLY_RATE") = fix_monthly
                     End If
 
                 End With
