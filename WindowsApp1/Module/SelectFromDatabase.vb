@@ -2621,7 +2621,7 @@ Module SelectFromDatabase
         Return False
     End Function
 
-    Public Function GetTotal(column As String, where As String) As Decimal
+    Public Function GetTotal(column As String, where As String, optional bioNo As ) As Decimal
         Dim TOTALS As Decimal = 0
         Dim mysql As String = $"Select COALESCE(sum({column}), 0) AS TOTALS From {where}"
         Dim ds As DataSet = LoadSQL(mysql)
