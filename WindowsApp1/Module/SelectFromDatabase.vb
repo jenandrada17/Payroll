@@ -2626,10 +2626,7 @@ Module SelectFromDatabase
         Dim mysql As String = $"Select COALESCE(sum({column}), 0) AS TOTALS From {where}"
         Dim ds As DataSet = LoadSQL(mysql)
         If ds.Tables(0).Rows.Count > 0 Then
-            Dim dr As DataRow = ds.Tables(0).Rows(0)
-            With dr
-                TOTALS = .Item("TOTALS")
-            End With
+            TOTALS = ds.Tables(0).Rows(0).Item("TOTALS")
         End If
 
         Return TOTALS
