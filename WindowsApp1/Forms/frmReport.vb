@@ -1,4 +1,5 @@
-﻿Imports System.Globalization
+﻿Imports System.Data.SqlClient
+Imports System.Globalization
 
 Public Class frmReport
 
@@ -19,6 +20,7 @@ Public Class frmReport
         PopulatePaydate_Yearly(SILYear_Combo, "RECORDED_ALLOW_DEDUC", "PAYDATE")
         Lists_Deduction_History(DeducHistory_List)
         Lists_SBU(SBU_LV)
+        PopulateDateRange13Month()
 
     End Sub
 
@@ -1872,15 +1874,18 @@ Public Class frmReport
     End Sub
 
     Private Sub Month_LV_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles Month_LV.MouseDoubleClick
-        Dim range As DateTime
+        Dim range As DateTime = Range_Combo.Text
         If Month_LV.Items.Count >= 0 Then
-            If Range_Combo.SelectedIndex = 0 Then
-                range = $"5/15/{Today.Year}"
-            ElseIf Range_Combo.SelectedIndex = 1 Then
-                range = $"12/15/{Today.Year}"
-            Else
-                range = Nothing
-            End If
+
+            'If Range_Combo.SelectedIndex = 0 Then
+            '    range = $"5/15/{Today.Year}"
+            'ElseIf Range_Combo.SelectedIndex = 1 Then
+            '    range = $"12/15/{Today.Year}"
+            'Else
+            '    range = Nothing
+            'End If
+
+            'Laod_13Month(Month_LV.Items(Month_LV.FocusedItem.Index).SubItems(1).Tag, rpt_13Month, range)
 
             Laod_13Month(Month_LV.Items(Month_LV.FocusedItem.Index).SubItems(1).Tag, rpt_13Month, range)
         End If
@@ -2237,26 +2242,45 @@ Public Class frmReport
     Private Sub Range_Combo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Range_Combo.SelectedIndexChanged
         rpt_13Month.Clear()
 
-        If Range_Combo.SelectedIndex = 0 Then
-            Lists_13Month(Month_LV, "", $"5/15/{Today.Year}")
-        Else
-            Lists_13Month(Month_LV, "", $"12/15/{Today.Year}")
-        End If
+        'If Range_Combo.SelectedIndex = 0 Then
+        '    Lists_13Month(Month_LV, "", $"5/15/{Today.Year}")
+        'Else
+        '    Lists_13Month(Month_LV, "", $"12/15/{Today.Year}")
+        'End If
+
+        Lists_13Month(Month_LV, "", Range_Combo.Text)
+
+    End Sub
+
+    Private Sub PopulateDateRange13Month()
+        Dim mysql As String = "SELECT DISTINCT PAYDATE FROM PAYROLL_PAYOUT 
+                                WHERE (EXTRACT(MONTH FROM PAYDATE) = 5 AND EXTRACT(DAY FROM PAYDATE) = 15) 
+                                OR (EXTRACT(MONTH FROM PAYDATE) = 12 AND EXTRACT(DAY FROM PAYDATE) = 15) ORDER BY PAYDATE
+"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
+            If ds.Tables(0).Rows.Count > 0 Then
+                For Each dr In ds.Tables(0).Rows
+                    Range_Combo.Items.Add(dr.Item("PAYDATE"))
+                Next
+            End If
+        End Using
     End Sub
 
     Private Sub PrintList_btn_Click(sender As Object, e As EventArgs) Handles PrintList_btn.Click
-        Dim range As DateTime
         If Month_LV.Items.Count >= 0 Then
-            If Range_Combo.SelectedIndex = 0 Then
-                range = $"5/15/{Today.Year}"
+            'Dim range As DateTime
+            'If Range_Combo.SelectedIndex = 0 Then
+            '    range = $"5/15/{Today.Year}"
 
-            ElseIf Range_Combo.SelectedIndex = 1 Then
-                range = $"12/15/{Today.Year}"
-            Else
-                range = Nothing
-            End If
+            'ElseIf Range_Combo.SelectedIndex = 1 Then
+            '    range = $"12/15/{Today.Year}"
+            'Else
+            '    range = Nothing
+            'End If
 
-            Print_13Month_LIST(range)
+            'Print_13Month_LIST(range)
+
+            Print_13Month_LIST(Range_Combo.Text)
         End If
     End Sub
 

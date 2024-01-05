@@ -796,7 +796,7 @@ Module SaveUpdate
                         TotalREGHol = REG_STANDARD + REG_TRAINEE
                         TotalSPECHol = SPEC_STANDARD + SPEC_TRAINEE
 
-                        '===================== MINIMUM RATE CHANGED STARTING SEPTEMBER 1, 2022 =============== 
+                        '===================== MINIMUM RATE CHANGED ===================================== 
                         If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
                             Dim old_days As Double = OLD_NEW_RATE(bioNo, paydate_).old_days
                             Dim new_days As Double = OLD_NEW_RATE(bioNo, paydate_).new_days
@@ -807,7 +807,7 @@ Module SaveUpdate
                             Dim newMin_rholiday As Integer = REG_SPEC_HOLIDAY(bioNo, paydate_).rholiday
                             Dim newMin_sholiday As Integer = REG_SPEC_HOLIDAY(bioNo, paydate_).sholiday
 
-                            Dim old_rholiday As Decimal = (RegularHol * Old_Rate) * regHoliday
+                            Dim old_rholiday As Decimal = ((RegularHol - newMin_rholiday) * Old_Rate) * regHoliday
                             Dim new_rholiday As Decimal = (newMin_rholiday * rate) * regHoliday
 
                             Dim old_sholiday As Decimal = ((SpecialHol / 8) * Old_Rate) * specHoliday
@@ -829,7 +829,7 @@ Module SaveUpdate
                         TotalREGHol = (RegularHol * rate) * regHoliday
                         TotalSPECHol = ((SpecialHol_hrs / 8) * rate) * specHoliday
 
-                        '===================== MINIMUM RATE CHANGED STARTING SEPTEMBER 1, 2022 ===================== 
+                        '===================== MINIMUM RATE CHANGED ================================ 
                         If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
                             Dim old_days As Double = OLD_NEW_RATE(bioNo, paydate_).old_days
                             Dim new_days As Double = OLD_NEW_RATE(bioNo, paydate_).new_days
@@ -839,10 +839,10 @@ Module SaveUpdate
                             Dim newMin_rholiday As Integer = REG_SPEC_HOLIDAY(bioNo, paydate_).rholiday
                             Dim newMin_sholiday As Integer = REG_SPEC_HOLIDAY(bioNo, paydate_).sholiday
 
-                            Dim old_rholiday As Decimal = (RegularHol * Old_Rate) * regHoliday
+                            Dim old_rholiday As Decimal = ((RegularHol - newMin_rholiday) * Old_Rate) * regHoliday
                             Dim new_rholiday As Decimal = (newMin_rholiday * rate) * regHoliday
 
-                            Dim old_sholiday As Decimal = ((SpecialHol / 8) * Old_Rate) * specHoliday
+                            Dim old_sholiday As Decimal = (((SpecialHol_hrs - newMin_sholiday) / 8) * Old_Rate) * specHoliday
                             Dim new_sholiday As Decimal = ((newMin_sholiday / 8) * rate) * specHoliday
 
                             TotalREGHol = old_rholiday + new_rholiday
@@ -851,7 +851,7 @@ Module SaveUpdate
 
                     End If
 
-                    '''============================= IF ABOVE MINIMUM RATE=============== 
+                    ''============================= IF ABOVE MINIMUM RATE=============== 
                     'If rate > Minimum_rate Then
                     '    Monthly_rate = Monthly_rate / 2
 
@@ -881,6 +881,9 @@ Module SaveUpdate
                     If fix_monthly_rate = True Then
                         Monthly_rate = Monthly_rate / 2
                         TotalBasic = Monthly_rate
+
+                        TotalREGHol = 0
+                        TotalSPECHol = 0
                     End If
 
                     '============================ CHECK WITH TRAINING DAYS COVERED ======================== 
@@ -1008,53 +1011,6 @@ Module SaveUpdate
                             Next
                         End If
                     End Using
-
-                    'If BranchCode <> Nothing Then '=============== BRANCHES (BY RANGE)
-
-                    '    Dim balance As Decimal = GetDeduction_OverAll_Balance(bioNo)
-                    '    Dim Amount_perPayroll As Decimal = GetDeduction_ChargesRange(bioNo, balance)
-
-                    '    If Amount_perPayroll > balance Then
-                    '        Amount_perPayroll = balance
-                    '    End If
-
-                    '    Deduction = Deduction + Amount_perPayroll
-                    '    Save_Recorded_Allow_Deduc(bioNo, paydate_, "Charges", Amount_perPayroll, "DEDUCTION", 0)
-
-                    'Else '=============== HEAD OFFICE (BY AMORT)
-
-                    'Dim sql_3 As String = $"Select Z.*, Z.id as idd From PAYROLL_DEDUCTION Z WHERE BIO_NO = '{bioNo}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
-                    'Using ds_3 As DataSet = LoadSQL(sql_3, "PAYROLL_DEDUCTION")
-                    '    If ds_3.Tables(0).Rows.Count > 0 Then
-                    '        For Each dr_3 In ds_3.Tables(0).Rows
-                    '            With dr_3
-
-                    '                Dim amountt As Decimal = 0
-
-                    '                If IsDBNull(.Item("BALANCE")) Then
-                    '                    Deduction = Deduction + .Item("AMORT")
-                    '                    amountt = .Item("AMORT")
-                    '                Else
-
-                    '                    Dim balance As Decimal = GetDeduction_Balance(.Item("idd"))
-
-                    '                    If balance < .Item("AMORT") Then
-                    '                        Deduction = Deduction + .Item("BALANCE")
-                    '                        amountt = balance
-                    '                    Else
-                    '                        Deduction = Deduction + .Item("AMORT")
-                    '                        amountt = .Item("AMORT")
-                    '                    End If
-
-                    '                End If
-
-                    '                Save_Recorded_Allow_Deduc(bioNo, paydate_, .Item("CATEGORY"), amountt, "DEDUCTION", .Item("idd"))
-
-                    '            End With
-                    '        Next
-                    '    End If
-                    'End Using
-                    'End If
 
                     '============================================= OTHER DEDUCTION LIKE MP2, MAXICARE ==================================================  
                     Dim sql_5 As String = $"Select * From PAYROLL_OTHER_DEDUCTION WHERE BIO_NO = '{bioNo}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
