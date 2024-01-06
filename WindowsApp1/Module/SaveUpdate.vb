@@ -1533,7 +1533,7 @@ Module SaveUpdate
                                 Optional TIN As String = "", Optional SSS As String = "", Optional PHILH As String = "",
                                 Optional HDMF As String = "", Optional HO_CATEGORY As String = "", Optional COMMON_CATEGORY As String = "",
                                 Optional EMP_POSITION As String = "", Optional COMMON_COMPANY As String = "", Optional PhotoCategory As String = "",
-                                Optional Middlename As String = "", Optional BDATE As String = "", Optional ADDRESS As String = "")
+                                Optional Middlename As String = "", Optional BDATE As String = "", Optional ADDRESS As String = "", Optional DATE_ENDED As String = "")
 
         If COMPANY = "HEAD OFFICE" Then BRANCH_CODE = "" 'PARA MAIWASAN ANG BRANCHCODE MASAVE INCASE WALA NACLEAR
 
@@ -1592,6 +1592,7 @@ Module SaveUpdate
                 If Middlename <> "" Then .Item("MIDDLENAME") = Middlename
                 If BDATE <> "" Then .Item("BDATE") = BDATE
                 If ADDRESS <> "" Then .Item("ADDRESS") = ADDRESS
+                If DATE_ENDED <> "" Then .Item("DATE_ENDED") = DATE_ENDED
 
             End With
 

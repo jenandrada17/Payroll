@@ -835,6 +835,8 @@ Module SelectFromDatabase
 
     Friend Function REGHolidayCount(startingDate As DateTime, EndingDate As DateTime) As Integer
         Dim count As Integer
+        emp_status
+        dateEnded
 
         While (startingDate <= EndingDate)
             Dim mysql As String = $"SELECT * FROM PAYROLL_HOLIDAY Where DATEE = '{startingDate.ToString("M")}' and KINDS = 'REGULAR'"
@@ -1909,7 +1911,7 @@ Module SelectFromDatabase
                            SSS_TXT As TextBox, PHILH_TXT As TextBox, HDMF_TXT As TextBox, HO_Category As ComboBox,
                            ComCategory_Combo As ComboBox, Position_Combo As ComboBox, ComCompany_Cmbo As ComboBox,
                            PhotoCategory_Combo As ComboBox, Lastname As TextBox, Middlename As TextBox,
-                           BDate_dtp As DateTimePicker, Address_txt As TextBox, Optional btnSave As Button = Nothing)
+                           BDate_dtp As DateTimePicker, Address_txt As TextBox, InActiveDate As DateTimePicker, Optional btnSave As Button = Nothing)
 
         Dim mysql As String = $"select * from PAYROLL_EMPLOYEE where BIO_NO = '{bio_no}'"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
@@ -1941,6 +1943,7 @@ Module SelectFromDatabase
 
                     If .Item("EMP_STATUS") = "INACTIVE" Then
                         InActive_RB.Checked = True
+                        InActiveDate.Value = IIf(IsDBNull(.Item("DATE_ENDED")), "1/1/2000", .Item("DATE_ENDED"))
                     End If
 
                     If btnSave IsNot Nothing Then

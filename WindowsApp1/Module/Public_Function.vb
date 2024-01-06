@@ -7,6 +7,8 @@ Imports System.Text.RegularExpressions
 Module Public_Function
 
     Friend trimmer As New Regex("\s\s+")
+    Friend emp_status As String
+    Friend dateEnded As Date
 
     Friend Function ExcelFilePath(ByVal filePath As String) As String
         DefaultFolder = Path.GetDirectoryName(filePath)

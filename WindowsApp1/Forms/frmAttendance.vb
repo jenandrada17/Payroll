@@ -1329,6 +1329,8 @@ Public Class frmAttendance
             Dim bioNum = BiometricID_TXT.Text
             Dim branchCode = GetBranchCode(bioNum)
             Dim dateStarted = GetData("DATE_STARTED", $"PAYROLL_EMPLOYEE WHERE BIO_NO = '{bioNum}'")
+            emp_status = GetData("EMP_STATUS", $"PAYROLL_EMPLOYEE WHERE BIO_NO = '{bioNum}'")
+            dateEnded = GetData("DATE_ENDED", $"PAYROLL_EMPLOYEE WHERE BIO_NO = '{bioNum}'")
 
             Dim PAYROLL As String
             If Paydate_ComboB.SelectedIndex >= 0 Then
@@ -1351,7 +1353,13 @@ Public Class frmAttendance
                     If row.DefaultCellStyle.BackColor = Color.MediumOrchid Then
 
                         If DATEE >= dateStarted Then
-                            TotalRHoliday_LBL.Text = TotalRHoliday_LBL.Text + 1
+                            If emp_status = "INACTIVE" Then
+                                If DATEE > dateEnded Then
+                                    Console.WriteLine("INACTIVE - HOLIDAY NOT INCLUDED")
+                                End If
+                            Else
+                                TotalRHoliday_LBL.Text = TotalRHoliday_LBL.Text + 1
+                            End If
                         End If
 
                     ElseIf row.DefaultCellStyle.BackColor = Color.Plum Then
@@ -1472,6 +1480,7 @@ Public Class frmAttendance
 
             TotalOTHr_LBL.Text = CDbl(TotalOTHr_LBL.Text) + AM_OT_NUP.Value
 
+            'TODO - INACTIVE REGULAR HOLIDAY
             '=========================== MINIMUM RATE CHANGED STARTED SEPTEMBER 1, 2022 ONLY (JUNE 30, 2022)===================== 
             If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
                 Dim newMin_startingDate As Date = GetData("STARTING_DATE", $"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'")
