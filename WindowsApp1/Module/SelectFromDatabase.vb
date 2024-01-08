@@ -835,14 +835,20 @@ Module SelectFromDatabase
 
     Friend Function REGHolidayCount(startingDate As DateTime, EndingDate As DateTime) As Integer
         Dim count As Integer
-        emp_status
-        dateEnded
 
         While (startingDate <= EndingDate)
             Dim mysql As String = $"SELECT * FROM PAYROLL_HOLIDAY Where DATEE = '{startingDate.ToString("M")}' and KINDS = 'REGULAR'"
             Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_HOLIDAY")
             If ds.Tables(0).Rows.Count > 0 Then
-                count += 1
+                If emp_status = "INACTIVE" Then
+                    If startingDate.ToShortDateString < CDate(dateEnded).ToShortDateString Then
+                        Console.WriteLine("INACTIVE - HOLIDAY NOT INCLUDED")
+                    Else
+                        count += 1
+                    End If
+                Else
+                    count += 1
+                End If
             End If
 
             startingDate = startingDate.AddDays(1)

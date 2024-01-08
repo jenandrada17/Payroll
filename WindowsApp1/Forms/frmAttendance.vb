@@ -1354,7 +1354,7 @@ Public Class frmAttendance
 
                         If DATEE >= dateStarted Then
                             If emp_status = "INACTIVE" Then
-                                If DATEE > dateEnded Then
+                                If DATEE > CDate(dateEnded).ToShortDateString Then
                                     Console.WriteLine("INACTIVE - HOLIDAY NOT INCLUDED")
                                 End If
                             Else
