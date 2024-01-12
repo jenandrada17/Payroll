@@ -4,6 +4,7 @@ Imports System.IO
 Module SaveUpdate
 
     Dim STANDARD_DAYS As Integer = frmMainForm.DAYS_COUNT
+    Friend fix_monthly_rate As Boolean
 
     Friend Sub SaveHoliday(datee As String, namee As String, kinds As String)
         Dim mysql As String = "Select * From PAYROLL_HOLIDAY Rows 1"
@@ -635,7 +636,7 @@ Module SaveUpdate
                     Dim TotalREGHol, TotalSPECHol, TotalOT, TotalLateUnder, TotalNight, GrossAmount As Decimal
                     Dim Minimum_rate As Decimal = IIf(IsDBNull(.Item("BRANCH_CODE")) Or .Item("BRANCH_CODE").Equals(""), GetMinimumRate("CITY", "GENSAN"), GetMinimumRate("BRANCHCODE", .Item("BRANCH_CODE")))
                     Dim Ecola As Double = GetEcola("BRANCHCODE", .Item("BRANCH_CODE"))
-                    Dim fix_monthly_rate As Boolean = IIf(IsDBNull(.Item("FIX_MONTHLY_RATE")), False, .Item("FIX_MONTHLY_RATE"))
+                    fix_monthly_rate = IIf(IsDBNull(.Item("FIX_MONTHLY_RATE")), False, .Item("FIX_MONTHLY_RATE"))
 
                     rate = IIf(IsDBNull(.Item("RATE_DAILY")) Or .Item("RATE_DAILY") = 0, Minimum_rate, .Item("RATE_DAILY"))
                     Dim Monthly_rate As Decimal = IIf(IsDBNull(.Item("RATE_MONTHLY")) Or .Item("RATE_MONTHLY").Equals("0"), rate * 26, .Item("RATE_MONTHLY"))
@@ -796,59 +797,65 @@ Module SaveUpdate
                         TotalREGHol = REG_STANDARD + REG_TRAINEE
                         TotalSPECHol = SPEC_STANDARD + SPEC_TRAINEE
 
-                        '===================== MINIMUM RATE CHANGED ===================================== 
-                        If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
-                            Dim old_days As Double = OLD_NEW_RATE(bioNo, paydate_).old_days
-                            Dim new_days As Double = OLD_NEW_RATE(bioNo, paydate_).new_days
+                        If rate > Minimum_rate Then
+                            Console.WriteLine("Above Minimum, not applicable for change minimum rate calculation!")
+                        Else
+                            '===================== MINIMUM RATE CHANGED ===================================== 
+                            If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
+                                Dim old_days As Double = OLD_NEW_RATE(bioNo, paydate_).old_days
+                                Dim new_days As Double = OLD_NEW_RATE(bioNo, paydate_).new_days
 
-                            Dim tot_days As Double = (old_days * Old_Rate) + (new_days * rate)
-                            TotalBasic = tot_days - total_train
+                                Dim tot_days As Double = (old_days * Old_Rate) + (new_days * rate)
+                                TotalBasic = tot_days - total_train
 
-                            Dim newMin_rholiday As Integer = REG_SPEC_HOLIDAY(bioNo, paydate_).rholiday
-                            Dim newMin_sholiday As Integer = REG_SPEC_HOLIDAY(bioNo, paydate_).sholiday
+                                Dim newMin_rholiday As Integer = REG_SPEC_HOLIDAY(bioNo, paydate_).rholiday
+                                Dim newMin_sholiday As Integer = REG_SPEC_HOLIDAY(bioNo, paydate_).sholiday
 
-                            Dim old_rholiday As Decimal = ((RegularHol - newMin_rholiday) * Old_Rate) * regHoliday
-                            Dim new_rholiday As Decimal = (newMin_rholiday * rate) * regHoliday
+                                Dim old_rholiday As Decimal = ((RegularHol - newMin_rholiday) * Old_Rate) * regHoliday
+                                Dim new_rholiday As Decimal = (newMin_rholiday * rate) * regHoliday
 
-                            Dim old_sholiday As Decimal = ((SpecialHol / 8) * Old_Rate) * specHoliday
-                            Dim new_sholiday As Decimal = ((newMin_sholiday / 8) * rate) * specHoliday
+                                Dim old_sholiday As Decimal = ((SpecialHol / 8) * Old_Rate) * specHoliday
+                                Dim new_sholiday As Decimal = ((newMin_sholiday / 8) * rate) * specHoliday
 
-                            Dim old_training_rholiday As Decimal = (Training_REGHoliday * (Old_Rate * 0.75)) * regHoliday
-                            Dim new_training_rholiday As Decimal = (Rholiday_newMin_covred_training * trainee_rate) * regHoliday
+                                Dim old_training_rholiday As Decimal = (Training_REGHoliday * (Old_Rate * 0.75)) * regHoliday
+                                Dim new_training_rholiday As Decimal = (Rholiday_newMin_covred_training * trainee_rate) * regHoliday
 
-                            Dim old_training_sholiday As Decimal = (Training_SPECHoliday * (Old_Rate * 0.75)) * specHoliday
-                            Dim new_training_sholiday As Decimal = ((Sholiday_newMin_covred_training / 8) * trainee_rate) * specHoliday
+                                Dim old_training_sholiday As Decimal = (Training_SPECHoliday * (Old_Rate * 0.75)) * specHoliday
+                                Dim new_training_sholiday As Decimal = ((Sholiday_newMin_covred_training / 8) * trainee_rate) * specHoliday
 
-                            TotalREGHol = (old_rholiday + new_rholiday) + (old_training_rholiday + new_training_rholiday)
-                            TotalSPECHol = (old_sholiday + new_sholiday) + (old_training_sholiday + new_training_sholiday)
+                                TotalREGHol = (old_rholiday + new_rholiday) + (old_training_rholiday + new_training_rholiday)
+                                TotalSPECHol = (old_sholiday + new_sholiday) + (old_training_sholiday + new_training_sholiday)
+                            End If
                         End If
-
                     Else
 
                         TotalBasic = (NoOfDays * rate)
                         TotalREGHol = (RegularHol * rate) * regHoliday
                         TotalSPECHol = ((SpecialHol_hrs / 8) * rate) * specHoliday
 
-                        '===================== MINIMUM RATE CHANGED ================================ 
-                        If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
-                            Dim old_days As Double = OLD_NEW_RATE(bioNo, paydate_).old_days
-                            Dim new_days As Double = OLD_NEW_RATE(bioNo, paydate_).new_days
+                        If rate > Minimum_rate Then
+                            Console.WriteLine("Above Minimum, not applicable for change minimum rate calculation!")
+                        Else
+                            '===================== MINIMUM RATE CHANGED ================================ 
+                            If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
+                                Dim old_days As Double = OLD_NEW_RATE(bioNo, paydate_).old_days
+                                Dim new_days As Double = OLD_NEW_RATE(bioNo, paydate_).new_days
 
-                            TotalBasic = (old_days * Old_Rate) + (new_days * rate)
+                                TotalBasic = (old_days * Old_Rate) + (new_days * rate)
 
-                            Dim newMin_rholiday As Integer = REG_SPEC_HOLIDAY(bioNo, paydate_).rholiday
-                            Dim newMin_sholiday As Integer = REG_SPEC_HOLIDAY(bioNo, paydate_).sholiday
+                                Dim newMin_rholiday As Integer = REG_SPEC_HOLIDAY(bioNo, paydate_).rholiday
+                                Dim newMin_sholiday As Integer = REG_SPEC_HOLIDAY(bioNo, paydate_).sholiday
 
-                            Dim old_rholiday As Decimal = ((RegularHol - newMin_rholiday) * Old_Rate) * regHoliday
-                            Dim new_rholiday As Decimal = (newMin_rholiday * rate) * regHoliday
+                                Dim old_rholiday As Decimal = ((RegularHol - newMin_rholiday) * Old_Rate) * regHoliday
+                                Dim new_rholiday As Decimal = (newMin_rholiday * rate) * regHoliday
 
-                            Dim old_sholiday As Decimal = (((SpecialHol_hrs - newMin_sholiday) / 8) * Old_Rate) * specHoliday
-                            Dim new_sholiday As Decimal = ((newMin_sholiday / 8) * rate) * specHoliday
+                                Dim old_sholiday As Decimal = (((SpecialHol_hrs - newMin_sholiday) / 8) * Old_Rate) * specHoliday
+                                Dim new_sholiday As Decimal = ((newMin_sholiday / 8) * rate) * specHoliday
 
-                            TotalREGHol = old_rholiday + new_rholiday
-                            TotalSPECHol = old_sholiday + new_sholiday
+                                TotalREGHol = old_rholiday + new_rholiday
+                                TotalSPECHol = old_sholiday + new_sholiday
+                            End If
                         End If
-
                     End If
 
                     ''============================= IF ABOVE MINIMUM RATE=============== 
@@ -868,14 +875,14 @@ Module SaveUpdate
                     'End If
 
                     ''============================= IF ABOVE MINIMUM RATE=============== 
-                    If rate > Minimum_rate Then
-                        If NoOfDays >= STANDARD_DAYS Then  '=== CHECK IF ABOVE MINIMUM 
-                            TotalBasic = NoOfDays * rate
-                        Else
-                            Dim MINUS_DAYS As Double = STANDARD_DAYS - NoOfDays
-                            TotalBasic = (Monthly_rate / 2) - (MINUS_DAYS * rate)
-                        End If
-                    End If
+                    'If rate > Minimum_rate Then
+                    '    If NoOfDays >= STANDARD_DAYS Then  '=== CHECK IF ABOVE MINIMUM 
+                    '        TotalBasic = NoOfDays * rate
+                    '    Else
+                    '        Dim MINUS_DAYS As Double = STANDARD_DAYS - NoOfDays
+                    '        TotalBasic = (Monthly_rate / 2) - (MINUS_DAYS * rate)
+                    '    End If
+                    'End If
 
                     ''============================= FIX MONTHLY RATE===============  
                     If fix_monthly_rate = True Then

@@ -282,8 +282,10 @@ Public Class frmPayout
                 Dim old_sholiday As Decimal = ((CDbl(SpecialHol_TXT.Text) / 8) * Old_Rate) * specHoliday_
                 Dim new_sholiday As Decimal = ((newMin_sholiday / 8) * rate) * specHoliday_
 
-                reg_holiday = old_rholiday + new_rholiday
-                spec_holiday = old_sholiday + new_sholiday
+                If fix_monthly_rate = False Then
+                    reg_holiday = old_rholiday + new_rholiday
+                    spec_holiday = old_sholiday + new_sholiday
+                End If
 
             End If
 
