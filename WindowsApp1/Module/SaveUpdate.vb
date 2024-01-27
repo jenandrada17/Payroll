@@ -775,11 +775,13 @@ Module SaveUpdate
 
                     '============================================= BENIFITS CONTRIBUTION =========================================================  
                     Dim trainee_rate As Decimal = rate * 0.75
-                    Dim programmer_trainee As Double = 0
+                    Dim exempted_trainee As Double = 0
 
-                    If .Item("EMP_POSITION") = "PROGRAMMER" Then programmer_trainee = noOf_days_training
+                    If .Item("EMP_POSITION") = "PROGRAMMER" Or .Item("EMP_POSITION") = "UTILITY" Or .Item("EMP_POSITION") = "DRIVER" Then
+                        exempted_trainee = noOf_days_training       'EXEMPTED ON TRAINING RATE
+                    End If
 
-                    If noOf_days_training <> 0 And programmer_trainee = 0 Then '================ IF TRAINEE BASE CALCULATE NEW RATE =================
+                    If noOf_days_training <> 0 And exempted_trainee = 0 Then '================ IF TRAINEE BASE CALCULATE NEW RATE =================
 
                         Dim total_train As Decimal = (Convert.ToDouble(rate) - trainee_rate) * Convert.ToDouble(noOf_days_training)
                         TotalBasic = (NoOfDays * rate) - total_train

@@ -276,13 +276,16 @@ Public Class frmPayout
                 Dim newMin_rholiday As Integer = REG_SPEC_HOLIDAY(BIO_NO, paydate_).rholiday
                 Dim newMin_sholiday As Integer = REG_SPEC_HOLIDAY(BIO_NO, paydate_).sholiday
 
-                Dim old_rholiday As Decimal = (CDbl(RegularHol_TXT.Text) * Old_Rate) * regHoliday_
+                Dim old_rholiday As Decimal = ((CDbl(RegularHol_TXT.Text) - newMin_rholiday) * Old_Rate) * regHoliday_
                 Dim new_rholiday As Decimal = (newMin_rholiday * rate) * regHoliday_
 
-                Dim old_sholiday As Decimal = ((CDbl(SpecialHol_TXT.Text) / 8) * Old_Rate) * specHoliday_
+                Dim old_sholiday As Decimal = (((CDbl(SpecialHol_TXT.Text) - newMin_sholiday) / 8) * Old_Rate) * specHoliday_
                 Dim new_sholiday As Decimal = ((newMin_sholiday / 8) * rate) * specHoliday_
 
-                If fix_monthly_rate = False Then
+                If fix_monthly_rate Then
+                    reg_holiday = 0
+                    spec_holiday = 0
+                Else
                     reg_holiday = old_rholiday + new_rholiday
                     spec_holiday = old_sholiday + new_sholiday
                 End If

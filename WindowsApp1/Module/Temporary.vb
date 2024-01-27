@@ -648,7 +648,7 @@ Module Temporary
     End Sub
 
     Friend Sub GetTotalOF()
-        Dim mysql As String = "Select SUM(AMOUNT) as total from RECORDED_ALLOW_DEDUC where PAYDATE='6/15/2023' and TRANSAC_NAME = 'DEDUCTION' and CATEGORY = 'SBU'"
+        Dim mysql As String = "Select SUM(AMOUNT) as total from RECORDED_ALLOW_DEDUC where PAYDATE='1/15/2024' and TRANSAC_NAME = 'DEDUCTION' and CATEGORY = 'Late Adjustment'"
         Using ds As DataSet = LoadSQL(mysql, "RECORDED_ALLOW_DEDUC")
             If ds.Tables(0).Rows.Count > 0 Then
                 Console.WriteLine(ds.Tables(0).Rows(0).Item("total"))

@@ -2260,26 +2260,29 @@ Public Class frmReport
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
-                    Range_Combo.Items.Add(dr.Item("PAYDATE"))
+                    Range_Combo.Items.Add(CDate(dr.Item("PAYDATE")).ToShortDateString)
                 Next
             End If
         End Using
+
+        Dim midYear As Date = New Date(Today.Year, 5, 15)
+        Dim thirteenth As Date = New Date(Today.Year, 12, 15)
+
+        If Not Range_Combo.Items.Contains(midYear.ToShortDateString) Then
+            If Date.Now <= midYear Then
+                Range_Combo.Items.Add(midYear)
+            End If
+        End If
+
+        If Not Range_Combo.Items.Contains(thirteenth.ToShortDateString) Then
+            If Date.Now > midYear Then
+                Range_Combo.Items.Add(thirteenth)
+            End If
+        End If
     End Sub
 
     Private Sub PrintList_btn_Click(sender As Object, e As EventArgs) Handles PrintList_btn.Click
         If Month_LV.Items.Count >= 0 Then
-            'Dim range As DateTime
-            'If Range_Combo.SelectedIndex = 0 Then
-            '    range = $"5/15/{Today.Year}"
-
-            'ElseIf Range_Combo.SelectedIndex = 1 Then
-            '    range = $"12/15/{Today.Year}"
-            'Else
-            '    range = Nothing
-            'End If
-
-            'Print_13Month_LIST(range)
-
             Print_13Month_LIST(Range_Combo.Text)
         End If
     End Sub
