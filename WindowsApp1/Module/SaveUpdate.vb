@@ -779,6 +779,7 @@ Module SaveUpdate
 
                     If .Item("EMP_POSITION") = "PROGRAMMER" Or .Item("EMP_POSITION") = "UTILITY" Or .Item("EMP_POSITION") = "DRIVER" Then
                         exempted_trainee = noOf_days_training       'EXEMPTED ON TRAINING RATE
+                        noOf_days_training = 0
                     End If
 
                     If noOf_days_training <> 0 And exempted_trainee = 0 Then '================ IF TRAINEE BASE CALCULATE NEW RATE =================
@@ -859,32 +860,6 @@ Module SaveUpdate
                             End If
                         End If
                     End If
-
-                    ''============================= IF ABOVE MINIMUM RATE=============== 
-                    'If rate > Minimum_rate Then
-                    '    Monthly_rate = Monthly_rate / 2
-
-                    '    If fix_monthly_rate = True Then
-                    '        TotalBasic = Monthly_rate
-                    '    Else
-                    '        If NoOfDays >= STANDARD_DAYS Then  '=== CHECK IF ABOVE MINIMUM 
-                    '            TotalBasic = NoOfDays * rate
-                    '        Else
-                    '            Dim MINUS_DAYS As Double = STANDARD_DAYS - NoOfDays
-                    '            TotalBasic = Monthly_rate - (MINUS_DAYS * rate)
-                    '        End If
-                    '    End If
-                    'End If
-
-                    ''============================= IF ABOVE MINIMUM RATE=============== 
-                    'If rate > Minimum_rate Then
-                    '    If NoOfDays >= STANDARD_DAYS Then  '=== CHECK IF ABOVE MINIMUM 
-                    '        TotalBasic = NoOfDays * rate
-                    '    Else
-                    '        Dim MINUS_DAYS As Double = STANDARD_DAYS - NoOfDays
-                    '        TotalBasic = (Monthly_rate / 2) - (MINUS_DAYS * rate)
-                    '    End If
-                    'End If
 
                     ''============================= FIX MONTHLY RATE===============  
                     If fix_monthly_rate = True Then
