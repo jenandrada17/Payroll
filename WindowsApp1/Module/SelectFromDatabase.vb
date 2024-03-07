@@ -858,6 +858,7 @@ Module SelectFromDatabase
     End Function
 
     Friend Function SPECHolidayCount(startingDate As DateTime, EndingDate As DateTime) As Integer
+        specialHolidayList.Clear()
         Dim count As Integer
 
         While (startingDate <= EndingDate)
@@ -865,6 +866,7 @@ Module SelectFromDatabase
             Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_HOLIDAY")
             If ds.Tables(0).Rows.Count > 0 Then
                 count += 1
+                specialHolidayList.Add(startingDate.ToShortDateString)
             End If
 
             startingDate = startingDate.AddDays(1)
@@ -2148,7 +2150,6 @@ Module SelectFromDatabase
     End Function
 
     Public Function Calculate_Training_SpecHoliday(BIO_NO As String, PAYDATE As String, datee As String) As Double
-
         Dim specHoliday_hrs As Double = 0
         Dim mysql As String = $"Select * From BIOMETRIC_DTR where BIO_ID = '{BIO_NO}' AND PAYDATE = '{PAYDATE}' and DATE_ONLY = '{datee}'"
         Using dss As DataSet = LoadSQL(mysql, "BIOMETRIC_DTR")

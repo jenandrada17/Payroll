@@ -67,7 +67,9 @@ Module SaveUpdate
                 .Item("TRAINING_SPECHOLIDAY") = 0
                 .Item("SPECHOLIDAY_HRS") = specHoliday_hrs ' ==== SPECIAL HOLIDAY COVERED HOURS 
 
-                If LATE_ADJUSTMENT <> Nothing Then
+                If LATE_ADJUSTMENT = Nothing Then
+                    .Item("LATE_ADJUSTMENT") = 1
+                Else
                     .Item("LATE_ADJUSTMENT") = LATE_ADJUSTMENT
                 End If
 
@@ -182,7 +184,7 @@ Module SaveUpdate
         Dim temp_Rholiday As Integer = 0
         Dim temp_Sholiday As Integer = 0
 
-        '=========================== MINIMUM RATE CHANGED STARTED SEPTEMBER 1, 2022 ONLY (JUNE 30, 2022)===================== 
+        '=========================== MINIMUM RATE CHANGED STARTED SEPTEMBER 1, 2022 ONLY (JUNE 30, 2022) ===================== 
         If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate}'") Then
             newMin_startingDate = GetData("STARTING_DATE", $"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate}'")
             temp_Rholiday = REGHolidayCount(newMin_startingDate.AddDays(-1), endd)
@@ -202,6 +204,10 @@ Module SaveUpdate
                 With dr
                     .Item(column) = total_holiday
 
+                    If column = "SPECHOLIDAY" Then
+                        .Item("SPECHOLIDAY_HRS") = GetSpecialHoliday_hrs(.item("BIOMETRICID"), paydate)
+                    End If
+
                     '============================================= UPDATE REGULAR HOLIDAY COVERED IN NEW MINIMUM ================================== 
                     If newMin_startingDate <> Nothing Then
                         UpdateData_Single("RHOLIDAY", temp_Rholiday, $"TEMP_TABLE WHERE BIO_NO = '{ .Item("BIOMETRICID")}' AND PAYDATE = '{paydate}'")
@@ -214,6 +220,14 @@ Module SaveUpdate
         End If
 
     End Sub
+
+    Private Function GetSpecialHoliday_hrs(bioNO As Integer, paydate As String) As Integer
+        Dim specHoliday_hrs As Integer = 0
+        For Each specHolDate As Date In specialHolidayList.Distinct().ToArray()
+            specHoliday_hrs += Calculate_Training_SpecHoliday(bioNO, paydate, specHolDate.ToShortDateString)
+        Next
+        Return specHoliday_hrs
+    End Function
 
     Friend Sub UpdatePayout(paydate As String)
         Dim startt As Date = frmMainForm.starting
@@ -871,7 +885,7 @@ Module SaveUpdate
                     End If
 
                     '============================ CHECK WITH TRAINING DAYS COVERED ======================== 
-                    If noOf_days_training = 0 Then
+                    If noOf_days_training = 0 And exempted_trainee = 0 Then
                         '======================== CHECK IF CLOSE PAYROLL ==================================   
                         Dim date_pay As DateTime = Convert.ToDateTime(paydate_)
                         date_pay = date_pay.ToString("d")

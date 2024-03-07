@@ -111,13 +111,16 @@
 
                     If Regular_RB.Checked = True Then
                         REGULDARHolidayLists(lvHoliday)
+                        UpdateAttendance(frmMainForm.Paydate, "REGHOLIDAY")
                     Else
                         SPECIALHolidayLists(lvHoliday)
+                        UpdateAttendance(frmMainForm.Paydate, "SPECHOLIDAY")
                     End If
 
                     SaveLogs($"REMOVED HOLIDAY - Name({item.SubItems(1).Text}), Date({item.SubItems(0).Text})", frmMainForm.UserName_LBL.Text)
                 Next
 
+                UpdatePayout(frmMainForm.Paydate)
             End If
         End If
     End Sub

@@ -420,9 +420,9 @@ Public Class frmAttendance
 
                             specHoliday_hrs += GetSpecial_hrs(list_.First, list_.Last)
 
-                            If specHoliday_hrs > 8 Then
-                                specHoliday_hrs = 8
-                            End If
+                            'If specHoliday_hrs > 8 Then
+                            '    specHoliday_hrs = 8
+                            'End If
                         End If
                     End If
                 Next
@@ -439,7 +439,7 @@ Public Class frmAttendance
                     SaveTemporary(BiometricID_TXT.Text, old_days, new_days, temp_overtime, new_overtime, temp_late, new_late, temp_undertime, new_undertime, temp_Rholiday, temp_Sholiday, PAYROLL)
                 End If
 
-                '========== FOR EXCEEDING DAYS OF LATE (MORE THAN 2 DAYS OF LATE THIS WILL APPLIED)==========
+                '========== FOR EXCEEDING DAYS OF LATE (MORE THAN 2 DAYS OF LATE THIS WILL APPLIED) ==========
                 If Late_applied = True Then
                     Dim total_latee As Integer = CInt(TotalLateHR_LBL.Text) - Late_approved
                     Late_percentage = LatePercentage(BiometricID_TXT.Text, PAYROLL, total_latee)
@@ -2112,9 +2112,9 @@ Public Class frmAttendance
 
                         specHoliday_hrs += GetSpecial_hrs(list_.First, list_.Last)
 
-                        If specHoliday_hrs > 8 Then
-                            specHoliday_hrs = 8
-                        End If
+                        'If specHoliday_hrs > 8 Then
+                        '    specHoliday_hrs = 8
+                        'End If
                     End If
 
                 End If
