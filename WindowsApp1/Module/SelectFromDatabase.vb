@@ -894,7 +894,7 @@ Module SelectFromDatabase
         End Using
     End Sub
 
-    Friend Sub PopulateBiometricSHEET(LV As ListView, Paydate As String, Optional searchName As String = "")
+    Friend Sub PopulateBiometricSHEET(LV As ListView, Paydate As String, Optional branch As Boolean = False, Optional searchName As String = "")
         LV.Items.Clear()
 
         Dim secured_str As String = searchName
@@ -903,10 +903,14 @@ Module SelectFromDatabase
         Dim name As String
         Dim mysql As String
 
+        'IF BRANCH MANUAL
+        Dim branchCondition As String = "BRANCH_MANUAL is null"
+        If branch Then branchCondition = "BRANCH_MANUAL = True"
+
         If searchName.Length <> 0 Then
 
             mysql = $"Select * From PAYROLL_ATTENDANCE A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIOMETRICID 
-                                 where A.PAYDATE = '{Paydate}' and  BRANCH_CODE NOT IN ('711-POL','711-ROX') and ("
+                                 where A.PAYDATE = '{Paydate}' and {branchCondition} and  ("
 
             For Each name In strWords
                 mysql &= $"{vbCr}UPPER(BIOMETRICID) LIKE UPPER('%{name}%') OR "
@@ -914,8 +918,8 @@ Module SelectFromDatabase
             Next
 
         Else
-            mysql = $"Select * From PAYROLL_ATTENDANCE A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIOMETRICID where A.PAYDATE = '{Paydate}' 
-                                   and BRANCH_CODE NOT IN ('711-POL','711-ROX') ORDER BY FULLNAME ASC "
+            mysql = $"Select * From PAYROLL_ATTENDANCE A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIOMETRICID 
+                                where A.PAYDATE = '{Paydate}' and {branchCondition} ORDER BY FULLNAME ASC "
         End If
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
@@ -942,77 +946,77 @@ Module SelectFromDatabase
         End Using
     End Sub
 
-    Friend Sub Populate_S7ELVEN(datagrid As DataGridView, Paydate As String, Optional searchName As String = "")
+    'Friend Sub Populate_S7ELVEN(datagrid As DataGridView, Paydate As String, Optional searchName As String = "")
 
-        datagrid.Rows.Clear()
+    '    datagrid.Rows.Clear()
 
-        Dim secured_str As String = searchName
-        secured_str = DreadKnight(secured_str)
-        Dim strWords As String() = secured_str.Split(New Char() {" "c})
-        Dim name As String
-        Dim mysql As String
+    '    Dim secured_str As String = searchName
+    '    secured_str = DreadKnight(secured_str)
+    '    Dim strWords As String() = secured_str.Split(New Char() {" "c})
+    '    Dim name As String
+    '    Dim mysql As String
 
-        If searchName.Length <> 0 Then
+    '    If searchName.Length <> 0 Then
 
-            mysql = $"Select * From PAYROLL_ATTENDANCE A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIOMETRICID 
-                                 where A.PAYDATE = '{Paydate}' and BRANCH_CODE IN ('711-POL','711-ROX') and ("
+    '        mysql = $"Select * From PAYROLL_ATTENDANCE A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIOMETRICID 
+    '                             where A.PAYDATE = '{Paydate}' and BRANCH_CODE IN ('711-POL','711-ROX') and ("
 
-            For Each name In strWords
-                mysql &= $"{vbCr}UPPER(BIOMETRICID) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(FULLNAME) LIKE UPPER('%{name}%')) ORDER BY FULLNAME ASC "
-            Next
+    '        For Each name In strWords
+    '            mysql &= $"{vbCr}UPPER(BIOMETRICID) LIKE UPPER('%{name}%') OR "
+    '            mysql &= $"{vbCr}UPPER(FULLNAME) LIKE UPPER('%{name}%')) ORDER BY FULLNAME ASC "
+    '        Next
 
-        Else
-            mysql = $"Select * From PAYROLL_ATTENDANCE A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIOMETRICID where A.PAYDATE = '{Paydate}' 
-                                   and BRANCH_CODE IN ('711-POL','711-ROX') ORDER BY FULLNAME ASC "
-        End If
+    '    Else
+    '        mysql = $"Select * From PAYROLL_ATTENDANCE A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIOMETRICID where A.PAYDATE = '{Paydate}' 
+    '                               and BRANCH_CODE IN ('711-POL','711-ROX') ORDER BY FULLNAME ASC "
+    '    End If
 
 
-        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
-            If ds.Tables(0).Rows.Count > 0 Then
+    '    Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
+    '        If ds.Tables(0).Rows.Count > 0 Then
 
-                For Each dr In ds.Tables(0).Rows
+    '            For Each dr In ds.Tables(0).Rows
 
-                    With dr
+    '                With dr
 
-                        Dim rowId As Integer = datagrid.Rows.Add()
-                        Dim row As DataGridViewRow = datagrid.Rows(rowId)
-                        row.Cells(0).Value = .Item("BIOMETRICID")
-                        row.Cells(1).Value = .Item("FULLNAME")
-                        row.Cells(1).Tag = .Item("ID")
-                        row.Cells(2).Value = .Item("PRESENT_DAYS")
+    '                    Dim rowId As Integer = datagrid.Rows.Add()
+    '                    Dim row As DataGridViewRow = datagrid.Rows(rowId)
+    '                    row.Cells(0).Value = .Item("BIOMETRICID")
+    '                    row.Cells(1).Value = .Item("FULLNAME")
+    '                    row.Cells(1).Tag = .Item("ID")
+    '                    row.Cells(2).Value = .Item("PRESENT_DAYS")
 
-                        If .Item("OVERTIME") = 0 Then
-                            row.Cells(3).Value = ""
-                        Else
-                            row.Cells(3).Value = .Item("OVERTIME")
-                        End If
+    '                    If .Item("OVERTIME") = 0 Then
+    '                        row.Cells(3).Value = ""
+    '                    Else
+    '                        row.Cells(3).Value = .Item("OVERTIME")
+    '                    End If
 
-                        If .Item("LATE").Equals("0") Then
-                            row.Cells(4).Value = ""
-                        Else
-                            row.Cells(4).Value = .Item("LATE")
-                        End If
+    '                    If .Item("LATE").Equals("0") Then
+    '                        row.Cells(4).Value = ""
+    '                    Else
+    '                        row.Cells(4).Value = .Item("LATE")
+    '                    End If
 
-                        If .Item("UNDERTIME").Equals("0") Then
-                            row.Cells(5).Value = ""
-                        Else
-                            row.Cells(5).Value = .Item("UNDERTIME")
-                        End If
+    '                    If .Item("UNDERTIME").Equals("0") Then
+    '                        row.Cells(5).Value = ""
+    '                    Else
+    '                        row.Cells(5).Value = .Item("UNDERTIME")
+    '                    End If
 
-                        row.Cells(6).Value = IIf(IsDBNull(.Item("NIGHT_RATE")) Or .Item("NIGHT_RATE").Equals("0"), "", .Item("NIGHT_RATE"))
+    '                    row.Cells(6).Value = IIf(IsDBNull(.Item("NIGHT_RATE")) Or .Item("NIGHT_RATE").Equals("0"), "", .Item("NIGHT_RATE"))
 
-                        row.Height = 30
+    '                    row.Height = 30
 
-                    End With
+    '                End With
 
-                Next
-            Else
-                datagrid.Rows.Clear()
-            End If
-        End Using
+    '            Next
+    '        Else
+    '            datagrid.Rows.Clear()
+    '        End If
+    '    End Using
 
-    End Sub
+    'End Sub
 
     Public Sub AdjustHeightOfGridBasedOnRows(ByVal dataGrid As DataGridView)
 
@@ -1845,29 +1849,31 @@ Module SelectFromDatabase
 
         If searchName.Length <> 0 Then
 
-            mysql = $"select * from PAYROLL_EMPLOYEE where "
+            'mysql = $"select * from PAYROLL_EMPLOYEE where "
+            mysql = $"select * from TBL_EMPLOYEE where "
 
             For Each name In strWords
-                mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(BRANCH_CODE) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(FULLNAME) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(BIO_NO) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(COMPANY_CATEGORY) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(BRANCHCODE) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(FIRSTNAME) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(LASTNAME) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(BIOMETRICID) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(EMP_STATUS) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(EMP_POSITION) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(SSSNO) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(PHILHEALTHNO) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(TINNO) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(PAGIBIGNO) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(PAGIBIG) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(HO_CATEGORY) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(COMMON_CATEGORY) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(EMAIL_ADD) LIKE UPPER('%{name}%') ORDER BY COMPANY, BRANCH_CODE ASC "
+                mysql &= $"{vbCr}UPPER(EMAILADD) LIKE UPPER('%{name}%') ORDER BY COMPANY_CATEGORY, BRANCHCODE ASC "
             Next
 
         Else
-            mysql = "select * from PAYROLL_EMPLOYEE  ORDER BY COMPANY, BRANCH_CODE ASC "
+            mysql = "select * from TBL_EMPLOYEE  ORDER BY COMPANY_CATEGORY, BRANCHCODE ASC "
         End If
 
-        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+        Using ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
             LV.Items.Clear()
             progressBarStart(ds.Tables(0).Rows.Count)
             For Each dr In ds.Tables(0).Rows
@@ -1883,36 +1889,47 @@ Module SelectFromDatabase
         With dr
             Dim datee As DateTime
 
-            If Not IsDBNull(.Item("DATE_STARTED")) Then
-                datee = CDate(.Item("DATE_STARTED"))
+            If Not IsDBNull(.Item("DATEHIRED")) Then
+                datee = CDate(.Item("DATEHIRED"))
             Else
                 datee = Nothing
             End If
 
             Dim PHOTO_CATEGORY As String = ""
-            If .Item("COMPANY") = "PHOTO" Then
-                PHOTO_CATEGORY = IIf(IsDBNull(.Item("COMPANY_CATEGORY")), "", .Item("COMPANY_CATEGORY"))
+            Dim COMPANY As String = IIf(IsDBNull(.Item("COMPANY_CATEGORY")), "", .Item("COMPANY_CATEGORY"))
+
+            Dim MI As String
+            If String.IsNullOrEmpty(.Item("MiddleName")) Then
+                MI = ""
+            Else
+                MI = .Item("MiddleName").Substring(0, 1) & "."
             End If
 
-            Dim i As ListViewItem = LV.Items.Add(IIf(.Item("COMPANY") = "PHOTO", .Item("COMPANY") & $" ({PHOTO_CATEGORY.TrimEnd})", .Item("COMPANY")))
+            Dim FULLNAME As String = $"{ .Item("LastName")}, { .Item("FirstName")} {MI}"
+            If COMPANY = "PHOTO" Then
+                PHOTO_CATEGORY = IIf(IsDBNull(.Item("PHOTO_CATEGORY")), "", .Item("PHOTO_CATEGORY"))
+            End If
+
+            'Dim i As ListViewItem = LV.Items.Add(IIf(.Item("COMPANY") = "PHOTO", .Item("COMPANY") & $" ({PHOTO_CATEGORY.TrimEnd})", .Item("COMPANY")))
+            Dim i As ListViewItem = LV.Items.Add(IIf(COMPANY = "PHOTO", COMPANY & $" ({PHOTO_CATEGORY.TrimEnd})", COMPANY))
             i.Tag = .Item("ID")
-            i.SubItems.Add(.Item("BRANCH_CODE"))
-            i.SubItems.Add(.Item("FULLNAME"))
-            i.SubItems.Add(.Item("BIO_NO"))
+            i.SubItems.Add(IIf(IsDBNull(.Item("BRANCHCODE")), "", .Item("BRANCHCODE")))
+            i.SubItems.Add(FULLNAME.TrimEnd)
+            i.SubItems.Add(.Item("BIOMETRICID"))
             i.SubItems.Add(IIf(IsDBNull(.Item("EMP_NO")), "", .Item("EMP_NO")))
-            i.SubItems.Add(IIf(IsDBNull(.Item("EMAIL_ADD")), "", .Item("EMAIL_ADD")))
+            i.SubItems.Add(IIf(IsDBNull(.Item("EMAILADD")), "", .Item("EMAILADD")))
             i.SubItems.Add(IIf(datee = Nothing, "", datee.ToString("MMM dd, yyyy")))
             i.SubItems.Add(IIf(IsDBNull(.Item("EMP_POSITION")), "", .Item("EMP_POSITION")))
             i.SubItems.Add(IIf(IsDBNull(.Item("TINNO")), "", .Item("TINNO")))
             i.SubItems.Add(IIf(IsDBNull(.Item("SSSNO")), "", .Item("SSSNO")))
             i.SubItems.Add(IIf(IsDBNull(.Item("PHILHEALTHNO")), "", .Item("PHILHEALTHNO")))
-            i.SubItems.Add(IIf(IsDBNull(.Item("PAGIBIGNO")), "", .Item("PAGIBIGNO")))
+            i.SubItems.Add(IIf(IsDBNull(.Item("PAGIBIG")), "", .Item("PAGIBIG")))
         End With
     End Sub
 
     Public Sub GetFullname(bio_no As String, Add_Company_CB As ComboBox, Branch_ComboB As ComboBox, Firstname As TextBox,
                            Email_TXT As TextBox, InActive_RB As RadioButton, Started_DTP As DateTimePicker,
-                           TimeIn_Combo As ComboBox, TimeOut_Combo As ComboBox, EmoNo_TXT As TextBox, TIN_TXT As TextBox,
+                           TimeIn_Combo As ComboBox, TimeOut_Combo As ComboBox, EmpNo_TXT As TextBox, TIN_TXT As TextBox,
                            SSS_TXT As TextBox, PHILH_TXT As TextBox, HDMF_TXT As TextBox, HO_Category As ComboBox,
                            ComCategory_Combo As ComboBox, Position_Combo As ComboBox, ComCompany_Cmbo As ComboBox,
                            PhotoCategory_Combo As ComboBox, Lastname As TextBox, Middlename As TextBox,
@@ -1938,7 +1955,7 @@ Module SelectFromDatabase
                     Started_DTP.Text = IIf(IsDBNull(.Item("DATE_STARTED")), "", .Item("DATE_STARTED"))
                     TimeIn_Combo.Text = IIf(TIME_IN = Nothing, "", TIME_IN.ToShortTimeString())
                     TimeOut_Combo.Text = IIf(TIME_OUT = Nothing, "", TIME_OUT.ToShortTimeString())
-                    EmoNo_TXT.Text = IIf(IsDBNull(.Item("EMP_NO")), "", .Item("EMP_NO"))
+                    EmpNo_TXT.Text = IIf(IsDBNull(.Item("EMP_NO")), "", .Item("EMP_NO"))
                     TIN_TXT.Text = IIf(IsDBNull(.Item("TINNO")), "", .Item("TINNO"))
                     SSS_TXT.Text = IIf(IsDBNull(.Item("SSSNO")), "", .Item("SSSNO"))
                     PHILH_TXT.Text = IIf(IsDBNull(.Item("PHILHEALTHNO")), "", .Item("PHILHEALTHNO"))
@@ -1987,7 +2004,7 @@ Module SelectFromDatabase
                 Position_Combo.Text = ""
                 TimeIn_Combo.Text = ""
                 TimeOut_Combo.Text = ""
-                EmoNo_TXT.Text = ""
+                EmpNo_TXT.Text = ""
                 TIN_TXT.Text = ""
                 SSS_TXT.Text = ""
                 PHILH_TXT.Text = ""

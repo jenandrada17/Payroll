@@ -44,7 +44,7 @@ Module SaveUpdate
 
     Friend Sub SaveAttendanceEE(biometric As Integer, paydate As String, days As String, overTime As String, late_total As String, under_total As String,
                                 regHoliday As String, specHoliday As String, specHoliday_hrs As Double, SIL As Double, LATE_ADJUSTMENT As String, Optional LATE_APPROVED As String = "",
-                                        Optional MORNING_OT As String = "", Optional NIGHT_RATE As String = "")
+                                        Optional MORNING_OT As String = "", Optional NIGHT_RATE As String = "", Optional BRANCH As Boolean = False)
 
         Dim mysql As String
 
@@ -73,17 +73,13 @@ Module SaveUpdate
                     .Item("LATE_ADJUSTMENT") = LATE_ADJUSTMENT
                 End If
 
-                If LATE_APPROVED <> Nothing Then
-                    .Item("LATE_APPROVED") = LATE_APPROVED
-                End If
+                If LATE_APPROVED <> Nothing Then .Item("LATE_APPROVED") = LATE_APPROVED
 
-                If NIGHT_RATE <> Nothing Then
-                    .Item("NIGHT_RATE") = NIGHT_RATE
-                End If
+                If NIGHT_RATE <> Nothing Then .Item("NIGHT_RATE") = NIGHT_RATE
 
-                If MORNING_OT <> Nothing Then
-                    .Item("MORNING_OT") = MORNING_OT
-                End If
+                If MORNING_OT <> Nothing Then .Item("MORNING_OT") = MORNING_OT
+
+                If BRANCH = True Then .Item("BRANCH_MANUAL") = True
 
             End With
             SaveEntry(dss, False)
@@ -107,24 +103,21 @@ Module SaveUpdate
                     .Item("TRAINING_DAYS") = 0
                     .Item("TRAINING_REGHOLIDAY") = 0
                     .Item("TRAINING_SPECHOLIDAY") = 0
-                    .Item("SPECHOLIDAY_HRS") = specHoliday_hrs ' ==== SPECIAL HOLIDAY COVERED HOURS 
+                    .Item("SPECHOLIDAY_HRS") = specHoliday_hrs ' ==== SPECIAL HOLIDAY COVERED HOURS  
 
-                    If LATE_ADJUSTMENT <> Nothing Then
+                    If LATE_ADJUSTMENT = Nothing Then
+                        .Item("LATE_ADJUSTMENT") = 1
+                    Else
                         .Item("LATE_ADJUSTMENT") = LATE_ADJUSTMENT
                     End If
 
-                    If LATE_APPROVED <> Nothing Then
-                        .Item("LATE_APPROVED") = LATE_APPROVED
-                    End If
+                    If LATE_APPROVED <> Nothing Then .Item("LATE_APPROVED") = LATE_APPROVED
 
-                    If NIGHT_RATE <> Nothing Then
-                        .Item("NIGHT_RATE") = NIGHT_RATE
-                    End If
+                    If NIGHT_RATE <> Nothing Then .Item("NIGHT_RATE") = NIGHT_RATE
 
-                    If MORNING_OT <> Nothing Then
-                        .Item("MORNING_OT") = MORNING_OT
-                    End If
+                    If MORNING_OT <> Nothing Then .Item("MORNING_OT") = MORNING_OT
 
+                    If BRANCH = True Then .Item("BRANCH_MANUAL") = True
                 End With
                 ds.Tables(0).Rows.Add(dsNewRow)
                 SaveEntry(ds)

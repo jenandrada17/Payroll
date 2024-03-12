@@ -55,8 +55,10 @@ Public Class frmAttendance
 
         PopulateComboBox(Paydate_ComboB, "BIOMETRIC_DTR", "PAYDATE")
         PopulateComboBox(Payslip_DTR_Combo, "BIOMETRIC_DTR", "PAYDATE")
-        PopulateComboBox(DTR_Branch_Combo, "PAYROLL_EMPLOYEE", "BRANCH_CODE")
+        PopulateComboBox(DTR_Branch_Combo, "TBL_EMPLOYEE", "BRANCHCODE")
         PopulateComboBox(Paydate7_CB, "BIOMETRIC_DTR", "PAYDATE")
+        PopulateBiometricSHEET(Branch_LV, Paydate, True)
+        PopulateBiometricSHEET(Biometric_LV, Paydate)
 
         If IsLastDay(Paydate.ToString("d")) Then PI_Panel.Visible = True
 
@@ -1038,7 +1040,7 @@ Public Class frmAttendance
     End Sub
 
     Private Sub Search_BTN_Click(sender As Object, e As EventArgs) Handles Search_BTN.Click
-        PopulateBiometricSHEET(Biometric_LV, Paydate, Search_TXT.Text)
+        PopulateBiometricSHEET(Biometric_LV, Paydate, False, Search_TXT.Text)
     End Sub
 
     Private Sub Search_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Search_TXT.KeyPress
@@ -1132,6 +1134,13 @@ Public Class frmAttendance
                 Save7_BTN.Enabled = True
             End If
 
+            ''==========================  CHECK PAYDATE IF VALID FOR EDITING =========================   
+            'If Today.ToString("d") > CDate(PAYROLL) Then
+            '    Save7_BTN.Enabled = False
+            'Else
+            '    Save7_BTN.Enabled = True
+            'End If
+
         Else
             Emp7_TXT.Clear()
         End If
@@ -1153,6 +1162,7 @@ Public Class frmAttendance
 
                         Night7_TXT.Text = IIf(IsDBNull(.Item("NIGHT_RATE")), "", .Item("NIGHT_RATE"))
                         SIL7_NUP.Text = IIf(IsDBNull(.Item("SIL")), "", .Item("SIL"))
+                        SpecHol7_TXT.Text = IIf(IsDBNull(.Item("SPECHOLIDAY_HRS")), "", .Item("SPECHOLIDAY_HRS"))
 
                     End With
                 Next
@@ -1163,6 +1173,7 @@ Public Class frmAttendance
                 Days7_TXT.Clear()
                 Overtime7_TXT.Clear()
                 Late7_TXT.Clear()
+                SpecHol7_TXT.Clear()
                 Undertime7_TXT.Clear()
                 Night7_TXT.Clear()
                 SIL7_NUP.TextAlign = 0
@@ -1187,19 +1198,27 @@ Public Class frmAttendance
                 '======================== HOLIDAY ============================ 
                 Dim RHOLIDAY As Integer = REGHolidayCount(starting_date, ending_date)
                 Dim SHOLIDAY As Integer = SPECHolidayCount(starting_date, ending_date)
+                Dim specHoliday_hrs As Double = IIf(SpecHol7_TXT.Text = Nothing, 0, SpecHol7_TXT.Text)
+                Dim overtime As Integer = IIf(Overtime7_TXT.Text = Nothing, 0, Overtime7_TXT.Text)
                 Dim latee As Integer = IIf(Late7_TXT.Text = Nothing, 0, Late7_TXT.Text)
                 Dim undertimee As Integer = IIf(Undertime7_TXT.Text = Nothing, 0, Undertime7_TXT.Text)
+                Dim sil As Double = IIf(SIL7_NUP.Text = Nothing, 0, SIL7_NUP.Text)
                 Dim night7 As Integer = IIf(Night7_TXT.Text = Nothing, 0, Night7_TXT.Text)
-                Dim specHoliday_hrs As Double = 0
 
-                SaveAttendanceEE(Bio7_TXT.Text, PAYROLL, Days7_TXT.Text, Overtime7_TXT.Text, latee, undertimee,
-                             RHOLIDAY, SHOLIDAY, specHoliday_hrs, SIL7_NUP.Text, 0, night7)
+                'SaveAttendanceEE(biometric As Integer, Paydate As String, days As String, overTime As String, Late_total As String, under_total As String,
+                '                regHoliday As String, specHoliday As String, specHoliday_hrs As Double, SIL As Double, LATE_ADJUSTMENT As String, Optional LATE_APPROVED As String = "",
+                '                        Optional MORNING_OT As String = "", Optional NIGHT_RATE As String = "", Optional BRANCH As Boolean = False)
+
+                SaveAttendanceEE(Bio7_TXT.Text, PAYROLL, Days7_TXT.Text, overtime, latee, undertimee,
+                             RHOLIDAY, SHOLIDAY, specHoliday_hrs, sil, 0, "", "", night7, True)
 
                 SavePayout_IndividualL(Bio7_TXT.Text, PAYROLL, starting_date, ending_date)
 
                 SaveLogs($"{Save7_BTN.Tag} ATTENDANCE ({Emp7_TXT.Text} ({Bio7_TXT.Text})) - Days({Days7_TXT.Text}), OT({Overtime7_TXT.Text}), Late({Late7_TXT.Text}), Undertime({Undertime7_TXT.Text}), R/S Holiday({TotalRHoliday_LBL.Text}/{TotalSHoliday_LBL.Text}), Night Rate({Night7_TXT.Text}), SIL({SIL7_NUP.Text})", frmMainForm.UserName_LBL.Text)
 
                 Cancel7_BTN.PerformClick()
+
+                PopulateBiometricSHEET(Branch_LV, Paydate, True) ' ===== POPULATE DATAGRIDVIEW FROM SHEET ==== 
 
                 MsgBox("Successfully Saved!", MsgBoxStyle.Information, "Information")
             End If
@@ -1225,6 +1244,7 @@ Public Class frmAttendance
         Late7_TXT.Clear()
         Undertime7_TXT.Clear()
         Night7_TXT.Clear()
+        SpecHol7_TXT.Clear()
     End Sub
 
     Private Sub SIL_BTN_Click(sender As Object, e As EventArgs) Handles SIL_BTN.Click
@@ -1308,6 +1328,12 @@ Public Class frmAttendance
             ContextMenu_Late.Show(DataGridView1, New Point(e.X, e.Y))
 
         End If
+    End Sub
+
+    Private Sub Branch_LV_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles Branch_LV.MouseDoubleClick
+        If Branch_LV.Items.Count = 0 Then Exit Sub
+        Cancel7_BTN.PerformClick()
+        Bio7_TXT.Text = Branch_LV.Items(Branch_LV.FocusedItem.Index).SubItems(0).Text
     End Sub
 
     Private Sub Calculate_BTN_Click(sender As Object, e As EventArgs) Handles Calculate_BTN.Click
@@ -1630,17 +1656,19 @@ Public Class frmAttendance
     End Sub
 
     Private Sub Paydate7_CB_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Paydate7_CB.SelectedIndexChanged
+        Cancel7_BTN.PerformClick()
+
         If Paydate7_CB.SelectedIndex >= 0 Then
             paydate_ = Paydate7_CB.SelectedItem
         Else
             paydate_ = Paydate.ToString("d")
         End If
 
-        Populate_S7ELVEN(Seven_Grid, paydate_)
+        PopulateBiometricSHEET(Branch_LV, paydate_, True)
     End Sub
 
     Private Sub Search7_BTN_Click(sender As Object, e As EventArgs) Handles Search7_BTN.Click
-        Populate_S7ELVEN(Seven_Grid, paydate_, Search7_TXT.Text)
+        PopulateBiometricSHEET(Branch_LV, Paydate, True)
     End Sub
 
     Private Sub Search7_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Search7_TXT.KeyPress
@@ -2388,17 +2416,17 @@ Public Class frmAttendance
         TotalOTHr_LBL.Text = 0
     End Sub
 
-    Private Sub Seven_Grid_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles Seven_Grid.MouseDoubleClick
-        Bio7_TXT.Text = Seven_Grid.CurrentRow.Cells(0).Value
-        Emp7_TXT.Text = Seven_Grid.CurrentRow.Cells(1).Value
-        Days7_TXT.Text = Seven_Grid.CurrentRow.Cells(2).Value
-        Overtime7_TXT.Text = IIf(Seven_Grid.CurrentRow.Cells(3).Value = Nothing, 0, Seven_Grid.CurrentRow.Cells(3).Value)
-        Night7_TXT.Text = IIf(Seven_Grid.CurrentRow.Cells(6).Value = Nothing, 0, Seven_Grid.CurrentRow.Cells(6).Value)
+    'Private Sub Seven_Grid_MouseDoubleClick(sender As Object, e As MouseEventArgs)
+    '    Bio7_TXT.Text = Seven_Grid.CurrentRow.Cells(0).Value
+    '    Emp7_TXT.Text = Seven_Grid.CurrentRow.Cells(1).Value
+    '    Days7_TXT.Text = Seven_Grid.CurrentRow.Cells(2).Value
+    '    Overtime7_TXT.Text = IIf(Seven_Grid.CurrentRow.Cells(3).Value = Nothing, 0, Seven_Grid.CurrentRow.Cells(3).Value)
+    '    Night7_TXT.Text = IIf(Seven_Grid.CurrentRow.Cells(6).Value = Nothing, 0, Seven_Grid.CurrentRow.Cells(6).Value)
 
-        If Seven_Grid.CurrentRow.Cells(4).Value <> Nothing Then Late7_TXT.Text = TimeSpan.Parse(Seven_Grid.CurrentRow.Cells(4).Value).TotalMinutes
-        If Seven_Grid.CurrentRow.Cells(5).Value <> Nothing Then Undertime7_TXT.Text = TimeSpan.Parse(Seven_Grid.CurrentRow.Cells(5).Value).TotalMinutes
+    '    If Seven_Grid.CurrentRow.Cells(4).Value <> Nothing Then Late7_TXT.Text = TimeSpan.Parse(Seven_Grid.CurrentRow.Cells(4).Value).TotalMinutes
+    '    If Seven_Grid.CurrentRow.Cells(5).Value <> Nothing Then Undertime7_TXT.Text = TimeSpan.Parse(Seven_Grid.CurrentRow.Cells(5).Value).TotalMinutes
 
-    End Sub
+    'End Sub
 
     Public Sub Load_Attendance(emp As Employee, empNo As Integer)
         With emp

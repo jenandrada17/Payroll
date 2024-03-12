@@ -18,9 +18,11 @@ Public Class frmNewEmployee
     Private myCoolPoint As New Point
 
     Private Sub frmNewEmployee_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        'Import_Employee_SBU_AMOUNT_PRINCIPAL_CREDIT()
 
         Lists_Employees(lvEmployee)
-        PopulateComboBox(Branch_ComboB, "PAYROLL_EMPLOYEE", "BRANCH_CODE")
+        'PopulateComboBox(Branch_ComboB, "PAYROLL_EMPLOYEE", "BRANCH_CODE")
+        PopulateComboBox(Branch_ComboB, "TBL_EMPLOYEE", "BRANCHCODE")
         PopulateComboBox_Any(Position_Combo, "CATEGORIES WHERE NAME = 'POSITION'", "CATEGORY")
 
         For x = 0 To 23
@@ -356,11 +358,11 @@ Public Class frmNewEmployee
         DtSet = New System.Data.DataSet
         MyCommand.Fill(DtSet)
 
-        '====================== DELETE PAYROLL_SBU TO REPLACE NEW ==================
-        If isExist_String("PAYROLL_SBU", "") Then
-            RunCommand($"DELETE FROM PAYROLL_SBU ;")
-            'RunCommand($"DELETE FROM PAYROLL_SBU A INNER JOIN PAYROLL_EMPLOYEE B ON A.BIO_NO = B.BIO_NO WHERE B.BIO_NO <> 'HEAD OFFICE' ;")
-        End If
+        ''====================== DELETE PAYROLL_SBU TO REPLACE NEW ==================
+        'If isExist_String("PAYROLL_SBU", "") Then
+        '    RunCommand($"DELETE FROM PAYROLL_SBU ;")
+        '    'RunCommand($"DELETE FROM PAYROLL_SBU A INNER JOIN PAYROLL_EMPLOYEE B ON A.BIO_NO = B.BIO_NO WHERE B.BIO_NO <> 'HEAD OFFICE' ;")
+        'End If
 
         progressBarStart(DtSet.Tables(0).Rows.Count + 1)
 
@@ -402,6 +404,66 @@ Public Class frmNewEmployee
         Excel_Panel.Visible = False
 
     End Sub
+
+    'Private Sub Import_Employee_SBU_AMOUNT_PRINCIPAL_CREDIT()
+
+    '    eApp = New Excel.Application
+    '    eBook = eApp.Workbooks.Open(Path_TXT.Text)
+    '    eSheet = eBook.Worksheets(1)
+    '    eCell = eSheet.UsedRange
+
+    '    MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path_TXT.Text}';Extended Properties=Excel 8.0;")
+    '    MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
+    '    MyCommand.TableMappings.Add("Table", "Net-informations.com")
+    '    DtSet = New System.Data.DataSet
+    '    MyCommand.Fill(DtSet)
+
+    '    '====================== DELETE PAYROLL_SBU TO REPLACE NEW ==================
+    '    If isExist_String("PAYROLL_SBU", "") Then
+    '        RunCommand($"DELETE FROM PAYROLL_SBU ;")
+    '        'RunCommand($"DELETE FROM PAYROLL_SBU A INNER JOIN PAYROLL_EMPLOYEE B ON A.BIO_NO = B.BIO_NO WHERE B.BIO_NO <> 'HEAD OFFICE' ;")
+    '    End If
+
+    '    progressBarStart(DtSet.Tables(0).Rows.Count + 1)
+
+    '    For row = 7 To DtSet.Tables(0).Rows.Count
+
+    '        Dim EMP_NO As String = ""
+    '        Dim CATEGORY As String = ""
+    '        Dim AMOUNT As String = ""
+    '        Dim PRINCIPAL As String = ""
+    '        Dim CREDIT As String = ""
+    '        Dim BALANCE As String = ""
+
+    '        If eCell(row, 1).Font.Bold = True Then
+    '            EMP_NO = eCell(row, 4).Value
+    '            SAVE_Emp_SBU_EXCEL(EMP_NO, row)
+    '        End If
+
+    '        If IsDate(eCell(row, 1).value) Then
+    '            CATEGORY = eCell(row, 4).Value
+    '            AMOUNT = eCell(row, 5).Value
+    '            PRINCIPAL = eCell(row, 6).Value
+    '            CREDIT = eCell(row, 8).Value
+    '            BALANCE = eCell(row, 9).Value
+    '            UPDATE_Emp_SBU_EXCEL(CATEGORY, AMOUNT, PRINCIPAL, CREDIT, BALANCE, row)
+    '        End If
+
+    '        frmMainForm.AppProgressBar.Value += 1
+    '    Next row
+
+    '    RunCommand($"UPDATE PAYROLL_SBU SET CATEGORY = 'SBU';")
+
+    '    progressBarEnd()
+
+    '    Path_TXT.Clear()
+    '    MyConnection.Close()
+    '    eBook.Close()
+    '    eApp.Quit()
+
+    '    Excel_Panel.Visible = False
+
+    'End Sub
 
     Public Function IsDate(input As String) As Boolean '======== FOR IMPORTING SBU EXCEL =====
         Dim result As DateTime
