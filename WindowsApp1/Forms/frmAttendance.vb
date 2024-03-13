@@ -1379,6 +1379,24 @@ Public Class frmAttendance
                 Dim performance_allowance As String = IIf(eCell(row, 11).Value = Nothing, 0, eCell(row, 11).Value)
                 Dim fare_allowance As String = IIf(eCell(row, 12).Value = Nothing, 0, eCell(row, 12).Value)
 
+                'If bhouse_allowance <> 0 Then
+                '    SaveAllowance(0, bioNo, "BH ALLOWANCE", bhouse_allowance, "YES", "OPEN PAYROLL", 0, Today)
+                '    SaveAllowance_HISTORY(bioNo, "BH INCENTIVES", bhouse_allowance, "YES", "OPEN PAYROLL", 0, Today)
+                '    SaveLogs($"IMPORT ALLOWANCE FROM DTR - {fullname} ({bioNo}), Category(BH ALLOWANCE), Amount({bhouse_allowance}), Sched(OPEN PAYROLL), Effectivity({Today.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
+                'End If
+
+                'If performance_allowance <> 0 Then
+                '    SaveAllowance(0, bioNo, "PERFORMANCE INCENTIVES", performance_allowance, "YES", "OPEN PAYROLL", 0, Today)
+                '    SaveAllowance_HISTORY(bioNo, "PERFORMANCE INCENTIVES", performance_allowance, "YES", "OPEN PAYROLL", 0, Today)
+                '    SaveLogs($"IMPORT ALLOWANCE FROM DTR - {fullname} ({bioNo}), Category(PERFORMANCE ALLOWANCE), Amount({performance_allowance}), Sched(OPEN PAYROLL), Effectivity({Today.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
+                'End If
+
+                'If fare_allowance <> 0 Then
+                '    SaveAllowance(0, bioNo, "TRANSPORTATION", fare_allowance, "YES", "OPEN PAYROLL", 0, Today)
+                '    SaveAllowance_HISTORY(bioNo, "TRANSPORTATION", fare_allowance, "YES", "OPEN PAYROLL", 0, Today)
+                '    SaveLogs($"IMPORT ALLOWANCE FROM DTR - {fullname} ({bioNo}), Category(TRANSPORTATION), Amount({fare_allowance}), Sched(OPEN PAYROLL), Effectivity({Today.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
+                'End If
+
                 If totalDays <> 0 Then
                     SaveAttendanceEE(bioNo, payroll, totalDays, overtime, late, undertime,
                                  TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text, specHoliday_hrs, sil, Nothing, Nothing, Nothing, nightRate, True)
@@ -1386,24 +1404,6 @@ Public Class frmAttendance
                     SavePayout_IndividualL(bioNo, payroll, starting_date, ending_date)
 
                     distinct_bio.Add(eCell(row, 1).Value)
-                End If
-
-                If bhouse_allowance <> 0 Then
-                    SaveAllowance(0, bioNo, "BH ALLOWANCE", bhouse_allowance, "YES", "OPEN PAYROLL", 0, Today)
-                    SaveAllowance_HISTORY(bioNo, "BH INCENTIVES", bhouse_allowance, "YES", "OPEN PAYROLL", 0, Today)
-                    SaveLogs($"IMPORT ALLOWANCE FROM DTR - {fullname} ({bioNo}), Category(BH ALLOWANCE), Amount({bhouse_allowance}), Sched(OPEN PAYROLL), Effectivity({Today.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
-                End If
-
-                If performance_allowance <> 0 Then
-                    SaveAllowance(0, bioNo, "PERFORMANCE INCENTIVES", performance_allowance, "YES", "OPEN PAYROLL", 0, Today)
-                    SaveAllowance_HISTORY(bioNo, "PERFORMANCE INCENTIVES", performance_allowance, "YES", "OPEN PAYROLL", 0, Today)
-                    SaveLogs($"IMPORT ALLOWANCE FROM DTR - {fullname} ({bioNo}), Category(PERFORMANCE ALLOWANCE), Amount({performance_allowance}), Sched(OPEN PAYROLL), Effectivity({Today.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
-                End If
-
-                If fare_allowance <> 0 Then
-                    SaveAllowance(0, bioNo, "TRANSPORTATION", fare_allowance, "YES", "OPEN PAYROLL", 0, Today)
-                    SaveAllowance_HISTORY(bioNo, "TRANSPORTATION", fare_allowance, "YES", "OPEN PAYROLL", 0, Today)
-                    SaveLogs($"IMPORT ALLOWANCE FROM DTR - {fullname} ({bioNo}), Category(TRANSPORTATION), Amount({fare_allowance}), Sched(OPEN PAYROLL), Effectivity({Today.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
                 End If
 
                 If frmMainForm.AppProgressBar.Value <> DtSet.Tables(0).Rows.Count Then frmMainForm.AppProgressBar.Value += 1
@@ -1450,8 +1450,8 @@ Public Class frmAttendance
 
             Dim bioNum = BiometricID_TXT.Text
             Dim branchCode = GetBranchCode(bioNum)
-            Dim dateStarted = GetData("DATE_STARTED", $"PAYROLL_EMPLOYEE WHERE BIO_NO = '{bioNum}'")
-            emp_status = GetData("EMP_STATUS", $"PAYROLL_EMPLOYEE WHERE BIO_NO = '{bioNum}'")
+            Dim dateStarted = GetData("DATE_STARTED", $"TBL_EMPLOYEE WHERE BIOMETRICID = '{bioNum}'")
+            emp_status = GetData("EMP_STATUS", $"TBL_EMPLOYEE WHERE BIOMETRICID = '{bioNum}'")
             dateEnded = GetData("DATE_ENDED", $"PAYROLL_EMPLOYEE WHERE BIO_NO = '{bioNum}'")
 
             Dim PAYROLL As String

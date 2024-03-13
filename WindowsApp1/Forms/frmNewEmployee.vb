@@ -19,7 +19,8 @@ Public Class frmNewEmployee
 
     Private Sub frmNewEmployee_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Import_Employee_SBU_AMOUNT_PRINCIPAL_CREDIT()
-        Import_Employee_SBU_INCOMPLETE()
+        'Import_Employee_SBU_INCOMPLETE()
+        'Import_Employee_DETAILS_INCOMPLETE()
 
         Lists_Employees(lvEmployee)
         'PopulateComboBox(Branch_ComboB, "PAYROLL_EMPLOYEE", "BRANCH_CODE")
@@ -442,6 +443,41 @@ Public Class frmNewEmployee
             BALANCE = eCell(row, 6).Value
             AMOUNT = eCell(row, 7).Value
             SAVE_SBU_INCOMPLETE(CATEGORY, AMOUNT, PRINCIPAL, CREDIT, BALANCE, BIO)
+
+            frmMainForm.AppProgressBar.Value += 1
+        Next row
+
+        progressBarEnd()
+
+        Path_TXT.Clear()
+        MyConnection.Close()
+        eBook.Close()
+        eApp.Quit()
+
+        Excel_Panel.Visible = False
+
+    End Sub
+
+    Private Sub Import_Employee_DETAILS_INCOMPLETE()
+        Dim path As String = "C:\Users\MISPC1\Desktop\BRANCH PAYROLL\INCOMPLETE EMPLOYEE DETAILS.xlsx"
+        eApp = New Excel.Application
+        eBook = eApp.Workbooks.Open(path)
+        eSheet = eBook.Worksheets(1)
+        eCell = eSheet.UsedRange
+
+        MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{path}';Extended Properties=Excel 8.0;")
+        MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
+        MyCommand.TableMappings.Add("Table", "Net-informations.com")
+        DtSet = New System.Data.DataSet
+        MyCommand.Fill(DtSet)
+
+        progressBarStart(DtSet.Tables(0).Rows.Count + 1)
+
+        Dim newItem As Boolean = False
+
+        For row = 2 To DtSet.Tables(0).Rows.Count
+            Dim BIO As Integer = eCell(row, 1).Value
+            SAVE_EMPLOYEE_DETAILS_INCOMPLETE(BIO, eCell(row, 3).Value, eCell(row, 4).Value, eCell(row, 5).Value, eCell(row, 6).Value, eCell(row, 7).Value)
 
             frmMainForm.AppProgressBar.Value += 1
         Next row

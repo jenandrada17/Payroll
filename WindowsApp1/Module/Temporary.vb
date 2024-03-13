@@ -1070,4 +1070,23 @@ Module Temporary
         End Using
     End Sub
 
+    Public Sub SAVE_EMPLOYEE_DETAILS_INCOMPLETE(BIONO As Integer, COMPANY As String, BRANCHCODE As String, RATE_DAILY As Decimal, RATE_MONTHLY As Decimal, PHOTO_CATEGORY As String)
+
+        Dim sql As String = $"Select * From TBL_EMPLOYEE WHERE BIOMETRICID = {BIONO}"
+        Using ds As DataSet = LoadSQL(sql, "TBL_EMPLOYEE")
+            If ds.Tables(0).Rows.Count > 0 Then
+                With ds.Tables(0).Rows(0)
+                    .Item("COMPANY") = COMPANY
+                    .Item("COMPANY_CATEGORY") = COMPANY
+                    .Item("BRANCHCODE") = BRANCHCODE
+                    .Item("RATE_DAILY") = RATE_DAILY
+                    .Item("RATE_MONTHLY") = RATE_MONTHLY
+                    If PHOTO_CATEGORY <> Nothing Then .Item("PHOTO_CATEGORY") = PHOTO_CATEGORY
+                End With
+                SaveEntry(ds, False)
+            End If
+
+        End Using
+    End Sub
+
 End Module
