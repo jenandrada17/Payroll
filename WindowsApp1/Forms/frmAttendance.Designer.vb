@@ -118,9 +118,22 @@ Partial Class frmAttendance
         Me.Label2 = New System.Windows.Forms.Label()
         Me.BiometricID_TXT = New System.Windows.Forms.TextBox()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
+        Me.Browse7_BTN = New System.Windows.Forms.Button()
+        Me.Path7_TXT = New System.Windows.Forms.TextBox()
+        Me.Import7_BTN = New System.Windows.Forms.Button()
+        Me.Branch_LV = New System.Windows.Forms.ListView()
+        Me.ColumnHeader3 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader4 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader5 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader6 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader7 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader8 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader9 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.Label30 = New System.Windows.Forms.Label()
         Me.Paydate7_CB = New System.Windows.Forms.ComboBox()
         Me.Panel2 = New System.Windows.Forms.Panel()
+        Me.SpecHol7_TXT = New System.Windows.Forms.TextBox()
+        Me.Label36 = New System.Windows.Forms.Label()
         Me.SIL7_NUP = New System.Windows.Forms.NumericUpDown()
         Me.Label13 = New System.Windows.Forms.Label()
         Me.Undertime7_TXT = New System.Windows.Forms.TextBox()
@@ -176,16 +189,6 @@ Partial Class frmAttendance
         Me.RE_NAME_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.RE_BIO_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.RE_BRANCH_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Branch_LV = New System.Windows.Forms.ListView()
-        Me.ColumnHeader3 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader4 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader5 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader6 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader7 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader8 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader9 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.SpecHol7_TXT = New System.Windows.Forms.TextBox()
-        Me.Label36 = New System.Windows.Forms.Label()
         CType(Me.overAllBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.dtr_all, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Attendance_Tab.SuspendLayout()
@@ -1145,6 +1148,9 @@ Partial Class frmAttendance
         '
         'TabPage2
         '
+        Me.TabPage2.Controls.Add(Me.Browse7_BTN)
+        Me.TabPage2.Controls.Add(Me.Path7_TXT)
+        Me.TabPage2.Controls.Add(Me.Import7_BTN)
         Me.TabPage2.Controls.Add(Me.Branch_LV)
         Me.TabPage2.Controls.Add(Me.Label30)
         Me.TabPage2.Controls.Add(Me.Paydate7_CB)
@@ -1164,11 +1170,93 @@ Partial Class frmAttendance
         Me.TabPage2.Text = "    Branches (Manual)    "
         Me.TabPage2.UseVisualStyleBackColor = True
         '
+        'Browse7_BTN
+        '
+        Me.Browse7_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Browse7_BTN.Location = New System.Drawing.Point(328, 6)
+        Me.Browse7_BTN.Name = "Browse7_BTN"
+        Me.Browse7_BTN.Size = New System.Drawing.Size(82, 33)
+        Me.Browse7_BTN.TabIndex = 115
+        Me.Browse7_BTN.Text = "Browse"
+        Me.Browse7_BTN.UseVisualStyleBackColor = True
+        '
+        'Path7_TXT
+        '
+        Me.Path7_TXT.Enabled = False
+        Me.Path7_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Path7_TXT.Location = New System.Drawing.Point(4, 6)
+        Me.Path7_TXT.Name = "Path7_TXT"
+        Me.Path7_TXT.Size = New System.Drawing.Size(318, 33)
+        Me.Path7_TXT.TabIndex = 113
+        '
+        'Import7_BTN
+        '
+        Me.Import7_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Import7_BTN.Location = New System.Drawing.Point(416, 6)
+        Me.Import7_BTN.Name = "Import7_BTN"
+        Me.Import7_BTN.Size = New System.Drawing.Size(82, 33)
+        Me.Import7_BTN.TabIndex = 114
+        Me.Import7_BTN.Text = "Import"
+        Me.Import7_BTN.UseVisualStyleBackColor = True
+        '
+        'Branch_LV
+        '
+        Me.Branch_LV.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Branch_LV.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader3, Me.ColumnHeader4, Me.ColumnHeader5, Me.ColumnHeader6, Me.ColumnHeader7, Me.ColumnHeader8, Me.ColumnHeader9})
+        Me.Branch_LV.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Branch_LV.FullRowSelect = True
+        Me.Branch_LV.GridLines = True
+        Me.Branch_LV.HideSelection = False
+        Me.Branch_LV.Location = New System.Drawing.Point(2, 290)
+        Me.Branch_LV.MultiSelect = False
+        Me.Branch_LV.Name = "Branch_LV"
+        Me.Branch_LV.Size = New System.Drawing.Size(1146, 295)
+        Me.Branch_LV.TabIndex = 112
+        Me.Branch_LV.UseCompatibleStateImageBehavior = False
+        Me.Branch_LV.View = System.Windows.Forms.View.Details
+        '
+        'ColumnHeader3
+        '
+        Me.ColumnHeader3.Text = "Biometric No."
+        Me.ColumnHeader3.Width = 120
+        '
+        'ColumnHeader4
+        '
+        Me.ColumnHeader4.Text = "Name"
+        Me.ColumnHeader4.Width = 400
+        '
+        'ColumnHeader5
+        '
+        Me.ColumnHeader5.Text = "Total Days"
+        Me.ColumnHeader5.Width = 120
+        '
+        'ColumnHeader6
+        '
+        Me.ColumnHeader6.Text = "Overtime"
+        Me.ColumnHeader6.Width = 120
+        '
+        'ColumnHeader7
+        '
+        Me.ColumnHeader7.Text = "Late"
+        Me.ColumnHeader7.Width = 120
+        '
+        'ColumnHeader8
+        '
+        Me.ColumnHeader8.Text = "Undertime"
+        Me.ColumnHeader8.Width = 120
+        '
+        'ColumnHeader9
+        '
+        Me.ColumnHeader9.Text = "Night Rate"
+        Me.ColumnHeader9.Width = 120
+        '
         'Label30
         '
         Me.Label30.AutoSize = True
         Me.Label30.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label30.Location = New System.Drawing.Point(9, 195)
+        Me.Label30.Location = New System.Drawing.Point(6, 181)
         Me.Label30.Name = "Label30"
         Me.Label30.Size = New System.Drawing.Size(53, 25)
         Me.Label30.TabIndex = 111
@@ -1179,7 +1267,7 @@ Partial Class frmAttendance
         Me.Paydate7_CB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.Paydate7_CB.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Paydate7_CB.FormattingEnabled = True
-        Me.Paydate7_CB.Location = New System.Drawing.Point(89, 192)
+        Me.Paydate7_CB.Location = New System.Drawing.Point(89, 178)
         Me.Paydate7_CB.Name = "Paydate7_CB"
         Me.Paydate7_CB.Size = New System.Drawing.Size(151, 33)
         Me.Paydate7_CB.TabIndex = 110
@@ -1202,10 +1290,28 @@ Partial Class frmAttendance
         Me.Panel2.Controls.Add(Me.Label26)
         Me.Panel2.Controls.Add(Me.Late7_TXT)
         Me.Panel2.Controls.Add(Me.Label25)
-        Me.Panel2.Location = New System.Drawing.Point(516, 3)
+        Me.Panel2.Location = New System.Drawing.Point(516, 46)
         Me.Panel2.Name = "Panel2"
-        Me.Panel2.Size = New System.Drawing.Size(629, 183)
+        Me.Panel2.Size = New System.Drawing.Size(629, 197)
         Me.Panel2.TabIndex = 109
+        '
+        'SpecHol7_TXT
+        '
+        Me.SpecHol7_TXT.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SpecHol7_TXT.Location = New System.Drawing.Point(139, 144)
+        Me.SpecHol7_TXT.Name = "SpecHol7_TXT"
+        Me.SpecHol7_TXT.Size = New System.Drawing.Size(140, 35)
+        Me.SpecHol7_TXT.TabIndex = 114
+        '
+        'Label36
+        '
+        Me.Label36.AutoSize = True
+        Me.Label36.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label36.Location = New System.Drawing.Point(22, 144)
+        Me.Label36.Name = "Label36"
+        Me.Label36.Size = New System.Drawing.Size(114, 27)
+        Me.Label36.TabIndex = 115
+        Me.Label36.Text = "Spec. Hol.   (hr)"
         '
         'SIL7_NUP
         '
@@ -1343,15 +1449,15 @@ Partial Class frmAttendance
         'Search7_TXT
         '
         Me.Search7_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Search7_TXT.Location = New System.Drawing.Point(246, 192)
+        Me.Search7_TXT.Location = New System.Drawing.Point(6, 249)
         Me.Search7_TXT.Name = "Search7_TXT"
-        Me.Search7_TXT.Size = New System.Drawing.Size(368, 33)
+        Me.Search7_TXT.Size = New System.Drawing.Size(414, 33)
         Me.Search7_TXT.TabIndex = 105
         '
         'Search7_BTN
         '
         Me.Search7_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Search7_BTN.Location = New System.Drawing.Point(630, 192)
+        Me.Search7_BTN.Location = New System.Drawing.Point(428, 248)
         Me.Search7_BTN.Name = "Search7_BTN"
         Me.Search7_BTN.Size = New System.Drawing.Size(82, 33)
         Me.Search7_BTN.TabIndex = 106
@@ -1361,7 +1467,7 @@ Partial Class frmAttendance
         'SearchEmp7_BTN
         '
         Me.SearchEmp7_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.SearchEmp7_BTN.Location = New System.Drawing.Point(379, 57)
+        Me.SearchEmp7_BTN.Location = New System.Drawing.Point(379, 130)
         Me.SearchEmp7_BTN.Name = "SearchEmp7_BTN"
         Me.SearchEmp7_BTN.Size = New System.Drawing.Size(38, 30)
         Me.SearchEmp7_BTN.TabIndex = 87
@@ -1372,7 +1478,7 @@ Partial Class frmAttendance
         '
         Me.Label28.AutoSize = True
         Me.Label28.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label28.Location = New System.Drawing.Point(9, 58)
+        Me.Label28.Location = New System.Drawing.Point(6, 131)
         Me.Label28.Name = "Label28"
         Me.Label28.Size = New System.Drawing.Size(48, 25)
         Me.Label28.TabIndex = 85
@@ -1381,7 +1487,7 @@ Partial Class frmAttendance
         'Emp7_TXT
         '
         Me.Emp7_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Emp7_TXT.Location = New System.Drawing.Point(89, 56)
+        Me.Emp7_TXT.Location = New System.Drawing.Point(89, 129)
         Me.Emp7_TXT.Name = "Emp7_TXT"
         Me.Emp7_TXT.ReadOnly = True
         Me.Emp7_TXT.Size = New System.Drawing.Size(278, 33)
@@ -1391,7 +1497,7 @@ Partial Class frmAttendance
         '
         Me.Label27.AutoSize = True
         Me.Label27.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label27.Location = New System.Drawing.Point(9, 19)
+        Me.Label27.Location = New System.Drawing.Point(6, 92)
         Me.Label27.Name = "Label27"
         Me.Label27.Size = New System.Drawing.Size(60, 27)
         Me.Label27.TabIndex = 84
@@ -1400,7 +1506,7 @@ Partial Class frmAttendance
         'Bio7_TXT
         '
         Me.Bio7_TXT.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Bio7_TXT.Location = New System.Drawing.Point(89, 14)
+        Me.Bio7_TXT.Location = New System.Drawing.Point(89, 87)
         Me.Bio7_TXT.Name = "Bio7_TXT"
         Me.Bio7_TXT.Size = New System.Drawing.Size(151, 29)
         Me.Bio7_TXT.TabIndex = 83
@@ -1732,77 +1838,6 @@ Partial Class frmAttendance
         Me.RE_BRANCH_DGV.ReadOnly = True
         Me.RE_BRANCH_DGV.Width = 140
         '
-        'Branch_LV
-        '
-        Me.Branch_LV.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Branch_LV.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader3, Me.ColumnHeader4, Me.ColumnHeader5, Me.ColumnHeader6, Me.ColumnHeader7, Me.ColumnHeader8, Me.ColumnHeader9})
-        Me.Branch_LV.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Branch_LV.FullRowSelect = True
-        Me.Branch_LV.GridLines = True
-        Me.Branch_LV.HideSelection = False
-        Me.Branch_LV.Location = New System.Drawing.Point(2, 231)
-        Me.Branch_LV.MultiSelect = False
-        Me.Branch_LV.Name = "Branch_LV"
-        Me.Branch_LV.Size = New System.Drawing.Size(1146, 354)
-        Me.Branch_LV.TabIndex = 112
-        Me.Branch_LV.UseCompatibleStateImageBehavior = False
-        Me.Branch_LV.View = System.Windows.Forms.View.Details
-        '
-        'ColumnHeader3
-        '
-        Me.ColumnHeader3.Text = "Biometric No."
-        Me.ColumnHeader3.Width = 120
-        '
-        'ColumnHeader4
-        '
-        Me.ColumnHeader4.Text = "Name"
-        Me.ColumnHeader4.Width = 400
-        '
-        'ColumnHeader5
-        '
-        Me.ColumnHeader5.Text = "Total Days"
-        Me.ColumnHeader5.Width = 120
-        '
-        'ColumnHeader6
-        '
-        Me.ColumnHeader6.Text = "Overtime"
-        Me.ColumnHeader6.Width = 120
-        '
-        'ColumnHeader7
-        '
-        Me.ColumnHeader7.Text = "Late"
-        Me.ColumnHeader7.Width = 120
-        '
-        'ColumnHeader8
-        '
-        Me.ColumnHeader8.Text = "Undertime"
-        Me.ColumnHeader8.Width = 120
-        '
-        'ColumnHeader9
-        '
-        Me.ColumnHeader9.Text = "Night Rate"
-        Me.ColumnHeader9.Width = 120
-        '
-        'SpecHol7_TXT
-        '
-        Me.SpecHol7_TXT.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.SpecHol7_TXT.Location = New System.Drawing.Point(139, 144)
-        Me.SpecHol7_TXT.Name = "SpecHol7_TXT"
-        Me.SpecHol7_TXT.Size = New System.Drawing.Size(140, 35)
-        Me.SpecHol7_TXT.TabIndex = 114
-        '
-        'Label36
-        '
-        Me.Label36.AutoSize = True
-        Me.Label36.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label36.Location = New System.Drawing.Point(22, 144)
-        Me.Label36.Name = "Label36"
-        Me.Label36.Size = New System.Drawing.Size(114, 27)
-        Me.Label36.TabIndex = 115
-        Me.Label36.Text = "Spec. Hol.   (hr)"
-        '
         'frmAttendance
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -2014,4 +2049,7 @@ Partial Class frmAttendance
     Friend WithEvents ColumnHeader9 As ColumnHeader
     Friend WithEvents SpecHol7_TXT As TextBox
     Friend WithEvents Label36 As Label
+    Friend WithEvents Browse7_BTN As Button
+    Friend WithEvents Path7_TXT As TextBox
+    Friend WithEvents Import7_BTN As Button
 End Class

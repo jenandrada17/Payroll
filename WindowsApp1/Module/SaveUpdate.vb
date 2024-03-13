@@ -48,7 +48,7 @@ Module SaveUpdate
 
         Dim mysql As String
 
-        mysql = $"Select * FROM PAYROLL_ATTENDANCE inner join payroll_employee on BIO_NO = BIOMETRICID where BIOMETRICID = '{biometric}' and PAYDATE = '{paydate}'"
+        mysql = $"Select * FROM PAYROLL_ATTENDANCE A inner join tbl_employee B on B.BIOMETRICID = A.BIOMETRICID where A.BIOMETRICID = '{biometric}' and PAYDATE = '{paydate}'"
         Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
         If dss.Tables(0).Rows.Count > 0 Then
             With dss.Tables(0).Rows(0)
@@ -610,7 +610,7 @@ Module SaveUpdate
         Dim specHoliday = Holiday_Rate("SPECIAL")
 
         Dim mysql As String = $"Select * From payroll_attendance A 
-                                inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIOMETRICID  WHERE A.BIOMETRICID = '{bioNo}' and A.PAYDATE = '{paydate_}'"
+                                inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRICID  WHERE A.BIOMETRICID = '{bioNo}' and A.PAYDATE = '{paydate_}'"
 
         Using ds As DataSet = LoadSQL(mysql, "payroll_attendance")
             If ds.Tables(0).Rows.Count > 0 Then
@@ -625,7 +625,7 @@ Module SaveUpdate
                     Dim SpecialHol_hrs As Double = 0
                     Dim NoOfDays, SpecialHol, RegularHol As Double
                     Dim Deduction, SBU As Decimal
-                    Dim Company As String
+                    Dim Company As String = ""
                     Dim sched As String = ""
                     Dim noOf_days_training As Double = 0
                     Dim PI_ADD_DAYS As Double = 0
@@ -641,17 +641,77 @@ Module SaveUpdate
                     Dim Late_Adjustment As Decimal = 0
                     Dim Late_Approved As Integer = 0
                     Dim TotalREGHol, TotalSPECHol, TotalOT, TotalLateUnder, TotalNight, GrossAmount As Decimal
-                    Dim Minimum_rate As Decimal = IIf(IsDBNull(.Item("BRANCH_CODE")) Or .Item("BRANCH_CODE").Equals(""), GetMinimumRate("CITY", "GENSAN"), GetMinimumRate("BRANCHCODE", .Item("BRANCH_CODE")))
-                    Dim Ecola As Double = GetEcola("BRANCHCODE", .Item("BRANCH_CODE"))
+                    'Dim Minimum_rate As Decimal = IIf(IsDBNull(.Item("BRANCHCODE")) Or .Item("BRANCHCODE").Equals(""), GetMinimumRate("CITY", "GENSAN"), GetMinimumRate("BRANCHCODE", .Item("BRANCHCODE")))
+                    Dim Minimum_rate As Decimal = 0
+                    Dim Ecola As Decimal = 0
+                    Dim BranchCode As String = ""
+                    'Ecola = GetEcola("BRANCHCODE", .Item("BRANCHCODE"))
                     fix_monthly_rate = IIf(IsDBNull(.Item("FIX_MONTHLY_RATE")), False, .Item("FIX_MONTHLY_RATE"))
+                    'rate = IIf(IsDBNull(.Item("RATE_DAILY")) Or .Item("RATE_DAILY") = 0, Minimum_rate, .Item("RATE_DAILY"))
+                    Dim Monthly_rate As Decimal = 0 'IIf(IsDBNull(.Item("RATE_MONTHLY")) Or .Item("RATE_MONTHLY").Equals("0"), rate * 26, .Item("RATE_MONTHLY"))
+                    Dim Old_Rate As Decimal = 0 'IIf(IsDBNull(.Item("OLD_RATE")), rate, .Item("OLD_RATE"))
 
-                    rate = IIf(IsDBNull(.Item("RATE_DAILY")) Or .Item("RATE_DAILY") = 0, Minimum_rate, .Item("RATE_DAILY"))
-                    Dim Monthly_rate As Decimal = IIf(IsDBNull(.Item("RATE_MONTHLY")) Or .Item("RATE_MONTHLY").Equals("0"), rate * 26, .Item("RATE_MONTHLY"))
-                    Company = IIf(IsDBNull(.Item("COMPANY")), "", .Item("COMPANY"))
-                    Dim BranchCode As String = .Item("BRANCH_CODE")
+
+                    'BRANCHCODE
+                    Try
+                        If IsDBNull(.Item("BRANCHCODE")) Or .Item("BRANCHCODE").Equals("") Or String.IsNullOrEmpty(.Item("BRANCHCODE")) Then
+                            Minimum_rate = GetMinimumRate("CITY", "GENSAN")
+                            Ecola = 0
+                            BranchCode = ""
+                        Else
+                            Minimum_rate = GetMinimumRate("BRANCHCODE", .Item("BRANCHCODE"))
+                            Ecola = GetEcola("BRANCHCODE", .Item("BRANCHCODE"))
+                            BranchCode = .Item("BRANCHCODE")
+                        End If
+                    Catch ex As Exception
+                        SaveToText(bioNo, $"{ .Item("LASTNAME")}, { .Item("FIRSTNAME")} { .Item("MIDDLENAME")}", "BRANCHCODE")
+                    End Try
+
+                    'COMPANY / COMPANY_CATEGORY
+                    Try
+                        If IsDBNull(.Item("COMPANY_CATEGORY")) Or .Item("COMPANY_CATEGORY").Equals("") Or String.IsNullOrEmpty(.Item("COMPANY_CATEGORY")) Then
+                            Company = ""
+                        Else
+                            Company = .Item("COMPANY_CATEGORY")
+                        End If
+                    Catch ex As Exception
+                        SaveToText(bioNo, $"{ .Item("LASTNAME")}, { .Item("FIRSTNAME")} { .Item("MIDDLENAME")}", "COMPANY")
+                    End Try
+
+                    'RATE_DAILY
+                    Try
+                        If IsDBNull(.Item("RATE_DAILY")) Or .Item("RATE_DAILY") = 0 Then
+                            rate = Minimum_rate
+                        Else
+                            rate = .Item("RATE_DAILY")
+                        End If
+                    Catch ex As Exception
+                        SaveToText(bioNo, $"{ .Item("LASTNAME")}, { .Item("FIRSTNAME")} { .Item("MIDDLENAME")}", "RATE_DAILY")
+                    End Try
+
+                    'RATE_MONTHLY
+                    Try
+                        If IsDBNull(.Item("RATE_MONTHLY")) Or .Item("RATE_MONTHLY") = 0 Then
+                            Monthly_rate = rate * 26
+                        Else
+                            Monthly_rate = .Item("RATE_MONTHLY")
+                        End If
+                    Catch ex As Exception
+                        SaveToText(bioNo, $"{ .Item("LASTNAME")}, { .Item("FIRSTNAME")} { .Item("MIDDLENAME")}", "RATE_MONTHLY")
+                    End Try
+
+                    'OLD_RATE
+                    Try
+                        If IsDBNull(.Item("OLD_RATE")) Or .Item("OLD_RATE") = 0 Then
+                            Old_Rate = rate
+                        Else
+                            Old_Rate = .Item("OLD_RATE")
+                        End If
+                    Catch ex As Exception
+                        SaveToText(bioNo, $"{ .Item("LASTNAME")}, { .Item("FIRSTNAME")} { .Item("MIDDLENAME")}", "OLD_RATE")
+                    End Try
+
                     Dim Training_REGHoliday = 0, Training_SPECHoliday As Integer = 0
-                    Dim Old_Rate As Decimal = IIf(IsDBNull(.Item("OLD_RATE")), rate, .Item("OLD_RATE"))
-
                     Dim training_overtime As Double = 0
                     Dim training_late As TimeSpan = New TimeSpan(0, 0, 0, 0, 0)
                     Dim training_undertime As TimeSpan = New TimeSpan(0, 0, 0, 0, 0)
@@ -687,7 +747,7 @@ Module SaveUpdate
                     End Using
 
                     '====================================== IF TRAINEE GET TRAINING DAYS TO CALCULATE TRAINING FEE ===============================================
-                    If Not IsDBNull(.Item("DATE_STARTED")) Then
+                    If Not IsDBNull(.Item("DATEHIRED")) Then
                         Dim training_days As Integer
 
                         If Company = "DALTON" Or Company = "PHOTO" Or Company = "HEAD OFFICE" Then
@@ -696,7 +756,7 @@ Module SaveUpdate
                             training_days = 30
                         End If
 
-                        Dim Started As DateTime = .Item("DATE_STARTED")
+                        Dim Started As DateTime = .Item("DATEHIRED")
 
                         Dim days As Long = DateDiff(DateInterval.Day, Started, startingDate)
 
@@ -888,14 +948,14 @@ Module SaveUpdate
                                 Dim first_Basic As Decimal = GetFirst_Basic(bioNo, paydate_)
                                 Dim monthly_Basic As Decimal = TotalBasic + first_Basic
 
-                                If ThisIsNotNull("SSSNO", $"PAYROLL_EMPLOYEE where BIO_NO = '{bioNo}' and SSSNO is not null") Then 'IF HAS SSSNO DETAILS
+                                If ThisIsNotNull("SSSNO", $"TBL_EMPLOYEE where BIOMETRICID = '{bioNo}' and SSSNO is not null") Then 'IF HAS SSSNO DETAILS
                                     SSSComp = Get_SSS(monthly_Basic).EE
                                     SSS_ER = Get_SSS(monthly_Basic).ER
                                     SSS_EC = Get_SSS(monthly_Basic).EC
                                 End If
 
-                                If ThisIsNotNull("PAGIBIGNO", $"PAYROLL_EMPLOYEE where BIO_NO = '{bioNo}' and PAGIBIGNO is not null") Then PagibigComp = Get_Pagibig(monthly_Basic)
-                                If ThisIsNotNull("PHILHEALTHNO", $"PAYROLL_EMPLOYEE where BIO_NO = '{bioNo}' and PHILHEALTHNO is not null") Then PhilhealthComp = Get_PhilHealth(monthly_Basic)
+                                If ThisIsNotNull("PAGIBIG", $"TBL_EMPLOYEE where BIOMETRICID = '{bioNo}' and PAGIBIG is not null") Then PagibigComp = Get_Pagibig(monthly_Basic)
+                                If ThisIsNotNull("PHILHEALTHNO", $"TBL_EMPLOYEE where BIOMETRICID = '{bioNo}' and PHILHEALTHNO is not null") Then PhilhealthComp = Get_PhilHealth(monthly_Basic)
 
                             End If
                             sched = "CLOSE PAYROLL"
@@ -1362,7 +1422,7 @@ Module SaveUpdate
                     dss.Tables(0).Rows.Add(dsNewRow)
                     SaveEntry(dss)
 
-                    MsgBox("Successfully Saved!", MsgBoxStyle.Information, "Information")
+                    'MsgBox("Successfully Saved!", MsgBoxStyle.Information, "Information")
                 End Using
             End If
         End Using

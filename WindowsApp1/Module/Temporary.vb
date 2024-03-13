@@ -933,4 +933,141 @@ Module Temporary
         End Using
     End Sub
 
+    Friend Sub Import_Employee_BRANCH_DTR()
+        Dim path As String = "C:\Users\MISPC1\Desktop\Branch Import Formated.xlsx"
+        eApp = New Excel.Application
+        eBook = eApp.Workbooks.Open(path)
+        eSheet = eBook.Worksheets(1)
+        eCell = eSheet.UsedRange
+
+        MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path}';Extended Properties=Excel 8.0;")
+        MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
+        MyCommand.TableMappings.Add("Table", "Net-informations.com")
+        DtSet = New System.Data.DataSet
+        MyCommand.Fill(DtSet)
+
+        progressBarStart(DtSet.Tables(0).Rows.Count + 1)
+
+        Dim EMP_NO As String = Nothing
+
+        For row = 2 To DtSet.Tables(0).Rows.Count
+
+            If eCell(row, 1).Font.Bold = True Then
+                EMP_NO = eCell(row, 4).Value
+            End If
+
+            If EMP_NO <> Nothing And IsDate(eCell(row, 1).value) Then
+                Dim datee As DateTime = eCell(row, 1).Value
+                UPDATE_Emp_SBU_EXCEL_DATEONLY(EMP_NO, datee, row)
+
+                EMP_NO = Nothing
+            End If
+
+            frmMainForm.AppProgressBar.Value += 1
+        Next row
+
+        progressBarEnd()
+
+        MyConnection.Close()
+        eApp.Quit()
+        eApp.Application.DisplayAlerts = False
+
+    End Sub
+
+    Friend Sub SaveToText(bio As String, fullname As String, blank As String)
+        Dim path As String = "C:\Users\MISPC1\Desktop\BRANCH PAYROLL\EMPTY RECORD.txt"
+        Dim filee As New FileInfo(path)
+
+        If Not filee.Exists Then
+            filee.Create().Close()
+        End If
+
+        Dim writer As New StreamWriter(path, FileMode.Append)
+        writer.WriteLine(bio & vbTab & fullname & vbTab & blank)
+        writer.Close()
+    End Sub
+
+    Friend Sub Import_Employee_BRANCH_DEDUCTION()
+        Dim path As String = "C:\Users\MISPC1\Desktop\BRANCH PAYROLL\FINAL DEDUCTION BRANCHES.xlsx"
+        eApp = New Excel.Application
+        eBook = eApp.Workbooks.Open(path)
+        eSheet = eBook.Worksheets(1)
+        eCell = eSheet.UsedRange
+
+        MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{path}';Extended Properties=Excel 8.0;")
+        MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
+        MyCommand.TableMappings.Add("Table", "Net-informations.com")
+        DtSet = New System.Data.DataSet
+        MyCommand.Fill(DtSet)
+
+        progressBarStart(DtSet.Tables(0).Rows.Count + 1)
+
+        Dim EMP_NO As String = Nothing
+        Dim TEMP_BIO As Integer = 0
+
+        For row = 2 To DtSet.Tables(0).Rows.Count
+            Dim bioNo As Integer = eCell(row, 2).Value
+            Dim fullname As String = eCell(row, 3).Value
+            Dim deducName As String = eCell(row, 4).Value
+            Dim principal As Decimal = eCell(row, 5).Value
+            Dim amort As Decimal = eCell(row, 6).Value
+            Dim sched As String = "EVERY PAYROLL"
+
+            If eCell(row, 7).Value = "15" Then
+                sched = "OPEN PAYROLL"
+            ElseIf eCell(row, 7).Value = "30" Then
+                sched = "CLOSE PAYROLL"
+            End If
+
+            SaveDeductionS(0, deducName, principal, amort, sched, Today, bioNo)
+            SaveLogs($"DEDUCTION ADDED FOR BRANCHES - {fullname} ({bioNo}), Category({deducName}), Total({principal}), Schedule({sched}), Date({Today.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
+
+            frmMainForm.AppProgressBar.Value += 1
+        Next row
+
+        progressBarEnd()
+
+        MyConnection.Close()
+        eApp.Quit()
+        eApp.Application.DisplayAlerts = False
+
+    End Sub
+
+    Friend Function HeadOffice_Employee(EMP_NO As String)
+        Dim mysql As String = $"SELECT COMPANY_CATEGORY FROM TBL_EMPLOYEE WHERE EMP_NO = '{EMP_NO}' AND COMPANY_CATEGORY = 'HEAD OFFICE'"
+        Using ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
+            If ds.Tables(0).Rows.Count > 0 Then
+                Return True
+            End If
+        End Using
+        Return False
+    End Function
+
+    Public Sub SAVE_SBU_INCOMPLETE(CATEGORY As String, AMOUNT As String, PRINCIPAL As String, CREDIT As String, BALANCE As String, BIONO As Integer)
+
+        '====================== DELETE EXISTING DATA PAYROLL_SBU ==================
+        RunCommand($"DELETE FROM PAYROLL_SBU WHERE BIO_NO = {BIONO}")
+
+        Dim sql As String = "Select * From PAYROLL_SBU ORDER BY ID DESC Rows 1"
+        Using ds As DataSet = LoadSQL(sql, "PAYROLL_SBU")
+
+            Dim dsNewRow As DataRow = ds.Tables(0).NewRow
+            With dsNewRow
+
+                .Item("BIO_NO") = BIONO
+                .Item("DATE_ADDED") = Today
+                .Item("PRINCIPAL") = PRINCIPAL
+                .Item("CREDIT") = CREDIT
+                .Item("BALANCE") = BALANCE
+                .Item("CATEGORY") = CATEGORY
+                .Item("AMOUNT") = AMOUNT
+
+            End With
+
+            ds.Tables(0).Rows.Add(dsNewRow)
+            SaveEntry(ds)
+
+        End Using
+    End Sub
+
 End Module

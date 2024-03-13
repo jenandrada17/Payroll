@@ -1,4 +1,5 @@
-﻿Imports Microsoft.Office.Interop
+﻿Imports Microsoft.Internal
+Imports Microsoft.Office.Interop
 
 Public Class frmAttendance
 
@@ -1336,6 +1337,101 @@ Public Class frmAttendance
         Bio7_TXT.Text = Branch_LV.Items(Branch_LV.FocusedItem.Index).SubItems(0).Text
     End Sub
 
+    Private Sub Browse7_BTN_Click(sender As Object, e As EventArgs) Handles Browse7_BTN.Click
+        Dim dialog = New OpenFileDialog
+        If dialog.ShowDialog() = DialogResult.OK Then
+            Path7_TXT.Text = dialog.FileName
+        End If
+    End Sub
+
+    Private Sub Import7_BTN_Click(sender As Object, e As EventArgs) Handles Import7_BTN.Click
+        '=====================  ORIGIINAL ==============================
+        eApp = New Excel.Application
+        eBook = eApp.Workbooks.Open(Path7_TXT.Text)
+        eSheet = eBook.Worksheets(1)
+        eCell = eSheet.UsedRange
+
+        MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path7_TXT.Text}';Extended Properties=Excel 8.0;")
+        MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
+        MyCommand.TableMappings.Add("Table", "Net-informations.com")
+        DtSet = New System.Data.DataSet
+        MyCommand.Fill(DtSet)
+
+        Dim row As Integer
+        Dim payroll As String = Paydate.ToShortDateString
+
+        RunCommand($"DELETE FROM PAYROLL_ATTENDANCE WHERE PAYDATE = '{payroll}' AND BRANCH_MANUAL = TRUE;")
+
+        progressBarStart(DtSet.Tables(0).Rows.Count)
+
+        For row = 2 To DtSet.Tables(0).Rows.Count + 1
+            If IsNumeric(eCell(row, 1).Value) Then
+                Dim bioNo As String = eCell(row, 1).Value
+                Dim fullname As String = eCell(row, 2).Value
+                Dim totalDays As String = IIf(eCell(row, 3).Value = Nothing, 0, eCell(row, 3).Value)
+                Dim overtime As String = IIf(eCell(row, 4).Value = Nothing, 0, eCell(row, 4).Value)
+                Dim late As String = IIf(eCell(row, 5).Value = Nothing, 0, eCell(row, 5).Value)
+                Dim undertime As String = IIf(eCell(row, 6).Value = Nothing, 0, eCell(row, 6).Value)
+                Dim specHoliday_hrs As String = IIf(eCell(row, 7).Value = Nothing, 0, eCell(row, 7).Value)
+                Dim nightRate As String = IIf(eCell(row, 8).Value = Nothing, 0, eCell(row, 8).Value)
+                Dim sil As String = IIf(eCell(row, 9).Value = Nothing, 0, eCell(row, 9).Value)
+                Dim bhouse_allowance As String = IIf(eCell(row, 10).Value = Nothing, 0, eCell(row, 10).Value)
+                Dim performance_allowance As String = IIf(eCell(row, 11).Value = Nothing, 0, eCell(row, 11).Value)
+                Dim fare_allowance As String = IIf(eCell(row, 12).Value = Nothing, 0, eCell(row, 12).Value)
+
+                If totalDays <> 0 Then
+                    SaveAttendanceEE(bioNo, payroll, totalDays, overtime, late, undertime,
+                                 TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text, specHoliday_hrs, sil, Nothing, Nothing, Nothing, nightRate, True)
+
+                    SavePayout_IndividualL(bioNo, payroll, starting_date, ending_date)
+
+                    distinct_bio.Add(eCell(row, 1).Value)
+                End If
+
+                If bhouse_allowance <> 0 Then
+                    SaveAllowance(0, bioNo, "BH ALLOWANCE", bhouse_allowance, "YES", "OPEN PAYROLL", 0, Today)
+                    SaveAllowance_HISTORY(bioNo, "BH INCENTIVES", bhouse_allowance, "YES", "OPEN PAYROLL", 0, Today)
+                    SaveLogs($"IMPORT ALLOWANCE FROM DTR - {fullname} ({bioNo}), Category(BH ALLOWANCE), Amount({bhouse_allowance}), Sched(OPEN PAYROLL), Effectivity({Today.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
+                End If
+
+                If performance_allowance <> 0 Then
+                    SaveAllowance(0, bioNo, "PERFORMANCE INCENTIVES", performance_allowance, "YES", "OPEN PAYROLL", 0, Today)
+                    SaveAllowance_HISTORY(bioNo, "PERFORMANCE INCENTIVES", performance_allowance, "YES", "OPEN PAYROLL", 0, Today)
+                    SaveLogs($"IMPORT ALLOWANCE FROM DTR - {fullname} ({bioNo}), Category(PERFORMANCE ALLOWANCE), Amount({performance_allowance}), Sched(OPEN PAYROLL), Effectivity({Today.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
+                End If
+
+                If fare_allowance <> 0 Then
+                    SaveAllowance(0, bioNo, "TRANSPORTATION", fare_allowance, "YES", "OPEN PAYROLL", 0, Today)
+                    SaveAllowance_HISTORY(bioNo, "TRANSPORTATION", fare_allowance, "YES", "OPEN PAYROLL", 0, Today)
+                    SaveLogs($"IMPORT ALLOWANCE FROM DTR - {fullname} ({bioNo}), Category(TRANSPORTATION), Amount({fare_allowance}), Sched(OPEN PAYROLL), Effectivity({Today.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
+                End If
+
+                If frmMainForm.AppProgressBar.Value <> DtSet.Tables(0).Rows.Count Then frmMainForm.AppProgressBar.Value += 1
+
+            Else
+                MsgBox("row 2 Column 1 is empty or not a valid Biometric No.!", MsgBoxStyle.Exclamation)
+            End If
+        Next
+
+        progressBarEnd()
+
+        '====================== TRANSACTION ==========================
+        Dim listt As String = Nothing
+        For Each bio As String In distinct_bio
+            If listt = Nothing Then
+                listt = bio
+            Else
+                listt = listt & ", " & bio
+            End If
+        Next
+
+        SaveLogs($"IMPORTED BIOMETRIC - BRANCHES DTR ({listt})", frmMainForm.UserName_LBL.Text)
+
+        '=============================================================
+        PopulateComboBox(Paydate7_CB, "PAYROLL_ATTENDANCE", "PAYDATE")
+        PopulateBiometricSHEET(Branch_LV, Paydate, True)
+    End Sub
+
     Private Sub Calculate_BTN_Click(sender As Object, e As EventArgs) Handles Calculate_BTN.Click
         If Name_TXT.Text <> Nothing Then
             TotalDays_LBL.Text = 0
@@ -1668,7 +1764,7 @@ Public Class frmAttendance
     End Sub
 
     Private Sub Search7_BTN_Click(sender As Object, e As EventArgs) Handles Search7_BTN.Click
-        PopulateBiometricSHEET(Branch_LV, Paydate, True)
+        PopulateBiometricSHEET(Branch_LV, Paydate, True, Search7_TXT.Text)
     End Sub
 
     Private Sub Search7_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Search7_TXT.KeyPress

@@ -416,38 +416,48 @@ Module Public_Function
 
     End Sub
 
-    Public Sub SAVE_Emp_SBU_EXCEL(EMP_NO As String, RowNo As Integer)
-        Dim mysql As String
-        Dim BIO As String = ""
+    Public Function SAVE_Emp_SBU_EXCEL(EMP_NO As String, RowNo As Integer)
+        If Not HeadOffice_Employee(EMP_NO.TrimEnd) Then
+            Dim mysql As String
+            Dim BIO As String = ""
 
-        '====================== GET BIO_NO FOR SAVING TO PAYROLL_SBU  ==================
-        mysql = "Select * From PAYROLL_EMPLOYEE WHERE EMP_NO = '" & EMP_NO.TrimEnd & "'"
-        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
-            If ds.Tables(0).Rows.Count > 0 Then
-                Dim data As DataRow = ds.Tables(0).Rows(0)
-                With data
-                    BIO = .Item("BIO_NO")
+            '====================== GET BIO_NO FOR SAVING TO PAYROLL_SBU  ==================
+            mysql = "Select * From TBL_EMPLOYEE WHERE EMP_NO = '" & EMP_NO.TrimEnd & "'"
+            Using ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
+                If ds.Tables(0).Rows.Count > 0 Then
+                    Dim data As DataRow = ds.Tables(0).Rows(0)
+                    With data
+                        BIO = .Item("BIOMETRICID")
+                        Console.WriteLine($"SBU - { .Item("LASTNAME")}, { .Item("FIRSTNAME")}/ {BIO}")
+                    End With
+                Else
+                    'Exit Function
+                    Return False
+                End If
+            End Using
+
+            '====================== DELETE EXISTING DATA PAYROLL_SBU ==================
+            RunCommand($"DELETE FROM PAYROLL_SBU WHERE BIO_NO = {BIO}")
+
+            '====================== ADD NEW PAYROLL_SBU ==================
+            mysql = "Select * From PAYROLL_SBU Rows 1"
+            Using dssS As DataSet = LoadSQL(mysql, "PAYROLL_SBU")
+
+                Dim dsNewRow As DataRow = dssS.Tables(0).NewRow
+                With dsNewRow
+
+                    .Item("BIO_NO") = BIO
+                    .Item("DATE_ADDED") = Today
+
                 End With
-            Else
-                Exit Sub
-            End If
-        End Using
+                dssS.Tables(0).Rows.Add(dsNewRow)
+                SaveEntry(dssS)
+            End Using
 
-        '====================== ADD NEW PAYROLL_SBU ==================
-        mysql = "Select * From PAYROLL_SBU Rows 1"
-        Using dssS As DataSet = LoadSQL(mysql, "PAYROLL_SBU")
-
-            Dim dsNewRow As DataRow = dssS.Tables(0).NewRow
-            With dsNewRow
-
-                .Item("BIO_NO") = BIO
-
-            End With
-            dssS.Tables(0).Rows.Add(dsNewRow)
-            SaveEntry(dssS)
-        End Using
-
-    End Sub
+            Return True
+        End If
+        Return False
+    End Function
 
     Public Sub UPDATE_Emp_SBU_EXCEL(CATEGORY As String, AMOUNT As String, PRINCIPAL As String, CREDIT As String, BALANCE As String, RowNo As Integer)
 

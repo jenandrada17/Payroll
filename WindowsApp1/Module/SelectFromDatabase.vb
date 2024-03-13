@@ -909,17 +909,18 @@ Module SelectFromDatabase
 
         If searchName.Length <> 0 Then
 
-            mysql = $"Select * From PAYROLL_ATTENDANCE A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIOMETRICID 
+            mysql = $"Select * From PAYROLL_ATTENDANCE A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRICID 
                                  where A.PAYDATE = '{Paydate}' and {branchCondition} and  ("
 
             For Each name In strWords
-                mysql &= $"{vbCr}UPPER(BIOMETRICID) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(FULLNAME) LIKE UPPER('%{name}%')) ORDER BY FULLNAME ASC "
+                mysql &= $"{vbCr}UPPER(A.BIOMETRICID) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(FIRSTNAME) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(LASTNAME) LIKE UPPER('%{name}%')) ORDER BY LASTNAME, FIRSTNAME ASC "
             Next
 
         Else
-            mysql = $"Select * From PAYROLL_ATTENDANCE A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIOMETRICID 
-                                where A.PAYDATE = '{Paydate}' and {branchCondition} ORDER BY FULLNAME ASC "
+            mysql = $"Select * From PAYROLL_ATTENDANCE A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRICID 
+                                where A.PAYDATE = '{Paydate}' and {branchCondition} ORDER BY LASTNAME, FIRSTNAME ASC "
         End If
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
@@ -930,8 +931,17 @@ Module SelectFromDatabase
                 For Each dr In ds.Tables(0).Rows
                     With dr
 
+                        Dim MI As String
+                        If String.IsNullOrEmpty(.Item("MiddleName")) Then
+                            MI = ""
+                        Else
+                            MI = .Item("MiddleName").Substring(0, 1) & "."
+                        End If
+
+                        Dim FULLNAME As String = $"{ .Item("LastName")}, { .Item("FirstName")} {MI}"
+
                         Dim i As ListViewItem = LV.Items.Add(.Item("BIOMETRICID"))
-                        i.SubItems.Add(.Item("FULLNAME")).Tag = .Item("ID")
+                        i.SubItems.Add(FULLNAME).Tag = .Item("ID")
                         i.SubItems.Add(.Item("PRESENT_DAYS"))
                         i.SubItems.Add(IIf(.Item("OVERTIME") = 0, "", .Item("OVERTIME")))
                         i.SubItems.Add(IIf(.Item("LATE") = 0, "", .Item("LATE")))
@@ -1235,13 +1245,19 @@ Module SelectFromDatabase
     End Function
 
     Public Sub GetName(BiometricID_TXT As String, name As TextBox)
-        Dim mysql As String = "Select * From PAYROLL_EMPLOYEE WHERE BIO_NO= '" & BiometricID_TXT & "'"
-        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+        Dim mysql As String = "Select * From TBL_EMPLOYEE WHERE BIOMETRICID= '" & BiometricID_TXT & "'"
+        Using ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
             If ds.Tables(0).Rows.Count > 0 Then
                 Dim data As DataRow = ds.Tables(0).Rows(0)
                 With data
+                    Dim MI As String
+                    If String.IsNullOrEmpty(.Item("MiddleName")) Then
+                        MI = ""
+                    Else
+                        MI = .Item("MiddleName").Substring(0, 1) & "."
+                    End If
 
-                    name.Text = .Item("FULLNAME")
+                    name.Text = $"{ .Item("LastName")}, { .Item("FirstName")} {MI}"
                     name.Tag = .Item("ID")
 
                 End With
@@ -1276,17 +1292,18 @@ Module SelectFromDatabase
 
         If searchName.Length <> 0 Then
 
-            mysql = "select A.*, A.id as allow_id, B.* from PAYROLL_ALLOWANCES A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIOMETRIC_NO where ALLOWED = 'YES' and ("
+            mysql = "select A.*, A.id as allow_id, B.* from PAYROLL_ALLOWANCES A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRIC_NO where ALLOWED = 'YES' and ("
 
             For Each name In strWords
                 mysql &= $"{vbCr}UPPER(BIOMETRIC_NO) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(FULLNAME) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(BRANCH_CODE) LIKE UPPER('%{name}%')) ORDER BY FULLNAME, allow_id  ASC "
+                mysql &= $"{vbCr}UPPER(FIRSTNAME) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(LASTNAME) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(COMPANY_CATEGORY) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(BRANCHCODE) LIKE UPPER('%{name}%')) ORDER BY LASTNAME, FIRSTNAME, allow_id  ASC "
             Next
 
         Else
-            mysql = "select A.*, A.id as allow_id, B.* from PAYROLL_ALLOWANCES A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIOMETRIC_NO where ALLOWED = 'YES' ORDER BY FULLNAME, allow_id ASC "
+            mysql = "select A.*, A.id as allow_id, B.* from PAYROLL_ALLOWANCES A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRIC_NO where ALLOWED = 'YES' ORDER BY LASTNAME, FIRSTNAME, allow_id ASC "
         End If
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ALLOWANCES")
@@ -1310,8 +1327,17 @@ Module SelectFromDatabase
                 sched = .Item("SCHEDULE")
             End If
 
+            Dim MI As String
+            If String.IsNullOrEmpty(.Item("MiddleName")) Then
+                MI = ""
+            Else
+                MI = .Item("MiddleName").Substring(0, 1) & "."
+            End If
+
+            Dim FULLNAME As String = $"{ .Item("LastName")}, { .Item("FirstName")} {MI}"
+
             Dim effectivity As DateTime = .Item("EFFECTIVE_DATE")
-            Dim i As ListViewItem = LV.Items.Add(.Item("FULLNAME"))
+            Dim i As ListViewItem = LV.Items.Add(FULLNAME)
             i.SubItems.Add(.Item("CATEGORY")).Tag = .Item("allow_id")
             i.SubItems.Add(sched)
             i.SubItems.Add(effectivity.ToString("MMM dd, yyyy"))
@@ -1685,25 +1711,36 @@ Module SelectFromDatabase
         If searchName.Length <> 0 Then
 
             mysql = $"Select * From PAYROLL_PAYOUT A 
-                                        inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIOMETRIC_ID 
+                                        inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRIC_ID 
                                         where paydate = '{paydate}' and ( "
 
             For Each name In strWords
                 mysql &= $"{vbCr}UPPER(BIOMETRIC_ID) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(FULLNAME) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(BRANCH_CODE) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%')) ORDER BY FULLNAME"
+                mysql &= $"{vbCr}UPPER(FIRSTNAME) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(LASTNAME) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(BRANCHCODE) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(COMPANY_CATEGORY) LIKE UPPER('%{name}%')) ORDER BY LASTNAME, FIRSTNAME"
             Next
 
         Else
-            mysql = $"Select * From PAYROLL_PAYOUT A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIOMETRIC_ID where paydate ='{paydate}'  ORDER BY FULLNAME"
+            mysql = $"Select * From PAYROLL_PAYOUT A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRIC_ID where paydate ='{paydate}'  ORDER BY LASTNAME, FIRSTNAME"
         End If
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
             progressBarStart(ds.Tables(0).Rows.Count)
             For Each dr In ds.Tables(0).Rows
                 With dr
-                    Dim i As ListViewItem = LV.Items.Add(.Item("FULLNAME"))
+
+                    Dim MI As String
+                    If String.IsNullOrEmpty(.Item("MiddleName")) Then
+                        MI = ""
+                    Else
+                        MI = .Item("MiddleName").Substring(0, 1) & "."
+                    End If
+
+                    Dim FULLNAME As String = $"{ .Item("LastName")}, { .Item("FirstName")} {MI}"
+
+                    Dim i As ListViewItem = LV.Items.Add(FULLNAME)
                     i.SubItems.Add(FormatNumber(.Item("TOTAL_BASIC"))).Tag = .Item("BIOMETRIC_ID")
                     i.SubItems.Add(FormatNumber(.Item("GROSS_AMOUNT")))
                     i.SubItems.Add(FormatNumber(.Item("SSS_COMP")))

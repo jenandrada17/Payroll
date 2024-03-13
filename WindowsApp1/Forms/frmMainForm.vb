@@ -10,6 +10,8 @@ Public Class frmMainForm
     Public starting, ending As Date
 
     Private Sub frmMainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        'Import_Employee_BRANCH_DEDUCTION()
+
         'Update_HREmployee_From_PayrollEmployee()
 
         'ExportDataToExcel()

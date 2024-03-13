@@ -19,6 +19,7 @@ Public Class frmNewEmployee
 
     Private Sub frmNewEmployee_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Import_Employee_SBU_AMOUNT_PRINCIPAL_CREDIT()
+        Import_Employee_SBU_INCOMPLETE()
 
         Lists_Employees(lvEmployee)
         'PopulateComboBox(Branch_ComboB, "PAYROLL_EMPLOYEE", "BRANCH_CODE")
@@ -346,13 +347,13 @@ Public Class frmNewEmployee
     End Sub
 
     Private Sub Import_Employee_SBU_AMOUNT_PRINCIPAL_CREDIT()
-
+        Dim path As String = "C:\Users\MISPC1\Desktop\BRANCH PAYROLL\SBU AS MARCH 2024 - Copy.xls"
         eApp = New Excel.Application
-        eBook = eApp.Workbooks.Open(Path_TXT.Text)
+        eBook = eApp.Workbooks.Open(path)
         eSheet = eBook.Worksheets(1)
         eCell = eSheet.UsedRange
 
-        MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path_TXT.Text}';Extended Properties=Excel 8.0;")
+        MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{path}';Extended Properties=Excel 8.0;")
         MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
         MyCommand.TableMappings.Add("Table", "Net-informations.com")
         DtSet = New System.Data.DataSet
@@ -366,6 +367,8 @@ Public Class frmNewEmployee
 
         progressBarStart(DtSet.Tables(0).Rows.Count + 1)
 
+        Dim newItem As Boolean = False
+
         For row = 7 To DtSet.Tables(0).Rows.Count
 
             Dim EMP_NO As String = ""
@@ -377,22 +380,71 @@ Public Class frmNewEmployee
 
             If eCell(row, 1).Font.Bold = True Then
                 EMP_NO = eCell(row, 4).Value
-                SAVE_Emp_SBU_EXCEL(EMP_NO, row)
+                newItem = SAVE_Emp_SBU_EXCEL(EMP_NO, row)
             End If
 
-            If IsDate(eCell(row, 1).value) Then
-                CATEGORY = eCell(row, 4).Value
-                AMOUNT = eCell(row, 5).Value
-                PRINCIPAL = eCell(row, 6).Value
-                CREDIT = eCell(row, 8).Value
-                BALANCE = eCell(row, 9).Value
-                UPDATE_Emp_SBU_EXCEL(CATEGORY, AMOUNT, PRINCIPAL, CREDIT, BALANCE, row)
+            If newItem Then
+                If IsDate(eCell(row, 1).value) Then
+                    CATEGORY = eCell(row, 4).Value
+                    AMOUNT = eCell(row, 5).Value
+                    PRINCIPAL = eCell(row, 6).Value
+                    CREDIT = eCell(row, 8).Value
+                    BALANCE = eCell(row, 9).Value
+                    UPDATE_Emp_SBU_EXCEL(CATEGORY, AMOUNT, PRINCIPAL, CREDIT, BALANCE, row)
+                End If
             End If
 
             frmMainForm.AppProgressBar.Value += 1
         Next row
 
         RunCommand($"UPDATE PAYROLL_SBU SET CATEGORY = 'SBU';")
+
+        progressBarEnd()
+
+        Path_TXT.Clear()
+        MyConnection.Close()
+        eBook.Close()
+        eApp.Quit()
+
+        Excel_Panel.Visible = False
+
+    End Sub
+
+    Private Sub Import_Employee_SBU_INCOMPLETE()
+        Dim path As String = "C:\Users\MISPC1\Desktop\BRANCH PAYROLL\SBU INCOMPLETE.xlsx"
+        eApp = New Excel.Application
+        eBook = eApp.Workbooks.Open(path)
+        eSheet = eBook.Worksheets(1)
+        eCell = eSheet.UsedRange
+
+        MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{path}';Extended Properties=Excel 8.0;")
+        MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
+        MyCommand.TableMappings.Add("Table", "Net-informations.com")
+        DtSet = New System.Data.DataSet
+        MyCommand.Fill(DtSet)
+
+        progressBarStart(DtSet.Tables(0).Rows.Count + 1)
+
+        Dim newItem As Boolean = False
+
+        For row = 2 To DtSet.Tables(0).Rows.Count
+
+            Dim CATEGORY As String = ""
+            Dim AMOUNT As String = ""
+            Dim PRINCIPAL As String = ""
+            Dim CREDIT As String = ""
+            Dim BALANCE As String = ""
+
+            Dim BIO As Integer = eCell(row, 3).Value
+            CATEGORY = "SBU"
+            PRINCIPAL = eCell(row, 4).Value
+            CREDIT = eCell(row, 5).Value
+            BALANCE = eCell(row, 6).Value
+            AMOUNT = eCell(row, 7).Value
+            SAVE_SBU_INCOMPLETE(CATEGORY, AMOUNT, PRINCIPAL, CREDIT, BALANCE, BIO)
+
+            frmMainForm.AppProgressBar.Value += 1
+        Next row
 
         progressBarEnd()
 
