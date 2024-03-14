@@ -649,8 +649,8 @@ Module SaveUpdate
                     fix_monthly_rate = IIf(IsDBNull(.Item("FIX_MONTHLY_RATE")), False, .Item("FIX_MONTHLY_RATE"))
                     'rate = IIf(IsDBNull(.Item("RATE_DAILY")) Or .Item("RATE_DAILY") = 0, Minimum_rate, .Item("RATE_DAILY"))
                     Dim Monthly_rate As Decimal = 0 'IIf(IsDBNull(.Item("RATE_MONTHLY")) Or .Item("RATE_MONTHLY").Equals("0"), rate * 26, .Item("RATE_MONTHLY"))
-                    Dim Old_Rate As Decimal = 0 'IIf(IsDBNull(.Item("OLD_RATE")), rate, .Item("OLD_RATE"))
-
+                    Dim Old_Rate As Decimal = 0 'IIf(IsDBNull(.Item("OLD_RATE")), rate, .Item("OLD_RATE")) 
+                    Dim SBU_sched As String = GetData("SCHED", $"PAYROLL_SBU WHERE BIO_NO = {bioNo}")
 
                     'BRANCHCODE
                     Try
@@ -669,10 +669,10 @@ Module SaveUpdate
 
                     'COMPANY / COMPANY_CATEGORY
                     Try
-                        If IsDBNull(.Item("COMPANY_CATEGORY")) Or .Item("COMPANY_CATEGORY").Equals("") Or String.IsNullOrEmpty(.Item("COMPANY_CATEGORY")) Then
+                        If IsDBNull(.Item("COMPANY")) Or .Item("COMPANY").Equals("") Or String.IsNullOrEmpty(.Item("COMPANY")) Then
                             Company = ""
                         Else
-                            Company = .Item("COMPANY_CATEGORY")
+                            Company = .Item("COMPANY")
                         End If
                     Catch ex As Exception
                         SaveToText(bioNo, $"{ .Item("LASTNAME")}, { .Item("FIRSTNAME")} { .Item("MIDDLENAME")}", "COMPANY")
@@ -1083,15 +1083,26 @@ Module SaveUpdate
 
                             SBU = SBU_Amount(bioNo)
 
-                            If SBU = 500 Then
-                                If sched = "CLOSE PAYROLL" Then
+                            If SBU_sched = "EVERY PAYROLL" Then
+                                Save_Recorded_Allow_Deduc(bioNo, paydate_, "SBU", SBU, "DEDUCTION")
+                                Deduction = Deduction + SBU
+                            Else
+                                If sched = SBU_sched Then
                                     Save_Recorded_Allow_Deduc(bioNo, paydate_, "SBU", SBU, "DEDUCTION")
                                     Deduction = Deduction + SBU
                                 End If
-                            Else
-                                Save_Recorded_Allow_Deduc(bioNo, paydate_, "SBU", SBU, "DEDUCTION")
-                                Deduction = Deduction + SBU
                             End If
+
+
+                            'If SBU = 500 Then
+                            '    If sched = "CLOSE PAYROLL" Then
+                            '        Save_Recorded_Allow_Deduc(bioNo, paydate_, "SBU", SBU, "DEDUCTION")
+                            '        Deduction = Deduction + SBU
+                            '    End If
+                            'Else
+                            '    Save_Recorded_Allow_Deduc(bioNo, paydate_, "SBU", SBU, "DEDUCTION")
+                            '    Deduction = Deduction + SBU
+                            'End If
 
                         End If
 
@@ -1232,7 +1243,7 @@ Module SaveUpdate
     End Sub
 
     Friend Sub SavePayout_ALL(paydate_ As String, startingDate As DateTime, EndingDate As DateTime) '========== AUTO SAVE TO PAYOUT ============   
-        Dim mysql As String = $"Select * From TEMP_ATTENDANCE A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIOMETRICID"
+        Dim mysql As String = $"Select A.BIOMETRICID AS BIOMETRIC_ID From TEMP_ATTENDANCE A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRICID"
         Using ds As DataSet = LoadSQL(mysql, "TEMP_ATTENDANCE")
             If ds.Tables(0).Rows.Count > 0 Then
 
@@ -1240,7 +1251,7 @@ Module SaveUpdate
 
                 For Each dr In ds.Tables(0).Rows
                     With dr
-                        SavePayout_IndividualL(.Item("BIOMETRICID"), paydate_, startingDate, EndingDate)
+                        SavePayout_IndividualL(.Item("BIOMETRIC_ID"), paydate_, startingDate, EndingDate)
 
                         frmMainForm.AppProgressBar.Value += 1
                     End With
@@ -1789,14 +1800,20 @@ Module SaveUpdate
 
     Public Sub Update_Emp_DateHired_Position(FULLNAME As String, DATE_STARTED As String, EMP_POSITION As String, EMP_NO As String, empNo As String)
 
-        Dim mysql As String = $"Select * FROM PAYROLL_EMPLOYEE  where FULLNAME = '{FULLNAME}'"
-        Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE ")
+        Dim mysql As String = $"Select A.*, 
+                                LASTNAME || ', ' || FIRSTNAME || ' ' || 
+                                     CASE 
+                                         WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
+                                         ELSE ''
+                                     END AS FULLNAME
+                                FROM TBL_EMPLOYEE where FULLNAME = '{FULLNAME}'"
+        Dim ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE ")
         If ds.Tables(0).Rows.Count > 0 Then
 
             With ds.Tables(0).Rows(0)
 
                 If DATE_STARTED <> Nothing Then
-                    .Item("DATE_STARTED") = DATE_STARTED
+                    .Item("DATEHIRED") = DATE_STARTED
                 End If
 
                 .Item("EMP_POSITION") = EMP_POSITION.ToUpper
@@ -1848,21 +1865,27 @@ Module SaveUpdate
 
         Console.WriteLine("empNo " & empNo)
 
-        Dim mysql As String = $"Select * FROM PAYROLL_EMPLOYEE  where FULLNAME = '{FULLNAME}'"
-        Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE ")
+        Dim mysql As String = $"Select A.*, 
+                                LASTNAME || ', ' || FIRSTNAME || ' ' || 
+                                     CASE 
+                                         WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
+                                         ELSE ''
+                                     END AS FULLNAME
+                                FROM TBL_EMPLOYEE A where FULLNAME = '{FULLNAME}'"
+        Dim ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE ")
         If ds.Tables(0).Rows.Count > 0 Then
 
             With ds.Tables(0).Rows(0)
 
                 If DATE_STARTED <> Nothing Then
-                    .Item("DATE_STARTED") = DATE_STARTED
+                    .Item("DATEHIRED") = DATE_STARTED
                 End If
 
                 .Item("EMP_POSITION") = EMP_POSITION
                 .Item("TINNO") = TINNO
                 .Item("SSSNO") = SSSNO
                 .Item("PHILHEALTHNO") = PHILHEALTHNO
-                .Item("PAGIBIGNO") = PAGIBIGNO
+                .Item("PAGIBIG") = PAGIBIGNO
 
             End With
 
@@ -1873,8 +1896,8 @@ Module SaveUpdate
     Friend Sub Save_ClockINOUT(column As String, columnValue As String, TIME_IN As String, TIME_OUT As String)
         Dim mysql As String
 
-        mysql = $"Select * FROM PAYROLL_EMPLOYEE where {column} = '{columnValue}'"
-        Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+        mysql = $"Select * FROM TBL_EMPLOYEE where {column} = '{columnValue}'"
+        Dim ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
         If ds.Tables(0).Rows.Count > 0 Then
             For Each dr In ds.Tables(0).Rows
                 With dr
@@ -2147,7 +2170,12 @@ Module SaveUpdate
                 With ds.Tables(0).Rows(0)
 
                     bioNo = .Item("BIO_NO")
-                    namee = GetData("FULLNAME", $"PAYROLL_EMPLOYEE where BIO_NO='{ .Item("BIO_NO")}'")
+                    namee = GetData("FULLNAME", $"LASTNAME || ', ' || FIRSTNAME || ' ' || 
+                                                     CASE 
+                                                         WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
+                                                         ELSE ''
+                                                     END AS FULLNAME
+                                                TBL_EMPLOYEE where BIOMETRICID='{ .Item("BIO_NO")}'")
 
                     If status = "APPROVE" Then
                         .Item("STATUS") = status
@@ -2176,7 +2204,12 @@ Module SaveUpdate
                     Dim bioNo As String = .Item("BIO_NO")
                     Dim schedule As String = "EVERY PAYROLL"
 
-                    Dim namee As String = GetData("FULLNAME", $"PAYROLL_EMPLOYEE where BIO_NO='{bioNo}'")
+                    Dim namee As String = GetData("FULLNAME", $"LASTNAME || ', ' || FIRSTNAME || ' ' || 
+                                                                     CASE 
+                                                                         WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
+                                                                         ELSE ''
+                                                                     END AS FULLNAME
+                                                                TBL_EMPLOYEE where BIOMETRICID='{bioNo}'")
 
                     If .Item("SALARY_CHANGES") = "PERFORMANCE INCENTIVES" Then
 
@@ -2281,7 +2314,7 @@ Module SaveUpdate
         End Using
     End Sub
 
-    Friend Sub SaveNewSBU(NAMEE As String, BIO_NO As String, AMOUNT As String, PRINCIPAL As String)
+    Friend Sub SaveNewSBU(NAMEE As String, BIO_NO As String, AMOUNT As String, PRINCIPAL As String, SCHED As String)
         Dim old_principal = 0, old_amort As Decimal = 0
         Dim mysql As String = $"Select * from PAYROLL_SBU where BIO_NO ='{BIO_NO}'"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_SBU")
@@ -2295,10 +2328,11 @@ Module SaveUpdate
                     .Item("BALANCE") = PRINCIPAL
                     .Item("CATEGORY") = "SBU"
                     .Item("DATE_ADDED") = Today
+                    .Item("SCHED") = SCHED
                 End With
                 SaveEntry(ds, False)
 
-                SaveLogs($"UPDATED SBU - {NAMEE}({BIO_NO}) Principal(from {FormatNumber(old_principal)} to {FormatNumber(PRINCIPAL)}) Amort(from {FormatNumber(old_amort)} to {FormatNumber(AMOUNT)})", frmMainForm.UserName_LBL.Text)
+                SaveLogs($"UPDATED SBU - {NAMEE}({BIO_NO}) Principal(from {FormatNumber(old_principal)} to {FormatNumber(PRINCIPAL)}) Amort(from {FormatNumber(old_amort)} to {FormatNumber(AMOUNT)}) Schedule({SCHED})", frmMainForm.UserName_LBL.Text)
 
                 MsgBox("Successfully updated.", MsgBoxStyle.Information)
             Else
@@ -2312,12 +2346,13 @@ Module SaveUpdate
                         .Item("BALANCE") = PRINCIPAL
                         .Item("CATEGORY") = "SBU"
                         .Item("DATE_ADDED") = Today
+                        .Item("SCHED") = SCHED
                     End With
 
                     dss.Tables(0).Rows.Add(dsNew)
                     SaveEntry(dss)
 
-                    SaveLogs($"ADDED NEW SBU - {NAMEE}({BIO_NO}) Principal({FormatNumber(PRINCIPAL)}) Amort({FormatNumber(AMOUNT)})", frmMainForm.UserName_LBL.Text)
+                    SaveLogs($"ADDED NEW SBU - {NAMEE}({BIO_NO}) Principal({FormatNumber(PRINCIPAL)}) Amort({FormatNumber(AMOUNT)}) Schedule({SCHED})", frmMainForm.UserName_LBL.Text)
 
                     MsgBox("Successfully saved.", MsgBoxStyle.Information)
                 End Using

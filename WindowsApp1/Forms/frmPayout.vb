@@ -25,8 +25,8 @@ Public Class frmPayout
 
         '========================== PAYSLIP ===========================
         PopulateComboBox(Payslip_paydate_Combo, "PAYROLL_PAYOUT", "PAYDATE")
-        PopulateComboBox(Branch_ComboB, "PAYROLL_EMPLOYEE", "BRANCH_CODE")
-        PopulateComboBox(Branch_ComboB, "PAYROLL_EMPLOYEE", "BRANCH_CODE")
+        PopulateComboBox(Branch_ComboB, "TBL_EMPLOYEE", "BRANCHCODE")
+        PopulateComboBox(Branch_ComboB, "TBL_EMPLOYEE", "BRANCHCODE")
 
         Paydate_ComboB.Text = "--Select Payroll--"
 
@@ -272,7 +272,7 @@ Public Class frmPayout
 
             '===================== MINIMUM RATE CHANGED STARTING SEPTEMBER 1, 2022 ===================== 
             If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
-                Dim Old_Rate As Decimal = GetData_Decimal("OLD_RATE", $"PAYROLL_EMPLOYEE WHERE BIO_NO = '{BIO_NO}'")
+                Dim Old_Rate As Decimal = GetData_Decimal("OLD_RATE", $"TBL_EMPLOYEE WHERE BIOMETRICID = '{BIO_NO}'")
                 Dim newMin_rholiday As Integer = REG_SPEC_HOLIDAY(BIO_NO, paydate_).rholiday
                 Dim newMin_sholiday As Integer = REG_SPEC_HOLIDAY(BIO_NO, paydate_).sholiday
 
@@ -581,7 +581,7 @@ Public Class frmPayout
     End Sub
 
     Private Sub Calculate_Late(latee As Integer)
-        Dim ratee As Decimal = GetData_Decimal("RATE_DAILY", $"PAYROLL_EMPLOYEE WHERE BIO_NO = '{BiometricID_TXT.Text}'")
+        Dim ratee As Decimal = GetData_Decimal("RATE_DAILY", $"TBL_EMPLOYEE WHERE BIOMETRICID = '{BiometricID_TXT.Text}'")
         Dim late As Decimal = ((ratee / 8) / 60) * latee
 
         TotalLateUnder_LBL.Text = FormatNumber(late)
@@ -759,8 +759,14 @@ Public Class frmPayout
     Private Sub Payslip_All()
         Dim recipient As String
         Dim datee As DateTime = Payslip_paydate_Combo.Text
-        Dim mysqll As String = $"select * from payroll_payout A 
-                                                inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIOMETRIC_ID  
+        Dim mysqll As String = $"select A.*, B.*, 
+                                                LASTNAME || ', ' || FIRSTNAME || ' ' || 
+                                                     CASE 
+                                                         WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
+                                                         ELSE ''
+                                                     END AS FULLNAME
+                                                 from payroll_payout A 
+                                                inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRIC_ID  
                                                 where paydate = '{Payslip_paydate_Combo.Text}' and EMAIL_SENT is null;"
 
         Using ds As DataSet = LoadSQL(mysqll, "payroll_payout")
@@ -808,8 +814,14 @@ Public Class frmPayout
         Dim recipient As String
         Dim datee As DateTime = Payslip_paydate_Combo.Text
 
-        Dim mysqll As String = $"Select A.*, B.*, B.id as emp_id from payroll_payout A 
-                                                inner Join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIOMETRIC_ID   
+        Dim mysqll As String = $"Select A.*, B.*, B.id as emp_id,
+                                                 LASTNAME || ', ' || FIRSTNAME || ' ' || 
+                                                     CASE 
+                                                         WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
+                                                         ELSE ''
+                                                     END AS FULLNAME
+                                                from payroll_payout A 
+                                                inner Join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRIC_ID   
                                                 where paydate = '{Payslip_paydate_Combo.Text}' and B.{tbl_column} = '{column_value}';"
 
         Using ds As DataSet = LoadSQL(mysqll, "payroll_payout")
@@ -881,7 +893,7 @@ Public Class frmPayout
             Dim sql As String = $"select A.*, 
                                     LASTNAME || ', ' || FIRSTNAME || ' ' || 
                                          CASE 
-                                             WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) '.'
+                                             WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
                                              ELSE ''
                                          END AS FULLNAME 
                                     from TBL_EMPLOYEE A where BIOMETRICID = '{biometricID}';"

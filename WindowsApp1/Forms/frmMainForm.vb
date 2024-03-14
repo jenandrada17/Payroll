@@ -14,7 +14,7 @@ Public Class frmMainForm
 
         'Update_HREmployee_From_PayrollEmployee()
 
-        'Import_Employee_BRANCH_DEDUCTION() 
+        'Import_Employee_BRANCH_DEDUCTION()
 
         'ExportDataToExcel()
 

@@ -576,7 +576,7 @@ Public Class frmAttendance
                     mysqll = $"Select A.*, B.BIOMETRICID as bioNo, B.TIME_IN, B.TIME_OUT, C.*,
                                          LASTNAME || ', ' || FIRSTNAME || ' ' || 
                                              CASE 
-                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) '.'
+                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
                                                  ELSE ''
                                              END AS FULLNAME
                                         From PAYROLL_ATTENDANCE A 
@@ -592,7 +592,7 @@ Public Class frmAttendance
                         mysqll = $"Select A.*, B.BIOMETRICID as bioNo, B.TIME_IN, B.TIME_OUT, C.*,
                                          LASTNAME || ', ' || FIRSTNAME || ' ' || 
                                              CASE 
-                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) '.'
+                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
                                                  ELSE ''
                                              END AS FULLNAME  
                                         From PAYROLL_ATTENDANCE A 
@@ -606,7 +606,7 @@ Public Class frmAttendance
                         mysqll = $"Select A.*, B.BIOMETRICID as bioNo,  B.TIME_IN, B.TIME_OUT, C.*,
                                          LASTNAME || ', ' || FIRSTNAME || ' ' || 
                                              CASE 
-                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) '.'
+                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
                                                  ELSE ''
                                              END AS FULLNAME
                                         From PAYROLL_ATTENDANCE A 
@@ -626,7 +626,7 @@ Public Class frmAttendance
                 mysqll = $"Select A.*, B.BIOMETRICID as bioNo, B.TIME_IN, B.TIME_OUT, C.*,
                                          LASTNAME || ', ' || FIRSTNAME || ' ' || 
                                              CASE 
-                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) '.'
+                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
                                                  ELSE ''
                                              END AS FULLNAME
                                         From PAYROLL_ATTENDANCE A 
@@ -783,7 +783,7 @@ Public Class frmAttendance
             mysqll = $"Select A.*, C.*, 
                                          LASTNAME || ', ' || FIRSTNAME || ' ' || 
                                              CASE 
-                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) '.'
+                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
                                                  ELSE ''
                                              END AS FULLNAME
                                         From PAYROLL_ATTENDANCE A 

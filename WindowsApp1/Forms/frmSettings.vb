@@ -401,7 +401,7 @@
             Dim result As DialogResult = MsgBox($"Time in/out for {ClockBranch_CB.Text} will be Save/Updated, proceed anyway?", MessageBoxButtons.YesNo)
             If result = DialogResult.Yes Then
 
-                Save_ClockINOUT("BRANCH_CODE", ClockBranch_CB.Text, ClockBranch_IN_CB.Text, ClockBranch_OUT_CB.Text)
+                Save_ClockINOUT("BRANCHCODE", ClockBranch_CB.Text, ClockBranch_IN_CB.Text, ClockBranch_OUT_CB.Text)
                 Lists_TimeInOut(TimeInOut_LV)
 
                 SaveLogs($"UPDATED TIME IN/OUT FOR BRANCH({ClockBranch_CB.Text}),  In/Out({ClockBranch_IN_CB.Text} - {ClockBranch_OUT_CB.Text})", frmMainForm.UserName_LBL.Text)
@@ -419,7 +419,7 @@
             Dim result As DialogResult = MsgBox($"Time in/out for {ClockEmp_TXT.Text} will be Save/Updated, proceed anyway?", MessageBoxButtons.YesNo)
             If result = DialogResult.Yes Then
 
-                Save_ClockINOUT("BIO_NO", ClockBio_TXT.Text, ClockEmp_IN_CB.Text, ClockEmp_OUT_CB.Text)
+                Save_ClockINOUT("BIOMETRICID", ClockBio_TXT.Text, ClockEmp_IN_CB.Text, ClockEmp_OUT_CB.Text)
                 Lists_TimeInOut(TimeInOut_LV)
 
                 SaveLogs($"UPDATED TIME IN/OUT FOR {ClockEmp_TXT.Text} ({ClockBio_TXT.Text}),  In/Out({ClockEmp_IN_CB.Text} - {ClockEmp_OUT_CB.Text})", frmMainForm.UserName_LBL.Text)

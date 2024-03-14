@@ -479,38 +479,38 @@ Module Public_Function
         End Using
     End Sub
 
-    Public Sub SAVE_EmpNo_Deduction_EXCEL(EMP_NO As String, RowNo As Integer)
-        Dim mysql As String
-        Dim BIO As String = ""
+    'Public Sub SAVE_EmpNo_Deduction_EXCEL(EMP_NO As String, RowNo As Integer)
+    '    Dim mysql As String
+    '    Dim BIO As String = ""
 
-        '====================== GET BIO_NO FOR SAVING TO PAYROLL_SBU  ==================
-        mysql = "Select * From PAYROLL_EMPLOYEE WHERE EMP_NO = '" & EMP_NO.TrimEnd & "'"
-        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
-            If ds.Tables(0).Rows.Count > 0 Then
-                Dim data As DataRow = ds.Tables(0).Rows(0)
-                With data
-                    BIO = .Item("BIO_NO")
-                End With
-            Else
-                Exit Sub
-            End If
-        End Using
+    '    '====================== GET BIO_NO FOR SAVING TO PAYROLL_SBU  ==================
+    '    mysql = "Select * From PAYROLL_EMPLOYEE WHERE EMP_NO = '" & EMP_NO.TrimEnd & "'"
+    '    Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+    '        If ds.Tables(0).Rows.Count > 0 Then
+    '            Dim data As DataRow = ds.Tables(0).Rows(0)
+    '            With data
+    '                BIO = .Item("BIO_NO")
+    '            End With
+    '        Else
+    '            Exit Sub
+    '        End If
+    '    End Using
 
-        '====================== ADD NEW PAYROLL_SBU ==================
-        mysql = "Select * From PAYROLL_DEDUCTION Rows 1"
-        Using dssS As DataSet = LoadSQL(mysql, "PAYROLL_DEDUCTION")
+    '    '====================== ADD NEW PAYROLL_SBU ==================
+    '    mysql = "Select * From PAYROLL_DEDUCTION Rows 1"
+    '    Using dssS As DataSet = LoadSQL(mysql, "PAYROLL_DEDUCTION")
 
-            Dim dsNewRow As DataRow = dssS.Tables(0).NewRow
-            With dsNewRow
+    '        Dim dsNewRow As DataRow = dssS.Tables(0).NewRow
+    '        With dsNewRow
 
-                .Item("BIO_NO") = BIO
+    '            .Item("BIO_NO") = BIO
 
-            End With
-            dssS.Tables(0).Rows.Add(dsNewRow)
-            SaveEntry(dssS)
-        End Using
+    '        End With
+    '        dssS.Tables(0).Rows.Add(dsNewRow)
+    '        SaveEntry(dssS)
+    '    End Using
 
-    End Sub
+    'End Sub
 
     Public Sub SAVE_Deduction_EXCEL(CATEGORY As String, AMOUNT As String, PRINCIPAL As String, CREDIT As String, BALANCE As String, DATEE As String, RowNo As Integer)
 

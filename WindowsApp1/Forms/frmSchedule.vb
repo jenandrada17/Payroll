@@ -361,7 +361,12 @@ Public Class frmSchedule
             SIL = 0
             AL = 0
             RD = 0
-            Dim fullname As String = GetData("FULLNAME", $" PAYROLL_EMPLOYEE WHERE BIO_NO ='{bio}'")
+            Dim fullname As String = GetData("FULLNAME", $" LASTNAME || ', ' || FIRSTNAME || ' ' || 
+                                                                 CASE 
+                                                                     WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
+                                                                     ELSE ''
+                                                                 END AS FULLNAME
+                                                            TBL_EMPLOYEE WHERE BIO_NO ='{bio}'")
 
             While (start <= endd)
                 For columns = 4 To DtSet.Tables(0).Columns.Count + 1
@@ -446,7 +451,12 @@ Public Class frmSchedule
 
                     If count_all_sil > 5 Then
                         SIL = 5 - (count_all_sil - SIL)
-                        MsgBox($"{GetData("FULLNAME", $" PAYROLL_EMPLOYEE WHERE BIO_NO ='{bio}'")} already reached the maximum number of SIL for this year. SIL Reduced to {SIL}.", MsgBoxStyle.Exclamation, $"INVALID")
+                        MsgBox($"{GetData("FULLNAME", $" LASTNAME || ', ' || FIRSTNAME || ' ' || 
+                                                             CASE 
+                                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
+                                                                 ELSE ''
+                                                             END AS FULLNAME
+                                                        TBL_EMPLOYEE WHERE BIO_NO ='{bio}'")} already reached the maximum number of SIL for this year. SIL Reduced to {SIL}.", MsgBoxStyle.Exclamation, $"INVALID")
                     End If
 
                 Else

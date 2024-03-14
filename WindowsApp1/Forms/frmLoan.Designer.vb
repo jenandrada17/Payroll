@@ -65,8 +65,6 @@ Partial Class frmLoan
         Me.Label23 = New System.Windows.Forms.Label()
         Me.SSSCancel_BTN = New System.Windows.Forms.Button()
         Me.SSS_Save_BTN = New System.Windows.Forms.Button()
-        Me.SSS_Date_DTP = New System.Windows.Forms.DateTimePicker()
-        Me.Label10 = New System.Windows.Forms.Label()
         Me.SSS_Search_TXT = New System.Windows.Forms.TextBox()
         Me.SSS_Search_BTN = New System.Windows.Forms.Button()
         Me.SSSLoan_LV = New System.Windows.Forms.ListView()
@@ -103,8 +101,6 @@ Partial Class frmLoan
         Me.Pag_Cancel_BTN = New System.Windows.Forms.Button()
         Me.Pag_Save_BTN = New System.Windows.Forms.Button()
         Me.PagSearch_BTN = New System.Windows.Forms.Button()
-        Me.PagDate_DTP = New System.Windows.Forms.DateTimePicker()
-        Me.Label13 = New System.Windows.Forms.Label()
         Me.PagSearch_TXT = New System.Windows.Forms.TextBox()
         Me.PagEmp_BTN = New System.Windows.Forms.Button()
         Me.Label19 = New System.Windows.Forms.Label()
@@ -121,8 +117,6 @@ Partial Class frmLoan
         Me.Mp2Cancel_btn = New System.Windows.Forms.Button()
         Me.Mp2Save_btn = New System.Windows.Forms.Button()
         Me.Label11 = New System.Windows.Forms.Label()
-        Me.Mp2Date_dtp = New System.Windows.Forms.DateTimePicker()
-        Me.Label24 = New System.Windows.Forms.Label()
         Me.Mp2Search_txt = New System.Windows.Forms.TextBox()
         Me.Mp2Search_btn = New System.Windows.Forms.Button()
         Me.Mp2_List = New System.Windows.Forms.ListView()
@@ -147,8 +141,6 @@ Partial Class frmLoan
         Me.MaxCancel_btn = New System.Windows.Forms.Button()
         Me.MaxSave_btn = New System.Windows.Forms.Button()
         Me.Label33 = New System.Windows.Forms.Label()
-        Me.MaxDate_dtp = New System.Windows.Forms.DateTimePicker()
-        Me.Label34 = New System.Windows.Forms.Label()
         Me.MaxSearch_txt = New System.Windows.Forms.TextBox()
         Me.MaxSearch_btn = New System.Windows.Forms.Button()
         Me.Maxicare_List = New System.Windows.Forms.ListView()
@@ -177,8 +169,6 @@ Partial Class frmLoan
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.Label53 = New System.Windows.Forms.Label()
         Me.SBU_Amort_txt = New System.Windows.Forms.TextBox()
-        Me.Label54 = New System.Windows.Forms.Label()
-        Me.SBU_Date_dtp = New System.Windows.Forms.DateTimePicker()
         Me.SBU_Save_btn = New System.Windows.Forms.Button()
         Me.SBU_Cancel_btn = New System.Windows.Forms.Button()
         Me.SBU_Name_txt = New System.Windows.Forms.TextBox()
@@ -227,6 +217,18 @@ Partial Class frmLoan
         Me.Label31 = New System.Windows.Forms.Label()
         Me.DE_Effectivity_DTP = New System.Windows.Forms.DateTimePicker()
         Me.lblAdd = New System.Windows.Forms.Label()
+        Me.Label34 = New System.Windows.Forms.Label()
+        Me.MaxDate_dtp = New System.Windows.Forms.DateTimePicker()
+        Me.Label24 = New System.Windows.Forms.Label()
+        Me.Mp2Date_dtp = New System.Windows.Forms.DateTimePicker()
+        Me.Label13 = New System.Windows.Forms.Label()
+        Me.PagDate_DTP = New System.Windows.Forms.DateTimePicker()
+        Me.SSS_Date_DTP = New System.Windows.Forms.DateTimePicker()
+        Me.Label10 = New System.Windows.Forms.Label()
+        Me.Label54 = New System.Windows.Forms.Label()
+        Me.SBU_Date_dtp = New System.Windows.Forms.DateTimePicker()
+        Me.ScheduleSBU_Combo = New System.Windows.Forms.ComboBox()
+        Me.Label55 = New System.Windows.Forms.Label()
         Me.Loans_Tab.SuspendLayout()
         Me.TabPage2.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
@@ -672,25 +674,6 @@ Partial Class frmLoan
         Me.SSS_Save_BTN.Text = "Save"
         Me.SSS_Save_BTN.UseVisualStyleBackColor = False
         '
-        'SSS_Date_DTP
-        '
-        Me.SSS_Date_DTP.Font = New System.Drawing.Font("Dubai", 11.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.SSS_Date_DTP.Location = New System.Drawing.Point(77, 258)
-        Me.SSS_Date_DTP.Name = "SSS_Date_DTP"
-        Me.SSS_Date_DTP.Size = New System.Drawing.Size(304, 32)
-        Me.SSS_Date_DTP.TabIndex = 137
-        Me.SSS_Date_DTP.Value = New Date(2022, 1, 5, 0, 0, 0, 0)
-        '
-        'Label10
-        '
-        Me.Label10.AutoSize = True
-        Me.Label10.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label10.Location = New System.Drawing.Point(7, 258)
-        Me.Label10.Name = "Label10"
-        Me.Label10.Size = New System.Drawing.Size(43, 27)
-        Me.Label10.TabIndex = 140
-        Me.Label10.Text = "Date"
-        '
         'SSS_Search_TXT
         '
         Me.SSS_Search_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -1007,25 +990,6 @@ Partial Class frmLoan
         Me.PagSearch_BTN.Text = "Search"
         Me.PagSearch_BTN.UseVisualStyleBackColor = True
         '
-        'PagDate_DTP
-        '
-        Me.PagDate_DTP.Font = New System.Drawing.Font("Dubai", 11.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.PagDate_DTP.Location = New System.Drawing.Point(77, 263)
-        Me.PagDate_DTP.Name = "PagDate_DTP"
-        Me.PagDate_DTP.Size = New System.Drawing.Size(304, 32)
-        Me.PagDate_DTP.TabIndex = 149
-        Me.PagDate_DTP.Value = New Date(2021, 8, 27, 21, 55, 17, 0)
-        '
-        'Label13
-        '
-        Me.Label13.AutoSize = True
-        Me.Label13.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label13.Location = New System.Drawing.Point(7, 263)
-        Me.Label13.Name = "Label13"
-        Me.Label13.Size = New System.Drawing.Size(43, 27)
-        Me.Label13.TabIndex = 149
-        Me.Label13.Text = "Date"
-        '
         'PagSearch_TXT
         '
         Me.PagSearch_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -1205,25 +1169,6 @@ Partial Class frmLoan
         Me.Label11.Size = New System.Drawing.Size(54, 22)
         Me.Label11.TabIndex = 160
         Me.Label11.Text = "/Month"
-        '
-        'Mp2Date_dtp
-        '
-        Me.Mp2Date_dtp.Font = New System.Drawing.Font("Dubai", 11.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Mp2Date_dtp.Location = New System.Drawing.Point(77, 128)
-        Me.Mp2Date_dtp.Name = "Mp2Date_dtp"
-        Me.Mp2Date_dtp.Size = New System.Drawing.Size(304, 32)
-        Me.Mp2Date_dtp.TabIndex = 156
-        Me.Mp2Date_dtp.Value = New Date(2022, 1, 5, 0, 0, 0, 0)
-        '
-        'Label24
-        '
-        Me.Label24.AutoSize = True
-        Me.Label24.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label24.Location = New System.Drawing.Point(7, 128)
-        Me.Label24.Name = "Label24"
-        Me.Label24.Size = New System.Drawing.Size(43, 27)
-        Me.Label24.TabIndex = 157
-        Me.Label24.Text = "Date"
         '
         'Mp2Search_txt
         '
@@ -1466,25 +1411,6 @@ Partial Class frmLoan
         Me.Label33.TabIndex = 175
         Me.Label33.Text = "/Month"
         '
-        'MaxDate_dtp
-        '
-        Me.MaxDate_dtp.Font = New System.Drawing.Font("Dubai", 11.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.MaxDate_dtp.Location = New System.Drawing.Point(80, 128)
-        Me.MaxDate_dtp.Name = "MaxDate_dtp"
-        Me.MaxDate_dtp.Size = New System.Drawing.Size(304, 32)
-        Me.MaxDate_dtp.TabIndex = 171
-        Me.MaxDate_dtp.Value = New Date(2022, 1, 5, 0, 0, 0, 0)
-        '
-        'Label34
-        '
-        Me.Label34.AutoSize = True
-        Me.Label34.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label34.Location = New System.Drawing.Point(10, 128)
-        Me.Label34.Name = "Label34"
-        Me.Label34.Size = New System.Drawing.Size(43, 27)
-        Me.Label34.TabIndex = 172
-        Me.Label34.Text = "Date"
-        '
         'MaxSearch_txt
         '
         Me.MaxSearch_txt.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -1695,6 +1621,8 @@ Partial Class frmLoan
         '
         'GroupBox1
         '
+        Me.GroupBox1.Controls.Add(Me.ScheduleSBU_Combo)
+        Me.GroupBox1.Controls.Add(Me.Label55)
         Me.GroupBox1.Controls.Add(Me.Label53)
         Me.GroupBox1.Controls.Add(Me.SBU_Amort_txt)
         Me.GroupBox1.Controls.Add(Me.Label54)
@@ -1732,30 +1660,12 @@ Partial Class frmLoan
         Me.SBU_Amort_txt.Size = New System.Drawing.Size(238, 33)
         Me.SBU_Amort_txt.TabIndex = 39
         '
-        'Label54
-        '
-        Me.Label54.AutoSize = True
-        Me.Label54.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label54.Location = New System.Drawing.Point(-1, 99)
-        Me.Label54.Name = "Label54"
-        Me.Label54.Size = New System.Drawing.Size(41, 25)
-        Me.Label54.TabIndex = 127
-        Me.Label54.Text = "Date"
-        '
-        'SBU_Date_dtp
-        '
-        Me.SBU_Date_dtp.Location = New System.Drawing.Point(122, 95)
-        Me.SBU_Date_dtp.Name = "SBU_Date_dtp"
-        Me.SBU_Date_dtp.Size = New System.Drawing.Size(238, 29)
-        Me.SBU_Date_dtp.TabIndex = 37
-        Me.SBU_Date_dtp.Value = New Date(2022, 1, 6, 0, 0, 0, 0)
-        '
         'SBU_Save_btn
         '
         Me.SBU_Save_btn.BackColor = System.Drawing.Color.DarkSalmon
         Me.SBU_Save_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.SBU_Save_btn.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.SBU_Save_btn.Location = New System.Drawing.Point(288, 296)
+        Me.SBU_Save_btn.Location = New System.Drawing.Point(288, 330)
         Me.SBU_Save_btn.Name = "SBU_Save_btn"
         Me.SBU_Save_btn.Size = New System.Drawing.Size(102, 38)
         Me.SBU_Save_btn.TabIndex = 41
@@ -1767,7 +1677,7 @@ Partial Class frmLoan
         Me.SBU_Cancel_btn.BackColor = System.Drawing.Color.MistyRose
         Me.SBU_Cancel_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.SBU_Cancel_btn.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.SBU_Cancel_btn.Location = New System.Drawing.Point(77, 296)
+        Me.SBU_Cancel_btn.Location = New System.Drawing.Point(77, 330)
         Me.SBU_Cancel_btn.Name = "SBU_Cancel_btn"
         Me.SBU_Cancel_btn.Size = New System.Drawing.Size(105, 38)
         Me.SBU_Cancel_btn.TabIndex = 40
@@ -2180,6 +2090,121 @@ Partial Class frmLoan
         Me.lblAdd.Size = New System.Drawing.Size(32, 22)
         Me.lblAdd.TabIndex = 125
         '
+        'Label34
+        '
+        Me.Label34.AutoSize = True
+        Me.Label34.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label34.Location = New System.Drawing.Point(10, 128)
+        Me.Label34.Name = "Label34"
+        Me.Label34.Size = New System.Drawing.Size(43, 27)
+        Me.Label34.TabIndex = 172
+        Me.Label34.Text = "Date"
+        '
+        'MaxDate_dtp
+        '
+        Me.MaxDate_dtp.Font = New System.Drawing.Font("Dubai", 11.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MaxDate_dtp.Location = New System.Drawing.Point(80, 128)
+        Me.MaxDate_dtp.Name = "MaxDate_dtp"
+        Me.MaxDate_dtp.Size = New System.Drawing.Size(304, 32)
+        Me.MaxDate_dtp.TabIndex = 171
+        Me.MaxDate_dtp.Value = New Date(2022, 1, 5, 0, 0, 0, 0)
+        '
+        'Label24
+        '
+        Me.Label24.AutoSize = True
+        Me.Label24.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label24.Location = New System.Drawing.Point(7, 128)
+        Me.Label24.Name = "Label24"
+        Me.Label24.Size = New System.Drawing.Size(43, 27)
+        Me.Label24.TabIndex = 157
+        Me.Label24.Text = "Date"
+        '
+        'Mp2Date_dtp
+        '
+        Me.Mp2Date_dtp.Font = New System.Drawing.Font("Dubai", 11.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Mp2Date_dtp.Location = New System.Drawing.Point(77, 128)
+        Me.Mp2Date_dtp.Name = "Mp2Date_dtp"
+        Me.Mp2Date_dtp.Size = New System.Drawing.Size(304, 32)
+        Me.Mp2Date_dtp.TabIndex = 156
+        Me.Mp2Date_dtp.Value = New Date(2022, 1, 5, 0, 0, 0, 0)
+        '
+        'Label13
+        '
+        Me.Label13.AutoSize = True
+        Me.Label13.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label13.Location = New System.Drawing.Point(7, 263)
+        Me.Label13.Name = "Label13"
+        Me.Label13.Size = New System.Drawing.Size(43, 27)
+        Me.Label13.TabIndex = 149
+        Me.Label13.Text = "Date"
+        '
+        'PagDate_DTP
+        '
+        Me.PagDate_DTP.Font = New System.Drawing.Font("Dubai", 11.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.PagDate_DTP.Location = New System.Drawing.Point(77, 263)
+        Me.PagDate_DTP.Name = "PagDate_DTP"
+        Me.PagDate_DTP.Size = New System.Drawing.Size(304, 32)
+        Me.PagDate_DTP.TabIndex = 149
+        Me.PagDate_DTP.Value = New Date(2021, 8, 27, 21, 55, 17, 0)
+        '
+        'SSS_Date_DTP
+        '
+        Me.SSS_Date_DTP.Font = New System.Drawing.Font("Dubai", 11.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SSS_Date_DTP.Location = New System.Drawing.Point(77, 258)
+        Me.SSS_Date_DTP.Name = "SSS_Date_DTP"
+        Me.SSS_Date_DTP.Size = New System.Drawing.Size(304, 32)
+        Me.SSS_Date_DTP.TabIndex = 137
+        Me.SSS_Date_DTP.Value = New Date(2022, 1, 5, 0, 0, 0, 0)
+        '
+        'Label10
+        '
+        Me.Label10.AutoSize = True
+        Me.Label10.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label10.Location = New System.Drawing.Point(7, 258)
+        Me.Label10.Name = "Label10"
+        Me.Label10.Size = New System.Drawing.Size(43, 27)
+        Me.Label10.TabIndex = 140
+        Me.Label10.Text = "Date"
+        '
+        'Label54
+        '
+        Me.Label54.AutoSize = True
+        Me.Label54.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label54.Location = New System.Drawing.Point(-1, 99)
+        Me.Label54.Name = "Label54"
+        Me.Label54.Size = New System.Drawing.Size(41, 25)
+        Me.Label54.TabIndex = 127
+        Me.Label54.Text = "Date"
+        '
+        'SBU_Date_dtp
+        '
+        Me.SBU_Date_dtp.Location = New System.Drawing.Point(122, 95)
+        Me.SBU_Date_dtp.Name = "SBU_Date_dtp"
+        Me.SBU_Date_dtp.Size = New System.Drawing.Size(238, 29)
+        Me.SBU_Date_dtp.TabIndex = 37
+        Me.SBU_Date_dtp.Value = New Date(2022, 1, 6, 0, 0, 0, 0)
+        '
+        'ScheduleSBU_Combo
+        '
+        Me.ScheduleSBU_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.ScheduleSBU_Combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.ScheduleSBU_Combo.FormattingEnabled = True
+        Me.ScheduleSBU_Combo.Items.AddRange(New Object() {"OPEN PAYROLL", "CLOSE PAYROLL", "EVERY PAYROLL"})
+        Me.ScheduleSBU_Combo.Location = New System.Drawing.Point(122, 261)
+        Me.ScheduleSBU_Combo.Name = "ScheduleSBU_Combo"
+        Me.ScheduleSBU_Combo.Size = New System.Drawing.Size(238, 33)
+        Me.ScheduleSBU_Combo.TabIndex = 131
+        '
+        'Label55
+        '
+        Me.Label55.AutoSize = True
+        Me.Label55.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label55.Location = New System.Drawing.Point(-1, 263)
+        Me.Label55.Name = "Label55"
+        Me.Label55.Size = New System.Drawing.Size(67, 25)
+        Me.Label55.TabIndex = 132
+        Me.Label55.Text = "Schedule"
+        '
         'frmLoan
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -2293,8 +2318,6 @@ Partial Class frmLoan
     Friend WithEvents Pag_Cancel_BTN As Button
     Friend WithEvents Pag_Save_BTN As Button
     Friend WithEvents PagSearch_BTN As Button
-    Friend WithEvents PagDate_DTP As DateTimePicker
-    Friend WithEvents Label13 As Label
     Friend WithEvents PagSearch_TXT As TextBox
     Friend WithEvents Mp2_List As ListView
     Friend WithEvents ColumnHeader19 As ColumnHeader
@@ -2312,8 +2335,6 @@ Partial Class frmLoan
     Friend WithEvents Label26 As Label
     Friend WithEvents PagPrincipal_TXT As TextBox
     Friend WithEvents Label27 As Label
-    Friend WithEvents SSS_Date_DTP As DateTimePicker
-    Friend WithEvents Label10 As Label
     Friend WithEvents Label3 As Label
     Friend WithEvents DateCharges_DTP As DateTimePicker
     Friend WithEvents CategoryDeduc_txt As TextBox
@@ -2325,8 +2346,6 @@ Partial Class frmLoan
     Friend WithEvents TabPage4 As TabPage
     Friend WithEvents TabPage5 As TabPage
     Friend WithEvents Label11 As Label
-    Friend WithEvents Mp2Date_dtp As DateTimePicker
-    Friend WithEvents Label24 As Label
     Friend WithEvents Mp2Search_txt As TextBox
     Friend WithEvents Mp2Search_btn As Button
     'Friend WithEvents Mp2_List As ListView
@@ -2348,8 +2367,6 @@ Partial Class frmLoan
     Friend WithEvents MaxCancel_btn As Button
     Friend WithEvents MaxSave_btn As Button
     Friend WithEvents Label33 As Label
-    Friend WithEvents MaxDate_dtp As DateTimePicker
-    Friend WithEvents Label34 As Label
     Friend WithEvents MaxSearch_txt As TextBox
     Friend WithEvents MaxSearch_btn As Button
     Friend WithEvents Maxicare_List As ListView
@@ -2411,8 +2428,6 @@ Partial Class frmLoan
     Friend WithEvents GroupBox1 As GroupBox
     Friend WithEvents Label53 As Label
     Friend WithEvents SBU_Amort_txt As TextBox
-    Friend WithEvents Label54 As Label
-    Friend WithEvents SBU_Date_dtp As DateTimePicker
     Friend WithEvents SBU_Save_btn As Button
     Friend WithEvents SBU_Cancel_btn As Button
     Friend WithEvents SBU_Name_txt As TextBox
@@ -2430,4 +2445,16 @@ Partial Class frmLoan
     Friend WithEvents SBUEdit_Menu As ToolStripMenuItem
     Friend WithEvents SBU_Search_txt As TextBox
     Friend WithEvents SBU_Search_btn As Button
+    Friend WithEvents SSS_Date_DTP As DateTimePicker
+    Friend WithEvents Label10 As Label
+    Friend WithEvents PagDate_DTP As DateTimePicker
+    Friend WithEvents Label13 As Label
+    Friend WithEvents Mp2Date_dtp As DateTimePicker
+    Friend WithEvents Label24 As Label
+    Friend WithEvents MaxDate_dtp As DateTimePicker
+    Friend WithEvents Label34 As Label
+    Friend WithEvents Label54 As Label
+    Friend WithEvents SBU_Date_dtp As DateTimePicker
+    Friend WithEvents ScheduleSBU_Combo As ComboBox
+    Friend WithEvents Label55 As Label
 End Class

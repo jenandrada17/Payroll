@@ -13,46 +13,46 @@ Module Temporary
     Dim eSheet As Excel.Worksheet = Nothing
     Dim eCell As Excel.Range
 
-    Friend Sub Import_Employee_SBU_DATE_ONLY(Path As String)
+    'Friend Sub Import_Employee_SBU_DATE_ONLY(Path As String)
 
-        eApp = New Excel.Application
-        eBook = eApp.Workbooks.Open(Path)
-        eSheet = eBook.Worksheets(1)
-        eCell = eSheet.UsedRange
+    '    eApp = New Excel.Application
+    '    eBook = eApp.Workbooks.Open(Path)
+    '    eSheet = eBook.Worksheets(1)
+    '    eCell = eSheet.UsedRange
 
-        MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path}';Extended Properties=Excel 8.0;")
-        MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
-        MyCommand.TableMappings.Add("Table", "Net-informations.com")
-        DtSet = New System.Data.DataSet
-        MyCommand.Fill(DtSet)
+    '    MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path}';Extended Properties=Excel 8.0;")
+    '    MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
+    '    MyCommand.TableMappings.Add("Table", "Net-informations.com")
+    '    DtSet = New System.Data.DataSet
+    '    MyCommand.Fill(DtSet)
 
-        progressBarStart(DtSet.Tables(0).Rows.Count + 1)
+    '    progressBarStart(DtSet.Tables(0).Rows.Count + 1)
 
-        Dim EMP_NO As String = Nothing
+    '    Dim EMP_NO As String = Nothing
 
-        For row = 7 To DtSet.Tables(0).Rows.Count
+    '    For row = 7 To DtSet.Tables(0).Rows.Count
 
-            If eCell(row, 1).Font.Bold = True Then
-                EMP_NO = eCell(row, 4).Value
-            End If
+    '        If eCell(row, 1).Font.Bold = True Then
+    '            EMP_NO = eCell(row, 4).Value
+    '        End If
 
-            If EMP_NO <> Nothing And IsDate(eCell(row, 1).value) Then
-                Dim datee As DateTime = eCell(row, 1).Value
-                UPDATE_Emp_SBU_EXCEL_DATEONLY(EMP_NO, datee, row)
+    '        If EMP_NO <> Nothing And IsDate(eCell(row, 1).value) Then
+    '            Dim datee As DateTime = eCell(row, 1).Value
+    '            UPDATE_Emp_SBU_EXCEL_DATEONLY(EMP_NO, datee, row)
 
-                EMP_NO = Nothing
-            End If
+    '            EMP_NO = Nothing
+    '        End If
 
-            frmMainForm.AppProgressBar.Value += 1
-        Next row
+    '        frmMainForm.AppProgressBar.Value += 1
+    '    Next row
 
-        progressBarEnd()
+    '    progressBarEnd()
 
-        MyConnection.Close()
-        eApp.Quit()
-        eApp.Application.DisplayAlerts = False
+    '    MyConnection.Close()
+    '    eApp.Quit()
+    '    eApp.Application.DisplayAlerts = False
 
-    End Sub
+    'End Sub
 
     Friend Sub SSS_Contribution_2023()
 
@@ -129,17 +129,17 @@ Module Temporary
         End Using
     End Sub
 
-    Public Sub UPDATE_Emp_SBU_EXCEL_DATEONLY(emp_no As String, datee As String, RowNo As Integer)
-        Dim mysql As String = $"Select * From PAYROLL_SBU A inner join PAYROLL_EMPLOYEE B on B.BIO_NO=A.BIO_NO where EMP_NO='{emp_no}'"
-        Using dssS As DataSet = LoadSQL(mysql, "PAYROLL_SBU")
-            If dssS.Tables(0).Rows.Count > 0 Then
-                With dssS.Tables(0).Rows(0)
-                    .Item("DATE_ADDED") = datee
-                End With
-                SaveEntry(dssS, False)
-            End If
-        End Using
-    End Sub
+    'Public Sub UPDATE_Emp_SBU_EXCEL_DATEONLY(emp_no As String, datee As String, RowNo As Integer)
+    '    Dim mysql As String = $"Select * From PAYROLL_SBU A inner join PAYROLL_EMPLOYEE B on B.BIO_NO=A.BIO_NO where EMP_NO='{emp_no}'"
+    '    Using dssS As DataSet = LoadSQL(mysql, "PAYROLL_SBU")
+    '        If dssS.Tables(0).Rows.Count > 0 Then
+    '            With dssS.Tables(0).Rows(0)
+    '                .Item("DATE_ADDED") = datee
+    '            End With
+    '            SaveEntry(dssS, False)
+    '        End If
+    '    End Using
+    'End Sub
 
     Friend Sub SaveTemporary(BIO_NO As String, old_days As Double, new_days As Double, OLD_OVERTIME As Double, NEW_OVERTIME As Double, OLD_LATE As Double, NEW_LATE As Double, OLD_UNDERTIME As Double, NEW_UNDERTIME As Double, RHOLIDAY As Double, SHOLIDAY As Double, PAYDATE As String)
         Dim mysql As String = $"Select * from TEMP_TABLE where BIO_NO = '{BIO_NO}' and PAYDATE = '{PAYDATE}'"
@@ -238,37 +238,37 @@ Module Temporary
     End Function
     '=========================================================
 
-    Friend Sub PayoutRate()
-        Dim mysql As String = "Select BIOMETRIC_ID, PRESENT_DAYS, TOTAL_BASIC, FIX_MONTHLY_RATE, RATE_MONTHLY, A.PAYDATE  from Payroll_Payout A 
-                                  inner join payroll_employee B on B.BIO_NO = A.BIOMETRIC_ID 
-                                  inner join payroll_attendance C on C.BIOMETRICID = A.BIOMETRIC_ID and C.PAYDATE = A.PAYDATE"
+    'Friend Sub PayoutRate()
+    '    Dim mysql As String = "Select BIOMETRIC_ID, PRESENT_DAYS, TOTAL_BASIC, FIX_MONTHLY_RATE, RATE_MONTHLY, A.PAYDATE  from Payroll_Payout A 
+    '                              inner join payroll_employee B on B.BIO_NO = A.BIOMETRIC_ID 
+    '                              inner join payroll_attendance C on C.BIOMETRICID = A.BIOMETRIC_ID and C.PAYDATE = A.PAYDATE"
 
-        Using ds As DataSet = LoadSQL(mysql, "Payroll_Payout")
-            For Each dr In ds.Tables(0).Rows
-                With dr
+    '    Using ds As DataSet = LoadSQL(mysql, "Payroll_Payout")
+    '        For Each dr In ds.Tables(0).Rows
+    '            With dr
 
-                    Dim ratee As String = CDec(.item("TOTAL_BASIC")) / CDbl(.item("PRESENT_DAYS"))
+    '                Dim ratee As String = CDec(.item("TOTAL_BASIC")) / CDbl(.item("PRESENT_DAYS"))
 
-                    If .item("BIOMETRIC_ID") = 3888 Then
-                        Console.WriteLine("TOTAL_BASIC  " & .item("TOTAL_BASIC"))
-                    End If
+    '                If .item("BIOMETRIC_ID") = 3888 Then
+    '                    Console.WriteLine("TOTAL_BASIC  " & .item("TOTAL_BASIC"))
+    '                End If
 
-                    If .item("TOTAL_BASIC") = "0" Then
-                        ratee = 0
-                    ElseIf IsDBNull(.item("FIX_MONTHLY_RATE")) Then
+    '                If .item("TOTAL_BASIC") = "0" Then
+    '                    ratee = 0
+    '                ElseIf IsDBNull(.item("FIX_MONTHLY_RATE")) Then
 
-                    ElseIf .item("FIX_MONTHLY_RATE") = "True" Then
-                        ratee = CDec(.item("RATE_MONTHLY")) / 26
-                    End If
+    '                ElseIf .item("FIX_MONTHLY_RATE") = "True" Then
+    '                    ratee = CDec(.item("RATE_MONTHLY")) / 26
+    '                End If
 
-                    Console.WriteLine(.item("BIOMETRIC_ID"))
-                    Console.WriteLine(ratee)
-                    Console.WriteLine(.item("PAYDATE"))
-                    UpdateRate(.item("BIOMETRIC_ID"), ratee, .item("PAYDATE"))
-                End With
-            Next
-        End Using
-    End Sub
+    '                Console.WriteLine(.item("BIOMETRIC_ID"))
+    '                Console.WriteLine(ratee)
+    '                Console.WriteLine(.item("PAYDATE"))
+    '                UpdateRate(.item("BIOMETRIC_ID"), ratee, .item("PAYDATE"))
+    '            End With
+    '        Next
+    '    End Using
+    'End Sub
 
     Friend Sub UpdateRate(bio As String, rate As String, paydate As String)
         Dim mysql As String = $"Select * from Payroll_Payout where BIOMETRIC_ID ='{bio}' and paydate = '{paydate}'"
@@ -471,113 +471,113 @@ Module Temporary
     Dim raXL As Excel.Range
     Dim row As Integer = 2
 
-    Friend Sub CostGetDetails()
-        ' Start Excel and get Application object.
-        appXL = CreateObject("Excel.Application")
-        appXL.Visible = True
+    'Friend Sub CostGetDetails()
+    '    ' Start Excel and get Application object.
+    '    appXL = CreateObject("Excel.Application")
+    '    appXL.Visible = True
 
-        ' Add a new workbook.
-        wbXl = appXL.Workbooks.Add
-        shXL = wbXl.ActiveSheet
+    '    ' Add a new workbook.
+    '    wbXl = appXL.Workbooks.Add
+    '    shXL = wbXl.ActiveSheet
 
-        ' Add table headers going cell by cell.
-        shXL.Cells(1, 1).Value = "BIOMETRIC_ID"
-        shXL.Cells(1, 2).Value = "FULLNAME"
-        shXL.Cells(1, 3).Value = "TOTAL_BASIC"
-        shXL.Cells(1, 4).Value = "TOTAL_OVERTIME"
-        shXL.Cells(1, 5).Value = "TOTAL_LATE_UT"
-        shXL.Cells(1, 6).Value = "TOTAL_REGHOLIDAY"
-        shXL.Cells(1, 7).Value = "TOTAL_SPECHOLIDAY"
-        shXL.Cells(1, 8).Value = "GROSS_AMOUNT"
-        shXL.Cells(1, 9).Value = "SSS_COMP"
-        shXL.Cells(1, 10).Value = "SSS_ER"
-        shXL.Cells(1, 11).Value = "SSS_EC"
-        shXL.Cells(1, 12).Value = "PAGIBIG_COMP"
-        shXL.Cells(1, 13).Value = "PHILHEALTH_COMP"
-        shXL.Cells(1, 14).Value = "TOTAL_ALLOWANCE"
-        shXL.Cells(1, 15).Value = "TOTAL_DEDUCTION"
-        shXL.Cells(1, 16).Value = "NET_PAY"
+    '    ' Add table headers going cell by cell.
+    '    shXL.Cells(1, 1).Value = "BIOMETRIC_ID"
+    '    shXL.Cells(1, 2).Value = "FULLNAME"
+    '    shXL.Cells(1, 3).Value = "TOTAL_BASIC"
+    '    shXL.Cells(1, 4).Value = "TOTAL_OVERTIME"
+    '    shXL.Cells(1, 5).Value = "TOTAL_LATE_UT"
+    '    shXL.Cells(1, 6).Value = "TOTAL_REGHOLIDAY"
+    '    shXL.Cells(1, 7).Value = "TOTAL_SPECHOLIDAY"
+    '    shXL.Cells(1, 8).Value = "GROSS_AMOUNT"
+    '    shXL.Cells(1, 9).Value = "SSS_COMP"
+    '    shXL.Cells(1, 10).Value = "SSS_ER"
+    '    shXL.Cells(1, 11).Value = "SSS_EC"
+    '    shXL.Cells(1, 12).Value = "PAGIBIG_COMP"
+    '    shXL.Cells(1, 13).Value = "PHILHEALTH_COMP"
+    '    shXL.Cells(1, 14).Value = "TOTAL_ALLOWANCE"
+    '    shXL.Cells(1, 15).Value = "TOTAL_DEDUCTION"
+    '    shXL.Cells(1, 16).Value = "NET_PAY"
 
-        'Dim mysql As String = $"Select * from PAYROLL_PAYOUT A
-        '                        inner join PAYROLL_EMPLOYEE B on A.BIOMETRIC_ID = B.BIO_NO  
-        '                        where upper(HO_CATEGORY)  LIKE upper('%Dalton Admin Office%') and A.PAYDATE = '3/15/2023'"
+    '    'Dim mysql As String = $"Select * from PAYROLL_PAYOUT A
+    '    '                        inner join PAYROLL_EMPLOYEE B on A.BIOMETRIC_ID = B.BIO_NO  
+    '    '                        where upper(HO_CATEGORY)  LIKE upper('%Dalton Admin Office%') and A.PAYDATE = '3/15/2023'"
 
-        Dim mysql As String = $"Select * from PAYROLL_PAYOUT A
-                                inner join PAYROLL_EMPLOYEE B on A.BIOMETRIC_ID = B.BIO_NO  
-                                where A.PAYDATE = '3/15/2023' Order by HO_CATEGORY, FULLNAME"
+    '    Dim mysql As String = $"Select * from PAYROLL_PAYOUT A
+    '                            inner join PAYROLL_EMPLOYEE B on A.BIOMETRIC_ID = B.BIO_NO  
+    '                            where A.PAYDATE = '3/15/2023' Order by HO_CATEGORY, FULLNAME"
 
-        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
-            If ds.Tables(0).Rows.Count > 0 Then
-                For Each dr In ds.Tables(0).Rows
-                    With dr
+    '    Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
+    '        If ds.Tables(0).Rows.Count > 0 Then
+    '            For Each dr In ds.Tables(0).Rows
+    '                With dr
 
-                        shXL.Cells(row, 1).Value = .item("BIOMETRIC_ID")
-                        shXL.Cells(row, 2).Value = .item("FULLNAME")
-                        shXL.Cells(row, 3).Value = .item("TOTAL_BASIC")
-                        shXL.Cells(row, 4).Value = .item("TOTAL_OVERTIME")
-                        shXL.Cells(row, 5).Value = .item("TOTAL_LATE_UT")
-                        shXL.Cells(row, 6).Value = .item("TOTAL_REGHOLIDAY")
-                        shXL.Cells(row, 7).Value = .item("TOTAL_SPECHOLIDAY")
-                        shXL.Cells(row, 8).Value = .item("GROSS_AMOUNT")
-                        shXL.Cells(row, 9).Value = .item("SSS_COMP")
-                        shXL.Cells(row, 10).Value = .item("SSS_ER")
-                        shXL.Cells(row, 11).Value = .item("SSS_EC")
-                        shXL.Cells(row, 12).Value = .item("PAGIBIG_COMP")
-                        shXL.Cells(row, 13).Value = .item("PHILHEALTH_COMP")
-                        shXL.Cells(row, 14).Value = .item("TOTAL_ALLOWANCE")
-                        shXL.Cells(row, 15).Value = .item("TOTAL_DEDUCTION")
-                        shXL.Cells(row, 16).Value = .item("NET_PAY")
-                        shXL.Cells(row, 17).Value = .item("HO_CATEGORY")
+    '                    shXL.Cells(row, 1).Value = .item("BIOMETRIC_ID")
+    '                    shXL.Cells(row, 2).Value = .item("FULLNAME")
+    '                    shXL.Cells(row, 3).Value = .item("TOTAL_BASIC")
+    '                    shXL.Cells(row, 4).Value = .item("TOTAL_OVERTIME")
+    '                    shXL.Cells(row, 5).Value = .item("TOTAL_LATE_UT")
+    '                    shXL.Cells(row, 6).Value = .item("TOTAL_REGHOLIDAY")
+    '                    shXL.Cells(row, 7).Value = .item("TOTAL_SPECHOLIDAY")
+    '                    shXL.Cells(row, 8).Value = .item("GROSS_AMOUNT")
+    '                    shXL.Cells(row, 9).Value = .item("SSS_COMP")
+    '                    shXL.Cells(row, 10).Value = .item("SSS_ER")
+    '                    shXL.Cells(row, 11).Value = .item("SSS_EC")
+    '                    shXL.Cells(row, 12).Value = .item("PAGIBIG_COMP")
+    '                    shXL.Cells(row, 13).Value = .item("PHILHEALTH_COMP")
+    '                    shXL.Cells(row, 14).Value = .item("TOTAL_ALLOWANCE")
+    '                    shXL.Cells(row, 15).Value = .item("TOTAL_DEDUCTION")
+    '                    shXL.Cells(row, 16).Value = .item("NET_PAY")
+    '                    shXL.Cells(row, 17).Value = .item("HO_CATEGORY")
 
-                        row += 1
-                    End With
-                Next
-            End If
-        End Using
+    '                    row += 1
+    '                End With
+    '            Next
+    '        End If
+    '    End Using
 
-        GetRecordedAllowanceDeduction()
-    End Sub
+    '    GetRecordedAllowanceDeduction()
+    'End Sub
 
-    Friend Sub GetRecordedAllowanceDeduction()
-        row += 3
+    'Friend Sub GetRecordedAllowanceDeduction()
+    '    row += 3
 
-        shXL.Cells(row, 1).Value = "BIOMETRIC_ID"
-        shXL.Cells(row, 2).Value = "FULLNAME"
-        shXL.Cells(row, 3).Value = "HO_CATEGORY"
-        shXL.Cells(row, 4).Value = "ADDITIONAL"
-        shXL.Cells(row, 5).Value = "AMOUNT"
-        shXL.Cells(row, 6).Value = "DEDUCTION"
-        shXL.Cells(row, 7).Value = "AMOUNT"
+    '    shXL.Cells(row, 1).Value = "BIOMETRIC_ID"
+    '    shXL.Cells(row, 2).Value = "FULLNAME"
+    '    shXL.Cells(row, 3).Value = "HO_CATEGORY"
+    '    shXL.Cells(row, 4).Value = "ADDITIONAL"
+    '    shXL.Cells(row, 5).Value = "AMOUNT"
+    '    shXL.Cells(row, 6).Value = "DEDUCTION"
+    '    shXL.Cells(row, 7).Value = "AMOUNT"
 
-        row += 1
-        'Dim mysql As String = $"Select * from PAYROLL_PAYOUT A
-        '                        inner join PAYROLL_EMPLOYEE B on A.BIOMETRIC_ID = B.BIO_NO  
-        '                        where upper(HO_CATEGORY) like upper('%Dalton Admin Office%') and A.PAYDATE = '3/15/2023'"
+    '    row += 1
+    '    'Dim mysql As String = $"Select * from PAYROLL_PAYOUT A
+    '    '                        inner join PAYROLL_EMPLOYEE B on A.BIOMETRIC_ID = B.BIO_NO  
+    '    '                        where upper(HO_CATEGORY) like upper('%Dalton Admin Office%') and A.PAYDATE = '3/15/2023'"
 
-        Dim mysql As String = $"Select * from PAYROLL_PAYOUT A
-                                inner join PAYROLL_EMPLOYEE B on A.BIOMETRIC_ID = B.BIO_NO  
-                                where A.PAYDATE = '3/15/2023'  Order by HO_CATEGORY, FULLNAME"
+    '    Dim mysql As String = $"Select * from PAYROLL_PAYOUT A
+    '                            inner join PAYROLL_EMPLOYEE B on A.BIOMETRIC_ID = B.BIO_NO  
+    '                            where A.PAYDATE = '3/15/2023'  Order by HO_CATEGORY, FULLNAME"
 
-        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
-            If ds.Tables(0).Rows.Count > 0 Then
-                For Each dr In ds.Tables(0).Rows
-                    With dr
+    '    Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
+    '        If ds.Tables(0).Rows.Count > 0 Then
+    '            For Each dr In ds.Tables(0).Rows
+    '                With dr
 
-                        shXL.Cells(row, 1).Value = .item("BIOMETRIC_ID")
-                        shXL.Cells(row, 2).Value = .item("FULLNAME")
-                        shXL.Cells(row, 3).Value = .item("HO_CATEGORY")
-                        GetRecorded_Allow_Deduc(.item("BIOMETRIC_ID"))
-                    End With
-                Next
-            End If
-        End Using
+    '                    shXL.Cells(row, 1).Value = .item("BIOMETRIC_ID")
+    '                    shXL.Cells(row, 2).Value = .item("FULLNAME")
+    '                    shXL.Cells(row, 3).Value = .item("HO_CATEGORY")
+    '                    GetRecorded_Allow_Deduc(.item("BIOMETRIC_ID"))
+    '                End With
+    '            Next
+    '        End If
+    '    End Using
 
-        raXL = Nothing
-        shXL = Nothing
-        wbXl = Nothing
-        appXL.Quit()
-        appXL = Nothing
-    End Sub
+    '    raXL = Nothing
+    '    shXL = Nothing
+    '    wbXl = Nothing
+    '    appXL.Quit()
+    '    appXL = Nothing
+    'End Sub
 
     Friend Sub GetRecorded_Allow_Deduc(bio As String)
         Dim mysql As String = $"Select * from RECORDED_ALLOW_DEDUC where BIO_NO={bio} and PAYDATE = '3/15/2023'"
@@ -656,48 +656,48 @@ Module Temporary
         End Using
     End Sub
 
-    Friend Sub AddColumn_TBL_EMPLOYEE()
-        If Not ColumnChecker("TBL_EMPLOYEE", "EMP_NO") Then
-            RunCommand("ALTER TABLE TBL_EMPLOYEE ADD EMP_NO VARCHAR(50);")
-        End If
-        If Not ColumnChecker("TBL_EMPLOYEE", "COMPANY_CATEGORY") Then
-            RunCommand("ALTER TABLE TBL_EMPLOYEE ADD COMPANY_CATEGORY VARCHAR(50);")
-        End If
-        If Not ColumnChecker("TBL_EMPLOYEE", "OLD_RATE") Then
-            RunCommand("ALTER TABLE TBL_EMPLOYEE ADD OLD_RATE DECIMAL(12, 12);")
-        End If
-        If Not ColumnChecker("TBL_EMPLOYEE", "RATE_DAILY") Then
-            RunCommand("ALTER TABLE TBL_EMPLOYEE ADD RATE_DAILY DECIMAL(12, 12);")
-        End If
-        If Not ColumnChecker("TBL_EMPLOYEE", "RATE_MONTHLY") Then
-            RunCommand("ALTER TABLE TBL_EMPLOYEE ADD RATE_MONTHLY DECIMAL(12, 12);")
-        End If
-        If Not ColumnChecker("TBL_EMPLOYEE", "FIX_MONTHLY_RATE") Then
-            RunCommand("ALTER TABLE TBL_EMPLOYEE ADD FIX_MONTHLY_RATE DECIMAL(12, 12);")
-        End If
-        If Not ColumnChecker("TBL_EMPLOYEE", "TIME_IN") Then
-            RunCommand("ALTER TABLE TBL_EMPLOYEE ADD TIME_IN DECIMAL(12, 12);")
-        End If
-        If Not ColumnChecker("TBL_EMPLOYEE", "TIME_OUT") Then
-            RunCommand("ALTER TABLE TBL_EMPLOYEE ADD TIME_OUT DECIMAL(12, 12);")
-        End If
-        If Not ColumnChecker("TBL_EMPLOYEE", "COMMON_CATEGORY") Then
-            RunCommand("ALTER TABLE TBL_EMPLOYEE ADD COMMON_CATEGORY DECIMAL(12, 12);")
-        End If
-        If Not ColumnChecker("TBL_EMPLOYEE", "COMMON_COMPANY") Then
-            RunCommand("ALTER TABLE TBL_EMPLOYEE ADD COMMON_COMPANY DECIMAL(12, 12);")
-        End If
-        If Not ColumnChecker("TBL_EMPLOYEE", "HO_CATEGORY") Then
-            RunCommand("ALTER TABLE TBL_EMPLOYEE ADD HO_CATEGORY DECIMAL(12, 12);")
-        End If
+    'Friend Sub AddColumn_TBL_EMPLOYEE()
+    '    If Not ColumnChecker("TBL_EMPLOYEE", "EMP_NO") Then
+    '        RunCommand("ALTER TABLE TBL_EMPLOYEE ADD EMP_NO VARCHAR(50);")
+    '    End If
+    '    If Not ColumnChecker("TBL_EMPLOYEE", "COMPANY_CATEGORY") Then
+    '        RunCommand("ALTER TABLE TBL_EMPLOYEE ADD COMPANY_CATEGORY VARCHAR(50);")
+    '    End If
+    '    If Not ColumnChecker("TBL_EMPLOYEE", "OLD_RATE") Then
+    '        RunCommand("ALTER TABLE TBL_EMPLOYEE ADD OLD_RATE DECIMAL(12, 12);")
+    '    End If
+    '    If Not ColumnChecker("TBL_EMPLOYEE", "RATE_DAILY") Then
+    '        RunCommand("ALTER TABLE TBL_EMPLOYEE ADD RATE_DAILY DECIMAL(12, 12);")
+    '    End If
+    '    If Not ColumnChecker("TBL_EMPLOYEE", "RATE_MONTHLY") Then
+    '        RunCommand("ALTER TABLE TBL_EMPLOYEE ADD RATE_MONTHLY DECIMAL(12, 12);")
+    '    End If
+    '    If Not ColumnChecker("TBL_EMPLOYEE", "FIX_MONTHLY_RATE") Then
+    '        RunCommand("ALTER TABLE TBL_EMPLOYEE ADD FIX_MONTHLY_RATE DECIMAL(12, 12);")
+    '    End If
+    '    If Not ColumnChecker("TBL_EMPLOYEE", "TIME_IN") Then
+    '        RunCommand("ALTER TABLE TBL_EMPLOYEE ADD TIME_IN DECIMAL(12, 12);")
+    '    End If
+    '    If Not ColumnChecker("TBL_EMPLOYEE", "TIME_OUT") Then
+    '        RunCommand("ALTER TABLE TBL_EMPLOYEE ADD TIME_OUT DECIMAL(12, 12);")
+    '    End If
+    '    If Not ColumnChecker("TBL_EMPLOYEE", "COMMON_CATEGORY") Then
+    '        RunCommand("ALTER TABLE TBL_EMPLOYEE ADD COMMON_CATEGORY DECIMAL(12, 12);")
+    '    End If
+    '    If Not ColumnChecker("TBL_EMPLOYEE", "COMMON_COMPANY") Then
+    '        RunCommand("ALTER TABLE TBL_EMPLOYEE ADD COMMON_COMPANY DECIMAL(12, 12);")
+    '    End If
+    '    If Not ColumnChecker("TBL_EMPLOYEE", "HO_CATEGORY") Then
+    '        RunCommand("ALTER TABLE TBL_EMPLOYEE ADD HO_CATEGORY DECIMAL(12, 12);")
+    '    End If
 
-        'RunCommand("UPDATE TBL_EMPLOYEE
-        '            SET TBL_EMPLOYEE.column1 = PAYROLL_EMPLOYEE.column1,
-        '                TBL_EMPLOYEE.column2 = PAYROLL_EMPLOYEE.column2, 
-        '            FROM TBL_EMPLOYEE
-        '            JOIN PAYROLL_EMPLOYEE ON TBL_EMPLOYEE.employee_id = PAYROLL_EMPLOYEE.employee_id 
-        '            WHERE TBL_EMPLOYEE.BIOMETRICID = PAYROLL_EMPLOYEE.BIO_NO;")
-    End Sub
+    '    'RunCommand("UPDATE TBL_EMPLOYEE
+    '    '            SET TBL_EMPLOYEE.column1 = PAYROLL_EMPLOYEE.column1,
+    '    '                TBL_EMPLOYEE.column2 = PAYROLL_EMPLOYEE.column2, 
+    '    '            FROM TBL_EMPLOYEE
+    '    '            JOIN PAYROLL_EMPLOYEE ON TBL_EMPLOYEE.employee_id = PAYROLL_EMPLOYEE.employee_id 
+    '    '            WHERE TBL_EMPLOYEE.BIOMETRICID = PAYROLL_EMPLOYEE.BIO_NO;")
+    'End Sub
 
     Friend Sub GetPositions()
         ''FROM PAYROLL_EMPLOYEE TO TEXTFILE
@@ -800,27 +800,27 @@ Module Temporary
         Return st
     End Function
 
-    Private Sub GetNotEqual_BIONO()
-        Dim mysql As String = "Select * from PAYROLL_EMPLOYEE B inner join TBL_EMPLOYEE A on B.BIO_NO = A.BIOMETRICID"
-        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
-            If ds.Tables(0).Rows.Count > 0 Then
-                Dim path As String = "C:\Users\MISPC1\Desktop\Employees Equal BIONO.txt"
-                Dim filee As New FileInfo(path)
+    'Private Sub GetNotEqual_BIONO()
+    '    Dim mysql As String = "Select * from PAYROLL_EMPLOYEE B inner join TBL_EMPLOYEE A on B.BIO_NO = A.BIOMETRICID"
+    '    Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+    '        If ds.Tables(0).Rows.Count > 0 Then
+    '            Dim path As String = "C:\Users\MISPC1\Desktop\Employees Equal BIONO.txt"
+    '            Dim filee As New FileInfo(path)
 
-                If Not filee.Exists Then
-                    filee.Create().Close()
-                End If
+    '            If Not filee.Exists Then
+    '                filee.Create().Close()
+    '            End If
 
-                For Each dr In ds.Tables(0).Rows
-                    With dr
-                        Dim writer As New StreamWriter(path)
-                        writer.WriteLine(.item("FULLNAME"))
-                        writer.Close()
-                    End With
-                Next
-            End If
-        End Using
-    End Sub
+    '            For Each dr In ds.Tables(0).Rows
+    '                With dr
+    '                    Dim writer As New StreamWriter(path)
+    '                    writer.WriteLine(.item("FULLNAME"))
+    '                    writer.Close()
+    '                End With
+    '            Next
+    '        End If
+    '    End Using
+    'End Sub
 
     Friend Sub ExportDataToExcel()
         ' Set the license context to properly use EPPlus in a commercial context
@@ -828,36 +828,54 @@ Module Temporary
 
         ' Your existing code here
         'Dim mysql As String = "Select * from TBL_EMPLOYEE"
-        Dim mysql As String = "SELECT 
-                                    TBL_EMPLOYEE.*,                     
-                                    LASTNAME || ', ' || FIRSTNAME || ' ' || 
-                                    CASE 
-                                        WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'  
-                                        ELSE '' 
-                                    END AS FULLNAME
-                                FROM 
-                                    TBL_EMPLOYEE  
-                                INNER JOIN (
-                                    SELECT 
-                                        BIOMETRICID
-                                    FROM 
-                                        TBL_EMPLOYEE
-                                    GROUP BY 
-                                        BIOMETRICID
-                                    HAVING 
-                                        COUNT(*) > 1
-                                ) AS Duplicates ON TBL_EMPLOYEE.BIOMETRICID = Duplicates.BIOMETRICID
-                                ORDER BY 
-                                    BIOMETRICID ASC;
-"
+
+        ''DuplicateBioNoEmployees
+        'Dim mysql As String = "SELECT 
+        '                            TBL_EMPLOYEE.*,                     
+        '                            LASTNAME || ', ' || FIRSTNAME || ' ' || 
+        '                            CASE 
+        '                                WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'  
+        '                                ELSE '' 
+        '                            END AS FULLNAME
+        '                        FROM 
+        '                            TBL_EMPLOYEE  
+        '                        INNER JOIN (
+        '                            SELECT 
+        '                                BIOMETRICID
+        '                            FROM 
+        '                                TBL_EMPLOYEE
+        '                            GROUP BY 
+        '                                BIOMETRICID
+        '                            HAVING 
+        '                                COUNT(*) > 1
+        '                        ) AS Duplicates ON TBL_EMPLOYEE.BIOMETRICID = Duplicates.BIOMETRICID
+        '                        ORDER BY 
+        '                            BIOMETRICID ASC;
+
+        ''Incomplete Employee Record
+        'Dim mysql As String = "Select BIOMETRICID, COMPANY, RATE_DAILY, RATE_MONTHLY, BRANCHCODE, 
+        '                        LASTNAME || ', ' || FIRSTNAME || ' ' || CASE WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) ELSE '' END AS FULLNAME 
+        '                        From TBL_EMPLOYEE   
+        '                        WHERE COMPANY IS NULL OR RATE_DAILY IS NULL OR BRANCHCODE IS NULL 
+        '                        ORDER BY FULLNAME" 
+
+        'Incomplete Employee Record - ATTENDANCE ACTIVE ONLY
+        Dim mysql As String = "Select BIOMETRICID, COMPANY, RATE_DAILY, RATE_MONTHLY, BRANCHCODE, 
+                                LASTNAME || ', ' || FIRSTNAME || ' ' || CASE WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) ELSE '' END AS FULLNAME 
+                                From TBL_EMPLOYEE   
+                                WHERE (COMPANY IS NULL OR RATE_DAILY IS NULL OR BRANCHCODE IS NULL) AND EMP_STATUS <> 'INACTIVE' AND COMPANY <> 'HEAD OFFICE' 
+                                ORDER BY FULLNAME"
+
         Using ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
             If ds.Tables(0).Rows.Count > 0 Then
-                Dim path As String = "C:\Users\MISPC1\Desktop\Duplicate BIO No. Employees.xlsx"
+                Dim path As String = "C:\Users\MISPC1\Desktop\Database to Excel\Incomplete Employees Record.xlsx"
 
                 ' Create a new Excel package
                 Using package As New ExcelPackage(New FileInfo(path))
                     ' Add a worksheet to the Excel package
-                    Dim worksheet As ExcelWorksheet = package.Workbook.Worksheets.Add("DuplicateBioNoEmployees")
+                    'Dim worksheet As ExcelWorksheet = package.Workbook.Worksheets.Add("IncompleteEmployeeDetails")
+                    'Dim worksheet As ExcelWorksheet = package.Workbook.Worksheets.Add("PRIORITY-ACTIVE-ONLY")
+                    Dim worksheet As ExcelWorksheet = package.Workbook.Worksheets.Add("BRANCHES ONLY")
 
                     ' Write column names to the first row
                     For colIndex As Integer = 1 To ds.Tables(0).Columns.Count
@@ -904,12 +922,14 @@ Module Temporary
                     'Dim SSSNO As String = IIf(IsDBNull(.Item("SSSNO")), "", .Item("SSSNO"))
                     'Dim PHILHEALTHNO As String = IIf(IsDBNull(.Item("PHILHEALTHNO")), "", .Item("PHILHEALTHNO"))
                     'Dim TINNO As String = IIf(IsDBNull(.Item("TINNO")), "", .Item("TINNO"))
-                    'Dim PAGIBIG As String = IIf(IsDBNull(.Item("PAGIBIGNO")), "", .Item("PAGIBIGNO"))
+                    'Dim PAGIBIG As String = IIf(IsDBNull(.Item("PAGIBIGNO")), "", .Item("PAGIBIGNO")) 
+                    'Dim DATEHIRED As String = IIf(IsDBNull(.Item("DATE_STARTED")), "", .Item("DATE_STARTED"))
+                    'Dim DATE_ENDED As String = IIf(IsDBNull(.Item("DATE_ENDED")), "", .Item("DATE_ENDED"))
 
-                    Dim DATEHIRED As String = IIf(IsDBNull(.Item("DATE_STARTED")), "", .Item("DATE_STARTED"))
-                    Dim DATE_ENDED As String = IIf(IsDBNull(.Item("DATE_ENDED")), "", .Item("DATE_ENDED"))
+                    Dim COMPANY As String = IIf(IsDBNull(.Item("COMPANY")), "", .Item("COMPANY"))
 
-                    UpdateeEMPLOYEE(bio_no, DATEHIRED, DATE_ENDED)
+                    'UpdateeEMPLOYEE(bio_no, DATEHIRED, DATE_ENDED)
+                    UpdateeEMPLOYEE(bio_no, COMPANY)
                 End With
             Next
         End Using
@@ -922,7 +942,8 @@ Module Temporary
     '                           EMP_POSITION As String, SSSNO As String, PHILHEALTHNO As String, TINNO As String, PAGIBIG As String)
 
 
-    Friend Sub UpdateeEMPLOYEE(BIO As Integer, DATEHIRED As String, DATE_ENDED As String)
+    'Friend Sub UpdateeEMPLOYEE(BIO As Integer, DATEHIRED As String, DATE_ENDED As String)
+    Friend Sub UpdateeEMPLOYEE(BIO As Integer, COMPANY As String)
 
         Dim mysql As String = $"Select * from TBL_EMPLOYEE where BIOMETRICID = {BIO}"
         Using ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
@@ -953,8 +974,14 @@ Module Temporary
                     '    If PHOTO_CATEGORY <> "" Then .Item("PHOTO_CATEGORY") = PHOTO_CATEGORY
                     'End If 
 
-                    If DATEHIRED <> "" Then .Item("DATEHIRED") = DATEHIRED
-                    If DATE_ENDED <> "" Then .Item("DATE_ENDED") = DATE_ENDED
+                    'If DATEHIRED <> "" Then .Item("DATEHIRED") = DATEHIRED
+                    'If DATE_ENDED <> "" Then .Item("DATE_ENDED") = DATE_ENDED 
+
+                    If IsDBNull(.Item("COMPANY")) Then
+                        If COMPANY <> "" Then .Item("COMPANY") = COMPANY
+                    ElseIf String.IsNullOrEmpty(.Item("COMPANY")) Then
+                        If COMPANY <> "" Then .Item("COMPANY") = COMPANY
+                    End If
 
                 End With
                 SaveEntry(ds, False)
@@ -962,46 +989,46 @@ Module Temporary
         End Using
     End Sub
 
-    Friend Sub Import_Employee_BRANCH_DTR()
-        Dim path As String = "C:\Users\MISPC1\Desktop\Branch Import Formated.xlsx"
-        eApp = New Excel.Application
-        eBook = eApp.Workbooks.Open(path)
-        eSheet = eBook.Worksheets(1)
-        eCell = eSheet.UsedRange
+    'Friend Sub Import_Employee_BRANCH_DTR()
+    '    Dim path As String = "C:\Users\MISPC1\Desktop\Branch Import Formated.xlsx"
+    '    eApp = New Excel.Application
+    '    eBook = eApp.Workbooks.Open(path)
+    '    eSheet = eBook.Worksheets(1)
+    '    eCell = eSheet.UsedRange
 
-        MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path}';Extended Properties=Excel 8.0;")
-        MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
-        MyCommand.TableMappings.Add("Table", "Net-informations.com")
-        DtSet = New System.Data.DataSet
-        MyCommand.Fill(DtSet)
+    '    MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path}';Extended Properties=Excel 8.0;")
+    '    MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
+    '    MyCommand.TableMappings.Add("Table", "Net-informations.com")
+    '    DtSet = New System.Data.DataSet
+    '    MyCommand.Fill(DtSet)
 
-        progressBarStart(DtSet.Tables(0).Rows.Count + 1)
+    '    progressBarStart(DtSet.Tables(0).Rows.Count + 1)
 
-        Dim EMP_NO As String = Nothing
+    '    Dim EMP_NO As String = Nothing
 
-        For row = 2 To DtSet.Tables(0).Rows.Count
+    '    For row = 2 To DtSet.Tables(0).Rows.Count
 
-            If eCell(row, 1).Font.Bold = True Then
-                EMP_NO = eCell(row, 4).Value
-            End If
+    '        If eCell(row, 1).Font.Bold = True Then
+    '            EMP_NO = eCell(row, 4).Value
+    '        End If
 
-            If EMP_NO <> Nothing And IsDate(eCell(row, 1).value) Then
-                Dim datee As DateTime = eCell(row, 1).Value
-                UPDATE_Emp_SBU_EXCEL_DATEONLY(EMP_NO, datee, row)
+    '        If EMP_NO <> Nothing And IsDate(eCell(row, 1).value) Then
+    '            Dim datee As DateTime = eCell(row, 1).Value
+    '            UPDATE_Emp_SBU_EXCEL_DATEONLY(EMP_NO, datee, row)
 
-                EMP_NO = Nothing
-            End If
+    '            EMP_NO = Nothing
+    '        End If
 
-            frmMainForm.AppProgressBar.Value += 1
-        Next row
+    '        frmMainForm.AppProgressBar.Value += 1
+    '    Next row
 
-        progressBarEnd()
+    '    progressBarEnd()
 
-        MyConnection.Close()
-        eApp.Quit()
-        eApp.Application.DisplayAlerts = False
+    '    MyConnection.Close()
+    '    eApp.Quit()
+    '    eApp.Application.DisplayAlerts = False
 
-    End Sub
+    'End Sub
 
     Friend Sub SaveToText(bio As String, fullname As String, blank As String)
         Dim desktopPath As String = Environment.GetFolderPath(Environment.SpecialFolder.Desktop)
@@ -1064,7 +1091,7 @@ Module Temporary
     End Sub
 
     Friend Function HeadOffice_Employee(EMP_NO As String)
-        Dim mysql As String = $"SELECT COMPANY_CATEGORY FROM TBL_EMPLOYEE WHERE EMP_NO = '{EMP_NO}' AND COMPANY_CATEGORY = 'HEAD OFFICE'"
+        Dim mysql As String = $"SELECT COMPANY FROM TBL_EMPLOYEE WHERE EMP_NO = '{EMP_NO}' AND COMPANY = 'HEAD OFFICE'"
         Using ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
             If ds.Tables(0).Rows.Count > 0 Then
                 Return True
@@ -1107,7 +1134,7 @@ Module Temporary
             If ds.Tables(0).Rows.Count > 0 Then
                 With ds.Tables(0).Rows(0)
                     .Item("COMPANY") = COMPANY
-                    .Item("COMPANY_CATEGORY") = COMPANY
+                    .Item("PHOTO_CATEGORY") = COMPANY
                     .Item("BRANCHCODE") = BRANCHCODE
                     .Item("RATE_DAILY") = RATE_DAILY
                     .Item("RATE_MONTHLY") = RATE_MONTHLY

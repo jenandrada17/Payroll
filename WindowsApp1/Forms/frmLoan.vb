@@ -712,8 +712,10 @@ Public Class frmLoan
             MsgBox("Please indicate the principal amount.", MsgBoxStyle.Exclamation)
         ElseIf SBU_Principal_txt.Text = Nothing Then
             MsgBox("Please indicate the amort.", MsgBoxStyle.Exclamation)
+        ElseIf ScheduleSBU_Combo.Text = Nothing Then
+            MsgBox("Please select the schedule.", MsgBoxStyle.Exclamation)
         Else
-            SaveNewSBU(SBU_Name_txt.Text, SBU_Name_txt.Tag, SBU_Amort_txt.Text, SBU_Principal_txt.Text)
+            SaveNewSBU(SBU_Name_txt.Text, SBU_Name_txt.Tag, SBU_Amort_txt.Text, SBU_Principal_txt.Text, ScheduleSBU_Combo.Text)
             Lists_SBU(SBU_LV)
             SBU_Cancel_btn.PerformClick()
         End If
@@ -764,7 +766,7 @@ Public Class frmLoan
         SBU_Name_txt.Tag = SBU_LV.Items(SBU_LV.FocusedItem.Index).SubItems(4).Tag
         SBU_Principal_txt.Text = SBU_LV.Items(SBU_LV.FocusedItem.Index).SubItems(2).Text
         SBU_Amort_txt.Text = SBU_LV.Items(SBU_LV.FocusedItem.Index).SubItems(1).Text
-
+        ScheduleSBU_Combo.Text = GetData("SCHED", $"PAYROLL_SBU where BIO_NO ='{SBU_Name_txt.Tag}'")
         Dim datee As String = GetData("DATE_ADDED", $"PAYROLL_SBU where BIO_NO ='{SBU_Name_txt.Tag}'")
         SBU_Date_dtp.Value = IIf(datee = "", Today, datee)
     End Sub

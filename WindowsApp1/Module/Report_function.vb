@@ -20,10 +20,10 @@ Module Report_function
             .Columns.Add("TOTAL_AMOUNT")
         End With
 
-        mysql = $"Select A.*, B.*, C.*, C.ADDRESS as ADDRESS_ From PAYROLL_PAYOUT A  
-                                        INNER JOIN PAYROLL_EMPLOYEE C ON BIO_NO = BIOMETRIC_ID    
-                                        LEFT JOIN PAYROLL_CITY_BRANCH B ON BRANCHCODE = BRANCH_CODE    
-                                        WHERE (BRANCHCODE IN ('DIG','ISU','M1','POL', 'ROG','ROX','FINEPIX','COT','MID','KID','SNP','GMA','SML','ZAM','SMD')
+        mysql = $"Select A.*, B.*, C.*, C.ADDRESS as ADDRESS_  From PAYROLL_PAYOUT A  
+                                        INNER JOIN TBL_EMPLOYEE C ON BIOMETRICID = BIOMETRIC_ID    
+                                        LEFT JOIN PAYROLL_CITY_BRANCH B ON B.BRANCHCODE = C.BRANCHCODE
+                                        WHERE (B.BRANCHCODE IN ('DIG','ISU','M1','POL', 'ROG','ROX','FINEPIX','COT','MID','KID','SNP','GMA','SML','ZAM','SMD')
                                                 AND  PAYDATE = '{paydate}' AND COMPANY = 'PHOTO') OR (HO_CATEGORY LIKE 'Photo%' AND  PAYDATE = '{paydate}')
                                         ORDER BY CASE WHEN UPPER(HO_CATEGORY) LIKE UPPER('%Admin%') THEN 0  
                                                 WHEN UPPER(C.ADDRESS) LIKE UPPER('GENSAN') THEN 1 
@@ -104,8 +104,8 @@ Module Report_function
         End With
 
         mysql = $"Select A.*, B.*, C.*, C.ADDRESS as ADDRESS_ From PAYROLL_PAYOUT A  
-                                        INNER JOIN PAYROLL_EMPLOYEE C ON BIO_NO = BIOMETRIC_ID    
-                                        LEFT JOIN PAYROLL_CITY_BRANCH B ON BRANCHCODE = BRANCH_CODE    
+                                        INNER JOIN TBL_EMPLOYEE C ON C.BIOMETRICID = BIOMETRIC_ID    
+                                        LEFT JOIN PAYROLL_CITY_BRANCH B ON B.BRANCHCODE = C.BIOMETRICID    
                                         WHERE PAYDATE = '{paydate}'  AND COMPANY = 'PHOTO'
                                             AND BRANCHCODE IN ('SMG','KCG','ACM','TAC')  
                                         ORDER BY CASE WHEN C.ADDRESS = 'GENSAN' THEN 0  
@@ -171,8 +171,8 @@ Module Report_function
         End With
 
         mysql = $"Select A.*, B.*, C.*, C.ADDRESS as ADDRESS_  From PAYROLL_PAYOUT A  
-                                        INNER JOIN PAYROLL_EMPLOYEE C ON BIO_NO = BIOMETRIC_ID    
-                                        LEFT JOIN PAYROLL_CITY_BRANCH B ON BRANCHCODE = BRANCH_CODE    
+                                        INNER JOIN TBL_EMPLOYEE C ON BIOMETRICID = BIOMETRIC_ID    
+                                        LEFT JOIN PAYROLL_CITY_BRANCH B ON B.BRANCHCODE = C.BRANCHCODE    
                                         WHERE PAYDATE = '{paydate}' AND COMPANY  = 'DALTON'
                                             OR  (HO_CATEGORY LIKE 'Dalton%' AND PAYDATE = '{paydate}' )
                                         ORDER BY CASE WHEN UPPER(HO_CATEGORY) LIKE UPPER('%Admin%') THEN 0 
@@ -275,8 +275,8 @@ Module Report_function
         End With
 
         mysql = $"Select  A.*, B.*, C.*, C.ADDRESS as ADDRESS_ From PAYROLL_PAYOUT A  
-                                        INNER JOIN PAYROLL_EMPLOYEE C ON BIO_NO = BIOMETRIC_ID    
-                                        LEFT JOIN PAYROLL_CITY_BRANCH B ON BRANCHCODE = BRANCH_CODE    
+                                        INNER JOIN TBL_EMPLOYEE C ON BIOMETRICID = BIOMETRIC_ID    
+                                        LEFT JOIN PAYROLL_CITY_BRANCH B ON B.BRANCHCODE = C.BRANCHCODE    
                                         WHERE PAYDATE = '{paydate}' AND COMPANY  = 'PERFECOM'
                                             OR (HO_CATEGORY LIKE 'Perfecom%' AND  PAYDATE = '{paydate}')
                                         ORDER BY CASE WHEN UPPER(HO_CATEGORY) LIKE UPPER('%Admin%') THEN 0  
@@ -347,8 +347,8 @@ Module Report_function
         End With
 
         mysql = $"Select A.*, B.*, C.*, C.ADDRESS as ADDRESS_ From PAYROLL_PAYOUT A  
-                                        INNER JOIN PAYROLL_EMPLOYEE C ON BIO_NO = BIOMETRIC_ID     
-                                        LEFT JOIN PAYROLL_CITY_BRANCH B ON BRANCHCODE = BRANCH_CODE      
+                                        INNER JOIN TBL_EMPLOYEE C ON BIOMETRICID = BIOMETRIC_ID     
+                                        LEFT JOIN PAYROLL_CITY_BRANCH B ON B.BRANCHCODE = C.BRANCHCODE      
                                         WHERE PAYDATE = '{paydate}' AND COMPANY  = 'P&G UY'
                                             OR (HO_CATEGORY LIKE 'GHS/P&G UY%' AND PAYDATE = '{paydate}')
                                         ORDER BY CASE WHEN UPPER(HO_CATEGORY) LIKE UPPER('%Admin%') THEN 0  
@@ -425,11 +425,11 @@ Module Report_function
         Dim TOTALS As Decimal = 0
         Dim NET_PAY As Decimal = 0
 
-        Dim mysqll As String = $"Select * From PAYROLL_EMPLOYEE A  
-                                        INNER JOIN PAYROLL_PAYOUT C ON A.BIO_NO = C.BIOMETRIC_ID
-                                        where BIO_NO = '2788' AND PAYDATE = '{paydate}'"
+        Dim mysqll As String = $"Select * From TBL_EMPLOYEE A  
+                                        INNER JOIN PAYROLL_PAYOUT C ON A.BIOMETRICID = C.BIOMETRIC_ID
+                                        where BIOMETRICID = '2788' AND PAYDATE = '{paydate}'"
 
-        Using ds As DataSet = LoadSQL(mysqll, "PAYROLL_EMPLOYEE")
+        Using ds As DataSet = LoadSQL(mysqll, "TBL_EMPLOYEE")
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
                     With dr
@@ -471,13 +471,19 @@ Module Report_function
 
         Dim TOTALS As Decimal = 0
 
-        Dim mysqll As String = $"Select * From PAYROLL_EMPLOYEE A 
+        Dim mysqll As String = $"Select A.*, B.*, C.*, 
+                                        LASTNAME || ', ' || FIRSTNAME || ' ' || 
+                                             CASE 
+                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
+                                                 ELSE ''
+                                             END AS FULLNAME
+                                        From TBL_EMPLOYEE A 
                                         INNER JOIN PAYROLL_PERCENTAGEE B ON B.CATEGORY = A.COMMON_CATEGORY
-                                        INNER JOIN PAYROLL_PAYOUT C ON A.BIO_NO = C.BIOMETRIC_ID
+                                        INNER JOIN PAYROLL_PAYOUT C ON A.BIOMETRICID = C.BIOMETRIC_ID
                                         where PAYDATE = '{paydate}' AND HO_CATEGORY = 'PGC Head Office' OR (HO_CATEGORY IN ('Construction', 'Leasing Admin Office') AND PAYDATE = '{paydate}')
                                           ORDER BY FULLNAME ASC"
 
-        Using ds As DataSet = LoadSQL(mysqll, "PAYROLL_EMPLOYEE")
+        Using ds As DataSet = LoadSQL(mysqll, "TBL_EMPLOYEE")
             If ds.Tables(0).Rows.Count > 0 Then
 
                 progressBarStart(ds.Tables(0).Rows.Count)
@@ -490,7 +496,7 @@ Module Report_function
                         Dim NET_PAY As Decimal = .Item("NET_PAY")
                         Dim LEASING As String = .Item("LEASING")
 
-                        If .ITEM("BIO_NO") = "2788" Then ' MADERA  
+                        If .ITEM("BIOMETRICID") = "2788" Then ' MADERA  
                             LEASING = (50 * LEASING) / 100
                         End If
 
@@ -604,14 +610,20 @@ Module Report_function
         Dim Seven11_tot As Decimal = 0
         Dim COMI_TO_FUJI_tot As Decimal = 0
 
-        Dim mysqll As String = $"Select * From PAYROLL_EMPLOYEE A 
+        Dim mysqll As String = $"Select A.*, B.*, C.*, 
+                                        LASTNAME || ', ' || FIRSTNAME || ' ' || 
+                                             CASE 
+                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
+                                                 ELSE ''
+                                             END AS FULLNAME
+                                        From TBL_EMPLOYEE A 
                                         INNER JOIN PAYROLL_PERCENTAGEE B ON B.CATEGORY = A.COMMON_CATEGORY
-                                        INNER JOIN PAYROLL_PAYOUT C ON A.BIO_NO = C.BIOMETRIC_ID
+                                        INNER JOIN PAYROLL_PAYOUT C ON A.BIOMETRICID = C.BIOMETRIC_ID
                                         where  PAYDATE = '{paydate}' AND HO_CATEGORY = 'PGC Head Office' 
                                             OR (HO_CATEGORY IN ('Construction', 'Leasing Admin Office') AND  PAYDATE = '{paydate}')
                                             ORDER BY FULLNAME ASC"
 
-        Using ds As DataSet = LoadSQL(mysqll, "PAYROLL_EMPLOYEE")
+        Using ds As DataSet = LoadSQL(mysqll, "TBL_EMPLOYEE")
             If ds.Tables(0).Rows.Count > 0 Then
 
                 progressBarStart(ds.Tables(0).Rows.Count)
@@ -627,13 +639,13 @@ Module Report_function
                         Dim COMI_TO_FUJI As String = .Item("COMI_TO_FUJI")
                         Dim VALUEE As String = .Item(column)
 
-                        If .ITEM("BIO_NO") = "2788" Then ' MADERA 
+                        If .ITEM("BIOMETRICID") = "2788" Then ' MADERA 
                             VALUEE = (50 * VALUEE) / 100
                         End If
 
                         If column = "COMI_TO_FUJI" Then ' P&G UY SONS
 
-                            If .ITEM("BIO_NO") = "2788" Then ' MADERA  
+                            If .ITEM("BIOMETRICID") = "2788" Then ' MADERA  
                                 G3_tot += NET_PAY * ((50 * G3) / 100)
                                 Seven11_tot += NET_PAY * ((50 * Seven11) / 100)
                                 COMI_TO_FUJI_tot += NET_PAY * ((50 * COMI_TO_FUJI) / 100)
@@ -679,7 +691,7 @@ Module Report_function
         mysql = $"Select A.*, B.*, C.*, 
                     LASTNAME || ', ' || FIRSTNAME || ' ' || 
                          CASE 
-                             WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) '.'
+                             WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
                              ELSE ''
                          END AS FULLNAME  
                     From PAYROLL_PAYOUT A INNER JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
@@ -757,7 +769,7 @@ Module Report_function
             mysql = $"Select A.*, B.*, C.*, 
                         LASTNAME || ', ' || FIRSTNAME || ' ' || 
                              CASE 
-                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) '.'
+                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
                                  ELSE ''
                              END AS FULLNAME
                         From RECORDED_ALLOW_DEDUC A INNER JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIO_NO 
@@ -767,7 +779,7 @@ Module Report_function
             mysql = $"Select A.*, B.*, C.*, 
                         LASTNAME || ', ' || FIRSTNAME || ' ' || 
                              CASE 
-                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) '.'
+                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
                                  ELSE ''
                              END AS FULLNAME
                         From RECORDED_ALLOW_DEDUC A INNER JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIO_NO  
@@ -788,12 +800,12 @@ Module Report_function
 
                         '===================================== BRANCHES ===============================
                         Dim BRANCH_CODE As String = IIf(.Item("BRANCHCODE") = "" Or IsDBNull(.Item("BRANCHCODE")), .Item("HO_CATEGORY"), .Item("BRANCHNAME"))
-                        Dim COMPANY As String = IIf(IsDBNull(.Item("COMPANY_CATEGORY")), "", .Item("COMPANY_CATEGORY"))
+                        Dim COMPANY As String = IIf(IsDBNull(.Item("COMPANY")), "", .Item("COMPANY"))
                         Dim HO_CATEGORY As String = IIf(IsDBNull(.Item("HO_CATEGORY")), "", .Item("HO_CATEGORY"))
                         Dim PHOTO_CATEGORY As String = IIf(IsDBNull(.Item("PHOTO_CATEGORY")), "", .Item("PHOTO_CATEGORY"))
 
                         If COMPANY = "DALTON" Then
-                            BRANCH_CODE = IIf(.Item("BRANCHCODE") = "" Or IsDBNull(.Item("BRANCHCODE")), .Item("HO_CATEGORY"), TitleCase(.Item("COMPANY_CATEGORY")) & "-" & .Item("BRANCHNAME"))
+                            BRANCH_CODE = IIf(.Item("BRANCHCODE") = "" Or IsDBNull(.Item("BRANCHCODE")), .Item("HO_CATEGORY"), TitleCase(.Item("COMPANY")) & "-" & .Item("BRANCHNAME"))
                         End If
 
                         If HO_CATEGORY = "GHS/P&G UY Admin Office" Or HO_CATEGORY = "GHS/P&G UY Admin Operation" Then
@@ -840,8 +852,14 @@ Module Report_function
             .Columns.Add("BRANCH")
         End With
 
-        mysql = $"Select * From PAYROLL_PAYOUT INNER JOIN PAYROLL_EMPLOYEE ON BIO_NO = BIOMETRIC_ID   
-                                        LEFT JOIN PAYROLL_CITY_BRANCH ON BRANCHCODE = BRANCH_CODE     
+        mysql = $"Select A.*, B.*, B.BRANCHCODE AS BRANCH_CODE, 
+                                        LASTNAME || ', ' || FIRSTNAME || ' ' || 
+                                             CASE 
+                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
+                                                 ELSE ''
+                                             END AS FULLNAME
+                                        From PAYROLL_PAYOUT A INNER JOIN TBL_EMPLOYEE B ON BIOMETRICID = BIOMETRIC_ID   
+                                        LEFT JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE     
                                         WHERE PAYDATE = '{paydate}' {str} and PAGIBIG_COMP <> 0 ORDER BY FULLNAME"
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
@@ -855,7 +873,7 @@ Module Report_function
                         Dim FULLNAME As String = IIf(IsDBNull(.Item("FULLNAME")), "", .Item("FULLNAME"))
                         Dim monthly_Basic As Decimal = GetMonthly_Basic(.item("BIOMETRIC_ID"), paydate)
 
-                        Dim NOO As String = IIf(IsDBNull(.Item("PAGIBIGNO")), "", .Item("PAGIBIGNO"))
+                        Dim NOO As String = IIf(IsDBNull(.Item("PAGIBIG")), "", .Item("PAGIBIG"))
                         Dim EE As String = Get_Pagibig(monthly_Basic)
                         Dim BRANCH As String = ""
 
@@ -863,7 +881,7 @@ Module Report_function
                         Dim BRANCH_CODE As String = IIf(.Item("BRANCH_CODE") = "" Or IsDBNull(.Item("BRANCH_CODE")), .Item("HO_CATEGORY"), .Item("BRANCHNAME"))
                         Dim COMPANY As String = .Item("COMPANY")
                         Dim HO_CATEGORY As String = IIf(IsDBNull(.Item("HO_CATEGORY")), "", .Item("HO_CATEGORY"))
-                        Dim COMPANY_CATEGORY As String = IIf(IsDBNull(.Item("COMPANY_CATEGORY")), "", .Item("COMPANY_CATEGORY"))
+                        Dim COMPANY_CATEGORY As String = IIf(IsDBNull(.Item("PHOTO_CATEGORY")), "", .Item("PHOTO_CATEGORY"))
 
                         If COMPANY = "DALTON" Then
                             BRANCH_CODE = IIf(.Item("BRANCH_CODE") = "" Or IsDBNull(.Item("BRANCH_CODE")), .Item("HO_CATEGORY"), TitleCase(.Item("COMPANY")) & "-" & .Item("BRANCHNAME"))
@@ -911,8 +929,14 @@ Module Report_function
             .Columns.Add("BRANCH")
         End With
 
-        mysql = $"Select * From PAYROLL_PAYOUT INNER JOIN PAYROLL_EMPLOYEE ON BIO_NO = BIOMETRIC_ID   
-                                        LEFT JOIN PAYROLL_CITY_BRANCH ON BRANCHCODE = BRANCH_CODE     
+        mysql = $"Select A.*, B.*, C.*,  B.BRANCHCODE AS BRANCH_CODE, 
+                                        LASTNAME || ', ' || FIRSTNAME || ' ' || 
+                                             CASE 
+                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
+                                                 ELSE ''
+                                             END AS FULLNAME 
+                                        From PAYROLL_PAYOUT A INNER JOIN TBL_EMPLOYEE B ON BIOMETRICID = BIOMETRIC_ID   
+                                        LEFT JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE     
                                         WHERE PAYDATE = '{paydate}' {str} and PHILHEALTH_COMP <> 0 ORDER BY FULLNAME"
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
@@ -932,9 +956,9 @@ Module Report_function
 
                         '===================================== BRANCHES ===============================
                         Dim BRANCH_CODE As String = IIf(.Item("BRANCH_CODE") = "" Or IsDBNull(.Item("BRANCH_CODE")), .Item("HO_CATEGORY"), .Item("BRANCHNAME"))
-                        Dim COMPANY As String = .Item("COMPANY")
+                        Dim COMPANY As String = IIf(IsDBNull(.Item("COMPANY")), "", .Item("COMPANY"))
                         Dim HO_CATEGORY As String = IIf(IsDBNull(.Item("HO_CATEGORY")), "", .Item("HO_CATEGORY"))
-                        Dim COMPANY_CATEGORY As String = IIf(IsDBNull(.Item("COMPANY_CATEGORY")), "", .Item("COMPANY_CATEGORY"))
+                        Dim COMPANY_CATEGORY As String = IIf(IsDBNull(.Item("PHOTO_CATEGORY")), "", .Item("PHOTO_CATEGORY"))
 
                         If COMPANY = "DALTON" Then
                             BRANCH_CODE = IIf(.Item("BRANCH_CODE") = "" Or IsDBNull(.Item("BRANCH_CODE")), .Item("HO_CATEGORY"), TitleCase(.Item("COMPANY")) & "-" & .Item("BRANCHNAME"))
@@ -970,14 +994,14 @@ Module Report_function
     Public Function GetList_Branch(address As String, str As String) As String
 
         Dim branch_group As New List(Of String)()
-        Dim mysql As String = $"Select BRANCHCODE from PAYROLL_CITY_BRANCH A
-                                inner join PAYROLL_EMPLOYEE B ON BRANCHCODE = BRANCH_CODE 
-                                where A.address = '{address}' and {str}"
+        Dim mysql As String = $"Select A.BRANCHCODE AS BRANCH_CODE from PAYROLL_CITY_BRANCH A
+                                inner join TBL_EMPLOYEE B ON A.BRANCHCODE = B.BRANCHCODE 
+                                where A.ADDRESS = '{address}' and {str}"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_CITY_BRANCH")
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
                     With dr
-                        branch_group.Add($"'{ .item("BRANCHCODE")}'")
+                        branch_group.Add($"'{ .item("BRANCH_CODE")}'")
                     End With
                 Next
             End If
@@ -1040,8 +1064,14 @@ Module Report_function
                 .Columns.Add("REGULAR_PAY")
             End With
 
-            Dim mysql As String = $"Select FULLNAME, BIOMETRIC_ID, PAYDATE from PAYROLL_EMPLOYEE inner join PAYROLL_PAYOUT on BIOMETRIC_ID = BIO_NO where BIO_NO='{bioNo}' and PAYDATE BETWEEN '{starting_date}' AND '{ending_date}'"
-            Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+            Dim mysql As String = $"Select BIOMETRIC_ID, PAYDATE, 
+                                LASTNAME || ', ' || FIRSTNAME || ' ' || 
+                                     CASE 
+                                         WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
+                                         ELSE ''
+                                     END AS FULLNAME
+                                from TBL_EMPLOYEE inner join PAYROLL_PAYOUT on BIOMETRIC_ID = BIOMETRICID where BIOMETRICID='{bioNo}' and PAYDATE BETWEEN '{starting_date}' AND '{ending_date}'"
+            Using ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
                 progressBarStart(ds.Tables(0).Rows.Count)
                 For Each dr In ds.Tables(0).Rows
                     With dr
@@ -1052,10 +1082,10 @@ Module Report_function
                         Dim NO_OF_DAYS As Decimal = GetData_Decimal("PRESENT_DAYS", $"PAYROLL_ATTENDANCE where BIOMETRICID = '{bioNo}' and PAYDATE = '{PAYDATE}'")
                         Dim tOTAL_BASIC As Decimal = GetData_Decimal("TOTAL_BASIC", $"PAYROLL_PAYOUT where BIOMETRIC_ID = '{bioNo}' and PAYDATE  = '{PAYDATE}'")
 
-                        Dim tOTAL_ECOLA As Decimal = GetData_Decimal("AMOUNT", $"RECORDED_ALLOW_DEDUC where BIO_NO = '{bioNo}' and CATEGORY = 'ECOLA' and PAYDATE = '{PAYDATE}'")
-                        Dim tOTAL_SIL As Decimal = GetData_Decimal("AMOUNT", $"RECORDED_ALLOW_DEDUC where BIO_NO = '{bioNo}' and CATEGORY like '%SIL' and PAYDATE = '{PAYDATE}'")
-                        Dim tOTAL_PI As Decimal = GetData_Decimal("AMOUNT", $"RECORDED_ALLOW_DEDUC where BIO_NO = '{bioNo}' and CATEGORY = 'PERFORMANCE INCENTIVES' and PAYDATE = '{PAYDATE}'")
-                        Dim tOTAL_LATE_UT As Decimal = GetData_Decimal("TOTAL_LATE_UT", $"PAYROLL_PAYOUT where  BIOMETRIC_ID = '{bioNo}' and PAYDATE = '{PAYDATE}'")
+                        Dim tOTAL_ECOLA As Decimal = GetData_Decimal("AMOUNT", $"RECORDED_ALLOW_DEDUC where BIOMETRICID = '{bioNo}' and CATEGORY = 'ECOLA' and PAYDATE = '{PAYDATE}'")
+                        Dim tOTAL_SIL As Decimal = GetData_Decimal("AMOUNT", $"RECORDED_ALLOW_DEDUC where BIOMETRICID = '{bioNo}' and CATEGORY like '%SIL' and PAYDATE = '{PAYDATE}'")
+                        Dim tOTAL_PI As Decimal = GetData_Decimal("AMOUNT", $"RECORDED_ALLOW_DEDUC where BIOMETRICID = '{bioNo}' and CATEGORY = 'PERFORMANCE INCENTIVES' and PAYDATE = '{PAYDATE}'")
+                        Dim tOTAL_LATE_UT As Decimal = GetData_Decimal("TOTAL_LATE_UT", $"PAYROLL_PAYOUT BIOMETRICID  BIOMETRIC_ID = '{bioNo}' and PAYDATE = '{PAYDATE}'")
 
                         OTHER_INCOME = (tOTAL_ECOLA + tOTAL_SIL + tOTAL_PI) - tOTAL_LATE_UT
                         Dim TOTALS As Decimal = tOTAL_BASIC + OTHER_INCOME

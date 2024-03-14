@@ -23,7 +23,6 @@ Public Class frmNewEmployee
         'Import_Employee_DETAILS_INCOMPLETE()
 
         Lists_Employees(lvEmployee)
-        'PopulateComboBox(Branch_ComboB, "PAYROLL_EMPLOYEE", "BRANCH_CODE")
         PopulateComboBox(Branch_ComboB, "TBL_EMPLOYEE", "BRANCHCODE")
         PopulateComboBox_Any(Position_Combo, "CATEGORIES WHERE NAME = 'POSITION'", "CATEGORY")
 
@@ -131,89 +130,89 @@ Public Class frmNewEmployee
     End Sub
 
 
-    Private Sub Import_Employee_DEDUCTION_2()
+    'Private Sub Import_Employee_DEDUCTION_2()
 
-        eApp = New Excel.Application
-        eBook = eApp.Workbooks.Open(Path_TXT.Text)
-        eSheet = eBook.Worksheets(1)
-        eCell = eSheet.UsedRange
+    '    eApp = New Excel.Application
+    '    eBook = eApp.Workbooks.Open(Path_TXT.Text)
+    '    eSheet = eBook.Worksheets(1)
+    '    eCell = eSheet.UsedRange
 
-        MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path_TXT.Text}';Extended Properties=Excel 8.0;")
-        MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
-        MyCommand.TableMappings.Add("Table", "Net-informations.com")
-        DtSet = New System.Data.DataSet
-        MyCommand.Fill(DtSet)
+    '    MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path_TXT.Text}';Extended Properties=Excel 8.0;")
+    '    MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
+    '    MyCommand.TableMappings.Add("Table", "Net-informations.com")
+    '    DtSet = New System.Data.DataSet
+    '    MyCommand.Fill(DtSet)
 
-        '====================== DELETE PAYROLL_SBU TO REPLACE NEW ==================
-        If isExist_String("PAYROLL_DEDUCTION", "") Then
-            RunCommand($"DELETE FROM PAYROLL_DEDUCTION ;")
-        End If
+    '    '====================== DELETE PAYROLL_SBU TO REPLACE NEW ==================
+    '    If isExist_String("PAYROLL_DEDUCTION", "") Then
+    '        RunCommand($"DELETE FROM PAYROLL_DEDUCTION ;")
+    '    End If
 
-        '====================== DELETE PAYROLL_SBU TO REPLACE NEW ==================
-        If isExist_String("PAYROLL_LOANS", "") Then
-            RunCommand($"DELETE FROM PAYROLL_LOANS ;")
-        End If
+    '    '====================== DELETE PAYROLL_SBU TO REPLACE NEW ==================
+    '    If isExist_String("PAYROLL_LOANS", "") Then
+    '        RunCommand($"DELETE FROM PAYROLL_LOANS ;")
+    '    End If
 
-        progressBarStart(DtSet.Tables(0).Rows.Count + 1)
+    '    progressBarStart(DtSet.Tables(0).Rows.Count + 1)
 
-        For row = 4 To DtSet.Tables(0).Rows.Count
+    '    For row = 4 To DtSet.Tables(0).Rows.Count
 
-            Dim EMP_NO As String = ""
-            Dim CATEGORY As String = ""
-            Dim AMOUNT As String = ""
-            Dim PRINCIPAL As String = ""
-            Dim DATEE As String = ""
-            Dim CREDIT As String = ""
-            Dim BALANCE As String = ""
+    '        Dim EMP_NO As String = ""
+    '        Dim CATEGORY As String = ""
+    '        Dim AMOUNT As String = ""
+    '        Dim PRINCIPAL As String = ""
+    '        Dim DATEE As String = ""
+    '        Dim CREDIT As String = ""
+    '        Dim BALANCE As String = ""
 
-            If eCell(row, 1).Font.Bold = True Then
-                EMP_NO = eCell(row, 4).Value
-                SAVE_EmpNo_Deduction_EXCEL(EMP_NO, row)
-            End If
+    '        If eCell(row, 1).Font.Bold = True Then
+    '            EMP_NO = eCell(row, 4).Value
+    '            SAVE_EmpNo_Deduction_EXCEL(EMP_NO, row)
+    '        End If
 
-            If IsDate(eCell(row, 1).value) Then
-                Dim IF_SBU As String = eCell(row, 3).value
+    '        If IsDate(eCell(row, 1).value) Then
+    '            Dim IF_SBU As String = eCell(row, 3).value
 
-                If IF_SBU.TrimEnd <> "SBU(Savings Build Up)" Then
-                    DATEE = eCell(row, 1).Value
-                    CATEGORY = eCell(row, 4).Value
-                    AMOUNT = eCell(row, 5).Value
-                    PRINCIPAL = eCell(row, 6).Value
-                    CREDIT = IIf(eCell(row, 8).Value = Nothing, 0, eCell(row, 8).Value)
-                    BALANCE = eCell(row, 9).Value
+    '            If IF_SBU.TrimEnd <> "SBU(Savings Build Up)" Then
+    '                DATEE = eCell(row, 1).Value
+    '                CATEGORY = eCell(row, 4).Value
+    '                AMOUNT = eCell(row, 5).Value
+    '                PRINCIPAL = eCell(row, 6).Value
+    '                CREDIT = IIf(eCell(row, 8).Value = Nothing, 0, eCell(row, 8).Value)
+    '                BALANCE = eCell(row, 9).Value
 
-                    If (CATEGORY.Contains("LOAN") Or CATEGORY.Contains("Loan") Or CATEGORY.Contains("loan")) And Not CATEGORY.Contains("Car") Then
+    '                If (CATEGORY.Contains("LOAN") Or CATEGORY.Contains("Loan") Or CATEGORY.Contains("loan")) And Not CATEGORY.Contains("Car") Then
 
-                        If CATEGORY.Contains("PAG-IBIG") Or CATEGORY.Contains("HDMF") Then
-                            CATEGORY = "PAG-IBIG"
-                        Else
-                            CATEGORY = "SSS"
-                        End If
+    '                    If CATEGORY.Contains("PAG-IBIG") Or CATEGORY.Contains("HDMF") Then
+    '                        CATEGORY = "PAG-IBIG"
+    '                    Else
+    '                        CATEGORY = "SSS"
+    '                    End If
 
-                        SAVE_LOANS_EXCEL(CATEGORY, AMOUNT, PRINCIPAL, CREDIT, BALANCE, DATEE, row)
-                    Else
-                        SAVE_Deduction_EXCEL(CATEGORY, AMOUNT, PRINCIPAL, CREDIT, BALANCE, DATEE, row)
-                    End If
+    '                    SAVE_LOANS_EXCEL(CATEGORY, AMOUNT, PRINCIPAL, CREDIT, BALANCE, DATEE, row)
+    '                Else
+    '                    SAVE_Deduction_EXCEL(CATEGORY, AMOUNT, PRINCIPAL, CREDIT, BALANCE, DATEE, row)
+    '                End If
 
-                End If
+    '            End If
 
-            End If
+    '        End If
 
-            frmMainForm.AppProgressBar.Value += 1
-        Next row
+    '        frmMainForm.AppProgressBar.Value += 1
+    '    Next row
 
-        progressBarEnd()
+    '    progressBarEnd()
 
-        RunCommand($"DELETE FROM PAYROLL_DEDUCTION WHERE CATEGORY is null;")
+    '    RunCommand($"DELETE FROM PAYROLL_DEDUCTION WHERE CATEGORY is null;")
 
-        Path_TXT.Clear()
-        MyConnection.Close()
-        eBook.Close()
-        eApp.Quit()
+    '    Path_TXT.Clear()
+    '    MyConnection.Close()
+    '    eBook.Close()
+    '    eApp.Quit()
 
-        Excel_Panel.Visible = False
+    '    Excel_Panel.Visible = False
 
-    End Sub
+    'End Sub
 
     'Private Sub Import_Deduction()
 
@@ -278,74 +277,74 @@ Public Class frmNewEmployee
 
     'End Sub 
 
-    Private Sub Import_13MONTH()
+    'Private Sub Import_13MONTH()
 
-        eApp = New Excel.Application
-        eBook = eApp.Workbooks.Open(Path_TXT.Text)
-        eSheet = eBook.Worksheets(1)
-        eCell = eSheet.UsedRange
+    '    eApp = New Excel.Application
+    '    eBook = eApp.Workbooks.Open(Path_TXT.Text)
+    '    eSheet = eBook.Worksheets(1)
+    '    eCell = eSheet.UsedRange
 
-        MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path_TXT.Text}';Extended Properties=Excel 8.0;")
-        MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
-        MyCommand.TableMappings.Add("Table", "Net-informations.com")
-        DtSet = New System.Data.DataSet
-        MyCommand.Fill(DtSet)
+    '    MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path_TXT.Text}';Extended Properties=Excel 8.0;")
+    '    MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
+    '    MyCommand.TableMappings.Add("Table", "Net-informations.com")
+    '    DtSet = New System.Data.DataSet
+    '    MyCommand.Fill(DtSet)
 
-        '====================== DELETE PAYROLL_SBU TO REPLACE NEW ==================
-        'If isExist_String("PAYROLL_13MONTH", "") Then
-        '    RunCommand($"DELETE FROM PAYROLL_13MONTH ;")
-        'End If
+    '    '====================== DELETE PAYROLL_SBU TO REPLACE NEW ==================
+    '    'If isExist_String("PAYROLL_13MONTH", "") Then
+    '    '    RunCommand($"DELETE FROM PAYROLL_13MONTH ;")
+    '    'End If
 
-        progressBarStart(DtSet.Tables(0).Rows.Count + 1)
+    '    progressBarStart(DtSet.Tables(0).Rows.Count + 1)
 
-        For row = 1 To DtSet.Tables(0).Rows.Count
+    '    For row = 1 To DtSet.Tables(0).Rows.Count
 
 
-            If Not String.IsNullOrEmpty(eCell(row, 1).Value) Then
-                If Not IsDate(eCell(row, 1).Value) Then
-                    If eCell(row, 1).Value.Contains("EMPLOYEE NO.:") Then
-                        Dim EMP_NO As String = eCell(row, 2).Value
-                        SAVE_13MONTH_EMPNO(EMP_NO, row)
-                    End If
-                End If
+    '        If Not String.IsNullOrEmpty(eCell(row, 1).Value) Then
+    '            If Not IsDate(eCell(row, 1).Value) Then
+    '                If eCell(row, 1).Value.Contains("EMPLOYEE NO.:") Then
+    '                    Dim EMP_NO As String = eCell(row, 2).Value
+    '                    SAVE_13MONTH_EMPNO(EMP_NO, row)
+    '                End If
+    '            End If
 
-            End If
+    '        End If
 
-            Dim val As Double
-            If String.IsNullOrEmpty(eCell(row, 3).Value) Or Double.TryParse(eCell(row, 3).Value, val) Then
-                Continue For
-            Else
-                If eCell(row, 3).Value = "13TH MONTH PAY" Then
-                    Dim AMOUNT As Decimal = eCell(row, 5).Value
-                    SAVE_13MONTH_AMOUNT(AMOUNT, row)
-                End If
-            End If
+    '        Dim val As Double
+    '        If String.IsNullOrEmpty(eCell(row, 3).Value) Or Double.TryParse(eCell(row, 3).Value, val) Then
+    '            Continue For
+    '        Else
+    '            If eCell(row, 3).Value = "13TH MONTH PAY" Then
+    '                Dim AMOUNT As Decimal = eCell(row, 5).Value
+    '                SAVE_13MONTH_AMOUNT(AMOUNT, row)
+    '            End If
+    '        End If
 
-            frmMainForm.AppProgressBar.Value += 1
-        Next row
+    '        frmMainForm.AppProgressBar.Value += 1
+    '    Next row
 
-        progressBarEnd()
+    '    progressBarEnd()
 
-        Path_TXT.Clear()
-        MyConnection.Close()
-        eBook.Close()
-        eApp.Quit()
+    '    Path_TXT.Clear()
+    '    MyConnection.Close()
+    '    eBook.Close()
+    '    eApp.Quit()
 
-        Excel_Panel.Visible = False
+    '    Excel_Panel.Visible = False
 
-        Dim mysql As String = $"Select * From payroll_payout A 
-                                inner join payroll_employee B on B.BIO_NO = A.BIOMETRIC_ID 
-                                inner Join payroll_13month C on B.EMP_NO = B.EMP_NO where C.EMP_NO = B.EMP_NO"
+    '    Dim mysql As String = $"Select * From payroll_payout A 
+    '                            inner join payroll_employee B on B.BIO_NO = A.BIOMETRIC_ID 
+    '                            inner Join payroll_13month C on B.EMP_NO = B.EMP_NO where C.EMP_NO = B.EMP_NO"
 
-        Using ds As DataSet = LoadSQL(mysql, "payroll_payout")
-            For Each dr In ds.Tables(0).Rows()
-                With dr
-                    Save_Recorded_Allow_Deduc_13month(.item("BIO_NO"), "12/15/2021", "13th Month Pay", .item("AMOUNT"), "ALLOWANCE")
-                    UPDATENETPAY(.item("BIO_NO"), "12/15/2021", .item("AMOUNT"))
-                End With
-            Next
-        End Using
-    End Sub
+    '    Using ds As DataSet = LoadSQL(mysql, "payroll_payout")
+    '        For Each dr In ds.Tables(0).Rows()
+    '            With dr
+    '                Save_Recorded_Allow_Deduc_13month(.item("BIO_NO"), "12/15/2021", "13th Month Pay", .item("AMOUNT"), "ALLOWANCE")
+    '                UPDATENETPAY(.item("BIO_NO"), "12/15/2021", .item("AMOUNT"))
+    '            End With
+    '        Next
+    '    End Using
+    'End Sub
 
     Private Sub Import_Employee_SBU_AMOUNT_PRINCIPAL_CREDIT()
         Dim path As String = "C:\Users\MISPC1\Desktop\BRANCH PAYROLL\SBU AS MARCH 2024 - Copy.xls"
@@ -558,53 +557,53 @@ Public Class frmNewEmployee
         Return DateTime.TryParse(input, result)
     End Function
 
-    Private Sub Import_Employee_Benifits_Details_BY_NAME()
+    'Private Sub Import_Employee_Benifits_Details_BY_NAME()
 
-        eApp = New Excel.Application
-        eBook = eApp.Workbooks.Open(Path_TXT.Text)
-        eSheet = eBook.Worksheets(1)
-        eCell = eSheet.UsedRange
+    '    eApp = New Excel.Application
+    '    eBook = eApp.Workbooks.Open(Path_TXT.Text)
+    '    eSheet = eBook.Worksheets(1)
+    '    eCell = eSheet.UsedRange
 
-        MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path_TXT.Text}';Extended Properties=Excel 8.0;")
-        MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
-        MyCommand.TableMappings.Add("Table", "Net-informations.com")
-        DtSet = New System.Data.DataSet
-        MyCommand.Fill(DtSet)
-
-
-        progressBarStart(DtSet.Tables(0).Rows.Count + 1)
-
-        For row = 2 To DtSet.Tables(0).Rows.Count + 1
-
-            Dim MI As String
-
-            If String.IsNullOrEmpty(eCell(row, 4).Value) Then
-                MI = ""
-            Else
-                MI = eCell(row, 4).Value.Substring(0, 1) & "."
-            End If
-
-            Dim fullname As String = eCell(row, 2).Value & ", " & eCell(row, 3).Value & " " & MI
-
-            Update_Emp_Benefits_DetailS_BY_NAME(fullname, eCell(row, 9).Value, eCell(row, 10).Value, eCell(row, 11).Value, eCell(row, 12).Value, eCell(row, 6).Value, eCell(row, 8).Value, eCell(row, 1).Value)
-
-            frmMainForm.AppProgressBar.Value += 1
-
-        Next
-
-        progressBarEnd()
+    '    MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path_TXT.Text}';Extended Properties=Excel 8.0;")
+    '    MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
+    '    MyCommand.TableMappings.Add("Table", "Net-informations.com")
+    '    DtSet = New System.Data.DataSet
+    '    MyCommand.Fill(DtSet)
 
 
-        Lists_Employees(lvEmployee)
+    '    progressBarStart(DtSet.Tables(0).Rows.Count + 1)
 
-        Path_TXT.Clear()
-        MyConnection.Close()
-        eBook.Close()
-        eApp.Quit()
+    '    For row = 2 To DtSet.Tables(0).Rows.Count + 1
 
-        Excel_Panel.Visible = False
+    '        Dim MI As String
 
-    End Sub
+    '        If String.IsNullOrEmpty(eCell(row, 4).Value) Then
+    '            MI = ""
+    '        Else
+    '            MI = eCell(row, 4).Value.Substring(0, 1) & "."
+    '        End If
+
+    '        Dim fullname As String = eCell(row, 2).Value & ", " & eCell(row, 3).Value & " " & MI
+
+    '        Update_Emp_Benefits_DetailS_BY_NAME(fullname, eCell(row, 9).Value, eCell(row, 10).Value, eCell(row, 11).Value, eCell(row, 12).Value, eCell(row, 6).Value, eCell(row, 8).Value, eCell(row, 1).Value)
+
+    '        frmMainForm.AppProgressBar.Value += 1
+
+    '    Next
+
+    '    progressBarEnd()
+
+
+    '    Lists_Employees(lvEmployee)
+
+    '    Path_TXT.Clear()
+    '    MyConnection.Close()
+    '    eBook.Close()
+    '    eApp.Quit()
+
+    '    Excel_Panel.Visible = False
+
+    'End Sub
 
     'Private Sub Import_Employee_Benifits_Details_BY_BIO()
 
@@ -823,7 +822,7 @@ Public Class frmNewEmployee
     Private Sub Add_BTN_Click(sender As Object, e As EventArgs) Handles Add_BTN.Click
         Add_Panel.Location = New Point(ClientSize.Width / 2 - Add_Panel.Size.Width / 2, ClientSize.Height / 2 - Add_Panel.Size.Height / 2)
         Add_Panel.Visible = True
-        PopulateComboBox(Branch_ComboB, "PAYROLL_EMPLOYEE", "BRANCH_CODE")
+        PopulateComboBox(Branch_ComboB, "TBL_EMPLOYEE", "BRANCHCODE")
     End Sub
 
     Private Sub Label9_Click(sender As Object, e As EventArgs) Handles Label9.Click
