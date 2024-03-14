@@ -392,7 +392,7 @@ Module SaveUpdate
 
     Friend Sub SaveRATE_City(column As String, value As String, daily_rate As String, Optional group As Boolean = False) '=========== BOOLEAN IF MORE THAN 1 ========== 
         If value = "" Then
-            SaveRATE("BRANCH_CODE", "", daily_rate, False, True)
+            SaveRATE("BRANCHCODE", "", daily_rate, False, True)
             Exit Sub
         End If
 
@@ -403,7 +403,7 @@ Module SaveUpdate
                 With dr
                     Dim branchCode As String = .Item("BRANCHCODE")
 
-                    SaveRATE("BRANCH_CODE", branchCode, daily_rate, False, True)
+                    SaveRATE("BRANCHCODE", branchCode, daily_rate, False, True)
                 End With
             Next
         End If
@@ -411,8 +411,8 @@ Module SaveUpdate
     'SaveRATE("BIO_NO", Rate_BioNo_TXT.Text, Rate_EmpAmount_TXT.Text, fix_monthly)
     Friend Sub SaveRATE(column As String, value As String, daily_rate As String, Optional fix_monthly As Boolean = False, Optional group As Boolean = False) '=========== BOOLEAN IF MORE THAN 1 ========== 
 
-        Dim mysql As String = $"Select * FROM  PAYROLL_EMPLOYEE WHERE {column} = '{value}'"
-        Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+        Dim mysql As String = $"Select * FROM  TBL_EMPLOYEE WHERE {column} = '{value}'"
+        Dim dss As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
         If dss.Tables(0).Rows.Count > 0 Then
 
             progressBarStart(dss.Tables(0).Rows.Count)
@@ -1590,20 +1590,24 @@ Module SaveUpdate
 
         Dim mysql As String
 
-        mysql = $"Select * FROM PAYROLL_EMPLOYEE  where BIO_NO = '{BIO_NO}'"
-        Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE ")
+        mysql = $"Select * FROM TBL_EMPLOYEE  where BIOMETRICID = '{BIO_NO}'"
+        Dim ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE ")
         If ds.Tables(0).Rows.Count > 0 Then
             With ds.Tables(0).Rows(0)
+                Dim namee As String() = FULLNAME.Split({","c, " "c}, StringSplitOptions.RemoveEmptyEntries)
+                Dim firstname As String = namee(1)
+                Dim lastname As String = namee(0)
 
                 .Item("COMPANY") = COMPANY
-                .Item("BRANCH_CODE") = BRANCH_CODE
-                .Item("FULLNAME") = FULLNAME
+                .Item("BRANCHCODE") = BRANCH_CODE
+                .Item("FIRSTNAME") = firstname
+                .Item("LASTNAME") = lastname
                 .Item("EMAIL_ADD") = EMAIL_ADD
                 .Item("EMP_STATUS") = EMP_STATUS
-                .Item("RATE_DAILY") = IIf(.Item("BRANCH_CODE") = Nothing, GetMinimumRate("CITY", "GENSAN"), GetMinimumRate("BRANCHCODE", .Item("BRANCH_CODE")))
+                .Item("RATE_DAILY") = IIf(.Item("BRANCHCODE") = Nothing, GetMinimumRate("CITY", "GENSAN"), GetMinimumRate("BRANCHCODE", .Item("BRANCHCODE")))
 
                 If COMPANY = "PHOTO" Then
-                    .Item("COMPANY_CATEGORY") = GetData("CATEGORY", $"PAYROLL_CITY_BRANCH WHERE BRANCHCODE = '{BRANCH_CODE}'")
+                    .Item("PHOTO_CATEGORY") = GetData("CATEGORY", $"PAYROLL_CITY_BRANCH WHERE BRANCHCODE = '{BRANCH_CODE}'")
                 End If
 
                 Dim toLower As String = ""
@@ -1628,21 +1632,22 @@ Module SaveUpdate
                     If TIME_OUT <> "" Then .Item("TIME_OUT") = TIME_OUT
                 End If
 
-                If DATE_STARTED <> "" Then .Item("DATE_STARTED") = DATE_STARTED
+                If DATE_STARTED <> "" Then .Item("DATEHIRED") = DATE_STARTED
                 If EMP_NO <> "" Then .Item("EMP_NO") = EMP_NO
                 If TIN <> "" Then .Item("TINNO") = TIN
                 If SSS <> "" Then .Item("SSSNO") = SSS
                 If PHILH <> "" Then .Item("PHILHEALTHNO") = PHILH
-                If HDMF <> "" Then .Item("PAGIBIGNO") = HDMF
+                If HDMF <> "" Then .Item("PAGIBIG") = HDMF
                 If HO_CATEGORY <> "" Then .Item("HO_CATEGORY") = toProper
                 If COMMON_CATEGORY <> "" Then .Item("COMMON_CATEGORY") = COMMON_CATEGORY
                 If EMP_POSITION <> "" Then .Item("EMP_POSITION") = EMP_POSITION
                 If COMMON_COMPANY <> "" Then .Item("COMMON_COMPANY") = COMMON_COMPANY
-                If PhotoCategory <> "" Then .Item("COMPANY_CATEGORY") = PhotoCategory
+                If PhotoCategory <> "" Then .Item("PHOTO_CATEGORY") = PhotoCategory
 
                 If Middlename <> "" Then .Item("MIDDLENAME") = Middlename
                 If BDATE <> "" Then .Item("BDATE") = BDATE
-                If ADDRESS <> "" Then .Item("ADDRESS") = ADDRESS
+                'TODO ADDRESS
+                If ADDRESS <> "" Then .Item("PERMANENT_STREET") = ADDRESS
                 If DATE_ENDED <> "" Then .Item("DATE_ENDED") = DATE_ENDED
 
             End With
@@ -1655,19 +1660,22 @@ Module SaveUpdate
 
         Else
 
-            mysql = "Select * From PAYROLL_EMPLOYEE Rows 1"
-            Using dss As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+            mysql = "Select * From TBL_EMPLOYEE Rows 1"
+            Using dss As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
 
                 Dim dsNewRow As DataRow = dss.Tables(0).NewRow
                 With dsNewRow
+                    Dim namee As String() = FULLNAME.Split({","c, " "c}, StringSplitOptions.RemoveEmptyEntries)
+                    Dim firstname As String = namee(1).ToString
+                    Dim lastname As String = namee(0).ToString
 
-                    .Item("BIO_NO") = BIO_NO
                     .Item("COMPANY") = COMPANY
-                    .Item("BRANCH_CODE") = BRANCH_CODE
-                    .Item("FULLNAME") = FULLNAME
-                    .Item("EMAIL_ADD") = EMAIL_ADD
+                    .Item("BRANCHCODE") = BRANCH_CODE
+                    .Item("FIRSTNAME") = firstname
+                    .Item("LASTNAME") = lastname
+                    .Item("EMAILADD") = EMAIL_ADD
                     .Item("EMP_STATUS") = EMP_STATUS
-                    .Item("RATE_DAILY") = IIf(.Item("BRANCH_CODE") = Nothing, GetMinimumRate("CITY", "GENSAN"), GetMinimumRate("BRANCHCODE", .Item("BRANCH_CODE")))
+                    .Item("RATE_DAILY") = IIf(.Item("BRANCHCODE") = Nothing, GetMinimumRate("CITY", "GENSAN"), GetMinimumRate("BRANCHCODE", .Item("BRANCHCODE")))
 
 
                     Dim val As Double
@@ -1680,21 +1688,22 @@ Module SaveUpdate
                     End If
 
 
-                    If DATE_STARTED <> "" Then .Item("DATE_STARTED") = DATE_STARTED
+                    If DATE_STARTED <> "" Then .Item("DATEHIRED") = DATE_STARTED
                     If EMP_NO <> "" Then .Item("EMP_NO") = EMP_NO
                     If TIN <> "" Then .Item("TINNO") = TIN
                     If SSS <> "" Then .Item("SSSNO") = SSS
                     If PHILH <> "" Then .Item("PHILHEALTHNO") = PHILH
-                    If HDMF <> "" Then .Item("PAGIBIGNO") = HDMF
+                    If HDMF <> "" Then .Item("PAGIBIG") = HDMF
                     If HO_CATEGORY <> "" Then .Item("HO_CATEGORY") = HO_CATEGORY
                     If COMMON_CATEGORY <> "" Then .Item("COMMON_CATEGORY") = COMMON_CATEGORY
                     If EMP_POSITION <> "" Then .Item("EMP_POSITION") = EMP_POSITION
                     If COMMON_COMPANY <> "" Then .Item("COMMON_COMPANY") = COMMON_COMPANY
-                    If PhotoCategory <> "" Then .Item("COMPANY_CATEGORY") = PhotoCategory
+                    If PhotoCategory <> "" Then .Item("PHOTO_CATEGORY") = PhotoCategory
 
                     If Middlename <> "" Then .Item("MIDDLENAME") = Middlename
-                    If BDATE <> "" Then .Item("BDATE") = BDATE
-                    If ADDRESS <> "" Then .Item("ADDRESS") = ADDRESS
+                    If BDATE <> "" Then .Item("DATEOFBIRTH") = BDATE
+                    'TODO ADDRESS
+                    If ADDRESS <> "" Then .Item("PERMANENT_STREET") = ADDRESS
 
                 End With
 

@@ -13,9 +13,9 @@
         End If
 
         PopulateComboBox_Any(Rate_City_ComboB, "PAYROLL_CITY_BRANCH", "CITY")
-        PopulateComboBox_Any(ClockBranch_CB, "PAYROLL_EMPLOYEE", "BRANCH_CODE")
+        PopulateComboBox_Any(ClockBranch_CB, "TBL_EMPLOYEE", "BRANCHCODE")
         PopulateComboBox_Any(City_Combo, "PAYROLL_CITY_BRANCH", "CITY")
-        PopulateComboBox_Any(CityCode_Combo, "PAYROLL_EMPLOYEE", "BRANCH_CODE")
+        PopulateComboBox_Any(CityCode_Combo, "TBL_EMPLOYEE", "BRANCHCODE")
         PopulateComboBox_Any(Address_Combo, "PAYROLL_CITY_BRANCH", "ADDRESS")
         Lists_Rate(Rate_list)
         Lists_TimeInOut(TimeInOut_LV)
@@ -191,7 +191,7 @@
                     fix_monthly = True
                 End If
 
-                SaveRATE("BIO_NO", Rate_BioNo_TXT.Text, Rate_EmpAmount_TXT.Text, fix_monthly)
+                SaveRATE("BIOMETRICID", Rate_BioNo_TXT.Text, Rate_EmpAmount_TXT.Text, fix_monthly)
 
                 SaveLogs($"UPDATED RATE - {Rate_Employee_TXT.Text} ({Rate_BioNo_TXT.Text}), Rate( from {Rate_EmpAmount_TXT.Tag} to {Rate_EmpAmount_TXT.Text} )", frmMainForm.UserName_LBL.Text)
 

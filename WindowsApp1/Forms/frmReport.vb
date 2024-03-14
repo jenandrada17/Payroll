@@ -1762,24 +1762,43 @@ Public Class frmReport
                 str = $"WHERE  HO_CATEGORY = 'PGC Head Office'"
             End If
 
-            Dim mysql As String = $"Select * From PAYROLL_EMPLOYEE A LEFT JOIN PAYROLL_CITY_BRANCH B ON B.BRANCHCODE = A.BRANCH_CODE {str} ORDER BY FULLNAME"
+            Dim mysql As String = $"Select A.*, B.*, 
+                                        LASTNAME || ', ' || FIRSTNAME || ' ' || 
+                                             CASE 
+                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1)
+                                                 ELSE ''
+                                             END AS FULLNAME 
+                                        From TBL_EMPLOYEE A 
+                                        LEFT JOIN PAYROLL_CITY_BRANCH B ON B.BRANCHCODE = A.BRANCHCODE {str} ORDER BY FULLNAME"
 
             If search <> Nothing Then
                 If IsNumeric(search) Then
-                    mysql = $"Select * From PAYROLL_EMPLOYEE A 
-                                        LEFT JOIN PAYROLL_CITY_BRANCH B ON B.BRANCHCODE = A.BRANCH_CODE 
-                                        where BIO_NO ='{search}' or EMP_NO ='{search}' or RATE_DAILY ='{search}' or RATE_MONTHLY ='{search}'  
+                    mysql = $"Select A.*, B.*, 
+                                        LASTNAME || ', ' || FIRSTNAME || ' ' || 
+                                             CASE 
+                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1)
+                                                 ELSE ''
+                                             END AS FULLNAME 
+                                        From TBL_EMPLOYEE A 
+                                        LEFT JOIN PAYROLL_CITY_BRANCH B ON B.BRANCHCODE = A.BRANCHCODE 
+                                        where BIOMETRICID ='{search}' or EMP_NO ='{search}' or RATE_DAILY ='{search}' or RATE_MONTHLY ='{search}'  
                                         ORDER BY FULLNAME"
                 Else
-                    mysql = $"Select * From PAYROLL_EMPLOYEE A 
-                                        LEFT JOIN PAYROLL_CITY_BRANCH B ON B.BRANCHCODE = A.BRANCH_CODE 
-                                        where upper(FULLNAME) like upper('%{search}%') or upper(COMPANY) like upper('%{search}%') or upper(BRANCH_CODE) like upper('%{search}%') 
+                    mysql = $"Select A.*, B.*, 
+                                        LASTNAME || ', ' || FIRSTNAME || ' ' || 
+                                             CASE 
+                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1)
+                                                 ELSE ''
+                                             END AS FULLNAME 
+                                        From TBL_EMPLOYEE A 
+                                        LEFT JOIN PAYROLL_CITY_BRANCH B ON B.BRANCHCODE = A.BRANCHCODE 
+                                        where upper(FULLNAME) like upper('%{search}%') or upper(COMPANY) like upper('%{search}%') or upper(BRANCHCODE) like upper('%{search}%') 
                                         ORDER BY FULLNAME"
                 End If
             End If
 
 
-            Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+            Using ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
                 If ds.Tables(0).Rows.Count > 0 Then
 
                     progressBarStart(ds.Tables(0).Rows.Count)
@@ -1792,13 +1811,13 @@ Public Class frmReport
                             Dim MONTHLY As Decimal = IIf(IsDBNull(.Item("RATE_MONTHLY")), 0, .Item("RATE_MONTHLY"))
 
                             '===================================== BRANCHES ===============================
-                            Dim BRANCH_CODE As String = IIf(.Item("BRANCH_CODE") = "" Or IsDBNull(.Item("BRANCH_CODE")), .Item("HO_CATEGORY"), .Item("BRANCHNAME"))
-                            Dim COMPANY As String = .Item("COMPANY")
+                            Dim BRANCH_CODE As String = IIf(IsDBNull(.Item("BRANCHCODE")) Or .Item("BRANCHCODE").Equals(""), .Item("HO_CATEGORY"), .Item("BRANCHNAME"))
+                            Dim COMPANY As String = IIf(IsDBNull(.Item("COMPANY_CATEGORY")), "", .Item("COMPANY_CATEGORY"))
                             Dim HO_CATEGORY As String = IIf(IsDBNull(.Item("HO_CATEGORY")), "", .Item("HO_CATEGORY"))
                             Dim COMPANY_CATEGORY As String = IIf(IsDBNull(.Item("COMPANY_CATEGORY")), "", .Item("COMPANY_CATEGORY"))
 
                             If COMPANY = "DALTON" Then
-                                BRANCH_CODE = IIf(.Item("BRANCH_CODE") = "" Or IsDBNull(.Item("BRANCH_CODE")), .Item("HO_CATEGORY"), TitleCase(.Item("COMPANY")) & "-" & .Item("BRANCHNAME"))
+                                BRANCH_CODE = IIf(IsDBNull(.Item("BRANCHCODE")) Or .Item("BRANCHCODE").Equals(""), .Item("HO_CATEGORY"), TitleCase(.Item("COMPANY")) & "-" & .Item("BRANCHNAME"))
                             End If
 
                             If HO_CATEGORY = "GHS/P&G UY Admin Office" Or HO_CATEGORY = "GHS/P&G UY Admin Operation" Then

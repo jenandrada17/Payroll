@@ -982,7 +982,8 @@ Module Temporary
     End Sub
 
     Friend Sub SaveToText(bio As String, fullname As String, blank As String)
-        Dim path As String = "C:\Users\MISPC1\Desktop\BRANCH PAYROLL\EMPTY RECORD.txt"
+        Dim desktopPath As String = Environment.GetFolderPath(Environment.SpecialFolder.Desktop)
+        Dim path As String = $"{desktopPath}\PAYROLL BRANCH - EMPTY RECORD.txt"
         Dim filee As New FileInfo(path)
 
         If Not filee.Exists Then

@@ -1145,8 +1145,8 @@ Module SelectFromDatabase
 
     Public Sub Payout_Details(bioNo As String, name As TextBox, ratee As TextBox, RateFixYes_RB As RadioButton, Optional MonthlyRate_TXT As TextBox = Nothing)
 
-        Dim mysql As String = $"Select * From PAYROLL_EMPLOYEE WHERE BIO_NO = '{bioNo}'"
-        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+        Dim mysql As String = $"Select * From TBL_EMPLOYEE WHERE BIOMETRICID = '{bioNo}'"
+        Using ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
 
             If ds.Tables(0).Rows.Count > 0 Then
 
@@ -1154,12 +1154,20 @@ Module SelectFromDatabase
                 With data
 
                     Dim rate As Decimal = IIf(IsDBNull(.Item("RATE_DAILY")), 0, .Item("RATE_DAILY"))
-                    Dim minimum As Decimal = IIf(.Item("BRANCH_CODE") = Nothing, GetMinimumRate("CITY", "GENSAN"), GetMinimumRate("BRANCHCODE", .Item("BRANCH_CODE")))
+                    Dim minimum As Decimal = IIf(.Item("BRANCHCODE") = Nothing, GetMinimumRate("CITY", "GENSAN"), GetMinimumRate("BRANCHCODE", .Item("BRANCHCODE")))
 
                     ratee.Text = IIf(rate = 0, minimum, rate)
                     ratee.Tag = minimum
 
-                    name.Text = .Item("FULLNAME")
+                    Dim MI As String
+                    If String.IsNullOrEmpty(.Item("MiddleName")) Then
+                        MI = ""
+                    Else
+                        MI = .Item("MiddleName").Substring(0, 1) & "."
+                    End If
+
+                    Dim FULLNAME As String = $"{ .Item("LastName")}, { .Item("FirstName")} {MI}"
+                    name.Text = FULLNAME
 
                     RateFixYes_RB.Checked = IIf(IsDBNull(.Item("FIX_MONTHLY_RATE")), False, .Item("FIX_MONTHLY_RATE"))
                     RateFixYes_RB.Tag = IIf(IsDBNull(.Item("RATE_MONTHLY")) Or .Item("RATE_MONTHLY").Equals("0"), ratee.Text * 26, .Item("RATE_MONTHLY"))
@@ -1458,21 +1466,21 @@ Module SelectFromDatabase
 
         If searchName.Length <> 0 Then
 
-            mysql = $"Select * From PAYROLL_EMPLOYEE where "
+            mysql = $"Select * From TBL_EMPLOYEE where "
 
             For Each name In strWords
                 mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(BRANCH_CODE) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(FULLNAME) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(BIO_NO) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(EMP_STATUS) LIKE UPPER('%{name}%') ORDER BY COMPANY, BRANCH_CODE ASC "
+                mysql &= $"{vbCr}UPPER(FIRSTNAME) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(LASTNAME) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(BIOMETRICID) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(EMP_STATUS) LIKE UPPER('%{name}%') ORDER BY COMPANY, BRANCHCODE ASC "
             Next
 
         Else
-            mysql = $"Select * From PAYROLL_EMPLOYEE ORDER BY COMPANY, BRANCH_CODE ASC "
+            mysql = $"Select * From TBL_EMPLOYEE ORDER BY COMPANY, BRANCHCODE ASC "
         End If
 
-        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+        Using ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
             If ds.Tables(0).Rows.Count > 0 Then
 
                 listview.Items.Clear()
@@ -1480,9 +1488,19 @@ Module SelectFromDatabase
 
                 For Each dr In ds.Tables(0).Rows
                     With dr
-                        Dim i As ListViewItem = listview.Items.Add(.Item("BRANCH_CODE"))
-                        i.SubItems.Add(.Item("FULLNAME"))
-                        i.SubItems.Add(.Item("BIO_NO"))
+
+                        Dim MI As String
+                        If String.IsNullOrEmpty(.Item("MiddleName")) Then
+                            MI = ""
+                        Else
+                            MI = .Item("MiddleName").Substring(0, 1) & "."
+                        End If
+
+                        Dim FULLNAME As String = $"{ .Item("LastName")}, { .Item("FirstName")} {MI}"
+
+                        Dim i As ListViewItem = listview.Items.Add(IIf(IsDBNull(.Item("BRANCHCODE")), "", .Item("BRANCHCODE")))
+                        i.SubItems.Add(FULLNAME)
+                        i.SubItems.Add(.Item("BIOMETRICID"))
                         i.SubItems.Add(IIf(IsDBNull(.Item("RATE_DAILY")), "", .Item("RATE_DAILY")))
                     End With
                     frmMainForm.AppProgressBar.Value += 1
@@ -1546,18 +1564,30 @@ Module SelectFromDatabase
         Dim mysql As String
 
         If searchName.Length <> 0 Then
-            mysql = "select B.*, B.ID as deduc_idd, A.FULLNAME, B.STATUS from PAYROLL_DEDUCTION B inner join  PAYROLL_EMPLOYEE A on B.BIO_NO = A.BIO_NO WHERE "
+            mysql = "select B.*, B.ID as deduc_idd, B.STATUS,
+                            LASTNAME || ', ' || FIRSTNAME || ' ' || 
+                                 CASE 
+                                     WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1)
+                                     ELSE ''
+                                 END AS FULLNAME
+                            from PAYROLL_DEDUCTION B inner join  TBL_EMPLOYEE A on B.BIO_NO = A.BIOMETRICID WHERE "
 
             For Each name In strWords
                 mysql &= $"{vbCr}UPPER(B.BIO_NO) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(FULLNAME) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(BRANCH_CODE) LIKE UPPER('%{name}%') ORDER BY FULLNAME, CATEGORY ASC "
+                mysql &= $"{vbCr}UPPER(COMPANY_CATEGORY) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(BRANCHCODE) LIKE UPPER('%{name}%') ORDER BY FULLNAME, CATEGORY ASC "
             Next
 
         Else
 
-            mysql = "select B.*, B.ID as deduc_idd, A.FULLNAME, B.STATUS from PAYROLL_DEDUCTION B inner join  PAYROLL_EMPLOYEE A on B.BIO_NO = A.BIO_NO ORDER BY FULLNAME, CATEGORY ASC "
+            mysql = "select B.*, B.ID as deduc_idd, B.STATUS, 
+                            LASTNAME || ', ' || FIRSTNAME || ' ' || 
+                                 CASE 
+                                     WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1)
+                                     ELSE ''
+                                 END AS FULLNAME
+                            from PAYROLL_DEDUCTION B inner join  TBL_EMPLOYEE A on B.BIO_NO = A.BIOMETRICID ORDER BY FULLNAME, CATEGORY ASC "
 
         End If
 
@@ -1566,7 +1596,6 @@ Module SelectFromDatabase
             progressBarStart(ds.Tables(0).Rows.Count)
             For Each dr In ds.Tables(0).Rows
                 With dr
-
                     Dim i As ListViewItem = LV.Items.Add(.Item("FULLNAME"))
                     i.SubItems.Add(.Item("CATEGORY")).Tag = .Item("deduc_idd")
                     i.SubItems.Add(CDec(.Item("AMORT")).ToString("N"))
@@ -1595,26 +1624,43 @@ Module SelectFromDatabase
         Dim mysql As String
 
         If searchName.Length <> 0 Then
-            mysql = $"select COALESCE(sum(SIL), 0) AS TOTALS, FULLNAME, BIO_NO from PAYROLL_EMPLOYEE INNER JOIN PAYROLL_ATTENDANCE on BIOMETRICID = BIO_NO Where PAYDATE BETWEEN '{startt.ToShortDateString}' AND '{endd.ToShortDateString}' and ("
+            mysql = $"select COALESCE(sum(SIL), 0) AS TOTALS, A.BIOMETRICID, 
+                            LASTNAME || ', ' || FIRSTNAME || ' ' || 
+                                 CASE 
+                                     WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1)
+                                     ELSE ''
+                                 END AS FULLNAME
+                            from TBL_EMPLOYEE A 
+                            INNER JOIN PAYROLL_ATTENDANCE B on B.BIOMETRICID = A.BIOMETRICID 
+                            Where PAYDATE BETWEEN '{startt.ToShortDateString}' AND '{endd.ToShortDateString}' and ("
 
             For Each name In strWords
-                mysql &= $"{vbCr}UPPER(BIO_NO) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(BIOMETRICID) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(FULLNAME) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(BRANCH_CODE) LIKE UPPER('%{name}%'))  GROUP BY FULLNAME, BIO_NO ORDER BY FULLNAME ASC "
+                mysql &= $"{vbCr}UPPER(BRANCHCODE) LIKE UPPER('%{name}%'))  GROUP BY FULLNAME, BIOMETRICID ORDER BY FULLNAME ASC "
             Next
         Else
-            mysql = $"select COALESCE(sum(SIL), 0) AS TOTALS, FULLNAME, BIO_NO from PAYROLL_EMPLOYEE INNER JOIN PAYROLL_ATTENDANCE on BIOMETRICID = BIO_NO Where PAYDATE BETWEEN '{startt.ToShortDateString}' AND '{endd.ToShortDateString}' GROUP BY FULLNAME, BIO_NO ORDER BY FULLNAME ASC "
+            mysql = $"select COALESCE(sum(SIL), 0) AS TOTALS, A.BIOMETRICID,
+                                LASTNAME || ', ' || FIRSTNAME || ' ' || 
+                                     CASE 
+                                         WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1)
+                                         ELSE ''
+                                     END AS FULLNAME
+                                from TBL_EMPLOYEE A 
+                                INNER JOIN PAYROLL_ATTENDANCE B on B.BIOMETRICID = A.BIOMETRICID 
+                                Where PAYDATE BETWEEN '{startt.ToShortDateString}' AND '{endd.ToShortDateString}' 
+                                GROUP BY FULLNAME, A.BIOMETRICID ORDER BY FULLNAME ASC "
         End If
 
-        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+        Using ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
             LV.Items.Clear()
             progressBarStart(ds.Tables(0).Rows.Count)
             For Each dr In ds.Tables(0).Rows
                 With dr
 
                     Dim i As ListViewItem = LV.Items.Add(.Item("FULLNAME"))
-                    i.SubItems.Add(.Item("TOTALS") + Get_SIL("PAYROLL_SCHED_COUNT", $"PAYROLL_SCHED_COUNT WHERE BIO_NO = '{ .item("BIO_NO")}' AND PAYDATE BETWEEN '{startt.ToShortDateString}' AND '{endd.ToShortDateString}'"))
+                    i.SubItems.Add(.Item("TOTALS") + Get_SIL("PAYROLL_SCHED_COUNT", $"PAYROLL_SCHED_COUNT WHERE BIO_NO = '{ .item("BIOMETRICID")}' AND PAYDATE BETWEEN '{startt.ToShortDateString}' AND '{endd.ToShortDateString}'"))
 
                 End With
                 frmMainForm.AppProgressBar.Value += 1
@@ -1633,29 +1679,43 @@ Module SelectFromDatabase
 
         If searchName.Length <> 0 Then
 
-            mysql = $"select FULLNAME, BIOMETRIC_ID from PAYROLL_EMPLOYEE A inner join PAYROLL_PAYOUT B on B.BIOMETRIC_ID = A.BIO_NO  where "
+            mysql = $"select BIOMETRIC_ID,
+                        LASTNAME || ', ' || FIRSTNAME || ' ' || 
+                             CASE 
+                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1)
+                                 ELSE ''
+                             END AS FULLNAME 
+                        from TBL_EMPLOYEE A 
+                        inner join PAYROLL_PAYOUT B on B.BIOMETRIC_ID = A.BIOMETRICID  where "
 
             For Each name In strWords
-                mysql &= $"{vbCr}UPPER(A.BIO_NO) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(A.BIOMETRICID) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(FULLNAME) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(BRANCH_CODE) LIKE UPPER('%{name}%') Group by FULLNAME, BIOMETRIC_ID ORDER BY FULLNAME ASC "
+                mysql &= $"{vbCr}UPPER(BRANCHCODE) LIKE UPPER('%{name}%') Group by FULLNAME, BIOMETRIC_ID ORDER BY FULLNAME ASC "
             Next
 
         Else
 
-            mysql = $"select FULLNAME, BIOMETRIC_ID  from PAYROLL_EMPLOYEE A inner join PAYROLL_PAYOUT B on B.BIOMETRIC_ID = A.BIO_NO Group by FULLNAME, BIOMETRIC_ID ORDER BY FULLNAME ASC "
+            mysql = $"select BIOMETRIC_ID,
+                        LASTNAME || ', ' || FIRSTNAME || ' ' || 
+                             CASE 
+                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1)
+                                 ELSE ''
+                             END AS FULLNAME 
+                        from TBL_EMPLOYEE A 
+                        inner join PAYROLL_PAYOUT B on B.BIOMETRIC_ID = A.BIOMETRICID 
+                        Group by FULLNAME, BIOMETRIC_ID ORDER BY FULLNAME ASC "
 
         End If
 
-        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+        Using ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
             LV.Items.Clear()
             progressBarStart(ds.Tables(0).Rows.Count)
             For Each dr In ds.Tables(0).Rows
                 With dr
 
                     Dim TOTALS As Decimal = IIf(range = Nothing, Get13Month(.item("BIOMETRIC_ID")), Get13Month(.item("BIOMETRIC_ID"), range))
-
                     Dim i As ListViewItem = LV.Items.Add(.Item("FULLNAME"))
                     i.SubItems.Add(TOTALS.ToString("N")).Tag = .item("BIOMETRIC_ID")
 
@@ -1886,14 +1946,18 @@ Module SelectFromDatabase
 
         If searchName.Length <> 0 Then
 
-            'mysql = $"select * from PAYROLL_EMPLOYEE where "
-            mysql = $"select * from TBL_EMPLOYEE where "
+            mysql = $"select *, 
+                            LASTNAME || ', ' || FIRSTNAME || ' ' || 
+                                 CASE 
+                                     WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1)
+                                     ELSE ''
+                                 END AS FULLNAME  
+                            from TBL_EMPLOYEE where "
 
             For Each name In strWords
                 mysql &= $"{vbCr}UPPER(COMPANY_CATEGORY) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(BRANCHCODE) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(FIRSTNAME) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(LASTNAME) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(FULLNAME) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(BIOMETRICID) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(EMP_STATUS) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(EMP_POSITION) LIKE UPPER('%{name}%') OR "
@@ -1907,7 +1971,13 @@ Module SelectFromDatabase
             Next
 
         Else
-            mysql = "select * from TBL_EMPLOYEE  ORDER BY COMPANY_CATEGORY, BRANCHCODE ASC "
+            mysql = "select *, 
+                            LASTNAME || ', ' || FIRSTNAME || ' ' || 
+                                 CASE 
+                                     WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1)
+                                     ELSE ''
+                                 END AS FULLNAME  
+                            from TBL_EMPLOYEE  ORDER BY COMPANY_CATEGORY, BRANCHCODE ASC "
         End If
 
         Using ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
@@ -1935,14 +2005,6 @@ Module SelectFromDatabase
             Dim PHOTO_CATEGORY As String = ""
             Dim COMPANY As String = IIf(IsDBNull(.Item("COMPANY_CATEGORY")), "", .Item("COMPANY_CATEGORY"))
 
-            Dim MI As String
-            If String.IsNullOrEmpty(.Item("MiddleName")) Then
-                MI = ""
-            Else
-                MI = .Item("MiddleName").Substring(0, 1) & "."
-            End If
-
-            Dim FULLNAME As String = $"{ .Item("LastName")}, { .Item("FirstName")} {MI}"
             If COMPANY = "PHOTO" Then
                 PHOTO_CATEGORY = IIf(IsDBNull(.Item("PHOTO_CATEGORY")), "", .Item("PHOTO_CATEGORY"))
             End If
@@ -1951,7 +2013,7 @@ Module SelectFromDatabase
             Dim i As ListViewItem = LV.Items.Add(IIf(COMPANY = "PHOTO", COMPANY & $" ({PHOTO_CATEGORY.TrimEnd})", COMPANY))
             i.Tag = .Item("ID")
             i.SubItems.Add(IIf(IsDBNull(.Item("BRANCHCODE")), "", .Item("BRANCHCODE")))
-            i.SubItems.Add(FULLNAME.TrimEnd)
+            i.SubItems.Add(.Item("FULLNAME"))
             i.SubItems.Add(.Item("BIOMETRICID"))
             i.SubItems.Add(IIf(IsDBNull(.Item("EMP_NO")), "", .Item("EMP_NO")))
             i.SubItems.Add(IIf(IsDBNull(.Item("EMAILADD")), "", .Item("EMAILADD")))
@@ -1964,6 +2026,7 @@ Module SelectFromDatabase
         End With
     End Sub
 
+    'TODO PAYROLL_EMPLOYEE (ON EDITING/VIEWING)
     Public Sub GetFullname(bio_no As String, Add_Company_CB As ComboBox, Branch_ComboB As ComboBox, Firstname As TextBox,
                            Email_TXT As TextBox, InActive_RB As RadioButton, Started_DTP As DateTimePicker,
                            TimeIn_Combo As ComboBox, TimeOut_Combo As ComboBox, EmpNo_TXT As TextBox, TIN_TXT As TextBox,
@@ -3002,27 +3065,39 @@ Module SelectFromDatabase
 
         If searchName.Length <> 0 Then
 
-            mysql = "select  COALESCE(sum(C.AMOUNT), 0) AS TOTALS, FULLNAME, CREDIT, PRINCIPAL, B.AMOUNT, B.BIO_NO as bio  from PAYROLL_EMPLOYEE A 
-                            inner join PAYROLL_SBU B on B.BIO_NO = A.BIO_NO 
-                            left join RECORDED_ALLOW_DEDUC C on C.BIO_NO = A.BIO_NO and C.CATEGORY = 'SBU' and PAYDATE <> '12/15/2021' WHERE "
+            mysql = "select  COALESCE(sum(C.AMOUNT), 0) AS TOTALS, CREDIT, PRINCIPAL, B.AMOUNT, B.BIO_NO as bio , 
+                            LASTNAME || ', ' || FIRSTNAME || ' ' || 
+                                CASE 
+                                    WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1)
+                                    ELSE ''
+                                END AS FULLNAME
+                            from TBL_EMPLOYEE A 
+                            inner join PAYROLL_SBU B on B.BIO_NO = A.BIOMETRICID 
+                            left join RECORDED_ALLOW_DEDUC C on C.BIO_NO = A.BIOMETRICID and C.CATEGORY = 'SBU' and PAYDATE <> '12/15/2021' WHERE "
 
             For Each name In strWords
                 mysql &= $"{vbCr}UPPER(B.BIO_NO) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(FULLNAME) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(BRANCH_CODE) LIKE UPPER('%{name}%') 
+                mysql &= $"{vbCr}UPPER(BRANCHCODE) LIKE UPPER('%{name}%') 
                         GROUP BY C.AMOUNT, FULLNAME, CREDIT, PRINCIPAL,  B.AMOUNT, B.BIO_NO ORDER BY FULLNAME ASC "
             Next
 
         Else
-            mysql = "select COALESCE(sum(C.AMOUNT), 0) AS TOTALS, FULLNAME, CREDIT, PRINCIPAL, B.AMOUNT, B.BIO_NO as bio from PAYROLL_EMPLOYEE A 
-                                inner join PAYROLL_SBU B on B.BIO_NO = A.BIO_NO 
-                                left join RECORDED_ALLOW_DEDUC C on C.BIO_NO = A.BIO_NO and C.CATEGORY = 'SBU'  and PAYDATE <> '12/15/2021' 
+            mysql = "select COALESCE(sum(C.AMOUNT), 0) AS TOTALS, CREDIT, PRINCIPAL, B.AMOUNT, B.BIO_NO as bio, 
+                                LASTNAME || ', ' || FIRSTNAME || ' ' || 
+                                    CASE 
+                                        WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1)
+                                        ELSE ''
+                                    END AS FULLNAME
+                                from TBL_EMPLOYEE A 
+                                inner join PAYROLL_SBU B on B.BIO_NO = A.BIOMETRICID 
+                                left join RECORDED_ALLOW_DEDUC C on C.BIO_NO = A.BIOMETRICID and C.CATEGORY = 'SBU'  and PAYDATE <> '12/15/2021' 
                                 GROUP BY C.AMOUNT, FULLNAME, CREDIT, PRINCIPAL,  B.AMOUNT, B.BIO_NO
                                 ORDER BY FULLNAME ASC "
         End If
 
-        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+        Using ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
             LV.Items.Clear()
             progressBarStart(ds.Tables(0).Rows.Count)
             For Each dr In ds.Tables(0).Rows

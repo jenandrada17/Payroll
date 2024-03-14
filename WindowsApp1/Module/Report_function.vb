@@ -676,9 +676,15 @@ Module Report_function
             .Columns.Add("BRANCH")
         End With
 
-        mysql = $"Select * From PAYROLL_PAYOUT INNER JOIN PAYROLL_EMPLOYEE ON BIO_NO = BIOMETRIC_ID 
-                                        LEFT JOIN PAYROLL_CITY_BRANCH ON BRANCHCODE = BRANCH_CODE 
-                                        WHERE PAYDATE = '{paydate}' {str} and SSS_COMP <> 0 ORDER BY FULLNAME"
+        mysql = $"Select A.*, B.*, C.*, 
+                    LASTNAME || ', ' || FIRSTNAME || ' ' || 
+                         CASE 
+                             WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1)
+                             ELSE ''
+                         END AS FULLNAME  
+                    From PAYROLL_PAYOUT A INNER JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
+                    LEFT JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE 
+                    WHERE PAYDATE = '{paydate}' {str} and SSS_COMP <> 0 ORDER BY FULLNAME"
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
             If ds.Tables(0).Rows.Count > 0 Then
@@ -697,13 +703,13 @@ Module Report_function
                         Dim EC As String = Get_SSS(monthly_Basic).EC
 
                         '===================================== BRANCHES ===============================
-                        Dim BRANCH_CODE As String = IIf(.Item("BRANCH_CODE") = "" Or IsDBNull(.Item("BRANCH_CODE")), .Item("HO_CATEGORY"), .Item("BRANCHNAME"))
-                        Dim COMPANY As String = .Item("COMPANY")
+                        Dim BRANCH_CODE As String = IIf(IsDBNull(.Item("BRANCHCODE")) Or .Item("BRANCHCODE") = "", .Item("HO_CATEGORY"), .Item("BRANCHNAME"))
+                        Dim COMPANY As String = IIf(IsDBNull(.Item("COMPANY")), "", .Item("COMPANY"))
                         Dim HO_CATEGORY As String = IIf(IsDBNull(.Item("HO_CATEGORY")), "", .Item("HO_CATEGORY"))
-                        Dim COMPANY_CATEGORY As String = IIf(IsDBNull(.Item("COMPANY_CATEGORY")), "", .Item("COMPANY_CATEGORY"))
+                        Dim COMPANY_CATEGORY As String = IIf(IsDBNull(.Item("PHOTO_CATEGORY")), "", .Item("PHOTO_CATEGORY"))
 
                         If COMPANY = "DALTON" Then
-                            BRANCH_CODE = IIf(.Item("BRANCH_CODE") = "" Or IsDBNull(.Item("BRANCH_CODE")), .Item("HO_CATEGORY"), TitleCase(.Item("COMPANY")) & "-" & .Item("BRANCHNAME"))
+                            BRANCH_CODE = IIf(IsDBNull(.Item("BRANCHCODE")) Or .Item("BRANCHCODE") = "", .Item("HO_CATEGORY"), TitleCase(.Item("COMPANY")) & "-" & .Item("BRANCHNAME"))
                         End If
 
                         If HO_CATEGORY = "GHS/P&G UY Admin Office" Or HO_CATEGORY = "GHS/P&G UY Admin Operation" Then
@@ -748,13 +754,25 @@ Module Report_function
         End With
 
         If category = "SSS" Then
-            mysql = $"Select * From RECORDED_ALLOW_DEDUC A INNER JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIO_NO 
-                                        LEFT JOIN PAYROLL_CITY_BRANCH ON BRANCHCODE = BRANCH_CODE       
-                                        WHERE PAYDATE = '{paydate}' AND TRANSAC_NAME = 'DEDUCTION' AND UPPER(A.CATEGORY) LIKE UPPER('%SSS%') {str} ORDER BY FULLNAME"
+            mysql = $"Select A.*, B.*, C.*, 
+                        LASTNAME || ', ' || FIRSTNAME || ' ' || 
+                             CASE 
+                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1)
+                                 ELSE ''
+                             END AS FULLNAME
+                        From RECORDED_ALLOW_DEDUC A INNER JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIO_NO 
+                        LEFT JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE       
+                        WHERE PAYDATE = '{paydate}' AND TRANSAC_NAME = 'DEDUCTION' AND UPPER(A.CATEGORY) LIKE UPPER('%SSS%') {str} ORDER BY FULLNAME"
         Else
-            mysql = $"Select * From RECORDED_ALLOW_DEDUC A INNER JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIO_NO  
-                                        LEFT JOIN PAYROLL_CITY_BRANCH ON BRANCHCODE = BRANCH_CODE        
-                                        WHERE PAYDATE = '{paydate}' AND TRANSAC_NAME = 'DEDUCTION' AND (UPPER(A.CATEGORY) LIKE UPPER('%PAG IBIG%') oR UPPER(A.CATEGORY) LIKE UPPER('%PAG-IBIG%')) {str} ORDER BY FULLNAME"
+            mysql = $"Select A.*, B.*, C.*, 
+                        LASTNAME || ', ' || FIRSTNAME || ' ' || 
+                             CASE 
+                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1)
+                                 ELSE ''
+                             END AS FULLNAME
+                        From RECORDED_ALLOW_DEDUC A INNER JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIO_NO  
+                        LEFT JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE        
+                        WHERE PAYDATE = '{paydate}' AND TRANSAC_NAME = 'DEDUCTION' AND (UPPER(A.CATEGORY) LIKE UPPER('%PAG IBIG%') oR UPPER(A.CATEGORY) LIKE UPPER('%PAG-IBIG%')) {str} ORDER BY FULLNAME"
         End If
 
         Using ds As DataSet = LoadSQL(mysql, "RECORDED_ALLOW_DEDUC")
@@ -769,13 +787,13 @@ Module Report_function
                         Dim AMOUNT As String = FormatNumber(.Item("AMOUNT"))
 
                         '===================================== BRANCHES ===============================
-                        Dim BRANCH_CODE As String = IIf(.Item("BRANCH_CODE") = "" Or IsDBNull(.Item("BRANCH_CODE")), .Item("HO_CATEGORY"), .Item("BRANCHNAME"))
-                        Dim COMPANY As String = .Item("COMPANY")
+                        Dim BRANCH_CODE As String = IIf(.Item("BRANCHCODE") = "" Or IsDBNull(.Item("BRANCHCODE")), .Item("HO_CATEGORY"), .Item("BRANCHNAME"))
+                        Dim COMPANY As String = IIf(IsDBNull(.Item("COMPANY_CATEGORY")), "", .Item("COMPANY_CATEGORY"))
                         Dim HO_CATEGORY As String = IIf(IsDBNull(.Item("HO_CATEGORY")), "", .Item("HO_CATEGORY"))
-                        Dim COMPANY_CATEGORY As String = IIf(IsDBNull(.Item("COMPANY_CATEGORY")), "", .Item("COMPANY_CATEGORY"))
+                        Dim PHOTO_CATEGORY As String = IIf(IsDBNull(.Item("PHOTO_CATEGORY")), "", .Item("PHOTO_CATEGORY"))
 
                         If COMPANY = "DALTON" Then
-                            BRANCH_CODE = IIf(.Item("BRANCH_CODE") = "" Or IsDBNull(.Item("BRANCH_CODE")), .Item("HO_CATEGORY"), TitleCase(.Item("COMPANY")) & "-" & .Item("BRANCHNAME"))
+                            BRANCH_CODE = IIf(.Item("BRANCHCODE") = "" Or IsDBNull(.Item("BRANCHCODE")), .Item("HO_CATEGORY"), TitleCase(.Item("COMPANY_CATEGORY")) & "-" & .Item("BRANCHNAME"))
                         End If
 
                         If HO_CATEGORY = "GHS/P&G UY Admin Office" Or HO_CATEGORY = "GHS/P&G UY Admin Operation" Then
@@ -788,8 +806,8 @@ Module Report_function
                             BRANCH_CODE = HO_CATEGORY
                         End If
 
-                        If COMPANY_CATEGORY <> "" Then
-                            BRANCH_CODE = COMPANY_CATEGORY
+                        If PHOTO_CATEGORY <> "" Then
+                            BRANCH_CODE = PHOTO_CATEGORY
                         End If
 
                         dt_Loans.Rows.Add(FULLNAME, AMOUNT, BRANCH_CODE)
