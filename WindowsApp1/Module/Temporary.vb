@@ -863,69 +863,76 @@ Module Temporary
             For Each dr In ds.Tables(0).Rows
                 With dr
                     Dim bio_no As String = .item("BIO_NO")
-                    Dim EMP_NO As String = IIf(IsDBNull(.Item("EMP_NO")), "", .Item("EMP_NO"))
-                    Dim COMPANY As String = IIf(IsDBNull(.Item("COMPANY")), "", .Item("COMPANY"))
-                    Dim BRANCH_CODE As String = IIf(IsDBNull(.Item("BRANCH_CODE")), "", .Item("BRANCH_CODE"))
-                    Dim HO_CATEGORY As String = IIf(IsDBNull(.Item("HO_CATEGORY")), "", .Item("HO_CATEGORY"))
-                    Dim PHOTO_CATEGORY As String = IIf(IsDBNull(.Item("COMPANY_CATEGORY")), "", .Item("COMPANY_CATEGORY"))
-                    Dim COMMON_CATEGORY As String = IIf(IsDBNull(.Item("COMMON_CATEGORY")), "", .Item("COMMON_CATEGORY"))
-                    Dim COMMON_COMPANY As String = IIf(IsDBNull(.Item("COMMON_COMPANY")), "", .Item("COMMON_COMPANY"))
-                    Dim OLD_RATE As String = IIf(IsDBNull(.Item("OLD_RATE")), "", .Item("OLD_RATE"))
-                    Dim RATE_DAILY As String = IIf(IsDBNull(.Item("RATE_DAILY")), "", .Item("RATE_DAILY"))
-                    Dim RATE_MONTHLY As String = IIf(IsDBNull(.Item("RATE_MONTHLY")), "", .Item("RATE_MONTHLY"))
-                    Dim FIX_MONTHLY_RATE As String = IIf(IsDBNull(.Item("FIX_MONTHLY_RATE")), "", .Item("FIX_MONTHLY_RATE"))
-                    Dim TIME_IN As String = IIf(IsDBNull(.Item("TIME_IN")), "", .Item("TIME_IN"))
-                    Dim TIME_OUT As String = IIf(IsDBNull(.Item("TIME_OUT")), "", .Item("TIME_OUT"))
-                    Dim EMAIL_ADD As String = IIf(IsDBNull(.Item("EMAIL_ADD")), "", .Item("EMAIL_ADD"))
-                    Dim EMP_STATUS As String = IIf(IsDBNull(.Item("EMP_STATUS")), "", .Item("EMP_STATUS"))
-                    Dim EMP_POSITION As String = IIf(IsDBNull(.Item("EMP_POSITION")), "", .Item("EMP_POSITION"))
-                    Dim SSSNO As String = IIf(IsDBNull(.Item("SSSNO")), "", .Item("SSSNO"))
-                    Dim PHILHEALTHNO As String = IIf(IsDBNull(.Item("PHILHEALTHNO")), "", .Item("PHILHEALTHNO"))
-                    Dim TINNO As String = IIf(IsDBNull(.Item("TINNO")), "", .Item("TINNO"))
-                    Dim PAGIBIG As String = IIf(IsDBNull(.Item("PAGIBIGNO")), "", .Item("PAGIBIGNO"))
+                    'Dim EMP_NO As String = IIf(IsDBNull(.Item("EMP_NO")), "", .Item("EMP_NO"))
+                    'Dim COMPANY As String = IIf(IsDBNull(.Item("COMPANY")), "", .Item("COMPANY"))
+                    'Dim BRANCH_CODE As String = IIf(IsDBNull(.Item("BRANCH_CODE")), "", .Item("BRANCH_CODE"))
+                    'Dim HO_CATEGORY As String = IIf(IsDBNull(.Item("HO_CATEGORY")), "", .Item("HO_CATEGORY"))
+                    'Dim PHOTO_CATEGORY As String = IIf(IsDBNull(.Item("COMPANY_CATEGORY")), "", .Item("COMPANY_CATEGORY"))
+                    'Dim COMMON_CATEGORY As String = IIf(IsDBNull(.Item("COMMON_CATEGORY")), "", .Item("COMMON_CATEGORY"))
+                    'Dim COMMON_COMPANY As String = IIf(IsDBNull(.Item("COMMON_COMPANY")), "", .Item("COMMON_COMPANY"))
+                    'Dim OLD_RATE As String = IIf(IsDBNull(.Item("OLD_RATE")), "", .Item("OLD_RATE"))
+                    'Dim RATE_DAILY As String = IIf(IsDBNull(.Item("RATE_DAILY")), "", .Item("RATE_DAILY"))
+                    'Dim RATE_MONTHLY As String = IIf(IsDBNull(.Item("RATE_MONTHLY")), "", .Item("RATE_MONTHLY"))
+                    'Dim FIX_MONTHLY_RATE As String = IIf(IsDBNull(.Item("FIX_MONTHLY_RATE")), "", .Item("FIX_MONTHLY_RATE"))
+                    'Dim TIME_IN As String = IIf(IsDBNull(.Item("TIME_IN")), "", .Item("TIME_IN"))
+                    'Dim TIME_OUT As String = IIf(IsDBNull(.Item("TIME_OUT")), "", .Item("TIME_OUT"))
+                    'Dim EMAIL_ADD As String = IIf(IsDBNull(.Item("EMAIL_ADD")), "", .Item("EMAIL_ADD"))
+                    'Dim EMP_STATUS As String = IIf(IsDBNull(.Item("EMP_STATUS")), "", .Item("EMP_STATUS"))
+                    'Dim EMP_POSITION As String = IIf(IsDBNull(.Item("EMP_POSITION")), "", .Item("EMP_POSITION"))
+                    'Dim SSSNO As String = IIf(IsDBNull(.Item("SSSNO")), "", .Item("SSSNO"))
+                    'Dim PHILHEALTHNO As String = IIf(IsDBNull(.Item("PHILHEALTHNO")), "", .Item("PHILHEALTHNO"))
+                    'Dim TINNO As String = IIf(IsDBNull(.Item("TINNO")), "", .Item("TINNO"))
+                    'Dim PAGIBIG As String = IIf(IsDBNull(.Item("PAGIBIGNO")), "", .Item("PAGIBIGNO"))
 
-                    UpdateeEMPLOYEE(bio_no, EMP_NO, COMPANY, BRANCH_CODE, HO_CATEGORY, PHOTO_CATEGORY, COMMON_CATEGORY, COMMON_COMPANY,
-                                    OLD_RATE, RATE_DAILY, RATE_MONTHLY, FIX_MONTHLY_RATE, TIME_IN, TIME_OUT, EMAIL_ADD,
-                                    EMP_STATUS, EMP_POSITION, SSSNO, PHILHEALTHNO, TINNO, PAGIBIG)
+                    Dim DATEHIRED As String = IIf(IsDBNull(.Item("DATE_STARTED")), "", .Item("DATE_STARTED"))
+                    Dim DATE_ENDED As String = IIf(IsDBNull(.Item("DATE_ENDED")), "", .Item("DATE_ENDED"))
+
+                    UpdateeEMPLOYEE(bio_no, DATEHIRED, DATE_ENDED)
                 End With
             Next
         End Using
     End Sub
 
-    Friend Sub UpdateeEMPLOYEE(BIO As Integer, EMP_NO As String, COMPANY As String, BRANCH_CODE As String,
-                               HO_CATEGORY As String, PHOTO_CATEGORY As String, COMMON_CATEGORY As String, COMMON_COMPANY As String,
-                               OLD_RATE As String, RATE_DAILY As String, RATE_MONTHLY As String, FIX_MONTHLY_RATE As String,
-                               TIME_IN As String, TIME_OUT As String, EMAIL_ADD As String, EMP_STATUS As String,
-                               EMP_POSITION As String, SSSNO As String, PHILHEALTHNO As String, TINNO As String, PAGIBIG As String)
+    'Friend Sub UpdateeEMPLOYEE(BIO As Integer, EMP_NO As String, COMPANY As String, BRANCH_CODE As String,
+    '                           HO_CATEGORY As String, PHOTO_CATEGORY As String, COMMON_CATEGORY As String, COMMON_COMPANY As String,
+    '                           OLD_RATE As String, RATE_DAILY As String, RATE_MONTHLY As String, FIX_MONTHLY_RATE As String,
+    '                           TIME_IN As String, TIME_OUT As String, EMAIL_ADD As String, EMP_STATUS As String,
+    '                           EMP_POSITION As String, SSSNO As String, PHILHEALTHNO As String, TINNO As String, PAGIBIG As String)
+
+
+    Friend Sub UpdateeEMPLOYEE(BIO As Integer, DATEHIRED As String, DATE_ENDED As String)
 
         Dim mysql As String = $"Select * from TBL_EMPLOYEE where BIOMETRICID = {BIO}"
         Using ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
             If ds.Tables(0).Rows.Count > 0 Then
                 With ds.Tables(0).Rows(0)
 
-                    If EMP_NO <> "" Then .Item("EMP_NO") = EMP_NO
-                    If COMPANY <> "" Then .Item("COMPANY_CATEGORY") = COMPANY
-                    If BRANCH_CODE <> "" Then .Item("BRANCHCODE") = BRANCH_CODE
-                    If HO_CATEGORY <> "" Then .Item("HO_CATEGORY") = HO_CATEGORY
-                    If COMMON_CATEGORY <> "" Then .Item("COMMON_CATEGORY") = COMMON_CATEGORY
-                    If COMMON_COMPANY <> "" Then .Item("COMMON_COMPANY") = COMMON_COMPANY
-                    If OLD_RATE <> "" Then .Item("OLD_RATE") = OLD_RATE
-                    If RATE_DAILY <> "" Then .Item("RATE_DAILY") = RATE_DAILY
-                    If RATE_MONTHLY <> "" Then .Item("RATE_MONTHLY") = RATE_MONTHLY
-                    If FIX_MONTHLY_RATE <> "" Then .Item("FIX_MONTHLY_RATE") = FIX_MONTHLY_RATE
-                    If TIME_IN <> "" Then .Item("TIME_IN") = TIME_IN
-                    If TIME_OUT <> "" Then .Item("TIME_OUT") = TIME_OUT
-                    If EMAIL_ADD <> "" Then .Item("EMAILADD") = EMAIL_ADD
-                    If EMP_STATUS <> "" Then .Item("EMP_STATUS") = EMP_STATUS
-                    If EMP_POSITION <> "" Then .Item("EMP_POSITION") = EMP_POSITION
-                    If SSSNO <> "" Then .Item("SSSNO") = SSSNO
-                    If PHILHEALTHNO <> "" Then .Item("PHILHEALTHNO") = PHILHEALTHNO
-                    If TINNO <> "" Then .Item("TINNO") = TINNO
-                    If PAGIBIG <> "" Then .Item("PAGIBIG") = PAGIBIG
+                    'If EMP_NO <> "" Then .Item("EMP_NO") = EMP_NO
+                    'If COMPANY <> "" Then .Item("COMPANY_CATEGORY") = COMPANY
+                    'If BRANCH_CODE <> "" Then .Item("BRANCHCODE") = BRANCH_CODE
+                    'If HO_CATEGORY <> "" Then .Item("HO_CATEGORY") = HO_CATEGORY
+                    'If COMMON_CATEGORY <> "" Then .Item("COMMON_CATEGORY") = COMMON_CATEGORY
+                    'If COMMON_COMPANY <> "" Then .Item("COMMON_COMPANY") = COMMON_COMPANY
+                    'If OLD_RATE <> "" Then .Item("OLD_RATE") = OLD_RATE
+                    'If RATE_DAILY <> "" Then .Item("RATE_DAILY") = RATE_DAILY
+                    'If RATE_MONTHLY <> "" Then .Item("RATE_MONTHLY") = RATE_MONTHLY
+                    'If fix_monthly_rate <> "" Then .Item("FIX_MONTHLY_RATE") = fix_monthly_rate
+                    'If TIME_IN <> "" Then .Item("TIME_IN") = TIME_IN
+                    'If TIME_OUT <> "" Then .Item("TIME_OUT") = TIME_OUT
+                    'If EMAIL_ADD <> "" Then .Item("EMAILADD") = EMAIL_ADD
+                    'If emp_status <> "" Then .Item("EMP_STATUS") = emp_status
+                    'If EMP_POSITION <> "" Then .Item("EMP_POSITION") = EMP_POSITION
+                    'If SSSNO <> "" Then .Item("SSSNO") = SSSNO
+                    'If PHILHEALTHNO <> "" Then .Item("PHILHEALTHNO") = PHILHEALTHNO
+                    'If TINNO <> "" Then .Item("TINNO") = TINNO
+                    'If PAGIBIG <> "" Then .Item("PAGIBIG") = PAGIBIG
 
-                    If IsDBNull(.Item("PHOTO_CATEGORY")) Then
-                        If PHOTO_CATEGORY <> "" Then .Item("PHOTO_CATEGORY") = PHOTO_CATEGORY
-                    End If
+                    'If IsDBNull(.Item("PHOTO_CATEGORY")) Then
+                    '    If PHOTO_CATEGORY <> "" Then .Item("PHOTO_CATEGORY") = PHOTO_CATEGORY
+                    'End If 
+
+                    If DATEHIRED <> "" Then .Item("DATEHIRED") = DATEHIRED
+                    If DATE_ENDED <> "" Then .Item("DATE_ENDED") = DATE_ENDED
 
                 End With
                 SaveEntry(ds, False)

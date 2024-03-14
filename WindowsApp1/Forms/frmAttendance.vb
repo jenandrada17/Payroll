@@ -386,7 +386,7 @@ Public Class frmAttendance
             If result = DialogResult.Yes Then
 
                 Dim PAYROLL As String
-                Dim specHoliday_hrs As Double = 0
+                Dim specHoliday_hrs As Integer = 0
                 If Paydate_ComboB.SelectedIndex >= 0 Then
                     PAYROLL = Paydate_ComboB.SelectedItem
                 Else
@@ -421,11 +421,11 @@ Public Class frmAttendance
                             list_.Add(row.Cells(4).Value)
                             list_ = list_.Where(Function(s) Not String.IsNullOrEmpty(s)).ToList()
 
-                            specHoliday_hrs += GetSpecial_hrs(list_.First, list_.Last)
-
-                            'If specHoliday_hrs > 8 Then
-                            '    specHoliday_hrs = 8
-                            'End If
+                            'specHoliday_hrs
+                            Dim hrs As Integer = GetSpecial_hrs(list_.First, list_.Last)
+                            Dim hrss As Integer = hrs / 8
+                            Dim hrsss As Integer = hrss * 8
+                            specHoliday_hrs += hrsss
                         End If
                     End If
                 Next
@@ -1450,9 +1450,9 @@ Public Class frmAttendance
 
             Dim bioNum = BiometricID_TXT.Text
             Dim branchCode = GetBranchCode(bioNum)
-            Dim dateStarted = GetData("DATE_STARTED", $"TBL_EMPLOYEE WHERE BIOMETRICID = '{bioNum}'")
+            Dim dateStarted = GetData("DATEHIRED", $"TBL_EMPLOYEE WHERE BIOMETRICID = '{bioNum}'")
             emp_status = GetData("EMP_STATUS", $"TBL_EMPLOYEE WHERE BIOMETRICID = '{bioNum}'")
-            dateEnded = GetData("DATE_ENDED", $"PAYROLL_EMPLOYEE WHERE BIO_NO = '{bioNum}'")
+            dateEnded = GetData("DATE_ENDED", $"TBL_EMPLOYEE WHERE BIOMETRICID = '{bioNum}'")
 
             Dim PAYROLL As String
             If Paydate_ComboB.SelectedIndex >= 0 Then
@@ -2169,7 +2169,7 @@ Public Class frmAttendance
 
             Dim Present As Integer = 0
             Dim halfday_Hour As Integer = 0
-            Dim specHoliday_hrs As Double = 0
+            Dim specHoliday_hrs As Integer = 0
 
             '========= TEMPORARY FOR PAYDATE 6/30/2022 ===========  
             temp_present = 0
@@ -2234,11 +2234,11 @@ Public Class frmAttendance
                         list_.Add(row.Cells(4).Value)
                         list_ = list_.Where(Function(s) Not String.IsNullOrEmpty(s)).ToList()
 
-                        specHoliday_hrs += GetSpecial_hrs(list_.First, list_.Last)
-
-                        'If specHoliday_hrs > 8 Then
-                        '    specHoliday_hrs = 8
-                        'End If
+                        'specHoliday_hrs
+                        Dim hrs As Integer = GetSpecial_hrs(list_.First, list_.Last)
+                        Dim hrss As Integer = hrs / 8
+                        Dim hrsss As Integer = hrss * 8
+                        specHoliday_hrs += hrsss
                     End If
 
                 End If

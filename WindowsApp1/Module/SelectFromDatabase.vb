@@ -2334,8 +2334,8 @@ Module SelectFromDatabase
     Public Function GetTime_In(BIO_NO As String)
         Dim inn As DateTime = "9/15/2021 8:00:00 AM"
 
-        Dim mysql As String = $"Select TIME_IN FROM  PAYROLL_EMPLOYEE WHERE BIO_NO = '{BIO_NO}'"
-        Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+        Dim mysql As String = $"Select TIME_IN FROM  TBL_EMPLOYEE WHERE BIOMETRICID = '{BIO_NO}'"
+        Dim ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
         If ds.Tables(0).Rows.Count > 0 Then
             Dim dr As DataRow = ds.Tables(0).Rows(0)
             With dr
@@ -2348,8 +2348,8 @@ Module SelectFromDatabase
     Public Function GetTime_Out(BIO_NO As String)
         Dim outt As DateTime = "9/15/2021 5:00:00 PM"
 
-        Dim mysql As String = $"Select TIME_OUT FROM  PAYROLL_EMPLOYEE WHERE BIO_NO = '{BIO_NO}'"
-        Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+        Dim mysql As String = $"Select TIME_OUT FROM  TBL_EMPLOYEE WHERE BIOMETRICID = '{BIO_NO}'"
+        Dim ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
         If ds.Tables(0).Rows.Count > 0 Then
             Dim dr As DataRow = ds.Tables(0).Rows(0)
             With dr
@@ -2363,12 +2363,12 @@ Module SelectFromDatabase
     Public Function GetBranchCode(BIO_NO As String)
         Dim BRANCH_CODE As String = ""
 
-        Dim mysql As String = $"Select BRANCH_CODE FROM  PAYROLL_EMPLOYEE WHERE BIO_NO = '{BIO_NO}'"
-        Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+        Dim mysql As String = $"Select BRANCHCODE FROM  TBL_EMPLOYEE WHERE BIOMETRICID = '{BIO_NO}'"
+        Dim ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
         If ds.Tables(0).Rows.Count > 0 Then
             Dim dr As DataRow = ds.Tables(0).Rows(0)
             With dr
-                BRANCH_CODE = .Item("BRANCH_CODE")
+                BRANCH_CODE = .Item("BRANCHCODE")
             End With
         End If
 
@@ -2400,12 +2400,12 @@ Module SelectFromDatabase
     Public Function CountYear_SIL(Bio_no As String, endingDate As DateTime) As Integer
 
         Dim cnt As Integer = 0
-        Dim mysql As String = $"Select DATE_STARTED From PAYROLL_EMPLOYEE where BIO_NO = '{Bio_no}'"
-        Using dss As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
+        Dim mysql As String = $"Select DATEHIRED From TBL_EMPLOYEE where BIOMETRICID = '{Bio_no}'"
+        Using dss As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
             If dss.Tables(0).Rows.Count > 0 Then
                 Dim dr As DataRow = dss.Tables(0).Rows(0)
                 With dr
-                    Dim date_started As DateTime = IIf(IsDBNull(.Item("DATE_STARTED")), Today, .Item("DATE_STARTED"))
+                    Dim date_started As DateTime = IIf(IsDBNull(.Item("DATEHIRED")), Today, .Item("DATEHIRED"))
                     cnt = DateDiff(DateInterval.Month, date_started, endingDate)
                 End With
             End If
