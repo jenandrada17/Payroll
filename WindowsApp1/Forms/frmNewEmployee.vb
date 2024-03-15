@@ -20,7 +20,7 @@ Public Class frmNewEmployee
     Private Sub frmNewEmployee_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         'Import_Employee_SBU_AMOUNT_PRINCIPAL_CREDIT()
         'Import_Employee_SBU_INCOMPLETE()
-        'Import_Employee_DETAILS_INCOMPLETE()
+        'Import_Employee_DETAILS_INCOMPLETE() 
 
         Lists_Employees(lvEmployee)
         PopulateComboBox(Branch_ComboB, "TBL_EMPLOYEE", "BRANCHCODE")
@@ -411,7 +411,7 @@ Public Class frmNewEmployee
     End Sub
 
     Private Sub Import_Employee_SBU_INCOMPLETE()
-        Dim path As String = "C:\Users\MISPC1\Desktop\BRANCH PAYROLL\SBU INCOMPLETE.xlsx"
+        Dim path As String = "C:\Users\MISPC1\Downloads\no sbu NO SBU.xlsx"
         eApp = New Excel.Application
         eBook = eApp.Workbooks.Open(path)
         eSheet = eBook.Worksheets(1)
@@ -435,12 +435,17 @@ Public Class frmNewEmployee
             Dim CREDIT As String = ""
             Dim BALANCE As String = ""
 
-            Dim BIO As Integer = eCell(row, 3).Value
+            Dim BIO As Integer = eCell(row, 2).Value
             CATEGORY = "SBU"
-            PRINCIPAL = eCell(row, 4).Value
-            CREDIT = eCell(row, 5).Value
-            BALANCE = eCell(row, 6).Value
-            AMOUNT = eCell(row, 7).Value
+            PRINCIPAL = eCell(row, 3).Value
+            CREDIT = eCell(row, 4).Value
+            BALANCE = eCell(row, 5).Value
+            AMOUNT = eCell(row, 6).Value
+
+            If PRINCIPAL = Nothing Then
+                Continue For
+            End If
+
             SAVE_SBU_INCOMPLETE(CATEGORY, AMOUNT, PRINCIPAL, CREDIT, BALANCE, BIO)
 
             frmMainForm.AppProgressBar.Value += 1
@@ -958,9 +963,9 @@ Public Class frmNewEmployee
             MsgBox("Please Indicate Birth Date!", MsgBoxStyle.Exclamation, "Error")
             Return False
 
-        ElseIf String.IsNullOrEmpty(Address_txt.Text) Then
-            MsgBox("Please Indicate Employee's Adress!", MsgBoxStyle.Exclamation, "Error")
-            Return False
+            'ElseIf String.IsNullOrEmpty(Address_txt.Text) Then
+            '    MsgBox("Please Indicate Employee's Adress!", MsgBoxStyle.Exclamation, "Error")
+            '    Return False
 
         ElseIf String.IsNullOrEmpty(Email_TXT.Text) Then
             MsgBox("Please Indicate Employee's Email!", MsgBoxStyle.Exclamation, "Error")

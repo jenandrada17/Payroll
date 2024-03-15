@@ -1228,8 +1228,8 @@ Public Class frmAttendance
 
                 '======================== HOLIDAY ============================ 
                 Dim RHOLIDAY As Integer = REGHolidayCount(starting_date, ending_date)
-                Dim SHOLIDAY As Integer = SPECHolidayCount(starting_date, ending_date)
                 Dim specHoliday_hrs As Double = IIf(SpecHol7_TXT.Text = Nothing, 0, SpecHol7_TXT.Text)
+                Dim SHOLIDAY As Integer = IIf(specHoliday_hrs = 0, 0, specHoliday_hrs / 8)
                 Dim overtime As Integer = IIf(Overtime7_TXT.Text = Nothing, 0, Overtime7_TXT.Text)
                 Dim latee As Integer = IIf(Late7_TXT.Text = Nothing, 0, Late7_TXT.Text)
                 Dim undertimee As Integer = IIf(Undertime7_TXT.Text = Nothing, 0, Undertime7_TXT.Text)

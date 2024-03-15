@@ -1613,7 +1613,7 @@ Module SaveUpdate
                 .Item("BRANCHCODE") = BRANCH_CODE
                 .Item("FIRSTNAME") = firstname
                 .Item("LASTNAME") = lastname
-                .Item("EMAIL_ADD") = EMAIL_ADD
+                .Item("EMAILADD") = EMAIL_ADD
                 .Item("EMP_STATUS") = EMP_STATUS
                 .Item("RATE_DAILY") = IIf(.Item("BRANCHCODE") = Nothing, GetMinimumRate("CITY", "GENSAN"), GetMinimumRate("BRANCHCODE", .Item("BRANCHCODE")))
 
@@ -1656,7 +1656,7 @@ Module SaveUpdate
                 If PhotoCategory <> "" Then .Item("PHOTO_CATEGORY") = PhotoCategory
 
                 If Middlename <> "" Then .Item("MIDDLENAME") = Middlename
-                If BDATE <> "" Then .Item("BDATE") = BDATE
+                If BDATE <> "" Then .Item("DATEOFBIRTH") = BDATE
                 'TODO ADDRESS
                 If ADDRESS <> "" Then .Item("PERMANENT_STREET") = ADDRESS
                 If DATE_ENDED <> "" Then .Item("DATE_ENDED") = DATE_ENDED
@@ -1680,6 +1680,7 @@ Module SaveUpdate
                     Dim firstname As String = namee(1).ToString
                     Dim lastname As String = namee(0).ToString
 
+                    .Item("BIOMETRICID") = BIO_NO
                     .Item("COMPANY") = COMPANY
                     .Item("BRANCHCODE") = BRANCH_CODE
                     .Item("FIRSTNAME") = firstname

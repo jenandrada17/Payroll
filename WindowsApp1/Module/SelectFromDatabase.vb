@@ -2043,6 +2043,11 @@ Module SelectFromDatabase
                             from TBL_EMPLOYEE A ORDER BY COMPANY, BRANCHCODE ASC "
         End If
 
+        Dim trimmedString As String = mysql.Trim()
+        Dim regexPattern As String = "\s+"
+        Dim resultString As String = System.Text.RegularExpressions.Regex.Replace(trimmedString, regexPattern, " ")
+        Console.WriteLine(resultString)
+
         Using ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
             LV.Items.Clear()
             progressBarStart(ds.Tables(0).Rows.Count)

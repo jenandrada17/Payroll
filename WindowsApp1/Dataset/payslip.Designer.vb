@@ -734,6 +734,10 @@ Partial Public Class payslip
         
         Private columnPAGIBIG_LOAN_BALANCE As Global.System.Data.DataColumn
         
+        Private columnNIGHT_RATE As Global.System.Data.DataColumn
+        
+        Private columnTOTAL_NIGHT_RATE As Global.System.Data.DataColumn
+        
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
         Public Sub New()
@@ -938,6 +942,22 @@ Partial Public Class payslip
         End Property
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public ReadOnly Property NIGHT_RATEColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnNIGHT_RATE
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public ReadOnly Property TOTAL_NIGHT_RATEColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnTOTAL_NIGHT_RATE
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0"),  _
          Global.System.ComponentModel.Browsable(false)>  _
         Public ReadOnly Property Count() As Integer
@@ -995,9 +1015,11 @@ Partial Public Class payslip
                     ByVal TOTAL_DEDUCTION As String,  _
                     ByVal present_hours As String,  _
                     ByVal SSS_LOAN_BALANCE As String,  _
-                    ByVal PAGIBIG_LOAN_BALANCE As String) As attendanceRow
+                    ByVal PAGIBIG_LOAN_BALANCE As String,  _
+                    ByVal NIGHT_RATE As String,  _
+                    ByVal TOTAL_NIGHT_RATE As String) As attendanceRow
             Dim rowattendanceRow As attendanceRow = CType(Me.NewRow,attendanceRow)
-            Dim columnValuesArray() As Object = New Object() {PRESENT_DAYS, OVERTIME, REGHOLIDAY, SPECHOLIDAY, TOTAL_LATE_UT, TOTAL_BASIC, TOTAL_OVERTIME, LATE_UNDERTIME, GROSS_AMOUNT, SSS_COMP, PAGIBIG_COMP, PHILHEALTH_COMP, TAX_WHELD, SSS_LOAN, PAGIBIG_LOAN, NET_PAY, SBU, TOTAL_DEDUCTION, present_hours, SSS_LOAN_BALANCE, PAGIBIG_LOAN_BALANCE}
+            Dim columnValuesArray() As Object = New Object() {PRESENT_DAYS, OVERTIME, REGHOLIDAY, SPECHOLIDAY, TOTAL_LATE_UT, TOTAL_BASIC, TOTAL_OVERTIME, LATE_UNDERTIME, GROSS_AMOUNT, SSS_COMP, PAGIBIG_COMP, PHILHEALTH_COMP, TAX_WHELD, SSS_LOAN, PAGIBIG_LOAN, NET_PAY, SBU, TOTAL_DEDUCTION, present_hours, SSS_LOAN_BALANCE, PAGIBIG_LOAN_BALANCE, NIGHT_RATE, TOTAL_NIGHT_RATE}
             rowattendanceRow.ItemArray = columnValuesArray
             Me.Rows.Add(rowattendanceRow)
             Return rowattendanceRow
@@ -1041,6 +1063,8 @@ Partial Public Class payslip
             Me.columnpresent_hours = MyBase.Columns("present_hours")
             Me.columnSSS_LOAN_BALANCE = MyBase.Columns("SSS_LOAN_BALANCE")
             Me.columnPAGIBIG_LOAN_BALANCE = MyBase.Columns("PAGIBIG_LOAN_BALANCE")
+            Me.columnNIGHT_RATE = MyBase.Columns("NIGHT_RATE")
+            Me.columnTOTAL_NIGHT_RATE = MyBase.Columns("TOTAL_NIGHT_RATE")
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -1088,6 +1112,10 @@ Partial Public Class payslip
             MyBase.Columns.Add(Me.columnSSS_LOAN_BALANCE)
             Me.columnPAGIBIG_LOAN_BALANCE = New Global.System.Data.DataColumn("PAGIBIG_LOAN_BALANCE", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnPAGIBIG_LOAN_BALANCE)
+            Me.columnNIGHT_RATE = New Global.System.Data.DataColumn("NIGHT_RATE", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnNIGHT_RATE)
+            Me.columnTOTAL_NIGHT_RATE = New Global.System.Data.DataColumn("TOTAL_NIGHT_RATE", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnTOTAL_NIGHT_RATE)
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -2244,6 +2272,36 @@ Partial Public Class payslip
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Property NIGHT_RATE() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableattendance.NIGHT_RATEColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'NIGHT_RATE' in table 'attendance' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableattendance.NIGHT_RATEColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Property TOTAL_NIGHT_RATE() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableattendance.TOTAL_NIGHT_RATEColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'TOTAL_NIGHT_RATE' in table 'attendance' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableattendance.TOTAL_NIGHT_RATEColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
         Public Function IsPRESENT_DAYSNull() As Boolean
             Return Me.IsNull(Me.tableattendance.PRESENT_DAYSColumn)
         End Function
@@ -2492,6 +2550,30 @@ Partial Public Class payslip
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
         Public Sub SetPAGIBIG_LOAN_BALANCENull()
             Me(Me.tableattendance.PAGIBIG_LOAN_BALANCEColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Function IsNIGHT_RATENull() As Boolean
+            Return Me.IsNull(Me.tableattendance.NIGHT_RATEColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Sub SetNIGHT_RATENull()
+            Me(Me.tableattendance.NIGHT_RATEColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Function IsTOTAL_NIGHT_RATENull() As Boolean
+            Return Me.IsNull(Me.tableattendance.TOTAL_NIGHT_RATEColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Sub SetTOTAL_NIGHT_RATENull()
+            Me(Me.tableattendance.TOTAL_NIGHT_RATEColumn) = Global.System.Convert.DBNull
         End Sub
     End Class
     

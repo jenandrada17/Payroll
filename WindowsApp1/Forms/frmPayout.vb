@@ -931,6 +931,8 @@ Public Class frmPayout
                 .Columns.Add("NET_PAY")
                 .Columns.Add("TOTAL_DEDUCTION")
                 .Columns.Add("present_hours")
+                .Columns.Add("NIGHT_RATE")
+                .Columns.Add("TOTAL_NIGHT_RATE")
             End With
 
             Dim PRESENT_DAYS As String = ""
@@ -945,6 +947,8 @@ Public Class frmPayout
             Dim PAGIBIG_LOAN_BALANCE As Decimal = 0
             Dim total_Allowance As Double = 0
             Dim SPECHOLIDAY_HRS As Double = 0
+            Dim NIGHT_RATE As Double = 0
+            Dim TOTAL_NIGHT_RATE As Double = 0
 
             Dim _mysql As String = $"select * from payroll_attendance where BIOMETRICID = '{biometricID}' and paydate = '{paydatee}';"
             Using ds As DataSet = LoadSQL(_mysql, "payroll_attendance")
@@ -960,6 +964,7 @@ Public Class frmPayout
                         OVERTIME = .Item("OVERTIME")
                         LATE_UNDERTIME = CInt(.Item("LATE")) + CInt(.Item("UNDERTIME"))
                         SPECHOLIDAY_HRS = IIf(IsDBNull(.Item("SPECHOLIDAY_HRS")), 0, .Item("SPECHOLIDAY_HRS"))
+                        NIGHT_RATE = IIf(IsDBNull(.Item("NIGHT_RATE")), 0, .Item("NIGHT_RATE"))
 
                     End With
                 End If
@@ -974,6 +979,7 @@ Public Class frmPayout
                         TOTAL_REGHOLIDAY = .Item("TOTAL_REGHOLIDAY")
                         TOTAL_SPECHOLIDAY = .Item("TOTAL_SPECHOLIDAY")
                         total_Allowance = .Item("TOTAL_ALLOWANCE")
+                        TOTAL_NIGHT_RATE = .Item("TOTAL_NIGHT_RATE")
 
                         Dim TOTAL_COMP As Double = .Item("SSS_COMP") + .Item("PAGIBIG_COMP") + .Item("PHILHEALTH_COMP")
 
@@ -981,7 +987,7 @@ Public Class frmPayout
                                         CDbl(.Item("TOTAL_BASIC")).ToString("N"), CDbl(.Item("TOTAL_OVERTIME")).ToString("N"), LATE_UNDERTIME,
                                         CDbl(.Item("GROSS_AMOUNT")).ToString("N"), CDbl(.Item("SSS_COMP")).ToString("N"), CDbl(.Item("PAGIBIG_COMP")).ToString("N"),
                                         CDbl(.Item("PHILHEALTH_COMP")).ToString("N"), CDbl(.Item("NET_PAY")).ToString("N"), TOTAL_COMP.ToString("N"),
-                                        present_hours)
+                                        present_hours, NIGHT_RATE, TOTAL_NIGHT_RATE.ToString("N"))
 
                     End With
                 End If

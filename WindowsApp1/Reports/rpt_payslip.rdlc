@@ -137,10 +137,18 @@
           <DataField>PAGIBIG_LOAN_BALANCE</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="NIGHT_RATE">
+          <DataField>NIGHT_RATE</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="TOTAL_NIGHT_RATE">
+          <DataField>TOTAL_NIGHT_RATE</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
       </Fields>
       <rd:DataSetInfo>
         <rd:DataSetName>payslip</rd:DataSetName>
-        <rd:SchemaPath>G:\Payroll-System\PAYROLL\WindowsApp1\Dataset\payslip.xsd</rd:SchemaPath>
+        <rd:SchemaPath>D:\PGC APPS\PAYROLL\WindowsApp1\Dataset\payslip.xsd</rd:SchemaPath>
         <rd:TableName>attendance</rd:TableName>
         <rd:TableAdapterFillMethod />
         <rd:TableAdapterGetDataMethod />
@@ -1607,6 +1615,147 @@
                       </TablixCells>
                     </TablixRow>
                     <TablixRow>
+                      <Height>0.25in</Height>
+                      <TablixCells>
+                        <TablixCell>
+                          <CellContents>
+                            <Textbox Name="NIGHT_RATE">
+                              <CanGrow>true</CanGrow>
+                              <KeepTogether>true</KeepTogether>
+                              <Paragraphs>
+                                <Paragraph>
+                                  <TextRuns>
+                                    <TextRun>
+                                      <Value>NIGHT PREMIUM</Value>
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
+                                    </TextRun>
+                                  </TextRuns>
+                                  <Style>
+                                    <TextAlign>Left</TextAlign>
+                                  </Style>
+                                </Paragraph>
+                              </Paragraphs>
+                              <rd:DefaultName>NIGHT_RATE</rd:DefaultName>
+                              <Style>
+                                <Border>
+                                  <Color>LightGrey</Color>
+                                  <Style>None</Style>
+                                </Border>
+                                <PaddingLeft>2pt</PaddingLeft>
+                                <PaddingRight>2pt</PaddingRight>
+                                <PaddingTop>2pt</PaddingTop>
+                                <PaddingBottom>2pt</PaddingBottom>
+                              </Style>
+                            </Textbox>
+                          </CellContents>
+                        </TablixCell>
+                        <TablixCell>
+                          <CellContents>
+                            <Textbox Name="Textbox9">
+                              <CanGrow>true</CanGrow>
+                              <KeepTogether>true</KeepTogether>
+                              <Paragraphs>
+                                <Paragraph>
+                                  <TextRuns>
+                                    <TextRun>
+                                      <Value />
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
+                                    </TextRun>
+                                  </TextRuns>
+                                  <Style>
+                                    <TextAlign>Left</TextAlign>
+                                  </Style>
+                                </Paragraph>
+                              </Paragraphs>
+                              <rd:DefaultName>Textbox9</rd:DefaultName>
+                              <Style>
+                                <Border>
+                                  <Color>LightGrey</Color>
+                                  <Style>None</Style>
+                                </Border>
+                                <PaddingLeft>2pt</PaddingLeft>
+                                <PaddingRight>2pt</PaddingRight>
+                                <PaddingTop>2pt</PaddingTop>
+                                <PaddingBottom>2pt</PaddingBottom>
+                              </Style>
+                            </Textbox>
+                          </CellContents>
+                        </TablixCell>
+                        <TablixCell>
+                          <CellContents>
+                            <Textbox Name="NIGHT_RATE1">
+                              <CanGrow>true</CanGrow>
+                              <KeepTogether>true</KeepTogether>
+                              <Paragraphs>
+                                <Paragraph>
+                                  <TextRuns>
+                                    <TextRun>
+                                      <Value>=Fields!NIGHT_RATE.Value</Value>
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
+                                    </TextRun>
+                                  </TextRuns>
+                                  <Style>
+                                    <TextAlign>Right</TextAlign>
+                                  </Style>
+                                </Paragraph>
+                              </Paragraphs>
+                              <rd:DefaultName>NIGHT_RATE1</rd:DefaultName>
+                              <Style>
+                                <Border>
+                                  <Color>LightGrey</Color>
+                                  <Style>None</Style>
+                                </Border>
+                                <PaddingLeft>2pt</PaddingLeft>
+                                <PaddingRight>2pt</PaddingRight>
+                                <PaddingTop>2pt</PaddingTop>
+                                <PaddingBottom>2pt</PaddingBottom>
+                              </Style>
+                            </Textbox>
+                          </CellContents>
+                        </TablixCell>
+                        <TablixCell>
+                          <CellContents>
+                            <Textbox Name="TOTAL_NIGHT_RATE">
+                              <CanGrow>true</CanGrow>
+                              <KeepTogether>true</KeepTogether>
+                              <Paragraphs>
+                                <Paragraph>
+                                  <TextRuns>
+                                    <TextRun>
+                                      <Value>=Fields!TOTAL_NIGHT_RATE.Value</Value>
+                                      <Style>
+                                        <FontFamily>Berlin Sans FB</FontFamily>
+                                      </Style>
+                                    </TextRun>
+                                  </TextRuns>
+                                  <Style>
+                                    <TextAlign>Right</TextAlign>
+                                  </Style>
+                                </Paragraph>
+                              </Paragraphs>
+                              <rd:DefaultName>TOTAL_NIGHT_RATE</rd:DefaultName>
+                              <Style>
+                                <Border>
+                                  <Color>LightGrey</Color>
+                                  <Style>None</Style>
+                                </Border>
+                                <PaddingLeft>2pt</PaddingLeft>
+                                <PaddingRight>2pt</PaddingRight>
+                                <PaddingTop>2pt</PaddingTop>
+                                <PaddingBottom>2pt</PaddingBottom>
+                              </Style>
+                            </Textbox>
+                          </CellContents>
+                        </TablixCell>
+                      </TablixCells>
+                    </TablixRow>
+                    <TablixRow>
                       <Height>0.23047in</Height>
                       <TablixCells>
                         <TablixCell>
@@ -1785,13 +1934,18 @@
                         <Hidden>=iif(fields!OVERTIME.Value = 0, True, False)</Hidden>
                       </Visibility>
                     </TablixMember>
+                    <TablixMember>
+                      <Visibility>
+                        <Hidden>=iif(fields!NIGHT_RATE.Value = 0, True, False)</Hidden>
+                      </Visibility>
+                    </TablixMember>
                     <TablixMember />
                   </TablixMembers>
                 </TablixRowHierarchy>
                 <DataSetName>DataSet2</DataSetName>
                 <Top>1.54028in</Top>
                 <Left>0.0335in</Left>
-                <Height>1.58577in</Height>
+                <Height>1.83577in</Height>
                 <Width>4.8797in</Width>
                 <ZIndex>2</ZIndex>
                 <Style>
@@ -2372,7 +2526,7 @@
                   </TablixMembers>
                 </TablixRowHierarchy>
                 <DataSetName>DataSet2</DataSetName>
-                <Top>3.855in</Top>
+                <Top>4.105in</Top>
                 <Left>0.03348in</Left>
                 <Height>1.03515in</Height>
                 <Width>4.87624in</Width>
@@ -2740,7 +2894,7 @@
                   </TablixMembers>
                 </TablixRowHierarchy>
                 <DataSetName>DataSet3</DataSetName>
-                <Top>3.175in</Top>
+                <Top>3.425in</Top>
                 <Left>0.03348in</Left>
                 <Height>0.63351in</Height>
                 <Width>4.87623in</Width>
@@ -3116,7 +3270,7 @@
                   </TablixMembers>
                 </TablixRowHierarchy>
                 <DataSetName>DataSet4</DataSetName>
-                <Top>4.91793in</Top>
+                <Top>5.16793in</Top>
                 <Left>0.03348in</Left>
                 <Height>0.6375in</Height>
                 <Width>4.87624in</Width>
@@ -3274,7 +3428,7 @@
                   </TablixMembers>
                 </TablixRowHierarchy>
                 <DataSetName>DataSet2</DataSetName>
-                <Top>5.67222in</Top>
+                <Top>5.92222in</Top>
                 <Left>0.03348in</Left>
                 <Height>0.24461in</Height>
                 <Width>4.87624in</Width>

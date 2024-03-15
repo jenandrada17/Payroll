@@ -1105,7 +1105,7 @@ Module Temporary
         '====================== DELETE EXISTING DATA PAYROLL_SBU ==================
         RunCommand($"DELETE FROM PAYROLL_SBU WHERE BIO_NO = {BIONO}")
 
-        Dim sql As String = "Select * From PAYROLL_SBU ORDER BY ID DESC Rows 1"
+        Dim sql As String = "Select * From PAYROLL_SBU Rows 1"
         Using ds As DataSet = LoadSQL(sql, "PAYROLL_SBU")
 
             Dim dsNewRow As DataRow = ds.Tables(0).NewRow
@@ -1118,6 +1118,7 @@ Module Temporary
                 .Item("BALANCE") = BALANCE
                 .Item("CATEGORY") = CATEGORY
                 .Item("AMOUNT") = AMOUNT
+                .Item("SCHED") = "EVERY PAYROLL"
 
             End With
 

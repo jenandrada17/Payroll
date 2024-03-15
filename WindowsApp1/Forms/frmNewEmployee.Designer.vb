@@ -366,7 +366,7 @@ Partial Class frmNewEmployee
         Me.btnSave.Location = New System.Drawing.Point(267, 144)
         Me.btnSave.Name = "btnSave"
         Me.btnSave.Size = New System.Drawing.Size(118, 47)
-        Me.btnSave.TabIndex = 103
+        Me.btnSave.TabIndex = 112
         Me.btnSave.Text = "Save"
         Me.btnSave.UseVisualStyleBackColor = False
         '
@@ -515,7 +515,7 @@ Partial Class frmNewEmployee
         Me.PhotoCategory_Combo.Location = New System.Drawing.Point(127, 99)
         Me.PhotoCategory_Combo.Name = "PhotoCategory_Combo"
         Me.PhotoCategory_Combo.Size = New System.Drawing.Size(293, 26)
-        Me.PhotoCategory_Combo.TabIndex = 133
+        Me.PhotoCategory_Combo.TabIndex = 89
         Me.PhotoCategory_Combo.Visible = False
         '
         'Label20
@@ -540,7 +540,7 @@ Partial Class frmNewEmployee
         Me.ComCategory_Combo.Location = New System.Drawing.Point(128, 131)
         Me.ComCategory_Combo.Name = "ComCategory_Combo"
         Me.ComCategory_Combo.Size = New System.Drawing.Size(292, 26)
-        Me.ComCategory_Combo.TabIndex = 89
+        Me.ComCategory_Combo.TabIndex = 90
         Me.ComCategory_Combo.Visible = False
         '
         'Label23
@@ -565,7 +565,7 @@ Partial Class frmNewEmployee
         Me.ComCompany_Cmbo.Location = New System.Drawing.Point(128, 163)
         Me.ComCompany_Cmbo.Name = "ComCompany_Cmbo"
         Me.ComCompany_Cmbo.Size = New System.Drawing.Size(292, 26)
-        Me.ComCompany_Cmbo.TabIndex = 137
+        Me.ComCompany_Cmbo.TabIndex = 91
         Me.ComCompany_Cmbo.Visible = False
         '
         'Label4
@@ -590,7 +590,7 @@ Partial Class frmNewEmployee
         Me.Branch_ComboB.Location = New System.Drawing.Point(127, 195)
         Me.Branch_ComboB.Name = "Branch_ComboB"
         Me.Branch_ComboB.Size = New System.Drawing.Size(292, 26)
-        Me.Branch_ComboB.TabIndex = 90
+        Me.Branch_ComboB.TabIndex = 92
         Me.Branch_ComboB.Visible = False
         '
         'Label5
@@ -612,7 +612,7 @@ Partial Class frmNewEmployee
         Me.Started_DTP.Location = New System.Drawing.Point(127, 227)
         Me.Started_DTP.Name = "Started_DTP"
         Me.Started_DTP.Size = New System.Drawing.Size(292, 26)
-        Me.Started_DTP.TabIndex = 91
+        Me.Started_DTP.TabIndex = 93
         Me.Started_DTP.Value = New Date(2000, 1, 1, 0, 0, 0, 0)
         '
         'Label12
@@ -633,7 +633,7 @@ Partial Class frmNewEmployee
         Me.EmpNo_TXT.Location = New System.Drawing.Point(128, 259)
         Me.EmpNo_TXT.Name = "EmpNo_TXT"
         Me.EmpNo_TXT.Size = New System.Drawing.Size(291, 26)
-        Me.EmpNo_TXT.TabIndex = 92
+        Me.EmpNo_TXT.TabIndex = 94
         '
         'Label22
         '
@@ -655,7 +655,7 @@ Partial Class frmNewEmployee
         Me.Position_Combo.Location = New System.Drawing.Point(127, 291)
         Me.Position_Combo.Name = "Position_Combo"
         Me.Position_Combo.Size = New System.Drawing.Size(293, 26)
-        Me.Position_Combo.TabIndex = 137
+        Me.Position_Combo.TabIndex = 95
         '
         'Label13
         '
@@ -677,7 +677,7 @@ Partial Class frmNewEmployee
         Me.TimeIn_Combo.Location = New System.Drawing.Point(126, 323)
         Me.TimeIn_Combo.Name = "TimeIn_Combo"
         Me.TimeIn_Combo.Size = New System.Drawing.Size(108, 26)
-        Me.TimeIn_Combo.TabIndex = 93
+        Me.TimeIn_Combo.TabIndex = 96
         '
         'Label14
         '
@@ -699,7 +699,7 @@ Partial Class frmNewEmployee
         Me.TimeOut_Combo.Location = New System.Drawing.Point(307, 323)
         Me.TimeOut_Combo.Name = "TimeOut_Combo"
         Me.TimeOut_Combo.Size = New System.Drawing.Size(111, 26)
-        Me.TimeOut_Combo.TabIndex = 94
+        Me.TimeOut_Combo.TabIndex = 97
         '
         'Label25
         '
@@ -731,7 +731,7 @@ Partial Class frmNewEmployee
         Me.FirstName_TXT.Location = New System.Drawing.Point(126, 371)
         Me.FirstName_TXT.Name = "FirstName_TXT"
         Me.FirstName_TXT.Size = New System.Drawing.Size(293, 26)
-        Me.FirstName_TXT.TabIndex = 95
+        Me.FirstName_TXT.TabIndex = 98
         '
         'Label28
         '
@@ -751,7 +751,7 @@ Partial Class frmNewEmployee
         Me.LastName_txt.Location = New System.Drawing.Point(126, 403)
         Me.LastName_txt.Name = "LastName_txt"
         Me.LastName_txt.Size = New System.Drawing.Size(293, 26)
-        Me.LastName_txt.TabIndex = 146
+        Me.LastName_txt.TabIndex = 99
         '
         'Label29
         '
@@ -771,7 +771,7 @@ Partial Class frmNewEmployee
         Me.MName_txt.Location = New System.Drawing.Point(127, 435)
         Me.MName_txt.Name = "MName_txt"
         Me.MName_txt.Size = New System.Drawing.Size(292, 26)
-        Me.MName_txt.TabIndex = 148
+        Me.MName_txt.TabIndex = 100
         '
         'Label30
         '
@@ -792,7 +792,7 @@ Partial Class frmNewEmployee
         Me.BDate_dtp.Location = New System.Drawing.Point(128, 467)
         Me.BDate_dtp.Name = "BDate_dtp"
         Me.BDate_dtp.Size = New System.Drawing.Size(291, 26)
-        Me.BDate_dtp.TabIndex = 150
+        Me.BDate_dtp.TabIndex = 101
         Me.BDate_dtp.Value = New Date(1753, 12, 31, 0, 0, 0, 0)
         '
         'Label31
@@ -805,6 +805,7 @@ Partial Class frmNewEmployee
         Me.Label31.Size = New System.Drawing.Size(118, 16)
         Me.Label31.TabIndex = 151
         Me.Label31.Text = "Address                    "
+        Me.Label31.Visible = False
         '
         'Address_txt
         '
@@ -813,7 +814,8 @@ Partial Class frmNewEmployee
         Me.Address_txt.Location = New System.Drawing.Point(127, 499)
         Me.Address_txt.Name = "Address_txt"
         Me.Address_txt.Size = New System.Drawing.Size(292, 26)
-        Me.Address_txt.TabIndex = 152
+        Me.Address_txt.TabIndex = 102
+        Me.Address_txt.Visible = False
         '
         'Label7
         '
@@ -832,7 +834,7 @@ Partial Class frmNewEmployee
         Me.Email_TXT.Location = New System.Drawing.Point(129, 531)
         Me.Email_TXT.Name = "Email_TXT"
         Me.Email_TXT.Size = New System.Drawing.Size(290, 26)
-        Me.Email_TXT.TabIndex = 96
+        Me.Email_TXT.TabIndex = 103
         '
         'Label15
         '
@@ -851,7 +853,7 @@ Partial Class frmNewEmployee
         Me.TIN_TXT.Location = New System.Drawing.Point(128, 563)
         Me.TIN_TXT.Name = "TIN_TXT"
         Me.TIN_TXT.Size = New System.Drawing.Size(291, 26)
-        Me.TIN_TXT.TabIndex = 97
+        Me.TIN_TXT.TabIndex = 104
         '
         'Label16
         '
@@ -870,7 +872,7 @@ Partial Class frmNewEmployee
         Me.SSS_TXT.Location = New System.Drawing.Point(127, 595)
         Me.SSS_TXT.Name = "SSS_TXT"
         Me.SSS_TXT.Size = New System.Drawing.Size(293, 26)
-        Me.SSS_TXT.TabIndex = 98
+        Me.SSS_TXT.TabIndex = 105
         '
         'Label18
         '
@@ -889,7 +891,7 @@ Partial Class frmNewEmployee
         Me.PHILH_TXT.Location = New System.Drawing.Point(127, 627)
         Me.PHILH_TXT.Name = "PHILH_TXT"
         Me.PHILH_TXT.Size = New System.Drawing.Size(293, 26)
-        Me.PHILH_TXT.TabIndex = 99
+        Me.PHILH_TXT.TabIndex = 106
         '
         'Label17
         '
@@ -908,7 +910,7 @@ Partial Class frmNewEmployee
         Me.HDMF_TXT.Location = New System.Drawing.Point(127, 659)
         Me.HDMF_TXT.Name = "HDMF_TXT"
         Me.HDMF_TXT.Size = New System.Drawing.Size(293, 26)
-        Me.HDMF_TXT.TabIndex = 100
+        Me.HDMF_TXT.TabIndex = 107
         '
         'Label21
         '
@@ -930,7 +932,7 @@ Partial Class frmNewEmployee
         Me.Active_RB.Location = New System.Drawing.Point(130, 691)
         Me.Active_RB.Name = "Active_RB"
         Me.Active_RB.Size = New System.Drawing.Size(185, 24)
-        Me.Active_RB.TabIndex = 101
+        Me.Active_RB.TabIndex = 108
         Me.Active_RB.TabStop = True
         Me.Active_RB.Text = "ACTIVE                         "
         Me.Active_RB.UseVisualStyleBackColor = True
@@ -943,7 +945,7 @@ Partial Class frmNewEmployee
         Me.InActive_RB.Location = New System.Drawing.Point(321, 691)
         Me.InActive_RB.Name = "InActive_RB"
         Me.InActive_RB.Size = New System.Drawing.Size(101, 24)
-        Me.InActive_RB.TabIndex = 102
+        Me.InActive_RB.TabIndex = 109
         Me.InActive_RB.Text = "INACTIVE"
         Me.InActive_RB.UseVisualStyleBackColor = True
         '
@@ -1007,7 +1009,7 @@ Partial Class frmNewEmployee
         Me.Clear_btn.Location = New System.Drawing.Point(267, 50)
         Me.Clear_btn.Name = "Clear_btn"
         Me.Clear_btn.Size = New System.Drawing.Size(118, 47)
-        Me.Clear_btn.TabIndex = 104
+        Me.Clear_btn.TabIndex = 111
         Me.Clear_btn.Text = "Clear"
         Me.Clear_btn.UseVisualStyleBackColor = False
         '
@@ -1019,7 +1021,7 @@ Partial Class frmNewEmployee
         Me.ImportPic_btn.Location = New System.Drawing.Point(62, 220)
         Me.ImportPic_btn.Name = "ImportPic_btn"
         Me.ImportPic_btn.Size = New System.Drawing.Size(87, 33)
-        Me.ImportPic_btn.TabIndex = 143
+        Me.ImportPic_btn.TabIndex = 110
         Me.ImportPic_btn.Text = "Import"
         Me.ImportPic_btn.UseVisualStyleBackColor = False
         '
