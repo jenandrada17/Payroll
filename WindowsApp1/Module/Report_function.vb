@@ -679,7 +679,7 @@ Module Report_function
         mysql = $"Select A.*, B.*, C.*, 
                     LASTNAME || ', ' || FIRSTNAME || ' ' || 
                          CASE 
-                             WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1)
+                             WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) '.'
                              ELSE ''
                          END AS FULLNAME  
                     From PAYROLL_PAYOUT A INNER JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
@@ -757,7 +757,7 @@ Module Report_function
             mysql = $"Select A.*, B.*, C.*, 
                         LASTNAME || ', ' || FIRSTNAME || ' ' || 
                              CASE 
-                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1)
+                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) '.'
                                  ELSE ''
                              END AS FULLNAME
                         From RECORDED_ALLOW_DEDUC A INNER JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIO_NO 
@@ -767,7 +767,7 @@ Module Report_function
             mysql = $"Select A.*, B.*, C.*, 
                         LASTNAME || ', ' || FIRSTNAME || ' ' || 
                              CASE 
-                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1)
+                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) '.'
                                  ELSE ''
                              END AS FULLNAME
                         From RECORDED_ALLOW_DEDUC A INNER JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIO_NO  

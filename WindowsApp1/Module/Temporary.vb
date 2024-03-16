@@ -827,15 +827,37 @@ Module Temporary
         ExcelPackage.LicenseContext = LicenseContext.Commercial
 
         ' Your existing code here
-        Dim mysql As String = "Select * from TBL_EMPLOYEE"
+        'Dim mysql As String = "Select * from TBL_EMPLOYEE"
+        Dim mysql As String = "SELECT 
+                                    TBL_EMPLOYEE.*,                     
+                                    LASTNAME || ', ' || FIRSTNAME || ' ' || 
+                                    CASE 
+                                        WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'  
+                                        ELSE '' 
+                                    END AS FULLNAME
+                                FROM 
+                                    TBL_EMPLOYEE  
+                                INNER JOIN (
+                                    SELECT 
+                                        BIOMETRICID
+                                    FROM 
+                                        TBL_EMPLOYEE
+                                    GROUP BY 
+                                        BIOMETRICID
+                                    HAVING 
+                                        COUNT(*) > 1
+                                ) AS Duplicates ON TBL_EMPLOYEE.BIOMETRICID = Duplicates.BIOMETRICID
+                                ORDER BY 
+                                    BIOMETRICID ASC;
+"
         Using ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
             If ds.Tables(0).Rows.Count > 0 Then
-                Dim path As String = "C:\Users\MISPC1\Desktop\HREmployees.xlsx"
+                Dim path As String = "C:\Users\MISPC1\Desktop\Duplicate BIO No. Employees.xlsx"
 
                 ' Create a new Excel package
                 Using package As New ExcelPackage(New FileInfo(path))
                     ' Add a worksheet to the Excel package
-                    Dim worksheet As ExcelWorksheet = package.Workbook.Worksheets.Add("HREmployees")
+                    Dim worksheet As ExcelWorksheet = package.Workbook.Worksheets.Add("DuplicateBioNoEmployees")
 
                     ' Write column names to the first row
                     For colIndex As Integer = 1 To ds.Tables(0).Columns.Count

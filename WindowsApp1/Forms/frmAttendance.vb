@@ -573,8 +573,14 @@ Public Class frmAttendance
 
                 If Bio1_DTR_TXT.Text <> Nothing And Bio2_DTR_TXT.Text <> Nothing Then  '============ DOUBLE EMPLOYEE
 
-                    mysqll = $"Select A.*, B.FULLNAME, B.BIO_NO as bioNo, B.TIME_IN, B.TIME_OUT, C.* From PAYROLL_ATTENDANCE A 
-                                        inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRICID 
+                    mysqll = $"Select A.*, B.BIOMETRICID as bioNo, B.TIME_IN, B.TIME_OUT, C.*,
+                                         LASTNAME || ', ' || FIRSTNAME || ' ' || 
+                                             CASE 
+                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) '.'
+                                                 ELSE ''
+                                             END AS FULLNAME
+                                        From PAYROLL_ATTENDANCE A 
+                                        inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRICID 
                                         inner join BIOMETRIC_DTR C ON C.BIO_ID = A.BIOMETRICID AND C.PAYDATE  = A.PAYDATE where A.PAYDATE  = '{paydatee}' and A.BIOMETRICID IN ('{Bio1_DTR_TXT.Text}','{Bio2_DTR_TXT.Text}') ORDER BY DATE_ONLY"
 
                     LIST_BIOO.Clear()
@@ -583,16 +589,28 @@ Public Class frmAttendance
                 Else
                     If Bio1_DTR_TXT.Text <> Nothing And Bio2_DTR_TXT.Text = Nothing Then  '============ 1ST EMPLOYEE
 
-                        mysqll = $"Select A.*, B.FULLNAME, B.BIO_NO as bioNo, B.TIME_IN, B.TIME_OUT, C.* From PAYROLL_ATTENDANCE A 
-                                        inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRICID 
+                        mysqll = $"Select A.*, B.BIOMETRICID as bioNo, B.TIME_IN, B.TIME_OUT, C.*,
+                                         LASTNAME || ', ' || FIRSTNAME || ' ' || 
+                                             CASE 
+                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) '.'
+                                                 ELSE ''
+                                             END AS FULLNAME  
+                                        From PAYROLL_ATTENDANCE A 
+                                        inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRICID 
                                         inner join BIOMETRIC_DTR C ON C.BIO_ID = A.BIOMETRICID AND C.PAYDATE  = A.PAYDATE where A.PAYDATE  = '{paydatee}' and A.BIOMETRICID = '{Bio1_DTR_TXT.Text}'  ORDER BY DATE_ONLY  ASC"
 
                         LIST_BIOO.Clear()
                         LIST_BIOO.Add(Bio1_DTR_TXT.Text)
                     ElseIf Bio2_DTR_TXT.Text <> Nothing And Bio1_DTR_TXT.Text = Nothing Then '============ 2ND EMPLOYEE
 
-                        mysqll = $"Select A.*, B.FULLNAME, B.BIO_NO as bioNo,  B.TIME_IN, B.TIME_OUT, C.* From PAYROLL_ATTENDANCE A 
-                                        inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRICID 
+                        mysqll = $"Select A.*, B.BIOMETRICID as bioNo,  B.TIME_IN, B.TIME_OUT, C.*,
+                                         LASTNAME || ', ' || FIRSTNAME || ' ' || 
+                                             CASE 
+                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) '.'
+                                                 ELSE ''
+                                             END AS FULLNAME
+                                        From PAYROLL_ATTENDANCE A 
+                                        inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRICID 
                                         inner join BIOMETRIC_DTR C ON C.BIO_ID = A.BIOMETRICID  AND C.PAYDATE  = A.PAYDATE where A.PAYDATE  = '{paydatee}' and A.BIOMETRICID = '{Bio2_DTR_TXT.Text}'  ORDER BY DATE_ONLY  ASC"
 
                         LIST_BIOO.Clear()
@@ -605,8 +623,14 @@ Public Class frmAttendance
 
             ElseIf HO_RadioB.Checked Then    '=========================== HEAD OFFICE ==================================
 
-                mysqll = $"Select A.*, B.FULLNAME, B.BIO_NO as bioNo, B.TIME_IN, B.TIME_OUT, C.* From PAYROLL_ATTENDANCE A 
-                                        inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRICID 
+                mysqll = $"Select A.*, B.BIOMETRICID as bioNo, B.TIME_IN, B.TIME_OUT, C.*,
+                                         LASTNAME || ', ' || FIRSTNAME || ' ' || 
+                                             CASE 
+                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) '.'
+                                                 ELSE ''
+                                             END AS FULLNAME
+                                        From PAYROLL_ATTENDANCE A 
+                                        inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRICID 
                                         inner join BIOMETRIC_DTR C ON C.BIO_ID = A.BIOMETRICID AND C.PAYDATE  = A.PAYDATE 
                                         where A.PAYDATE  = '{paydatee}' and COMPANY = 'HEAD OFFICE'  ORDER BY DATE_ONLY ASC"
                 LIST_BIOO.Clear()
@@ -756,9 +780,15 @@ Public Class frmAttendance
                 .Columns.Add("PM_OUT")
             End With
 
-            mysqll = $"Select * From PAYROLL_ATTENDANCE A 
-                                        inner JOIN PAYROLL_EMPLOYEE B ON B.BIO_NO = A.BIOMETRICID 
-                                        inner join BIOMETRIC_DTR C ON C.BIO_ID = B.BIO_NO  AND C.PAYDATE  = A.PAYDATE 
+            mysqll = $"Select A.*, C.*, 
+                                         LASTNAME || ', ' || FIRSTNAME || ' ' || 
+                                             CASE 
+                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) '.'
+                                                 ELSE ''
+                                             END AS FULLNAME
+                                        From PAYROLL_ATTENDANCE A 
+                                        inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRICID 
+                                        inner join BIOMETRIC_DTR C ON C.BIO_ID = B.BIOMETRICID  AND C.PAYDATE  = A.PAYDATE 
                                         where A.PAYDATE  = '{paydatee}' and B.BRANCH_CODE = '{DTR_Branch_Combo.Text}'  ORDER BY DATE_ONLY"
 
             '=========================== LIST OF BIO (COMPLETE DATE) ==========================

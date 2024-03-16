@@ -878,15 +878,21 @@ Public Class frmPayout
                 .Columns.Add("PAGIBIG")
             End With
 
-            Dim sql As String = $"select * from PAYROLL_EMPLOYEE where BIO_NO = '{biometricID}';"
-            Using ds As DataSet = LoadSQL(sql, "PAYROLL_EMPLOYEE")
+            Dim sql As String = $"select A.*, 
+                                    LASTNAME || ', ' || FIRSTNAME || ' ' || 
+                                         CASE 
+                                             WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) '.'
+                                             ELSE ''
+                                         END AS FULLNAME 
+                                    from TBL_EMPLOYEE A where BIOMETRICID = '{biometricID}';"
+            Using ds As DataSet = LoadSQL(sql, "TBL_EMPLOYEE")
                 If ds.Tables(0).Rows.Count > 0 Then
                     Dim data As DataRow = ds.Tables(0).Rows(0)
                     With data
 
                         rate = .Item("RATE_DAILY")
                         Dim namee As String = .Item("FULLNAME")
-                        dt_employee.Rows.Add(namee, .Item("SSSNO"), .Item("PHILHEALTHNO"), .Item("TINNO"), .Item("PAGIBIGNO"))
+                        dt_employee.Rows.Add(namee, .Item("SSSNO"), .Item("PHILHEALTHNO"), .Item("TINNO"), .Item("PAGIBIG"))
 
                     End With
                 End If

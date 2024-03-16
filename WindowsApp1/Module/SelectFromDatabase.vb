@@ -1567,14 +1567,14 @@ Module SelectFromDatabase
             mysql = "select B.*, B.ID as deduc_idd, B.STATUS,
                             LASTNAME || ', ' || FIRSTNAME || ' ' || 
                                  CASE 
-                                     WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1)
+                                     WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
                                      ELSE ''
                                  END AS FULLNAME
                             from PAYROLL_DEDUCTION B inner join  TBL_EMPLOYEE A on B.BIO_NO = A.BIOMETRICID WHERE "
 
             For Each name In strWords
                 mysql &= $"{vbCr}UPPER(B.BIO_NO) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(FULLNAME) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(LASTNAME || ', ' || FIRSTNAME || ' ' || CASE WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.' ELSE '' END) LIKE UPPER('%{name}%') OR"
                 mysql &= $"{vbCr}UPPER(COMPANY_CATEGORY) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(BRANCHCODE) LIKE UPPER('%{name}%') ORDER BY FULLNAME, CATEGORY ASC "
             Next
@@ -1584,7 +1584,7 @@ Module SelectFromDatabase
             mysql = "select B.*, B.ID as deduc_idd, B.STATUS, 
                             LASTNAME || ', ' || FIRSTNAME || ' ' || 
                                  CASE 
-                                     WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1)
+                                     WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
                                      ELSE ''
                                  END AS FULLNAME
                             from PAYROLL_DEDUCTION B inner join  TBL_EMPLOYEE A on B.BIO_NO = A.BIOMETRICID ORDER BY FULLNAME, CATEGORY ASC "
@@ -1627,7 +1627,7 @@ Module SelectFromDatabase
             mysql = $"select COALESCE(sum(SIL), 0) AS TOTALS, A.BIOMETRICID, 
                             LASTNAME || ', ' || FIRSTNAME || ' ' || 
                                  CASE 
-                                     WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1)
+                                     WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) '.'
                                      ELSE ''
                                  END AS FULLNAME
                             from TBL_EMPLOYEE A 
@@ -1636,7 +1636,7 @@ Module SelectFromDatabase
 
             For Each name In strWords
                 mysql &= $"{vbCr}UPPER(BIOMETRICID) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(FULLNAME) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(LASTNAME || ', ' || FIRSTNAME || ' ' || CASE WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.' ELSE '' END) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(BRANCHCODE) LIKE UPPER('%{name}%'))  GROUP BY FULLNAME, BIOMETRICID ORDER BY FULLNAME ASC "
             Next
@@ -1644,7 +1644,7 @@ Module SelectFromDatabase
             mysql = $"select COALESCE(sum(SIL), 0) AS TOTALS, A.BIOMETRICID,
                                 LASTNAME || ', ' || FIRSTNAME || ' ' || 
                                      CASE 
-                                         WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1)
+                                         WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) '.'
                                          ELSE ''
                                      END AS FULLNAME
                                 from TBL_EMPLOYEE A 
@@ -1682,7 +1682,7 @@ Module SelectFromDatabase
             mysql = $"select BIOMETRIC_ID,
                         LASTNAME || ', ' || FIRSTNAME || ' ' || 
                              CASE 
-                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1)
+                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
                                  ELSE ''
                              END AS FULLNAME 
                         from TBL_EMPLOYEE A 
@@ -1690,7 +1690,7 @@ Module SelectFromDatabase
 
             For Each name In strWords
                 mysql &= $"{vbCr}UPPER(A.BIOMETRICID) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(FULLNAME) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(LASTNAME || ', ' || FIRSTNAME || ' ' || CASE WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.' ELSE '' END) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(BRANCHCODE) LIKE UPPER('%{name}%') Group by FULLNAME, BIOMETRIC_ID ORDER BY FULLNAME ASC "
             Next
@@ -1700,7 +1700,7 @@ Module SelectFromDatabase
             mysql = $"select BIOMETRIC_ID,
                         LASTNAME || ', ' || FIRSTNAME || ' ' || 
                              CASE 
-                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1)
+                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
                                  ELSE ''
                              END AS FULLNAME 
                         from TBL_EMPLOYEE A 
@@ -1770,37 +1770,39 @@ Module SelectFromDatabase
 
         If searchName.Length <> 0 Then
 
-            mysql = $"Select * From PAYROLL_PAYOUT A 
+            mysql = $"Select A.*, B.*,  
+                                        LASTNAME || ', ' || FIRSTNAME || ' ' || 
+                                             CASE 
+                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
+                                                 ELSE ''
+                                             END AS FULLNAME 
+                                        From PAYROLL_PAYOUT A 
                                         inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRIC_ID 
                                         where paydate = '{paydate}' and ( "
 
             For Each name In strWords
                 mysql &= $"{vbCr}UPPER(BIOMETRIC_ID) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(FIRSTNAME) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(LASTNAME) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(LASTNAME || ', ' || FIRSTNAME || ' ' || CASE WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.' ELSE '' END) LIKE UPPER('%{name}%') OR  "
                 mysql &= $"{vbCr}UPPER(BRANCHCODE) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(COMPANY_CATEGORY) LIKE UPPER('%{name}%')) ORDER BY LASTNAME, FIRSTNAME"
             Next
 
         Else
-            mysql = $"Select * From PAYROLL_PAYOUT A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRIC_ID where paydate ='{paydate}'  ORDER BY LASTNAME, FIRSTNAME"
+            mysql = $"Select A.*, B.*,  
+                                        LASTNAME || ', ' || FIRSTNAME || ' ' || 
+                                             CASE 
+                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
+                                                 ELSE ''
+                                             END AS FULLNAME 
+                                        From PAYROLL_PAYOUT A 
+                                        inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRIC_ID where paydate ='{paydate}'  ORDER BY FULLNAME"
         End If
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
             progressBarStart(ds.Tables(0).Rows.Count)
             For Each dr In ds.Tables(0).Rows
                 With dr
-
-                    Dim MI As String
-                    If String.IsNullOrEmpty(.Item("MiddleName")) Then
-                        MI = ""
-                    Else
-                        MI = .Item("MiddleName").Substring(0, 1) & "."
-                    End If
-
-                    Dim FULLNAME As String = $"{ .Item("LastName")}, { .Item("FirstName")} {MI}"
-
-                    Dim i As ListViewItem = LV.Items.Add(FULLNAME)
+                    Dim i As ListViewItem = LV.Items.Add(.Item("FULLNAME"))
                     i.SubItems.Add(FormatNumber(.Item("TOTAL_BASIC"))).Tag = .Item("BIOMETRIC_ID")
                     i.SubItems.Add(FormatNumber(.Item("GROSS_AMOUNT")))
                     i.SubItems.Add(FormatNumber(.Item("SSS_COMP")))
@@ -1946,18 +1948,18 @@ Module SelectFromDatabase
 
         If searchName.Length <> 0 Then
 
-            mysql = $"select *, 
+            mysql = $"select A.*,   
                             LASTNAME || ', ' || FIRSTNAME || ' ' || 
                                  CASE 
-                                     WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1)
+                                     WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
                                      ELSE ''
                                  END AS FULLNAME  
-                            from TBL_EMPLOYEE where "
+                            from TBL_EMPLOYEE A where "
 
             For Each name In strWords
                 mysql &= $"{vbCr}UPPER(COMPANY_CATEGORY) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(BRANCHCODE) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(FULLNAME) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(LASTNAME || ', ' || FIRSTNAME || ' ' || CASE WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.' ELSE '' END) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(BIOMETRICID) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(EMP_STATUS) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(EMP_POSITION) LIKE UPPER('%{name}%') OR "
@@ -1971,13 +1973,13 @@ Module SelectFromDatabase
             Next
 
         Else
-            mysql = "select *, 
+            mysql = "select A.*,   
                             LASTNAME || ', ' || FIRSTNAME || ' ' || 
                                  CASE 
-                                     WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1)
+                                     WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
                                      ELSE ''
                                  END AS FULLNAME  
-                            from TBL_EMPLOYEE  ORDER BY COMPANY_CATEGORY, BRANCHCODE ASC "
+                            from TBL_EMPLOYEE A ORDER BY COMPANY_CATEGORY, BRANCHCODE ASC "
         End If
 
         Using ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
@@ -3068,7 +3070,7 @@ Module SelectFromDatabase
             mysql = "select  COALESCE(sum(C.AMOUNT), 0) AS TOTALS, CREDIT, PRINCIPAL, B.AMOUNT, B.BIO_NO as bio , 
                             LASTNAME || ', ' || FIRSTNAME || ' ' || 
                                 CASE 
-                                    WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1)
+                                    WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
                                     ELSE ''
                                 END AS FULLNAME
                             from TBL_EMPLOYEE A 
@@ -3077,7 +3079,7 @@ Module SelectFromDatabase
 
             For Each name In strWords
                 mysql &= $"{vbCr}UPPER(B.BIO_NO) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(FULLNAME) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(LASTNAME || ', ' || FIRSTNAME || ' ' || CASE WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.' ELSE '' END) LIKE UPPER('%{name}%') OR"
                 mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(BRANCHCODE) LIKE UPPER('%{name}%') 
                         GROUP BY C.AMOUNT, FULLNAME, CREDIT, PRINCIPAL,  B.AMOUNT, B.BIO_NO ORDER BY FULLNAME ASC "
@@ -3087,7 +3089,7 @@ Module SelectFromDatabase
             mysql = "select COALESCE(sum(C.AMOUNT), 0) AS TOTALS, CREDIT, PRINCIPAL, B.AMOUNT, B.BIO_NO as bio, 
                                 LASTNAME || ', ' || FIRSTNAME || ' ' || 
                                     CASE 
-                                        WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1)
+                                        WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
                                         ELSE ''
                                     END AS FULLNAME
                                 from TBL_EMPLOYEE A 
