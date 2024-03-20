@@ -1186,7 +1186,7 @@ Public Class frmAttendance
                     With dr
 
                         Days7_TXT.Text = .Item("PRESENT_DAYS")
-                        Overtime7_TXT.Text = .Item("OVERTIME")
+                        Overtime7_NUP.Text = .Item("OVERTIME")
 
                         Late7_TXT.Text = .Item("LATE")
                         Undertime7_TXT.Text = .Item("UNDERTIME")
@@ -1202,7 +1202,7 @@ Public Class frmAttendance
             Else
 
                 Days7_TXT.Clear()
-                Overtime7_TXT.Clear()
+                Overtime7_NUP.Value = Nothing
                 Late7_TXT.Clear()
                 SpecHol7_TXT.Clear()
                 Undertime7_TXT.Clear()
@@ -1230,7 +1230,8 @@ Public Class frmAttendance
                 Dim RHOLIDAY As Integer = REGHolidayCount(starting_date, ending_date)
                 Dim specHoliday_hrs As Double = IIf(SpecHol7_TXT.Text = Nothing, 0, SpecHol7_TXT.Text)
                 Dim SHOLIDAY As Integer = IIf(specHoliday_hrs = 0, 0, specHoliday_hrs / 8)
-                Dim overtime As Integer = IIf(Overtime7_TXT.Text = Nothing, 0, Overtime7_TXT.Text)
+                If specHoliday_hrs Mod 8 > 0 Then SHOLIDAY += 1
+                Dim overtime As Double = IIf(Overtime7_NUP.Text = Nothing, 0, Overtime7_NUP.Text)
                 Dim latee As Integer = IIf(Late7_TXT.Text = Nothing, 0, Late7_TXT.Text)
                 Dim undertimee As Integer = IIf(Undertime7_TXT.Text = Nothing, 0, Undertime7_TXT.Text)
                 Dim sil As Double = IIf(SIL7_NUP.Text = Nothing, 0, SIL7_NUP.Text)
@@ -1241,11 +1242,11 @@ Public Class frmAttendance
                 '                        Optional MORNING_OT As String = "", Optional NIGHT_RATE As String = "", Optional BRANCH As Boolean = False)
 
                 SaveAttendanceEE(Bio7_TXT.Text, PAYROLL, Days7_TXT.Text, overtime, latee, undertimee,
-                             RHOLIDAY, SHOLIDAY, specHoliday_hrs, sil, 0, "", "", night7, True)
+                                     RHOLIDAY, SHOLIDAY, specHoliday_hrs, sil, 0, "", "", night7, True)
 
                 SavePayout_IndividualL(Bio7_TXT.Text, PAYROLL, starting_date, ending_date)
 
-                SaveLogs($"{Save7_BTN.Tag} ATTENDANCE ({Emp7_TXT.Text} ({Bio7_TXT.Text})) - Days({Days7_TXT.Text}), OT({Overtime7_TXT.Text}), Late({Late7_TXT.Text}), Undertime({Undertime7_TXT.Text}), R/S Holiday({TotalRHoliday_LBL.Text}/{TotalSHoliday_LBL.Text}), Night Rate({Night7_TXT.Text}), SIL({SIL7_NUP.Text})", frmMainForm.UserName_LBL.Text)
+                SaveLogs($"{Save7_BTN.Tag} ATTENDANCE ({Emp7_TXT.Text} ({Bio7_TXT.Text})) - Days({Days7_TXT.Text}), OT({Overtime7_NUP.Text}), Late({Late7_TXT.Text}), Undertime({Undertime7_TXT.Text}), R/S Holiday({TotalRHoliday_LBL.Text}/{TotalSHoliday_LBL.Text}), Night Rate({Night7_TXT.Text}), SIL({SIL7_NUP.Text})", frmMainForm.UserName_LBL.Text)
 
                 Cancel7_BTN.PerformClick()
 
@@ -1259,7 +1260,7 @@ Public Class frmAttendance
         End If
     End Sub
 
-    Private Sub Hours7_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Undertime7_TXT.KeyPress, Overtime7_TXT.KeyPress, Night7_TXT.KeyPress, Late7_TXT.KeyPress, Days7_TXT.KeyPress
+    Private Sub Hours7_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Undertime7_TXT.KeyPress, Night7_TXT.KeyPress, Late7_TXT.KeyPress, Days7_TXT.KeyPress
         If e.KeyChar <> ChrW(Keys.Back) Then
             If Not Char.IsNumber(e.KeyChar) AndAlso Not Char.IsControl(e.KeyChar) Then
                 e.Handled = True
@@ -1271,7 +1272,7 @@ Public Class frmAttendance
         Bio7_TXT.Clear()
         Emp7_TXT.Clear()
         Days7_TXT.Clear()
-        Overtime7_TXT.Clear()
+        Overtime7_NUP.Value = Nothing
         Late7_TXT.Clear()
         Undertime7_TXT.Clear()
         Night7_TXT.Clear()
@@ -2113,7 +2114,8 @@ Public Class frmAttendance
 
                     frmMainForm.AppProgressBar.Value += 1
                 Else
-                    MsgBox("Row 1 Column 1 is empty or not a valid Biometric No.!", MsgBoxStyle.Exclamation)
+                    Continue For
+                    'MsgBox("Row 1 Column 1 is empty or not a valid Biometric No.!", MsgBoxStyle.Exclamation)
                 End If
             Next
 
@@ -2151,7 +2153,7 @@ Public Class frmAttendance
 
             Dim all_date, exist_date, add_date As New List(Of String)()
 
-            Dim branchCode As String = GetBranchCode(biometric_No)
+            'Dim branchCode As String = GetBranchCode(biometric_No)
             '=========================================================================================================
 
             For Each oRow As DataGridViewRow In DataGridView1.Rows

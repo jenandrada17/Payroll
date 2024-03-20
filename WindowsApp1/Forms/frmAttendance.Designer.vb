@@ -23,14 +23,12 @@ Partial Class frmAttendance
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim ReportDataSource2 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Me.overAllBindingSource = New System.Windows.Forms.BindingSource(Me.components)
-        Me.dtr_all = New WindowsApp1.dtr_all()
+        Dim DataGridViewCellStyle16 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle19 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle20 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle17 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle18 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim ReportDataSource4 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Attendance_Tab = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
@@ -142,7 +140,6 @@ Partial Class frmAttendance
         Me.Save7_BTN = New System.Windows.Forms.Button()
         Me.Days7_TXT = New System.Windows.Forms.TextBox()
         Me.Label21 = New System.Windows.Forms.Label()
-        Me.Overtime7_TXT = New System.Windows.Forms.TextBox()
         Me.Label23 = New System.Windows.Forms.Label()
         Me.Night7_TXT = New System.Windows.Forms.TextBox()
         Me.Label26 = New System.Windows.Forms.Label()
@@ -189,8 +186,9 @@ Partial Class frmAttendance
         Me.RE_NAME_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.RE_BIO_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.RE_BRANCH_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        CType(Me.overAllBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.dtr_all, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.overAllBindingSource = New System.Windows.Forms.BindingSource(Me.components)
+        Me.dtr_all = New WindowsApp1.dtr_all()
+        Me.Overtime7_NUP = New System.Windows.Forms.NumericUpDown()
         Me.Attendance_Tab.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.PI_Panel.SuspendLayout()
@@ -215,17 +213,10 @@ Partial Class frmAttendance
         Me.Branch_group.SuspendLayout()
         Me.ContextMenu_Late.SuspendLayout()
         CType(Me.printDTRBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.overAllBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.dtr_all, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.Overtime7_NUP, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
-        '
-        'overAllBindingSource
-        '
-        Me.overAllBindingSource.DataMember = "overAll"
-        Me.overAllBindingSource.DataSource = Me.dtr_all
-        '
-        'dtr_all
-        '
-        Me.dtr_all.DataSetName = "dtr_all"
-        Me.dtr_all.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema
         '
         'Label1
         '
@@ -965,34 +956,34 @@ Partial Class frmAttendance
         Me.DataGridView1.AllowUserToAddRows = False
         Me.DataGridView1.AllowUserToResizeColumns = False
         Me.DataGridView1.AllowUserToResizeRows = False
-        DataGridViewCellStyle6.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.DataGridView1.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle6
+        DataGridViewCellStyle16.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DataGridView1.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle16
         Me.DataGridView1.BackgroundColor = System.Drawing.Color.White
         Me.DataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.DataGridView1.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText
         Me.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.DataGridView1.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Date_DataGrid, Me.AM_In_DataGrid, Me.AM_Out_DataGrid, Me.PM_IN_DataGrid, Me.PM_Out_DataGrid, Me.Select_Datagrid})
-        DataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.InactiveCaption
-        DataGridViewCellStyle9.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.DataGridView1.DefaultCellStyle = DataGridViewCellStyle9
+        DataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle19.BackColor = System.Drawing.SystemColors.InactiveCaption
+        DataGridViewCellStyle19.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle19.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle19.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle19.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle19.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.DataGridView1.DefaultCellStyle = DataGridViewCellStyle19
         Me.DataGridView1.Location = New System.Drawing.Point(6, 44)
         Me.DataGridView1.Name = "DataGridView1"
         Me.DataGridView1.RowHeadersVisible = False
-        DataGridViewCellStyle10.SelectionBackColor = System.Drawing.Color.Transparent
-        DataGridViewCellStyle10.SelectionForeColor = System.Drawing.Color.Transparent
-        Me.DataGridView1.RowsDefaultCellStyle = DataGridViewCellStyle10
+        DataGridViewCellStyle20.SelectionBackColor = System.Drawing.Color.Transparent
+        DataGridViewCellStyle20.SelectionForeColor = System.Drawing.Color.Transparent
+        Me.DataGridView1.RowsDefaultCellStyle = DataGridViewCellStyle20
         Me.DataGridView1.Size = New System.Drawing.Size(684, 487)
         Me.DataGridView1.TabIndex = 65
         '
         'Date_DataGrid
         '
-        DataGridViewCellStyle7.NullValue = Nothing
-        Me.Date_DataGrid.DefaultCellStyle = DataGridViewCellStyle7
+        DataGridViewCellStyle17.NullValue = Nothing
+        Me.Date_DataGrid.DefaultCellStyle = DataGridViewCellStyle17
         Me.Date_DataGrid.HeaderText = "Date"
         Me.Date_DataGrid.Name = "Date_DataGrid"
         Me.Date_DataGrid.ReadOnly = True
@@ -1002,9 +993,9 @@ Partial Class frmAttendance
         '
         'AM_In_DataGrid
         '
-        DataGridViewCellStyle8.Format = "t"
-        DataGridViewCellStyle8.NullValue = Nothing
-        Me.AM_In_DataGrid.DefaultCellStyle = DataGridViewCellStyle8
+        DataGridViewCellStyle18.Format = "t"
+        DataGridViewCellStyle18.NullValue = Nothing
+        Me.AM_In_DataGrid.DefaultCellStyle = DataGridViewCellStyle18
         Me.AM_In_DataGrid.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.[Nothing]
         Me.AM_In_DataGrid.HeaderText = "In"
         Me.AM_In_DataGrid.Name = "AM_In_DataGrid"
@@ -1274,6 +1265,7 @@ Partial Class frmAttendance
         '
         'Panel2
         '
+        Me.Panel2.Controls.Add(Me.Overtime7_NUP)
         Me.Panel2.Controls.Add(Me.SpecHol7_TXT)
         Me.Panel2.Controls.Add(Me.Label36)
         Me.Panel2.Controls.Add(Me.SIL7_NUP)
@@ -1284,7 +1276,6 @@ Partial Class frmAttendance
         Me.Panel2.Controls.Add(Me.Save7_BTN)
         Me.Panel2.Controls.Add(Me.Days7_TXT)
         Me.Panel2.Controls.Add(Me.Label21)
-        Me.Panel2.Controls.Add(Me.Overtime7_TXT)
         Me.Panel2.Controls.Add(Me.Label23)
         Me.Panel2.Controls.Add(Me.Night7_TXT)
         Me.Panel2.Controls.Add(Me.Label26)
@@ -1391,14 +1382,6 @@ Partial Class frmAttendance
         Me.Label21.Size = New System.Drawing.Size(87, 27)
         Me.Label21.TabIndex = 75
         Me.Label21.Text = "No. of Days"
-        '
-        'Overtime7_TXT
-        '
-        Me.Overtime7_TXT.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Overtime7_TXT.Location = New System.Drawing.Point(139, 59)
-        Me.Overtime7_TXT.Name = "Overtime7_TXT"
-        Me.Overtime7_TXT.Size = New System.Drawing.Size(140, 35)
-        Me.Overtime7_TXT.TabIndex = 76
         '
         'Label23
         '
@@ -1601,9 +1584,9 @@ Partial Class frmAttendance
         'RptViewer_DTR
         '
         Me.RptViewer_DTR.Dock = System.Windows.Forms.DockStyle.Fill
-        ReportDataSource2.Name = "DataSet1"
-        ReportDataSource2.Value = Me.overAllBindingSource
-        Me.RptViewer_DTR.LocalReport.DataSources.Add(ReportDataSource2)
+        ReportDataSource4.Name = "DataSet1"
+        ReportDataSource4.Value = Me.overAllBindingSource
+        Me.RptViewer_DTR.LocalReport.DataSources.Add(ReportDataSource4)
         Me.RptViewer_DTR.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_DTR_ByGroup.rdlc"
         Me.RptViewer_DTR.Location = New System.Drawing.Point(0, 0)
         Me.RptViewer_DTR.Name = "RptViewer_DTR"
@@ -1838,6 +1821,27 @@ Partial Class frmAttendance
         Me.RE_BRANCH_DGV.ReadOnly = True
         Me.RE_BRANCH_DGV.Width = 140
         '
+        'overAllBindingSource
+        '
+        Me.overAllBindingSource.DataMember = "overAll"
+        Me.overAllBindingSource.DataSource = Me.dtr_all
+        '
+        'dtr_all
+        '
+        Me.dtr_all.DataSetName = "dtr_all"
+        Me.dtr_all.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema
+        '
+        'Overtime7_NUP
+        '
+        Me.Overtime7_NUP.DecimalPlaces = 1
+        Me.Overtime7_NUP.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Overtime7_NUP.Increment = New Decimal(New Integer() {5, 0, 0, 65536})
+        Me.Overtime7_NUP.Location = New System.Drawing.Point(139, 59)
+        Me.Overtime7_NUP.Maximum = New Decimal(New Integer() {200, 0, 0, 0})
+        Me.Overtime7_NUP.Name = "Overtime7_NUP"
+        Me.Overtime7_NUP.Size = New System.Drawing.Size(140, 35)
+        Me.Overtime7_NUP.TabIndex = 116
+        '
         'frmAttendance
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1849,8 +1853,6 @@ Partial Class frmAttendance
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Name = "frmAttendance"
         Me.Text = " "
-        CType(Me.overAllBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.dtr_all, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Attendance_Tab.ResumeLayout(False)
         Me.TabPage1.ResumeLayout(False)
         Me.TabPage1.PerformLayout()
@@ -1887,6 +1889,9 @@ Partial Class frmAttendance
         Me.Branch_group.PerformLayout()
         Me.ContextMenu_Late.ResumeLayout(False)
         CType(Me.printDTRBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.overAllBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.dtr_all, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.Overtime7_NUP, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1987,7 +1992,6 @@ Partial Class frmAttendance
     Friend WithEvents Label26 As Label
     Friend WithEvents Night7_TXT As TextBox
     Friend WithEvents Label23 As Label
-    Friend WithEvents Overtime7_TXT As TextBox
     Friend WithEvents Label21 As Label
     Friend WithEvents Days7_TXT As TextBox
     Friend WithEvents Label27 As Label
@@ -2052,4 +2056,5 @@ Partial Class frmAttendance
     Friend WithEvents Browse7_BTN As Button
     Friend WithEvents Path7_TXT As TextBox
     Friend WithEvents Import7_BTN As Button
+    Friend WithEvents Overtime7_NUP As NumericUpDown
 End Class
