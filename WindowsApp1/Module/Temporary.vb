@@ -1129,7 +1129,6 @@ Module Temporary
     End Sub
 
     Public Sub SAVE_EMPLOYEE_DETAILS_INCOMPLETE(BIONO As Integer, COMPANY As String, BRANCHCODE As String, RATE_DAILY As Decimal, RATE_MONTHLY As Decimal, PHOTO_CATEGORY As String)
-
         Dim sql As String = $"Select * From TBL_EMPLOYEE WHERE BIOMETRICID = {BIONO}"
         Using ds As DataSet = LoadSQL(sql, "TBL_EMPLOYEE")
             If ds.Tables(0).Rows.Count > 0 Then
@@ -1145,6 +1144,13 @@ Module Temporary
             End If
 
         End Using
+    End Sub
+
+    Friend Sub TestingScript_String(mysql As String)
+        Dim trimmedString As String = mysql.Trim()
+        Dim regexPattern As String = "\s+"
+        Dim resultString As String = System.Text.RegularExpressions.Regex.Replace(trimmedString, regexPattern, " ")
+        Console.WriteLine(resultString)
     End Sub
 
 End Module

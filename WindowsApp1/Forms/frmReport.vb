@@ -1043,6 +1043,7 @@ Public Class frmReport
                                         LEFT JOIN RECORDED_ALLOW_DEDUC C ON C.BIO_NO = B.BIOMETRIC_ID and C.PAYDATE = B.PAYDATE  
                                         WHERE B.PAYDATE = '{PAYDATE}' GROUP BY BRANCH_CODE, C.CATEGORY, TRANSAC_NAME, HO_CATEGORY, COMPANY"
 
+            TestingScript_String(mysql)
             Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
                 If ds.Tables(0).Rows.Count > 0 Then
                     progressBarStart(ds.Tables(0).Rows.Count)
@@ -1092,7 +1093,7 @@ Public Class frmReport
                                         INNER JOIN TBL_EMPLOYEE A ON A.BIOMETRICID = B.BIOMETRIC_ID 
                                         LEFT JOIN PAYROLL_COSTDISTRIB ON 1 = 1 
                                         WHERE B.PAYDATE = '{PAYDATE}' GROUP BY A.BRANCHCODE, HO_CATEGORY, NAMEE, NAME_CATEGORY, COMPANY"
-
+            TestingScript_String(mysql)
             Using dss As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
                 If dss.Tables(0).Rows.Count > 0 Then
                     progressBarStart(dss.Tables(0).Rows.Count)
@@ -2079,7 +2080,7 @@ Public Class frmReport
                                         inner Join TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID
                                         left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE  
                                         where A.PAYDATE = '{paydatee}' and B.COMPANY  = 'P&G UY' 
-                                        And B.BRANCHCODE IN ('COMI','KTV','PBA','WAVE', 'GHS MAINTENANCE') 
+                                        And B.BRANCHCODE IN ('COMI','KTV','PBA','WAVE', 'GHS-MAIN') 
                                         Order by B.BRANCHCODE asc"
 
             Dim mysql_PG_UY_HEADOFFICE As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
@@ -2273,10 +2274,7 @@ Public Class frmReport
     End Sub
 
     Private Sub LoadRows_NetPay(mysql As String, paydatee As String, Optional plus_ As String = Nothing)
-        Dim trimmedString As String = mysql.Trim()
-        Dim regexPattern As String = "\s+"
-        Dim resultString As String = System.Text.RegularExpressions.Regex.Replace(trimmedString, regexPattern, " ")
-        Console.WriteLine(resultString)
+        TestingScript_String(mysql)
 
         Dim GROUP As String = ""
         Dim period As String

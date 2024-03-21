@@ -1433,10 +1433,7 @@ Module SelectFromDatabase
                     from PAYROLL_DEDUCTION A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIO_NO WHERE (A.CATEGORY <> 'SSS LOAN' OR  A.CATEGORY <> 'PAG-IBIG LOAN') ORDER BY FULLNAME ASC"
         End If
 
-        Dim trimmedString As String = mysql.Trim()
-        Dim regexPattern As String = "\s+"
-        Dim resultString As String = System.Text.RegularExpressions.Regex.Replace(trimmedString, regexPattern, " ")
-        Console.WriteLine(resultString)
+        TestingScript_String(mysql)
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_DEDUCTION")
             LV.Items.Clear()
@@ -2043,10 +2040,7 @@ Module SelectFromDatabase
                             from TBL_EMPLOYEE A ORDER BY COMPANY, BRANCHCODE ASC "
         End If
 
-        Dim trimmedString As String = mysql.Trim()
-        Dim regexPattern As String = "\s+"
-        Dim resultString As String = System.Text.RegularExpressions.Regex.Replace(trimmedString, regexPattern, " ")
-        Console.WriteLine(resultString)
+        TestingScript_String(mysql)
 
         Using ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
             LV.Items.Clear()

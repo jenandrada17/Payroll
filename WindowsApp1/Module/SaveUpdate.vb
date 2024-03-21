@@ -739,6 +739,13 @@ Module SaveUpdate
                                     SpecialHol_hrs = IIf(IsDBNull(.Item("SPECHOLIDAY_HRS")), 0, .Item("SPECHOLIDAY_HRS"))
                                     Late_Adjustment = IIf(IsDBNull(.Item("LATE_ADJUSTMENT")), 0, .Item("LATE_ADJUSTMENT"))
                                     Late_Approved = IIf(IsDBNull(.Item("LATE_APPROVED")), 0, .Item("LATE_APPROVED"))
+
+                                    'IF IN CASE BRANCH MANUAL
+                                    Training_REGHoliday = IIf(IsDBNull(.Item("TRAINING_REGHOLIDAY")), 0, .Item("TRAINING_REGHOLIDAY"))
+                                    Training_SPECHoliday = IIf(IsDBNull(.Item("TRAINING_SPECHOLIDAY")), 0, .Item("TRAINING_SPECHOLIDAY"))
+                                    training_overtime = IIf(IsDBNull(.Item("TRAINING_OVERTIME")), 0, .Item("TRAINING_OVERTIME"))
+                                    training_late = IIf(IsDBNull(.Item("TRAINING_LATE")), 0, .Item("TRAINING_LATE"))
+                                    training_undertime = IIf(IsDBNull(.Item("TRAINING_UNDERTIME")), 0, .Item("TRAINING_UNDERTIME"))
                                 End If
 
                                 SIL = .Item("SIL") + Get_SIL("PAYROLL_SCHED_COUNT", $"PAYROLL_SCHED_COUNT WHERE BIO_NO = '{bioNo}' AND PAYDATE = '{paydate_}'")
@@ -746,7 +753,7 @@ Module SaveUpdate
                         End If
                     End Using
 
-                    '====================================== IF TRAINEE GET TRAINING DAYS TO CALCULATE TRAINING FEE ===============================================
+                    '====================================== IF TRAINEE GET TRAINING DAYS TO CALCULATE TRAINING FEE (FOR HEAD OFFICE ONLY) ===============================================
                     If Not IsDBNull(.Item("DATEHIRED")) Then
                         Dim training_days As Integer
 
@@ -839,6 +846,8 @@ Module SaveUpdate
                             SaveTraining_days(bioNo, paydate_, noOf_days_training, Training_REGHoliday, Training_SPECHoliday, training_overtime, training_late.TotalMinutes, training_undertime.TotalMinutes)
                         End If
                     End If
+
+                    '====================================== IF TRAINEE GET TRAINING DAYS TO CALCULATE TRAINING FEE (FOR BRANCHES MANUAL ONLY) ===============================================
 
                     '============================================= BENIFITS CONTRIBUTION =========================================================  
                     Dim trainee_rate As Decimal = rate * 0.75
