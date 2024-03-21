@@ -1408,7 +1408,7 @@ Public Class frmAttendance
                 Dim nightRate As String = IIf(eCell(row, 8).Value = Nothing, 0, eCell(row, 8).Value)
                 Dim sil As String = IIf(eCell(row, 9).Value = Nothing, 0, eCell(row, 9).Value)
                 Dim regHol_additional As Integer = IIf(eCell(row, 10).Value = Nothing, 0, eCell(row, 10).Value)
-                Dim regHoliday As Integer = CInt(TotalRHoliday_LBL.Text) + regHol_additional
+                Dim regHoliday As Integer = REGHolidayCount(starting_date, ending_date) + regHol_additional
 
                 If totalDays <> 0 Then
                     SaveAttendanceEE(bioNo, payroll, totalDays, overtime, late, undertime,

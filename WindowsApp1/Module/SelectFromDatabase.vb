@@ -673,7 +673,7 @@ Module SelectFromDatabase
 
     Public Function Get_SSS(monthly_Basic As Decimal) As (EE As Decimal, ER As Decimal, EC As Decimal, total As Decimal)
 
-        Console.WriteLine("monthly_Basic" & monthly_Basic)
+        'Console.WriteLine("monthly_Basic" & monthly_Basic)
         Dim ee As Decimal = 0
         Dim er As Decimal = 0
         Dim ec As Decimal = 0
