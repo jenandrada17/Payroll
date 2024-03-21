@@ -1227,7 +1227,8 @@ Public Class frmAttendance
                 End If
 
                 '======================== HOLIDAY ============================ 
-                Dim RHOLIDAY As Integer = REGHolidayCount(starting_date, ending_date)
+                Dim regHol_additional As Integer = IIf(RegHol7_TXT.Text = Nothing, 0, RegHol7_TXT.Text)
+                Dim RHOLIDAY As Integer = REGHolidayCount(starting_date, ending_date) + regHol_additional
                 Dim specHoliday_hrs As Double = IIf(SpecHol7_TXT.Text = Nothing, 0, SpecHol7_TXT.Text)
                 Dim SHOLIDAY As Integer = IIf(specHoliday_hrs = 0, 0, specHoliday_hrs / 8)
                 If specHoliday_hrs Mod 8 > 0 Then SHOLIDAY += 1
@@ -1260,7 +1261,7 @@ Public Class frmAttendance
         End If
     End Sub
 
-    Private Sub Hours7_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Undertime7_TXT.KeyPress, Night7_TXT.KeyPress, Late7_TXT.KeyPress, Days7_TXT.KeyPress
+    Private Sub Hours7_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Undertime7_TXT.KeyPress, Night7_TXT.KeyPress, Late7_TXT.KeyPress, Days7_TXT.KeyPress, SpecHol7_TXT.KeyPress, RegHol7_TXT.KeyPress
         If e.KeyChar <> ChrW(Keys.Back) Then
             If Not Char.IsNumber(e.KeyChar) AndAlso Not Char.IsControl(e.KeyChar) Then
                 e.Handled = True
@@ -1406,9 +1407,12 @@ Public Class frmAttendance
                 Dim specHoliday_hrs As String = IIf(eCell(row, 7).Value = Nothing, 0, eCell(row, 7).Value)
                 Dim nightRate As String = IIf(eCell(row, 8).Value = Nothing, 0, eCell(row, 8).Value)
                 Dim sil As String = IIf(eCell(row, 9).Value = Nothing, 0, eCell(row, 9).Value)
-                Dim bhouse_allowance As String = IIf(eCell(row, 10).Value = Nothing, 0, eCell(row, 10).Value)
-                Dim performance_allowance As String = IIf(eCell(row, 11).Value = Nothing, 0, eCell(row, 11).Value)
-                Dim fare_allowance As String = IIf(eCell(row, 12).Value = Nothing, 0, eCell(row, 12).Value)
+                Dim regHol_additional As Integer = IIf(eCell(row, 10).Value = Nothing, 0, eCell(row, 10).Value)
+                Dim regHoliday As Integer = CInt(TotalRHoliday_LBL.Text) + regHol_additional
+
+                'Dim bhouse_allowance As String = IIf(eCell(row, 10).Value = Nothing, 0, eCell(row, 10).Value)
+                'Dim performance_allowance As String = IIf(eCell(row, 11).Value = Nothing, 0, eCell(row, 11).Value)
+                'Dim fare_allowance As String = IIf(eCell(row, 12).Value = Nothing, 0, eCell(row, 12).Value)
 
                 'If bhouse_allowance <> 0 Then
                 '    SaveAllowance(0, bioNo, "BH ALLOWANCE", bhouse_allowance, "YES", "OPEN PAYROLL", 0, Today)
@@ -1430,7 +1434,7 @@ Public Class frmAttendance
 
                 If totalDays <> 0 Then
                     SaveAttendanceEE(bioNo, payroll, totalDays, overtime, late, undertime,
-                                 TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text, specHoliday_hrs, sil, Nothing, Nothing, Nothing, nightRate, True)
+                                 regHoliday, TotalSHoliday_LBL.Text, specHoliday_hrs, sil, Nothing, Nothing, Nothing, nightRate, True)
 
                     SavePayout_IndividualL(bioNo, payroll, starting_date, ending_date)
 

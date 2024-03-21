@@ -939,7 +939,7 @@ Module SaveUpdate
 
                     '============================ CHECK WITH TRAINING DAYS COVERED ======================== 
                     If noOf_days_training = 0 And exempted_trainee = 0 Then
-                        '======================== CHECK IF CLOSE PAYROLL ==================================   
+                        '======================== CHECK IF CLOSE PAYROLL ================================== 
                         Dim date_pay As DateTime = Convert.ToDateTime(paydate_)
                         date_pay = date_pay.ToString("d")
 

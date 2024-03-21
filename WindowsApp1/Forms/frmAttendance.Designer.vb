@@ -23,12 +23,14 @@ Partial Class frmAttendance
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim DataGridViewCellStyle16 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle19 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle20 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle17 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle18 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim ReportDataSource4 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim DataGridViewCellStyle11 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle14 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle15 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle12 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle13 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim ReportDataSource3 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Me.overAllBindingSource = New System.Windows.Forms.BindingSource(Me.components)
+        Me.dtr_all = New WindowsApp1.dtr_all()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Attendance_Tab = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
@@ -130,6 +132,9 @@ Partial Class frmAttendance
         Me.Label30 = New System.Windows.Forms.Label()
         Me.Paydate7_CB = New System.Windows.Forms.ComboBox()
         Me.Panel2 = New System.Windows.Forms.Panel()
+        Me.RegHol7_TXT = New System.Windows.Forms.TextBox()
+        Me.Label37 = New System.Windows.Forms.Label()
+        Me.Overtime7_NUP = New System.Windows.Forms.NumericUpDown()
         Me.SpecHol7_TXT = New System.Windows.Forms.TextBox()
         Me.Label36 = New System.Windows.Forms.Label()
         Me.SIL7_NUP = New System.Windows.Forms.NumericUpDown()
@@ -186,9 +191,9 @@ Partial Class frmAttendance
         Me.RE_NAME_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.RE_BIO_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.RE_BRANCH_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.overAllBindingSource = New System.Windows.Forms.BindingSource(Me.components)
-        Me.dtr_all = New WindowsApp1.dtr_all()
-        Me.Overtime7_NUP = New System.Windows.Forms.NumericUpDown()
+        Me.Label39 = New System.Windows.Forms.Label()
+        CType(Me.overAllBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.dtr_all, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Attendance_Tab.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.PI_Panel.SuspendLayout()
@@ -204,6 +209,7 @@ Partial Class frmAttendance
         Me.GroupBox1.SuspendLayout()
         Me.TabPage2.SuspendLayout()
         Me.Panel2.SuspendLayout()
+        CType(Me.Overtime7_NUP, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.SIL7_NUP, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabPage3.SuspendLayout()
         Me.Panel1.SuspendLayout()
@@ -213,10 +219,17 @@ Partial Class frmAttendance
         Me.Branch_group.SuspendLayout()
         Me.ContextMenu_Late.SuspendLayout()
         CType(Me.printDTRBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.overAllBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.dtr_all, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.Overtime7_NUP, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
+        '
+        'overAllBindingSource
+        '
+        Me.overAllBindingSource.DataMember = "overAll"
+        Me.overAllBindingSource.DataSource = Me.dtr_all
+        '
+        'dtr_all
+        '
+        Me.dtr_all.DataSetName = "dtr_all"
+        Me.dtr_all.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema
         '
         'Label1
         '
@@ -956,34 +969,34 @@ Partial Class frmAttendance
         Me.DataGridView1.AllowUserToAddRows = False
         Me.DataGridView1.AllowUserToResizeColumns = False
         Me.DataGridView1.AllowUserToResizeRows = False
-        DataGridViewCellStyle16.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.DataGridView1.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle16
+        DataGridViewCellStyle11.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DataGridView1.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle11
         Me.DataGridView1.BackgroundColor = System.Drawing.Color.White
         Me.DataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.DataGridView1.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText
         Me.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.DataGridView1.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Date_DataGrid, Me.AM_In_DataGrid, Me.AM_Out_DataGrid, Me.PM_IN_DataGrid, Me.PM_Out_DataGrid, Me.Select_Datagrid})
-        DataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle19.BackColor = System.Drawing.SystemColors.InactiveCaption
-        DataGridViewCellStyle19.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle19.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle19.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle19.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle19.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.DataGridView1.DefaultCellStyle = DataGridViewCellStyle19
+        DataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle14.BackColor = System.Drawing.SystemColors.InactiveCaption
+        DataGridViewCellStyle14.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle14.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle14.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle14.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.DataGridView1.DefaultCellStyle = DataGridViewCellStyle14
         Me.DataGridView1.Location = New System.Drawing.Point(6, 44)
         Me.DataGridView1.Name = "DataGridView1"
         Me.DataGridView1.RowHeadersVisible = False
-        DataGridViewCellStyle20.SelectionBackColor = System.Drawing.Color.Transparent
-        DataGridViewCellStyle20.SelectionForeColor = System.Drawing.Color.Transparent
-        Me.DataGridView1.RowsDefaultCellStyle = DataGridViewCellStyle20
+        DataGridViewCellStyle15.SelectionBackColor = System.Drawing.Color.Transparent
+        DataGridViewCellStyle15.SelectionForeColor = System.Drawing.Color.Transparent
+        Me.DataGridView1.RowsDefaultCellStyle = DataGridViewCellStyle15
         Me.DataGridView1.Size = New System.Drawing.Size(684, 487)
         Me.DataGridView1.TabIndex = 65
         '
         'Date_DataGrid
         '
-        DataGridViewCellStyle17.NullValue = Nothing
-        Me.Date_DataGrid.DefaultCellStyle = DataGridViewCellStyle17
+        DataGridViewCellStyle12.NullValue = Nothing
+        Me.Date_DataGrid.DefaultCellStyle = DataGridViewCellStyle12
         Me.Date_DataGrid.HeaderText = "Date"
         Me.Date_DataGrid.Name = "Date_DataGrid"
         Me.Date_DataGrid.ReadOnly = True
@@ -993,9 +1006,9 @@ Partial Class frmAttendance
         '
         'AM_In_DataGrid
         '
-        DataGridViewCellStyle18.Format = "t"
-        DataGridViewCellStyle18.NullValue = Nothing
-        Me.AM_In_DataGrid.DefaultCellStyle = DataGridViewCellStyle18
+        DataGridViewCellStyle13.Format = "t"
+        DataGridViewCellStyle13.NullValue = Nothing
+        Me.AM_In_DataGrid.DefaultCellStyle = DataGridViewCellStyle13
         Me.AM_In_DataGrid.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.[Nothing]
         Me.AM_In_DataGrid.HeaderText = "In"
         Me.AM_In_DataGrid.Name = "AM_In_DataGrid"
@@ -1164,7 +1177,7 @@ Partial Class frmAttendance
         'Browse7_BTN
         '
         Me.Browse7_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Browse7_BTN.Location = New System.Drawing.Point(328, 6)
+        Me.Browse7_BTN.Location = New System.Drawing.Point(516, 6)
         Me.Browse7_BTN.Name = "Browse7_BTN"
         Me.Browse7_BTN.Size = New System.Drawing.Size(82, 33)
         Me.Browse7_BTN.TabIndex = 115
@@ -1177,13 +1190,13 @@ Partial Class frmAttendance
         Me.Path7_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Path7_TXT.Location = New System.Drawing.Point(4, 6)
         Me.Path7_TXT.Name = "Path7_TXT"
-        Me.Path7_TXT.Size = New System.Drawing.Size(318, 33)
+        Me.Path7_TXT.Size = New System.Drawing.Size(506, 33)
         Me.Path7_TXT.TabIndex = 113
         '
         'Import7_BTN
         '
         Me.Import7_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Import7_BTN.Location = New System.Drawing.Point(416, 6)
+        Me.Import7_BTN.Location = New System.Drawing.Point(604, 6)
         Me.Import7_BTN.Name = "Import7_BTN"
         Me.Import7_BTN.Size = New System.Drawing.Size(82, 33)
         Me.Import7_BTN.TabIndex = 114
@@ -1265,6 +1278,9 @@ Partial Class frmAttendance
         '
         'Panel2
         '
+        Me.Panel2.Controls.Add(Me.Label39)
+        Me.Panel2.Controls.Add(Me.RegHol7_TXT)
+        Me.Panel2.Controls.Add(Me.Label37)
         Me.Panel2.Controls.Add(Me.Overtime7_NUP)
         Me.Panel2.Controls.Add(Me.SpecHol7_TXT)
         Me.Panel2.Controls.Add(Me.Label36)
@@ -1283,8 +1299,37 @@ Partial Class frmAttendance
         Me.Panel2.Controls.Add(Me.Label25)
         Me.Panel2.Location = New System.Drawing.Point(516, 46)
         Me.Panel2.Name = "Panel2"
-        Me.Panel2.Size = New System.Drawing.Size(629, 197)
+        Me.Panel2.Size = New System.Drawing.Size(629, 235)
         Me.Panel2.TabIndex = 109
+        '
+        'RegHol7_TXT
+        '
+        Me.RegHol7_TXT.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.RegHol7_TXT.Location = New System.Drawing.Point(139, 190)
+        Me.RegHol7_TXT.Name = "RegHol7_TXT"
+        Me.RegHol7_TXT.Size = New System.Drawing.Size(140, 35)
+        Me.RegHol7_TXT.TabIndex = 117
+        '
+        'Label37
+        '
+        Me.Label37.AutoSize = True
+        Me.Label37.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label37.Location = New System.Drawing.Point(22, 190)
+        Me.Label37.Name = "Label37"
+        Me.Label37.Size = New System.Drawing.Size(115, 27)
+        Me.Label37.TabIndex = 118
+        Me.Label37.Text = "Reg. Hol.   (day)"
+        '
+        'Overtime7_NUP
+        '
+        Me.Overtime7_NUP.DecimalPlaces = 1
+        Me.Overtime7_NUP.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Overtime7_NUP.Increment = New Decimal(New Integer() {5, 0, 0, 65536})
+        Me.Overtime7_NUP.Location = New System.Drawing.Point(139, 59)
+        Me.Overtime7_NUP.Maximum = New Decimal(New Integer() {200, 0, 0, 0})
+        Me.Overtime7_NUP.Name = "Overtime7_NUP"
+        Me.Overtime7_NUP.Size = New System.Drawing.Size(140, 35)
+        Me.Overtime7_NUP.TabIndex = 116
         '
         'SpecHol7_TXT
         '
@@ -1346,7 +1391,7 @@ Partial Class frmAttendance
         Me.Cancel7_BTN.BackColor = System.Drawing.Color.RosyBrown
         Me.Cancel7_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.Cancel7_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Cancel7_BTN.Location = New System.Drawing.Point(337, 143)
+        Me.Cancel7_BTN.Location = New System.Drawing.Point(337, 164)
         Me.Cancel7_BTN.Name = "Cancel7_BTN"
         Me.Cancel7_BTN.Size = New System.Drawing.Size(117, 37)
         Me.Cancel7_BTN.TabIndex = 108
@@ -1358,7 +1403,7 @@ Partial Class frmAttendance
         Me.Save7_BTN.BackColor = System.Drawing.Color.LightSalmon
         Me.Save7_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.Save7_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Save7_BTN.Location = New System.Drawing.Point(497, 143)
+        Me.Save7_BTN.Location = New System.Drawing.Point(497, 164)
         Me.Save7_BTN.Name = "Save7_BTN"
         Me.Save7_BTN.Size = New System.Drawing.Size(120, 37)
         Me.Save7_BTN.TabIndex = 107
@@ -1584,9 +1629,9 @@ Partial Class frmAttendance
         'RptViewer_DTR
         '
         Me.RptViewer_DTR.Dock = System.Windows.Forms.DockStyle.Fill
-        ReportDataSource4.Name = "DataSet1"
-        ReportDataSource4.Value = Me.overAllBindingSource
-        Me.RptViewer_DTR.LocalReport.DataSources.Add(ReportDataSource4)
+        ReportDataSource3.Name = "DataSet1"
+        ReportDataSource3.Value = Me.overAllBindingSource
+        Me.RptViewer_DTR.LocalReport.DataSources.Add(ReportDataSource3)
         Me.RptViewer_DTR.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_DTR_ByGroup.rdlc"
         Me.RptViewer_DTR.Location = New System.Drawing.Point(0, 0)
         Me.RptViewer_DTR.Name = "RptViewer_DTR"
@@ -1821,26 +1866,15 @@ Partial Class frmAttendance
         Me.RE_BRANCH_DGV.ReadOnly = True
         Me.RE_BRANCH_DGV.Width = 140
         '
-        'overAllBindingSource
+        'Label39
         '
-        Me.overAllBindingSource.DataMember = "overAll"
-        Me.overAllBindingSource.DataSource = Me.dtr_all
-        '
-        'dtr_all
-        '
-        Me.dtr_all.DataSetName = "dtr_all"
-        Me.dtr_all.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema
-        '
-        'Overtime7_NUP
-        '
-        Me.Overtime7_NUP.DecimalPlaces = 1
-        Me.Overtime7_NUP.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Overtime7_NUP.Increment = New Decimal(New Integer() {5, 0, 0, 65536})
-        Me.Overtime7_NUP.Location = New System.Drawing.Point(139, 59)
-        Me.Overtime7_NUP.Maximum = New Decimal(New Integer() {200, 0, 0, 0})
-        Me.Overtime7_NUP.Name = "Overtime7_NUP"
-        Me.Overtime7_NUP.Size = New System.Drawing.Size(140, 35)
-        Me.Overtime7_NUP.TabIndex = 116
+        Me.Label39.AutoSize = True
+        Me.Label39.Font = New System.Drawing.Font("Dubai", 8.249999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label39.Location = New System.Drawing.Point(37, 211)
+        Me.Label39.Name = "Label39"
+        Me.Label39.Size = New System.Drawing.Size(84, 18)
+        Me.Label39.TabIndex = 116
+        Me.Label39.Text = "(Additional only)"
         '
         'frmAttendance
         '
@@ -1853,6 +1887,8 @@ Partial Class frmAttendance
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Name = "frmAttendance"
         Me.Text = " "
+        CType(Me.overAllBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.dtr_all, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Attendance_Tab.ResumeLayout(False)
         Me.TabPage1.ResumeLayout(False)
         Me.TabPage1.PerformLayout()
@@ -1876,6 +1912,7 @@ Partial Class frmAttendance
         Me.TabPage2.PerformLayout()
         Me.Panel2.ResumeLayout(False)
         Me.Panel2.PerformLayout()
+        CType(Me.Overtime7_NUP, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.SIL7_NUP, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabPage3.ResumeLayout(False)
         Me.TabPage3.PerformLayout()
@@ -1889,9 +1926,6 @@ Partial Class frmAttendance
         Me.Branch_group.PerformLayout()
         Me.ContextMenu_Late.ResumeLayout(False)
         CType(Me.printDTRBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.overAllBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.dtr_all, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.Overtime7_NUP, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -2057,4 +2091,7 @@ Partial Class frmAttendance
     Friend WithEvents Path7_TXT As TextBox
     Friend WithEvents Import7_BTN As Button
     Friend WithEvents Overtime7_NUP As NumericUpDown
+    Friend WithEvents RegHol7_TXT As TextBox
+    Friend WithEvents Label37 As Label
+    Friend WithEvents Label39 As Label
 End Class
