@@ -1410,28 +1410,6 @@ Public Class frmAttendance
                 Dim regHol_additional As Integer = IIf(eCell(row, 10).Value = Nothing, 0, eCell(row, 10).Value)
                 Dim regHoliday As Integer = CInt(TotalRHoliday_LBL.Text) + regHol_additional
 
-                'Dim bhouse_allowance As String = IIf(eCell(row, 10).Value = Nothing, 0, eCell(row, 10).Value)
-                'Dim performance_allowance As String = IIf(eCell(row, 11).Value = Nothing, 0, eCell(row, 11).Value)
-                'Dim fare_allowance As String = IIf(eCell(row, 12).Value = Nothing, 0, eCell(row, 12).Value)
-
-                'If bhouse_allowance <> 0 Then
-                '    SaveAllowance(0, bioNo, "BH ALLOWANCE", bhouse_allowance, "YES", "OPEN PAYROLL", 0, Today)
-                '    SaveAllowance_HISTORY(bioNo, "BH INCENTIVES", bhouse_allowance, "YES", "OPEN PAYROLL", 0, Today)
-                '    SaveLogs($"IMPORT ALLOWANCE FROM DTR - {fullname} ({bioNo}), Category(BH ALLOWANCE), Amount({bhouse_allowance}), Sched(OPEN PAYROLL), Effectivity({Today.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
-                'End If
-
-                'If performance_allowance <> 0 Then
-                '    SaveAllowance(0, bioNo, "PERFORMANCE INCENTIVES", performance_allowance, "YES", "OPEN PAYROLL", 0, Today)
-                '    SaveAllowance_HISTORY(bioNo, "PERFORMANCE INCENTIVES", performance_allowance, "YES", "OPEN PAYROLL", 0, Today)
-                '    SaveLogs($"IMPORT ALLOWANCE FROM DTR - {fullname} ({bioNo}), Category(PERFORMANCE ALLOWANCE), Amount({performance_allowance}), Sched(OPEN PAYROLL), Effectivity({Today.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
-                'End If
-
-                'If fare_allowance <> 0 Then
-                '    SaveAllowance(0, bioNo, "TRANSPORTATION", fare_allowance, "YES", "OPEN PAYROLL", 0, Today)
-                '    SaveAllowance_HISTORY(bioNo, "TRANSPORTATION", fare_allowance, "YES", "OPEN PAYROLL", 0, Today)
-                '    SaveLogs($"IMPORT ALLOWANCE FROM DTR - {fullname} ({bioNo}), Category(TRANSPORTATION), Amount({fare_allowance}), Sched(OPEN PAYROLL), Effectivity({Today.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
-                'End If
-
                 If totalDays <> 0 Then
                     SaveAttendanceEE(bioNo, payroll, totalDays, overtime, late, undertime,
                                  regHoliday, TotalSHoliday_LBL.Text, specHoliday_hrs, sil, Nothing, Nothing, Nothing, nightRate, True)
