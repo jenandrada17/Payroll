@@ -1,4 +1,5 @@
-﻿Imports Microsoft.Internal
+﻿Imports System.Windows.Media.Media3D
+Imports Microsoft.Internal
 Imports Microsoft.Office.Interop
 
 Public Class frmAttendance
@@ -1238,12 +1239,24 @@ Public Class frmAttendance
                 Dim sil As Double = IIf(SIL7_NUP.Text = Nothing, 0, SIL7_NUP.Text)
                 Dim night7 As Integer = IIf(Night7_TXT.Text = Nothing, 0, Night7_TXT.Text)
 
-                'SaveAttendanceEE(biometric As Integer, Paydate As String, days As String, overTime As String, Late_total As String, under_total As String,
-                '                regHoliday As String, specHoliday As String, specHoliday_hrs As Double, SIL As Double, LATE_ADJUSTMENT As String, Optional LATE_APPROVED As String = "",
-                '                        Optional MORNING_OT As String = "", Optional NIGHT_RATE As String = "", Optional BRANCH As Boolean = False)
+                Dim TRAINING_DAYS As Integer = IIf(Night7_TXT.Text = Nothing, 0, Night7_TXT.Text)
+                Dim TRAINING_REGHOLIDAY As Integer = IIf(Night7_TXT.Text = Nothing, 0, Night7_TXT.Text)
+                Dim TRAINING_SPECHOLIDAY As Integer = IIf(Night7_TXT.Text = Nothing, 0, Night7_TXT.Text)
+                Dim TRAINING_OVERTIME As Integer = IIf(Night7_TXT.Text = Nothing, 0, Night7_TXT.Text)
+                Dim TRAINING_LATE As Integer = IIf(Night7_TXT.Text = Nothing, 0, Night7_TXT.Text)
+                Dim TRAINING_UNDERTIME As Integer = IIf(Night7_TXT.Text = Nothing, 0, Night7_TXT.Text)
+
+
+                'Friend Sub SaveAttendanceEE(biometric As Integer, paydate As String, days As String, overTime As String, late_total As String, under_total As String,
+                '                            regHoliday As String, specHoliday As String, specHoliday_hrs As Double, SIL As Double, LATE_ADJUSTMENT As String, Optional LATE_APPROVED As String = "",
+                '                                    Optional MORNING_OT As String = "", Optional NIGHT_RATE As String = "", Optional BRANCH As Boolean = False,
+                '                                    Optional TRAINING_DAYS As String = "", Optional TRAINING_REGHOLIDAY As String = "", Optional TRAINING_SPECHOLIDAY As String = "",
+                '                                    Optional TRAINING_OVERTIME As String = "", Optional TRAINING_LATE As String = "", Optional TRAINING_UNDERTIME As String = "")
+
 
                 SaveAttendanceEE(Bio7_TXT.Text, PAYROLL, Days7_TXT.Text, overtime, latee, undertimee,
-                                     RHOLIDAY, SHOLIDAY, specHoliday_hrs, sil, 0, "", "", night7, True)
+                                     RHOLIDAY, SHOLIDAY, specHoliday_hrs, sil, 0, "", "", night7, True, TRAINING_DAYS,
+                                     TRAINING_REGHOLIDAY, TRAINING_SPECHOLIDAY, TRAINING_OVERTIME, TRAINING_LATE, TRAINING_UNDERTIME)
 
                 SavePayout_IndividualL(Bio7_TXT.Text, PAYROLL, starting_date, ending_date)
 
@@ -1410,9 +1423,17 @@ Public Class frmAttendance
                 Dim regHol_additional As Integer = IIf(eCell(row, 10).Value = Nothing, 0, eCell(row, 10).Value)
                 Dim regHoliday As Integer = REGHolidayCount(starting_date, ending_date) + regHol_additional
 
+                Dim TRAINING_DAYS As Integer = IIf(eCell(row, 11).Value = Nothing, 0, eCell(row, 11).Value)
+                Dim TRAINING_OVERTIME As Integer = IIf(eCell(row, 12).Value = Nothing, 0, eCell(row, 12).Value)
+                Dim TRAINING_LATE As Integer = IIf(eCell(row, 13).Value = Nothing, 0, eCell(row, 13).Value)
+                Dim TRAINING_UNDERTIME As Integer = IIf(eCell(row, 14).Value = Nothing, 0, eCell(row, 14).Value)
+                Dim TRAINING_REGHOLIDAY As Integer = IIf(eCell(row, 15).Value = Nothing, 0, eCell(row, 15).Value)
+                Dim TRAINING_SPECHOLIDAY As Integer = IIf(eCell(row, 15).Value = Nothing, 0, eCell(row, 15).Value)
+
                 If totalDays <> 0 Then
                     SaveAttendanceEE(bioNo, payroll, totalDays, overtime, late, undertime,
-                                 regHoliday, TotalSHoliday_LBL.Text, specHoliday_hrs, sil, Nothing, Nothing, Nothing, nightRate, True)
+                                 regHoliday, TotalSHoliday_LBL.Text, specHoliday_hrs, sil, Nothing, Nothing, Nothing, nightRate, True,
+                                 TRAINING_DAYS, TRAINING_REGHOLIDAY, TRAINING_SPECHOLIDAY, TRAINING_OVERTIME, TRAINING_LATE, TRAINING_UNDERTIME)
 
                     SavePayout_IndividualL(bioNo, payroll, starting_date, ending_date)
 

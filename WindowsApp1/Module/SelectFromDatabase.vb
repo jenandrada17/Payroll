@@ -2513,7 +2513,7 @@ Module SelectFromDatabase
         If ds.Tables(0).Rows.Count > 0 Then
             Dim dr As DataRow = ds.Tables(0).Rows(0)
             With dr
-                BRANCH_CODE = .Item("BRANCHCODE")
+                BRANCH_CODE = IIf(IsDBNull(.Item("BRANCHCODE")), Nothing, .Item("BRANCHCODE"))
             End With
         End If
 

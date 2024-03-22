@@ -44,11 +44,11 @@ Module SaveUpdate
 
     Friend Sub SaveAttendanceEE(biometric As Integer, paydate As String, days As String, overTime As String, late_total As String, under_total As String,
                                 regHoliday As String, specHoliday As String, specHoliday_hrs As Double, SIL As Double, LATE_ADJUSTMENT As String, Optional LATE_APPROVED As String = "",
-                                        Optional MORNING_OT As String = "", Optional NIGHT_RATE As String = "", Optional BRANCH As Boolean = False)
+                                        Optional MORNING_OT As String = "", Optional NIGHT_RATE As String = "", Optional BRANCH As Boolean = False,
+                                        Optional TRAINING_DAYS As Integer = 0, Optional TRAINING_REGHOLIDAY As Integer = 0, Optional TRAINING_SPECHOLIDAY As Integer = 0,
+                                        Optional TRAINING_OVERTIME As Integer = 0, Optional TRAINING_LATE As Integer = 0, Optional TRAINING_UNDERTIME As Integer = 0)
 
-        Dim mysql As String
-
-        mysql = $"Select * FROM PAYROLL_ATTENDANCE A inner join tbl_employee B on B.BIOMETRICID = A.BIOMETRICID where A.BIOMETRICID = '{biometric}' and PAYDATE = '{paydate}'"
+        Dim mysql As String = $"Select * FROM PAYROLL_ATTENDANCE A inner join tbl_employee B on B.BIOMETRICID = A.BIOMETRICID where A.BIOMETRICID = '{biometric}' and PAYDATE = '{paydate}'"
         Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
         If dss.Tables(0).Rows.Count > 0 Then
             With dss.Tables(0).Rows(0)
@@ -79,7 +79,16 @@ Module SaveUpdate
 
                 If MORNING_OT <> Nothing Then .Item("MORNING_OT") = MORNING_OT
 
-                If BRANCH = True Then .Item("BRANCH_MANUAL") = True
+                If BRANCH = True Then
+                    .Item("BRANCH_MANUAL") = True
+
+                    If TRAINING_DAYS <> 0 Then .Item("TRAINING_DAYS") = TRAINING_DAYS
+                    If TRAINING_REGHOLIDAY <> 0 Then .Item("TRAINING_REGHOLIDAY") = TRAINING_REGHOLIDAY
+                    If TRAINING_SPECHOLIDAY <> 0 Then .Item("TRAINING_SPECHOLIDAY") = TRAINING_SPECHOLIDAY
+                    If TRAINING_OVERTIME <> 0 Then .Item("TRAINING_OVERTIME") = TRAINING_OVERTIME
+                    If TRAINING_LATE <> 0 Then .Item("TRAINING_LATE") = TRAINING_LATE
+                    If TRAINING_UNDERTIME <> 0 Then .Item("TRAINING_UNDERTIME") = TRAINING_UNDERTIME
+                End If
 
             End With
             SaveEntry(dss, False)
@@ -117,7 +126,17 @@ Module SaveUpdate
 
                     If MORNING_OT <> Nothing Then .Item("MORNING_OT") = MORNING_OT
 
-                    If BRANCH = True Then .Item("BRANCH_MANUAL") = True
+                    If BRANCH = True Then
+                        .Item("BRANCH_MANUAL") = True
+
+                        If TRAINING_DAYS <> 0 Then .Item("TRAINING_DAYS") = TRAINING_DAYS
+                        If TRAINING_REGHOLIDAY <> 0 Then .Item("TRAINING_REGHOLIDAY") = TRAINING_REGHOLIDAY
+                        If TRAINING_SPECHOLIDAY <> 0 Then .Item("TRAINING_SPECHOLIDAY") = TRAINING_SPECHOLIDAY
+                        If TRAINING_OVERTIME <> 0 Then .Item("TRAINING_OVERTIME") = TRAINING_OVERTIME
+                        If TRAINING_LATE <> 0 Then .Item("TRAINING_LATE") = TRAINING_LATE
+                        If TRAINING_UNDERTIME <> 0 Then .Item("TRAINING_UNDERTIME") = TRAINING_UNDERTIME
+                    End If
+
                 End With
                 ds.Tables(0).Rows.Add(dsNewRow)
                 SaveEntry(ds)
@@ -712,12 +731,14 @@ Module SaveUpdate
                     End Try
 
                     Dim Training_REGHoliday = 0, Training_SPECHoliday As Integer = 0
+                    Dim Training_totalLate As Integer = 0, Training_totalUT As Integer = 0
                     Dim training_overtime As Double = 0
                     Dim training_late As TimeSpan = New TimeSpan(0, 0, 0, 0, 0)
                     Dim training_undertime As TimeSpan = New TimeSpan(0, 0, 0, 0, 0)
                     '============================= MINIMUM RATE CHANGE (DAYS COVERED) ==============================
                     Dim Rholiday_newMin_covred_training As Integer = 0
                     Dim Sholiday_newMin_covred_training As Integer = 0
+                    Dim branch_manual As Boolean = False
 
                     ''============================================= ATTENDANCE (TOTAL DAYS) =========================================================
                     Dim sql_1 As String = $"Select * From PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{bioNo}' and paydate = '{paydate_}'"
@@ -744,8 +765,9 @@ Module SaveUpdate
                                     Training_REGHoliday = IIf(IsDBNull(.Item("TRAINING_REGHOLIDAY")), 0, .Item("TRAINING_REGHOLIDAY"))
                                     Training_SPECHoliday = IIf(IsDBNull(.Item("TRAINING_SPECHOLIDAY")), 0, .Item("TRAINING_SPECHOLIDAY"))
                                     training_overtime = IIf(IsDBNull(.Item("TRAINING_OVERTIME")), 0, .Item("TRAINING_OVERTIME"))
-                                    training_late = IIf(IsDBNull(.Item("TRAINING_LATE")), 0, .Item("TRAINING_LATE"))
-                                    training_undertime = IIf(IsDBNull(.Item("TRAINING_UNDERTIME")), 0, .Item("TRAINING_UNDERTIME"))
+                                    Training_totalLate = IIf(IsDBNull(.Item("TRAINING_LATE")), 0, .Item("TRAINING_LATE"))
+                                    Training_totalUT = IIf(IsDBNull(.Item("TRAINING_UNDERTIME")), 0, .Item("TRAINING_UNDERTIME"))
+                                    branch_manual = IIf(IsDBNull(.Item("BRANCH_MANUAL")), False, .Item("BRANCH_MANUAL"))
                                 End If
 
                                 SIL = .Item("SIL") + Get_SIL("PAYROLL_SCHED_COUNT", $"PAYROLL_SCHED_COUNT WHERE BIO_NO = '{bioNo}' AND PAYDATE = '{paydate_}'")
@@ -843,7 +865,16 @@ Module SaveUpdate
                                 startingDate = startingDate.AddDays(1)
                             End While
 
-                            SaveTraining_days(bioNo, paydate_, noOf_days_training, Training_REGHoliday, Training_SPECHoliday, training_overtime, training_late.TotalMinutes, training_undertime.TotalMinutes)
+                            Dim train_late As Integer = training_late.TotalMinutes
+                            Dim train_ut As Integer = training_undertime.TotalMinutes
+
+                            'FOR BRANCH MANUAL 
+                            If branch_manual Then
+                                train_late = Training_totalLate
+                                train_ut = Training_totalUT
+                            End If
+
+                            SaveTraining_days(bioNo, paydate_, noOf_days_training, Training_REGHoliday, Training_SPECHoliday, training_overtime, train_late, train_ut)
                         End If
                     End If
 
