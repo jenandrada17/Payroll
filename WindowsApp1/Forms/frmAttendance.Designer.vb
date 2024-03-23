@@ -23,12 +23,12 @@ Partial Class frmAttendance
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim DataGridViewCellStyle11 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle14 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle15 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle12 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle13 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim ReportDataSource3 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim DataGridViewCellStyle61 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle64 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle65 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle62 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle63 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim ReportDataSource13 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
         Me.overAllBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.dtr_all = New WindowsApp1.dtr_all()
         Me.Label1 = New System.Windows.Forms.Label()
@@ -132,6 +132,7 @@ Partial Class frmAttendance
         Me.Label30 = New System.Windows.Forms.Label()
         Me.Paydate7_CB = New System.Windows.Forms.ComboBox()
         Me.Panel2 = New System.Windows.Forms.Panel()
+        Me.Label39 = New System.Windows.Forms.Label()
         Me.RegHol7_TXT = New System.Windows.Forms.TextBox()
         Me.Label37 = New System.Windows.Forms.Label()
         Me.Overtime7_NUP = New System.Windows.Forms.NumericUpDown()
@@ -191,7 +192,20 @@ Partial Class frmAttendance
         Me.RE_NAME_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.RE_BIO_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.RE_BRANCH_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Label39 = New System.Windows.Forms.Label()
+        Me.T_Late7_TXT = New System.Windows.Forms.TextBox()
+        Me.Label40 = New System.Windows.Forms.Label()
+        Me.T_RegHol7_TXT = New System.Windows.Forms.TextBox()
+        Me.Label41 = New System.Windows.Forms.Label()
+        Me.T_SpecHol7_TXT = New System.Windows.Forms.TextBox()
+        Me.Label42 = New System.Windows.Forms.Label()
+        Me.T_UT7_TXT = New System.Windows.Forms.TextBox()
+        Me.Label44 = New System.Windows.Forms.Label()
+        Me.T_OT7_TXT = New System.Windows.Forms.TextBox()
+        Me.Label45 = New System.Windows.Forms.Label()
+        Me.T_Days7_TXT = New System.Windows.Forms.TextBox()
+        Me.Label46 = New System.Windows.Forms.Label()
+        Me.T_Night7_TXT = New System.Windows.Forms.TextBox()
+        Me.Label43 = New System.Windows.Forms.Label()
         CType(Me.overAllBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.dtr_all, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Attendance_Tab.SuspendLayout()
@@ -969,34 +983,34 @@ Partial Class frmAttendance
         Me.DataGridView1.AllowUserToAddRows = False
         Me.DataGridView1.AllowUserToResizeColumns = False
         Me.DataGridView1.AllowUserToResizeRows = False
-        DataGridViewCellStyle11.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.DataGridView1.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle11
+        DataGridViewCellStyle61.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.DataGridView1.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle61
         Me.DataGridView1.BackgroundColor = System.Drawing.Color.White
         Me.DataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.DataGridView1.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText
         Me.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.DataGridView1.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.Date_DataGrid, Me.AM_In_DataGrid, Me.AM_Out_DataGrid, Me.PM_IN_DataGrid, Me.PM_Out_DataGrid, Me.Select_Datagrid})
-        DataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle14.BackColor = System.Drawing.SystemColors.InactiveCaption
-        DataGridViewCellStyle14.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle14.ForeColor = System.Drawing.SystemColors.ControlText
-        DataGridViewCellStyle14.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle14.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.DataGridView1.DefaultCellStyle = DataGridViewCellStyle14
+        DataGridViewCellStyle64.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle64.BackColor = System.Drawing.SystemColors.InactiveCaption
+        DataGridViewCellStyle64.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle64.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle64.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle64.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle64.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.DataGridView1.DefaultCellStyle = DataGridViewCellStyle64
         Me.DataGridView1.Location = New System.Drawing.Point(6, 44)
         Me.DataGridView1.Name = "DataGridView1"
         Me.DataGridView1.RowHeadersVisible = False
-        DataGridViewCellStyle15.SelectionBackColor = System.Drawing.Color.Transparent
-        DataGridViewCellStyle15.SelectionForeColor = System.Drawing.Color.Transparent
-        Me.DataGridView1.RowsDefaultCellStyle = DataGridViewCellStyle15
+        DataGridViewCellStyle65.SelectionBackColor = System.Drawing.Color.Transparent
+        DataGridViewCellStyle65.SelectionForeColor = System.Drawing.Color.Transparent
+        Me.DataGridView1.RowsDefaultCellStyle = DataGridViewCellStyle65
         Me.DataGridView1.Size = New System.Drawing.Size(684, 487)
         Me.DataGridView1.TabIndex = 65
         '
         'Date_DataGrid
         '
-        DataGridViewCellStyle12.NullValue = Nothing
-        Me.Date_DataGrid.DefaultCellStyle = DataGridViewCellStyle12
+        DataGridViewCellStyle62.NullValue = Nothing
+        Me.Date_DataGrid.DefaultCellStyle = DataGridViewCellStyle62
         Me.Date_DataGrid.HeaderText = "Date"
         Me.Date_DataGrid.Name = "Date_DataGrid"
         Me.Date_DataGrid.ReadOnly = True
@@ -1006,9 +1020,9 @@ Partial Class frmAttendance
         '
         'AM_In_DataGrid
         '
-        DataGridViewCellStyle13.Format = "t"
-        DataGridViewCellStyle13.NullValue = Nothing
-        Me.AM_In_DataGrid.DefaultCellStyle = DataGridViewCellStyle13
+        DataGridViewCellStyle63.Format = "t"
+        DataGridViewCellStyle63.NullValue = Nothing
+        Me.AM_In_DataGrid.DefaultCellStyle = DataGridViewCellStyle63
         Me.AM_In_DataGrid.DisplayStyle = System.Windows.Forms.DataGridViewComboBoxDisplayStyle.[Nothing]
         Me.AM_In_DataGrid.HeaderText = "In"
         Me.AM_In_DataGrid.Name = "AM_In_DataGrid"
@@ -1177,10 +1191,10 @@ Partial Class frmAttendance
         'Browse7_BTN
         '
         Me.Browse7_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Browse7_BTN.Location = New System.Drawing.Point(516, 6)
+        Me.Browse7_BTN.Location = New System.Drawing.Point(975, 5)
         Me.Browse7_BTN.Name = "Browse7_BTN"
         Me.Browse7_BTN.Size = New System.Drawing.Size(82, 33)
-        Me.Browse7_BTN.TabIndex = 115
+        Me.Browse7_BTN.TabIndex = 69
         Me.Browse7_BTN.Text = "Browse"
         Me.Browse7_BTN.UseVisualStyleBackColor = True
         '
@@ -1188,18 +1202,18 @@ Partial Class frmAttendance
         '
         Me.Path7_TXT.Enabled = False
         Me.Path7_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Path7_TXT.Location = New System.Drawing.Point(4, 6)
+        Me.Path7_TXT.Location = New System.Drawing.Point(577, 6)
         Me.Path7_TXT.Name = "Path7_TXT"
-        Me.Path7_TXT.Size = New System.Drawing.Size(506, 33)
-        Me.Path7_TXT.TabIndex = 113
+        Me.Path7_TXT.Size = New System.Drawing.Size(392, 33)
+        Me.Path7_TXT.TabIndex = 68
         '
         'Import7_BTN
         '
         Me.Import7_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Import7_BTN.Location = New System.Drawing.Point(604, 6)
+        Me.Import7_BTN.Location = New System.Drawing.Point(1063, 5)
         Me.Import7_BTN.Name = "Import7_BTN"
         Me.Import7_BTN.Size = New System.Drawing.Size(82, 33)
-        Me.Import7_BTN.TabIndex = 114
+        Me.Import7_BTN.TabIndex = 70
         Me.Import7_BTN.Text = "Import"
         Me.Import7_BTN.UseVisualStyleBackColor = True
         '
@@ -1213,11 +1227,11 @@ Partial Class frmAttendance
         Me.Branch_LV.FullRowSelect = True
         Me.Branch_LV.GridLines = True
         Me.Branch_LV.HideSelection = False
-        Me.Branch_LV.Location = New System.Drawing.Point(2, 290)
+        Me.Branch_LV.Location = New System.Drawing.Point(2, 345)
         Me.Branch_LV.MultiSelect = False
         Me.Branch_LV.Name = "Branch_LV"
-        Me.Branch_LV.Size = New System.Drawing.Size(1146, 295)
-        Me.Branch_LV.TabIndex = 112
+        Me.Branch_LV.Size = New System.Drawing.Size(1146, 240)
+        Me.Branch_LV.TabIndex = 94
         Me.Branch_LV.UseCompatibleStateImageBehavior = False
         Me.Branch_LV.View = System.Windows.Forms.View.Details
         '
@@ -1260,7 +1274,7 @@ Partial Class frmAttendance
         '
         Me.Label30.AutoSize = True
         Me.Label30.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label30.Location = New System.Drawing.Point(6, 181)
+        Me.Label30.Location = New System.Drawing.Point(3, 304)
         Me.Label30.Name = "Label30"
         Me.Label30.Size = New System.Drawing.Size(53, 25)
         Me.Label30.TabIndex = 111
@@ -1271,79 +1285,103 @@ Partial Class frmAttendance
         Me.Paydate7_CB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.Paydate7_CB.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Paydate7_CB.FormattingEnabled = True
-        Me.Paydate7_CB.Location = New System.Drawing.Point(89, 178)
+        Me.Paydate7_CB.Location = New System.Drawing.Point(86, 301)
         Me.Paydate7_CB.Name = "Paydate7_CB"
         Me.Paydate7_CB.Size = New System.Drawing.Size(151, 33)
-        Me.Paydate7_CB.TabIndex = 110
+        Me.Paydate7_CB.TabIndex = 91
         '
         'Panel2
         '
+        Me.Panel2.Controls.Add(Me.T_Night7_TXT)
+        Me.Panel2.Controls.Add(Me.Label43)
+        Me.Panel2.Controls.Add(Me.T_OT7_TXT)
+        Me.Panel2.Controls.Add(Me.T_Days7_TXT)
+        Me.Panel2.Controls.Add(Me.Label45)
+        Me.Panel2.Controls.Add(Me.T_UT7_TXT)
+        Me.Panel2.Controls.Add(Me.Label46)
+        Me.Panel2.Controls.Add(Me.Label44)
+        Me.Panel2.Controls.Add(Me.T_SpecHol7_TXT)
+        Me.Panel2.Controls.Add(Me.Label42)
+        Me.Panel2.Controls.Add(Me.T_RegHol7_TXT)
+        Me.Panel2.Controls.Add(Me.Label41)
+        Me.Panel2.Controls.Add(Me.T_Late7_TXT)
         Me.Panel2.Controls.Add(Me.Label39)
-        Me.Panel2.Controls.Add(Me.RegHol7_TXT)
-        Me.Panel2.Controls.Add(Me.Label37)
+        Me.Panel2.Controls.Add(Me.Label40)
         Me.Panel2.Controls.Add(Me.Overtime7_NUP)
+        Me.Panel2.Controls.Add(Me.Save7_BTN)
+        Me.Panel2.Controls.Add(Me.Cancel7_BTN)
         Me.Panel2.Controls.Add(Me.SpecHol7_TXT)
         Me.Panel2.Controls.Add(Me.Label36)
         Me.Panel2.Controls.Add(Me.SIL7_NUP)
         Me.Panel2.Controls.Add(Me.Label13)
         Me.Panel2.Controls.Add(Me.Undertime7_TXT)
         Me.Panel2.Controls.Add(Me.Label29)
-        Me.Panel2.Controls.Add(Me.Cancel7_BTN)
-        Me.Panel2.Controls.Add(Me.Save7_BTN)
         Me.Panel2.Controls.Add(Me.Days7_TXT)
         Me.Panel2.Controls.Add(Me.Label21)
+        Me.Panel2.Controls.Add(Me.RegHol7_TXT)
         Me.Panel2.Controls.Add(Me.Label23)
         Me.Panel2.Controls.Add(Me.Night7_TXT)
+        Me.Panel2.Controls.Add(Me.Label37)
         Me.Panel2.Controls.Add(Me.Label26)
         Me.Panel2.Controls.Add(Me.Late7_TXT)
         Me.Panel2.Controls.Add(Me.Label25)
-        Me.Panel2.Location = New System.Drawing.Point(516, 46)
+        Me.Panel2.Location = New System.Drawing.Point(4, 102)
         Me.Panel2.Name = "Panel2"
-        Me.Panel2.Size = New System.Drawing.Size(629, 235)
+        Me.Panel2.Size = New System.Drawing.Size(1144, 166)
         Me.Panel2.TabIndex = 109
+        '
+        'Label39
+        '
+        Me.Label39.AutoSize = True
+        Me.Label39.Font = New System.Drawing.Font("Dubai", 8.249999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label39.Location = New System.Drawing.Point(262, 66)
+        Me.Label39.Name = "Label39"
+        Me.Label39.Size = New System.Drawing.Size(84, 18)
+        Me.Label39.TabIndex = 116
+        Me.Label39.Text = "(Additional only)"
         '
         'RegHol7_TXT
         '
         Me.RegHol7_TXT.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.RegHol7_TXT.Location = New System.Drawing.Point(139, 190)
+        Me.RegHol7_TXT.Location = New System.Drawing.Point(376, 43)
         Me.RegHol7_TXT.Name = "RegHol7_TXT"
-        Me.RegHol7_TXT.Size = New System.Drawing.Size(140, 35)
-        Me.RegHol7_TXT.TabIndex = 117
+        Me.RegHol7_TXT.Size = New System.Drawing.Size(79, 35)
+        Me.RegHol7_TXT.TabIndex = 79
         '
         'Label37
         '
         Me.Label37.AutoSize = True
         Me.Label37.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label37.Location = New System.Drawing.Point(22, 190)
+        Me.Label37.Location = New System.Drawing.Point(253, 45)
         Me.Label37.Name = "Label37"
-        Me.Label37.Size = New System.Drawing.Size(115, 27)
+        Me.Label37.Size = New System.Drawing.Size(101, 27)
         Me.Label37.TabIndex = 118
-        Me.Label37.Text = "Reg. Hol.   (day)"
+        Me.Label37.Text = "Reg. Hol. (dd)"
         '
         'Overtime7_NUP
         '
         Me.Overtime7_NUP.DecimalPlaces = 1
         Me.Overtime7_NUP.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Overtime7_NUP.Increment = New Decimal(New Integer() {5, 0, 0, 65536})
-        Me.Overtime7_NUP.Location = New System.Drawing.Point(139, 59)
+        Me.Overtime7_NUP.Location = New System.Drawing.Point(112, 125)
         Me.Overtime7_NUP.Maximum = New Decimal(New Integer() {200, 0, 0, 0})
         Me.Overtime7_NUP.Name = "Overtime7_NUP"
-        Me.Overtime7_NUP.Size = New System.Drawing.Size(140, 35)
-        Me.Overtime7_NUP.TabIndex = 116
+        Me.Overtime7_NUP.Size = New System.Drawing.Size(79, 35)
+        Me.Overtime7_NUP.TabIndex = 77
         '
         'SpecHol7_TXT
         '
         Me.SpecHol7_TXT.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.SpecHol7_TXT.Location = New System.Drawing.Point(139, 144)
+        Me.SpecHol7_TXT.Location = New System.Drawing.Point(376, 84)
         Me.SpecHol7_TXT.Name = "SpecHol7_TXT"
-        Me.SpecHol7_TXT.Size = New System.Drawing.Size(140, 35)
-        Me.SpecHol7_TXT.TabIndex = 114
+        Me.SpecHol7_TXT.Size = New System.Drawing.Size(79, 35)
+        Me.SpecHol7_TXT.TabIndex = 80
         '
         'Label36
         '
         Me.Label36.AutoSize = True
         Me.Label36.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label36.Location = New System.Drawing.Point(22, 144)
+        Me.Label36.Location = New System.Drawing.Point(253, 84)
         Me.Label36.Name = "Label36"
         Me.Label36.Size = New System.Drawing.Size(114, 27)
         Me.Label36.TabIndex = 115
@@ -1352,17 +1390,17 @@ Partial Class frmAttendance
         'SIL7_NUP
         '
         Me.SIL7_NUP.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.SIL7_NUP.Location = New System.Drawing.Point(482, 93)
+        Me.SIL7_NUP.Location = New System.Drawing.Point(376, 124)
         Me.SIL7_NUP.Maximum = New Decimal(New Integer() {5, 0, 0, 0})
         Me.SIL7_NUP.Name = "SIL7_NUP"
-        Me.SIL7_NUP.Size = New System.Drawing.Size(135, 35)
-        Me.SIL7_NUP.TabIndex = 113
+        Me.SIL7_NUP.Size = New System.Drawing.Size(79, 35)
+        Me.SIL7_NUP.TabIndex = 81
         '
         'Label13
         '
         Me.Label13.AutoSize = True
         Me.Label13.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label13.Location = New System.Drawing.Point(351, 100)
+        Me.Label13.Location = New System.Drawing.Point(253, 128)
         Me.Label13.Name = "Label13"
         Me.Label13.Size = New System.Drawing.Size(65, 27)
         Me.Label13.TabIndex = 112
@@ -1371,30 +1409,30 @@ Partial Class frmAttendance
         'Undertime7_TXT
         '
         Me.Undertime7_TXT.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Undertime7_TXT.Location = New System.Drawing.Point(482, 52)
+        Me.Undertime7_TXT.Location = New System.Drawing.Point(112, 84)
         Me.Undertime7_TXT.Name = "Undertime7_TXT"
-        Me.Undertime7_TXT.Size = New System.Drawing.Size(135, 35)
-        Me.Undertime7_TXT.TabIndex = 109
+        Me.Undertime7_TXT.Size = New System.Drawing.Size(79, 35)
+        Me.Undertime7_TXT.TabIndex = 76
         '
         'Label29
         '
         Me.Label29.AutoSize = True
         Me.Label29.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label29.Location = New System.Drawing.Point(351, 55)
+        Me.Label29.Location = New System.Drawing.Point(8, 83)
         Me.Label29.Name = "Label29"
-        Me.Label29.Size = New System.Drawing.Size(125, 27)
+        Me.Label29.Size = New System.Drawing.Size(76, 27)
         Me.Label29.TabIndex = 110
-        Me.Label29.Text = "Undertime  (mm)"
+        Me.Label29.Text = "UT  (mm)"
         '
         'Cancel7_BTN
         '
         Me.Cancel7_BTN.BackColor = System.Drawing.Color.RosyBrown
         Me.Cancel7_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.Cancel7_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Cancel7_BTN.Location = New System.Drawing.Point(337, 164)
+        Me.Cancel7_BTN.Location = New System.Drawing.Point(861, 125)
         Me.Cancel7_BTN.Name = "Cancel7_BTN"
         Me.Cancel7_BTN.Size = New System.Drawing.Size(117, 37)
-        Me.Cancel7_BTN.TabIndex = 108
+        Me.Cancel7_BTN.TabIndex = 89
         Me.Cancel7_BTN.Text = "Cancel"
         Me.Cancel7_BTN.UseVisualStyleBackColor = False
         '
@@ -1403,26 +1441,26 @@ Partial Class frmAttendance
         Me.Save7_BTN.BackColor = System.Drawing.Color.LightSalmon
         Me.Save7_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.Save7_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Save7_BTN.Location = New System.Drawing.Point(497, 164)
+        Me.Save7_BTN.Location = New System.Drawing.Point(1021, 125)
         Me.Save7_BTN.Name = "Save7_BTN"
         Me.Save7_BTN.Size = New System.Drawing.Size(120, 37)
-        Me.Save7_BTN.TabIndex = 107
+        Me.Save7_BTN.TabIndex = 90
         Me.Save7_BTN.Text = "Save"
         Me.Save7_BTN.UseVisualStyleBackColor = False
         '
         'Days7_TXT
         '
         Me.Days7_TXT.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Days7_TXT.Location = New System.Drawing.Point(139, 16)
+        Me.Days7_TXT.Location = New System.Drawing.Point(112, 3)
         Me.Days7_TXT.Name = "Days7_TXT"
-        Me.Days7_TXT.Size = New System.Drawing.Size(140, 35)
+        Me.Days7_TXT.Size = New System.Drawing.Size(79, 35)
         Me.Days7_TXT.TabIndex = 74
         '
         'Label21
         '
         Me.Label21.AutoSize = True
         Me.Label21.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label21.Location = New System.Drawing.Point(22, 19)
+        Me.Label21.Location = New System.Drawing.Point(8, 6)
         Me.Label21.Name = "Label21"
         Me.Label21.Size = New System.Drawing.Size(87, 27)
         Me.Label21.TabIndex = 75
@@ -1432,7 +1470,7 @@ Partial Class frmAttendance
         '
         Me.Label23.AutoSize = True
         Me.Label23.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label23.Location = New System.Drawing.Point(22, 62)
+        Me.Label23.Location = New System.Drawing.Point(8, 128)
         Me.Label23.Name = "Label23"
         Me.Label23.Size = New System.Drawing.Size(72, 27)
         Me.Label23.TabIndex = 77
@@ -1441,34 +1479,34 @@ Partial Class frmAttendance
         'Night7_TXT
         '
         Me.Night7_TXT.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Night7_TXT.Location = New System.Drawing.Point(482, 10)
+        Me.Night7_TXT.Location = New System.Drawing.Point(376, 3)
         Me.Night7_TXT.Name = "Night7_TXT"
-        Me.Night7_TXT.Size = New System.Drawing.Size(135, 35)
+        Me.Night7_TXT.Size = New System.Drawing.Size(79, 35)
         Me.Night7_TXT.TabIndex = 78
         '
         'Label26
         '
         Me.Label26.AutoSize = True
         Me.Label26.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label26.Location = New System.Drawing.Point(351, 13)
+        Me.Label26.Location = New System.Drawing.Point(253, 9)
         Me.Label26.Name = "Label26"
-        Me.Label26.Size = New System.Drawing.Size(82, 27)
+        Me.Label26.Size = New System.Drawing.Size(112, 27)
         Me.Label26.TabIndex = 79
-        Me.Label26.Text = "Night Rate"
+        Me.Label26.Text = "Night Rate (hr)"
         '
         'Late7_TXT
         '
         Me.Late7_TXT.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Late7_TXT.Location = New System.Drawing.Point(139, 100)
+        Me.Late7_TXT.Location = New System.Drawing.Point(112, 44)
         Me.Late7_TXT.Name = "Late7_TXT"
-        Me.Late7_TXT.Size = New System.Drawing.Size(140, 35)
-        Me.Late7_TXT.TabIndex = 80
+        Me.Late7_TXT.Size = New System.Drawing.Size(79, 35)
+        Me.Late7_TXT.TabIndex = 75
         '
         'Label25
         '
         Me.Label25.AutoSize = True
         Me.Label25.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label25.Location = New System.Drawing.Point(22, 100)
+        Me.Label25.Location = New System.Drawing.Point(8, 44)
         Me.Label25.Name = "Label25"
         Me.Label25.Size = New System.Drawing.Size(88, 27)
         Me.Label25.TabIndex = 81
@@ -1477,28 +1515,28 @@ Partial Class frmAttendance
         'Search7_TXT
         '
         Me.Search7_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Search7_TXT.Location = New System.Drawing.Point(6, 249)
+        Me.Search7_TXT.Location = New System.Drawing.Point(250, 301)
         Me.Search7_TXT.Name = "Search7_TXT"
         Me.Search7_TXT.Size = New System.Drawing.Size(414, 33)
-        Me.Search7_TXT.TabIndex = 105
+        Me.Search7_TXT.TabIndex = 92
         '
         'Search7_BTN
         '
         Me.Search7_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Search7_BTN.Location = New System.Drawing.Point(428, 248)
+        Me.Search7_BTN.Location = New System.Drawing.Point(672, 300)
         Me.Search7_BTN.Name = "Search7_BTN"
         Me.Search7_BTN.Size = New System.Drawing.Size(82, 33)
-        Me.Search7_BTN.TabIndex = 106
+        Me.Search7_BTN.TabIndex = 93
         Me.Search7_BTN.Text = "Search"
         Me.Search7_BTN.UseVisualStyleBackColor = True
         '
         'SearchEmp7_BTN
         '
         Me.SearchEmp7_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.SearchEmp7_BTN.Location = New System.Drawing.Point(379, 130)
+        Me.SearchEmp7_BTN.Location = New System.Drawing.Point(364, 49)
         Me.SearchEmp7_BTN.Name = "SearchEmp7_BTN"
         Me.SearchEmp7_BTN.Size = New System.Drawing.Size(38, 30)
-        Me.SearchEmp7_BTN.TabIndex = 87
+        Me.SearchEmp7_BTN.TabIndex = 73
         Me.SearchEmp7_BTN.Text = "..."
         Me.SearchEmp7_BTN.UseVisualStyleBackColor = True
         '
@@ -1506,7 +1544,7 @@ Partial Class frmAttendance
         '
         Me.Label28.AutoSize = True
         Me.Label28.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label28.Location = New System.Drawing.Point(6, 131)
+        Me.Label28.Location = New System.Drawing.Point(12, 52)
         Me.Label28.Name = "Label28"
         Me.Label28.Size = New System.Drawing.Size(48, 25)
         Me.Label28.TabIndex = 85
@@ -1515,17 +1553,17 @@ Partial Class frmAttendance
         'Emp7_TXT
         '
         Me.Emp7_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Emp7_TXT.Location = New System.Drawing.Point(89, 129)
+        Me.Emp7_TXT.Location = New System.Drawing.Point(80, 48)
         Me.Emp7_TXT.Name = "Emp7_TXT"
         Me.Emp7_TXT.ReadOnly = True
         Me.Emp7_TXT.Size = New System.Drawing.Size(278, 33)
-        Me.Emp7_TXT.TabIndex = 86
+        Me.Emp7_TXT.TabIndex = 72
         '
         'Label27
         '
         Me.Label27.AutoSize = True
         Me.Label27.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label27.Location = New System.Drawing.Point(6, 92)
+        Me.Label27.Location = New System.Drawing.Point(12, 13)
         Me.Label27.Name = "Label27"
         Me.Label27.Size = New System.Drawing.Size(60, 27)
         Me.Label27.TabIndex = 84
@@ -1534,10 +1572,10 @@ Partial Class frmAttendance
         'Bio7_TXT
         '
         Me.Bio7_TXT.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Bio7_TXT.Location = New System.Drawing.Point(89, 87)
+        Me.Bio7_TXT.Location = New System.Drawing.Point(80, 11)
         Me.Bio7_TXT.Name = "Bio7_TXT"
-        Me.Bio7_TXT.Size = New System.Drawing.Size(151, 29)
-        Me.Bio7_TXT.TabIndex = 83
+        Me.Bio7_TXT.Size = New System.Drawing.Size(109, 29)
+        Me.Bio7_TXT.TabIndex = 71
         '
         'TabPage3
         '
@@ -1629,9 +1667,9 @@ Partial Class frmAttendance
         'RptViewer_DTR
         '
         Me.RptViewer_DTR.Dock = System.Windows.Forms.DockStyle.Fill
-        ReportDataSource3.Name = "DataSet1"
-        ReportDataSource3.Value = Me.overAllBindingSource
-        Me.RptViewer_DTR.LocalReport.DataSources.Add(ReportDataSource3)
+        ReportDataSource13.Name = "DataSet1"
+        ReportDataSource13.Value = Me.overAllBindingSource
+        Me.RptViewer_DTR.LocalReport.DataSources.Add(ReportDataSource13)
         Me.RptViewer_DTR.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_DTR_ByGroup.rdlc"
         Me.RptViewer_DTR.Location = New System.Drawing.Point(0, 0)
         Me.RptViewer_DTR.Name = "RptViewer_DTR"
@@ -1866,15 +1904,131 @@ Partial Class frmAttendance
         Me.RE_BRANCH_DGV.ReadOnly = True
         Me.RE_BRANCH_DGV.Width = 140
         '
-        'Label39
+        'T_Late7_TXT
         '
-        Me.Label39.AutoSize = True
-        Me.Label39.Font = New System.Drawing.Font("Dubai", 8.249999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label39.Location = New System.Drawing.Point(37, 211)
-        Me.Label39.Name = "Label39"
-        Me.Label39.Size = New System.Drawing.Size(84, 18)
-        Me.Label39.TabIndex = 116
-        Me.Label39.Text = "(Additional only)"
+        Me.T_Late7_TXT.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.T_Late7_TXT.Location = New System.Drawing.Point(616, 83)
+        Me.T_Late7_TXT.Name = "T_Late7_TXT"
+        Me.T_Late7_TXT.Size = New System.Drawing.Size(79, 35)
+        Me.T_Late7_TXT.TabIndex = 84
+        '
+        'Label40
+        '
+        Me.Label40.AutoSize = True
+        Me.Label40.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label40.Location = New System.Drawing.Point(515, 84)
+        Me.Label40.Name = "Label40"
+        Me.Label40.Size = New System.Drawing.Size(96, 27)
+        Me.Label40.TabIndex = 120
+        Me.Label40.Text = "T. Late (mm)"
+        '
+        'T_RegHol7_TXT
+        '
+        Me.T_RegHol7_TXT.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.T_RegHol7_TXT.Location = New System.Drawing.Point(879, 3)
+        Me.T_RegHol7_TXT.Name = "T_RegHol7_TXT"
+        Me.T_RegHol7_TXT.Size = New System.Drawing.Size(79, 35)
+        Me.T_RegHol7_TXT.TabIndex = 86
+        '
+        'Label41
+        '
+        Me.Label41.AutoSize = True
+        Me.Label41.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label41.Location = New System.Drawing.Point(751, 11)
+        Me.Label41.Name = "Label41"
+        Me.Label41.Size = New System.Drawing.Size(114, 27)
+        Me.Label41.TabIndex = 122
+        Me.Label41.Text = "T. Reg Hol. (dd)"
+        '
+        'T_SpecHol7_TXT
+        '
+        Me.T_SpecHol7_TXT.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.T_SpecHol7_TXT.Location = New System.Drawing.Point(879, 41)
+        Me.T_SpecHol7_TXT.Name = "T_SpecHol7_TXT"
+        Me.T_SpecHol7_TXT.Size = New System.Drawing.Size(79, 35)
+        Me.T_SpecHol7_TXT.TabIndex = 87
+        '
+        'Label42
+        '
+        Me.Label42.AutoSize = True
+        Me.Label42.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label42.Location = New System.Drawing.Point(751, 44)
+        Me.Label42.Name = "Label42"
+        Me.Label42.Size = New System.Drawing.Size(122, 27)
+        Me.Label42.TabIndex = 124
+        Me.Label42.Text = "T. Spec. Hol. (hr)"
+        '
+        'T_UT7_TXT
+        '
+        Me.T_UT7_TXT.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.T_UT7_TXT.Location = New System.Drawing.Point(616, 125)
+        Me.T_UT7_TXT.Name = "T_UT7_TXT"
+        Me.T_UT7_TXT.Size = New System.Drawing.Size(79, 35)
+        Me.T_UT7_TXT.TabIndex = 85
+        '
+        'Label44
+        '
+        Me.Label44.AutoSize = True
+        Me.Label44.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label44.Location = New System.Drawing.Point(515, 128)
+        Me.Label44.Name = "Label44"
+        Me.Label44.Size = New System.Drawing.Size(92, 27)
+        Me.Label44.TabIndex = 128
+        Me.Label44.Text = "T. UT  (mm)"
+        '
+        'T_OT7_TXT
+        '
+        Me.T_OT7_TXT.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.T_OT7_TXT.Location = New System.Drawing.Point(616, 42)
+        Me.T_OT7_TXT.Name = "T_OT7_TXT"
+        Me.T_OT7_TXT.Size = New System.Drawing.Size(79, 35)
+        Me.T_OT7_TXT.TabIndex = 83
+        '
+        'Label45
+        '
+        Me.Label45.AutoSize = True
+        Me.Label45.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label45.Location = New System.Drawing.Point(515, 45)
+        Me.Label45.Name = "Label45"
+        Me.Label45.Size = New System.Drawing.Size(82, 27)
+        Me.Label45.TabIndex = 132
+        Me.Label45.Text = "T. OT  (hr)"
+        '
+        'T_Days7_TXT
+        '
+        Me.T_Days7_TXT.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.T_Days7_TXT.Location = New System.Drawing.Point(616, 3)
+        Me.T_Days7_TXT.Name = "T_Days7_TXT"
+        Me.T_Days7_TXT.Size = New System.Drawing.Size(79, 35)
+        Me.T_Days7_TXT.TabIndex = 82
+        '
+        'Label46
+        '
+        Me.Label46.AutoSize = True
+        Me.Label46.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label46.Location = New System.Drawing.Point(515, 7)
+        Me.Label46.Name = "Label46"
+        Me.Label46.Size = New System.Drawing.Size(93, 27)
+        Me.Label46.TabIndex = 130
+        Me.Label46.Text = "T. days  (dd)"
+        '
+        'T_Night7_TXT
+        '
+        Me.T_Night7_TXT.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.T_Night7_TXT.Location = New System.Drawing.Point(879, 82)
+        Me.T_Night7_TXT.Name = "T_Night7_TXT"
+        Me.T_Night7_TXT.Size = New System.Drawing.Size(79, 35)
+        Me.T_Night7_TXT.TabIndex = 88
+        '
+        'Label43
+        '
+        Me.Label43.AutoSize = True
+        Me.Label43.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label43.Location = New System.Drawing.Point(751, 85)
+        Me.Label43.Name = "Label43"
+        Me.Label43.Size = New System.Drawing.Size(128, 27)
+        Me.Label43.TabIndex = 134
+        Me.Label43.Text = "T. Night Rate (hr)"
         '
         'frmAttendance
         '
@@ -2094,4 +2248,18 @@ Partial Class frmAttendance
     Friend WithEvents RegHol7_TXT As TextBox
     Friend WithEvents Label37 As Label
     Friend WithEvents Label39 As Label
+    Friend WithEvents T_UT7_TXT As TextBox
+    Friend WithEvents Label44 As Label
+    Friend WithEvents T_SpecHol7_TXT As TextBox
+    Friend WithEvents Label42 As Label
+    Friend WithEvents T_RegHol7_TXT As TextBox
+    Friend WithEvents Label41 As Label
+    Friend WithEvents T_Late7_TXT As TextBox
+    Friend WithEvents Label40 As Label
+    Friend WithEvents T_OT7_TXT As TextBox
+    Friend WithEvents Label45 As Label
+    Friend WithEvents T_Days7_TXT As TextBox
+    Friend WithEvents Label46 As Label
+    Friend WithEvents T_Night7_TXT As TextBox
+    Friend WithEvents Label43 As Label
 End Class

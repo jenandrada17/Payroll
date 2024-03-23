@@ -259,7 +259,8 @@ Module SelectFromDatabase
             progressBarEnd()
 
         Catch ex As Exception
-            Log_Report(ex.ToString())
+            'Log_Report(ex.ToString())
+            Console.WriteLine($"Error - {vbCrLf}{ex}")
         End Try
     End Sub
 
@@ -356,7 +357,8 @@ Module SelectFromDatabase
             frmMainForm.AppProgressBar.Maximum = 1000
             frmMainForm.AppProgressBar.Visible = False
         Catch ex As Exception
-            Log_Report(ex.ToString())
+            'Log_Report(ex.ToString())
+            Console.WriteLine($"Error - {vbCrLf}{ex}")
         End Try
     End Sub
 
@@ -427,7 +429,8 @@ Module SelectFromDatabase
             frmMainForm.AppProgressBar.Visible = False
 
         Catch ex As Exception
-            Log_Report(ex.ToString())
+            'Log_Report(ex.ToString())
+            Console.WriteLine($"Error - {vbCrLf}{ex}")
         End Try
 
     End Sub
@@ -465,7 +468,7 @@ Module SelectFromDatabase
     Friend Sub AttendanceDetails(biometric As String, paydate As String, NoOfDays_TXT As TextBox, RegularOT_TXT As TextBox,
                              SpecialHol_TXT As TextBox, RegularHol_TXT As TextBox, Late_TXT As TextBox,
                              UnderTime_TXT As TextBox, TrainingDays_LBL As Label, NightTime_TXT As TextBox,
-                             TrainingOT_LBL As Label, TrainningLate_LBL As Label, TrainingUT_LBL As Label, TrainingSHol_LBL As Label)
+                             TrainingOT_LBL As Label, TrainningLate_LBL As Label, TrainingUT_LBL As Label, TrainingSHol_LBL As Label, TrainningNight_LBL As Label)
 
         Dim mysql As String = $"Select * From PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{biometric}' and paydate = '{paydate}'"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
@@ -477,11 +480,11 @@ Module SelectFromDatabase
                     ''============================= FOR MONTHLY RATE (IF ABOVE MINIMUM RATE)================================== 
                     NoOfDays_TXT.Text = .Item("PRESENT_DAYS")
                     RegularOT_TXT.Text = .Item("OVERTIME")
-                    RegularHol_TXT.Text = .Item("REGHOLIDAY")
                     RegularHol_TXT.Tag = IIf(IsDBNull(.Item("TRAINING_REGHOLIDAY")), 0, .Item("TRAINING_REGHOLIDAY"))
+                    RegularHol_TXT.Text = CInt(.Item("REGHOLIDAY")) + CInt(RegularHol_TXT.Tag)
                     SpecialHol_TXT.Text = IIf(IsDBNull(.Item("SPECHOLIDAY_HRS")), 0, .Item("SPECHOLIDAY_HRS"))
                     SpecialHol_TXT.Tag = IIf(IsDBNull(.Item("TRAINING_SPECHOLIDAY")), 0, .Item("TRAINING_SPECHOLIDAY"))
-                    Late_TXT.Text = .Item("LATE")
+                    Late_TXT.Text = .Item("LATE") 
                     UnderTime_TXT.Text = .Item("UNDERTIME")
                     NightTime_TXT.Text = IIf(IsDBNull(.Item("NIGHT_RATE")), "", .Item("NIGHT_RATE"))
                     NightTime_TXT.Tag = IIf(IsDBNull(.Item("NIGHT_RATE")), 0, .Item("NIGHT_RATE"))
@@ -491,6 +494,7 @@ Module SelectFromDatabase
                     TrainningLate_LBL.Text = IIf(IsDBNull(.Item("TRAINING_LATE")), 0, .Item("TRAINING_LATE"))
                     TrainingUT_LBL.Text = IIf(IsDBNull(.Item("TRAINING_UNDERTIME")), 0, .Item("TRAINING_UNDERTIME"))
                     TrainingSHol_LBL.Text = IIf(IsDBNull(.Item("TRAINING_SPECHOLIDAY")), 0, .Item("TRAINING_SPECHOLIDAY"))
+                    TrainningNight_LBL.Text = IIf(IsDBNull(.Item("TRAINING_NIGHTRATE")), 0, .Item("TRAINING_NIGHTRATE"))
                 End With
             End If
         End Using

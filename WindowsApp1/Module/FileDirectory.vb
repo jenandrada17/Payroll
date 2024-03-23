@@ -13,9 +13,9 @@ Public Module FileDirectory
             End If
             Return True
         Catch ex As Exception
-            Log_Report(String.Format("User: {0}", fbUser))
-            Log_Report(String.Format("Database: {0}", dbName))
-            Log_Report(ex.ToString)
+            'Log_Report(String.Format("User: {0}", fbUser))
+            'Log_Report(String.Format("Database: {0}", dbName))
+            'Log_Report(ex.ToString)
             Return False
         End Try
 

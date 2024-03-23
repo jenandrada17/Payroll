@@ -702,7 +702,7 @@ Public Class frmAttendance
             RptViewer_DTR.RefreshReport()
 
         Catch ex As Exception
-            Log_Report(ex.ToString)
+            'Log_Report(ex.ToString)
             MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
 
@@ -850,7 +850,7 @@ Public Class frmAttendance
             Replacing($"BIOMETRIC_DTR WHERE PAYDATE = '{paydatee}' AND am_in IS NULL AND  am_out  IS NULL AND  pm_in  IS NULL AND  pm_out  IS NULL ")
 
         Catch ex As Exception
-            Log_Report(ex.ToString)
+            'Log_Report(ex.ToString)
             MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
 
@@ -1196,6 +1196,15 @@ Public Class frmAttendance
                         SIL7_NUP.Text = IIf(IsDBNull(.Item("SIL")), "", .Item("SIL"))
                         SpecHol7_TXT.Text = IIf(IsDBNull(.Item("SPECHOLIDAY_HRS")), "", .Item("SPECHOLIDAY_HRS"))
 
+                        'IF TRAINEE
+                        T_Days7_TXT.Text = IIf(IsDBNull(.Item("TRAINING_DAYS")), "", .Item("TRAINING_DAYS"))
+                        T_RegHol7_TXT.Text = IIf(IsDBNull(.Item("TRAINING_REGHOLIDAY")), "", .Item("TRAINING_REGHOLIDAY"))
+                        T_SpecHol7_TXT.Text = IIf(IsDBNull(.Item("TRAINING_SPECHOLIDAY")), "", .Item("TRAINING_SPECHOLIDAY"))
+                        T_OT7_TXT.Text = IIf(IsDBNull(.Item("TRAINING_OVERTIME")), "", .Item("TRAINING_OVERTIME"))
+                        T_Late7_TXT.Text = IIf(IsDBNull(.Item("TRAINING_LATE")), "", .Item("TRAINING_LATE"))
+                        T_UT7_TXT.Text = IIf(IsDBNull(.Item("TRAINING_UNDERTIME")), "", .Item("TRAINING_UNDERTIME"))
+                        T_Night7_TXT.Text = IIf(IsDBNull(.Item("TRAINING_NIGHTRATE")), "", .Item("TRAINING_NIGHTRATE"))
+
                     End With
                 Next
 
@@ -1210,6 +1219,13 @@ Public Class frmAttendance
                 Night7_TXT.Clear()
                 SIL7_NUP.TextAlign = 0
                 Save7_BTN.Tag = "ADDED"
+                T_Days7_TXT.Clear()
+                T_RegHol7_TXT.Clear()
+                T_SpecHol7_TXT.Clear()
+                T_OT7_TXT.Clear()
+                T_Late7_TXT.Clear()
+                T_UT7_TXT.Clear()
+                T_Night7_TXT.Clear()
             End If
         End Using
     End Sub
@@ -1239,12 +1255,13 @@ Public Class frmAttendance
                 Dim sil As Double = IIf(SIL7_NUP.Text = Nothing, 0, SIL7_NUP.Text)
                 Dim night7 As Integer = IIf(Night7_TXT.Text = Nothing, 0, Night7_TXT.Text)
 
-                Dim TRAINING_DAYS As Integer = IIf(Night7_TXT.Text = Nothing, 0, Night7_TXT.Text)
-                Dim TRAINING_REGHOLIDAY As Integer = IIf(Night7_TXT.Text = Nothing, 0, Night7_TXT.Text)
-                Dim TRAINING_SPECHOLIDAY As Integer = IIf(Night7_TXT.Text = Nothing, 0, Night7_TXT.Text)
-                Dim TRAINING_OVERTIME As Integer = IIf(Night7_TXT.Text = Nothing, 0, Night7_TXT.Text)
-                Dim TRAINING_LATE As Integer = IIf(Night7_TXT.Text = Nothing, 0, Night7_TXT.Text)
-                Dim TRAINING_UNDERTIME As Integer = IIf(Night7_TXT.Text = Nothing, 0, Night7_TXT.Text)
+                Dim TRAINING_DAYS As Integer = IIf(T_Days7_TXT.Text = Nothing, 0, T_Days7_TXT.Text)
+                Dim TRAINING_REGHOLIDAY As Integer = IIf(T_RegHol7_TXT.Text = Nothing, 0, T_RegHol7_TXT.Text)
+                Dim TRAINING_SPECHOLIDAY As Integer = IIf(T_SpecHol7_TXT.Text = Nothing, 0, T_SpecHol7_TXT.Text)
+                Dim TRAINING_OVERTIME As Integer = IIf(T_OT7_TXT.Text = Nothing, 0, T_OT7_TXT.Text)
+                Dim TRAINING_LATE As Integer = IIf(T_Late7_TXT.Text = Nothing, 0, T_Late7_TXT.Text)
+                Dim TRAINING_UNDERTIME As Integer = IIf(T_UT7_TXT.Text = Nothing, 0, T_UT7_TXT.Text)
+                Dim TRAINING_NIGHTRATE As Integer = IIf(T_Night7_TXT.Text = Nothing, 0, T_Night7_TXT.Text)
 
 
                 'Friend Sub SaveAttendanceEE(biometric As Integer, paydate As String, days As String, overTime As String, late_total As String, under_total As String,
@@ -1255,8 +1272,8 @@ Public Class frmAttendance
 
 
                 SaveAttendanceEE(Bio7_TXT.Text, PAYROLL, Days7_TXT.Text, overtime, latee, undertimee,
-                                     RHOLIDAY, SHOLIDAY, specHoliday_hrs, sil, 0, "", "", night7, True, TRAINING_DAYS,
-                                     TRAINING_REGHOLIDAY, TRAINING_SPECHOLIDAY, TRAINING_OVERTIME, TRAINING_LATE, TRAINING_UNDERTIME)
+                                     RHOLIDAY, SHOLIDAY, specHoliday_hrs, sil, 0, "", "", night7, True, TRAINING_DAYS, TRAINING_REGHOLIDAY,
+                                     TRAINING_SPECHOLIDAY, TRAINING_OVERTIME, TRAINING_LATE, TRAINING_UNDERTIME, TRAINING_NIGHTRATE)
 
                 SavePayout_IndividualL(Bio7_TXT.Text, PAYROLL, starting_date, ending_date)
 
@@ -1290,7 +1307,15 @@ Public Class frmAttendance
         Late7_TXT.Clear()
         Undertime7_TXT.Clear()
         Night7_TXT.Clear()
+        RegHol7_TXT.Clear()
         SpecHol7_TXT.Clear()
+        T_Days7_TXT.Clear()
+        T_Late7_TXT.Clear()
+        T_OT7_TXT.Clear()
+        T_UT7_TXT.Clear()
+        T_RegHol7_TXT.Clear()
+        T_SpecHol7_TXT.Clear()
+        T_Night7_TXT.Clear()
     End Sub
 
     Private Sub SIL_BTN_Click(sender As Object, e As EventArgs) Handles SIL_BTN.Click
@@ -1423,17 +1448,18 @@ Public Class frmAttendance
                 Dim regHol_additional As Integer = IIf(eCell(row, 10).Value = Nothing, 0, eCell(row, 10).Value)
                 Dim regHoliday As Integer = REGHolidayCount(starting_date, ending_date) + regHol_additional
 
-                Dim TRAINING_DAYS As Integer = IIf(eCell(row, 11).Value = Nothing, 0, eCell(row, 11).Value)
-                Dim TRAINING_OVERTIME As Integer = IIf(eCell(row, 12).Value = Nothing, 0, eCell(row, 12).Value)
-                Dim TRAINING_LATE As Integer = IIf(eCell(row, 13).Value = Nothing, 0, eCell(row, 13).Value)
-                Dim TRAINING_UNDERTIME As Integer = IIf(eCell(row, 14).Value = Nothing, 0, eCell(row, 14).Value)
-                Dim TRAINING_REGHOLIDAY As Integer = IIf(eCell(row, 15).Value = Nothing, 0, eCell(row, 15).Value)
+                Dim TRAINING_OVERTIME As Integer = IIf(eCell(row, 11).Value = Nothing, 0, eCell(row, 11).Value)
+                Dim TRAINING_LATE As Integer = IIf(eCell(row, 12).Value = Nothing, 0, eCell(row, 12).Value)
+                Dim TRAINING_UNDERTIME As Integer = IIf(eCell(row, 13).Value = Nothing, 0, eCell(row, 13).Value)
+                Dim TRAINING_REGHOLIDAY As Integer = IIf(eCell(row, 14).Value = Nothing, 0, eCell(row, 14).Value)
                 Dim TRAINING_SPECHOLIDAY As Integer = IIf(eCell(row, 15).Value = Nothing, 0, eCell(row, 15).Value)
+                Dim TRAINING_NIGHTRATE As Integer = IIf(eCell(row, 16).Value = Nothing, 0, eCell(row, 16).Value)
+                Dim TRAINING_DAYS As Integer = IIf(eCell(row, 17).Value = Nothing, 0, eCell(row, 17).Value)
 
                 If totalDays <> 0 Then
                     SaveAttendanceEE(bioNo, payroll, totalDays, overtime, late, undertime,
                                  regHoliday, TotalSHoliday_LBL.Text, specHoliday_hrs, sil, Nothing, Nothing, Nothing, nightRate, True,
-                                 TRAINING_DAYS, TRAINING_REGHOLIDAY, TRAINING_SPECHOLIDAY, TRAINING_OVERTIME, TRAINING_LATE, TRAINING_UNDERTIME)
+                                 TRAINING_DAYS, TRAINING_REGHOLIDAY, TRAINING_SPECHOLIDAY, TRAINING_OVERTIME, TRAINING_LATE, TRAINING_UNDERTIME, TRAINING_NIGHTRATE)
 
                     SavePayout_IndividualL(bioNo, payroll, starting_date, ending_date)
 
@@ -1443,7 +1469,7 @@ Public Class frmAttendance
                 If frmMainForm.AppProgressBar.Value <> DtSet.Tables(0).Rows.Count Then frmMainForm.AppProgressBar.Value += 1
 
             Else
-                MsgBox("row 2 Column 1 is empty or not a valid Biometric No.!", MsgBoxStyle.Exclamation)
+                MsgBox($"row {row} is empty or not a valid Biometric No.!", MsgBoxStyle.Exclamation)
             End If
         Next
 

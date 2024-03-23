@@ -225,17 +225,17 @@ Module Public_Function
         Return str
     End Function
 
-    Friend Sub Log_Report(ByVal str As String)
-        If Not File.Exists(LOG_FILE) Then CreateLog()
+    'Friend Sub Log_Report(ByVal str As String)
+    '    If Not File.Exists(LOG_FILE) Then CreateLog()
 
-        Dim recorded_log As String = $"[{Now.ToString("MM/dd/yyyy HH:mm:ss") }] - {str }"
+    '    Dim recorded_log As String = $"[{Now.ToString("MM/dd/yyyy HH:mm:ss") }] - {str }"
 
-        Dim fs As New FileStream(LOG_FILE, FileMode.Append, FileAccess.Write)
-        Dim fw As New StreamWriter(fs)
-        fw.WriteLine(recorded_log)
-        fw.Close()
-        fs.Close()
-    End Sub
+    '    Dim fs As New FileStream(LOG_FILE, FileMode.Append, FileAccess.Write)
+    '    Dim fw As New StreamWriter(fs)
+    '    fw.WriteLine(recorded_log)
+    '    fw.Close()
+    '    fs.Close()
+    'End Sub
 
     Friend Function IsEnter(ByVal e As KeyPressEventArgs) As Boolean
         If Asc(e.KeyChar) = 13 Then

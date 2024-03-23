@@ -37,7 +37,7 @@ Module Database
         Catch ex As FbException
             Console.WriteLine(">>>>>" & mySql)
             MessageBox.Show($"[{ex.ErrorCode.ToString}] - {ex.Message}", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
-            Log_Report("LoadSQL - " & ex.ToString)
+            'Log_Report("LoadSQL - " & ex.ToString)
             ds = Nothing
             Return ds
         End Try
@@ -55,16 +55,16 @@ Module Database
             con.Open()
         Catch ex As FbException
             MsgBox(language(0) & ex.ErrorCode & vbCrLf & ex.Message.ToString, vbCritical, "Connecting Error")
-            Log_Report(ex.Message.ToString)
-            Log_Report(String.Format("User: {0}", fbUser))
-            Log_Report(String.Format("Database: {0}", dbName))
+            'Log_Report(ex.Message.ToString)
+            'Log_Report(String.Format("User: {0}", fbUser))
+            'Log_Report(String.Format("Database: {0}", dbName))
             con.Dispose()
             Exit Sub
         Catch ex As Exception
             MsgBox(language(0) & ex.HResult & vbCrLf & ex.Message.ToString, vbCritical, "Connecting Error")
-            Log_Report(ex.Message.ToString)
-            Log_Report(String.Format("User: {0}", fbUser))
-            Log_Report(String.Format("Database: {0}", dbName))
+            'Log_Report(ex.Message.ToString)
+            'Log_Report(String.Format("User: {0}", fbUser))
+            'Log_Report(String.Format("Database: {0}", dbName))
             con.Dispose()
             Exit Sub
         End Try
@@ -135,7 +135,7 @@ Module Database
         Catch ex As Exception
             con.Dispose()
             MsgBox(language(0) + vbCrLf + ex.Message.ToString, vbCritical, "Connecting Error")
-            Log_Report(ex.Message.ToString)
+            'Log_Report(ex.Message.ToString)
             Exit Sub
         End Try
     End Sub
@@ -154,7 +154,7 @@ Module Database
             con.Close()
         Catch ex As Exception
             MsgBox(ex.ToString, MsgBoxStyle.Critical)
-            Log_Report(String.Format("[{0}] - ", sql) & ex.ToString)
+            'Log_Report(String.Format("[{0}] - ", sql) & ex.ToString)
             con.Dispose()
             Exit Sub
         End Try

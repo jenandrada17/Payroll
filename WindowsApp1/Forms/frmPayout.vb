@@ -86,7 +86,7 @@ Public Class frmPayout
 
             AttendanceDetails(BIO_NO, paydate_, NoOfDays_TXT, RegularOT_TXT, SpecialHol_TXT, RegularHol_TXT,
                                         Late_TXT, UnderTime_TXT, TrainingDays_LBL, NightTime_TXT,
-                                        TrainingOT_LBL, TrainningLate_LBL, TrainingUT_LBL, TrainingSHol_LBL)
+                                        TrainingOT_LBL, TrainningLate_LBL, TrainingUT_LBL, TrainingSHol_LBL, TrainningNight_LBL)
 
             PayoutDetails(BIO_NO, paydate_, Rate_TXT, Name_TXT, RateFixYes_RB, TotalBasic_LBL, TotalOT_LBL,
                                         TotalHol_LBL, TotalNight_LBL, TotalLateUnder_LBL, SSSComp_LBL, HDMF_LBL, Philhealth_LBL, GrossAmount_LBL)
@@ -1105,7 +1105,7 @@ Public Class frmPayout
             ReportViewer_payslip.RefreshReport()
 
         Catch ex As Exception
-            Log_Report(ex.ToString)
+            'Log_Report(ex.ToString)
             MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
 

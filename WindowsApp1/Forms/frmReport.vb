@@ -372,7 +372,7 @@ Public Class frmReport
                 End Using
 
             Catch ex As Exception
-                Log_Report(ex.ToString)
+                'Log_Report(ex.ToString)
                 MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
         End If
@@ -505,7 +505,7 @@ Public Class frmReport
             RptViewer_Count.RefreshReport()
 
         Catch ex As Exception
-            Log_Report(ex.ToString)
+            'Log_Report(ex.ToString)
             MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
 
@@ -834,7 +834,7 @@ Public Class frmReport
             RptViewer_Common.RefreshReport()
 
         Catch ex As Exception
-            Log_Report(ex.ToString)
+            'Log_Report(ex.ToString)
             MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
 
@@ -875,7 +875,7 @@ Public Class frmReport
             RptViewer_Summary.RefreshReport()
 
         Catch ex As Exception
-            Log_Report(ex.ToString)
+            'Log_Report(ex.ToString)
             MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
 
@@ -943,7 +943,7 @@ Public Class frmReport
             Rpt_Distribution.RefreshReport()
 
         Catch ex As Exception
-            Log_Report(ex.ToString)
+            'Log_Report(ex.ToString)
             MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
 
@@ -1006,7 +1006,7 @@ Public Class frmReport
             Rpt_Loans.RefreshReport()
 
         Catch ex As Exception
-            Log_Report(ex.ToString)
+            'Log_Report(ex.ToString)
             MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
 
@@ -1196,7 +1196,7 @@ Public Class frmReport
             Rpt_CostContrib.RefreshReport()
 
         Catch ex As Exception
-            Log_Report(ex.ToString)
+            'Log_Report(ex.ToString)
             MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
 
@@ -1747,7 +1747,7 @@ Public Class frmReport
             Rpt_PI.RefreshReport()
 
         Catch ex As Exception
-            Log_Report(ex.ToString)
+            'Log_Report(ex.ToString)
             MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
 
@@ -1887,7 +1887,7 @@ Public Class frmReport
             Rpt_Rate.RefreshReport()
 
         Catch ex As Exception
-            Log_Report(ex.ToString)
+            'Log_Report(ex.ToString)
             MessageBox.Show($"{ex.Message} {vbCrLf} {linee}", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
 
@@ -2267,7 +2267,7 @@ Public Class frmReport
             PlusS = Nothing
 
         Catch ex As Exception
-            Log_Report(ex.ToString)
+            'Log_Report(ex.ToString)
             MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
 
