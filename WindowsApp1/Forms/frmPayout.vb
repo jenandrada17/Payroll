@@ -113,6 +113,7 @@ Public Class frmPayout
                         Previous_groupB.Visible = True
 
                         Remittance_LBL.Text = (CDbl(SSSComp_LBL.Text) + CDbl(HDMF_LBL.Text) + CDbl(Philhealth_LBL.Text)).ToString(”N”)
+                        Remittance_LBL.Tag = (CDbl(SSSComp_LBL.Text) + CDbl(HDMF_LBL.Text) + CDbl(Philhealth_LBL.Text)).ToString(”N”)
 
                         sched_deduc = "CLOSE PAYROLL"
                     End If
@@ -578,6 +579,23 @@ Public Class frmPayout
             Calculate_NetPay()
         End If
 
+    End Sub
+
+    Private Sub RemitOff_BTN_Click(sender As Object, e As EventArgs) Handles RemitOff_BTN.Click
+        If RemitOff_BTN.Text = "OFF" Then
+            SSSComp_LBL.Text = 0
+            HDMF_LBL.Text = 0
+            Philhealth_LBL.Text = 0
+            Remittance_LBL.Text = 0
+            RemitOff_BTN.Text = "ON"
+        Else
+            SSSComp_LBL.Text = SSSComp_LBL.Tag
+            HDMF_LBL.Text = HDMF_LBL.Tag
+            Philhealth_LBL.Text = Philhealth_LBL.Tag
+            Remittance_LBL.Text = Remittance_LBL.Tag
+            RemitOff_BTN.Text = "OFF"
+        End If
+        Calculate_NetPay()
     End Sub
 
     Private Sub Calculate_Late(latee As Integer)

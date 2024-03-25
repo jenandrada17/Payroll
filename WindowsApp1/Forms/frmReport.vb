@@ -21,7 +21,6 @@ Public Class frmReport
         Lists_Deduction_History(DeducHistory_List)
         Lists_SBU(SBU_LV)
         PopulateDateRange13Month()
-
     End Sub
 
     Private Sub SearchSBU_BTN_Click(sender As Object, e As EventArgs) Handles SearchSBU_BTN.Click
@@ -1014,6 +1013,7 @@ Public Class frmReport
 
     Public Sub LoadCostDistribution()
         Rpt_CostContrib.LocalReport.DataSources.Clear()
+        Dim linee As String = Nothing
 
         Try
 
@@ -1050,18 +1050,26 @@ Public Class frmReport
                     For Each dr In ds.Tables(0).Rows
                         With dr
 
-                            Dim COMPANY As String = .Item("COMPANY").ToLower()
+                            'bioNo = .Item("BIOMETRICID")
+                            linee = "COMPANY - 1"
+                            Dim COMPANY As String = IIf(IsDBNull(.Item("COMPANY")), "", .Item("COMPANY").ToLower())
                             Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
                             Dim toProper As String = info.ToTitleCase(COMPANY)
 
-                            Dim BRANCHCODE As String = .Item("BRANCH_CODE")
+                            linee = "BRANCHCODE - 1"
+                            Dim BRANCHCODE As String = IIf(IsDBNull(.Item("BRANCH_CODE")), "", .Item("BRANCH_CODE"))
+                            linee = "BRANCHNAME - 1"
                             Dim BRANCHNAME As String = GET_STRING("PAYROLL_CITY_BRANCH", "BRANCHNAME", $"BRANCHCODE = '{BRANCHCODE}'")
+                            linee = "CATEGORY - 1"
                             Dim CATEGORY As String = IIf(IsDBNull(.Item("CATEGORY")), "", .Item("CATEGORY"))
+                            linee = "DC_Amount - 1"
                             Dim DC_Amount As String = IIf(IsDBNull(.Item("TOTS")), "", .Item("TOTS"))
+                            linee = "Debit_Credit - 1"
                             Dim Debit_Credit As String = IIf(IsDBNull(.Item("TRANSAC_NAME")), "", .Item("TRANSAC_NAME"))
 
                             If BRANCHCODE = Nothing Then
-                                BRANCHNAME = CStr(.Item("HO_CATEGORY")).TrimEnd
+                                linee = "BRANCHNAME = HO_CATEGORY - 1"
+                                BRANCHNAME = IIf(IsDBNull(.Item("HO_CATEGORY")), "", CStr(.Item("HO_CATEGORY")).TrimEnd)
 
                             ElseIf BRANCHCODE = "ROG" Or BRANCHCODE = "ROX" Or BRANCHCODE = "MID" Or BRANCHCODE = "ACM" Or BRANCHCODE = "ACM " Or BRANCHCODE = "KID" Or BRANCHCODE = "POL" Or BRANCHCODE = "KCG" Then
                                 BRANCHNAME = toProper & " " & BRANCHNAME
@@ -1072,6 +1080,7 @@ Public Class frmReport
                             End If
 
                             If CATEGORY = "13Th Month Pay" Then
+                                linee = "DC_Amount GetTotal() - 1"
                                 DC_Amount = GetTotal("AMOUNT", $"TBL_EMPLOYEE B inner join RECORDED_ALLOW_DEDUC A on A.BIO_NO = B.BIOMETRICID and B.HO_CATEGORY = 'PGC Head Office' and A.CATEGORY = '13th Month Pay' and A.PAYDATE = '{PAYDATE}'")
                             End If
 
@@ -1100,11 +1109,15 @@ Public Class frmReport
                     For Each dr In dss.Tables(0).Rows
                         With dr
 
-                            Dim COMPANY As String = .Item("COMPANY").ToLower()
+                            'bioNo = .Item("BIOMETRICID")
+                            linee = "COMPANY - 2"
+                            Dim COMPANY As String = IIf(IsDBNull(.Item("COMPANY")), "", .Item("COMPANY").ToLower())
                             Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
                             Dim toProper As String = info.ToTitleCase(COMPANY)
 
-                            Dim BRANCHCODE As String = .Item("BRANCH_CODE")
+                            linee = "BRANCHCODE - 2"
+                            Dim BRANCHCODE As String = IIf(IsDBNull(.Item("BRANCH_CODE")), "", .Item("BRANCH_CODE"))
+                            linee = "BRANCHNAME - 2"
                             Dim BRANCHNAME As String = GET_STRING("PAYROLL_CITY_BRANCH", "BRANCHNAME", $"BRANCHCODE = '{BRANCHCODE}'")
                             Dim CATEGORY As String = Nothing
                             Dim Debit_Credit As String = Nothing
@@ -1113,6 +1126,7 @@ Public Class frmReport
                             Dim DC_Amount As Decimal = 0
 
                             If BRANCHCODE = Nothing Then
+                                linee = "BRANCHNAME = HO_CATEGORY - 2"
                                 BRANCHNAME = CStr(.Item("HO_CATEGORY")).TrimEnd
                             ElseIf BRANCHCODE = "ROG" Or BRANCHCODE = "ROX" Or BRANCHCODE = "MID" Or BRANCHCODE = "ACM" Or BRANCHCODE = "ACM " Or BRANCHCODE = "KID" Or BRANCHCODE = "POL" Or BRANCHCODE = "KCG" Then
                                 BRANCHNAME = toProper & " " & BRANCHNAME
@@ -1196,8 +1210,7 @@ Public Class frmReport
             Rpt_CostContrib.RefreshReport()
 
         Catch ex As Exception
-            'Log_Report(ex.ToString)
-            MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show($"{ex.Message} {vbCrLf} {linee}", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
 
     End Sub
