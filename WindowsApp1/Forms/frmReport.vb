@@ -1,5 +1,6 @@
 ﻿Imports System.Data.SqlClient
 Imports System.Globalization
+Imports System.Security.Policy
 
 Public Class frmReport
 
@@ -1014,6 +1015,7 @@ Public Class frmReport
     Public Sub LoadCostDistribution()
         Rpt_CostContrib.LocalReport.DataSources.Clear()
         Dim linee As String = Nothing
+        Dim SALES_INCENTIVE_INCLUDED As Boolean = False
 
         Try
 
@@ -1041,7 +1043,13 @@ Public Class frmReport
             mysql = $"Select A.BRANCHCODE AS BRANCH_CODE, C.CATEGORY, TRANSAC_NAME, HO_CATEGORY, COMPANY, SUM(AMOUNT) AS TOTS From PAYROLL_PAYOUT B 
                                         INNER JOIN TBL_EMPLOYEE A ON A.BIOMETRICID = B.BIOMETRIC_ID 
                                         LEFT JOIN RECORDED_ALLOW_DEDUC C ON C.BIO_NO = B.BIOMETRIC_ID and C.PAYDATE = B.PAYDATE  
-                                        WHERE B.PAYDATE = '{PAYDATE}' GROUP BY BRANCH_CODE, C.CATEGORY, TRANSAC_NAME, HO_CATEGORY, COMPANY"
+                                        WHERE B.PAYDATE = '{PAYDATE}' AND A.BRANCHCODE = '3G' GROUP BY BRANCH_CODE, C.CATEGORY, TRANSAC_NAME, HO_CATEGORY, COMPANY"
+
+            '''========================================= RECORDED_ALLOW_DEDUC ================================================
+            'mysql = $"Select A.BRANCHCODE AS BRANCH_CODE, C.CATEGORY, TRANSAC_NAME, HO_CATEGORY, COMPANY, SUM(AMOUNT) AS TOTS From PAYROLL_PAYOUT B 
+            '                            INNER JOIN TBL_EMPLOYEE A ON A.BIOMETRICID = B.BIOMETRIC_ID 
+            '                            LEFT JOIN RECORDED_ALLOW_DEDUC C ON C.BIO_NO = B.BIOMETRIC_ID and C.PAYDATE = B.PAYDATE  
+            '                            WHERE B.PAYDATE = '{PAYDATE}' GROUP BY BRANCH_CODE, C.CATEGORY, TRANSAC_NAME, HO_CATEGORY, COMPANY"
 
             TestingScript_String(mysql)
             Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
@@ -1050,7 +1058,6 @@ Public Class frmReport
                     For Each dr In ds.Tables(0).Rows
                         With dr
 
-                            'bioNo = .Item("BIOMETRICID")
                             linee = "COMPANY - 1"
                             Dim COMPANY As String = IIf(IsDBNull(.Item("COMPANY")), "", .Item("COMPANY").ToLower())
                             Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
@@ -1079,11 +1086,22 @@ Public Class frmReport
                                 CATEGORY = "Basic Refund"
                             End If
 
+                            If CATEGORY.Contains("SALES INCENTIVE") Then
+                                If Not SALES_INCENTIVE_INCLUDED Then
+                                    SALES_INCENTIVE_INCLUDED = True
+                                    CATEGORY = "SALES INCENTIVE"
+                                    DC_Amount = GetTotal("AMOUNT", $"TBL_EMPLOYEE B inner join RECORDED_ALLOW_DEDUC A on A.BIO_NO = B.BIOMETRICID and B.BRANCHCODE = '{BRANCHCODE}' and UPPER(A.CATEGORY) LIKE '%SALES INCENTIVE%'  and A.PAYDATE = '{PAYDATE}'")
+                                Else
+                                    Continue For
+                                End If
+                            End If
+
                             If CATEGORY = "13Th Month Pay" Then
                                 linee = "DC_Amount GetTotal() - 1"
                                 DC_Amount = GetTotal("AMOUNT", $"TBL_EMPLOYEE B inner join RECORDED_ALLOW_DEDUC A on A.BIO_NO = B.BIOMETRICID and B.HO_CATEGORY = 'PGC Head Office' and A.CATEGORY = '13th Month Pay' and A.PAYDATE = '{PAYDATE}'")
                             End If
 
+                            Console.WriteLine($"{BRANCHNAME}-{CATEGORY}-{DC_Amount}-{Debit_Credit}")
                             dt_Cost.Rows.Add(BRANCHNAME, CATEGORY, DC_Amount, Debit_Credit)
 
                         End With
@@ -1101,10 +1119,22 @@ Public Class frmReport
                                         From PAYROLL_PAYOUT B 
                                         INNER JOIN TBL_EMPLOYEE A ON A.BIOMETRICID = B.BIOMETRIC_ID 
                                         LEFT JOIN PAYROLL_COSTDISTRIB ON 1 = 1 
-                                        WHERE B.PAYDATE = '{PAYDATE}' GROUP BY A.BRANCHCODE, HO_CATEGORY, NAMEE, NAME_CATEGORY, COMPANY"
+                                        WHERE B.PAYDATE = '{PAYDATE}' AND A.BRANCHCODE = '3G' GROUP BY A.BRANCHCODE, HO_CATEGORY, NAMEE, NAME_CATEGORY, COMPANY"
+
+            '''========================================= PAYROLL_COSTDISTRIBUTION ================================================
+            'mysql = $"Select  A.BRANCHCODE AS BRANCH_CODE, HO_CATEGORY, NAMEE, NAME_CATEGORY, COMPANY, SUM(TOTAL_BASIC) AS BASIC, SUM(TOTAL_OVERTIME) AS OT,
+            '                            SUM(TOTAL_LATE_UT) AS LATE_UT , SUM(SSS_COMP) AS SSS_EE , SUM(SSS_ER) AS SSS_ER , SUM(SSS_EC) AS SSS_EC, 
+            '                            SUM(NET_PAY) AS NETPAY, SUM(PAGIBIG_COMP) AS HDMF, SUM(PHILHEALTH_COMP) AS PHILH, SUM(TOTAL_REGHOLIDAY) AS REGHOLIDAY, SUM(TOTAL_SPECHOLIDAY) AS SPECHOLIDAY  
+            '                            From PAYROLL_PAYOUT B 
+            '                            INNER JOIN TBL_EMPLOYEE A ON A.BIOMETRICID = B.BIOMETRIC_ID 
+            '                            LEFT JOIN PAYROLL_COSTDISTRIB ON 1 = 1 
+            '                            WHERE B.PAYDATE = '{PAYDATE}' GROUP BY A.BRANCHCODE, HO_CATEGORY, NAMEE, NAME_CATEGORY, COMPANY"
             TestingScript_String(mysql)
             Using dss As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
                 If dss.Tables(0).Rows.Count > 0 Then
+                    Dim BasicPay As Boolean = False, RegularOT = False, SSSEmployerShare = False, ECC = False
+                    Dim HDMFEmployerShare As Boolean = False, PhilHealthEmployerShare = False, RegularHoliday = False, SpecialHoliday = False
+                    Dim ECPAYABLE As Boolean = False, LATE = False, SSSPAYABLE = False, HDMFPAYABLE = False, PHILHEALTHPAYABLE = False, CASHINBANK = False
                     progressBarStart(dss.Tables(0).Rows.Count)
                     For Each dr In dss.Tables(0).Rows
                         With dr
@@ -1132,35 +1162,72 @@ Public Class frmReport
                                 BRANCHNAME = toProper & " " & BRANCHNAME
                             End If
 
+                            If BRANCHCODE = "3G" Then
+                                Console.WriteLine(BRANCHCODE)
+                            End If
+
                             '======================== PAYROLL_COSTCONTRIB ================= 
                             NAMEE = .Item("NAMEE")
                             NAME_CATEGORY = .Item("NAME_CATEGORY")
 
                             If NAME_CATEGORY = "DEBIT" Then
-
                                 If NAMEE = "Basic Pay" Then
-                                    DC_Amount = .Item("BASIC")
-
+                                    If Not BasicPay Then
+                                        'DC_Amount = .Item("BASIC")
+                                        BasicPay = True
+                                        DC_Amount = DC_Amount = GetTotal("TOTAL_BASIC", $"TBL_EMPLOYEE B inner join PAYROLL_PAYOUT A on A.BIOMETRIC_ID = B.BIOMETRICID and A.PAYDATE = '{PAYDATE}'")
+                                    Else
+                                        Continue For
+                                    End If
                                 ElseIf NAMEE = "Regular Overtime" Then
-                                    DC_Amount = .Item("OT")
-
+                                    If Not RegularOT Then
+                                        RegularOT = True
+                                        DC_Amount = .Item("OT")
+                                    Else
+                                        Continue For
+                                    End If
                                 ElseIf NAMEE = "SSS Employer Share" Then
-                                    DC_Amount = .Item("SSS_ER")
-
+                                    If Not SSSEmployerShare Then
+                                        SSSEmployerShare = True
+                                        DC_Amount = .Item("SSS_ER")
+                                    Else
+                                        Continue For
+                                    End If
                                 ElseIf NAMEE = "ECC" Then
-                                    DC_Amount = .Item("SSS_EC")
-
+                                    If Not ECC Then
+                                        ECC = True
+                                        DC_Amount = .Item("SSS_EC")
+                                    Else
+                                        Continue For
+                                    End If
                                 ElseIf NAMEE = "HDMF Employer Share" Then
-                                    DC_Amount = .Item("HDMF")
-
+                                    If Not HDMFEmployerShare Then
+                                        HDMFEmployerShare = True
+                                        DC_Amount = .Item("HDMF")
+                                    Else
+                                        Continue For
+                                    End If
                                 ElseIf NAMEE = "Phil Health Employer Share" Then
-                                    DC_Amount = .Item("PHILH")
-
+                                    If Not PhilHealthEmployerShare Then
+                                        PhilHealthEmployerShare = True
+                                        DC_Amount = .Item("PHILH")
+                                    Else
+                                        Continue For
+                                    End If
                                 ElseIf NAMEE = "Regular Holiday" Then
-                                    DC_Amount = .Item("REGHOLIDAY")
-
+                                    If Not RegularHoliday Then
+                                        RegularHoliday = True
+                                        DC_Amount = .Item("REGHOLIDAY")
+                                    Else
+                                        Continue For
+                                    End If
                                 ElseIf NAMEE = "Special Holiday" Then
-                                    DC_Amount = .Item("SPECHOLIDAY")
+                                    If Not SpecialHoliday Then
+                                        SpecialHoliday = True
+                                        DC_Amount = .Item("SPECHOLIDAY")
+                                    Else
+                                        Continue For
+                                    End If
                                 End If
 
                                 Debit_Credit = "DEBIT"
@@ -1168,28 +1235,54 @@ Public Class frmReport
                             ElseIf .Item("NAME_CATEGORY") = "CREDIT" Then
 
                                 If NAMEE = "EC PAYABLE" Then
-                                    DC_Amount = .Item("SSS_EC")
-
+                                    If Not ECPAYABLE Then
+                                        ECPAYABLE = True
+                                        DC_Amount = .Item("SSS_EC")
+                                    Else
+                                        Continue For
+                                    End If
                                 ElseIf NAMEE = "LATE" Then
-                                    DC_Amount = .Item("LATE_UT")
-
+                                    If Not LATE Then
+                                        LATE = True
+                                        DC_Amount = .Item("LATE_UT")
+                                    Else
+                                        Continue For
+                                    End If
                                 ElseIf NAMEE = "SSS PAYABLE" Then
-                                    DC_Amount = .Item("SSS_EE") + .Item("SSS_ER")
-
+                                    If Not SSSPAYABLE Then
+                                        SSSPAYABLE = True
+                                        DC_Amount = .Item("SSS_EE") + .Item("SSS_ER")
+                                    Else
+                                        Continue For
+                                    End If
                                 ElseIf NAMEE = "HDMF PAYABLE" Then
-                                    DC_Amount = .Item("HDMF") * 2
-
+                                    If Not HDMFPAYABLE Then
+                                        HDMFPAYABLE = True
+                                        DC_Amount = DC_Amount = .Item("HDMF") * 2
+                                    Else
+                                        Continue For
+                                    End If
                                 ElseIf NAMEE = "PHIL HEALTH PAYABLE" Then
-                                    DC_Amount = .Item("PHILH") * 2
-
+                                    If Not PHILHEALTHPAYABLE Then
+                                        PHILHEALTHPAYABLE = True
+                                        DC_Amount = .Item("PHILH") * 2
+                                    Else
+                                        Continue For
+                                    End If
                                 ElseIf NAMEE = "CASH IN BANK" Then
-                                    DC_Amount = .Item("NETPAY")
-
+                                    If Not CASHINBANK Then
+                                        CASHINBANK = True
+                                        DC_Amount = .Item("NETPAY")
+                                    Else
+                                        Continue For
+                                    End If
                                 End If
 
                                 Debit_Credit = "CREDIT"
                             End If
 
+
+                            Console.WriteLine($"{BRANCHNAME}-{NAMEE}-{DC_Amount}-{Debit_Credit}")
                             dt_Cost.Rows.Add(BRANCHNAME, NAMEE, DC_Amount, Debit_Credit)
 
                         End With
@@ -2259,19 +2352,19 @@ Public Class frmReport
                                         left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
                                         where A.PAYDATE  = '{PaydateNet_ComboB.Text}' AND B.HO_CATEGORY = 'PGC Head Office' "
 
-            LoadRows_NetPay(mysql_DAVAO_PERFECT, paydatee, "DAVAO PERFECT")
-            LoadRows_NetPay(mysql_JR_PHOTO, paydatee, "JR PHOTO")
-            LoadRows_NetPay(mysql_GENSAN_PERFECT, paydatee, "GENSAN PERFECT")
-            LoadRows_NetPay(mysql_PHOTO_HEADOFFICE, paydatee)
+            'LoadRows_NetPay(mysql_DAVAO_PERFECT, paydatee, "DAVAO PERFECT")
+            'LoadRows_NetPay(mysql_JR_PHOTO, paydatee, "JR PHOTO")
+            'LoadRows_NetPay(mysql_GENSAN_PERFECT, paydatee, "GENSAN PERFECT")
+            'LoadRows_NetPay(mysql_PHOTO_HEADOFFICE, paydatee)
             LoadRows_NetPay(mysql_PG_UY_3G, paydatee)
-            LoadRows_NetPay(mysql_7ELEVEN, paydatee)
-            LoadRows_NetPay(mysql_COMI_WAVE, paydatee)
-            LoadRows_NetPay(mysql_PG_UY_HEADOFFICE, paydatee)
-            LoadRows_NetPay(mysql_DALTON_OFFICE_OPERATION, paydatee)
-            LoadRows_NetPay(mysql_DALTON_BRANCHES, paydatee)
-            LoadRows_NetPay(mysql_PERFECOM, paydatee, "PERFECOM")
-            LoadRows_NetPay(mysql_PTU_REALTY, paydatee, "PTU")
-            LoadRows_NetPay(mysql_PGC_HEADOFFICE, paydatee)
+            'LoadRows_NetPay(mysql_7ELEVEN, paydatee)
+            'LoadRows_NetPay(mysql_COMI_WAVE, paydatee)
+            'LoadRows_NetPay(mysql_PG_UY_HEADOFFICE, paydatee)
+            'LoadRows_NetPay(mysql_DALTON_OFFICE_OPERATION, paydatee)
+            'LoadRows_NetPay(mysql_DALTON_BRANCHES, paydatee)
+            'LoadRows_NetPay(mysql_PERFECOM, paydatee, "PERFECOM")
+            'LoadRows_NetPay(mysql_PTU_REALTY, paydatee, "PTU")
+            'LoadRows_NetPay(mysql_PGC_HEADOFFICE, paydatee)
 
             Dim rds_DTR As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt_NetPay)
             ReportV_NetPay.LocalReport.DataSources.Add(rds_DTR)
