@@ -1173,9 +1173,9 @@ Public Class frmReport
                             If NAME_CATEGORY = "DEBIT" Then
                                 If NAMEE = "Basic Pay" Then
                                     If Not BasicPay Then
-                                        'DC_Amount = .Item("BASIC")
+                                        DC_Amount = .Item("BASIC")
                                         BasicPay = True
-                                        DC_Amount = DC_Amount = GetTotal("TOTAL_BASIC", $"TBL_EMPLOYEE B inner join PAYROLL_PAYOUT A on A.BIOMETRIC_ID = B.BIOMETRICID and A.PAYDATE = '{PAYDATE}'")
+                                        'DC_Amount = GetTotal("TOTAL_BASIC", $"TBL_EMPLOYEE B inner join PAYROLL_PAYOUT A on A.BIOMETRIC_ID = B.BIOMETRICID and A.PAYDATE = '{PAYDATE}' and BRANCHCODE = '{BRANCHCODE}'")
                                     Else
                                         Continue For
                                     End If
