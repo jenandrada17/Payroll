@@ -17,7 +17,7 @@ Public Class frmReport
         PopulateComboBox_Any(Rem_Paydate_Combo, "PAYROLL_PAYOUT", "PAYDATE")
         PopulateComboBox(CostPaydate_Combo, "PAYROLL_PAYOUT", "PAYDATE")
         PopulateComboBox(LoanPaydate_Combo, "PAYROLL_PAYOUT", "PAYDATE")
-        PopulatePaydate_Monthly(PI_Paydate_Combo, "RECORDED_ALLOW_DEDUC", "PAYDATE")
+        PopulatePaydate_Monthly(Allow_Paydate_Combo, "RECORDED_ALLOW_DEDUC", "PAYDATE")
         PopulatePaydate_Yearly(SILYear_Combo, "RECORDED_ALLOW_DEDUC", "PAYDATE")
         Lists_Deduction_History(DeducHistory_List)
         Lists_SBU(SBU_LV)
@@ -1015,7 +1015,6 @@ Public Class frmReport
     Public Sub LoadCostDistribution()
         Rpt_CostContrib.LocalReport.DataSources.Clear()
         Dim linee As String = Nothing
-        Dim SALES_INCENTIVE_INCLUDED As Boolean = False
 
         Try
 
@@ -1040,16 +1039,10 @@ Public Class frmReport
             End With
 
             ''========================================= RECORDED_ALLOW_DEDUC ================================================
-            mysql = $"Select A.BRANCHCODE AS BRANCH_CODE, C.CATEGORY, TRANSAC_NAME, HO_CATEGORY, COMPANY, SUM(AMOUNT) AS TOTS From PAYROLL_PAYOUT B 
+            mysql = $"Select A.BRANCHCODE AS BRANCH_CODE, C.CATEGORY, TRANSAC_NAME, COALESCE(HO_CATEGORY, '') AS HO_CATEGORY, COMPANY, SUM(AMOUNT) AS TOTS From PAYROLL_PAYOUT B 
                                         INNER JOIN TBL_EMPLOYEE A ON A.BIOMETRICID = B.BIOMETRIC_ID 
                                         LEFT JOIN RECORDED_ALLOW_DEDUC C ON C.BIO_NO = B.BIOMETRIC_ID and C.PAYDATE = B.PAYDATE  
-                                        WHERE B.PAYDATE = '{PAYDATE}' AND A.BRANCHCODE = '3G' GROUP BY BRANCH_CODE, C.CATEGORY, TRANSAC_NAME, HO_CATEGORY, COMPANY"
-
-            '''========================================= RECORDED_ALLOW_DEDUC ================================================
-            'mysql = $"Select A.BRANCHCODE AS BRANCH_CODE, C.CATEGORY, TRANSAC_NAME, HO_CATEGORY, COMPANY, SUM(AMOUNT) AS TOTS From PAYROLL_PAYOUT B 
-            '                            INNER JOIN TBL_EMPLOYEE A ON A.BIOMETRICID = B.BIOMETRIC_ID 
-            '                            LEFT JOIN RECORDED_ALLOW_DEDUC C ON C.BIO_NO = B.BIOMETRIC_ID and C.PAYDATE = B.PAYDATE  
-            '                            WHERE B.PAYDATE = '{PAYDATE}' GROUP BY BRANCH_CODE, C.CATEGORY, TRANSAC_NAME, HO_CATEGORY, COMPANY"
+                                        WHERE B.PAYDATE = '{PAYDATE}' GROUP BY BRANCH_CODE, COMPANY, C.CATEGORY, TRANSAC_NAME, HO_CATEGORY"
 
             TestingScript_String(mysql)
             Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
@@ -1059,9 +1052,9 @@ Public Class frmReport
                         With dr
 
                             linee = "COMPANY - 1"
-                            Dim COMPANY As String = IIf(IsDBNull(.Item("COMPANY")), "", .Item("COMPANY").ToLower())
-                            Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
-                            Dim toProper As String = info.ToTitleCase(COMPANY)
+                            Dim COMPANY As String = IIf(IsDBNull(.Item("COMPANY")), "", .Item("COMPANY"))
+                            'Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
+                            'Dim toProper As String = info.ToTitleCase(COMPANY)
 
                             linee = "BRANCHCODE - 1"
                             Dim BRANCHCODE As String = IIf(IsDBNull(.Item("BRANCH_CODE")), "", .Item("BRANCH_CODE"))
@@ -1077,23 +1070,30 @@ Public Class frmReport
                             If BRANCHCODE = Nothing Then
                                 linee = "BRANCHNAME = HO_CATEGORY - 1"
                                 BRANCHNAME = IIf(IsDBNull(.Item("HO_CATEGORY")), "", CStr(.Item("HO_CATEGORY")).TrimEnd)
-
-                            ElseIf BRANCHCODE = "ROG" Or BRANCHCODE = "ROX" Or BRANCHCODE = "MID" Or BRANCHCODE = "ACM" Or BRANCHCODE = "ACM " Or BRANCHCODE = "KID" Or BRANCHCODE = "POL" Or BRANCHCODE = "KCG" Then
-                                BRANCHNAME = toProper & " " & BRANCHNAME
+                            ElseIf BRANCHCODE = "SMG" Then
+                                If COMPANY = "PERFECOM" Then
+                                    BRANCHNAME = $"Perfecom-SM GENSAN"
+                                Else
+                                    BRANCHNAME = $"Photo-SM GENSAN"
+                                End If
+                            ElseIf BRANCHCODE = "KCG" And COMPANY = "PERFECOM" Then
+                                BRANCHNAME = $"Perfecom-KCC Gensan"
+                            ElseIf BRANCHCODE = "KID" And COMPANY = "PHOTO" Then
+                                BRANCHNAME = $"Photo-Kidapawan"
+                            ElseIf BRANCHCODE = "MID" And COMPANY = "PHOTO" Then
+                                BRANCHNAME = $"Photo-Midsayap"
+                            ElseIf BRANCHCODE = "POL" And COMPANY = "PHOTO" Then
+                                BRANCHNAME = $"Photo-Polomolok"
+                            ElseIf BRANCHCODE = "ROG" And COMPANY = "PHOTO" Then
+                                BRANCHNAME = $"Photo-Robinson Gensan"
+                            ElseIf BRANCHCODE = "ROX" And COMPANY = "PHOTO" Then
+                                BRANCHNAME = $"Photo-Roxas Gensan"
+                            ElseIf BRANCHCODE = "SNP" And COMPANY = "PHOTO" Then
+                                BRANCHNAME = $"Photo-San Pedro"
                             End If
 
                             If CATEGORY = "Basic Pay" Then
                                 CATEGORY = "Basic Refund"
-                            End If
-
-                            If CATEGORY.Contains("SALES INCENTIVE") Then
-                                If Not SALES_INCENTIVE_INCLUDED Then
-                                    SALES_INCENTIVE_INCLUDED = True
-                                    CATEGORY = "SALES INCENTIVE"
-                                    DC_Amount = GetTotal("AMOUNT", $"TBL_EMPLOYEE B inner join RECORDED_ALLOW_DEDUC A on A.BIO_NO = B.BIOMETRICID and B.BRANCHCODE = '{BRANCHCODE}' and UPPER(A.CATEGORY) LIKE '%SALES INCENTIVE%'  and A.PAYDATE = '{PAYDATE}'")
-                                Else
-                                    Continue For
-                                End If
                             End If
 
                             If CATEGORY = "13Th Month Pay" Then
@@ -1101,7 +1101,6 @@ Public Class frmReport
                                 DC_Amount = GetTotal("AMOUNT", $"TBL_EMPLOYEE B inner join RECORDED_ALLOW_DEDUC A on A.BIO_NO = B.BIOMETRICID and B.HO_CATEGORY = 'PGC Head Office' and A.CATEGORY = '13th Month Pay' and A.PAYDATE = '{PAYDATE}'")
                             End If
 
-                            Console.WriteLine($"{BRANCHNAME}-{CATEGORY}-{DC_Amount}-{Debit_Credit}")
                             dt_Cost.Rows.Add(BRANCHNAME, CATEGORY, DC_Amount, Debit_Credit)
 
                         End With
@@ -1113,37 +1112,24 @@ Public Class frmReport
             End Using
 
             ''========================================= PAYROLL_COSTDISTRIBUTION ================================================
-            mysql = $"Select  A.BRANCHCODE AS BRANCH_CODE, HO_CATEGORY, NAMEE, NAME_CATEGORY, COMPANY, SUM(TOTAL_BASIC) AS BASIC, SUM(TOTAL_OVERTIME) AS OT,
-                                        SUM(TOTAL_LATE_UT) AS LATE_UT , SUM(SSS_COMP) AS SSS_EE , SUM(SSS_ER) AS SSS_ER , SUM(SSS_EC) AS SSS_EC, 
+            mysql = $"Select A.BRANCHCODE AS BRANCH_CODE, COALESCE(HO_CATEGORY, '') AS HO_CATEGORY, NAMEE, NAME_CATEGORY, COMPANY, SUM(TOTAL_BASIC) AS BASIC, SUM(TOTAL_OVERTIME) AS OT,
+                                        SUM(TOTAL_LATE_UT) AS LATE_UT, SUM(TOTAL_NIGHT_RATE) AS NIGHT_RATE, SUM(SSS_COMP) AS SSS_EE , SUM(SSS_ER) AS SSS_ER , SUM(SSS_EC) AS SSS_EC, 
                                         SUM(NET_PAY) AS NETPAY, SUM(PAGIBIG_COMP) AS HDMF, SUM(PHILHEALTH_COMP) AS PHILH, SUM(TOTAL_REGHOLIDAY) AS REGHOLIDAY, SUM(TOTAL_SPECHOLIDAY) AS SPECHOLIDAY  
                                         From PAYROLL_PAYOUT B 
                                         INNER JOIN TBL_EMPLOYEE A ON A.BIOMETRICID = B.BIOMETRIC_ID 
                                         LEFT JOIN PAYROLL_COSTDISTRIB ON 1 = 1 
-                                        WHERE B.PAYDATE = '{PAYDATE}' AND A.BRANCHCODE = '3G' GROUP BY A.BRANCHCODE, HO_CATEGORY, NAMEE, NAME_CATEGORY, COMPANY"
-
-            '''========================================= PAYROLL_COSTDISTRIBUTION ================================================
-            'mysql = $"Select  A.BRANCHCODE AS BRANCH_CODE, HO_CATEGORY, NAMEE, NAME_CATEGORY, COMPANY, SUM(TOTAL_BASIC) AS BASIC, SUM(TOTAL_OVERTIME) AS OT,
-            '                            SUM(TOTAL_LATE_UT) AS LATE_UT , SUM(SSS_COMP) AS SSS_EE , SUM(SSS_ER) AS SSS_ER , SUM(SSS_EC) AS SSS_EC, 
-            '                            SUM(NET_PAY) AS NETPAY, SUM(PAGIBIG_COMP) AS HDMF, SUM(PHILHEALTH_COMP) AS PHILH, SUM(TOTAL_REGHOLIDAY) AS REGHOLIDAY, SUM(TOTAL_SPECHOLIDAY) AS SPECHOLIDAY  
-            '                            From PAYROLL_PAYOUT B 
-            '                            INNER JOIN TBL_EMPLOYEE A ON A.BIOMETRICID = B.BIOMETRIC_ID 
-            '                            LEFT JOIN PAYROLL_COSTDISTRIB ON 1 = 1 
-            '                            WHERE B.PAYDATE = '{PAYDATE}' GROUP BY A.BRANCHCODE, HO_CATEGORY, NAMEE, NAME_CATEGORY, COMPANY"
+                                        WHERE B.PAYDATE = '{PAYDATE}' GROUP BY A.BRANCHCODE, HO_CATEGORY, NAMEE, NAME_CATEGORY, COMPANY"
             TestingScript_String(mysql)
             Using dss As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
                 If dss.Tables(0).Rows.Count > 0 Then
-                    Dim BasicPay As Boolean = False, RegularOT = False, SSSEmployerShare = False, ECC = False
-                    Dim HDMFEmployerShare As Boolean = False, PhilHealthEmployerShare = False, RegularHoliday = False, SpecialHoliday = False
-                    Dim ECPAYABLE As Boolean = False, LATE = False, SSSPAYABLE = False, HDMFPAYABLE = False, PHILHEALTHPAYABLE = False, CASHINBANK = False
                     progressBarStart(dss.Tables(0).Rows.Count)
                     For Each dr In dss.Tables(0).Rows
                         With dr
 
-                            'bioNo = .Item("BIOMETRICID")
                             linee = "COMPANY - 2"
-                            Dim COMPANY As String = IIf(IsDBNull(.Item("COMPANY")), "", .Item("COMPANY").ToLower())
-                            Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
-                            Dim toProper As String = info.ToTitleCase(COMPANY)
+                            Dim COMPANY As String = IIf(IsDBNull(.Item("COMPANY")), "", .Item("COMPANY"))
+                            'Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
+                            'Dim toProper As String = info.ToTitleCase(COMPANY)
 
                             linee = "BRANCHCODE - 2"
                             Dim BRANCHCODE As String = IIf(IsDBNull(.Item("BRANCH_CODE")), "", .Item("BRANCH_CODE"))
@@ -1158,12 +1144,26 @@ Public Class frmReport
                             If BRANCHCODE = Nothing Then
                                 linee = "BRANCHNAME = HO_CATEGORY - 2"
                                 BRANCHNAME = CStr(.Item("HO_CATEGORY")).TrimEnd
-                            ElseIf BRANCHCODE = "ROG" Or BRANCHCODE = "ROX" Or BRANCHCODE = "MID" Or BRANCHCODE = "ACM" Or BRANCHCODE = "ACM " Or BRANCHCODE = "KID" Or BRANCHCODE = "POL" Or BRANCHCODE = "KCG" Then
-                                BRANCHNAME = toProper & " " & BRANCHNAME
-                            End If
-
-                            If BRANCHCODE = "3G" Then
-                                Console.WriteLine(BRANCHCODE)
+                            ElseIf BRANCHCODE = "SMG" Then
+                                If COMPANY = "PERFECOM" Then
+                                    BRANCHNAME = $"Perfecom-SM GENSAN"
+                                Else
+                                    BRANCHNAME = $"Photo-SM GENSAN"
+                                End If
+                            ElseIf BRANCHCODE = "KCG" And COMPANY = "PERFECOM" Then
+                                BRANCHNAME = $"Perfecom-KCC Gensan"
+                            ElseIf BRANCHCODE = "KID" And COMPANY = "PHOTO" Then
+                                BRANCHNAME = $"Photo-Kidapawan"
+                            ElseIf BRANCHCODE = "MID" And COMPANY = "PHOTO" Then
+                                BRANCHNAME = $"Photo-Midsayap"
+                            ElseIf BRANCHCODE = "POL" And COMPANY = "PHOTO" Then
+                                BRANCHNAME = $"Photo-Polomolok"
+                            ElseIf BRANCHCODE = "ROG" And COMPANY = "PHOTO" Then
+                                BRANCHNAME = $"Photo-Robinson Gensan"
+                            ElseIf BRANCHCODE = "ROX" And COMPANY = "PHOTO" Then
+                                BRANCHNAME = $"Photo-Roxas Gensan"
+                            ElseIf BRANCHCODE = "SNP" And COMPANY = "PHOTO" Then
+                                BRANCHNAME = $"Photo-San Pedro"
                             End If
 
                             '======================== PAYROLL_COSTCONTRIB ================= 
@@ -1171,63 +1171,34 @@ Public Class frmReport
                             NAME_CATEGORY = .Item("NAME_CATEGORY")
 
                             If NAME_CATEGORY = "DEBIT" Then
+
                                 If NAMEE = "Basic Pay" Then
-                                    If Not BasicPay Then
-                                        DC_Amount = .Item("BASIC")
-                                        BasicPay = True
-                                        'DC_Amount = GetTotal("TOTAL_BASIC", $"TBL_EMPLOYEE B inner join PAYROLL_PAYOUT A on A.BIOMETRIC_ID = B.BIOMETRICID and A.PAYDATE = '{PAYDATE}' and BRANCHCODE = '{BRANCHCODE}'")
-                                    Else
-                                        Continue For
-                                    End If
+                                    DC_Amount = .Item("BASIC")
+
                                 ElseIf NAMEE = "Regular Overtime" Then
-                                    If Not RegularOT Then
-                                        RegularOT = True
-                                        DC_Amount = .Item("OT")
-                                    Else
-                                        Continue For
-                                    End If
+                                    DC_Amount = .Item("OT")
+
                                 ElseIf NAMEE = "SSS Employer Share" Then
-                                    If Not SSSEmployerShare Then
-                                        SSSEmployerShare = True
-                                        DC_Amount = .Item("SSS_ER")
-                                    Else
-                                        Continue For
-                                    End If
+                                    DC_Amount = .Item("SSS_ER")
+
                                 ElseIf NAMEE = "ECC" Then
-                                    If Not ECC Then
-                                        ECC = True
-                                        DC_Amount = .Item("SSS_EC")
-                                    Else
-                                        Continue For
-                                    End If
+                                    DC_Amount = .Item("SSS_EC")
+
                                 ElseIf NAMEE = "HDMF Employer Share" Then
-                                    If Not HDMFEmployerShare Then
-                                        HDMFEmployerShare = True
-                                        DC_Amount = .Item("HDMF")
-                                    Else
-                                        Continue For
-                                    End If
+                                    DC_Amount = .Item("HDMF")
+
                                 ElseIf NAMEE = "Phil Health Employer Share" Then
-                                    If Not PhilHealthEmployerShare Then
-                                        PhilHealthEmployerShare = True
-                                        DC_Amount = .Item("PHILH")
-                                    Else
-                                        Continue For
-                                    End If
+                                    DC_Amount = .Item("PHILH")
+
                                 ElseIf NAMEE = "Regular Holiday" Then
-                                    If Not RegularHoliday Then
-                                        RegularHoliday = True
-                                        DC_Amount = .Item("REGHOLIDAY")
-                                    Else
-                                        Continue For
-                                    End If
+                                    DC_Amount = .Item("REGHOLIDAY")
+
                                 ElseIf NAMEE = "Special Holiday" Then
-                                    If Not SpecialHoliday Then
-                                        SpecialHoliday = True
-                                        DC_Amount = .Item("SPECHOLIDAY")
-                                    Else
-                                        Continue For
-                                    End If
+                                    DC_Amount = .Item("SPECHOLIDAY")
+
+                                ElseIf NAMEE = "Night Premium" Then
+                                    DC_Amount = .Item("NIGHT_RATE")
+
                                 End If
 
                                 Debit_Credit = "DEBIT"
@@ -1235,54 +1206,28 @@ Public Class frmReport
                             ElseIf .Item("NAME_CATEGORY") = "CREDIT" Then
 
                                 If NAMEE = "EC PAYABLE" Then
-                                    If Not ECPAYABLE Then
-                                        ECPAYABLE = True
-                                        DC_Amount = .Item("SSS_EC")
-                                    Else
-                                        Continue For
-                                    End If
+                                    DC_Amount = .Item("SSS_EC")
+
                                 ElseIf NAMEE = "LATE" Then
-                                    If Not LATE Then
-                                        LATE = True
-                                        DC_Amount = .Item("LATE_UT")
-                                    Else
-                                        Continue For
-                                    End If
+                                    DC_Amount = .Item("LATE_UT")
+
                                 ElseIf NAMEE = "SSS PAYABLE" Then
-                                    If Not SSSPAYABLE Then
-                                        SSSPAYABLE = True
-                                        DC_Amount = .Item("SSS_EE") + .Item("SSS_ER")
-                                    Else
-                                        Continue For
-                                    End If
+                                    DC_Amount = .Item("SSS_EE") + .Item("SSS_ER")
+
                                 ElseIf NAMEE = "HDMF PAYABLE" Then
-                                    If Not HDMFPAYABLE Then
-                                        HDMFPAYABLE = True
-                                        DC_Amount = DC_Amount = .Item("HDMF") * 2
-                                    Else
-                                        Continue For
-                                    End If
+                                    DC_Amount = .Item("HDMF") * 2
+
                                 ElseIf NAMEE = "PHIL HEALTH PAYABLE" Then
-                                    If Not PHILHEALTHPAYABLE Then
-                                        PHILHEALTHPAYABLE = True
-                                        DC_Amount = .Item("PHILH") * 2
-                                    Else
-                                        Continue For
-                                    End If
+                                    DC_Amount = .Item("PHILH") * 2
+
                                 ElseIf NAMEE = "CASH IN BANK" Then
-                                    If Not CASHINBANK Then
-                                        CASHINBANK = True
-                                        DC_Amount = .Item("NETPAY")
-                                    Else
-                                        Continue For
-                                    End If
+                                    DC_Amount = .Item("NETPAY")
+
                                 End If
 
                                 Debit_Credit = "CREDIT"
                             End If
 
-
-                            Console.WriteLine($"{BRANCHNAME}-{NAMEE}-{DC_Amount}-{Debit_Credit}")
                             dt_Cost.Rows.Add(BRANCHNAME, NAMEE, DC_Amount, Debit_Credit)
 
                         End With
@@ -1307,6 +1252,320 @@ Public Class frmReport
         End Try
 
     End Sub
+
+    'Public Sub LoadCostDistribution()
+    '    Rpt_CostContrib.LocalReport.DataSources.Clear()
+    '    Dim linee As String = Nothing
+    '    Dim SALES_INCENTIVE_INCLUDED As Boolean = False
+
+    '    Try
+
+    '        Dim mysql As String
+    '        Dim PAYDATE As String = CostPaydate_Combo.Text
+    '        Dim PAYROLL As DateTime = CostPaydate_Combo.Text
+
+    '        Dim FORMNAME As String = "2nd PERIOD"
+
+    '        If PAYROLL.Day = 15 Then
+    '            FORMNAME = "1ST PERIOD"
+    '        End If
+
+    '        FORMNAME = $"{(PAYROLL.ToString("MMMM dd, yyyy")).ToUpper} - {FORMNAME}"
+
+    '        Dim dt_Cost As New DataTable()
+    '        With dt_Cost
+    '            .Columns.Add("BRANCH")
+    '            .Columns.Add("NAME")
+    '            .Columns.Add("AMOUNT")
+    '            .Columns.Add("CATEGORY")
+    '        End With
+
+    '        ''========================================= RECORDED_ALLOW_DEDUC ================================================
+    '        mysql = $"Select A.BRANCHCODE AS BRANCH_CODE, C.CATEGORY, TRANSAC_NAME, HO_CATEGORY, COMPANY, SUM(AMOUNT) AS TOTS From PAYROLL_PAYOUT B 
+    '                                    INNER JOIN TBL_EMPLOYEE A ON A.BIOMETRICID = B.BIOMETRIC_ID 
+    '                                    LEFT JOIN RECORDED_ALLOW_DEDUC C ON C.BIO_NO = B.BIOMETRIC_ID and C.PAYDATE = B.PAYDATE  
+    '                                    WHERE B.PAYDATE = '{PAYDATE}' AND A.BRANCHCODE = '3G' GROUP BY BRANCH_CODE, C.CATEGORY, TRANSAC_NAME, HO_CATEGORY, COMPANY"
+
+    '        '========================================= RECORDED_ALLOW_DEDUC ================================================
+    '        'mysql = $"Select A.BRANCHCODE AS BRANCH_CODE, C.CATEGORY, TRANSAC_NAME, HO_CATEGORY, COMPANY, SUM(AMOUNT) AS TOTS From PAYROLL_PAYOUT B 
+    '        '                            INNER JOIN TBL_EMPLOYEE A ON A.BIOMETRICID = B.BIOMETRIC_ID 
+    '        '                            LEFT JOIN RECORDED_ALLOW_DEDUC C ON C.BIO_NO = B.BIOMETRIC_ID and C.PAYDATE = B.PAYDATE  
+    '        '                            WHERE B.PAYDATE = '{PAYDATE}' GROUP BY BRANCH_CODE, C.CATEGORY, TRANSAC_NAME, HO_CATEGORY, COMPANY"
+
+    '        TestingScript_String(mysql)
+    '        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
+    '            If ds.Tables(0).Rows.Count > 0 Then
+    '                progressBarStart(ds.Tables(0).Rows.Count)
+    '                For Each dr In ds.Tables(0).Rows
+    '                    With dr
+
+    '                        linee = "COMPANY - 1"
+    '                        Dim COMPANY As String = IIf(IsDBNull(.Item("COMPANY")), "", .Item("COMPANY").ToLower())
+    '                        Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
+    '                        Dim toProper As String = info.ToTitleCase(COMPANY)
+
+    '                        linee = "BRANCHCODE - 1"
+    '                        Dim BRANCHCODE As String '= IIf(IsDBNull(.Item("BRANCH_CODE")), "", .Item("BRANCH_CODE"))
+
+    '                        If IsDBNull(.Item("BRANCH_CODE")) Then
+    '                            BRANCHCODE = ""
+    '                        ElseIf .Item("BRANCH_CODE") = "" Then
+    '                            BRANCHCODE = ""
+    '                        Else
+    '                            BRANCHCODE = .Item("BRANCH_CODE")
+    '                        End If
+
+    '                        linee = "BRANCHNAME - 1"
+    '                        Dim BRANCHNAME As String = GET_STRING("PAYROLL_CITY_BRANCH", "BRANCHNAME", $"BRANCHCODE = '{BRANCHCODE}'")
+    '                        linee = "CATEGORY - 1"
+    '                        Dim CATEGORY As String = IIf(IsDBNull(.Item("CATEGORY")), "", .Item("CATEGORY"))
+    '                        linee = "DC_Amount - 1"
+    '                        Dim DC_Amount As String = IIf(IsDBNull(.Item("TOTS")), "", .Item("TOTS"))
+    '                        linee = "Debit_Credit - 1"
+    '                        Dim Debit_Credit As String = IIf(IsDBNull(.Item("TRANSAC_NAME")), "", .Item("TRANSAC_NAME"))
+
+    '                        If BRANCHCODE = Nothing Then
+    '                            linee = "BRANCHNAME = HO_CATEGORY - 1"
+    '                            BRANCHNAME = IIf(IsDBNull(.Item("HO_CATEGORY")), "", CStr(.Item("HO_CATEGORY")).TrimEnd)
+
+    '                        ElseIf BRANCHCODE = "ROG" Or BRANCHCODE = "ROX" Or BRANCHCODE = "MID" Or BRANCHCODE = "ACM" Or BRANCHCODE = "ACM " Or BRANCHCODE = "KID" Or BRANCHCODE = "POL" Or BRANCHCODE = "KCG" Then
+    '                            BRANCHNAME = toProper & " " & BRANCHNAME
+    '                        End If
+
+    '                        If CATEGORY = "Basic Pay" Then
+    '                            CATEGORY = "Basic Refund"
+    '                        End If
+
+    '                        If CATEGORY.Contains("SALES INCENTIVE") Then
+    '                            If Not SALES_INCENTIVE_INCLUDED Then
+    '                                SALES_INCENTIVE_INCLUDED = True
+    '                                CATEGORY = "SALES INCENTIVE"
+    '                                DC_Amount = GetTotal("AMOUNT", $"TBL_EMPLOYEE B inner join RECORDED_ALLOW_DEDUC A on A.BIO_NO = B.BIOMETRICID and B.BRANCHCODE = '{BRANCHCODE}' and UPPER(A.CATEGORY) LIKE '%SALES INCENTIVE%'  and A.PAYDATE = '{PAYDATE}'")
+    '                            Else
+    '                                Continue For
+    '                            End If
+    '                        End If
+
+    '                        If CATEGORY = "13Th Month Pay" Then
+    '                            linee = "DC_Amount GetTotal() - 1"
+    '                            DC_Amount = GetTotal("AMOUNT", $"TBL_EMPLOYEE B inner join RECORDED_ALLOW_DEDUC A on A.BIO_NO = B.BIOMETRICID and B.HO_CATEGORY = 'PGC Head Office' and A.CATEGORY = '13th Month Pay' and A.PAYDATE = '{PAYDATE}'")
+    '                        End If
+
+    '                        Console.WriteLine($"{BRANCHNAME}-{CATEGORY}-{DC_Amount}-{Debit_Credit}")
+    '                        dt_Cost.Rows.Add(BRANCHNAME, CATEGORY, DC_Amount, Debit_Credit)
+
+    '                    End With
+
+    '                    frmMainForm.AppProgressBar.Value += 1
+    '                Next
+    '                progressBarEnd()
+    '            End If
+    '        End Using
+
+    '        ''========================================= PAYROLL_COSTDISTRIBUTION ================================================
+    '        'mysql = $"Select  A.BRANCHCODE AS BRANCH_CODE, HO_CATEGORY, NAMEE, NAME_CATEGORY, COMPANY, SUM(TOTAL_BASIC) AS BASIC, SUM(TOTAL_OVERTIME) AS OT,
+    '        '                            SUM(TOTAL_LATE_UT) AS LATE_UT , SUM(SSS_COMP) AS SSS_EE , SUM(SSS_ER) AS SSS_ER , SUM(SSS_EC) AS SSS_EC, 
+    '        '                            SUM(NET_PAY) AS NETPAY, SUM(PAGIBIG_COMP) AS HDMF, SUM(PHILHEALTH_COMP) AS PHILH, SUM(TOTAL_REGHOLIDAY) AS REGHOLIDAY, SUM(TOTAL_SPECHOLIDAY) AS SPECHOLIDAY  
+    '        '                            From PAYROLL_PAYOUT B 
+    '        '                            INNER JOIN TBL_EMPLOYEE A ON A.BIOMETRICID = B.BIOMETRIC_ID 
+    '        '                            LEFT JOIN PAYROLL_COSTDISTRIB ON 1 = 1 
+    '        '                            WHERE B.PAYDATE = '{PAYDATE}' AND A.BRANCHCODE = '3G' GROUP BY A.BRANCHCODE, HO_CATEGORY, NAMEE, NAME_CATEGORY, COMPANY"
+
+    '        '========================================= PAYROLL_COSTDISTRIBUTION ================================================
+    '        mysql = $"Select  A.BRANCHCODE AS BRANCH_CODE, HO_CATEGORY, NAMEE, NAME_CATEGORY, COMPANY, SUM(TOTAL_BASIC) AS BASIC, SUM(TOTAL_OVERTIME) AS OT,
+    '                                    SUM(TOTAL_LATE_UT) AS LATE_UT , SUM(SSS_COMP) AS SSS_EE , SUM(SSS_ER) AS SSS_ER , SUM(SSS_EC) AS SSS_EC, 
+    '                                    SUM(NET_PAY) AS NETPAY, SUM(PAGIBIG_COMP) AS HDMF, SUM(PHILHEALTH_COMP) AS PHILH, SUM(TOTAL_REGHOLIDAY) AS REGHOLIDAY, SUM(TOTAL_SPECHOLIDAY) AS SPECHOLIDAY  
+    '                                    From PAYROLL_PAYOUT B 
+    '                                    INNER JOIN TBL_EMPLOYEE A ON A.BIOMETRICID = B.BIOMETRIC_ID 
+    '                                    LEFT JOIN PAYROLL_COSTDISTRIB ON 1 = 1 
+    '                                    WHERE B.PAYDATE = '{PAYDATE}' GROUP BY A.BRANCHCODE, HO_CATEGORY, NAMEE, NAME_CATEGORY, COMPANY"
+    '        TestingScript_String(mysql)
+    '        Using dss As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
+    '            If dss.Tables(0).Rows.Count > 0 Then
+    '                Dim BasicPay As Boolean = False, RegularOT = False, SSSEmployerShare = False, ECC = False
+    '                Dim HDMFEmployerShare As Boolean = False, PhilHealthEmployerShare = False, RegularHoliday = False, SpecialHoliday = False
+    '                Dim ECPAYABLE As Boolean = False, LATE = False, SSSPAYABLE = False, HDMFPAYABLE = False, PHILHEALTHPAYABLE = False, CASHINBANK = False
+    '                progressBarStart(dss.Tables(0).Rows.Count)
+    '                For Each dr In dss.Tables(0).Rows
+    '                    With dr
+
+    '                        'bioNo = .Item("BIOMETRICID")
+    '                        linee = "COMPANY - 2"
+    '                        Dim COMPANY As String = IIf(IsDBNull(.Item("COMPANY")), "", .Item("COMPANY").ToLower())
+    '                        Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
+    '                        Dim toProper As String = info.ToTitleCase(COMPANY)
+
+    '                        linee = "BRANCHCODE - 2"
+    '                        Dim BRANCHCODE As String '= IIf(IsDBNull(.Item("BRANCH_CODE")), "", .Item("BRANCH_CODE"))
+
+    '                        If IsDBNull(.Item("BRANCH_CODE")) Then
+    '                            BRANCHCODE = ""
+    '                        ElseIf .Item("BRANCH_CODE") = "" Then
+    '                            BRANCHCODE = ""
+    '                        Else
+    '                            BRANCHCODE = .Item("BRANCH_CODE")
+    '                        End If
+
+    '                        linee = "BRANCHNAME - 2"
+    '                        Dim BRANCHNAME As String = GET_STRING("PAYROLL_CITY_BRANCH", "BRANCHNAME", $"BRANCHCODE = '{BRANCHCODE}'")
+    '                        Dim CATEGORY As String = Nothing
+    '                        Dim Debit_Credit As String = Nothing
+    '                        Dim NAMEE As String = Nothing
+    '                        Dim NAME_CATEGORY As String = Nothing
+    '                        Dim DC_Amount As Decimal = 0
+
+    '                        If BRANCHCODE = Nothing Then
+    '                            linee = "BRANCHNAME = HO_CATEGORY - 2"
+    '                            BRANCHNAME = CStr(.Item("HO_CATEGORY")).TrimEnd
+    '                        ElseIf BRANCHCODE = "ROG" Or BRANCHCODE = "ROX" Or BRANCHCODE = "MID" Or BRANCHCODE = "ACM" Or BRANCHCODE = "ACM " Or BRANCHCODE = "KID" Or BRANCHCODE = "POL" Or BRANCHCODE = "KCG" Then
+    '                            BRANCHNAME = toProper & " " & BRANCHNAME
+    '                        End If
+
+    '                        If BRANCHCODE = "3G" Then
+    '                            Console.WriteLine(BRANCHCODE)
+    '                        End If
+
+    '                        '======================== PAYROLL_COSTCONTRIB ================= 
+    '                        NAMEE = .Item("NAMEE")
+    '                        NAME_CATEGORY = .Item("NAME_CATEGORY")
+
+    '                        If NAME_CATEGORY = "DEBIT" Then
+    '                            If NAMEE = "Basic Pay" Then
+    '                                If Not BasicPay Then
+    '                                    'DC_Amount = .Item("BASIC")
+    '                                    BasicPay = True
+    '                                    DC_Amount = GetTotal("TOTAL_BASIC", $"TBL_EMPLOYEE B inner join PAYROLL_PAYOUT A on A.BIOMETRIC_ID = B.BIOMETRICID and A.PAYDATE = '{PAYDATE}' and BRANCHCODE = '{BRANCHCODE}'")
+    '                                Else
+    '                                    Continue For
+    '                                End If
+    '                            ElseIf NAMEE = "Regular Overtime" Then
+    '                                If Not RegularOT Then
+    '                                    RegularOT = True
+    '                                    DC_Amount = .Item("OT")
+    '                                Else
+    '                                    Continue For
+    '                                End If
+    '                            ElseIf NAMEE = "SSS Employer Share" Then
+    '                                If Not SSSEmployerShare Then
+    '                                    SSSEmployerShare = True
+    '                                    DC_Amount = .Item("SSS_ER")
+    '                                Else
+    '                                    Continue For
+    '                                End If
+    '                            ElseIf NAMEE = "ECC" Then
+    '                                If Not ECC Then
+    '                                    ECC = True
+    '                                    DC_Amount = .Item("SSS_EC")
+    '                                Else
+    '                                    Continue For
+    '                                End If
+    '                            ElseIf NAMEE = "HDMF Employer Share" Then
+    '                                If Not HDMFEmployerShare Then
+    '                                    HDMFEmployerShare = True
+    '                                    DC_Amount = .Item("HDMF")
+    '                                Else
+    '                                    Continue For
+    '                                End If
+    '                            ElseIf NAMEE = "Phil Health Employer Share" Then
+    '                                If Not PhilHealthEmployerShare Then
+    '                                    PhilHealthEmployerShare = True
+    '                                    DC_Amount = .Item("PHILH")
+    '                                Else
+    '                                    Continue For
+    '                                End If
+    '                            ElseIf NAMEE = "Regular Holiday" Then
+    '                                If Not RegularHoliday Then
+    '                                    RegularHoliday = True
+    '                                    DC_Amount = .Item("REGHOLIDAY")
+    '                                Else
+    '                                    Continue For
+    '                                End If
+    '                            ElseIf NAMEE = "Special Holiday" Then
+    '                                If Not SpecialHoliday Then
+    '                                    SpecialHoliday = True
+    '                                    DC_Amount = .Item("SPECHOLIDAY")
+    '                                Else
+    '                                    Continue For
+    '                                End If
+    '                            End If
+
+    '                            Debit_Credit = "DEBIT"
+
+    '                        ElseIf .Item("NAME_CATEGORY") = "CREDIT" Then
+
+    '                            If NAMEE = "EC PAYABLE" Then
+    '                                If Not ECPAYABLE Then
+    '                                    ECPAYABLE = True
+    '                                    DC_Amount = .Item("SSS_EC")
+    '                                Else
+    '                                    Continue For
+    '                                End If
+    '                            ElseIf NAMEE = "LATE" Then
+    '                                If Not LATE Then
+    '                                    LATE = True
+    '                                    DC_Amount = .Item("LATE_UT")
+    '                                Else
+    '                                    Continue For
+    '                                End If
+    '                            ElseIf NAMEE = "SSS PAYABLE" Then
+    '                                If Not SSSPAYABLE Then
+    '                                    SSSPAYABLE = True
+    '                                    DC_Amount = .Item("SSS_EE") + .Item("SSS_ER")
+    '                                Else
+    '                                    Continue For
+    '                                End If
+    '                            ElseIf NAMEE = "HDMF PAYABLE" Then
+    '                                If Not HDMFPAYABLE Then
+    '                                    HDMFPAYABLE = True
+    '                                    DC_Amount = DC_Amount = .Item("HDMF") * 2
+    '                                Else
+    '                                    Continue For
+    '                                End If
+    '                            ElseIf NAMEE = "PHIL HEALTH PAYABLE" Then
+    '                                If Not PHILHEALTHPAYABLE Then
+    '                                    PHILHEALTHPAYABLE = True
+    '                                    DC_Amount = .Item("PHILH") * 2
+    '                                Else
+    '                                    Continue For
+    '                                End If
+    '                            ElseIf NAMEE = "CASH IN BANK" Then
+    '                                If Not CASHINBANK Then
+    '                                    CASHINBANK = True
+    '                                    DC_Amount = .Item("NETPAY")
+    '                                Else
+    '                                    Continue For
+    '                                End If
+    '                            End If
+
+    '                            Debit_Credit = "CREDIT"
+    '                        End If
+
+
+    '                        Console.WriteLine($"{BRANCHNAME}-{NAMEE}-{DC_Amount}-{Debit_Credit}")
+    '                        dt_Cost.Rows.Add(BRANCHNAME, NAMEE, DC_Amount, Debit_Credit)
+
+    '                    End With
+
+    '                    frmMainForm.AppProgressBar.Value += 1
+    '                Next
+    '                progressBarEnd()
+    '            End If
+    '        End Using
+
+    '        Dim paramList As New List(Of Microsoft.Reporting.WinForms.ReportParameter) From {
+    '                New Microsoft.Reporting.WinForms.ReportParameter("paramPaydate", FORMNAME)
+    '                }
+
+    '        Dim DATASOURCE As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt_Cost)
+    '        Rpt_CostContrib.LocalReport.DataSources.Add(DATASOURCE)
+    '        Rpt_CostContrib.LocalReport.SetParameters(paramList)
+    '        Rpt_CostContrib.RefreshReport()
+
+    '    Catch ex As Exception
+    '        MessageBox.Show($"{ex.Message} {vbCrLf} {linee}", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
+    '    End Try
+
+    'End Sub
 
     Private Sub SumPaydate_Combo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles SumPaydate_Combo.SelectedIndexChanged
         LoadSummary_Print()
@@ -1736,18 +1995,18 @@ Public Class frmReport
         End If
     End Sub
 
-    Private Sub PI_Paydate_Combo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles PI_Paydate_Combo.SelectedIndexChanged
-        If PI_Paydate_Combo.SelectedIndex >= 0 And PI_Company_CB.SelectedIndex >= 0 Then
-            LoadPI()
+    Private Sub Allow_Company_CB_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Allow_Company_CB.SelectedIndexChanged
+        If Allow_Paydate_Combo.SelectedIndex >= 0 And Allow_Category_CB.SelectedIndex >= 0 And Allow_Company_CB.SelectedIndex >= 0 Then
+            LoadPI(Allow_Category_CB.Text)
         Else
             MsgBox("Paydate and Company must not be empty.", MsgBoxStyle.Exclamation)
         End If
     End Sub
 
-    Public Sub LoadPI()
+    Public Sub LoadPI(category As String)
 
         Rpt_PI.LocalReport.DataSources.Clear()
-        Dim PAYDATE_start As DateTime = PI_Paydate_Combo.Text
+        Dim PAYDATE_start As DateTime = Allow_Paydate_Combo.Text
         Dim PAYDATE_end As New DateTime(PAYDATE_start.Year, PAYDATE_start.Month, System.DateTime.DaysInMonth(PAYDATE_start.Year, PAYDATE_start.Month))
 
         Try
@@ -1762,23 +2021,23 @@ Public Class frmReport
                 .Columns.Add("BRANCH")
             End With
 
-            If PI_Company_CB.SelectedIndex = 0 Then
+            If Allow_Company_CB.SelectedIndex = 0 Then
                 str = $" AND HO_CATEGORY LIKE '%Photo%'"
-            ElseIf PI_Company_CB.SelectedIndex = 1 Then
+            ElseIf Allow_Company_CB.SelectedIndex = 1 Then
                 str = $" AND PHOTO_CATEGORY = 'GENSAN PERFECT'"
-            ElseIf PI_Company_CB.SelectedIndex = 2 Then
+            ElseIf Allow_Company_CB.SelectedIndex = 2 Then
                 str = $" AND PHOTO_CATEGORY = 'DAVAO PERFECT'"
-            ElseIf PI_Company_CB.SelectedIndex = 3 Then
+            ElseIf Allow_Company_CB.SelectedIndex = 3 Then
                 str = $" AND PHOTO_CATEGORY = 'JR PHOTO' "
-            ElseIf PI_Company_CB.SelectedIndex = 4 Then
+            ElseIf Allow_Company_CB.SelectedIndex = 4 Then
                 str = $" AND (COMPANY = 'DALTON' OR HO_CATEGORY LIKE '%Dalton%')"
-            ElseIf PI_Company_CB.SelectedIndex = 5 Then
+            ElseIf Allow_Company_CB.SelectedIndex = 5 Then
                 str = $" AND  (COMPANY = 'PERFECOM' OR HO_CATEGORY LIKE '%Perfecom%')"
-            ElseIf PI_Company_CB.SelectedIndex = 6 Then
+            ElseIf Allow_Company_CB.SelectedIndex = 6 Then
                 str = $" AND  (COMPANY = 'P&G UY' OR HO_CATEGORY LIKE '%GHS%')"
-            ElseIf PI_Company_CB.SelectedIndex = 7 Then
+            ElseIf Allow_Company_CB.SelectedIndex = 7 Then
                 str = $" AND  HO_CATEGORY IN ('Leasing Admin Office','Construction')"
-            ElseIf PI_Company_CB.SelectedIndex = 8 Then
+            ElseIf Allow_Company_CB.SelectedIndex = 8 Then
                 str = $" AND  HO_CATEGORY = 'PGC Head Office'"
             Else
                 str = ""
@@ -1793,7 +2052,7 @@ Public Class frmReport
                                              END AS FULLNAME 
                                         From RECORDED_ALLOW_DEDUC A INNER JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIO_NO   
                                         LEFT JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE           
-                                        WHERE UPPER(A.CATEGORY) = 'PERFORMANCE INCENTIVES' {str} AND PAYDATE BETWEEN '{PAYDATE_start.AddDays(14).ToShortDateString}' AND '{PAYDATE_end.ToShortDateString}' ORDER BY FULLNAME, PAYDATE"
+                                        WHERE UPPER(A.CATEGORY) LIKE UPPER('%{category}%') {str} AND PAYDATE BETWEEN '{PAYDATE_start.AddDays(14).ToShortDateString}' AND '{PAYDATE_end.ToShortDateString}' ORDER BY FULLNAME, PAYDATE"
 
             Using ds As DataSet = LoadSQL(mysql, "RECORDED_ALLOW_DEDUC")
                 If ds.Tables(0).Rows.Count > 0 Then
@@ -1807,7 +2066,16 @@ Public Class frmReport
                             Dim AMOUNT As String = FormatNumber(.Item("AMOUNT"))
 
                             '===================================== BRANCHES ===============================
-                            Dim BRANCH_CODE As String = IIf(.Item("BRANCH_CODE") = "" Or IsDBNull(.Item("BRANCH_CODE")), .Item("HO_CATEGORY"), .Item("BRANCHNAME"))
+                            Dim BRANCH_CODE As String '= IIf(.Item("BRANCH_CODE") = "" Or IsDBNull(.Item("BRANCH_CODE")), .Item("HO_CATEGORY"), .Item("BRANCHNAME"))
+
+                            If IsDBNull(.Item("BRANCHCODE")) Then
+                                BRANCH_CODE = .Item("HO_CATEGORY")
+                            ElseIf .Item("BRANCHCODE") = "" Then
+                                BRANCH_CODE = .Item("HO_CATEGORY")
+                            Else
+                                BRANCH_CODE = .Item("BRANCHNAME")
+                            End If
+
                             Dim COMPANY As String = .Item("COMPANY")
                             Dim HO_CATEGORY As String = IIf(IsDBNull(.Item("HO_CATEGORY")), "", .Item("HO_CATEGORY"))
                             Dim COMPANY_CATEGORY As String = IIf(IsDBNull(.Item("PHOTO_CATEGORY")), "", .Item("PHOTO_CATEGORY"))
@@ -1841,7 +2109,7 @@ Public Class frmReport
             End Using
 
             Dim DATASOURCE As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt_PI)
-            Dim FORMNAME As String = $"List of Performance Incentives - {PI_Paydate_Combo.Text}"
+            Dim FORMNAME As String = $"LIST OF {category} - {Allow_Paydate_Combo.Text}"
 
             Dim paramList As New List(Of Microsoft.Reporting.WinForms.ReportParameter) From {
                     New Microsoft.Reporting.WinForms.ReportParameter("paramFormName", FORMNAME)
@@ -1947,6 +2215,15 @@ Public Class frmReport
                             Dim BRANCHNAME As String = IIf(IsDBNull(.Item("BRANCHNAME")) Or .Item("BRANCHNAME").Equals(""), "", .Item("BRANCHNAME"))
                             linee = "BRANCHCODE"
                             Dim BRANCH_CODE As String = IIf(IsDBNull(.Item("BRANCHCODE")) Or .Item("BRANCHCODE").Equals(""), "", BRANCHNAME)
+
+                            If IsDBNull(.Item("BRANCHCODE")) Then
+                                BRANCH_CODE = ""
+                            ElseIf .Item("BRANCHCODE") = "" Then
+                                BRANCH_CODE = ""
+                            Else
+                                BRANCH_CODE = BRANCHNAME
+                            End If
+
                             linee = "COMPANY"
                             Dim COMPANY As String = IIf(IsDBNull(.Item("COMPANY")), "", .Item("COMPANY"))
                             linee = "COMPANY_CATEGORY"
@@ -2015,14 +2292,6 @@ Public Class frmReport
         End If
     End Sub
 
-    Private Sub PI_Company_CB_SelectedIndexChanged(sender As Object, e As EventArgs) Handles PI_Company_CB.SelectedIndexChanged
-        If PI_Paydate_Combo.SelectedIndex >= 0 And PI_Company_CB.SelectedIndex >= 0 Then
-            LoadPI()
-        Else
-            MsgBox("Paydate and Company must not be empty.", MsgBoxStyle.Exclamation)
-        End If
-    End Sub
-
     Private Sub SBU_LV_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles SBU_LV.MouseDoubleClick
         If SBU_LV.Items.Count >= 0 Then
             LoadSBU(SBU_LV.Items(SBU_LV.FocusedItem.Index).SubItems(4).Tag)
@@ -2088,142 +2357,38 @@ Public Class frmReport
                 .Columns.Add("MONTH_13")
             End With
 
-            Dim mysql_DAVAO_PERFECT As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
-                                        LASTNAME || ', ' || FIRSTNAME || ' ' || 
-                                             CASE 
-                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
-                                                 ELSE ''
-                                             END AS FULLNAME
-                                        From PAYROLL_PAYOUT A 
-                                        inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
-                                        left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
-                                        where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' and B.BRANCHCODE IN ('SMG','KCG','ACM','TAC') 
-                                        Order by case when B.BRANCHCODE = 'KCG' then 0
-                                                      when B.BRANCHCODE = 'SMG' then 1
-                                                      when B.BRANCHCODE = 'TAC' then 2
-                                                      when B.BRANCHCODE = 'ACM' then 3 end"
-
-            Dim mysql_JR_PHOTO As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
-                                        LASTNAME || ', ' || FIRSTNAME || ' ' || 
-                                             CASE 
-                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
-                                                 ELSE ''
-                                             END AS FULLNAME
-                                        From PAYROLL_PAYOUT A 
-                                        inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
-                                        left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
-                                        where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' and B.BRANCHCODE IN ('DIG','ISU','M1','POL') 
-                                        Order by case when B.BRANCHCODE = 'DIG' then 0
-                                                      when B.BRANCHCODE = 'ISU' then 1
-                                                      when B.BRANCHCODE = 'M1' then 2
-                                                      when B.BRANCHCODE = 'POL' then 3 end"
-
-            Dim mysql_GENSAN_PERFECT As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
-                                        LASTNAME || ', ' || FIRSTNAME || ' ' || 
-                                             CASE 
-                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
-                                                 ELSE ''
-                                             END AS FULLNAME
-                                        From PAYROLL_PAYOUT A 
-                                        inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
-                                        left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
-                                        where PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' 
-                                        and (B.BRANCHCODE IN ('ROG','ROX','FINEPIX','COT','MID','KID','SNP','GMA','SML','ZAM','SMD')
-                                        or B.HO_CATEGORY IN ('Photo Admin Office', 'Photo Admin Operation')) 
-                                        Order by case when B.BRANCHCODE = 'ROG' then 1
-                                                      when B.BRANCHCODE = 'ROX' then 2
-                                                      when B.BRANCHCODE = 'FINEPIX' then 3
-                                                      when B.BRANCHCODE = 'COT' then 4 
-                                                      when B.BRANCHCODE = 'KID' then 5 
-                                                      when B.BRANCHCODE = 'MID' then 6 
-                                                      when B.BRANCHCODE = 'GMA' then 7 
-                                                      when B.BRANCHCODE = 'SNP' then 8 
-                                                      when B.BRANCHCODE = 'SMD' then 9 
-                                                      when B.BRANCHCODE = 'SML' then 10 
-                                                      when B.BRANCHCODE = 'ZAM' then 11 
-                                                      else 0 end"
-
-            Dim mysql_PHOTO_HEADOFFICE As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
-                                        LASTNAME || ', ' || FIRSTNAME || ' ' || 
-                                             CASE 
-                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
-                                                 ELSE ''
-                                             END AS FULLNAME
-                                        From PAYROLL_PAYOUT A 
-                                        inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
-                                        left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
-                                        where PAYDATE  = '{paydatee}' and B.HO_CATEGORY like 'Photo%'  order by HO_CATEGORY"
-
-            Dim mysql_PG_UY_3G As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
-                                        LASTNAME || ', ' || FIRSTNAME || ' ' || 
-                                             CASE 
-                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
-                                                 ELSE ''
-                                             END AS FULLNAME
-                                        From PAYROLL_PAYOUT A 
-                                        inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
-                                        left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
-                                        where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'P&G UY' and B.BRANCHCODE = '3G' "
-
-            Dim mysql_7ELEVEN As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
-                                        LASTNAME || ', ' || FIRSTNAME || ' ' || 
-                                             CASE 
-                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
-                                                 ELSE ''
-                                             END AS FULLNAME
-                                        From PAYROLL_PAYOUT A 
-                                        inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID   
-                                        left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE  
-                                        where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'P&G UY' and B.BRANCHCODE IN ('711-POL','711-ROX','711-MAL') "
-
-            Dim mysql_COMI_WAVE As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
-                                        LASTNAME || ', ' || FIRSTNAME || ' ' || 
-                                             CASE 
-                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
-                                                 ELSE ''
-                                             END AS FULLNAME
-                                        From PAYROLL_PAYOUT A 
-                                        inner Join TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID
-                                        left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE  
-                                        where A.PAYDATE = '{paydatee}' and B.COMPANY  = 'P&G UY' 
-                                        And B.BRANCHCODE IN ('COMI','KTV','PBA','WAVE', 'GHS-MAIN') 
-                                        Order by B.BRANCHCODE asc"
-
-            Dim mysql_PG_UY_HEADOFFICE As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
-                                        LASTNAME || ', ' || FIRSTNAME || ' ' || 
-                                             CASE 
-                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
-                                                 ELSE ''
-                                             END AS FULLNAME
-                                        From PAYROLL_PAYOUT A 
-                                        inner Join TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID
-                                        left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE  
-                                        where A.PAYDATE = '{paydatee}' and B.HO_CATEGORY LIKE '%GHS%' "
-
-            Dim mysql_DALTON_OFFICE_OPERATION As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
-                                        LASTNAME || ', ' || FIRSTNAME || ' ' || 
-                                             CASE 
-                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
-                                                 ELSE ''
-                                             END AS FULLNAME
-                                        From PAYROLL_PAYOUT A 
-                                        inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID   
-                                        left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE  
-                                        where A.PAYDATE  = '{paydatee}' and B.HO_CATEGORY IN ('Dalton Admin Office','Dalton Retail','Dalton Admin Operation') 
-                                        Order by case when B.HO_CATEGORY LIKE '%Operation%' then 1 else 0  end, B.HO_CATEGORY asc"
-
-            Dim mysql_DALTON_BRANCHES As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
-                                        LASTNAME || ', ' || FIRSTNAME || ' ' || 
-                                             CASE 
-                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
-                                                 ELSE ''
-                                             END AS FULLNAME
-                                        From PAYROLL_PAYOUT A 
-                                        inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
-                                        left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
-                                        where A.PAYDATE  = '{paydatee}' AND B.COMPANY  = 'DALTON' 
-                                         Order by B.BRANCHCODE  asc"
 #Region "WITH SORTING"
+
+            'Dim mysql_DAVAO_PERFECT As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
+            '                            LASTNAME || ', ' || FIRSTNAME || ' ' || 
+            '                                 CASE 
+            '                                     WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
+            '                                     ELSE ''
+            '                                 END AS FULLNAME
+            '                            From PAYROLL_PAYOUT A 
+            '                            inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
+            '                            left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
+            '                            where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' and B.BRANCHCODE IN ('SMG','KCG','ACM','TAC') 
+            '                            Order by case when B.BRANCHCODE = 'KCG' then 0
+            '                                          when B.BRANCHCODE = 'SMG' then 1
+            '                                          when B.BRANCHCODE = 'TAC' then 2
+            '                                          when B.BRANCHCODE = 'ACM' then 3 end"
+
+            'Dim mysql_JR_PHOTO As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
+            '                            LASTNAME || ', ' || FIRSTNAME || ' ' || 
+            '                                 CASE 
+            '                                     WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
+            '                                     ELSE ''
+            '                                 END AS FULLNAME
+            '                            From PAYROLL_PAYOUT A 
+            '                            inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
+            '                            left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
+            '                            where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' and B.BRANCHCODE IN ('DIG','ISU','M1','POL') 
+            '                            Order by case when B.BRANCHCODE = 'DIG' then 0
+            '                                          when B.BRANCHCODE = 'ISU' then 1
+            '                                          when B.BRANCHCODE = 'M1' then 2
+            '                                          when B.BRANCHCODE = 'POL' then 3 end" 
+
             'Dim mysql_DALTON_BRANCHES As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
             '                            LASTNAME || ', ' || FIRSTNAME || ' ' || 
             '                                 CASE 
@@ -2308,9 +2473,249 @@ Public Class frmReport
             '                                           when B.BRANCHCODE = 'BUT' then 71 
             '                                           when B.BRANCHCODE = 'GCA' then 72  
             '                                           end, B.BRANCHCODE asc"
+
+            'Dim mysql_GENSAN_PERFECT As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
+            '                            LASTNAME || ', ' || FIRSTNAME || ' ' || 
+            '                                 CASE 
+            '                                     WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
+            '                                     ELSE ''
+            '                                 END AS FULLNAME
+            '                            From PAYROLL_PAYOUT A 
+            '                            inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
+            '                            left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
+            '                            where PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' 
+            '                            and (B.BRANCHCODE IN ('ROG','ROX','FINEPIX','COT','MID','KID','SNP','GMA','SML','ZAM','SMD')
+            '                            or B.HO_CATEGORY IN ('Photo Admin Office', 'Photo Admin Operation')) 
+            '                            Order by case when B.BRANCHCODE = 'ROG' then 1
+            '                                          when B.BRANCHCODE = 'ROX' then 2
+            '                                          when B.BRANCHCODE = 'FINEPIX' then 3
+            '                                          when B.BRANCHCODE = 'COT' then 4 
+            '                                          when B.BRANCHCODE = 'KID' then 5 
+            '                                          when B.BRANCHCODE = 'MID' then 6 
+            '                                          when B.BRANCHCODE = 'GMA' then 7 
+            '                                          when B.BRANCHCODE = 'SNP' then 8 
+            '                                          when B.BRANCHCODE = 'SMD' then 9 
+            '                                          when B.BRANCHCODE = 'SML' then 10 
+            '                                          when B.BRANCHCODE = 'ZAM' then 11 
+            '                                          else 0 end"
+
+            'Dim mysql_PERFECOM As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
+            '                            LASTNAME || ', ' || FIRSTNAME || ' ' || 
+            '                                 CASE 
+            '                                     WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
+            '                                     ELSE ''
+            '                                 END AS FULLNAME
+            '                            From PAYROLL_PAYOUT A 
+            '                            inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
+            '                            left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
+            '                            where A.PAYDATE  = '{PaydateNet_ComboB.Text}' 
+            '                            and  (B.COMPANY  = 'PERFECOM' OR B.HO_CATEGORY In ('Perfecom Admin Office','Perfecom Admin Operation')) 
+            '                            ORDER BY CASE WHEN B.BRANCHCODE = 'SMG' THEN 1
+            '                                          WHEN B.BRANCHCODE = 'KCG' THEN 2
+            '                                          WHEN B.BRANCHCODE = 'OPK' THEN 3
+            '                                          WHEN B.BRANCHCODE = 'ARC' THEN 4
+            '                                          WHEN B.BRANCHCODE = 'ARC' THEN 5
+            '                                          WHEN B.BRANCHCODE = 'KCM' THEN 6
+            '                                          WHEN B.BRANCHCODE = 'ZAM' THEN 7
+            '                                          else 0 end, B.HO_CATEGORY asc, B.BRANCHCODE asc"
 #End Region
 
-            Dim mysql_PERFECOM As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
+            'Dim mysql_DAVAO_PERFECT As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
+            '                            LASTNAME || ', ' || FIRSTNAME || ' ' || 
+            '                                 CASE 
+            '                                     WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
+            '                                     ELSE ''
+            '                                 END AS FULLNAME
+            '                            From PAYROLL_PAYOUT A 
+            '                            inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
+            '                            left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
+            '                            where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' and B.BRANCHCODE IN ('SMG','KCG','ACM','TAC') 
+            '                            Order by B.BRANCHCODE "
+
+            Dim mysql_DAVAO_PERFECT As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
+                                        LASTNAME || ', ' || FIRSTNAME || ' ' || 
+                                             CASE 
+                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
+                                                 ELSE ''
+                                             END AS FULLNAME
+                                        From PAYROLL_PAYOUT A 
+                                        inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
+                                        left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
+                                        where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' and B.PHOTO_CATEGORY = 'DAVAO PERFECT' 
+                                        Order by B.BRANCHCODE "
+
+            'Dim mysql_JR_PHOTO As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
+            '                            LASTNAME || ', ' || FIRSTNAME || ' ' || 
+            '                                 CASE 
+            '                                     WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
+            '                                     ELSE ''
+            '                                 END AS FULLNAME
+            '                            From PAYROLL_PAYOUT A 
+            '                            inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
+            '                            left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
+            '                            where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' and B.BRANCHCODE IN ('DIG','ISU','M1','POL') 
+            '                            Order by B.BRANCHCODE "
+
+
+            Dim mysql_JR_PHOTO As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
+                                        LASTNAME || ', ' || FIRSTNAME || ' ' || 
+                                             CASE 
+                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
+                                                 ELSE ''
+                                             END AS FULLNAME
+                                        From PAYROLL_PAYOUT A 
+                                        inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
+                                        left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
+                                        where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' and B.PHOTO_CATEGORY = 'JR PHOTO' 
+                                        Order by B.BRANCHCODE "
+
+
+            'Dim mysql_GENSAN_PERFECT As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
+            '                            LASTNAME || ', ' || FIRSTNAME || ' ' || 
+            '                                 CASE 
+            '                                     WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
+            '                                     ELSE ''
+            '                                 END AS FULLNAME
+            '                            From PAYROLL_PAYOUT A 
+            '                            inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
+            '                            left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
+            '                            where PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' 
+            '                            and (B.BRANCHCODE IN ('ROG','ROX','FINEPIX','COT','MID','KID','SNP','GMA','SML','ZAM','SMD')
+            '                            or B.HO_CATEGORY IN ('Photo Admin Office', 'Photo Admin Operation')) 
+            '                            Order by B.BRANCHCODE " 
+
+
+            Dim mysql_GENSAN_PERFECT As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
+                                        LASTNAME || ', ' || FIRSTNAME || ' ' || 
+                                             CASE 
+                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
+                                                 ELSE ''
+                                             END AS FULLNAME
+                                        From PAYROLL_PAYOUT A 
+                                        inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
+                                        left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
+                                        where PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' 
+                                        and B.PHOTO_CATEGORY = 'GENSAN PERFECT'  
+                                        Order by B.BRANCHCODE "
+
+            Dim mysql_PHOTO_HEADOFFICE As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
+                                        LASTNAME || ', ' || FIRSTNAME || ' ' || 
+                                             CASE 
+                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
+                                                 ELSE ''
+                                             END AS FULLNAME
+                                        From PAYROLL_PAYOUT A 
+                                        inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
+                                        left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
+                                        where PAYDATE  = '{paydatee}' and B.HO_CATEGORY like 'Photo%'  order by HO_CATEGORY"
+
+            'Dim mysql_PG_UY_3G As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
+            '                            LASTNAME || ', ' || FIRSTNAME || ' ' || 
+            '                                 CASE 
+            '                                     WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
+            '                                     ELSE ''
+            '                                 END AS FULLNAME
+            '                            From PAYROLL_PAYOUT A 
+            '                            inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
+            '                            left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
+            '                            where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'P&G UY' and B.BRANCHCODE = '3G' "
+
+            'Dim mysql_7ELEVEN As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
+            '                            LASTNAME || ', ' || FIRSTNAME || ' ' || 
+            '                                 CASE 
+            '                                     WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
+            '                                     ELSE ''
+            '                                 END AS FULLNAME
+            '                            From PAYROLL_PAYOUT A 
+            '                            inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID   
+            '                            left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE  
+            '                            where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'P&G UY' and B.BRANCHCODE IN ('711-POL','711-ROX','711-MAL') "
+
+            'Dim mysql_COMI_WAVE As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
+            '                            LASTNAME || ', ' || FIRSTNAME || ' ' || 
+            '                                 CASE 
+            '                                     WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
+            '                                     ELSE ''
+            '                                 END AS FULLNAME
+            '                            From PAYROLL_PAYOUT A 
+            '                            inner Join TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID
+            '                            left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE  
+            '                            where A.PAYDATE = '{paydatee}' and B.COMPANY  = 'P&G UY' 
+            '                            And B.BRANCHCODE IN ('COMI','KTV','PBA','WAVE', 'GHS-MAIN') 
+            '                            Order by B.BRANCHCODE asc"
+
+            Dim mysql_PG_UY As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
+                                        LASTNAME || ', ' || FIRSTNAME || ' ' || 
+                                             CASE 
+                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
+                                                 ELSE ''
+                                             END AS FULLNAME
+                                        From PAYROLL_PAYOUT A 
+                                        inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
+                                        left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
+                                        where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'P&G UY' "
+
+            Dim mysql_PG_UY_HEADOFFICE As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
+                                        LASTNAME || ', ' || FIRSTNAME || ' ' || 
+                                             CASE 
+                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
+                                                 ELSE ''
+                                             END AS FULLNAME
+                                        From PAYROLL_PAYOUT A 
+                                        inner Join TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID
+                                        left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE  
+                                        where A.PAYDATE = '{paydatee}' and B.HO_CATEGORY LIKE '%GHS%' "
+
+            'Dim mysql_DALTON_OFFICE_OPERATION As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
+            '                            LASTNAME || ', ' || FIRSTNAME || ' ' || 
+            '                                 CASE 
+            '                                     WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
+            '                                     ELSE ''
+            '                                 END AS FULLNAME
+            '                            From PAYROLL_PAYOUT A 
+            '                            inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID   
+            '                            left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE  
+            '                            where A.PAYDATE  = '{paydatee}' and B.HO_CATEGORY IN ('Dalton Admin Office','Dalton Retail','Dalton Admin Operation') 
+            '                            Order by case when B.HO_CATEGORY LIKE '%Operation%' then 1 else 0  end, B.HO_CATEGORY asc"
+
+            Dim mysql_DALTON_HEAD_OFFICE As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
+                                        LASTNAME || ', ' || FIRSTNAME || ' ' || 
+                                             CASE 
+                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
+                                                 ELSE ''
+                                             END AS FULLNAME
+                                        From PAYROLL_PAYOUT A 
+                                        inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID   
+                                        left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE  
+                                        where A.PAYDATE  = '{paydatee}' and B.HO_CATEGORY LIKE '%Dalton%' 
+                                        Order by B.HO_CATEGORY"
+
+            Dim mysql_DALTON_BRANCHES As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
+                                        LASTNAME || ', ' || FIRSTNAME || ' ' || 
+                                             CASE 
+                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
+                                                 ELSE ''
+                                             END AS FULLNAME
+                                        From PAYROLL_PAYOUT A 
+                                        inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
+                                        left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
+                                        where A.PAYDATE  = '{paydatee}' AND B.COMPANY  = 'DALTON' 
+                                         Order by B.BRANCHCODE  asc"
+
+            'Dim mysql_PERFECOM As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
+            '                            LASTNAME || ', ' || FIRSTNAME || ' ' || 
+            '                                 CASE 
+            '                                     WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
+            '                                     ELSE ''
+            '                                 END AS FULLNAME
+            '                            From PAYROLL_PAYOUT A 
+            '                            inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
+            '                            left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
+            '                            where A.PAYDATE  = '{PaydateNet_ComboB.Text}' 
+            '                            and  (B.COMPANY  = 'PERFECOM' OR B.HO_CATEGORY In ('Perfecom Admin Office','Perfecom Admin Operation')) 
+            '                            ORDER BY B.HO_CATEGORY asc, B.BRANCHCODE asc"
+
+            Dim mysql_PERFECOM As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE, 
                                         LASTNAME || ', ' || FIRSTNAME || ' ' || 
                                              CASE 
                                                  WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
@@ -2320,15 +2725,8 @@ Public Class frmReport
                                         inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
                                         left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
                                         where A.PAYDATE  = '{PaydateNet_ComboB.Text}' 
-                                        and  (B.COMPANY  = 'PERFECOM' OR B.HO_CATEGORY In ('Perfecom Admin Office','Perfecom Admin Operation')) 
-                                        ORDER BY CASE WHEN B.BRANCHCODE = 'SMG' THEN 1
-                                                      WHEN B.BRANCHCODE = 'KCG' THEN 2
-                                                      WHEN B.BRANCHCODE = 'OPK' THEN 3
-                                                      WHEN B.BRANCHCODE = 'ARC' THEN 4
-                                                      WHEN B.BRANCHCODE = 'ARC' THEN 5
-                                                      WHEN B.BRANCHCODE = 'KCM' THEN 6
-                                                      WHEN B.BRANCHCODE = 'ZAM' THEN 7
-                                                      else 0 end, B.HO_CATEGORY asc, B.BRANCHCODE asc"
+                                        and  (B.COMPANY  = 'PERFECOM' OR B.HO_CATEGORY LIKE '%Perfecom%') 
+                                        ORDER BY B.HO_CATEGORY asc, B.BRANCHCODE asc"
 
             Dim mysql_PTU_REALTY As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
                                         LASTNAME || ', ' || FIRSTNAME || ' ' || 
@@ -2352,19 +2750,20 @@ Public Class frmReport
                                         left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
                                         where A.PAYDATE  = '{PaydateNet_ComboB.Text}' AND B.HO_CATEGORY = 'PGC Head Office' "
 
-            'LoadRows_NetPay(mysql_DAVAO_PERFECT, paydatee, "DAVAO PERFECT")
-            'LoadRows_NetPay(mysql_JR_PHOTO, paydatee, "JR PHOTO")
-            'LoadRows_NetPay(mysql_GENSAN_PERFECT, paydatee, "GENSAN PERFECT")
-            'LoadRows_NetPay(mysql_PHOTO_HEADOFFICE, paydatee)
-            LoadRows_NetPay(mysql_PG_UY_3G, paydatee)
+            LoadRows_NetPay(mysql_DAVAO_PERFECT, paydatee, "DAVAO PERFECT")
+            LoadRows_NetPay(mysql_JR_PHOTO, paydatee, "JR PHOTO")
+            LoadRows_NetPay(mysql_GENSAN_PERFECT, paydatee, "GENSAN PERFECT")
+            LoadRows_NetPay(mysql_PHOTO_HEADOFFICE, paydatee)
+            LoadRows_NetPay(mysql_PG_UY, paydatee)
             'LoadRows_NetPay(mysql_7ELEVEN, paydatee)
             'LoadRows_NetPay(mysql_COMI_WAVE, paydatee)
-            'LoadRows_NetPay(mysql_PG_UY_HEADOFFICE, paydatee)
+            LoadRows_NetPay(mysql_PG_UY_HEADOFFICE, paydatee)
             'LoadRows_NetPay(mysql_DALTON_OFFICE_OPERATION, paydatee)
-            'LoadRows_NetPay(mysql_DALTON_BRANCHES, paydatee)
-            'LoadRows_NetPay(mysql_PERFECOM, paydatee, "PERFECOM")
-            'LoadRows_NetPay(mysql_PTU_REALTY, paydatee, "PTU")
-            'LoadRows_NetPay(mysql_PGC_HEADOFFICE, paydatee)
+            LoadRows_NetPay(mysql_DALTON_HEAD_OFFICE, paydatee)
+            LoadRows_NetPay(mysql_DALTON_BRANCHES, paydatee)
+            LoadRows_NetPay(mysql_PERFECOM, paydatee, "PERFECOM")
+            LoadRows_NetPay(mysql_PTU_REALTY, paydatee, "PTU")
+            LoadRows_NetPay(mysql_PGC_HEADOFFICE, paydatee)
 
             Dim rds_DTR As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt_NetPay)
             ReportV_NetPay.LocalReport.DataSources.Add(rds_DTR)
@@ -2373,7 +2772,6 @@ Public Class frmReport
             PlusS = Nothing
 
         Catch ex As Exception
-            'Log_Report(ex.ToString)
             MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
 
@@ -2624,4 +3022,5 @@ Public Class frmReport
     Private Sub ComboBox1_SelectedIndexChanged(sender As Object, e As EventArgs) Handles RateCompany_CB.SelectedIndexChanged
         LoadEmployeeRate()
     End Sub
+
 End Class

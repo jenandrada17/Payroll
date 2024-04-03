@@ -673,6 +673,11 @@ Module SaveUpdate
                     Dim Old_Rate As Decimal = 0 'IIf(IsDBNull(.Item("OLD_RATE")), rate, .Item("OLD_RATE")) 
                     Dim SBU_sched As String = GetData("SCHED", $"PAYROLL_SBU WHERE BIO_NO = {bioNo}")
 
+                    Dim sss_no As String = IIf(IsDBNull(.Item("SSSNO")), Nothing, .Item("SSSNO"))
+                    Dim philhealth_no As String = IIf(IsDBNull(.Item("PHILHEALTHNO")), Nothing, .Item("PHILHEALTHNO"))
+                    Dim tin_no As String = IIf(IsDBNull(.Item("TINNO")), Nothing, .Item("TINNO"))
+                    Dim pagibig_no As String = IIf(IsDBNull(.Item("PAGIBIG")), Nothing, .Item("PAGIBIG"))
+
                     'BRANCHCODE
                     Try
                         If IsDBNull(.Item("BRANCHCODE")) Or .Item("BRANCHCODE").Equals("") Or String.IsNullOrEmpty(.Item("BRANCHCODE")) Then
@@ -989,7 +994,7 @@ Module SaveUpdate
                                 Dim first_Basic As Decimal = GetFirst_Basic(bioNo, paydate_)
                                 Dim monthly_Basic As Decimal = TotalBasic + first_Basic
 
-                                If ThisIsNotNull("SSSNO", $"TBL_EMPLOYEE where BIOMETRICID = '{bioNo}' and SSSNO is not null") Then 'IF HAS SSSNO DETAILS
+                                If ThisIsNotNull("SSSNO", $"TBL_EMPLOYEE where BIOMETRICID = '{bioNo}' and SSSNO is not null") Then 'IF HAS SSSNO DETAILS 
                                     SSSComp = Get_SSS(monthly_Basic).EE
                                     SSS_ER = Get_SSS(monthly_Basic).ER
                                     SSS_EC = Get_SSS(monthly_Basic).EC

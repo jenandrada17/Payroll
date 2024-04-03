@@ -1263,14 +1263,6 @@ Public Class frmAttendance
                 Dim TRAINING_UNDERTIME As Integer = IIf(T_UT7_TXT.Text = Nothing, 0, T_UT7_TXT.Text)
                 Dim TRAINING_NIGHTRATE As Integer = IIf(T_Night7_TXT.Text = Nothing, 0, T_Night7_TXT.Text)
 
-
-                'Friend Sub SaveAttendanceEE(biometric As Integer, paydate As String, days As String, overTime As String, late_total As String, under_total As String,
-                '                            regHoliday As String, specHoliday As String, specHoliday_hrs As Double, SIL As Double, LATE_ADJUSTMENT As String, Optional LATE_APPROVED As String = "",
-                '                                    Optional MORNING_OT As String = "", Optional NIGHT_RATE As String = "", Optional BRANCH As Boolean = False,
-                '                                    Optional TRAINING_DAYS As String = "", Optional TRAINING_REGHOLIDAY As String = "", Optional TRAINING_SPECHOLIDAY As String = "",
-                '                                    Optional TRAINING_OVERTIME As String = "", Optional TRAINING_LATE As String = "", Optional TRAINING_UNDERTIME As String = "")
-
-
                 SaveAttendanceEE(Bio7_TXT.Text, PAYROLL, Days7_TXT.Text, overtime, latee, undertimee,
                                      RHOLIDAY, SHOLIDAY, specHoliday_hrs, sil, 0, "", "", night7, True, TRAINING_DAYS, TRAINING_REGHOLIDAY,
                                      TRAINING_SPECHOLIDAY, TRAINING_OVERTIME, TRAINING_LATE, TRAINING_UNDERTIME, TRAINING_NIGHTRATE)

@@ -27,7 +27,7 @@
         </Field>
         <Field Name="AMOUNT">
           <DataField>AMOUNT</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+          <rd:TypeName>System.Decimal</rd:TypeName>
         </Field>
         <Field Name="CATEGORY">
           <DataField>CATEGORY</DataField>
@@ -36,7 +36,7 @@
       </Fields>
       <rd:DataSetInfo>
         <rd:DataSetName>reports</rd:DataSetName>
-        <rd:SchemaPath>G:\Payroll-System\PAYROLL\WindowsApp1\Dataset\reports.xsd</rd:SchemaPath>
+        <rd:SchemaPath>D:\PGC APPS\PAYROLL\WindowsApp1\Dataset\reports.xsd</rd:SchemaPath>
         <rd:TableName>CostContribution</rd:TableName>
         <rd:TableAdapterFillMethod />
         <rd:TableAdapterGetDataMethod />
@@ -299,7 +299,7 @@
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox6">
+                        <Textbox Name="Textbox2">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
@@ -316,7 +316,7 @@
                               <Style />
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox6</rd:DefaultName>
+                          <rd:DefaultName>Textbox2</rd:DefaultName>
                           <Style>
                             <Border>
                               <Style>None</Style>

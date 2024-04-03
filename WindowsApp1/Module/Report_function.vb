@@ -677,6 +677,7 @@ Module Report_function
 
         Dim mysql As String
         Dim PAYROLL As DateTime = paydate
+        Dim linee As String = Nothing
 
         Dim dt_Remittance As New DataTable()
         With dt_Remittance
@@ -688,67 +689,85 @@ Module Report_function
             .Columns.Add("BRANCH")
         End With
 
-        mysql = $"Select A.*, B.*, C.*, 
+        Try
+
+            mysql = $"Select A.*, B.*, C.*, 
                     LASTNAME || ', ' || FIRSTNAME || ' ' || 
                          CASE 
                              WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
                              ELSE ''
                          END AS FULLNAME  
-                    From PAYROLL_PAYOUT A INNER JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
+                    From PAYROLL_PAYOUT A 
+                    INNER JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
                     LEFT JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE 
                     WHERE PAYDATE = '{paydate}' {str} and SSS_COMP <> 0 ORDER BY FULLNAME"
 
-        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
-            If ds.Tables(0).Rows.Count > 0 Then
+            Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
+                If ds.Tables(0).Rows.Count > 0 Then
 
-                progressBarStart(ds.Tables(0).Rows.Count)
-                For Each dr In ds.Tables(0).Rows
-                    With dr
+                    progressBarStart(ds.Tables(0).Rows.Count)
+                    For Each dr In ds.Tables(0).Rows
+                        With dr
 
-                        '============================= NAME AND ATTENDANCE ============================  
-                        Dim FULLNAME As String = IIf(IsDBNull(.Item("FULLNAME")), "", .Item("FULLNAME"))
-                        Dim monthly_Basic As Decimal = GetMonthly_Basic(.item("BIOMETRIC_ID"), paydate)
+                            '============================= NAME AND ATTENDANCE ============================  
+                            Dim FULLNAME As String = IIf(IsDBNull(.Item("FULLNAME")), "", .Item("FULLNAME"))
+                            Dim monthly_Basic As Decimal = GetMonthly_Basic(.item("BIOMETRIC_ID"), paydate)
 
-                        Dim NOO As String = IIf(IsDBNull(.Item("SSSNO")), "", .Item("SSSNO"))
-                        Dim EE As String = Get_SSS(monthly_Basic).EE
-                        Dim ER As String = Get_SSS(monthly_Basic).ER
-                        Dim EC As String = Get_SSS(monthly_Basic).EC
+                            Dim NOO As String = IIf(IsDBNull(.Item("SSSNO")), "", .Item("SSSNO"))
+                            Dim EE As String = Get_SSS(monthly_Basic).EE
+                            Dim ER As String = Get_SSS(monthly_Basic).ER
+                            Dim EC As String = Get_SSS(monthly_Basic).EC
 
-                        '===================================== BRANCHES ===============================
-                        Dim BRANCH_CODE As String = IIf(IsDBNull(.Item("BRANCHCODE")) Or .Item("BRANCHCODE") = "", .Item("HO_CATEGORY"), .Item("BRANCHNAME"))
-                        Dim COMPANY As String = IIf(IsDBNull(.Item("COMPANY")), "", .Item("COMPANY"))
-                        Dim HO_CATEGORY As String = IIf(IsDBNull(.Item("HO_CATEGORY")), "", .Item("HO_CATEGORY"))
-                        Dim COMPANY_CATEGORY As String = IIf(IsDBNull(.Item("PHOTO_CATEGORY")), "", .Item("PHOTO_CATEGORY"))
+                            '===================================== BRANCHES ===============================
+                            linee = $"BRANCH_CODE -{FULLNAME}"
+                            Dim BRANCH_CODE As String '= IIf(IsDBNull(.Item("BRANCHCODE")) Or .Item("BRANCHCODE") = "", .Item("HO_CATEGORY"), .Item("BRANCHNAME"))
 
-                        If COMPANY = "DALTON" Then
-                            BRANCH_CODE = IIf(IsDBNull(.Item("BRANCHCODE")) Or .Item("BRANCHCODE") = "", .Item("HO_CATEGORY"), TitleCase(.Item("COMPANY")) & "-" & .Item("BRANCHNAME"))
-                        End If
+                            If IsDBNull(.Item("BRANCHCODE")) Then
+                                BRANCH_CODE = .Item("HO_CATEGORY")
+                            ElseIf .Item("BRANCHCODE") = "" Then
+                                BRANCH_CODE = .Item("HO_CATEGORY")
+                            Else
+                                BRANCH_CODE = .Item("BRANCHNAME")
+                            End If
 
-                        If HO_CATEGORY = "GHS/P&G UY Admin Office" Or HO_CATEGORY = "GHS/P&G UY Admin Operation" Then
-                            BRANCH_CODE = HO_CATEGORY
+                            linee = $"COMPANY -{FULLNAME}"
+                            Dim COMPANY As String = IIf(IsDBNull(.Item("COMPANY")), "", .Item("COMPANY"))
+                            linee = $"HO_CATEGORY -{FULLNAME}"
+                            Dim HO_CATEGORY As String = IIf(IsDBNull(.Item("HO_CATEGORY")), "", .Item("HO_CATEGORY"))
+                            linee = $"COMPANY_CATEGORY -{FULLNAME}"
+                            Dim COMPANY_CATEGORY As String = IIf(IsDBNull(.Item("PHOTO_CATEGORY")), "", .Item("PHOTO_CATEGORY"))
 
-                        ElseIf HO_CATEGORY.Contains("Dalton") Then
-                            BRANCH_CODE = HO_CATEGORY
+                            If COMPANY = "DALTON" Then
+                                linee = $"COMPANY - BRANCH_CODE -{FULLNAME}"
+                                BRANCH_CODE = IIf(IsDBNull(.Item("BRANCHCODE")) Or .Item("BRANCHCODE") = "", .Item("HO_CATEGORY"), TitleCase(.Item("COMPANY")) & "-" & .Item("BRANCHNAME"))
+                            End If
 
-                        ElseIf HO_CATEGORY.Contains("Photo") Or HO_CATEGORY.Contains("PGC") Then
-                            BRANCH_CODE = HO_CATEGORY
-                        End If
+                            If HO_CATEGORY = "GHS/P&G UY Admin Office" Or HO_CATEGORY = "GHS/P&G UY Admin Operation" Then
+                                BRANCH_CODE = HO_CATEGORY
 
-                        If COMPANY_CATEGORY <> "" Then
-                            BRANCH_CODE = COMPANY_CATEGORY
-                        End If
+                            ElseIf HO_CATEGORY.Contains("Dalton") Then
+                                BRANCH_CODE = HO_CATEGORY
 
-                        dt_Remittance.Rows.Add(FULLNAME, NOO, EE, ER, EC, BRANCH_CODE)
+                            ElseIf HO_CATEGORY.Contains("Photo") Or HO_CATEGORY.Contains("PGC") Then
+                                BRANCH_CODE = HO_CATEGORY
+                            End If
 
-                        frmMainForm.AppProgressBar.Value += 1
-                    End With
+                            If COMPANY_CATEGORY <> "" Then
+                                BRANCH_CODE = COMPANY_CATEGORY
+                            End If
 
-                Next
-                progressBarEnd()
-            Else
+                            dt_Remittance.Rows.Add(FULLNAME, NOO, EE, ER, EC, BRANCH_CODE)
 
-            End If
-        End Using
+                            frmMainForm.AppProgressBar.Value += 1
+                        End With
+
+                    Next
+                    progressBarEnd()
+                End If
+            End Using
+        Catch ex As Exception
+            MsgBox($"{ex.ToString} {vbCrLf} {linee}")
+        End Try
 
         Return dt_Remittance
     End Function
@@ -799,7 +818,16 @@ Module Report_function
                         Dim AMOUNT As String = FormatNumber(.Item("AMOUNT"))
 
                         '===================================== BRANCHES ===============================
-                        Dim BRANCH_CODE As String = IIf(.Item("BRANCHCODE") = "" Or IsDBNull(.Item("BRANCHCODE")), .Item("HO_CATEGORY"), .Item("BRANCHNAME"))
+                        Dim BRANCH_CODE As String '= IIf(.Item("BRANCHCODE") = "" Or IsDBNull(.Item("BRANCHCODE")), .Item("HO_CATEGORY"), .Item("BRANCHNAME"))
+
+                        If IsDBNull(.Item("BRANCHCODE")) Then
+                            BRANCH_CODE = .Item("HO_CATEGORY")
+                        ElseIf .Item("BRANCHCODE") = "" Then
+                            BRANCH_CODE = .Item("HO_CATEGORY")
+                        Else
+                            BRANCH_CODE = .Item("BRANCHNAME")
+                        End If
+
                         Dim COMPANY As String = IIf(IsDBNull(.Item("COMPANY")), "", .Item("COMPANY"))
                         Dim HO_CATEGORY As String = IIf(IsDBNull(.Item("HO_CATEGORY")), "", .Item("HO_CATEGORY"))
                         Dim PHOTO_CATEGORY As String = IIf(IsDBNull(.Item("PHOTO_CATEGORY")), "", .Item("PHOTO_CATEGORY"))
@@ -852,7 +880,7 @@ Module Report_function
             .Columns.Add("BRANCH")
         End With
 
-        mysql = $"Select A.*, B.*, B.BRANCHCODE AS BRANCH_CODE, 
+        mysql = $"Select A.*, B.*, B.BRANCHCODE AS BRANCH_CODE, C.*,
                                         LASTNAME || ', ' || FIRSTNAME || ' ' || 
                                              CASE 
                                                  WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
@@ -878,7 +906,16 @@ Module Report_function
                         Dim BRANCH As String = ""
 
                         '===================================== BRANCHES ===============================
-                        Dim BRANCH_CODE As String = IIf(.Item("BRANCH_CODE") = "" Or IsDBNull(.Item("BRANCH_CODE")), .Item("HO_CATEGORY"), .Item("BRANCHNAME"))
+                        Dim BRANCH_CODE As String '= IIf(.Item("BRANCH_CODE") = "" Or IsDBNull(.Item("BRANCH_CODE")), .Item("HO_CATEGORY"), .Item("BRANCHNAME"))
+
+                        If IsDBNull(.Item("BRANCHCODE")) Then
+                            BRANCH_CODE = .Item("HO_CATEGORY")
+                        ElseIf .Item("BRANCHCODE") = "" Then
+                            BRANCH_CODE = .Item("HO_CATEGORY")
+                        Else
+                            BRANCH_CODE = .Item("BRANCHNAME")
+                        End If
+
                         Dim COMPANY As String = .Item("COMPANY")
                         Dim HO_CATEGORY As String = IIf(IsDBNull(.Item("HO_CATEGORY")), "", .Item("HO_CATEGORY"))
                         Dim COMPANY_CATEGORY As String = IIf(IsDBNull(.Item("PHOTO_CATEGORY")), "", .Item("PHOTO_CATEGORY"))
@@ -955,7 +992,16 @@ Module Report_function
                         Dim BRANCH As String = ""
 
                         '===================================== BRANCHES ===============================
-                        Dim BRANCH_CODE As String = IIf(.Item("BRANCH_CODE") = "" Or IsDBNull(.Item("BRANCH_CODE")), .Item("HO_CATEGORY"), .Item("BRANCHNAME"))
+                        Dim BRANCH_CODE As String '= IIf(.Item("BRANCH_CODE") = "" Or IsDBNull(.Item("BRANCH_CODE")), .Item("HO_CATEGORY"), .Item("BRANCHNAME"))
+
+                        If IsDBNull(.Item("BRANCHCODE")) Then
+                            BRANCH_CODE = .Item("HO_CATEGORY")
+                        ElseIf .Item("BRANCHCODE") = "" Then
+                            BRANCH_CODE = .Item("HO_CATEGORY")
+                        Else
+                            BRANCH_CODE = .Item("BRANCHNAME")
+                        End If
+
                         Dim COMPANY As String = IIf(IsDBNull(.Item("COMPANY")), "", .Item("COMPANY"))
                         Dim HO_CATEGORY As String = IIf(IsDBNull(.Item("HO_CATEGORY")), "", .Item("HO_CATEGORY"))
                         Dim COMPANY_CATEGORY As String = IIf(IsDBNull(.Item("PHOTO_CATEGORY")), "", .Item("PHOTO_CATEGORY"))

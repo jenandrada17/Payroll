@@ -1082,7 +1082,7 @@ Module SelectFromDatabase
     End Sub
 
     Public Sub PopulateComboBox(combo As ComboBox, table As String, column As String)
-        Dim sql As String = $"select distinct({column}) from {table}"
+        Dim sql As String = $"select distinct({column}) from {table} order by {column} desc"
         Dim rdr As FbDataReader = LoadSQL_byDataReader(sql)
         combo.Items.Clear()
         While rdr.Read()
@@ -2145,24 +2145,24 @@ Module SelectFromDatabase
                         btnSave.Tag = "UPDATE" ' FOR USER_LOGS
                     End If
 
-                    '======================== FIRSTNAME, LASTNAME, MIDDLENAME ========================== 
-                    Dim firstt, middlee As String
-                    Dim fullname As String = .Item("FULLNAME")
-                    Dim name As String() = fullname.Split(",")
-                    Dim sobra As String = name(1).TrimStart
+                    ''======================== FIRSTNAME, LASTNAME, MIDDLENAME ========================== 
+                    'Dim firstt, middlee As String
+                    'Dim fullname As String = .Item("FULLNAME")
+                    'Dim name As String() = fullname.Split(",")
+                    'Dim sobra As String = name(1).TrimStart
 
-                    If sobra.EndsWith(".") Then
-                        Dim index As Integer = sobra.Length - 2
-                        middlee = sobra.Substring(index, 2)
-                        firstt = sobra.Replace(middlee, "").TrimEnd
-                    Else
-                        firstt = sobra
-                        middlee = Nothing
-                    End If
+                    'If sobra.EndsWith(".") Then
+                    '    Dim index As Integer = sobra.Length - 2
+                    '    middlee = sobra.Substring(index, 2)
+                    '    firstt = sobra.Replace(middlee, "").TrimEnd
+                    'Else
+                    '    firstt = sobra
+                    '    middlee = Nothing
+                    'End If
 
-                    Lastname.Text = name(0)
-                    Firstname.Text = firstt
-                    Middlename.Text = middlee
+                    Lastname.Text = IIf(IsDBNull(.Item("LASTNAME")), Nothing, .Item("LASTNAME"))
+                    Firstname.Text = IIf(IsDBNull(.Item("FIRSTNAME")), Nothing, .Item("FIRSTNAME"))
+                    Middlename.Text = IIf(IsDBNull(.Item("MIDDLENAME")), Nothing, .Item("MIDDLENAME"))
                 End With
             Else
                 Add_Company_CB.Text = ""
