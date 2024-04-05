@@ -1128,9 +1128,9 @@ Module Report_function
                         Dim NO_OF_DAYS As Decimal = GetData_Decimal("PRESENT_DAYS", $"PAYROLL_ATTENDANCE where BIOMETRICID = '{bioNo}' and PAYDATE = '{PAYDATE}'")
                         Dim tOTAL_BASIC As Decimal = GetData_Decimal("TOTAL_BASIC", $"PAYROLL_PAYOUT where BIOMETRIC_ID = '{bioNo}' and PAYDATE  = '{PAYDATE}'")
 
-                        Dim tOTAL_ECOLA As Decimal = GetData_Decimal("AMOUNT", $"RECORDED_ALLOW_DEDUC where BIOMETRICID = '{bioNo}' and CATEGORY = 'ECOLA' and PAYDATE = '{PAYDATE}'")
-                        Dim tOTAL_SIL As Decimal = GetData_Decimal("AMOUNT", $"RECORDED_ALLOW_DEDUC where BIOMETRICID = '{bioNo}' and CATEGORY like '%SIL' and PAYDATE = '{PAYDATE}'")
-                        Dim tOTAL_PI As Decimal = GetData_Decimal("AMOUNT", $"RECORDED_ALLOW_DEDUC where BIOMETRICID = '{bioNo}' and CATEGORY = 'PERFORMANCE INCENTIVES' and PAYDATE = '{PAYDATE}'")
+                        Dim tOTAL_ECOLA As Decimal = GetData_Decimal("AMOUNT", $"RECORDED_ALLOW_DEDUC where BIO_NO = '{bioNo}' and CATEGORY = 'ECOLA' and PAYDATE = '{PAYDATE}'")
+                        Dim tOTAL_SIL As Decimal = GetData_Decimal("AMOUNT", $"RECORDED_ALLOW_DEDUC where BIO_NO = '{bioNo}' and CATEGORY like '%SIL' and PAYDATE = '{PAYDATE}'")
+                        Dim tOTAL_PI As Decimal = GetData_Decimal("AMOUNT", $"RECORDED_ALLOW_DEDUC where BIO_NO = '{bioNo}' and CATEGORY = 'PERFORMANCE INCENTIVES' and PAYDATE = '{PAYDATE}'")
                         Dim tOTAL_LATE_UT As Decimal = GetData_Decimal("TOTAL_LATE_UT", $"PAYROLL_PAYOUT where  BIOMETRIC_ID = '{bioNo}' and PAYDATE = '{PAYDATE}'")
 
                         OTHER_INCOME = (tOTAL_ECOLA + tOTAL_SIL + tOTAL_PI) - tOTAL_LATE_UT

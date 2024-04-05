@@ -57,7 +57,7 @@ Public Class frmReport
             Dim mysql As String
             Dim fullname As String = Nothing
 
-            mysql = $"select  COALESCE(sum(C.AMOUNT), 0) AS TOTALS, FULLNAME, CREDIT, PRINCIPAL, A.DATEHIRED, B.AMOUNT as amnt, DATE_ADDED, BALANCE,
+            mysql = $"select  COALESCE(sum(C.AMOUNT), 0) AS TOTALS, CREDIT, PRINCIPAL, A.DATEHIRED, B.AMOUNT as amnt, DATE_ADDED, BALANCE,
                              LASTNAME || ', ' || FIRSTNAME || ' ' || 
                                  CASE 
                                      WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
@@ -2735,23 +2735,9 @@ Public Class frmReport
                             Dim SBU_CHARGES As Double = .Item("TOTAL_DEDUCTION")
                             linee = "NET_PAY"
                             Dim NET_PAY As Double = .Item("NET_PAY")
+
                             linee = "BRANCH_CODE"
                             Dim BRANCH_CODE As String = IIf(IsDBNull(.Item("BRANCH_CODE")) Or .Item("BRANCH_CODE").Equals(""), .Item("HO_CATEGORY"), .Item("BRANCHNAME"))
-                            Dim BRANCHNAME As String = Nothing
-
-                            If fullname = "SUYO, DIANA JOY D." Then
-                                Console.WriteLine(fullname)
-                            End If
-
-                            If IsDBNull(.Item("BRANCH_CODE")) Then
-                                BRANCHNAME = .Item("HO_CATEGORY")
-                                Console.WriteLine("NULL")
-                            ElseIf .Item("BRANCH_CODE").Equals("") Then
-                                Console.WriteLine("EMPTY")
-                                BRANCHNAME = .Item("HO_CATEGORY")
-                            Else
-                                BRANCHNAME = IIf(IsDBNull(.Item("BRANCHNAME")), "", .Item("BRANCHNAME"))
-                            End If
 
 
                             linee = "COMPANY"
@@ -2776,10 +2762,10 @@ Public Class frmReport
                                 TARDINESS = 0
                             End If
 
-                            If COMPANY = "DALTON" Then
-                                linee = "COMPANY = DALTON"
-                                BRANCH_CODE = IIf(IsDBNull(.Item("BRANCH_CODE")) Or .Item("BRANCH_CODE").Equals(""), .Item("HO_CATEGORY"), TitleCase(.Item("COMPANY")) & "-" & .Item("BRANCHNAME"))
-                            End If
+                            'If COMPANY = "DALTON" Then
+                            '    linee = "COMPANY = DALTON"
+                            '    BRANCH_CODE = IIf(IsDBNull(.Item("BRANCH_CODE")) Or .Item("BRANCH_CODE").Equals(""), .Item("HO_CATEGORY"), TitleCase(.Item("COMPANY")) & "-" & .Item("BRANCHNAME"))
+                            'End If
 
                             If HO_CATEGORY = "GHS/P&G UY Admin Office" Or HO_CATEGORY = "GHS/P&G UY Admin Operation" Then
                                 BRANCH_CODE = HO_CATEGORY
@@ -2801,34 +2787,48 @@ Public Class frmReport
 
                             Dim tempPlus As String = plus_
 
-                            If plus_ = "DAVAO PERFECT" Or plus_ = "GENSAN PERFECT" And HO_CATEGORY = "" Then BRANCH_CODE = "Perfect" & "-" & .Item("BRANCHNAME")
-                            If plus_ = "JR PHOTO" Then BRANCH_CODE = "JR Photo" & "-" & .Item("BRANCHNAME")
+                            'If plus_ = "DAVAO PERFECT" Or plus_ = "GENSAN PERFECT" And HO_CATEGORY = "" Then BRANCH_CODE = "Perfect" & "-" & .Item("BRANCHNAME")
+                            'If plus_ = "JR PHOTO" Then BRANCH_CODE = "JR Photo" & "-" & .Item("BRANCHNAME")
+
+                            linee = "BRANCHCODE - 1"
+                            Dim BRANCHCODE As String = IIf(IsDBNull(.Item("BRANCH_CODE")), "", .Item("BRANCH_CODE"))
+                            linee = "BRANCHNAME - 1"
+                            Dim BRANCHNAME As String = GET_STRING("PAYROLL_CITY_BRANCH", "BRANCHNAME", $"BRANCHCODE = '{BRANCHCODE}'")
+
+                            If IsDBNull(.Item("BRANCH_CODE")) Then
+                                BRANCHNAME = .Item("HO_CATEGORY")
+                            ElseIf .Item("BRANCH_CODE").Equals("") Then
+                                BRANCHNAME = .Item("HO_CATEGORY")
+                            Else
+                                BRANCHNAME = IIf(IsDBNull(.Item("BRANCHNAME")), "", .Item("BRANCHNAME"))
+                            End If
 
 
-                            If BRANCH_CODE = Nothing Then
+                            If BRANCHCODE = Nothing Then
                                 linee = "BRANCHNAME = HO_CATEGORY - 1"
-                                BRANCH_CODE = IIf(IsDBNull(.Item("HO_CATEGORY")), "", CStr(.Item("HO_CATEGORY")).TrimEnd)
-                            ElseIf BRANCH_CODE = "SMG" Then
+                                BRANCHNAME = IIf(IsDBNull(.Item("HO_CATEGORY")), "", CStr(.Item("HO_CATEGORY")).TrimEnd)
+                            ElseIf BRANCHCODE = "SMG" Then
                                 If COMPANY = "PERFECOM" Then
-                                    BRANCH_CODE = $"Perfecom-SM GENSAN"
+                                    BRANCHNAME = $"Perfecom-SM GENSAN"
                                 Else
-                                    BRANCH_CODE = $"Photo-SM GENSAN"
+                                    BRANCHNAME = $"Photo-SM GENSAN"
                                 End If
-                            ElseIf BRANCH_CODE = "KCG" And COMPANY = "PERFECOM" Then
+                            ElseIf BRANCHCODE = "KCG" And COMPANY = "PERFECOM" Then
                                 BRANCHNAME = $"Perfecom-KCC Gensan"
-                            ElseIf BRANCH_CODE = "KID" And COMPANY = "PHOTO" Then
+                            ElseIf BRANCHCODE = "KID" And COMPANY = "PHOTO" Then
                                 BRANCHNAME = $"Photo-Kidapawan"
-                            ElseIf BRANCH_CODE = "MID" And COMPANY = "PHOTO" Then
+                            ElseIf BRANCHCODE = "MID" And COMPANY = "PHOTO" Then
                                 BRANCHNAME = $"Photo-Midsayap"
-                            ElseIf BRANCH_CODE = "POL" And COMPANY = "PHOTO" Then
+                            ElseIf BRANCHCODE = "POL" And COMPANY = "PHOTO" Then
                                 BRANCHNAME = $"Photo-Polomolok"
-                            ElseIf BRANCH_CODE = "ROG" And COMPANY = "PHOTO" Then
+                            ElseIf BRANCHCODE = "ROG" And COMPANY = "PHOTO" Then
                                 BRANCHNAME = $"Photo-Robinson Gensan"
-                            ElseIf BRANCH_CODE = "ROX" And COMPANY = "PHOTO" Then
+                            ElseIf BRANCHCODE = "ROX" And COMPANY = "PHOTO" Then
                                 BRANCHNAME = $"Photo-Roxas Gensan"
-                            ElseIf BRANCH_CODE = "SNP" And COMPANY = "PHOTO" Then
+                            ElseIf BRANCHCODE = "SNP" And COMPANY = "PHOTO" Then
                                 BRANCHNAME = $"Photo-San Pedro"
                             End If
+
 
                             '======================= 13 MONTH ================
                             Dim MONTH_13 As Decimal = 0
@@ -2839,16 +2839,10 @@ Public Class frmReport
 
                             COMPANY = "ALL COMPANY"
 
-                            'dataTable.Rows.Add(EMP_NO, namee, BASIC.ToString("n"), OVERTIME.ToString("n"), HOLIDAY.ToString("n"), N_DIFF.ToString("n"),
-                            '                   PI_ECOLA_SIL.ToString("n"), TARDINESS.ToString("n"), SSS.ToString("n"), PHIC.ToString("n"), PAGIBIG.ToString("n"),
-                            '                   SBU_CHARGES.ToString("n"), NET_PAY.ToString("n"), BRANCH_CODE, payroll.ToString("MMMM dd, yyyy"), period, COMPANY,
-                            '                   HO_CATEGORY, tempPlus, MONTH_13.ToString("n"))
-
-
                             dataTable.Rows.Add(EMP_NO, namee, BASIC.ToString("n"), OVERTIME.ToString("n"), HOLIDAY.ToString("n"), N_DIFF.ToString("n"),
                                                PI_ECOLA_SIL.ToString("n"), TARDINESS.ToString("n"), SSS.ToString("n"), PHIC.ToString("n"), PAGIBIG.ToString("n"),
                                                SBU_CHARGES.ToString("n"), NET_PAY.ToString("n"), BRANCH_CODE, payroll.ToString("MMMM dd, yyyy"), period, COMPANY,
-                                               HO_CATEGORY, MONTH_13.ToString("n"))
+                                               HO_CATEGORY, tempPlus, MONTH_13.ToString("n"))
 
                             frmMainForm.AppProgressBar.Value += 1
                         End With
