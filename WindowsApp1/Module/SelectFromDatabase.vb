@@ -1103,7 +1103,7 @@ Module SelectFromDatabase
     End Sub
 
     Public Sub PopulateComboBox_Any(combo As ComboBox, table As String, column As String)
-        Dim sql As String = $"select distinct({column}) from {table}"
+        Dim sql As String = $"select distinct({column}) from {table} ORDER BY {column} DESC"
         Dim rdr As FbDataReader = LoadSQL_byDataReader(sql)
         combo.Items.Clear()
         While rdr.Read()
@@ -1127,7 +1127,7 @@ Module SelectFromDatabase
     Public Sub PopulatePaydate_Monthly(combo As ComboBox, table As String, column As String)
         combo.Items.Clear()
 
-        Dim sql As String = $"Select EXTRACT(MONTH from PAYDATE) as monthh,  EXTRACT(YEAR from PAYDATE) as yearr from {table} GROUP BY yearr, monthh"
+        Dim sql As String = $"SELECT EXTRACT(MONTH FROM PAYDATE) AS monthh,  EXTRACT(YEAR FROM PAYDATE) AS yearr FROM {table} GROUP BY yearr, monthh ORDER BY yearr DESC, monthh DESC;"
         Using ds As DataSet = LoadSQL(sql)
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
@@ -1143,7 +1143,7 @@ Module SelectFromDatabase
     Public Sub PopulatePaydate_Yearly(combo As ComboBox, table As String, column As String)
         combo.Items.Clear()
 
-        Dim sql As String = $"Select EXTRACT(YEAR from PAYDATE) as yearr from {table} GROUP BY yearr"
+        Dim sql As String = $"Select EXTRACT(YEAR from PAYDATE) as yearr from {table} GROUP BY yearr ORDER BY yearr DESC;"
         Using ds As DataSet = LoadSQL(sql)
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
