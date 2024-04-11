@@ -6,9 +6,6 @@ Module Database
     Public con As FbConnection
     Public ReaderCon As FbConnection
     Private reader As FbDataReader = Nothing
-    Friend dbName As String = "1M4N4G3YU0.FDB" 'Final
-    Friend fbUser As String = "SYSDBA"
-    Friend fbPass As String = "masterkey"
     Friend fbDataSet As New DataSet
     Friend conStr As String = String.Empty
     Dim scr_val As Integer
@@ -55,16 +52,10 @@ Module Database
             con.Open()
         Catch ex As FbException
             MsgBox(language(0) & ex.ErrorCode & vbCrLf & ex.Message.ToString, vbCritical, "Connecting Error")
-            'Log_Report(ex.Message.ToString)
-            'Log_Report(String.Format("User: {0}", fbUser))
-            'Log_Report(String.Format("Database: {0}", dbName))
             con.Dispose()
             Exit Sub
         Catch ex As Exception
             MsgBox(language(0) & ex.HResult & vbCrLf & ex.Message.ToString, vbCritical, "Connecting Error")
-            'Log_Report(ex.Message.ToString)
-            'Log_Report(String.Format("User: {0}", fbUser))
-            'Log_Report(String.Format("Database: {0}", dbName))
             con.Dispose()
             Exit Sub
         End Try

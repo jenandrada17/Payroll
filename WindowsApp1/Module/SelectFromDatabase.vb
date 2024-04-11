@@ -1821,9 +1821,10 @@ Module SelectFromDatabase
         Return TOTALS
     End Function
 
-    Friend Sub Lists_Payout(LV As ListView, paydate As String, Optional searchName As String = "")
+    Friend Function Lists_Payout(LV As ListView, paydate As String, Optional searchName As String = "")
 
         LV.Items.Clear()
+        Dim netPay As Decimal = 0
         Dim secured_str As String = searchName
         secured_str = DreadKnight(secured_str)
         Dim strWords As String() = secured_str.Split(New Char() {" "c})
@@ -1873,13 +1874,16 @@ Module SelectFromDatabase
                     i.SubItems.Add(FormatNumber(.Item("TOTAL_ALLOWANCE")))
                     i.SubItems.Add(FormatNumber(.Item("TOTAL_DEDUCTION")))
                     i.SubItems.Add(FormatNumber(.Item("NET_PAY")))
+
+                    netPay += FormatNumber(.Item("NET_PAY"))
                 End With
 
                 frmMainForm.AppProgressBar.Value += 1
             Next
             progressBarEnd()
         End Using
-    End Sub
+        Return $"Net Pay: {FormatNumber(netPay)}"
+    End Function
 
     Friend Sub progressBarStart(ByVal objectt As Integer)
         frmMainForm.AppProgressBar.Maximum = objectt

@@ -872,9 +872,6 @@ Module Temporary
 
                 ' Create a new Excel package
                 Using package As New ExcelPackage(New FileInfo(path))
-                    ' Add a worksheet to the Excel package
-                    'Dim worksheet As ExcelWorksheet = package.Workbook.Worksheets.Add("IncompleteEmployeeDetails")
-                    'Dim worksheet As ExcelWorksheet = package.Workbook.Worksheets.Add("PRIORITY-ACTIVE-ONLY")
                     Dim worksheet As ExcelWorksheet = package.Workbook.Worksheets.Add("BRANCHES ONLY")
 
                     ' Write column names to the first row

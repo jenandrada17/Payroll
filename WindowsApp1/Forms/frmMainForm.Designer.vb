@@ -499,7 +499,7 @@ Partial Class frmMainForm
         Me.AppProgressBar.Location = New System.Drawing.Point(0, 49)
         Me.AppProgressBar.Maximum = 1000
         Me.AppProgressBar.Name = "AppProgressBar"
-        Me.AppProgressBar.Size = New System.Drawing.Size(1186, 3)
+        Me.AppProgressBar.Size = New System.Drawing.Size(1166, 3)
         Me.AppProgressBar.TabIndex = 7
         '
         'ProgressBar1

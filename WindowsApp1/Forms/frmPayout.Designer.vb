@@ -63,6 +63,7 @@ Partial Class frmPayout
         Me.Label5 = New System.Windows.Forms.Label()
         Me.NoOfDays_TXT = New System.Windows.Forms.TextBox()
         Me.GroupBox4 = New System.Windows.Forms.GroupBox()
+        Me.RemitOff_BTN = New System.Windows.Forms.Button()
         Me.TotalNight_LBL = New System.Windows.Forms.Label()
         Me.NetPay_LBL = New System.Windows.Forms.Label()
         Me.Label38 = New System.Windows.Forms.Label()
@@ -194,7 +195,7 @@ Partial Class frmPayout
         Me.All_RadioB = New System.Windows.Forms.RadioButton()
         Me.Label21 = New System.Windows.Forms.Label()
         Me.Payslip_paydate_Combo = New System.Windows.Forms.ComboBox()
-        Me.RemitOff_BTN = New System.Windows.Forms.Button()
+        Me.subTotal_lbl = New System.Windows.Forms.Label()
         Me.GroupBox6.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
@@ -613,6 +614,18 @@ Partial Class frmPayout
         Me.GroupBox4.TabStop = False
         Me.GroupBox4.Text = "Salary Information"
         '
+        'RemitOff_BTN
+        '
+        Me.RemitOff_BTN.BackColor = System.Drawing.Color.RosyBrown
+        Me.RemitOff_BTN.FlatStyle = System.Windows.Forms.FlatStyle.System
+        Me.RemitOff_BTN.Font = New System.Drawing.Font("Arial Narrow", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.RemitOff_BTN.Location = New System.Drawing.Point(152, 349)
+        Me.RemitOff_BTN.Name = "RemitOff_BTN"
+        Me.RemitOff_BTN.Size = New System.Drawing.Size(30, 20)
+        Me.RemitOff_BTN.TabIndex = 89
+        Me.RemitOff_BTN.Text = "OFF"
+        Me.RemitOff_BTN.UseVisualStyleBackColor = False
+        '
         'TotalNight_LBL
         '
         Me.TotalNight_LBL.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -911,11 +924,12 @@ Partial Class frmPayout
         Me.TabControl1.Location = New System.Drawing.Point(7, 8)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(1150, 650)
+        Me.TabControl1.Size = New System.Drawing.Size(1150, 656)
         Me.TabControl1.TabIndex = 79
         '
         'TabPage2
         '
+        Me.TabPage2.Controls.Add(Me.subTotal_lbl)
         Me.TabPage2.Controls.Add(Me.Label23)
         Me.TabPage2.Controls.Add(Me.Pay_Refresh_BTN)
         Me.TabPage2.Controls.Add(Me.GroupBox5)
@@ -927,7 +941,7 @@ Partial Class frmPayout
         Me.TabPage2.Location = New System.Drawing.Point(4, 41)
         Me.TabPage2.Name = "TabPage2"
         Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(1142, 605)
+        Me.TabPage2.Size = New System.Drawing.Size(1142, 611)
         Me.TabPage2.TabIndex = 1
         Me.TabPage2.Text = "    Payout    "
         Me.TabPage2.UseVisualStyleBackColor = True
@@ -1185,7 +1199,7 @@ Partial Class frmPayout
         Me.Payout_list.Location = New System.Drawing.Point(6, 160)
         Me.Payout_list.MultiSelect = False
         Me.Payout_list.Name = "Payout_list"
-        Me.Payout_list.Size = New System.Drawing.Size(1140, 433)
+        Me.Payout_list.Size = New System.Drawing.Size(1140, 434)
         Me.Payout_list.TabIndex = 100
         Me.Payout_list.UseCompatibleStateImageBehavior = False
         Me.Payout_list.View = System.Windows.Forms.View.Details
@@ -2050,17 +2064,15 @@ Partial Class frmPayout
         Me.Payslip_paydate_Combo.TabIndex = 97
         Me.Payslip_paydate_Combo.Text = "   Select Date"
         '
-        'RemitOff_BTN
+        'subTotal_lbl
         '
-        Me.RemitOff_BTN.BackColor = System.Drawing.Color.RosyBrown
-        Me.RemitOff_BTN.FlatStyle = System.Windows.Forms.FlatStyle.System
-        Me.RemitOff_BTN.Font = New System.Drawing.Font("Arial Narrow", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.RemitOff_BTN.Location = New System.Drawing.Point(152, 349)
-        Me.RemitOff_BTN.Name = "RemitOff_BTN"
-        Me.RemitOff_BTN.Size = New System.Drawing.Size(30, 20)
-        Me.RemitOff_BTN.TabIndex = 89
-        Me.RemitOff_BTN.Text = "OFF"
-        Me.RemitOff_BTN.UseVisualStyleBackColor = False
+        Me.subTotal_lbl.Font = New System.Drawing.Font("Berlin Sans FB", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.subTotal_lbl.Location = New System.Drawing.Point(943, 597)
+        Me.subTotal_lbl.Name = "subTotal_lbl"
+        Me.subTotal_lbl.Size = New System.Drawing.Size(195, 12)
+        Me.subTotal_lbl.TabIndex = 108
+        Me.subTotal_lbl.Text = "0"
+        Me.subTotal_lbl.TextAlign = System.Drawing.ContentAlignment.MiddleRight
         '
         'frmPayout
         '
@@ -2271,4 +2283,5 @@ Partial Class frmPayout
     Friend WithEvents TrainningNight_LBL As Label
     Friend WithEvents Label56 As Label
     Friend WithEvents RemitOff_BTN As Button
+    Friend WithEvents subTotal_lbl As Label
 End Class

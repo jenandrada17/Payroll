@@ -132,12 +132,14 @@ Public Class frmReport
             Dim totalCredit As Decimal = 0
             Dim principal As Decimal = 0
             Dim balance As Decimal = 0
+            Dim partialPayment As Decimal = 0
             Dim status As String = ""
 
             a_amount = GetData_Decimal("AMORT", $"PAYROLL_DEDUCTION WHERE ID = '{deduct_id}'")
             credit = GetData_Decimal("CREDIT", $"PAYROLL_DEDUCTION WHERE ID = '{deduct_id}'")
-            totalCredit = credit + GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC WHERE R_DEDUC_ID = '{deduct_id}' and PAYDATE <> '12/15/2021'")
             principal = GetData_Decimal("PRINCIPAL", $"PAYROLL_DEDUCTION WHERE ID = '{deduct_id}'")
+            partialPayment = GetData_Decimal("AMOUNT", $"PARTIAL_PAYMENT WHERE DEDUCT_ID = '{deduct_id}'")
+            totalCredit = credit + partialPayment + GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC WHERE R_DEDUC_ID = '{deduct_id}' and PAYDATE <> '12/15/2021'")
             balance = principal - totalCredit
 
             Dim datt As Date = GetData("DATEE", $"PAYROLL_DEDUCTION WHERE ID = '{deduct_id}'")
@@ -159,6 +161,18 @@ Public Class frmReport
 
                             dt.Rows.Add(Format(datee, "MMMM dd, yyyy"), amount.ToString("N"), "YES")
 
+                        End With
+                    Next
+                End If
+            End Using
+
+            '====================== PARTIAL PAYMENT ===================
+            mysqll = $"Select  *  from PARTIAL_PAYMENT WHERE DEDUCT_ID = '{deduct_id}' ORDER BY DATEE ASC "
+            Using dss As DataSet = LoadSQL(mysqll, "PARTIAL_PAYMENT")
+                If dss.Tables(0).Rows.Count > 0 Then
+                    For Each dr In dss.Tables(0).Rows
+                        With dr
+                            dt.Rows.Add($"Partial Payment", CDbl(.Item("AMOUNT")).ToString("N"), "YES")
                         End With
                     Next
                 End If
@@ -1038,7 +1052,8 @@ Public Class frmReport
             End With
 
             ''========================================= RECORDED_ALLOW_DEDUC ================================================
-            mysql = $"Select A.BRANCHCODE AS BRANCH_CODE, C.CATEGORY, TRANSAC_NAME, COALESCE(HO_CATEGORY, '') AS HO_CATEGORY, COMPANY, SUM(AMOUNT) AS TOTS From PAYROLL_PAYOUT B 
+            mysql = $"Select A.BRANCHCODE AS BRANCH_CODE, C.CATEGORY, TRANSAC_NAME, COALESCE(HO_CATEGORY, '') AS HO_CATEGORY, COMPANY, SUM(AMOUNT) AS TOTS 
+                                        From PAYROLL_PAYOUT B 
                                         INNER JOIN TBL_EMPLOYEE A ON A.BIOMETRICID = B.BIOMETRIC_ID 
                                         LEFT JOIN RECORDED_ALLOW_DEDUC C ON C.BIO_NO = B.BIOMETRIC_ID and C.PAYDATE = B.PAYDATE  
                                         WHERE B.PAYDATE = '{PAYDATE}' GROUP BY BRANCH_CODE, COMPANY, C.CATEGORY, TRANSAC_NAME, HO_CATEGORY"
@@ -1052,9 +1067,6 @@ Public Class frmReport
 
                             linee = "COMPANY - 1"
                             Dim COMPANY As String = IIf(IsDBNull(.Item("COMPANY")), "", .Item("COMPANY"))
-                            'Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
-                            'Dim toProper As String = info.ToTitleCase(COMPANY)
-
                             linee = "BRANCHCODE - 1"
                             Dim BRANCHCODE As String = IIf(IsDBNull(.Item("BRANCH_CODE")), "", .Item("BRANCH_CODE"))
                             linee = "BRANCHNAME - 1"
@@ -1113,7 +1125,7 @@ Public Class frmReport
             ''========================================= PAYROLL_COSTDISTRIBUTION ================================================
             mysql = $"Select A.BRANCHCODE AS BRANCH_CODE, COALESCE(HO_CATEGORY, '') AS HO_CATEGORY, NAMEE, NAME_CATEGORY, COMPANY, SUM(TOTAL_BASIC) AS BASIC, SUM(TOTAL_OVERTIME) AS OT,
                                         SUM(TOTAL_LATE_UT) AS LATE_UT, SUM(TOTAL_NIGHT_RATE) AS NIGHT_RATE, SUM(SSS_COMP) AS SSS_EE , SUM(SSS_ER) AS SSS_ER , SUM(SSS_EC) AS SSS_EC, 
-                                        SUM(NET_PAY) AS NETPAY, SUM(PAGIBIG_COMP) AS HDMF, SUM(PHILHEALTH_COMP) AS PHILH, SUM(TOTAL_REGHOLIDAY) AS REGHOLIDAY, SUM(TOTAL_SPECHOLIDAY) AS SPECHOLIDAY  
+                                        SUM(NET_PAY) AS NETPAY, SUM(PAGIBIG_COMP) AS HDMF, SUM(PHILHEALTH_COMP) AS PHILH, SUM(TOTAL_REGHOLIDAY) AS REGHOLIDAY, SUM(TOTAL_SPECHOLIDAY) AS SPECHOLIDAY
                                         From PAYROLL_PAYOUT B 
                                         INNER JOIN TBL_EMPLOYEE A ON A.BIOMETRICID = B.BIOMETRIC_ID 
                                         LEFT JOIN PAYROLL_COSTDISTRIB ON 1 = 1 
@@ -1127,9 +1139,6 @@ Public Class frmReport
 
                             linee = "COMPANY - 2"
                             Dim COMPANY As String = IIf(IsDBNull(.Item("COMPANY")), "", .Item("COMPANY"))
-                            'Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
-                            'Dim toProper As String = info.ToTitleCase(COMPANY)
-
                             linee = "BRANCHCODE - 2"
                             Dim BRANCHCODE As String = IIf(IsDBNull(.Item("BRANCH_CODE")), "", .Item("BRANCH_CODE"))
                             linee = "BRANCHNAME - 2"
@@ -2555,8 +2564,7 @@ Public Class frmReport
                                         From PAYROLL_PAYOUT A 
                                         inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
                                         left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
-                                        where PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' 
-                                        and B.PHOTO_CATEGORY = 'GENSAN PERFECT'  
+                                        where PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' and B.PHOTO_CATEGORY = 'GENSAN PERFECT'  
                                         Order by B.BRANCHCODE "
 
             Dim mysql_PHOTO_HEADOFFICE As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
@@ -2592,19 +2600,31 @@ Public Class frmReport
                                         left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE  
                                         where A.PAYDATE = '{paydatee}' and B.HO_CATEGORY LIKE '%GHS%' "
 
-            Dim mysql_DALTON_HEAD_OFFICE As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
-                                        LASTNAME || ', ' || FIRSTNAME || ' ' || 
-                                             CASE 
-                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
-                                                 ELSE ''
-                                             END AS FULLNAME
-                                        From PAYROLL_PAYOUT A 
-                                        inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID   
-                                        left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE  
-                                        where A.PAYDATE  = '{paydatee}' and B.HO_CATEGORY LIKE '%Dalton%' 
-                                        Order by B.HO_CATEGORY"
+            'Dim mysql_DALTON_HEAD_OFFICE As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
+            '                            LASTNAME || ', ' || FIRSTNAME || ' ' || 
+            '                                 CASE 
+            '                                     WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
+            '                                     ELSE ''
+            '                                 END AS FULLNAME
+            '                            From PAYROLL_PAYOUT A 
+            '                            inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID   
+            '                            left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE  
+            '                            where A.PAYDATE  = '{paydatee}' and B.HO_CATEGORY LIKE '%Dalton%' 
+            '                            Order by B.HO_CATEGORY"
 
-            Dim mysql_DALTON_BRANCHES As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
+            'Dim mysql_DALTON_BRANCHES As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
+            '                            LASTNAME || ', ' || FIRSTNAME || ' ' || 
+            '                                 CASE 
+            '                                     WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
+            '                                     ELSE ''
+            '                                 END AS FULLNAME
+            '                            From PAYROLL_PAYOUT A 
+            '                            inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
+            '                            left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
+            '                            where A.PAYDATE  = '{paydatee}' AND B.COMPANY  = 'DALTON' 
+            '                             Order by B.BRANCHCODE  asc"
+
+            Dim mysql_DALTON As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
                                         LASTNAME || ', ' || FIRSTNAME || ' ' || 
                                              CASE 
                                                  WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
@@ -2613,8 +2633,8 @@ Public Class frmReport
                                         From PAYROLL_PAYOUT A 
                                         inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
                                         left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
-                                        where A.PAYDATE  = '{paydatee}' AND B.COMPANY  = 'DALTON' 
-                                         Order by B.BRANCHCODE  asc"
+                                        where A.PAYDATE  = '{paydatee}' AND (B.COMPANY  = 'DALTON' OR B.HO_CATEGORY LIKE '%Dalton%') 
+                                         Order by B.HO_CATEGORY asc, B.BRANCHCODE  asc"
 
             Dim mysql_PERFECOM As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE, 
                                         LASTNAME || ', ' || FIRSTNAME || ' ' || 
@@ -2625,7 +2645,7 @@ Public Class frmReport
                                         From PAYROLL_PAYOUT A 
                                         inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
                                         left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
-                                        where A.PAYDATE  = '{PaydateNet_ComboB.Text}' 
+                                        where A.PAYDATE  = '{paydatee}' 
                                         and  (B.COMPANY  = 'PERFECOM' OR B.HO_CATEGORY LIKE '%Perfecom%') 
                                         ORDER BY B.HO_CATEGORY asc, B.BRANCHCODE asc"
 
@@ -2638,7 +2658,7 @@ Public Class frmReport
                                         From PAYROLL_PAYOUT A 
                                         inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
                                         left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
-                                        where A.PAYDATE  = '{PaydateNet_ComboB.Text}' AND B.HO_CATEGORY IN ('Construction' , 'Leasing Admin Office') "
+                                        where A.PAYDATE  = '{paydatee}' AND B.HO_CATEGORY IN ('Construction' , 'Leasing Admin Office') "
 
             Dim mysql_PGC_HEADOFFICE As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
                                         LASTNAME || ', ' || FIRSTNAME || ' ' || 
@@ -2649,7 +2669,7 @@ Public Class frmReport
                                         From PAYROLL_PAYOUT A 
                                         inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
                                         left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
-                                        where A.PAYDATE  = '{PaydateNet_ComboB.Text}' AND B.HO_CATEGORY = 'PGC Head Office' "
+                                        where A.PAYDATE  = '{paydatee}' AND B.HO_CATEGORY = 'PGC Head Office' "
 
 #End Region
             LoadRows_NetPay(mysql_DAVAO_PERFECT, paydatee, dt_NetPay, "DAVAO PERFECT")
@@ -2658,8 +2678,9 @@ Public Class frmReport
             LoadRows_NetPay(mysql_PHOTO_HEADOFFICE, paydatee, dt_NetPay)
             LoadRows_NetPay(mysql_PG_UY, paydatee, dt_NetPay)
             LoadRows_NetPay(mysql_PG_UY_HEADOFFICE, paydatee, dt_NetPay)
-            LoadRows_NetPay(mysql_DALTON_HEAD_OFFICE, paydatee, dt_NetPay)
-            LoadRows_NetPay(mysql_DALTON_BRANCHES, paydatee, dt_NetPay)
+            'LoadRows_NetPay(mysql_DALTON_HEAD_OFFICE, paydatee, dt_NetPay)
+            'LoadRows_NetPay(mysql_DALTON_BRANCHES, paydatee, dt_NetPay)
+            LoadRows_NetPay(mysql_DALTON, paydatee, dt_NetPay)
             LoadRows_NetPay(mysql_PERFECOM, paydatee, dt_NetPay, "PERFECOM")
             LoadRows_NetPay(mysql_PTU_REALTY, paydatee, dt_NetPay, "PTU")
             LoadRows_NetPay(mysql_PGC_HEADOFFICE, paydatee, dt_NetPay)
@@ -2736,10 +2757,6 @@ Public Class frmReport
                             linee = "NET_PAY"
                             Dim NET_PAY As Double = .Item("NET_PAY")
 
-                            linee = "BRANCH_CODE"
-                            Dim BRANCH_CODE As String = IIf(IsDBNull(.Item("BRANCH_CODE")) Or .Item("BRANCH_CODE").Equals(""), .Item("HO_CATEGORY"), .Item("BRANCHNAME"))
-
-
                             linee = "COMPANY"
                             Dim COMPANY As String = IIf(IsDBNull(.Item("COMPANY")), "", .Item("COMPANY"))
                             linee = "HO_CATEGORY"
@@ -2747,10 +2764,52 @@ Public Class frmReport
                             linee = "Minimum_rate"
                             Dim Minimum_rate As Double = 0
 
-                            If IsDBNull(.Item("BRANCH_CODE")) Or .Item("BRANCH_CODE").Equals("") Then
+                            'If IsDBNull(.Item("BRANCH_CODE")) Or .Item("BRANCH_CODE").Equals("") Then
+                            '    BRANCH_CODE = .Item("HO_CATEGORY")
+                            '    Minimum_rate = GetMinimumRate("CITY", "GENSAN")
+                            'Else
+                            '    BRANCH_CODE = .Item("BRANCHNAME")
+                            '    Minimum_rate = GetMinimumRate("BRANCHCODE", .Item("BRANCH_CODE"))
+                            'End If 
+
+                            'linee = "BRANCHNAME - 1"
+                            'Dim BRANCHNAME As String = GET_STRING("PAYROLL_CITY_BRANCH", "BRANCHNAME", $"BRANCHCODE = '{BRANCHCODE}'")
+
+                            linee = "BRANCH_CODE"
+                            Dim BRANCH_CODE As String = Nothing
+                            Dim BRANCHNAME As String = Nothing
+                            If IsDBNull(.Item("BRANCH_CODE")) Then
+                                BRANCH_CODE = .Item("HO_CATEGORY")
+                                Minimum_rate = GetMinimumRate("CITY", "GENSAN")
+                            ElseIf .Item("BRANCH_CODE").Equals("") Then
+                                BRANCH_CODE = .Item("HO_CATEGORY")
                                 Minimum_rate = GetMinimumRate("CITY", "GENSAN")
                             Else
+                                BRANCH_CODE = .Item("BRANCH_CODE")
+                                BRANCHNAME = IIf(IsDBNull(.Item("BRANCHNAME")), "", .Item("BRANCHNAME"))
                                 Minimum_rate = GetMinimumRate("BRANCHCODE", .Item("BRANCH_CODE"))
+                            End If
+
+                            If BRANCH_CODE = "SMG" Then
+                                If COMPANY = "PERFECOM" Then
+                                    BRANCHNAME = $"Perfecom-SM GENSAN"
+                                Else
+                                    BRANCHNAME = $"Photo-SM GENSAN"
+                                End If
+                            ElseIf BRANCH_CODE = "KCG" And COMPANY = "PERFECOM" Then
+                                BRANCHNAME = $"Perfecom-KCC Gensan"
+                            ElseIf BRANCH_CODE = "KID" And COMPANY = "PHOTO" Then
+                                BRANCHNAME = $"Photo-Kidapawan"
+                            ElseIf BRANCH_CODE = "MID" And COMPANY = "PHOTO" Then
+                                BRANCHNAME = $"Photo-Midsayap"
+                            ElseIf BRANCH_CODE = "POL" And COMPANY = "PHOTO" Then
+                                BRANCHNAME = $"Photo-Polomolok"
+                            ElseIf BRANCH_CODE = "ROG" And COMPANY = "PHOTO" Then
+                                BRANCHNAME = $"Photo-Robinson Gensan"
+                            ElseIf BRANCH_CODE = "ROX" And COMPANY = "PHOTO" Then
+                                BRANCHNAME = $"Photo-Roxas Gensan"
+                            ElseIf BRANCH_CODE = "SNP" And COMPANY = "PHOTO" Then
+                                BRANCHNAME = $"Photo-San Pedro"
                             End If
 
                             linee = "Rate"
@@ -2762,73 +2821,17 @@ Public Class frmReport
                                 TARDINESS = 0
                             End If
 
-                            'If COMPANY = "DALTON" Then
-                            '    linee = "COMPANY = DALTON"
-                            '    BRANCH_CODE = IIf(IsDBNull(.Item("BRANCH_CODE")) Or .Item("BRANCH_CODE").Equals(""), .Item("HO_CATEGORY"), TitleCase(.Item("COMPANY")) & "-" & .Item("BRANCHNAME"))
-                            'End If
+                            If HO_CATEGORY = "GHS/P&G UY Admin Office" Or HO_CATEGORY = "GHS/P&G UY Admin Operation" Or
+                                HO_CATEGORY.Contains("Dalton") Or HO_CATEGORY.Contains("Photo") Or HO_CATEGORY.Contains("PGC") Or
+                                plus_ = "PGC" Or plus_ = "PTU" Then
 
-                            If HO_CATEGORY = "GHS/P&G UY Admin Office" Or HO_CATEGORY = "GHS/P&G UY Admin Operation" Then
-                                BRANCH_CODE = HO_CATEGORY
-
-                            ElseIf HO_CATEGORY.Contains("Dalton") Then
-                                BRANCH_CODE = HO_CATEGORY
-
-                            ElseIf HO_CATEGORY.Contains("Photo") Or HO_CATEGORY.Contains("PGC") Then
-                                BRANCH_CODE = HO_CATEGORY
-                            End If
-
-                            If plus_ = "PGC" Then
-                                BRANCH_CODE = HO_CATEGORY
-                            End If
-
-                            If plus_ = "PTU" Then
-                                BRANCH_CODE = HO_CATEGORY
+                                BRANCHNAME = HO_CATEGORY
                             End If
 
                             Dim tempPlus As String = plus_
 
                             'If plus_ = "DAVAO PERFECT" Or plus_ = "GENSAN PERFECT" And HO_CATEGORY = "" Then BRANCH_CODE = "Perfect" & "-" & .Item("BRANCHNAME")
-                            'If plus_ = "JR PHOTO" Then BRANCH_CODE = "JR Photo" & "-" & .Item("BRANCHNAME")
-
-                            linee = "BRANCHCODE - 1"
-                            Dim BRANCHCODE As String = IIf(IsDBNull(.Item("BRANCH_CODE")), "", .Item("BRANCH_CODE"))
-                            linee = "BRANCHNAME - 1"
-                            Dim BRANCHNAME As String = GET_STRING("PAYROLL_CITY_BRANCH", "BRANCHNAME", $"BRANCHCODE = '{BRANCHCODE}'")
-
-                            If IsDBNull(.Item("BRANCH_CODE")) Then
-                                BRANCHNAME = .Item("HO_CATEGORY")
-                            ElseIf .Item("BRANCH_CODE").Equals("") Then
-                                BRANCHNAME = .Item("HO_CATEGORY")
-                            Else
-                                BRANCHNAME = IIf(IsDBNull(.Item("BRANCHNAME")), "", .Item("BRANCHNAME"))
-                            End If
-
-
-                            If BRANCHCODE = Nothing Then
-                                linee = "BRANCHNAME = HO_CATEGORY - 1"
-                                BRANCHNAME = IIf(IsDBNull(.Item("HO_CATEGORY")), "", CStr(.Item("HO_CATEGORY")).TrimEnd)
-                            ElseIf BRANCHCODE = "SMG" Then
-                                If COMPANY = "PERFECOM" Then
-                                    BRANCHNAME = $"Perfecom-SM GENSAN"
-                                Else
-                                    BRANCHNAME = $"Photo-SM GENSAN"
-                                End If
-                            ElseIf BRANCHCODE = "KCG" And COMPANY = "PERFECOM" Then
-                                BRANCHNAME = $"Perfecom-KCC Gensan"
-                            ElseIf BRANCHCODE = "KID" And COMPANY = "PHOTO" Then
-                                BRANCHNAME = $"Photo-Kidapawan"
-                            ElseIf BRANCHCODE = "MID" And COMPANY = "PHOTO" Then
-                                BRANCHNAME = $"Photo-Midsayap"
-                            ElseIf BRANCHCODE = "POL" And COMPANY = "PHOTO" Then
-                                BRANCHNAME = $"Photo-Polomolok"
-                            ElseIf BRANCHCODE = "ROG" And COMPANY = "PHOTO" Then
-                                BRANCHNAME = $"Photo-Robinson Gensan"
-                            ElseIf BRANCHCODE = "ROX" And COMPANY = "PHOTO" Then
-                                BRANCHNAME = $"Photo-Roxas Gensan"
-                            ElseIf BRANCHCODE = "SNP" And COMPANY = "PHOTO" Then
-                                BRANCHNAME = $"Photo-San Pedro"
-                            End If
-
+                            'If plus_ = "JR PHOTO" Then BRANCH_CODE = "JR Photo" & "-" & .Item("BRANCHNAME") 
 
                             '======================= 13 MONTH ================
                             Dim MONTH_13 As Decimal = 0
@@ -2841,7 +2844,7 @@ Public Class frmReport
 
                             dataTable.Rows.Add(EMP_NO, namee, BASIC.ToString("n"), OVERTIME.ToString("n"), HOLIDAY.ToString("n"), N_DIFF.ToString("n"),
                                                PI_ECOLA_SIL.ToString("n"), TARDINESS.ToString("n"), SSS.ToString("n"), PHIC.ToString("n"), PAGIBIG.ToString("n"),
-                                               SBU_CHARGES.ToString("n"), NET_PAY.ToString("n"), BRANCH_CODE, payroll.ToString("MMMM dd, yyyy"), period, COMPANY,
+                                               SBU_CHARGES.ToString("n"), NET_PAY.ToString("n"), BRANCHNAME, payroll.ToString("MMMM dd, yyyy"), period, COMPANY,
                                                HO_CATEGORY, tempPlus, MONTH_13.ToString("n"))
 
                             frmMainForm.AppProgressBar.Value += 1

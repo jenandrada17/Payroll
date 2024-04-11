@@ -390,7 +390,7 @@ Public Class frmPayout
     End Sub
 
     Private Sub Search_BTN_Click(sender As Object, e As EventArgs) Handles Search_BTN.Click
-        Lists_Payout(Payout_list, paydate_, Search_TXT.Text)
+        subTotal_lbl.Text = Lists_Payout(Payout_list, paydate_, Search_TXT.Text)
     End Sub
 
     Private Sub Search_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Search_TXT.KeyPress
