@@ -2600,30 +2600,6 @@ Public Class frmReport
                                         left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE  
                                         where A.PAYDATE = '{paydatee}' and B.HO_CATEGORY LIKE '%GHS%' "
 
-            'Dim mysql_DALTON_HEAD_OFFICE As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
-            '                            LASTNAME || ', ' || FIRSTNAME || ' ' || 
-            '                                 CASE 
-            '                                     WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
-            '                                     ELSE ''
-            '                                 END AS FULLNAME
-            '                            From PAYROLL_PAYOUT A 
-            '                            inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID   
-            '                            left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE  
-            '                            where A.PAYDATE  = '{paydatee}' and B.HO_CATEGORY LIKE '%Dalton%' 
-            '                            Order by B.HO_CATEGORY"
-
-            'Dim mysql_DALTON_BRANCHES As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
-            '                            LASTNAME || ', ' || FIRSTNAME || ' ' || 
-            '                                 CASE 
-            '                                     WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
-            '                                     ELSE ''
-            '                                 END AS FULLNAME
-            '                            From PAYROLL_PAYOUT A 
-            '                            inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
-            '                            left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
-            '                            where A.PAYDATE  = '{paydatee}' AND B.COMPANY  = 'DALTON' 
-            '                             Order by B.BRANCHCODE  asc"
-
             Dim mysql_DALTON As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
                                         LASTNAME || ', ' || FIRSTNAME || ' ' || 
                                              CASE 
@@ -2678,8 +2654,6 @@ Public Class frmReport
             LoadRows_NetPay(mysql_PHOTO_HEADOFFICE, paydatee, dt_NetPay)
             LoadRows_NetPay(mysql_PG_UY, paydatee, dt_NetPay)
             LoadRows_NetPay(mysql_PG_UY_HEADOFFICE, paydatee, dt_NetPay)
-            'LoadRows_NetPay(mysql_DALTON_HEAD_OFFICE, paydatee, dt_NetPay)
-            'LoadRows_NetPay(mysql_DALTON_BRANCHES, paydatee, dt_NetPay)
             LoadRows_NetPay(mysql_DALTON, paydatee, dt_NetPay)
             LoadRows_NetPay(mysql_PERFECOM, paydatee, dt_NetPay, "PERFECOM")
             LoadRows_NetPay(mysql_PTU_REALTY, paydatee, dt_NetPay, "PTU")
@@ -2764,25 +2738,14 @@ Public Class frmReport
                             linee = "Minimum_rate"
                             Dim Minimum_rate As Double = 0
 
-                            'If IsDBNull(.Item("BRANCH_CODE")) Or .Item("BRANCH_CODE").Equals("") Then
-                            '    BRANCH_CODE = .Item("HO_CATEGORY")
-                            '    Minimum_rate = GetMinimumRate("CITY", "GENSAN")
-                            'Else
-                            '    BRANCH_CODE = .Item("BRANCHNAME")
-                            '    Minimum_rate = GetMinimumRate("BRANCHCODE", .Item("BRANCH_CODE"))
-                            'End If 
-
-                            'linee = "BRANCHNAME - 1"
-                            'Dim BRANCHNAME As String = GET_STRING("PAYROLL_CITY_BRANCH", "BRANCHNAME", $"BRANCHCODE = '{BRANCHCODE}'")
-
                             linee = "BRANCH_CODE"
                             Dim BRANCH_CODE As String = Nothing
                             Dim BRANCHNAME As String = Nothing
                             If IsDBNull(.Item("BRANCH_CODE")) Then
-                                BRANCH_CODE = .Item("HO_CATEGORY")
+                                BRANCHNAME = .Item("HO_CATEGORY")
                                 Minimum_rate = GetMinimumRate("CITY", "GENSAN")
                             ElseIf .Item("BRANCH_CODE").Equals("") Then
-                                BRANCH_CODE = .Item("HO_CATEGORY")
+                                BRANCHNAME = .Item("HO_CATEGORY")
                                 Minimum_rate = GetMinimumRate("CITY", "GENSAN")
                             Else
                                 BRANCH_CODE = .Item("BRANCH_CODE")
