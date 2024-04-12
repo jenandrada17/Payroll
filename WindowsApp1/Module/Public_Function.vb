@@ -9,6 +9,7 @@ Module Public_Function
     Friend trimmer As New Regex("\s\s+")
     Friend emp_status As String
     Friend dateEnded As String
+    Friend dateStarted As String
     Friend specialHolidayList As New List(Of String)
 
 

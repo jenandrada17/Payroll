@@ -1045,6 +1045,7 @@ Public Class frmReport
 
             Dim dt_Cost As New DataTable()
             With dt_Cost
+                .Columns.Add("COMPANY")
                 .Columns.Add("BRANCH")
                 .Columns.Add("NAME")
                 .Columns.Add("AMOUNT")
@@ -1052,11 +1053,17 @@ Public Class frmReport
             End With
 
             ''========================================= RECORDED_ALLOW_DEDUC ================================================
+            'mysql = $"Select A.BRANCHCODE AS BRANCH_CODE, C.CATEGORY, TRANSAC_NAME, COALESCE(HO_CATEGORY, '') AS HO_CATEGORY, COMPANY, SUM(AMOUNT) AS TOTS 
+            '                            From PAYROLL_PAYOUT B 
+            '                            INNER JOIN TBL_EMPLOYEE A ON A.BIOMETRICID = B.BIOMETRIC_ID 
+            '                            LEFT JOIN RECORDED_ALLOW_DEDUC C ON C.BIO_NO = B.BIOMETRIC_ID and C.PAYDATE = B.PAYDATE  
+            '                            WHERE B.PAYDATE = '{PAYDATE}' GROUP BY BRANCH_CODE, COMPANY, C.CATEGORY, TRANSAC_NAME, HO_CATEGORY"
+
             mysql = $"Select A.BRANCHCODE AS BRANCH_CODE, C.CATEGORY, TRANSAC_NAME, COALESCE(HO_CATEGORY, '') AS HO_CATEGORY, COMPANY, SUM(AMOUNT) AS TOTS 
                                         From PAYROLL_PAYOUT B 
                                         INNER JOIN TBL_EMPLOYEE A ON A.BIOMETRICID = B.BIOMETRIC_ID 
                                         LEFT JOIN RECORDED_ALLOW_DEDUC C ON C.BIO_NO = B.BIOMETRIC_ID and C.PAYDATE = B.PAYDATE  
-                                        WHERE B.PAYDATE = '{PAYDATE}' GROUP BY BRANCH_CODE, COMPANY, C.CATEGORY, TRANSAC_NAME, HO_CATEGORY"
+                                        WHERE B.PAYDATE = '{PAYDATE}' GROUP BY COMPANY, BRANCH_CODE, C.CATEGORY, TRANSAC_NAME, HO_CATEGORY"
 
             TestingScript_String(mysql)
             Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
@@ -1123,13 +1130,21 @@ Public Class frmReport
             End Using
 
             ''========================================= PAYROLL_COSTDISTRIBUTION ================================================
+            'mysql = $"Select A.BRANCHCODE AS BRANCH_CODE, COALESCE(HO_CATEGORY, '') AS HO_CATEGORY, NAMEE, NAME_CATEGORY, COMPANY, SUM(TOTAL_BASIC) AS BASIC, SUM(TOTAL_OVERTIME) AS OT,
+            '                            SUM(TOTAL_LATE_UT) AS LATE_UT, SUM(TOTAL_NIGHT_RATE) AS NIGHT_RATE, SUM(SSS_COMP) AS SSS_EE , SUM(SSS_ER) AS SSS_ER , SUM(SSS_EC) AS SSS_EC, 
+            '                            SUM(NET_PAY) AS NETPAY, SUM(PAGIBIG_COMP) AS HDMF, SUM(PHILHEALTH_COMP) AS PHILH, SUM(TOTAL_REGHOLIDAY) AS REGHOLIDAY, SUM(TOTAL_SPECHOLIDAY) AS SPECHOLIDAY
+            '                            From PAYROLL_PAYOUT B 
+            '                            INNER JOIN TBL_EMPLOYEE A ON A.BIOMETRICID = B.BIOMETRIC_ID 
+            '                            LEFT JOIN PAYROLL_COSTDISTRIB ON 1 = 1 
+            '                            WHERE B.PAYDATE = '{PAYDATE}' GROUP BY A.BRANCHCODE, HO_CATEGORY, NAMEE, NAME_CATEGORY, COMPANY"
+
             mysql = $"Select A.BRANCHCODE AS BRANCH_CODE, COALESCE(HO_CATEGORY, '') AS HO_CATEGORY, NAMEE, NAME_CATEGORY, COMPANY, SUM(TOTAL_BASIC) AS BASIC, SUM(TOTAL_OVERTIME) AS OT,
                                         SUM(TOTAL_LATE_UT) AS LATE_UT, SUM(TOTAL_NIGHT_RATE) AS NIGHT_RATE, SUM(SSS_COMP) AS SSS_EE , SUM(SSS_ER) AS SSS_ER , SUM(SSS_EC) AS SSS_EC, 
                                         SUM(NET_PAY) AS NETPAY, SUM(PAGIBIG_COMP) AS HDMF, SUM(PHILHEALTH_COMP) AS PHILH, SUM(TOTAL_REGHOLIDAY) AS REGHOLIDAY, SUM(TOTAL_SPECHOLIDAY) AS SPECHOLIDAY
                                         From PAYROLL_PAYOUT B 
                                         INNER JOIN TBL_EMPLOYEE A ON A.BIOMETRICID = B.BIOMETRIC_ID 
                                         LEFT JOIN PAYROLL_COSTDISTRIB ON 1 = 1 
-                                        WHERE B.PAYDATE = '{PAYDATE}' GROUP BY A.BRANCHCODE, HO_CATEGORY, NAMEE, NAME_CATEGORY, COMPANY"
+                                        WHERE B.PAYDATE = '{PAYDATE}' GROUP BY COMPANY, BRANCH_CODE, NAMEE, NAME_CATEGORY, HO_CATEGORY"
             TestingScript_String(mysql)
             Using dss As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
                 If dss.Tables(0).Rows.Count > 0 Then
@@ -1137,17 +1152,18 @@ Public Class frmReport
                     For Each dr In dss.Tables(0).Rows
                         With dr
 
+                            Dim CATEGORY As String = Nothing
+                            Dim Debit_Credit As String = Nothing
+                            Dim NAMEE As String = Nothing
+                            Dim NAME_CATEGORY As String = Nothing
+                            Dim DC_Amount As Decimal = 0
+
                             linee = "COMPANY - 2"
                             Dim COMPANY As String = IIf(IsDBNull(.Item("COMPANY")), "", .Item("COMPANY"))
                             linee = "BRANCHCODE - 2"
                             Dim BRANCHCODE As String = IIf(IsDBNull(.Item("BRANCH_CODE")), "", .Item("BRANCH_CODE"))
                             linee = "BRANCHNAME - 2"
                             Dim BRANCHNAME As String = GET_STRING("PAYROLL_CITY_BRANCH", "BRANCHNAME", $"BRANCHCODE = '{BRANCHCODE}'")
-                            Dim CATEGORY As String = Nothing
-                            Dim Debit_Credit As String = Nothing
-                            Dim NAMEE As String = Nothing
-                            Dim NAME_CATEGORY As String = Nothing
-                            Dim DC_Amount As Decimal = 0
 
                             If BRANCHCODE = Nothing Then
                                 linee = "BRANCHNAME = HO_CATEGORY - 2"

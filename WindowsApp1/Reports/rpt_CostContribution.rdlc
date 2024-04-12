@@ -33,6 +33,10 @@
           <DataField>CATEGORY</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="COMPANY">
+          <DataField>COMPANY</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
       </Fields>
       <rd:DataSetInfo>
         <rd:DataSetName>reports</rd:DataSetName>

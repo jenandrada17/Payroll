@@ -1187,23 +1187,23 @@ Public Class frmAttendance
                     With dr
 
                         Days7_TXT.Text = .Item("PRESENT_DAYS")
-                        Overtime7_NUP.Text = .Item("OVERTIME")
+                        Overtime7_NUP.Text = IIf(IsDBNull(.Item("OVERTIME")) Or .Item("OVERTIME").Equals("0"), "", .Item("OVERTIME"))
 
-                        Late7_TXT.Text = .Item("LATE")
-                        Undertime7_TXT.Text = .Item("UNDERTIME")
+                        Late7_TXT.Text = IIf(IsDBNull(.Item("LATE")) Or .Item("LATE").Equals("0"), "", .Item("LATE"))
+                        Undertime7_TXT.Text = IIf(IsDBNull(.Item("UNDERTIME")) Or .Item("UNDERTIME").Equals("0"), "", .Item("UNDERTIME"))
 
-                        Night7_TXT.Text = IIf(IsDBNull(.Item("NIGHT_RATE")), "", .Item("NIGHT_RATE"))
-                        SIL7_NUP.Text = IIf(IsDBNull(.Item("SIL")), "", .Item("SIL"))
-                        SpecHol7_TXT.Text = IIf(IsDBNull(.Item("SPECHOLIDAY_HRS")), "", .Item("SPECHOLIDAY_HRS"))
+                        Night7_TXT.Text = IIf(IsDBNull(.Item("NIGHT_RATE")) Or .Item("NIGHT_RATE") = 0, "", .Item("NIGHT_RATE"))
+                        SIL7_NUP.Text = IIf(IsDBNull(.Item("SIL")) Or .Item("SIL") = 0, "", .Item("SIL"))
+                        SpecHol7_TXT.Text = IIf(IsDBNull(.Item("SPECHOLIDAY_HRS")) Or .Item("SPECHOLIDAY_HRS") = 0, "", .Item("SPECHOLIDAY_HRS"))
 
                         'IF TRAINEE
-                        T_Days7_TXT.Text = IIf(IsDBNull(.Item("TRAINING_DAYS")), "", .Item("TRAINING_DAYS"))
-                        T_RegHol7_TXT.Text = IIf(IsDBNull(.Item("TRAINING_REGHOLIDAY")), "", .Item("TRAINING_REGHOLIDAY"))
-                        T_SpecHol7_TXT.Text = IIf(IsDBNull(.Item("TRAINING_SPECHOLIDAY")), "", .Item("TRAINING_SPECHOLIDAY"))
-                        T_OT7_TXT.Text = IIf(IsDBNull(.Item("TRAINING_OVERTIME")), "", .Item("TRAINING_OVERTIME"))
-                        T_Late7_TXT.Text = IIf(IsDBNull(.Item("TRAINING_LATE")), "", .Item("TRAINING_LATE"))
-                        T_UT7_TXT.Text = IIf(IsDBNull(.Item("TRAINING_UNDERTIME")), "", .Item("TRAINING_UNDERTIME"))
-                        T_Night7_TXT.Text = IIf(IsDBNull(.Item("TRAINING_NIGHTRATE")), "", .Item("TRAINING_NIGHTRATE"))
+                        T_Days7_TXT.Text = IIf(IsDBNull(.Item("TRAINING_DAYS")) Or .Item("TRAINING_DAYS") = 0, "", .Item("TRAINING_DAYS"))
+                        T_RegHol7_TXT.Text = IIf(IsDBNull(.Item("TRAINING_REGHOLIDAY")) Or .Item("TRAINING_REGHOLIDAY") = 0, "", .Item("TRAINING_REGHOLIDAY"))
+                        T_SpecHol7_TXT.Text = IIf(IsDBNull(.Item("TRAINING_SPECHOLIDAY")) Or .Item("TRAINING_SPECHOLIDAY") = 0, "", .Item("TRAINING_SPECHOLIDAY"))
+                        T_OT7_TXT.Text = IIf(IsDBNull(.Item("TRAINING_OVERTIME")) Or .Item("TRAINING_OVERTIME").Equals("0"), "", .Item("TRAINING_OVERTIME"))
+                        T_Late7_TXT.Text = IIf(IsDBNull(.Item("TRAINING_LATE")) Or .Item("TRAINING_LATE").Equals("0"), "", .Item("TRAINING_LATE"))
+                        T_UT7_TXT.Text = IIf(IsDBNull(.Item("TRAINING_UNDERTIME")) Or .Item("TRAINING_UNDERTIME").Equals("0"), "", .Item("TRAINING_UNDERTIME"))
+                        T_Night7_TXT.Text = IIf(IsDBNull(.Item("TRAINING_NIGHTRATE")) Or .Item("TRAINING_NIGHTRATE").Equals("0"), "", .Item("TRAINING_NIGHTRATE"))
 
                     End With
                 Next
@@ -1243,6 +1243,9 @@ Public Class frmAttendance
                     PAYROLL = DataGridView1.Tag
                 End If
 
+                emp_status = GetData("EMP_STATUS", $"TBL_EMPLOYEE WHERE BIOMETRICID = '{Bio7_TXT.Text}'")
+                dateEnded = GetData("DATE_ENDED", $"TBL_EMPLOYEE WHERE BIOMETRICID = '{Bio7_TXT.Text}'")
+                dateStarted = GetData("DATEHIRED", $"TBL_EMPLOYEE WHERE BIOMETRICID = '{Bio7_TXT.Text}'")
                 '======================== HOLIDAY ============================ 
                 Dim regHol_additional As Integer = IIf(RegHol7_TXT.Text = Nothing, 0, RegHol7_TXT.Text)
                 Dim RHOLIDAY As Integer = REGHolidayCount(starting_date, ending_date) + regHol_additional

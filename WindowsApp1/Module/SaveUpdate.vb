@@ -82,13 +82,21 @@ Module SaveUpdate
                 If BRANCH = True Then
                     .Item("BRANCH_MANUAL") = True
 
-                    If TRAINING_DAYS <> 0 Then .Item("TRAINING_DAYS") = TRAINING_DAYS
-                    If TRAINING_REGHOLIDAY <> 0 Then .Item("TRAINING_REGHOLIDAY") = TRAINING_REGHOLIDAY
-                    If TRAINING_SPECHOLIDAY <> 0 Then .Item("TRAINING_SPECHOLIDAY") = TRAINING_SPECHOLIDAY
-                    If TRAINING_OVERTIME <> 0 Then .Item("TRAINING_OVERTIME") = TRAINING_OVERTIME
-                    If TRAINING_LATE <> 0 Then .Item("TRAINING_LATE") = TRAINING_LATE
-                    If TRAINING_UNDERTIME <> 0 Then .Item("TRAINING_UNDERTIME") = TRAINING_UNDERTIME
-                    If TRAINING_NIGHTRATE <> 0 Then .Item("TRAINING_NIGHTRATE") = TRAINING_NIGHTRATE
+                    .Item("TRAINING_DAYS") = TRAINING_DAYS
+                    .Item("TRAINING_REGHOLIDAY") = TRAINING_REGHOLIDAY
+                    .Item("TRAINING_SPECHOLIDAY") = TRAINING_SPECHOLIDAY
+                    .Item("TRAINING_OVERTIME") = TRAINING_OVERTIME
+                    .Item("TRAINING_LATE") = TRAINING_LATE
+                    .Item("TRAINING_UNDERTIME") = TRAINING_UNDERTIME
+                    .Item("TRAINING_NIGHTRATE") = TRAINING_NIGHTRATE
+
+                    'If TRAINING_DAYS <> 0 Then .Item("TRAINING_DAYS") = TRAINING_DAYS
+                    'If TRAINING_REGHOLIDAY <> 0 Then .Item("TRAINING_REGHOLIDAY") = TRAINING_REGHOLIDAY
+                    'If TRAINING_SPECHOLIDAY <> 0 Then .Item("TRAINING_SPECHOLIDAY") = TRAINING_SPECHOLIDAY
+                    'If TRAINING_OVERTIME <> 0 Then .Item("TRAINING_OVERTIME") = TRAINING_OVERTIME
+                    'If TRAINING_LATE <> 0 Then .Item("TRAINING_LATE") = TRAINING_LATE
+                    'If TRAINING_UNDERTIME <> 0 Then .Item("TRAINING_UNDERTIME") = TRAINING_UNDERTIME
+                    'If TRAINING_NIGHTRATE <> 0 Then .Item("TRAINING_NIGHTRATE") = TRAINING_NIGHTRATE
                 End If
 
             End With
@@ -630,6 +638,16 @@ Module SaveUpdate
         Dim regHoliday = Holiday_Rate("REGULAR")
         Dim specHoliday = Holiday_Rate("SPECIAL")
 
+        Dim sched As String = ""
+        Dim date_pay As DateTime = Convert.ToDateTime(paydate_)
+        date_pay = date_pay.ToString("d")
+
+        If IsLastDay(date_pay) Then
+            sched = "CLOSE PAYROLL"
+        Else
+            sched = "OPEN PAYROLL"
+        End If
+
         Dim mysql As String = $"Select * From payroll_attendance A 
                                 inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRICID  WHERE A.BIOMETRICID = '{bioNo}' and A.PAYDATE = '{paydate_}'"
 
@@ -647,7 +665,6 @@ Module SaveUpdate
                     Dim NoOfDays, SpecialHol, RegularHol As Double
                     Dim Deduction, SBU As Decimal
                     Dim Company As String = ""
-                    Dim sched As String = ""
                     Dim noOf_days_training As Double = 0
                     Dim PI_ADD_DAYS As Double = 0
                     Dim TotalBasic As Decimal = 0
@@ -897,10 +914,7 @@ Module SaveUpdate
                         Dim total_train As Decimal = (Convert.ToDouble(rate) - trainee_rate) * Convert.ToDouble(noOf_days_training)
                         TotalBasic = (NoOfDays * rate) - total_train
 
-                        '===================== TRAINING HOLIDAY ==================  
-                        'RegularHol = Math.Abs(RegularHol - Training_REGHoliday)
-                        'SpecialHol = Math.Abs(SpecialHol_hrs - Training_SPECHoliday)
-
+                        '===================== TRAINING HOLIDAY ==================    
                         If RegularHol <> 0 Then RegularHol = Math.Abs(RegularHol - Training_REGHoliday)
                         If SpecialHol <> 0 Then SpecialHol = Math.Abs(SpecialHol_hrs - Training_SPECHoliday)
 
@@ -985,11 +999,8 @@ Module SaveUpdate
 
                     '============================ CHECK WITH TRAINING DAYS COVERED ======================== 
                     If noOf_days_training = 0 And exempted_trainee = 0 Then
-                        '======================== CHECK IF CLOSE PAYROLL ================================== 
-                        Dim date_pay As DateTime = Convert.ToDateTime(paydate_)
-                        date_pay = date_pay.ToString("d")
-
-                        If IsLastDay(date_pay) Then
+                        '======================== CHECK IF CLOSE PAYROLL ==================================  
+                        If sched = "CLOSE PAYROLL" Then
                             If bioNo <> 58 Then
                                 Dim first_Basic As Decimal = GetFirst_Basic(bioNo, paydate_)
                                 Dim monthly_Basic As Decimal = TotalBasic + first_Basic
@@ -1002,11 +1013,7 @@ Module SaveUpdate
 
                                 If ThisIsNotNull("PAGIBIG", $"TBL_EMPLOYEE where BIOMETRICID = '{bioNo}' and PAGIBIG is not null") Then PagibigComp = Get_Pagibig(monthly_Basic)
                                 If ThisIsNotNull("PHILHEALTHNO", $"TBL_EMPLOYEE where BIOMETRICID = '{bioNo}' and PHILHEALTHNO is not null") Then PhilhealthComp = Get_PhilHealth(monthly_Basic)
-
                             End If
-                            sched = "CLOSE PAYROLL"
-                        Else
-                            sched = "OPEN PAYROLL"
                         End If
 
                     End If

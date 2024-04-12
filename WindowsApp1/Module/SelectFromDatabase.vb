@@ -481,7 +481,7 @@ Module SelectFromDatabase
                     NoOfDays_TXT.Text = .Item("PRESENT_DAYS")
                     RegularOT_TXT.Text = .Item("OVERTIME")
                     RegularHol_TXT.Tag = IIf(IsDBNull(.Item("TRAINING_REGHOLIDAY")), 0, .Item("TRAINING_REGHOLIDAY"))
-                    RegularHol_TXT.Text = CInt(.Item("REGHOLIDAY")) + CInt(RegularHol_TXT.Tag)
+                    RegularHol_TXT.Text = CInt(.Item("REGHOLIDAY")) '+ CInt(RegularHol_TXT.Tag)
                     SpecialHol_TXT.Text = IIf(IsDBNull(.Item("SPECHOLIDAY_HRS")), 0, .Item("SPECHOLIDAY_HRS"))
                     SpecialHol_TXT.Tag = IIf(IsDBNull(.Item("TRAINING_SPECHOLIDAY")), 0, .Item("TRAINING_SPECHOLIDAY"))
                     Late_TXT.Text = .Item("LATE") 
@@ -881,13 +881,19 @@ Module SelectFromDatabase
             Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_HOLIDAY")
             If ds.Tables(0).Rows.Count > 0 Then
                 If emp_status = "INACTIVE" Then
-                    If startingDate.ToShortDateString < CDate(dateEnded).ToShortDateString Then
+                    If CDate(dateEnded).ToShortDateString < startingDate.ToShortDateString Then
                         Console.WriteLine("INACTIVE - HOLIDAY NOT INCLUDED")
                     Else
                         count += 1
                     End If
                 Else
-                    count += 1
+                    If dateStarted <> Nothing Then
+                        If CDate(dateStarted).ToShortDateString > startingDate.ToShortDateString Then
+                            Console.WriteLine("ACTIVE - BUT HOLIDAY NOT INCLUDED (BASED ON DATEHIRED)")
+                        End If
+                    Else
+                        count += 1
+                    End If
                 End If
             End If
 

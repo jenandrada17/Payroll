@@ -3248,6 +3248,8 @@ Partial Public Class reports
         
         Private columnCATEGORY As Global.System.Data.DataColumn
         
+        Private columnCOMPANY As Global.System.Data.DataColumn
+        
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
         Public Sub New()
@@ -3316,6 +3318,14 @@ Partial Public Class reports
         End Property
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public ReadOnly Property COMPANYColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnCOMPANY
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0"),  _
          Global.System.ComponentModel.Browsable(false)>  _
         Public ReadOnly Property Count() As Integer
@@ -3352,9 +3362,9 @@ Partial Public Class reports
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
-        Public Overloads Function AddCostContributionRow(ByVal BRANCH As String, ByVal NAME As String, ByVal AMOUNT As Decimal, ByVal CATEGORY As String) As CostContributionRow
+        Public Overloads Function AddCostContributionRow(ByVal BRANCH As String, ByVal NAME As String, ByVal AMOUNT As Decimal, ByVal CATEGORY As String, ByVal COMPANY As String) As CostContributionRow
             Dim rowCostContributionRow As CostContributionRow = CType(Me.NewRow,CostContributionRow)
-            Dim columnValuesArray() As Object = New Object() {BRANCH, NAME, AMOUNT, CATEGORY}
+            Dim columnValuesArray() As Object = New Object() {BRANCH, NAME, AMOUNT, CATEGORY, COMPANY}
             rowCostContributionRow.ItemArray = columnValuesArray
             Me.Rows.Add(rowCostContributionRow)
             Return rowCostContributionRow
@@ -3381,6 +3391,7 @@ Partial Public Class reports
             Me.columnNAME = MyBase.Columns("NAME")
             Me.columnAMOUNT = MyBase.Columns("AMOUNT")
             Me.columnCATEGORY = MyBase.Columns("CATEGORY")
+            Me.columnCOMPANY = MyBase.Columns("COMPANY")
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -3394,6 +3405,8 @@ Partial Public Class reports
             MyBase.Columns.Add(Me.columnAMOUNT)
             Me.columnCATEGORY = New Global.System.Data.DataColumn("CATEGORY", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnCATEGORY)
+            Me.columnCOMPANY = New Global.System.Data.DataColumn("COMPANY", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnCOMPANY)
             Me.columnBRANCH.Caption = "NO"
         End Sub
         
@@ -7962,6 +7975,21 @@ Partial Public Class reports
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Property COMPANY() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableCostContribution.COMPANYColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'COMPANY' in table 'CostContribution' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableCostContribution.COMPANYColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
         Public Function IsBRANCHNull() As Boolean
             Return Me.IsNull(Me.tableCostContribution.BRANCHColumn)
         End Function
@@ -8006,6 +8034,18 @@ Partial Public Class reports
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
         Public Sub SetCATEGORYNull()
             Me(Me.tableCostContribution.CATEGORYColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Function IsCOMPANYNull() As Boolean
+            Return Me.IsNull(Me.tableCostContribution.COMPANYColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Sub SetCOMPANYNull()
+            Me(Me.tableCostContribution.COMPANYColumn) = Global.System.Convert.DBNull
         End Sub
     End Class
     
