@@ -59,13 +59,13 @@
                   <Width>0.3125in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.16667in</Width>
+                  <Width>2.94792in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.87344in</Width>
+                  <Width>1.16511in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>0.87344in</Width>
+                  <Width>1.16511in</Width>
                 </TablixColumn>
                 <TablixColumn>
                   <Width>1in</Width>
@@ -385,7 +385,11 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!BRANCH.Value</Value>
+                                  <Value>=IIf(Fields!COMPANY.Value = "DALTON", "Dalton - " &amp; Fields!BRANCH.Value, 
+    IIf(Fields!COMPANY.Value = "PHOTO" And Not Fields!BRANCH.Value.StartsWith("Photo - "), "Photo - " &amp; Fields!BRANCH.Value, 
+    IIf(Fields!COMPANY.Value = "P&amp;G UY", "P&amp;G Uy - " &amp; Fields!BRANCH.Value, 
+    IIf(Fields!COMPANY.Value = "PERFECOM" And Not Fields!BRANCH.Value.StartsWith("Perfecom - "), "Perfecom - " &amp; Fields!BRANCH.Value, 
+        Fields!BRANCH.Value))))</Value>
                                   <Style>
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>
@@ -1197,6 +1201,9 @@
                   </Group>
                   <SortExpressions>
                     <SortExpression>
+                      <Value>=Fields!COMPANY.Value</Value>
+                    </SortExpression>
+                    <SortExpression>
                       <Value>=Fields!BRANCH.Value</Value>
                     </SortExpression>
                   </SortExpressions>
@@ -1238,7 +1245,7 @@
               </SortExpression>
             </SortExpressions>
             <Height>2.04796in</Height>
-            <Width>4.22605in</Width>
+            <Width>6.59064in</Width>
             <Style>
               <Border>
                 <Style>None</Style>
@@ -1249,7 +1256,7 @@
         <Height>2.04796in</Height>
         <Style />
       </Body>
-      <Width>5.22605in</Width>
+      <Width>6.59064in</Width>
       <Page>
         <LeftMargin>0.5in</LeftMargin>
         <RightMargin>0.5in</RightMargin>

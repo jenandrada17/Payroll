@@ -1052,18 +1052,18 @@ Public Class frmReport
                 .Columns.Add("CATEGORY")
             End With
 
-            ''========================================= RECORDED_ALLOW_DEDUC ================================================
-            'mysql = $"Select A.BRANCHCODE AS BRANCH_CODE, C.CATEGORY, TRANSAC_NAME, COALESCE(HO_CATEGORY, '') AS HO_CATEGORY, COMPANY, SUM(AMOUNT) AS TOTS 
-            '                            From PAYROLL_PAYOUT B 
-            '                            INNER JOIN TBL_EMPLOYEE A ON A.BIOMETRICID = B.BIOMETRIC_ID 
-            '                            LEFT JOIN RECORDED_ALLOW_DEDUC C ON C.BIO_NO = B.BIOMETRIC_ID and C.PAYDATE = B.PAYDATE  
-            '                            WHERE B.PAYDATE = '{PAYDATE}' GROUP BY BRANCH_CODE, COMPANY, C.CATEGORY, TRANSAC_NAME, HO_CATEGORY"
-
+            '========================================= RECORDED_ALLOW_DEDUC ================================================
             mysql = $"Select A.BRANCHCODE AS BRANCH_CODE, C.CATEGORY, TRANSAC_NAME, COALESCE(HO_CATEGORY, '') AS HO_CATEGORY, COMPANY, SUM(AMOUNT) AS TOTS 
                                         From PAYROLL_PAYOUT B 
                                         INNER JOIN TBL_EMPLOYEE A ON A.BIOMETRICID = B.BIOMETRIC_ID 
                                         LEFT JOIN RECORDED_ALLOW_DEDUC C ON C.BIO_NO = B.BIOMETRIC_ID and C.PAYDATE = B.PAYDATE  
-                                        WHERE B.PAYDATE = '{PAYDATE}' GROUP BY COMPANY, BRANCH_CODE, C.CATEGORY, TRANSAC_NAME, HO_CATEGORY"
+                                        WHERE B.PAYDATE = '{PAYDATE}' GROUP BY BRANCH_CODE, COMPANY, C.CATEGORY, TRANSAC_NAME, HO_CATEGORY"
+
+            ''mysql = $"Select A.BRANCHCODE AS BRANCH_CODE, C.CATEGORY, TRANSAC_NAME, COALESCE(HO_CATEGORY, '') AS HO_CATEGORY, COMPANY, SUM(AMOUNT) AS TOTS 
+            ''                            From PAYROLL_PAYOUT B 
+            ''                            INNER JOIN TBL_EMPLOYEE A ON A.BIOMETRICID = B.BIOMETRIC_ID 
+            ''                            LEFT JOIN RECORDED_ALLOW_DEDUC C ON C.BIO_NO = B.BIOMETRIC_ID and C.PAYDATE = B.PAYDATE  
+            ''                            WHERE B.PAYDATE = '{PAYDATE}' GROUP BY COMPANY, BRANCH_CODE, C.CATEGORY, TRANSAC_NAME, HO_CATEGORY"
 
             TestingScript_String(mysql)
             Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
@@ -1090,27 +1090,27 @@ Public Class frmReport
                                 BRANCHNAME = IIf(IsDBNull(.Item("HO_CATEGORY")), "", CStr(.Item("HO_CATEGORY")).TrimEnd)
                             ElseIf BRANCHCODE = "SMG" Then
                                 If COMPANY = "PERFECOM" Then
-                                    BRANCHNAME = $"Perfecom-SM GENSAN"
+                                    BRANCHNAME = $"Perfecom - SM GENSAN"
                                 Else
-                                    BRANCHNAME = $"Photo-SM GENSAN"
+                                    BRANCHNAME = $"Photo - SM GENSAN"
                                 End If
                             ElseIf BRANCHCODE = "KCG" And COMPANY = "PERFECOM" Then
-                                BRANCHNAME = $"Perfecom-KCC Gensan"
+                                BRANCHNAME = $"Perfecom - KCC Gensan"
                             ElseIf BRANCHCODE = "KID" And COMPANY = "PHOTO" Then
-                                BRANCHNAME = $"Photo-Kidapawan"
+                                BRANCHNAME = $"Photo - Kidapawan"
                             ElseIf BRANCHCODE = "MID" And COMPANY = "PHOTO" Then
-                                BRANCHNAME = $"Photo-Midsayap"
+                                BRANCHNAME = $"Photo - Midsayap"
                             ElseIf BRANCHCODE = "POL" And COMPANY = "PHOTO" Then
-                                BRANCHNAME = $"Photo-Polomolok"
+                                BRANCHNAME = $"Photo - Polomolok"
                             ElseIf BRANCHCODE = "ROG" And COMPANY = "PHOTO" Then
-                                BRANCHNAME = $"Photo-Robinson Gensan"
+                                BRANCHNAME = $"Photo - Robinson Gensan"
                             ElseIf BRANCHCODE = "ROX" And COMPANY = "PHOTO" Then
-                                BRANCHNAME = $"Photo-Roxas Gensan"
+                                BRANCHNAME = $"Photo - Roxas Gensan"
                             ElseIf BRANCHCODE = "SNP" And COMPANY = "PHOTO" Then
-                                BRANCHNAME = $"Photo-San Pedro"
+                                BRANCHNAME = $"Photo - San Pedro"
                             End If
 
-                            If CATEGORY = "Basic Pay" Then
+                            If CATEGORY.ToUpper = "BASIC PAY" Or CATEGORY.ToUpper = "BASIC REFUND" Then
                                 CATEGORY = "Basic Refund"
                             End If
 
@@ -1119,7 +1119,7 @@ Public Class frmReport
                                 DC_Amount = GetTotal("AMOUNT", $"TBL_EMPLOYEE B inner join RECORDED_ALLOW_DEDUC A on A.BIO_NO = B.BIOMETRICID and B.HO_CATEGORY = 'PGC Head Office' and A.CATEGORY = '13th Month Pay' and A.PAYDATE = '{PAYDATE}'")
                             End If
 
-                            dt_Cost.Rows.Add(BRANCHNAME, CATEGORY, DC_Amount, Debit_Credit)
+                            dt_Cost.Rows.Add(COMPANY, BRANCHNAME, CATEGORY, DC_Amount, Debit_Credit)
 
                         End With
 
@@ -1129,22 +1129,22 @@ Public Class frmReport
                 End If
             End Using
 
-            ''========================================= PAYROLL_COSTDISTRIBUTION ================================================
-            'mysql = $"Select A.BRANCHCODE AS BRANCH_CODE, COALESCE(HO_CATEGORY, '') AS HO_CATEGORY, NAMEE, NAME_CATEGORY, COMPANY, SUM(TOTAL_BASIC) AS BASIC, SUM(TOTAL_OVERTIME) AS OT,
-            '                            SUM(TOTAL_LATE_UT) AS LATE_UT, SUM(TOTAL_NIGHT_RATE) AS NIGHT_RATE, SUM(SSS_COMP) AS SSS_EE , SUM(SSS_ER) AS SSS_ER , SUM(SSS_EC) AS SSS_EC, 
-            '                            SUM(NET_PAY) AS NETPAY, SUM(PAGIBIG_COMP) AS HDMF, SUM(PHILHEALTH_COMP) AS PHILH, SUM(TOTAL_REGHOLIDAY) AS REGHOLIDAY, SUM(TOTAL_SPECHOLIDAY) AS SPECHOLIDAY
-            '                            From PAYROLL_PAYOUT B 
-            '                            INNER JOIN TBL_EMPLOYEE A ON A.BIOMETRICID = B.BIOMETRIC_ID 
-            '                            LEFT JOIN PAYROLL_COSTDISTRIB ON 1 = 1 
-            '                            WHERE B.PAYDATE = '{PAYDATE}' GROUP BY A.BRANCHCODE, HO_CATEGORY, NAMEE, NAME_CATEGORY, COMPANY"
-
+            '========================================= PAYROLL_COSTDISTRIBUTION ================================================
             mysql = $"Select A.BRANCHCODE AS BRANCH_CODE, COALESCE(HO_CATEGORY, '') AS HO_CATEGORY, NAMEE, NAME_CATEGORY, COMPANY, SUM(TOTAL_BASIC) AS BASIC, SUM(TOTAL_OVERTIME) AS OT,
                                         SUM(TOTAL_LATE_UT) AS LATE_UT, SUM(TOTAL_NIGHT_RATE) AS NIGHT_RATE, SUM(SSS_COMP) AS SSS_EE , SUM(SSS_ER) AS SSS_ER , SUM(SSS_EC) AS SSS_EC, 
                                         SUM(NET_PAY) AS NETPAY, SUM(PAGIBIG_COMP) AS HDMF, SUM(PHILHEALTH_COMP) AS PHILH, SUM(TOTAL_REGHOLIDAY) AS REGHOLIDAY, SUM(TOTAL_SPECHOLIDAY) AS SPECHOLIDAY
                                         From PAYROLL_PAYOUT B 
                                         INNER JOIN TBL_EMPLOYEE A ON A.BIOMETRICID = B.BIOMETRIC_ID 
                                         LEFT JOIN PAYROLL_COSTDISTRIB ON 1 = 1 
-                                        WHERE B.PAYDATE = '{PAYDATE}' GROUP BY COMPANY, BRANCH_CODE, NAMEE, NAME_CATEGORY, HO_CATEGORY"
+                                        WHERE B.PAYDATE = '{PAYDATE}' GROUP BY A.BRANCHCODE, HO_CATEGORY, NAMEE, NAME_CATEGORY, COMPANY"
+
+            'mysql = $"Select A.BRANCHCODE AS BRANCH_CODE, COALESCE(HO_CATEGORY, '') AS HO_CATEGORY, NAMEE, NAME_CATEGORY, COMPANY, SUM(TOTAL_BASIC) AS BASIC, SUM(TOTAL_OVERTIME) AS OT,
+            '                            SUM(TOTAL_LATE_UT) AS LATE_UT, SUM(TOTAL_NIGHT_RATE) AS NIGHT_RATE, SUM(SSS_COMP) AS SSS_EE , SUM(SSS_ER) AS SSS_ER , SUM(SSS_EC) AS SSS_EC, 
+            '                            SUM(NET_PAY) AS NETPAY, SUM(PAGIBIG_COMP) AS HDMF, SUM(PHILHEALTH_COMP) AS PHILH, SUM(TOTAL_REGHOLIDAY) AS REGHOLIDAY, SUM(TOTAL_SPECHOLIDAY) AS SPECHOLIDAY
+            '                            From PAYROLL_PAYOUT B 
+            '                            INNER JOIN TBL_EMPLOYEE A ON A.BIOMETRICID = B.BIOMETRIC_ID 
+            '                            LEFT JOIN PAYROLL_COSTDISTRIB ON 1 = 1 
+            '                            WHERE B.PAYDATE = '{PAYDATE}' GROUP BY COMPANY, BRANCH_CODE, NAMEE, NAME_CATEGORY, HO_CATEGORY"
             TestingScript_String(mysql)
             Using dss As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
                 If dss.Tables(0).Rows.Count > 0 Then
@@ -1170,24 +1170,24 @@ Public Class frmReport
                                 BRANCHNAME = CStr(.Item("HO_CATEGORY")).TrimEnd
                             ElseIf BRANCHCODE = "SMG" Then
                                 If COMPANY = "PERFECOM" Then
-                                    BRANCHNAME = $"Perfecom-SM GENSAN"
+                                    BRANCHNAME = $"Perfecom - SM GENSAN"
                                 Else
-                                    BRANCHNAME = $"Photo-SM GENSAN"
+                                    BRANCHNAME = $"Photo - SM GENSAN"
                                 End If
                             ElseIf BRANCHCODE = "KCG" And COMPANY = "PERFECOM" Then
-                                BRANCHNAME = $"Perfecom-KCC Gensan"
+                                BRANCHNAME = $"Perfecom - KCC Gensan"
                             ElseIf BRANCHCODE = "KID" And COMPANY = "PHOTO" Then
-                                BRANCHNAME = $"Photo-Kidapawan"
+                                BRANCHNAME = $"Photo - Kidapawan"
                             ElseIf BRANCHCODE = "MID" And COMPANY = "PHOTO" Then
-                                BRANCHNAME = $"Photo-Midsayap"
+                                BRANCHNAME = $"Photo - Midsayap"
                             ElseIf BRANCHCODE = "POL" And COMPANY = "PHOTO" Then
-                                BRANCHNAME = $"Photo-Polomolok"
+                                BRANCHNAME = $"Photo - Polomolok"
                             ElseIf BRANCHCODE = "ROG" And COMPANY = "PHOTO" Then
-                                BRANCHNAME = $"Photo-Robinson Gensan"
+                                BRANCHNAME = $"Photo - Robinson Gensan"
                             ElseIf BRANCHCODE = "ROX" And COMPANY = "PHOTO" Then
-                                BRANCHNAME = $"Photo-Roxas Gensan"
+                                BRANCHNAME = $"Photo - Roxas Gensan"
                             ElseIf BRANCHCODE = "SNP" And COMPANY = "PHOTO" Then
-                                BRANCHNAME = $"Photo-San Pedro"
+                                BRANCHNAME = $"Photo - San Pedro"
                             End If
 
                             '======================== PAYROLL_COSTCONTRIB ================= 
@@ -1252,7 +1252,7 @@ Public Class frmReport
                                 Debit_Credit = "CREDIT"
                             End If
 
-                            dt_Cost.Rows.Add(BRANCHNAME, NAMEE, DC_Amount, Debit_Credit)
+                            dt_Cost.Rows.Add(COMPANY, BRANCHNAME, NAMEE, DC_Amount, Debit_Credit)
 
                         End With
 
