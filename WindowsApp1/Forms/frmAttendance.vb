@@ -1425,7 +1425,7 @@ Public Class frmAttendance
         Dim row As Integer
         Dim payroll As String = Paydate.ToShortDateString
 
-        RunCommand($"DELETE FROM PAYROLL_ATTENDANCE WHERE PAYDATE = '{payroll}' AND BRANCH_MANUAL = TRUE;")
+        'RunCommand($"DELETE FROM PAYROLL_ATTENDANCE WHERE PAYDATE = '{payroll}' AND BRANCH_MANUAL = TRUE;")
 
         progressBarStart(DtSet.Tables(0).Rows.Count)
 
@@ -1452,6 +1452,8 @@ Public Class frmAttendance
                 Dim TRAINING_DAYS As Integer = IIf(eCell(row, 17).Value = Nothing, 0, eCell(row, 17).Value)
 
                 If totalDays <> 0 Then
+                    RunCommand($"DELETE FROM PAYROLL_ATTENDANCE WHERE PAYDATE = '{payroll}' AND BRANCH_MANUAL = TRUE AND BIOMETRICID = {bioNo};")
+
                     SaveAttendanceEE(bioNo, payroll, totalDays, overtime, late, undertime,
                                  regHoliday, TotalSHoliday_LBL.Text, specHoliday_hrs, sil, Nothing, Nothing, Nothing, nightRate, True,
                                  TRAINING_DAYS, TRAINING_REGHOLIDAY, TRAINING_SPECHOLIDAY, TRAINING_OVERTIME, TRAINING_LATE, TRAINING_UNDERTIME, TRAINING_NIGHTRATE)

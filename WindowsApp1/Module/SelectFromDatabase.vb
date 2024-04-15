@@ -888,8 +888,11 @@ Module SelectFromDatabase
                     End If
                 Else
                     If dateStarted <> Nothing Then
-                        If CDate(dateStarted).ToShortDateString > startingDate.ToShortDateString Then
+                        Dim dateStart As Date = CDate(dateStarted).ToShortDateString
+                        If dateStart > startingDate.ToShortDateString Then
                             Console.WriteLine("ACTIVE - BUT HOLIDAY NOT INCLUDED (BASED ON DATEHIRED)")
+                        Else
+                            count += 1
                         End If
                     Else
                         count += 1
@@ -1534,18 +1537,29 @@ Module SelectFromDatabase
 
         If searchName.Length <> 0 Then
 
-            mysql = $"Select * From TBL_EMPLOYEE where "
+            mysql = $"Select A.*, 
+                            LASTNAME || ', ' || FIRSTNAME || ' ' || 
+                                 CASE 
+                                     WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
+                                     ELSE ''
+                                 END AS FULLNAME
+                      From TBL_EMPLOYEE A where "
 
             For Each name In strWords
                 mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(FIRSTNAME) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(LASTNAME) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(LASTNAME || ', ' || FIRSTNAME || ' ' || CASE WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.' ELSE '' END) LIKE UPPER('%{name}%') OR"
                 mysql &= $"{vbCr}UPPER(BIOMETRICID) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(EMP_STATUS) LIKE UPPER('%{name}%') ORDER BY COMPANY, BRANCHCODE ASC "
             Next
 
         Else
-            mysql = $"Select * From TBL_EMPLOYEE ORDER BY COMPANY, BRANCHCODE ASC "
+            mysql = $"Select A.*, 
+                            LASTNAME || ', ' || FIRSTNAME || ' ' || 
+                                 CASE 
+                                     WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
+                                     ELSE ''
+                                 END AS FULLNAME 
+                      From TBL_EMPLOYEE A ORDER BY COMPANY, BRANCHCODE ASC "
         End If
 
         Using ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
@@ -1557,19 +1571,20 @@ Module SelectFromDatabase
                 For Each dr In ds.Tables(0).Rows
                     With dr
 
-                        Dim MI As String
-                        If String.IsNullOrEmpty(.Item("MiddleName")) Then
-                            MI = ""
-                        Else
-                            MI = .Item("MiddleName").Substring(0, 1) & "."
-                        End If
+                        'Dim MI As String
+                        'If String.IsNullOrEmpty(.Item("MiddleName")) Then
+                        '    MI = ""
+                        'Else
+                        '    MI = .Item("MiddleName").Substring(0, 1) & "."
+                        'End If
 
-                        Dim FULLNAME As String = $"{ .Item("LastName")}, { .Item("FirstName")} {MI}"
+                        'Dim FULLNAME As String = $"{ .Item("LastName")}, { .Item("FirstName")} {MI}"
+                        Dim rate As String = IIf(IsDBNull(.Item("RATE_DAILY")), "", .Item("RATE_DAILY"))
 
                         Dim i As ListViewItem = listview.Items.Add(IIf(IsDBNull(.Item("BRANCHCODE")), "", .Item("BRANCHCODE")))
-                        i.SubItems.Add(FULLNAME)
+                        i.SubItems.Add(.Item("FULLNAME"))
                         i.SubItems.Add(.Item("BIOMETRICID"))
-                        i.SubItems.Add(IIf(IsDBNull(.Item("RATE_DAILY")), "", .Item("RATE_DAILY")))
+                        i.SubItems.Add(rate)
                     End With
                     frmMainForm.AppProgressBar.Value += 1
                 Next
