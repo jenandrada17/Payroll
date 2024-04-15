@@ -1412,7 +1412,7 @@
                                 <Paragraph>
                                   <TextRuns>
                                     <TextRun>
-                                      <Value>=CInt(Fields!LATE_UNDERTIME.Value / 60) &amp; "." &amp; CInt(Fields!LATE_UNDERTIME.Value Mod 60)</Value>
+                                      <Value>=IIf(Fields!LATE_UNDERTIME.Value &lt; 60, 0, CInt(Fields!LATE_UNDERTIME.Value / 60) &amp; "." &amp; CInt(Fields!LATE_UNDERTIME.Value Mod 60))</Value>
                                       <Style>
                                         <FontFamily>Berlin Sans FB</FontFamily>
                                       </Style>

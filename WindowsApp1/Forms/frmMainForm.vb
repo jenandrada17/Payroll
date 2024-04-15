@@ -119,6 +119,8 @@ Public Class frmMainForm
             End If
         End If
 
+        Version_lbl.Text = $"Version {Application.ProductVersion}"
+
         'UpdatePayout("6/30/2023")
     End Sub
 

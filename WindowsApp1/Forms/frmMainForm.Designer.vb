@@ -63,6 +63,7 @@ Partial Class frmMainForm
         Me.Exit_LBL = New System.Windows.Forms.Label()
         Me.PictureBox5 = New System.Windows.Forms.PictureBox()
         Me.pNavigate = New System.Windows.Forms.Panel()
+        Me.Version_lbl = New System.Windows.Forms.Label()
         Me.NavagationPanel.SuspendLayout()
         CType(Me.PictureBox11, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -470,6 +471,7 @@ Partial Class frmMainForm
         'Panel1
         '
         Me.Panel1.BackColor = System.Drawing.Color.White
+        Me.Panel1.Controls.Add(Me.Version_lbl)
         Me.Panel1.Controls.Add(Me.Dashboard_lbl)
         Me.Panel1.Controls.Add(Me.AppProgressBar)
         Me.Panel1.Controls.Add(Me.ProgressBar1)
@@ -563,6 +565,17 @@ Partial Class frmMainForm
         Me.pNavigate.Size = New System.Drawing.Size(1169, 665)
         Me.pNavigate.TabIndex = 22
         '
+        'Version_lbl
+        '
+        Me.Version_lbl.AutoSize = True
+        Me.Version_lbl.Font = New System.Drawing.Font("Segoe UI", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Version_lbl.ForeColor = System.Drawing.Color.Black
+        Me.Version_lbl.Location = New System.Drawing.Point(3, 34)
+        Me.Version_lbl.Name = "Version_lbl"
+        Me.Version_lbl.Size = New System.Drawing.Size(34, 12)
+        Me.Version_lbl.TabIndex = 23
+        Me.Version_lbl.Text = "Version"
+        '
         'frmMainForm
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -641,4 +654,5 @@ Partial Class frmMainForm
     Friend WithEvents Dashboard_lbl As Label
     Friend WithEvents PictureBox11 As PictureBox
     Friend WithEvents Allowance_btn As Button
+    Friend WithEvents Version_lbl As Label
 End Class

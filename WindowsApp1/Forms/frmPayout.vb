@@ -984,6 +984,8 @@ Public Class frmPayout
                         SPECHOLIDAY_HRS = IIf(IsDBNull(.Item("SPECHOLIDAY_HRS")), 0, .Item("SPECHOLIDAY_HRS"))
                         NIGHT_RATE = IIf(IsDBNull(.Item("NIGHT_RATE")), 0, .Item("NIGHT_RATE"))
 
+                        If SPECHOLIDAY_HRS <> 0 Then SPECHOLIDAY = SPECHOLIDAY_HRS / 8
+
                     End With
                 End If
             End Using
