@@ -1,4 +1,5 @@
 ﻿Imports System.IO
+Imports System.Windows.Forms.AxHost
 Imports FirebirdSql.Data.FirebirdClient
 
 Module SelectFromDatabase
@@ -881,15 +882,18 @@ Module SelectFromDatabase
             Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_HOLIDAY")
             If ds.Tables(0).Rows.Count > 0 Then
                 If emp_status = "INACTIVE" Then
-                    If CDate(dateEnded).ToShortDateString < startingDate.ToShortDateString Then
+                    Dim endedd As Date = CDate(dateEnded).ToShortDateString
+                    Dim holidayy As Date = startingDate.ToShortDateString
+                    If endedd < holidayy Then
                         Console.WriteLine("INACTIVE - HOLIDAY NOT INCLUDED")
                     Else
                         count += 1
                     End If
                 Else
                     If dateStarted <> Nothing Then
-                        Dim dateStart As Date = CDate(dateStarted).ToShortDateString
-                        If dateStart > startingDate.ToShortDateString Then
+                        Dim startt As Date = CDate(dateStarted).ToShortDateString
+                        Dim holidayy As Date = startingDate.ToShortDateString
+                        If startt > holidayy Then
                             Console.WriteLine("ACTIVE - BUT HOLIDAY NOT INCLUDED (BASED ON DATEHIRED)")
                         Else
                             count += 1

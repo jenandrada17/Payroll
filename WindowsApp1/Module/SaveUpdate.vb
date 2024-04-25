@@ -1521,12 +1521,16 @@ Module SaveUpdate
         End Using
     End Sub
 
-    Friend Sub SavePI_Additional_Days(NO_OF_DAYS As String, PAYDATE As String)
+    Friend Sub SavePI_Additional_Days(NO_OF_DAYS As String, PAYDATE As String, PLACE As String)
         Dim mysql As String = $"Select * From PAYROLL_PI_DAYS WHERE PAYDATE ='{PAYDATE}'"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PI_DAYS")
             If ds.Tables(0).Rows.Count > 0 Then
                 With ds.Tables(0).Rows(0)
-                    .Item("NO_OF_DAYS") = NO_OF_DAYS
+                    If PLACE = "HEAD OFFICE" Then
+                        .Item("HO_NO_OF_DAYS") = NO_OF_DAYS
+                    Else
+                        .Item("BRANCH_NO_OF_DAYS") = NO_OF_DAYS
+                    End If
                 End With
                 SaveEntry(ds, False)
 

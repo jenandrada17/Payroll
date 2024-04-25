@@ -62,7 +62,10 @@ Public Class frmAttendance
         PopulateBiometricSHEET(Branch_LV, Paydate, True)
         PopulateBiometricSHEET(Biometric_LV, Paydate)
 
-        If IsLastDay(Paydate.ToString("d")) Then PI_Panel.Visible = True
+        If IsLastDay(Paydate.ToString("d")) Then
+            PI_Panel.Visible = True
+            B_PI_Panel.Visible = True
+        End If
 
     End Sub
 
@@ -1489,6 +1492,32 @@ Public Class frmAttendance
         PopulateBiometricSHEET(Branch_LV, Paydate, True)
     End Sub
 
+    Private Sub B_AddPIDays_btn_Click(sender As Object, e As EventArgs) Handles B_AddPIDays_btn.Click
+        If B_P_Add_Panel.Visible = True Then
+            B_P_Add_Panel.Visible = False
+            B_PI_Days.Value = 0.0
+        Else
+            B_P_Add_Panel.Visible = True
+            B_PI_Days.Value = B_PIDays_lbl.Text
+        End If
+    End Sub
+
+    Private Sub B_PIDaysCheck_btn_Click(sender As Object, e As EventArgs) Handles B_PIDaysCheck_btn.Click
+        Dim result As DialogResult = MsgBox("Additional days will be save for PI calculation, proceed anyway?", MsgBoxStyle.YesNo)
+        If result = DialogResult.Yes Then
+            B_PIDays_lbl.Text = B_PI_Days.Value
+            Dim paydatee As String = Paydate.ToShortDateString
+            SavePI_Additional_Days(B_PI_Days.Value, paydatee, "BRANCHES")
+        End If
+
+        B_P_Add_Panel.Visible = False
+    End Sub
+
+    Private Sub B_PIDaysX_btn_Click(sender As Object, e As EventArgs) Handles B_PIDaysX_btn.Click
+        B_P_Add_Panel.Visible = False
+        B_PI_Days.Value = 0.0
+    End Sub
+
     Private Sub Calculate_BTN_Click(sender As Object, e As EventArgs) Handles Calculate_BTN.Click
         If Name_TXT.Text <> Nothing Then
             TotalDays_LBL.Text = 0
@@ -1785,7 +1814,7 @@ Public Class frmAttendance
         If result = DialogResult.Yes Then
             PIDays_lbl.Text = PI_Days.Value
             Dim paydatee As String = Paydate.ToShortDateString
-            SavePI_Additional_Days(PI_Days.Value, paydatee)
+            SavePI_Additional_Days(PI_Days.Value, paydatee, "HEAD OFFICE")
         End If
 
         P_Add_Panel.Visible = False
