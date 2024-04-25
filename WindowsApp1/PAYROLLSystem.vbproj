@@ -190,6 +190,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>dtr_all.xsd</DependentUpon>
     </Compile>
+    <Compile Include="Dataset\dtr_all.vb">
+      <DependentUpon>dtr_all.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Dataset\Forms.Designer.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

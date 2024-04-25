@@ -109,8 +109,8 @@ Module SelectFromDatabase
         Return False
     End Function
 
-    Public Function ThisIsNotNull(column As String, table As String)
-        Dim mysql As String = $"Select {column} FROM {table}"
+    Public Function ThisNotIsNull(column As String, table As String)
+        Dim mysql As String = $"Select {column} FROM {table} AND {column} IS NOT NULL AND {column} <> ''"
         Dim ds As DataSet = LoadSQL(mysql)
         If ds.Tables(0).Rows.Count > 0 Then
             Return True

@@ -763,7 +763,7 @@ Public Class frmAttendance
         '========================================================================
 
         Try
-            Dim all_in As New dtr_all.overAllDataTable
+            'Dim all_in As New dtr_all.overAllDataTable
 
             Dim dt_DTR As New DataTable()
             With dt_DTR

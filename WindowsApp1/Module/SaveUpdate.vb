@@ -1005,14 +1005,14 @@ Module SaveUpdate
                                 Dim first_Basic As Decimal = GetFirst_Basic(bioNo, paydate_)
                                 Dim monthly_Basic As Decimal = TotalBasic + first_Basic
 
-                                If ThisIsNotNull("SSSNO", $"TBL_EMPLOYEE where BIOMETRICID = '{bioNo}' and SSSNO is not null") Then 'IF HAS SSSNO DETAILS 
+                                If ThisNotIsNull("SSSNO", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo} ") Then 'IF HAS SSSNO DETAILS 
                                     SSSComp = Get_SSS(monthly_Basic).EE
                                     SSS_ER = Get_SSS(monthly_Basic).ER
                                     SSS_EC = Get_SSS(monthly_Basic).EC
                                 End If
 
-                                If ThisIsNotNull("PAGIBIG", $"TBL_EMPLOYEE where BIOMETRICID = '{bioNo}' and PAGIBIG is not null") Then PagibigComp = Get_Pagibig(monthly_Basic)
-                                If ThisIsNotNull("PHILHEALTHNO", $"TBL_EMPLOYEE where BIOMETRICID = '{bioNo}' and PHILHEALTHNO is not null") Then PhilhealthComp = Get_PhilHealth(monthly_Basic)
+                                If ThisNotIsNull("PAGIBIG", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo}") Then PagibigComp = Get_Pagibig(monthly_Basic)
+                                If ThisNotIsNull("PHILHEALTHNO", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo}") Then PhilhealthComp = Get_PhilHealth(monthly_Basic)
                             End If
                         End If
 
@@ -1222,10 +1222,8 @@ Module SaveUpdate
 
 
                                 '=================  LATE ADJUSTMENT IF NOT EXEMPTED ==================== 
-                                If Late_Adjustment > 1 And Not ThisHasRow($"LATE_EXEMPTED WHERE BIONO = {bioNo}") Then
-                                    'Dim late_rate As Decimal = (rate / 8) / 60
-                                    'Dim total_adjustment As Decimal = ((Late - Late_Approved) * (Late_Adjustment - 1)) * late_rate
-
+                                Dim LateAdjust As Boolean = IIf(GetData("VALUES", $"MAINTENANCE WHERE KEYS='LateAdjustment'") = "ON", True, False)
+                                If LateAdjust = True And Late_Adjustment > 1 And Not ThisHasRow($"LATE_EXEMPTED WHERE BIONO = {bioNo}") Then
                                     Dim t1 As Decimal = (Old_Rate / 8) / 60
                                     Dim t2 As Decimal = (rate / 8) / 60
                                     Dim lateMinusApprove As Decimal = Late - Late_Approved
@@ -1265,7 +1263,8 @@ Module SaveUpdate
 
                         '======================================= LATE ADJUSTMENT IF NOT EXEMPTED ====================================== 
                         If Not ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
-                            If Late_Adjustment > 1 And Not ThisHasRow($"LATE_EXEMPTED WHERE BIONO = {bioNo}") Then
+                            Dim LateAdjust As Boolean = IIf(GetData("VALUESS", $"MAINTENANCE WHERE KEYSS = 'LateAdjustment'") = "ON", True, False)
+                            If LateAdjust = True And Late_Adjustment > 1 And Not ThisHasRow($"LATE_EXEMPTED WHERE BIONO = {bioNo}") Then
 
                                 Dim late_rate As Decimal = (rate / 8) / 60
                                 Dim total_adjustment As Decimal = ((Late - Late_Approved) * (Late_Adjustment - 1)) * late_rate
