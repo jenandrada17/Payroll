@@ -44,7 +44,8 @@ Public Class frmAttendance
 
         LoadDateTime()
 
-        PIDays_lbl.Text = GetData_Decimal("NO_OF_DAYS", $"PAYROLL_PI_DAYS WHERE PAYDATE='{Paydate.ToString("d")}'")
+        PIDays_lbl.Text = GetData_Decimal("HO_NO_OF_DAYS", $"PAYROLL_PI_DAYS WHERE PAYDATE='{Paydate.ToString("d")}'")
+        B_PIDays_lbl.Text = GetData_Decimal("BRANCH_NO_OF_DAYS", $"PAYROLL_PI_DAYS WHERE PAYDATE='{Paydate.ToString("d")}'")
 
         AM_In_DataGrid.Items.Insert(0, "")
         AM_Out_DataGrid.Items.Insert(0, "")
@@ -66,7 +67,6 @@ Public Class frmAttendance
             PI_Panel.Visible = True
             B_PI_Panel.Visible = True
         End If
-
     End Sub
 
     Private Sub Close_LBL_Click(sender As Object, e As EventArgs) Handles Close_LBL.Click
@@ -1456,6 +1456,8 @@ Public Class frmAttendance
 
                 If totalDays <> 0 Then
                     RunCommand($"DELETE FROM PAYROLL_ATTENDANCE WHERE PAYDATE = '{payroll}' AND BRANCH_MANUAL = TRUE AND BIOMETRICID = {bioNo};")
+                    RunCommand($"DELETE FROM PAYROLL_PAYOUT WHERE PAYDATE = '{payroll}' AND BIOMETRIC_ID = {bioNo};")
+                    RunCommand($"DELETE FROM RECORDED_ALLOW_DEDUC WHERE PAYDATE = '{payroll}' AND BIO_NO = {bioNo};")
 
                     SaveAttendanceEE(bioNo, payroll, totalDays, overtime, late, undertime,
                                  regHoliday, TotalSHoliday_LBL.Text, specHoliday_hrs, sil, Nothing, Nothing, Nothing, nightRate, True,
@@ -2430,7 +2432,8 @@ Public Class frmAttendance
         Dim datee As DateTime = paydate_
         LoadDateTime(datee)
 
-        PIDays_lbl.Text = GetData_Decimal("NO_OF_DAYS", $"PAYROLL_PI_DAYS WHERE PAYDATE='{paydate_}'")
+        PIDays_lbl.Text = GetData_Decimal("HO_NO_OF_DAYS", $"PAYROLL_PI_DAYS WHERE PAYDATE='{paydate_}'")
+        B_PIDays_lbl.Text = GetData_Decimal("BRANCH_NO_OF_DAYS", $"PAYROLL_PI_DAYS WHERE PAYDATE='{paydate_}'")
 
         '==========================  CHECK PAYDATE IF VALID FOR EDITING =========================   
         If Today.ToString("d") > CDate(paydate_) Then

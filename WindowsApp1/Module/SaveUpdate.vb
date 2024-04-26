@@ -1053,9 +1053,15 @@ Module SaveUpdate
 
                                         If .item("CATEGORY") = "PERFORMANCE INCENTIVES" Then
                                             If fix_monthly_rate = False And .item("FIX") = "NO" Then
-                                                Dim PI_totalDays As Double = GetFirst_NoOfDays(bioNo, paydate_) + NoOfDays + RegularHol + SIL + GetData_Decimal("NO_OF_DAYS", $"PAYROLL_PI_DAYS WHERE PAYDATE='{paydate_}'")
-                                                Dim absent As Double = 0
 
+                                                Dim PI_totalDays As Double = 0
+                                                If branch_manual Then
+                                                    PI_totalDays = GetFirst_NoOfDays(bioNo, paydate_) + NoOfDays + SIL + GetData_Decimal("BRANCH_NO_OF_DAYS", $"PAYROLL_PI_DAYS WHERE PAYDATE='{paydate_}'")
+                                                Else
+                                                    PI_totalDays = GetFirst_NoOfDays(bioNo, paydate_) + NoOfDays + RegularHol + SIL + GetData_Decimal("HO_NO_OF_DAYS", $"PAYROLL_PI_DAYS WHERE PAYDATE='{paydate_}'")
+                                                End If
+
+                                                Dim absent As Double = 0
                                                 If PI_totalDays < 26 Then
                                                     absent = 26 - PI_totalDays
                                                     deduc_to_PI = (.Item("AMOUNT") / 26) * absent
@@ -1525,14 +1531,16 @@ Module SaveUpdate
         Dim mysql As String = $"Select * From PAYROLL_PI_DAYS WHERE PAYDATE ='{PAYDATE}'"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PI_DAYS")
             If ds.Tables(0).Rows.Count > 0 Then
-                With ds.Tables(0).Rows(0)
-                    If PLACE = "HEAD OFFICE" Then
-                        .Item("HO_NO_OF_DAYS") = NO_OF_DAYS
-                    Else
-                        .Item("BRANCH_NO_OF_DAYS") = NO_OF_DAYS
-                    End If
-                End With
-                SaveEntry(ds, False)
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+                        If PLACE = "HEAD OFFICE" Then
+                            .Item("HO_NO_OF_DAYS") = NO_OF_DAYS
+                        Else
+                            .Item("BRANCH_NO_OF_DAYS") = NO_OF_DAYS
+                        End If
+                    End With
+                    SaveEntry(ds, False)
+                Next
 
                 MsgBox("Successfully Updated!", MsgBoxStyle.Information)
                 SaveLogs($"UPDATED PI ADDITIONAL DAY/S ({NO_OF_DAYS}) PAYROLL DATE ({PAYDATE})", frmMainForm.UserName_LBL.Text)
@@ -1544,7 +1552,11 @@ Module SaveUpdate
                     With dsNewRow
 
                         .Item("PAYDATE") = PAYDATE
-                        .Item("NO_OF_DAYS") = NO_OF_DAYS
+                        If PLACE = "HEAD OFFICE" Then
+                            .Item("HO_NO_OF_DAYS") = NO_OF_DAYS
+                        Else
+                            .Item("BRANCH_NO_OF_DAYS") = NO_OF_DAYS
+                        End If
 
                     End With
                     dss.Tables(0).Rows.Add(dsNewRow)

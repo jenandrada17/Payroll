@@ -630,6 +630,7 @@ Module SelectFromDatabase
     End Function
 
     Public Function GetFirst_NoOfDays(bio_no As String, paydate As String) As Double
+        Dim branch_manual As Boolean = CheckData("BRANCH_MANUAL", $"PAYROLL_ATTENDANCE WHERE PAYDATE = '{paydate}' AND BIOMETRICID = '{bio_no}'")
         Dim first_NoOfDays As Double
 
         Dim paydate_ As DateTime = Convert.ToDateTime(paydate)
@@ -644,7 +645,11 @@ Module SelectFromDatabase
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
                     With dr
-                        first_NoOfDays = .Item("PRESENT_DAYS") + .Item("REGHOLIDAY") + .Item("SPECHOLIDAY") + .Item("SIL")
+                        If branch_manual Then
+                            first_NoOfDays = .Item("PRESENT_DAYS") + .Item("SIL")
+                        Else
+                            first_NoOfDays = .Item("PRESENT_DAYS") + .Item("REGHOLIDAY") + .Item("SPECHOLIDAY") + .Item("SIL")
+                        End If
                     End With
                 Next
             Else
