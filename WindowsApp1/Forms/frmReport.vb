@@ -115,6 +115,122 @@ Public Class frmReport
 
     End Sub
 
+    Friend Sub LoadSBU_Company(company As String)
+        Rpt_SBU.LocalReport.DataSources.Clear()
+
+        Try
+            Dim dt As New DataTable()
+            With dt
+                .Columns.Add("NAME")
+                .Columns.Add("P_AMOUNT")
+                .Columns.Add("A_AMOUNT")
+                .Columns.Add("PRINCIPAL")
+                .Columns.Add("CREDIT")
+                .Columns.Add("BALANCE")
+                .Columns.Add("DATE")
+                .Columns.Add("RECORDS_")
+                .Columns.Add("AMOUNT")
+            End With
+
+
+            Dim credit As Decimal = 0
+            Dim totalCredit As Decimal = 0
+            Dim principal As Decimal = 0
+            Dim balance As Decimal = 0
+
+            Dim mysql As String
+            Dim companyName As String = Nothing
+
+            'mysql = $"select  COALESCE(sum(C.AMOUNT), 0) AS TOTALS, CREDIT, PRINCIPAL, A.DATEHIRED, B.AMOUNT as amnt, DATE_ADDED, BALANCE,
+            '                 LASTNAME || ', ' || FIRSTNAME || ' ' || 
+            '                     CASE 
+            '                         WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
+            '                         ELSE ''
+            '                     END AS FULLNAME
+            '                from TBL_EMPLOYEE A 
+            '                inner join PAYROLL_SBU B on B.BIO_NO = A.BIOMETRICID 
+            '                left join RECORDED_ALLOW_DEDUC C on C.BIO_NO = A.BIOMETRICID and C.CATEGORY = 'SBU' and PAYDATE <> '12/15/2021' 
+            '                WHERE  COMPANY = '{company}' GROUP BY C.AMOUNT, FULLNAME, CREDIT, PRINCIPAL, A.DATEHIRED, B.AMOUNT, DATE_ADDED, BALANCE   ORDER BY FULLNAME ASC "
+
+            mysql = $"select COALESCE(sum(C.AMOUNT), 0) AS TOTALS, 
+                             COALESCE(sum(B.CREDIT), 0) AS CREDITS, 
+                             COALESCE(sum(B.PRINCIPAL), 0) AS PRINCIPALS,
+                             COALESCE(sum(B.AMOUNT), 0) AS AMNT, COMPANY
+                            from TBL_EMPLOYEE A 
+                            inner join PAYROLL_SBU B on B.BIO_NO = A.BIOMETRICID 
+                            left join RECORDED_ALLOW_DEDUC C on C.BIO_NO = A.BIOMETRICID and C.CATEGORY = 'SBU' and PAYDATE <> '12/15/2021' 
+                            WHERE  COMPANY = '{company}' GROUP BY C.AMOUNT, B.CREDIT, B.PRINCIPAL, B.AMOUNT, A.DATEHIRED, DATE_ADDED, COMPANY "
+
+            Using ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
+                If ds.Tables(0).Rows.Count > 0 Then
+                    With ds.Tables(0).Rows(0)
+                        credit = IIf(IsDBNull(.Item("CREDITS")), 0, .Item("CREDITS"))
+                        totalCredit = credit + CDbl(.Item("TOTALS"))
+                        principal = IIf(IsDBNull(.Item("PRINCIPALS")), 0, .Item("PRINCIPALS"))
+                        balance = principal - totalCredit
+
+                        'Dim datee As Date = IIf(IsDBNull(.Item("DATE_ADDED")), .Item("DATEHIRED"), .Item("DATE_ADDED"))
+                        dt.Rows.Add(company, principal, principal, FormatNumber(principal), FormatNumber(totalCredit), FormatNumber(balance), "Remantic Principal", "NO", .Item("AMNT"))
+                        dt.Rows.Add(company, credit, credit, FormatNumber(principal), FormatNumber(totalCredit), FormatNumber(balance), "Remantic Credited", "YES", .Item("AMNT"))
+
+                    End With
+                End If
+            End Using
+
+            principal = GetTotal("AMOUNT", $"PAYROLL_SBU A LEFT JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIO_NO WHERE COMPANY = 'DALTON' AND A.CATEGORY = 'SBU'")
+            credit = GetTotal("AMOUNT", $"PAYROLL_SBU A LEFT JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIO_NO WHERE COMPANY = 'DALTON' AND A.CATEGORY = 'SBU'")
+            dt.Rows.Add(company, principal, principal, FormatNumber(principal), FormatNumber(totalCredit), FormatNumber(balance), "Remantic Principal", "NO", .Item("AMNT"))
+            dt.Rows.Add(company, credit, credit, FormatNumber(principal), FormatNumber(totalCredit), FormatNumber(balance), "Remantic Credited", "YES", .Item("AMNT"))
+
+            'Dim mysqll As String = $"Select  PAYDATE, B.DATEHIRED, AMOUNT  from RECORDED_ALLOW_DEDUC A  
+            '                left join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIO_NO 
+            '                WHERE  COMPANY = '{company}' and A.CATEGORY = 'SBU' and PAYDATE <> '12/15/2021' ORDER BY PAYDATE ASC "
+
+            Dim mysqll As String = $"SELECT
+                                    EXTRACT(MONTH FROM A.PAYDATE) AS MONTHH,
+                                    EXTRACT(YEAR FROM A.PAYDATE) AS YEARR,
+                                    SUM(AMOUNT) AS TOTAL_AMOUNT
+                                FROM
+                                    RECORDED_ALLOW_DEDUC A
+                                LEFT JOIN
+                                    TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIO_NO
+                                WHERE
+                                    COMPANY = '{company}' AND
+                                    A.CATEGORY = 'SBU' AND
+                                    A.PAYDATE <> '12/15/2021'
+                                GROUP BY
+                                    EXTRACT(MONTH FROM A.PAYDATE),
+                                    EXTRACT(YEAR FROM A.PAYDATE)
+                                ORDER BY
+                                    EXTRACT(YEAR FROM A.PAYDATE),
+                                    EXTRACT(MONTH FROM A.PAYDATE) ASC; "
+
+            Using dss As DataSet = LoadSQL(mysqll, "RECORDED_ALLOW_DEDUC")
+                If dss.Tables(0).Rows.Count > 0 Then
+                    For Each dr In dss.Tables(0).Rows
+                        With dr
+
+                            Dim amount As Double = .Item("TOTAL_AMOUNT")
+                            Dim monthName As String = New DateTime(.Item("YEARR"), .Item("MONTHH"), 1).ToString("Y")
+
+                            dt.Rows.Add(company, amount, amount, FormatNumber(principal), FormatNumber(totalCredit), FormatNumber(balance), monthName, "YES", amount)
+
+                        End With
+                    Next
+                End If
+            End Using
+
+            Dim DATASET As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt)
+            Rpt_SBU.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_SBU_Company.rdlc"
+            Rpt_SBU.LocalReport.DataSources.Add(DATASET)
+            Rpt_SBU.RefreshReport()
+
+        Catch ex As Exception
+            MsgBox(ex.ToString)
+        End Try
+
+    End Sub
+
     Friend Sub LoadDeduction(deduct_id As Integer, category As String, fullname As String)
         Rpt_Deduction.LocalReport.DataSources.Clear()
 
@@ -2529,12 +2645,6 @@ Public Class frmReport
     Private Sub Range_Combo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Range_Combo.SelectedIndexChanged
         rpt_13Month.Clear()
 
-        'If Range_Combo.SelectedIndex = 0 Then
-        '    Lists_13Month(Month_LV, "", $"5/15/{Today.Year}")
-        'Else
-        '    Lists_13Month(Month_LV, "", $"12/15/{Today.Year}")
-        'End If
-
         Lists_13Month(Month_LV, "", Range_Combo.Text)
 
     End Sub
@@ -2612,4 +2722,7 @@ Public Class frmReport
         LoadEmployeeRate()
     End Sub
 
+    Private Sub CompanySBU_CB_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CompanySBU_CB.SelectedIndexChanged
+        LoadSBU_Company(CompanySBU_CB.Text)
+    End Sub
 End Class

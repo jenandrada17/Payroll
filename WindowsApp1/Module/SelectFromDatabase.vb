@@ -630,7 +630,7 @@ Module SelectFromDatabase
     End Function
 
     Public Function GetFirst_NoOfDays(bio_no As String, paydate As String) As Double
-        Dim branch_manual As Boolean = CheckData("BRANCH_MANUAL", $"PAYROLL_ATTENDANCE WHERE PAYDATE = '{paydate}' AND BIOMETRICID = '{bio_no}'")
+        Dim branch_manual As Boolean = GetDataBoolean("BRANCH_MANUAL", $"PAYROLL_ATTENDANCE WHERE PAYDATE = '{paydate}' AND BIOMETRICID = '{bio_no}'")
         Dim first_NoOfDays As Double
 
         Dim paydate_ As DateTime = Convert.ToDateTime(paydate)
@@ -2819,6 +2819,19 @@ Module SelectFromDatabase
             If ds.Tables(0).Rows.Count > 0 Then
                 With ds.Tables(0).Rows(0)
                     dataa = IIf(IsDBNull(.Item(column)), "", .Item(column))
+                End With
+            End If
+        End Using
+        Return dataa
+    End Function
+
+    Friend Function GetDataBoolean(column As String, str As String) As Boolean
+        Dim dataa As Boolean = False
+        Dim mysql As String = $"Select {column} from {str}"
+        Using ds As DataSet = LoadSQL(mysql)
+            If ds.Tables(0).Rows.Count > 0 Then
+                With ds.Tables(0).Rows(0)
+                    dataa = IIf(IsDBNull(.Item(column)), False, .Item(column))
                 End With
             End If
         End Using
