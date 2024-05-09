@@ -1,6 +1,7 @@
 ﻿Imports System.Data.SqlClient
 Imports System.Globalization
 Imports System.Security.Policy
+Imports FirebirdSql.Data
 
 Public Class frmReport
 
@@ -79,7 +80,10 @@ Public Class frmReport
 
                         Dim datee As Date = IIf(IsDBNull(.Item("DATE_ADDED")), .Item("DATEHIRED"), .Item("DATE_ADDED"))
                         dt.Rows.Add(fullname, principal, principal, FormatNumber(principal), FormatNumber(totalCredit), FormatNumber(balance), datee.ToString("MM/dd/yyyy"), "NO", .Item("amnt"))
-                        dt.Rows.Add(fullname, credit, credit, FormatNumber(principal), FormatNumber(totalCredit), FormatNumber(balance), "12/15/2021", "YES", .Item("amnt"))
+
+                        If credit <> 0 Then     'IF NOT ZERO PARA DILI MASOBRA ANG COUNT NG DATE
+                            dt.Rows.Add(fullname, credit, credit, FormatNumber(principal), FormatNumber(totalCredit), FormatNumber(balance), "12/15/2021", "YES", .Item("amnt"))
+                        End If
 
                     End With
                 End If
@@ -132,59 +136,26 @@ Public Class frmReport
                 .Columns.Add("AMOUNT")
             End With
 
-
-            Dim credit As Decimal = 0
+            Dim remanticCredit As Decimal = 0
             Dim totalCredit As Decimal = 0
             Dim principal As Decimal = 0
             Dim balance As Decimal = 0
-
-            Dim mysql As String
+            Dim newPayrollCredit As Decimal = 0
+            Dim totalAmount As Decimal = 0
             Dim companyName As String = Nothing
 
-            'mysql = $"select  COALESCE(sum(C.AMOUNT), 0) AS TOTALS, CREDIT, PRINCIPAL, A.DATEHIRED, B.AMOUNT as amnt, DATE_ADDED, BALANCE,
-            '                 LASTNAME || ', ' || FIRSTNAME || ' ' || 
-            '                     CASE 
-            '                         WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
-            '                         ELSE ''
-            '                     END AS FULLNAME
-            '                from TBL_EMPLOYEE A 
-            '                inner join PAYROLL_SBU B on B.BIO_NO = A.BIOMETRICID 
-            '                left join RECORDED_ALLOW_DEDUC C on C.BIO_NO = A.BIOMETRICID and C.CATEGORY = 'SBU' and PAYDATE <> '12/15/2021' 
-            '                WHERE  COMPANY = '{company}' GROUP BY C.AMOUNT, FULLNAME, CREDIT, PRINCIPAL, A.DATEHIRED, B.AMOUNT, DATE_ADDED, BALANCE   ORDER BY FULLNAME ASC "
+            principal = GetTotal("PRINCIPAL", $"PAYROLL_SBU A LEFT JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIO_NO WHERE COMPANY = '{company}' AND A.CATEGORY = 'SBU'")
+            remanticCredit = GetTotal("CREDIT", $"PAYROLL_SBU A LEFT JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIO_NO WHERE COMPANY = '{company}' AND A.CATEGORY = 'SBU'")
+            totalAmount = GetTotal("AMOUNT", $"PAYROLL_SBU A LEFT JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIO_NO WHERE COMPANY = '{company}' AND A.CATEGORY = 'SBU'")
+            newPayrollCredit = GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC A LEFT JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIO_NO WHERE COMPANY = '{company}' AND A.CATEGORY = 'SBU' AND PAYDATE <> '12/15/2021' ")
+            totalCredit = remanticCredit + newPayrollCredit
+            balance = principal - totalCredit
 
-            mysql = $"select COALESCE(sum(C.AMOUNT), 0) AS TOTALS, 
-                             COALESCE(sum(B.CREDIT), 0) AS CREDITS, 
-                             COALESCE(sum(B.PRINCIPAL), 0) AS PRINCIPALS,
-                             COALESCE(sum(B.AMOUNT), 0) AS AMNT, COMPANY
-                            from TBL_EMPLOYEE A 
-                            inner join PAYROLL_SBU B on B.BIO_NO = A.BIOMETRICID 
-                            left join RECORDED_ALLOW_DEDUC C on C.BIO_NO = A.BIOMETRICID and C.CATEGORY = 'SBU' and PAYDATE <> '12/15/2021' 
-                            WHERE  COMPANY = '{company}' GROUP BY C.AMOUNT, B.CREDIT, B.PRINCIPAL, B.AMOUNT, A.DATEHIRED, DATE_ADDED, COMPANY "
+            dt.Rows.Add(company, principal, principal, FormatNumber(principal), FormatNumber(totalCredit), FormatNumber(balance), "Principal", "NO", totalAmount)
 
-            Using ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
-                If ds.Tables(0).Rows.Count > 0 Then
-                    With ds.Tables(0).Rows(0)
-                        credit = IIf(IsDBNull(.Item("CREDITS")), 0, .Item("CREDITS"))
-                        totalCredit = credit + CDbl(.Item("TOTALS"))
-                        principal = IIf(IsDBNull(.Item("PRINCIPALS")), 0, .Item("PRINCIPALS"))
-                        balance = principal - totalCredit
-
-                        'Dim datee As Date = IIf(IsDBNull(.Item("DATE_ADDED")), .Item("DATEHIRED"), .Item("DATE_ADDED"))
-                        dt.Rows.Add(company, principal, principal, FormatNumber(principal), FormatNumber(totalCredit), FormatNumber(balance), "Remantic Principal", "NO", .Item("AMNT"))
-                        dt.Rows.Add(company, credit, credit, FormatNumber(principal), FormatNumber(totalCredit), FormatNumber(balance), "Remantic Credited", "YES", .Item("AMNT"))
-
-                    End With
-                End If
-            End Using
-
-            principal = GetTotal("AMOUNT", $"PAYROLL_SBU A LEFT JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIO_NO WHERE COMPANY = 'DALTON' AND A.CATEGORY = 'SBU'")
-            credit = GetTotal("AMOUNT", $"PAYROLL_SBU A LEFT JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIO_NO WHERE COMPANY = 'DALTON' AND A.CATEGORY = 'SBU'")
-            dt.Rows.Add(company, principal, principal, FormatNumber(principal), FormatNumber(totalCredit), FormatNumber(balance), "Remantic Principal", "NO", .Item("AMNT"))
-            dt.Rows.Add(company, credit, credit, FormatNumber(principal), FormatNumber(totalCredit), FormatNumber(balance), "Remantic Credited", "YES", .Item("AMNT"))
-
-            'Dim mysqll As String = $"Select  PAYDATE, B.DATEHIRED, AMOUNT  from RECORDED_ALLOW_DEDUC A  
-            '                left join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIO_NO 
-            '                WHERE  COMPANY = '{company}' and A.CATEGORY = 'SBU' and PAYDATE <> '12/15/2021' ORDER BY PAYDATE ASC "
+            If remanticCredit <> 0 Then     'IF NOT ZERO PARA DILI MASOBRA ANG COUNT NG DATE
+                dt.Rows.Add(company, remanticCredit, remanticCredit, FormatNumber(principal), FormatNumber(totalCredit), FormatNumber(balance), "From Remantic", "YES", totalAmount)
+            End If
 
             Dim mysqll As String = $"SELECT
                                     EXTRACT(MONTH FROM A.PAYDATE) AS MONTHH,
@@ -207,6 +178,7 @@ Public Class frmReport
 
             Using dss As DataSet = LoadSQL(mysqll, "RECORDED_ALLOW_DEDUC")
                 If dss.Tables(0).Rows.Count > 0 Then
+                    progressBarStart(dss.Tables(0).Rows.Count)
                     For Each dr In dss.Tables(0).Rows
                         With dr
 
@@ -216,7 +188,9 @@ Public Class frmReport
                             dt.Rows.Add(company, amount, amount, FormatNumber(principal), FormatNumber(totalCredit), FormatNumber(balance), monthName, "YES", amount)
 
                         End With
+                        frmMainForm.AppProgressBar.Value += 1
                     Next
+                    progressBarEnd()
                 End If
             End Using
 
@@ -229,6 +203,152 @@ Public Class frmReport
             MsgBox(ex.ToString)
         End Try
 
+    End Sub
+
+    Friend Sub LoadDeduction_Company(conditional As String)
+        Rpt_Deduction.LocalReport.DataSources.Clear()
+
+        Try
+
+            Dim dt As New DataTable()
+            With dt
+                .Columns.Add("COMPANY")
+                .Columns.Add("PHOTO_CATEGORY")
+                .Columns.Add("AMOUNT")
+                .Columns.Add("PRINCIPAL")
+                .Columns.Add("CREDIT")
+                .Columns.Add("BALANCE")
+                .Columns.Add("DATE")
+                .Columns.Add("AMOUNT_CREDIT")
+                .Columns.Add("RECORDS_")
+            End With
+
+            Dim amort As Decimal = 0
+            Dim remanticCredit As Decimal = 0
+            Dim totalCredit As Decimal = 0
+            Dim newPayrollCredit As Decimal = 0
+            Dim principal As Decimal = 0
+            Dim balance As Decimal = 0
+            Dim partialPayment As Decimal = 0
+            Dim status As String = ""
+            Dim company As String = ""
+            Dim photo_category As String = ""
+
+            'amort = GetTotal("AMORT", $"PAYROLL_DEDUCTION A LEFT JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIO_NO WHERE {conditional}")
+            'remanticCredit = GetTotal("CREDIT", $"PAYROLL_DEDUCTION A LEFT JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIO_NO WHERE {conditional}")
+            'principal = GetTotal("PRINCIPAL", $"PAYROLL_DEDUCTION A LEFT JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIO_NO WHERE {conditional}")
+            'partialPayment = GetTotal("AMOUNT", $"PARTIAL_PAYMENT A LEFT JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIO_NO WHERE {conditional}")
+            'newPayrollCredit = GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC  A LEFT JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIO_NO WHERE {conditional} AND R_DEDUC_ID IS NOT NULL and PAYDATE <> '12/15/2021'")
+            'totalCredit = remanticCredit + partialPayment + newPayrollCredit
+            'balance = principal - totalCredit
+
+            'dt.Rows.Add(company, FormatNumber(amort), FormatNumber(principal), FormatNumber(totalCredit), FormatNumber(balance), "Principal", principal.ToString("N"), "NO")
+            'dt.Rows.Add(company, FormatNumber(amort), FormatNumber(principal), FormatNumber(totalCredit), FormatNumber(balance), "From Remantic", remanticCredit.ToString("N"), "YES")
+
+
+            'TODO - PHOTO CATEGORY GROUPINGS
+            Dim mysql As String = $"SELECT COALESCE(sum(A.AMORT), 0) AS TOTAL_AMORT, 
+                                           COALESCE(sum(A.CREDIT), 0) AS TOTAL_CREDIT, 
+                                           COALESCE(sum(A.PRINCIPAL), 0) AS TOTAL_PRINCIPAL, 
+                                           COALESCE(sum(D.AMOUNT), 0) AS TOTAL_PARTIAL, 
+                                           COALESCE(sum(C.AMOUNT), 0) AS TOTAL_NEW_CREDITED, COMPANY, PHOTO_CATEGORY
+                                    from PAYROLL_DEDUCTION A 
+                                    inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIO_NO  
+                                    left join RECORDED_ALLOW_DEDUC C on C.BIO_NO = A.BIO_NO 
+                                    left join PARTIAL_PAYMENT D on D.BIO_NO = A.BIO_NO 
+                                    WHERE {conditional} AND R_DEDUC_ID IS NOT NULL AND PAYDATE <> '12/15/2021' 
+                                    GROUP BY COMPANY, PHOTO_CATEGORY"
+
+            TestingScript_String(mysql)
+            Using ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
+                If ds.Tables(0).Rows.Count > 0 Then
+                    For Each dr In ds.Tables(0).Rows
+                        With dr
+                            amort = .Item("TOTAL_AMORT")
+                            remanticCredit = .Item("TOTAL_CREDIT")
+                            principal = .Item("TOTAL_PRINCIPAL")
+                            partialPayment = .Item("TOTAL_PARTIAL")
+                            newPayrollCredit = .Item("TOTAL_NEW_CREDITED")
+                            totalCredit = remanticCredit + partialPayment + newPayrollCredit
+                            balance = principal - totalCredit
+                            company = .Item("COMPANY")
+
+                            If company = "PHOTO" Then photo_category = .Item("PHOTO_CATEGORY")
+
+                            dt.Rows.Add(company, photo_category, FormatNumber(amort), FormatNumber(principal), FormatNumber(totalCredit), FormatNumber(balance), "Principal", principal.ToString("N"), "NO")
+
+                            If remanticCredit <> 0 Then     'IF NOT ZERO PARA DILI MASOBRA ANG COUNT NG DATE
+                                dt.Rows.Add(company, photo_category, FormatNumber(amort), FormatNumber(principal), FormatNumber(totalCredit), FormatNumber(balance), "From Remantic", remanticCredit.ToString("N"), "YES")
+                            End If
+                        End With
+                    Next
+                End If
+            End Using
+
+
+            Dim mysqll As String = $"SELECT
+                                    EXTRACT(MONTH FROM A.PAYDATE) AS MONTHH,
+                                    EXTRACT(YEAR FROM A.PAYDATE) AS YEARR,
+                                    SUM(AMOUNT) AS TOTAL_AMOUNT, 
+                                    COMPANY, PHOTO_CATEGORY 
+                                FROM
+                                    RECORDED_ALLOW_DEDUC A
+                                LEFT JOIN
+                                    TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIO_NO
+                                WHERE
+                                    {conditional} AND
+                                    R_DEDUC_ID IS NOT NULL AND
+                                    A.PAYDATE <> '12/15/2021'
+                                GROUP BY
+                                    EXTRACT(MONTH FROM A.PAYDATE),
+                                    EXTRACT(YEAR FROM A.PAYDATE),
+                                    COMPANY, PHOTO_CATEGORY
+                                ORDER BY
+                                    EXTRACT(YEAR FROM A.PAYDATE),
+                                    EXTRACT(MONTH FROM A.PAYDATE) ASC; "
+
+            TestingScript_String(mysqll)
+            Using dss As DataSet = LoadSQL(mysqll, "RECORDED_ALLOW_DEDUC")
+                If dss.Tables(0).Rows.Count > 0 Then
+                    progressBarStart(dss.Tables(0).Rows.Count)
+                    For Each dr In dss.Tables(0).Rows
+                        With dr
+
+                            Dim amount As Double = .Item("TOTAL_AMOUNT")
+                            Dim monthName As String = New DateTime(.Item("YEARR"), .Item("MONTHH"), 1).ToString("Y")
+                            company = .Item("COMPANY")
+
+                            If company = "PHOTO" Then photo_category = .Item("PHOTO_CATEGORY")
+
+                            dt.Rows.Add(company, photo_category, FormatNumber(amort), FormatNumber(principal), FormatNumber(totalCredit), FormatNumber(balance), monthName, amount.ToString("N"), "YES")
+
+                        End With
+                        frmMainForm.AppProgressBar.Value += 1
+                    Next
+                    progressBarEnd()
+                End If
+            End Using
+
+            '====================== PARTIAL PAYMENT =================== 
+            mysqll = $"Select  *  from PARTIAL_PAYMENT A INNER JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIO_NO WHERE {conditional} ORDER BY DATEE ASC "
+            Using dss As DataSet = LoadSQL(mysqll, "PARTIAL_PAYMENT")
+                If dss.Tables(0).Rows.Count > 0 Then
+                    For Each dr In dss.Tables(0).Rows
+                        With dr
+                            dt.Rows.Add(company, photo_category, FormatNumber(amort), FormatNumber(principal), FormatNumber(totalCredit), FormatNumber(balance), "Partial Payment", CDbl(.Item("AMOUNT")).ToString("N"), "YES")
+                        End With
+                    Next
+                End If
+            End Using
+
+            Dim DATASET As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt)
+            Rpt_Deduction.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_Deduction_Company.rdlc"
+            Rpt_Deduction.LocalReport.DataSources.Add(DATASET)
+            Rpt_Deduction.RefreshReport()
+
+        Catch ex As Exception
+            MsgBox(ex.ToString)
+        End Try
     End Sub
 
     Friend Sub LoadDeduction(deduct_id As Integer, category As String, fullname As String)
@@ -2724,5 +2844,18 @@ Public Class frmReport
 
     Private Sub CompanySBU_CB_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CompanySBU_CB.SelectedIndexChanged
         LoadSBU_Company(CompanySBU_CB.Text)
+    End Sub
+
+    Private Sub CompanyDeduct_CB_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CompanyDeduct_CB.SelectedIndexChanged
+        Dim conditional As String = $"COMPANY = '{CompanyDeduct_CB.Text}'"
+        If CompanyDeduct_CB.Text = "PTU REALTY" Then
+            conditional = "HO_CATEGORY IN ('Construction' , 'Leasing Admin Office')"
+        ElseIf CompanyDeduct_CB.Text = "PGC HEAD OFFICE" Then
+            conditional = "HO_CATEGORY = 'PGC Head Office'"
+        ElseIf CompanyDeduct_CB.Text = "ALL" Then
+            conditional = "COMPANY IS NOT NULL"
+        End If
+
+        LoadDeduction_Company(conditional)
     End Sub
 End Class

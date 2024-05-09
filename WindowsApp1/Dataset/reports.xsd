@@ -151,7 +151,7 @@
               <xs:element name="NAME" msprop:Generator_ColumnPropNameInTable="NAMEColumn" msprop:Generator_ColumnPropNameInRow="NAME" msprop:Generator_UserColumnName="NAME" msprop:Generator_ColumnVarNameInTable="columnNAME" type="xs:string" minOccurs="0" />
               <xs:element name="AMOUNT" msprop:Generator_ColumnPropNameInTable="AMOUNTColumn" msprop:Generator_ColumnPropNameInRow="AMOUNT" msprop:Generator_UserColumnName="AMOUNT" msprop:Generator_ColumnVarNameInTable="columnAMOUNT" type="xs:decimal" minOccurs="0" />
               <xs:element name="CATEGORY" msprop:Generator_ColumnPropNameInTable="CATEGORYColumn" msprop:Generator_ColumnPropNameInRow="CATEGORY" msprop:Generator_UserColumnName="CATEGORY" msprop:Generator_ColumnVarNameInTable="columnCATEGORY" type="xs:string" minOccurs="0" />
-              <xs:element name="COMPANY" msprop:Generator_ColumnPropNameInRow="COMPANY" msprop:Generator_ColumnPropNameInTable="COMPANYColumn" msprop:Generator_ColumnVarNameInTable="columnCOMPANY" msprop:Generator_UserColumnName="COMPANY" type="xs:string" minOccurs="0" />
+              <xs:element name="COMPANY" msprop:Generator_ColumnPropNameInTable="COMPANYColumn" msprop:Generator_ColumnPropNameInRow="COMPANY" msprop:Generator_UserColumnName="COMPANY" msprop:Generator_ColumnVarNameInTable="columnCOMPANY" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>
@@ -207,6 +207,21 @@
               <xs:element name="RATE" msdata:Caption="AMOUNT" msprop:Generator_ColumnPropNameInTable="RATEColumn" msprop:Generator_ColumnPropNameInRow="RATE" msprop:Generator_UserColumnName="RATE" msprop:Generator_ColumnVarNameInTable="columnRATE" type="xs:string" minOccurs="0" />
               <xs:element name="MONTHLY" msdata:Caption="BRANCH" msprop:Generator_ColumnPropNameInTable="MONTHLYColumn" msprop:Generator_ColumnPropNameInRow="MONTHLY" msprop:Generator_UserColumnName="MONTHLY" msprop:Generator_ColumnVarNameInTable="columnMONTHLY" type="xs:string" minOccurs="0" />
               <xs:element name="BRANCH" msprop:Generator_ColumnPropNameInTable="BRANCHColumn" msprop:Generator_ColumnPropNameInRow="BRANCH" msprop:Generator_UserColumnName="BRANCH" msprop:Generator_ColumnVarNameInTable="columnBRANCH" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Deduction_Company" msprop:Generator_RowEvHandlerName="Deduction_CompanyRowChangeEventHandler" msprop:Generator_RowDeletedName="Deduction_CompanyRowDeleted" msprop:Generator_RowDeletingName="Deduction_CompanyRowDeleting" msprop:Generator_RowEvArgName="Deduction_CompanyRowChangeEvent" msprop:Generator_TablePropName="Deduction_Company" msprop:Generator_RowChangedName="Deduction_CompanyRowChanged" msprop:Generator_UserTableName="Deduction_Company" msprop:Generator_RowChangingName="Deduction_CompanyRowChanging" msprop:Generator_RowClassName="Deduction_CompanyRow" msprop:Generator_TableClassName="Deduction_CompanyDataTable" msprop:Generator_TableVarName="tableDeduction_Company">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="COMPANY" msdata:Caption="NAME" msprop:Generator_ColumnPropNameInTable="COMPANYColumn" msprop:Generator_ColumnPropNameInRow="COMPANY" msprop:Generator_UserColumnName="COMPANY" msprop:Generator_ColumnVarNameInTable="columnCOMPANY" type="xs:string" minOccurs="0" />
+              <xs:element name="AMOUNT" msdata:Caption="PRINCIPAL" msprop:Generator_ColumnPropNameInTable="AMOUNTColumn" msprop:Generator_ColumnPropNameInRow="AMOUNT" msprop:Generator_UserColumnName="AMOUNT" msprop:Generator_ColumnVarNameInTable="columnAMOUNT" type="xs:string" minOccurs="0" />
+              <xs:element name="PRINCIPAL" msdata:Caption="CREDIT" msprop:Generator_ColumnPropNameInTable="PRINCIPALColumn" msprop:Generator_ColumnPropNameInRow="PRINCIPAL" msprop:Generator_UserColumnName="PRINCIPAL" msprop:Generator_ColumnVarNameInTable="columnPRINCIPAL" type="xs:string" minOccurs="0" />
+              <xs:element name="CREDIT" msdata:Caption="BALANCE" msprop:Generator_ColumnPropNameInTable="CREDITColumn" msprop:Generator_ColumnPropNameInRow="CREDIT" msprop:Generator_UserColumnName="CREDIT" msprop:Generator_ColumnVarNameInTable="columnCREDIT" type="xs:string" minOccurs="0" />
+              <xs:element name="BALANCE" msdata:Caption="DATE" msprop:Generator_ColumnPropNameInTable="BALANCEColumn" msprop:Generator_ColumnPropNameInRow="BALANCE" msprop:Generator_UserColumnName="BALANCE" msprop:Generator_ColumnVarNameInTable="columnBALANCE" type="xs:string" minOccurs="0" />
+              <xs:element name="DATE" msdata:Caption="P_AMOUNT" msprop:Generator_ColumnPropNameInTable="DATEColumn" msprop:Generator_ColumnPropNameInRow="_DATE" msprop:Generator_UserColumnName="DATE" msprop:Generator_ColumnVarNameInTable="columnDATE" type="xs:string" minOccurs="0" />
+              <xs:element name="AMOUNT_CREDIT" msprop:Generator_ColumnPropNameInTable="AMOUNT_CREDITColumn" msprop:Generator_ColumnPropNameInRow="AMOUNT_CREDIT" msprop:Generator_UserColumnName="AMOUNT_CREDIT" msprop:Generator_ColumnVarNameInTable="columnAMOUNT_CREDIT" type="xs:string" minOccurs="0" />
+              <xs:element name="RECORDS_" msprop:Generator_UserColumnName="RECORDS_" msprop:Generator_ColumnPropNameInTable="RECORDS_Column" msprop:Generator_ColumnPropNameInRow="RECORDS_" msprop:Generator_ColumnVarNameInTable="columnRECORDS_" type="xs:string" minOccurs="0" />
+              <xs:element name="PHOTO_CATEGORY" msprop:Generator_ColumnPropNameInRow="PHOTO_CATEGORY" msprop:Generator_ColumnPropNameInTable="PHOTO_CATEGORYColumn" msprop:Generator_ColumnVarNameInTable="columnPHOTO_CATEGORY" msprop:Generator_UserColumnName="PHOTO_CATEGORY" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>
