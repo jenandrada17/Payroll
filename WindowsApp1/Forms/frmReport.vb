@@ -1,4 +1,5 @@
-﻿Imports System.Data.SqlClient
+﻿Imports System.Data.Common
+Imports System.Data.SqlClient
 Imports System.Globalization
 Imports System.Security.Policy
 Imports FirebirdSql.Data
@@ -229,7 +230,7 @@ Public Class frmReport
             Dim newPayrollCredit As Decimal = 0
             Dim principal As Decimal = 0
             Dim balance As Decimal = 0
-            Dim partialPayment As Decimal = 0
+            Dim partialPayment As Decimal = GetTotal("AMOUNT", $"PARTIAL_PAYMENT A INNER JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIO_NO WHERE {conditional}")
             Dim status As String = ""
             Dim company As String = ""
             Dim photo_category As String = ""
@@ -249,14 +250,12 @@ Public Class frmReport
             'TODO - PHOTO CATEGORY GROUPINGS
             Dim mysql As String = $"SELECT COALESCE(sum(A.AMORT), 0) AS TOTAL_AMORT, 
                                            COALESCE(sum(A.CREDIT), 0) AS TOTAL_CREDIT, 
-                                           COALESCE(sum(A.PRINCIPAL), 0) AS TOTAL_PRINCIPAL, 
-                                           COALESCE(sum(D.AMOUNT), 0) AS TOTAL_PARTIAL, 
+                                           COALESCE(sum(A.PRINCIPAL), 0) AS TOTAL_PRINCIPAL,  
                                            COALESCE(sum(C.AMOUNT), 0) AS TOTAL_NEW_CREDITED, COMPANY, PHOTO_CATEGORY
                                     from PAYROLL_DEDUCTION A 
                                     inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIO_NO  
-                                    left join RECORDED_ALLOW_DEDUC C on C.BIO_NO = A.BIO_NO 
-                                    left join PARTIAL_PAYMENT D on D.BIO_NO = A.BIO_NO 
-                                    WHERE {conditional} AND R_DEDUC_ID IS NOT NULL AND PAYDATE <> '12/15/2021' 
+                                    left join RECORDED_ALLOW_DEDUC C on C.BIO_NO = A.BIO_NO AND C.R_DEDUC_ID = A.ID 
+                                    WHERE {conditional} AND PAYDATE <> '12/15/2021' 
                                     GROUP BY COMPANY, PHOTO_CATEGORY"
 
             TestingScript_String(mysql)
@@ -267,9 +266,8 @@ Public Class frmReport
                             amort = .Item("TOTAL_AMORT")
                             remanticCredit = .Item("TOTAL_CREDIT")
                             principal = .Item("TOTAL_PRINCIPAL")
-                            partialPayment = .Item("TOTAL_PARTIAL")
                             newPayrollCredit = .Item("TOTAL_NEW_CREDITED")
-                            totalCredit = remanticCredit + partialPayment + newPayrollCredit
+                            totalCredit = remanticCredit + newPayrollCredit + partialPayment
                             balance = principal - totalCredit
                             company = .Item("COMPANY")
 
@@ -287,25 +285,26 @@ Public Class frmReport
 
 
             Dim mysqll As String = $"SELECT
-                                    EXTRACT(MONTH FROM A.PAYDATE) AS MONTHH,
-                                    EXTRACT(YEAR FROM A.PAYDATE) AS YEARR,
+                                    EXTRACT(MONTH FROM C.PAYDATE) AS MONTHH,
+                                    EXTRACT(YEAR FROM C.PAYDATE) AS YEARR,
                                     SUM(AMOUNT) AS TOTAL_AMOUNT, 
                                     COMPANY, PHOTO_CATEGORY 
                                 FROM
-                                    RECORDED_ALLOW_DEDUC A
-                                LEFT JOIN
+                                    PAYROLL_DEDUCTION A
+                                INNER JOIN
                                     TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIO_NO
+                                LEFT JOIN
+                                    RECORDED_ALLOW_DEDUC C ON C.BIO_NO = A.BIO_NO AND C.R_DEDUC_ID = A.ID
                                 WHERE
-                                    {conditional} AND
-                                    R_DEDUC_ID IS NOT NULL AND
-                                    A.PAYDATE <> '12/15/2021'
+                                    {conditional} AND 
+                                    C.PAYDATE <> '12/15/2021'
                                 GROUP BY
-                                    EXTRACT(MONTH FROM A.PAYDATE),
-                                    EXTRACT(YEAR FROM A.PAYDATE),
+                                    EXTRACT(MONTH FROM C.PAYDATE),
+                                    EXTRACT(YEAR FROM C.PAYDATE),
                                     COMPANY, PHOTO_CATEGORY
                                 ORDER BY
-                                    EXTRACT(YEAR FROM A.PAYDATE),
-                                    EXTRACT(MONTH FROM A.PAYDATE) ASC; "
+                                    EXTRACT(YEAR FROM C.PAYDATE),
+                                    EXTRACT(MONTH FROM C.PAYDATE) ASC; "
 
             TestingScript_String(mysqll)
             Using dss As DataSet = LoadSQL(mysqll, "RECORDED_ALLOW_DEDUC")
@@ -330,14 +329,13 @@ Public Class frmReport
             End Using
 
             '====================== PARTIAL PAYMENT =================== 
-            mysqll = $"Select  *  from PARTIAL_PAYMENT A INNER JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIO_NO WHERE {conditional} ORDER BY DATEE ASC "
+            mysqll = $"Select  COALESCE(sum(AMOUNT), 0) AS TOTALS  from PARTIAL_PAYMENT A INNER JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIO_NO WHERE {conditional} GROUP BY DEDUCT_ID "
             Using dss As DataSet = LoadSQL(mysqll, "PARTIAL_PAYMENT")
                 If dss.Tables(0).Rows.Count > 0 Then
-                    For Each dr In dss.Tables(0).Rows
-                        With dr
-                            dt.Rows.Add(company, photo_category, FormatNumber(amort), FormatNumber(principal), FormatNumber(totalCredit), FormatNumber(balance), "Partial Payment", CDbl(.Item("AMOUNT")).ToString("N"), "YES")
-                        End With
-                    Next
+                    With dss.Tables(0).Rows(0)
+                        Dim totals As Decimal = .Item("TOTALS")
+                        dt.Rows.Add(company, photo_category, FormatNumber(amort), FormatNumber(principal), FormatNumber(totalCredit), FormatNumber(balance), "Partial Payment", totals.ToString("N"), "YES")
+                    End With
                 End If
             End Using
 
@@ -2245,20 +2243,12 @@ Public Class frmReport
     End Sub
 
     Private Sub Month_LV_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles Month_LV.MouseDoubleClick
-        Dim range As DateTime = Range_Combo.Text
         If Month_LV.Items.Count >= 0 Then
-
-            'If Range_Combo.SelectedIndex = 0 Then
-            '    range = $"5/15/{Today.Year}"
-            'ElseIf Range_Combo.SelectedIndex = 1 Then
-            '    range = $"12/15/{Today.Year}"
-            'Else
-            '    range = Nothing
-            'End If
-
-            'Laod_13Month(Month_LV.Items(Month_LV.FocusedItem.Index).SubItems(1).Tag, rpt_13Month, range)
-
-            Laod_13Month(Month_LV.Items(Month_LV.FocusedItem.Index).SubItems(1).Tag, rpt_13Month, range)
+            If Range_Combo.SelectedIndex >= 0 Then
+                Laod_13Month(Month_LV.Items(Month_LV.FocusedItem.Index).SubItems(1).Tag, rpt_13Month, Range_Combo.Text)
+            Else
+                Laod_13Month(Month_LV.Items(Month_LV.FocusedItem.Index).SubItems(1).Tag, rpt_13Month)
+            End If
         End If
     End Sub
 

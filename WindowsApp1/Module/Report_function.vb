@@ -1112,6 +1112,7 @@ Module Report_function
 
     Friend Sub Laod_13Month(bioNo As String, report As Microsoft.Reporting.WinForms.ReportViewer, Optional range As DateTime = Nothing)
 
+        Dim noRemantic As Boolean = True
         Dim datee As DateTime = IIf(range = Nothing, Date.Now, range)
         Dim December_April As DateTime = New DateTime(datee.AddYears(-1).Year, 12, 1)
         Dim May_Nov As DateTime = New DateTime(datee.Year, 5, 1)
@@ -1170,6 +1171,14 @@ Module Report_function
 
                         OTHER_INCOME = (tOTAL_ECOLA + tOTAL_SIL + tOTAL_PI) - tOTAL_LATE_UT
                         Dim TOTALS As Decimal = tOTAL_BASIC + OTHER_INCOME
+
+                        'TODO- ONLY IN PAYDATE 5/15/2024 
+                        Console.WriteLine(frmMainForm.Paydate)
+                        If frmMainForm.Paydate = "5/15/2024" And noRemantic Then
+                            Dim fromRematic As Decimal = GetData_Decimal("AMOUNT", $"PAYROLL_13MONTH where  BIO_NO = '{bioNo}' and PAYDATE = '5/15/2024'")
+                            dt.Rows.Add(FULLNAME, "Dec. to Feb. 2024", "-", "-", "-", fromRematic.ToString("N"))
+                            noRemantic = False
+                        End If
 
                         dt.Rows.Add(FULLNAME, CDate(PAYDATE).ToString("MMMM dd, yyyy"), NO_OF_DAYS, tOTAL_BASIC.ToString("N"), OTHER_INCOME.ToString("N"), TOTALS.ToString("N"))
 

@@ -11,6 +11,8 @@ Public Class frmMainForm
 
     Private Sub frmMainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
+        'Branch13MonthFromRemantic()
+
         'ExportDataToExcel()
 
         'Update_HREmployee_From_PayrollEmployee()

@@ -1150,4 +1150,82 @@ Module Temporary
         Console.WriteLine(resultString)
     End Sub
 
+    Friend Sub Branch13MonthFromRemantic()
+        Dim path() As String = {"C:\Users\MISPC1\Desktop\Branch Import Format - 13TH MONTH PAY.xlsx", "C:\Users\MISPC1\Desktop\P&G, PCOM, PHOTO 13TH.xlsx"}
+
+        For i = 0 To path.Length - 1
+
+            eApp = New Excel.Application
+            eBook = eApp.Workbooks.Open(path(i))
+            eSheet = eBook.Worksheets(1)
+            eCell = eSheet.UsedRange
+
+            MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{path(i)}';Extended Properties=Excel 8.0;")
+            MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
+            MyCommand.TableMappings.Add("Table", "Net-informations.com")
+            DtSet = New System.Data.DataSet
+            MyCommand.Fill(DtSet)
+
+            progressBarStart(DtSet.Tables(0).Rows.Count + 1)
+
+            For row = 2 To DtSet.Tables(0).Rows.Count + 1
+                Dim bioNo As Integer = eCell(row, 1).Value
+                Dim fullname As String = eCell(row, 2).Value
+                Dim amount As Decimal = eCell(row, 3).Value
+                Dim paydate As String = "5/15/2024"
+
+                If bioNo <> 0 Or bioNo <> Nothing Then
+                    Save13MonthFromRemantic(bioNo, amount, paydate)
+                    SaveLogs($"13MONTH ADDED FROM REMANTIC (DEC-FEB) - {fullname} ({bioNo}), AMOUNT({amount}), PAYDATE({paydate})", frmMainForm.UserName_LBL.Text)
+                End If
+
+                Console.WriteLine($"Row {row}")
+                frmMainForm.AppProgressBar.Value += 1
+            Next row
+
+            progressBarEnd()
+
+            MyConnection.Close()
+            eApp.Quit()
+            eApp.Application.DisplayAlerts = False
+        Next
+
+        MsgBox("Importing Done!")
+    End Sub
+
+
+    Friend Sub Save13MonthFromRemantic(bioNo As Integer, amount As Decimal, paydate As String)
+        Dim mysql As String
+
+        mysql = $"Select * FROM PAYROLL_13MONTH where BIO_NO = '{bioNo}' and PAYDATE = '{paydate}'"
+        Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_13MONTH")
+        If ds.Tables(0).Rows.Count > 0 Then
+
+            With ds.Tables(0).Rows(0)
+
+                .Item("BIO_NO") = bioNo
+                .Item("AMOUNT") = amount
+                .Item("PAYDATE") = paydate
+
+            End With
+            SaveEntry(ds, False)
+        Else
+
+            mysql = "Select * From PAYROLL_13MONTH Rows 1"
+            Using dss As DataSet = LoadSQL(mysql, "PAYROLL_13MONTH")
+
+                Dim dsNewRow As DataRow = dss.Tables(0).NewRow
+                With dsNewRow
+
+                    .Item("BIO_NO") = bioNo
+                    .Item("AMOUNT") = amount
+                    .Item("PAYDATE") = paydate
+
+                End With
+                dss.Tables(0).Rows.Add(dsNewRow)
+                SaveEntry(dss)
+            End Using
+        End If
+    End Sub
+
 End Module
