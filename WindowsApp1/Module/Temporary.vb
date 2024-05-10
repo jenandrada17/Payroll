@@ -1195,9 +1195,7 @@ Module Temporary
 
 
     Friend Sub Save13MonthFromRemantic(bioNo As Integer, amount As Decimal, paydate As String)
-        Dim mysql As String
-
-        mysql = $"Select * FROM PAYROLL_13MONTH where BIO_NO = '{bioNo}' and PAYDATE = '{paydate}'"
+        Dim mysql As String = $"Select * FROM PAYROLL_13MONTH where BIO_NO = '{bioNo}' and PAYDATE = '{paydate}'"
         Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_13MONTH")
         If ds.Tables(0).Rows.Count > 0 Then
 

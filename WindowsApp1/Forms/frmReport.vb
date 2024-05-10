@@ -233,50 +233,62 @@ Public Class frmReport
             Dim partialPayment As Decimal = GetTotal("AMOUNT", $"PARTIAL_PAYMENT A INNER JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIO_NO WHERE {conditional}")
             Dim status As String = ""
             Dim company As String = ""
-            Dim photo_category As String = ""
-
-            'amort = GetTotal("AMORT", $"PAYROLL_DEDUCTION A LEFT JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIO_NO WHERE {conditional}")
-            'remanticCredit = GetTotal("CREDIT", $"PAYROLL_DEDUCTION A LEFT JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIO_NO WHERE {conditional}")
-            'principal = GetTotal("PRINCIPAL", $"PAYROLL_DEDUCTION A LEFT JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIO_NO WHERE {conditional}")
-            'partialPayment = GetTotal("AMOUNT", $"PARTIAL_PAYMENT A LEFT JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIO_NO WHERE {conditional}")
-            'newPayrollCredit = GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC  A LEFT JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIO_NO WHERE {conditional} AND R_DEDUC_ID IS NOT NULL and PAYDATE <> '12/15/2021'")
-            'totalCredit = remanticCredit + partialPayment + newPayrollCredit
-            'balance = principal - totalCredit
-
-            'dt.Rows.Add(company, FormatNumber(amort), FormatNumber(principal), FormatNumber(totalCredit), FormatNumber(balance), "Principal", principal.ToString("N"), "NO")
-            'dt.Rows.Add(company, FormatNumber(amort), FormatNumber(principal), FormatNumber(totalCredit), FormatNumber(balance), "From Remantic", remanticCredit.ToString("N"), "YES")
-
+            Dim company_category As String = ""
+            Dim ho_category As String = ""
 
             'TODO - PHOTO CATEGORY GROUPINGS
-            Dim mysql As String = $"SELECT COALESCE(sum(A.AMORT), 0) AS TOTAL_AMORT, 
-                                           COALESCE(sum(A.CREDIT), 0) AS TOTAL_CREDIT, 
-                                           COALESCE(sum(A.PRINCIPAL), 0) AS TOTAL_PRINCIPAL,  
-                                           COALESCE(sum(C.AMOUNT), 0) AS TOTAL_NEW_CREDITED, COMPANY, PHOTO_CATEGORY
-                                    from PAYROLL_DEDUCTION A 
-                                    inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIO_NO  
-                                    left join RECORDED_ALLOW_DEDUC C on C.BIO_NO = A.BIO_NO AND C.R_DEDUC_ID = A.ID 
-                                    WHERE {conditional} AND PAYDATE <> '12/15/2021' 
-                                    GROUP BY COMPANY, PHOTO_CATEGORY"
+            'Dim mysql As String = $"SELECT COALESCE(sum(A.AMORT), 0) AS TOTAL_AMORT, 
+            '                               COALESCE(sum(A.CREDIT), 0) AS TOTAL_CREDIT, 
+            '                               COALESCE(sum(A.PRINCIPAL), 0) AS TOTAL_PRINCIPAL,  
+            '                               COALESCE(sum(C.AMOUNT), 0) AS TOTAL_NEW_CREDITED, COMPANY, PHOTO_CATEGORY, HO_CATEGORY
+            '                        from PAYROLL_DEDUCTION A 
+            '                        inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIO_NO 
+            '                        left join RECORDED_ALLOW_DEDUC C on C.BIO_NO = A.BIO_NO AND C.R_DEDUC_ID = A.ID  
+            '                        WHERE {conditional}AND PAYDATE <> '12/15/2021' 
+            '                        GROUP BY PHOTO_CATEGORY, HO_CATEGORY"
+
+            Dim mysql As String = $"SELECT 
+                                        SUM(A.AMORT) AS TOTAL_AMORT,  
+                                        SUM(A.CREDIT) AS TOTAL_CREDIT,
+                                        SUM(A.PRINCIPAL) AS TOTAL_PRINCIPAL,  
+                                        A.CATEGORY, COMPANY, PHOTO_CATEGORY, HO_CATEGORY, A.ID AS DEDUCTID
+                                    from 
+	                                    PAYROLL_DEDUCTION A 
+                                    inner join 
+	                                    TBL_EMPLOYEE B on B.BIOMETRICID = A.BIO_NO
+                                    WHERE 
+	                                     {conditional} 
+                                    GROUP BY  
+                                        A.CATEGORY, COMPANY, PHOTO_CATEGORY, HO_CATEGORY, A.ID"
 
             TestingScript_String(mysql)
             Using ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
                 If ds.Tables(0).Rows.Count > 0 Then
                     For Each dr In ds.Tables(0).Rows
                         With dr
+                            Dim deductID As Integer = .Item("DEDUCTID")
                             amort = .Item("TOTAL_AMORT")
                             remanticCredit = .Item("TOTAL_CREDIT")
                             principal = .Item("TOTAL_PRINCIPAL")
-                            newPayrollCredit = .Item("TOTAL_NEW_CREDITED")
                             totalCredit = remanticCredit + newPayrollCredit + partialPayment
                             balance = principal - totalCredit
                             company = .Item("COMPANY")
+                            ho_category = .Item("HO_CATEGORY")
 
-                            If company = "PHOTO" Then photo_category = .Item("PHOTO_CATEGORY")
+                            If company = "PHOTO" Then
+                                company_category = .Item("PHOTO_CATEGORY")
+                                newPayrollCredit = GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC INNER JOIN TBL_EMPLOYEE on BIOMETRICID = BIO_NO WHERE R_DEDUC_ID IS NOT NULL AND PHOTO_CATEGORY = '{company_category}'")
+                            ElseIf ho_category <> Nothing Then
+                                company_category = ho_category
+                                newPayrollCredit = GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC INNER JOIN TBL_EMPLOYEE on BIOMETRICID = BIO_NO WHERE R_DEDUC_ID IS NOT NULL AND HO_CATEGORY = '{ho_category}'")
+                            Else
+                                newPayrollCredit = GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC INNER JOIN TBL_EMPLOYEE on BIOMETRICID = BIO_NO WHERE R_DEDUC_ID IS NOT NULL{conditional}")
+                            End If
 
-                            dt.Rows.Add(company, photo_category, FormatNumber(amort), FormatNumber(principal), FormatNumber(totalCredit), FormatNumber(balance), "Principal", principal.ToString("N"), "NO")
+                            dt.Rows.Add(company, company_category, FormatNumber(amort), FormatNumber(principal), FormatNumber(totalCredit), FormatNumber(balance), "Principal", principal.ToString("N"), "NO")
 
                             If remanticCredit <> 0 Then     'IF NOT ZERO PARA DILI MASOBRA ANG COUNT NG DATE
-                                dt.Rows.Add(company, photo_category, FormatNumber(amort), FormatNumber(principal), FormatNumber(totalCredit), FormatNumber(balance), "From Remantic", remanticCredit.ToString("N"), "YES")
+                                dt.Rows.Add(company, company_category, FormatNumber(amort), FormatNumber(principal), FormatNumber(totalCredit), FormatNumber(balance), "From Remantic", remanticCredit.ToString("N"), "YES")
                             End If
                         End With
                     Next
@@ -284,27 +296,46 @@ Public Class frmReport
             End Using
 
 
-            Dim mysqll As String = $"SELECT
-                                    EXTRACT(MONTH FROM C.PAYDATE) AS MONTHH,
-                                    EXTRACT(YEAR FROM C.PAYDATE) AS YEARR,
-                                    SUM(AMOUNT) AS TOTAL_AMOUNT, 
-                                    COMPANY, PHOTO_CATEGORY 
-                                FROM
-                                    PAYROLL_DEDUCTION A
-                                INNER JOIN
-                                    TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIO_NO
-                                LEFT JOIN
-                                    RECORDED_ALLOW_DEDUC C ON C.BIO_NO = A.BIO_NO AND C.R_DEDUC_ID = A.ID
-                                WHERE
-                                    {conditional} AND 
-                                    C.PAYDATE <> '12/15/2021'
-                                GROUP BY
-                                    EXTRACT(MONTH FROM C.PAYDATE),
-                                    EXTRACT(YEAR FROM C.PAYDATE),
-                                    COMPANY, PHOTO_CATEGORY
-                                ORDER BY
-                                    EXTRACT(YEAR FROM C.PAYDATE),
-                                    EXTRACT(MONTH FROM C.PAYDATE) ASC; "
+            'Dim mysqll As String = $"SELECT
+            '                        EXTRACT(MONTH FROM C.PAYDATE) AS MONTHH,
+            '                        EXTRACT(YEAR FROM C.PAYDATE) AS YEARR,
+            '                        SUM(AMOUNT) AS TOTAL_AMOUNT, 
+            '                        COMPANY, PHOTO_CATEGORY, HO_CATEGORY 
+            '                    FROM
+            '                        PAYROLL_DEDUCTION A
+            '                    INNER JOIN
+            '                        TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIO_NO
+            '                    LEFT JOIN
+            '                        RECORDED_ALLOW_DEDUC C ON C.BIO_NO = A.BIO_NO AND C.R_DEDUC_ID = A.ID 
+            '                    WHERE 
+            '                        {conditional} AND
+            '                        C.PAYDATE <> '12/15/2021'
+            '                    GROUP BY
+            '                        EXTRACT(MONTH FROM C.PAYDATE),
+            '                        EXTRACT(YEAR FROM C.PAYDATE),
+            '                        COMPANY, PHOTO_CATEGORY, HO_CATEGORY
+            '                    ORDER BY
+            '                        EXTRACT(YEAR FROM C.PAYDATE),
+            '                        EXTRACT(MONTH FROM C.PAYDATE) ASC; "
+
+
+            Dim mysqll As String = $"SELECT 
+                                        EXTRACT(MONTH FROM C.PAYDATE) AS MONTHH, 
+                                        EXTRACT(YEAR FROM C.PAYDATE) AS YEARR,
+                                        COMPANY, PHOTO_CATEGORY, HO_CATEGORY,
+                                        SUM(AMOUNT) AS TOTAL_AMOUNT -- Assuming you want to sum the amounts for each month/year combination
+                                    FROM
+                                        PAYROLL_DEDUCTION A
+                                    INNER JOIN 
+                                        TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIO_NO   
+                                    LEFT JOIN 
+                                        RECORDED_ALLOW_DEDUC C ON C.BIO_NO = A.BIO_NO AND C.R_DEDUC_ID = A.ID  
+                                    WHERE
+                                        {conditional} AND C.PAYDATE <> DATE '2021-12-15'
+                                    GROUP BY 
+                                        EXTRACT(MONTH FROM C.PAYDATE),
+                                        EXTRACT(YEAR FROM C.PAYDATE), 
+                                        COMPANY, PHOTO_CATEGORY, HO_CATEGORY"
 
             TestingScript_String(mysqll)
             Using dss As DataSet = LoadSQL(mysqll, "RECORDED_ALLOW_DEDUC")
@@ -317,9 +348,13 @@ Public Class frmReport
                             Dim monthName As String = New DateTime(.Item("YEARR"), .Item("MONTHH"), 1).ToString("Y")
                             company = .Item("COMPANY")
 
-                            If company = "PHOTO" Then photo_category = .Item("PHOTO_CATEGORY")
+                            If company = "PHOTO" Then
+                                company_category = .Item("PHOTO_CATEGORY")
+                            ElseIf ho_category <> Nothing Then
+                                company_category = ho_category
+                            End If
 
-                            dt.Rows.Add(company, photo_category, FormatNumber(amort), FormatNumber(principal), FormatNumber(totalCredit), FormatNumber(balance), monthName, amount.ToString("N"), "YES")
+                            dt.Rows.Add(company, company_category, FormatNumber(amort), FormatNumber(principal), FormatNumber(totalCredit), FormatNumber(balance), monthName, amount.ToString("N"), "YES")
 
                         End With
                         frmMainForm.AppProgressBar.Value += 1
@@ -329,12 +364,18 @@ Public Class frmReport
             End Using
 
             '====================== PARTIAL PAYMENT =================== 
-            mysqll = $"Select  COALESCE(sum(AMOUNT), 0) AS TOTALS  from PARTIAL_PAYMENT A INNER JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIO_NO WHERE {conditional} GROUP BY DEDUCT_ID "
+            mysqll = $"Select  COALESCE(sum(AMOUNT), 0) AS TOTALS, HO_CATEGORY  
+                            from PARTIAL_PAYMENT A 
+                            INNER JOIN PAYROLL_DEDUCTION B ON B.ID = DEDUCT_ID  
+                            INNER JOIN TBL_EMPLOYEE C ON C.BIOMETRICID = A.BIO_NO  AND {conditional} 
+                            GROUP BY DEDUCT_ID, HO_CATEGORY  "
+
+            TestingScript_String(mysqll)
             Using dss As DataSet = LoadSQL(mysqll, "PARTIAL_PAYMENT")
                 If dss.Tables(0).Rows.Count > 0 Then
                     With dss.Tables(0).Rows(0)
                         Dim totals As Decimal = .Item("TOTALS")
-                        dt.Rows.Add(company, photo_category, FormatNumber(amort), FormatNumber(principal), FormatNumber(totalCredit), FormatNumber(balance), "Partial Payment", totals.ToString("N"), "YES")
+                        dt.Rows.Add(company, company_category, FormatNumber(amort), FormatNumber(principal), FormatNumber(totalCredit), FormatNumber(balance), "Partial Payment", totals.ToString("N"), "YES")
                     End With
                 End If
             End Using
