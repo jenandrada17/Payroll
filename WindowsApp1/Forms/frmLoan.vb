@@ -770,4 +770,22 @@ Public Class frmLoan
         Dim datee As String = GetData("DATE_ADDED", $"PAYROLL_SBU where BIO_NO ='{SBU_Name_txt.Tag}'")
         SBU_Date_dtp.Value = IIf(datee = "", Today, datee)
     End Sub
+
+    Private Sub menu_remove_Click(sender As Object, e As EventArgs) Handles menu_remove.Click
+        Dim deductID As Integer = Deduc_list.Items(Deduc_list.FocusedItem.Index).SubItems(4).Tag
+        Dim namee As String = Deduc_list.Items(Deduc_list.FocusedItem.Index).SubItems(0).Text
+        Dim bioNo As Integer = Deduc_list.Items(Deduc_list.FocusedItem.Index).SubItems(1).Tag
+        Dim category As String = Deduc_list.Items(Deduc_list.FocusedItem.Index).SubItems(1).Text
+        Dim principal As String = Deduc_list.Items(Deduc_list.FocusedItem.Index).SubItems(2).Text
+        Dim datee As Date = Deduc_list.Items(Deduc_list.FocusedItem.Index).SubItems(2).Tag
+        Dim amort As String = Deduc_list.Items(Deduc_list.FocusedItem.Index).SubItems(3).Text
+        Dim sched As String = Deduc_list.Items(Deduc_list.FocusedItem.Index).SubItems(4).Text
+        If Deduc_list.Items(Deduc_list.FocusedItem.Index).BackColor <> Color.LightCoral Then
+            Dim result As DialogResult = MsgBox("Are you sure you want to remove this?", MsgBoxStyle.YesNo)
+            If result = DialogResult.Yes Then
+                RunCommand($"UPDATE PAYROLL_DEDUCTION SET STATUS = 'REMOVED' WHERE ID = {deductID}")
+                SaveLogs($"DEDUCTION DELETED - {namee} ({bioNo}), Category({category}), Total({principal}), Schedule({sched}), Date({datee.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
+            End If
+        End If
+    End Sub
 End Class

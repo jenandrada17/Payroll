@@ -1,4 +1,6 @@
-﻿Public Class frmAllowance
+﻿Imports System.Security
+
+Public Class frmAllowance
 
     Private Sub Close_LBL_Click(sender As Object, e As EventArgs) Handles Close_LBL.Click
         Close()
@@ -435,5 +437,23 @@
 
         GetAllowance_Details(idNo, Allow_Name_TXT, Allow_Category_Combo, Allow_Schedule_Combo, A_EveryDate_Combo, Allow_Amount_TXT, A_EffectiveDate_DTP, FixYes_RadioB, FixNo_RadioB)
         Name_lbl.Tag = "UPDATE"
+    End Sub
+
+    Private Sub Remove_MenuItem_Click(sender As Object, e As EventArgs) Handles Remove_MenuItem.Click
+        Dim idNo As Integer = Allowance_LV.Items(Allowance_LV.FocusedItem.Index).SubItems(4).Tag
+        Dim namee As String = Allowance_LV.Items(Allowance_LV.FocusedItem.Index).SubItems(0).Text
+        Dim bioNo As Integer = Allowance_LV.Items(Allowance_LV.FocusedItem.Index).SubItems(0).Tag
+        Dim category As String = Allowance_LV.Items(Allowance_LV.FocusedItem.Index).SubItems(1).Text
+        Dim sched As String = Allowance_LV.Items(Allowance_LV.FocusedItem.Index).SubItems(2).Text
+        Dim effectivity As Date = Allowance_LV.Items(Allowance_LV.FocusedItem.Index).SubItems(3).Text
+        Dim amount As String = Allowance_LV.Items(Allowance_LV.FocusedItem.Index).SubItems(4).Text
+
+        Dim result As DialogResult = MsgBox("Are you sure you want to remove this allowance?", MsgBoxStyle.YesNo)
+        If result = DialogResult.Yes Then
+            RunCommand($"UPDATE PAYROLL_ALLOWANCES SET ALLOWED = 'NO' WHERE ID = {idNo}")
+            SaveLogs($"REMOVED ALLOWANCE - {namee} ({bioNo}), Category({category}), Amount({amount}), Sched({sched}), Effectivity({effectivity.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
+            Lists_Allowance(Allowance_LV)
+            MsgBox("Successfully Removed!", MsgBoxStyle.Information)
+        End If
     End Sub
 End Class
