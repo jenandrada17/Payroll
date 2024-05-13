@@ -79,9 +79,8 @@ Module SaveUpdate
 
                 If MORNING_OT <> Nothing Then .Item("MORNING_OT") = MORNING_OT
 
-                If BRANCH = True Then
+                If BRANCH Then
                     .Item("BRANCH_MANUAL") = True
-
                     .Item("TRAINING_DAYS") = TRAINING_DAYS
                     .Item("TRAINING_REGHOLIDAY") = TRAINING_REGHOLIDAY
                     .Item("TRAINING_SPECHOLIDAY") = TRAINING_SPECHOLIDAY
@@ -89,14 +88,6 @@ Module SaveUpdate
                     .Item("TRAINING_LATE") = TRAINING_LATE
                     .Item("TRAINING_UNDERTIME") = TRAINING_UNDERTIME
                     .Item("TRAINING_NIGHTRATE") = TRAINING_NIGHTRATE
-
-                    'If TRAINING_DAYS <> 0 Then .Item("TRAINING_DAYS") = TRAINING_DAYS
-                    'If TRAINING_REGHOLIDAY <> 0 Then .Item("TRAINING_REGHOLIDAY") = TRAINING_REGHOLIDAY
-                    'If TRAINING_SPECHOLIDAY <> 0 Then .Item("TRAINING_SPECHOLIDAY") = TRAINING_SPECHOLIDAY
-                    'If TRAINING_OVERTIME <> 0 Then .Item("TRAINING_OVERTIME") = TRAINING_OVERTIME
-                    'If TRAINING_LATE <> 0 Then .Item("TRAINING_LATE") = TRAINING_LATE
-                    'If TRAINING_UNDERTIME <> 0 Then .Item("TRAINING_UNDERTIME") = TRAINING_UNDERTIME
-                    'If TRAINING_NIGHTRATE <> 0 Then .Item("TRAINING_NIGHTRATE") = TRAINING_NIGHTRATE
                 End If
 
             End With
@@ -135,7 +126,7 @@ Module SaveUpdate
 
                     If MORNING_OT <> Nothing Then .Item("MORNING_OT") = MORNING_OT
 
-                    If BRANCH = True Then
+                    If BRANCH Then
                         .Item("BRANCH_MANUAL") = True
 
                         If TRAINING_DAYS <> 0 Then .Item("TRAINING_DAYS") = TRAINING_DAYS
@@ -679,15 +670,12 @@ Module SaveUpdate
                     Dim Late_Adjustment As Decimal = 0
                     Dim Late_Approved As Integer = 0
                     Dim TotalREGHol, TotalSPECHol, TotalOT, TotalLateUnder, TotalNight, GrossAmount As Decimal
-                    'Dim Minimum_rate As Decimal = IIf(IsDBNull(.Item("BRANCHCODE")) Or .Item("BRANCHCODE").Equals(""), GetMinimumRate("CITY", "GENSAN"), GetMinimumRate("BRANCHCODE", .Item("BRANCHCODE")))
                     Dim Minimum_rate As Decimal = 0
                     Dim Ecola As Decimal = 0
                     Dim BranchCode As String = ""
-                    'Ecola = GetEcola("BRANCHCODE", .Item("BRANCHCODE"))
                     fix_monthly_rate = IIf(IsDBNull(.Item("FIX_MONTHLY_RATE")), False, .Item("FIX_MONTHLY_RATE"))
-                    'rate = IIf(IsDBNull(.Item("RATE_DAILY")) Or .Item("RATE_DAILY") = 0, Minimum_rate, .Item("RATE_DAILY"))
-                    Dim Monthly_rate As Decimal = 0 'IIf(IsDBNull(.Item("RATE_MONTHLY")) Or .Item("RATE_MONTHLY").Equals("0"), rate * 26, .Item("RATE_MONTHLY"))
-                    Dim Old_Rate As Decimal = 0 'IIf(IsDBNull(.Item("OLD_RATE")), rate, .Item("OLD_RATE")) 
+                    Dim Monthly_rate As Decimal = 0
+                    Dim Old_Rate As Decimal = 0
                     Dim SBU_sched As String = GetData("SCHED", $"PAYROLL_SBU WHERE BIO_NO = {bioNo}")
 
                     Dim sss_no As String = IIf(IsDBNull(.Item("SSSNO")), Nothing, .Item("SSSNO"))
@@ -695,6 +683,7 @@ Module SaveUpdate
                     Dim tin_no As String = IIf(IsDBNull(.Item("TINNO")), Nothing, .Item("TINNO"))
                     Dim pagibig_no As String = IIf(IsDBNull(.Item("PAGIBIG")), Nothing, .Item("PAGIBIG"))
 
+#Region "INCOMPLETE RECORD TO NOTEPAD DESKTOP"
                     'BRANCHCODE
                     Try
                         If IsDBNull(.Item("BRANCHCODE")) Or .Item("BRANCHCODE").Equals("") Or String.IsNullOrEmpty(.Item("BRANCHCODE")) Then
@@ -753,6 +742,7 @@ Module SaveUpdate
                     Catch ex As Exception
                         SaveToText(bioNo, $"{ .Item("LASTNAME")}, { .Item("FIRSTNAME")} { .Item("MIDDLENAME")}", "OLD_RATE")
                     End Try
+#End Region
 
                     Dim Training_REGHoliday = 0, Training_SPECHoliday As Integer = 0
                     Dim Training_totalLate As Integer = 0, Training_totalUT As Integer = 0, Training_nightRate As Integer = 0
@@ -784,19 +774,20 @@ Module SaveUpdate
                                     SpecialHol_hrs = IIf(IsDBNull(.Item("SPECHOLIDAY_HRS")), 0, .Item("SPECHOLIDAY_HRS"))
                                     Late_Adjustment = IIf(IsDBNull(.Item("LATE_ADJUSTMENT")), 0, .Item("LATE_ADJUSTMENT"))
                                     Late_Approved = IIf(IsDBNull(.Item("LATE_APPROVED")), 0, .Item("LATE_APPROVED"))
-
-                                    'IF IN CASE BRANCH MANUAL
-                                    noOf_days_training = IIf(IsDBNull(.Item("TRAINING_DAYS")), 0, .Item("TRAINING_DAYS"))
-                                    Training_REGHoliday = IIf(IsDBNull(.Item("TRAINING_REGHOLIDAY")), 0, .Item("TRAINING_REGHOLIDAY"))
-                                    Training_SPECHoliday = IIf(IsDBNull(.Item("TRAINING_SPECHOLIDAY")), 0, .Item("TRAINING_SPECHOLIDAY"))
-                                    training_overtime = IIf(IsDBNull(.Item("TRAINING_OVERTIME")), 0, .Item("TRAINING_OVERTIME"))
-                                    Training_totalLate = IIf(IsDBNull(.Item("TRAINING_LATE")), 0, .Item("TRAINING_LATE"))
-                                    Training_totalUT = IIf(IsDBNull(.Item("TRAINING_UNDERTIME")), 0, .Item("TRAINING_UNDERTIME"))
-                                    Training_nightRate = IIf(IsDBNull(.Item("TRAINING_NIGHTRATE")), 0, .Item("TRAINING_NIGHTRATE"))
                                     branch_manual = IIf(IsDBNull(.Item("BRANCH_MANUAL")), False, .Item("BRANCH_MANUAL"))
+
+                                    If branch_manual Then       'IF IN CASE BRANCH MANUAL
+                                        noOf_days_training = IIf(IsDBNull(.Item("TRAINING_DAYS")), 0, .Item("TRAINING_DAYS"))
+                                        Training_REGHoliday = IIf(IsDBNull(.Item("TRAINING_REGHOLIDAY")), 0, .Item("TRAINING_REGHOLIDAY"))
+                                        Training_SPECHoliday = IIf(IsDBNull(.Item("TRAINING_SPECHOLIDAY")), 0, .Item("TRAINING_SPECHOLIDAY"))
+                                        training_overtime = IIf(IsDBNull(.Item("TRAINING_OVERTIME")), 0, .Item("TRAINING_OVERTIME"))
+                                        Training_totalLate = IIf(IsDBNull(.Item("TRAINING_LATE")), 0, .Item("TRAINING_LATE"))
+                                        Training_totalUT = IIf(IsDBNull(.Item("TRAINING_UNDERTIME")), 0, .Item("TRAINING_UNDERTIME"))
+                                        Training_nightRate = IIf(IsDBNull(.Item("TRAINING_NIGHTRATE")), 0, .Item("TRAINING_NIGHTRATE"))
+                                    End If
                                 End If
 
-                                SIL = .Item("SIL") + Get_SIL("PAYROLL_SCHED_COUNT", $"PAYROLL_SCHED_COUNT WHERE BIO_NO = '{bioNo}' AND PAYDATE = '{paydate_}'")
+                                    SIL = .Item("SIL") + Get_SIL("PAYROLL_SCHED_COUNT", $"PAYROLL_SCHED_COUNT WHERE BIO_NO = '{bioNo}' AND PAYDATE = '{paydate_}'")
                             End With
                         End If
                     End Using
@@ -821,8 +812,6 @@ Module SaveUpdate
 
                             Dim ending As DateTime = startingDate.AddDays(days_covred)
                             While (startingDate <= ending)
-
-                                'While (startingDate <= EndingDate)
 
                                 If PRESENT_Date(bioNo, paydate_, startingDate) Then
 
@@ -1152,17 +1141,6 @@ Module SaveUpdate
                                 End If
                             End If
 
-
-                            'If SBU = 500 Then
-                            '    If sched = "CLOSE PAYROLL" Then
-                            '        Save_Recorded_Allow_Deduc(bioNo, paydate_, "SBU", SBU, "DEDUCTION")
-                            '        Deduction = Deduction + SBU
-                            '    End If
-                            'Else
-                            '    Save_Recorded_Allow_Deduc(bioNo, paydate_, "SBU", SBU, "DEDUCTION")
-                            '    Deduction = Deduction + SBU
-                            'End If
-
                         End If
 
                     End If
@@ -1174,16 +1152,12 @@ Module SaveUpdate
 
                         '===================== STANDARD AND TRAINING OVERTIME/LATE/UNDERTIME ==================    
                         Dim LATEE, LATE_TRAIN, UNDERTIMEE, UNDERTIMEE_TRAIN, OVERTIMEE, OVERTIMEE_TRAIN, NIGHTRATEE, NIGHTRATEE_TRAIN As Decimal
-                        'LATEE = ((rate / 8) / 60) * (Late - training_late.TotalMinutes)
                         LATEE = ((rate / 8) / 60) * (Late - Training_totalLate)
-                        'UNDERTIMEE = ((rate / 8) / 60) * (UnderTime - training_undertime.TotalMinutes)
                         UNDERTIMEE = ((rate / 8) / 60) * (UnderTime - Training_totalUT)
                         OVERTIMEE = ((rate / 8) * 1.25) * (RegularOT - training_overtime)
                         NIGHTRATEE = ((rate / 8) * 0.1) * (nightRate - Training_nightRate)
 
-                        'LATE_TRAIN = ((trainee_rate / 8) / 60) * training_late.TotalMinutes
                         LATE_TRAIN = ((trainee_rate / 8) / 60) * Training_totalLate
-                        'UNDERTIMEE_TRAIN = ((trainee_rate / 8) / 60) * training_undertime.TotalMinutes
                         UNDERTIMEE_TRAIN = ((trainee_rate / 8) / 60) * Training_totalUT
                         OVERTIMEE_TRAIN = ((trainee_rate / 8) * 1.25) * training_overtime
                         NIGHTRATEE_TRAIN = ((trainee_rate / 8) * 0.1) * Training_nightRate
@@ -1215,7 +1189,6 @@ Module SaveUpdate
                                 Dim old_late As Double = OLD_NEW_RATE(bioNo, paydate_).old_late
                                 Dim new_late As Double = OLD_NEW_RATE(bioNo, paydate_).new_late
 
-                                'Dim percentLate_training As Double = training_late.TotalMinutes / Late
                                 Dim percentLate_training As Double = Training_totalLate / Late
                                 Dim percentLate_old As Double = old_late / Late
                                 Dim percentLate_new As Double = new_late / Late
@@ -1245,7 +1218,6 @@ Module SaveUpdate
                                 Dim old_undertime As Double = OLD_NEW_RATE(bioNo, paydate_).old_undertime
                                 Dim new_undertime As Double = OLD_NEW_RATE(bioNo, paydate_).new_undertime
 
-                                'Dim percentUT_training As Double = training_undertime.TotalMinutes / UNDERTIMEE
                                 Dim percentUT_training As Double = Training_totalUT / UNDERTIMEE
                                 Dim percentUT_old As Double = old_undertime / UNDERTIMEE
                                 Dim percentUT_new As Double = new_undertime / UNDERTIMEE

@@ -1212,7 +1212,16 @@ Module SelectFromDatabase
                 With data
 
                     Dim rate As Decimal = IIf(IsDBNull(.Item("RATE_DAILY")), 0, .Item("RATE_DAILY"))
-                    Dim minimum As Decimal = IIf(.Item("BRANCHCODE") = Nothing, GetMinimumRate("CITY", "GENSAN"), GetMinimumRate("BRANCHCODE", .Item("BRANCHCODE")))
+                    Dim branchCode As String = IIf(IsDBNull(.Item("BRANCHCODE")), Nothing, .Item("BRANCHCODE"))
+                    Dim minimum As Decimal = 0  '= IIf(.Item("BRANCHCODE").Equals(Nothing) Or String.IsNullOrWhiteSpace(.Item("BRANCHCODE")), GetMinimumRate("CITY", "GENSAN"), GetMinimumRate("BRANCHCODE", .Item("BRANCHCODE")))
+
+                    If IsDBNull(.Item("BRANCHCODE")) Then
+                        minimum = GetMinimumRate("CITY", "GENSAN")
+                    ElseIf .Item("BRANCHCODE").Equals(Nothing) Or String.IsNullOrWhiteSpace(.Item("BRANCHCODE")) Then
+                        minimum = GetMinimumRate("BRANCHCODE", .Item("BRANCHCODE"))
+                    Else
+
+                    End If
 
                     ratee.Text = IIf(rate = 0, minimum, rate)
                     ratee.Tag = minimum
