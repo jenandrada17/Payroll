@@ -11,7 +11,7 @@
     <Shape ID="DesignTable:ComGensanPDistrib" ZOrder="10" X="366" Y="17" Height="315" Width="181" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="311" />
     <Shape ID="DesignTable:ComLeasingDistrib" ZOrder="9" X="571" Y="18" Height="315" Width="188" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="311" />
     <Shape ID="DesignTable:Remittance" ZOrder="8" X="767" Y="19" Height="163" Width="150" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="159" />
-    <Shape ID="DesignTable:CostContribution" ZOrder="7" X="924" Y="16" Height="124" Width="165" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="101" />
+    <Shape ID="DesignTable:CostContribution" ZOrder="7" X="924" Y="16" Height="124" Width="165" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="120" />
     <Shape ID="DesignTable:PerformanceIncentives" ZOrder="6" X="196" Y="366" Height="87" Width="159" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="83" />
     <Shape ID="DesignTable:SBU" ZOrder="5" X="769" Y="222" Height="201" Width="150" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="197" />
     <Shape ID="DesignTable:13Month" ZOrder="4" X="927" Y="159" Height="144" Width="150" AdapterExpanded="true" DataTableExpanded="true" OldAdapterHeight="0" OldDataTableHeight="0" SplitterPosition="140" />

@@ -220,8 +220,8 @@
               <xs:element name="BALANCE" msdata:Caption="DATE" msprop:Generator_ColumnPropNameInTable="BALANCEColumn" msprop:Generator_ColumnPropNameInRow="BALANCE" msprop:Generator_UserColumnName="BALANCE" msprop:Generator_ColumnVarNameInTable="columnBALANCE" type="xs:string" minOccurs="0" />
               <xs:element name="DATE" msdata:Caption="P_AMOUNT" msprop:Generator_ColumnPropNameInTable="DATEColumn" msprop:Generator_ColumnPropNameInRow="_DATE" msprop:Generator_UserColumnName="DATE" msprop:Generator_ColumnVarNameInTable="columnDATE" type="xs:string" minOccurs="0" />
               <xs:element name="AMOUNT_CREDIT" msprop:Generator_ColumnPropNameInTable="AMOUNT_CREDITColumn" msprop:Generator_ColumnPropNameInRow="AMOUNT_CREDIT" msprop:Generator_UserColumnName="AMOUNT_CREDIT" msprop:Generator_ColumnVarNameInTable="columnAMOUNT_CREDIT" type="xs:string" minOccurs="0" />
-              <xs:element name="RECORDS_" msprop:Generator_UserColumnName="RECORDS_" msprop:Generator_ColumnPropNameInTable="RECORDS_Column" msprop:Generator_ColumnPropNameInRow="RECORDS_" msprop:Generator_ColumnVarNameInTable="columnRECORDS_" type="xs:string" minOccurs="0" />
-              <xs:element name="PHOTO_CATEGORY" msprop:Generator_ColumnPropNameInRow="PHOTO_CATEGORY" msprop:Generator_ColumnPropNameInTable="PHOTO_CATEGORYColumn" msprop:Generator_ColumnVarNameInTable="columnPHOTO_CATEGORY" msprop:Generator_UserColumnName="PHOTO_CATEGORY" type="xs:string" minOccurs="0" />
+              <xs:element name="RECORDS_" msprop:Generator_ColumnPropNameInTable="RECORDS_Column" msprop:Generator_ColumnPropNameInRow="RECORDS_" msprop:Generator_UserColumnName="RECORDS_" msprop:Generator_ColumnVarNameInTable="columnRECORDS_" type="xs:string" minOccurs="0" />
+              <xs:element name="PHOTO_CATEGORY" msprop:Generator_UserColumnName="PHOTO_CATEGORY" msprop:Generator_ColumnPropNameInTable="PHOTO_CATEGORYColumn" msprop:Generator_ColumnPropNameInRow="PHOTO_CATEGORY" msprop:Generator_ColumnVarNameInTable="columnPHOTO_CATEGORY" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>
