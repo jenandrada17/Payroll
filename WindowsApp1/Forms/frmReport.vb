@@ -1353,10 +1353,7 @@ Public Class frmReport
                                 CATEGORY = "Basic Refund"
                             End If
 
-                            If CATEGORY = "13Th Month Pay" Then
-                                linee = "DC_Amount GetTotal() - 1"
-                                DC_Amount = GetTotal("AMOUNT", $"TBL_EMPLOYEE B inner join RECORDED_ALLOW_DEDUC A on A.BIO_NO = B.BIOMETRICID and B.HO_CATEGORY = 'PGC Head Office' and A.CATEGORY = '13th Month Pay' and A.PAYDATE = '{PAYDATE}'")
-                            End If
+                            'GITANGGAL ANG 13MONTH PAY
 
                             If DC_Amount <> 0 Then
                                 dt_Cost.Rows.Add(COMPANY, BRANCHNAME, CATEGORY, DC_Amount, Debit_Credit)
