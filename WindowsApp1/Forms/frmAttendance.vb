@@ -1225,7 +1225,7 @@ Public Class frmAttendance
                 T_Days7_TXT.Clear()
                 T_RegHol7_TXT.Clear()
                 T_SpecHol7_TXT.Clear()
-                T_OT7_TXT.Clear()
+                T_OT7_TXT.TextAlign = 0
                 T_Late7_TXT.Clear()
                 T_UT7_TXT.Clear()
                 T_Night7_TXT.Clear()
@@ -1309,7 +1309,7 @@ Public Class frmAttendance
         SpecHol7_TXT.Clear()
         T_Days7_TXT.Clear()
         T_Late7_TXT.Clear()
-        T_OT7_TXT.Clear()
+        T_OT7_TXT.Value = Nothing
         T_UT7_TXT.Clear()
         T_RegHol7_TXT.Clear()
         T_SpecHol7_TXT.Clear()
