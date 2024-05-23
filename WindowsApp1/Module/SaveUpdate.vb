@@ -1131,6 +1131,10 @@ Module SaveUpdate
                         End If
                     End Using
 
+                    '============================================= ADDITIONAL PAY DUTY ON REST DAY, HOLIDAYS (AS ADDITIONAL ALLOWANCE) =========================================================
+
+
+
                     '============================================= DEDUCTION =========================================================  
                     Deduction = 0
 

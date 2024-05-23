@@ -1330,7 +1330,7 @@ Public Class frmAttendance
 
                 SavePayout_IndividualL(Bio7_TXT.Text, PAYROLL, starting_date, ending_date)
 
-        SaveLogs($"{Save7_BTN.Tag} ATTENDANCE ({Emp7_TXT.Text} ({Bio7_TXT.Text})) - Days({Days7_TXT.Text}), OT({Overtime7_NUP.Text}), Late({Late7_TXT.Text}), Undertime({Undertime7_TXT.Text}), R/S Holiday({TotalRHoliday_LBL.Text}/{TotalSHoliday_LBL.Text}), Night Rate({Night7_TXT.Text}), SIL({SIL7_NUP.Text})", frmMainForm.UserName_LBL.Text)
+                SaveLogs($"{Save7_BTN.Tag} ATTENDANCE ({Emp7_TXT.Text} ({Bio7_TXT.Text})) - Days({Days7_TXT.Text}), OT({Overtime7_NUP.Text}), Late({Late7_TXT.Text}), Undertime({Undertime7_TXT.Text}), R/S Holiday({TotalRHoliday_LBL.Text}/{TotalSHoliday_LBL.Text}), Night Rate({Night7_TXT.Text}), SIL({SIL7_NUP.Text})", frmMainForm.UserName_LBL.Text)
 
                 Cancel7_BTN.PerformClick()
 
@@ -1369,6 +1369,23 @@ Public Class frmAttendance
         T_RegHol7_TXT.Clear()
         T_SpecHol7_TXT.Clear()
         T_Night7_TXT.Clear()
+
+        txtRestDayDuty.Clear()
+        txtSpecRestDay.Clear()
+        txtRegRestDay.Clear()
+
+        txtRestDayOT.Clear()
+        txtSpecOT.Clear()
+        txtSpecRestDayOT.Clear()
+        txtRegOT.Clear()
+        txtRegRestDayOT.Clear()
+
+        txtSpecNightShift.Clear()
+        txtRegNightShift.Clear()
+
+        txtOrdNightShiftOT.Clear()
+        txtSpecNightShiftOT.Clear()
+        txtRegNightShiftOT.Clear()
     End Sub
 
     Private Sub SIL_BTN_Click(sender As Object, e As EventArgs) Handles SIL_BTN.Click
