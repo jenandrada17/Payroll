@@ -46,7 +46,11 @@ Module SaveUpdate
                                 regHoliday As String, specHoliday As String, specHoliday_hrs As Double, SIL As Double, LATE_ADJUSTMENT As String, Optional LATE_APPROVED As String = "",
                                         Optional MORNING_OT As String = "", Optional NIGHT_RATE As String = "", Optional BRANCH As Boolean = False,
                                         Optional TRAINING_DAYS As Integer = 0, Optional TRAINING_REGHOLIDAY As Integer = 0, Optional TRAINING_SPECHOLIDAY As Integer = 0,
-                                        Optional TRAINING_OVERTIME As Integer = 0, Optional TRAINING_LATE As Integer = 0, Optional TRAINING_UNDERTIME As Integer = 0, Optional TRAINING_NIGHTRATE As Integer = 0)
+                                        Optional TRAINING_OVERTIME As Integer = 0, Optional TRAINING_LATE As Integer = 0, Optional TRAINING_UNDERTIME As Integer = 0, Optional TRAINING_NIGHTRATE As Integer = 0,
+                                        Optional DUTY_RESTDAY As Integer = 0, Optional DUTY_SPEC_RESTDAY As Integer = 0, Optional DUTY_REG_RESTDAY As Integer = 0,
+                                        Optional DUTY_RESTDAY_OT As Double = 0, Optional DUTY_SPEC_OT As Double = 0, Optional DUTY_SPEC_RESTDAY_OT As Double = 0, Optional DUTY_REG_OT As Double = 0, Optional DUTY_REG_RESTDAY_OT As Double = 0,
+                                        Optional DUTY_SPEC_NIGHTSHIFT As Double = 0, Optional DUTY_REG_NIGHTSHIFT As Double = 0,
+                                        Optional DUTY_ORD_NIGHTSHIFT_OT As Double = 0, Optional DUTY_SPEC_NIGHTSHIFT_OT As Double = 0, Optional DUTY_REG_NIGHTSHIFT_OT As Double = 0)
 
         Dim mysql As String = $"Select * FROM PAYROLL_ATTENDANCE A inner join tbl_employee B on B.BIOMETRICID = A.BIOMETRICID where A.BIOMETRICID = '{biometric}' and PAYDATE = '{paydate}'"
         Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
@@ -88,6 +92,20 @@ Module SaveUpdate
                     .Item("TRAINING_LATE") = TRAINING_LATE
                     .Item("TRAINING_UNDERTIME") = TRAINING_UNDERTIME
                     .Item("TRAINING_NIGHTRATE") = TRAINING_NIGHTRATE
+
+                    .Item("DUTY_RESTDAY") = DUTY_RESTDAY
+                    .Item("DUTY_SPEC_RESTDAY") = DUTY_SPEC_RESTDAY
+                    .Item("DUTY_REG_RESTDAY") = DUTY_REG_RESTDAY
+                    .Item("DUTY_RESTDAY_OT") = DUTY_RESTDAY_OT
+                    .Item("DUTY_SPEC_OT") = DUTY_SPEC_OT
+                    .Item("DUTY_SPEC_RESTDAY_OT") = DUTY_SPEC_RESTDAY_OT
+                    .Item("DUTY_REG_OT") = DUTY_REG_OT
+                    .Item("DUTY_REG_RESTDAY_OT") = DUTY_REG_RESTDAY_OT
+                    .Item("DUTY_SPEC_NIGHTSHIFT") = DUTY_SPEC_NIGHTSHIFT
+                    .Item("DUTY_REG_NIGHTSHIFT") = DUTY_REG_NIGHTSHIFT
+                    .Item("DUTY_ORD_NIGHTSHIFT_OT") = DUTY_ORD_NIGHTSHIFT_OT
+                    .Item("DUTY_SPEC_NIGHTSHIFT_OT") = DUTY_SPEC_NIGHTSHIFT_OT
+                    .Item("DUTY_REG_NIGHTSHIFT_OT") = DUTY_REG_NIGHTSHIFT_OT
                 End If
 
             End With
@@ -136,6 +154,21 @@ Module SaveUpdate
                         If TRAINING_LATE <> 0 Then .Item("TRAINING_LATE") = TRAINING_LATE
                         If TRAINING_UNDERTIME <> 0 Then .Item("TRAINING_UNDERTIME") = TRAINING_UNDERTIME
                         If TRAINING_NIGHTRATE <> 0 Then .Item("TRAINING_NIGHTRATE") = TRAINING_NIGHTRATE
+
+                        If DUTY_RESTDAY <> 0 Then .Item("DUTY_RESTDAY") = DUTY_RESTDAY
+                        If DUTY_SPEC_RESTDAY <> 0 Then .Item("DUTY_SPEC_RESTDAY") = DUTY_SPEC_RESTDAY
+                        If DUTY_REG_RESTDAY <> 0 Then .Item("DUTY_REG_RESTDAY") = DUTY_REG_RESTDAY
+                        If DUTY_RESTDAY_OT <> 0 Then .Item("DUTY_RESTDAY_OT") = DUTY_RESTDAY_OT
+                        If DUTY_SPEC_OT <> 0 Then .Item("DUTY_SPEC_OT") = DUTY_SPEC_OT
+                        If DUTY_SPEC_RESTDAY_OT <> 0 Then .Item("DUTY_SPEC_RESTDAY_OT") = DUTY_SPEC_RESTDAY_OT
+                        If DUTY_REG_OT <> 0 Then .Item("DUTY_REG_OT") = DUTY_REG_OT
+                        If DUTY_REG_RESTDAY_OT <> 0 Then .Item("DUTY_REG_RESTDAY_OT") = DUTY_REG_RESTDAY_OT
+                        If DUTY_SPEC_NIGHTSHIFT <> 0 Then .Item("DUTY_SPEC_NIGHTSHIFT") = DUTY_SPEC_NIGHTSHIFT
+                        If DUTY_REG_NIGHTSHIFT <> 0 Then .Item("DUTY_REG_NIGHTSHIFT") = DUTY_REG_NIGHTSHIFT
+                        If DUTY_ORD_NIGHTSHIFT_OT <> 0 Then .Item("DUTY_ORD_NIGHTSHIFT_OT") = DUTY_ORD_NIGHTSHIFT_OT
+                        If DUTY_SPEC_NIGHTSHIFT_OT <> 0 Then .Item("DUTY_SPEC_NIGHTSHIFT_OT") = DUTY_SPEC_NIGHTSHIFT_OT
+                        If DUTY_REG_NIGHTSHIFT_OT <> 0 Then .Item("DUTY_REG_NIGHTSHIFT_OT") = DUTY_REG_NIGHTSHIFT_OT
+
                     End If
 
                 End With
@@ -753,6 +786,12 @@ Module SaveUpdate
                     Dim Rholiday_newMin_covred_training As Integer = 0
                     Dim Sholiday_newMin_covred_training As Integer = 0
                     Dim branch_manual As Boolean = False
+                    '============================= BRANCH EXCESS DUTY ==============================
+                    Dim DUTY_RESTDAY As Integer = 0, DUTY_SPEC_RESTDAY = 0, DUTY_REG_RESTDAY = 0
+                    Dim DUTY_RESTDAY_OT As Double = 0, DUTY_SPEC_OT = 0, DUTY_SPEC_RESTDAY_OT = 0, DUTY_REG_OT = 0, DUTY_REG_RESTDAY_OT = 0
+                    Dim DUTY_SPEC_NIGHTSHIFT As Integer = 0, DUTY_REG_NIGHTSHIFT = 0
+                    Dim DUTY_ORD_NIGHTSHIFT_OT As Double = 0, DUTY_SPEC_NIGHTSHIFT_OT = 0, DUTY_REG_NIGHTSHIFT_OT = 0
+                    Dim TOTAL_EXCESS_DUTY As Decimal = 0
 
                     ''============================================= ATTENDANCE (TOTAL DAYS) =========================================================
                     Dim sql_1 As String = $"Select * From PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{bioNo}' and paydate = '{paydate_}'"
@@ -784,6 +823,24 @@ Module SaveUpdate
                                         Training_totalLate = IIf(IsDBNull(.Item("TRAINING_LATE")), 0, .Item("TRAINING_LATE"))
                                         Training_totalUT = IIf(IsDBNull(.Item("TRAINING_UNDERTIME")), 0, .Item("TRAINING_UNDERTIME"))
                                         Training_nightRate = IIf(IsDBNull(.Item("TRAINING_NIGHTRATE")), 0, .Item("TRAINING_NIGHTRATE"))
+
+                                        DUTY_RESTDAY = IIf(IsDBNull(.Item("DUTY_RESTDAY")), 0, .Item("DUTY_RESTDAY"))
+                                        DUTY_SPEC_RESTDAY = IIf(IsDBNull(.Item("DUTY_SPEC_RESTDAY")), 0, .Item("DUTY_SPEC_RESTDAY"))
+                                        DUTY_REG_RESTDAY = IIf(IsDBNull(.Item("DUTY_REG_RESTDAY")), 0, .Item("DUTY_REG_RESTDAY"))
+
+                                        DUTY_RESTDAY_OT = IIf(IsDBNull(.Item("DUTY_RESTDAY_OT")), 0, .Item("DUTY_RESTDAY_OT"))
+                                        DUTY_SPEC_OT = IIf(IsDBNull(.Item("DUTY_SPEC_OT")), 0, .Item("DUTY_SPEC_OT"))
+                                        DUTY_SPEC_RESTDAY_OT = IIf(IsDBNull(.Item("DUTY_SPEC_RESTDAY_OT")), 0, .Item("DUTY_SPEC_RESTDAY_OT"))
+                                        DUTY_REG_OT = IIf(IsDBNull(.Item("DUTY_REG_OT")), 0, .Item("DUTY_REG_OT"))
+                                        DUTY_REG_RESTDAY_OT = IIf(IsDBNull(.Item("DUTY_REG_RESTDAY_OT")), 0, .Item("DUTY_REG_RESTDAY_OT"))
+
+                                        DUTY_SPEC_NIGHTSHIFT = IIf(IsDBNull(.Item("DUTY_SPEC_NIGHTSHIFT")), 0, .Item("DUTY_SPEC_NIGHTSHIFT"))
+                                        DUTY_REG_NIGHTSHIFT = IIf(IsDBNull(.Item("DUTY_REG_NIGHTSHIFT")), 0, .Item("DUTY_REG_NIGHTSHIFT"))
+
+                                        DUTY_ORD_NIGHTSHIFT_OT = IIf(IsDBNull(.Item("DUTY_ORD_NIGHTSHIFT_OT")), 0, .Item("DUTY_ORD_NIGHTSHIFT_OT"))
+                                        DUTY_SPEC_NIGHTSHIFT_OT = IIf(IsDBNull(.Item("DUTY_SPEC_NIGHTSHIFT_OT")), 0, .Item("DUTY_SPEC_NIGHTSHIFT_OT"))
+                                        DUTY_REG_NIGHTSHIFT_OT = IIf(IsDBNull(.Item("DUTY_REG_NIGHTSHIFT_OT")), 0, .Item("DUTY_REG_NIGHTSHIFT_OT"))
+
                                     End If
                                 End If
 

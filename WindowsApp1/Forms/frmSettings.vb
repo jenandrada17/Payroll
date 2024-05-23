@@ -247,8 +247,7 @@
         End If
     End Sub
 
-    Private Sub Rate_BranchAmount_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Rate_CityAmount_TXT.KeyPress,
-                                                Rate_BioNo_TXT.KeyPress
+    Private Sub Rate_BranchAmount_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Rate_CityAmount_TXT.KeyPress, Rate_BioNo_TXT.KeyPress
 
         If e.KeyChar <> ChrW(Keys.Back) Then
             If Not Char.IsNumber(e.KeyChar) AndAlso Not Char.IsControl(e.KeyChar) AndAlso Not e.KeyChar = "." Then
@@ -473,15 +472,6 @@
                 Rate_BioNo_TXT.Tag = .BRANCH_CODE
                 Rate_Employee_TXT.Text = .Fullname
                 Rate_Employee_TXT.Tag = .EMP_ID
-
-                'ElseIf tabName = "ALLOWANCE" Then
-
-                '    Allow_Name_TXT.Text = .Fullname
-                '    Allow_Name_TXT.Tag = .BiometricID
-                '    Allow_SearchEmp_BTN.Tag = .BRANCH_CODE
-                '    Label14.Tag = .EMP_ID
-                '    Settings_Tab.SelectedIndex = 2
-                '    Allow_Category_Combo.SelectedItem = category
 
             ElseIf tabName = "TIMEIN/OUT" Then
 

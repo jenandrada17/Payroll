@@ -1208,6 +1208,23 @@ Public Class frmAttendance
                         T_UT7_TXT.Text = IIf(IsDBNull(.Item("TRAINING_UNDERTIME")) Or .Item("TRAINING_UNDERTIME").Equals("0"), "", .Item("TRAINING_UNDERTIME"))
                         T_Night7_TXT.Text = IIf(IsDBNull(.Item("TRAINING_NIGHTRATE")) Or .Item("TRAINING_NIGHTRATE").Equals("0"), "", .Item("TRAINING_NIGHTRATE"))
 
+                        txtRestDayDuty.Text = IIf(IsDBNull(.Item("DUTY_RESTDAY")) Or .Item("DUTY_RESTDAY").Equals("0"), "", .Item("DUTY_RESTDAY"))
+                        txtSpecRestDay.Text = IIf(IsDBNull(.Item("DUTY_SPEC_RESTDAY")) Or .Item("DUTY_SPEC_RESTDAY").Equals("0"), "", .Item("DUTY_SPEC_RESTDAY"))
+                        txtRegRestDay.Text = IIf(IsDBNull(.Item("DUTY_REG_RESTDAY")) Or .Item("DUTY_REG_RESTDAY").Equals("0"), "", .Item("DUTY_REG_RESTDAY"))
+
+                        txtRestDayOT.Text = IIf(IsDBNull(.Item("DUTY_RESTDAY_OT")) Or .Item("DUTY_RESTDAY_OT").Equals("0"), "", .Item("DUTY_RESTDAY_OT"))
+                        txtSpecOT.Text = IIf(IsDBNull(.Item("DUTY_SPEC_OT")) Or .Item("DUTY_SPEC_OT").Equals("0"), "", .Item("DUTY_SPEC_OT"))
+                        txtSpecRestDayOT.Text = IIf(IsDBNull(.Item("DUTY_SPEC_RESTDAY_OT")) Or .Item("DUTY_SPEC_RESTDAY_OT").Equals("0"), "", .Item("DUTY_SPEC_RESTDAY_OT"))
+                        txtRegOT.Text = IIf(IsDBNull(.Item("DUTY_REG_OT")) Or .Item("DUTY_REG_OT").Equals("0"), "", .Item("DUTY_REG_OT"))
+                        txtRegRestDayOT.Text = IIf(IsDBNull(.Item("DUTY_REG_RESTDAY_OT")) Or .Item("DUTY_REG_RESTDAY_OT").Equals("0"), "", .Item("DUTY_REG_RESTDAY_OT"))
+
+                        txtSpecNightShift.Text = IIf(IsDBNull(.Item("DUTY_SPEC_NIGHTSHIFT")) Or .Item("DUTY_SPEC_NIGHTSHIFT").Equals("0"), "", .Item("DUTY_SPEC_NIGHTSHIFT"))
+                        txtRegNightShift.Text = IIf(IsDBNull(.Item("DUTY_REG_NIGHTSHIFT")) Or .Item("DUTY_REG_NIGHTSHIFT").Equals("0"), "", .Item("DUTY_REG_NIGHTSHIFT"))
+
+                        txtOrdNightShiftOT.Text = IIf(IsDBNull(.Item("DUTY_ORD_NIGHTSHIFT_OT")) Or .Item("DUTY_ORD_NIGHTSHIFT_OT").Equals("0"), "", .Item("DUTY_ORD_NIGHTSHIFT_OT"))
+                        txtSpecNightShiftOT.Text = IIf(IsDBNull(.Item("DUTY_SPEC_NIGHTSHIFT_OT")) Or .Item("DUTY_SPEC_NIGHTSHIFT_OT").Equals("0"), "", .Item("DUTY_SPEC_NIGHTSHIFT_OT"))
+                        txtRegNightShiftOT.Text = IIf(IsDBNull(.Item("DUTY_REG_NIGHTSHIFT_OT")) Or .Item("DUTY_REG_NIGHTSHIFT_OT").Equals("0"), "", .Item("DUTY_REG_NIGHTSHIFT_OT"))
+
                     End With
                 Next
 
@@ -1229,6 +1246,24 @@ Public Class frmAttendance
                 T_Late7_TXT.Clear()
                 T_UT7_TXT.Clear()
                 T_Night7_TXT.Clear()
+
+                txtRestDayDuty.Clear()
+                txtSpecRestDay.Clear()
+                txtRegRestDay.Clear()
+
+                txtRestDayOT.Clear()
+                txtSpecOT.Clear()
+                txtSpecRestDayOT.Clear()
+                txtRegOT.Clear()
+                txtRegRestDayOT.Clear()
+
+                txtSpecNightShift.Clear()
+                txtRegNightShift.Clear()
+
+                txtOrdNightShiftOT.Clear()
+                txtSpecNightShiftOT.Clear()
+                txtRegNightShiftOT.Clear()
+
             End If
         End Using
     End Sub
@@ -1269,13 +1304,33 @@ Public Class frmAttendance
                 Dim TRAINING_UNDERTIME As Integer = IIf(T_UT7_TXT.Text = Nothing, 0, T_UT7_TXT.Text)
                 Dim TRAINING_NIGHTRATE As Integer = IIf(T_Night7_TXT.Text = Nothing, 0, T_Night7_TXT.Text)
 
+                Dim DUTY_RESTDAY As Integer = IIf(txtRestDayDuty.Text = Nothing, 0, txtRestDayDuty.Text)
+                Dim DUTY_SPEC_RESTDAY As Integer = IIf(txtSpecRestDay.Text = Nothing, 0, txtSpecRestDay.Text)
+                Dim DUTY_REG_RESTDAY As Integer = IIf(txtRegRestDay.Text = Nothing, 0, txtRegRestDay.Text)
+
+                Dim DUTY_RESTDAY_OT As Double = IIf(txtRestDayOT.Text = Nothing, 0, txtRestDayOT.Text)
+                Dim DUTY_SPEC_OT As Double = IIf(txtSpecOT.Text = Nothing, 0, txtSpecOT.Text)
+                Dim DUTY_SPEC_RESTDAY_OT As Double = IIf(txtSpecRestDayOT.Text = Nothing, 0, txtSpecRestDayOT.Text)
+                Dim DUTY_REG_OT As Double = IIf(txtRegOT.Text = Nothing, 0, txtRegOT.Text)
+                Dim DUTY_REG_RESTDAY_OT As Double = IIf(txtRegRestDayOT.Text = Nothing, 0, txtRegRestDayOT.Text)
+
+                Dim DUTY_SPEC_NIGHTSHIFT As Integer = IIf(txtSpecNightShift.Text = Nothing, 0, txtSpecNightShift.Text)
+                Dim DUTY_REG_NIGHTSHIFT As Integer = IIf(txtRegNightShift.Text = Nothing, 0, txtRegNightShift.Text)
+
+                Dim DUTY_ORD_NIGHTSHIFT_OT As Double = IIf(txtOrdNightShiftOT.Text = Nothing, 0, txtOrdNightShiftOT.Text)
+                Dim DUTY_SPEC_NIGHTSHIFT_OT As Double = IIf(txtSpecNightShiftOT.Text = Nothing, 0, txtSpecNightShiftOT.Text)
+                Dim DUTY_REG_NIGHTSHIFT_OT As Double = IIf(txtRegNightShiftOT.Text = Nothing, 0, txtRegNightShiftOT.Text)
+
                 SaveAttendanceEE(Bio7_TXT.Text, PAYROLL, Days7_TXT.Text, overtime, latee, undertimee,
                                      RHOLIDAY, SHOLIDAY, specHoliday_hrs, sil, 0, "", "", night7, True, TRAINING_DAYS, TRAINING_REGHOLIDAY,
-                                     TRAINING_SPECHOLIDAY, TRAINING_OVERTIME, TRAINING_LATE, TRAINING_UNDERTIME, TRAINING_NIGHTRATE)
+                                     TRAINING_SPECHOLIDAY, TRAINING_OVERTIME, TRAINING_LATE, TRAINING_UNDERTIME, TRAINING_NIGHTRATE,
+                                     DUTY_RESTDAY, DUTY_SPEC_RESTDAY, DUTY_REG_RESTDAY, DUTY_RESTDAY_OT, DUTY_SPEC_OT, DUTY_SPEC_RESTDAY_OT, DUTY_REG_OT, DUTY_REG_RESTDAY_OT,
+                                     DUTY_SPEC_NIGHTSHIFT, DUTY_REG_NIGHTSHIFT, DUTY_ORD_NIGHTSHIFT_OT, DUTY_SPEC_NIGHTSHIFT_OT, DUTY_REG_NIGHTSHIFT_OT)
+
 
                 SavePayout_IndividualL(Bio7_TXT.Text, PAYROLL, starting_date, ending_date)
 
-                SaveLogs($"{Save7_BTN.Tag} ATTENDANCE ({Emp7_TXT.Text} ({Bio7_TXT.Text})) - Days({Days7_TXT.Text}), OT({Overtime7_NUP.Text}), Late({Late7_TXT.Text}), Undertime({Undertime7_TXT.Text}), R/S Holiday({TotalRHoliday_LBL.Text}/{TotalSHoliday_LBL.Text}), Night Rate({Night7_TXT.Text}), SIL({SIL7_NUP.Text})", frmMainForm.UserName_LBL.Text)
+        SaveLogs($"{Save7_BTN.Tag} ATTENDANCE ({Emp7_TXT.Text} ({Bio7_TXT.Text})) - Days({Days7_TXT.Text}), OT({Overtime7_NUP.Text}), Late({Late7_TXT.Text}), Undertime({Undertime7_TXT.Text}), R/S Holiday({TotalRHoliday_LBL.Text}/{TotalSHoliday_LBL.Text}), Night Rate({Night7_TXT.Text}), SIL({SIL7_NUP.Text})", frmMainForm.UserName_LBL.Text)
 
                 Cancel7_BTN.PerformClick()
 
@@ -1454,6 +1509,23 @@ Public Class frmAttendance
                 Dim TRAINING_NIGHTRATE As Integer = IIf(eCell(row, 16).Value = Nothing, 0, eCell(row, 16).Value)
                 Dim TRAINING_DAYS As Integer = IIf(eCell(row, 17).Value = Nothing, 0, eCell(row, 17).Value)
 
+                Dim DUTY_RESTDAY As Integer = IIf(eCell(row, 18).Value = Nothing, 0, eCell(row, 18).Value)
+                Dim DUTY_SPEC_RESTDAY As Integer = IIf(eCell(row, 19).Value = Nothing, 0, eCell(row, 19).Value)
+                Dim DUTY_REG_RESTDAY As Integer = IIf(eCell(row, 20).Value = Nothing, 0, eCell(row, 20).Value)
+
+                Dim DUTY_RESTDAY_OT As Double = IIf(eCell(row, 21).Value = Nothing, 0, eCell(row, 21).Value)
+                Dim DUTY_SPEC_OT As Double = IIf(eCell(row, 22).Value = Nothing, 0, eCell(row, 22).Value)
+                Dim DUTY_SPEC_RESTDAY_OT As Double = IIf(eCell(row, 23).Value = Nothing, 0, eCell(row, 23).Value)
+                Dim DUTY_REG_OT As Double = IIf(eCell(row, 24).Value = Nothing, 0, eCell(row, 24).Value)
+                Dim DUTY_REG_RESTDAY_OT As Double = IIf(eCell(row, 25).Value = Nothing, 0, eCell(row, 25).Value)
+
+                Dim DUTY_SPEC_NIGHTSHIFT As Integer = IIf(eCell(row, 26).Value = Nothing, 0, eCell(row, 26).Value)
+                Dim DUTY_REG_NIGHTSHIFT As Integer = IIf(eCell(row, 27).Value = Nothing, 0, eCell(row, 27).Value)
+
+                Dim DUTY_ORD_NIGHTSHIFT_OT As Double = IIf(eCell(row, 28).Value = Nothing, 0, eCell(row, 28).Value)
+                Dim DUTY_SPEC_NIGHTSHIFT_OT As Double = IIf(eCell(row, 29).Value = Nothing, 0, eCell(row, 29).Value)
+                Dim DUTY_REG_NIGHTSHIFT_OT As Double = IIf(eCell(row, 30).Value = Nothing, 0, eCell(row, 30).Value)
+
                 If totalDays <> 0 Then
                     RunCommand($"DELETE FROM PAYROLL_ATTENDANCE WHERE PAYDATE = '{payroll}' AND BRANCH_MANUAL = TRUE AND BIOMETRICID = {bioNo};")
                     RunCommand($"DELETE FROM PAYROLL_PAYOUT WHERE PAYDATE = '{payroll}' AND BIOMETRIC_ID = {bioNo};")
@@ -1461,7 +1533,11 @@ Public Class frmAttendance
 
                     SaveAttendanceEE(bioNo, payroll, totalDays, overtime, late, undertime,
                                  regHoliday, TotalSHoliday_LBL.Text, specHoliday_hrs, sil, Nothing, Nothing, Nothing, nightRate, True,
-                                 TRAINING_DAYS, TRAINING_REGHOLIDAY, TRAINING_SPECHOLIDAY, TRAINING_OVERTIME, TRAINING_LATE, TRAINING_UNDERTIME, TRAINING_NIGHTRATE)
+                                 TRAINING_DAYS, TRAINING_REGHOLIDAY, TRAINING_SPECHOLIDAY, TRAINING_OVERTIME, TRAINING_LATE, TRAINING_UNDERTIME, TRAINING_NIGHTRATE,
+                                 DUTY_RESTDAY, DUTY_SPEC_RESTDAY, DUTY_REG_RESTDAY,
+                                 DUTY_RESTDAY_OT, DUTY_SPEC_OT, DUTY_SPEC_RESTDAY_OT, DUTY_REG_OT, DUTY_REG_RESTDAY_OT,
+                                 DUTY_SPEC_NIGHTSHIFT, DUTY_REG_NIGHTSHIFT,
+                                 DUTY_ORD_NIGHTSHIFT_OT, DUTY_SPEC_NIGHTSHIFT_OT, DUTY_REG_NIGHTSHIFT_OT)
 
                     SavePayout_IndividualL(bioNo, payroll, starting_date, ending_date)
 
