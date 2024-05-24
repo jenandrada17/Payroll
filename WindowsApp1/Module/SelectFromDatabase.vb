@@ -1287,7 +1287,7 @@ Module SelectFromDatabase
 
     Public Function Holiday_Rate(holiday As String) As Double
         Dim rate As Double = 0
-        Dim mysql As String = "Select * From payroll_holiday_rate WHERE HOLIDAY= '" & holiday & "'"
+        Dim mysql As String = "Select * From payroll_holiday_rate WHERE DAY_NAME= '" & holiday & "'"
         Using ds As DataSet = LoadSQL(mysql, "payroll_holiday_rate")
             If ds.Tables(0).Rows.Count > 0 Then
                 Dim data As DataRow = ds.Tables(0).Rows(0)

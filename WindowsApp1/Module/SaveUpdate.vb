@@ -662,6 +662,23 @@ Module SaveUpdate
         Dim regHoliday = Holiday_Rate("REGULAR")
         Dim specHoliday = Holiday_Rate("SPECIAL")
 
+        Dim RESTDAY = Holiday_Rate("RESTDAY")
+        Dim SPEC_RESTDAY = Holiday_Rate("SPEC_RESTDAY")
+        Dim REG_RESTDAY = Holiday_Rate("REG_RESTDAY")
+
+        Dim RESTDAY_OT = Holiday_Rate("RESTDAY_OT")
+        Dim SPEC_OT = Holiday_Rate("SPEC_OT")
+        Dim SPEC_RESTDAY_OT = Holiday_Rate("SPEC_RESTDAY_OT")
+        Dim REG_OT = Holiday_Rate("REG_OT")
+        Dim REG_RESTDAY_OT = Holiday_Rate("REG_RESTDAY_OT")
+
+        Dim SPEC_NIGHTSHIFT = Holiday_Rate("SPEC_NIGHTSHIFT")
+        Dim REG_NIGHTSHIFT = Holiday_Rate("REG_NIGHTSHIFT")
+
+        Dim ORD_NIGHTSHIFT_OT = Holiday_Rate("ORD_NIGHTSHIFT_OT")
+        Dim SPEC_NIGHTSHIFT_OT = Holiday_Rate("SPEC_NIGHTSHIFT_OT")
+        Dim REG_NIGHTSHIFT_OT = Holiday_Rate("REG_NIGHTSHIFT_OT")
+
         Dim sched As String = ""
         Dim date_pay As DateTime = Convert.ToDateTime(paydate_)
         date_pay = date_pay.ToString("d")
@@ -1132,7 +1149,86 @@ Module SaveUpdate
                     End Using
 
                     '============================================= ADDITIONAL PAY DUTY ON REST DAY, HOLIDAYS (AS ADDITIONAL ALLOWANCE) =========================================================
+                    Dim DutyAmount As Decimal = 0
+                    If DUTY_RESTDAY <> 0 Then
+                        'AdditionalDuty(typeOfRate As String, typeOfDay As String, rate As Decimal, percentageRate As Decimal, nameOfCategory As String)
+                        DutyAmount = (DUTY_RESTDAY * rate) * RESTDAY
+                        Allowances = Allowances + DutyAmount
+                        Save_Recorded_Allow_Deduc(bioNo, paydate_, "Rest Day Duty", DutyAmount, "ALLOWANCE")
+                    End If
+                    If DUTY_SPEC_RESTDAY <> 0 Then
+                        DutyAmount = (DUTY_SPEC_RESTDAY * rate) * SPEC_RESTDAY
+                        Allowances = Allowances + DutyAmount
+                        Save_Recorded_Allow_Deduc(bioNo, paydate_, "Spec. Hol., Rest Day", DutyAmount, "ALLOWANCE")
+                    End If
+                    If DUTY_REG_RESTDAY <> 0 Then
+                        DutyAmount = (DUTY_REG_RESTDAY * rate) * REG_RESTDAY
+                        Allowances = Allowances + DutyAmount
+                        Save_Recorded_Allow_Deduc(bioNo, paydate_, "Reg. Hol., Rest Day", DutyAmount, "ALLOWANCE")
+                    End If
 
+                    If DUTY_RESTDAY_OT <> 0 Then
+                        Dim ott = DUTY_RESTDAY_OT / 8
+                        DutyAmount = (ott * rate) * RESTDAY_OT
+                        Allowances = Allowances + DutyAmount
+                        Save_Recorded_Allow_Deduc(bioNo, paydate_, "Rest Day, OT", DutyAmount, "ALLOWANCE")
+                    End If
+                    If DUTY_SPEC_OT <> 0 Then
+                        Dim ott = DUTY_SPEC_OT / 8
+                        DutyAmount = (ott * rate) * SPEC_OT
+                        Allowances = Allowances + DutyAmount
+                        Save_Recorded_Allow_Deduc(bioNo, paydate_, "Spec. Hol., OT", DutyAmount, "ALLOWANCE")
+                    End If
+                    If DUTY_SPEC_RESTDAY_OT <> 0 Then
+                        Dim ott = DUTY_SPEC_RESTDAY_OT / 8
+                        DutyAmount = (ott * rate) * SPEC_RESTDAY_OT
+                        Allowances = Allowances + DutyAmount
+                        Save_Recorded_Allow_Deduc(bioNo, paydate_, "Spec. Hol., Rest Day, OT", DutyAmount, "ALLOWANCE")
+                    End If
+                    If DUTY_REG_OT <> 0 Then
+                        Dim ott = DUTY_REG_OT / 8
+                        DutyAmount = (ott * rate) * REG_OT
+                        Allowances = Allowances + DutyAmount
+                        Save_Recorded_Allow_Deduc(bioNo, paydate_, "Reg. Hol., OT", DutyAmount, "ALLOWANCE")
+                    End If
+                    If DUTY_REG_RESTDAY_OT <> 0 Then
+                        Dim ott = DUTY_REG_RESTDAY_OT / 8
+                        DutyAmount = (ott * rate) * REG_RESTDAY_OT
+                        Allowances = Allowances + DutyAmount
+                        Save_Recorded_Allow_Deduc(bioNo, paydate_, "Reg. Hol., Rest Day, OT", DutyAmount, "ALLOWANCE")
+                    End If
+
+                    If DUTY_SPEC_NIGHTSHIFT <> 0 Then
+                        Dim ott = DUTY_SPEC_NIGHTSHIFT / 8
+                        DutyAmount = (ott * rate) * SPEC_NIGHTSHIFT
+                        Allowances = Allowances + DutyAmount
+                        Save_Recorded_Allow_Deduc(bioNo, paydate_, "Spec. Hol., Night Shift", DutyAmount, "ALLOWANCE")
+                    End If
+                    If DUTY_REG_NIGHTSHIFT <> 0 Then
+                        Dim ott = DUTY_REG_NIGHTSHIFT / 8
+                        DutyAmount = (ott * rate) * REG_NIGHTSHIFT
+                        Allowances = Allowances + DutyAmount
+                        Save_Recorded_Allow_Deduc(bioNo, paydate_, "Reg. Hol., Night Shift", DutyAmount, "ALLOWANCE")
+                    End If
+
+                    If DUTY_ORD_NIGHTSHIFT_OT <> 0 Then
+                        Dim ott = DUTY_ORD_NIGHTSHIFT_OT / 8
+                        DutyAmount = (ott * rate) * ORD_NIGHTSHIFT_OT
+                        Allowances = Allowances + DutyAmount
+                        Save_Recorded_Allow_Deduc(bioNo, paydate_, "Night Shift, OT", DutyAmount, "ALLOWANCE")
+                    End If
+                    If DUTY_SPEC_NIGHTSHIFT_OT <> 0 Then
+                        Dim ott = DUTY_SPEC_NIGHTSHIFT_OT / 8
+                        DutyAmount = (ott * rate) * SPEC_NIGHTSHIFT_OT
+                        Allowances = Allowances + DutyAmount
+                        Save_Recorded_Allow_Deduc(bioNo, paydate_, "Spec. Hol., Night Shift, OT", DutyAmount, "ALLOWANCE")
+                    End If
+                    If DUTY_REG_NIGHTSHIFT_OT <> 0 Then
+                        Dim ott = DUTY_REG_NIGHTSHIFT_OT / 8
+                        DutyAmount = (ott * rate) * REG_NIGHTSHIFT_OT
+                        Allowances = Allowances + DutyAmount
+                        Save_Recorded_Allow_Deduc(bioNo, paydate_, "Reg. Hol., Night Shift, OT", DutyAmount, "ALLOWANCE")
+                    End If
 
 
                     '============================================= DEDUCTION =========================================================  
