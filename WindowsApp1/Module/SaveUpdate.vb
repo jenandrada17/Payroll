@@ -804,10 +804,10 @@ Module SaveUpdate
                     Dim Sholiday_newMin_covred_training As Integer = 0
                     Dim branch_manual As Boolean = False
                     '============================= BRANCH EXCESS DUTY ==============================
-                    Dim DUTY_RESTDAY As Integer = 0, DUTY_SPEC_RESTDAY = 0, DUTY_REG_RESTDAY = 0
-                    Dim DUTY_RESTDAY_OT As Double = 0, DUTY_SPEC_OT = 0, DUTY_SPEC_RESTDAY_OT = 0, DUTY_REG_OT = 0, DUTY_REG_RESTDAY_OT = 0
-                    Dim DUTY_SPEC_NIGHTSHIFT As Integer = 0, DUTY_REG_NIGHTSHIFT = 0
-                    Dim DUTY_ORD_NIGHTSHIFT_OT As Double = 0, DUTY_SPEC_NIGHTSHIFT_OT = 0, DUTY_REG_NIGHTSHIFT_OT = 0
+                    Dim DUTY_RESTDAY As Double = 0 : Dim DUTY_SPEC_RESTDAY As Double = 0 : Dim DUTY_REG_RESTDAY As Double = 0
+                    Dim DUTY_RESTDAY_OT As Double = 0 : Dim DUTY_SPEC_OT As Double = 0 : Dim DUTY_SPEC_RESTDAY_OT As Double = 0 : Dim DUTY_REG_OT As Double = 0 : Dim DUTY_REG_RESTDAY_OT As Double = 0
+                    Dim DUTY_SPEC_NIGHTSHIFT As Double = 0 : Dim DUTY_REG_NIGHTSHIFT As Double = 0
+                    Dim DUTY_ORD_NIGHTSHIFT_OT As Double = 0 : Dim DUTY_SPEC_NIGHTSHIFT_OT As Double = 0 : Dim DUTY_REG_NIGHTSHIFT_OT As Double = 0
                     Dim TOTAL_EXCESS_DUTY As Decimal = 0
 
                     ''============================================= ATTENDANCE (TOTAL DAYS) =========================================================
@@ -861,7 +861,7 @@ Module SaveUpdate
                                     End If
                                 End If
 
-                                    SIL = .Item("SIL") + Get_SIL("PAYROLL_SCHED_COUNT", $"PAYROLL_SCHED_COUNT WHERE BIO_NO = '{bioNo}' AND PAYDATE = '{paydate_}'")
+                                SIL = .Item("SIL") + Get_SIL("PAYROLL_SCHED_COUNT", $"PAYROLL_SCHED_COUNT WHERE BIO_NO = '{bioNo}' AND PAYDATE = '{paydate_}'")
                             End With
                         End If
                     End Using
@@ -1151,7 +1151,8 @@ Module SaveUpdate
                     '============================================= ADDITIONAL PAY DUTY ON REST DAY, HOLIDAYS (AS ADDITIONAL ALLOWANCE) =========================================================
                     Dim DutyAmount As Decimal = 0
                     If DUTY_RESTDAY <> 0 Then
-                        'AdditionalDuty(typeOfRate As String, typeOfDay As String, rate As Decimal, percentageRate As Decimal, nameOfCategory As String)
+                        'AdditionalDuty(dayNotHour As Boolean, typeOfDay As Double, rate As Decimal, percentageRate As Decimal, nameOfCategory As String)
+                        'AdditionalDuty(True, DUTY_RESTDAY, rate, RESTDAY, "Rest Day Duty")
                         DutyAmount = (DUTY_RESTDAY * rate) * RESTDAY
                         Allowances = Allowances + DutyAmount
                         Save_Recorded_Allow_Deduc(bioNo, paydate_, "Rest Day Duty", DutyAmount, "ALLOWANCE")
@@ -1437,6 +1438,16 @@ Module SaveUpdate
             End If
         End Using
     End Sub
+
+    Private Function AdditionalDuty(dayNotHour As Boolean, typeOfDay As Double, rate As Decimal, percentageRate As Decimal, nameOfCategory As String, bioNo As Integer, paydate_ As String)
+        'If dayNotHour Then
+        '    DutyAmount = (DUTY_RESTDAY * rate) * RESTDAY
+        '    Allowances = Allowances + DutyAmount
+        '    Save_Recorded_Allow_Deduc(bioNo, paydate_, "Rest Day Duty", DutyAmount, "ALLOWANCE")
+        'Else
+
+        'End If
+    End Function
 
     Friend Sub SavePayout_ALL(paydate_ As String, startingDate As DateTime, EndingDate As DateTime) '========== AUTO SAVE TO PAYOUT ============   
         Dim mysql As String = $"Select A.BIOMETRICID AS BIOMETRIC_ID From TEMP_ATTENDANCE A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRICID"
