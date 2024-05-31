@@ -1226,4 +1226,51 @@ Module Temporary
         End If
     End Sub
 
+    Friend Sub SSS_ER_EC()
+        Dim mysql As String = $"SELECT * FROM PAYROLL_PAYOUT WHERE PAYDATE IN ('4/30/2024','5/31/2024')"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
+            If ds.Tables(0).Rows.Count > 0 Then
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+                        Dim bioNo As Integer = .item("BIOMETRIC_ID")
+                        Dim paydate As Date = .item("PAYDATE")
+                        Dim sss_ee As Decimal = .item("SSS_COMP")
+                        Dim sss_er As Decimal = .item("SSS_ER")
+                        Dim secondBasic As Decimal = .item("TOTAL_BASIC")
+
+                        Console.WriteLine(bioNo)
+                        Console.WriteLine(paydate.ToShortDateString)
+                        Console.WriteLine(sss_ee)
+                        Console.WriteLine(sss_er)
+
+                        If sss_ee <> 0 And sss_er = 0 Then
+                            Dim first_Basic As Decimal = GetFirst_Basic(bioNo, paydate)
+                            Dim monthly_Basic As Decimal = secondBasic + first_Basic
+
+                            If ThisNotIsNull("SSSNO", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo} ") Then 'IF HAS SSSNO DETAILS 
+                                Get_SSS(monthly_Basic)
+                                UpdateSSS_ER_EC(bioNo, paydate.ToShortDateString, SSSER, SSSEC)
+                            End If
+
+                        End If
+                    End With
+                Next
+                Console.WriteLine("Finished!")
+            End If
+        End Using
+    End Sub
+
+    Friend Sub UpdateSSS_ER_EC(bioNo As Integer, paydate As String, SSS_ER As Decimal, SSS_EC As Decimal)
+        Dim mysql As String = $"SELECT * FROM PAYROLL_PAYOUT WHERE BIOMETRIC_ID = {bioNo} AND PAYDATE = '{paydate}'"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
+            If ds.Tables(0).Rows.Count > 0 Then
+                With ds.Tables(0).Rows(0)
+                    .Item("SSS_ER") = SSS_ER
+                    .Item("SSS_EC") = SSS_EC
+                End With
+                SaveEntry(ds, False)
+            End If
+        End Using
+    End Sub
+
 End Module

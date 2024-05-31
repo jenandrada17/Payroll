@@ -1069,9 +1069,10 @@ Module SaveUpdate
                                 Dim monthly_Basic As Decimal = TotalBasic + first_Basic
 
                                 If ThisNotIsNull("SSSNO", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo} ") Then 'IF HAS SSSNO DETAILS 
-                                    SSSComp = Get_SSS(monthly_Basic).EE
-                                    SSS_ER = Get_SSS(monthly_Basic).ER
-                                    SSS_EC = Get_SSS(monthly_Basic).EC
+                                    Get_SSS(monthly_Basic)
+                                    SSSComp = SSSEE
+                                    SSS_ER = SSSER
+                                    SSS_EC = SSSEC
                                 End If
 
                                 If ThisNotIsNull("PAGIBIG", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo}") Then PagibigComp = Get_Pagibig(monthly_Basic)

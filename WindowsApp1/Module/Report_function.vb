@@ -690,19 +690,6 @@ Module Report_function
         End With
 
         Try
-
-            'mysql = $"Select A.*, B.*, C.*, 
-            '        LASTNAME || ', ' || FIRSTNAME || ' ' || 
-            '             CASE 
-            '                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
-            '                 ELSE ''
-            '             END AS FULLNAME  
-            '        From PAYROLL_PAYOUT A 
-            '        INNER JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
-            '        LEFT JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE 
-            '        WHERE PAYDATE = '{paydate}' {str} and SSS_COMP <> 0 ORDER BY FULLNAME"
-
-
             mysql = $"Select BIOMETRIC_ID, SSSNO, SSS_COMP, SSS_ER, SSS_EC, B.BRANCHCODE, COMPANY, HO_CATEGORY, PHOTO_CATEGORY, BRANCHNAME, C.*, 
                     LASTNAME || ', ' || FIRSTNAME || ' ' || 
                          CASE 
@@ -726,15 +713,11 @@ Module Report_function
                             Dim FULLNAME As String = IIf(IsDBNull(.Item("FULLNAME")), "", .Item("FULLNAME"))
                             Dim monthly_Basic As Decimal = GetMonthly_Basic(.item("BIOMETRIC_ID"), paydate)     'TO BE DELETED IF SSS ALL DETAILS IS SAVED ON PAYOUT (PARA MADALI ANG PAGFETCH)
 
+                            Get_SSS(monthly_Basic)
                             Dim NOO As String = IIf(IsDBNull(.Item("SSSNO")), "", .Item("SSSNO"))
-                            Dim EE As String = IIf(.Item("SSS_COMP") = 0, Get_SSS(monthly_Basic).EE, .Item("SSS_COMP"))
-                            Dim ER As String = IIf(.Item("SSS_ER") = 0, Get_SSS(monthly_Basic).ER, .Item("SSS_ER"))
-                            Dim EC As String = IIf(.Item("SSS_EC") = 0, Get_SSS(monthly_Basic).EC, .Item("SSS_EC"))
-
-                            'Dim monthly_Basic As Decimal = GetMonthly_Basic(.item("BIOMETRIC_ID"), paydate)
-                            'Dim EE As String = Get_SSS(monthly_Basic).EE
-                            'Dim ER As String = Get_SSS(monthly_Basic).ER
-                            'Dim EC As String = Get_SSS(monthly_Basic).EC
+                            Dim EE As String = IIf(.Item("SSS_COMP") = 0, SSSEE, .Item("SSS_COMP"))
+                            Dim ER As String = IIf(.Item("SSS_ER") = 0, SSSER, .Item("SSS_ER"))
+                            Dim EC As String = IIf(.Item("SSS_EC") = 0, SSSEC, .Item("SSS_EC"))
 
                             '===================================== BRANCHES ===============================
                             linee = $"COMPANY -{FULLNAME}"

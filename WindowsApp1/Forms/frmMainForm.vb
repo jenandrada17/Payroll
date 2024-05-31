@@ -11,6 +11,8 @@ Public Class frmMainForm
 
     Private Sub frmMainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
+        'SSS_ER_EC()
+
         'Branch13MonthFromRemantic()
 
         'ExportDataToExcel()

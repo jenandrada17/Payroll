@@ -681,13 +681,16 @@ Module SelectFromDatabase
         Return monthly_Basic
     End Function
 
-    Public Function Get_SSS(monthly_Basic As Decimal) As (EE As Decimal, ER As Decimal, EC As Decimal, total As Decimal)
+    Friend SSSEE As Decimal = 0
+    Friend SSSER As Decimal = 0
+    Friend SSSEC As Decimal = 0
+    Friend SSSTOTAL As Decimal = 0
 
-        'Console.WriteLine("monthly_Basic" & monthly_Basic)
-        Dim ee As Decimal = 0
-        Dim er As Decimal = 0
-        Dim ec As Decimal = 0
-        Dim total As Decimal = 0
+    Public Sub Get_SSS(monthly_Basic As Decimal)
+        SSSEE = 0
+        SSSER = 0
+        SSSEC = 0
+        SSSTOTAL = 0
         Dim in_range As Boolean = False
 
         Dim mysql As String = $"Select * FROM PAYROLL_SSS"
@@ -707,10 +710,10 @@ Module SelectFromDatabase
                         End If
 
                         If (Enumerable.Range(strWords(0), strWords.Last).Contains(monthly_Basic)) Then
-                            ee = .Item("RSS_EE")
-                            er = .Item("RSS_ER")
-                            ec = .Item("EC_TOTAL")
-                            total = .Item("TOTAL_TOTAL")
+                            SSSEE = .Item("RSS_EE")
+                            SSSER = .Item("RSS_ER")
+                            SSSEC = .Item("EC_TOTAL")
+                            SSSTOTAL = .Item("TOTAL_TOTAL")
                             in_range = True
                         End If
                     End With
@@ -726,17 +729,73 @@ Module SelectFromDatabase
             Using dsss As DataSet = LoadSQL(mysqll, "PAYROLL_SSS")
                 If dsss.Tables(0).Rows.Count > 0 Then
                     With dsss.Tables(0).Rows(0)
-                        ee = .Item("RSS_EE")
-                        er = .Item("RSS_ER")
-                        ec = .Item("EC_TOTAL")
-                        total = .Item("TOTAL_TOTAL")
+                        SSSEE = .Item("RSS_EE")
+                        SSSER = .Item("RSS_ER")
+                        SSSEC = .Item("EC_TOTAL")
+                        SSSTOTAL = .Item("TOTAL_TOTAL")
                     End With
                 End If
             End Using
         End If
+    End Sub
 
-        Return (ee, er, ec, total)
-    End Function
+
+    'Public Function Get_SSS(monthly_Basic As Decimal) As (EE As Decimal, ER As Decimal, EC As Decimal, total As Decimal)
+
+    '    'Console.WriteLine("monthly_Basic" & monthly_Basic)
+    '    Dim ee As Decimal = 0
+    '    Dim er As Decimal = 0
+    '    Dim ec As Decimal = 0
+    '    Dim total As Decimal = 0
+    '    Dim in_range As Boolean = False
+
+    '    Dim mysql As String = $"Select * FROM PAYROLL_SSS"
+    '    Using ds As DataSet = LoadSQL(mysql, "PAYROLL_SSS")
+    '        If ds.Tables(0).Rows.Count > 0 Then
+    '            For Each dr In ds.Tables(0).Rows
+    '                With dr
+    '                    Dim range As String = .Item("RANGECOMP")
+    '                    Dim strWords As String() = range.Split(New Char() {" "c})
+
+    '                    If strWords(0).Contains("Below") Then
+    '                        strWords(0) = 1
+    '                    End If
+
+    '                    If strWords.Last.Contains("Over") Then
+    '                        strWords(2) = 200000 '200,000 Monthly income
+    '                    End If
+
+    '                    If (Enumerable.Range(strWords(0), strWords.Last).Contains(monthly_Basic)) Then
+    '                        ee = .Item("RSS_EE")
+    '                        er = .Item("RSS_ER")
+    '                        ec = .Item("EC_TOTAL")
+    '                        total = .Item("TOTAL_TOTAL")
+    '                        in_range = True
+    '                    End If
+    '                End With
+    '            Next
+    '        End If
+    '    End Using
+
+    '    If in_range = False Then 'IF ABOVE MAXIMUM RATE
+    '        Dim dss As DataSet = LoadSQL("SELECT MAX(ID) as idd FROM PAYROLL_SSS", "PAYROLL_SSS")
+    '        Dim lastID As String = dss.Tables(0).Rows(0).Item("idd")
+
+    '        Dim mysqll As String = $"SELECT * FROM PAYROLL_SSS where ID = '{lastID}'"  '$"Select MAX(ID) AS Greatest FROM PAYROLL_SSS"
+    '        Using dsss As DataSet = LoadSQL(mysqll, "PAYROLL_SSS")
+    '            If dsss.Tables(0).Rows.Count > 0 Then
+    '                With dsss.Tables(0).Rows(0)
+    '                    ee = .Item("RSS_EE")
+    '                    er = .Item("RSS_ER")
+    '                    ec = .Item("EC_TOTAL")
+    '                    total = .Item("TOTAL_TOTAL")
+    '                End With
+    '            End If
+    '        End Using
+    '    End If
+
+    '    Return (ee, er, ec, total)
+    'End Function
 
     Public Function Get_Pagibig(monthly_Basic As Decimal) As Decimal
         Dim pagibig As Decimal
@@ -781,7 +840,8 @@ Module SelectFromDatabase
     End Function
 
     Public Function Get_Taxable(monthly_Basic As String) As Decimal
-        Dim sss As Decimal = Get_SSS(monthly_Basic).EE
+        Get_SSS((monthly_Basic))
+        Dim sss As Decimal = SSSEE
         Dim pagibig As Decimal = Get_Pagibig(monthly_Basic)
         Dim philhealth As Decimal = Get_PhilHealth(monthly_Basic)
         Dim taxable As Decimal
