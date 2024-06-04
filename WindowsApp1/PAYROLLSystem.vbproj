@@ -420,6 +420,7 @@
     <EmbeddedResource Include="Reports\rpt_Remittance.rdlc" />
     <EmbeddedResource Include="Reports\rpt_RemittanceALL.rdlc" />
     <EmbeddedResource Include="Reports\rpt_SBU.rdlc" />
+    <EmbeddedResource Include="Reports\rpt_SBU_All.rdlc" />
     <EmbeddedResource Include="Reports\rpt_SBU_Company.rdlc" />
   </ItemGroup>
   <ItemGroup>

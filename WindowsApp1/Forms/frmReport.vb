@@ -206,6 +206,110 @@ Public Class frmReport
 
     End Sub
 
+    Friend Sub LoadSBU_ViewList()
+        Rpt_SBU.LocalReport.DataSources.Clear()
+
+        Try
+            Dim dt As New DataTable()
+            With dt
+                .Columns.Add("BRANCH")
+                .Columns.Add("NAME")
+                .Columns.Add("PRINCIPAL")
+                .Columns.Add("AMORT")
+                .Columns.Add("CREDIT")
+                .Columns.Add("BALANCE")
+                .Columns.Add("FORM_NAME")
+            End With
+
+            Dim mysqll As String = $"select  
+                                        CASE
+		                                    WHEN BRANCHNAME IS NOT NULL AND BRANCHNAME <> '' THEN BRANCHNAME
+		                                    ELSE HO_CATEGORY
+                                        END AS BRANCHNAME,
+    
+	                                    LASTNAME || ', ' || FIRSTNAME || ' ' ||
+	                                    CASE
+		                                    WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
+		                                    ELSE ''
+	                                    END AS FULLNAME,
+    
+                                        PRINCIPAL,
+                                        B.AMOUNT as AMORT, 
+                                        COMPANY, 
+    
+                                        CASE 
+    	                                    WHEN CREDIT IS NULL AND BALANCE IS NULL THEN COALESCE(sum(C.AMOUNT), 0)
+                                            ELSE COALESCE(sum(C.AMOUNT), 0) + CREDIT 
+	                                    END AS NEW_CREDIT,
+    
+                                        PRINCIPAL - CASE 
+                                                        WHEN CREDIT IS NULL AND BALANCE IS NULL THEN COALESCE(sum(C.AMOUNT), 0)
+                                                        ELSE COALESCE(sum(C.AMOUNT), 0) + CREDIT 
+                                                    END
+                                        AS NEW_BALANCE
+    
+                                    from
+	                                    TBL_EMPLOYEE A
+                                    inner join
+	                                    PAYROLL_SBU B on B.BIO_NO = A.BIOMETRICID
+                                    left join
+	                                    RECORDED_ALLOW_DEDUC C on C.BIO_NO = A.BIOMETRICID and C.CATEGORY = 'SBU' and PAYDATE <> '12/15/2021'
+                                    LEFT JOIN
+	                                    PAYROLL_CITY_BRANCH D ON D.BRANCHCODE = A.BRANCHCODE
+                                    GROUP BY FULLNAME, BRANCHNAME, CREDIT, PRINCIPAL, B.AMOUNT, COMPANY, BALANCE
+                                    ORDER BY BRANCHNAME, FULLNAME ASC; "
+
+            Using dss As DataSet = LoadSQL(mysqll, "TBL_EMPLOYEE")
+                If dss.Tables(0).Rows.Count > 0 Then
+                    progressBarStart(dss.Tables(0).Rows.Count)
+                    For Each dr In dss.Tables(0).Rows
+                        With dr
+
+                            Dim company As String = Nothing
+                            Dim branch As String = Nothing
+                            Dim fullname As String = .Item("FULLNAME")
+                            Dim principal As Decimal = .Item("PRINCIPAL")
+                            Dim amort As Decimal = .Item("AMORT")
+                            Dim credit As Decimal = .Item("NEW_CREDIT")
+                            Dim balance As Decimal = .Item("NEW_BALANCE")
+
+                            If IsDBNull(.Item("BRANCHNAME")) Then
+                                branch = "No branch"
+                            ElseIf String.IsNullOrEmpty(.Item("BRANCHNAME")) Then
+                                branch = "No branch"
+                            Else
+                                branch = .Item("BRANCHNAME")
+                            End If
+
+                            If IsDBNull(.Item("COMPANY")) Then
+                                company = "No company"
+                            ElseIf String.IsNullOrEmpty(.Item("COMPANY")) Then
+                                company = "No company"
+                            Else
+                                company = .Item("COMPANY")
+                            End If
+
+                            If company <> "HEAD OFFICE" Then branch = $"{company} - {branch}"
+
+                            dt.Rows.Add(branch, fullname, FormatNumber(principal), FormatNumber(amort), FormatNumber(credit), FormatNumber(balance), $"LIST OF SBU - {Now}")
+
+                        End With
+                        frmMainForm.AppProgressBar.Value += 1
+                    Next
+                    progressBarEnd()
+                End If
+            End Using
+
+            Dim DATASET As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt)
+            Rpt_SBU.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_SBU_All.rdlc"
+            Rpt_SBU.LocalReport.DataSources.Add(DATASET)
+            Rpt_SBU.RefreshReport()
+
+        Catch ex As Exception
+            MsgBox(ex.ToString)
+        End Try
+    End Sub
+
     Friend Sub LoadDeduction_Company(conditional As String)
         Rpt_Deduction.LocalReport.DataSources.Clear()
 
@@ -3119,5 +3223,9 @@ Public Class frmReport
         End If
 
         LoadDeduction_Company(conditional)
+    End Sub
+
+    Private Sub btnViewList_Click(sender As Object, e As EventArgs) Handles btnViewList.Click
+        LoadSBU_ViewList()
     End Sub
 End Class

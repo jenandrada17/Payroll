@@ -1155,12 +1155,12 @@ Module Report_function
                         OTHER_INCOME = (tOTAL_ECOLA + tOTAL_SIL + tOTAL_PI) - tOTAL_LATE_UT
                         Dim TOTALS As Decimal = tOTAL_BASIC + OTHER_INCOME
 
-                        'TODO- ONLY IN PAYDATE 5/15/2024 
-                        Console.WriteLine(frmMainForm.Paydate)
-                        If frmMainForm.Paydate = "5/15/2024" And noRemantic Then
+                        If range.ToShortDateString = "5/15/2024" Then
                             Dim fromRematic As Decimal = GetData_Decimal("AMOUNT", $"PAYROLL_13MONTH where  BIO_NO = '{bioNo}' and PAYDATE = '5/15/2024'")
-                            dt.Rows.Add(FULLNAME, "Dec. to Feb. 2024", "-", "-", "-", fromRematic.ToString("N"))
-                            noRemantic = False
+                            If fromRematic <> 0 And noRemantic Then
+                                dt.Rows.Add(FULLNAME, "Dec. to Feb. 2024", "-", "-", "-", fromRematic.ToString("N"))
+                                noRemantic = False
+                            End If
                         End If
 
                         dt.Rows.Add(FULLNAME, CDate(PAYDATE).ToString("MMMM dd, yyyy"), NO_OF_DAYS, tOTAL_BASIC.ToString("N"), OTHER_INCOME.ToString("N"), TOTALS.ToString("N"))
