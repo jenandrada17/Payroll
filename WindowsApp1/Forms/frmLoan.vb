@@ -794,4 +794,18 @@ Public Class frmLoan
             End If
         End If
     End Sub
+
+    Private Sub btnCancelSOA_Click(sender As Object, e As EventArgs) Handles btnCancelSOA.Click
+        txtBioID.Clear()
+        txtNameSOA.Clear()
+        txtDesignation.Clear()
+        txtCompany.Clear()
+        rpt_SOA.Clear()
+    End Sub
+
+    Private Sub txtBioID_TextChanged(sender As Object, e As EventArgs) Handles txtBioID.TextChanged
+        If txtBioID.Text <> Nothing Then
+            GetSOAInfo(txtBioID.Text, txtNameSOA, txtDesignation, txtCompany, rpt_SOA)
+        End If
+    End Sub
 End Class

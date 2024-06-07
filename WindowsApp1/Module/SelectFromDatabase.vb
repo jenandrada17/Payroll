@@ -1,4 +1,5 @@
 ﻿Imports System.IO
+Imports System.Windows.Documents
 Imports System.Windows.Forms.AxHost
 Imports FirebirdSql.Data.FirebirdClient
 
@@ -485,7 +486,7 @@ Module SelectFromDatabase
                     RegularHol_TXT.Text = CInt(.Item("REGHOLIDAY")) '+ CInt(RegularHol_TXT.Tag)
                     SpecialHol_TXT.Text = IIf(IsDBNull(.Item("SPECHOLIDAY_HRS")), 0, .Item("SPECHOLIDAY_HRS"))
                     SpecialHol_TXT.Tag = IIf(IsDBNull(.Item("TRAINING_SPECHOLIDAY")), 0, .Item("TRAINING_SPECHOLIDAY"))
-                    Late_TXT.Text = .Item("LATE") 
+                    Late_TXT.Text = .Item("LATE")
                     UnderTime_TXT.Text = .Item("UNDERTIME")
                     NightTime_TXT.Text = IIf(IsDBNull(.Item("NIGHT_RATE")), "", .Item("NIGHT_RATE"))
                     NightTime_TXT.Tag = IIf(IsDBNull(.Item("NIGHT_RATE")), 0, .Item("NIGHT_RATE"))
@@ -3382,4 +3383,90 @@ Module SelectFromDatabase
         End Using
     End Function
 
+    Friend Sub GetSOAInfo(bioNo As String, txtNameSOA As TextBox, txtDesignation As TextBox, txtCompany As TextBox, rpt_SOA As Microsoft.Reporting.WinForms.ReportViewer)
+        Dim hasRecord As Boolean = False
+        Dim minimumRate As Decimal = 0
+        Dim mysql As String = $"SELECT * FROM TBL_EMPLOYEE WHERE BIOMETRICID = {bioNo}"
+        Using ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
+            If ds.Tables(0).Rows.Count > 0 Then
+                With ds.Tables(0).Rows(0)
+
+                    Dim mi As String = Nothing
+                    If IsDBNull(.Item("MIDDLENAME")) Then
+                    ElseIf String.IsNullOrEmpty(.Item("MIDDLENAME")) Then
+                    Else
+                        mi = $" { .Item("MIDDLENAME").Substring(0, 1)}"
+                    End If
+
+                    txtNameSOA.Text = $"{ .Item("LASTNAME")}, { .Item("FIRSTNAME")}{mi}"
+                    txtDesignation.Text = IIf(IsDBNull(.Item("EMP_POSITION")), Nothing, .Item("EMP_POSITION"))
+                    txtCompany.Text = IIf(IsDBNull(.Item("COMPANY")), Nothing, .Item("COMPANY"))
+                    minimumRate = IIf(IsDBNull(.Item("RATE_DAILY")), 0, .Item("RATE_DAILY"))
+                    hasRecord = True
+                End With
+            Else
+                MsgBox("There's no record for this biometric number.", MsgBoxStyle.Exclamation)
+            End If
+        End Using
+
+
+        If hasRecord Then       'AUTO PREVIEW IF HAS RECORD
+            rpt_SOA.LocalReport.DataSources.Clear()
+
+            Try
+                Dim dt As New DataTable()
+                With dt
+                    .Columns.Add("SOA_DATE")
+                    .Columns.Add("FULLNAME")
+                    .Columns.Add("DESIGNATION")
+                    .Columns.Add("COMPANY")
+                    .Columns.Add("PARTICULARS")
+                    .Columns.Add("AMOUNT")
+                    .Columns.Add("CATEGORY")
+                End With
+
+                'HOLD SALARY
+                Dim mysqll As String = $"SELECT * FROM RECORDED_ALLOW_DEDUC WHERE BIO_NO = '{bioNo}' AND UPPER(CATEGORY) LIKE UPPER('%HOLD SALARY%')"
+                Dim ds As DataSet = LoadSQL(mysql, "RECORDED_ALLOW_DEDUC")
+                If ds.Tables(0).Rows.Count > 0 Then
+                    dt.Rows.Add(Today.ToShortDateString, txtNameSOA.Text, txtDesignation.Text, txtCompany.Text, "HOLD SALARY", ds.Tables(0).Rows(0).Item("AMOUNT"), "DEBIT")
+                End If
+
+                'SIL REFUND
+                Dim remainingSIL As Double = 5 - GetTotalSIL(bioNo)
+                Dim perSIL As Decimal = (minimumRate * 5) / 12
+                Dim silRefund As Decimal = remainingSIL * perSIL
+                dt.Rows.Add(Today.ToShortDateString, txtNameSOA.Text, txtDesignation.Text, txtCompany.Text, "S.I.L Refund", silRefund, "DEBIT")
+
+                '13TH MONTH
+
+
+                Dim dataSource As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt)
+                rpt_SOA.LocalReport.DataSources.Add(dataSource)
+                rpt_SOA.RefreshReport()
+
+            Catch ex As Exception
+                MsgBox(ex.ToString)
+            End Try
+
+        End If
+    End Sub
+
+    Friend Function GetTotalSIL(bioNo As Integer) As Double
+        Dim sil As Integer = 0
+        Dim mysql As String = $"select COALESCE(sum(SIL), 0) AS TOTALS
+                                from 
+                                    PAYROLL_ATTENDANCE 
+                                Where 
+                                    BIOMETRICID = {bioNo} AND
+                                    PAYDATE BETWEEN 
+                                        CAST(EXTRACT(YEAR FROM CURRENT_DATE) || '-01-01' AS DATE) 
+                                        AND 
+                                        CAST(EXTRACT(YEAR FROM CURRENT_DATE) || '-12-31' AS DATE)"
+        Dim ds As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
+        If ds.Tables(0).Rows.Count > 0 Then
+            sil = ds.Tables(0).Rows(0).Item("TOTALS")
+        End If
+        Return sil
+    End Function
 End Module
