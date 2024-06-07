@@ -57,6 +57,7 @@ Partial Class frmLoan
         Me.menu_subtotal = New System.Windows.Forms.ToolStripMenuItem()
         Me.Balance_MenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.menu_edit = New System.Windows.Forms.ToolStripMenuItem()
+        Me.menu_remove = New System.Windows.Forms.ToolStripMenuItem()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
         Me.Label38 = New System.Windows.Forms.Label()
         Me.Label39 = New System.Windows.Forms.Label()
@@ -229,7 +230,6 @@ Partial Class frmLoan
         Me.Label31 = New System.Windows.Forms.Label()
         Me.DE_Effectivity_DTP = New System.Windows.Forms.DateTimePicker()
         Me.lblAdd = New System.Windows.Forms.Label()
-        Me.menu_remove = New System.Windows.Forms.ToolStripMenuItem()
         Me.Loans_Tab.SuspendLayout()
         Me.TabPage2.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
@@ -550,31 +550,38 @@ Partial Class frmLoan
         '
         Me.Context_Deduct.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.PartialPaymentDeducMenu, Me.menu_subtotal, Me.Balance_MenuItem, Me.menu_edit, Me.menu_remove})
         Me.Context_Deduct.Name = "Context_deduct"
-        Me.Context_Deduct.Size = New System.Drawing.Size(181, 136)
+        Me.Context_Deduct.Size = New System.Drawing.Size(157, 114)
         '
         'PartialPaymentDeducMenu
         '
         Me.PartialPaymentDeducMenu.Name = "PartialPaymentDeducMenu"
-        Me.PartialPaymentDeducMenu.Size = New System.Drawing.Size(180, 22)
+        Me.PartialPaymentDeducMenu.Size = New System.Drawing.Size(156, 22)
         Me.PartialPaymentDeducMenu.Text = "Partial Payment"
         '
         'menu_subtotal
         '
         Me.menu_subtotal.Name = "menu_subtotal"
-        Me.menu_subtotal.Size = New System.Drawing.Size(180, 22)
+        Me.menu_subtotal.Size = New System.Drawing.Size(156, 22)
         Me.menu_subtotal.Text = "View Subtotal"
         '
         'Balance_MenuItem
         '
         Me.Balance_MenuItem.Name = "Balance_MenuItem"
-        Me.Balance_MenuItem.Size = New System.Drawing.Size(180, 22)
+        Me.Balance_MenuItem.Size = New System.Drawing.Size(156, 22)
         Me.Balance_MenuItem.Text = "Balance"
         '
         'menu_edit
         '
         Me.menu_edit.Name = "menu_edit"
-        Me.menu_edit.Size = New System.Drawing.Size(180, 22)
+        Me.menu_edit.Size = New System.Drawing.Size(156, 22)
         Me.menu_edit.Text = "Edit"
+        '
+        'menu_remove
+        '
+        Me.menu_remove.Name = "menu_remove"
+        Me.menu_remove.Size = New System.Drawing.Size(156, 22)
+        Me.menu_remove.Text = "Remove"
+        Me.menu_remove.Visible = False
         '
         'TabPage1
         '
@@ -1609,8 +1616,9 @@ Partial Class frmLoan
         Me.TabPage6.ContextMenuStrip = Me.Context_SBU
         Me.TabPage6.Controls.Add(Me.SBU_Search_txt)
         Me.TabPage6.Controls.Add(Me.SBU_Search_btn)
-        Me.TabPage6.Controls.Add(Me.SBU_LV)
         Me.TabPage6.Controls.Add(Me.GroupBox1)
+        Me.TabPage6.Controls.Add(Me.Partial_Panel)
+        Me.TabPage6.Controls.Add(Me.SBU_LV)
         Me.TabPage6.Location = New System.Drawing.Point(4, 38)
         Me.TabPage6.Name = "TabPage6"
         Me.TabPage6.Padding = New System.Windows.Forms.Padding(3)
@@ -1860,7 +1868,7 @@ Partial Class frmLoan
         Me.Partial_Panel.Controls.Add(Me.PartialAmount_txt)
         Me.Partial_Panel.Controls.Add(Me.Label49)
         Me.Partial_Panel.Controls.Add(Me.Label48)
-        Me.Partial_Panel.Location = New System.Drawing.Point(660, 12)
+        Me.Partial_Panel.Location = New System.Drawing.Point(661, 188)
         Me.Partial_Panel.Name = "Partial_Panel"
         Me.Partial_Panel.Size = New System.Drawing.Size(405, 189)
         Me.Partial_Panel.TabIndex = 164
@@ -2206,19 +2214,11 @@ Partial Class frmLoan
         Me.lblAdd.Size = New System.Drawing.Size(32, 22)
         Me.lblAdd.TabIndex = 125
         '
-        'menu_remove
-        '
-        Me.menu_remove.Name = "menu_remove"
-        Me.menu_remove.Size = New System.Drawing.Size(180, 22)
-        Me.menu_remove.Text = "Remove"
-        Me.menu_remove.Visible = False
-        '
         'frmLoan
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1175, 680)
-        Me.Controls.Add(Me.Partial_Panel)
         Me.Controls.Add(Me.Close_LBL)
         Me.Controls.Add(Me.Loans_Tab)
         Me.Controls.Add(Me.Label1)

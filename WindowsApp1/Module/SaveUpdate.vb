@@ -1440,15 +1440,15 @@ Module SaveUpdate
         End Using
     End Sub
 
-    Private Function AdditionalDuty(dayNotHour As Boolean, typeOfDay As Double, rate As Decimal, percentageRate As Decimal, nameOfCategory As String, bioNo As Integer, paydate_ As String)
-        'If dayNotHour Then
-        '    DutyAmount = (DUTY_RESTDAY * rate) * RESTDAY
-        '    Allowances = Allowances + DutyAmount
-        '    Save_Recorded_Allow_Deduc(bioNo, paydate_, "Rest Day Duty", DutyAmount, "ALLOWANCE")
-        'Else
+    'Private Function AdditionalDuty(dayNotHour As Boolean, typeOfDay As Double, rate As Decimal, percentageRate As Decimal, nameOfCategory As String, bioNo As Integer, paydate_ As String)
+    '    If dayNotHour Then
+    '        DutyAmount = (DUTY_RESTDAY * rate) * RESTDAY
+    '        Allowances = Allowances + DutyAmount
+    '        Save_Recorded_Allow_Deduc(bioNo, paydate_, "Rest Day Duty", DutyAmount, "ALLOWANCE")
+    '    Else
 
-        'End If
-    End Function
+    '    End If
+    'End Function
 
     Friend Sub SavePayout_ALL(paydate_ As String, startingDate As DateTime, EndingDate As DateTime) '========== AUTO SAVE TO PAYOUT ============   
         Dim mysql As String = $"Select A.BIOMETRICID AS BIOMETRIC_ID From TEMP_ATTENDANCE A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRICID"
