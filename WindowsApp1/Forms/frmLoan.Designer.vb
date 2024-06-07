@@ -169,12 +169,6 @@ Partial Class frmLoan
         Me.SBUEdit_Menu = New System.Windows.Forms.ToolStripMenuItem()
         Me.SBU_Search_txt = New System.Windows.Forms.TextBox()
         Me.SBU_Search_btn = New System.Windows.Forms.Button()
-        Me.SBU_LV = New System.Windows.Forms.ListView()
-        Me.ColumnHeader34 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader35 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader36 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader37 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader38 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.GroupBox1 = New System.Windows.Forms.GroupBox()
         Me.ScheduleSBU_Combo = New System.Windows.Forms.ComboBox()
         Me.Label55 = New System.Windows.Forms.Label()
@@ -200,6 +194,12 @@ Partial Class frmLoan
         Me.PartialAmount_txt = New System.Windows.Forms.TextBox()
         Me.Label49 = New System.Windows.Forms.Label()
         Me.Label48 = New System.Windows.Forms.Label()
+        Me.SBU_LV = New System.Windows.Forms.ListView()
+        Me.ColumnHeader34 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader35 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader36 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader37 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader38 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader19 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader20 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader21 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -230,6 +230,8 @@ Partial Class frmLoan
         Me.Label31 = New System.Windows.Forms.Label()
         Me.DE_Effectivity_DTP = New System.Windows.Forms.DateTimePicker()
         Me.lblAdd = New System.Windows.Forms.Label()
+        Me.TabPage7 = New System.Windows.Forms.TabPage()
+        Me.TabPage8 = New System.Windows.Forms.TabPage()
         Me.Loans_Tab.SuspendLayout()
         Me.TabPage2.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
@@ -266,6 +268,8 @@ Partial Class frmLoan
         Me.Loans_Tab.Controls.Add(Me.TabPage4)
         Me.Loans_Tab.Controls.Add(Me.TabPage5)
         Me.Loans_Tab.Controls.Add(Me.TabPage6)
+        Me.Loans_Tab.Controls.Add(Me.TabPage7)
+        Me.Loans_Tab.Controls.Add(Me.TabPage8)
         Me.Loans_Tab.Font = New System.Drawing.Font("Dubai", 12.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Loans_Tab.Location = New System.Drawing.Point(6, 32)
         Me.Loans_Tab.Name = "Loans_Tab"
@@ -1617,7 +1621,6 @@ Partial Class frmLoan
         Me.TabPage6.Controls.Add(Me.SBU_Search_txt)
         Me.TabPage6.Controls.Add(Me.SBU_Search_btn)
         Me.TabPage6.Controls.Add(Me.GroupBox1)
-        Me.TabPage6.Controls.Add(Me.Partial_Panel)
         Me.TabPage6.Controls.Add(Me.SBU_LV)
         Me.TabPage6.Location = New System.Drawing.Point(4, 38)
         Me.TabPage6.Name = "TabPage6"
@@ -1656,53 +1659,6 @@ Partial Class frmLoan
         Me.SBU_Search_btn.TabIndex = 130
         Me.SBU_Search_btn.Text = "Search"
         Me.SBU_Search_btn.UseVisualStyleBackColor = True
-        '
-        'SBU_LV
-        '
-        Me.SBU_LV.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.SBU_LV.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader34, Me.ColumnHeader35, Me.ColumnHeader36, Me.ColumnHeader37, Me.ColumnHeader38})
-        Me.SBU_LV.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.SBU_LV.FullRowSelect = True
-        Me.SBU_LV.GridLines = True
-        Me.SBU_LV.HideSelection = False
-        Me.SBU_LV.Location = New System.Drawing.Point(466, 76)
-        Me.SBU_LV.MultiSelect = False
-        Me.SBU_LV.Name = "SBU_LV"
-        Me.SBU_LV.Size = New System.Drawing.Size(675, 483)
-        Me.SBU_LV.TabIndex = 128
-        Me.SBU_LV.UseCompatibleStateImageBehavior = False
-        Me.SBU_LV.View = System.Windows.Forms.View.Details
-        '
-        'ColumnHeader34
-        '
-        Me.ColumnHeader34.Text = "Name"
-        Me.ColumnHeader34.Width = 250
-        '
-        'ColumnHeader35
-        '
-        Me.ColumnHeader35.Text = "Amount"
-        Me.ColumnHeader35.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.ColumnHeader35.Width = 100
-        '
-        'ColumnHeader36
-        '
-        Me.ColumnHeader36.Text = "Principal"
-        Me.ColumnHeader36.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.ColumnHeader36.Width = 100
-        '
-        'ColumnHeader37
-        '
-        Me.ColumnHeader37.Text = "Amount Paid"
-        Me.ColumnHeader37.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.ColumnHeader37.Width = 100
-        '
-        'ColumnHeader38
-        '
-        Me.ColumnHeader38.Text = "Balance"
-        Me.ColumnHeader38.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.ColumnHeader38.Width = 100
         '
         'GroupBox1
         '
@@ -1868,9 +1824,9 @@ Partial Class frmLoan
         Me.Partial_Panel.Controls.Add(Me.PartialAmount_txt)
         Me.Partial_Panel.Controls.Add(Me.Label49)
         Me.Partial_Panel.Controls.Add(Me.Label48)
-        Me.Partial_Panel.Location = New System.Drawing.Point(661, 188)
+        Me.Partial_Panel.Location = New System.Drawing.Point(706, 10)
         Me.Partial_Panel.Name = "Partial_Panel"
-        Me.Partial_Panel.Size = New System.Drawing.Size(405, 189)
+        Me.Partial_Panel.Size = New System.Drawing.Size(71, 22)
         Me.Partial_Panel.TabIndex = 164
         Me.Partial_Panel.Visible = False
         '
@@ -1969,6 +1925,53 @@ Partial Class frmLoan
         Me.Label48.Size = New System.Drawing.Size(115, 27)
         Me.Label48.TabIndex = 0
         Me.Label48.Text = "Partial Payment"
+        '
+        'SBU_LV
+        '
+        Me.SBU_LV.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.SBU_LV.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader34, Me.ColumnHeader35, Me.ColumnHeader36, Me.ColumnHeader37, Me.ColumnHeader38})
+        Me.SBU_LV.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SBU_LV.FullRowSelect = True
+        Me.SBU_LV.GridLines = True
+        Me.SBU_LV.HideSelection = False
+        Me.SBU_LV.Location = New System.Drawing.Point(466, 76)
+        Me.SBU_LV.MultiSelect = False
+        Me.SBU_LV.Name = "SBU_LV"
+        Me.SBU_LV.Size = New System.Drawing.Size(675, 483)
+        Me.SBU_LV.TabIndex = 128
+        Me.SBU_LV.UseCompatibleStateImageBehavior = False
+        Me.SBU_LV.View = System.Windows.Forms.View.Details
+        '
+        'ColumnHeader34
+        '
+        Me.ColumnHeader34.Text = "Name"
+        Me.ColumnHeader34.Width = 250
+        '
+        'ColumnHeader35
+        '
+        Me.ColumnHeader35.Text = "Amount"
+        Me.ColumnHeader35.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.ColumnHeader35.Width = 100
+        '
+        'ColumnHeader36
+        '
+        Me.ColumnHeader36.Text = "Principal"
+        Me.ColumnHeader36.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.ColumnHeader36.Width = 100
+        '
+        'ColumnHeader37
+        '
+        Me.ColumnHeader37.Text = "Amount Paid"
+        Me.ColumnHeader37.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.ColumnHeader37.Width = 100
+        '
+        'ColumnHeader38
+        '
+        Me.ColumnHeader38.Text = "Balance"
+        Me.ColumnHeader38.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.ColumnHeader38.Width = 100
         '
         'ColumnHeader19
         '
@@ -2214,11 +2217,30 @@ Partial Class frmLoan
         Me.lblAdd.Size = New System.Drawing.Size(32, 22)
         Me.lblAdd.TabIndex = 125
         '
+        'TabPage7
+        '
+        Me.TabPage7.Location = New System.Drawing.Point(4, 38)
+        Me.TabPage7.Name = "TabPage7"
+        Me.TabPage7.Size = New System.Drawing.Size(1147, 604)
+        Me.TabPage7.TabIndex = 13
+        Me.TabPage7.Text = "      SOA Form    "
+        Me.TabPage7.UseVisualStyleBackColor = True
+        '
+        'TabPage8
+        '
+        Me.TabPage8.Location = New System.Drawing.Point(4, 38)
+        Me.TabPage8.Name = "TabPage8"
+        Me.TabPage8.Size = New System.Drawing.Size(1147, 604)
+        Me.TabPage8.TabIndex = 14
+        Me.TabPage8.Text = "      SOA List      "
+        Me.TabPage8.UseVisualStyleBackColor = True
+        '
         'frmLoan
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1175, 680)
+        Me.Controls.Add(Me.Partial_Panel)
         Me.Controls.Add(Me.Close_LBL)
         Me.Controls.Add(Me.Loans_Tab)
         Me.Controls.Add(Me.Label1)
@@ -2466,4 +2488,6 @@ Partial Class frmLoan
     Friend WithEvents ScheduleSBU_Combo As ComboBox
     Friend WithEvents Label55 As Label
     Friend WithEvents menu_remove As ToolStripMenuItem
+    Friend WithEvents TabPage7 As TabPage
+    Friend WithEvents TabPage8 As TabPage
 End Class

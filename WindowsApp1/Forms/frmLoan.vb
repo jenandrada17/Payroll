@@ -619,13 +619,19 @@ Public Class frmLoan
     End Sub
 
     Private Sub PartialPanel(name As String, bioNo As String, deduc_id As String, category As String, balance As String)
-        Partial_Panel.Visible = True
         PartialAmount_txt.Text = balance
         PartialName_txt.Text = name
         PartialName_txt.Tag = deduc_id
         PartialCat_txt.Text = category
         Label52.Tag = bioNo
         PartialAmount_txt.Focus()
+
+        'SIZE AND LOCATION OF THE PARTIAL PANEL
+        Dim x As Integer = (Parent.ClientSize.Width - Partial_Panel.Width) / 2
+        Dim y As Integer = (Parent.ClientSize.Height - Partial_Panel.Height) / 2
+        Partial_Panel.Location = New Point(x, y)
+        Partial_Panel.Size = New Size(405, 189)
+        Partial_Panel.Visible = True
     End Sub
 
     Private Sub Label50_Click(sender As Object, e As EventArgs) Handles Label50.Click
