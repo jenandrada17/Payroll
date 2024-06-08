@@ -1019,14 +1019,6 @@ Partial Public Class Forms
     Partial Public Class SOA_FORMDataTable
         Inherits Global.System.Data.TypedTableBase(Of SOA_FORMRow)
         
-        Private columnSOA_DATE As Global.System.Data.DataColumn
-        
-        Private columnFULLNAME As Global.System.Data.DataColumn
-        
-        Private columnDESIGNATION As Global.System.Data.DataColumn
-        
-        Private columnCOMPANY As Global.System.Data.DataColumn
-        
         Private columnPARTICULARS As Global.System.Data.DataColumn
         
         Private columnAMOUNT As Global.System.Data.DataColumn
@@ -1067,38 +1059,6 @@ Partial Public Class Forms
             MyBase.New(info, context)
             Me.InitVars
         End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
-        Public ReadOnly Property SOA_DATEColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnSOA_DATE
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
-        Public ReadOnly Property FULLNAMEColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnFULLNAME
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
-        Public ReadOnly Property DESIGNATIONColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnDESIGNATION
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
-        Public ReadOnly Property COMPANYColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnCOMPANY
-            End Get
-        End Property
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
@@ -1161,9 +1121,9 @@ Partial Public Class Forms
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
-        Public Overloads Function AddSOA_FORMRow(ByVal SOA_DATE As String, ByVal FULLNAME As String, ByVal DESIGNATION As String, ByVal COMPANY As String, ByVal PARTICULARS As String, ByVal AMOUNT As String, ByVal CATEGORY As String) As SOA_FORMRow
+        Public Overloads Function AddSOA_FORMRow(ByVal PARTICULARS As String, ByVal AMOUNT As String, ByVal CATEGORY As String) As SOA_FORMRow
             Dim rowSOA_FORMRow As SOA_FORMRow = CType(Me.NewRow,SOA_FORMRow)
-            Dim columnValuesArray() As Object = New Object() {SOA_DATE, FULLNAME, DESIGNATION, COMPANY, PARTICULARS, AMOUNT, CATEGORY}
+            Dim columnValuesArray() As Object = New Object() {PARTICULARS, AMOUNT, CATEGORY}
             rowSOA_FORMRow.ItemArray = columnValuesArray
             Me.Rows.Add(rowSOA_FORMRow)
             Return rowSOA_FORMRow
@@ -1186,10 +1146,6 @@ Partial Public Class Forms
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
         Friend Sub InitVars()
-            Me.columnSOA_DATE = MyBase.Columns("SOA_DATE")
-            Me.columnFULLNAME = MyBase.Columns("FULLNAME")
-            Me.columnDESIGNATION = MyBase.Columns("DESIGNATION")
-            Me.columnCOMPANY = MyBase.Columns("COMPANY")
             Me.columnPARTICULARS = MyBase.Columns("PARTICULARS")
             Me.columnAMOUNT = MyBase.Columns("AMOUNT")
             Me.columnCATEGORY = MyBase.Columns("CATEGORY")
@@ -1198,14 +1154,6 @@ Partial Public Class Forms
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
         Private Sub InitClass()
-            Me.columnSOA_DATE = New Global.System.Data.DataColumn("SOA_DATE", GetType(String), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnSOA_DATE)
-            Me.columnFULLNAME = New Global.System.Data.DataColumn("FULLNAME", GetType(String), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnFULLNAME)
-            Me.columnDESIGNATION = New Global.System.Data.DataColumn("DESIGNATION", GetType(String), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnDESIGNATION)
-            Me.columnCOMPANY = New Global.System.Data.DataColumn("COMPANY", GetType(String), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnCOMPANY)
             Me.columnPARTICULARS = New Global.System.Data.DataColumn("PARTICULARS", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnPARTICULARS)
             Me.columnAMOUNT = New Global.System.Data.DataColumn("AMOUNT", GetType(String), Nothing, Global.System.Data.MappingType.Element)
@@ -2265,66 +2213,6 @@ Partial Public Class Forms
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
-        Public Property SOA_DATE() As String
-            Get
-                Try 
-                    Return CType(Me(Me.tableSOA_FORM.SOA_DATEColumn),String)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'SOA_DATE' in table 'SOA_FORM' is DBNull.", e)
-                End Try
-            End Get
-            Set
-                Me(Me.tableSOA_FORM.SOA_DATEColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
-        Public Property FULLNAME() As String
-            Get
-                Try 
-                    Return CType(Me(Me.tableSOA_FORM.FULLNAMEColumn),String)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'FULLNAME' in table 'SOA_FORM' is DBNull.", e)
-                End Try
-            End Get
-            Set
-                Me(Me.tableSOA_FORM.FULLNAMEColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
-        Public Property DESIGNATION() As String
-            Get
-                Try 
-                    Return CType(Me(Me.tableSOA_FORM.DESIGNATIONColumn),String)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'DESIGNATION' in table 'SOA_FORM' is DBNull.", e)
-                End Try
-            End Get
-            Set
-                Me(Me.tableSOA_FORM.DESIGNATIONColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
-        Public Property COMPANY() As String
-            Get
-                Try 
-                    Return CType(Me(Me.tableSOA_FORM.COMPANYColumn),String)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'COMPANY' in table 'SOA_FORM' is DBNull.", e)
-                End Try
-            End Get
-            Set
-                Me(Me.tableSOA_FORM.COMPANYColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
         Public Property PARTICULARS() As String
             Get
                 Try 
@@ -2367,54 +2255,6 @@ Partial Public Class Forms
                 Me(Me.tableSOA_FORM.CATEGORYColumn) = value
             End Set
         End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
-        Public Function IsSOA_DATENull() As Boolean
-            Return Me.IsNull(Me.tableSOA_FORM.SOA_DATEColumn)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
-        Public Sub SetSOA_DATENull()
-            Me(Me.tableSOA_FORM.SOA_DATEColumn) = Global.System.Convert.DBNull
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
-        Public Function IsFULLNAMENull() As Boolean
-            Return Me.IsNull(Me.tableSOA_FORM.FULLNAMEColumn)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
-        Public Sub SetFULLNAMENull()
-            Me(Me.tableSOA_FORM.FULLNAMEColumn) = Global.System.Convert.DBNull
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
-        Public Function IsDESIGNATIONNull() As Boolean
-            Return Me.IsNull(Me.tableSOA_FORM.DESIGNATIONColumn)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
-        Public Sub SetDESIGNATIONNull()
-            Me(Me.tableSOA_FORM.DESIGNATIONColumn) = Global.System.Convert.DBNull
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
-        Public Function IsCOMPANYNull() As Boolean
-            Return Me.IsNull(Me.tableSOA_FORM.COMPANYColumn)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
-        Public Sub SetCOMPANYNull()
-            Me(Me.tableSOA_FORM.COMPANYColumn) = Global.System.Convert.DBNull
-        End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _

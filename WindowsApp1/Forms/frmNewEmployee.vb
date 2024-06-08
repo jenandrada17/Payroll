@@ -1085,6 +1085,11 @@ Public Class frmNewEmployee
             SwitchForm_Scheduling(FormName.Schedule, tmpEmp)
             Close()
 
+        ElseIf txtSearch.Tag = "SOAForm" Then
+
+            SwitchForm_Loans(FormName.Loans, tmpEmp, "SOA")
+            Close()
+
         End If
 
     End Sub

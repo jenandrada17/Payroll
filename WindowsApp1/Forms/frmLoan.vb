@@ -206,6 +206,13 @@ Public Class frmLoan
                 SBU_Name_txt.Text = .Fullname
                 SBU_Name_txt.Tag = .BiometricID
 
+            ElseIf tabName = "SOA" Then
+                Loans_Tab.SelectedIndex = 6
+                txtNameSOA.Tag = .BiometricID
+                txtDesignation.Text = .Position
+                txtCompany.Text = .Company
+                txtNameSOA.Text = .Fullname
+
             End If
         End With
     End Sub
@@ -796,16 +803,37 @@ Public Class frmLoan
     End Sub
 
     Private Sub btnCancelSOA_Click(sender As Object, e As EventArgs) Handles btnCancelSOA.Click
-        txtBioID.Clear()
         txtNameSOA.Clear()
         txtDesignation.Clear()
         txtCompany.Clear()
         rpt_SOA.Clear()
     End Sub
 
-    Private Sub txtBioID_TextChanged(sender As Object, e As EventArgs) Handles txtBioID.TextChanged
-        If txtBioID.Text <> Nothing Then
-            GetSOAInfo(txtBioID.Text, txtNameSOA, txtDesignation, txtCompany, rpt_SOA)
+    Private Sub SearchEMP_BTN_Click(sender As Object, e As EventArgs) Handles SearchEMP_BTN.Click
+        Try
+            Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmNewEmployee").SingleOrDefault()
+            If instForm Is Nothing Then
+                Dim frm As frmNewEmployee
+                frm = DirectCast(CreateObjectInstance("frmNewEmployee"), Form)
+                frm.MdiParent = frmMainForm
+                frmMainForm.pNavigate.Controls.Add(frm)
+                frmMainForm.pNavigate.Tag = frm
+                frm.txtSearch.Tag = "SOAForm"
+                frm.Dock = DockStyle.Fill
+                frm.BringToFront()
+                frm.Show()
+            Else
+                instForm.BringToFront()
+            End If
+
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    Private Sub txtNameSOA_TextChanged(sender As Object, e As EventArgs) Handles txtNameSOA.TextChanged
+        If txtNameSOA.Text <> Nothing Then
+            GetSOAInfo(txtNameSOA.Tag, txtNameSOA.Text, txtDesignation.Text, txtCompany.Text, rpt_SOA)
         End If
     End Sub
 End Class

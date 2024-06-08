@@ -23,7 +23,7 @@ Partial Class frmLoan
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim ReportDataSource2 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource3 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
         Me.Close_LBL = New System.Windows.Forms.Label()
         Me.Loans_Tab = New System.Windows.Forms.TabControl()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
@@ -184,6 +184,26 @@ Partial Class frmLoan
         Me.SBU_Principal_txt = New System.Windows.Forms.TextBox()
         Me.Label58 = New System.Windows.Forms.Label()
         Me.SBU_SearchEmp_btn = New System.Windows.Forms.Button()
+        Me.SBU_LV = New System.Windows.Forms.ListView()
+        Me.ColumnHeader34 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader35 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader36 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader37 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader38 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.TabPage7 = New System.Windows.Forms.TabPage()
+        Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.btnCancelSOA = New System.Windows.Forms.Button()
+        Me.Label89 = New System.Windows.Forms.Label()
+        Me.btnSaveSOA = New System.Windows.Forms.Button()
+        Me.btnPreviewSOA = New System.Windows.Forms.Button()
+        Me.Label83 = New System.Windows.Forms.Label()
+        Me.txtCompany = New System.Windows.Forms.TextBox()
+        Me.txtDesignation = New System.Windows.Forms.TextBox()
+        Me.SearchEMP_BTN = New System.Windows.Forms.Button()
+        Me.Label87 = New System.Windows.Forms.Label()
+        Me.txtNameSOA = New System.Windows.Forms.TextBox()
+        Me.rpt_SOA = New Microsoft.Reporting.WinForms.ReportViewer()
+        Me.TabPage8 = New System.Windows.Forms.TabPage()
         Me.Partial_Panel = New System.Windows.Forms.Panel()
         Me.PartialName_txt = New System.Windows.Forms.TextBox()
         Me.Label52 = New System.Windows.Forms.Label()
@@ -195,12 +215,6 @@ Partial Class frmLoan
         Me.PartialAmount_txt = New System.Windows.Forms.TextBox()
         Me.Label49 = New System.Windows.Forms.Label()
         Me.Label48 = New System.Windows.Forms.Label()
-        Me.SBU_LV = New System.Windows.Forms.ListView()
-        Me.ColumnHeader34 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader35 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader36 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader37 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.ColumnHeader38 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader19 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader20 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.ColumnHeader21 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
@@ -231,22 +245,6 @@ Partial Class frmLoan
         Me.Label31 = New System.Windows.Forms.Label()
         Me.DE_Effectivity_DTP = New System.Windows.Forms.DateTimePicker()
         Me.lblAdd = New System.Windows.Forms.Label()
-        Me.TabPage7 = New System.Windows.Forms.TabPage()
-        Me.TabPage8 = New System.Windows.Forms.TabPage()
-        Me.rpt_SOA = New Microsoft.Reporting.WinForms.ReportViewer()
-        Me.Panel1 = New System.Windows.Forms.Panel()
-        Me.btnCancelSOA = New System.Windows.Forms.Button()
-        Me.btnSaveSOA = New System.Windows.Forms.Button()
-        Me.btnPreviewSOA = New System.Windows.Forms.Button()
-        Me.Label83 = New System.Windows.Forms.Label()
-        Me.txtCompany = New System.Windows.Forms.TextBox()
-        Me.SearchEMP_BTN = New System.Windows.Forms.Button()
-        Me.Label87 = New System.Windows.Forms.Label()
-        Me.txtBioID = New System.Windows.Forms.TextBox()
-        Me.txtNameSOA = New System.Windows.Forms.TextBox()
-        Me.Label88 = New System.Windows.Forms.Label()
-        Me.txtDesignation = New System.Windows.Forms.TextBox()
-        Me.Label89 = New System.Windows.Forms.Label()
         Me.Loans_Tab.SuspendLayout()
         Me.TabPage2.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
@@ -262,9 +260,9 @@ Partial Class frmLoan
         Me.TabPage6.SuspendLayout()
         Me.Context_SBU.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
-        Me.Partial_Panel.SuspendLayout()
         Me.TabPage7.SuspendLayout()
         Me.Panel1.SuspendLayout()
+        Me.Partial_Panel.SuspendLayout()
         Me.SuspendLayout()
         '
         'Close_LBL
@@ -1828,6 +1826,205 @@ Partial Class frmLoan
         Me.SBU_SearchEmp_btn.Text = "..."
         Me.SBU_SearchEmp_btn.UseVisualStyleBackColor = True
         '
+        'SBU_LV
+        '
+        Me.SBU_LV.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.SBU_LV.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader34, Me.ColumnHeader35, Me.ColumnHeader36, Me.ColumnHeader37, Me.ColumnHeader38})
+        Me.SBU_LV.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SBU_LV.FullRowSelect = True
+        Me.SBU_LV.GridLines = True
+        Me.SBU_LV.HideSelection = False
+        Me.SBU_LV.Location = New System.Drawing.Point(466, 76)
+        Me.SBU_LV.MultiSelect = False
+        Me.SBU_LV.Name = "SBU_LV"
+        Me.SBU_LV.Size = New System.Drawing.Size(675, 483)
+        Me.SBU_LV.TabIndex = 128
+        Me.SBU_LV.UseCompatibleStateImageBehavior = False
+        Me.SBU_LV.View = System.Windows.Forms.View.Details
+        '
+        'ColumnHeader34
+        '
+        Me.ColumnHeader34.Text = "Name"
+        Me.ColumnHeader34.Width = 250
+        '
+        'ColumnHeader35
+        '
+        Me.ColumnHeader35.Text = "Amount"
+        Me.ColumnHeader35.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.ColumnHeader35.Width = 100
+        '
+        'ColumnHeader36
+        '
+        Me.ColumnHeader36.Text = "Principal"
+        Me.ColumnHeader36.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.ColumnHeader36.Width = 100
+        '
+        'ColumnHeader37
+        '
+        Me.ColumnHeader37.Text = "Amount Paid"
+        Me.ColumnHeader37.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.ColumnHeader37.Width = 100
+        '
+        'ColumnHeader38
+        '
+        Me.ColumnHeader38.Text = "Balance"
+        Me.ColumnHeader38.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
+        Me.ColumnHeader38.Width = 100
+        '
+        'TabPage7
+        '
+        Me.TabPage7.Controls.Add(Me.Panel1)
+        Me.TabPage7.Controls.Add(Me.rpt_SOA)
+        Me.TabPage7.Location = New System.Drawing.Point(4, 38)
+        Me.TabPage7.Name = "TabPage7"
+        Me.TabPage7.Size = New System.Drawing.Size(1147, 604)
+        Me.TabPage7.TabIndex = 13
+        Me.TabPage7.Text = "      SOA Form    "
+        Me.TabPage7.UseVisualStyleBackColor = True
+        '
+        'Panel1
+        '
+        Me.Panel1.AutoScroll = True
+        Me.Panel1.Controls.Add(Me.btnCancelSOA)
+        Me.Panel1.Controls.Add(Me.Label89)
+        Me.Panel1.Controls.Add(Me.btnSaveSOA)
+        Me.Panel1.Controls.Add(Me.btnPreviewSOA)
+        Me.Panel1.Controls.Add(Me.Label83)
+        Me.Panel1.Controls.Add(Me.txtCompany)
+        Me.Panel1.Controls.Add(Me.txtDesignation)
+        Me.Panel1.Controls.Add(Me.SearchEMP_BTN)
+        Me.Panel1.Controls.Add(Me.Label87)
+        Me.Panel1.Controls.Add(Me.txtNameSOA)
+        Me.Panel1.Location = New System.Drawing.Point(638, 3)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(506, 598)
+        Me.Panel1.TabIndex = 2
+        '
+        'btnCancelSOA
+        '
+        Me.btnCancelSOA.BackColor = System.Drawing.Color.PeachPuff
+        Me.btnCancelSOA.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnCancelSOA.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnCancelSOA.Location = New System.Drawing.Point(19, 523)
+        Me.btnCancelSOA.Name = "btnCancelSOA"
+        Me.btnCancelSOA.Size = New System.Drawing.Size(115, 40)
+        Me.btnCancelSOA.TabIndex = 70
+        Me.btnCancelSOA.Text = "Cancel"
+        Me.btnCancelSOA.UseVisualStyleBackColor = False
+        '
+        'Label89
+        '
+        Me.Label89.AutoSize = True
+        Me.Label89.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label89.Location = New System.Drawing.Point(23, 96)
+        Me.Label89.Name = "Label89"
+        Me.Label89.Size = New System.Drawing.Size(84, 25)
+        Me.Label89.TabIndex = 73
+        Me.Label89.Text = "Designation"
+        '
+        'btnSaveSOA
+        '
+        Me.btnSaveSOA.BackColor = System.Drawing.Color.DarkSalmon
+        Me.btnSaveSOA.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnSaveSOA.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSaveSOA.Location = New System.Drawing.Point(375, 523)
+        Me.btnSaveSOA.Name = "btnSaveSOA"
+        Me.btnSaveSOA.Size = New System.Drawing.Size(115, 40)
+        Me.btnSaveSOA.TabIndex = 72
+        Me.btnSaveSOA.Text = "Save"
+        Me.btnSaveSOA.UseVisualStyleBackColor = False
+        '
+        'btnPreviewSOA
+        '
+        Me.btnPreviewSOA.BackColor = System.Drawing.Color.MistyRose
+        Me.btnPreviewSOA.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnPreviewSOA.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnPreviewSOA.Location = New System.Drawing.Point(204, 526)
+        Me.btnPreviewSOA.Name = "btnPreviewSOA"
+        Me.btnPreviewSOA.Size = New System.Drawing.Size(115, 40)
+        Me.btnPreviewSOA.TabIndex = 71
+        Me.btnPreviewSOA.Text = "Preview"
+        Me.btnPreviewSOA.UseVisualStyleBackColor = False
+        '
+        'Label83
+        '
+        Me.Label83.AutoSize = True
+        Me.Label83.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label83.Location = New System.Drawing.Point(23, 147)
+        Me.Label83.Name = "Label83"
+        Me.Label83.Size = New System.Drawing.Size(71, 25)
+        Me.Label83.TabIndex = 17
+        Me.Label83.Text = "Company"
+        '
+        'txtCompany
+        '
+        Me.txtCompany.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtCompany.Location = New System.Drawing.Point(137, 147)
+        Me.txtCompany.Name = "txtCompany"
+        Me.txtCompany.ReadOnly = True
+        Me.txtCompany.Size = New System.Drawing.Size(269, 29)
+        Me.txtCompany.TabIndex = 18
+        '
+        'txtDesignation
+        '
+        Me.txtDesignation.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtDesignation.Location = New System.Drawing.Point(137, 95)
+        Me.txtDesignation.Name = "txtDesignation"
+        Me.txtDesignation.ReadOnly = True
+        Me.txtDesignation.Size = New System.Drawing.Size(269, 29)
+        Me.txtDesignation.TabIndex = 12
+        '
+        'SearchEMP_BTN
+        '
+        Me.SearchEMP_BTN.Location = New System.Drawing.Point(428, 50)
+        Me.SearchEMP_BTN.Name = "SearchEMP_BTN"
+        Me.SearchEMP_BTN.Size = New System.Drawing.Size(35, 26)
+        Me.SearchEMP_BTN.TabIndex = 8
+        Me.SearchEMP_BTN.Text = "..."
+        Me.SearchEMP_BTN.UseVisualStyleBackColor = True
+        '
+        'Label87
+        '
+        Me.Label87.AutoSize = True
+        Me.Label87.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label87.Location = New System.Drawing.Point(23, 51)
+        Me.Label87.Name = "Label87"
+        Me.Label87.Size = New System.Drawing.Size(48, 25)
+        Me.Label87.TabIndex = 2
+        Me.Label87.Text = "Name"
+        '
+        'txtNameSOA
+        '
+        Me.txtNameSOA.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtNameSOA.Location = New System.Drawing.Point(137, 46)
+        Me.txtNameSOA.Name = "txtNameSOA"
+        Me.txtNameSOA.ReadOnly = True
+        Me.txtNameSOA.Size = New System.Drawing.Size(269, 29)
+        Me.txtNameSOA.TabIndex = 3
+        '
+        'rpt_SOA
+        '
+        ReportDataSource3.Name = "DataSet1"
+        ReportDataSource3.Value = Nothing
+        Me.rpt_SOA.LocalReport.DataSources.Add(ReportDataSource3)
+        Me.rpt_SOA.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_SOA.rdlc"
+        Me.rpt_SOA.Location = New System.Drawing.Point(3, 3)
+        Me.rpt_SOA.Name = "rpt_SOA"
+        Me.rpt_SOA.ServerReport.BearerToken = Nothing
+        Me.rpt_SOA.Size = New System.Drawing.Size(629, 598)
+        Me.rpt_SOA.TabIndex = 1
+        '
+        'TabPage8
+        '
+        Me.TabPage8.Location = New System.Drawing.Point(4, 38)
+        Me.TabPage8.Name = "TabPage8"
+        Me.TabPage8.Size = New System.Drawing.Size(1147, 604)
+        Me.TabPage8.TabIndex = 14
+        Me.TabPage8.Text = "      SOA List      "
+        Me.TabPage8.UseVisualStyleBackColor = True
+        '
         'Partial_Panel
         '
         Me.Partial_Panel.BackColor = System.Drawing.Color.LightSalmon
@@ -1942,53 +2139,6 @@ Partial Class frmLoan
         Me.Label48.Size = New System.Drawing.Size(115, 27)
         Me.Label48.TabIndex = 0
         Me.Label48.Text = "Partial Payment"
-        '
-        'SBU_LV
-        '
-        Me.SBU_LV.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.SBU_LV.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader34, Me.ColumnHeader35, Me.ColumnHeader36, Me.ColumnHeader37, Me.ColumnHeader38})
-        Me.SBU_LV.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.SBU_LV.FullRowSelect = True
-        Me.SBU_LV.GridLines = True
-        Me.SBU_LV.HideSelection = False
-        Me.SBU_LV.Location = New System.Drawing.Point(466, 76)
-        Me.SBU_LV.MultiSelect = False
-        Me.SBU_LV.Name = "SBU_LV"
-        Me.SBU_LV.Size = New System.Drawing.Size(675, 483)
-        Me.SBU_LV.TabIndex = 128
-        Me.SBU_LV.UseCompatibleStateImageBehavior = False
-        Me.SBU_LV.View = System.Windows.Forms.View.Details
-        '
-        'ColumnHeader34
-        '
-        Me.ColumnHeader34.Text = "Name"
-        Me.ColumnHeader34.Width = 250
-        '
-        'ColumnHeader35
-        '
-        Me.ColumnHeader35.Text = "Amount"
-        Me.ColumnHeader35.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.ColumnHeader35.Width = 100
-        '
-        'ColumnHeader36
-        '
-        Me.ColumnHeader36.Text = "Principal"
-        Me.ColumnHeader36.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.ColumnHeader36.Width = 100
-        '
-        'ColumnHeader37
-        '
-        Me.ColumnHeader37.Text = "Amount Paid"
-        Me.ColumnHeader37.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.ColumnHeader37.Width = 100
-        '
-        'ColumnHeader38
-        '
-        Me.ColumnHeader38.Text = "Balance"
-        Me.ColumnHeader38.TextAlign = System.Windows.Forms.HorizontalAlignment.Right
-        Me.ColumnHeader38.Width = 100
         '
         'ColumnHeader19
         '
@@ -2234,178 +2384,6 @@ Partial Class frmLoan
         Me.lblAdd.Size = New System.Drawing.Size(32, 22)
         Me.lblAdd.TabIndex = 125
         '
-        'TabPage7
-        '
-        Me.TabPage7.Controls.Add(Me.Panel1)
-        Me.TabPage7.Controls.Add(Me.rpt_SOA)
-        Me.TabPage7.Location = New System.Drawing.Point(4, 38)
-        Me.TabPage7.Name = "TabPage7"
-        Me.TabPage7.Size = New System.Drawing.Size(1147, 604)
-        Me.TabPage7.TabIndex = 13
-        Me.TabPage7.Text = "      SOA Form    "
-        Me.TabPage7.UseVisualStyleBackColor = True
-        '
-        'TabPage8
-        '
-        Me.TabPage8.Location = New System.Drawing.Point(4, 38)
-        Me.TabPage8.Name = "TabPage8"
-        Me.TabPage8.Size = New System.Drawing.Size(1147, 604)
-        Me.TabPage8.TabIndex = 14
-        Me.TabPage8.Text = "      SOA List      "
-        Me.TabPage8.UseVisualStyleBackColor = True
-        '
-        'rpt_SOA
-        '
-        ReportDataSource2.Name = "DataSet1"
-        ReportDataSource2.Value = Nothing
-        Me.rpt_SOA.LocalReport.DataSources.Add(ReportDataSource2)
-        Me.rpt_SOA.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_PAF.rdlc"
-        Me.rpt_SOA.Location = New System.Drawing.Point(3, 3)
-        Me.rpt_SOA.Name = "rpt_SOA"
-        Me.rpt_SOA.ServerReport.BearerToken = Nothing
-        Me.rpt_SOA.Size = New System.Drawing.Size(629, 598)
-        Me.rpt_SOA.TabIndex = 1
-        '
-        'Panel1
-        '
-        Me.Panel1.AutoScroll = True
-        Me.Panel1.Controls.Add(Me.btnCancelSOA)
-        Me.Panel1.Controls.Add(Me.Label89)
-        Me.Panel1.Controls.Add(Me.btnSaveSOA)
-        Me.Panel1.Controls.Add(Me.btnPreviewSOA)
-        Me.Panel1.Controls.Add(Me.Label83)
-        Me.Panel1.Controls.Add(Me.txtCompany)
-        Me.Panel1.Controls.Add(Me.txtDesignation)
-        Me.Panel1.Controls.Add(Me.SearchEMP_BTN)
-        Me.Panel1.Controls.Add(Me.Label87)
-        Me.Panel1.Controls.Add(Me.txtBioID)
-        Me.Panel1.Controls.Add(Me.txtNameSOA)
-        Me.Panel1.Controls.Add(Me.Label88)
-        Me.Panel1.Location = New System.Drawing.Point(638, 3)
-        Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(506, 598)
-        Me.Panel1.TabIndex = 2
-        '
-        'btnCancelSOA
-        '
-        Me.btnCancelSOA.BackColor = System.Drawing.Color.PeachPuff
-        Me.btnCancelSOA.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnCancelSOA.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnCancelSOA.Location = New System.Drawing.Point(19, 523)
-        Me.btnCancelSOA.Name = "btnCancelSOA"
-        Me.btnCancelSOA.Size = New System.Drawing.Size(115, 40)
-        Me.btnCancelSOA.TabIndex = 70
-        Me.btnCancelSOA.Text = "Cancel"
-        Me.btnCancelSOA.UseVisualStyleBackColor = False
-        '
-        'btnSaveSOA
-        '
-        Me.btnSaveSOA.BackColor = System.Drawing.Color.DarkSalmon
-        Me.btnSaveSOA.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnSaveSOA.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnSaveSOA.Location = New System.Drawing.Point(375, 523)
-        Me.btnSaveSOA.Name = "btnSaveSOA"
-        Me.btnSaveSOA.Size = New System.Drawing.Size(115, 40)
-        Me.btnSaveSOA.TabIndex = 72
-        Me.btnSaveSOA.Text = "Save"
-        Me.btnSaveSOA.UseVisualStyleBackColor = False
-        '
-        'btnPreviewSOA
-        '
-        Me.btnPreviewSOA.BackColor = System.Drawing.Color.MistyRose
-        Me.btnPreviewSOA.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnPreviewSOA.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnPreviewSOA.Location = New System.Drawing.Point(204, 526)
-        Me.btnPreviewSOA.Name = "btnPreviewSOA"
-        Me.btnPreviewSOA.Size = New System.Drawing.Size(115, 40)
-        Me.btnPreviewSOA.TabIndex = 71
-        Me.btnPreviewSOA.Text = "Preview"
-        Me.btnPreviewSOA.UseVisualStyleBackColor = False
-        '
-        'Label83
-        '
-        Me.Label83.AutoSize = True
-        Me.Label83.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label83.Location = New System.Drawing.Point(23, 182)
-        Me.Label83.Name = "Label83"
-        Me.Label83.Size = New System.Drawing.Size(71, 25)
-        Me.Label83.TabIndex = 17
-        Me.Label83.Text = "Company"
-        '
-        'txtCompany
-        '
-        Me.txtCompany.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtCompany.Location = New System.Drawing.Point(137, 182)
-        Me.txtCompany.Name = "txtCompany"
-        Me.txtCompany.ReadOnly = True
-        Me.txtCompany.Size = New System.Drawing.Size(269, 29)
-        Me.txtCompany.TabIndex = 18
-        '
-        'SearchEMP_BTN
-        '
-        Me.SearchEMP_BTN.Location = New System.Drawing.Point(428, 85)
-        Me.SearchEMP_BTN.Name = "SearchEMP_BTN"
-        Me.SearchEMP_BTN.Size = New System.Drawing.Size(35, 26)
-        Me.SearchEMP_BTN.TabIndex = 8
-        Me.SearchEMP_BTN.Text = "..."
-        Me.SearchEMP_BTN.UseVisualStyleBackColor = True
-        '
-        'Label87
-        '
-        Me.Label87.AutoSize = True
-        Me.Label87.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label87.Location = New System.Drawing.Point(23, 86)
-        Me.Label87.Name = "Label87"
-        Me.Label87.Size = New System.Drawing.Size(48, 25)
-        Me.Label87.TabIndex = 2
-        Me.Label87.Text = "Name"
-        '
-        'txtBioID
-        '
-        Me.txtBioID.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtBioID.Location = New System.Drawing.Point(137, 36)
-        Me.txtBioID.Name = "txtBioID"
-        Me.txtBioID.Size = New System.Drawing.Size(269, 29)
-        Me.txtBioID.TabIndex = 1
-        '
-        'txtNameSOA
-        '
-        Me.txtNameSOA.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtNameSOA.Location = New System.Drawing.Point(137, 81)
-        Me.txtNameSOA.Name = "txtNameSOA"
-        Me.txtNameSOA.ReadOnly = True
-        Me.txtNameSOA.Size = New System.Drawing.Size(269, 29)
-        Me.txtNameSOA.TabIndex = 3
-        '
-        'Label88
-        '
-        Me.Label88.AutoSize = True
-        Me.Label88.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label88.Location = New System.Drawing.Point(23, 39)
-        Me.Label88.Name = "Label88"
-        Me.Label88.Size = New System.Drawing.Size(88, 25)
-        Me.Label88.TabIndex = 0
-        Me.Label88.Text = "Biometric ID"
-        '
-        'txtDesignation
-        '
-        Me.txtDesignation.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtDesignation.Location = New System.Drawing.Point(137, 130)
-        Me.txtDesignation.Name = "txtDesignation"
-        Me.txtDesignation.ReadOnly = True
-        Me.txtDesignation.Size = New System.Drawing.Size(269, 29)
-        Me.txtDesignation.TabIndex = 12
-        '
-        'Label89
-        '
-        Me.Label89.AutoSize = True
-        Me.Label89.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label89.Location = New System.Drawing.Point(23, 131)
-        Me.Label89.Name = "Label89"
-        Me.Label89.Size = New System.Drawing.Size(84, 25)
-        Me.Label89.TabIndex = 73
-        Me.Label89.Text = "Designation"
-        '
         'frmLoan
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -2441,11 +2419,11 @@ Partial Class frmLoan
         Me.Context_SBU.ResumeLayout(False)
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
-        Me.Partial_Panel.ResumeLayout(False)
-        Me.Partial_Panel.PerformLayout()
         Me.TabPage7.ResumeLayout(False)
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
+        Me.Partial_Panel.ResumeLayout(False)
+        Me.Partial_Panel.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -2673,9 +2651,7 @@ Partial Class frmLoan
     Friend WithEvents txtCompany As TextBox
     Friend WithEvents SearchEMP_BTN As Button
     Friend WithEvents Label87 As Label
-    Friend WithEvents txtBioID As TextBox
     Friend WithEvents txtNameSOA As TextBox
-    Friend WithEvents Label88 As Label
     Friend WithEvents Label89 As Label
     Friend WithEvents txtDesignation As TextBox
 End Class

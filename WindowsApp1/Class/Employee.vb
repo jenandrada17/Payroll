@@ -101,6 +101,7 @@
                 With dr
 
                     EMP_ID = .Item("id")
+                    Position = IIf(IsDBNull(.Item("Emp_Position")), "", .Item("Emp_Position"))
                     Company = IIf(IsDBNull(.Item("Company")), "", .Item("Company"))
                     BRANCH_CODE = IIf(IsDBNull(.Item("BRANCHCODE")), "", .Item("BRANCHCODE"))
                     Fullname = .Item("FULLNAME")

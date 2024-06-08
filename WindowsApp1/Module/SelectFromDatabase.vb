@@ -1,6 +1,8 @@
 ﻿Imports System.IO
+Imports System.Security
 Imports System.Windows.Documents
 Imports System.Windows.Forms.AxHost
+Imports System.Windows.Forms.VisualStyles.VisualStyleElement
 Imports FirebirdSql.Data.FirebirdClient
 
 Module SelectFromDatabase
@@ -1888,6 +1890,9 @@ Module SelectFromDatabase
         End Using
     End Sub
 
+    Friend startDate_13Month As Date
+    Friend endDate_13Month As Date
+
     Friend Function Get13Month(bio_no As String, Optional paydatee As DateTime = Nothing)
 
         Dim datee As DateTime = IIf(paydatee = Nothing, Date.Now, paydatee)
@@ -1909,6 +1914,10 @@ Module SelectFromDatabase
             Dim days As Integer = System.DateTime.DaysInMonth(December_April.Year, December_April.Month)
             ending_date = December_April.AddMonths(4).AddDays(days).AddDays(-1).ToString("d")
         End If
+
+        'JUST FOR THE SOA
+        startDate_13Month = starting_date
+        endDate_13Month = ending_date
 
         Dim tOTAL_ECOLA As Decimal = GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC where BIO_NO = '{bio_no}' and CATEGORY = 'ECOLA' and PAYDATE BETWEEN '{starting_date}' AND '{ending_date}'")
         Dim tOTAL_SIL As Decimal = GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC where BIO_NO = '{bio_no}' and CATEGORY like '%SIL' and PAYDATE BETWEEN '{starting_date}' AND '{ending_date}'")
@@ -3383,7 +3392,7 @@ Module SelectFromDatabase
         End Using
     End Function
 
-    Friend Sub GetSOAInfo(bioNo As String, txtNameSOA As TextBox, txtDesignation As TextBox, txtCompany As TextBox, rpt_SOA As Microsoft.Reporting.WinForms.ReportViewer)
+    Friend Sub GetSOAInfo(bioNo As String, fullname As String, designation As String, company As String, rpt_SOA As Microsoft.Reporting.WinForms.ReportViewer)
         Dim hasRecord As Boolean = False
         Dim minimumRate As Decimal = 0
         Dim mysql As String = $"SELECT * FROM TBL_EMPLOYEE WHERE BIOMETRICID = {bioNo}"
@@ -3398,9 +3407,6 @@ Module SelectFromDatabase
                         mi = $" { .Item("MIDDLENAME").Substring(0, 1)}"
                     End If
 
-                    txtNameSOA.Text = $"{ .Item("LASTNAME")}, { .Item("FIRSTNAME")}{mi}"
-                    txtDesignation.Text = IIf(IsDBNull(.Item("EMP_POSITION")), Nothing, .Item("EMP_POSITION"))
-                    txtCompany.Text = IIf(IsDBNull(.Item("COMPANY")), Nothing, .Item("COMPANY"))
                     minimumRate = IIf(IsDBNull(.Item("RATE_DAILY")), 0, .Item("RATE_DAILY"))
                     hasRecord = True
                 End With
@@ -3416,33 +3422,104 @@ Module SelectFromDatabase
             Try
                 Dim dt As New DataTable()
                 With dt
-                    .Columns.Add("SOA_DATE")
-                    .Columns.Add("FULLNAME")
-                    .Columns.Add("DESIGNATION")
-                    .Columns.Add("COMPANY")
+                    '.Columns.Add("SOA_DATE")
+                    '.Columns.Add("FULLNAME")
+                    '.Columns.Add("DESIGNATION")
+                    '.Columns.Add("COMPANY")
                     .Columns.Add("PARTICULARS")
                     .Columns.Add("AMOUNT")
                     .Columns.Add("CATEGORY")
                 End With
 
+                Dim holdSalary As Decimal = 0
+                Dim silRefund As Decimal = 0
+                Dim remaining13thMonth As Decimal = 0
+                Dim totalSBUCredit As Decimal = 0
+                Dim totalClaims As Decimal = 0
+                Dim totalDeduction As Decimal = 0
+                Dim NETPAY As Decimal = 0
+
+                '======================================================== CLAIMS ====================================================================
                 'HOLD SALARY
-                Dim mysqll As String = $"SELECT * FROM RECORDED_ALLOW_DEDUC WHERE BIO_NO = '{bioNo}' AND UPPER(CATEGORY) LIKE UPPER('%HOLD SALARY%')"
-                Dim ds As DataSet = LoadSQL(mysql, "RECORDED_ALLOW_DEDUC")
-                If ds.Tables(0).Rows.Count > 0 Then
-                    dt.Rows.Add(Today.ToShortDateString, txtNameSOA.Text, txtDesignation.Text, txtCompany.Text, "HOLD SALARY", ds.Tables(0).Rows(0).Item("AMOUNT"), "DEBIT")
+                Dim mysql1 As String = $"SELECT * FROM RECORDED_ALLOW_DEDUC WHERE BIO_NO = '{bioNo}' AND UPPER(CATEGORY) LIKE UPPER('%HOLD SALARY%')"
+                Dim ds1 As DataSet = LoadSQL(mysql1, "RECORDED_ALLOW_DEDUC")
+                If ds1.Tables(0).Rows.Count > 0 Then
+                    holdSalary = ds1.Tables(0).Rows(0).Item("AMOUNT")
+                    totalClaims += holdSalary
+                    dt.Rows.Add("HOLD SALARY", ds1.Tables(0).Rows(0).Item("AMOUNT"), "DEBIT")
                 End If
 
                 'SIL REFUND
                 Dim remainingSIL As Double = 5 - GetTotalSIL(bioNo)
                 Dim perSIL As Decimal = (minimumRate * 5) / 12
-                Dim silRefund As Decimal = remainingSIL * perSIL
-                dt.Rows.Add(Today.ToShortDateString, txtNameSOA.Text, txtDesignation.Text, txtCompany.Text, "S.I.L Refund", silRefund, "DEBIT")
+                silRefund = remainingSIL * perSIL
+                totalClaims += silRefund
+                dt.Rows.Add("S.I.L Refund", silRefund.ToString("N"), "DEBIT")
 
                 '13TH MONTH
+                remaining13thMonth = Get13Month(bioNo)
+                totalClaims += remaining13thMonth
+                Dim fromDate As String = startDate_13Month.ToString("MMMM dd, yyyy")
+                Dim toDate As String = endDate_13Month.ToString("MMMM dd, yyyy")
+                dt.Rows.Add($"13th Month Pay ({fromDate} - {toDate})", remaining13thMonth.ToString("N"))
 
+                'SBU 
+                Dim mysql2 As String = $"SELECT COALESCE(SUM(C.AMOUNT), 0) AS TOTALS, CREDIT, MIN(C.PAYDATE) AS FROMDATE, MAX(C.PAYDATE) AS TODATE
+                                          FROM PAYROLL_SBU A  
+                                          LEFT JOIN RECORDED_ALLOW_DEDUC C ON C.BIO_NO = A.BIO_NO AND C.CATEGORY = 'SBU'  AND PAYDATE <> '12/15/2021' 
+                                          WHERE A.BIO_NO = {bioNo}
+                                          GROUP BY C.AMOUNT, CREDIT "
+                Dim ds2 As DataSet = LoadSQL(mysql2, "PAYROLL_SBU")
+                If ds2.Tables(0).Rows.Count > 0 Then
+                    Dim creditSBU As Decimal = IIf(IsDBNull(ds2.Tables(0).Rows(0).Item("CREDIT")), 0, ds2.Tables(0).Rows(0).Item("CREDIT"))
+                    totalSBUCredit = creditSBU + CDbl(ds2.Tables(0).Rows(0).Item("TOTALS"))
+                    totalClaims += totalSBUCredit
+                    Dim fromSBUDate As String = CDate(ds2.Tables(0).Rows(0).Item("FROMDATE")).ToString("MMMM dd, yyyy")
+                    Dim toSBUDate As String = CDate(ds2.Tables(0).Rows(0).Item("TODATE")).ToString("MMMM dd, yyyy")
+                    dt.Rows.Add($"SBU-SAVINGS BUILD UP ({fromSBUDate} - {toSBUDate})", totalSBUCredit.ToString("N"), "DEBIT")
+                End If
+
+                '======================================================== DEDUCTIONS ====================================================================
+                Dim mysql3 As String = $"SELECT ID, CATEGORY FROM PAYROLL_DEDUCTION WHERE BIO_NO = {bioNo}"
+                Using ds3 As DataSet = LoadSQL(mysql3, "PAYROLL_DEDUCTION")
+                    If ds3.Tables(0).Rows.Count > 0 Then
+                        For Each dr In ds3.Tables(0).Rows
+                            With dr
+
+                                Dim deduct_id As String = .item("ID")
+                                Dim category As String = .item("CATEGORY")
+                                Dim a_amount As Decimal = GetData_Decimal("AMORT", $"PAYROLL_DEDUCTION WHERE ID = '{deduct_id}'")
+                                Dim creditDeduc As Decimal = GetData_Decimal("CREDIT", $"PAYROLL_DEDUCTION WHERE ID = '{deduct_id}'")
+                                Dim principal As Decimal = GetData_Decimal("PRINCIPAL", $"PAYROLL_DEDUCTION WHERE ID = '{deduct_id}'")
+                                Dim partialPayment As Decimal = GetData_Decimal("AMOUNT", $"PARTIAL_PAYMENT WHERE DEDUCT_ID = '{deduct_id}'")
+                                Dim totalCredit As Decimal = creditDeduc + partialPayment + GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC WHERE R_DEDUC_ID = '{deduct_id}' and PAYDATE <> '12/15/2021'")
+                                Dim balance As Decimal = principal - totalCredit
+
+                                If balance <> 0 Then
+                                    totalDeduction += balance
+                                    dt.Rows.Add(category, balance.ToString("N"), "CREDIT")
+                                End If
+
+                            End With
+                        Next
+                    End If
+                End Using
+
+                NETPAY = totalClaims - totalDeduction
+
+                Dim parameter As New List(Of Microsoft.Reporting.WinForms.ReportParameter) From {
+                New Microsoft.Reporting.WinForms.ReportParameter("paramFullname", fullname),
+                New Microsoft.Reporting.WinForms.ReportParameter("paramDesignation", designation),
+                New Microsoft.Reporting.WinForms.ReportParameter("paramCompany", company),
+                New Microsoft.Reporting.WinForms.ReportParameter("paramDate", Today.ToShortDateString),
+                New Microsoft.Reporting.WinForms.ReportParameter("paramTotalClaims", totalClaims.ToString("N")),
+                New Microsoft.Reporting.WinForms.ReportParameter("paramTotalDeduction", totalDeduction.ToString("N")),
+                New Microsoft.Reporting.WinForms.ReportParameter("paramNetPay", NETPAY.ToString("N"))
+                }
 
                 Dim dataSource As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt)
                 rpt_SOA.LocalReport.DataSources.Add(dataSource)
+                rpt_SOA.LocalReport.SetParameters(parameter)
                 rpt_SOA.RefreshReport()
 
             Catch ex As Exception
