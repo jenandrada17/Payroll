@@ -3524,9 +3524,6 @@
                   <TablixMembers>
                     <TablixMember />
                   </TablixMembers>
-                  <Visibility>
-                    <Hidden>=IIF(REPORTITEMS!PARTICULARS.VALUE = NOTHING or REPORTITEMS!AMOUNT.VALUE = "0.00", TRUE, FALSE)</Hidden>
-                  </Visibility>
                 </TablixMember>
                 <TablixMember>
                   <KeepWithGroup>Before</KeepWithGroup>
@@ -3545,9 +3542,6 @@
                       <Value>=Fields!PARTICULARS.Value</Value>
                     </SortExpression>
                   </SortExpressions>
-                  <Visibility>
-                    <Hidden>=IIF(REPORTITEMS!PARTICULARS2.VALUE = NOTHING or REPORTITEMS!AMOUNT3.VALUE = "0.00", TRUE, FALSE)</Hidden>
-                  </Visibility>
                 </TablixMember>
                 <TablixMember>
                   <KeepWithGroup>Before</KeepWithGroup>

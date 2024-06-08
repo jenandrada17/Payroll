@@ -828,7 +828,7 @@ Public Class frmLoan
 
     Private Sub txtNameSOA_TextChanged(sender As Object, e As EventArgs) Handles txtNameSOA.TextChanged
         If txtNameSOA.Text <> Nothing Then
-            GetSOAInfo(txtNameSOA.Tag, txtNameSOA.Text, txtDesignation.Text, txtCompany.Text, txtDesignation.Tag, rpt_SOA)
+            GetSOAInfo(txtNameSOA.Tag, txtNameSOA.Text, txtDesignation.Text, txtCompany.Text, txtDesignation.Tag)
         End If
     End Sub
 

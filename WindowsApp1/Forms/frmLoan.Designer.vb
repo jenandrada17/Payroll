@@ -23,7 +23,7 @@ Partial Class frmLoan
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim ReportDataSource3 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource6 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
         Me.Close_LBL = New System.Windows.Forms.Label()
         Me.Loans_Tab = New System.Windows.Forms.TabControl()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
@@ -243,17 +243,13 @@ Partial Class frmLoan
         Me.Label31 = New System.Windows.Forms.Label()
         Me.DE_Effectivity_DTP = New System.Windows.Forms.DateTimePicker()
         Me.lblAdd = New System.Windows.Forms.Label()
+        Me.TextBox1 = New System.Windows.Forms.TextBox()
+        Me.Button1 = New System.Windows.Forms.Button()
         Me.Explain_datagrid = New System.Windows.Forms.DataGridView()
         Me.IRNO_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.Name_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Company_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.Deadline_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.IR_DGV = New System.Windows.Forms.DataGridViewButtonColumn()
-        Me.File_DGV = New System.Windows.Forms.DataGridViewButtonColumn()
-        Me.Explain_DGV = New System.Windows.Forms.DataGridViewButtonColumn()
         Me.Remarks_DGV = New System.Windows.Forms.DataGridViewButtonColumn()
-        Me.TextBox1 = New System.Windows.Forms.TextBox()
-        Me.Button1 = New System.Windows.Forms.Button()
         Me.Loans_Tab.SuspendLayout()
         Me.TabPage2.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
@@ -1991,9 +1987,9 @@ Partial Class frmLoan
         '
         'rpt_SOA
         '
-        ReportDataSource3.Name = "DataSet1"
-        ReportDataSource3.Value = Nothing
-        Me.rpt_SOA.LocalReport.DataSources.Add(ReportDataSource3)
+        ReportDataSource6.Name = "DataSet1"
+        ReportDataSource6.Value = Nothing
+        Me.rpt_SOA.LocalReport.DataSources.Add(ReportDataSource6)
         Me.rpt_SOA.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_SOA.rdlc"
         Me.rpt_SOA.Location = New System.Drawing.Point(3, 3)
         Me.rpt_SOA.Name = "rpt_SOA"
@@ -2372,80 +2368,6 @@ Partial Class frmLoan
         Me.lblAdd.Size = New System.Drawing.Size(32, 22)
         Me.lblAdd.TabIndex = 125
         '
-        'Explain_datagrid
-        '
-        Me.Explain_datagrid.AllowUserToAddRows = False
-        Me.Explain_datagrid.AllowUserToResizeRows = False
-        Me.Explain_datagrid.BackgroundColor = System.Drawing.SystemColors.ButtonFace
-        Me.Explain_datagrid.BorderStyle = System.Windows.Forms.BorderStyle.None
-        Me.Explain_datagrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.Explain_datagrid.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.IRNO_DGV, Me.Name_DGV, Me.Company_DGV, Me.Deadline_DGV, Me.IR_DGV, Me.File_DGV, Me.Explain_DGV, Me.Remarks_DGV})
-        Me.Explain_datagrid.Location = New System.Drawing.Point(3, 59)
-        Me.Explain_datagrid.Name = "Explain_datagrid"
-        Me.Explain_datagrid.RowHeadersVisible = False
-        Me.Explain_datagrid.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
-        Me.Explain_datagrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
-        Me.Explain_datagrid.Size = New System.Drawing.Size(1141, 539)
-        Me.Explain_datagrid.TabIndex = 7
-        '
-        'IRNO_DGV
-        '
-        Me.IRNO_DGV.HeaderText = "IR No."
-        Me.IRNO_DGV.Name = "IRNO_DGV"
-        Me.IRNO_DGV.ReadOnly = True
-        Me.IRNO_DGV.Width = 110
-        '
-        'Name_DGV
-        '
-        Me.Name_DGV.HeaderText = "Name"
-        Me.Name_DGV.Name = "Name_DGV"
-        Me.Name_DGV.ReadOnly = True
-        Me.Name_DGV.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.Name_DGV.Width = 300
-        '
-        'Company_DGV
-        '
-        Me.Company_DGV.HeaderText = "Company"
-        Me.Company_DGV.Name = "Company_DGV"
-        Me.Company_DGV.ReadOnly = True
-        Me.Company_DGV.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.Company_DGV.Width = 165
-        '
-        'Deadline_DGV
-        '
-        Me.Deadline_DGV.HeaderText = "Deadline"
-        Me.Deadline_DGV.Name = "Deadline_DGV"
-        Me.Deadline_DGV.ReadOnly = True
-        Me.Deadline_DGV.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.Deadline_DGV.Width = 195
-        '
-        'IR_DGV
-        '
-        Me.IR_DGV.HeaderText = "   IR"
-        Me.IR_DGV.Name = "IR_DGV"
-        Me.IR_DGV.Width = 75
-        '
-        'File_DGV
-        '
-        Me.File_DGV.HeaderText = "   SC"
-        Me.File_DGV.Name = "File_DGV"
-        Me.File_DGV.Width = 75
-        '
-        'Explain_DGV
-        '
-        Me.Explain_DGV.HeaderText = "   Explanation"
-        Me.Explain_DGV.Name = "Explain_DGV"
-        Me.Explain_DGV.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.Explain_DGV.Width = 125
-        '
-        'Remarks_DGV
-        '
-        Me.Remarks_DGV.HeaderText = "Remarks"
-        Me.Remarks_DGV.Name = "Remarks_DGV"
-        Me.Remarks_DGV.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.Remarks_DGV.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic
-        Me.Remarks_DGV.Width = 90
-        '
         'TextBox1
         '
         Me.TextBox1.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
@@ -2463,6 +2385,51 @@ Partial Class frmLoan
         Me.Button1.TabIndex = 132
         Me.Button1.Text = "Search"
         Me.Button1.UseVisualStyleBackColor = True
+        '
+        'Explain_datagrid
+        '
+        Me.Explain_datagrid.AllowUserToAddRows = False
+        Me.Explain_datagrid.AllowUserToResizeRows = False
+        Me.Explain_datagrid.BackgroundColor = System.Drawing.SystemColors.ButtonFace
+        Me.Explain_datagrid.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.Explain_datagrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.Explain_datagrid.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.IRNO_DGV, Me.Name_DGV, Me.IR_DGV, Me.Remarks_DGV})
+        Me.Explain_datagrid.Location = New System.Drawing.Point(3, 59)
+        Me.Explain_datagrid.Name = "Explain_datagrid"
+        Me.Explain_datagrid.RowHeadersVisible = False
+        Me.Explain_datagrid.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
+        Me.Explain_datagrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.Explain_datagrid.Size = New System.Drawing.Size(1141, 539)
+        Me.Explain_datagrid.TabIndex = 7
+        '
+        'IRNO_DGV
+        '
+        Me.IRNO_DGV.HeaderText = "Fullname"
+        Me.IRNO_DGV.Name = "IRNO_DGV"
+        Me.IRNO_DGV.ReadOnly = True
+        Me.IRNO_DGV.Width = 480
+        '
+        'Name_DGV
+        '
+        Me.Name_DGV.HeaderText = "Date Ended"
+        Me.Name_DGV.Name = "Name_DGV"
+        Me.Name_DGV.ReadOnly = True
+        Me.Name_DGV.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.Name_DGV.Width = 290
+        '
+        'IR_DGV
+        '
+        Me.IR_DGV.HeaderText = "Attachment"
+        Me.IR_DGV.Name = "IR_DGV"
+        Me.IR_DGV.Width = 200
+        '
+        'Remarks_DGV
+        '
+        Me.Remarks_DGV.HeaderText = "Remarks"
+        Me.Remarks_DGV.Name = "Remarks_DGV"
+        Me.Remarks_DGV.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.Remarks_DGV.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic
+        Me.Remarks_DGV.Width = 150
         '
         'frmLoan
         '
@@ -2735,15 +2702,11 @@ Partial Class frmLoan
     Friend WithEvents Label89 As Label
     Friend WithEvents txtDesignation As TextBox
     Friend WithEvents btnClearSOA As Button
+    Friend WithEvents TextBox1 As TextBox
+    Friend WithEvents Button1 As Button
     Friend WithEvents Explain_datagrid As DataGridView
     Friend WithEvents IRNO_DGV As DataGridViewTextBoxColumn
     Friend WithEvents Name_DGV As DataGridViewTextBoxColumn
-    Friend WithEvents Company_DGV As DataGridViewTextBoxColumn
-    Friend WithEvents Deadline_DGV As DataGridViewTextBoxColumn
     Friend WithEvents IR_DGV As DataGridViewButtonColumn
-    Friend WithEvents File_DGV As DataGridViewButtonColumn
-    Friend WithEvents Explain_DGV As DataGridViewButtonColumn
     Friend WithEvents Remarks_DGV As DataGridViewButtonColumn
-    Friend WithEvents TextBox1 As TextBox
-    Friend WithEvents Button1 As Button
 End Class
