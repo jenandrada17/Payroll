@@ -210,6 +210,7 @@ Public Class frmLoan
                 Loans_Tab.SelectedIndex = 6
                 txtNameSOA.Tag = .BiometricID
                 txtDesignation.Text = .Position
+                txtDesignation.Tag = .DAILY_RATE
                 txtCompany.Text = .Company
                 txtNameSOA.Text = .Fullname
 
@@ -802,12 +803,6 @@ Public Class frmLoan
         End If
     End Sub
 
-    Private Sub btnCancelSOA_Click(sender As Object, e As EventArgs) Handles btnCancelSOA.Click
-        txtNameSOA.Clear()
-        txtDesignation.Clear()
-        txtCompany.Clear()
-        rpt_SOA.Clear()
-    End Sub
 
     Private Sub SearchEMP_BTN_Click(sender As Object, e As EventArgs) Handles SearchEMP_BTN.Click
         Try
@@ -833,7 +828,14 @@ Public Class frmLoan
 
     Private Sub txtNameSOA_TextChanged(sender As Object, e As EventArgs) Handles txtNameSOA.TextChanged
         If txtNameSOA.Text <> Nothing Then
-            GetSOAInfo(txtNameSOA.Tag, txtNameSOA.Text, txtDesignation.Text, txtCompany.Text, rpt_SOA)
+            GetSOAInfo(txtNameSOA.Tag, txtNameSOA.Text, txtDesignation.Text, txtCompany.Text, txtDesignation.Tag, rpt_SOA)
         End If
+    End Sub
+
+    Private Sub btnClearSOA_Click(sender As Object, e As EventArgs) Handles btnClearSOA.Click
+        txtNameSOA.Clear()
+        txtDesignation.Clear()
+        txtCompany.Clear()
+        rpt_SOA.Clear()
     End Sub
 End Class

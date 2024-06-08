@@ -192,10 +192,8 @@ Partial Class frmLoan
         Me.ColumnHeader38 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
         Me.TabPage7 = New System.Windows.Forms.TabPage()
         Me.Panel1 = New System.Windows.Forms.Panel()
-        Me.btnCancelSOA = New System.Windows.Forms.Button()
+        Me.btnClearSOA = New System.Windows.Forms.Button()
         Me.Label89 = New System.Windows.Forms.Label()
-        Me.btnSaveSOA = New System.Windows.Forms.Button()
-        Me.btnPreviewSOA = New System.Windows.Forms.Button()
         Me.Label83 = New System.Windows.Forms.Label()
         Me.txtCompany = New System.Windows.Forms.TextBox()
         Me.txtDesignation = New System.Windows.Forms.TextBox()
@@ -245,6 +243,17 @@ Partial Class frmLoan
         Me.Label31 = New System.Windows.Forms.Label()
         Me.DE_Effectivity_DTP = New System.Windows.Forms.DateTimePicker()
         Me.lblAdd = New System.Windows.Forms.Label()
+        Me.Explain_datagrid = New System.Windows.Forms.DataGridView()
+        Me.IRNO_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Name_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Company_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.Deadline_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.IR_DGV = New System.Windows.Forms.DataGridViewButtonColumn()
+        Me.File_DGV = New System.Windows.Forms.DataGridViewButtonColumn()
+        Me.Explain_DGV = New System.Windows.Forms.DataGridViewButtonColumn()
+        Me.Remarks_DGV = New System.Windows.Forms.DataGridViewButtonColumn()
+        Me.TextBox1 = New System.Windows.Forms.TextBox()
+        Me.Button1 = New System.Windows.Forms.Button()
         Me.Loans_Tab.SuspendLayout()
         Me.TabPage2.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
@@ -262,7 +271,9 @@ Partial Class frmLoan
         Me.GroupBox1.SuspendLayout()
         Me.TabPage7.SuspendLayout()
         Me.Panel1.SuspendLayout()
+        Me.TabPage8.SuspendLayout()
         Me.Partial_Panel.SuspendLayout()
+        CType(Me.Explain_datagrid, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Close_LBL
@@ -1887,10 +1898,8 @@ Partial Class frmLoan
         'Panel1
         '
         Me.Panel1.AutoScroll = True
-        Me.Panel1.Controls.Add(Me.btnCancelSOA)
+        Me.Panel1.Controls.Add(Me.btnClearSOA)
         Me.Panel1.Controls.Add(Me.Label89)
-        Me.Panel1.Controls.Add(Me.btnSaveSOA)
-        Me.Panel1.Controls.Add(Me.btnPreviewSOA)
         Me.Panel1.Controls.Add(Me.Label83)
         Me.Panel1.Controls.Add(Me.txtCompany)
         Me.Panel1.Controls.Add(Me.txtDesignation)
@@ -1902,17 +1911,17 @@ Partial Class frmLoan
         Me.Panel1.Size = New System.Drawing.Size(506, 598)
         Me.Panel1.TabIndex = 2
         '
-        'btnCancelSOA
+        'btnClearSOA
         '
-        Me.btnCancelSOA.BackColor = System.Drawing.Color.PeachPuff
-        Me.btnCancelSOA.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnCancelSOA.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnCancelSOA.Location = New System.Drawing.Point(19, 523)
-        Me.btnCancelSOA.Name = "btnCancelSOA"
-        Me.btnCancelSOA.Size = New System.Drawing.Size(115, 40)
-        Me.btnCancelSOA.TabIndex = 70
-        Me.btnCancelSOA.Text = "Cancel"
-        Me.btnCancelSOA.UseVisualStyleBackColor = False
+        Me.btnClearSOA.BackColor = System.Drawing.Color.PeachPuff
+        Me.btnClearSOA.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnClearSOA.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnClearSOA.Location = New System.Drawing.Point(201, 228)
+        Me.btnClearSOA.Name = "btnClearSOA"
+        Me.btnClearSOA.Size = New System.Drawing.Size(115, 40)
+        Me.btnClearSOA.TabIndex = 70
+        Me.btnClearSOA.Text = "Clear"
+        Me.btnClearSOA.UseVisualStyleBackColor = False
         '
         'Label89
         '
@@ -1923,30 +1932,6 @@ Partial Class frmLoan
         Me.Label89.Size = New System.Drawing.Size(84, 25)
         Me.Label89.TabIndex = 73
         Me.Label89.Text = "Designation"
-        '
-        'btnSaveSOA
-        '
-        Me.btnSaveSOA.BackColor = System.Drawing.Color.DarkSalmon
-        Me.btnSaveSOA.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnSaveSOA.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnSaveSOA.Location = New System.Drawing.Point(375, 523)
-        Me.btnSaveSOA.Name = "btnSaveSOA"
-        Me.btnSaveSOA.Size = New System.Drawing.Size(115, 40)
-        Me.btnSaveSOA.TabIndex = 72
-        Me.btnSaveSOA.Text = "Save"
-        Me.btnSaveSOA.UseVisualStyleBackColor = False
-        '
-        'btnPreviewSOA
-        '
-        Me.btnPreviewSOA.BackColor = System.Drawing.Color.MistyRose
-        Me.btnPreviewSOA.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnPreviewSOA.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnPreviewSOA.Location = New System.Drawing.Point(204, 526)
-        Me.btnPreviewSOA.Name = "btnPreviewSOA"
-        Me.btnPreviewSOA.Size = New System.Drawing.Size(115, 40)
-        Me.btnPreviewSOA.TabIndex = 71
-        Me.btnPreviewSOA.Text = "Preview"
-        Me.btnPreviewSOA.UseVisualStyleBackColor = False
         '
         'Label83
         '
@@ -2018,11 +2003,14 @@ Partial Class frmLoan
         '
         'TabPage8
         '
+        Me.TabPage8.Controls.Add(Me.TextBox1)
+        Me.TabPage8.Controls.Add(Me.Button1)
+        Me.TabPage8.Controls.Add(Me.Explain_datagrid)
         Me.TabPage8.Location = New System.Drawing.Point(4, 38)
         Me.TabPage8.Name = "TabPage8"
         Me.TabPage8.Size = New System.Drawing.Size(1147, 604)
         Me.TabPage8.TabIndex = 14
-        Me.TabPage8.Text = "      SOA List      "
+        Me.TabPage8.Text = "      SOA Attachment      "
         Me.TabPage8.UseVisualStyleBackColor = True
         '
         'Partial_Panel
@@ -2384,6 +2372,98 @@ Partial Class frmLoan
         Me.lblAdd.Size = New System.Drawing.Size(32, 22)
         Me.lblAdd.TabIndex = 125
         '
+        'Explain_datagrid
+        '
+        Me.Explain_datagrid.AllowUserToAddRows = False
+        Me.Explain_datagrid.AllowUserToResizeRows = False
+        Me.Explain_datagrid.BackgroundColor = System.Drawing.SystemColors.ButtonFace
+        Me.Explain_datagrid.BorderStyle = System.Windows.Forms.BorderStyle.None
+        Me.Explain_datagrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.Explain_datagrid.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.IRNO_DGV, Me.Name_DGV, Me.Company_DGV, Me.Deadline_DGV, Me.IR_DGV, Me.File_DGV, Me.Explain_DGV, Me.Remarks_DGV})
+        Me.Explain_datagrid.Location = New System.Drawing.Point(3, 59)
+        Me.Explain_datagrid.Name = "Explain_datagrid"
+        Me.Explain_datagrid.RowHeadersVisible = False
+        Me.Explain_datagrid.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
+        Me.Explain_datagrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
+        Me.Explain_datagrid.Size = New System.Drawing.Size(1141, 539)
+        Me.Explain_datagrid.TabIndex = 7
+        '
+        'IRNO_DGV
+        '
+        Me.IRNO_DGV.HeaderText = "IR No."
+        Me.IRNO_DGV.Name = "IRNO_DGV"
+        Me.IRNO_DGV.ReadOnly = True
+        Me.IRNO_DGV.Width = 110
+        '
+        'Name_DGV
+        '
+        Me.Name_DGV.HeaderText = "Name"
+        Me.Name_DGV.Name = "Name_DGV"
+        Me.Name_DGV.ReadOnly = True
+        Me.Name_DGV.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.Name_DGV.Width = 300
+        '
+        'Company_DGV
+        '
+        Me.Company_DGV.HeaderText = "Company"
+        Me.Company_DGV.Name = "Company_DGV"
+        Me.Company_DGV.ReadOnly = True
+        Me.Company_DGV.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.Company_DGV.Width = 165
+        '
+        'Deadline_DGV
+        '
+        Me.Deadline_DGV.HeaderText = "Deadline"
+        Me.Deadline_DGV.Name = "Deadline_DGV"
+        Me.Deadline_DGV.ReadOnly = True
+        Me.Deadline_DGV.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.Deadline_DGV.Width = 195
+        '
+        'IR_DGV
+        '
+        Me.IR_DGV.HeaderText = "   IR"
+        Me.IR_DGV.Name = "IR_DGV"
+        Me.IR_DGV.Width = 75
+        '
+        'File_DGV
+        '
+        Me.File_DGV.HeaderText = "   SC"
+        Me.File_DGV.Name = "File_DGV"
+        Me.File_DGV.Width = 75
+        '
+        'Explain_DGV
+        '
+        Me.Explain_DGV.HeaderText = "   Explanation"
+        Me.Explain_DGV.Name = "Explain_DGV"
+        Me.Explain_DGV.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.Explain_DGV.Width = 125
+        '
+        'Remarks_DGV
+        '
+        Me.Remarks_DGV.HeaderText = "Remarks"
+        Me.Remarks_DGV.Name = "Remarks_DGV"
+        Me.Remarks_DGV.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.Remarks_DGV.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic
+        Me.Remarks_DGV.Width = 90
+        '
+        'TextBox1
+        '
+        Me.TextBox1.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBox1.Location = New System.Drawing.Point(3, 20)
+        Me.TextBox1.Name = "TextBox1"
+        Me.TextBox1.Size = New System.Drawing.Size(358, 33)
+        Me.TextBox1.TabIndex = 131
+        '
+        'Button1
+        '
+        Me.Button1.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button1.Location = New System.Drawing.Point(367, 19)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(82, 33)
+        Me.Button1.TabIndex = 132
+        Me.Button1.Text = "Search"
+        Me.Button1.UseVisualStyleBackColor = True
+        '
         'frmLoan
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -2422,8 +2502,11 @@ Partial Class frmLoan
         Me.TabPage7.ResumeLayout(False)
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
+        Me.TabPage8.ResumeLayout(False)
+        Me.TabPage8.PerformLayout()
         Me.Partial_Panel.ResumeLayout(False)
         Me.Partial_Panel.PerformLayout()
+        CType(Me.Explain_datagrid, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -2644,9 +2727,6 @@ Partial Class frmLoan
     Friend WithEvents TabPage8 As TabPage
     Friend WithEvents rpt_SOA As Microsoft.Reporting.WinForms.ReportViewer
     Friend WithEvents Panel1 As Panel
-    Friend WithEvents btnCancelSOA As Button
-    Friend WithEvents btnSaveSOA As Button
-    Friend WithEvents btnPreviewSOA As Button
     Friend WithEvents Label83 As Label
     Friend WithEvents txtCompany As TextBox
     Friend WithEvents SearchEMP_BTN As Button
@@ -2654,4 +2734,16 @@ Partial Class frmLoan
     Friend WithEvents txtNameSOA As TextBox
     Friend WithEvents Label89 As Label
     Friend WithEvents txtDesignation As TextBox
+    Friend WithEvents btnClearSOA As Button
+    Friend WithEvents Explain_datagrid As DataGridView
+    Friend WithEvents IRNO_DGV As DataGridViewTextBoxColumn
+    Friend WithEvents Name_DGV As DataGridViewTextBoxColumn
+    Friend WithEvents Company_DGV As DataGridViewTextBoxColumn
+    Friend WithEvents Deadline_DGV As DataGridViewTextBoxColumn
+    Friend WithEvents IR_DGV As DataGridViewButtonColumn
+    Friend WithEvents File_DGV As DataGridViewButtonColumn
+    Friend WithEvents Explain_DGV As DataGridViewButtonColumn
+    Friend WithEvents Remarks_DGV As DataGridViewButtonColumn
+    Friend WithEvents TextBox1 As TextBox
+    Friend WithEvents Button1 As Button
 End Class
