@@ -1944,6 +1944,9 @@
                             <Border>
                               <Style>None</Style>
                             </Border>
+                            <RightBorder>
+                              <Style>Solid</Style>
+                            </RightBorder>
                             <VerticalAlign>Middle</VerticalAlign>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
@@ -3524,6 +3527,9 @@
                   <TablixMembers>
                     <TablixMember />
                   </TablixMembers>
+                  <Visibility>
+                    <Hidden>=IIF(REPORTITEMS!PARTICULARS.VALUE = NOTHING, TRUE, FALSE)</Hidden>
+                  </Visibility>
                 </TablixMember>
                 <TablixMember>
                   <KeepWithGroup>Before</KeepWithGroup>
@@ -3542,6 +3548,9 @@
                       <Value>=Fields!PARTICULARS.Value</Value>
                     </SortExpression>
                   </SortExpressions>
+                  <Visibility>
+                    <Hidden>=IIF(REPORTITEMS!PARTICULARS2.VALUE = NOTHING, TRUE, FALSE)</Hidden>
+                  </Visibility>
                 </TablixMember>
                 <TablixMember>
                   <KeepWithGroup>Before</KeepWithGroup>
@@ -3575,7 +3584,7 @@
             <DataSetName>DataSet1</DataSetName>
             <Top>0.48496in</Top>
             <Height>3.8652in</Height>
-            <Width>7.28125in</Width>
+            <Width>7.28126in</Width>
             <ZIndex>1</ZIndex>
             <Style>
               <Border>
@@ -3587,7 +3596,7 @@
         <Height>4.39016in</Height>
         <Style />
       </Body>
-      <Width>7.28125in</Width>
+      <Width>7.28126in</Width>
       <Page>
         <LeftMargin>0.5in</LeftMargin>
         <RightMargin>0.5in</RightMargin>
