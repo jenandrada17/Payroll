@@ -53,6 +53,7 @@ Public Class frmLoan
         Mp2Date_dtp.Value = Today
         MaxDate_dtp.Value = Today
         SBU_Date_dtp.Value = Today
+        Me.rpt_SOA.RefreshReport()
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Cancel_btn.Click

@@ -3331,7 +3331,7 @@ Module SelectFromDatabase
                                     END AS FULLNAME
                                 from TBL_EMPLOYEE A 
                                 inner join PAYROLL_SBU B on B.BIO_NO = A.BIOMETRICID 
-                                left join RECORDED_ALLOW_DEDUC C on C.BIO_NO = A.BIOMETRICID and C.CATEGORY = 'SBU'  and PAYDATE <> '12/15/2021' 
+                                left join RECORDED_ALLOW_DEDUC C on C.BIO_NO = A.BIOMETRICID and C.CATEGORY = 'SBU'  and PAYDATE <> '12/15/2021'  
                                 GROUP BY C.AMOUNT, FULLNAME, CREDIT, PRINCIPAL,  B.AMOUNT, B.BIO_NO
                                 ORDER BY FULLNAME ASC "
         End If
@@ -3363,7 +3363,6 @@ Module SelectFromDatabase
             Next
             progressBarEnd()
         End Using
-
     End Sub
 
     Friend Function LatePercentage(bioNum As String, paydate_ As String, total_late As Integer)

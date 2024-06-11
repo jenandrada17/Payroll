@@ -169,7 +169,8 @@ Public Class frmReport
                                 WHERE
                                     COMPANY = '{company}' AND
                                     A.CATEGORY = 'SBU' AND
-                                    A.PAYDATE <> '12/15/2021'
+                                    A.PAYDATE <> '12/15/2021' AND 
+                                    SOA_PATH IS NULL
                                 GROUP BY
                                     EXTRACT(MONTH FROM A.PAYDATE),
                                     EXTRACT(YEAR FROM A.PAYDATE)
@@ -256,6 +257,7 @@ Public Class frmReport
 	                                    RECORDED_ALLOW_DEDUC C on C.BIO_NO = A.BIOMETRICID and C.CATEGORY = 'SBU' and PAYDATE <> '12/15/2021'
                                     LEFT JOIN
 	                                    PAYROLL_CITY_BRANCH D ON D.BRANCHCODE = A.BRANCHCODE
+                                    WHERE SOA_PATH IS NULL
                                     GROUP BY FULLNAME, BRANCHNAME, CREDIT, PRINCIPAL, B.AMOUNT, COMPANY, BALANCE
                                     ORDER BY BRANCHNAME, FULLNAME ASC; "
 
