@@ -617,12 +617,12 @@ Public Class frmPayout
         If Deduction_grid.Rows.Count > 0 Then
             For Each row As DataGridViewRow In Deduction_grid.Rows
                 If row.Cells(3).Value = "OFF" Then
-                    totals = totals + row.Cells(0).Tag
+                    totals = FormatNumber(totals + row.Cells(0).Tag)
                 End If
             Next
         End If
 
-        Deduction_LBL.Text = FormatNumber(totals)
+        Deduction_LBL.Text = totals
         Deduction_LBL.Tag = totals
 
     End Sub
@@ -633,16 +633,16 @@ Public Class frmPayout
 
         Dim positive, negative As Decimal
         If IsLastDay(paydate_) Then
-            positive = CDec(GrossAmount_LBL.Tag) + CDec(Allowances_LBL.Tag)
-            negative = CONTRIB + CDec(Deduction_LBL.Tag)
+            positive = FormatNumber(CDec(GrossAmount_LBL.Tag) + CDec(Allowances_LBL.Tag))
+            negative = FormatNumber(CONTRIB + CDec(Deduction_LBL.Tag))
         Else
             Remittance_LBL.Text = 0.00
-            positive = CDec(GrossAmount_LBL.Tag) + CDec(Allowances_LBL.Tag)
-            negative = CDec(Deduction_LBL.Tag)
+            positive = FormatNumber(CDec(GrossAmount_LBL.Tag) + CDec(Allowances_LBL.Tag))
+            negative = FormatNumber(CDec(Deduction_LBL.Tag))
         End If
 
         NetPay_LBL.Text = FormatNumber(positive - negative)
-        NetPay_LBL.Tag = positive - negative
+        NetPay_LBL.Tag = FormatNumber(positive - negative)
 
     End Sub
 
