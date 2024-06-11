@@ -23,15 +23,14 @@ Partial Class frmLoan
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim DataGridViewCellStyle25 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim ReportDataSource4 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Dim DataGridViewCellStyle26 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle27 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle28 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle29 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle30 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle31 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle32 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim ReportDataSource1 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.Close_LBL = New System.Windows.Forms.Label()
         Me.Loans_Tab = New System.Windows.Forms.TabControl()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
@@ -203,8 +202,12 @@ Partial Class frmLoan
         Me.Label56 = New System.Windows.Forms.Label()
         Me.cbStatus = New System.Windows.Forms.ComboBox()
         Me.txtSearchSOA = New System.Windows.Forms.TextBox()
-        Me.Button3 = New System.Windows.Forms.Button()
+        Me.btnSearch = New System.Windows.Forms.Button()
         Me.gridSOA = New System.Windows.Forms.DataGridView()
+        Me.Context_SOA = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.menuForm = New System.Windows.Forms.ToolStripMenuItem()
+        Me.menuRemarks = New System.Windows.Forms.ToolStripMenuItem()
+        Me.menuAttachment = New System.Windows.Forms.ToolStripMenuItem()
         Me.rpt_SOA = New Microsoft.Reporting.WinForms.ReportViewer()
         Me.Partial_Panel = New System.Windows.Forms.Panel()
         Me.PartialName_txt = New System.Windows.Forms.TextBox()
@@ -252,13 +255,17 @@ Partial Class frmLoan
         Me.btnCancelSOA = New System.Windows.Forms.Button()
         Me.Label69 = New System.Windows.Forms.Label()
         Me.rbRemarksSOA = New System.Windows.Forms.RichTextBox()
+        Me.panelAttachment = New System.Windows.Forms.Panel()
+        Me.lblClose = New System.Windows.Forms.Label()
+        Me.btnSavePDF = New System.Windows.Forms.Button()
+        Me.btnBrowse = New System.Windows.Forms.Button()
+        Me.txtPath = New System.Windows.Forms.TextBox()
+        Me.Label59 = New System.Windows.Forms.Label()
         Me.dataFullname = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.dataDesignation = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.dataCompany = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.dataStatus = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.dataDateEnded = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.dataRemarks = New System.Windows.Forms.DataGridViewButtonColumn()
-        Me.dataAttachment = New System.Windows.Forms.DataGridViewButtonColumn()
         Me.Loans_Tab.SuspendLayout()
         Me.TabPage2.SuspendLayout()
         Me.GroupBox6.SuspendLayout()
@@ -277,8 +284,10 @@ Partial Class frmLoan
         Me.TabPage7.SuspendLayout()
         Me.Panel1.SuspendLayout()
         CType(Me.gridSOA, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.Context_SOA.SuspendLayout()
         Me.Partial_Panel.SuspendLayout()
         Me.panelRemarksSOA.SuspendLayout()
+        Me.panelAttachment.SuspendLayout()
         Me.SuspendLayout()
         '
         'Close_LBL
@@ -1904,7 +1913,7 @@ Partial Class frmLoan
         Me.Panel1.Controls.Add(Me.Label56)
         Me.Panel1.Controls.Add(Me.cbStatus)
         Me.Panel1.Controls.Add(Me.txtSearchSOA)
-        Me.Panel1.Controls.Add(Me.Button3)
+        Me.Panel1.Controls.Add(Me.btnSearch)
         Me.Panel1.Controls.Add(Me.gridSOA)
         Me.Panel1.Location = New System.Drawing.Point(3, 3)
         Me.Panel1.Name = "Panel1"
@@ -1915,7 +1924,7 @@ Partial Class frmLoan
         '
         Me.Label56.AutoSize = True
         Me.Label56.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label56.Location = New System.Drawing.Point(462, 19)
+        Me.Label56.Location = New System.Drawing.Point(919, 20)
         Me.Label56.Name = "Label56"
         Me.Label56.Size = New System.Drawing.Size(51, 25)
         Me.Label56.TabIndex = 134
@@ -1926,8 +1935,8 @@ Partial Class frmLoan
         Me.cbStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.cbStatus.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.cbStatus.FormattingEnabled = True
-        Me.cbStatus.Items.AddRange(New Object() {"ALL", "PHOTO", "P&G UY", "DALTON", "PERFECOM", "PTU REALTY", "PGC HEAD OFFICE"})
-        Me.cbStatus.Location = New System.Drawing.Point(513, 15)
+        Me.cbStatus.Items.AddRange(New Object() {"AWOL", "RESIGNED", "SUSPENDED", "TERMINATED", "END OF PROBATIONARY", "AWOL/BREACH OF CONTRACT"})
+        Me.cbStatus.Location = New System.Drawing.Point(970, 16)
         Me.cbStatus.Name = "cbStatus"
         Me.cbStatus.Size = New System.Drawing.Size(168, 33)
         Me.cbStatus.TabIndex = 133
@@ -1940,15 +1949,15 @@ Partial Class frmLoan
         Me.txtSearchSOA.Size = New System.Drawing.Size(276, 33)
         Me.txtSearchSOA.TabIndex = 131
         '
-        'Button3
+        'btnSearch
         '
-        Me.Button3.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Button3.Location = New System.Drawing.Point(294, 12)
-        Me.Button3.Name = "Button3"
-        Me.Button3.Size = New System.Drawing.Size(82, 33)
-        Me.Button3.TabIndex = 132
-        Me.Button3.Text = "Search"
-        Me.Button3.UseVisualStyleBackColor = True
+        Me.btnSearch.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSearch.Location = New System.Drawing.Point(291, 16)
+        Me.btnSearch.Name = "btnSearch"
+        Me.btnSearch.Size = New System.Drawing.Size(82, 33)
+        Me.btnSearch.TabIndex = 132
+        Me.btnSearch.Text = "Search"
+        Me.btnSearch.UseVisualStyleBackColor = True
         '
         'gridSOA
         '
@@ -1959,15 +1968,24 @@ Partial Class frmLoan
         Me.gridSOA.BackgroundColor = System.Drawing.SystemColors.ButtonFace
         Me.gridSOA.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.gridSOA.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None
-        DataGridViewCellStyle25.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle25.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle25.Font = New System.Drawing.Font("Dubai", 12.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle25.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle25.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle25.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        Me.gridSOA.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle25
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle1.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        Me.gridSOA.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
         Me.gridSOA.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.gridSOA.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.dataFullname, Me.dataDesignation, Me.dataCompany, Me.dataStatus, Me.dataDateEnded, Me.dataRemarks, Me.dataAttachment})
+        Me.gridSOA.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.dataFullname, Me.dataDesignation, Me.dataCompany, Me.dataStatus, Me.dataDateEnded})
+        Me.gridSOA.ContextMenuStrip = Me.Context_SOA
+        DataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle7.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.ControlText
+        DataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.gridSOA.DefaultCellStyle = DataGridViewCellStyle7
         Me.gridSOA.Location = New System.Drawing.Point(5, 56)
         Me.gridSOA.Name = "gridSOA"
         Me.gridSOA.RowHeadersVisible = False
@@ -1976,11 +1994,35 @@ Partial Class frmLoan
         Me.gridSOA.Size = New System.Drawing.Size(1133, 165)
         Me.gridSOA.TabIndex = 75
         '
+        'Context_SOA
+        '
+        Me.Context_SOA.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.menuForm, Me.menuRemarks, Me.menuAttachment})
+        Me.Context_SOA.Name = "Context_deduct"
+        Me.Context_SOA.Size = New System.Drawing.Size(178, 70)
+        '
+        'menuForm
+        '
+        Me.menuForm.Name = "menuForm"
+        Me.menuForm.Size = New System.Drawing.Size(177, 22)
+        Me.menuForm.Text = "Form"
+        '
+        'menuRemarks
+        '
+        Me.menuRemarks.Name = "menuRemarks"
+        Me.menuRemarks.Size = New System.Drawing.Size(177, 22)
+        Me.menuRemarks.Text = "Add Remarks"
+        '
+        'menuAttachment
+        '
+        Me.menuAttachment.Name = "menuAttachment"
+        Me.menuAttachment.Size = New System.Drawing.Size(177, 22)
+        Me.menuAttachment.Text = "Upload Attachment"
+        '
         'rpt_SOA
         '
-        ReportDataSource4.Name = "DataSet1"
-        ReportDataSource4.Value = Nothing
-        Me.rpt_SOA.LocalReport.DataSources.Add(ReportDataSource4)
+        ReportDataSource1.Name = "DataSet1"
+        ReportDataSource1.Value = Nothing
+        Me.rpt_SOA.LocalReport.DataSources.Add(ReportDataSource1)
         Me.rpt_SOA.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_SOA.rdlc"
         Me.rpt_SOA.Location = New System.Drawing.Point(6, 248)
         Me.rpt_SOA.Name = "rpt_SOA"
@@ -2399,79 +2441,124 @@ Partial Class frmLoan
         Me.rbRemarksSOA.TabIndex = 0
         Me.rbRemarksSOA.Text = ""
         '
+        'panelAttachment
+        '
+        Me.panelAttachment.BackColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(0, Byte), Integer), CType(CType(64, Byte), Integer))
+        Me.panelAttachment.Controls.Add(Me.lblClose)
+        Me.panelAttachment.Controls.Add(Me.btnSavePDF)
+        Me.panelAttachment.Controls.Add(Me.btnBrowse)
+        Me.panelAttachment.Controls.Add(Me.txtPath)
+        Me.panelAttachment.Controls.Add(Me.Label59)
+        Me.panelAttachment.Location = New System.Drawing.Point(882, 10)
+        Me.panelAttachment.Name = "panelAttachment"
+        Me.panelAttachment.Size = New System.Drawing.Size(71, 22)
+        Me.panelAttachment.TabIndex = 164
+        Me.panelAttachment.Visible = False
+        '
+        'lblClose
+        '
+        Me.lblClose.AutoSize = True
+        Me.lblClose.ForeColor = System.Drawing.Color.White
+        Me.lblClose.Location = New System.Drawing.Point(587, -1)
+        Me.lblClose.Name = "lblClose"
+        Me.lblClose.Size = New System.Drawing.Size(14, 13)
+        Me.lblClose.TabIndex = 86
+        Me.lblClose.Text = "X"
+        '
+        'btnSavePDF
+        '
+        Me.btnSavePDF.Enabled = False
+        Me.btnSavePDF.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnSavePDF.Location = New System.Drawing.Point(509, 29)
+        Me.btnSavePDF.Name = "btnSavePDF"
+        Me.btnSavePDF.Size = New System.Drawing.Size(82, 33)
+        Me.btnSavePDF.TabIndex = 166
+        Me.btnSavePDF.Text = "Save"
+        Me.btnSavePDF.UseVisualStyleBackColor = True
+        '
+        'btnBrowse
+        '
+        Me.btnBrowse.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnBrowse.Location = New System.Drawing.Point(419, 30)
+        Me.btnBrowse.Name = "btnBrowse"
+        Me.btnBrowse.Size = New System.Drawing.Size(82, 33)
+        Me.btnBrowse.TabIndex = 165
+        Me.btnBrowse.Text = "Browse"
+        Me.btnBrowse.UseVisualStyleBackColor = True
+        '
+        'txtPath
+        '
+        Me.txtPath.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtPath.Location = New System.Drawing.Point(15, 33)
+        Me.txtPath.Name = "txtPath"
+        Me.txtPath.Size = New System.Drawing.Size(391, 29)
+        Me.txtPath.TabIndex = 86
+        '
+        'Label59
+        '
+        Me.Label59.AutoSize = True
+        Me.Label59.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label59.ForeColor = System.Drawing.Color.White
+        Me.Label59.Location = New System.Drawing.Point(12, 14)
+        Me.Label59.Name = "Label59"
+        Me.Label59.Size = New System.Drawing.Size(102, 16)
+        Me.Label59.TabIndex = 86
+        Me.Label59.Text = "Browse PDF file"
+        '
         'dataFullname
         '
-        DataGridViewCellStyle26.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.dataFullname.DefaultCellStyle = DataGridViewCellStyle26
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.dataFullname.DefaultCellStyle = DataGridViewCellStyle2
         Me.dataFullname.HeaderText = "Name"
         Me.dataFullname.Name = "dataFullname"
         Me.dataFullname.ReadOnly = True
         Me.dataFullname.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dataFullname.Width = 280
+        Me.dataFullname.Width = 350
         '
         'dataDesignation
         '
-        DataGridViewCellStyle27.Font = New System.Drawing.Font("Dubai", 11.25!)
-        Me.dataDesignation.DefaultCellStyle = DataGridViewCellStyle27
+        DataGridViewCellStyle3.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.dataDesignation.DefaultCellStyle = DataGridViewCellStyle3
         Me.dataDesignation.HeaderText = "Designation"
         Me.dataDesignation.Name = "dataDesignation"
         Me.dataDesignation.ReadOnly = True
-        Me.dataDesignation.Width = 180
+        Me.dataDesignation.Width = 210
         '
         'dataCompany
         '
-        DataGridViewCellStyle28.Font = New System.Drawing.Font("Dubai", 11.25!)
-        Me.dataCompany.DefaultCellStyle = DataGridViewCellStyle28
+        DataGridViewCellStyle4.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.dataCompany.DefaultCellStyle = DataGridViewCellStyle4
         Me.dataCompany.HeaderText = "Company"
         Me.dataCompany.Name = "dataCompany"
         Me.dataCompany.ReadOnly = True
-        Me.dataCompany.Width = 150
+        Me.dataCompany.Width = 160
         '
         'dataStatus
         '
-        DataGridViewCellStyle29.Font = New System.Drawing.Font("Dubai", 11.25!)
-        Me.dataStatus.DefaultCellStyle = DataGridViewCellStyle29
+        DataGridViewCellStyle5.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.dataStatus.DefaultCellStyle = DataGridViewCellStyle5
         Me.dataStatus.HeaderText = "Status"
         Me.dataStatus.Name = "dataStatus"
         Me.dataStatus.ReadOnly = True
         Me.dataStatus.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dataStatus.Width = 170
+        Me.dataStatus.Width = 220
         '
         'dataDateEnded
         '
-        DataGridViewCellStyle30.Font = New System.Drawing.Font("Dubai", 11.25!)
-        Me.dataDateEnded.DefaultCellStyle = DataGridViewCellStyle30
+        DataGridViewCellStyle6.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.dataDateEnded.DefaultCellStyle = DataGridViewCellStyle6
         Me.dataDateEnded.HeaderText = "Date Ended"
         Me.dataDateEnded.Name = "dataDateEnded"
         Me.dataDateEnded.ReadOnly = True
         Me.dataDateEnded.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.dataDateEnded.Width = 130
-        '
-        'dataRemarks
-        '
-        DataGridViewCellStyle31.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle31.Font = New System.Drawing.Font("Dubai", 11.25!)
-        Me.dataRemarks.DefaultCellStyle = DataGridViewCellStyle31
-        Me.dataRemarks.HeaderText = "Remarks"
-        Me.dataRemarks.Name = "dataRemarks"
-        Me.dataRemarks.Resizable = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.dataRemarks.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic
-        Me.dataRemarks.Width = 90
-        '
-        'dataAttachment
-        '
-        DataGridViewCellStyle32.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle32.Font = New System.Drawing.Font("Dubai", 11.25!)
-        Me.dataAttachment.DefaultCellStyle = DataGridViewCellStyle32
-        Me.dataAttachment.HeaderText = "Attachment"
-        Me.dataAttachment.Name = "dataAttachment"
-        Me.dataAttachment.Width = 115
+        Me.dataDateEnded.Width = 170
         '
         'frmLoan
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1175, 680)
+        Me.Controls.Add(Me.panelAttachment)
         Me.Controls.Add(Me.panelRemarksSOA)
         Me.Controls.Add(Me.Partial_Panel)
         Me.Controls.Add(Me.Close_LBL)
@@ -2507,10 +2594,13 @@ Partial Class frmLoan
         Me.Panel1.ResumeLayout(False)
         Me.Panel1.PerformLayout()
         CType(Me.gridSOA, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.Context_SOA.ResumeLayout(False)
         Me.Partial_Panel.ResumeLayout(False)
         Me.Partial_Panel.PerformLayout()
         Me.panelRemarksSOA.ResumeLayout(False)
         Me.panelRemarksSOA.PerformLayout()
+        Me.panelAttachment.ResumeLayout(False)
+        Me.panelAttachment.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -2731,20 +2821,28 @@ Partial Class frmLoan
     Friend WithEvents rpt_SOA As Microsoft.Reporting.WinForms.ReportViewer
     Friend WithEvents gridSOA As DataGridView
     Friend WithEvents txtSearchSOA As TextBox
-    Friend WithEvents Button3 As Button
+    Friend WithEvents btnSearch As Button
     Friend WithEvents Label56 As Label
     Friend WithEvents cbStatus As ComboBox
     Friend WithEvents Panel1 As Panel
     Friend WithEvents panelRemarksSOA As Panel
+    Friend WithEvents panelAttachment As Panel
+    Friend WithEvents lblClose As Label
+    Friend WithEvents btnSavePDF As Button
+    Friend WithEvents btnBrowse As Button
+    Friend WithEvents txtPath As TextBox
+    Friend WithEvents Label59 As Label
     Friend WithEvents btnSaveSOA As Button
     Friend WithEvents btnCancelSOA As Button
     Friend WithEvents Label69 As Label
     Friend WithEvents rbRemarksSOA As RichTextBox
+    Friend WithEvents Context_SOA As ContextMenuStrip
+    Friend WithEvents menuForm As ToolStripMenuItem
+    Friend WithEvents menuRemarks As ToolStripMenuItem
+    Friend WithEvents menuAttachment As ToolStripMenuItem
     Friend WithEvents dataFullname As DataGridViewTextBoxColumn
     Friend WithEvents dataDesignation As DataGridViewTextBoxColumn
     Friend WithEvents dataCompany As DataGridViewTextBoxColumn
     Friend WithEvents dataStatus As DataGridViewTextBoxColumn
     Friend WithEvents dataDateEnded As DataGridViewTextBoxColumn
-    Friend WithEvents dataRemarks As DataGridViewButtonColumn
-    Friend WithEvents dataAttachment As DataGridViewButtonColumn
 End Class

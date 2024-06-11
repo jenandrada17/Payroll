@@ -302,7 +302,7 @@ Module SaveUpdate
         Dim mysql As String
         RATE = CDbl(RATE) / 100
 
-        mysql = "Select * FROM PAYROLL_HOLIDAY_RATE where HOLIDAY = '" & HOLIDAY & "'"
+        mysql = "Select * FROM PAYROLL_HOLIDAY_RATE where DAY_NAME = '" & HOLIDAY & "'"
         Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_HOLIDAY_RATE")
         If dss.Tables(0).Rows.Count > 0 Then
             With dss.Tables(0).Rows(0)
@@ -320,7 +320,7 @@ Module SaveUpdate
                 Dim dsNewRow As DataRow = ds.Tables(0).NewRow
                 With dsNewRow
 
-                    .Item("HOLIDAY") = HOLIDAY
+                    .Item("DAY_NAME") = HOLIDAY
                     .Item("RATE") = RATE
 
                 End With

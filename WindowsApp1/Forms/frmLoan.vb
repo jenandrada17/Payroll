@@ -307,7 +307,7 @@ Public Class frmLoan
         Close()
     End Sub
 
-    Private Sub SSS_Amount_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles SSSPrincipal_TXT.KeyPress, SSS_Amort_TXT.KeyPress, PagAmort_TXT.KeyPress, PagPrincipal_TXT.KeyPress, Mp2Amort_txt.KeyPress, MaxAmort_txt.KeyPress
+    Private Sub SSS_Amount_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles SSSPrincipal_TXT.KeyPress, SSS_Amort_TXT.KeyPress, PagPrincipal_TXT.KeyPress, PagAmort_TXT.KeyPress, Mp2Amort_txt.KeyPress, MaxAmort_txt.KeyPress
         If Not e.KeyChar = ChrW(Keys.Back) Then
             If Not Char.IsNumber(e.KeyChar) And Not Char.IsControl(e.KeyChar) And Not e.KeyChar = "." Then
                 e.Handled = True
@@ -827,187 +827,113 @@ Public Class frmLoan
         End Try
     End Sub
 
-    Private Sub gridSOA_CellDoubleClick(sender As Object, e As DataGridViewCellEventArgs) Handles gridSOA.CellDoubleClick
-        Dim grid = DirectCast(sender, DataGridView)
-        Dim selectedRow As DataGridViewRow = gridSOA.Rows(e.RowIndex)
-        If e.RowIndex >= 0 AndAlso e.ColumnIndex >= 0 Then
-            If TypeOf gridSOA.Columns(e.ColumnIndex) Is DataGridViewButtonColumn Then
-                If grid.Columns(e.ColumnIndex).Name = "dataRemarks" Then
-                    If selectedRow.Cells("dataRemarks").Value = "Add" Then
-                        rbRemarksSOA.Text = ""
-                    Else
-                        rbRemarksSOA.Text = selectedRow.Cells("dataRemarks").Tag
-                    End If
-
-                    Dim x As Integer = (Parent.ClientSize.Width - Partial_Panel.Width) / 2
-                    Dim y As Integer = (Parent.ClientSize.Height - Partial_Panel.Height) / 2
-                    panelRemarksSOA.Location = New Point(x, y)
-                    panelRemarksSOA.Size = New Size(381, 240)
-                    panelRemarksSOA.Visible = True
-
-                Else
-
-                    If selectedRow.Cells("dataAttachment").Value = "Upload" Then
-
-                        CreateAndShowTemporaryPanel()
-
-                    Else
-                        'Dim path As String = $"{My.Settings.FileIRRecordsPath}\{fullname}\IR No. {irno}\Explanation.pdf"
-
-                        'Try
-                        '    Process.Start(path)
-                        'Catch ex As Exception
-                        '    MsgBox("File Does not exists!", MsgBoxStyle.Exclamation)
-                        'End Try
-                    End If
-                End If
-            Else
-
-                bioNo = selectedRow.Cells("dataFullname").Tag
-                fullname = selectedRow.Cells("dataFullname").Value.ToString()
-                designation = selectedRow.Cells("dataDesignation").Value.ToString()
-                minimumRate = selectedRow.Cells("dataDesignation").Tag
-                company = selectedRow.Cells("dataCompany").Value.ToString()
-
-                GetSOAInfo(bioNo, fullname, designation, company, minimumRate, rpt_SOA)
-            End If
-        End If
-    End Sub
-    Private Sub CreateAndShowTemporaryPanel()
-        ' Create a new form for the popup
-        Dim tempForm As New Form()
-        tempForm.Text = "Temporary Panel Form"
-        tempForm.Size = New Size(450, 150)
-        tempForm.StartPosition = FormStartPosition.CenterScreen
-        tempForm.FormBorderStyle = FormBorderStyle.None
-
-        ' Initialize and configure the dynamic panel
-        Dim panelDynamic As New Panel()
-        panelDynamic.Size = New Size(609, 81)
-        panelDynamic.Location = New Point(10, 10)
-        panelDynamic.BackColor = Color.FromArgb(64, 0, 64)
-        tempForm.Controls.Add(panelDynamic)
-
-        ' Initialize and configure the label
-        Dim labelBrowse As New Label()
-        labelBrowse.Text = "Browse PDF file:"
-        labelBrowse.Location = New Point(10, 10)
-        panelDynamic.Controls.Add(labelBrowse)
-
-        ' Initialize and configure the textbox
-        Dim textBoxPath As New TextBox()
-        textBoxPath.Location = New Point(120, 10)
-        textBoxPath.Size = New Size(200, 20)
-        panelDynamic.Controls.Add(textBoxPath)
-
-        ' Initialize and configure the Browse button
-        Dim buttonBrowse As New Button()
-        buttonBrowse.Text = "Browse"
-        buttonBrowse.Location = New Point(330, 10)
-        AddHandler buttonBrowse.Click, Sub(sender As Object, e As EventArgs)
-                                           Using openFileDialog As New OpenFileDialog()
-                                               openFileDialog.Filter = "PDF files (*.pdf)|*.pdf|All files (*.*)|*.*"
-                                               openFileDialog.Title = "Browse PDF File"
-
-                                               If openFileDialog.ShowDialog() = DialogResult.OK Then
-                                                   textBoxPath.Text = openFileDialog.FileName
-                                               End If
-                                           End Using
-                                       End Sub
-        panelDynamic.Controls.Add(buttonBrowse)
-
-        ' Initialize and configure the Save button
-        Dim buttonSave As New Button()
-        buttonSave.Text = "Save"
-        buttonSave.Location = New Point(330, 25)
-        AddHandler buttonSave.Click, Sub(sender As Object, e As EventArgs)
-                                         ' Implement the save functionality here
-                                         MessageBox.Show("Save button clicked. Implement the save functionality as needed.")
-                                     End Sub
-
-        ' Initialize and configure the Save button
-        Dim buttonCancel As New Button()
-        buttonSave.Text = "Cancel"
-        buttonSave.Location = New Point(330, 35)
-        AddHandler buttonCancel.Click, Sub(sender As Object, e As EventArgs)
-                                           ' Implement the save functionality here
-                                           MessageBox.Show("Save button clicked. Implement the save functionality as needed.")
-                                       End Sub
-        panelDynamic.Controls.Add(buttonSave)
-
-        ' Show the form as a dialog
-        tempForm.ShowDialog()
-    End Sub
-
-    Dim bioNo As Integer = Nothing
-    Dim fullname As String = Nothing
-    Dim designation As String = Nothing
-    Dim minimumRate As Decimal = Nothing
-    Dim company As String = Nothing
-
-    Private Sub gridSOA_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles gridSOA.CellContentClick
-        Dim grid = DirectCast(sender, DataGridView)
-        Dim selectedRow As DataGridViewRow = gridSOA.Rows(e.RowIndex)
-        If e.RowIndex >= 0 AndAlso e.ColumnIndex >= 0 Then
-            If TypeOf gridSOA.Columns(e.ColumnIndex) Is DataGridViewButtonColumn Then
-                If grid.Columns(e.ColumnIndex).Name = "dataRemarks" Then
-                    If selectedRow.Cells("dataRemarks").Value = "Add" Then
-                        rbRemarksSOA.Text = ""
-                    Else
-                        rbRemarksSOA.Text = selectedRow.Cells("dataRemarks").Tag
-                    End If
-
-                    Dim x As Integer = (Parent.ClientSize.Width - Partial_Panel.Width) / 2
-                    Dim y As Integer = (Parent.ClientSize.Height - Partial_Panel.Height) / 2
-                    panelRemarksSOA.Location = New Point(x, y)
-                    panelRemarksSOA.Size = New Size(381, 240)
-                    panelRemarksSOA.Visible = True
-
-                Else
-
-                    If selectedRow.Cells("dataAttachment").Value = "Upload" Then
-
-                        CreateAndShowTemporaryPanel()
-
-                    Else
-                        'Dim path As String = $"{My.Settings.FileIRRecordsPath}\{fullname}\IR No. {irno}\Explanation.pdf"
-
-                        'Try
-                        '    Process.Start(path)
-                        'Catch ex As Exception
-                        '    MsgBox("File Does not exists!", MsgBoxStyle.Exclamation)
-                        'End Try
-                    End If
-                End If
-            Else
-
-                bioNo = selectedRow.Cells("dataFullname").Tag
-                fullname = selectedRow.Cells("dataFullname").Value.ToString()
-                designation = selectedRow.Cells("dataDesignation").Value.ToString()
-                minimumRate = selectedRow.Cells("dataDesignation").Tag
-                company = selectedRow.Cells("dataCompany").Value.ToString()
-
-                GetSOAInfo(bioNo, fullname, designation, company, minimumRate, rpt_SOA)
-            End If
-        End If
-    End Sub
-
     Private Sub btnCancelSOA_Click(sender As Object, e As EventArgs) Handles btnCancelSOA.Click
         panelRemarksSOA.Visible = False
         rbRemarksSOA.Text = ""
     End Sub
 
-    Private Sub btnSaveSOA_Click(sender As Object, e As EventArgs) Handles btnSaveSOA.Click
+    Private Sub btnSavePDF_Click(sender As Object, e As EventArgs) Handles btnSavePDF.Click
+        Dim i As Integer = gridSOA.CurrentRow.Index
+        Dim fullname As String = gridSOA.Item(0, i).Value
+        Dim bioNo As String = gridSOA.Item(0, i).Tag
 
-        'Dim i As Integer = Explain_datagrid.CurrentRow.Index
-        'RemarksSave(Explain_datagrid.Item(0, i).Value, Exp_Remarks_RichB.Text)
+        Dim SOA_Path As String = SavePDF_ToPGCNAS(fullname, IO.File.ReadAllBytes(txtPath.Text))
 
-        'Exp_Remarks_RichB.Text = ""
-        'Remarks_Panel.Visible = False
+        Update_Row("TBL_EMPLOYEE", $"WHERE BIOMETRICID = {bioNo}", "SOA_PATH", SOA_Path)
 
-        'PopulateExplaination(Explain_datagrid)
+        SaveLogs($"UPLOADED SOA ATTACHMENT - {fullname} ({bioNo}), PATH({SOA_Path})", frmMainForm.UserName_LBL.Text)
 
-        'MessageBox.Show($"Successfully Saved", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Information)
+        txtPath.Clear()
+        btnSavePDF.Enabled = False
+        panelAttachment.Visible = False
 
+        PopulateINACTIVE_Employees(gridSOA)
+    End Sub
+
+    Private Sub btnBrowse_Click(sender As Object, e As EventArgs) Handles btnBrowse.Click
+        Using openFileDialog As New OpenFileDialog()
+            openFileDialog.Filter = "PDF files (*.pdf)|*.pdf|All files (*.*)|*.*"
+            openFileDialog.Title = "Browse PDF File"
+
+            If openFileDialog.ShowDialog() = DialogResult.OK Then
+                txtPath.Text = openFileDialog.FileName
+                btnSavePDF.Enabled = True
+            End If
+        End Using
+    End Sub
+
+    Private Sub btnSearch_Click(sender As Object, e As EventArgs) Handles btnSearch.Click
+        PopulateINACTIVE_Employees(gridSOA, txtSearchSOA.Text)
+    End Sub
+
+    Private Sub txtSearchSOA_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtSearchSOA.KeyPress
+        If e.KeyChar = ChrW(Keys.Enter) Then
+            btnSearch.PerformClick()
+        End If
+    End Sub
+
+    Private allowCoolMove As Boolean = False
+    Private myCoolPoint As New Point
+    Private Sub panelAttachment_MouseDown(sender As Object, e As MouseEventArgs) Handles panelAttachment.MouseDown
+        allowCoolMove = True
+        myCoolPoint = New Point(e.X, e.Y)
+        Cursor = Cursors.SizeAll
+    End Sub
+
+    Private Sub panelAttachment_MouseMove(sender As Object, e As MouseEventArgs) Handles panelAttachment.MouseMove
+        If allowCoolMove = True Then
+            panelAttachment.Location = New Point(panelAttachment.Location.X + e.X - myCoolPoint.X, panelAttachment.Location.Y + e.Y - myCoolPoint.Y)
+        End If
+    End Sub
+
+    Private Sub panelAttachment_MouseUp(sender As Object, e As MouseEventArgs) Handles panelAttachment.MouseUp
+        allowCoolMove = False
+        Cursor = Cursors.Default
+    End Sub
+
+    Private Sub menuForm_Click(sender As Object, e As EventArgs) Handles menuForm.Click
+        Dim i As Integer = gridSOA.CurrentRow.Index.ToString
+        Dim bioNo As Integer = gridSOA.Item(0, i).Tag.ToString
+        Dim fullname As String = gridSOA.Item(0, i).Value.ToString
+        Dim designation As String = gridSOA.Item(1, i).Value.ToString
+        Dim minimumRate As Decimal = gridSOA.Item(1, i).Tag.ToString
+        Dim company As String = IIf(String.IsNullOrWhiteSpace(gridSOA.Item(2, i).Value), "", gridSOA.Item(2, i).Value)
+
+        GetSOAInfo(bioNo, fullname, designation, company, minimumRate, rpt_SOA)
+    End Sub
+
+    Private Sub menuRemarks_Click(sender As Object, e As EventArgs) Handles menuRemarks.Click
+        Loans_Tab.Focus()
+        Dim x As Integer = (Me.ClientSize.Width - panelRemarksSOA.Width) / 2
+        Dim y As Integer = (Me.ClientSize.Height - panelRemarksSOA.Height) / 2
+        panelRemarksSOA.Location = New Point(x, y)
+        panelRemarksSOA.Size = New Size(381, 240)
+        panelRemarksSOA.Visible = True
+    End Sub
+
+    Private Sub menuAttachment_Click(sender As Object, e As EventArgs) Handles menuAttachment.Click
+        Loans_Tab.Focus()
+        Dim x As Integer = (Me.ClientSize.Width - panelAttachment.Width) / 2
+        Dim y As Integer = (Me.ClientSize.Height - panelAttachment.Height) / 2
+        panelAttachment.Location = New Point(x, y)
+        panelAttachment.Size = New Size(606, 74)
+        panelAttachment.Visible = True
+    End Sub
+
+    Private clickedRowIndex As Integer = -1
+    Private Sub gridSOA_MouseDown(sender As Object, e As MouseEventArgs) Handles gridSOA.MouseDown
+        If e.Button = MouseButtons.Right Then
+            Dim hitTestInfo = gridSOA.HitTest(e.X, e.Y)
+            If hitTestInfo.Type = DataGridViewHitTestType.Cell Then
+                clickedRowIndex = hitTestInfo.RowIndex
+                gridSOA.Rows(clickedRowIndex).Selected = True
+            End If
+        End If
+    End Sub
+
+    Private Sub lblClose_Click(sender As Object, e As EventArgs) Handles lblClose.Click
+        txtPath.Clear()
+        btnSavePDF.Enabled = False
+        panelAttachment.Visible = False
     End Sub
 End Class

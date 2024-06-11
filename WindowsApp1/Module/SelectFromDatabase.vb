@@ -1,6 +1,5 @@
 ﻿Imports System.IO
 Imports FirebirdSql.Data.FirebirdClient
-Imports Microsoft.Reporting.WinForms
 
 Module SelectFromDatabase
 
@@ -1000,7 +999,7 @@ Module SelectFromDatabase
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
                     With dr
-                        If .Item("HOLIDAY") = "REGULAR" Then
+                        If .Item("DAY_NAME") = "REGULAR" Then
                             regularRate.Text = FormatPercent(.Item("RATE"), 0)
                         Else
                             SpecialRate.Text = FormatPercent(.Item("RATE"), 0)
@@ -3565,12 +3564,15 @@ Module SelectFromDatabase
                                           GROUP BY C.AMOUNT, CREDIT "
             Dim ds2 As DataSet = LoadSQL(mysql2, "PAYROLL_SBU")
             If ds2.Tables(0).Rows.Count > 0 Then
-                Dim creditSBU As Decimal = IIf(IsDBNull(ds2.Tables(0).Rows(0).Item("CREDIT")), 0, ds2.Tables(0).Rows(0).Item("CREDIT"))
-                totalSBUCredit = creditSBU + CDbl(ds2.Tables(0).Rows(0).Item("TOTALS"))
-                totalClaims += totalSBUCredit
-                Dim fromSBUDate As String = CDate(ds2.Tables(0).Rows(0).Item("FROMDATE")).ToString("MMMM dd, yyyy")
-                Dim toSBUDate As String = CDate(ds2.Tables(0).Rows(0).Item("TODATE")).ToString("MMMM dd, yyyy")
-                dt.Rows.Add($"SBU-SAVINGS BUILD UP ({fromSBUDate} - {toSBUDate})", totalSBUCredit.ToString("N"), "DEBIT")
+                With ds2.Tables(0).Rows(0)
+                    Dim creditSBU As Decimal = IIf(IsDBNull(.Item("CREDIT")), 0, .Item("CREDIT"))
+                    totalSBUCredit = creditSBU + CDbl(.Item("TOTALS"))
+                    totalClaims += totalSBUCredit
+                    Dim fromSBUDate As String = IIf(IsDBNull(.Item("FROMDATE")), Nothing, CDate(.Item("FROMDATE")).ToString("MMMM dd, yyyy"))
+                    Dim toSBUDate As String = IIf(IsDBNull(.Item("TODATE")), Nothing, CDate(.Item("TODATE")).ToString("MMMM dd, yyyy"))
+                    Dim dateCovered As String = IIf(fromSBUDate = Nothing, Nothing, $"({fromSBUDate} - {toSBUDate})")
+                    dt.Rows.Add($"SBU-SAVINGS BUILD UP {dateCovered}", totalSBUCredit.ToString("N"), "DEBIT")
+                End With
             End If
 
             '======================================================== DEDUCTIONS ====================================================================
@@ -3640,27 +3642,60 @@ Module SelectFromDatabase
     End Function
 
 
-    Friend Sub PopulateINACTIVE_Employees(datagrid As DataGridView)
+    Friend Sub PopulateINACTIVE_Employees(datagrid As DataGridView, Optional search As String = "")
         datagrid.Rows.Clear()
 
-        Dim mysql As String = "SELECT 
-                                    LASTNAME || ', ' || FIRSTNAME || ' ' ||                              
-                                    CASE                                  
-                                    WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1)                                
-                                    ELSE ''                                 
-                                    END AS FULLNAME, 
-                                    BIOMETRICID, EMP_POSITION, COMPANY, STATUS, DATE_ENDED, RATE_DAILY, SOA_PATH, SOA_REMARKS
-                               FROM TBL_EMPLOYEE WHERE EMP_STATUS = 'INACTIVE'"
+        Dim secured_str As String = search
+        secured_str = DreadKnight(secured_str)
+        Dim strWords As String() = secured_str.Split(New Char() {" "c})
+        Dim name As String
+        Dim mysql As String
+
+        If search.Length <> 0 Then
+
+            mysql = "Select 
+                        LASTNAME || ', ' || FIRSTNAME || ' ' ||                              
+                        Case                                  
+                        WHEN MIDDLENAME Is Not NULL And MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1)                                
+                        Else ''                                 
+                        End As FULLNAME, 
+                        BIOMETRICID, EMP_POSITION, COMPANY, STATUS, DATE_ENDED, RATE_DAILY, SOA_PATH, SOA_REMARKS
+                    From TBL_EMPLOYEE Where emp_status = 'INACTIVE' AND SOA_PATH IS NULL and ("
+
+            For Each name In strWords
+                mysql &= $"{vbCr}UPPER(BIOMETRICID) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(LASTNAME || ', ' || FIRSTNAME || ' ' || CASE WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.' ELSE '' END) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(EMP_POSITION) LIKE UPPER('%{name}%')) ORDER BY FULLNAME  ASC "
+            Next
+
+        Else
+            mysql = "Select 
+                        LASTNAME || ', ' || FIRSTNAME || ' ' ||                              
+                        Case                                  
+                        WHEN MIDDLENAME Is Not NULL And MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1)                                
+                        Else ''                                 
+                        End As FULLNAME, 
+                        BIOMETRICID, EMP_POSITION, COMPANY, STATUS, DATE_ENDED, RATE_DAILY, SOA_PATH, SOA_REMARKS
+                    From TBL_EMPLOYEE Where emp_status = 'INACTIVE' AND SOA_PATH IS NULL"
+        End If
 
         Using ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
                     With dr
 
-                        Dim dateEnded As DateTime = IIf(IsDBNull(.item("DATE_ENDED")), "1/1/1001", .item("DATE_ENDED"))
+                        Dim dateEnded As String = IIf(IsDBNull(.item("DATE_ENDED")), Nothing, .item("DATE_ENDED"))
                         Dim pathSOA As String = IIf(IsDBNull(.item("SOA_PATH")), Nothing, .item("SOA_PATH"))
                         Dim remarksSOA As String = IIf(IsDBNull(.item("SOA_REMARKS")), Nothing, .item("SOA_REMARKS"))
                         Dim minimumRate As Decimal = IIf(IsDBNull(.item("RATE_DAILY")), 0, .item("RATE_DAILY"))
+
+                        Dim company As String = Nothing
+                        If IsDBNull(.Item("COMPANY")) Then
+                        ElseIf String.IsNullOrWhiteSpace(.Item("COMPANY")) Then
+                        Else
+                            company = .Item("COMPANY")
+                        End If
 
                         Dim rowId As Integer = datagrid.Rows.Add()
                         Dim row As DataGridViewRow = datagrid.Rows(rowId)
@@ -3668,24 +3703,13 @@ Module SelectFromDatabase
                         row.Cells("dataFullname").Tag = .Item("BIOMETRICID")
                         row.Cells("dataDesignation").Value = .Item("EMP_POSITION")
                         row.Cells("dataDesignation").Tag = minimumRate
-                        row.Cells("dataCompany").Value = .Item("COMPANY")
+                        row.Cells("dataCompany").Value = company
+                        row.Cells("dataCompany").Tag = remarksSOA
                         row.Cells("dataStatus").Value = .Item("STATUS")
-                        row.Cells("dataDateEnded").Value = dateEnded.ToString("MMMM dd, yyyy")
+                        row.Cells("dataStatus").Tag = pathSOA
 
-                        If remarksSOA = Nothing Then
-                            row.Cells("dataRemarks").Value = "Add"
-                        Else
-                            row.Cells("dataRemarks").Value = "View"
-                            row.Cells("dataRemarks").Tag = remarksSOA
-                        End If
-
-
-                        If pathSOA = Nothing Then
-                            row.DefaultCellStyle.BackColor = Color.LightSalmon
-                            row.Cells("dataAttachment").Value = "Upload"
-                        Else
-                            row.Cells("dataAttachment").Value = "Open"
-                            row.Cells("dataAttachment").Tag = pathSOA
+                        If dateEnded <> Nothing Then
+                            row.Cells("dataDateEnded").Value = CDate(dateEnded).ToString("MMMM dd, yyyy")
                         End If
 
                         row.Height = 25
@@ -3695,4 +3719,17 @@ Module SelectFromDatabase
             End If
         End Using
     End Sub
+
+    Friend Sub Update_Row(table As String, str As String, columnName As String, columnValue As String)
+        Dim mysql As String = $"Select * From {table} {str}"
+        Using ds As DataSet = LoadSQL(mysql, table)
+            If ds.Tables(0).Rows.Count > 0 Then
+                With ds.Tables(0).Rows(0)
+                    .Item(columnName) = columnValue
+                End With
+                SaveEntry(ds, False)
+            End If
+        End Using
+    End Sub
+
 End Module

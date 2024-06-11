@@ -591,6 +591,32 @@ Module Public_Function
 
 #End Region
 
+#Region "PGCNAS"
+    Friend Function SavePDF_ToPGCNAS(Fullname As String, byteViewer As Byte())
+        Fullname = Fullname.ToString.TrimEnd()
+
+        Dim DirFolderToCreate As String = My.Settings.PGCNAS_SOA
+        Dim folderName As DirectoryInfo = New DirectoryInfo(DirFolderToCreate)
+        If Not folderName.Exists Then folderName.Create()
+
+        Dim path As String = $"{DirFolderToCreate}\{Fullname} - SOA.pdf"
+
+        SaveToFOlder(path, byteViewer)
+
+        Return path
+    End Function
+
+    Friend Sub SaveToFOlder(path As String, byteViewer As Byte())
+        Try
+            Dim newFile As New FileStream(path, FileMode.Create)
+            newFile.Write(byteViewer, 0, byteViewer.Length)
+            newFile.Close()
+        Catch ex As Exception
+            MsgBox(ex.ToString, MsgBoxStyle.Exclamation)
+        End Try
+    End Sub
+#End Region
+
 #Region "UPDATE_DEDUCTION"
     Friend Sub CheckDeduction_inRecorded() '============== NO R_DEDUC_ID IN RECORDED_ALLOW_DEDUC
         Dim mysql As String = $"Select A.*, B.ID as deduct_id from RECORDED_ALLOW_DEDUC A 
