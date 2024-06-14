@@ -278,6 +278,25 @@ Public Class frmMainForm
         OpenWindowsForm("frmAllowance")
     End Sub
 
+    Dim allowMove As Boolean = False
+    Dim moveLocation As New Point
+    Private Sub Panel1_MouseDown(sender As Object, e As MouseEventArgs) Handles Panel1.MouseDown
+        allowMove = True
+        Cursor = Cursors.SizeAll
+        moveLocation = New Point(e.X, e.Y)
+    End Sub
+
+    Private Sub Panel1_MouseMove(sender As Object, e As MouseEventArgs) Handles Panel1.MouseMove
+        If allowMove = True Then
+            Me.Location = New Point(Me.Location.X + e.X - moveLocation.X, Me.Location.Y + e.Y - moveLocation.Y)
+        End If
+    End Sub
+
+    Private Sub Panel1_MouseUp(sender As Object, e As MouseEventArgs) Handles Panel1.MouseUp
+        allowMove = False
+        Cursor = Cursors.Default
+    End Sub
+
     Private Sub Dashboard_BTN_Click(sender As Object, e As EventArgs) Handles Dashboard_BTN.Click
         OpenWindowsForm("frmSchedule")
     End Sub

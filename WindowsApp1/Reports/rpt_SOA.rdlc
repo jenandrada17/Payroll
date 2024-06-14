@@ -17,22 +17,6 @@
         <CommandText>/* Local Query */</CommandText>
       </Query>
       <Fields>
-        <Field Name="SOA_DATE">
-          <DataField>SOA_DATE</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="FULLNAME">
-          <DataField>FULLNAME</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="DESIGNATION">
-          <DataField>DESIGNATION</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="COMPANY">
-          <DataField>COMPANY</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
         <Field Name="PARTICULARS">
           <DataField>PARTICULARS</DataField>
           <rd:TypeName>System.String</rd:TypeName>
@@ -43,14 +27,6 @@
         </Field>
         <Field Name="CATEGORY">
           <DataField>CATEGORY</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="TOTALS">
-          <DataField>TOTALS</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="NETPAY">
-          <DataField>NETPAY</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>
@@ -3381,7 +3357,7 @@
                         <TablixMember />
                       </TablixMembers>
                       <Visibility>
-                        <Hidden>=IIF(REPORTITEMS!PARTICULARS.VALUE = NOTHING, TRUE, FALSE)</Hidden>
+                        <Hidden>=IIF(REPORTITEMS!PARTICULARS.VALUE = NOTHING or REPORTITEMS!AMOUNT.VALUE = "0.00", TRUE, FALSE)</Hidden>
                       </Visibility>
                     </TablixMember>
                     <TablixMember>

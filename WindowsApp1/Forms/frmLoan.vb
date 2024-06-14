@@ -46,6 +46,7 @@ Public Class frmLoan
         Load_Other_Deduction(Maxicare_List, "PAYROLL_OTHER_DEDUCTION", "MAXICARE")
         Lists_SBU(SBU_LV)
         PopulateINACTIVE_Employees(gridSOA)
+        PopulateSOA_Attachment(grid_Attachment)
 
         DateCharges_DTP.Value = Today
         SSS_Date_DTP.Value = Today
@@ -53,7 +54,6 @@ Public Class frmLoan
         Mp2Date_dtp.Value = Today
         MaxDate_dtp.Value = Today
         SBU_Date_dtp.Value = Today
-        Me.rpt_SOA.RefreshReport()
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Cancel_btn.Click
@@ -805,7 +805,6 @@ Public Class frmLoan
         End If
     End Sub
 
-
     Private Sub SearchEMP_BTN_Click(sender As Object, e As EventArgs)
         Try
             Dim instForm As Form = Application.OpenForms.OfType(Of Form)().Where(Function(frm) frm.Name = "frmNewEmployee").SingleOrDefault()
@@ -828,7 +827,7 @@ Public Class frmLoan
         End Try
     End Sub
 
-    Private Sub btnCancelSOA_Click(sender As Object, e As EventArgs) Handles btnCancelSOA.Click
+    Private Sub btnCancelSOA_Click(sender As Object, e As EventArgs) Handles btnRemarksCancel.Click
         panelRemarksSOA.Visible = False
         rbRemarksSOA.Text = ""
     End Sub
@@ -840,7 +839,7 @@ Public Class frmLoan
 
         Dim SOA_Path As String = SavePDF_ToPGCNAS(fullname, IO.File.ReadAllBytes(txtPath.Text))
 
-        Update_Row("TBL_EMPLOYEE", $"WHERE BIOMETRICID = {bioNo}", "SOA_PATH", SOA_Path)
+        RunCommand($"UPDATE TBL_EMPLOYEE SET SOA_PATH = '{SOA_Path}' WHERE BIOMETRICID = {bioNo}")
 
         SaveLogs($"UPLOADED SOA ATTACHMENT - {fullname} ({bioNo}), PATH({SOA_Path})", frmMainForm.UserName_LBL.Text)
 
@@ -873,68 +872,115 @@ Public Class frmLoan
         End If
     End Sub
 
-    Private allowCoolMove As Boolean = False
-    Private myCoolPoint As New Point
-    Private Sub panelAttachment_MouseDown(sender As Object, e As MouseEventArgs) Handles panelAttachment.MouseDown
-        allowCoolMove = True
-        myCoolPoint = New Point(e.X, e.Y)
-        Cursor = Cursors.SizeAll
-    End Sub
-
-    Private Sub panelAttachment_MouseMove(sender As Object, e As MouseEventArgs) Handles panelAttachment.MouseMove
-        If allowCoolMove = True Then
-            panelAttachment.Location = New Point(panelAttachment.Location.X + e.X - myCoolPoint.X, panelAttachment.Location.Y + e.Y - myCoolPoint.Y)
-        End If
-    End Sub
-
-    Private Sub panelAttachment_MouseUp(sender As Object, e As MouseEventArgs) Handles panelAttachment.MouseUp
-        allowCoolMove = False
-        Cursor = Cursors.Default
-    End Sub
-
     Private Sub menuForm_Click(sender As Object, e As EventArgs) Handles menuForm.Click
         Dim i As Integer = gridSOA.CurrentRow.Index.ToString
         Dim bioNo As Integer = gridSOA.Item(0, i).Tag.ToString
         Dim fullname As String = gridSOA.Item(0, i).Value.ToString
-        Dim designation As String = gridSOA.Item(1, i).Value.ToString
-        Dim minimumRate As Decimal = gridSOA.Item(1, i).Tag.ToString
-        Dim company As String = IIf(String.IsNullOrWhiteSpace(gridSOA.Item(2, i).Value), "", gridSOA.Item(2, i).Value)
+        Dim designation As String = gridSOA.Item(3, i).Value.ToString
+        Dim minimumRate As Decimal = gridSOA.Item(3, i).Tag.ToString
+        Dim company As String = IIf(String.IsNullOrWhiteSpace(gridSOA.Item(4, i).Value), "", gridSOA.Item(4, i).Value)
 
-        GetSOAInfo(bioNo, fullname, designation, company, minimumRate, rpt_SOA)
-    End Sub
-
-    Private Sub menuRemarks_Click(sender As Object, e As EventArgs) Handles menuRemarks.Click
-        Loans_Tab.Focus()
-        Dim x As Integer = (Me.ClientSize.Width - panelRemarksSOA.Width) / 2
-        Dim y As Integer = (Me.ClientSize.Height - panelRemarksSOA.Height) / 2
-        panelRemarksSOA.Location = New Point(x, y)
-        panelRemarksSOA.Size = New Size(381, 240)
-        panelRemarksSOA.Visible = True
+        GetSOAInfo(bioNo, fullname, designation, company, minimumRate, rpt_SOA_)
     End Sub
 
     Private Sub menuAttachment_Click(sender As Object, e As EventArgs) Handles menuAttachment.Click
-        Loans_Tab.Focus()
-        Dim x As Integer = (Me.ClientSize.Width - panelAttachment.Width) / 2
-        Dim y As Integer = (Me.ClientSize.Height - panelAttachment.Height) / 2
-        panelAttachment.Location = New Point(x, y)
-        panelAttachment.Size = New Size(606, 74)
-        panelAttachment.Visible = True
-    End Sub
+        'Loans_Tab.Focus()
+        'Dim x As Integer = (Me.ClientSize.Width - panelAttachment.Width) / 2
+        'Dim y As Integer = (Me.ClientSize.Height - panelAttachment.Height) / 2
+        'panelAttachment.Location = New Point(x, y)
+        'panelAttachment.Size = New Size(606, 74)
+        'panelAttachment.Visible = True
 
-    Private clickedRowIndex As Integer = -1
-    Private Sub gridSOA_MouseDown(sender As Object, e As MouseEventArgs) Handles gridSOA.MouseDown
-        If e.Button = MouseButtons.Right Then
-            Dim hitTestInfo = gridSOA.HitTest(e.X, e.Y)
-            If hitTestInfo.Type = DataGridViewHitTestType.Cell Then
-                clickedRowIndex = hitTestInfo.RowIndex
-                gridSOA.Rows(clickedRowIndex).Selected = True
+        Dim i As Integer = gridSOA.CurrentRow.Index.ToString
+        Dim bioNo As String = gridSOA.Item(0, i).Tag
+        Dim fullname As String = gridSOA.Item(0, i).Value.ToString
+
+        Using openFileDialog As New OpenFileDialog()
+            openFileDialog.Filter = "PDF files (*.pdf)|*.pdf|All files (*.*)|*.*"
+            openFileDialog.Title = "Browse PDF File"
+
+            If openFileDialog.ShowDialog() = DialogResult.OK Then
+                Dim filename As String = openFileDialog.FileName
+
+                Dim result As DialogResult = MsgBox($"The account of {fullname} will be closed, proceed anyway?", MessageBoxButtons.YesNo)
+                If result = DialogResult.Yes Then
+
+                    Dim SOA_Path As String = SavePDF_ToPGCNAS(fullname, IO.File.ReadAllBytes(filename))
+
+                    RunCommand($"UPDATE TBL_EMPLOYEE SET SOA_PATH = '{SOA_Path}' WHERE BIOMETRICID = {bioNo}")                                          'UPDATE SOA PATH
+                    RunCommand($"UPDATE PAYROLL_DEDUCTION SET STATUS = 'PAID', REMARKS = 'SOA UPLOADED (DATE: {Date.Now})' WHERE BIO_NO = {bioNo}")     'DEDUCTION SET TO PAID         
+                    RunCommand($"UPDATE PAYROLL_SBU SET STATUS = 'CLOSED', REMARKS = 'SOA UPLOADED (DATE: {Date.Now})' WHERE BIO_NO = {bioNo}")         'SBU STATUS SET TO CLOSED
+
+                    SaveLogs($"UPLOADED SOA ATTACHMENT - {fullname} ({bioNo}), PATH({SOA_Path})", frmMainForm.UserName_LBL.Text)
+
+                    PopulateINACTIVE_Employees(gridSOA)
+                    PopulateSOA_Attachment(grid_Attachment)
+                End If
             End If
-        End If
+        End Using
+
     End Sub
 
     Private Sub lblClose_Click(sender As Object, e As EventArgs) Handles lblClose.Click
         txtPath.Clear()
         btnSavePDF.Enabled = False
         panelAttachment.Visible = False
+    End Sub
+
+    Private Sub panelRemarksSOA_MouseDown(sender As Object, e As MouseEventArgs) Handles panelRemarksSOA.MouseDown
+        allowMove = True
+        Cursor = Cursors.SizeAll
+        moveLocation = New Point(e.X, e.Y)
+    End Sub
+
+    Private Sub panelRemarksSOA_MouseUp(sender As Object, e As MouseEventArgs) Handles panelRemarksSOA.MouseUp
+        allowMove = False
+        Cursor = Cursors.Default
+    End Sub
+
+    Private Sub panelRemarksSOA_MouseMove(sender As Object, e As MouseEventArgs) Handles panelRemarksSOA.MouseMove
+        If allowMove = True Then
+            panelRemarksSOA.Location = New Point(panelRemarksSOA.Location.X + e.X - moveLocation.X, panelRemarksSOA.Location.Y + e.Y - moveLocation.Y)
+        End If
+    End Sub
+
+    Private Sub btnRemarksSave_Click(sender As Object, e As EventArgs) Handles btnRemarksSave.Click
+        Dim i As Integer = grid_Attachment.CurrentRow.Index.ToString
+        Dim bioNo As String = grid_Attachment.Item(0, i).Tag 
+        RunCommand($"UPDATE TBL_EMPLOYEE SET SOA_REMARKS = '{rbRemarksSOA.Text}' WHERE BIOMETRICID = {bioNo}")
+        panelRemarksSOA.Visible = False
+        PopulateSOA_Attachment(grid_Attachment)
+    End Sub
+
+    Private Sub grid_Attachment_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles grid_Attachment.CellContentClick
+
+        Dim grid = DirectCast(sender, DataGridView)
+        Dim row As DataGridViewRow = grid_Attachment.Rows(e.RowIndex)
+
+        If TypeOf grid.Columns(e.ColumnIndex) Is DataGridViewButtonColumn Then
+            If grid.Columns(e.ColumnIndex).Name = "dgv_Remarks" Then
+
+                If row.Cells("dgv_Remarks").Value = "View" Then
+                    rbRemarksSOA.Text = row.Cells("dgv_Remarks").Tag
+                Else
+                    rbRemarksSOA.Clear()
+                End If
+
+                Loans_Tab.Focus()
+                Dim x As Integer = (Me.ClientSize.Width - panelRemarksSOA.Width) / 2
+                Dim y As Integer = (Me.ClientSize.Height - panelRemarksSOA.Height) / 2
+                panelRemarksSOA.Location = New Point(x, y)
+                panelRemarksSOA.Size = New Size(378, 261)
+                panelRemarksSOA.Visible = True
+
+            ElseIf grid.Columns(e.ColumnIndex).Name = "dgv_Attachment" Then
+                If row.Cells("dgv_Attachment").Value = "View" Then
+                    If row.Cells("dgv_Attachment").Tag <> Nothing Then
+                        Process.Start(row.Cells("dgv_Attachment").Tag)
+                    End If
+                End If
+            End If
+        End If
+
     End Sub
 End Class

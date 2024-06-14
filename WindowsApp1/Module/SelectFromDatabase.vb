@@ -3387,131 +3387,6 @@ Module SelectFromDatabase
         End Using
     End Function
 
-    'Friend Sub GetSOAInfo(bioNo As String, fullname As String, designation As String, company As String, minimumRate As Decimal)
-    '    Try
-    '        ' Prepare DataTable
-    '        Dim dt As New DataTable()
-    '        With dt
-    '            .Columns.Add("PARTICULARS")
-    '            .Columns.Add("AMOUNT")
-    '            .Columns.Add("CATEGORY")
-    '        End With
-
-    '        ' Variables to hold calculations
-    '        Dim holdSalary As Decimal = 0
-    '        Dim silRefund As Decimal = 0
-    '        Dim remaining13thMonth As Decimal = 0
-    '        Dim totalSBUCredit As Decimal = 0
-    '        Dim totalClaims As Decimal = 0
-    '        Dim totalDeduction As Decimal = 0
-    '        Dim NETPAY As Decimal = 0
-
-    '        '======================================================== CLAIMS ====================================================================
-    '        'HOLD SALARY
-    '        Dim mysql1 As String = $"SELECT * FROM RECORDED_ALLOW_DEDUC WHERE BIO_NO = '{bioNo}' AND UPPER(CATEGORY) LIKE UPPER('%HOLD SALARY%')"
-    '        Dim ds1 As DataSet = LoadSQL(mysql1, "RECORDED_ALLOW_DEDUC")
-    '        If ds1.Tables(0).Rows.Count > 0 Then
-    '            holdSalary = ds1.Tables(0).Rows(0).Item("AMOUNT")
-    '            totalClaims += holdSalary
-    '            dt.Rows.Add("HOLD SALARY", ds1.Tables(0).Rows(0).Item("AMOUNT"), "DEBIT")
-    '        End If
-
-    '        'SIL REFUND
-    '        Dim remainingSIL As Double = 5 - GetTotalSIL(bioNo)
-    '        Dim perSIL As Decimal = (minimumRate * 5) / 12
-    '        silRefund = remainingSIL * perSIL
-    '        totalClaims += silRefund
-    '        dt.Rows.Add("S.I.L Refund", silRefund.ToString("N"), "DEBIT")
-
-    '        '13TH MONTH
-    '        remaining13thMonth = Get13Month(bioNo)
-    '        totalClaims += remaining13thMonth
-    '        Dim fromDate As String = startDate_13Month.ToString("MMMM dd, yyyy")
-    '        Dim toDate As String = endDate_13Month.ToString("MMMM dd, yyyy")
-    '        dt.Rows.Add($"13th Month Pay ({fromDate} - {toDate})", remaining13thMonth.ToString("N"))
-
-    '        'SBU 
-    '        Dim mysql2 As String = $"SELECT COALESCE(SUM(C.AMOUNT), 0) AS TOTALS, CREDIT, MIN(C.PAYDATE) AS FROMDATE, MAX(C.PAYDATE) AS TODATE
-    '                                  FROM PAYROLL_SBU A  
-    '                                  LEFT JOIN RECORDED_ALLOW_DEDUC C ON C.BIO_NO = A.BIO_NO AND C.CATEGORY = 'SBU'  AND PAYDATE <> '12/15/2021' 
-    '                                  WHERE A.BIO_NO = {bioNo}
-    '                                  GROUP BY C.AMOUNT, CREDIT "
-    '        Dim ds2 As DataSet = LoadSQL(mysql2, "PAYROLL_SBU")
-    '        If ds2.Tables(0).Rows.Count > 0 Then
-    '            Dim creditSBU As Decimal = IIf(IsDBNull(ds2.Tables(0).Rows(0).Item("CREDIT")), 0, ds2.Tables(0).Rows(0).Item("CREDIT"))
-    '            totalSBUCredit = creditSBU + CDbl(ds2.Tables(0).Rows(0).Item("TOTALS"))
-    '            totalClaims += totalSBUCredit
-    '            Dim fromSBUDate As String = CDate(ds2.Tables(0).Rows(0).Item("FROMDATE")).ToString("MMMM dd, yyyy")
-    '            Dim toSBUDate As String = CDate(ds2.Tables(0).Rows(0).Item("TODATE")).ToString("MMMM dd, yyyy")
-    '            dt.Rows.Add($"SBU-SAVINGS BUILD UP ({fromSBUDate} - {toSBUDate})", totalSBUCredit.ToString("N"), "DEBIT")
-    '        End If
-
-    '        '======================================================== DEDUCTIONS ====================================================================
-    '        Dim mysql3 As String = $"SELECT ID, CATEGORY FROM PAYROLL_DEDUCTION WHERE BIO_NO = {bioNo}"
-    '        Using ds3 As DataSet = LoadSQL(mysql3, "PAYROLL_DEDUCTION")
-    '            If ds3.Tables(0).Rows.Count > 0 Then
-    '                For Each dr In ds3.Tables(0).Rows
-    '                    With dr
-    '                        Dim deduct_id As String = .item("ID")
-    '                        Dim category As String = .item("CATEGORY")
-    '                        Dim a_amount As Decimal = GetData_Decimal("AMORT", $"PAYROLL_DEDUCTION WHERE ID = '{deduct_id}'")
-    '                        Dim creditDeduc As Decimal = GetData_Decimal("CREDIT", $"PAYROLL_DEDUCTION WHERE ID = '{deduct_id}'")
-    '                        Dim principal As Decimal = GetData_Decimal("PRINCIPAL", $"PAYROLL_DEDUCTION WHERE ID = '{deduct_id}'")
-    '                        Dim partialPayment As Decimal = GetData_Decimal("AMOUNT", $"PARTIAL_PAYMENT WHERE DEDUCT_ID = '{deduct_id}'")
-    '                        Dim totalCredit As Decimal = creditDeduc + partialPayment + GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC WHERE R_DEDUC_ID = '{deduct_id}' and PAYDATE <> '12/15/2021'")
-    '                        Dim balance As Decimal = principal - totalCredit
-
-    '                        If balance <> 0 Then
-    '                            totalDeduction += balance
-    '                            dt.Rows.Add(category, balance.ToString("N"), "CREDIT")
-    '                        End If
-    '                    End With
-    '                Next
-    '            End If
-    '        End Using
-
-    '        NETPAY = totalClaims - totalDeduction
-
-    '        ' Create and show the new form with ReportViewer
-    '        Dim reportForm As New Form()
-    '        reportForm.Text = "Statement of Account"
-    '        reportForm.Size = New Size(800, 600)
-    '        reportForm.StartPosition = FormStartPosition.CenterScreen
-
-    '        Dim rpt_SOA As New ReportViewer()
-    '        rpt_SOA.Dock = DockStyle.Fill
-    '        reportForm.Controls.Add(rpt_SOA)
-
-    '        ' Configure the ReportViewer
-    '        Dim parameter As New List(Of ReportParameter) From {
-    '        New ReportParameter("paramFullname", fullname),
-    '        New ReportParameter("paramDesignation", designation),
-    '        New ReportParameter("paramCompany", company),
-    '        New ReportParameter("paramDate", Today.ToShortDateString),
-    '        New ReportParameter("paramTotalClaims", totalClaims.ToString("N")),
-    '        New ReportParameter("paramTotalDeduction", totalDeduction.ToString("N")),
-    '        New ReportParameter("paramNetPay", NETPAY.ToString("N"))
-    '    }
-
-    '        Dim dataSource As New ReportDataSource("DataSet1", dt)
-    '        rpt_SOA.LocalReport.DataSources.Clear()
-    '        rpt_SOA.LocalReport.DataSources.Add(dataSource)
-    '        rpt_SOA.LocalReport.SetParameters(parameter)
-
-    '        ' Load the report definition
-    '        rpt_SOA.LocalReport.ReportPath = "Path\To\Your\Report.rdlc" ' Update this with the correct path
-
-    '        ' Refresh the ReportViewer
-    '        rpt_SOA.RefreshReport()
-
-    '        ' Show the form
-    '        reportForm.ShowDialog()
-
-    '    Catch ex As Exception
-    '        MsgBox(ex.ToString)
-    '    End Try
-    'End Sub
-
     Friend Sub GetSOAInfo(bioNo As String, fullname As String, designation As String, company As String, minimumRate As Decimal, rpt_SOA As Microsoft.Reporting.WinForms.ReportViewer)
         rpt_SOA.LocalReport.DataSources.Clear()
 
@@ -3567,21 +3442,38 @@ Module SelectFromDatabase
                     Dim creditSBU As Decimal = IIf(IsDBNull(.Item("CREDIT")), 0, .Item("CREDIT"))
                     totalSBUCredit = creditSBU + CDbl(.Item("TOTALS"))
                     totalClaims += totalSBUCredit
-                    Dim fromSBUDate As String = IIf(IsDBNull(.Item("FROMDATE")), Nothing, CDate(.Item("FROMDATE")).ToString("MMMM dd, yyyy"))
-                    Dim toSBUDate As String = IIf(IsDBNull(.Item("TODATE")), Nothing, CDate(.Item("TODATE")).ToString("MMMM dd, yyyy"))
-                    Dim dateCovered As String = IIf(fromSBUDate = Nothing, Nothing, $"({fromSBUDate} - {toSBUDate})")
-                    dt.Rows.Add($"SBU-SAVINGS BUILD UP {dateCovered}", totalSBUCredit.ToString("N"), "DEBIT")
+
+                    'Dim fromSBUDate As String = Nothing
+                    'Dim toSBUDate As String = Nothing
+
+                    'If IsDBNull(.Item("FROMDATE")) Then
+                    'ElseIf String.IsNullOrWhiteSpace(.Item("FROMDATE")) Then
+                    'Else
+                    '    fromSBUDate = CDate(.Item("FROMDATE")).ToString("MMMM dd, yyyy")
+                    'End If
+
+                    'If IsDBNull(.Item("TODATE")) Then
+                    'ElseIf String.IsNullOrWhiteSpace(.Item("TODATE")) Then
+                    'Else
+                    '    fromSBUDate = CDate(.Item("TODATE")).ToString("MMMM dd, yyyy")
+                    'End If
+
+                    'Dim dateCovered As String = IIf(fromSBUDate = Nothing, Nothing, $"({fromSBUDate} - {toSBUDate})")
+                    'dt.Rows.Add($"SBU-SAVINGS BUILD UP {dateCovered}", totalSBUCredit.ToString("N"), "DEBIT")
+
+                    dt.Rows.Add($"SBU-SAVINGS BUILD UP", totalSBUCredit.ToString("N"), "DEBIT")
                 End With
             End If
 
             '======================================================== DEDUCTIONS ====================================================================
-            Dim mysql3 As String = $"SELECT ID, CATEGORY FROM PAYROLL_DEDUCTION WHERE BIO_NO = {bioNo}"
+            Dim mysql3 As String = $"SELECT ID, STATUS, CATEGORY FROM PAYROLL_DEDUCTION WHERE BIO_NO = {bioNo}"
             Using ds3 As DataSet = LoadSQL(mysql3, "PAYROLL_DEDUCTION")
                 If ds3.Tables(0).Rows.Count > 0 Then
                     For Each dr In ds3.Tables(0).Rows
                         With dr
 
                             Dim deduct_id As String = .item("ID")
+                            Dim status As String = IIf(IsDBNull(.item("STATUS")), Nothing, .item("STATUS"))
                             Dim category As String = .item("CATEGORY")
                             Dim a_amount As Decimal = GetData_Decimal("AMORT", $"PAYROLL_DEDUCTION WHERE ID = '{deduct_id}'")
                             Dim creditDeduc As Decimal = GetData_Decimal("CREDIT", $"PAYROLL_DEDUCTION WHERE ID = '{deduct_id}'")
@@ -3590,7 +3482,7 @@ Module SelectFromDatabase
                             Dim totalCredit As Decimal = creditDeduc + partialPayment + GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC WHERE R_DEDUC_ID = '{deduct_id}' and PAYDATE <> '12/15/2021'")
                             Dim balance As Decimal = principal - totalCredit
 
-                            If balance <> 0 Then
+                            If balance <> 0 And status = Nothing Then
                                 totalDeduction += balance
                                 dt.Rows.Add(category, balance.ToString("N"), "CREDIT")
                             End If
@@ -3652,31 +3544,34 @@ Module SelectFromDatabase
 
         If search.Length <> 0 Then
 
-            mysql = "Select 
+            mysql = "SELECT 
                         LASTNAME || ', ' || FIRSTNAME || ' ' ||                              
-                        Case                                  
+                        CASE                                  
                         WHEN MIDDLENAME Is Not NULL And MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1)                                
-                        Else ''                                 
-                        End As FULLNAME, 
+                        ELSE ''                                 
+                        END AS FULLNAME, 
                         BIOMETRICID, EMP_POSITION, COMPANY, STATUS, DATE_ENDED, RATE_DAILY, SOA_PATH, SOA_REMARKS
-                    From TBL_EMPLOYEE Where emp_status = 'INACTIVE' AND SOA_PATH IS NULL and ("
+                    FROM TBL_EMPLOYEE 
+                    WHERE EMP_STATUS = 'INACTIVE' AND SOA_PATH IS NULL AND ("
 
             For Each name In strWords
                 mysql &= $"{vbCr}UPPER(BIOMETRICID) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(LASTNAME || ', ' || FIRSTNAME || ' ' || CASE WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.' ELSE '' END) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(EMP_POSITION) LIKE UPPER('%{name}%')) ORDER BY FULLNAME  ASC "
+                mysql &= $"{vbCr}UPPER(EMP_POSITION) LIKE UPPER('%{name}%')) ORDER BY DATE_ENDED, FULLNAME ASC "
             Next
 
         Else
-            mysql = "Select 
+            mysql = "SELECT 
                         LASTNAME || ', ' || FIRSTNAME || ' ' ||                              
-                        Case                                  
-                        WHEN MIDDLENAME Is Not NULL And MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1)                                
-                        Else ''                                 
-                        End As FULLNAME, 
+                        CASE                                  
+                        WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1)                                
+                        ELSE ''                                 
+                        End AS FULLNAME, 
                         BIOMETRICID, EMP_POSITION, COMPANY, STATUS, DATE_ENDED, RATE_DAILY, SOA_PATH, SOA_REMARKS
-                    From TBL_EMPLOYEE Where emp_status = 'INACTIVE' AND SOA_PATH IS NULL"
+                    FROM TBL_EMPLOYEE 
+                    WHERE EMP_STATUS = 'INACTIVE' AND SOA_PATH IS NULL 
+                    ORDER BY DATE_ENDED, FULLNAME  ASC "
         End If
 
         Using ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
@@ -3700,10 +3595,6 @@ Module SelectFromDatabase
                         Dim row As DataGridViewRow = datagrid.Rows(rowId)
                         row.Cells("dataFullname").Value = .Item("FULLNAME")
                         row.Cells("dataFullname").Tag = .Item("BIOMETRICID")
-                        row.Cells("dataDesignation").Value = .Item("EMP_POSITION")
-                        row.Cells("dataDesignation").Tag = minimumRate
-                        row.Cells("dataCompany").Value = company
-                        row.Cells("dataCompany").Tag = remarksSOA
                         row.Cells("dataStatus").Value = .Item("STATUS")
                         row.Cells("dataStatus").Tag = pathSOA
 
@@ -3711,6 +3602,10 @@ Module SelectFromDatabase
                             row.Cells("dataDateEnded").Value = CDate(dateEnded).ToString("MMMM dd, yyyy")
                         End If
 
+                        row.Cells("dataDesignation").Value = .Item("EMP_POSITION")
+                        row.Cells("dataDesignation").Tag = minimumRate
+                        row.Cells("dataCompany").Value = company
+                        row.Cells("dataCompany").Tag = remarksSOA
                         row.Height = 25
 
                     End With
@@ -3719,14 +3614,94 @@ Module SelectFromDatabase
         End Using
     End Sub
 
-    Friend Sub Update_Row(table As String, str As String, columnName As String, columnValue As String)
-        Dim mysql As String = $"Select * From {table} {str}"
-        Using ds As DataSet = LoadSQL(mysql, table)
+    Friend Sub PopulateSOA_Attachment(datagrid As DataGridView, Optional search As String = "")
+        datagrid.Rows.Clear()
+
+        Dim secured_str As String = search
+        secured_str = DreadKnight(secured_str)
+        Dim strWords As String() = secured_str.Split(New Char() {" "c})
+        Dim name As String
+        Dim mysql As String
+
+        If search.Length <> 0 Then
+
+            mysql = "SELECT 
+                        LASTNAME || ', ' || FIRSTNAME || ' ' ||                              
+                        CASE                                  
+                        WHEN MIDDLENAME Is Not NULL And MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1)                                
+                        ELSE ''                                 
+                        END AS FULLNAME, 
+                        BIOMETRICID, EMP_POSITION, COMPANY, STATUS, DATE_ENDED, RATE_DAILY, SOA_PATH, SOA_REMARKS
+                    FROM TBL_EMPLOYEE WHERE SOA_PATH IS NOT NULL and ("
+
+            For Each name In strWords
+                mysql &= $"{vbCr}UPPER(BIOMETRICID) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(LASTNAME || ', ' || FIRSTNAME || ' ' || CASE WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.' ELSE '' END) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(EMP_POSITION) LIKE UPPER('%{name}%')) ORDER BY FULLNAME  ASC "
+            Next
+
+        Else
+            mysql = "SELECT 
+                        LASTNAME || ', ' || FIRSTNAME || ' ' ||                              
+                        CASE                                  
+                        WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1)                                
+                        ELSE ''                                 
+                        END AS FULLNAME, 
+                        BIOMETRICID, EMP_POSITION, COMPANY, STATUS, DATE_ENDED, RATE_DAILY, SOA_PATH, SOA_REMARKS
+                    FROM TBL_EMPLOYEE WHERE SOA_PATH IS NOT NULL"
+        End If
+
+        Using ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
             If ds.Tables(0).Rows.Count > 0 Then
-                With ds.Tables(0).Rows(0)
-                    .Item(columnName) = columnValue
-                End With
-                SaveEntry(ds, False)
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+
+                        Dim dateEnded As String = IIf(IsDBNull(.item("DATE_ENDED")), Nothing, .item("DATE_ENDED"))
+                        Dim pathSOA As String = IIf(IsDBNull(.item("SOA_PATH")), Nothing, .item("SOA_PATH"))
+                        Dim remarksSOA As String = IIf(IsDBNull(.item("SOA_REMARKS")), Nothing, .item("SOA_REMARKS"))
+                        Dim minimumRate As Decimal = IIf(IsDBNull(.item("RATE_DAILY")), 0, .item("RATE_DAILY"))
+
+                        Dim company As String = Nothing
+                        If IsDBNull(.Item("COMPANY")) Then
+                        ElseIf String.IsNullOrWhiteSpace(.Item("COMPANY")) Then
+                        Else
+                            company = .Item("COMPANY")
+                        End If
+
+                        Dim rowId As Integer = datagrid.Rows.Add()
+                        Dim row As DataGridViewRow = datagrid.Rows(rowId)
+                        row.Cells("dgv_Fullname").Value = .Item("FULLNAME")
+                        row.Cells("dgv_Fullname").Tag = .Item("BIOMETRICID")
+                        row.Cells("dgv_Status").Value = .Item("STATUS")
+
+                        If dateEnded <> Nothing Then
+                            row.Cells("dgv_DateEnded").Value = CDate(dateEnded).ToString("MMMM dd, yyyy")
+                        End If
+
+                        row.Cells("dgv_Designation").Value = .Item("EMP_POSITION")
+                        row.Cells("dgv_Designation").Tag = minimumRate
+                        row.Cells("dgv_Company").Value = company
+                        row.Cells("dgv_Company").Tag = remarksSOA
+
+                        If remarksSOA = Nothing Then
+                            row.Cells("dgv_Remarks").Value = "Add"
+                        Else
+                            row.Cells("dgv_Remarks").Value = "View"
+                            row.Cells("dgv_Remarks").Tag = remarksSOA
+                        End If
+
+                        If pathSOA = Nothing Then
+                            row.Cells("dgv_Attachment").Value = "No Attachment"
+                        Else
+                            row.Cells("dgv_Attachment").Value = "View"
+                            row.Cells("dgv_Attachment").Tag = pathSOA
+                        End If
+
+                        row.Height = 30
+
+                    End With
+                Next
             End If
         End Using
     End Sub

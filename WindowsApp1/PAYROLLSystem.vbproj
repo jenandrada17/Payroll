@@ -287,12 +287,6 @@
     <Compile Include="Forms\frmReport.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\frmReportViewer.Designer.vb">
-      <DependentUpon>frmReportViewer.vb</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\frmReportViewer.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="Forms\frmSchedule.Designer.vb">
       <DependentUpon>frmSchedule.vb</DependentUpon>
     </Compile>

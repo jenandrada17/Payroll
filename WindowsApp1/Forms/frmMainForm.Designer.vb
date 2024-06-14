@@ -55,6 +55,7 @@ Partial Class frmMainForm
         Me.Settings_BTN = New System.Windows.Forms.Button()
         Me.Contribution_BTN = New System.Windows.Forms.Button()
         Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.Version_lbl = New System.Windows.Forms.Label()
         Me.Dashboard_lbl = New System.Windows.Forms.Label()
         Me.AppProgressBar = New System.Windows.Forms.ProgressBar()
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
@@ -63,7 +64,6 @@ Partial Class frmMainForm
         Me.Exit_LBL = New System.Windows.Forms.Label()
         Me.PictureBox5 = New System.Windows.Forms.PictureBox()
         Me.pNavigate = New System.Windows.Forms.Panel()
-        Me.Version_lbl = New System.Windows.Forms.Label()
         Me.NavagationPanel.SuspendLayout()
         CType(Me.PictureBox11, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox7, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -484,6 +484,17 @@ Partial Class frmMainForm
         Me.Panel1.Size = New System.Drawing.Size(1169, 52)
         Me.Panel1.TabIndex = 21
         '
+        'Version_lbl
+        '
+        Me.Version_lbl.AutoSize = True
+        Me.Version_lbl.Font = New System.Drawing.Font("Segoe UI", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Version_lbl.ForeColor = System.Drawing.Color.Black
+        Me.Version_lbl.Location = New System.Drawing.Point(3, 34)
+        Me.Version_lbl.Name = "Version_lbl"
+        Me.Version_lbl.Size = New System.Drawing.Size(34, 12)
+        Me.Version_lbl.TabIndex = 23
+        Me.Version_lbl.Text = "Version"
+        '
         'Dashboard_lbl
         '
         Me.Dashboard_lbl.AutoSize = True
@@ -564,17 +575,6 @@ Partial Class frmMainForm
         Me.pNavigate.Name = "pNavigate"
         Me.pNavigate.Size = New System.Drawing.Size(1169, 665)
         Me.pNavigate.TabIndex = 22
-        '
-        'Version_lbl
-        '
-        Me.Version_lbl.AutoSize = True
-        Me.Version_lbl.Font = New System.Drawing.Font("Segoe UI", 6.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Version_lbl.ForeColor = System.Drawing.Color.Black
-        Me.Version_lbl.Location = New System.Drawing.Point(3, 34)
-        Me.Version_lbl.Name = "Version_lbl"
-        Me.Version_lbl.Size = New System.Drawing.Size(34, 12)
-        Me.Version_lbl.TabIndex = 23
-        Me.Version_lbl.Text = "Version"
         '
         'frmMainForm
         '
