@@ -1,4 +1,5 @@
-﻿Imports System.Globalization
+﻿Imports System.Data.Common
+Imports System.Globalization
 Imports System.IO
 Imports System.Net.Mail
 Imports System.Reflection
@@ -642,19 +643,95 @@ Module Public_Function
         End Using
     End Sub
 
-    'Friend Sub UpdateDeduction(BIO_NO As String, CATEGORY As String, AMOUNT As Decimal) '============== NO R_DEDUC_ID IN RECORDED_ALLOW_DEDUC
-    '    Dim mysql As String = $"Select * from RECORDED_ALLOW_DEDUC Where BIO_NO = '{BIO_NO}' and CATEGORY ='{CATEGORY}' and AMORT ='{AMOUNT}'"
-    '    Using ds As DataSet = LoadSQL(mysql, "PAYROLL_DEDUCTION")
-    '        If ds.Tables(0).Rows.Count > 0 Then
-    '            With ds.Tables(0).Rows(0)
-    '                Dim bio_no As String = .Item("BIO_NO")
-    '                Dim category As String = .Item("CATEGORY")
+    'Friend Function ShowPasswordForm()
+    '    Dim passwordForm As New Form()
+    '    passwordForm.Size = New Size(300, 120)
+    '    passwordForm.StartPosition = FormStartPosition.CenterScreen
 
+    '    passwordForm.FormBorderStyle = FormBorderStyle.FixedDialog
+    '    passwordForm.MaximizeBox = False
 
-    '            End With
+    '    Dim lblPrompt As New Label()
+    '    lblPrompt.Text = "Please enter your password:"
+    '    lblPrompt.AutoSize = True
+    '    lblPrompt.Location = New Point(10, 10)
+    '    passwordForm.Controls.Add(lblPrompt)
+
+    '    Dim txtPassword As New TextBox()
+    '    txtPassword.Location = New Point(10, 40)
+    '    txtPassword.Width = 260
+    '    txtPassword.UseSystemPasswordChar = True
+    '    passwordForm.Controls.Add(txtPassword)
+
+    '    AddHandler txtPassword.KeyPress, AddressOf txtPassword_KeyPress
+
+    '    passwordForm.ShowDialog()
+    'End Function
+
+    'Private Sub txtPassword_KeyPress(sender As Object, e As KeyPressEventArgs)
+    '    If e.KeyChar = ChrW(Keys.Enter) Then
+    '        Dim userID As String = frmMainForm.UserName_LBL.Tag
+    '        Dim txtPassword As TextBox = DirectCast(sender, TextBox)
+
+    '        Dim getPassword As String = GET_STRING("PAYROLL_USER", "PASSWORD", $"ID = {userID}")
+    '        getPassword = DecryptString(getPassword)
+
+    '        If txtPassword.Text = getPassword Then
+
     '        End If
-    '    End Using
-    'End Sub  
+    '    End If
+    'End Sub
+
+    Friend Function ShowPasswordForm() As Boolean
+        Dim passwordForm As New Form()
+        passwordForm.Size = New Size(300, 120)
+        passwordForm.StartPosition = FormStartPosition.CenterScreen
+
+        passwordForm.FormBorderStyle = FormBorderStyle.FixedDialog
+        passwordForm.MaximizeBox = False
+        passwordForm.MinimizeBox = False ' Also disable minimize button
+
+        Dim lblPrompt As New Label()
+        lblPrompt.Text = "Please enter your password:"
+        lblPrompt.AutoSize = True
+        lblPrompt.Location = New Point(10, 10)
+        passwordForm.Controls.Add(lblPrompt)
+
+        Dim txtPassword As New TextBox()
+        txtPassword.Location = New Point(10, 40)
+        txtPassword.Width = 260
+        txtPassword.UseSystemPasswordChar = True
+        passwordForm.Controls.Add(txtPassword)
+
+        ' Variable to store the result
+        Dim passwordMatch As Boolean = False
+
+        ' Add a KeyPress event handler for txtPassword
+        AddHandler txtPassword.KeyPress, Sub(sender As Object, e As KeyPressEventArgs)
+                                             If e.KeyChar = ChrW(Keys.Enter) Then
+                                                 Dim userID As Integer = frmMainForm.UserName_LBL.Tag
+                                                 Dim txtPasswordBox As TextBox = DirectCast(sender, TextBox)
+
+                                                 Dim getPassword As String = GET_STRING("PAYROLL_USER", "PASSWORD", $"ID = {userID}")
+                                                 getPassword = DecryptString(getPassword)
+
+                                                 If txtPasswordBox.Text = getPassword Then
+                                                     passwordMatch = True
+                                                     passwordForm.DialogResult = DialogResult.OK
+                                                     passwordForm.Close()
+                                                 Else
+                                                     MsgBox("Incorrect password. Please try again.", MsgBoxStyle.Exclamation)
+                                                 End If
+                                                 e.Handled = True ' Prevent the default beep sound on Enter key press
+                                             End If
+                                         End Sub
+
+        passwordForm.ShowDialog()
+
+        Return passwordMatch
+    End Function
+
+
 #End Region
 
 End Module

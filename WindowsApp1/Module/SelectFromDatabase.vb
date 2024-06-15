@@ -1886,8 +1886,8 @@ Module SelectFromDatabase
         End Using
     End Sub
 
-    Friend startDate_13Month As Date
-    Friend endDate_13Month As Date
+    'Friend startDate_13Month As Date
+    'Friend endDate_13Month As Date
 
     Friend Function Get13Month(bio_no As String, Optional paydatee As DateTime = Nothing)
 
@@ -1911,9 +1911,9 @@ Module SelectFromDatabase
             ending_date = December_April.AddMonths(4).AddDays(days).AddDays(-1).ToString("d")
         End If
 
-        'JUST FOR THE SOA
-        startDate_13Month = starting_date
-        endDate_13Month = ending_date
+        ''JUST FOR THE SOA
+        'startDate_13Month = starting_date
+        'endDate_13Month = ending_date
 
         Dim tOTAL_ECOLA As Decimal = GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC where BIO_NO = '{bio_no}' and CATEGORY = 'ECOLA' and PAYDATE BETWEEN '{starting_date}' AND '{ending_date}'")
         Dim tOTAL_SIL As Decimal = GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC where BIO_NO = '{bio_no}' and CATEGORY like '%SIL' and PAYDATE BETWEEN '{starting_date}' AND '{ending_date}'")
@@ -3426,9 +3426,10 @@ Module SelectFromDatabase
             '13TH MONTH
             remaining13thMonth = Get13Month(bioNo)
             totalClaims += remaining13thMonth
-            Dim fromDate As String = startDate_13Month.ToString("MMMM dd, yyyy")
-            Dim toDate As String = endDate_13Month.ToString("MMMM dd, yyyy")
-            dt.Rows.Add($"13th Month Pay ({fromDate} - {toDate})", remaining13thMonth.ToString("N"))
+            'Dim fromDate As String = startDate_13Month.ToString("MMMM dd, yyyy")
+            'Dim toDate As String = endDate_13Month.ToString("MMMM dd, yyyy")
+            'dt.Rows.Add($"13th Month Pay ({fromDate} - {toDate})", remaining13thMonth.ToString("N"), "DEBIT")
+            dt.Rows.Add($"13th Month Pay", remaining13thMonth.ToString("N"), "DEBIT")
 
             'SBU 
             Dim mysql2 As String = $"SELECT COALESCE(SUM(C.AMOUNT), 0) AS TOTALS, CREDIT, MIN(C.PAYDATE) AS FROMDATE, MAX(C.PAYDATE) AS TODATE

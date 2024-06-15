@@ -884,12 +884,6 @@ Public Class frmLoan
     End Sub
 
     Private Sub menuAttachment_Click(sender As Object, e As EventArgs) Handles menuAttachment.Click
-        'Loans_Tab.Focus()
-        'Dim x As Integer = (Me.ClientSize.Width - panelAttachment.Width) / 2
-        'Dim y As Integer = (Me.ClientSize.Height - panelAttachment.Height) / 2
-        'panelAttachment.Location = New Point(x, y)
-        'panelAttachment.Size = New Size(606, 74)
-        'panelAttachment.Visible = True
 
         Dim i As Integer = gridSOA.CurrentRow.Index.ToString
         Dim bioNo As String = gridSOA.Item(0, i).Tag
@@ -902,12 +896,15 @@ Public Class frmLoan
             If openFileDialog.ShowDialog() = DialogResult.OK Then
                 Dim filename As String = openFileDialog.FileName
 
-                Dim result As DialogResult = MsgBox($"The account of {fullname} will be closed, proceed anyway?", MessageBoxButtons.YesNo)
-                If result = DialogResult.Yes Then
+                'Dim result As DialogResult = MsgBox($"The account of {fullname} will be closed, proceed anyway?", MessageBoxButtons.YesNo)
+                'If result = DialogResult.Yes Then
 
+                If ShowPasswordForm() Then
+
+                    Dim userName As String = frmMainForm.UserName_LBL.Text
                     Dim SOA_Path As String = SavePDF_ToPGCNAS(fullname, IO.File.ReadAllBytes(filename))
 
-                    RunCommand($"UPDATE TBL_EMPLOYEE SET SOA_PATH = '{SOA_Path}' WHERE BIOMETRICID = {bioNo}")                                          'UPDATE SOA PATH
+                    RunCommand($"UPDATE TBL_EMPLOYEE SET SOA_PATH = '{SOA_Path}', SOA_UPLOADED_WHO = '{userName}' WHERE BIOMETRICID = {bioNo}")                                          'UPDATE SOA PATH
                     RunCommand($"UPDATE PAYROLL_DEDUCTION SET STATUS = 'PAID', REMARKS = 'SOA UPLOADED (DATE: {Date.Now})' WHERE BIO_NO = {bioNo}")     'DEDUCTION SET TO PAID         
                     RunCommand($"UPDATE PAYROLL_SBU SET STATUS = 'CLOSED', REMARKS = 'SOA UPLOADED (DATE: {Date.Now})' WHERE BIO_NO = {bioNo}")         'SBU STATUS SET TO CLOSED
 
@@ -918,10 +915,21 @@ Public Class frmLoan
 
                     rpt_SOA_.Clear()
                 End If
+
+                'End If
             End If
         End Using
 
     End Sub
+
+
+    ' TextBox key press event handler to show the password form when Enter is pressed
+    Private Sub TextBox1_KeyPress(sender As Object, e As KeyPressEventArgs) Handles TextBox1.KeyPress
+        If e.KeyChar = ChrW(Keys.Enter) Then
+            e.Handled = True
+        End If
+    End Sub
+
 
     Private Sub lblClose_Click(sender As Object, e As EventArgs) Handles lblClose.Click
         txtPath.Clear()
