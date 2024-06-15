@@ -3413,7 +3413,7 @@ Module SelectFromDatabase
             If ds1.Tables(0).Rows.Count > 0 Then
                 holdSalary = ds1.Tables(0).Rows(0).Item("AMOUNT")
                 totalClaims += holdSalary
-                dt.Rows.Add("HOLD SALARY", ds1.Tables(0).Rows(0).Item("AMOUNT"), "DEBIT")
+                dt.Rows.Add("HOLD SALARY", holdSalary.ToString("N"), "DEBIT")
             End If
 
             'SIL REFUND
@@ -3558,7 +3558,7 @@ Module SelectFromDatabase
                 mysql &= $"{vbCr}UPPER(BIOMETRICID) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(LASTNAME || ', ' || FIRSTNAME || ' ' || CASE WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.' ELSE '' END) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(EMP_POSITION) LIKE UPPER('%{name}%')) ORDER BY DATE_ENDED, FULLNAME ASC "
+                mysql &= $"{vbCr}UPPER(EMP_POSITION) LIKE UPPER('%{name}%')) ORDER BY DATE_ENDED DESC, FULLNAME ASC "
             Next
 
         Else
@@ -3571,7 +3571,7 @@ Module SelectFromDatabase
                         BIOMETRICID, EMP_POSITION, COMPANY, STATUS, DATE_ENDED, RATE_DAILY, SOA_PATH, SOA_REMARKS
                     FROM TBL_EMPLOYEE 
                     WHERE EMP_STATUS = 'INACTIVE' AND SOA_PATH IS NULL 
-                    ORDER BY DATE_ENDED, FULLNAME  ASC "
+                    ORDER BY DATE_ENDED DESC, FULLNAME ASC "
         End If
 
         Using ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")

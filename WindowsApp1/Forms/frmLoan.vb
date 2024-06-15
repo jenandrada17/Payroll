@@ -915,6 +915,8 @@ Public Class frmLoan
 
                     PopulateINACTIVE_Employees(gridSOA)
                     PopulateSOA_Attachment(grid_Attachment)
+
+                    rpt_SOA_.Clear()
                 End If
             End If
         End Using
