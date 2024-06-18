@@ -1920,7 +1920,11 @@ Module SelectFromDatabase
         Dim tOTAL_PI As Decimal = GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC where BIO_NO = '{bio_no}' and CATEGORY = 'PERFORMANCE INCENTIVES' and PAYDATE BETWEEN '{starting_date}' AND '{ending_date}'")
         Dim tOTAL_BASIC As Decimal = GetTotal("TOTAL_BASIC", $"PAYROLL_PAYOUT where BIOMETRIC_ID = '{bio_no}' and PAYDATE BETWEEN '{starting_date}' AND '{ending_date}'")
         Dim tOTAL_LATE_UT As Decimal = GetTotal("TOTAL_LATE_UT", $"PAYROLL_PAYOUT where  BIOMETRIC_ID = '{bio_no}' and PAYDATE BETWEEN '{starting_date}' AND '{ending_date}'")
-        Dim fromRematic As Decimal = GetData_Decimal("AMOUNT", $"PAYROLL_13MONTH where  BIO_NO = '{bio_no}' and PAYDATE = '5/15/2024'")     'TODO- ONLY IN PAYDATE 5/15/2024
+        Dim fromRematic As Decimal = 0
+
+        If paydatee = "5/15/2024" Then
+            fromRematic = GetData_Decimal("AMOUNT", $"PAYROLL_13MONTH where  BIO_NO = '{bio_no}' and PAYDATE = '5/15/2024'")     'TODO- ONLY IN PAYDATE 5/15/2024
+        End If
 
         Dim TOTALS As Decimal = ((tOTAL_ECOLA + tOTAL_SIL + tOTAL_PI + tOTAL_BASIC + fromRematic) - tOTAL_LATE_UT) / 12
 

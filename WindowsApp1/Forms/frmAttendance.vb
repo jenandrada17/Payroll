@@ -1160,21 +1160,18 @@ Public Class frmAttendance
 
             '==========================  CHECK PAYDATE IF VALID FOR EDITING =========================   
             If Paydate7_CB.SelectedIndex >= 0 Then
-                If Paydate7_CB.Text = frmMainForm.Paydate.ToString("d") Then
-                    Save7_BTN.Enabled = True
-                Else
+                If Today.ToString("d") > CDate(Paydate7_CB.Text) Then
                     Save7_BTN.Enabled = False
+                Else
+                    Save7_BTN.Enabled = True
                 End If
             Else
-                Save7_BTN.Enabled = True
+                If Today.ToString("d") > CDate(PAYROLL) Then
+                    Save7_BTN.Enabled = False
+                Else
+                    Save7_BTN.Enabled = True
+                End If
             End If
-
-            ''==========================  CHECK PAYDATE IF VALID FOR EDITING =========================   
-            'If Today.ToString("d") > CDate(PAYROLL) Then
-            '    Save7_BTN.Enabled = False
-            'Else
-            '    Save7_BTN.Enabled = True
-            'End If
 
         Else
             Emp7_TXT.Clear()

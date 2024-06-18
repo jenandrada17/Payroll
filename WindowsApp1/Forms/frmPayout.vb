@@ -622,7 +622,7 @@ Public Class frmPayout
             Next
         End If
 
-        Deduction_LBL.Text = totals
+        Deduction_LBL.Text = FormatNumber(totals)
         Deduction_LBL.Tag = totals
 
     End Sub
@@ -730,6 +730,10 @@ Public Class frmPayout
 
                 Payslip_All()
 
+            ElseIf rbAllActive.Checked = True Then
+
+                Payslip_All(True)
+
             ElseIf Company_RadioB.Checked = True Then
 
                 If Company_ComboB.SelectedIndex >= 0 Then
@@ -774,8 +778,9 @@ Public Class frmPayout
 
     End Sub
 
-    Private Sub Payslip_All()
+    Private Sub Payslip_All(Optional allActive As Boolean = False)
         Dim recipient As String
+        Dim activeString As String = IIf(allActive, "AND EMP_STATUS <> 'INACTIVE'", "")
         Dim datee As DateTime = Payslip_paydate_Combo.Text
         Dim mysqll As String = $"select A.*, B.*, 
                                                 LASTNAME || ', ' || FIRSTNAME || ' ' || 
@@ -784,7 +789,7 @@ Public Class frmPayout
                                                          ELSE ''
                                                      END AS FULLNAME
                                                  from payroll_payout A 
-                                                inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRIC_ID  
+                                                inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRIC_ID {activeString}  
                                                 where paydate = '{Payslip_paydate_Combo.Text}' and EMAIL_SENT is null;"
 
         Using ds As DataSet = LoadSQL(mysqll, "payroll_payout")

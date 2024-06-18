@@ -922,15 +922,6 @@ Public Class frmLoan
 
     End Sub
 
-
-    ' TextBox key press event handler to show the password form when Enter is pressed
-    Private Sub TextBox1_KeyPress(sender As Object, e As KeyPressEventArgs) Handles TextBox1.KeyPress
-        If e.KeyChar = ChrW(Keys.Enter) Then
-            e.Handled = True
-        End If
-    End Sub
-
-
     Private Sub lblClose_Click(sender As Object, e As EventArgs) Handles lblClose.Click
         txtPath.Clear()
         btnSavePDF.Enabled = False

@@ -727,6 +727,7 @@ Module SaveUpdate
                     Dim Monthly_rate As Decimal = 0
                     Dim Old_Rate As Decimal = 0
                     Dim SBU_sched As String = GetData("SCHED", $"PAYROLL_SBU WHERE BIO_NO = {bioNo}")
+                    Dim Hold_salary As Boolean = IIf(IsDBNull(.Item("HOLD_SALARY")), False, .Item("HOLD_SALARY"))
 
                     Dim sss_no As String = IIf(IsDBNull(.Item("SSSNO")), Nothing, .Item("SSSNO"))
                     Dim philhealth_no As String = IIf(IsDBNull(.Item("PHILHEALTHNO")), Nothing, .Item("PHILHEALTHNO"))
@@ -1428,12 +1429,15 @@ Module SaveUpdate
 
                     NetPay = positive - negative
 
+                    'HOLD SALARY
+                    If Hold_salary And NetPay > 0 Then Save_Recorded_Allow_Deduc(bioNo, paydate_, "HOLD SALARY", NetPay, "DEDUCTION") : NetPay = 0
+
                     SavePayout(bioNo, paydate_, TotalBasic, TotalOT,
-                                  TotalLateUnder, GrossAmount,
-                                  SSSComp, SSS_ER, SSS_EC,
-                                  PagibigComp, PhilhealthComp,
-                                  Allowances, Deduction, NetPay,
-                                  TotalREGHol, TotalSPECHol, TotalNight, rate)
+                                      TotalLateUnder, GrossAmount,
+                                      SSSComp, SSS_ER, SSS_EC,
+                                      PagibigComp, PhilhealthComp,
+                                      Allowances, Deduction, NetPay,
+                                      TotalREGHol, TotalSPECHol, TotalNight, rate)
 
                 End With
             End If
