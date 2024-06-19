@@ -8,7 +8,6 @@ Public Class frmLoan
     Dim Editing_DEDUCT As Boolean = False
     Dim Editing_SSS As Boolean = False
     Dim Editing_PAGIBIG As Boolean = False
-    'Dim Editing_SBU As Boolean = False
     Dim OrigAmount_DEDUCT As Decimal = 0
     Dim OrigAmount_SSS As Decimal = 0
     Dim OrigAmount_PAGIBIG As Decimal = 0
@@ -207,14 +206,6 @@ Public Class frmLoan
                 Loans_Tab.SelectedIndex = 5
                 SBU_Name_txt.Text = .Fullname
                 SBU_Name_txt.Tag = .BiometricID
-
-                'ElseIf tabName = "SOA" Then
-                '    Loans_Tab.SelectedIndex = 6
-                '    txtNameSOA.Tag = .BiometricID
-                '    txtDesignation.Text = .Position
-                '    txtDesignation.Tag = .DAILY_RATE
-                '    txtCompany.Text = .Company
-                '    txtNameSOA.Text = .Fullname
 
             End If
         End With

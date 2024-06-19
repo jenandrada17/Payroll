@@ -271,7 +271,6 @@ Public Class frmAttendance
             Dim lateHour As TimeSpan = DateTime.Parse(row.Cells(1).Value).Subtract(DateTime.Parse(timeIn.ToShortTimeString))
 
             Dim cellValue As DateTime = row.Cells(1).Value
-            'Dim limit As DateTime = (timeIn.AddMinutes(-1)).ToShortTimeString
             Dim limit As DateTime = (timeIn).ToShortTimeString
 
             If cellValue > limit Then
@@ -288,28 +287,11 @@ Public Class frmAttendance
 
         End If
 
-        ''================================  CELL NUMBER PM IN =================================== 
-        'If Not row.Cells(3).Value = Nothing Then
-        '    Dim lateHour As TimeSpan = DateTime.Parse(row.Cells(3).Value).Subtract(DateTime.Parse(timeIn.AddHours(5).ToShortTimeString))
-
-        '    Dim cellValue As DateTime = row.Cells(3).Value
-        '    Dim limit As DateTime = (timeIn.AddMinutes(-1)).ToShortTimeString
-
-        '    If cellValue > limit Then
-        '        late_count += lateHour
-        '    End If
-
-        'End If
-
     End Sub
 
     Private Sub CalculateuNDERTIME(row As DataGridViewRow, timeIn As DateTime, timeOut As DateTime)
         '=================================  CELL NUMBER PM OUT ==================================== 
         If Not row.Cells(4).Value = Nothing Then
-
-            'Dim _out As DateTime = DateTime.Parse(row.Cells(4).Value).Subtract(New TimeSpan(0, DateTime.Parse(row.Cells(4).Value).Minute, 0))  
-            'Dim _timeOut As DateTime = timeOut.ToShortTimeString 
-            'Dim underHour As TimeSpan = _timeOut.Subtract(_out.ToShortTimeString)
 
             Dim convert_out As DateTime = DateTime.Parse(row.Cells(4).Value)
             Dim orig_outt As TimeSpan = New TimeSpan(timeOut.Hour, timeOut.Minute, 0)
@@ -705,7 +687,6 @@ Public Class frmAttendance
             RptViewer_DTR.RefreshReport()
 
         Catch ex As Exception
-            'Log_Report(ex.ToString)
             MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
 
@@ -766,7 +747,6 @@ Public Class frmAttendance
         '========================================================================
 
         Try
-            'Dim all_in As New dtr_all.overAllDataTable
 
             Dim dt_DTR As New DataTable()
             With dt_DTR
@@ -853,7 +833,6 @@ Public Class frmAttendance
             Replacing($"BIOMETRIC_DTR WHERE PAYDATE = '{paydatee}' AND am_in IS NULL AND  am_out  IS NULL AND  pm_in  IS NULL AND  pm_out  IS NULL ")
 
         Catch ex As Exception
-            'Log_Report(ex.ToString)
             MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
 
@@ -940,29 +919,6 @@ Public Class frmAttendance
 
                 '========================================= TIME IN/OUT ========================================= 
                 Dim DATEE As DateTime = row.Tag
-
-                'If CheckData("BIO_NO", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{biometric_No}'") Then
-                '    Dim timeIn As DateTime
-                '    If DateExist_IN_Schedule(biometric_No, DATEE.ToShortDateString) Then
-
-                '        If DateTime.TryParse(GetData("TIME_IN", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{biometric_No}' AND DATEE = '{DATEE.ToShortDateString}'  "), timeIn) Then
-                '            TIME_IN = timeIn
-                '            TIME_OUT = timeIn.AddHours(9)
-                '        Else
-                '            Continue For
-                '        End If
-
-                '    Else
-
-                '        TIME_IN = GetData("VALUEE", $"PAYROLL_DEFAULT_TIMEIN")
-                '        TIME_OUT = TIME_IN.AddHours(9)
-
-                '    End If
-
-                'Else
-                '    TIME_IN = GetTime_In(biometric_No)
-                '    TIME_OUT = GetTime_Out(biometric_No)
-                'End If 
 
                 If CheckData("BIO_NO", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{biometric_No}'") Then
 
@@ -1497,8 +1453,6 @@ Public Class frmAttendance
         Dim row As Integer
         Dim payroll As String = Paydate.ToShortDateString
 
-        'RunCommand($"DELETE FROM PAYROLL_ATTENDANCE WHERE PAYDATE = '{payroll}' AND BRANCH_MANUAL = TRUE;")
-
         progressBarStart(DtSet.Tables(0).Rows.Count)
 
         For row = 2 To DtSet.Tables(0).Rows.Count + 1
@@ -1835,62 +1789,6 @@ Public Class frmAttendance
 
     End Sub
 
-    'Private Sub DTR_Details(BioNo As TextBox, Namee As TextBox, grid As DataGridView, SaveBTN As Button)
-
-    '    Dim PAYROLL As String
-    '    If Paydate_ComboB.SelectedIndex >= 0 Then
-    '        PAYROLL = Paydate_ComboB.SelectedItem
-    '    Else
-    '        PAYROLL = DataGridView1.Tag
-    '    End If
-
-    '    If BioNo.Text = "" Then
-    '        Namee.Text = ""
-
-    '        If BioNo.Name = "BiometricID_TXT" Then SIL_Panel.Visible = False
-
-    '        For Each oRow As DataGridViewRow In grid.Rows
-    '            oRow.Cells(5).Value = False
-    '            For cell As Integer = 1 To 4
-    '                oRow.Cells(cell).Value = Nothing
-    '            Next
-    '        Next
-
-    '    Else
-
-    '        GetName(BioNo.Text, Namee)
-
-    '        If BioNo.Name = "BiometricID_TXT" Then
-    '            SIL_LBL.Text = Get_SIL("PAYROLL_ATTENDANCE", $"PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{BioNo.Text}' AND PAYDATE = '{PAYROLL}'") + Get_SIL("PAYROLL_SCHED_COUNT", $"PAYROLL_SCHED_COUNT WHERE BIO_NO = '{BioNo.Text}' AND PAYDATE = '{PAYROLL}'")
-
-    '            If Not Namee.Text = String.Empty Then
-    '                TIME_IN = GetTime_In(BioNo.Text)
-    '                TIME_OUT = GetTime_Out(BioNo.Text)
-
-    '                TimeIn_TXT.Text = TIME_IN.ToShortTimeString
-    '                TimeOut_TXT.Text = TIME_OUT.ToShortTimeString
-    '            End If
-
-    '            If Not Namee.Text = "" Then
-    '                Attendance_Per_Employee(BioNo.Text, PAYROLL)
-    '            End If
-
-    '        Else
-
-
-    '        End If
-
-    '        '==========================  CHECK PAYDATE IF VALID FOR EDITING =========================   
-    '        If Today.ToString("d") > CDate(PAYROLL) Then
-    '            SaveBTN.Enabled = False
-    '        Else
-    '            SaveBTN.Enabled = True
-    '        End If
-
-    '    End If
-
-    'End Sub
-
     Private Sub AddPIDays_btn_Click_1(sender As Object, e As EventArgs) Handles AddPIDays_btn.Click
         If P_Add_Panel.Visible = True Then
             P_Add_Panel.Visible = False
@@ -2086,9 +1984,6 @@ Public Class frmAttendance
                 If ThisHasRow($"BIOMETRIC_DTR where BIO_ID = '{bio_no}' and PAYDATE = '{Paydate.ToShortDateString}'") Then Replacing($"BIOMETRIC_DTR where BIO_ID = '{bio_no}' and PAYDATE = '{Paydate.ToShortDateString}';") 'TO REPLACE EXISTING RECORD =========================
             End If
 
-            '======================== GET TIME IN/OUT TO CALCULATE LATE UNDERTIME OVERTIME ============================
-            'If eCell(row, 3).Value <> Nothing Then
-
             Dim column_ As Integer = 3
 
             '========================= IF NOT VALID DATE ==================
@@ -2101,10 +1996,6 @@ Public Class frmAttendance
                     column_ += 1
                 End If
             End While
-
-            Console.WriteLine(DATEE.ToShortDateString)
-
-            'Dim DATEE As DateTime = eCell(row, 3).Value
 
             If CheckData("BIO_NO", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{bio_no}'") Then
 
@@ -2130,8 +2021,6 @@ Public Class frmAttendance
                 TIME_IN = GetTimeInOut(bio_no).Time_in
                 TIME_OUT = GetTimeInOut(bio_no).Time_out
             End If
-
-            'End If
 
             '=============== CHECK PER CELL IN A ROW ============= 
             For column = 5 To 13
@@ -2251,10 +2140,7 @@ Public Class frmAttendance
 
             progressBarStart(DtSet.Tables(0).Rows.Count)
 
-            Console.WriteLine(DtSet.Tables(0).Rows.Count)
-
             For row = 1 To DtSet.Tables(0).Rows.Count
-                'For row = 1 To DtSet.Tables(0).Rows.Count + 1
                 If IsNumeric(eCell(row, 3).Value) Then
                     SaveBiometricSheet(Paydate, eCell(row, 3).Value, eCell(row, 4).Value)
                     distinct_bio.Add(eCell(row, 3).Value)
@@ -2262,7 +2148,6 @@ Public Class frmAttendance
                     frmMainForm.AppProgressBar.Value += 1
                 Else
                     Continue For
-                    'MsgBox("Row 1 Column 1 is empty or not a valid Biometric No.!", MsgBoxStyle.Exclamation)
                 End If
             Next
 
@@ -2300,7 +2185,6 @@ Public Class frmAttendance
 
             Dim all_date, exist_date, add_date As New List(Of String)()
 
-            'Dim branchCode As String = GetBranchCode(biometric_No)
             '=========================================================================================================
 
             For Each oRow As DataGridViewRow In DataGridView1.Rows
@@ -2625,8 +2509,6 @@ Public Class frmAttendance
                             Dim asss As Date = DataGridView1.Rows(rowIndex).Tag
 
                             If asss = date_ Then
-                                'row.Cells(1).Style.ForeColor = IIf(IsDBNull(.Item("LATE_APPROVED")), Color.Black, Color.Blue)
-                                'row.Cells(1).Tag = IIf(IsDBNull(.Item("LATE_MIN_APPROVED")), 0, .Item("LATE_MIN_APPROVED"))
 
                                 If IsDBNull(.Item("LATE_APPROVED")) Then
                                     row.Cells(1).Style.ForeColor = Color.Black
@@ -2691,18 +2573,6 @@ Public Class frmAttendance
         TotalUTHR_LBL.Text = 0
         TotalOTHr_LBL.Text = 0
     End Sub
-
-    'Private Sub Seven_Grid_MouseDoubleClick(sender As Object, e As MouseEventArgs)
-    '    Bio7_TXT.Text = Seven_Grid.CurrentRow.Cells(0).Value
-    '    Emp7_TXT.Text = Seven_Grid.CurrentRow.Cells(1).Value
-    '    Days7_TXT.Text = Seven_Grid.CurrentRow.Cells(2).Value
-    '    Overtime7_TXT.Text = IIf(Seven_Grid.CurrentRow.Cells(3).Value = Nothing, 0, Seven_Grid.CurrentRow.Cells(3).Value)
-    '    Night7_TXT.Text = IIf(Seven_Grid.CurrentRow.Cells(6).Value = Nothing, 0, Seven_Grid.CurrentRow.Cells(6).Value)
-
-    '    If Seven_Grid.CurrentRow.Cells(4).Value <> Nothing Then Late7_TXT.Text = TimeSpan.Parse(Seven_Grid.CurrentRow.Cells(4).Value).TotalMinutes
-    '    If Seven_Grid.CurrentRow.Cells(5).Value <> Nothing Then Undertime7_TXT.Text = TimeSpan.Parse(Seven_Grid.CurrentRow.Cells(5).Value).TotalMinutes
-
-    'End Sub
 
     Public Sub Load_Attendance(emp As Employee, empNo As Integer)
         With emp

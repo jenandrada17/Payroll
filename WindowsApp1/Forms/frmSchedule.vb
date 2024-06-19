@@ -62,8 +62,6 @@ Public Class frmSchedule
                 End If
             Next
 
-            'SaveSCHED_COUNT(bio, Paydate, total_days, overTime, SIL, ending_date)
-
             MsgBox("Successfully Saved!", MsgBoxStyle.Information)
             Cancel_BTN.PerformClick()
         Else
@@ -271,7 +269,6 @@ Public Class frmSchedule
                 StartNineteen = StartNineteen.AddDays(1)
             End While
 
-            Console.WriteLine("PAydateee1 " & Paydate)
         Else
 
             Paydate = New DateTime(EndFour.Year, EndFour.Month, DateTime.DaysInMonth(EndFour.Year, EndFour.Month))
@@ -291,7 +288,6 @@ Public Class frmSchedule
 
             End While
 
-            Console.WriteLine("PAydateee1 " & Paydate)
         End If
 
         Dim tm As New Date(1, 1, 1, 0, 0, 0)

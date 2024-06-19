@@ -720,7 +720,6 @@ Public Class frmReport
                 End Using
 
             Catch ex As Exception
-                'Log_Report(ex.ToString)
                 MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
         End If
@@ -853,7 +852,6 @@ Public Class frmReport
             RptViewer_Count.RefreshReport()
 
         Catch ex As Exception
-            'Log_Report(ex.ToString)
             MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
 
@@ -1182,7 +1180,6 @@ Public Class frmReport
             RptViewer_Common.RefreshReport()
 
         Catch ex As Exception
-            'Log_Report(ex.ToString)
             MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
 
@@ -1223,7 +1220,6 @@ Public Class frmReport
             RptViewer_Summary.RefreshReport()
 
         Catch ex As Exception
-            'Log_Report(ex.ToString)
             MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
 
@@ -1291,7 +1287,6 @@ Public Class frmReport
             Rpt_Distribution.RefreshReport()
 
         Catch ex As Exception
-            'Log_Report(ex.ToString)
             MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
 
@@ -1458,8 +1453,6 @@ Public Class frmReport
                                 CATEGORY = "Basic Refund"
                             End If
 
-                            'GITANGGAL ANG 13MONTH PAY
-
                             If DC_Amount <> 0 Then
                                 dt_Cost.Rows.Add(COMPANY, BRANCHNAME, CATEGORY, DC_Amount, Debit_Credit)
                             End If
@@ -1471,39 +1464,6 @@ Public Class frmReport
                     progressBarEnd()
                 End If
             End Using
-
-            ''========================================= PAYROLL_COSTDISTRIBUTION ================================================
-            'mysql = $"SELECT   
-            '            CASE 
-            '                WHEN BRANCHCODE IS NULL THEN ''
-            '                WHEN BRANCHCODE = '' THEN ''
-            '                ELSE BRANCHCODE 
-            '            END AS BRANCH_CODE,
-            '            CASE 
-            '                WHEN HO_CATEGORY IS NULL THEN ''
-            '                WHEN HO_CATEGORY = '' THEN ''
-            '                ELSE HO_CATEGORY 
-            '            END AS HO_CATEGORY, 
-            '            COMPANY,  
-            '            SUM((SELECT COALESCE(SUM(TOTAL_BASIC), 0) FROM PAYROLL_PAYOUT WHERE BIOMETRIC_ID = A.BIOMETRICID AND PAYDATE = '{PAYDATE}')) AS BASIC,
-            '            SUM((SELECT COALESCE(SUM(TOTAL_OVERTIME), 0) FROM PAYROLL_PAYOUT WHERE BIOMETRIC_ID = A.BIOMETRICID AND PAYDATE = '{PAYDATE}')) AS OT,
-            '            SUM((SELECT COALESCE(SUM(SSS_ER), 0) FROM PAYROLL_PAYOUT WHERE BIOMETRIC_ID = A.BIOMETRICID AND PAYDATE = '{PAYDATE}')) AS SSS_ER,
-            '            SUM((SELECT COALESCE(SUM(SSS_EC), 0) FROM PAYROLL_PAYOUT WHERE BIOMETRIC_ID = A.BIOMETRICID AND PAYDATE = '{PAYDATE}')) AS SSS_EC,
-            '            SUM((SELECT COALESCE(SUM(PAGIBIG_COMP), 0) FROM PAYROLL_PAYOUT WHERE BIOMETRIC_ID = A.BIOMETRICID AND PAYDATE = '{PAYDATE}')) AS HDMF,
-            '            SUM((SELECT COALESCE(SUM(PHILHEALTH_COMP), 0) FROM PAYROLL_PAYOUT WHERE BIOMETRIC_ID = A.BIOMETRICID AND PAYDATE = '{PAYDATE}')) AS PHILH,
-            '            SUM((SELECT COALESCE(SUM(TOTAL_REGHOLIDAY), 0) FROM PAYROLL_PAYOUT WHERE BIOMETRIC_ID = A.BIOMETRICID AND PAYDATE = '{PAYDATE}')) AS REGHOLIDAY,
-            '            SUM((SELECT COALESCE(SUM(TOTAL_SPECHOLIDAY), 0) FROM PAYROLL_PAYOUT WHERE BIOMETRIC_ID = A.BIOMETRICID AND PAYDATE = '{PAYDATE}')) AS SPECHOLIDAY,
-            '            SUM((SELECT COALESCE(SUM(TOTAL_NIGHT_RATE), 0) FROM PAYROLL_PAYOUT WHERE BIOMETRIC_ID = A.BIOMETRICID AND PAYDATE = '{PAYDATE}')) AS NIGHT_RATE,
-            '            SUM((SELECT COALESCE(SUM(TOTAL_LATE_UT), 0) FROM PAYROLL_PAYOUT WHERE BIOMETRIC_ID = A.BIOMETRICID AND PAYDATE = '{PAYDATE}')) AS LATE_UT,
-            '            SUM((SELECT COALESCE(SUM(SSS_ER), 0) FROM PAYROLL_PAYOUT WHERE BIOMETRIC_ID = A.BIOMETRICID AND PAYDATE = '{PAYDATE}') +
-            '            (SELECT COALESCE(SUM(SSS_EC), 0) FROM PAYROLL_PAYOUT WHERE BIOMETRIC_ID = A.BIOMETRICID AND PAYDATE = '{PAYDATE}')) AS SSS_PAYABLE,
-            '            SUM((SELECT COALESCE(SUM(PAGIBIG_COMP), 0) FROM PAYROLL_PAYOUT WHERE BIOMETRIC_ID = A.BIOMETRICID AND PAYDATE = '{PAYDATE}') * 2) AS HDMF_PAYABLE,
-            '            SUM((SELECT COALESCE(SUM(PHILHEALTH_COMP), 0) FROM PAYROLL_PAYOUT WHERE BIOMETRIC_ID = A.BIOMETRICID AND PAYDATE = '{PAYDATE}') * 2) AS PHILH_PAYABLE,
-            '            SUM((SELECT COALESCE(SUM(NET_PAY), 0) FROM PAYROLL_PAYOUT WHERE BIOMETRIC_ID = A.BIOMETRICID AND PAYDATE = '{PAYDATE}')) AS NETPAY
-            '        FROM
-            '            TBL_EMPLOYEE A   
-            '        GROUP BY 
-            '            COMPANY, BRANCH_CODE, HO_CATEGORY;"
 
             '========================================= PAYROLL_COSTDISTRIBUTION ================================================
             mysql = $"SELECT   
@@ -1633,259 +1593,6 @@ Public Class frmReport
         End Try
 
     End Sub
-
-
-    'Public Sub LoadCostDistribution()
-    '    Rpt_CostContrib.LocalReport.DataSources.Clear()
-    '    Dim linee As String = Nothing
-
-    '    Try
-
-    '        Dim mysql As String
-    '        Dim PAYDATE As String = CostPaydate_Combo.Text
-    '        Dim PAYROLL As DateTime = CostPaydate_Combo.Text
-
-    '        Dim FORMNAME As String = "2nd PERIOD"
-
-    '        If PAYROLL.Day = 15 Then
-    '            FORMNAME = "1ST PERIOD"
-    '        End If
-
-    '        FORMNAME = $"{(PAYROLL.ToString("MMMM dd, yyyy")).ToUpper} - {FORMNAME}"
-
-    '        Dim dt_Cost As New DataTable()
-    '        With dt_Cost
-    '            .Columns.Add("COMPANY")
-    '            .Columns.Add("BRANCH")
-    '            .Columns.Add("NAME")
-    '            .Columns.Add("AMOUNT")
-    '            .Columns.Add("CATEGORY")
-    '        End With
-
-    '        '========================================= RECORDED_ALLOW_DEDUC ================================================
-    '        mysql = $"Select A.BRANCHCODE AS BRANCH_CODE, C.CATEGORY, TRANSAC_NAME, COALESCE(HO_CATEGORY, '') AS HO_CATEGORY, COMPANY, SUM(AMOUNT) AS TOTS 
-    '                                    From PAYROLL_PAYOUT B 
-    '                                    INNER JOIN TBL_EMPLOYEE A ON A.BIOMETRICID = B.BIOMETRIC_ID 
-    '                                    LEFT JOIN RECORDED_ALLOW_DEDUC C ON C.BIO_NO = B.BIOMETRIC_ID and C.PAYDATE = B.PAYDATE  
-    '                                    WHERE B.PAYDATE = '{PAYDATE}' GROUP BY BRANCH_CODE, COMPANY, C.CATEGORY, TRANSAC_NAME, HO_CATEGORY"
-
-    '        ''mysql = $"Select A.BRANCHCODE AS BRANCH_CODE, C.CATEGORY, TRANSAC_NAME, COALESCE(HO_CATEGORY, '') AS HO_CATEGORY, COMPANY, SUM(AMOUNT) AS TOTS 
-    '        ''                            From PAYROLL_PAYOUT B 
-    '        ''                            INNER JOIN TBL_EMPLOYEE A ON A.BIOMETRICID = B.BIOMETRIC_ID 
-    '        ''                            LEFT JOIN RECORDED_ALLOW_DEDUC C ON C.BIO_NO = B.BIOMETRIC_ID and C.PAYDATE = B.PAYDATE  
-    '        ''                            WHERE B.PAYDATE = '{PAYDATE}' GROUP BY COMPANY, BRANCH_CODE, C.CATEGORY, TRANSAC_NAME, HO_CATEGORY"
-
-    '        TestingScript_String(mysql)
-    '        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
-    '            If ds.Tables(0).Rows.Count > 0 Then
-    '                progressBarStart(ds.Tables(0).Rows.Count)
-    '                For Each dr In ds.Tables(0).Rows
-    '                    With dr
-
-    '                        linee = "COMPANY - 1"
-    '                        Dim COMPANY As String = IIf(IsDBNull(.Item("COMPANY")), "", .Item("COMPANY"))
-    '                        linee = "BRANCHCODE - 1"
-    '                        Dim BRANCHCODE As String = IIf(IsDBNull(.Item("BRANCH_CODE")), "", .Item("BRANCH_CODE"))
-    '                        linee = "BRANCHNAME - 1"
-    '                        Dim BRANCHNAME As String = GET_STRING("PAYROLL_CITY_BRANCH", "BRANCHNAME", $"BRANCHCODE = '{BRANCHCODE}'")
-    '                        linee = "CATEGORY - 1"
-    '                        Dim CATEGORY As String = IIf(IsDBNull(.Item("CATEGORY")), "", .Item("CATEGORY"))
-    '                        linee = "DC_Amount - 1"
-    '                        Dim DC_Amount As String = IIf(IsDBNull(.Item("TOTS")), "", .Item("TOTS"))
-    '                        linee = "Debit_Credit - 1"
-    '                        Dim Debit_Credit As String = IIf(IsDBNull(.Item("TRANSAC_NAME")), "", .Item("TRANSAC_NAME"))
-
-    '                        If BRANCHCODE = Nothing Then
-    '                            linee = "BRANCHNAME = HO_CATEGORY - 1"
-    '                            BRANCHNAME = IIf(IsDBNull(.Item("HO_CATEGORY")), "", CStr(.Item("HO_CATEGORY")).TrimEnd)
-    '                        ElseIf BRANCHCODE = "SMG" Then
-    '                            If COMPANY = "PERFECOM" Then
-    '                                BRANCHNAME = $"Perfecom - SM GENSAN"
-    '                            Else
-    '                                BRANCHNAME = $"Photo - SM GENSAN"
-    '                            End If
-    '                        ElseIf BRANCHCODE = "KCG" And COMPANY = "PERFECOM" Then
-    '                            BRANCHNAME = $"Perfecom - KCC Gensan"
-    '                        ElseIf BRANCHCODE = "KID" And COMPANY = "PHOTO" Then
-    '                            BRANCHNAME = $"Photo - Kidapawan"
-    '                        ElseIf BRANCHCODE = "MID" And COMPANY = "PHOTO" Then
-    '                            BRANCHNAME = $"Photo - Midsayap"
-    '                        ElseIf BRANCHCODE = "POL" And COMPANY = "PHOTO" Then
-    '                            BRANCHNAME = $"Photo - Polomolok"
-    '                        ElseIf BRANCHCODE = "ROG" And COMPANY = "PHOTO" Then
-    '                            BRANCHNAME = $"Photo - Robinson Gensan"
-    '                        ElseIf BRANCHCODE = "ROX" And COMPANY = "PHOTO" Then
-    '                            BRANCHNAME = $"Photo - Roxas Gensan"
-    '                        ElseIf BRANCHCODE = "SNP" And COMPANY = "PHOTO" Then
-    '                            BRANCHNAME = $"Photo - San Pedro"
-    '                        End If
-
-    '                        If CATEGORY.ToUpper = "BASIC PAY" Or CATEGORY.ToUpper = "BASIC REFUND" Then
-    '                            CATEGORY = "Basic Refund"
-    '                        End If
-
-    '                        If CATEGORY = "13Th Month Pay" Then
-    '                            linee = "DC_Amount GetTotal() - 1"
-    '                            DC_Amount = GetTotal("AMOUNT", $"TBL_EMPLOYEE B inner join RECORDED_ALLOW_DEDUC A on A.BIO_NO = B.BIOMETRICID and B.HO_CATEGORY = 'PGC Head Office' and A.CATEGORY = '13th Month Pay' and A.PAYDATE = '{PAYDATE}'")
-    '                        End If
-
-    '                        dt_Cost.Rows.Add(COMPANY, BRANCHNAME, CATEGORY, DC_Amount, Debit_Credit)
-
-    '                    End With
-
-    '                    frmMainForm.AppProgressBar.Value += 1
-    '                Next
-    '                progressBarEnd()
-    '            End If
-    '        End Using
-
-    '        '========================================= PAYROLL_COSTDISTRIBUTION ================================================
-    '        mysql = $"Select A.BRANCHCODE AS BRANCH_CODE, COALESCE(HO_CATEGORY, '') AS HO_CATEGORY, NAMEE, NAME_CATEGORY, COMPANY, SUM(TOTAL_BASIC) AS BASIC, SUM(TOTAL_OVERTIME) AS OT,
-    '                                    SUM(TOTAL_LATE_UT) AS LATE_UT, SUM(TOTAL_NIGHT_RATE) AS NIGHT_RATE, SUM(SSS_COMP) AS SSS_EE , SUM(SSS_ER) AS SSS_ER , SUM(SSS_EC) AS SSS_EC, 
-    '                                    SUM(NET_PAY) AS NETPAY, SUM(PAGIBIG_COMP) AS HDMF, SUM(PHILHEALTH_COMP) AS PHILH, SUM(TOTAL_REGHOLIDAY) AS REGHOLIDAY, SUM(TOTAL_SPECHOLIDAY) AS SPECHOLIDAY
-    '                                    From PAYROLL_PAYOUT B 
-    '                                    INNER JOIN TBL_EMPLOYEE A ON A.BIOMETRICID = B.BIOMETRIC_ID 
-    '                                    LEFT JOIN PAYROLL_COSTDISTRIB ON 1 = 1 
-    '                                    WHERE B.PAYDATE = '{PAYDATE}' GROUP BY A.BRANCHCODE, HO_CATEGORY, NAMEE, NAME_CATEGORY, COMPANY"
-
-    '        'mysql = $"Select A.BRANCHCODE AS BRANCH_CODE, COALESCE(HO_CATEGORY, '') AS HO_CATEGORY, NAMEE, NAME_CATEGORY, COMPANY, SUM(TOTAL_BASIC) AS BASIC, SUM(TOTAL_OVERTIME) AS OT,
-    '        '                            SUM(TOTAL_LATE_UT) AS LATE_UT, SUM(TOTAL_NIGHT_RATE) AS NIGHT_RATE, SUM(SSS_COMP) AS SSS_EE , SUM(SSS_ER) AS SSS_ER , SUM(SSS_EC) AS SSS_EC, 
-    '        '                            SUM(NET_PAY) AS NETPAY, SUM(PAGIBIG_COMP) AS HDMF, SUM(PHILHEALTH_COMP) AS PHILH, SUM(TOTAL_REGHOLIDAY) AS REGHOLIDAY, SUM(TOTAL_SPECHOLIDAY) AS SPECHOLIDAY
-    '        '                            From PAYROLL_PAYOUT B 
-    '        '                            INNER JOIN TBL_EMPLOYEE A ON A.BIOMETRICID = B.BIOMETRIC_ID 
-    '        '                            LEFT JOIN PAYROLL_COSTDISTRIB ON 1 = 1 
-    '        '                            WHERE B.PAYDATE = '{PAYDATE}' GROUP BY COMPANY, BRANCH_CODE, NAMEE, NAME_CATEGORY, HO_CATEGORY"
-    '        TestingScript_String(mysql)
-    '        Using dss As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
-    '            If dss.Tables(0).Rows.Count > 0 Then
-    '                progressBarStart(dss.Tables(0).Rows.Count)
-    '                For Each dr In dss.Tables(0).Rows
-    '                    With dr
-
-    '                        Dim CATEGORY As String = Nothing
-    '                        Dim Debit_Credit As String = Nothing
-    '                        Dim NAMEE As String = Nothing
-    '                        Dim NAME_CATEGORY As String = Nothing
-    '                        Dim DC_Amount As Decimal = 0
-
-    '                        linee = "COMPANY - 2"
-    '                        Dim COMPANY As String = IIf(IsDBNull(.Item("COMPANY")), "", .Item("COMPANY"))
-    '                        linee = "BRANCHCODE - 2"
-    '                        Dim BRANCHCODE As String = IIf(IsDBNull(.Item("BRANCH_CODE")), "", .Item("BRANCH_CODE"))
-    '                        linee = "BRANCHNAME - 2"
-    '                        Dim BRANCHNAME As String = GET_STRING("PAYROLL_CITY_BRANCH", "BRANCHNAME", $"BRANCHCODE = '{BRANCHCODE}'")
-
-    '                        If BRANCHCODE = Nothing Then
-    '                            linee = "BRANCHNAME = HO_CATEGORY - 2"
-    '                            BRANCHNAME = CStr(.Item("HO_CATEGORY")).TrimEnd
-    '                        ElseIf BRANCHCODE = "SMG" Then
-    '                            If COMPANY = "PERFECOM" Then
-    '                                BRANCHNAME = $"Perfecom - SM GENSAN"
-    '                            Else
-    '                                BRANCHNAME = $"Photo - SM GENSAN"
-    '                            End If
-    '                        ElseIf BRANCHCODE = "KCG" And COMPANY = "PERFECOM" Then
-    '                            BRANCHNAME = $"Perfecom - KCC Gensan"
-    '                        ElseIf BRANCHCODE = "KID" And COMPANY = "PHOTO" Then
-    '                            BRANCHNAME = $"Photo - Kidapawan"
-    '                        ElseIf BRANCHCODE = "MID" And COMPANY = "PHOTO" Then
-    '                            BRANCHNAME = $"Photo - Midsayap"
-    '                        ElseIf BRANCHCODE = "POL" And COMPANY = "PHOTO" Then
-    '                            BRANCHNAME = $"Photo - Polomolok"
-    '                        ElseIf BRANCHCODE = "ROG" And COMPANY = "PHOTO" Then
-    '                            BRANCHNAME = $"Photo - Robinson Gensan"
-    '                        ElseIf BRANCHCODE = "ROX" And COMPANY = "PHOTO" Then
-    '                            BRANCHNAME = $"Photo - Roxas Gensan"
-    '                        ElseIf BRANCHCODE = "SNP" And COMPANY = "PHOTO" Then
-    '                            BRANCHNAME = $"Photo - San Pedro"
-    '                        End If
-
-    '                        '======================== PAYROLL_COSTCONTRIB ================= 
-    '                        NAMEE = .Item("NAMEE")
-    '                        NAME_CATEGORY = .Item("NAME_CATEGORY")
-
-    '                        If NAME_CATEGORY = "DEBIT" Then
-
-    '                            If NAMEE = "Basic Pay" Then
-    '                                DC_Amount = .Item("BASIC")
-
-    '                            ElseIf NAMEE = "Regular Overtime" Then
-    '                                DC_Amount = .Item("OT")
-
-    '                            ElseIf NAMEE = "SSS Employer Share" Then
-    '                                DC_Amount = .Item("SSS_ER")
-
-    '                            ElseIf NAMEE = "ECC" Then
-    '                                DC_Amount = .Item("SSS_EC")
-
-    '                            ElseIf NAMEE = "HDMF Employer Share" Then
-    '                                DC_Amount = .Item("HDMF")
-
-    '                            ElseIf NAMEE = "Phil Health Employer Share" Then
-    '                                DC_Amount = .Item("PHILH")
-
-    '                            ElseIf NAMEE = "Regular Holiday" Then
-    '                                DC_Amount = .Item("REGHOLIDAY")
-
-    '                            ElseIf NAMEE = "Special Holiday" Then
-    '                                DC_Amount = .Item("SPECHOLIDAY")
-
-    '                            ElseIf NAMEE = "Night Premium" Then
-    '                                DC_Amount = .Item("NIGHT_RATE")
-
-    '                            End If
-
-    '                            Debit_Credit = "DEBIT"
-
-    '                        ElseIf .Item("NAME_CATEGORY") = "CREDIT" Then
-
-    '                            If NAMEE = "EC PAYABLE" Then
-    '                                DC_Amount = .Item("SSS_EC")
-
-    '                            ElseIf NAMEE = "LATE" Then
-    '                                DC_Amount = .Item("LATE_UT")
-
-    '                            ElseIf NAMEE = "SSS PAYABLE" Then
-    '                                DC_Amount = .Item("SSS_EE") + .Item("SSS_ER")
-
-    '                            ElseIf NAMEE = "HDMF PAYABLE" Then
-    '                                DC_Amount = .Item("HDMF") * 2
-
-    '                            ElseIf NAMEE = "PHIL HEALTH PAYABLE" Then
-    '                                DC_Amount = .Item("PHILH") * 2
-
-    '                            ElseIf NAMEE = "CASH IN BANK" Then
-    '                                DC_Amount = .Item("NETPAY")
-
-    '                            End If
-
-    '                            Debit_Credit = "CREDIT"
-    '                        End If
-
-    '                        dt_Cost.Rows.Add(COMPANY, BRANCHNAME, NAMEE, DC_Amount, Debit_Credit)
-
-    '                    End With
-
-    '                    frmMainForm.AppProgressBar.Value += 1
-    '                Next
-    '                progressBarEnd()
-    '            End If
-    '        End Using
-
-    '        Dim paramList As New List(Of Microsoft.Reporting.WinForms.ReportParameter) From {
-    '                New Microsoft.Reporting.WinForms.ReportParameter("paramPaydate", FORMNAME)
-    '                }
-
-    '        Dim DATASOURCE As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt_Cost)
-    '        Rpt_CostContrib.LocalReport.DataSources.Add(DATASOURCE)
-    '        Rpt_CostContrib.LocalReport.SetParameters(paramList)
-    '        Rpt_CostContrib.RefreshReport()
-
-    '    Catch ex As Exception
-    '        MessageBox.Show($"{ex.Message} {vbCrLf} {linee}", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
-    '    End Try
-
-    'End Sub
 
     Private Sub SumPaydate_Combo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles SumPaydate_Combo.SelectedIndexChanged
         LoadSummary_Print()

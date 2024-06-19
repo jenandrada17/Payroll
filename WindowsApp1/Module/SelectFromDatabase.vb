@@ -53,7 +53,6 @@ Module SelectFromDatabase
 
                     Name_txt.Text = .Item("FULLNAME")
                     EmpNo_txt.Text = .Item("EMP_NO")
-                    'Address_txt.Text = IIf(IsDBNull(.Item("ADDRESS")), Nothing, .Item("ADDRESS"))
                     Bdate_txt.Text = IIf(IsDBNull(.Item("DATEOFBIRTH")), Nothing, .Item("DATEOFBIRTH"))
                     DateHire_txt.Text = IIf(IsDBNull(.Item("DATEHIRED")), Nothing, .Item("DATEHIRED"))
                     SSS_txt.Text = IIf(IsDBNull(.Item("SSSNO")), Nothing, .Item("SSSNO"))
@@ -259,7 +258,6 @@ Module SelectFromDatabase
             progressBarEnd()
 
         Catch ex As Exception
-            'Log_Report(ex.ToString())
             Console.WriteLine($"Error - {vbCrLf}{ex}")
         End Try
     End Sub
@@ -357,7 +355,6 @@ Module SelectFromDatabase
             frmMainForm.AppProgressBar.Maximum = 1000
             frmMainForm.AppProgressBar.Visible = False
         Catch ex As Exception
-            'Log_Report(ex.ToString())
             Console.WriteLine($"Error - {vbCrLf}{ex}")
         End Try
     End Sub
@@ -429,7 +426,6 @@ Module SelectFromDatabase
             frmMainForm.AppProgressBar.Visible = False
 
         Catch ex As Exception
-            'Log_Report(ex.ToString())
             Console.WriteLine($"Error - {vbCrLf}{ex}")
         End Try
 
@@ -738,64 +734,6 @@ Module SelectFromDatabase
         End If
     End Sub
 
-
-    'Public Function Get_SSS(monthly_Basic As Decimal) As (EE As Decimal, ER As Decimal, EC As Decimal, total As Decimal)
-
-    '    'Console.WriteLine("monthly_Basic" & monthly_Basic)
-    '    Dim ee As Decimal = 0
-    '    Dim er As Decimal = 0
-    '    Dim ec As Decimal = 0
-    '    Dim total As Decimal = 0
-    '    Dim in_range As Boolean = False
-
-    '    Dim mysql As String = $"Select * FROM PAYROLL_SSS"
-    '    Using ds As DataSet = LoadSQL(mysql, "PAYROLL_SSS")
-    '        If ds.Tables(0).Rows.Count > 0 Then
-    '            For Each dr In ds.Tables(0).Rows
-    '                With dr
-    '                    Dim range As String = .Item("RANGECOMP")
-    '                    Dim strWords As String() = range.Split(New Char() {" "c})
-
-    '                    If strWords(0).Contains("Below") Then
-    '                        strWords(0) = 1
-    '                    End If
-
-    '                    If strWords.Last.Contains("Over") Then
-    '                        strWords(2) = 200000 '200,000 Monthly income
-    '                    End If
-
-    '                    If (Enumerable.Range(strWords(0), strWords.Last).Contains(monthly_Basic)) Then
-    '                        ee = .Item("RSS_EE")
-    '                        er = .Item("RSS_ER")
-    '                        ec = .Item("EC_TOTAL")
-    '                        total = .Item("TOTAL_TOTAL")
-    '                        in_range = True
-    '                    End If
-    '                End With
-    '            Next
-    '        End If
-    '    End Using
-
-    '    If in_range = False Then 'IF ABOVE MAXIMUM RATE
-    '        Dim dss As DataSet = LoadSQL("SELECT MAX(ID) as idd FROM PAYROLL_SSS", "PAYROLL_SSS")
-    '        Dim lastID As String = dss.Tables(0).Rows(0).Item("idd")
-
-    '        Dim mysqll As String = $"SELECT * FROM PAYROLL_SSS where ID = '{lastID}'"  '$"Select MAX(ID) AS Greatest FROM PAYROLL_SSS"
-    '        Using dsss As DataSet = LoadSQL(mysqll, "PAYROLL_SSS")
-    '            If dsss.Tables(0).Rows.Count > 0 Then
-    '                With dsss.Tables(0).Rows(0)
-    '                    ee = .Item("RSS_EE")
-    '                    er = .Item("RSS_ER")
-    '                    ec = .Item("EC_TOTAL")
-    '                    total = .Item("TOTAL_TOTAL")
-    '                End With
-    '            End If
-    '        End Using
-    '    End If
-
-    '    Return (ee, er, ec, total)
-    'End Function
-
     Public Function Get_Pagibig(monthly_Basic As Decimal) As Decimal
         Dim pagibig As Decimal
 
@@ -1073,78 +1011,6 @@ Module SelectFromDatabase
         End Using
     End Sub
 
-    'Friend Sub Populate_S7ELVEN(datagrid As DataGridView, Paydate As String, Optional searchName As String = "")
-
-    '    datagrid.Rows.Clear()
-
-    '    Dim secured_str As String = searchName
-    '    secured_str = DreadKnight(secured_str)
-    '    Dim strWords As String() = secured_str.Split(New Char() {" "c})
-    '    Dim name As String
-    '    Dim mysql As String
-
-    '    If searchName.Length <> 0 Then
-
-    '        mysql = $"Select * From PAYROLL_ATTENDANCE A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIOMETRICID 
-    '                             where A.PAYDATE = '{Paydate}' and BRANCH_CODE IN ('711-POL','711-ROX') and ("
-
-    '        For Each name In strWords
-    '            mysql &= $"{vbCr}UPPER(BIOMETRICID) LIKE UPPER('%{name}%') OR "
-    '            mysql &= $"{vbCr}UPPER(FULLNAME) LIKE UPPER('%{name}%')) ORDER BY FULLNAME ASC "
-    '        Next
-
-    '    Else
-    '        mysql = $"Select * From PAYROLL_ATTENDANCE A inner join PAYROLL_EMPLOYEE B on B.BIO_NO = A.BIOMETRICID where A.PAYDATE = '{Paydate}' 
-    '                               and BRANCH_CODE IN ('711-POL','711-ROX') ORDER BY FULLNAME ASC "
-    '    End If
-
-
-    '    Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
-    '        If ds.Tables(0).Rows.Count > 0 Then
-
-    '            For Each dr In ds.Tables(0).Rows
-
-    '                With dr
-
-    '                    Dim rowId As Integer = datagrid.Rows.Add()
-    '                    Dim row As DataGridViewRow = datagrid.Rows(rowId)
-    '                    row.Cells(0).Value = .Item("BIOMETRICID")
-    '                    row.Cells(1).Value = .Item("FULLNAME")
-    '                    row.Cells(1).Tag = .Item("ID")
-    '                    row.Cells(2).Value = .Item("PRESENT_DAYS")
-
-    '                    If .Item("OVERTIME") = 0 Then
-    '                        row.Cells(3).Value = ""
-    '                    Else
-    '                        row.Cells(3).Value = .Item("OVERTIME")
-    '                    End If
-
-    '                    If .Item("LATE").Equals("0") Then
-    '                        row.Cells(4).Value = ""
-    '                    Else
-    '                        row.Cells(4).Value = .Item("LATE")
-    '                    End If
-
-    '                    If .Item("UNDERTIME").Equals("0") Then
-    '                        row.Cells(5).Value = ""
-    '                    Else
-    '                        row.Cells(5).Value = .Item("UNDERTIME")
-    '                    End If
-
-    '                    row.Cells(6).Value = IIf(IsDBNull(.Item("NIGHT_RATE")) Or .Item("NIGHT_RATE").Equals("0"), "", .Item("NIGHT_RATE"))
-
-    '                    row.Height = 30
-
-    '                End With
-
-    '            Next
-    '        Else
-    '            datagrid.Rows.Clear()
-    '        End If
-    '    End Using
-
-    'End Sub
-
     Public Sub AdjustHeightOfGridBasedOnRows(ByVal dataGrid As DataGridView)
 
         If dataGrid.Rows.Count >= 0 Then
@@ -1235,7 +1101,6 @@ Module SelectFromDatabase
 
     Public Function CountCELL_Nothing(row As DataGridViewRow) As Integer
         Dim count As New Integer
-        'If Not row.DefaultCellStyle.ForeColor = Color.Red And row.Cells(5).Value = True Then
         If row.DefaultCellStyle.ForeColor = Color.Red And row.Cells(5).Value = True Then
             For cell As Integer = 1 To 4
                 If row.Cells(cell).Value = Nothing Then
@@ -1272,7 +1137,7 @@ Module SelectFromDatabase
 
                     Dim rate As Decimal = IIf(IsDBNull(.Item("RATE_DAILY")), 0, .Item("RATE_DAILY"))
                     Dim branchCode As String = IIf(IsDBNull(.Item("BRANCHCODE")), Nothing, .Item("BRANCHCODE"))
-                    Dim minimum As Decimal = 0  '= IIf(.Item("BRANCHCODE").Equals(Nothing) Or String.IsNullOrWhiteSpace(.Item("BRANCHCODE")), GetMinimumRate("CITY", "GENSAN"), GetMinimumRate("BRANCHCODE", .Item("BRANCHCODE")))
+                    Dim minimum As Decimal = 0
 
                     If IsDBNull(.Item("BRANCHCODE")) Then
                         minimum = GetMinimumRate("CITY", "GENSAN")
@@ -1648,14 +1513,6 @@ Module SelectFromDatabase
                 For Each dr In ds.Tables(0).Rows
                     With dr
 
-                        'Dim MI As String
-                        'If String.IsNullOrEmpty(.Item("MiddleName")) Then
-                        '    MI = ""
-                        'Else
-                        '    MI = .Item("MiddleName").Substring(0, 1) & "."
-                        'End If
-
-                        'Dim FULLNAME As String = $"{ .Item("LastName")}, { .Item("FirstName")} {MI}"
                         Dim rate As String = IIf(IsDBNull(.Item("RATE_DAILY")), "", .Item("RATE_DAILY"))
 
                         Dim i As ListViewItem = listview.Items.Add(IIf(IsDBNull(.Item("BRANCHCODE")), "", .Item("BRANCHCODE")))
@@ -1886,9 +1743,6 @@ Module SelectFromDatabase
         End Using
     End Sub
 
-    'Friend startDate_13Month As Date
-    'Friend endDate_13Month As Date
-
     Friend Function Get13Month(bio_no As String, Optional paydatee As DateTime = Nothing)
 
         Dim datee As DateTime = IIf(paydatee = Nothing, Date.Now, paydatee)
@@ -1910,10 +1764,6 @@ Module SelectFromDatabase
             Dim days As Integer = System.DateTime.DaysInMonth(December_April.Year, December_April.Month)
             ending_date = December_April.AddMonths(4).AddDays(days).AddDays(-1).ToString("d")
         End If
-
-        ''JUST FOR THE SOA
-        'startDate_13Month = starting_date
-        'endDate_13Month = ending_date
 
         Dim tOTAL_ECOLA As Decimal = GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC where BIO_NO = '{bio_no}' and CATEGORY = 'ECOLA' and PAYDATE BETWEEN '{starting_date}' AND '{ending_date}'")
         Dim tOTAL_SIL As Decimal = GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC where BIO_NO = '{bio_no}' and CATEGORY like '%SIL' and PAYDATE BETWEEN '{starting_date}' AND '{ending_date}'")
@@ -2189,7 +2039,6 @@ Module SelectFromDatabase
                 PHOTO_CATEGORY = IIf(IsDBNull(.Item("PHOTO_CATEGORY")), "", .Item("PHOTO_CATEGORY"))
             End If
 
-            'Dim i As ListViewItem = LV.Items.Add(IIf(.Item("COMPANY") = "PHOTO", .Item("COMPANY") & $" ({PHOTO_CATEGORY.TrimEnd})", .Item("COMPANY")))
             Dim i As ListViewItem = LV.Items.Add(IIf(COMPANY = "PHOTO", COMPANY & $" ({PHOTO_CATEGORY.TrimEnd})", COMPANY))
             i.Tag = .Item("ID")
             i.SubItems.Add(IIf(IsDBNull(.Item("BRANCHCODE")), "", .Item("BRANCHCODE")))
@@ -2247,7 +2096,6 @@ Module SelectFromDatabase
                     PHILH_TXT.Text = IIf(IsDBNull(.Item("PHILHEALTHNO")), "", .Item("PHILHEALTHNO"))
                     HDMF_TXT.Text = IIf(IsDBNull(.Item("PAGIBIG")), "", .Item("PAGIBIG"))
                     BDate_dtp.Value = IIf(IsDBNull(.Item("DATEOFBIRTH")), "12/31/1753", .Item("DATEOFBIRTH"))
-                    'Address_txt.Text = IIf(IsDBNull(.Item("ADDRESS")), "", .Item("ADDRESS"))
                     Dim emp_status As String = IIf(IsDBNull(.Item("EMP_STATUS")), Nothing, .Item("EMP_STATUS"))
 
                     If emp_status = "INACTIVE" Then
@@ -2258,21 +2106,6 @@ Module SelectFromDatabase
                     If btnSave IsNot Nothing Then
                         btnSave.Tag = "UPDATE" ' FOR USER_LOGS
                     End If
-
-                    ''======================== FIRSTNAME, LASTNAME, MIDDLENAME ========================== 
-                    'Dim firstt, middlee As String
-                    'Dim fullname As String = .Item("FULLNAME")
-                    'Dim name As String() = fullname.Split(",")
-                    'Dim sobra As String = name(1).TrimStart
-
-                    'If sobra.EndsWith(".") Then
-                    '    Dim index As Integer = sobra.Length - 2
-                    '    middlee = sobra.Substring(index, 2)
-                    '    firstt = sobra.Replace(middlee, "").TrimEnd
-                    'Else
-                    '    firstt = sobra
-                    '    middlee = Nothing
-                    'End If
 
                     Lastname.Text = IIf(IsDBNull(.Item("LASTNAME")), Nothing, .Item("LASTNAME"))
                     Firstname.Text = IIf(IsDBNull(.Item("FIRSTNAME")), Nothing, .Item("FIRSTNAME"))
@@ -3430,9 +3263,6 @@ Module SelectFromDatabase
             '13TH MONTH
             remaining13thMonth = Get13Month(bioNo)
             totalClaims += remaining13thMonth
-            'Dim fromDate As String = startDate_13Month.ToString("MMMM dd, yyyy")
-            'Dim toDate As String = endDate_13Month.ToString("MMMM dd, yyyy")
-            'dt.Rows.Add($"13th Month Pay ({fromDate} - {toDate})", remaining13thMonth.ToString("N"), "DEBIT")
             dt.Rows.Add($"13th Month Pay", remaining13thMonth.ToString("N"), "DEBIT")
 
             'SBU 

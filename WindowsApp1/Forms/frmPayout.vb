@@ -1130,7 +1130,6 @@ Public Class frmPayout
             ReportViewer_payslip.RefreshReport()
 
         Catch ex As Exception
-            'Log_Report(ex.ToString)
             MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
 
