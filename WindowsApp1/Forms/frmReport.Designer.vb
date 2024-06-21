@@ -23,24 +23,22 @@ Partial Class frmReport
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim ReportDataSource1 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Dim ReportDataSource2 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Dim ReportDataSource3 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Dim ReportDataSource4 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Dim ReportDataSource5 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Dim ReportDataSource6 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Dim ReportDataSource7 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Dim ReportDataSource8 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Dim ReportDataSource9 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Dim ReportDataSource10 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Dim ReportDataSource11 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Dim ReportDataSource12 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
-        Dim ReportDataSource13 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource92 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource93 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource94 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource95 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource96 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource97 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource98 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource99 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource100 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource101 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource102 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource103 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
+        Dim ReportDataSource104 As Microsoft.Reporting.WinForms.ReportDataSource = New Microsoft.Reporting.WinForms.ReportDataSource()
         Me.PG_RealtyBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.RemittanceBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.PerformanceIncentivesBindingSource = New System.Windows.Forms.BindingSource(Me.components)
-        Me.EmployeeRateBindingSource = New System.Windows.Forms.BindingSource(Me.components)
-        Me.reports = New WindowsApp1.reports()
         Me.Reports_Tab = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
         Me.Label31 = New System.Windows.Forms.Label()
@@ -198,12 +196,12 @@ Partial Class frmReport
         Me.RateSearch_btn = New System.Windows.Forms.Button()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Close_LBL = New System.Windows.Forms.Label()
+        Me.EmployeeRateBindingSource = New System.Windows.Forms.BindingSource(Me.components)
+        Me.reports = New WindowsApp1.reports()
         Me.Reports1 = New WindowsApp1.reports()
         CType(Me.PG_RealtyBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.RemittanceBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PerformanceIncentivesBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.EmployeeRateBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.reports, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Reports_Tab.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.TabPage3.SuspendLayout()
@@ -221,18 +219,10 @@ Partial Class frmReport
         Me.TabPage11.SuspendLayout()
         Me.TabPage12.SuspendLayout()
         Me.TabPage8.SuspendLayout()
+        CType(Me.EmployeeRateBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.reports, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Reports1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
-        '
-        'EmployeeRateBindingSource
-        '
-        Me.EmployeeRateBindingSource.DataMember = "EmployeeRate"
-        Me.EmployeeRateBindingSource.DataSource = Me.reports
-        '
-        'reports
-        '
-        Me.reports.DataSetName = "reports"
-        Me.reports.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema
         '
         'Reports_Tab
         '
@@ -328,9 +318,9 @@ Partial Class frmReport
         '
         'ReportV_NetPay
         '
-        ReportDataSource1.Name = "DataSet1"
-        ReportDataSource1.Value = Nothing
-        Me.ReportV_NetPay.LocalReport.DataSources.Add(ReportDataSource1)
+        ReportDataSource92.Name = "DataSet1"
+        ReportDataSource92.Value = Nothing
+        Me.ReportV_NetPay.LocalReport.DataSources.Add(ReportDataSource92)
         Me.ReportV_NetPay.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_NetPay.rdlc"
         Me.ReportV_NetPay.Location = New System.Drawing.Point(4, 67)
         Me.ReportV_NetPay.Name = "ReportV_NetPay"
@@ -417,9 +407,9 @@ Partial Class frmReport
         '
         'RptViewer_Common
         '
-        ReportDataSource2.Name = "DataSet1"
-        ReportDataSource2.Value = Nothing
-        Me.RptViewer_Common.LocalReport.DataSources.Add(ReportDataSource2)
+        ReportDataSource93.Name = "DataSet1"
+        ReportDataSource93.Value = Nothing
+        Me.RptViewer_Common.LocalReport.DataSources.Add(ReportDataSource93)
         Me.RptViewer_Common.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_CommonEmp.rdlc"
         Me.RptViewer_Common.Location = New System.Drawing.Point(6, 48)
         Me.RptViewer_Common.Name = "RptViewer_Common"
@@ -1018,9 +1008,9 @@ Partial Class frmReport
         '
         'RptViewer_Count
         '
-        ReportDataSource3.Name = "DataSet1"
-        ReportDataSource3.Value = Nothing
-        Me.RptViewer_Count.LocalReport.DataSources.Add(ReportDataSource3)
+        ReportDataSource94.Name = "DataSet1"
+        ReportDataSource94.Value = Nothing
+        Me.RptViewer_Count.LocalReport.DataSources.Add(ReportDataSource94)
         Me.RptViewer_Count.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_Common.rdlc"
         Me.RptViewer_Count.Location = New System.Drawing.Point(4, 61)
         Me.RptViewer_Count.Name = "RptViewer_Count"
@@ -1064,27 +1054,27 @@ Partial Class frmReport
         '
         'RptViewer_Summary
         '
-        ReportDataSource4.Name = "Photo_GensanJR"
-        ReportDataSource4.Value = Nothing
-        ReportDataSource5.Name = "Photo_Davao"
-        ReportDataSource5.Value = Nothing
-        ReportDataSource6.Name = "Dalton"
-        ReportDataSource6.Value = Nothing
-        ReportDataSource7.Name = "Perfecom"
-        ReportDataSource7.Value = Nothing
-        ReportDataSource8.Name = "PG_UY"
-        ReportDataSource8.Value = Nothing
-        ReportDataSource9.Name = "Household"
-        ReportDataSource9.Value = Nothing
-        ReportDataSource10.Name = "PG_Realty"
-        ReportDataSource10.Value = Me.PG_RealtyBindingSource
-        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource4)
-        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource5)
-        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource6)
-        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource7)
-        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource8)
-        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource9)
-        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource10)
+        ReportDataSource95.Name = "Photo_GensanJR"
+        ReportDataSource95.Value = Nothing
+        ReportDataSource96.Name = "Photo_Davao"
+        ReportDataSource96.Value = Nothing
+        ReportDataSource97.Name = "Dalton"
+        ReportDataSource97.Value = Nothing
+        ReportDataSource98.Name = "Perfecom"
+        ReportDataSource98.Value = Nothing
+        ReportDataSource99.Name = "PG_UY"
+        ReportDataSource99.Value = Nothing
+        ReportDataSource100.Name = "Household"
+        ReportDataSource100.Value = Nothing
+        ReportDataSource101.Name = "PG_Realty"
+        ReportDataSource101.Value = Me.PG_RealtyBindingSource
+        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource95)
+        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource96)
+        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource97)
+        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource98)
+        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource99)
+        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource100)
+        Me.RptViewer_Summary.LocalReport.DataSources.Add(ReportDataSource101)
         Me.RptViewer_Summary.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_PayrollSummary.rdlc"
         Me.RptViewer_Summary.Location = New System.Drawing.Point(1, 53)
         Me.RptViewer_Summary.Name = "RptViewer_Summary"
@@ -1153,9 +1143,9 @@ Partial Class frmReport
         '
         'Rpt_Distribution
         '
-        ReportDataSource11.Name = "DataSet1"
-        ReportDataSource11.Value = Me.RemittanceBindingSource
-        Me.Rpt_Distribution.LocalReport.DataSources.Add(ReportDataSource11)
+        ReportDataSource102.Name = "DataSet1"
+        ReportDataSource102.Value = Me.RemittanceBindingSource
+        Me.Rpt_Distribution.LocalReport.DataSources.Add(ReportDataSource102)
         Me.Rpt_Distribution.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_Remittance.rdlc"
         Me.Rpt_Distribution.Location = New System.Drawing.Point(4, 62)
         Me.Rpt_Distribution.Name = "Rpt_Distribution"
@@ -1246,7 +1236,7 @@ Partial Class frmReport
         Me.btnDeductionList.BackColor = System.Drawing.Color.LightGray
         Me.btnDeductionList.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnDeductionList.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnDeductionList.Location = New System.Drawing.Point(499, 13)
+        Me.btnDeductionList.Location = New System.Drawing.Point(1019, 29)
         Me.btnDeductionList.Name = "btnDeductionList"
         Me.btnDeductionList.Size = New System.Drawing.Size(126, 33)
         Me.btnDeductionList.TabIndex = 138
@@ -1257,7 +1247,7 @@ Partial Class frmReport
         '
         Me.Label52.AutoSize = True
         Me.Label52.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label52.Location = New System.Drawing.Point(850, 21)
+        Me.Label52.Location = New System.Drawing.Point(495, 31)
         Me.Label52.Name = "Label52"
         Me.Label52.Size = New System.Drawing.Size(71, 25)
         Me.Label52.TabIndex = 129
@@ -1269,7 +1259,7 @@ Partial Class frmReport
         Me.CompanyDeduct_CB.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CompanyDeduct_CB.FormattingEnabled = True
         Me.CompanyDeduct_CB.Items.AddRange(New Object() {"ALL", "PHOTO", "P&G UY", "DALTON", "PERFECOM", "PTU REALTY", "PGC HEAD OFFICE"})
-        Me.CompanyDeduct_CB.Location = New System.Drawing.Point(924, 18)
+        Me.CompanyDeduct_CB.Location = New System.Drawing.Point(569, 28)
         Me.CompanyDeduct_CB.Name = "CompanyDeduct_CB"
         Me.CompanyDeduct_CB.Size = New System.Drawing.Size(221, 33)
         Me.CompanyDeduct_CB.TabIndex = 128
@@ -1277,24 +1267,24 @@ Partial Class frmReport
         'Rpt_Deduction
         '
         Me.Rpt_Deduction.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_Deduction.rdlc"
-        Me.Rpt_Deduction.Location = New System.Drawing.Point(499, 56)
+        Me.Rpt_Deduction.Location = New System.Drawing.Point(499, 68)
         Me.Rpt_Deduction.Name = "Rpt_Deduction"
         Me.Rpt_Deduction.ServerReport.BearerToken = Nothing
-        Me.Rpt_Deduction.Size = New System.Drawing.Size(652, 520)
+        Me.Rpt_Deduction.Size = New System.Drawing.Size(652, 508)
         Me.Rpt_Deduction.TabIndex = 127
         '
         'DeducHistory_txt
         '
         Me.DeducHistory_txt.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.DeducHistory_txt.Location = New System.Drawing.Point(6, 18)
+        Me.DeducHistory_txt.Location = New System.Drawing.Point(6, 27)
         Me.DeducHistory_txt.Name = "DeducHistory_txt"
-        Me.DeducHistory_txt.Size = New System.Drawing.Size(395, 33)
+        Me.DeducHistory_txt.Size = New System.Drawing.Size(289, 33)
         Me.DeducHistory_txt.TabIndex = 125
         '
         'DeducHistory_btn
         '
         Me.DeducHistory_btn.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.DeducHistory_btn.Location = New System.Drawing.Point(407, 17)
+        Me.DeducHistory_btn.Location = New System.Drawing.Point(299, 27)
         Me.DeducHistory_btn.Name = "DeducHistory_btn"
         Me.DeducHistory_btn.Size = New System.Drawing.Size(82, 33)
         Me.DeducHistory_btn.TabIndex = 126
@@ -1311,10 +1301,10 @@ Partial Class frmReport
         Me.DeducHistory_List.FullRowSelect = True
         Me.DeducHistory_List.GridLines = True
         Me.DeducHistory_List.HideSelection = False
-        Me.DeducHistory_List.Location = New System.Drawing.Point(6, 56)
+        Me.DeducHistory_List.Location = New System.Drawing.Point(6, 68)
         Me.DeducHistory_List.MultiSelect = False
         Me.DeducHistory_List.Name = "DeducHistory_List"
-        Me.DeducHistory_List.Size = New System.Drawing.Size(483, 524)
+        Me.DeducHistory_List.Size = New System.Drawing.Size(483, 512)
         Me.DeducHistory_List.Sorting = System.Windows.Forms.SortOrder.Ascending
         Me.DeducHistory_List.TabIndex = 124
         Me.DeducHistory_List.UseCompatibleStateImageBehavior = False
@@ -1712,9 +1702,9 @@ Partial Class frmReport
         '
         'Rpt_PI
         '
-        ReportDataSource12.Name = "DataSet1"
-        ReportDataSource12.Value = Me.PerformanceIncentivesBindingSource
-        Me.Rpt_PI.LocalReport.DataSources.Add(ReportDataSource12)
+        ReportDataSource103.Name = "DataSet1"
+        ReportDataSource103.Value = Me.PerformanceIncentivesBindingSource
+        Me.Rpt_PI.LocalReport.DataSources.Add(ReportDataSource103)
         Me.Rpt_PI.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_PI.rdlc"
         Me.Rpt_PI.Location = New System.Drawing.Point(4, 62)
         Me.Rpt_PI.Name = "Rpt_PI"
@@ -1861,9 +1851,9 @@ Partial Class frmReport
         '
         'Rpt_Rate
         '
-        ReportDataSource13.Name = "DataSet1"
-        ReportDataSource13.Value = Me.EmployeeRateBindingSource
-        Me.Rpt_Rate.LocalReport.DataSources.Add(ReportDataSource13)
+        ReportDataSource104.Name = "DataSet1"
+        ReportDataSource104.Value = Me.EmployeeRateBindingSource
+        Me.Rpt_Rate.LocalReport.DataSources.Add(ReportDataSource104)
         Me.Rpt_Rate.LocalReport.ReportEmbeddedResource = "WindowsApp1.Rate.rdlc"
         Me.Rpt_Rate.Location = New System.Drawing.Point(6, 63)
         Me.Rpt_Rate.Name = "Rpt_Rate"
@@ -1909,6 +1899,16 @@ Partial Class frmReport
         Me.Close_LBL.TabIndex = 75
         Me.Close_LBL.Text = "Close"
         '
+        'EmployeeRateBindingSource
+        '
+        Me.EmployeeRateBindingSource.DataMember = "EmployeeRate"
+        Me.EmployeeRateBindingSource.DataSource = Me.reports
+        '
+        'reports
+        '
+        Me.reports.DataSetName = "reports"
+        Me.reports.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema
+        '
         'Reports1
         '
         Me.Reports1.DataSetName = "reports"
@@ -1928,8 +1928,6 @@ Partial Class frmReport
         CType(Me.PG_RealtyBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.RemittanceBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PerformanceIncentivesBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.EmployeeRateBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.reports, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Reports_Tab.ResumeLayout(False)
         Me.TabPage1.ResumeLayout(False)
         Me.TabPage1.PerformLayout()
@@ -1962,6 +1960,8 @@ Partial Class frmReport
         Me.TabPage12.PerformLayout()
         Me.TabPage8.ResumeLayout(False)
         Me.TabPage8.PerformLayout()
+        CType(Me.EmployeeRateBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.reports, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Reports1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
