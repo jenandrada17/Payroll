@@ -2936,4 +2936,131 @@ Public Class frmReport
     Private Sub btnViewList_Click(sender As Object, e As EventArgs) Handles btnViewList.Click
         LoadSBU_ViewList()
     End Sub
+
+    Private Sub btnDeductionList_Click(sender As Object, e As EventArgs) Handles btnDeductionList.Click
+        LoadDEDUCTION_ViewList()
+    End Sub
+
+
+    Friend Sub LoadDEDUCTION_ViewList()
+        Rpt_Deduction.LocalReport.DataSources.Clear()
+
+        Try
+            Dim dt As New DataTable()
+            With dt
+                .Columns.Add("BRANCH")
+                .Columns.Add("NAME")
+                .Columns.Add("CATEGORY")
+                .Columns.Add("DATE_ADDED")
+                .Columns.Add("PRINCIPAL")
+                .Columns.Add("AMORT")
+                .Columns.Add("CREDIT")
+                .Columns.Add("PARTIAL")
+                .Columns.Add("BALANCE")
+                .Columns.Add("FORM_NAME")
+            End With
+
+            Dim mysqll As String = $"SELECT
+                                        A.BIO_NO,
+                                        LASTNAME || ', ' || FIRSTNAME || ' ' ||
+                                        CASE
+                                            WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
+                                            ELSE ''
+                                        END AS FULLNAME,
+                                        BRANCHNAME,
+                                        COMPANY,
+    
+                                        A.ID,
+                                        A.CATEGORY,
+                                        A.DATEE,
+                                        PRINCIPAL,
+                                        A.AMORT, 
+    
+                                        CASE 
+                                            WHEN CREDIT IS NULL AND BALANCE IS NULL THEN COALESCE(C_SUM, 0)
+                                            ELSE COALESCE(C_SUM, 0) + CREDIT 
+                                        END AS TOTAL_CREDIT,
+     
+                                        COALESCE(P_TOTAL, 0) AS TOTAL_PARTIAL,
+    
+                                        PRINCIPAL - CASE 
+                                                        WHEN CREDIT IS NULL AND BALANCE IS NULL THEN COALESCE(C_SUM, 0)
+                                                        ELSE COALESCE(C_SUM, 0) + CREDIT + COALESCE(P_TOTAL, 0)
+                                                    END AS TOTAL_BALANCE,
+                                        A.STATUS
+                                    FROM
+                                        PAYROLL_DEDUCTION A
+                                    INNER JOIN
+                                        TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIO_NO
+                                    LEFT JOIN
+                                        (SELECT BIO_NO, R_DEDUC_ID, COALESCE(SUM(AMOUNT), 0) AS C_SUM
+                                         FROM RECORDED_ALLOW_DEDUC
+                                         WHERE PAYDATE <> '12/15/2021'
+                                         GROUP BY BIO_NO, R_DEDUC_ID) C ON C.BIO_NO = A.BIO_NO AND C.R_DEDUC_ID = A.ID
+                                    LEFT JOIN
+                                        (SELECT DEDUCT_ID, COALESCE(SUM(AMOUNT), 0) AS P_TOTAL
+                                         FROM PARTIAL_PAYMENT
+                                         GROUP BY DEDUCT_ID) D ON D.DEDUCT_ID = A.ID
+                                    LEFT JOIN 
+	                                    PAYROLL_CITY_BRANCH E ON E.BRANCHCODE = B.BRANCHCODE 
+                                    GROUP BY 
+                                        A.BIO_NO, FULLNAME, BRANCHNAME, COMPANY, A.ID, A.CATEGORY, A.DATEE, CREDIT,
+                                        PRINCIPAL, A.AMORT, BALANCE, A.STATUS, C.C_SUM, D.P_TOTAL
+                                    ORDER BY FULLNAME ASC;"
+
+            Using dss As DataSet = LoadSQL(mysqll, "TBL_EMPLOYEE")
+                If dss.Tables(0).Rows.Count > 0 Then
+                    progressBarStart(dss.Tables(0).Rows.Count)
+                    For Each dr In dss.Tables(0).Rows
+                        With dr
+
+                            Dim company As String = Nothing
+                            Dim branch As String = Nothing
+                            Dim fullname As String = .Item("FULLNAME")
+                            Dim category As String = .Item("CATEGORY")
+                            Dim dateAdded As String = CDate(.Item("DATEE")).ToShortDateString
+                            Dim principal As Decimal = .Item("PRINCIPAL")
+                            Dim amort As Decimal = .Item("AMORT")
+                            Dim credit As Decimal = .Item("TOTAL_CREDIT")
+                            Dim partialPayment As Decimal = .Item("TOTAL_PARTIAL")
+                            Dim balance As Decimal = .Item("TOTAL_BALANCE")
+
+                            If IsDBNull(.Item("BRANCHNAME")) Then
+                                branch = "No branch"
+                            ElseIf String.IsNullOrEmpty(.Item("BRANCHNAME")) Then
+                                branch = "No branch"
+                            Else
+                                branch = .Item("BRANCHNAME")
+                            End If
+
+                            If IsDBNull(.Item("COMPANY")) Then
+                                company = "No company"
+                            ElseIf String.IsNullOrEmpty(.Item("COMPANY")) Then
+                                company = "No company"
+                            Else
+                                company = .Item("COMPANY")
+                            End If
+
+                            If company <> "HEAD OFFICE" Then branch = $"{company} - {branch}"
+
+                            frmMainForm.AppProgressBar.Value += 1
+
+                            dt.Rows.Add(branch, fullname, category, dateAdded, FormatNumber(principal), FormatNumber(amort), FormatNumber(credit), FormatNumber(partialPayment), FormatNumber(balance), $"LIST OF DEDUCTION - {Now}")
+
+                        End With
+                    Next
+                    progressBarEnd()
+                End If
+            End Using
+
+            Dim DATASET As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt)
+            Rpt_Deduction.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_Deduction_All.rdlc"
+            Rpt_Deduction.LocalReport.DataSources.Add(DATASET)
+            Rpt_Deduction.RefreshReport()
+
+        Catch ex As Exception
+            MsgBox(ex.ToString)
+        End Try
+    End Sub
+
 End Class

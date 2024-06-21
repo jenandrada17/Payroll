@@ -23,20 +23,20 @@ Partial Class frmLoan
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle28 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle29 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle30 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle31 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle32 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Dim DataGridViewCellStyle15 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle33 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle34 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle35 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle36 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle37 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle38 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle39 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle16 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle17 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle18 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle19 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle20 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle21 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle22 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle23 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle24 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle25 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle26 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle27 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.Close_LBL = New System.Windows.Forms.Label()
         Me.Loans_Tab = New System.Windows.Forms.TabControl()
         Me.TabPage2 = New System.Windows.Forms.TabPage()
@@ -2008,13 +2008,13 @@ Partial Class frmLoan
         Me.gridSOA.BackgroundColor = System.Drawing.SystemColors.ButtonFace
         Me.gridSOA.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.gridSOA.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None
-        DataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle7.Font = New System.Drawing.Font("Dubai", 12.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        Me.gridSOA.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle7
+        DataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle15.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle15.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle15.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle15.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle15.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        Me.gridSOA.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle15
         Me.gridSOA.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.gridSOA.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.dataFullname, Me.dataStatus, Me.dataDateEnded, Me.dataDesignation, Me.dataCompany})
         Me.gridSOA.ContextMenuStrip = Me.Context_SOA
@@ -2028,8 +2028,8 @@ Partial Class frmLoan
         '
         'dataFullname
         '
-        DataGridViewCellStyle28.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.dataFullname.DefaultCellStyle = DataGridViewCellStyle28
+        DataGridViewCellStyle16.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.dataFullname.DefaultCellStyle = DataGridViewCellStyle16
         Me.dataFullname.Frozen = True
         Me.dataFullname.HeaderText = "Name"
         Me.dataFullname.Name = "dataFullname"
@@ -2039,8 +2039,8 @@ Partial Class frmLoan
         '
         'dataStatus
         '
-        DataGridViewCellStyle29.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.dataStatus.DefaultCellStyle = DataGridViewCellStyle29
+        DataGridViewCellStyle17.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.dataStatus.DefaultCellStyle = DataGridViewCellStyle17
         Me.dataStatus.HeaderText = "Status"
         Me.dataStatus.Name = "dataStatus"
         Me.dataStatus.ReadOnly = True
@@ -2049,8 +2049,8 @@ Partial Class frmLoan
         '
         'dataDateEnded
         '
-        DataGridViewCellStyle30.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.dataDateEnded.DefaultCellStyle = DataGridViewCellStyle30
+        DataGridViewCellStyle18.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.dataDateEnded.DefaultCellStyle = DataGridViewCellStyle18
         Me.dataDateEnded.HeaderText = "Date Ended"
         Me.dataDateEnded.Name = "dataDateEnded"
         Me.dataDateEnded.ReadOnly = True
@@ -2059,8 +2059,8 @@ Partial Class frmLoan
         '
         'dataDesignation
         '
-        DataGridViewCellStyle31.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.dataDesignation.DefaultCellStyle = DataGridViewCellStyle31
+        DataGridViewCellStyle19.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.dataDesignation.DefaultCellStyle = DataGridViewCellStyle19
         Me.dataDesignation.HeaderText = "Designation"
         Me.dataDesignation.Name = "dataDesignation"
         Me.dataDesignation.ReadOnly = True
@@ -2068,8 +2068,8 @@ Partial Class frmLoan
         '
         'dataCompany
         '
-        DataGridViewCellStyle32.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.dataCompany.DefaultCellStyle = DataGridViewCellStyle32
+        DataGridViewCellStyle20.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.dataCompany.DefaultCellStyle = DataGridViewCellStyle20
         Me.dataCompany.HeaderText = "Company"
         Me.dataCompany.Name = "dataCompany"
         Me.dataCompany.ReadOnly = True
@@ -2115,13 +2115,13 @@ Partial Class frmLoan
         Me.grid_Attachment.BackgroundColor = System.Drawing.SystemColors.ButtonFace
         Me.grid_Attachment.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.grid_Attachment.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None
-        DataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle15.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle15.Font = New System.Drawing.Font("Dubai", 12.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle15.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle15.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle15.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        Me.grid_Attachment.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle15
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle1.Font = New System.Drawing.Font("Dubai", 12.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        Me.grid_Attachment.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
         Me.grid_Attachment.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
         Me.grid_Attachment.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.dgv_Fullname, Me.dgv_Status, Me.dgv_DateEnded, Me.dgv_Designation, Me.dgv_Company, Me.dgv_Remarks, Me.dgv_Attachment})
         Me.grid_Attachment.ContextMenuStrip = Me.Context_SOA
@@ -2135,8 +2135,8 @@ Partial Class frmLoan
         '
         'dgv_Fullname
         '
-        DataGridViewCellStyle33.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.dgv_Fullname.DefaultCellStyle = DataGridViewCellStyle33
+        DataGridViewCellStyle21.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.dgv_Fullname.DefaultCellStyle = DataGridViewCellStyle21
         Me.dgv_Fullname.Frozen = True
         Me.dgv_Fullname.HeaderText = "Name"
         Me.dgv_Fullname.Name = "dgv_Fullname"
@@ -2146,8 +2146,8 @@ Partial Class frmLoan
         '
         'dgv_Status
         '
-        DataGridViewCellStyle34.Font = New System.Drawing.Font("Dubai", 11.25!)
-        Me.dgv_Status.DefaultCellStyle = DataGridViewCellStyle34
+        DataGridViewCellStyle22.Font = New System.Drawing.Font("Dubai", 11.25!)
+        Me.dgv_Status.DefaultCellStyle = DataGridViewCellStyle22
         Me.dgv_Status.HeaderText = "Status"
         Me.dgv_Status.Name = "dgv_Status"
         Me.dgv_Status.ReadOnly = True
@@ -2156,8 +2156,8 @@ Partial Class frmLoan
         '
         'dgv_DateEnded
         '
-        DataGridViewCellStyle35.Font = New System.Drawing.Font("Dubai", 11.25!)
-        Me.dgv_DateEnded.DefaultCellStyle = DataGridViewCellStyle35
+        DataGridViewCellStyle23.Font = New System.Drawing.Font("Dubai", 11.25!)
+        Me.dgv_DateEnded.DefaultCellStyle = DataGridViewCellStyle23
         Me.dgv_DateEnded.HeaderText = "Date Ended"
         Me.dgv_DateEnded.Name = "dgv_DateEnded"
         Me.dgv_DateEnded.ReadOnly = True
@@ -2166,8 +2166,8 @@ Partial Class frmLoan
         '
         'dgv_Designation
         '
-        DataGridViewCellStyle36.Font = New System.Drawing.Font("Dubai", 11.25!)
-        Me.dgv_Designation.DefaultCellStyle = DataGridViewCellStyle36
+        DataGridViewCellStyle24.Font = New System.Drawing.Font("Dubai", 11.25!)
+        Me.dgv_Designation.DefaultCellStyle = DataGridViewCellStyle24
         Me.dgv_Designation.HeaderText = "Designation"
         Me.dgv_Designation.Name = "dgv_Designation"
         Me.dgv_Designation.ReadOnly = True
@@ -2175,8 +2175,8 @@ Partial Class frmLoan
         '
         'dgv_Company
         '
-        DataGridViewCellStyle37.Font = New System.Drawing.Font("Dubai", 11.25!)
-        Me.dgv_Company.DefaultCellStyle = DataGridViewCellStyle37
+        DataGridViewCellStyle25.Font = New System.Drawing.Font("Dubai", 11.25!)
+        Me.dgv_Company.DefaultCellStyle = DataGridViewCellStyle25
         Me.dgv_Company.HeaderText = "Company"
         Me.dgv_Company.Name = "dgv_Company"
         Me.dgv_Company.ReadOnly = True
@@ -2184,18 +2184,18 @@ Partial Class frmLoan
         '
         'dgv_Remarks
         '
-        DataGridViewCellStyle38.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle38.Font = New System.Drawing.Font("Dubai", 11.25!)
-        Me.dgv_Remarks.DefaultCellStyle = DataGridViewCellStyle38
+        DataGridViewCellStyle26.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle26.Font = New System.Drawing.Font("Dubai", 11.25!)
+        Me.dgv_Remarks.DefaultCellStyle = DataGridViewCellStyle26
         Me.dgv_Remarks.HeaderText = "Remarks"
         Me.dgv_Remarks.Name = "dgv_Remarks"
         Me.dgv_Remarks.Width = 110
         '
         'dgv_Attachment
         '
-        DataGridViewCellStyle39.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle39.Font = New System.Drawing.Font("Dubai", 11.25!)
-        Me.dgv_Attachment.DefaultCellStyle = DataGridViewCellStyle39
+        DataGridViewCellStyle27.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle27.Font = New System.Drawing.Font("Dubai", 11.25!)
+        Me.dgv_Attachment.DefaultCellStyle = DataGridViewCellStyle27
         Me.dgv_Attachment.HeaderText = "Attachment"
         Me.dgv_Attachment.Name = "dgv_Attachment"
         Me.dgv_Attachment.Width = 140
