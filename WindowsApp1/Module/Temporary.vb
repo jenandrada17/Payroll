@@ -1273,4 +1273,49 @@ Module Temporary
         End Using
     End Sub
 
+    Friend Sub UpdateEmpStatus() '=========== BOOLEAN IF MORE THAN 1 ========== 
+        Dim mysql As String = $"Select * FROM TBL_EMPLOYEE"
+        Dim ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
+        If ds.Tables(0).Rows.Count > 0 Then
+            For Each dr In ds.Tables(0).Rows
+                With dr
+
+                    Dim bioNo As String = .Item("BIOMETRICID")
+                    Dim empid As String = .Item("ID")
+                    Dim status As String = IIf(IsDBNull(.Item("STATUS")), Nothing, .Item("STATUS"))
+                    Dim empstatus As String = IIf(IsDBNull(.Item("EMP_STATUS")), Nothing, .Item("EMP_STATUS"))
+                    Dim dateEnded As String = GetDateEnded(empid)
+
+                    If status <> Nothing Then
+                        If empstatus <> "INACTIVE" And (status = "AWOL" Or status = "AWOL/BREACH OF CONTRACT" Or status = "END OF PROBATIONARY" Or status = "RESIGNED" Or status = "TERMINATED") Then
+                            .Item("EMP_STATUS") = "INACTIVE"
+                            If dateEnded <> Nothing Then .Item("DATE_ENDED") = dateEnded
+
+                            Console.WriteLine($"INACTIVE = {bioNo}")
+                        ElseIf empstatus <> "ACTIVE" And (status = "APPOINTED" Or status = "PROBATIONARY" Or status = "REGULAR" Or status = "SUSPENDED") Then
+                            .Item("EMP_STATUS") = "ACTIVE"
+                            .Item("DATE_ENDED") = DBNull.Value
+                            Console.WriteLine($"ACTIVE = {bioNo}")
+                        Else
+                            Continue For
+                        End If
+                    Else
+                        Continue For
+                    End If
+                End With
+                SaveEntry(ds, False)
+            Next
+        End If
+    End Sub
+
+    Friend Function GetDateEnded(EmpID As Integer)
+        Dim mysql As String = $"Select * FROM TBL_LASTDATE WHERE EMP_ID = {EmpID}"
+        Dim ds As DataSet = LoadSQL(mysql, "TBL_LASTDATE")
+        If ds.Tables(0).Rows.Count > 0 Then
+            With ds.Tables(0).Rows(0)
+                Return .Item("LASTDATE")
+            End With
+        End If
+        Return Nothing
+    End Function
 End Module

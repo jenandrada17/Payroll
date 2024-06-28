@@ -1,6 +1,4 @@
-﻿Imports System.Windows.Media.Media3D
-Imports Microsoft.Internal
-Imports Microsoft.Office.Interop
+﻿Imports Microsoft.Office.Interop
 
 Public Class frmAttendance
 
@@ -24,7 +22,7 @@ Public Class frmAttendance
     Dim MyCommand As System.Data.OleDb.OleDbDataAdapter
     Dim ALLOW_OT As Boolean = True
 
-    '========= TEMPORARY FOR PAYDATE 6/30/2022 (CHANGED MINIMUM RATE)===========  
+    '========= TEMPORARY FOR PAYDATE 6/30/2022 (CHANGED MINIMUM RATE) ===========  
     Dim temp_present As Double = 0
     Dim temp_half As Double = 0
     Dim temp_overtime As Double = 0
@@ -67,6 +65,7 @@ Public Class frmAttendance
             PI_Panel.Visible = True
             B_PI_Panel.Visible = True
         End If
+
     End Sub
 
     Private Sub Close_LBL_Click(sender As Object, e As EventArgs) Handles Close_LBL.Click

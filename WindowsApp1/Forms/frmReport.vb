@@ -350,7 +350,8 @@ Public Class frmReport
                                         SUM((SELECT COALESCE(SUM(AMOUNT), 0) FROM PARTIAL_PAYMENT WHERE DEDUCT_ID = A.ID)) AS TOTAL_PARTIAL, 
                                         COMPANY, PHOTO_CATEGORY, HO_CATEGORY 
                                     FROM
-                                        PAYROLL_DEDUCTION A 
+                                        
+A 
                                     INNER JOIN 
                                         TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIO_NO
                                     WHERE 

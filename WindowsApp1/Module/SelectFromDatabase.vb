@@ -3094,7 +3094,6 @@ Module SelectFromDatabase
     End Sub
 
     Public Function GetDeduction_Balance(IDX As String)
-
         Dim STATUS As String = GetData("STATUS", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'")
         Dim credit As Decimal = GetData_Decimal("CREDIT", $"PAYROLL_DEDUCTION WHERE ID = '{IDX}'")
         Dim CollectedCredit As Decimal = GetTotal("AMOUNT", $" RECORDED_ALLOW_DEDUC WHERE R_DEDUC_ID = '{IDX}' and PAYDATE <> '12/15/2021'")
@@ -3132,7 +3131,6 @@ Module SelectFromDatabase
     End Sub
 
     Friend Sub Lists_SBU(LV As ListView, Optional searchName As String = "")
-
         Dim secured_str As String = searchName
         secured_str = DreadKnight(secured_str)
         Dim strWords As String() = secured_str.Split(New Char() {" "c})
