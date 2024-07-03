@@ -286,10 +286,6 @@ Module Public_Function
             e_mail.Body = BodyText
             Smtp_Server.Send(e_mail)
 
-            'If FOR_single Then
-            '    MsgBox("Email Sent!")
-            'End If
-
         Catch error_t As Exception
             MsgBox(error_t.ToString)
         End Try
