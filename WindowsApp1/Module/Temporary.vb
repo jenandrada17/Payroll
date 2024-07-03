@@ -1,4 +1,5 @@
 ﻿Imports System.IO
+Imports System.Windows.Forms.VisualStyles.VisualStyleElement
 Imports Microsoft.Office.Interop
 Imports OfficeOpenXml
 
@@ -1318,4 +1319,134 @@ Module Temporary
         End If
         Return Nothing
     End Function
+
+    Friend Sub EmployeeStatus()
+        Dim path() As String = {"C:\Users\MISPC1\Desktop\List of Employess (6-10-2024).xlsx"}
+
+        For i = 0 To path.Length - 1
+
+            eApp = New Excel.Application
+            eBook = eApp.Workbooks.Open(path(i))
+            eSheet = eBook.Worksheets(1)
+            eCell = eSheet.UsedRange
+
+            MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{path(i)}';Extended Properties=Excel 8.0;")
+            MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
+            MyCommand.TableMappings.Add("Table", "Net-informations.com")
+            DtSet = New System.Data.DataSet
+            MyCommand.Fill(DtSet)
+
+            progressBarStart(DtSet.Tables(0).Rows.Count + 1)
+
+            For row = 2 To DtSet.Tables(0).Rows.Count + 1
+                Dim fullname As String = eCell(row, 1).Value
+                Dim bioNo As Integer = eCell(row, 2).Value
+                Dim emp_status As String = eCell(row, 5).Value
+                Dim status As String = eCell(row, 6).Value
+                Dim email As String = eCell(row, 7).Value
+                Dim sss As String = eCell(row, 8).Value
+                Dim philhealth As String = eCell(row, 9).Value
+                Dim tin As String = eCell(row, 10).Value
+                Dim pagibig As String = eCell(row, 11).Value
+
+                If bioNo <> 0 Or bioNo <> Nothing Then
+                    SaveEmployeeStatus(bioNo, emp_status, status, email, sss, philhealth, tin, pagibig)
+                    SaveLogs($"UPDATE EMPLOYEE INFO FROM EXCEL - {fullname} ({bioNo}), EMP_STATUS({emp_status}), STATUS({status}), EMAILADD({email}), SSSNO({sss}), PHILHEALTHNO({philhealth}), TINNO({tin}), PAGIBIG({pagibig})", frmMainForm.UserName_LBL.Text)
+                End If
+
+                Console.WriteLine($"Row {row}")
+                frmMainForm.AppProgressBar.Value += 1
+            Next row
+
+            progressBarEnd()
+
+            MyConnection.Close()
+            eApp.Quit()
+            eApp.Application.DisplayAlerts = False
+        Next
+
+        MsgBox("Importing Done!")
+    End Sub
+
+    Friend Sub SaveEmployeeStatus(bioNo As Integer, EMP_STATUS As String, STATUS As String, EMAILADD As String, SSSNO As String, PHILHEALTHNO As String, TINNO As String, PAGIBIG As String)
+        Dim mysql As String = $"Select * FROM TBL_EMPLOYEE where BIOMETRICID = '{bioNo}'"
+        Dim ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
+        If ds.Tables(0).Rows.Count > 0 Then
+
+            With ds.Tables(0).Rows(0)
+
+                If bioNo = 4185 Or bioNo = 4870 Then
+                    Console.WriteLine("")
+                End If
+
+                .Item("EMP_STATUS") = EMP_STATUS
+                If STATUS <> Nothing Then .Item("STATUS") = STATUS
+                If EMAILADD <> Nothing Then .Item("EMAILADD") = EMAILADD
+                If SSSNO <> Nothing Then .Item("SSSNO") = SSSNO
+                If PHILHEALTHNO <> Nothing Then .Item("PHILHEALTHNO") = PHILHEALTHNO
+                If TINNO <> Nothing Then .Item("TINNO") = TINNO
+                If PAGIBIG <> Nothing Then .Item("PAGIBIG") = PAGIBIG
+
+            End With
+            SaveEntry(ds, False)
+        End If
+    End Sub
+
+    Friend Sub EmployeeBankAccount()
+        Dim path() As String = {"C:\Users\MISPC1\Desktop\BIO # WITH  ACCT # DALTON ATM.xlsx"}
+
+        For i = 0 To path.Length - 1
+
+            eApp = New Excel.Application
+            eBook = eApp.Workbooks.Open(path(i))
+            eSheet = eBook.Worksheets(1)
+            eCell = eSheet.UsedRange
+
+            MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{path(i)}';Extended Properties=Excel 8.0;")
+            MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
+            MyCommand.TableMappings.Add("Table", "Net-informations.com")
+            DtSet = New System.Data.DataSet
+            MyCommand.Fill(DtSet)
+
+            progressBarStart(DtSet.Tables(0).Rows.Count + 1)
+
+            For row = 3 To DtSet.Tables(0).Rows.Count + 1
+                Dim bioNo As Integer = eCell(row, 1).Value
+                Dim accountNo As String = eCell(row, 2).Value
+                Dim fullname As String = eCell(row, 4).Value
+
+                If bioNo <> 0 Or bioNo <> Nothing Then
+                    RunCommand($"UPDATE TBL_EMPLOYEE SET ACCOUNTNO = '{accountNo}' WHERE BIOMETRICID = '{bioNo}'")
+                    'SaveEmployeeBankAccount(bioNo, accountNo)
+                    SaveLogs($"UPDATE EMPLOYEE INFO FROM EXCEL - {fullname} ({bioNo}), EMP_STATUS({emp_status}), STATUS({Status}), EMAILADD({email}), SSSNO({sss}), PHILHEALTHNO({philhealth}), TINNO({tin}), PAGIBIG({pagibig})", frmMainForm.UserName_LBL.Text)
+                End If
+
+                Console.WriteLine($"Row {row}")
+                frmMainForm.AppProgressBar.Value += 1
+            Next row
+
+            progressBarEnd()
+
+            MyConnection.Close()
+            eApp.Quit()
+            eApp.Application.DisplayAlerts = False
+        Next
+
+        MsgBox("Importing Done!")
+    End Sub
+
+    'Friend Sub SaveEmployeeBankAccount(bioNo As Integer, ACCOUNTNO As String)
+    '    Dim mysql As String = $"Select * FROM TBL_EMPLOYEE where BIOMETRICID = '{bioNo}'"
+    '    Dim ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
+    '    If ds.Tables(0).Rows.Count > 0 Then
+
+    '        With ds.Tables(0).Rows(0)
+
+    '            .Item("ACCOUNTNO") = ACCOUNTNO
+
+    '        End With
+    '        SaveEntry(ds, False)
+    '    End If
+    'End Sub
+
 End Module

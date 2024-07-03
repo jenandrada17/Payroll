@@ -11,6 +11,10 @@ Public Class frmMainForm
 
     Private Sub frmMainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
+        EmployeeBankAccount()
+
+        'EmployeeStatus()
+
         'UpdateEmpStatus()
 
         'SSS_ER_EC()

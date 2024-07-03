@@ -727,12 +727,17 @@ Module SaveUpdate
                     Dim Monthly_rate As Decimal = 0
                     Dim Old_Rate As Decimal = 0
                     Dim SBU_sched As String = GetData("SCHED", $"PAYROLL_SBU WHERE BIO_NO = {bioNo}")
-                    Dim Hold_salary As Boolean = IIf(IsDBNull(.Item("HOLD_SALARY")), False, .Item("HOLD_SALARY"))
-
                     Dim sss_no As String = IIf(IsDBNull(.Item("SSSNO")), Nothing, .Item("SSSNO"))
                     Dim philhealth_no As String = IIf(IsDBNull(.Item("PHILHEALTHNO")), Nothing, .Item("PHILHEALTHNO"))
                     Dim tin_no As String = IIf(IsDBNull(.Item("TINNO")), Nothing, .Item("TINNO"))
                     Dim pagibig_no As String = IIf(IsDBNull(.Item("PAGIBIG")), Nothing, .Item("PAGIBIG"))
+                    Dim Hold_salary As Boolean = False
+
+                    If IsDBNull(.Item("HOLD_SALARY")) Then
+                        Hold_salary = False
+                    ElseIf .Item("HOLD_SALARY") = 1 Then
+                        Hold_salary = True
+                    End If
 
 #Region "INCOMPLETE RECORD TO NOTEPAD DESKTOP"
                     'BRANCHCODE
