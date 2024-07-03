@@ -1312,15 +1312,17 @@ Module SaveUpdate
 
                         '===================== STANDARD AND TRAINING OVERTIME/LATE/UNDERTIME ==================    
                         Dim LATEE, LATE_TRAIN, UNDERTIMEE, UNDERTIMEE_TRAIN, OVERTIMEE, OVERTIMEE_TRAIN, NIGHTRATEE, NIGHTRATEE_TRAIN As Decimal
-                        LATEE = ((rate / 8) / 60) * (Late - Training_totalLate)
-                        UNDERTIMEE = ((rate / 8) / 60) * (UnderTime - Training_totalUT)
-                        OVERTIMEE = ((rate / 8) * 1.25) * (RegularOT - training_overtime)
-                        NIGHTRATEE = ((rate / 8) * 0.1) * (nightRate - Training_nightRate)
+                        Dim cutomizeOT As Integer = GetData_Integer("OT_HRS", $"PAYROLL_CUSTOMIZE_OT WHERE BIONO = {bioNo}")
+                        Dim OTHRS As Integer = IIf(cutomizeOT = 0, 8, cutomizeOT)
+                        LATEE = ((rate / OTHRS) / 60) * (Late - Training_totalLate)
+                        UNDERTIMEE = ((rate / OTHRS) / 60) * (UnderTime - Training_totalUT)
+                        OVERTIMEE = ((rate / OTHRS) * 1.25) * (RegularOT - training_overtime)
+                        NIGHTRATEE = ((rate / OTHRS) * 0.1) * (nightRate - Training_nightRate)
 
-                        LATE_TRAIN = ((trainee_rate / 8) / 60) * Training_totalLate
-                        UNDERTIMEE_TRAIN = ((trainee_rate / 8) / 60) * Training_totalUT
-                        OVERTIMEE_TRAIN = ((trainee_rate / 8) * 1.25) * training_overtime
-                        NIGHTRATEE_TRAIN = ((trainee_rate / 8) * 0.1) * Training_nightRate
+                        LATE_TRAIN = ((trainee_rate / OTHRS) / 60) * Training_totalLate
+                        UNDERTIMEE_TRAIN = ((trainee_rate / OTHRS) / 60) * Training_totalUT
+                        OVERTIMEE_TRAIN = ((trainee_rate / OTHRS) * 1.25) * training_overtime
+                        NIGHTRATEE_TRAIN = ((trainee_rate / OTHRS) * 0.1) * Training_nightRate
 
                         LATEE = LATEE + LATE_TRAIN
                         UNDERTIMEE = UNDERTIMEE + UNDERTIMEE_TRAIN
@@ -1338,9 +1340,9 @@ Module SaveUpdate
                                 Dim percentOT_old As Double = old_OT / RegularOT
                                 Dim percentOT_new As Double = new_OT / RegularOT
 
-                                Dim OT_training As Double = ((trainee_rate / 8) / 60) * (RegularOT * percentOT_training)
-                                Dim OT_old As Double = ((Old_Rate / 8) * 1.25) * (RegularOT * percentOT_old)
-                                Dim OT_new As Double = ((rate / 8) * 1.25) * (RegularOT * percentOT_new)
+                                Dim OT_training As Double = ((trainee_rate / OTHRS) / 60) * (RegularOT * percentOT_training)
+                                Dim OT_old As Double = ((Old_Rate / OTHRS) * 1.25) * (RegularOT * percentOT_old)
+                                Dim OT_new As Double = ((rate / OTHRS) * 1.25) * (RegularOT * percentOT_new)
 
                                 OVERTIMEE = OT_training + OT_old + OT_new
                             End If
@@ -1353,18 +1355,17 @@ Module SaveUpdate
                                 Dim percentLate_old As Double = old_late / Late
                                 Dim percentLate_new As Double = new_late / Late
 
-                                Dim Late_training As Double = ((trainee_rate / 8) / 60) * (Late * percentLate_training)
-                                Dim Late_old As Double = ((Old_Rate / 8) / 60) * (Late * percentLate_old)
-                                Dim Late_new As Double = ((rate / 8) / 60) * (Late * percentLate_new)
+                                Dim Late_training As Double = ((trainee_rate / OTHRS) / 60) * (Late * percentLate_training)
+                                Dim Late_old As Double = ((Old_Rate / OTHRS) / 60) * (Late * percentLate_old)
+                                Dim Late_new As Double = ((rate / OTHRS) / 60) * (Late * percentLate_new)
 
                                 LATEE = Late_training + Late_old + Late_new
-
 
                                 '=================  LATE ADJUSTMENT IF NOT EXEMPTED ==================== 
                                 Dim LateAdjust As Boolean = IIf(GetData("VALUES", $"MAINTENANCE WHERE KEYS='LateAdjustment'") = "ON", True, False)
                                 If LateAdjust = True And Late_Adjustment > 1 And Not ThisHasRow($"LATE_EXEMPTED WHERE BIONO = {bioNo}") Then
-                                    Dim t1 As Decimal = (Old_Rate / 8) / 60
-                                    Dim t2 As Decimal = (rate / 8) / 60
+                                    Dim t1 As Decimal = (Old_Rate / OTHRS) / 60
+                                    Dim t2 As Decimal = (rate / OTHRS) / 60
                                     Dim lateMinusApprove As Decimal = Late - Late_Approved
                                     Dim total_adjustment1 As Decimal = ((lateMinusApprove * percentLate_old) * (Late_Adjustment - 1)) * t1
                                     Dim total_adjustment2 As Decimal = ((lateMinusApprove * percentLate_new) * (Late_Adjustment - 1)) * t2
@@ -1382,9 +1383,9 @@ Module SaveUpdate
                                 Dim percentUT_old As Double = old_undertime / UNDERTIMEE
                                 Dim percentUT_new As Double = new_undertime / UNDERTIMEE
 
-                                Dim UT_training As Double = ((trainee_rate / 8) / 60) * (UNDERTIMEE * percentUT_training)
-                                Dim UT_old As Double = ((Old_Rate / 8) / 60) * (UNDERTIMEE * percentUT_old)
-                                Dim UT_new As Double = ((rate / 8) / 60) * (UNDERTIMEE * percentUT_new)
+                                Dim UT_training As Double = ((trainee_rate / OTHRS) / 60) * (UNDERTIMEE * percentUT_training)
+                                Dim UT_old As Double = ((Old_Rate / OTHRS) / 60) * (UNDERTIMEE * percentUT_old)
+                                Dim UT_new As Double = ((rate / OTHRS) / 60) * (UNDERTIMEE * percentUT_new)
 
                                 UNDERTIMEE = UT_training + UT_old + UT_new
                             End If
@@ -1404,7 +1405,7 @@ Module SaveUpdate
                             Dim LateAdjust As Boolean = IIf(GetData("VALUESS", $"MAINTENANCE WHERE KEYSS = 'LateAdjustment'") = "ON", True, False)
                             If LateAdjust = True And Late_Adjustment > 1 And Not ThisHasRow($"LATE_EXEMPTED WHERE BIONO = {bioNo}") Then
 
-                                Dim late_rate As Decimal = (rate / 8) / 60
+                                Dim late_rate As Decimal = (rate / OTHRS) / 60
                                 Dim total_adjustment As Decimal = ((Late - Late_Approved) * (Late_Adjustment - 1)) * late_rate
                                 Deduction += total_adjustment
                                 Save_Recorded_Allow_Deduc(bioNo, paydate_, "Late Adjustment", total_adjustment, "DEDUCTION")

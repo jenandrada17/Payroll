@@ -740,7 +740,12 @@ Module Report_function
                                 If COMPANY = "PERFECOM" Then COMPANY = "Perfecom"
                                 If COMPANY = "P&G UY" Then COMPANY = "P&G Uy"
 
-                                BRANCH_CODE = $"{COMPANY} - { .Item("BRANCHNAME")}"
+                                If str = Nothing Then
+                                    BRANCH_CODE = COMPANY
+                                Else
+                                    BRANCH_CODE = $"{COMPANY} - { .Item("BRANCHNAME")}"
+                                End If
+
                             End If
 
                             If HO_CATEGORY = "GHS/P&G UY Admin Office" Or HO_CATEGORY = "GHS/P&G UY Admin Operation" Then
@@ -914,7 +919,12 @@ Module Report_function
                             If COMPANY = "PERFECOM" Then COMPANY = "Perfecom"
                             If COMPANY = "P&G UY" Then COMPANY = "P&G Uy"
 
-                            BRANCH_CODE = $"{COMPANY} - { .Item("BRANCHNAME")}"
+                            If str = Nothing Then
+                                BRANCH_CODE = COMPANY
+                            Else
+                                BRANCH_CODE = $"{COMPANY} - { .Item("BRANCHNAME")}"
+                            End If
+
                         End If
 
                         Dim HO_CATEGORY As String = IIf(IsDBNull(.Item("HO_CATEGORY")), "", .Item("HO_CATEGORY"))
@@ -995,7 +1005,11 @@ Module Report_function
                             If COMPANY = "PERFECOM" Then COMPANY = "Perfecom"
                             If COMPANY = "P&G UY" Then COMPANY = "P&G Uy"
 
-                            BRANCH_CODE = $"{COMPANY} - { .Item("BRANCHNAME")}"
+                            If str = Nothing Then
+                                BRANCH_CODE = COMPANY
+                            Else
+                                BRANCH_CODE = $"{COMPANY} - { .Item("BRANCHNAME")}"
+                            End If
                         End If
 
                         Dim HO_CATEGORY As String = IIf(IsDBNull(.Item("HO_CATEGORY")), "", .Item("HO_CATEGORY"))
