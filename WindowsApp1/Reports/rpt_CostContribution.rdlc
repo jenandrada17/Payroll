@@ -385,11 +385,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=IIf(Fields!COMPANY.Value = "DALTON", "Dalton - " &amp; Fields!BRANCH.Value, 
-    IIf(Fields!COMPANY.Value = "PHOTO" And Not Fields!BRANCH.Value.StartsWith("Photo - "), "Photo - " &amp; Fields!BRANCH.Value, 
-    IIf(Fields!COMPANY.Value = "P&amp;G UY", "P&amp;G Uy - " &amp; Fields!BRANCH.Value, 
-    IIf(Fields!COMPANY.Value = "PERFECOM" And Not Fields!BRANCH.Value.StartsWith("Perfecom - "), "Perfecom - " &amp; Fields!BRANCH.Value, 
-        Fields!BRANCH.Value))))</Value>
+                                  <Value>=Fields!BRANCH.Value</Value>
                                   <Style>
                                     <FontFamily>Book Antiqua</FontFamily>
                                     <FontSize>8pt</FontSize>

@@ -3252,11 +3252,13 @@ Module SelectFromDatabase
             End If
 
             'SIL REFUND
-            Dim remainingSIL As Double = 5 - GetTotalSIL(bioNo)
-            Dim perSIL As Decimal = (minimumRate * 5) / 12
-            silRefund = remainingSIL * perSIL
-            totalClaims += silRefund
-            dt.Rows.Add("S.I.L Refund", silRefund.ToString("N"), "DEBIT")
+            If SIL_Allowed(bioNo) Then
+                Dim remainingSIL As Double = 5 - GetTotalSIL(bioNo)
+                Dim perSIL As Decimal = (minimumRate * 5) / 12
+                silRefund = remainingSIL * perSIL
+                totalClaims += silRefund
+                dt.Rows.Add("S.I.L Refund", silRefund.ToString("N"), "DEBIT")
+            End If
 
             '13TH MONTH
             remaining13thMonth = Get13Month(bioNo)
@@ -3363,6 +3365,19 @@ Module SelectFromDatabase
             sil = ds.Tables(0).Rows(0).Item("TOTALS")
         End If
         Return sil
+    End Function
+
+    Friend Function SIL_Allowed(bioNo As Integer) As Boolean
+        Dim allowedSIL As Boolean = False
+        Dim mysql As String = $"SELECT  
+                                  (CURRENT_DATE - DATEHIRED) >= 365
+                                FROM 
+                                  TBL_EMPLOYEE 
+                                WHERE
+                                  BIOMETRICID = {bioNo}"
+        Dim ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
+        allowedSIL = ds.Tables(0).Rows(0).Item(0)
+        Return allowedSIL
     End Function
 
 

@@ -795,11 +795,13 @@ A
 
             DALTON_BB = GetCount_Common("where company = 'DALTON'")
             DALTON_HO = GetCount_Common("where UPPER(HO_CATEGORY) LIKE UPPER('%Dalton%')")
-            GENSANPERFECT_BB = GetCount_Common("where branch_code IN ('ROG','ROX','FINEPIX','GMA','DIG','SNP','SMD')")
+            'GENSANPERFECT_BB = GetCount_Common("where branch_code IN ('ROG','ROX','FINEPIX','GMA','DIG','SNP','SMD')")
+            GENSANPERFECT_BB = GetCount_Common("where branch_code IN ('PRG','PRX','FINEPIX','GMA','DIG','PSP','SMD')")
             GENSANPERFECT_HO = GetCount_Common("where UPPER(HO_CATEGORY) LIKE UPPER('%Photo%')")
             JRPHOTO_BB = Nothing
             JRPHOTO_HO = Nothing
-            DAVAOP_BB = GetCount_Common("where branch_code IN ('SMG','KCG','ACM','TAC')")
+            'DAVAOP_BB = GetCount_Common("where branch_code IN ('SMG','KCG','ACM','TAC')")
+            DAVAOP_BB = GetCount_Common("where branch_code IN ('PSG','KCG','ACM','TAC')")
             DAVAOP_HO = Nothing
             PERFECOM_BB = GetCount_Common("where company = 'PERFECOM'")
             PERFECOM_HO = GetCount_Common("where company = 'HEAD OFFICE' AND UPPER(HO_CATEGORY) LIKE UPPER('%Perfecom%')")
@@ -821,7 +823,8 @@ A
             LEASING = GetCount_Common("where ho_category IN ('Leasing Admin Office', 'Construction')")
             DALTON_BR = GetDistinctCount("branch_code", "where company = 'DALTON'")
             GENSANPERFECT_BR = GetDistinctCount("branch_code", "where company = 'PHOTO'")
-            DAVAOP_BR = GetDistinctCount("branch_code", "where branch_code IN ('SMG','KCG','ACM','TAC')")
+            'DAVAOP_BR = GetDistinctCount("branch_code", "where branch_code IN ('SMG','KCG','ACM','TAC')")
+            DAVAOP_BR = GetDistinctCount("branch_code", "where branch_code IN ('PSG','KCG','ACM','TAC')")
             PERFECOM_BR = GetDistinctCount("branch_code", "where company = 'PERFECOM'")
             G3_BR = GetDistinctCount("branch_code", "where branch_code = '3G'")
             Seven11_BR = GetDistinctCount("branch_code", "where branch_code IN ('711-ROX','711-POL')")
@@ -869,11 +872,13 @@ A
 
         DALTON_BB = GetCount_Common("where company = 'DALTON'")
         DALTON_HO = GetCount_Common("where UPPER(HO_CATEGORY) LIKE UPPER('%Dalton%')")
-        GENSANPERFECT_BB = GetCount_Common("where branch_code IN ('ROG','ROX','FINEPIX','GMA','DIG','SNP','SMD')")
+        'GENSANPERFECT_BB = GetCount_Common("where branch_code IN ('ROG','ROX','FINEPIX','GMA','DIG','SNP','SMD')")
+        GENSANPERFECT_BB = GetCount_Common("where branch_code IN ('PRG','PRX','FINEPIX','GMA','DIG','PSP','SMD')")
         GENSANPERFECT_HO = GetCount_Common("where UPPER(HO_CATEGORY) LIKE UPPER('%Photo%')")
         JRPHOTO_BB = Nothing
         JRPHOTO_HO = Nothing
-        DAVAOP_BB = GetCount_Common("where branch_code IN ('SMG','KCG','ACM','TAC')")
+        'DAVAOP_BB = GetCount_Common("where branch_code IN ('SMG','KCG','ACM','TAC')")
+        DAVAOP_BB = GetCount_Common("where branch_code IN ('PSG','KCG','ACM','TAC')")
         DAVAOP_HO = Nothing
         PERFECOM_BB = GetCount_Common("where company = 'PERFECOM'")
         PERFECOM_HO = GetCount_Common("where company = 'HEAD OFFICE' AND UPPER(HO_CATEGORY) LIKE UPPER('%Perfecom%')")
@@ -895,7 +900,8 @@ A
         LEASING = GetCount_Common("where ho_category IN ('Leasing Admin Office','Construction')")
         DALTON_BR = GetDistinctCount("branch_code", "where company = 'DALTON'")
         GENSANPERFECT_BR = GetDistinctCount("branch_code", "where company = 'PHOTO'")
-        DAVAOP_BR = GetDistinctCount("branch_code", "where branch_code IN ('SMG','KCG','ACM','TAC')")
+        'DAVAOP_BR = GetDistinctCount("branch_code", "where branch_code IN ('SMG','KCG','ACM','TAC')")
+        DAVAOP_BR = GetDistinctCount("branch_code", "where branch_code IN ('PSG','KCG','ACM','TAC')")
         PERFECOM_BR = GetDistinctCount("branch_code", "where company = 'PERFECOM'")
         G3_BR = GetDistinctCount("branch_code", "where branch_code = '3G'")
         Seven11_BR = GetDistinctCount("branch_code", "where branch_code IN ('711-ROX','711-POL')")
@@ -1355,6 +1361,144 @@ A
 
     End Sub
 
+    'Public Sub LoadCostDistribution()
+    '    Rpt_CostContrib.LocalReport.DataSources.Clear()
+    '    Dim linee As String = Nothing
+
+    '    Try
+    '        Dim mysql As String
+    '        Dim PAYDATE As String = CostPaydate_Combo.Text
+    '        Dim PAYROLL As DateTime = DateTime.Parse(CostPaydate_Combo.Text)
+
+    '        Dim FORMNAME As String = "2nd PERIOD"
+    '        If PAYROLL.Day = 15 Then
+    '            FORMNAME = "1ST PERIOD"
+    '        End If
+
+    '        FORMNAME = $"{(PAYROLL.ToString("MMMM dd, yyyy")).ToUpper} - {FORMNAME}"
+
+    '        Dim dt_Cost As New DataTable()
+    '        With dt_Cost
+    '            .Columns.Add("COMPANY")
+    '            .Columns.Add("BRANCH")
+    '            .Columns.Add("NAME")
+    '            .Columns.Add("AMOUNT")
+    '            .Columns.Add("CATEGORY")
+    '        End With
+
+    '        ' Combined SQL Query
+    '        mysql = $"SELECT 
+    '                CASE 
+    '                    WHEN A.BRANCHCODE IS NULL THEN ''
+    '                    WHEN A.BRANCHCODE = '' THEN ''
+    '                    ELSE A.BRANCHCODE 
+    '                END AS BRANCH_CODE,
+    '                CASE 
+    '                    WHEN A.HO_CATEGORY IS NULL THEN ''
+    '                    WHEN A.HO_CATEGORY = '' THEN ''
+    '                    ELSE A.HO_CATEGORY 
+    '                END AS HO_CATEGORY,  
+    '                C.CATEGORY, 
+    '                A.COMPANY, 
+    '                TRANSAC_NAME,  
+    '                SUM(C.AMOUNT) AS TOTS,
+    '                SUM(COALESCE(PP.TOTAL_BASIC, 0)) AS BASIC,
+    '                SUM(COALESCE(PP.TOTAL_OVERTIME, 0)) AS OT,
+    '                SUM(COALESCE(PP.SSS_ER, 0)) AS SSS_ER,
+    '                SUM(COALESCE(PP.SSS_EC, 0)) AS SSS_EC,
+    '                SUM(COALESCE(PP.PAGIBIG_COMP, 0)) AS HDMF,
+    '                SUM(COALESCE(PP.PHILHEALTH_COMP, 0)) AS PHILH,
+    '                SUM(COALESCE(PP.TOTAL_REGHOLIDAY, 0)) AS REGHOLIDAY,
+    '                SUM(COALESCE(PP.TOTAL_SPECHOLIDAY, 0)) AS SPECHOLIDAY,
+    '                SUM(COALESCE(PP.TOTAL_NIGHT_RATE, 0)) AS NIGHT_RATE,
+    '                SUM(COALESCE(PP.TOTAL_LATE_UT, 0)) AS LATE_UT,
+    '                SUM(COALESCE(PP.SSS_ER, 0) + COALESCE(PP.SSS_COMP, 0)) AS SSS_PAYABLE,
+    '                SUM(COALESCE(PP.PAGIBIG_COMP, 0) * 2) AS HDMF_PAYABLE,
+    '                SUM(COALESCE(PP.PHILHEALTH_COMP, 0) * 2) AS PHILH_PAYABLE,
+    '                SUM(COALESCE(PP.NET_PAY, 0)) AS NETPAY
+    '            FROM 
+    '                TBL_EMPLOYEE A 
+    '            LEFT JOIN 
+    '                RECORDED_ALLOW_DEDUC C ON C.BIO_NO = A.BIOMETRICID AND C.PAYDATE = '{PAYDATE}'    
+    '            LEFT JOIN 
+    '                PAYROLL_PAYOUT PP ON PP.BIOMETRIC_ID = A.BIOMETRICID AND PP.PAYDATE = '{PAYDATE}'
+    '            GROUP BY 
+    '                A.BRANCHCODE, A.HO_CATEGORY, A.COMPANY, C.CATEGORY, TRANSAC_NAME
+    '            ORDER BY 
+    '                BRANCH_CODE;"
+
+    '        TestingScript_String(mysql)
+    '        Using ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
+    '            If ds.Tables(0).Rows.Count > 0 Then
+    '                progressBarStart(ds.Tables(0).Rows.Count)
+    '                For Each dr In ds.Tables(0).Rows
+    '                    With dr
+    '                        linee = "COMPANY"
+    '                        Dim COMPANY As String = IIf(IsDBNull(.Item("COMPANY")), "", .Item("COMPANY"))
+    '                        linee = "BRANCHCODE"
+    '                        Dim BRANCHCODE As String = IIf(IsDBNull(.Item("BRANCH_CODE")), "", .Item("BRANCH_CODE"))
+    '                        linee = "BRANCHNAME"
+    '                        Dim BRANCHNAME As String = GET_STRING("PAYROLL_CITY_BRANCH", "BRANCHNAME", $"BRANCHCODE = '{BRANCHCODE}'")
+
+    '                        If BRANCHCODE = Nothing Then
+    '                            linee = "BRANCHNAME = HO_CATEGORY"
+    '                            BRANCHNAME = IIf(IsDBNull(.Item("HO_CATEGORY")), "", CStr(.Item("HO_CATEGORY")).TrimEnd)
+    '                        End If
+
+    '                        Dim CATEGORY As String = IIf(IsDBNull(.Item("CATEGORY")), "", .Item("CATEGORY"))
+    '                        Dim DC_Amount As Decimal = IIf(IsDBNull(.Item("TOTS")), 0, .Item("TOTS"))
+    '                        Dim Debit_Credit As String = IIf(IsDBNull(.Item("TRANSAC_NAME")), "", .Item("TRANSAC_NAME"))
+
+    '                        If CATEGORY.ToUpper = "BASIC PAY" Or CATEGORY.ToUpper = "BASIC REFUND" Then
+    '                            CATEGORY = "Basic Refund"
+    '                        End If
+
+    '                        If DC_Amount <> 0 Then
+    '                            dt_Cost.Rows.Add(COMPANY, BRANCHNAME, CATEGORY, DC_Amount, Debit_Credit)
+    '                        End If
+
+    '                        Dim TOTAL_BASIC As Decimal = .Item("BASIC")
+
+    '                        If TOTAL_BASIC <> 0 Then
+    '                            dt_Cost.Rows.Add(COMPANY, BRANCHNAME, "Basic Pay", .Item("BASIC"), "DEBIT")
+    '                            dt_Cost.Rows.Add(COMPANY, BRANCHNAME, "Regular Overtime", .Item("OT"), "DEBIT")
+    '                            dt_Cost.Rows.Add(COMPANY, BRANCHNAME, "SSS Employer Share", .Item("SSS_ER"), "DEBIT")
+    '                            dt_Cost.Rows.Add(COMPANY, BRANCHNAME, "ECC", .Item("SSS_EC"), "DEBIT")
+    '                            dt_Cost.Rows.Add(COMPANY, BRANCHNAME, "HDMF Employer Share", .Item("HDMF"), "DEBIT")
+    '                            dt_Cost.Rows.Add(COMPANY, BRANCHNAME, "Phil Health Employer Share", .Item("PHILH"), "DEBIT")
+    '                            dt_Cost.Rows.Add(COMPANY, BRANCHNAME, "Regular Holiday", .Item("REGHOLIDAY"), "DEBIT")
+    '                            dt_Cost.Rows.Add(COMPANY, BRANCHNAME, "Special Holiday", .Item("SPECHOLIDAY"), "DEBIT")
+    '                            dt_Cost.Rows.Add(COMPANY, BRANCHNAME, "Night Premium", .Item("NIGHT_RATE"), "DEBIT")
+    '                            dt_Cost.Rows.Add(COMPANY, BRANCHNAME, "EC PAYABLE", .Item("SSS_EC"), "CREDIT")
+    '                            dt_Cost.Rows.Add(COMPANY, BRANCHNAME, "LATE", .Item("LATE_UT"), "CREDIT")
+    '                            dt_Cost.Rows.Add(COMPANY, BRANCHNAME, "SSS PAYABLE", .Item("SSS_PAYABLE"), "CREDIT")
+    '                            dt_Cost.Rows.Add(COMPANY, BRANCHNAME, "HDMF PAYABLE", .Item("HDMF_PAYABLE"), "CREDIT")
+    '                            dt_Cost.Rows.Add(COMPANY, BRANCHNAME, "PHIL HEALTH PAYABLE", .Item("PHILH_PAYABLE"), "CREDIT")
+    '                            dt_Cost.Rows.Add(COMPANY, BRANCHNAME, "CASH IN BANK", .Item("NETPAY"), "CREDIT")
+    '                        End If
+    '                    End With
+
+    '                    frmMainForm.AppProgressBar.Value += 1
+    '                Next
+    '                progressBarEnd()
+    '            End If
+    '        End Using
+
+    '        Dim paramList As New List(Of Microsoft.Reporting.WinForms.ReportParameter) From {
+    '            New Microsoft.Reporting.WinForms.ReportParameter("paramPaydate", FORMNAME)
+    '            }
+
+    '        Dim DATASOURCE As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt_Cost)
+    '        Rpt_CostContrib.LocalReport.DataSources.Add(DATASOURCE)
+    '        Rpt_CostContrib.LocalReport.SetParameters(paramList)
+    '        Rpt_CostContrib.RefreshReport()
+
+    '    Catch ex As Exception
+    '        MessageBox.Show($"{ex.Message} {vbCrLf} {linee}", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
+    '    End Try
+    'End Sub
+
+
     Public Sub LoadCostDistribution()
         Rpt_CostContrib.LocalReport.DataSources.Clear()
         Dim linee As String = Nothing
@@ -1399,11 +1543,11 @@ A
                         COMPANY, 
                         SUM(AMOUNT) AS TOTS 
                     From 
-	                    TBL_EMPLOYEE A 
+                     TBL_EMPLOYEE A 
                     LEFT JOIN 
-	                    RECORDED_ALLOW_DEDUC C ON C.BIO_NO = A.BIOMETRICID and C.PAYDATE = '{PAYDATE}'    
+                     RECORDED_ALLOW_DEDUC C ON C.BIO_NO = A.BIOMETRICID and C.PAYDATE = '{PAYDATE}'    
                     GROUP BY 
-	                    BRANCH_CODE, COMPANY, C.CATEGORY, TRANSAC_NAME, HO_CATEGORY"
+                     BRANCH_CODE, COMPANY, C.CATEGORY, TRANSAC_NAME, HO_CATEGORY"
 
             TestingScript_String(mysql)
             Using ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
@@ -1428,26 +1572,26 @@ A
                             If BRANCHCODE = Nothing Then
                                 linee = "BRANCHNAME = HO_CATEGORY - 1"
                                 BRANCHNAME = IIf(IsDBNull(.Item("HO_CATEGORY")), "", CStr(.Item("HO_CATEGORY")).TrimEnd)
-                            ElseIf BRANCHCODE = "SMG" Then
-                                If COMPANY = "PERFECOM" Then
-                                    BRANCHNAME = $"Perfecom - SM GENSAN"
-                                Else
-                                    BRANCHNAME = $"Photo - SM GENSAN"
-                                End If
-                            ElseIf BRANCHCODE = "KCG" And COMPANY = "PERFECOM" Then
-                                BRANCHNAME = $"Perfecom - KCC Gensan"
-                            ElseIf BRANCHCODE = "KID" And COMPANY = "PHOTO" Then
-                                BRANCHNAME = $"Photo - Kidapawan"
-                            ElseIf BRANCHCODE = "MID" And COMPANY = "PHOTO" Then
-                                BRANCHNAME = $"Photo - Midsayap"
-                            ElseIf BRANCHCODE = "POL" And COMPANY = "PHOTO" Then
-                                BRANCHNAME = $"Photo - Polomolok"
-                            ElseIf BRANCHCODE = "ROG" And COMPANY = "PHOTO" Then
-                                BRANCHNAME = $"Photo - Robinson Gensan"
-                            ElseIf BRANCHCODE = "ROX" And COMPANY = "PHOTO" Then
-                                BRANCHNAME = $"Photo - Roxas Gensan"
-                            ElseIf BRANCHCODE = "SNP" And COMPANY = "PHOTO" Then
-                                BRANCHNAME = $"Photo - San Pedro"
+                                'ElseIf BRANCHCODE = "SMG" Then
+                                '    If COMPANY = "PERFECOM" Then
+                                '        BRANCHNAME = $"Perfecom - SM GENSAN"
+                                '    Else
+                                '        BRANCHNAME = $"Photo - SM GENSAN"
+                                '    End If
+                                'ElseIf BRANCHCODE = "KCG" And COMPANY = "PERFECOM" Then
+                                '    BRANCHNAME = $"Perfecom - KCC Gensan"
+                                'ElseIf BRANCHCODE = "KID" And COMPANY = "PHOTO" Then
+                                '    BRANCHNAME = $"Photo - Kidapawan"
+                                'ElseIf BRANCHCODE = "MID" And COMPANY = "PHOTO" Then
+                                '    BRANCHNAME = $"Photo - Midsayap"
+                                'ElseIf BRANCHCODE = "POL" And COMPANY = "PHOTO" Then
+                                '    BRANCHNAME = $"Photo - Polomolok"
+                                'ElseIf BRANCHCODE = "ROG" And COMPANY = "PHOTO" Then
+                                '    BRANCHNAME = $"Photo - Robinson Gensan"
+                                'ElseIf BRANCHCODE = "ROX" And COMPANY = "PHOTO" Then
+                                '    BRANCHNAME = $"Photo - Roxas Gensan"
+                                'ElseIf BRANCHCODE = "SNP" And COMPANY = "PHOTO" Then
+                                '    BRANCHNAME = $"Photo - San Pedro"
                             End If
 
                             If CATEGORY.ToUpper = "BASIC PAY" Or CATEGORY.ToUpper = "BASIC REFUND" Then
@@ -1455,6 +1599,19 @@ A
                             End If
 
                             If DC_Amount <> 0 Then
+
+                                'If BRANCHCODE = "PRG" Or BRANCHCODE = "PRX" Or BRANCHCODE = "PSP" Or BRANCHCODE = "PMD" Then
+                                '    Console.WriteLine($"BRANCHCODE - {BRANCHCODE}")
+                                '    Console.WriteLine($"BRANCHCODE - {BRANCHNAME}")
+                                '    Console.WriteLine($"COMPANY - {COMPANY}")
+
+                                '    BRANCHNAME = $"ZZZ ({COMPANY} - {BRANCHNAME})"
+                                'End If 
+
+                                If COMPANY <> "" Then
+                                    BRANCHNAME = $"{COMPANY} - {BRANCHNAME}"
+                                End If
+
                                 dt_Cost.Rows.Add(COMPANY, BRANCHNAME, CATEGORY, DC_Amount, Debit_Credit)
                             End If
 
@@ -1516,26 +1673,38 @@ A
                             If BRANCHCODE = Nothing Then
                                 linee = "BRANCHNAME = HO_CATEGORY - 2"
                                 BRANCHNAME = CStr(.Item("HO_CATEGORY")).TrimEnd
-                            ElseIf BRANCHCODE = "SMG" Then
-                                If COMPANY = "PERFECOM" Then
-                                    BRANCHNAME = $"Perfecom - SM GENSAN"
-                                Else
-                                    BRANCHNAME = $"Photo - SM GENSAN"
-                                End If
-                            ElseIf BRANCHCODE = "KCG" And COMPANY = "PERFECOM" Then
-                                BRANCHNAME = $"Perfecom - KCC Gensan"
-                            ElseIf BRANCHCODE = "KID" And COMPANY = "PHOTO" Then
-                                BRANCHNAME = $"Photo - Kidapawan"
-                            ElseIf BRANCHCODE = "MID" And COMPANY = "PHOTO" Then
-                                BRANCHNAME = $"Photo - Midsayap"
-                            ElseIf BRANCHCODE = "POL" And COMPANY = "PHOTO" Then
-                                BRANCHNAME = $"Photo - Polomolok"
-                            ElseIf BRANCHCODE = "ROG" And COMPANY = "PHOTO" Then
-                                BRANCHNAME = $"Photo - Robinson Gensan"
-                            ElseIf BRANCHCODE = "ROX" And COMPANY = "PHOTO" Then
-                                BRANCHNAME = $"Photo - Roxas Gensan"
-                            ElseIf BRANCHCODE = "SNP" And COMPANY = "PHOTO" Then
-                                BRANCHNAME = $"Photo - San Pedro"
+                                'ElseIf BRANCHCODE = "SMG" Then
+                                '    If COMPANY = "PERFECOM" Then
+                                '        BRANCHNAME = $"Perfecom - SM GENSAN"
+                                '    Else
+                                '        BRANCHNAME = $"Photo - SM GENSAN"
+                                '    End If
+                                'ElseIf BRANCHCODE = "KCG" And COMPANY = "PERFECOM" Then
+                                '    BRANCHNAME = $"Perfecom - KCC Gensan"
+                                'ElseIf BRANCHCODE = "KID" And COMPANY = "PHOTO" Then
+                                '    BRANCHNAME = $"Photo - Kidapawan"
+                                'ElseIf BRANCHCODE = "MID" And COMPANY = "PHOTO" Then
+                                '    BRANCHNAME = $"Photo - Midsayap"
+                                'ElseIf BRANCHCODE = "POL" And COMPANY = "PHOTO" Then
+                                '    BRANCHNAME = $"Photo - Polomolok"
+                                'ElseIf BRANCHCODE = "ROG" And COMPANY = "PHOTO" Then
+                                '    BRANCHNAME = $"Photo - Robinson Gensan"
+                                'ElseIf BRANCHCODE = "ROX" And COMPANY = "PHOTO" Then
+                                '    BRANCHNAME = $"Photo - Roxas Gensan"
+                                'ElseIf BRANCHCODE = "SNP" And COMPANY = "PHOTO" Then
+                                '    BRANCHNAME = $"Photo - San Pedro"
+                            End If
+
+                            'If BRANCHCODE = "PRG" Or BRANCHCODE = "PRX" Or BRANCHCODE = "PSP" Or BRANCHCODE = "PMD" Then
+                            '    Console.WriteLine($"BRANCHCODE - {BRANCHCODE}")
+                            '    Console.WriteLine($"BRANCHCODE - {BRANCHNAME}")
+                            '    Console.WriteLine($"COMPANY - {COMPANY}")
+
+                            '    BRANCHNAME = $"ZZZ ({COMPANY} - {BRANCHNAME})"
+                            'End If 
+
+                            If COMPANY <> "" Then
+                                BRANCHNAME = $"{COMPANY} - {BRANCHNAME}"
                             End If
 
                             Dim TOTAL_BASIC As Decimal = .Item("BASIC")
@@ -1705,19 +1874,25 @@ A
         ElseIf Company_Combo.SelectedIndex = 4 Then '=== PERFECOM 
 
             NetBranch_Combo.Items.Clear()
+            'Dim mysql = $"Select * From PAYROLL_PAYOUT A 
+            '                            inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
+            '                            left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
+            '                            where A.PAYDATE  = '{PaydateNet_ComboB.Text}' 
+            '                            and  (B.COMPANY  = 'PERFECOM' OR B.HO_CATEGORY In ('Perfecom Admin Office','Perfecom Admin Operation'))
+            '                            ORDER BY CASE WHEN B.BRANCHCODE = 'SMG' THEN 1
+            '                                          WHEN B.BRANCHCODE = 'KCG' THEN 2
+            '                                          WHEN B.BRANCHCODE = 'OPK' THEN 3
+            '                                          WHEN B.BRANCHCODE = 'ARC' THEN 4
+            '                                          WHEN B.BRANCHCODE = 'ARC' THEN 5
+            '                                          WHEN B.BRANCHCODE = 'KCM' THEN 6
+            '                                          WHEN B.BRANCHCODE = 'ZAM' THEN 7
+            '                                          else 0 end, B.HO_CATEGORY asc, B.BRANCHCODE asc"
             Dim mysql = $"Select * From PAYROLL_PAYOUT A 
                                         inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
                                         left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
                                         where A.PAYDATE  = '{PaydateNet_ComboB.Text}' 
                                         and  (B.COMPANY  = 'PERFECOM' OR B.HO_CATEGORY In ('Perfecom Admin Office','Perfecom Admin Operation'))
-                                        ORDER BY CASE WHEN B.BRANCHCODE = 'SMG' THEN 1
-                                                      WHEN B.BRANCHCODE = 'KCG' THEN 2
-                                                      WHEN B.BRANCHCODE = 'OPK' THEN 3
-                                                      WHEN B.BRANCHCODE = 'ARC' THEN 4
-                                                      WHEN B.BRANCHCODE = 'ARC' THEN 5
-                                                      WHEN B.BRANCHCODE = 'KCM' THEN 6
-                                                      WHEN B.BRANCHCODE = 'ZAM' THEN 7
-                                                      else 0 end, B.HO_CATEGORY asc, B.BRANCHCODE asc"
+                                        ORDER BY B.BRANCHCODE asc"
             PlusS = "PERFECOM"
 
             LoadNet_Print(mysql)
@@ -1755,49 +1930,69 @@ A
                 If PaydateNet_ComboB.SelectedIndex >= 0 Then
                     If NetBranch_Combo.SelectedIndex = 0 Then '=== Davao Perfect
 
+                        'mysql = $"Select * From PAYROLL_PAYOUT A 
+                        '                inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
+                        '                left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
+                        '                where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' and B.BRANCHCODE IN ('SMG','KCG','ACM','TAC') 
+                        '                Order by case when B.BRANCHCODE = 'KCG' then 0
+                        '                              when B.BRANCHCODE = 'SMG' then 1
+                        '                              when B.BRANCHCODE = 'TAC' then 2
+                        '                              when B.BRANCHCODE = 'ACM' then 3 end"
+
                         mysql = $"Select * From PAYROLL_PAYOUT A 
                                         inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
                                         left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
-                                        where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' and B.BRANCHCODE IN ('SMG','KCG','ACM','TAC') 
-                                        Order by case when B.BRANCHCODE = 'KCG' then 0
-                                                      when B.BRANCHCODE = 'SMG' then 1
-                                                      when B.BRANCHCODE = 'TAC' then 2
-                                                      when B.BRANCHCODE = 'ACM' then 3 end"
+                                        where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' and B.PHOTO_CATEGORY = 'DAVAO PERFECT'
+                                        Order by B.BRANCHCODE"
 
                         PlusS = "DAVAO PERFECT"
 
                     ElseIf NetBranch_Combo.SelectedIndex = 1 Then '=== JR Photo
 
+                        'mysql = $"Select * From PAYROLL_PAYOUT A 
+                        '                inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
+                        '                left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
+                        '                where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' and B.BRANCH_CODE IN ('DIG','ISU','M1','POL')
+                        '                Order by case when B.BRANCHCODE = 'DIG' then 0
+                        '                              when B.BRANCHCODE = 'ISU' then 1
+                        '                              when B.BRANCHCODE = 'M1' then 2
+                        '                              when B.BRANCHCODE = 'POL' then 3 end"
+
                         mysql = $"Select * From PAYROLL_PAYOUT A 
                                         inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
                                         left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
-                                        where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' and B.BRANCH_CODE IN ('DIG','ISU','M1','POL')
-                                        Order by case when B.BRANCHCODE = 'DIG' then 0
-                                                      when B.BRANCHCODE = 'ISU' then 1
-                                                      when B.BRANCHCODE = 'M1' then 2
-                                                      when B.BRANCHCODE = 'POL' then 3 end"
+                                        where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' and B.PHOTO_CATEGORY = 'JR PHOTO'
+                                        Order by B.BRANCHCODE "
 
                         PlusS = "JR PHOTO"
                     ElseIf NetBranch_Combo.SelectedIndex = 2 Then '=== Gensan Perfect
+
+                        'mysql = $"Select * From PAYROLL_PAYOUT A 
+                        '                inner JOIN TBL_EMPLOYEE B ON B.BRANCHCODE = A.BIOMETRIC_ID 
+                        '                left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
+                        '                where PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' 
+                        '                and (B.BRANCHCODE IN ('ROG','ROX','FINEPIX','COT','MID','KID','SNP','GMA','SML','ZAM','SMD')
+                        '                or B.HO_CATEGORY IN ('Photo Admin Office', 'Photo Admin Operation'))
+                        '                Order by case when B.BRANCHCODE = 'ROG' then 1
+                        '                              when B.BRANCHCODE = 'ROX' then 2
+                        '                              when B.BRANCHCODE = 'FINEPIX' then 3
+                        '                              when B.BRANCHCODE = 'COT' then 4 
+                        '                              when B.BRANCHCODE = 'KID' then 5 
+                        '                              when B.BRANCHCODE = 'MID' then 6 
+                        '                              when B.BRANCHCODE = 'GMA' then 7 
+                        '                              when B.BRANCHCODE = 'SNP' then 8 
+                        '                              when B.BRANCHCODE = 'SMD' then 9 
+                        '                              when B.BRANCHCODE = 'SML' then 10 
+                        '                              when B.BRANCHCODE = 'ZAM' then 11 
+                        '                              else 0 end"
 
                         mysql = $"Select * From PAYROLL_PAYOUT A 
                                         inner JOIN TBL_EMPLOYEE B ON B.BRANCHCODE = A.BIOMETRIC_ID 
                                         left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
                                         where PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' 
-                                        and (B.BRANCHCODE IN ('ROG','ROX','FINEPIX','COT','MID','KID','SNP','GMA','SML','ZAM','SMD')
-                                        or B.HO_CATEGORY IN ('Photo Admin Office', 'Photo Admin Operation'))
-                                        Order by case when B.BRANCHCODE = 'ROG' then 1
-                                                      when B.BRANCHCODE = 'ROX' then 2
-                                                      when B.BRANCHCODE = 'FINEPIX' then 3
-                                                      when B.BRANCHCODE = 'COT' then 4 
-                                                      when B.BRANCHCODE = 'KID' then 5 
-                                                      when B.BRANCHCODE = 'MID' then 6 
-                                                      when B.BRANCHCODE = 'GMA' then 7 
-                                                      when B.BRANCHCODE = 'SNP' then 8 
-                                                      when B.BRANCHCODE = 'SMD' then 9 
-                                                      when B.BRANCHCODE = 'SML' then 10 
-                                                      when B.BRANCHCODE = 'ZAM' then 11 
-                                                      else 0 end"
+                                            and B.PHOTO_CATEGORY = 'GENSAN PERFECT'
+                                            or B.HO_CATEGORY IN ('Photo Admin Office', 'Photo Admin Operation'))
+                                        Order by B.BRANCHCODE"
 
                         PlusS = "GENSAN PERFECT"
                     ElseIf NetBranch_Combo.SelectedIndex = 3 Then '=== Photo Head Office
@@ -1864,84 +2059,90 @@ A
 
                     ElseIf NetBranch_Combo.SelectedIndex = 1 Then '=== All Dalton Branches Maually Order
 
+                        'mysql = $"Select * From PAYROLL_PAYOUT A 
+                        '                inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
+                        '                left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
+                        '                where A.PAYDATE  = '{paydatee}' AND B.COMPANY  = 'DALTON'
+                        '                 Order by case when B.BRANCHCODE = 'CAG' then 0 
+                        '                               when B.BRANCHCODE = 'JCAT 2' then 1 
+                        '                               when B.BRANCHCODE = 'KCG' then 2 
+                        '                               when B.BRANCHCODE = 'LAG' then 3 
+                        '                               when B.BRANCHCODE = 'PMA' then 4  
+                        '                               when B.BRANCHCODE = 'NUN' then 5  
+                        '                               when B.BRANCHCODE = 'PEN' then 6  
+                        '                               when B.BRANCHCODE = 'PGN' then 7  
+                        '                               when B.BRANCHCODE = 'PIO' then 8  
+                        '                               when B.BRANCHCODE = 'ROG' then 9  
+                        '                               when B.BRANCHCODE = 'ROX' then 10  
+                        '                               when B.BRANCHCODE = 'SAN' then 11  
+                        '                               when B.BRANCHCODE = 'UHA' then 12  
+                        '                               when B.BRANCHCODE = 'POL' then 13  
+                        '                               when B.BRANCHCODE = 'POL2' then 14  
+                        '                               when B.BRANCHCODE = 'POL3' then 15  
+                        '                               when B.BRANCHCODE = 'GAP' then 16  
+                        '                               when B.BRANCHCODE = 'ACM' then 17  
+                        '                               when B.BRANCHCODE = 'GAM' then 18  
+                        '                               when B.BRANCHCODE = 'AL1' then 19  
+                        '                               when B.BRANCHCODE = 'AL2' then 20  
+                        '                               when B.BRANCHCODE = 'ZUL' then 21   
+                        '                               when B.BRANCHCODE = 'ISU 1' then 22  
+                        '                               when B.BRANCHCODE = 'ISU 2' then 23  
+                        '                               when B.BRANCHCODE = 'ISU 3' then 24   
+                        '                               when B.BRANCHCODE = 'TAC 1' then 25  
+                        '                               when B.BRANCHCODE = 'TAC 2' then 26  
+                        '                               when B.BRANCHCODE = 'PQO' then 27   
+                        '                               when B.BRANCHCODE = 'SRA' then 28  
+                        '                               when B.BRANCHCODE = 'TBOLI' then 29  
+                        '                               when B.BRANCHCODE = 'BANG' then 30   
+                        '                               when B.BRANCHCODE = 'ESPE' then 31  
+                        '                               when B.BRANCHCODE = 'KAL' then 32  
+                        '                               when B.BRANCHCODE = 'LAM' then 33  
+                        '                               when B.BRANCHCODE = 'LEBAK' then 34   
+                        '                               when B.BRANCHCODE = 'AWANG' then 35  
+                        '                               when B.BRANCHCODE = 'DAL' then 36  
+                        '                               when B.BRANCHCODE = 'COT 1' then 37  
+                        '                               when B.BRANCHCODE = 'COT 2' then 38   
+                        '                               when B.BRANCHCODE = 'COT 3' then 39   
+                        '                               when B.BRANCHCODE = 'COT 4' then 40   
+                        '                               when B.BRANCHCODE = 'KID' then 41  
+                        '                               when B.BRANCHCODE = 'KID2' then 42  
+                        '                               when B.BRANCHCODE = 'GAK' then 43   
+                        '                               when B.BRANCHCODE = 'MID' then 44  
+                        '                               when B.BRANCHCODE = 'KAB' then 45  
+                        '                               when B.BRANCHCODE = 'KAB 2' then 46  
+                        '                               when B.BRANCHCODE = 'KAB3' then 47   
+                        '                               when B.BRANCHCODE = 'PIKIT' then 48    
+                        '                               when B.BRANCHCODE = 'MLANG' then 49 
+                        '                               when B.BRANCHCODE = 'TUL' then 50 
+                        '                               when B.BRANCHCODE = 'SHARIFF' then 51 
+                        '                               when B.BRANCHCODE = 'SHARIFF 2' then 52 
+                        '                               when B.BRANCHCODE = 'UPI' then 53 
+                        '                               when B.BRANCHCODE = 'PAR' then 54 
+                        '                               when B.BRANCHCODE = 'BUL' then 55  
+                        '                               when B.BRANCHCODE = 'DIG 1' then 56 
+                        '                               when B.BRANCHCODE = 'DIG 2' then 57 
+                        '                               when B.BRANCHCODE = 'GAD' then 58  
+                        '                               when B.BRANCHCODE = 'GGP' then 59 
+                        '                               when B.BRANCHCODE = 'SNP' then 60 
+                        '                               when B.BRANCHCODE = 'TAG' then 61  
+                        '                               when B.BRANCHCODE = 'ALA' then 62  
+                        '                               when B.BRANCHCODE = 'GLAN' then 63 
+                        '                               when B.BRANCHCODE = 'KIA' then 64 
+                        '                               when B.BRANCHCODE = 'MAA' then 65 
+                        '                               when B.BRANCHCODE = 'MAITUM' then 66 
+                        '                               when B.BRANCHCODE = 'ABREA' then 67 
+                        '                               when B.BRANCHCODE = 'SURI 2' then 68  
+                        '                               when B.BRANCHCODE = 'SURI 3' then 69 
+                        '                               when B.BRANCHCODE = 'GCS' then 70  
+                        '                               when B.BRANCHCODE = 'BUT' then 71 
+                        '                               when B.BRANCHCODE = 'GCA' then 72  
+                        '                               end, B.BRANCHCODE asc"
+
                         mysql = $"Select * From PAYROLL_PAYOUT A 
                                         inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
                                         left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
                                         where A.PAYDATE  = '{paydatee}' AND B.COMPANY  = 'DALTON'
-                                         Order by case when B.BRANCHCODE = 'CAG' then 0 
-                                                       when B.BRANCHCODE = 'JCAT 2' then 1 
-                                                       when B.BRANCHCODE = 'KCG' then 2 
-                                                       when B.BRANCHCODE = 'LAG' then 3 
-                                                       when B.BRANCHCODE = 'PMA' then 4  
-                                                       when B.BRANCHCODE = 'NUN' then 5  
-                                                       when B.BRANCHCODE = 'PEN' then 6  
-                                                       when B.BRANCHCODE = 'PGN' then 7  
-                                                       when B.BRANCHCODE = 'PIO' then 8  
-                                                       when B.BRANCHCODE = 'ROG' then 9  
-                                                       when B.BRANCHCODE = 'ROX' then 10  
-                                                       when B.BRANCHCODE = 'SAN' then 11  
-                                                       when B.BRANCHCODE = 'UHA' then 12  
-                                                       when B.BRANCHCODE = 'POL' then 13  
-                                                       when B.BRANCHCODE = 'POL2' then 14  
-                                                       when B.BRANCHCODE = 'POL3' then 15  
-                                                       when B.BRANCHCODE = 'GAP' then 16  
-                                                       when B.BRANCHCODE = 'ACM' then 17  
-                                                       when B.BRANCHCODE = 'GAM' then 18  
-                                                       when B.BRANCHCODE = 'AL1' then 19  
-                                                       when B.BRANCHCODE = 'AL2' then 20  
-                                                       when B.BRANCHCODE = 'ZUL' then 21   
-                                                       when B.BRANCHCODE = 'ISU 1' then 22  
-                                                       when B.BRANCHCODE = 'ISU 2' then 23  
-                                                       when B.BRANCHCODE = 'ISU 3' then 24   
-                                                       when B.BRANCHCODE = 'TAC 1' then 25  
-                                                       when B.BRANCHCODE = 'TAC 2' then 26  
-                                                       when B.BRANCHCODE = 'PQO' then 27   
-                                                       when B.BRANCHCODE = 'SRA' then 28  
-                                                       when B.BRANCHCODE = 'TBOLI' then 29  
-                                                       when B.BRANCHCODE = 'BANG' then 30   
-                                                       when B.BRANCHCODE = 'ESPE' then 31  
-                                                       when B.BRANCHCODE = 'KAL' then 32  
-                                                       when B.BRANCHCODE = 'LAM' then 33  
-                                                       when B.BRANCHCODE = 'LEBAK' then 34   
-                                                       when B.BRANCHCODE = 'AWANG' then 35  
-                                                       when B.BRANCHCODE = 'DAL' then 36  
-                                                       when B.BRANCHCODE = 'COT 1' then 37  
-                                                       when B.BRANCHCODE = 'COT 2' then 38   
-                                                       when B.BRANCHCODE = 'COT 3' then 39   
-                                                       when B.BRANCHCODE = 'COT 4' then 40   
-                                                       when B.BRANCHCODE = 'KID' then 41  
-                                                       when B.BRANCHCODE = 'KID2' then 42  
-                                                       when B.BRANCHCODE = 'GAK' then 43   
-                                                       when B.BRANCHCODE = 'MID' then 44  
-                                                       when B.BRANCHCODE = 'KAB' then 45  
-                                                       when B.BRANCHCODE = 'KAB 2' then 46  
-                                                       when B.BRANCHCODE = 'KAB3' then 47   
-                                                       when B.BRANCHCODE = 'PIKIT' then 48    
-                                                       when B.BRANCHCODE = 'MLANG' then 49 
-                                                       when B.BRANCHCODE = 'TUL' then 50 
-                                                       when B.BRANCHCODE = 'SHARIFF' then 51 
-                                                       when B.BRANCHCODE = 'SHARIFF 2' then 52 
-                                                       when B.BRANCHCODE = 'UPI' then 53 
-                                                       when B.BRANCHCODE = 'PAR' then 54 
-                                                       when B.BRANCHCODE = 'BUL' then 55  
-                                                       when B.BRANCHCODE = 'DIG 1' then 56 
-                                                       when B.BRANCHCODE = 'DIG 2' then 57 
-                                                       when B.BRANCHCODE = 'GAD' then 58  
-                                                       when B.BRANCHCODE = 'GGP' then 59 
-                                                       when B.BRANCHCODE = 'SNP' then 60 
-                                                       when B.BRANCHCODE = 'TAG' then 61  
-                                                       when B.BRANCHCODE = 'ALA' then 62  
-                                                       when B.BRANCHCODE = 'GLAN' then 63 
-                                                       when B.BRANCHCODE = 'KIA' then 64 
-                                                       when B.BRANCHCODE = 'MAA' then 65 
-                                                       when B.BRANCHCODE = 'MAITUM' then 66 
-                                                       when B.BRANCHCODE = 'ABREA' then 67 
-                                                       when B.BRANCHCODE = 'SURI 2' then 68  
-                                                       when B.BRANCHCODE = 'SURI 3' then 69 
-                                                       when B.BRANCHCODE = 'GCS' then 70  
-                                                       when B.BRANCHCODE = 'BUT' then 71 
-                                                       when B.BRANCHCODE = 'GCA' then 72  
-                                                       end, B.BRANCHCODE asc"
+                                         Order by B.BRANCHCODE asc"
 
                     End If
 
@@ -2765,27 +2966,27 @@ A
                                 Minimum_rate = GetMinimumRate("BRANCHCODE", .Item("BRANCH_CODE"))
                             End If
 
-                            If BRANCH_CODE = "SMG" Then
-                                If COMPANY = "PERFECOM" Then
-                                    BRANCHNAME = $"Perfecom-SM GENSAN"
-                                Else
-                                    BRANCHNAME = $"Photo-SM GENSAN"
-                                End If
-                            ElseIf BRANCH_CODE = "KCG" And COMPANY = "PERFECOM" Then
-                                BRANCHNAME = $"Perfecom-KCC Gensan"
-                            ElseIf BRANCH_CODE = "KID" And COMPANY = "PHOTO" Then
-                                BRANCHNAME = $"Photo-Kidapawan"
-                            ElseIf BRANCH_CODE = "MID" And COMPANY = "PHOTO" Then
-                                BRANCHNAME = $"Photo-Midsayap"
-                            ElseIf BRANCH_CODE = "POL" And COMPANY = "PHOTO" Then
-                                BRANCHNAME = $"Photo-Polomolok"
-                            ElseIf BRANCH_CODE = "ROG" And COMPANY = "PHOTO" Then
-                                BRANCHNAME = $"Photo-Robinson Gensan"
-                            ElseIf BRANCH_CODE = "ROX" And COMPANY = "PHOTO" Then
-                                BRANCHNAME = $"Photo-Roxas Gensan"
-                            ElseIf BRANCH_CODE = "SNP" And COMPANY = "PHOTO" Then
-                                BRANCHNAME = $"Photo-San Pedro"
-                            End If
+                            'If BRANCH_CODE = "SMG" Then
+                            '    If COMPANY = "PERFECOM" Then
+                            '        BRANCHNAME = $"Perfecom-SM GENSAN"
+                            '    Else
+                            '        BRANCHNAME = $"Photo-SM GENSAN"
+                            '    End If
+                            'ElseIf BRANCH_CODE = "KCG" And COMPANY = "PERFECOM" Then
+                            '    BRANCHNAME = $"Perfecom-KCC Gensan"
+                            'ElseIf BRANCH_CODE = "KID" And COMPANY = "PHOTO" Then
+                            '    BRANCHNAME = $"Photo-Kidapawan"
+                            'ElseIf BRANCH_CODE = "MID" And COMPANY = "PHOTO" Then
+                            '    BRANCHNAME = $"Photo-Midsayap"
+                            'ElseIf BRANCH_CODE = "POL" And COMPANY = "PHOTO" Then
+                            '    BRANCHNAME = $"Photo-Polomolok"
+                            'ElseIf BRANCH_CODE = "ROG" And COMPANY = "PHOTO" Then
+                            '    BRANCHNAME = $"Photo-Robinson Gensan"
+                            'ElseIf BRANCH_CODE = "ROX" And COMPANY = "PHOTO" Then
+                            '    BRANCHNAME = $"Photo-Roxas Gensan"
+                            'ElseIf BRANCH_CODE = "SNP" And COMPANY = "PHOTO" Then
+                            '    BRANCHNAME = $"Photo-San Pedro"
+                            'End If
 
                             linee = "Rate"
                             Dim Rate As Decimal = IIf(IsDBNull(.Item("RATE_DAILY")) Or .Item("RATE_DAILY") = 0, Minimum_rate, .Item("RATE_DAILY"))
@@ -2804,9 +3005,6 @@ A
                             End If
 
                             Dim tempPlus As String = plus_
-
-                            'If plus_ = "DAVAO PERFECT" Or plus_ = "GENSAN PERFECT" And HO_CATEGORY = "" Then BRANCH_CODE = "Perfect" & "-" & .Item("BRANCHNAME")
-                            'If plus_ = "JR PHOTO" Then BRANCH_CODE = "JR Photo" & "-" & .Item("BRANCHNAME") 
 
                             '======================= 13 MONTH ================
                             Dim MONTH_13 As Decimal = 0

@@ -1393,7 +1393,8 @@ Module Temporary
     End Sub
 
     Friend Sub EmployeeBankAccount()
-        Dim path() As String = {"C:\Users\MISPC1\Desktop\BIO # WITH  ACCT # DALTON ATM.xlsx"}
+        'Dim path() As String = {"C:\Users\MISPC1\Desktop\BIO # WITH  ACCT # DALTON ATM.xlsx"}
+        Dim path() As String = {"C:\Users\MISPC1\Desktop\BIO # WITH ACCT # PHOTO ATM.xlsx"}
 
         For i = 0 To path.Length - 1
 
@@ -1417,8 +1418,7 @@ Module Temporary
 
                 If bioNo <> 0 Or bioNo <> Nothing Then
                     RunCommand($"UPDATE TBL_EMPLOYEE SET ACCOUNTNO = '{accountNo}' WHERE BIOMETRICID = '{bioNo}'")
-                    'SaveEmployeeBankAccount(bioNo, accountNo)
-                    SaveLogs($"UPDATE EMPLOYEE INFO FROM EXCEL - {fullname} ({bioNo}), EMP_STATUS({emp_status}), STATUS({Status}), EMAILADD({email}), SSSNO({sss}), PHILHEALTHNO({philhealth}), TINNO({tin}), PAGIBIG({pagibig})", frmMainForm.UserName_LBL.Text)
+                    SaveLogs($"UPDATE ACCOUNT# FROM EXCEL PHOTO - {fullname} ({bioNo}), ACCOUNT NO.({accountNo})", frmMainForm.UserName_LBL.Text)
                 End If
 
                 Console.WriteLine($"Row {row}")
@@ -1434,19 +1434,5 @@ Module Temporary
 
         MsgBox("Importing Done!")
     End Sub
-
-    'Friend Sub SaveEmployeeBankAccount(bioNo As Integer, ACCOUNTNO As String)
-    '    Dim mysql As String = $"Select * FROM TBL_EMPLOYEE where BIOMETRICID = '{bioNo}'"
-    '    Dim ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
-    '    If ds.Tables(0).Rows.Count > 0 Then
-
-    '        With ds.Tables(0).Rows(0)
-
-    '            .Item("ACCOUNTNO") = ACCOUNTNO
-
-    '        End With
-    '        SaveEntry(ds, False)
-    '    End If
-    'End Sub
 
 End Module
