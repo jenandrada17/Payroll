@@ -2062,7 +2062,8 @@ Module SelectFromDatabase
                            SSS_TXT As TextBox, PHILH_TXT As TextBox, HDMF_TXT As TextBox, HO_Category As ComboBox,
                            ComCategory_Combo As ComboBox, Position_Combo As ComboBox, ComCompany_Cmbo As ComboBox,
                            PhotoCategory_Combo As ComboBox, Lastname As TextBox, Middlename As TextBox,
-                           BDate_dtp As DateTimePicker, Address_txt As TextBox, InActiveDate As DateTimePicker, Optional btnSave As Button = Nothing)
+                           BDate_dtp As DateTimePicker, Address_txt As TextBox, InActiveDate As DateTimePicker,
+                           AccountNo_TXT As TextBox, Optional btnSave As Button = Nothing)
 
         Dim mysql As String = $"select A.*, 
                                 LASTNAME || ', ' || FIRSTNAME || ' ' || 
@@ -2096,6 +2097,7 @@ Module SelectFromDatabase
                     PHILH_TXT.Text = IIf(IsDBNull(.Item("PHILHEALTHNO")), "", .Item("PHILHEALTHNO"))
                     HDMF_TXT.Text = IIf(IsDBNull(.Item("PAGIBIG")), "", .Item("PAGIBIG"))
                     BDate_dtp.Value = IIf(IsDBNull(.Item("DATEOFBIRTH")), "12/31/1753", .Item("DATEOFBIRTH"))
+                    AccountNo_TXT.Text = IIf(IsDBNull(.Item("ACCOUNTNO")), "", .Item("ACCOUNTNO"))
                     Dim emp_status As String = IIf(IsDBNull(.Item("EMP_STATUS")), Nothing, .Item("EMP_STATUS"))
 
                     If emp_status = "INACTIVE" Then
@@ -2131,6 +2133,7 @@ Module SelectFromDatabase
                 HDMF_TXT.Text = ""
                 BDate_dtp.Value = "12/31/1753"
                 Address_txt.Text = ""
+                AccountNo_TXT.Text = ""
 
                 If btnSave IsNot Nothing Then
                     btnSave.Tag = "SAVE" ' FOR USER_LOGS

@@ -2817,7 +2817,7 @@ A
             LoadRows_NetPay(mysql_PTU_REALTY, paydatee, dt_NetPay, "PTU")
             LoadRows_NetPay(mysql_PGC_HEADOFFICE, paydatee, dt_NetPay)
 
-            Dim rds_DTR As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt_NetPay)
+            Dim rds_DTR As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet2", dt_NetPay)
             ReportV_NetPay.LocalReport.DataSources.Add(rds_DTR)
             ReportV_NetPay.RefreshReport()
 
@@ -2860,7 +2860,7 @@ A
                             linee = "BIO_NO"
                             Dim BIO_NO As String = .Item("BIOMETRICID")
                             linee = "ACCOUNTNO"
-                            Dim ACCOUNTNO As String = .Item("ACCOUNTNO")
+                            Dim ACCOUNTNO As String = IIf(IsDBNull(.Item("ACCOUNTNO")), "", .Item("ACCOUNTNO"))
 
                             Dim payroll As DateTime = paydatee
 

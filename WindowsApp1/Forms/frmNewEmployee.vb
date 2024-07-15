@@ -518,7 +518,8 @@ Public Class frmNewEmployee
 
             SaveNew_Employee(Add_Company_CB.Text, Branch_ComboB.Text, fullname, Bio_TXT.Text, Email_TXT.Text, emp_status, Started_DTP.Value, False,
                          TimeIn_Combo.Text, TimeOut_Combo.Text, EmpNo_TXT.Text, TIN_TXT.Text, SSS_TXT.Text, PHILH_TXT.Text, HDMF_TXT.Text, HO_Category.Text,
-                         ComCategory_Combo.Text, Position_Combo.Text, ComCompany_Cmbo.Text, PhotoCategory_Combo.Text, MName_txt.Text, BDate_dtp.Value, Address_txt.Text, InactiveDate.Value)
+                         ComCategory_Combo.Text, Position_Combo.Text, ComCompany_Cmbo.Text, PhotoCategory_Combo.Text, MName_txt.Text, BDate_dtp.Value,
+                         Address_txt.Text, InactiveDate.Value, AccountNo_TXT.Text)
 
             If Emp_Pic.Image IsNot Nothing Then
                 SavePic(fullname, Emp_Pic)
@@ -771,7 +772,7 @@ Public Class frmNewEmployee
         If Bio_TXT.Text <> Nothing Then
             GetFullname(Bio_TXT.Text, Add_Company_CB, Branch_ComboB, FirstName_TXT, Email_TXT, InActive_RB,
                             Started_DTP, TimeIn_Combo, TimeOut_Combo, EmpNo_TXT, TIN_TXT, SSS_TXT, PHILH_TXT, HDMF_TXT, HO_Category, ComCategory_Combo,
-                            Position_Combo, ComCompany_Cmbo, PhotoCategory_Combo, LastName_txt, MName_txt, BDate_dtp, Address_txt, InactiveDate, btnSave)
+                            Position_Combo, ComCompany_Cmbo, PhotoCategory_Combo, LastName_txt, MName_txt, BDate_dtp, Address_txt, InactiveDate, AccountNo_TXT, btnSave)
 
             Dim fullname As String
             If String.IsNullOrEmpty(MName_txt.Text) Then
@@ -842,7 +843,7 @@ Public Class frmNewEmployee
         GetFullname(bio_No, Add_Company_CB, Branch_ComboB, FirstName_TXT, Email_TXT, InActive_RB, Started_DTP,
                     TimeIn_Combo, TimeOut_Combo, EmpNo_TXT, TIN_TXT, SSS_TXT, PHILH_TXT, HDMF_TXT, HO_Category,
                     ComCategory_Combo, Position_Combo, ComCompany_Cmbo, PhotoCategory_Combo, LastName_txt, MName_txt,
-                    BDate_dtp, Address_txt, InactiveDate, btnSave)
+                    BDate_dtp, Address_txt, InactiveDate, AccountNo_TXT, btnSave)
 
         Add_Panel.Location = New Point(ClientSize.Width / 2 - Add_Panel.Size.Width / 2, ClientSize.Height / 2 - Add_Panel.Size.Height / 2)
         Add_Panel.Visible = True
