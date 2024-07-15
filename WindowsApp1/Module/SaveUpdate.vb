@@ -679,15 +679,15 @@ Module SaveUpdate
         Dim SPEC_NIGHTSHIFT_OT = Holiday_Rate("SPEC_NIGHTSHIFT_OT")
         Dim REG_NIGHTSHIFT_OT = Holiday_Rate("REG_NIGHTSHIFT_OT")
 
-        Dim sched As String = ""
-        Dim date_pay As DateTime = Convert.ToDateTime(paydate_)
-        date_pay = date_pay.ToString("d")
+        'Dim sched As String = ""
+        'Dim date_pay As DateTime = Convert.ToDateTime(paydate_)
+        'date_pay = date_pay.ToString("d")
 
-        If IsLastDay(date_pay) Then
-            sched = "CLOSE PAYROLL"
-        Else
-            sched = "OPEN PAYROLL"
-        End If
+        'If IsLastDay(date_pay) Then
+        '    sched = "CLOSE PAYROLL"
+        'Else
+        '    sched = "OPEN PAYROLL"
+        'End If 
 
         Dim mysql As String = $"Select * From payroll_attendance A 
                                 inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRICID  WHERE A.BIOMETRICID = '{bioNo}' and A.PAYDATE = '{paydate_}'"
@@ -1069,7 +1069,7 @@ Module SaveUpdate
                     '============================ CHECK WITH TRAINING DAYS COVERED ======================== 
                     If noOf_days_training = 0 And exempted_trainee = 0 Then
                         '======================== CHECK IF CLOSE PAYROLL ==================================  
-                        If sched = "CLOSE PAYROLL" Then
+                        If payrollSched = "CLOSE PAYROLL" Then
                             If bioNo <> 58 Then
                                 Dim first_Basic As Decimal = GetFirst_Basic(bioNo, paydate_)
                                 Dim monthly_Basic As Decimal = TotalBasic + first_Basic
@@ -1110,7 +1110,7 @@ Module SaveUpdate
                     End If
 
                     '============================================= OTHER ALLOWANCES =========================================================
-                    Dim sql_ As String = $"Select * From PAYROLL_ALLOWANCES WHERE BIOMETRIC_NO = '{bioNo}' and ALLOWED = 'YES' and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
+                    Dim sql_ As String = $"Select * From PAYROLL_ALLOWANCES WHERE BIOMETRIC_NO = '{bioNo}' and ALLOWED = 'YES' and (SCHEDULE = '{payrollSched}' or SCHEDULE = 'EVERY PAYROLL')"
                     Using dss_ As DataSet = LoadSQL(sql_, "PAYROLL_ALLOWANCES")
                         If dss_.Tables(0).Rows.Count > 0 Then
                             For Each drr_ In dss_.Tables(0).Rows
@@ -1242,7 +1242,7 @@ Module SaveUpdate
                     '============================================= DEDUCTION =========================================================  
                     Deduction = 0
 
-                    Dim sql_3 As String = $"Select Z.*, Z.id as idddd From PAYROLL_DEDUCTION Z WHERE BIO_NO = '{bioNo}' and STATUS is null and SCHEDULE IN ('{sched}', 'EVERY PAYROLL')"
+                    Dim sql_3 As String = $"Select Z.*, Z.id as idddd From PAYROLL_DEDUCTION Z WHERE BIO_NO = '{bioNo}' and STATUS is null and SCHEDULE IN ('{payrollSched}', 'EVERY PAYROLL')"
                     Using ds_3 As DataSet = LoadSQL(sql_3, "PAYROLL_DEDUCTION")
                         If ds_3.Tables(0).Rows.Count > 0 Then
                             For Each dr_3 In ds_3.Tables(0).Rows
@@ -1277,7 +1277,7 @@ Module SaveUpdate
                     End Using
 
                     '============================================= OTHER DEDUCTION LIKE MP2, MAXICARE ==================================================  
-                    Dim sql_5 As String = $"Select * From PAYROLL_OTHER_DEDUCTION WHERE BIO_NO = '{bioNo}' and STATUS is null and (SCHEDULE = '{sched}' or SCHEDULE = 'EVERY PAYROLL')"
+                    Dim sql_5 As String = $"Select * From PAYROLL_OTHER_DEDUCTION WHERE BIO_NO = '{bioNo}' and STATUS is null and (SCHEDULE = '{payrollSched}' or SCHEDULE = 'EVERY PAYROLL')"
                     Using ds_5 As DataSet = LoadSQL(sql_5, "PAYROLL_OTHER_DEDUCTION")
                         If ds_5.Tables(0).Rows.Count > 0 Then
                             For Each dr_5 In ds_5.Tables(0).Rows
@@ -1300,7 +1300,7 @@ Module SaveUpdate
                                 Save_Recorded_Allow_Deduc(bioNo, paydate_, "SBU", SBU, "DEDUCTION")
                                 Deduction = Deduction + SBU
                             Else
-                                If sched = SBU_sched Then
+                                If payrollSched = SBU_sched Then
                                     Save_Recorded_Allow_Deduc(bioNo, paydate_, "SBU", SBU, "DEDUCTION")
                                     Deduction = Deduction + SBU
                                 End If

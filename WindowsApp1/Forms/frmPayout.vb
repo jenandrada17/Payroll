@@ -296,6 +296,20 @@ Public Class frmPayout
             Dim result As DialogResult = MessageBox.Show($"The record will be edited, do you want to proceed?", "Warning", MessageBoxButtons.YesNo)
             If result = DialogResult.Yes Then
 
+                If payrollSched = "CLOSE PAYROLL" Then
+                    If BIO_NO <> 58 Then
+                        Dim first_Basic As Decimal = GetFirst_Basic(BIO_NO, paydate_)
+                        Dim monthly_Basic As Decimal = CDec(TotalBasic_LBL.Tag) + first_Basic
+
+                        If ThisNotIsNull("SSSNO", $"TBL_EMPLOYEE where BIOMETRICID = {BIO_NO} ") Then 'IF HAS SSSNO DETAILS 
+                            Get_SSS(monthly_Basic)
+                            'SSSComp = SSSEE
+                            SSS_ER = SSSER
+                            SSS_EC = SSSEC
+                        End If
+                    End If
+                End If
+
                 SavePayout(BIO_NO, paydate_, TotalBasic_LBL.Tag, TotalOT_LBL.Tag,
                   TotalLateUnder_LBL.Tag, GrossAmount_LBL.Tag, SSSComp_LBL.Text, SSS_ER, SSS_EC,
                   HDMF_LBL.Text, Philhealth_LBL.Text, Allowances_LBL.Tag, Deduction_LBL.Tag, NetPay_LBL.Tag,
@@ -797,6 +811,10 @@ Public Class frmPayout
                 progressBarStart(ds.Tables(0).Rows.Count)
                 For Each dr In ds.Tables(0).Rows
                     With dr
+
+                        If .item("BIOMETRIC_ID") = 2493 Then
+                            Console.WriteLine(.item("BIOMETRIC_ID"))
+                        End If
 
                         Console.WriteLine(.item("BIOMETRIC_ID"))
 

@@ -1228,7 +1228,8 @@ Module Temporary
     End Sub
 
     Friend Sub SSS_ER_EC()
-        Dim mysql As String = $"SELECT * FROM PAYROLL_PAYOUT WHERE PAYDATE IN ('4/30/2024','5/31/2024')"
+        'Dim mysql As String = $"SELECT * FROM PAYROLL_PAYOUT WHERE PAYDATE IN ('4/30/2024','5/31/2024')"
+        Dim mysql As String = $"SELECT * FROM PAYROLL_PAYOUT WHERE PAYDATE IN ('6/30/2024')"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows

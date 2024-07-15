@@ -11,6 +11,7 @@ Module Public_Function
     Friend emp_status As String
     Friend dateEnded As String
     Friend dateStarted As String
+    Friend payrollSched As String = ""
     Friend specialHolidayList As New List(Of String)
 
 

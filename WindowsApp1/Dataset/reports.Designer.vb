@@ -780,6 +780,8 @@ Partial Public Class reports
         
         Private columnMONTH_13 As Global.System.Data.DataColumn
         
+        Private columnACCOUNT_NO As Global.System.Data.DataColumn
+        
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
         Public Sub New()
@@ -984,6 +986,14 @@ Partial Public Class reports
         End Property
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public ReadOnly Property ACCOUNT_NOColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnACCOUNT_NO
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0"),  _
          Global.System.ComponentModel.Browsable(false)>  _
         Public ReadOnly Property Count() As Integer
@@ -1041,9 +1051,10 @@ Partial Public Class reports
                     ByVal COMPANY As String,  _
                     ByVal HO_CATEGORY As String,  _
                     ByVal PLUS As String,  _
-                    ByVal MONTH_13 As String) As NetPayRow
+                    ByVal MONTH_13 As String,  _
+                    ByVal ACCOUNT_NO As String) As NetPayRow
             Dim rowNetPayRow As NetPayRow = CType(Me.NewRow,NetPayRow)
-            Dim columnValuesArray() As Object = New Object() {EMP_NO, FULLNAME, BASIC, OVERTIME, HOLIDAY, N_DIFF, PI_ECOLA_SIL, TARDINESS, SSS, PHIC, PAGIBIG, SBU_CHARGES, NET_PAY, BRANCH_CODE, PAYDATE, PERIOD, RANGE, COMPANY, HO_CATEGORY, PLUS, MONTH_13}
+            Dim columnValuesArray() As Object = New Object() {EMP_NO, FULLNAME, BASIC, OVERTIME, HOLIDAY, N_DIFF, PI_ECOLA_SIL, TARDINESS, SSS, PHIC, PAGIBIG, SBU_CHARGES, NET_PAY, BRANCH_CODE, PAYDATE, PERIOD, RANGE, COMPANY, HO_CATEGORY, PLUS, MONTH_13, ACCOUNT_NO}
             rowNetPayRow.ItemArray = columnValuesArray
             Me.Rows.Add(rowNetPayRow)
             Return rowNetPayRow
@@ -1087,6 +1098,7 @@ Partial Public Class reports
             Me.columnHO_CATEGORY = MyBase.Columns("HO_CATEGORY")
             Me.columnPLUS = MyBase.Columns("PLUS")
             Me.columnMONTH_13 = MyBase.Columns("MONTH_13")
+            Me.columnACCOUNT_NO = MyBase.Columns("ACCOUNT_NO")
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -1134,6 +1146,8 @@ Partial Public Class reports
             MyBase.Columns.Add(Me.columnPLUS)
             Me.columnMONTH_13 = New Global.System.Data.DataColumn("MONTH_13", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnMONTH_13)
+            Me.columnACCOUNT_NO = New Global.System.Data.DataColumn("ACCOUNT_NO", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnACCOUNT_NO)
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -6568,6 +6582,21 @@ Partial Public Class reports
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Property ACCOUNT_NO() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableNetPay.ACCOUNT_NOColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'ACCOUNT_NO' in table 'NetPay' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableNetPay.ACCOUNT_NOColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
         Public Function IsEMP_NONull() As Boolean
             Return Me.IsNull(Me.tableNetPay.EMP_NOColumn)
         End Function
@@ -6816,6 +6845,18 @@ Partial Public Class reports
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
         Public Sub SetMONTH_13Null()
             Me(Me.tableNetPay.MONTH_13Column) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Function IsACCOUNT_NONull() As Boolean
+            Return Me.IsNull(Me.tableNetPay.ACCOUNT_NOColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Sub SetACCOUNT_NONull()
+            Me(Me.tableNetPay.ACCOUNT_NOColumn) = Global.System.Convert.DBNull
         End Sub
     End Class
     

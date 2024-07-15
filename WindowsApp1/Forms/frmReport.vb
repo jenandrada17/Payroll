@@ -1496,8 +1496,7 @@ A
     '    Catch ex As Exception
     '        MessageBox.Show($"{ex.Message} {vbCrLf} {linee}", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
     '    End Try
-    'End Sub
-
+    'End Sub 
 
     Public Sub LoadCostDistribution()
         Rpt_CostContrib.LocalReport.DataSources.Clear()
@@ -1566,32 +1565,12 @@ A
                             Dim CATEGORY As String = IIf(IsDBNull(.Item("CATEGORY")), "", .Item("CATEGORY"))
                             linee = "DC_Amount - 1"
                             Dim DC_Amount As Decimal = IIf(IsDBNull(.Item("TOTS")), 0, .Item("TOTS"))
-                            linee = "Debit_Credit - 1"
+                            linee = $"Debit_Credit - 1 {COMPANY} - {BRANCHCODE} - {CATEGORY}"
                             Dim Debit_Credit As String = IIf(IsDBNull(.Item("TRANSAC_NAME")), "", .Item("TRANSAC_NAME"))
 
                             If BRANCHCODE = Nothing Then
                                 linee = "BRANCHNAME = HO_CATEGORY - 1"
                                 BRANCHNAME = IIf(IsDBNull(.Item("HO_CATEGORY")), "", CStr(.Item("HO_CATEGORY")).TrimEnd)
-                                'ElseIf BRANCHCODE = "SMG" Then
-                                '    If COMPANY = "PERFECOM" Then
-                                '        BRANCHNAME = $"Perfecom - SM GENSAN"
-                                '    Else
-                                '        BRANCHNAME = $"Photo - SM GENSAN"
-                                '    End If
-                                'ElseIf BRANCHCODE = "KCG" And COMPANY = "PERFECOM" Then
-                                '    BRANCHNAME = $"Perfecom - KCC Gensan"
-                                'ElseIf BRANCHCODE = "KID" And COMPANY = "PHOTO" Then
-                                '    BRANCHNAME = $"Photo - Kidapawan"
-                                'ElseIf BRANCHCODE = "MID" And COMPANY = "PHOTO" Then
-                                '    BRANCHNAME = $"Photo - Midsayap"
-                                'ElseIf BRANCHCODE = "POL" And COMPANY = "PHOTO" Then
-                                '    BRANCHNAME = $"Photo - Polomolok"
-                                'ElseIf BRANCHCODE = "ROG" And COMPANY = "PHOTO" Then
-                                '    BRANCHNAME = $"Photo - Robinson Gensan"
-                                'ElseIf BRANCHCODE = "ROX" And COMPANY = "PHOTO" Then
-                                '    BRANCHNAME = $"Photo - Roxas Gensan"
-                                'ElseIf BRANCHCODE = "SNP" And COMPANY = "PHOTO" Then
-                                '    BRANCHNAME = $"Photo - San Pedro"
                             End If
 
                             If CATEGORY.ToUpper = "BASIC PAY" Or CATEGORY.ToUpper = "BASIC REFUND" Then
@@ -1599,14 +1578,6 @@ A
                             End If
 
                             If DC_Amount <> 0 Then
-
-                                'If BRANCHCODE = "PRG" Or BRANCHCODE = "PRX" Or BRANCHCODE = "PSP" Or BRANCHCODE = "PMD" Then
-                                '    Console.WriteLine($"BRANCHCODE - {BRANCHCODE}")
-                                '    Console.WriteLine($"BRANCHCODE - {BRANCHNAME}")
-                                '    Console.WriteLine($"COMPANY - {COMPANY}")
-
-                                '    BRANCHNAME = $"ZZZ ({COMPANY} - {BRANCHNAME})"
-                                'End If 
 
                                 If COMPANY <> "" Then
                                     BRANCHNAME = $"{COMPANY} - {BRANCHNAME}"
@@ -1673,35 +1644,8 @@ A
                             If BRANCHCODE = Nothing Then
                                 linee = "BRANCHNAME = HO_CATEGORY - 2"
                                 BRANCHNAME = CStr(.Item("HO_CATEGORY")).TrimEnd
-                                'ElseIf BRANCHCODE = "SMG" Then
-                                '    If COMPANY = "PERFECOM" Then
-                                '        BRANCHNAME = $"Perfecom - SM GENSAN"
-                                '    Else
-                                '        BRANCHNAME = $"Photo - SM GENSAN"
-                                '    End If
-                                'ElseIf BRANCHCODE = "KCG" And COMPANY = "PERFECOM" Then
-                                '    BRANCHNAME = $"Perfecom - KCC Gensan"
-                                'ElseIf BRANCHCODE = "KID" And COMPANY = "PHOTO" Then
-                                '    BRANCHNAME = $"Photo - Kidapawan"
-                                'ElseIf BRANCHCODE = "MID" And COMPANY = "PHOTO" Then
-                                '    BRANCHNAME = $"Photo - Midsayap"
-                                'ElseIf BRANCHCODE = "POL" And COMPANY = "PHOTO" Then
-                                '    BRANCHNAME = $"Photo - Polomolok"
-                                'ElseIf BRANCHCODE = "ROG" And COMPANY = "PHOTO" Then
-                                '    BRANCHNAME = $"Photo - Robinson Gensan"
-                                'ElseIf BRANCHCODE = "ROX" And COMPANY = "PHOTO" Then
-                                '    BRANCHNAME = $"Photo - Roxas Gensan"
-                                'ElseIf BRANCHCODE = "SNP" And COMPANY = "PHOTO" Then
-                                '    BRANCHNAME = $"Photo - San Pedro"
                             End If
 
-                            'If BRANCHCODE = "PRG" Or BRANCHCODE = "PRX" Or BRANCHCODE = "PSP" Or BRANCHCODE = "PMD" Then
-                            '    Console.WriteLine($"BRANCHCODE - {BRANCHCODE}")
-                            '    Console.WriteLine($"BRANCHCODE - {BRANCHNAME}")
-                            '    Console.WriteLine($"COMPANY - {COMPANY}")
-
-                            '    BRANCHNAME = $"ZZZ ({COMPANY} - {BRANCHNAME})"
-                            'End If 
 
                             If COMPANY <> "" Then
                                 BRANCHNAME = $"{COMPANY} - {BRANCHNAME}"
@@ -2577,6 +2521,7 @@ A
                 .Columns.Add("HO_CATEGORY")
                 .Columns.Add("PLUS")
                 .Columns.Add("MONTH_13")
+                .Columns.Add("ACCOUNT_NO")
             End With
 
 #Region "WITH SORTING"
@@ -2914,6 +2859,8 @@ A
                             Dim EMP_NO As String = IIf(IsDBNull(.Item("EMP_NO")), "", .Item("EMP_NO"))
                             linee = "BIO_NO"
                             Dim BIO_NO As String = .Item("BIOMETRICID")
+                            linee = "ACCOUNTNO"
+                            Dim ACCOUNTNO As String = .Item("ACCOUNTNO")
 
                             Dim payroll As DateTime = paydatee
 
@@ -2966,28 +2913,6 @@ A
                                 Minimum_rate = GetMinimumRate("BRANCHCODE", .Item("BRANCH_CODE"))
                             End If
 
-                            'If BRANCH_CODE = "SMG" Then
-                            '    If COMPANY = "PERFECOM" Then
-                            '        BRANCHNAME = $"Perfecom-SM GENSAN"
-                            '    Else
-                            '        BRANCHNAME = $"Photo-SM GENSAN"
-                            '    End If
-                            'ElseIf BRANCH_CODE = "KCG" And COMPANY = "PERFECOM" Then
-                            '    BRANCHNAME = $"Perfecom-KCC Gensan"
-                            'ElseIf BRANCH_CODE = "KID" And COMPANY = "PHOTO" Then
-                            '    BRANCHNAME = $"Photo-Kidapawan"
-                            'ElseIf BRANCH_CODE = "MID" And COMPANY = "PHOTO" Then
-                            '    BRANCHNAME = $"Photo-Midsayap"
-                            'ElseIf BRANCH_CODE = "POL" And COMPANY = "PHOTO" Then
-                            '    BRANCHNAME = $"Photo-Polomolok"
-                            'ElseIf BRANCH_CODE = "ROG" And COMPANY = "PHOTO" Then
-                            '    BRANCHNAME = $"Photo-Robinson Gensan"
-                            'ElseIf BRANCH_CODE = "ROX" And COMPANY = "PHOTO" Then
-                            '    BRANCHNAME = $"Photo-Roxas Gensan"
-                            'ElseIf BRANCH_CODE = "SNP" And COMPANY = "PHOTO" Then
-                            '    BRANCHNAME = $"Photo-San Pedro"
-                            'End If
-
                             linee = "Rate"
                             Dim Rate As Decimal = IIf(IsDBNull(.Item("RATE_DAILY")) Or .Item("RATE_DAILY") = 0, Minimum_rate, .Item("RATE_DAILY"))
 
@@ -3018,7 +2943,7 @@ A
                             dataTable.Rows.Add(EMP_NO, namee, BASIC.ToString("n"), OVERTIME.ToString("n"), HOLIDAY.ToString("n"), N_DIFF.ToString("n"),
                                                PI_ECOLA_SIL.ToString("n"), TARDINESS.ToString("n"), SSS.ToString("n"), PHIC.ToString("n"), PAGIBIG.ToString("n"),
                                                SBU_CHARGES.ToString("n"), NET_PAY.ToString("n"), BRANCHNAME, payroll.ToString("MMMM dd, yyyy"), period, COMPANY,
-                                               HO_CATEGORY, tempPlus, MONTH_13.ToString("n"))
+                                               HO_CATEGORY, tempPlus, MONTH_13.ToString("n"), ACCOUNTNO)
 
                             frmMainForm.AppProgressBar.Value += 1
                         End With

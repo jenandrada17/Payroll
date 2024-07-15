@@ -114,6 +114,8 @@ Partial Class frmNewEmployee
         Me.Add_Panel = New System.Windows.Forms.Panel()
         Me.Context_Details = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.View_Menu = New System.Windows.Forms.ToolStripMenuItem()
+        Me.Label26 = New System.Windows.Forms.Label()
+        Me.TextBox1 = New System.Windows.Forms.TextBox()
         Me.Excel_Panel.SuspendLayout()
         Me.FlowLayoutPanel1.SuspendLayout()
         Me.InactivePanel.SuspendLayout()
@@ -423,6 +425,8 @@ Partial Class frmNewEmployee
         Me.FlowLayoutPanel1.Controls.Add(Me.InActive_RB)
         Me.FlowLayoutPanel1.Controls.Add(Me.InactivePanel)
         Me.FlowLayoutPanel1.Controls.Add(Me.Panel2)
+        Me.FlowLayoutPanel1.Controls.Add(Me.Label26)
+        Me.FlowLayoutPanel1.Controls.Add(Me.TextBox1)
         Me.FlowLayoutPanel1.Location = New System.Drawing.Point(20, 31)
         Me.FlowLayoutPanel1.Name = "FlowLayoutPanel1"
         Me.FlowLayoutPanel1.Size = New System.Drawing.Size(470, 606)
@@ -1091,6 +1095,25 @@ Partial Class frmNewEmployee
         Me.View_Menu.Size = New System.Drawing.Size(137, 22)
         Me.View_Menu.Text = "View Details"
         '
+        'Label26
+        '
+        Me.Label26.AutoSize = True
+        Me.Label26.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label26.ForeColor = System.Drawing.Color.Black
+        Me.Label26.Location = New System.Drawing.Point(3, 1093)
+        Me.Label26.Name = "Label26"
+        Me.Label26.Size = New System.Drawing.Size(118, 16)
+        Me.Label26.TabIndex = 153
+        Me.Label26.Text = "HDMF No.                "
+        '
+        'TextBox1
+        '
+        Me.TextBox1.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.TextBox1.Location = New System.Drawing.Point(127, 1096)
+        Me.TextBox1.Name = "TextBox1"
+        Me.TextBox1.Size = New System.Drawing.Size(293, 26)
+        Me.TextBox1.TabIndex = 152
+        '
         'frmNewEmployee
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1217,4 +1240,6 @@ Partial Class frmNewEmployee
     Friend WithEvents InactivePanel As Panel
     Friend WithEvents Label8 As Label
     Friend WithEvents InactiveDate As DateTimePicker
+    Friend WithEvents Label26 As Label
+    Friend WithEvents TextBox1 As TextBox
 End Class

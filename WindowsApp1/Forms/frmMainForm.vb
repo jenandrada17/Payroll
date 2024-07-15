@@ -11,13 +11,13 @@ Public Class frmMainForm
 
     Private Sub frmMainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
+        'SSS_ER_EC()
+
         'EmployeeBankAccount()
 
         'EmployeeStatus()
 
-        'UpdateEmpStatus()
-
-        'SSS_ER_EC()
+        'UpdateEmpStatus() 
 
         'Branch13MonthFromRemantic()
 
@@ -130,6 +130,17 @@ Public Class frmMainForm
         End If
 
         Version_lbl.Text = $"Version {Application.ProductVersion}"
+
+        'PAYROLL SCHEDULE (USE FOR UPDATING PAYOUT)
+        Dim date_pay As DateTime = Convert.ToDateTime(Paydate)
+        date_pay = date_pay.ToString("d")
+
+        If IsLastDay(date_pay) Then
+            payrollSched = "CLOSE PAYROLL"
+        Else
+            payrollSched = "OPEN PAYROLL"
+        End If
+
 
         'UpdatePayout("6/30/2023")
     End Sub
