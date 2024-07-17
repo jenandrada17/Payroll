@@ -384,6 +384,8 @@ Partial Public Class Forms
         
         Private columnJOBLEVEL_TO As Global.System.Data.DataColumn
         
+        Private columnPREPARED_BY As Global.System.Data.DataColumn
+        
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
         Public Sub New()
@@ -684,6 +686,14 @@ Partial Public Class Forms
         End Property
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public ReadOnly Property PREPARED_BYColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnPREPARED_BY
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0"),  _
          Global.System.ComponentModel.Browsable(false)>  _
         Public ReadOnly Property Count() As Integer
@@ -753,9 +763,10 @@ Partial Public Class Forms
                     ByVal JOBTITLE_FROM As String,  _
                     ByVal JOBTITLE_TO As String,  _
                     ByVal JOBLEVEL_FROM As String,  _
-                    ByVal JOBLEVEL_TO As String) As PAFRow
+                    ByVal JOBLEVEL_TO As String,  _
+                    ByVal PREPARED_BY As String) As PAFRow
             Dim rowPAFRow As PAFRow = CType(Me.NewRow,PAFRow)
-            Dim columnValuesArray() As Object = New Object() {LASTNAME, FIRSTNAME, MIDDLE, DATE_PREPARED, EMP_NO, BIRTH_DATE, DATE_HIRE, EMP_ADDRESS, SSS_NO, TAX_NO, SEX, MARITAL_STATUS, EMPLOYMENT, SALARY_CHANGES, S_FROM, S_TO, S_EFFECTIVE_FROM, S_EFFECTIVE_TO, PI_FROM, PI_TO, PI_EFFECTIVE_FROM, PI_EFFECTIVE_TO, PI_SCHED_FROM, PI_SCHED_TO, REMARKS, COMPANY_FROM, COMPANY_TO, DEP_FROM, DEP_TO, JOBTITLE_FROM, JOBTITLE_TO, JOBLEVEL_FROM, JOBLEVEL_TO}
+            Dim columnValuesArray() As Object = New Object() {LASTNAME, FIRSTNAME, MIDDLE, DATE_PREPARED, EMP_NO, BIRTH_DATE, DATE_HIRE, EMP_ADDRESS, SSS_NO, TAX_NO, SEX, MARITAL_STATUS, EMPLOYMENT, SALARY_CHANGES, S_FROM, S_TO, S_EFFECTIVE_FROM, S_EFFECTIVE_TO, PI_FROM, PI_TO, PI_EFFECTIVE_FROM, PI_EFFECTIVE_TO, PI_SCHED_FROM, PI_SCHED_TO, REMARKS, COMPANY_FROM, COMPANY_TO, DEP_FROM, DEP_TO, JOBTITLE_FROM, JOBTITLE_TO, JOBLEVEL_FROM, JOBLEVEL_TO, PREPARED_BY}
             rowPAFRow.ItemArray = columnValuesArray
             Me.Rows.Add(rowPAFRow)
             Return rowPAFRow
@@ -811,6 +822,7 @@ Partial Public Class Forms
             Me.columnJOBTITLE_TO = MyBase.Columns("JOBTITLE_TO")
             Me.columnJOBLEVEL_FROM = MyBase.Columns("JOBLEVEL_FROM")
             Me.columnJOBLEVEL_TO = MyBase.Columns("JOBLEVEL_TO")
+            Me.columnPREPARED_BY = MyBase.Columns("PREPARED_BY")
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -882,6 +894,8 @@ Partial Public Class Forms
             MyBase.Columns.Add(Me.columnJOBLEVEL_FROM)
             Me.columnJOBLEVEL_TO = New Global.System.Data.DataColumn("JOBLEVEL_TO", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnJOBLEVEL_TO)
+            Me.columnPREPARED_BY = New Global.System.Data.DataColumn("PREPARED_BY", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnPREPARED_BY)
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -1801,6 +1815,21 @@ Partial Public Class Forms
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Property PREPARED_BY() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tablePAF.PREPARED_BYColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'PREPARED_BY' in table 'PAF' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tablePAF.PREPARED_BYColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
         Public Function IsLASTNAMENull() As Boolean
             Return Me.IsNull(Me.tablePAF.LASTNAMEColumn)
         End Function
@@ -2193,6 +2222,18 @@ Partial Public Class Forms
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
         Public Sub SetJOBLEVEL_TONull()
             Me(Me.tablePAF.JOBLEVEL_TOColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Function IsPREPARED_BYNull() As Boolean
+            Return Me.IsNull(Me.tablePAF.PREPARED_BYColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Sub SetPREPARED_BYNull()
+            Me(Me.tablePAF.PREPARED_BYColumn) = Global.System.Convert.DBNull
         End Sub
     End Class
     

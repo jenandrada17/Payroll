@@ -767,10 +767,10 @@ Partial Class frmAllowance
         '
         'PITo_txt
         '
-        Me.PITo_txt.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.PITo_txt.Location = New System.Drawing.Point(218, 1125)
+        Me.PITo_txt.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.PITo_txt.Location = New System.Drawing.Point(218, 1122)
         Me.PITo_txt.Name = "PITo_txt"
-        Me.PITo_txt.Size = New System.Drawing.Size(188, 29)
+        Me.PITo_txt.Size = New System.Drawing.Size(188, 35)
         Me.PITo_txt.TabIndex = 62
         '
         'Label34
@@ -785,10 +785,10 @@ Partial Class frmAllowance
         '
         'PIFrom_txt
         '
-        Me.PIFrom_txt.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.PIFrom_txt.Location = New System.Drawing.Point(218, 979)
+        Me.PIFrom_txt.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.PIFrom_txt.Location = New System.Drawing.Point(218, 975)
         Me.PIFrom_txt.Name = "PIFrom_txt"
-        Me.PIFrom_txt.Size = New System.Drawing.Size(188, 29)
+        Me.PIFrom_txt.Size = New System.Drawing.Size(188, 35)
         Me.PIFrom_txt.TabIndex = 56
         '
         'Label35
@@ -843,10 +843,10 @@ Partial Class frmAllowance
         '
         'SalaryTo_txt
         '
-        Me.SalaryTo_txt.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.SalaryTo_txt.Location = New System.Drawing.Point(218, 884)
+        Me.SalaryTo_txt.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SalaryTo_txt.Location = New System.Drawing.Point(218, 880)
         Me.SalaryTo_txt.Name = "SalaryTo_txt"
-        Me.SalaryTo_txt.Size = New System.Drawing.Size(188, 29)
+        Me.SalaryTo_txt.Size = New System.Drawing.Size(188, 35)
         Me.SalaryTo_txt.TabIndex = 52
         '
         'Label24
@@ -861,10 +861,10 @@ Partial Class frmAllowance
         '
         'SalaryFrom_txt
         '
-        Me.SalaryFrom_txt.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.SalaryFrom_txt.Location = New System.Drawing.Point(218, 804)
+        Me.SalaryFrom_txt.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SalaryFrom_txt.Location = New System.Drawing.Point(218, 800)
         Me.SalaryFrom_txt.Name = "SalaryFrom_txt"
-        Me.SalaryFrom_txt.Size = New System.Drawing.Size(188, 29)
+        Me.SalaryFrom_txt.Size = New System.Drawing.Size(188, 35)
         Me.SalaryFrom_txt.TabIndex = 48
         '
         'Label26
@@ -1002,9 +1002,9 @@ Partial Class frmAllowance
         Me.Label17.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label17.Location = New System.Drawing.Point(23, 443)
         Me.Label17.Name = "Label17"
-        Me.Label17.Size = New System.Drawing.Size(102, 25)
+        Me.Label17.Size = New System.Drawing.Size(105, 25)
         Me.Label17.TabIndex = 33
-        Me.Label17.Text = "Salary Charges"
+        Me.Label17.Text = "Salary Changes"
         '
         'Employment_CB
         '

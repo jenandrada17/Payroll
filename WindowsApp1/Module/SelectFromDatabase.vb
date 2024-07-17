@@ -53,6 +53,7 @@ Module SelectFromDatabase
 
                     Name_txt.Text = .Item("FULLNAME")
                     EmpNo_txt.Text = .Item("EMP_NO")
+                    EmpNo_txt.Tag = .Item("COMPANY")
                     Bdate_txt.Text = IIf(IsDBNull(.Item("DATEOFBIRTH")), Nothing, .Item("DATEOFBIRTH"))
                     DateHire_txt.Text = IIf(IsDBNull(.Item("DATEHIRED")), Nothing, .Item("DATEHIRED"))
                     SSS_txt.Text = IIf(IsDBNull(.Item("SSSNO")), Nothing, .Item("SSSNO"))
@@ -60,6 +61,12 @@ Module SelectFromDatabase
                     JobTitleFrom_txt.Text = IIf(IsDBNull(.Item("EMP_POSITION")), Nothing, .Item("EMP_POSITION"))
                     SalaryFrom_txt.Text = IIf(IsDBNull(.Item("RATE_MONTHLY")), Nothing, CDec(.Item("RATE_MONTHLY")).ToString("N"))
 
+                    Dim addressID As Integer = IIf(IsDBNull(.Item("PERMANENT_ADDID")), 0, .Item("PERMANENT_ADDID"))
+                    Dim barangay As String = GET_STRING("TBL_ADDRESS", "BARANGAY", $"ID = {addressID}")
+                    Dim city As String = GET_STRING("TBL_ADDRESS", "CITYMUN", $"ID = {addressID}")
+                    Dim province As String = GET_STRING("TBL_ADDRESS", "PROVINCE", $"ID = {addressID}")
+
+                    If addressID <> 0 Then Address_txt.Text = ($"{barangay} {city} {province}").ToUpper
                 End With
             Else
                 Name_txt.Text = ""

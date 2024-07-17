@@ -250,6 +250,7 @@ Public Class frmAllowance
                 .Columns.Add("PI_EFFECTIVE_TO")
                 .Columns.Add("PI_SCHED_TO")
                 .Columns.Add("REMARKS")
+                .Columns.Add("PREPARED_BY")
             End With
 
             '======================== FIRSTNAME, LASTNAME, MIDDLENAME ========================== 
@@ -280,6 +281,9 @@ Public Class frmAllowance
             If PIFrom_txt.Text = Nothing Then PIFrom_txt.Text = 0
             If PITo_txt.Text = Nothing Then PITo_txt.Text = 0
 
+            Dim preparedBy As String = "Pearly Queen C. Benemerito"
+            If EmpNo_txt.Tag = "DALTON" Then preparedBy = "Novelty S. Cababat"
+
             dt.Rows.Add(name(0), firstt, middlee, datePrepared, EmpNo_txt.Text, Bdate_txt.Text, dateHire,
                         Address_txt.Text, SSS_txt.Text, TIN_txt.Text, Gender_CB.Text, Marital_CB.Text,
                         Employment_CB.Text, SalesCharges_CB.Text,
@@ -291,7 +295,7 @@ Public Class frmAllowance
                         SalaryTo_txt.Text, S_Effect_to,
                         PIFrom_txt.Text, PI_Effect_from, PI_SchedFrom_CB.Text,
                         PITo_txt.Text, PI_Effect_to, PI_SchedTo_CB.Text,
-                        Remarks_txt.Text)
+                        Remarks_txt.Text, preparedBy)
 
             Dim dataSource As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt)
             rpt_Allowance.LocalReport.DataSources.Add(dataSource)
