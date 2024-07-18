@@ -1601,7 +1601,7 @@ Module SaveUpdate
         SaveLogs($"CHANGED WITHOLDING TAX {RANGE_LIST}", frmMainForm.UserName_LBL.Text)
     End Sub
 
-    Friend Sub SaveAllowance(idNO As Integer, bioNo As String, category As String, amount As String, fix As String, SCHEDULE As String, DAY_DATE As String, EFFECTIVE_DATE As String)
+    Friend Sub SaveAllowance(idNO As Integer, bioNo As String, category As String, amount As String, fix As String, SCHEDULE As String, DAY_DATE As String, EFFECTIVE_DATE As String, Optional source As String = Nothing)
         Dim mysql As String = $"Select * From PAYROLL_ALLOWANCES WHERE ID = '{idNO}'"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ALLOWANCES")
             If ds.Tables(0).Rows.Count > 0 Then
@@ -1618,7 +1618,7 @@ Module SaveUpdate
 
                     End With
                     SaveEntry(ds, False)
-                    MsgBox("Successfully Updated!", MsgBoxStyle.Information, "Information")
+                    If source = Nothing Then MsgBox("Successfully Updated!", MsgBoxStyle.Information, "Information")
                 Next
             Else
 
@@ -1641,7 +1641,7 @@ Module SaveUpdate
                     dss.Tables(0).Rows.Add(dsNewRow)
                     SaveEntry(dss)
 
-                    MsgBox("Successfully Saved!", MsgBoxStyle.Information, "Information")
+                    If source = Nothing Then MsgBox("Successfully Saved!", MsgBoxStyle.Information, "Information")
                 End Using
             End If
         End Using

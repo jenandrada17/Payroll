@@ -36,7 +36,8 @@ Module SelectFromDatabase
     Public Sub GetInfo_Form(bioNo As String, Name_txt As TextBox, EmpNo_txt As TextBox, Address_txt As TextBox, Bdate_txt As TextBox,
                             DateHire_txt As TextBox, SSS_txt As TextBox, TIN_txt As TextBox,
                             PIFrom_txt As TextBox, PIEffectFrom_dtp As DateTimePicker, PI_SchedFrom_CB As ComboBox,
-                            JobTitleFrom_txt As TextBox, SalaryFrom_txt As TextBox)
+                            JobTitleFrom_txt As TextBox, SalaryFrom_txt As TextBox, SalaryTo_txt As TextBox,
+                            Gender_CB As ComboBox, Marital_CB As ComboBox)
 
         Dim mysql As String = $"Select A.*, 
                                 LASTNAME || ', ' || FIRSTNAME || ' ' || 
@@ -60,6 +61,7 @@ Module SelectFromDatabase
                     TIN_txt.Text = IIf(IsDBNull(.Item("TINNO")), Nothing, .Item("TINNO"))
                     JobTitleFrom_txt.Text = IIf(IsDBNull(.Item("EMP_POSITION")), Nothing, .Item("EMP_POSITION"))
                     SalaryFrom_txt.Text = IIf(IsDBNull(.Item("RATE_MONTHLY")), Nothing, CDec(.Item("RATE_MONTHLY")).ToString("N"))
+                    SalaryTo_txt.Text = IIf(IsDBNull(.Item("RATE_MONTHLY")), Nothing, CDec(.Item("RATE_MONTHLY")).ToString("N"))
 
                     Dim addressID As Integer = IIf(IsDBNull(.Item("PERMANENT_ADDID")), 0, .Item("PERMANENT_ADDID"))
                     Dim barangay As String = GET_STRING("TBL_ADDRESS", "BARANGAY", $"ID = {addressID}")
@@ -67,6 +69,12 @@ Module SelectFromDatabase
                     Dim province As String = GET_STRING("TBL_ADDRESS", "PROVINCE", $"ID = {addressID}")
 
                     If addressID <> 0 Then Address_txt.Text = ($"{barangay} {city} {province}").ToUpper
+                    If Gender_CB IsNot Nothing Then Gender_CB.Text = IIf(IsDBNull(.Item("GENDER")), Nothing, (.Item("GENDER")).ToUpper)
+                    If Marital_CB IsNot Nothing Then
+                        Dim civilStatus As String = IIf(IsDBNull(.Item("CIVILSTATUS")), Nothing, (.Item("CIVILSTATUS")))
+                        Marital_CB.Text = IIf(civilStatus = "-Select-", Nothing, (.Item("CIVILSTATUS")).ToUpper)
+                    End If
+
                 End With
             Else
                 Name_txt.Text = ""
@@ -78,6 +86,7 @@ Module SelectFromDatabase
                 TIN_txt.Text = ""
                 JobTitleFrom_txt.Text = ""
                 SalaryFrom_txt.Text = ""
+                SalaryTo_txt.Text = ""
             End If
         End Using
 
@@ -1353,7 +1362,7 @@ Module SelectFromDatabase
             Dim effectivity As DateTime = .Item("EFFECTIVE_DATE")
             Dim i As ListViewItem = LV.Items.Add(.Item("FULLNAME"))
             i.SubItems.Add(.Item("CATEGORY")).Tag = .Item("allow_id")
-            i.SubItems.Add(sched)
+            i.SubItems.Add(sched).Tag = .Item("BIOMETRIC_NO")
             i.SubItems.Add(effectivity.ToString("MMM dd, yyyy"))
             i.SubItems.Add(FormatNumber(.Item("AMOUNT"))).Tag = .Item("id")
             i.SubItems.Add(.Item("ALLOWED"))
@@ -3055,20 +3064,32 @@ Module SelectFromDatabase
     Friend Sub ListOF_PAF(grid As DataGridView, Optional search As String = Nothing)
         grid.Rows.Clear()
         Dim mysql As String
+        Dim secured_str As String = search
+        secured_str = DreadKnight(secured_str)
+        Dim strWords As String() = secured_str.Split(New Char() {" "c})
+        Dim name As String
 
         If search = Nothing Then
-            mysql = $"Select A.*, B.BIO_NO as bioNo, 
+            mysql = $"Select A.*, B.BIOMETRICID as bioNo, 
                     LASTNAME || ', ' || FIRSTNAME || ' ' || 
                          CASE 
                              WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
                              ELSE ''
                          END AS FULLNAME
-                    from PAYROLL_PAF A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIO_NO"
+                    from PAYROLL_PAF A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIO_NO WHERE "
+
+            For Each name In strWords
+                mysql &= $"{vbCr}UPPER(BIOMETRIC_NO) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(LASTNAME || ', ' || FIRSTNAME || ' ' || CASE WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.' ELSE '' END) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(BRANCHCODE) LIKE UPPER('%{name}%')) ORDER BY FULLNAME"
+            Next
+
         Else
             If IsNumeric(search) Then
                 mysql = $"Select * from PAYROLL_PAF where PAF_NO = '{search}' Or BIO_NO = '{search}'"
             Else
-                mysql = $"Select A.*, B.BIO_NO as bioNo, 
+                mysql = $"Select A.*, B.BIOMETRICID as bioNo, 
                         LASTNAME || ', ' || FIRSTNAME || ' ' || 
                              CASE 
                                  WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
@@ -3078,6 +3099,7 @@ Module SelectFromDatabase
             End If
         End If
 
+        TestingScript_String(mysql)
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAF")
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
@@ -3094,7 +3116,8 @@ Module SelectFromDatabase
                         row.Cells(4).Value = .item("PI_FROM")
                         row.Cells(5).Value = .item("PI_TO")
                         row.Cells(6).Value = .item("REMARKS")
-                        row.Cells(7).Value = IIf(IsDBNull(.item("STATUS")), "PENDING", .item("STATUS"))
+                        row.Cells(7).Value = CDate(.item("DATE_CREATED")).ToShortDateString
+                        row.Cells(8).Value = IIf(IsDBNull(.item("STATUS")), "PENDING", .item("STATUS"))
 
                         row.Height = 30
                     End With

@@ -151,7 +151,7 @@ Public Class frmAllowance
 
             ElseIf tabName = "FORM" Then
                 BiometricID_TXT.Text = .BiometricID
-                GetInfo_Form(.BiometricID, Name_TXT, EmpNo_txt, Address_txt, Bdate_txt, DateHire_txt, SSS_txt, TIN_txt, PIFrom_txt, PIEffectFrom_dtp, PI_SchedFrom_CB, JobTitleFrom_txt, SalaryFrom_txt)
+                GetInfo_Form(.BiometricID, Name_TXT, EmpNo_txt, Address_txt, Bdate_txt, DateHire_txt, SSS_txt, TIN_txt, PIFrom_txt, PIEffectFrom_dtp, PI_SchedFrom_CB, JobTitleFrom_txt, SalaryFrom_txt, SalaryTo_txt, Gender_CB, Marital_CB)
                 Allowance_Tab.SelectedIndex = 1
 
             End If
@@ -211,8 +211,35 @@ Public Class frmAllowance
         End Try
     End Sub
 
+    Private Function PAF_ValidPreview()
+        If Gender_CB.Text = Nothing Then
+            MsgBox("Please Indicate the Gender", MsgBoxStyle.Exclamation, "Invalid")
+            Return False
+        ElseIf Marital_CB.Text = Nothing Then
+            MsgBox("Please Indicate the Marital Status", MsgBoxStyle.Exclamation, "Invalid")
+            Return False
+        ElseIf Employment_CB.Text = Nothing Then
+            MsgBox("Please Indicate the Employment", MsgBoxStyle.Exclamation, "Invalid")
+            Return False
+        ElseIf SalaryChanges_CB.Text = Nothing Then
+            MsgBox("Please Indicate the type of Salary Changes", MsgBoxStyle.Exclamation, "Invalid")
+            Return False
+        ElseIf PITo_txt.Text = Nothing Or PITo_txt.Text = "0" Then
+            MsgBox("Please Indicate the New PI Amount", MsgBoxStyle.Exclamation, "Invalid")
+            Return False
+        ElseIf PIEffectTo_dtp.Value = "1/1/1990" Then
+            MsgBox("Please Indicate the New PI Effectivity Date", MsgBoxStyle.Exclamation, "Invalid")
+            Return False
+        ElseIf PI_SchedTo_CB.Text = Nothing Then
+            MsgBox("Please Indicate the New PI Schedule", MsgBoxStyle.Exclamation, "Invalid")
+            Return False
+        End If
+        Return True
+    End Function
+
     Private Sub F_Preview_btn_Click(sender As Object, e As EventArgs) Handles F_Preview_btn.Click
         rpt_Allowance.LocalReport.DataSources.Clear()
+        If Not PAF_ValidPreview() Then Exit Sub
 
         Try
             Dim dt As New DataTable()
@@ -286,7 +313,7 @@ Public Class frmAllowance
 
             dt.Rows.Add(name(0), firstt, middlee, datePrepared, EmpNo_txt.Text, Bdate_txt.Text, dateHire,
                         Address_txt.Text, SSS_txt.Text, TIN_txt.Text, Gender_CB.Text, Marital_CB.Text,
-                        Employment_CB.Text, SalesCharges_CB.Text,
+                        Employment_CB.Text, SalaryChanges_CB.Text,
                         CompanyFrom_txt.Text, CompanyT0_txt.Text,
                         DeptFrom_txt.Text, DeptTo_txt.Text,
                         JobTitleFrom_txt.Text, JobTitleTo_txt.Text,
@@ -313,7 +340,9 @@ Public Class frmAllowance
 
     Private Sub BiometricID_TXT_TextChanged(sender As Object, e As EventArgs) Handles BiometricID_TXT.TextChanged
         If BiometricID_TXT.Text <> Nothing Then
-            GetInfo_Form(BiometricID_TXT.Text, Name_TXT, EmpNo_txt, Address_txt, Bdate_txt, DateHire_txt, SSS_txt, TIN_txt, PIFrom_txt, PIEffectFrom_dtp, PI_SchedFrom_CB, JobTitleFrom_txt, SalaryFrom_txt)
+            GetInfo_Form(BiometricID_TXT.Text, Name_TXT, EmpNo_txt, Address_txt, Bdate_txt, DateHire_txt, SSS_txt, TIN_txt, PIFrom_txt, PIEffectFrom_dtp, PI_SchedFrom_CB, JobTitleFrom_txt, SalaryFrom_txt, SalaryTo_txt, Gender_CB, Marital_CB)
+
+            If Name_TXT.Tag <> "UPDATE" Then PIFrom_txt.Text = Nothing
         End If
     End Sub
 
@@ -328,23 +357,39 @@ Public Class frmAllowance
     Private Sub F_Save_btn_Click(sender As Object, e As EventArgs) Handles F_Save_btn.Click
         If Name_TXT.Text <> Nothing Then
 
-            SavePAF(0, BiometricID_TXT.Text, Gender_CB.Text, Marital_CB.Text, Employment_CB.Text, SalesCharges_CB.Text,
-                       DeptFrom_txt.Text, JobLevelFrom_txt.Text,
-                       SalaryFrom_txt.Text, SalryEffectFrom_dtp.Value,
-                       SalaryTo_txt.Text, SalryEffectTo_dtp.Value,
-                       PIFrom_txt.Text, PIEffectFrom_dtp.Value, PI_SchedFrom_CB.Text,
-                       PITo_txt.Text, PIEffectTo_dtp.Value, PI_SchedTo_CB.Text,
-                       Remarks_txt.Text)
+            Dim sched As String = PI_SchedTo_CB.Text
+            If sched = "every 15th of the month" Then
+                sched = "OPEN PAYROLL"
+            ElseIf sched = "every 30th of the month" Then
+                sched = "CLOSE PAYROLL"
+            Else
+                sched = "EVERY PAYROLL"
+            End If
 
-            SaveLogs($"ADDED PAF- {Name_TXT.Text} ({BiometricID_TXT.Text}), Marital({Marital_CB.Text}), Employment({Employment_CB.Text}), Sales Charges({SalesCharges_CB.Text}), 
-                    Department({DeptFrom_txt.Text}), Job Level({JobLevelFrom_txt.Text}), Salary_Wage_From({SalaryFrom_txt.Text}), Salary_Wage_From_Effectivity({SalryEffectTo_dtp.Value}), 
+            SavePAF(0, BiometricID_TXT.Text, Gender_CB.Text, Marital_CB.Text, Employment_CB.Text, SalaryChanges_CB.Text,
+                           DeptFrom_txt.Text, JobLevelFrom_txt.Text,
+                           SalaryFrom_txt.Text, SalryEffectFrom_dtp.Value,
+                           SalaryTo_txt.Text, SalryEffectTo_dtp.Value,
+                           PIFrom_txt.Text, PIEffectFrom_dtp.Value, PI_SchedFrom_CB.Text,
+                           PITo_txt.Text, PIEffectTo_dtp.Value, PI_SchedTo_CB.Text,
+                           Remarks_txt.Text)
+
+                If SalaryChanges_CB.Text = "PERFORMANCE INCENTIVES" Then        'SAVE PI HISTORY ================ 
+                    SaveAllowance(BiometricID_TXT.Tag, BiometricID_TXT.Text, "PERFORMANCE INCENTIVES", PITo_txt.Text, "YES", sched, 0, PIEffectTo_dtp.Value, "PAF")
+                    SaveAllowance_HISTORY(BiometricID_TXT.Text, "PERFORMANCE INCENTIVES", PITo_txt.Text, "YES", sched, 0, PIEffectTo_dtp.Value)
+                End If
+
+                SaveLogs($"ADDED PAF- {Name_TXT.Text} ({BiometricID_TXT.Text}), Marital({Marital_CB.Text}), Employment({Employment_CB.Text}), Sales Charges({SalaryChanges_CB.Text}), 
+                    Department({DeptFrom_txt.Text}), Job Level({JobLevelFrom_txt.Text}), 
+                    Salary_Wage_From({SalaryFrom_txt.Text}), Salary_Wage_From_Effectivity({SalryEffectTo_dtp.Value}), 
                     Salary_Wage_To({SalaryTo_txt.Text}), Salary_Wage_From_Effectivity({SalryEffectTo_dtp.Value}),
-                    PI_From({PIFrom_txt.Text}), PI_From_Effectivity({PIEffectFrom_dtp.Value}), PI_From_Schedule({PI_SchedFrom_CB.Text}) 
-                    PI_To({PITo_txt.Text}), PI_To_Effectivity({PIEffectTo_dtp.Value}), PI_To_Schedule({PI_SchedTo_CB.Text}), 
+                    PI_From({PIFrom_txt.Text}), PI_To({PITo_txt.Text}), 
+                    PI_From_Effectivity({PIEffectFrom_dtp.Value}), PI_To_Effectivity({PIEffectTo_dtp.Value}), 
+                    PI_From_Schedule({PI_SchedFrom_CB.Text}) PI_To_Schedule({PI_SchedTo_CB.Text}), 
                     Remarks({Remarks_txt.Text})", frmMainForm.UserName_LBL.Text)
 
-            F_Calcel_btn.PerformClick()
-        End If
+                F_Calcel_btn.PerformClick()
+            End If
     End Sub
 
     Private Sub Allowance_Tab_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Allowance_Tab.SelectedIndexChanged
@@ -388,7 +433,9 @@ Public Class frmAllowance
     Private Sub F_Calcel_btn_Click(sender As Object, e As EventArgs) Handles F_Calcel_btn.Click
         rpt_Allowance.Clear()
         BiometricID_TXT.Clear()
+        BiometricID_TXT.Tag = "0"
         Name_TXT.Clear()
+        Name_TXT.Tag = ""
         EmpNo_txt.Clear()
         Address_txt.Clear()
         Bdate_txt.Clear()
@@ -398,7 +445,7 @@ Public Class frmAllowance
         Gender_CB.SelectedIndex = -1
         Marital_CB.SelectedIndex = -1
         Employment_CB.SelectedIndex = -1
-        SalesCharges_CB.SelectedIndex = -1
+        SalaryChanges_CB.SelectedIndex = -1
         CompanyFrom_txt.Clear()
         DeptFrom_txt.Clear()
         JobTitleFrom_txt.Clear()
@@ -459,5 +506,26 @@ Public Class frmAllowance
             Lists_Allowance(Allowance_LV)
             MsgBox("Successfully Removed!", MsgBoxStyle.Information)
         End If
+    End Sub
+
+    Private Sub Form_MenuItem_Click(sender As Object, e As EventArgs) Handles Form_MenuItem.Click
+        If Allowance_LV.Items.Count = 0 Then Exit Sub
+
+        Dim sched As String = Allowance_LV.Items(Allowance_LV.FocusedItem.Index).SubItems(2).Text
+        If sched = "OPEN PAYROLL" Then
+            PI_SchedFrom_CB.Text = "every 15th of the month"
+        ElseIf sched = "CLOSE PAYROLL" Then
+            PI_SchedFrom_CB.Text = "every 30th of the month"
+        Else
+            PI_SchedFrom_CB.Text = "every month"
+        End If
+
+        BiometricID_TXT.Text = Allowance_LV.Items(Allowance_LV.FocusedItem.Index).SubItems(2).Tag
+        BiometricID_TXT.Tag = Allowance_LV.Items(Allowance_LV.FocusedItem.Index).SubItems(4).Tag     'IDNO OF ALLOWANCE
+        SalaryChanges_CB.Text = "PERFORMANCE INCENTIVES"
+        SalaryTo_txt.Text = SalaryFrom_txt.Text     'SalaryTo SAME AS SalaryFrom (MOSTLY HINDI NAMAN NAGBABAGO ANG MONTHLY SALARY)
+        GetInfo_Form(BiometricID_TXT.Text, Name_TXT, EmpNo_txt, Address_txt, Bdate_txt, DateHire_txt, SSS_txt, TIN_txt, PIFrom_txt, PIEffectFrom_dtp, PI_SchedFrom_CB, JobTitleFrom_txt, SalaryFrom_txt, SalaryTo_txt, Gender_CB, Marital_CB)
+        Allowance_Tab.SelectedIndex = 1
+        Name_TXT.Tag = "UPDATE"
     End Sub
 End Class
