@@ -2699,7 +2699,7 @@ A
                                         inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
                                         left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
                                         where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' and B.PHOTO_CATEGORY = 'DAVAO PERFECT' 
-                                        Order by B.BRANCHCODE "
+                                        Order by B.COMPANY, BRANCHNAME, B.HO_CATEGORY, FULLNAME"
 
             Dim mysql_JR_PHOTO As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
                                         LASTNAME || ', ' || FIRSTNAME || ' ' || 
@@ -2711,7 +2711,7 @@ A
                                         inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
                                         left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
                                         where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' and B.PHOTO_CATEGORY = 'JR PHOTO' 
-                                        Order by B.BRANCHCODE "
+                                        Order by B.COMPANY, BRANCHNAME, B.HO_CATEGORY, FULLNAME"
 
             Dim mysql_GENSAN_PERFECT As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
                                         LASTNAME || ', ' || FIRSTNAME || ' ' || 
@@ -2723,7 +2723,7 @@ A
                                         inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
                                         left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
                                         where PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' and B.PHOTO_CATEGORY = 'GENSAN PERFECT'  
-                                        Order by B.BRANCHCODE "
+                                        Order by B.COMPANY, BRANCHNAME, B.HO_CATEGORY, FULLNAME"
 
             Dim mysql_PHOTO_HEADOFFICE As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
                                         LASTNAME || ', ' || FIRSTNAME || ' ' || 
@@ -2734,7 +2734,8 @@ A
                                         From PAYROLL_PAYOUT A 
                                         inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
                                         left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
-                                        where PAYDATE  = '{paydatee}' and B.HO_CATEGORY like 'Photo%'  order by HO_CATEGORY"
+                                        where PAYDATE  = '{paydatee}' and B.HO_CATEGORY like 'Photo%'  
+                                        order by B.COMPANY, BRANCHNAME, B.HO_CATEGORY, FULLNAME"
 
             Dim mysql_PG_UY As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
                                         LASTNAME || ', ' || FIRSTNAME || ' ' || 
@@ -2745,7 +2746,8 @@ A
                                         From PAYROLL_PAYOUT A 
                                         inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
                                         left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
-                                        where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'P&G UY' "
+                                        where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'P&G UY' 
+                                        order by B.COMPANY, BRANCHNAME, B.HO_CATEGORY, FULLNAME"
 
             Dim mysql_PG_UY_HEADOFFICE As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
                                         LASTNAME || ', ' || FIRSTNAME || ' ' || 
@@ -2756,7 +2758,8 @@ A
                                         From PAYROLL_PAYOUT A 
                                         inner Join TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID
                                         left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE  
-                                        where A.PAYDATE = '{paydatee}' and B.HO_CATEGORY LIKE '%GHS%' "
+                                        where A.PAYDATE = '{paydatee}' and B.HO_CATEGORY LIKE '%GHS%' 
+                                        order by B.COMPANY, BRANCHNAME, B.HO_CATEGORY, FULLNAME"
 
             Dim mysql_DALTON As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
                                         LASTNAME || ', ' || FIRSTNAME || ' ' || 
@@ -2768,7 +2771,7 @@ A
                                         inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
                                         left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
                                         where A.PAYDATE  = '{paydatee}' AND (B.COMPANY  = 'DALTON' OR B.HO_CATEGORY LIKE '%Dalton%') 
-                                         Order by B.HO_CATEGORY asc, B.BRANCHCODE  asc"
+                                        order by B.COMPANY, BRANCHNAME, B.HO_CATEGORY, FULLNAME"
 
             Dim mysql_PERFECOM As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE, 
                                         LASTNAME || ', ' || FIRSTNAME || ' ' || 
@@ -2781,7 +2784,7 @@ A
                                         left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
                                         where A.PAYDATE  = '{paydatee}' 
                                         and  (B.COMPANY  = 'PERFECOM' OR B.HO_CATEGORY LIKE '%Perfecom%') 
-                                        ORDER BY B.HO_CATEGORY asc, B.BRANCHCODE asc"
+                                        order by B.COMPANY, BRANCHNAME, B.HO_CATEGORY, FULLNAME"
 
             Dim mysql_PTU_REALTY As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
                                         LASTNAME || ', ' || FIRSTNAME || ' ' || 
@@ -2792,7 +2795,8 @@ A
                                         From PAYROLL_PAYOUT A 
                                         inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
                                         left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
-                                        where A.PAYDATE  = '{paydatee}' AND B.HO_CATEGORY IN ('Construction' , 'Leasing Admin Office') "
+                                        where A.PAYDATE  = '{paydatee}' AND B.HO_CATEGORY IN ('Construction' , 'Leasing Admin Office') 
+                                        order by B.COMPANY, BRANCHNAME, B.HO_CATEGORY, FULLNAME"
 
             Dim mysql_PGC_HEADOFFICE As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
                                         LASTNAME || ', ' || FIRSTNAME || ' ' || 
@@ -2803,7 +2807,8 @@ A
                                         From PAYROLL_PAYOUT A 
                                         inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
                                         left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
-                                        where A.PAYDATE  = '{paydatee}' AND B.HO_CATEGORY = 'PGC Head Office' "
+                                        where A.PAYDATE  = '{paydatee}' AND B.HO_CATEGORY = 'PGC Head Office' 
+                                        order by B.COMPANY, BRANCHNAME, B.HO_CATEGORY, FULLNAME"
 
 #End Region
             LoadRows_NetPay(mysql_DAVAO_PERFECT, paydatee, dt_NetPay, "DAVAO PERFECT")
@@ -2922,12 +2927,22 @@ A
                                 TARDINESS = 0
                             End If
 
-                            If HO_CATEGORY = "GHS/P&G UY Admin Office" Or HO_CATEGORY = "GHS/P&G UY Admin Operation" Or
-                                HO_CATEGORY.Contains("Dalton") Or HO_CATEGORY.Contains("Photo") Or HO_CATEGORY.Contains("PGC") Or
-                                plus_ = "PGC" Or plus_ = "PTU" Then
+                            'If HO_CATEGORY = "GHS/P&G UY Admin Office" Or HO_CATEGORY = "GHS/P&G UY Admin Operation" Or
+                            '    HO_CATEGORY.Contains("Dalton") Or HO_CATEGORY.Contains("Photo") Or HO_CATEGORY.Contains("PGC") Or
+                            '    plus_ = "PGC" Or plus_ = "PTU" Then
 
-                                BRANCHNAME = HO_CATEGORY
+                            '    BRANCHNAME = HO_CATEGORY
+                            'End If 
+
+                            '--- RECENTLY ADDED ----
+                            If BRANCH_CODE = Nothing Then
+                                BRANCHNAME = IIf(IsDBNull(.Item("HO_CATEGORY")), "", CStr(.Item("HO_CATEGORY")).TrimEnd)
                             End If
+
+                            If COMPANY <> "" Then
+                                BRANCHNAME = $"{COMPANY} - {BRANCHNAME}"
+                            End If
+
 
                             Dim tempPlus As String = plus_
 

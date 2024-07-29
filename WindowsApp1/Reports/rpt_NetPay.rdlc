@@ -13016,6 +13016,11 @@ Fields!PLUS.Value = "PTU", "PTU REALTY")</Value>
             <FixedColumnHeaders>true</FixedColumnHeaders>
             <FixedRowHeaders>true</FixedRowHeaders>
             <DataSetName>DataSet2</DataSetName>
+            <SortExpressions>
+              <SortExpression>
+                <Value>=Fields!BRANCH_CODE.Value</Value>
+              </SortExpression>
+            </SortExpressions>
             <Top>0.0925in</Top>
             <Left>0.11458in</Left>
             <Height>7.05599in</Height>
