@@ -543,6 +543,7 @@ Module SaveUpdate
                 .Item("AMORT") = AMORT
                 .Item("SCHEDULE") = SCHEDULE
                 .Item("DATEE") = DATEE
+                '.Item("EFFECTIVE_DATE") = DATEE         'DILI DAPAT MAEDIT NG EFFECTIVITY (basi mausab)
 
             End With
             SaveEntry(ds, False)
@@ -564,6 +565,7 @@ Module SaveUpdate
                     .Item("BALANCE") = PRINCIPAL
                     .Item("SCHEDULE") = SCHEDULE
                     .Item("DATEE") = DATEE
+                    .Item("EFFECTIVE_DATE") = DATEE
 
                 End With
                 dss.Tables(0).Rows.Add(dsNewRow)
@@ -1242,7 +1244,7 @@ Module SaveUpdate
                     '============================================= DEDUCTION =========================================================  
                     Deduction = 0
 
-                    Dim sql_3 As String = $"Select Z.*, Z.id as idddd From PAYROLL_DEDUCTION Z WHERE BIO_NO = '{bioNo}' and STATUS is null and SCHEDULE IN ('{payrollSched}', 'EVERY PAYROLL')"
+                    Dim sql_3 As String = $"Select Z.*, Z.id as idddd From PAYROLL_DEDUCTION Z WHERE BIO_NO = '{bioNo}' and STATUS is null and SCHEDULE IN ('{payrollSched}', 'EVERY PAYROLL') AND EFFECTIVE_DATE <= '{paydate_}'"
                     Using ds_3 As DataSet = LoadSQL(sql_3, "PAYROLL_DEDUCTION")
                         If ds_3.Tables(0).Rows.Count > 0 Then
                             For Each dr_3 In ds_3.Tables(0).Rows
