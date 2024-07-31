@@ -2524,7 +2524,8 @@ A
                 .Columns.Add("ACCOUNT_NO")
             End With
 
-#Region "WITH SORTING"
+
+#Region "TO BE DELETED"
 
             'Dim mysql_DAVAO_PERFECT As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
             '                            LASTNAME || ', ' || FIRSTNAME || ' ' || 
@@ -2535,11 +2536,8 @@ A
             '                            From PAYROLL_PAYOUT A 
             '                            inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
             '                            left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
-            '                            where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' and B.BRANCHCODE IN ('SMG','KCG','ACM','TAC') 
-            '                            Order by case when B.BRANCHCODE = 'KCG' then 0
-            '                                          when B.BRANCHCODE = 'SMG' then 1
-            '                                          when B.BRANCHCODE = 'TAC' then 2
-            '                                          when B.BRANCHCODE = 'ACM' then 3 end"
+            '                            where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' and B.PHOTO_CATEGORY = 'DAVAO PERFECT' 
+            '                            Order by B.COMPANY, BRANCHNAME, B.HO_CATEGORY, FULLNAME"
 
             'Dim mysql_JR_PHOTO As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
             '                            LASTNAME || ', ' || FIRSTNAME || ' ' || 
@@ -2550,96 +2548,8 @@ A
             '                            From PAYROLL_PAYOUT A 
             '                            inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
             '                            left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
-            '                            where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' and B.BRANCHCODE IN ('DIG','ISU','M1','POL') 
-            '                            Order by case when B.BRANCHCODE = 'DIG' then 0
-            '                                          when B.BRANCHCODE = 'ISU' then 1
-            '                                          when B.BRANCHCODE = 'M1' then 2
-            '                                          when B.BRANCHCODE = 'POL' then 3 end" 
-
-            'Dim mysql_DALTON_BRANCHES As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
-            '                            LASTNAME || ', ' || FIRSTNAME || ' ' || 
-            '                                 CASE 
-            '                                     WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
-            '                                     ELSE ''
-            '                                 END AS FULLNAME
-            '                            From PAYROLL_PAYOUT A 
-            '                            inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
-            '                            left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
-            '                            where A.PAYDATE  = '{paydatee}' AND B.COMPANY  = 'DALTON' 
-            '                             Order by case when B.BRANCHCODE = 'CAG' then 0 
-            '                                           when B.BRANCHCODE = 'JCAT 2' then 1 
-            '                                           when B.BRANCHCODE = 'KCG' then 2 
-            '                                           when B.BRANCHCODE = 'LAG' then 3 
-            '                                           when B.BRANCHCODE = 'PMA' then 4  
-            '                                           when B.BRANCHCODE = 'NUN' then 5  
-            '                                           when B.BRANCHCODE = 'PEN' then 6  
-            '                                           when B.BRANCHCODE = 'PGN' then 7  
-            '                                           when B.BRANCHCODE = 'PIO' then 8  
-            '                                           when B.BRANCHCODE = 'ROG' then 9  
-            '                                           when B.BRANCHCODE = 'ROX' then 10  
-            '                                           when B.BRANCHCODE = 'SAN' then 11  
-            '                                           when B.BRANCHCODE = 'UHA' then 12  
-            '                                           when B.BRANCHCODE = 'POL' then 13  
-            '                                           when B.BRANCHCODE = 'POL2' then 14  
-            '                                           when B.BRANCHCODE = 'POL3' then 15  
-            '                                           when B.BRANCHCODE = 'GAP' then 16  
-            '                                           when B.BRANCHCODE = 'ACM' then 17  
-            '                                           when B.BRANCHCODE = 'GAM' then 18  
-            '                                           when B.BRANCHCODE = 'AL1' then 19  
-            '                                           when B.BRANCHCODE = 'AL2' then 20  
-            '                                           when B.BRANCHCODE = 'ZUL' then 21   
-            '                                           when B.BRANCHCODE = 'ISU 1' then 22  
-            '                                           when B.BRANCHCODE = 'ISU 2' then 23  
-            '                                           when B.BRANCHCODE = 'ISU 3' then 24   
-            '                                           when B.BRANCHCODE = 'TAC 1' then 25  
-            '                                           when B.BRANCHCODE = 'TAC 2' then 26  
-            '                                           when B.BRANCHCODE = 'PQO' then 27   
-            '                                           when B.BRANCHCODE = 'SRA' then 28  
-            '                                           when B.BRANCHCODE = 'TBOLI' then 29  
-            '                                           when B.BRANCHCODE = 'BANG' then 30   
-            '                                           when B.BRANCHCODE = 'ESPE' then 31  
-            '                                           when B.BRANCHCODE = 'KAL' then 32  
-            '                                           when B.BRANCHCODE = 'LAM' then 33  
-            '                                           when B.BRANCHCODE = 'LEBAK' then 34   
-            '                                           when B.BRANCHCODE = 'AWANG' then 35  
-            '                                           when B.BRANCHCODE = 'DAL' then 36  
-            '                                           when B.BRANCHCODE = 'COT 1' then 37  
-            '                                           when B.BRANCHCODE = 'COT 2' then 38   
-            '                                           when B.BRANCHCODE = 'COT 3' then 39   
-            '                                           when B.BRANCHCODE = 'COT 4' then 40   
-            '                                           when B.BRANCHCODE = 'KID' then 41  
-            '                                           when B.BRANCHCODE = 'KID2' then 42  
-            '                                           when B.BRANCHCODE = 'GAK' then 43   
-            '                                           when B.BRANCHCODE = 'MID' then 44  
-            '                                           when B.BRANCHCODE = 'KAB' then 45  
-            '                                           when B.BRANCHCODE = 'KAB 2' then 46  
-            '                                           when B.BRANCHCODE = 'KAB3' then 47   
-            '                                           when B.BRANCHCODE = 'PIKIT' then 48    
-            '                                           when B.BRANCHCODE = 'MLANG' then 49 
-            '                                           when B.BRANCHCODE = 'TUL' then 50 
-            '                                           when B.BRANCHCODE = 'SHARIFF' then 51 
-            '                                           when B.BRANCHCODE = 'SHARIFF 2' then 52 
-            '                                           when B.BRANCHCODE = 'UPI' then 53 
-            '                                           when B.BRANCHCODE = 'PAR' then 54 
-            '                                           when B.BRANCHCODE = 'BUL' then 55  
-            '                                           when B.BRANCHCODE = 'DIG 1' then 56 
-            '                                           when B.BRANCHCODE = 'DIG 2' then 57 
-            '                                           when B.BRANCHCODE = 'GAD' then 58  
-            '                                           when B.BRANCHCODE = 'GGP' then 59 
-            '                                           when B.BRANCHCODE = 'SNP' then 60 
-            '                                           when B.BRANCHCODE = 'TAG' then 61  
-            '                                           when B.BRANCHCODE = 'ALA' then 62  
-            '                                           when B.BRANCHCODE = 'GLAN' then 63 
-            '                                           when B.BRANCHCODE = 'KIA' then 64 
-            '                                           when B.BRANCHCODE = 'MAA' then 65 
-            '                                           when B.BRANCHCODE = 'MAITUM' then 66 
-            '                                           when B.BRANCHCODE = 'ABREA' then 67 
-            '                                           when B.BRANCHCODE = 'SURI 2' then 68  
-            '                                           when B.BRANCHCODE = 'SURI 3' then 69 
-            '                                           when B.BRANCHCODE = 'GCS' then 70  
-            '                                           when B.BRANCHCODE = 'BUT' then 71 
-            '                                           when B.BRANCHCODE = 'GCA' then 72  
-            '                                           end, B.BRANCHCODE asc"
+            '                            where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' and B.PHOTO_CATEGORY = 'JR PHOTO' 
+            '                            Order by B.COMPANY, BRANCHNAME, B.HO_CATEGORY, FULLNAME"
 
             'Dim mysql_GENSAN_PERFECT As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
             '                            LASTNAME || ', ' || FIRSTNAME || ' ' || 
@@ -2650,23 +2560,10 @@ A
             '                            From PAYROLL_PAYOUT A 
             '                            inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
             '                            left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
-            '                            where PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' 
-            '                            and (B.BRANCHCODE IN ('ROG','ROX','FINEPIX','COT','MID','KID','SNP','GMA','SML','ZAM','SMD')
-            '                            or B.HO_CATEGORY IN ('Photo Admin Office', 'Photo Admin Operation')) 
-            '                            Order by case when B.BRANCHCODE = 'ROG' then 1
-            '                                          when B.BRANCHCODE = 'ROX' then 2
-            '                                          when B.BRANCHCODE = 'FINEPIX' then 3
-            '                                          when B.BRANCHCODE = 'COT' then 4 
-            '                                          when B.BRANCHCODE = 'KID' then 5 
-            '                                          when B.BRANCHCODE = 'MID' then 6 
-            '                                          when B.BRANCHCODE = 'GMA' then 7 
-            '                                          when B.BRANCHCODE = 'SNP' then 8 
-            '                                          when B.BRANCHCODE = 'SMD' then 9 
-            '                                          when B.BRANCHCODE = 'SML' then 10 
-            '                                          when B.BRANCHCODE = 'ZAM' then 11 
-            '                                          else 0 end"
+            '                            where PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' and B.PHOTO_CATEGORY = 'GENSAN PERFECT'  
+            '                            Order by B.COMPANY, BRANCHNAME, B.HO_CATEGORY, FULLNAME"
 
-            'Dim mysql_PERFECOM As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
+            'Dim mysql_PHOTO_HEADOFFICE As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
             '                            LASTNAME || ', ' || FIRSTNAME || ' ' || 
             '                                 CASE 
             '                                     WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
@@ -2675,152 +2572,108 @@ A
             '                            From PAYROLL_PAYOUT A 
             '                            inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
             '                            left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
-            '                            where A.PAYDATE  = '{PaydateNet_ComboB.Text}' 
-            '                            and  (B.COMPANY  = 'PERFECOM' OR B.HO_CATEGORY In ('Perfecom Admin Office','Perfecom Admin Operation')) 
-            '                            ORDER BY CASE WHEN B.BRANCHCODE = 'SMG' THEN 1
-            '                                          WHEN B.BRANCHCODE = 'KCG' THEN 2
-            '                                          WHEN B.BRANCHCODE = 'OPK' THEN 3
-            '                                          WHEN B.BRANCHCODE = 'ARC' THEN 4
-            '                                          WHEN B.BRANCHCODE = 'ARC' THEN 5
-            '                                          WHEN B.BRANCHCODE = 'KCM' THEN 6
-            '                                          WHEN B.BRANCHCODE = 'ZAM' THEN 7
-            '                                          else 0 end, B.HO_CATEGORY asc, B.BRANCHCODE asc"
-#End Region
+            '                            where PAYDATE  = '{paydatee}' and B.HO_CATEGORY like 'Photo%'  
+            '                            order by B.COMPANY, BRANCHNAME, B.HO_CATEGORY, FULLNAME"
 
-#Region "Final"
+            'Dim mysql_PG_UY As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
+            '                            LASTNAME || ', ' || FIRSTNAME || ' ' || 
+            '                                 CASE 
+            '                                     WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
+            '                                     ELSE ''
+            '                                 END AS FULLNAME
+            '                            From PAYROLL_PAYOUT A 
+            '                            inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
+            '                            left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
+            '                            where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'P&G UY' 
+            '                            order by B.COMPANY, BRANCHNAME, B.HO_CATEGORY, FULLNAME"
 
-            Dim mysql_DAVAO_PERFECT As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
-                                        LASTNAME || ', ' || FIRSTNAME || ' ' || 
-                                             CASE 
-                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
-                                                 ELSE ''
-                                             END AS FULLNAME
-                                        From PAYROLL_PAYOUT A 
-                                        inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
-                                        left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
-                                        where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' and B.PHOTO_CATEGORY = 'DAVAO PERFECT' 
-                                        Order by B.COMPANY, BRANCHNAME, B.HO_CATEGORY, FULLNAME"
+            'Dim mysql_PG_UY_HEADOFFICE As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
+            '                            LASTNAME || ', ' || FIRSTNAME || ' ' || 
+            '                                 CASE 
+            '                                     WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
+            '                                     ELSE ''
+            '                                 END AS FULLNAME
+            '                            From PAYROLL_PAYOUT A 
+            '                            inner Join TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID
+            '                            left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE  
+            '                            where A.PAYDATE = '{paydatee}' and B.HO_CATEGORY LIKE '%GHS%' 
+            '                            order by B.COMPANY, BRANCHNAME, B.HO_CATEGORY, FULLNAME"
 
-            Dim mysql_JR_PHOTO As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
-                                        LASTNAME || ', ' || FIRSTNAME || ' ' || 
-                                             CASE 
-                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
-                                                 ELSE ''
-                                             END AS FULLNAME
-                                        From PAYROLL_PAYOUT A 
-                                        inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
-                                        left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
-                                        where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' and B.PHOTO_CATEGORY = 'JR PHOTO' 
-                                        Order by B.COMPANY, BRANCHNAME, B.HO_CATEGORY, FULLNAME"
+            'Dim mysql_DALTON As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
+            '                            LASTNAME || ', ' || FIRSTNAME || ' ' || 
+            '                                 CASE 
+            '                                     WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
+            '                                     ELSE ''
+            '                                 END AS FULLNAME
+            '                            From PAYROLL_PAYOUT A 
+            '                            inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
+            '                            left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
+            '                            where A.PAYDATE  = '{paydatee}' AND (B.COMPANY  = 'DALTON' OR B.HO_CATEGORY LIKE '%Dalton%') 
+            '                            order by B.COMPANY, BRANCHNAME, B.HO_CATEGORY, FULLNAME"
 
-            Dim mysql_GENSAN_PERFECT As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
-                                        LASTNAME || ', ' || FIRSTNAME || ' ' || 
-                                             CASE 
-                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
-                                                 ELSE ''
-                                             END AS FULLNAME
-                                        From PAYROLL_PAYOUT A 
-                                        inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
-                                        left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
-                                        where PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' and B.PHOTO_CATEGORY = 'GENSAN PERFECT'  
-                                        Order by B.COMPANY, BRANCHNAME, B.HO_CATEGORY, FULLNAME"
+            'Dim mysql_PERFECOM As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE, 
+            '                            LASTNAME || ', ' || FIRSTNAME || ' ' || 
+            '                                 CASE 
+            '                                     WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
+            '                                     ELSE ''
+            '                                 END AS FULLNAME
+            '                            From PAYROLL_PAYOUT A 
+            '                            inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
+            '                            left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
+            '                            where A.PAYDATE  = '{paydatee}' 
+            '                            and  (B.COMPANY  = 'PERFECOM' OR B.HO_CATEGORY LIKE '%Perfecom%') 
+            '                            order by B.COMPANY, BRANCHNAME, B.HO_CATEGORY, FULLNAME"
 
-            Dim mysql_PHOTO_HEADOFFICE As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
-                                        LASTNAME || ', ' || FIRSTNAME || ' ' || 
-                                             CASE 
-                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
-                                                 ELSE ''
-                                             END AS FULLNAME
-                                        From PAYROLL_PAYOUT A 
-                                        inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
-                                        left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
-                                        where PAYDATE  = '{paydatee}' and B.HO_CATEGORY like 'Photo%'  
-                                        order by B.COMPANY, BRANCHNAME, B.HO_CATEGORY, FULLNAME"
+            'Dim mysql_PTU_REALTY As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
+            '                            LASTNAME || ', ' || FIRSTNAME || ' ' || 
+            '                                 CASE 
+            '                                     WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
+            '                                     ELSE ''
+            '                                 END AS FULLNAME
+            '                            From PAYROLL_PAYOUT A 
+            '                            inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
+            '                            left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
+            '                            where A.PAYDATE  = '{paydatee}' AND B.HO_CATEGORY IN ('Construction' , 'Leasing Admin Office') 
+            '                            order by B.COMPANY, BRANCHNAME, B.HO_CATEGORY, FULLNAME"
 
-            Dim mysql_PG_UY As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
-                                        LASTNAME || ', ' || FIRSTNAME || ' ' || 
-                                             CASE 
-                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
-                                                 ELSE ''
-                                             END AS FULLNAME
-                                        From PAYROLL_PAYOUT A 
-                                        inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
-                                        left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
-                                        where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'P&G UY' 
-                                        order by B.COMPANY, BRANCHNAME, B.HO_CATEGORY, FULLNAME"
+            'Dim mysql_PGC_HEADOFFICE As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
+            '                            LASTNAME || ', ' || FIRSTNAME || ' ' || 
+            '                                 CASE 
+            '                                     WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
+            '                                     ELSE ''
+            '                                 END AS FULLNAME
+            '                            From PAYROLL_PAYOUT A 
+            '                            inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
+            '                            left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
+            '                            where A.PAYDATE  = '{paydatee}' AND B.HO_CATEGORY = 'PGC Head Office' 
+            '                            order by B.COMPANY, BRANCHNAME, B.HO_CATEGORY, FULLNAME" 
 
-            Dim mysql_PG_UY_HEADOFFICE As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
-                                        LASTNAME || ', ' || FIRSTNAME || ' ' || 
-                                             CASE 
-                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
-                                                 ELSE ''
-                                             END AS FULLNAME
-                                        From PAYROLL_PAYOUT A 
-                                        inner Join TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID
-                                        left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE  
-                                        where A.PAYDATE = '{paydatee}' and B.HO_CATEGORY LIKE '%GHS%' 
-                                        order by B.COMPANY, BRANCHNAME, B.HO_CATEGORY, FULLNAME"
-
-            Dim mysql_DALTON As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
-                                        LASTNAME || ', ' || FIRSTNAME || ' ' || 
-                                             CASE 
-                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
-                                                 ELSE ''
-                                             END AS FULLNAME
-                                        From PAYROLL_PAYOUT A 
-                                        inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
-                                        left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
-                                        where A.PAYDATE  = '{paydatee}' AND (B.COMPANY  = 'DALTON' OR B.HO_CATEGORY LIKE '%Dalton%') 
-                                        order by B.COMPANY, BRANCHNAME, B.HO_CATEGORY, FULLNAME"
-
-            Dim mysql_PERFECOM As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE, 
-                                        LASTNAME || ', ' || FIRSTNAME || ' ' || 
-                                             CASE 
-                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
-                                                 ELSE ''
-                                             END AS FULLNAME
-                                        From PAYROLL_PAYOUT A 
-                                        inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
-                                        left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
-                                        where A.PAYDATE  = '{paydatee}' 
-                                        and  (B.COMPANY  = 'PERFECOM' OR B.HO_CATEGORY LIKE '%Perfecom%') 
-                                        order by B.COMPANY, BRANCHNAME, B.HO_CATEGORY, FULLNAME"
-
-            Dim mysql_PTU_REALTY As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
-                                        LASTNAME || ', ' || FIRSTNAME || ' ' || 
-                                             CASE 
-                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
-                                                 ELSE ''
-                                             END AS FULLNAME
-                                        From PAYROLL_PAYOUT A 
-                                        inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
-                                        left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
-                                        where A.PAYDATE  = '{paydatee}' AND B.HO_CATEGORY IN ('Construction' , 'Leasing Admin Office') 
-                                        order by B.COMPANY, BRANCHNAME, B.HO_CATEGORY, FULLNAME"
-
-            Dim mysql_PGC_HEADOFFICE As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
-                                        LASTNAME || ', ' || FIRSTNAME || ' ' || 
-                                             CASE 
-                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
-                                                 ELSE ''
-                                             END AS FULLNAME
-                                        From PAYROLL_PAYOUT A 
-                                        inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
-                                        left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
-                                        where A.PAYDATE  = '{paydatee}' AND B.HO_CATEGORY = 'PGC Head Office' 
-                                        order by B.COMPANY, BRANCHNAME, B.HO_CATEGORY, FULLNAME"
+            'LoadRows_NetPay(mysql_DAVAO_PERFECT, paydatee, dt_NetPay, "DAVAO PERFECT")
+            'LoadRows_NetPay(mysql_JR_PHOTO, paydatee, dt_NetPay, "JR PHOTO")
+            'LoadRows_NetPay(mysql_GENSAN_PERFECT, paydatee, dt_NetPay, "GENSAN PERFECT")
+            'LoadRows_NetPay(mysql_PHOTO_HEADOFFICE, paydatee, dt_NetPay)
+            'LoadRows_NetPay(mysql_PG_UY, paydatee, dt_NetPay)
+            'LoadRows_NetPay(mysql_PG_UY_HEADOFFICE, paydatee, dt_NetPay)
+            'LoadRows_NetPay(mysql_DALTON, paydatee, dt_NetPay)
+            'LoadRows_NetPay(mysql_PERFECOM, paydatee, dt_NetPay, "PERFECOM")
+            'LoadRows_NetPay(mysql_PTU_REALTY, paydatee, dt_NetPay, "PTU")
+            'LoadRows_NetPay(mysql_PGC_HEADOFFICE, paydatee, dt_NetPay)
 
 #End Region
-            LoadRows_NetPay(mysql_DAVAO_PERFECT, paydatee, dt_NetPay, "DAVAO PERFECT")
-            LoadRows_NetPay(mysql_JR_PHOTO, paydatee, dt_NetPay, "JR PHOTO")
-            LoadRows_NetPay(mysql_GENSAN_PERFECT, paydatee, dt_NetPay, "GENSAN PERFECT")
-            LoadRows_NetPay(mysql_PHOTO_HEADOFFICE, paydatee, dt_NetPay)
-            LoadRows_NetPay(mysql_PG_UY, paydatee, dt_NetPay)
-            LoadRows_NetPay(mysql_PG_UY_HEADOFFICE, paydatee, dt_NetPay)
-            LoadRows_NetPay(mysql_DALTON, paydatee, dt_NetPay)
-            LoadRows_NetPay(mysql_PERFECOM, paydatee, dt_NetPay, "PERFECOM")
-            LoadRows_NetPay(mysql_PTU_REALTY, paydatee, dt_NetPay, "PTU")
-            LoadRows_NetPay(mysql_PGC_HEADOFFICE, paydatee, dt_NetPay)
+
+            Dim mysqll As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
+                                        LASTNAME || ', ' || FIRSTNAME || ' ' || 
+                                             CASE 
+                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
+                                                 ELSE ''
+                                             END AS FULLNAME
+                                        From PAYROLL_PAYOUT A 
+                                        inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
+                                        left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
+                                        where A.PAYDATE  = '{paydatee}'
+                                        Order by B.COMPANY, BRANCHNAME, B.HO_CATEGORY, FULLNAME"
+
+            LoadRows_NetPay(mysqll, paydatee, dt_NetPay)
 
             Dim rds_DTR As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet2", dt_NetPay)
             ReportV_NetPay.LocalReport.DataSources.Add(rds_DTR)
@@ -2942,7 +2795,6 @@ A
                             If COMPANY <> "" Then
                                 BRANCHNAME = $"{COMPANY} - {BRANCHNAME}"
                             End If
-
 
                             Dim tempPlus As String = plus_
 
