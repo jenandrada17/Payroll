@@ -3274,6 +3274,9 @@ Module SelectFromDatabase
             Dim totalDeduction As Decimal = 0
             Dim NETPAY As Decimal = 0
 
+            Dim preparedBy As String = "Pearly Queen C. Benemerito"
+            If company = "DALTON" Then preparedBy = "Novelty S. Cababat"
+
             '======================================================== CLAIMS ====================================================================
             'HOLD SALARY
             Dim mysql1 As String = $"SELECT * FROM RECORDED_ALLOW_DEDUC WHERE BIO_NO = '{bioNo}' AND UPPER(CATEGORY) LIKE UPPER('%HOLD SALARY%')"
@@ -3369,7 +3372,8 @@ Module SelectFromDatabase
             New Microsoft.Reporting.WinForms.ReportParameter("paramDate", Today.ToShortDateString),
             New Microsoft.Reporting.WinForms.ReportParameter("paramTotalClaims", totalClaims.ToString("N")),
             New Microsoft.Reporting.WinForms.ReportParameter("paramTotalDeduction", totalDeduction.ToString("N")),
-            New Microsoft.Reporting.WinForms.ReportParameter("paramNetPay", NETPAY.ToString("N"))
+            New Microsoft.Reporting.WinForms.ReportParameter("paramNetPay", NETPAY.ToString("N")),
+            New Microsoft.Reporting.WinForms.ReportParameter("paramPreparedBy", preparedBy)
             }
 
             Dim dataSource As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt)

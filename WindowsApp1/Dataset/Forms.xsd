@@ -48,7 +48,7 @@
               <xs:element name="JOBTITLE_TO" msprop:Generator_ColumnPropNameInTable="JOBTITLE_TOColumn" msprop:Generator_ColumnPropNameInRow="JOBTITLE_TO" msprop:Generator_UserColumnName="JOBTITLE_TO" msprop:Generator_ColumnVarNameInTable="columnJOBTITLE_TO" type="xs:string" minOccurs="0" />
               <xs:element name="JOBLEVEL_FROM" msprop:Generator_ColumnPropNameInTable="JOBLEVEL_FROMColumn" msprop:Generator_ColumnPropNameInRow="JOBLEVEL_FROM" msprop:Generator_UserColumnName="JOBLEVEL_FROM" msprop:Generator_ColumnVarNameInTable="columnJOBLEVEL_FROM" type="xs:string" minOccurs="0" />
               <xs:element name="JOBLEVEL_TO" msprop:Generator_ColumnPropNameInTable="JOBLEVEL_TOColumn" msprop:Generator_ColumnPropNameInRow="JOBLEVEL_TO" msprop:Generator_UserColumnName="JOBLEVEL_TO" msprop:Generator_ColumnVarNameInTable="columnJOBLEVEL_TO" type="xs:string" minOccurs="0" />
-              <xs:element name="PREPARED_BY" msprop:Generator_ColumnPropNameInRow="PREPARED_BY" msprop:Generator_ColumnPropNameInTable="PREPARED_BYColumn" msprop:Generator_ColumnVarNameInTable="columnPREPARED_BY" msprop:Generator_UserColumnName="PREPARED_BY" type="xs:string" minOccurs="0" />
+              <xs:element name="PREPARED_BY" msprop:Generator_ColumnPropNameInTable="PREPARED_BYColumn" msprop:Generator_ColumnPropNameInRow="PREPARED_BY" msprop:Generator_UserColumnName="PREPARED_BY" msprop:Generator_ColumnVarNameInTable="columnPREPARED_BY" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>
