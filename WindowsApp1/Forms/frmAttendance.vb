@@ -1248,15 +1248,15 @@ Public Class frmAttendance
                 Dim sil As Double = IIf(SIL7_NUP.Text = Nothing, 0, SIL7_NUP.Text)
                 Dim night7 As Integer = IIf(Night7_TXT.Text = Nothing, 0, Night7_TXT.Text)
 
-                Dim TRAINING_DAYS As Integer = IIf(T_Days7_TXT.Text = Nothing, 0, T_Days7_TXT.Text)
-                Dim TRAINING_REGHOLIDAY As Integer = IIf(T_RegHol7_TXT.Text = Nothing, 0, T_RegHol7_TXT.Text)
+                Dim TRAINING_DAYS As Double = IIf(T_Days7_TXT.Text = Nothing, 0, T_Days7_TXT.Text)
+                Dim TRAINING_REGHOLIDAY As Double = IIf(T_RegHol7_TXT.Text = Nothing, 0, T_RegHol7_TXT.Text)
                 Dim TRAINING_SPECHOLIDAY As Integer = IIf(T_SpecHol7_TXT.Text = Nothing, 0, T_SpecHol7_TXT.Text)
                 Dim TRAINING_OVERTIME As Integer = IIf(T_OT7_TXT.Text = Nothing, 0, T_OT7_TXT.Text)
                 Dim TRAINING_LATE As Integer = IIf(T_Late7_TXT.Text = Nothing, 0, T_Late7_TXT.Text)
                 Dim TRAINING_UNDERTIME As Integer = IIf(T_UT7_TXT.Text = Nothing, 0, T_UT7_TXT.Text)
                 Dim TRAINING_NIGHTRATE As Integer = IIf(T_Night7_TXT.Text = Nothing, 0, T_Night7_TXT.Text)
 
-                Dim DUTY_RESTDAY As Integer = IIf(txtRestDayDuty.Text = Nothing, 0, txtRestDayDuty.Text)
+                Dim DUTY_RESTDAY As Double = IIf(txtRestDayDuty.Text = Nothing, 0, txtRestDayDuty.Text)
                 Dim DUTY_SPEC_RESTDAY As Integer = IIf(txtSpecRestDay.Text = Nothing, 0, txtSpecRestDay.Text)
                 Dim DUTY_REG_RESTDAY As Integer = IIf(txtRegRestDay.Text = Nothing, 0, txtRegRestDay.Text)
 

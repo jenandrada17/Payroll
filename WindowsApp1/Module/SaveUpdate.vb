@@ -45,9 +45,9 @@ Module SaveUpdate
     Friend Sub SaveAttendanceEE(biometric As Integer, paydate As String, days As String, overTime As String, late_total As String, under_total As String,
                                 regHoliday As String, specHoliday As String, specHoliday_hrs As Double, SIL As Double, LATE_ADJUSTMENT As String, Optional LATE_APPROVED As String = "",
                                         Optional MORNING_OT As String = "", Optional NIGHT_RATE As String = "", Optional BRANCH As Boolean = False,
-                                        Optional TRAINING_DAYS As Integer = 0, Optional TRAINING_REGHOLIDAY As Integer = 0, Optional TRAINING_SPECHOLIDAY As Integer = 0,
+                                        Optional TRAINING_DAYS As Double = 0, Optional TRAINING_REGHOLIDAY As Double = 0, Optional TRAINING_SPECHOLIDAY As Integer = 0,
                                         Optional TRAINING_OVERTIME As Integer = 0, Optional TRAINING_LATE As Integer = 0, Optional TRAINING_UNDERTIME As Integer = 0, Optional TRAINING_NIGHTRATE As Integer = 0,
-                                        Optional DUTY_RESTDAY As Integer = 0, Optional DUTY_SPEC_RESTDAY As Integer = 0, Optional DUTY_REG_RESTDAY As Integer = 0,
+                                        Optional DUTY_RESTDAY As Double = 0, Optional DUTY_SPEC_RESTDAY As Double = 0, Optional DUTY_REG_RESTDAY As Double = 0,
                                         Optional DUTY_RESTDAY_OT As Double = 0, Optional DUTY_SPEC_OT As Double = 0, Optional DUTY_SPEC_RESTDAY_OT As Double = 0, Optional DUTY_REG_OT As Double = 0, Optional DUTY_REG_RESTDAY_OT As Double = 0,
                                         Optional DUTY_SPEC_NIGHTSHIFT As Double = 0, Optional DUTY_REG_NIGHTSHIFT As Double = 0,
                                         Optional DUTY_ORD_NIGHTSHIFT_OT As Double = 0, Optional DUTY_SPEC_NIGHTSHIFT_OT As Double = 0, Optional DUTY_REG_NIGHTSHIFT_OT As Double = 0)
