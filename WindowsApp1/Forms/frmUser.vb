@@ -114,5 +114,4 @@
         allowMove = False
         Cursor = Cursors.Default
     End Sub
-
 End Class

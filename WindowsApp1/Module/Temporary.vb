@@ -862,7 +862,15 @@ Module Temporary
 
         'Incomplete Employee Record - ATTENDANCE ACTIVE ONLY
         Dim mysql As String = "Select BIOMETRICID, COMPANY, RATE_DAILY, RATE_MONTHLY, BRANCHCODE, 
-                                LASTNAME || ', ' || FIRSTNAME || ' ' || CASE WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) ELSE '' END AS FULLNAME 
+                                    LASTNAME || ', ' || FIRSTNAME || 
+                                    CASE
+                                        WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
+                                        ELSE ''
+                                    END || 
+                                    CASE 
+                                        WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX
+                                        ELSE ''
+                                    END AS FULLNAME 
                                 From TBL_EMPLOYEE   
                                 WHERE (COMPANY IS NULL OR RATE_DAILY IS NULL OR BRANCHCODE IS NULL) AND EMP_STATUS <> 'INACTIVE' AND COMPANY <> 'HEAD OFFICE' 
                                 ORDER BY FULLNAME"

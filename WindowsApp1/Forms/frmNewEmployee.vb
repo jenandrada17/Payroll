@@ -95,14 +95,6 @@ Public Class frmNewEmployee
 
         For row = 2 To DtSet.Tables(0).Rows.Count + 1
 
-            'Public Sub SaveNew_Employee(COMPANY As String, BRANCH_CODE As String, FULLNAME As String, BIO_NO As String, EMAIL_ADD As String,
-            '                    EMP_STATUS As String, Optional DATE_STARTED As String = "", Optional group As Boolean = False,
-            '                    Optional TIME_IN As String = "", Optional TIME_OUT As String = "", Optional EMP_NO As String = "",
-            '                    Optional TIN As String = "", Optional SSS As String = "", Optional PHILH As String = "",
-            '                    Optional HDMF As String = "", Optional HO_CATEGORY As String = "", Optional COMMON_CATEGORY As String = "",
-            '                    Optional EMP_POSITION As String = "", Optional COMMON_COMPANY As String = "", Optional PhotoCategory As String = "",
-            '                    Optional Middlename As String = "", Optional BDATE As String = "", Optional ADDRESS As String = "")
-
             Console.WriteLine(eCell(row, 1).Value)
             Console.WriteLine(eCell(row, 9).Value)
             Console.WriteLine(eCell(row, 11).Value)
@@ -279,138 +271,138 @@ Public Class frmNewEmployee
         Return DateTime.TryParse(input, result)
     End Function
 
-    Private Sub Import_Employee_DateStarted_Position()
+    'Private Sub Import_Employee_DateStarted_Position()
 
-        eApp = New Excel.Application
-        eBook = eApp.Workbooks.Open(Path_TXT.Text)
-        eSheet = eBook.Worksheets(1)
-        eCell = eSheet.UsedRange
+    '    eApp = New Excel.Application
+    '    eBook = eApp.Workbooks.Open(Path_TXT.Text)
+    '    eSheet = eBook.Worksheets(1)
+    '    eCell = eSheet.UsedRange
 
-        MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path_TXT.Text}';Extended Properties=Excel 8.0;")
-        MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
-        MyCommand.TableMappings.Add("Table", "Net-informations.com")
-        DtSet = New System.Data.DataSet
-        MyCommand.Fill(DtSet)
-
-
-        progressBarStart(DtSet.Tables(0).Rows.Count + 1)
-
-        For row = 1 To DtSet.Tables(0).Rows.Count + 1
-
-            Update_Emp_DateHired_Position(eCell(row, 2).Value, eCell(row, 4).Value, eCell(row, 5).Value, eCell(row, 3).Value, eCell(row, 1).Value)
-
-            frmMainForm.AppProgressBar.Value += 1
-
-        Next
-
-        progressBarEnd()
+    '    MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path_TXT.Text}';Extended Properties=Excel 8.0;")
+    '    MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
+    '    MyCommand.TableMappings.Add("Table", "Net-informations.com")
+    '    DtSet = New System.Data.DataSet
+    '    MyCommand.Fill(DtSet)
 
 
-        Lists_Employees(lvEmployee)
+    '    progressBarStart(DtSet.Tables(0).Rows.Count + 1)
 
-        Path_TXT.Clear()
-        MyConnection.Close()
-        eBook.Close()
-        eApp.Quit()
+    '    For row = 1 To DtSet.Tables(0).Rows.Count + 1
 
-        Excel_Panel.Visible = False
+    '        Update_Emp_DateHired_Position(eCell(row, 2).Value, eCell(row, 4).Value, eCell(row, 5).Value, eCell(row, 3).Value, eCell(row, 1).Value)
 
-    End Sub
+    '        frmMainForm.AppProgressBar.Value += 1
 
-    Private Sub Import_Employee_Fullname_biometric_ActiveOnly()
-        If Company_ComboB.SelectedIndex >= 0 Then
+    '    Next
 
-            eApp = New Excel.Application
-            eBook = eApp.Workbooks.Open(Path_TXT.Text)
-            eSheet = eBook.Worksheets(1)
-            eCell = eSheet.UsedRange
-            Dim row As Integer
-
-            MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path_TXT.Text}';Extended Properties=Excel 8.0;")
-            MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
-            MyCommand.TableMappings.Add("Table", "Net-informations.com")
-            DtSet = New System.Data.DataSet
-            MyCommand.Fill(DtSet)
-
-            If Company_ComboB.SelectedIndex = 4 Then
-
-                progressBarStart(DtSet.Tables(0).Rows.Count)
-
-                For row = 3 To DtSet.Tables(0).Rows.Count + 1
-
-                    SaveNew_Employee(Company_ComboB.Text, "", eCell(row, 2).Value, eCell(row, 3).Value, eCell(row, 4).Value, "ACTIVE", True)
-
-                    frmMainForm.AppProgressBar.Value += 1
-
-                Next
-
-                progressBarEnd()
-
-            Else
-
-                progressBarStart(DtSet.Tables(0).Rows.Count)
-
-                For row = 3 To DtSet.Tables(0).Rows.Count + 1
-
-                    SaveNew_Employee(Company_ComboB.Text, eCell(row, 1).value, eCell(row, 2).Value, eCell(row, 3).Value, eCell(row, 4).Value, "ACTIVE", True)
-
-                    frmMainForm.AppProgressBar.Value += 1
-
-                Next
-
-                progressBarEnd()
-
-            End If
-
-            Lists_Employees(lvEmployee)
-
-            Path_TXT.Clear()
-            MyConnection.Close()
-            eBook.Close()
-            eApp.Quit()
-
-            Excel_Panel.Visible = False
-        Else
-            MsgBox("Please Select Company.", MsgBoxStyle.Exclamation, "Error")
-        End If
-
-    End Sub
-
-    Private Sub Import_BranchesName()
-
-        eApp = New Excel.Application
-        eBook = eApp.Workbooks.Open(Path_TXT.Text)
-        eSheet = eBook.Worksheets(1)
-        eCell = eSheet.UsedRange
-        Dim row As Integer
-
-        MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path_TXT.Text}';Extended Properties=Excel 8.0;")
-        MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
-        MyCommand.TableMappings.Add("Table", "Net-informations.com")
-        DtSet = New System.Data.DataSet
-        MyCommand.Fill(DtSet)
+    '    progressBarEnd()
 
 
-        progressBarStart(DtSet.Tables(0).Rows.Count)
+    '    Lists_Employees(lvEmployee)
 
-        For row = 1 To DtSet.Tables(0).Rows.Count
+    '    Path_TXT.Clear()
+    '    MyConnection.Close()
+    '    eBook.Close()
+    '    eApp.Quit()
 
-            Save_BranchesName(eCell(row, 1).Value, eCell(row, 2).Value)
+    '    Excel_Panel.Visible = False
 
-            frmMainForm.AppProgressBar.Value += 1
+    'End Sub
 
-        Next
+    'Private Sub Import_Employee_Fullname_biometric_ActiveOnly()
+    '    If Company_ComboB.SelectedIndex >= 0 Then
 
-        progressBarEnd()
+    '        eApp = New Excel.Application
+    '        eBook = eApp.Workbooks.Open(Path_TXT.Text)
+    '        eSheet = eBook.Worksheets(1)
+    '        eCell = eSheet.UsedRange
+    '        Dim row As Integer
 
-        Path_TXT.Clear()
-        MyConnection.Close()
-        eBook.Close()
-        eApp.Quit()
+    '        MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path_TXT.Text}';Extended Properties=Excel 8.0;")
+    '        MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
+    '        MyCommand.TableMappings.Add("Table", "Net-informations.com")
+    '        DtSet = New System.Data.DataSet
+    '        MyCommand.Fill(DtSet)
 
-        Excel_Panel.Visible = False
+    '        If Company_ComboB.SelectedIndex = 4 Then
 
-    End Sub
+    '            progressBarStart(DtSet.Tables(0).Rows.Count)
+
+    '            For row = 3 To DtSet.Tables(0).Rows.Count + 1
+
+    '                SaveNew_Employee(Company_ComboB.Text, "", eCell(row, 2).Value, eCell(row, 3).Value, eCell(row, 4).Value, "ACTIVE", True)
+
+    '                frmMainForm.AppProgressBar.Value += 1
+
+    '            Next
+
+    '            progressBarEnd()
+
+    '        Else
+
+    '            progressBarStart(DtSet.Tables(0).Rows.Count)
+
+    '            For row = 3 To DtSet.Tables(0).Rows.Count + 1
+
+    '                SaveNew_Employee(Company_ComboB.Text, eCell(row, 1).value, eCell(row, 2).Value, eCell(row, 3).Value, eCell(row, 4).Value, "ACTIVE", True)
+
+    '                frmMainForm.AppProgressBar.Value += 1
+
+    '            Next
+
+    '            progressBarEnd()
+
+    '        End If
+
+    '        Lists_Employees(lvEmployee)
+
+    '        Path_TXT.Clear()
+    '        MyConnection.Close()
+    '        eBook.Close()
+    '        eApp.Quit()
+
+    '        Excel_Panel.Visible = False
+    '    Else
+    '        MsgBox("Please Select Company.", MsgBoxStyle.Exclamation, "Error")
+    '    End If
+
+    'End Sub
+
+    'Private Sub Import_BranchesName()
+
+    '    eApp = New Excel.Application
+    '    eBook = eApp.Workbooks.Open(Path_TXT.Text)
+    '    eSheet = eBook.Worksheets(1)
+    '    eCell = eSheet.UsedRange
+    '    Dim row As Integer
+
+    '    MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path_TXT.Text}';Extended Properties=Excel 8.0;")
+    '    MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
+    '    MyCommand.TableMappings.Add("Table", "Net-informations.com")
+    '    DtSet = New System.Data.DataSet
+    '    MyCommand.Fill(DtSet)
+
+
+    '    progressBarStart(DtSet.Tables(0).Rows.Count)
+
+    '    For row = 1 To DtSet.Tables(0).Rows.Count
+
+    '        Save_BranchesName(eCell(row, 1).Value, eCell(row, 2).Value)
+
+    '        frmMainForm.AppProgressBar.Value += 1
+
+    '    Next
+
+    '    progressBarEnd()
+
+    '    Path_TXT.Clear()
+    '    MyConnection.Close()
+    '    eBook.Close()
+    '    eApp.Quit()
+
+    '    Excel_Panel.Visible = False
+
+    'End Sub
 
     Private Sub Import_BTN_Click(sender As Object, e As EventArgs) Handles Import_BTN.Click
         Excel_Panel.Location = New Point(ClientSize.Width / 2 - Excel_Panel.Size.Width / 2, ClientSize.Height / 2 - Excel_Panel.Size.Height / 2)
@@ -519,7 +511,7 @@ Public Class frmNewEmployee
             SaveNew_Employee(Add_Company_CB.Text, Branch_ComboB.Text, fullname, Bio_TXT.Text, Email_TXT.Text, emp_status, Started_DTP.Value, False,
                          TimeIn_Combo.Text, TimeOut_Combo.Text, EmpNo_TXT.Text, TIN_TXT.Text, SSS_TXT.Text, PHILH_TXT.Text, HDMF_TXT.Text, HO_Category.Text,
                          ComCategory_Combo.Text, Position_Combo.Text, ComCompany_Cmbo.Text, PhotoCategory_Combo.Text, MName_txt.Text, BDate_dtp.Value,
-                         Address_txt.Text, InactiveDate.Value, AccountNo_TXT.Text)
+                         Address_txt.Text, InactiveDate.Value, AccountNo_TXT.Text, Suffix_txt.Text)
 
             If Emp_Pic.Image IsNot Nothing Then
                 SavePic(fullname, Emp_Pic)
@@ -772,7 +764,7 @@ Public Class frmNewEmployee
         If Bio_TXT.Text <> Nothing Then
             GetFullname(Bio_TXT.Text, Add_Company_CB, Branch_ComboB, FirstName_TXT, Email_TXT, InActive_RB,
                             Started_DTP, TimeIn_Combo, TimeOut_Combo, EmpNo_TXT, TIN_TXT, SSS_TXT, PHILH_TXT, HDMF_TXT, HO_Category, ComCategory_Combo,
-                            Position_Combo, ComCompany_Cmbo, PhotoCategory_Combo, LastName_txt, MName_txt, BDate_dtp, Address_txt, InactiveDate, AccountNo_TXT, btnSave)
+                            Position_Combo, ComCompany_Cmbo, PhotoCategory_Combo, LastName_txt, MName_txt, BDate_dtp, Address_txt, InactiveDate, AccountNo_TXT, Suffix_txt, btnSave)
 
             Dim fullname As String
             If String.IsNullOrEmpty(MName_txt.Text) Then
@@ -843,7 +835,7 @@ Public Class frmNewEmployee
         GetFullname(bio_No, Add_Company_CB, Branch_ComboB, FirstName_TXT, Email_TXT, InActive_RB, Started_DTP,
                     TimeIn_Combo, TimeOut_Combo, EmpNo_TXT, TIN_TXT, SSS_TXT, PHILH_TXT, HDMF_TXT, HO_Category,
                     ComCategory_Combo, Position_Combo, ComCompany_Cmbo, PhotoCategory_Combo, LastName_txt, MName_txt,
-                    BDate_dtp, Address_txt, InactiveDate, AccountNo_TXT, btnSave)
+                    BDate_dtp, Address_txt, InactiveDate, AccountNo_TXT, Suffix_txt, btnSave)
 
         Add_Panel.Location = New Point(ClientSize.Width / 2 - Add_Panel.Size.Width / 2, ClientSize.Height / 2 - Add_Panel.Size.Height / 2)
         Add_Panel.Visible = True

@@ -280,20 +280,26 @@ Public Class frmAllowance
                 .Columns.Add("PREPARED_BY")
             End With
 
-            '======================== FIRSTNAME, LASTNAME, MIDDLENAME ========================== 
-            Dim firstt, middlee As String
-            Dim fullname As String = Name_TXT.Text
-            Dim name As String() = fullname.Split(",")
-            Dim sobra As String = name(1).TrimStart
+            ''======================== FIRSTNAME, LASTNAME, MIDDLENAME ========================== 
+            'Dim firstt, middlee, suffix As String
+            'Dim fullname As String = Name_TXT.Text
+            'Dim name As String() = fullname.Split(",")
+            'Dim sobra As String = name(1).TrimStart
 
-            If sobra.EndsWith(".") Then
-                Dim index As Integer = sobra.Length - 2
-                middlee = sobra.Substring(index, 2)
-                firstt = sobra.Replace(middlee, "").TrimEnd
-            Else
-                firstt = sobra
-                middlee = Nothing
-            End If
+            'If sobra.Contains(".") Then
+            '    Dim index As Integer = sobra.Length - 2
+            '    middlee = sobra.Substring(index, 2)
+            '    firstt = sobra.Replace(middlee, "").TrimEnd
+            'Else
+            '    firstt = sobra
+            '    middlee = Nothing
+            'End If 
+
+            Dim lastt, firstt, middlee As String
+            lastt = lastName
+            firstt = firstName
+            middlee = $"{middleName.Substring(1, 1)}. {suffix}"
+
 
             Dim datePrepared = Nothing, dateHire = Nothing, S_Effect_from = Nothing, S_Effect_to = Nothing, PI_Effect_from = Nothing, PI_Effect_to As String = Nothing
 
@@ -311,7 +317,7 @@ Public Class frmAllowance
             Dim preparedBy As String = "Pearly Queen C. Benemerito"
             If EmpNo_txt.Tag = "DALTON" Then preparedBy = "Novelty S. Cababat"
 
-            dt.Rows.Add(name(0), firstt, middlee, datePrepared, EmpNo_txt.Text, Bdate_txt.Text, dateHire,
+            dt.Rows.Add(lastName, firstt, middlee, datePrepared, EmpNo_txt.Text, Bdate_txt.Text, dateHire,
                         Address_txt.Text, SSS_txt.Text, TIN_txt.Text, Gender_CB.Text, Marital_CB.Text,
                         Employment_CB.Text, SalaryChanges_CB.Text,
                         CompanyFrom_txt.Text, CompanyT0_txt.Text,

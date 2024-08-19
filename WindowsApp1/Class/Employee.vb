@@ -87,11 +87,15 @@
 #End Region
     Friend Sub LoadEmployee_New(ByVal bioNo As Integer)
         Dim mysql As String = "Select A.*, 
-                                LASTNAME || ', ' || FIRSTNAME || ' ' || 
-                                     CASE 
-                                         WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
-                                         ELSE ''
-                                     END AS FULLNAME 
+                                LASTNAME || ', ' || FIRSTNAME || 
+                                CASE
+                                    WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
+                                    ELSE ''
+                                END || 
+                                CASE 
+                                    WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX
+                                    ELSE ''
+                                END AS FULLNAME  
                                 From TBL_EMPLOYEE A where BIOMETRICID = '" & bioNo & "'"
         Using ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
 
@@ -118,7 +122,6 @@
                     TIME_OUT = IIf(OUTT = Nothing, "", OUTT.ToShortTimeString)
 
                     EMP_NO = IIf(IsDBNull(.Item("EMP_NO")), Nothing, .Item("EMP_NO"))
-                    'ADDRESS = IIf(IsDBNull(.Item("ADDRESS")), Nothing, .Item("ADDRESS"))
                     BDATE = IIf(IsDBNull(.Item("DATEOFBIRTH")), Nothing, .Item("DATEOFBIRTH"))
                     DATE_STARTED = IIf(IsDBNull(.Item("DATEHIRED")), Nothing, .Item("DATEHIRED"))
                     SSSNO = IIf(IsDBNull(.Item("SSSNO")), Nothing, .Item("SSSNO"))
@@ -128,56 +131,4 @@
             End If
         End Using
     End Sub
-
-    'Friend Sub LoadEmployee(ByVal idx As Integer)
-    '    Dim mysql As String = "Select * From PAYROLL_EMPLOYEE where id = '" & idx & "'"
-    '    Using ds As DataSet = LoadSQL(mysql, "PAYROLL_EMPLOYEE")
-
-    '        If ds.Tables(0).Rows.Count > 0 Then
-
-    '            Dim dr As DataRow = ds.Tables(0).Rows(0)
-    '            With dr
-
-    '                Dim MI As String
-
-    '                If String.IsNullOrEmpty(.Item("MIDDLENAME")) Then
-    '                    MI = ""
-    '                Else
-    '                    MI = .Item("MIDDLENAME").Substring(0, 1) & "."
-    '                End If
-
-    '                EMP_ID = .Item("id")
-    '                BiometricID = .Item("BIOMETRICID")
-    '                Fullname = $"{ .Item("LastName")}, { .Item("FirstName")} {MI}"
-    '                FirstName = .Item("FIRSTNAME")
-    '                MiddleName = .Item("MIDDLENAME")
-    '                LastName = .Item("LASTNAME")
-    '                Suffix = .Item("SUFFIX")
-    '                EmailAdd = IIf(IsDBNull(.Item("EMAILADD")), "", .Item("EMAILADD"))
-    '                Rate = IIf(IsDBNull(.Item("Rate")), "", .Item("Rate"))
-    '                Status = IIf(IsDBNull(.Item("STATUS")), "", .Item("STATUS"))
-    '                Position = IIf(IsDBNull(.Item("Emp_Position")), "", .Item("Emp_Position"))
-    '                BranchID = IIf(IsDBNull(.Item("BRANCH_ID")), "", .Item("BRANCH_ID"))
-
-    '            End With
-    '        End If
-    '    End Using
-
-    '    If Not BranchID = Nothing Then
-    '        Dim sql As String = "Select * From TBL_BRANCH  where id = '" & BranchID & "'"
-    '        Using dss As DataSet = LoadSQL(sql, "TBL_BRANCH")
-
-    '            If dss.Tables(0).Rows.Count > 0 Then
-    '                Dim drr As DataRow = dss.Tables(0).Rows(0)
-    '                With drr
-    '                    Company = .Item("COMPANYNAME")
-    '                    BranchName = .Item("BRANCHNAME")
-    '                End With
-    '            End If
-
-    '        End Using
-    '    End If
-
-    'End Sub
-
 End Class

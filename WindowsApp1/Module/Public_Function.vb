@@ -72,7 +72,7 @@ Module Public_Function
                     End If
 
                 Catch ex As Exception
-
+                    Console.WriteLine(ex.ToString)
                 End Try
         End Select
     End Sub

@@ -532,16 +532,20 @@ Module Report_function
         Dim TOTALS As Decimal = 0
 
         Dim mysqll As String = $"Select A.*, B.*, C.*, 
-                                        LASTNAME || ', ' || FIRSTNAME || ' ' || 
-                                             CASE 
-                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
-                                                 ELSE ''
-                                             END AS FULLNAME
+                                        LASTNAME || ', ' || FIRSTNAME || 
+                                        CASE
+                                            WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
+                                            ELSE ''
+                                        END || 
+                                        CASE 
+                                            WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX
+                                            ELSE ''
+                                        END AS FULLNAME
                                         From TBL_EMPLOYEE A 
                                         INNER JOIN PAYROLL_PERCENTAGEE B ON B.CATEGORY = A.COMMON_CATEGORY
                                         INNER JOIN PAYROLL_PAYOUT C ON A.BIOMETRICID = C.BIOMETRIC_ID
-                                        where PAYDATE = '{paydate}' AND HO_CATEGORY = 'PGC Head Office' OR (HO_CATEGORY IN ('Construction', 'Leasing Admin Office') AND PAYDATE = '{paydate}')
-                                          ORDER BY FULLNAME ASC"
+                                        WHERE PAYDATE = '{paydate}' AND HO_CATEGORY = 'PGC Head Office' OR (HO_CATEGORY IN ('Construction', 'Leasing Admin Office') AND PAYDATE = '{paydate}')
+                                        ORDER BY FULLNAME ASC"
 
         Using ds As DataSet = LoadSQL(mysqll, "TBL_EMPLOYEE")
             If ds.Tables(0).Rows.Count > 0 Then
@@ -671,17 +675,21 @@ Module Report_function
         Dim COMI_TO_FUJI_tot As Decimal = 0
 
         Dim mysqll As String = $"Select A.*, B.*, C.*, 
-                                        LASTNAME || ', ' || FIRSTNAME || ' ' || 
-                                             CASE 
-                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
-                                                 ELSE ''
-                                             END AS FULLNAME
+                                        LASTNAME || ', ' || FIRSTNAME || 
+                                        CASE
+                                            WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
+                                            ELSE ''
+                                        END || 
+                                        CASE 
+                                            WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX
+                                            ELSE ''
+                                        END AS FULLNAME
                                         From TBL_EMPLOYEE A 
                                         INNER JOIN PAYROLL_PERCENTAGEE B ON B.CATEGORY = A.COMMON_CATEGORY
                                         INNER JOIN PAYROLL_PAYOUT C ON A.BIOMETRICID = C.BIOMETRIC_ID
-                                        where  PAYDATE = '{paydate}' AND HO_CATEGORY = 'PGC Head Office' 
-                                            OR (HO_CATEGORY IN ('Construction', 'Leasing Admin Office') AND  PAYDATE = '{paydate}')
-                                            ORDER BY FULLNAME ASC"
+                                        WHERE  PAYDATE = '{paydate}' AND HO_CATEGORY = 'PGC Head Office' 
+                                        OR (HO_CATEGORY IN ('Construction', 'Leasing Admin Office') AND  PAYDATE = '{paydate}')
+                                        ORDER BY FULLNAME ASC"
 
         Using ds As DataSet = LoadSQL(mysqll, "TBL_EMPLOYEE")
             If ds.Tables(0).Rows.Count > 0 Then
@@ -751,11 +759,15 @@ Module Report_function
 
         Try
             mysql = $"Select BIOMETRIC_ID, SSSNO, SSS_COMP, SSS_ER, SSS_EC, B.BRANCHCODE, COMPANY, HO_CATEGORY, PHOTO_CATEGORY, BRANCHNAME, C.*, 
-                    LASTNAME || ', ' || FIRSTNAME || ' ' || 
-                         CASE 
-                             WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
-                             ELSE ''
-                         END AS FULLNAME  
+                    LASTNAME || ', ' || FIRSTNAME || 
+                    CASE
+                        WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
+                        ELSE ''
+                    END || 
+                    CASE 
+                        WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX
+                        ELSE ''
+                    END AS FULLNAME 
                     From PAYROLL_PAYOUT A 
                     INNER JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
                     LEFT JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE 
@@ -848,21 +860,29 @@ Module Report_function
 
         If category = "SSS" Then
             mysql = $"Select A.*, B.*, C.*, 
-                        LASTNAME || ', ' || FIRSTNAME || ' ' || 
-                             CASE 
-                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
-                                 ELSE ''
-                             END AS FULLNAME
+                        LASTNAME || ', ' || FIRSTNAME || 
+                        CASE
+                            WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
+                            ELSE ''
+                        END || 
+                        CASE 
+                            WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX
+                            ELSE ''
+                        END AS FULLNAME
                         From RECORDED_ALLOW_DEDUC A INNER JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIO_NO 
                         LEFT JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE       
                         WHERE PAYDATE = '{paydate}' AND TRANSAC_NAME = 'DEDUCTION' AND UPPER(A.CATEGORY) LIKE UPPER('%SSS%') {str} ORDER BY FULLNAME"
         Else
             mysql = $"Select A.*, B.*, C.*, 
-                        LASTNAME || ', ' || FIRSTNAME || ' ' || 
-                             CASE 
-                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
-                                 ELSE ''
-                             END AS FULLNAME
+                        LASTNAME || ', ' || FIRSTNAME || 
+                        CASE
+                            WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
+                            ELSE ''
+                        END || 
+                        CASE 
+                            WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX
+                            ELSE ''
+                        END AS FULLNAME
                         From RECORDED_ALLOW_DEDUC A INNER JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIO_NO  
                         LEFT JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE        
                         WHERE PAYDATE = '{paydate}' AND TRANSAC_NAME = 'DEDUCTION' AND (UPPER(A.CATEGORY) LIKE UPPER('%PAG IBIG%') oR UPPER(A.CATEGORY) LIKE UPPER('%PAG-IBIG%')) {str} ORDER BY FULLNAME"
@@ -943,14 +963,19 @@ Module Report_function
         End With
 
         mysql = $"Select A.*, B.*, B.BRANCHCODE AS BRANCH_CODE, C.*,
-                                        LASTNAME || ', ' || FIRSTNAME || ' ' || 
-                                             CASE 
-                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
-                                                 ELSE ''
-                                             END AS FULLNAME
-                                        From PAYROLL_PAYOUT A INNER JOIN TBL_EMPLOYEE B ON BIOMETRICID = BIOMETRIC_ID   
-                                        LEFT JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE     
-                                        WHERE PAYDATE = '{paydate}' {str} and PAGIBIG_COMP <> 0 ORDER BY FULLNAME"
+                    LASTNAME || ', ' || FIRSTNAME || 
+                    CASE
+                        WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
+                        ELSE ''
+                    END || 
+                    CASE 
+                        WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX
+                        ELSE ''
+                    END AS FULLNAME
+                    From PAYROLL_PAYOUT A 
+                    INNER JOIN TBL_EMPLOYEE B ON BIOMETRICID = BIOMETRIC_ID   
+                    LEFT JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE     
+                    WHERE PAYDATE = '{paydate}' {str} and PAGIBIG_COMP <> 0 ORDER BY FULLNAME"
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
             If ds.Tables(0).Rows.Count > 0 Then
@@ -1029,14 +1054,18 @@ Module Report_function
         End With
 
         mysql = $"Select A.*, B.*, C.*,  B.BRANCHCODE AS BRANCH_CODE, 
-                                        LASTNAME || ', ' || FIRSTNAME || ' ' || 
-                                             CASE 
-                                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
-                                                 ELSE ''
-                                             END AS FULLNAME 
-                                        From PAYROLL_PAYOUT A INNER JOIN TBL_EMPLOYEE B ON BIOMETRICID = BIOMETRIC_ID   
-                                        LEFT JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE     
-                                        WHERE PAYDATE = '{paydate}' {str} and PHILHEALTH_COMP <> 0 ORDER BY FULLNAME"
+                    LASTNAME || ', ' || FIRSTNAME || 
+                    CASE
+                        WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
+                        ELSE ''
+                    END || 
+                    CASE 
+                        WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX
+                        ELSE ''
+                    END AS FULLNAME
+                    From PAYROLL_PAYOUT A INNER JOIN TBL_EMPLOYEE B ON BIOMETRICID = BIOMETRIC_ID   
+                    LEFT JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE     
+                    WHERE PAYDATE = '{paydate}' {str} and PHILHEALTH_COMP <> 0 ORDER BY FULLNAME"
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
             If ds.Tables(0).Rows.Count > 0 Then
@@ -1173,11 +1202,15 @@ Module Report_function
             End With
 
             Dim mysql As String = $"Select BIOMETRIC_ID, PAYDATE, 
-                                LASTNAME || ', ' || FIRSTNAME || ' ' || 
-                                     CASE 
-                                         WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
-                                         ELSE ''
-                                     END AS FULLNAME
+                                LASTNAME || ', ' || FIRSTNAME || 
+                                CASE
+                                    WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
+                                    ELSE ''
+                                END || 
+                                CASE 
+                                    WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX
+                                    ELSE ''
+                                END AS FULLNAME
                                 from TBL_EMPLOYEE inner join PAYROLL_PAYOUT on BIOMETRIC_ID = BIOMETRICID where BIOMETRICID='{bioNo}' and PAYDATE BETWEEN '{starting_date}' AND '{ending_date}'"
             Using ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
                 progressBarStart(ds.Tables(0).Rows.Count)

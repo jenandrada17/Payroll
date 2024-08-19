@@ -1816,7 +1816,7 @@ Module SaveUpdate
                                 Optional HDMF As String = "", Optional HO_CATEGORY As String = "", Optional COMMON_CATEGORY As String = "",
                                 Optional EMP_POSITION As String = "", Optional COMMON_COMPANY As String = "", Optional PhotoCategory As String = "",
                                 Optional Middlename As String = "", Optional BDATE As String = "", Optional ADDRESS As String = "",
-                                Optional DATE_ENDED As String = "", Optional ACCOUNTNO As String = "")
+                                Optional DATE_ENDED As String = "", Optional ACCOUNTNO As String = "", Optional SUFFIX As String = "")
 
         If COMPANY = "HEAD OFFICE" Then BRANCH_CODE = "" 'PARA MAIWASAN ANG BRANCHCODE MASAVE INCASE WALA NACLEAR
 
@@ -1877,6 +1877,7 @@ Module SaveUpdate
                 If PhotoCategory <> "" Then .Item("PHOTO_CATEGORY") = PhotoCategory
 
                 If Middlename <> "" Then .Item("MIDDLENAME") = Middlename
+                If SUFFIX <> "" Then .Item("SUFFIX") = SUFFIX
                 If BDATE <> "" Then .Item("DATEOFBIRTH") = BDATE
                 'TODO ADDRESS
                 If ADDRESS <> "" Then .Item("PERMANENT_STREET") = ADDRESS
@@ -1934,6 +1935,7 @@ Module SaveUpdate
                     If PhotoCategory <> "" Then .Item("PHOTO_CATEGORY") = PhotoCategory
 
                     If Middlename <> "" Then .Item("MIDDLENAME") = Middlename
+                    If SUFFIX <> "" Then .Item("SUFFIX") = SUFFIX
                     If BDATE <> "" Then .Item("DATEOFBIRTH") = BDATE
                     'TODO ADDRESS
                     If ADDRESS <> "" Then .Item("PERMANENT_STREET") = ADDRESS
@@ -2021,33 +2023,33 @@ Module SaveUpdate
 
     End Sub
 
-    Public Sub Update_Emp_DateHired_Position(FULLNAME As String, DATE_STARTED As String, EMP_POSITION As String, EMP_NO As String, empNo As String)
+    'Public Sub Update_Emp_DateHired_Position(FULLNAME As String, DATE_STARTED As String, EMP_POSITION As String, EMP_NO As String, empNo As String)
 
-        Dim mysql As String = $"Select A.*, 
-                                LASTNAME || ', ' || FIRSTNAME || ' ' || 
-                                     CASE 
-                                         WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
-                                         ELSE ''
-                                     END AS FULLNAME
-                                FROM TBL_EMPLOYEE where FULLNAME = '{FULLNAME}'"
-        Dim ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE ")
-        If ds.Tables(0).Rows.Count > 0 Then
+    '    Dim mysql As String = $"Select A.*, 
+    '                            LASTNAME || ', ' || FIRSTNAME || ' ' || 
+    '                                 CASE 
+    '                                     WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
+    '                                     ELSE ''
+    '                                 END AS FULLNAME
+    '                            FROM TBL_EMPLOYEE where FULLNAME = '{FULLNAME}'"
+    '    Dim ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE ")
+    '    If ds.Tables(0).Rows.Count > 0 Then
 
-            With ds.Tables(0).Rows(0)
+    '        With ds.Tables(0).Rows(0)
 
-                If DATE_STARTED <> Nothing Then
-                    .Item("DATEHIRED") = DATE_STARTED
-                End If
+    '            If DATE_STARTED <> Nothing Then
+    '                .Item("DATEHIRED") = DATE_STARTED
+    '            End If
 
-                .Item("EMP_POSITION") = EMP_POSITION.ToUpper
-                .Item("EMP_NO") = EMP_NO
+    '            .Item("EMP_POSITION") = EMP_POSITION.ToUpper
+    '            .Item("EMP_NO") = EMP_NO
 
-            End With
+    '        End With
 
-            SaveEntry(ds, False)
-        End If
+    '        SaveEntry(ds, False)
+    '    End If
 
-    End Sub
+    'End Sub
 
     Public Sub SAVE_13MONTH_EMPNO(EMP_NO As String, RowNo As Integer)
         Dim mysql As String = "Select * From PAYROLL_13MONTH Rows 1"
@@ -2084,37 +2086,37 @@ Module SaveUpdate
 
     End Sub
 
-    Public Sub Update_Emp_Benefits_DetailS_BY_NAME(FULLNAME As String, TINNO As String, SSSNO As String, PHILHEALTHNO As String, PAGIBIGNO As String, DATE_STARTED As String, EMP_POSITION As String, empNo As String)
+    'Public Sub Update_Emp_Benefits_DetailS_BY_NAME(FULLNAME As String, TINNO As String, SSSNO As String, PHILHEALTHNO As String, PAGIBIGNO As String, DATE_STARTED As String, EMP_POSITION As String, empNo As String)
 
-        Console.WriteLine("empNo " & empNo)
+    '    Console.WriteLine("empNo " & empNo)
 
-        Dim mysql As String = $"Select A.*, 
-                                LASTNAME || ', ' || FIRSTNAME || ' ' || 
-                                     CASE 
-                                         WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
-                                         ELSE ''
-                                     END AS FULLNAME
-                                FROM TBL_EMPLOYEE A where FULLNAME = '{FULLNAME}'"
-        Dim ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE ")
-        If ds.Tables(0).Rows.Count > 0 Then
+    '    Dim mysql As String = $"Select A.*, 
+    '                            LASTNAME || ', ' || FIRSTNAME || ' ' || 
+    '                                 CASE 
+    '                                     WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
+    '                                     ELSE ''
+    '                                 END AS FULLNAME
+    '                            FROM TBL_EMPLOYEE A where FULLNAME = '{FULLNAME}'"
+    '    Dim ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE ")
+    '    If ds.Tables(0).Rows.Count > 0 Then
 
-            With ds.Tables(0).Rows(0)
+    '        With ds.Tables(0).Rows(0)
 
-                If DATE_STARTED <> Nothing Then
-                    .Item("DATEHIRED") = DATE_STARTED
-                End If
+    '            If DATE_STARTED <> Nothing Then
+    '                .Item("DATEHIRED") = DATE_STARTED
+    '            End If
 
-                .Item("EMP_POSITION") = EMP_POSITION
-                .Item("TINNO") = TINNO
-                .Item("SSSNO") = SSSNO
-                .Item("PHILHEALTHNO") = PHILHEALTHNO
-                .Item("PAGIBIG") = PAGIBIGNO
+    '            .Item("EMP_POSITION") = EMP_POSITION
+    '            .Item("TINNO") = TINNO
+    '            .Item("SSSNO") = SSSNO
+    '            .Item("PHILHEALTHNO") = PHILHEALTHNO
+    '            .Item("PAGIBIG") = PAGIBIGNO
 
-            End With
+    '        End With
 
-            SaveEntry(ds, False)
-        End If
-    End Sub
+    '        SaveEntry(ds, False)
+    '    End If
+    'End Sub
 
     Friend Sub Save_ClockINOUT(column As String, columnValue As String, TIME_IN As String, TIME_OUT As String)
         Dim mysql As String
@@ -2393,12 +2395,16 @@ Module SaveUpdate
                 With ds.Tables(0).Rows(0)
 
                     bioNo = .Item("BIO_NO")
-                    namee = GetData("FULLNAME", $"LASTNAME || ', ' || FIRSTNAME || ' ' || 
-                                                     CASE 
-                                                         WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
-                                                         ELSE ''
-                                                     END AS FULLNAME
-                                                TBL_EMPLOYEE where BIOMETRICID='{ .Item("BIO_NO")}'")
+                    namee = GetData("FULLNAME", $"LASTNAME || ', ' || FIRSTNAME || 
+                                                CASE
+                                                    WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
+                                                    ELSE ''
+                                                END || 
+                                                CASE 
+                                                    WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX
+                                                    ELSE ''
+                                                END AS FULLNAME
+                                                FROM TBL_EMPLOYEE where BIOMETRICID='{ .Item("BIO_NO")}'")
 
                     If status = "APPROVE" Then
                         .Item("STATUS") = status
@@ -2427,12 +2433,16 @@ Module SaveUpdate
                     Dim bioNo As String = .Item("BIO_NO")
                     Dim schedule As String = "EVERY PAYROLL"
 
-                    Dim namee As String = GetData("FULLNAME", $"LASTNAME || ', ' || FIRSTNAME || ' ' || 
-                                                                     CASE 
-                                                                         WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
-                                                                         ELSE ''
-                                                                     END AS FULLNAME
-                                                                TBL_EMPLOYEE where BIOMETRICID='{bioNo}'")
+                    Dim namee As String = GetData("FULLNAME", $"LASTNAME || ', ' || FIRSTNAME || 
+                                                                CASE
+                                                                    WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
+                                                                    ELSE ''
+                                                                END || 
+                                                                CASE 
+                                                                    WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX
+                                                                    ELSE ''
+                                                                END AS FULLNAME
+                                                                FROM TBL_EMPLOYEE where BIOMETRICID='{bioNo}'")
 
                     If .Item("SALARY_CHANGES") = "PERFORMANCE INCENTIVES" Then
 

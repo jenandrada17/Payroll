@@ -797,14 +797,18 @@ Public Class frmPayout
         Dim activeString As String = IIf(allActive, "AND EMP_STATUS <> 'INACTIVE'", "")
         Dim datee As DateTime = Payslip_paydate_Combo.Text
         Dim mysqll As String = $"select A.*, B.*, 
-                                                LASTNAME || ', ' || FIRSTNAME || ' ' || 
-                                                     CASE 
-                                                         WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
-                                                         ELSE ''
-                                                     END AS FULLNAME
-                                                 from payroll_payout A 
-                                                inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRIC_ID {activeString}  
-                                                where paydate = '{Payslip_paydate_Combo.Text}' and EMAIL_SENT is null;"
+                                    LASTNAME || ', ' || FIRSTNAME || 
+                                    CASE
+                                        WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
+                                        ELSE ''
+                                    END || 
+                                    CASE 
+                                        WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX
+                                        ELSE ''
+                                    END AS FULLNAME 
+                                    from payroll_payout A 
+                                    inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRIC_ID {activeString}  
+                                    where paydate = '{Payslip_paydate_Combo.Text}' and EMAIL_SENT is null;"
 
         Using ds As DataSet = LoadSQL(mysqll, "payroll_payout")
             If ds.Tables(0).Rows.Count > 0 Then
@@ -856,14 +860,18 @@ Public Class frmPayout
         Dim datee As DateTime = Payslip_paydate_Combo.Text
 
         Dim mysqll As String = $"Select A.*, B.*, B.id as emp_id,
-                                                 LASTNAME || ', ' || FIRSTNAME || ' ' || 
-                                                     CASE 
-                                                         WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
-                                                         ELSE ''
-                                                     END AS FULLNAME
-                                                from payroll_payout A 
-                                                inner Join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRIC_ID   
-                                                where paydate = '{Payslip_paydate_Combo.Text}' and B.{tbl_column} = '{column_value}';"
+                                    LASTNAME || ', ' || FIRSTNAME || 
+                                    CASE
+                                        WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
+                                        ELSE ''
+                                    END || 
+                                    CASE 
+                                        WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX
+                                        ELSE ''
+                                    END AS FULLNAME 
+                                    from payroll_payout A 
+                                    inner Join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRIC_ID   
+                                    where paydate = '{Payslip_paydate_Combo.Text}' and B.{tbl_column} = '{column_value}';"
 
         Using ds As DataSet = LoadSQL(mysqll, "payroll_payout")
             If ds.Tables(0).Rows.Count > 0 Then
@@ -932,11 +940,15 @@ Public Class frmPayout
             End With
 
             Dim sql As String = $"select A.*, 
-                                    LASTNAME || ', ' || FIRSTNAME || ' ' || 
-                                         CASE 
-                                             WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
-                                             ELSE ''
-                                         END AS FULLNAME 
+                                    LASTNAME || ', ' || FIRSTNAME || 
+                                    CASE
+                                        WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
+                                        ELSE ''
+                                    END || 
+                                    CASE 
+                                        WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX
+                                        ELSE ''
+                                    END AS FULLNAME 
                                     from TBL_EMPLOYEE A where BIOMETRICID = '{biometricID}';"
             Using ds As DataSet = LoadSQL(sql, "TBL_EMPLOYEE")
                 If ds.Tables(0).Rows.Count > 0 Then
