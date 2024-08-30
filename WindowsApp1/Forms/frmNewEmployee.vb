@@ -99,10 +99,11 @@ Public Class frmNewEmployee
             Console.WriteLine(eCell(row, 9).Value)
             Console.WriteLine(eCell(row, 11).Value)
 
-            SaveNew_Employee(eCell(row, 2).Value, eCell(row, 3).Value, eCell(row, 9).Value, eCell(row, 1).Value, eCell(row, 12).Value,
-                         "ACTIVE", eCell(row, 4).Value, True, eCell(row, 7).Value, eCell(row, 8).Value, eCell(row, 5).Value,
-                         eCell(row, 13).Value, eCell(row, 14).Value, eCell(row, 15).Value, eCell(row, 16).Value, "", "", eCell(row, 6).Value, "", eCell(row, 17).Value,
-                         eCell(row, 18).Value, eCell(row, 11).Value, eCell(row, 10).Value)
+            'MALI (FIRSTNAME, LASTNAME NOT FULLNAME)
+            'SaveNew_Employee(eCell(row, 2).Value, eCell(row, 3).Value, eCell(row, 9).Value, eCell(row, 1).Value, eCell(row, 12).Value,
+            '             "ACTIVE", eCell(row, 4).Value, True, eCell(row, 7).Value, eCell(row, 8).Value, eCell(row, 5).Value,
+            '             eCell(row, 13).Value, eCell(row, 14).Value, eCell(row, 15).Value, eCell(row, 16).Value, "", "", eCell(row, 6).Value, "", eCell(row, 17).Value,
+            '             eCell(row, 18).Value, eCell(row, 11).Value, eCell(row, 10).Value)
 
             frmMainForm.AppProgressBar.Value += 1
 
@@ -500,20 +501,15 @@ Public Class frmNewEmployee
                 DATE_ENDED = InactiveDate.Value
             End If
 
-            Dim fullname As String
-
-            If String.IsNullOrEmpty(MName_txt.Text) Then
-                fullname = $"{LastName_txt.Text}, {FirstName_TXT.Text} "
-            Else
-                fullname = $"{LastName_txt.Text}, {FirstName_TXT.Text} {MName_txt.Text.Substring(0, 1)}."
-            End If
-
-            SaveNew_Employee(Add_Company_CB.Text, Branch_ComboB.Text, fullname, Bio_TXT.Text, Email_TXT.Text, emp_status, Started_DTP.Value, False,
+            SaveNew_Employee(Add_Company_CB.Text, Branch_ComboB.Text, FirstName_TXT.Text, LastName_txt.Text, Bio_TXT.Text, Email_TXT.Text, emp_status, Started_DTP.Value, False,
                          TimeIn_Combo.Text, TimeOut_Combo.Text, EmpNo_TXT.Text, TIN_TXT.Text, SSS_TXT.Text, PHILH_TXT.Text, HDMF_TXT.Text, HO_Category.Text,
                          ComCategory_Combo.Text, Position_Combo.Text, ComCompany_Cmbo.Text, PhotoCategory_Combo.Text, MName_txt.Text, BDate_dtp.Value,
                          Address_txt.Text, InactiveDate.Value, AccountNo_TXT.Text, Suffix_txt.Text)
 
             If Emp_Pic.Image IsNot Nothing Then
+                Dim fullname As String = $"{LastName_txt.Text}, {FirstName_TXT.Text} {MName_txt.Text.Substring(0, 1)}."
+                If String.IsNullOrEmpty(MName_txt.Text) Then fullname = $"{LastName_txt.Text}, {FirstName_TXT.Text} "
+
                 SavePic(fullname, Emp_Pic)
             End If
 

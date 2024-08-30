@@ -1809,7 +1809,7 @@ Module SaveUpdate
         End If
     End Sub
 
-    Public Sub SaveNew_Employee(COMPANY As String, BRANCH_CODE As String, FULLNAME As String, BIO_NO As String, EMAIL_ADD As String,
+    Public Sub SaveNew_Employee(COMPANY As String, BRANCH_CODE As String, FIRSTNAME As String, LASTNAME As String, BIO_NO As String, EMAIL_ADD As String,
                                 EMP_STATUS As String, Optional DATE_STARTED As String = "", Optional group As Boolean = False,
                                 Optional TIME_IN As String = "", Optional TIME_OUT As String = "", Optional EMP_NO As String = "",
                                 Optional TIN As String = "", Optional SSS As String = "", Optional PHILH As String = "",
@@ -1826,14 +1826,14 @@ Module SaveUpdate
         Dim ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE ")
         If ds.Tables(0).Rows.Count > 0 Then
             With ds.Tables(0).Rows(0)
-                Dim namee As String() = FULLNAME.Split({","c, " "c}, StringSplitOptions.RemoveEmptyEntries)
-                Dim firstname As String = namee(1)
-                Dim lastname As String = namee(0)
+                'Dim namee As String() = FULLNAME.Split({","c, " "c}, StringSplitOptions.RemoveEmptyEntries)
+                'Dim firstname As String = namee(1)
+                'Dim lastname As String = namee(0)
 
                 .Item("COMPANY") = COMPANY
                 .Item("BRANCHCODE") = BRANCH_CODE
-                .Item("FIRSTNAME") = firstname
-                .Item("LASTNAME") = lastname
+                .Item("FIRSTNAME") = FIRSTNAME
+                .Item("LASTNAME") = LASTNAME
                 .Item("EMAILADD") = EMAIL_ADD
                 .Item("EMP_STATUS") = EMP_STATUS
                 .Item("RATE_DAILY") = IIf(.Item("BRANCHCODE") = Nothing, GetMinimumRate("CITY", "GENSAN"), GetMinimumRate("BRANCHCODE", .Item("BRANCHCODE")))
@@ -1898,15 +1898,15 @@ Module SaveUpdate
 
                 Dim dsNewRow As DataRow = dss.Tables(0).NewRow
                 With dsNewRow
-                    Dim namee As String() = FULLNAME.Split({","c, " "c}, StringSplitOptions.RemoveEmptyEntries)
-                    Dim firstname As String = namee(1).ToString
-                    Dim lastname As String = namee(0).ToString
+                    'Dim namee As String() = FULLNAME.Split({","c, " "c}, StringSplitOptions.RemoveEmptyEntries)
+                    'Dim firstname As String = namee(1).ToString
+                    'Dim lastname As String = namee(0).ToString
 
                     .Item("BIOMETRICID") = BIO_NO
                     .Item("COMPANY") = COMPANY
                     .Item("BRANCHCODE") = BRANCH_CODE
-                    .Item("FIRSTNAME") = firstname
-                    .Item("LASTNAME") = lastname
+                    .Item("FIRSTNAME") = FIRSTNAME
+                    .Item("LASTNAME") = LASTNAME
                     .Item("EMAILADD") = EMAIL_ADD
                     .Item("EMP_STATUS") = EMP_STATUS
                     .Item("RATE_DAILY") = IIf(.Item("BRANCHCODE") = Nothing, GetMinimumRate("CITY", "GENSAN"), GetMinimumRate("BRANCHCODE", .Item("BRANCHCODE")))
