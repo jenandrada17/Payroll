@@ -408,9 +408,10 @@ Public Class frmAttendance
 
                             'specHoliday_hrs
                             Dim hrs As Integer = GetSpecial_hrs(list_.First, list_.Last)
-                            Dim hrss As Integer = hrs / 8
-                            Dim hrsss As Integer = hrss * 8
-                            specHoliday_hrs += hrsss
+                            'Dim hrss As Integer = hrs / 8
+                            'Dim hrsss As Integer = hrss * 8
+                            'specHoliday_hrs += hrsss
+                            specHoliday_hrs += hrs
                         End If
                     End If
                 Next
