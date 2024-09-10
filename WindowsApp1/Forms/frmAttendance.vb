@@ -1488,6 +1488,11 @@ Public Class frmAttendance
                 Dim specHoliday_hrs As String = IIf(eCell(row, 7).Value = Nothing, 0, eCell(row, 7).Value)
                 Dim nightRate As String = IIf(eCell(row, 8).Value = Nothing, 0, eCell(row, 8).Value)
                 Dim sil As String = IIf(eCell(row, 9).Value = Nothing, 0, eCell(row, 9).Value)
+
+                emp_status = GetData("EMP_STATUS", $"TBL_EMPLOYEE WHERE BIOMETRICID = '{Bio7_TXT.Text}'")
+                dateEnded = GetData("DATE_ENDED", $"TBL_EMPLOYEE WHERE BIOMETRICID = '{Bio7_TXT.Text}'")
+                dateStarted = GetData("DATEHIRED", $"TBL_EMPLOYEE WHERE BIOMETRICID = '{Bio7_TXT.Text}'")
+                '======================== HOLIDAY ============================   
                 Dim regHol_additional As Integer = IIf(eCell(row, 10).Value = Nothing, 0, eCell(row, 10).Value)
                 Dim regHoliday As Integer = REGHolidayCount(starting_date, ending_date) + regHol_additional
 
