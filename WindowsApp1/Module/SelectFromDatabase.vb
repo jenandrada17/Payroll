@@ -1067,23 +1067,13 @@ Module SelectFromDatabase
 
                 For Each dr In ds.Tables(0).Rows
                     With dr
-
-                        'Dim MI As String
-                        'If String.IsNullOrEmpty(.Item("MiddleName")) Then
-                        '    MI = ""
-                        'Else
-                        '    MI = .Item("MiddleName").Substring(0, 1) & "."
-                        'End If
-
-                        'Dim FULLNAME As String = $"{ .Item("LastName")}, { .Item("FirstName")} {MI}"
-
                         Dim i As ListViewItem = LV.Items.Add(.Item("BIOMETRICID"))
                         i.SubItems.Add(.item("FULLNAME")).Tag = .Item("ID")
                         i.SubItems.Add(.Item("PRESENT_DAYS"))
                         i.SubItems.Add(IIf(.Item("OVERTIME") = 0, "", .Item("OVERTIME")))
                         i.SubItems.Add(IIf(.Item("LATE") = 0, "", .Item("LATE")))
                         i.SubItems.Add(IIf(.Item("UNDERTIME") = 0, "", .Item("UNDERTIME")))
-
+                        Console.WriteLine($"BIOMETRICID - { .Item("BIOMETRICID")}")
                     End With
 
                     frmMainForm.AppProgressBar.Value += 1
