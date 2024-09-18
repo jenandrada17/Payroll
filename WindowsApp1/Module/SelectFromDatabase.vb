@@ -1832,6 +1832,7 @@ Module SelectFromDatabase
                         GROUP BY FULLNAME, A.BIOMETRICID ORDER BY FULLNAME ASC "
         End If
 
+        TestingScript_String(mysql)
         Using ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
             LV.Items.Clear()
             progressBarStart(ds.Tables(0).Rows.Count)

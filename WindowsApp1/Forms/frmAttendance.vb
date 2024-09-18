@@ -1488,6 +1488,7 @@ Public Class frmAttendance
                 Dim specHoliday_hrs As String = IIf(String.IsNullOrWhiteSpace(eCell(row, 7).Value), 0, eCell(row, 7).Value)
                 Dim nightRate As String = IIf(String.IsNullOrWhiteSpace(eCell(row, 8).Value), 0, eCell(row, 8).Value)
                 Dim sil As String = IIf(String.IsNullOrWhiteSpace(eCell(row, 9).Value), 0, eCell(row, 9).Value)
+                If sil > 5 Then sil = 5
 
                 emp_status = GetData("EMP_STATUS", $"TBL_EMPLOYEE WHERE BIOMETRICID = '{bioNo}'")
                 dateEnded = GetData("DATE_ENDED", $"TBL_EMPLOYEE WHERE BIOMETRICID = '{bioNo}'")

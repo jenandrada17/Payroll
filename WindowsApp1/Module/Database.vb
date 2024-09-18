@@ -64,9 +64,7 @@ Module Database
 
     Friend Function SaveEntry(ByVal dsEntry As DataSet, Optional ByVal isNew As Boolean = True) As Boolean
         Try
-            If dsEntry Is Nothing Then
-                Return False
-            End If
+            If dsEntry Is Nothing Then Return False
 
             DbOpen()
 
@@ -74,7 +72,6 @@ Module Database
             Dim mySql As String, fillData As String
             Dim ds As DataSet = dsEntry
 
-            'Save all tables in the dataset
             For Each dsTable As DataTable In dsEntry.Tables
                 fillData = dsTable.TableName
                 mySql = "SELECT * FROM " & fillData
@@ -85,7 +82,7 @@ Module Database
                 End If
 
                 da = New FbDataAdapter(mySql, con)
-                Dim cb As New FbCommandBuilder(da) 'Required in Saving/Update to Database
+                Dim cb As New FbCommandBuilder(da)
                 cb.ConflictOption = ConflictOption.CompareRowVersion
                 da.Update(ds, fillData)
             Next
