@@ -506,6 +506,8 @@ Public Class frmNewEmployee
                          ComCategory_Combo.Text, Position_Combo.Text, ComCompany_Cmbo.Text, PhotoCategory_Combo.Text, MName_txt.Text, BDate_dtp.Value,
                          Address_txt.Text, InactiveDate.Value, AccountNo_TXT.Text, Suffix_txt.Text)
 
+            'SaveNewSBU($"{LastName_txt.Text}, {FirstName_TXT.Text}", Bio_TXT.Text, )
+
             If Emp_Pic.Image IsNot Nothing Then
                 Dim fullname As String = $"{LastName_txt.Text}, {FirstName_TXT.Text} {MName_txt.Text.Substring(0, 1)}."
                 If String.IsNullOrEmpty(MName_txt.Text) Then fullname = $"{LastName_txt.Text}, {FirstName_TXT.Text} "

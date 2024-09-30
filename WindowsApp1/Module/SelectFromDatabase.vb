@@ -2509,7 +2509,7 @@ Module SelectFromDatabase
                     list_.Add(IIf(IsDBNull(.Item("PM_OUT")), "", .Item("PM_OUT")))
                     list_ = list_.Where(Function(s) Not String.IsNullOrEmpty(s)).ToList()
 
-                    specHoliday_hrs = GetSpecial_hrs(list_.First, list_.Last)
+                    specHoliday_hrs = GetSpecial_hrs(list_.First, list_.Last, BIO_NO)
                 End With
             End If
         End Using
@@ -2517,10 +2517,14 @@ Module SelectFromDatabase
         Return specHoliday_hrs
     End Function
 
-    Friend Function GetSpecial_hrs(inn As DateTime, outt As DateTime) As Double
+    Friend Function GetSpecial_hrs(inn As DateTime, outt As DateTime, bioNo As Integer) As Double
         Dim specHoliday_hrs = 0, tot_hrs As Double = 0
+        Dim timeIn As DateTime = GetData("TIME_IN", $"TBL_EMPLOYEE WHERE BIOMETRICID = '{bioNo}'")
+        Dim timeOut As DateTime = GetData("TIME_OUT", $"TBL_EMPLOYEE WHERE BIOMETRICID = '{bioNo}'")
 
         Try
+            If inn < timeIn Then inn = timeIn
+
             Dim hrs As TimeSpan = DateTime.Parse(outt.AddMinutes(inn.Minute)).Subtract(DateTime.Parse(inn))
             tot_hrs = hrs.Hours
 
@@ -2711,6 +2715,25 @@ Module SelectFromDatabase
         End Using
 
         Return False
+    End Function
+
+    Public Function SBU_Balance(BIO_NO As String)
+        Dim balance As Decimal = 0
+        Dim mysql As String = $"Select * From PAYROLL_SBU where BIO_NO = '{BIO_NO}' "
+        Using dss As DataSet = LoadSQL(mysql, "PAYROLL_SBU")
+            If dss.Tables(0).Rows.Count > 0 Then
+                With dss.Tables(0).Rows(0)
+
+                    Dim credit As Decimal = IIf(IsDBNull(.Item("CREDIT")), 0, .Item("CREDIT"))
+                    Dim totalCredit As Decimal = credit + GetTotal("AMOUNT", $"RECORDED_ALLOW_DEDUC WHERE BIO_NO = '{ .Item("BIO_NO")}' and CATEGORY = 'SBU' and PAYDATE <> '12/15/2021'")
+                    Dim principal As Decimal = IIf(IsDBNull(.Item("PRINCIPAL")), 0, .Item("PRINCIPAL"))
+                    balance = principal - totalCredit
+
+                End With
+            End If
+        End Using
+
+        Return balance
     End Function
 
     Public Function CountYear_SIL(Bio_no As String, endingDate As DateTime) As Integer

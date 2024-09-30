@@ -1297,6 +1297,9 @@ Module SaveUpdate
                         If SBU_With_Balance(bioNo) Then
 
                             SBU = SBU_Amount(bioNo)
+                            Dim balanceSBU As Decimal = SBU_Balance(bioNo)
+
+                            If balanceSBU < SBU Then SBU = balanceSBU
 
                             If SBU_sched = "EVERY PAYROLL" Then
                                 Save_Recorded_Allow_Deduc(bioNo, paydate_, "SBU", SBU, "DEDUCTION")
@@ -2547,7 +2550,7 @@ Module SaveUpdate
         End Using
     End Sub
 
-    Friend Sub SaveNewSBU(NAMEE As String, BIO_NO As String, AMOUNT As String, PRINCIPAL As String, SCHED As String)
+    Friend Sub SaveNewSBU(NAMEE As String, BIO_NO As String, AMOUNT As String, PRINCIPAL As String, SCHED As String, Optional isNewEmployee As Boolean = False)
         Dim old_principal = 0, old_amort As Decimal = 0
         Dim mysql As String = $"Select * from PAYROLL_SBU where BIO_NO ='{BIO_NO}'"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_SBU")
@@ -2567,7 +2570,7 @@ Module SaveUpdate
 
                 SaveLogs($"UPDATED SBU - {NAMEE}({BIO_NO}) Principal(from {FormatNumber(old_principal)} to {FormatNumber(PRINCIPAL)}) Amort(from {FormatNumber(old_amort)} to {FormatNumber(AMOUNT)}) Schedule({SCHED})", frmMainForm.UserName_LBL.Text)
 
-                MsgBox("Successfully updated.", MsgBoxStyle.Information)
+                If Not isNewEmployee Then MsgBox("Successfully updated.", MsgBoxStyle.Information)
             Else
                 mysql = "Select * from PAYROLL_SBU Rows 1"
                 Using dss As DataSet = LoadSQL(mysql, "PAYROLL_SBU")
@@ -2587,7 +2590,7 @@ Module SaveUpdate
 
                     SaveLogs($"ADDED NEW SBU - {NAMEE}({BIO_NO}) Principal({FormatNumber(PRINCIPAL)}) Amort({FormatNumber(AMOUNT)}) Schedule({SCHED})", frmMainForm.UserName_LBL.Text)
 
-                    MsgBox("Successfully saved.", MsgBoxStyle.Information)
+                    If Not isNewEmployee Then MsgBox("Successfully saved.", MsgBoxStyle.Information)
                 End Using
             End If
         End Using

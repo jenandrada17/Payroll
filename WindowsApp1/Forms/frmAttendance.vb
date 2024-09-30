@@ -407,10 +407,7 @@ Public Class frmAttendance
                             list_ = list_.Where(Function(s) Not String.IsNullOrEmpty(s)).ToList()
 
                             'specHoliday_hrs
-                            Dim hrs As Integer = GetSpecial_hrs(list_.First, list_.Last)
-                            'Dim hrss As Integer = hrs / 8
-                            'Dim hrsss As Integer = hrss * 8
-                            'specHoliday_hrs += hrsss
+                            Dim hrs As Integer = GetSpecial_hrs(list_.First, list_.Last, BiometricID_TXT.Text)
                             specHoliday_hrs += hrs
                         End If
                     End If
@@ -2328,7 +2325,7 @@ Public Class frmAttendance
                         list_ = list_.Where(Function(s) Not String.IsNullOrEmpty(s)).ToList()
 
                         'specHoliday_hrs
-                        Dim hrs As Integer = GetSpecial_hrs(list_.First, list_.Last)
+                        Dim hrs As Integer = GetSpecial_hrs(list_.First, list_.Last, biometric_No)
                         Dim hrss As Integer = hrs / 8
                         Dim hrsss As Integer = hrss * 8
                         specHoliday_hrs += hrsss
