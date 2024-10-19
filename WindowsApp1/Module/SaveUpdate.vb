@@ -1372,7 +1372,7 @@ Module SaveUpdate
                                 LATEE = Late_training + Late_old + Late_new
 
                                 '=================  LATE ADJUSTMENT IF NOT EXEMPTED ==================== 
-                                Dim LateAdjust As Boolean = IIf(GetData("VALUES", $"MAINTENANCE WHERE KEYS='LateAdjustment'") = "ON", True, False)
+                                Dim LateAdjust As Boolean = IIf(GetData("VALUESS", $"MAINTENANCE WHERE KEYSS='LateAdjustment'") = "ON", True, False)
                                 If LateAdjust = True And Late_Adjustment > 1 And Not ThisHasRow($"LATE_EXEMPTED WHERE BIONO = {bioNo}") Then
                                     Dim t1 As Decimal = (Old_Rate / OTHRS) / 60
                                     Dim t2 As Decimal = (rate / OTHRS) / 60
