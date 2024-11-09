@@ -465,6 +465,7 @@ Module SaveUpdate
     Friend Sub SaveRATE(column As String, value As String, daily_rate As String, Optional fix_monthly As Boolean = False, Optional group As Boolean = False) '=========== BOOLEAN IF MORE THAN 1 ========== 
 
         Dim mysql As String = $"Select * FROM  TBL_EMPLOYEE WHERE {column} = '{value}'"
+        If column = "BRANCHCODE" AndAlso value = "" Then mysql = $"Select * FROM  TBL_EMPLOYEE WHERE BRANCHCODE IS NULL OR {column} = '{value}'"
         Dim dss As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
         If dss.Tables(0).Rows.Count > 0 Then
 
