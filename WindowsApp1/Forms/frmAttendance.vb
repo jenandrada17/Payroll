@@ -1308,9 +1308,17 @@ Public Class frmAttendance
 
                     'AS IF WALANG OLD DAYS NA COVERED KAY NA'MANUAL ADD NA NUNG LAST PAYROLL 
                     Dim new_days As Double = CDbl(Days7_TXT.Text)
-                    Dim new_overtime As Double = CDbl(Overtime7_NUP.Text)
-                    Dim new_late As Double = CDbl(Late7_TXT.Text)
-                    Dim new_undertime As Double = CDbl(Undertime7_TXT.Text)
+
+                    Dim new_overtime As Double
+                    If Not Double.TryParse(Overtime7_NUP.TextAlign, new_overtime) Then new_overtime = 0
+
+                    Dim new_late As Double
+                    If Not Double.TryParse(Late7_TXT.Text, new_late) Then new_late = 0
+
+                    Dim new_undertime As Double
+                    If Not Double.TryParse(Undertime7_TXT.Text, new_undertime) Then new_undertime = 0
+
+
                     SaveTemporary(Bio7_TXT.Text, 0, new_days, 0, new_overtime, 0, new_late, 0, new_undertime, 0, 0, PAYROLL)
                 End If
 
