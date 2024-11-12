@@ -1293,6 +1293,27 @@ Public Class frmAttendance
                 Dim DUTY_SPEC_NIGHTSHIFT_OT As Double = IIf(String.IsNullOrWhiteSpace(txtSpecNightShiftOT.Text), 0, txtSpecNightShiftOT.Text)
                 Dim DUTY_REG_NIGHTSHIFT_OT As Double = IIf(String.IsNullOrWhiteSpace(txtRegNightShiftOT.Text), 0, txtRegNightShiftOT.Text)
 
+
+                '===================================== MINIMUM CHANGED STARTING SEPTEMBER 1, 2022 =================================
+                If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
+                    ''TODO - IBUTANG APIL SA EXCEL IF NEED JUD ANG NUMBER OF DAYS NGA DILI COVERED SA NEW RATE (FOR THE MEANTIME ZERO MUNA ANG OLD DAYS KAY GIMANUAL UG ADD SA LAST PAYROLL)
+                    'Dim old_days As Double
+                    'old_days = (temp_present * 8) - temp_half
+                    'old_days = old_days / 8
+                    'Dim new_days As Double = CDbl(Days7_TXT.Text) - old_days
+                    'Dim new_overtime As Double = CDbl(Overtime7_NUP.Text) - temp_overtime
+                    'Dim new_late As Double = CDbl(Late7_TXT.Text) - temp_late
+                    'Dim new_undertime As Double = CDbl(Undertime7_TXT.Text) - temp_undertime
+                    'SaveTemporary(Bio7_TXT.Text, old_days, new_days, temp_overtime, new_overtime, temp_late, new_late, temp_undertime, new_undertime, temp_Rholiday, temp_Sholiday, PAYROLL)
+
+                    'AS IF WALANG OLD DAYS NA COVERED KAY NA'MANUAL ADD NA NUNG LAST PAYROLL 
+                    Dim new_days As Double = CDbl(Days7_TXT.Text)
+                    Dim new_overtime As Double = CDbl(Overtime7_NUP.Text)
+                    Dim new_late As Double = CDbl(Late7_TXT.Text)
+                    Dim new_undertime As Double = CDbl(Undertime7_TXT.Text)
+                    SaveTemporary(Bio7_TXT.Text, 0, new_days, 0, new_overtime, 0, new_late, 0, new_undertime, 0, 0, PAYROLL)
+                End If
+
                 SaveAttendanceEE(Bio7_TXT.Text, PAYROLL, Days7_TXT.Text, overtime, latee, undertimee,
                                      RHOLIDAY, SHOLIDAY, specHoliday_hrs, sil, 0, "", "", night7, True, TRAINING_DAYS, TRAINING_REGHOLIDAY,
                                      TRAINING_SPECHOLIDAY, TRAINING_OVERTIME, TRAINING_LATE, TRAINING_UNDERTIME, TRAINING_NIGHTRATE,
@@ -1523,6 +1544,22 @@ Public Class frmAttendance
                     RunCommand($"DELETE FROM PAYROLL_ATTENDANCE WHERE PAYDATE = '{payroll}' AND BRANCH_MANUAL = TRUE AND BIOMETRICID = {bioNo};")
                     RunCommand($"DELETE FROM PAYROLL_PAYOUT WHERE PAYDATE = '{payroll}' AND BIOMETRIC_ID = {bioNo};")
                     RunCommand($"DELETE FROM RECORDED_ALLOW_DEDUC WHERE PAYDATE = '{payroll}' AND BIO_NO = {bioNo};")
+
+                    '===================================== MINIMUM CHANGED STARTING SEPTEMBER 1, 2022 =================================
+                    If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
+                        ''TODO - IBUTANG APIL SA EXCEL IF NEED JUD ANG NUMBER OF DAYS NGA DILI COVERED SA NEW RATE (FOR THE MEANTIME ZERO MUNA ANG OLD DAYS KAY GIMANUAL UG ADD LAST PAYROLL)
+                        'Dim old_days As Double
+                        'old_days = (temp_present * 8) - temp_half
+                        'old_days = old_days / 8
+                        'Dim new_days As Double = CDbl(Days7_TXT.Text) - old_days
+                        'Dim new_overtime As Double = CDbl(Overtime7_NUP.Text) - temp_overtime
+                        'Dim new_late As Double = CDbl(Late7_TXT.Text) - temp_late
+                        'Dim new_undertime As Double = CDbl(Undertime7_TXT.Text) - temp_undertime
+                        'SaveTemporary(Bio7_TXT.Text, old_days, new_days, temp_overtime, new_overtime, temp_late, new_late, temp_undertime, new_undertime, temp_Rholiday, temp_Sholiday, PAYROLL)
+
+                        SaveTemporary(bioNo, 0, totalDays, 0, overtime, 0, late, 0, undertime, 0, 0, payroll)
+                    End If
+
 
                     SaveAttendanceEE(bioNo, payroll, totalDays, overtime, late, undertime,
                                  regHoliday, TotalSHoliday_LBL.Text, specHoliday_hrs, sil, Nothing, Nothing, Nothing, nightRate, True,
