@@ -266,10 +266,32 @@ Public Class frmPayout
             Dim allow_list = Nothing, deduc_list As String = Nothing
 
             Dim rate As Double = Rate_TXT.Text
-            If TrainingDays_LBL.Text > 0 Then rate = rate * 0.75  '====== IF TRAINEE
-
             Dim reg_holiday As String = (CDbl(RegularHol_TXT.Text) * rate) * regHoliday_
             Dim spec_holiday As String = ((CDbl(SpecialHol_TXT.Text) / 8) * rate) * specHoliday_
+
+            If TrainingDays_LBL.Text > 0 Then '====== IF TRAINEE / TRAINING HOLIDAY
+                Dim trainee_rate = rate * 0.75
+                Dim regHoliday = Holiday_Rate("REGULAR")
+                Dim specHoliday = Holiday_Rate("SPECIAL")
+                Dim RegularHol As Double = CDbl(RegularHol_TXT.Text)
+                Dim Training_REGHoliday As Decimal = GetData_Decimal("TRAINING_REGHOLIDAY", $"PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{BIO_NO}' AND PAYDATE = '{paydate_}'")
+                Dim SpecialHol_hrs As Double = CDbl(SpecialHol_TXT.Text)
+                Dim Training_SPECHoliday As Double = CDbl(TrainingSHol_LBL.Text)
+
+                If RegularHol <> 0 Then RegularHol = Math.Abs(RegularHol - Training_REGHoliday)
+                If SpecialHol_hrs <> 0 Then SpecialHol_hrs = Math.Abs(SpecialHol_hrs - Training_SPECHoliday)
+
+                Dim REG_STANDARD As Decimal = (RegularHol * rate) * regHoliday
+                Dim SPEC_STANDARD As Decimal = ((SpecialHol_hrs / 8) * rate) * specHoliday
+
+                Dim REG_TRAINEE As Decimal = (Training_REGHoliday * trainee_rate) * regHoliday
+                Dim SPEC_TRAINEE As Decimal = ((Training_SPECHoliday / 8) * trainee_rate) * specHoliday
+
+                reg_holiday = REG_STANDARD + REG_TRAINEE
+                spec_holiday = SPEC_STANDARD + SPEC_TRAINEE
+
+            End If
+
 
             '===================== MINIMUM RATE CHANGED STARTING SEPTEMBER 1, 2022 ===================== 
             If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then

@@ -183,6 +183,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationEvents.vb" />
     <Compile Include="Class\Employee.vb" />
     <Compile Include="Class\Security.vb" />
     <Compile Include="Class\Updater.vb" />
