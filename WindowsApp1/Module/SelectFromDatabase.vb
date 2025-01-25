@@ -2075,7 +2075,8 @@ Module SelectFromDatabase
 
     Friend Sub Populate_SSS(datagrid As DataGridView)
         datagrid.Rows.Clear()
-        Dim mysql As String = $"SELECT * FROM PAYROLL_SSS WHERE YEAR_COVERED = (SELECT MAX(YEAR_COVERED) FROM PAYROLL_SSS);"
+        'Dim mysql As String = $"SELECT * FROM PAYROLL_SSS WHERE YEAR_COVERED = (SELECT MAX(YEAR_COVERED) FROM PAYROLL_SSS);"
+        Dim mysql As String = $"SELECT * FROM PAYROLL_SSS;"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_SSS")
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows

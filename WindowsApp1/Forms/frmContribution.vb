@@ -54,9 +54,28 @@ Public Class frmContribution
 
             For row = 4 To DtSet.Tables(0).Rows.Count
 
-                SaveSSS_Contribution(eCell(row, 1).Value, eCell(row, 2).Value, eCell(row, 3).Value, eCell(row, 4).Value, eCell(row, 5).Value, eCell(row, 6).Value, eCell(row, 7).Value,
-                                     eCell(row, 8).Value, eCell(row, 9).Value, eCell(row, 10).Value, eCell(row, 11).Value, eCell(row, 12).Value, eCell(row, 13).Value, eCell(row, 14).Value,
-                                     eCell(row, 15).Value, eCell(row, 16).Value)
+                Dim RANGECOMP As String = $"{eCell(row, 1).Value} - {eCell(row, 2).Value}"
+                Dim RSS_EC As String = eCell(row, 3).Value
+                Dim MPF As String = eCell(row, 4).Value
+                Dim TOTAL As String = eCell(row, 5).Value
+                Dim RSS_ER As String = eCell(row, 6).Value
+                Dim RSS_EE As String = eCell(row, 10).Value
+                Dim RSS_TOTAL As String = CDbl(RSS_ER) + CDbl(RSS_EE)
+                Dim EC_ER As String = eCell(row, 8).Value
+                Dim EC_EE As String = "-"
+                Dim EC_TOTAL As String = EC_ER
+                Dim MPF_ER As String = eCell(row, 4).Value
+                Dim MPF_EE As String = eCell(row, 11).Value
+                Dim MPF_TOTAL As String = CDbl(MPF_ER) + CDbl(MPF_EE)
+                Dim TOTAL_ER As String = CDbl(RSS_ER) + CDbl(RSS_EE)
+                Dim TOTAL_EE As String = RSS_EE
+                Dim TOTAL_TOTAL As String = eCell(row, 13).Value
+
+                SaveSSS_Contribution(RANGECOMP, RSS_EC, MPF, TOTAL, RSS_ER, RSS_EE, RSS_TOTAL, EC_ER, EC_EE, EC_TOTAL, MPF_ER, MPF_EE, MPF_TOTAL, TOTAL_ER, TOTAL_EE, TOTAL_TOTAL)
+
+                'SaveSSS_Contribution(eCell(row, 1).Value, eCell(row, 2).Value, eCell(row, 3).Value, eCell(row, 4).Value, eCell(row, 5).Value, eCell(row, 6).Value, eCell(row, 7).Value,
+                '                     eCell(row, 8).Value, eCell(row, 9).Value, eCell(row, 10).Value, eCell(row, 11).Value, eCell(row, 12).Value, eCell(row, 13).Value, eCell(row, 14).Value,
+                '                     eCell(row, 15).Value, eCell(row, 16).Value)
 
                 frmMainForm.AppProgressBar.Value += 1
 

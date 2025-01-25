@@ -1511,9 +1511,11 @@ Module SaveUpdate
         End Using
     End Sub
 
-    Public Sub SaveSSS_Contribution(one As String, two As String, three As String, four As String, five As String, six As String, seven As String,
-                                    eight As String, nine As String, ten As String, eleven As String, twelve As String, thirteen As String, fourteen As String,
-                                    fifteen As String, sixteen As String)
+
+
+    Public Sub SaveSSS_Contribution(RANGECOMP As String, RSS_EC As String, MPF As String, TOTAL As String, RSS_ER As String, RSS_EE As String, RSS_TOTAL As String,
+                                    EC_ER As String, EC_EE As String, EC_TOTAL As String, MPF_ER As String, MPF_EE As String, MPF_TOTAL As String, TOTAL_ER As String,
+                                    TOTAL_EE As String, TOTAL_TOTAL As String)
 
         Dim sql As String = "Select * From PAYROLL_SSS Rows 1"
         Using ds As DataSet = LoadSQL(sql, "PAYROLL_SSS")
@@ -1521,22 +1523,25 @@ Module SaveUpdate
             Dim dsNewRow As DataRow = ds.Tables(0).NewRow
             With dsNewRow
 
-                .Item("rangeComp") = one
-                .Item("rss_ec") = two
-                .Item("mpf") = three
-                .Item("total") = four
-                .Item("rss_er") = five
-                .Item("rss_ee") = six
-                .Item("rss_total") = seven
-                .Item("ec_er") = eight
-                .Item("ec_ee") = nine
-                .Item("ec_total") = ten
-                .Item("mpf_er") = eleven
-                .Item("mpf_ee") = twelve
-                .Item("mpf_total") = thirteen
-                .Item("total_er") = fourteen
-                .Item("total_ee") = fifteen
-                .Item("total_total") = sixteen
+                'SaveSSS_Contribution(RANGECOMP, RSS_EC, MPF, TOTAL, RSS_ER, RSS_EE, RSS_TOTAL, EC_ER, EC_EE, EC_TOTAL, MPF_ER, MPF_EE, MPF_TOTAL, TOTAL_ER, TOTAL_EE, TOTAL_TOTAL)
+
+                .Item("rangeComp") = RANGECOMP
+                .Item("rss_ec") = RSS_EC
+                .Item("mpf") = MPF
+                .Item("total") = TOTAL
+                .Item("rss_er") = RSS_ER
+                .Item("rss_ee") = RSS_EE
+                .Item("rss_total") = RSS_TOTAL
+                .Item("ec_er") = EC_ER
+                .Item("ec_ee") = EC_EE
+                .Item("ec_total") = EC_TOTAL
+                .Item("mpf_er") = MPF_ER
+                .Item("mpf_ee") = MPF_EE
+                .Item("mpf_total") = MPF_TOTAL
+                .Item("total_er") = TOTAL_ER
+                .Item("total_ee") = TOTAL_EE
+                .Item("total_total") = TOTAL_TOTAL
+                .Item("year_covered") = Now.Year
 
             End With
 

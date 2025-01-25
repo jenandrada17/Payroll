@@ -22,11 +22,11 @@ Partial Class frmContribution
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.Contribution_Tab = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
         Me.SSS_grid = New System.Windows.Forms.DataGridView()
@@ -109,8 +109,8 @@ Partial Class frmContribution
         Me.SSS_grid.AllowUserToAddRows = False
         Me.SSS_grid.AllowUserToDeleteRows = False
         Me.SSS_grid.AllowUserToResizeRows = False
-        DataGridViewCellStyle9.BackColor = System.Drawing.Color.LightBlue
-        Me.SSS_grid.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle9
+        DataGridViewCellStyle1.BackColor = System.Drawing.Color.LightBlue
+        Me.SSS_grid.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
         Me.SSS_grid.BackgroundColor = System.Drawing.Color.White
         Me.SSS_grid.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.SSS_grid.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText
@@ -122,8 +122,8 @@ Partial Class frmContribution
         Me.SSS_grid.ReadOnly = True
         Me.SSS_grid.RowHeadersVisible = False
         Me.SSS_grid.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
-        DataGridViewCellStyle10.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.SSS_grid.RowsDefaultCellStyle = DataGridViewCellStyle10
+        DataGridViewCellStyle2.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.SSS_grid.RowsDefaultCellStyle = DataGridViewCellStyle2
         Me.SSS_grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.SSS_grid.Size = New System.Drawing.Size(1139, 542)
         Me.SSS_grid.TabIndex = 1
@@ -236,7 +236,6 @@ Partial Class frmContribution
         Me.Import_BTN.TabIndex = 86
         Me.Import_BTN.Text = "Import"
         Me.Import_BTN.UseVisualStyleBackColor = True
-        Me.Import_BTN.Visible = False
         '
         'Path_TXT
         '
@@ -246,7 +245,6 @@ Partial Class frmContribution
         Me.Path_TXT.ReadOnly = True
         Me.Path_TXT.Size = New System.Drawing.Size(350, 29)
         Me.Path_TXT.TabIndex = 85
-        Me.Path_TXT.Visible = False
         '
         'OpenFile_BTN
         '
@@ -257,7 +255,6 @@ Partial Class frmContribution
         Me.OpenFile_BTN.TabIndex = 84
         Me.OpenFile_BTN.Text = "Browse"
         Me.OpenFile_BTN.UseVisualStyleBackColor = True
-        Me.OpenFile_BTN.Visible = False
         '
         'Manual_Tab
         '
@@ -279,7 +276,7 @@ Partial Class frmContribution
         Me.Label3.AutoSize = True
         Me.Label3.Location = New System.Drawing.Point(20, 112)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(89, 32)
+        Me.Label3.Size = New System.Drawing.Size(88, 32)
         Me.Label3.TabIndex = 91
         Me.Label3.Text = "Employer"
         '
@@ -297,7 +294,7 @@ Partial Class frmContribution
         Me.Label2.AutoSize = True
         Me.Label2.Location = New System.Drawing.Point(20, 49)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(91, 32)
+        Me.Label2.Size = New System.Drawing.Size(90, 32)
         Me.Label2.TabIndex = 89
         Me.Label2.Text = "Employee"
         '
@@ -341,7 +338,7 @@ Partial Class frmContribution
         Me.Label5.AutoSize = True
         Me.Label5.Location = New System.Drawing.Point(301, 47)
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(33, 32)
+        Me.Label5.Size = New System.Drawing.Size(32, 32)
         Me.Label5.TabIndex = 95
         Me.Label5.Text = "%"
         '
@@ -350,7 +347,7 @@ Partial Class frmContribution
         Me.Label4.AutoSize = True
         Me.Label4.Location = New System.Drawing.Point(18, 44)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(127, 32)
+        Me.Label4.Size = New System.Drawing.Size(126, 32)
         Me.Label4.TabIndex = 94
         Me.Label4.Text = "Premium Rate"
         '
@@ -392,7 +389,7 @@ Partial Class frmContribution
         Me.Label6.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label6.Location = New System.Drawing.Point(6, 6)
         Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(81, 32)
+        Me.Label6.Size = New System.Drawing.Size(80, 32)
         Me.Label6.TabIndex = 94
         Me.Label6.Text = "Monthly"
         '
@@ -413,20 +410,20 @@ Partial Class frmContribution
         Me.WH_grid.AllowUserToAddRows = False
         Me.WH_grid.AllowUserToDeleteRows = False
         Me.WH_grid.AllowUserToResizeRows = False
-        DataGridViewCellStyle6.BackColor = System.Drawing.Color.LightBlue
-        Me.WH_grid.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle6
+        DataGridViewCellStyle3.BackColor = System.Drawing.Color.LightBlue
+        Me.WH_grid.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle3
         Me.WH_grid.BackgroundColor = System.Drawing.Color.White
         Me.WH_grid.BorderStyle = System.Windows.Forms.BorderStyle.None
         Me.WH_grid.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableAlwaysIncludeHeaderText
         Me.WH_grid.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.[Single]
-        DataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle7.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.WH_grid.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle7
+        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle4.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.WH_grid.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle4
         Me.WH_grid.ColumnHeadersHeight = 41
         Me.WH_grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing
         Me.WH_grid.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.range_dgv, Me.wh_dgv})
@@ -435,8 +432,8 @@ Partial Class frmContribution
         Me.WH_grid.ReadOnly = True
         Me.WH_grid.RowHeadersVisible = False
         Me.WH_grid.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing
-        DataGridViewCellStyle8.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.WH_grid.RowsDefaultCellStyle = DataGridViewCellStyle8
+        DataGridViewCellStyle5.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.WH_grid.RowsDefaultCellStyle = DataGridViewCellStyle5
         Me.WH_grid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect
         Me.WH_grid.Size = New System.Drawing.Size(506, 524)
         Me.WH_grid.TabIndex = 2
@@ -472,7 +469,7 @@ Partial Class frmContribution
         Me.Close_LBL.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Close_LBL.Location = New System.Drawing.Point(1119, -6)
         Me.Close_LBL.Name = "Close_LBL"
-        Me.Close_LBL.Size = New System.Drawing.Size(57, 32)
+        Me.Close_LBL.Size = New System.Drawing.Size(56, 32)
         Me.Close_LBL.TabIndex = 76
         Me.Close_LBL.Text = "Close"
         '
