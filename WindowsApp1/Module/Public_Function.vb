@@ -4,6 +4,7 @@ Imports System.IO
 Imports System.Net.Mail
 Imports System.Reflection
 Imports System.Text.RegularExpressions
+Imports FirebirdSql.Data.FirebirdClient
 
 Module Public_Function
 
@@ -727,8 +728,23 @@ Module Public_Function
 
         Return passwordMatch
     End Function
-
-
 #End Region
+
+    Friend Function ValidServerConnection()
+        Dim connectionString As String = "User=SYSDBA;Password=masterkey;Database=hodb;DataSource=PGC-Encashment;Port=3050;Dialect=3;Charset=UTF8;Pooling=true"
+
+        Try
+            Using con As New FbConnection(connectionString)
+                con.Open()
+                Console.WriteLine("Connection successful!")
+            End Using
+            Return True
+        Catch ex As FbException
+            Console.WriteLine("Error: " & ex.Message)
+        Catch ex As Exception
+            Console.WriteLine("General Error: " & ex.Message)
+        End Try
+        Return False
+    End Function
 
 End Module

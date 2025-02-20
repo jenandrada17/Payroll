@@ -2855,9 +2855,9 @@ Module SelectFromDatabase
         lv.Items.Clear()
         Dim mysql As String
         If search = Nothing Then
-            mysql = $"Select * from PAYROLL_LOGS ORDER BY DATEE DESC"
+            mysql = $"Select First 200 * from PAYROLL_LOGS ORDER BY DATEE DESC"
         Else
-            mysql = $"Select * from PAYROLL_LOGS WHERE USER LIKE UPPER('%{search}%') OR TRANSACTIONN LIKE UPPER('%{search}%') ORDER BY DATEE DESC"
+            mysql = $"Select  First 200 * from PAYROLL_LOGS WHERE USER LIKE UPPER('%{search}%') OR TRANSACTIONN LIKE UPPER('%{search}%') ORDER BY DATEE DESC"
         End If
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_LOGS")
@@ -3468,7 +3468,7 @@ Module SelectFromDatabase
                                     END) LIKE UPPER('%{name}%') OR"
                 mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(BRANCHCODE) LIKE UPPER('%{name}%') 
-                        GROUP BY C.AMOUNT, FULLNAME, CREDIT, PRINCIPAL,  B.AMOUNT, B.BIO_NO ORDER BY FULLNAME ASC "
+                        GROUP BY FULLNAME, CREDIT, PRINCIPAL,  B.AMOUNT, B.BIO_NO ORDER BY FULLNAME ASC "
             Next
 
         Else
@@ -3485,9 +3485,11 @@ Module SelectFromDatabase
                         from TBL_EMPLOYEE A 
                         inner join PAYROLL_SBU B on B.BIO_NO = A.BIOMETRICID 
                         left join RECORDED_ALLOW_DEDUC C on C.BIO_NO = A.BIOMETRICID and C.CATEGORY = 'SBU'  and PAYDATE <> '12/15/2021'  
-                        GROUP BY C.AMOUNT, FULLNAME, CREDIT, PRINCIPAL,  B.AMOUNT, B.BIO_NO
+                        GROUP BY FULLNAME, CREDIT, PRINCIPAL,  B.AMOUNT, B.BIO_NO
                         ORDER BY FULLNAME ASC "
         End If
+
+        TestingScript_String(mysql)
 
         Using ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
             LV.Items.Clear()

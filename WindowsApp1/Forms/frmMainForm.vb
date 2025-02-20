@@ -11,6 +11,11 @@ Public Class frmMainForm
 
     Private Sub frmMainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
+        If Not ValidServerConnection() Then
+            MsgBox("Connection to the server has been interrupted.!", MsgBoxStyle.Exclamation)
+            Close()
+        End If
+
         'SSS_ER_EC()
 
         'EmployeeBankAccount()
