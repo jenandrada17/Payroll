@@ -1,4 +1,5 @@
 ﻿Imports System.Security
+Imports Microsoft.Reporting.WinForms
 
 Public Class frmAllowance
 
@@ -281,7 +282,7 @@ Public Class frmAllowance
             End With
 
             Dim lastt, firstt As String
-            Dim middlee As String = nothing
+            Dim middlee As String = Nothing
             lastt = lastName
             firstt = firstName
             If middlee <> Nothing Then middlee = $"{middleName.Substring(1, 1)}. {suffix}"
@@ -315,7 +316,7 @@ Public Class frmAllowance
                         PITo_txt.Text, PI_Effect_to, PI_SchedTo_CB.Text,
                         Remarks_txt.Text, preparedBy)
 
-            Dim dataSource As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt)
+            Dim dataSource As New ReportDataSource("DataSet1", dt)
             rpt_Allowance.LocalReport.DataSources.Add(dataSource)
             rpt_Allowance.RefreshReport()
 
@@ -365,12 +366,12 @@ Public Class frmAllowance
                            PITo_txt.Text, PIEffectTo_dtp.Value, PI_SchedTo_CB.Text,
                            Remarks_txt.Text)
 
-                If SalaryChanges_CB.Text = "PERFORMANCE INCENTIVES" Then        'SAVE PI HISTORY ================ 
-                    SaveAllowance(BiometricID_TXT.Tag, BiometricID_TXT.Text, "PERFORMANCE INCENTIVES", PITo_txt.Text, "YES", sched, 0, PIEffectTo_dtp.Value, "PAF")
-                    SaveAllowance_HISTORY(BiometricID_TXT.Text, "PERFORMANCE INCENTIVES", PITo_txt.Text, "YES", sched, 0, PIEffectTo_dtp.Value)
-                End If
+            If SalaryChanges_CB.Text = "PERFORMANCE INCENTIVES" Then        'SAVE PI HISTORY ================ 
+                SaveAllowance(BiometricID_TXT.Tag, BiometricID_TXT.Text, "PERFORMANCE INCENTIVES", PITo_txt.Text, "YES", sched, 0, PIEffectTo_dtp.Value, "PAF")
+                SaveAllowance_HISTORY(BiometricID_TXT.Text, "PERFORMANCE INCENTIVES", PITo_txt.Text, "YES", sched, 0, PIEffectTo_dtp.Value)
+            End If
 
-                SaveLogs($"ADDED PAF- {Name_TXT.Text} ({BiometricID_TXT.Text}), Marital({Marital_CB.Text}), Employment({Employment_CB.Text}), Sales Charges({SalaryChanges_CB.Text}), 
+            SaveLogs($"ADDED PAF- {Name_TXT.Text} ({BiometricID_TXT.Text}), Marital({Marital_CB.Text}), Employment({Employment_CB.Text}), Sales Charges({SalaryChanges_CB.Text}), 
                     Department({DeptFrom_txt.Text}), Job Level({JobLevelFrom_txt.Text}), 
                     Salary_Wage_From({SalaryFrom_txt.Text}), Salary_Wage_From_Effectivity({SalryEffectTo_dtp.Value}), 
                     Salary_Wage_To({SalaryTo_txt.Text}), Salary_Wage_From_Effectivity({SalryEffectTo_dtp.Value}),
@@ -379,8 +380,8 @@ Public Class frmAllowance
                     PI_From_Schedule({PI_SchedFrom_CB.Text}) PI_To_Schedule({PI_SchedTo_CB.Text}), 
                     Remarks({Remarks_txt.Text})", frmMainForm.UserName_LBL.Text)
 
-                F_Calcel_btn.PerformClick()
-            End If
+            F_Calcel_btn.PerformClick()
+        End If
     End Sub
 
     Private Sub Allowance_Tab_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Allowance_Tab.SelectedIndexChanged

@@ -1,5 +1,7 @@
 ﻿Imports System.Globalization
 Imports System.Text.RegularExpressions
+Imports Microsoft.Reporting.WinForms
+Imports System.IO
 
 Public Class frmPayout
 
@@ -800,8 +802,9 @@ Public Class frmPayout
                     MsgBox(Employee_TXT.Text & " has an invalid email address.", MsgBoxStyle.Exclamation, "INVALID")
                     Exit Sub
                 Else
+
                     '================================ SEND TO EMAIL ADDRESS IF VALID ============================
-                    Send_Email(ReportViewer_payslip.LocalReport.Render("PDF"), Email_TXT.Text, Employee_TXT.Text, Payslip_paydate_Combo.Text, BodyText_RichB.Text, datee.ToString("MMMM dd, yyyy") & " PAYROLL")
+                    Send_Email(ReportViewer_payslip.LocalReport.Render("PDF"), Email_TXT.Text, Employee_TXT.Text, Payslip_paydate_Combo.Text, BodyText_RichB.Text, datee.ToString("MMMM dd, yyyy") & " PAYROLL", Employee_TXT.Tag, datee)
 
                     MsgBox("Email sent to " & Employee_TXT.Text, MsgBoxStyle.Information, "Information")
                 End If
@@ -831,15 +834,12 @@ Public Class frmPayout
                                     inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRIC_ID {activeString}  
                                     where paydate = '{Payslip_paydate_Combo.Text}' and EMAIL_SENT is null;"
 
+        TestingScript_String(mysqll)
         Using ds As DataSet = LoadSQL(mysqll, "payroll_payout")
             If ds.Tables(0).Rows.Count > 0 Then
                 progressBarStart(ds.Tables(0).Rows.Count)
                 For Each dr In ds.Tables(0).Rows
                     With dr
-
-                        If .item("BIOMETRIC_ID") = 3540 Then
-                            Console.WriteLine(.item("BIOMETRIC_ID"))
-                        End If
 
                         Console.WriteLine(.item("BIOMETRIC_ID"))
 
@@ -856,12 +856,10 @@ Public Class frmPayout
                         If Not FoundMatch Then  '=========== CHECK IF VALID EMAIL ADDRESS ============================
                             MsgBox(namee & " has an invalid email address.", MsgBoxStyle.Exclamation, "INVALID")
                             Continue For
-                        Else                    '============== SEND TO EMAIL ADDRESS IF VALID ============================
-                            Console.WriteLine($"BIOMETRIC_ID -{ .item("BIOMETRIC_ID")}-")
+                        Else                    '============== SEND TO EMAIL ADDRESS IF VALID ============================ 
 
-                            Send_Email(ReportViewer_payslip.LocalReport.Render("PDF"), recipient, namee, Payslip_paydate_Combo.Text, BodyText_RichB.Text, datee.ToString("MMMM dd, yyyy") & " PAYROLL")
+                            Send_Email(ReportViewer_payslip.LocalReport.Render("PDF"), recipient, namee, Payslip_paydate_Combo.Text, BodyText_RichB.Text, datee.ToString("MMMM dd, yyyy") & " PAYROLL", .item("BIOMETRIC_ID"), Payslip_paydate_Combo.Text)
 
-                            UpdateEMAIL_SENT(.item("BIOMETRIC_ID"), Payslip_paydate_Combo.Text)
                         End If
 
                         frmMainForm.AppProgressBar.Value += 1
@@ -918,7 +916,7 @@ Public Class frmPayout
 
                         Else                    '============== SEND TO EMAIL ADDRESS IF VALID ============================
 
-                            Send_Email(ReportViewer_payslip.LocalReport.Render("PDF"), recipient, namee, Payslip_paydate_Combo.Text, BodyText_RichB.Text, datee.ToString("MMMM dd, yyyy") & " PAYROLL")
+                            Send_Email(ReportViewer_payslip.LocalReport.Render("PDF"), recipient, namee, Payslip_paydate_Combo.Text, BodyText_RichB.Text, datee.ToString("MMMM dd, yyyy") & " PAYROLL", .item("BIOMETRIC_ID"), datee)
 
                         End If
 
@@ -986,7 +984,7 @@ Public Class frmPayout
                 End If
             End Using
 
-            Dim rds_employee As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt_employee)
+            Dim rds_employee As New ReportDataSource("DataSet1", dt_employee)
             ReportViewer_payslip.LocalReport.DataSources.Add(rds_employee)
 
             '============================================ EMPLOYEE ATTENDANCE AND PAYOUT =======================================
