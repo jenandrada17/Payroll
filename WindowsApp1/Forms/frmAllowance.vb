@@ -280,7 +280,8 @@ Public Class frmAllowance
                 .Columns.Add("PREPARED_BY")
             End With
 
-            Dim lastt, firstt, middlee As String
+            Dim lastt, firstt As String
+            Dim middlee As String = nothing
             lastt = lastName
             firstt = firstName
             If middlee <> Nothing Then middlee = $"{middleName.Substring(1, 1)}. {suffix}"

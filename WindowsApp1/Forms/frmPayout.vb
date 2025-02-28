@@ -29,7 +29,6 @@ Public Class frmPayout
         PopulateComboBox(Branch_ComboB, "TBL_EMPLOYEE", "BRANCHCODE")
 
         Paydate_ComboB.Text = "--Select Payroll--"
-
     End Sub
 
     Private Sub Select_BTN_Click(sender As Object, e As EventArgs) Handles Select_BTN.Click
@@ -838,7 +837,7 @@ Public Class frmPayout
                 For Each dr In ds.Tables(0).Rows
                     With dr
 
-                        If .item("BIOMETRIC_ID") = 2493 Then
+                        If .item("BIOMETRIC_ID") = 3540 Then
                             Console.WriteLine(.item("BIOMETRIC_ID"))
                         End If
 
@@ -858,6 +857,8 @@ Public Class frmPayout
                             MsgBox(namee & " has an invalid email address.", MsgBoxStyle.Exclamation, "INVALID")
                             Continue For
                         Else                    '============== SEND TO EMAIL ADDRESS IF VALID ============================
+                            Console.WriteLine($"BIOMETRIC_ID -{ .item("BIOMETRIC_ID")}-")
+
                             Send_Email(ReportViewer_payslip.LocalReport.Render("PDF"), recipient, namee, Payslip_paydate_Combo.Text, BodyText_RichB.Text, datee.ToString("MMMM dd, yyyy") & " PAYROLL")
 
                             UpdateEMAIL_SENT(.item("BIOMETRIC_ID"), Payslip_paydate_Combo.Text)

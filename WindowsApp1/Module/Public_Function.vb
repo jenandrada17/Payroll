@@ -260,38 +260,42 @@ Module Public_Function
 #End Region
 
     Friend Sub Send_Email(byteViewer As Byte(), recipient_Email As String, recipient_Name As String, paydate As String, BodyText As String, subjectt As String)
-        Try
-
-            Dim email As String = GetEmail()
-            Dim password As String = GetPassword()
-
-            Dim Smtp_Server As New SmtpClient
-            Dim e_mail As New MailMessage()
-            Smtp_Server.UseDefaultCredentials = False
-            Smtp_Server.Credentials = New Net.NetworkCredential(email, password)
-            Smtp_Server.Port = 587
-            Smtp_Server.EnableSsl = True
-            Smtp_Server.Host = "smtp.gmail.com"
-
-            e_mail = New MailMessage()
-            e_mail.From = New MailAddress(email)
-            e_mail.To.Add(recipient_Email)
-            e_mail.Subject = subjectt
-            e_mail.IsBodyHtml = False
-
-            Dim memoryStream = New MemoryStream(byteViewer)
-            memoryStream.Seek(0, SeekOrigin.Begin)
-
-            Dim attachment = New Attachment(memoryStream, recipient_Name & ".pdf")
-            e_mail.Attachments.Add(attachment)
-
-            e_mail.Body = BodyText
-            Smtp_Server.Send(e_mail)
-
-        Catch error_t As Exception
-            MsgBox(error_t.ToString)
-        End Try
+        Console.WriteLine(recipient_Email)
     End Sub
+
+    'Friend Sub Send_Email(byteViewer As Byte(), recipient_Email As String, recipient_Name As String, paydate As String, BodyText As String, subjectt As String)
+    '    Try
+
+    '        Dim email As String = GetEmail()
+    '        Dim password As String = GetPassword()
+
+    '        Dim Smtp_Server As New SmtpClient
+    '        Dim e_mail As New MailMessage()
+    '        Smtp_Server.UseDefaultCredentials = False
+    '        Smtp_Server.Credentials = New Net.NetworkCredential(email, password)
+    '        Smtp_Server.Port = 587
+    '        Smtp_Server.EnableSsl = True
+    '        Smtp_Server.Host = "smtp.gmail.com"
+
+    '        e_mail = New MailMessage()
+    '        e_mail.From = New MailAddress(email)
+    '        e_mail.To.Add(recipient_Email)
+    '        e_mail.Subject = subjectt
+    '        e_mail.IsBodyHtml = False
+
+    '        Dim memoryStream = New MemoryStream(byteViewer)
+    '        memoryStream.Seek(0, SeekOrigin.Begin)
+
+    '        Dim attachment = New Attachment(memoryStream, recipient_Name & ".pdf")
+    '        e_mail.Attachments.Add(attachment)
+
+    '        e_mail.Body = BodyText
+    '        Smtp_Server.Send(e_mail)
+
+    '    Catch error_t As Exception
+    '        MsgBox(error_t.ToString)
+    '    End Try
+    'End Sub
 
     Friend Sub TempAttendance()
         RunCommand("DELETE FROM TEMP_ATTENDANCE")
