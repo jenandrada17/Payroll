@@ -1257,28 +1257,28 @@ Public Class frmAttendance
                 dateEnded = GetData("DATE_ENDED", $"TBL_EMPLOYEE WHERE BIOMETRICID = '{Bio7_TXT.Text}'")
                 dateStarted = GetData("DATEHIRED", $"TBL_EMPLOYEE WHERE BIOMETRICID = '{Bio7_TXT.Text}'")
                 '======================== HOLIDAY ============================ 
-                Dim regHol_additional As Integer = IIf(String.IsNullOrWhiteSpace(RegHol7_TXT.Text), 0, RegHol7_TXT.Text)
-                Dim RHOLIDAY As Integer = REGHolidayCount(starting_date, ending_date) + regHol_additional
+                Dim regHol_additional As Double = IIf(String.IsNullOrWhiteSpace(RegHol7_TXT.Text), 0, RegHol7_TXT.Text)
+                Dim RHOLIDAY As Double = REGHolidayCount(starting_date, ending_date) + regHol_additional
                 Dim specHoliday_hrs As Double = IIf(String.IsNullOrWhiteSpace(SpecHol7_TXT.Text), 0, SpecHol7_TXT.Text)
-                Dim SHOLIDAY As Integer = IIf(specHoliday_hrs = 0, 0, specHoliday_hrs / 8)
+                Dim SHOLIDAY As Double = IIf(specHoliday_hrs = 0, 0, specHoliday_hrs / 8)
                 If specHoliday_hrs Mod 8 > 0 Then SHOLIDAY += 1
                 Dim overtime As Double = IIf(String.IsNullOrWhiteSpace(Overtime7_NUP.Text), 0, Overtime7_NUP.Text)
-                Dim latee As Integer = IIf(String.IsNullOrWhiteSpace(Late7_TXT.Text), 0, Late7_TXT.Text)
-                Dim undertimee As Integer = IIf(String.IsNullOrWhiteSpace(Undertime7_TXT.Text), 0, Undertime7_TXT.Text)
+                Dim latee As Double = IIf(String.IsNullOrWhiteSpace(Late7_TXT.Text), 0, Late7_TXT.Text)
+                Dim undertimee As Double = IIf(String.IsNullOrWhiteSpace(Undertime7_TXT.Text), 0, Undertime7_TXT.Text)
                 Dim sil As Double = IIf(String.IsNullOrWhiteSpace(SIL7_NUP.Text), 0, SIL7_NUP.Text)
-                Dim night7 As Integer = IIf(String.IsNullOrWhiteSpace(Night7_TXT.Text), 0, Night7_TXT.Text)
+                Dim night7 As Double = IIf(String.IsNullOrWhiteSpace(Night7_TXT.Text), 0, Night7_TXT.Text)
 
                 Dim TRAINING_DAYS As Double = IIf(String.IsNullOrWhiteSpace(T_Days7_TXT.Text), 0, T_Days7_TXT.Text)
                 Dim TRAINING_REGHOLIDAY As Double = IIf(String.IsNullOrWhiteSpace(T_RegHol7_TXT.Text), 0, T_RegHol7_TXT.Text)
-                Dim TRAINING_SPECHOLIDAY As Integer = IIf(String.IsNullOrWhiteSpace(T_SpecHol7_TXT.Text), 0, T_SpecHol7_TXT.Text)
-                Dim TRAINING_OVERTIME As Integer = IIf(String.IsNullOrWhiteSpace(T_OT7_TXT.Text), 0, T_OT7_TXT.Text)
-                Dim TRAINING_LATE As Integer = IIf(String.IsNullOrWhiteSpace(T_Late7_TXT.Text), 0, T_Late7_TXT.Text)
-                Dim TRAINING_UNDERTIME As Integer = IIf(String.IsNullOrWhiteSpace(T_UT7_TXT.Text), 0, T_UT7_TXT.Text)
-                Dim TRAINING_NIGHTRATE As Integer = IIf(String.IsNullOrWhiteSpace(T_Night7_TXT.Text), 0, T_Night7_TXT.Text)
+                Dim TRAINING_SPECHOLIDAY As Double = IIf(String.IsNullOrWhiteSpace(T_SpecHol7_TXT.Text), 0, T_SpecHol7_TXT.Text)
+                Dim TRAINING_OVERTIME As Double = IIf(String.IsNullOrWhiteSpace(T_OT7_TXT.Text), 0, T_OT7_TXT.Text)
+                Dim TRAINING_LATE As Double = IIf(String.IsNullOrWhiteSpace(T_Late7_TXT.Text), 0, T_Late7_TXT.Text)
+                Dim TRAINING_UNDERTIME As Double = IIf(String.IsNullOrWhiteSpace(T_UT7_TXT.Text), 0, T_UT7_TXT.Text)
+                Dim TRAINING_NIGHTRATE As Double = IIf(String.IsNullOrWhiteSpace(T_Night7_TXT.Text), 0, T_Night7_TXT.Text)
 
                 Dim DUTY_RESTDAY As Double = IIf(String.IsNullOrWhiteSpace(txtRestDayDuty.Text), 0, txtRestDayDuty.Text)
-                Dim DUTY_SPEC_RESTDAY As Integer = IIf(String.IsNullOrWhiteSpace(txtSpecRestDay.Text), 0, txtSpecRestDay.Text)
-                Dim DUTY_REG_RESTDAY As Integer = IIf(String.IsNullOrWhiteSpace(txtRegRestDay.Text), 0, txtRegRestDay.Text)
+                Dim DUTY_SPEC_RESTDAY As Double = IIf(String.IsNullOrWhiteSpace(txtSpecRestDay.Text), 0, txtSpecRestDay.Text)
+                Dim DUTY_REG_RESTDAY As Double = IIf(String.IsNullOrWhiteSpace(txtRegRestDay.Text), 0, txtRegRestDay.Text)
 
                 Dim DUTY_RESTDAY_OT As Double = IIf(String.IsNullOrWhiteSpace(txtRestDayOT.Text), 0, txtRestDayOT.Text)
                 Dim DUTY_SPEC_OT As Double = IIf(String.IsNullOrWhiteSpace(txtSpecOT.Text), 0, txtSpecOT.Text)
@@ -1286,8 +1286,8 @@ Public Class frmAttendance
                 Dim DUTY_REG_OT As Double = IIf(String.IsNullOrWhiteSpace(txtRegOT.Text), 0, txtRegOT.Text)
                 Dim DUTY_REG_RESTDAY_OT As Double = IIf(String.IsNullOrWhiteSpace(txtRegRestDayOT.Text), 0, txtRegRestDayOT.Text)
 
-                Dim DUTY_SPEC_NIGHTSHIFT As Integer = IIf(String.IsNullOrWhiteSpace(txtSpecNightShift.Text), 0, txtSpecNightShift.Text)
-                Dim DUTY_REG_NIGHTSHIFT As Integer = IIf(String.IsNullOrWhiteSpace(txtRegNightShift.Text), 0, txtRegNightShift.Text)
+                Dim DUTY_SPEC_NIGHTSHIFT As Double = IIf(String.IsNullOrWhiteSpace(txtSpecNightShift.Text), 0, txtSpecNightShift.Text)
+                Dim DUTY_REG_NIGHTSHIFT As Double = IIf(String.IsNullOrWhiteSpace(txtRegNightShift.Text), 0, txtRegNightShift.Text)
 
                 Dim DUTY_ORD_NIGHTSHIFT_OT As Double = IIf(String.IsNullOrWhiteSpace(txtOrdNightShiftOT.Text), 0, txtOrdNightShiftOT.Text)
                 Dim DUTY_SPEC_NIGHTSHIFT_OT As Double = IIf(String.IsNullOrWhiteSpace(txtSpecNightShiftOT.Text), 0, txtSpecNightShiftOT.Text)
