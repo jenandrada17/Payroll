@@ -1,7 +1,9 @@
 ﻿Imports System.Data.Common
 Imports System.Data.SqlClient
 Imports System.Globalization
+Imports System.Security
 Imports System.Security.Policy
+Imports System.Windows.Forms.VisualStyles.VisualStyleElement
 Imports FirebirdSql.Data
 
 Public Class frmReport
@@ -12,12 +14,25 @@ Public Class frmReport
 
     Private Sub frmReport_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
-        PopulateComboBox(PaydateNet_ComboB, "PAYROLL_PAYOUT", "PAYDATE")
-        PopulateComboBox(PaydateCom_Combo, "PAYROLL_PAYOUT", "PAYDATE")
-        PopulateComboBox(SumPaydate_Combo, "PAYROLL_PAYOUT", "PAYDATE")
-        PopulateComboBox_Any(Rem_Paydate_Combo, "PAYROLL_PAYOUT", "PAYDATE")
-        PopulateComboBox(CostPaydate_Combo, "PAYROLL_PAYOUT", "PAYDATE")
-        PopulateComboBox(LoanPaydate_Combo, "PAYROLL_PAYOUT", "PAYDATE")
+        'PopulateComboBox(PaydateNet_ComboB, "PAYROLL_PAYOUT", "PAYDATE")
+        'PopulateComboBox(PaydateCom_Combo, "PAYROLL_PAYOUT", "PAYDATE")
+        'PopulateComboBox(SumPaydate_Combo, "PAYROLL_PAYOUT", "PAYDATE")
+        'PopulateComboBox_Any(Rem_Paydate_Combo, "PAYROLL_PAYOUT", "PAYDATE")
+        'PopulateComboBox(CostPaydate_Combo, "PAYROLL_PAYOUT", "PAYDATE")
+        'PopulateComboBox(PaydateSBU_Combo, "PAYROLL_PAYOUT", "PAYDATE")
+        'PopulateComboBox(LoanPaydate_Combo, "PAYROLL_PAYOUT", "PAYDATE")
+
+        Dim comboBoxes As New List(Of System.Windows.Forms.ComboBox) From {
+            PaydateNet_ComboB,
+            PaydateCom_Combo,
+            SumPaydate_Combo,
+            Rem_Paydate_Combo,
+            CostPaydate_Combo,
+            PaydateSBU_Combo,
+            LoanPaydate_Combo
+        }
+
+        PopulateComboBoxes_PayDate(comboBoxes, "PAYROLL_PAYOUT", "PAYDATE")
         PopulatePaydate_Monthly(Allow_Paydate_Combo, "RECORDED_ALLOW_DEDUC", "PAYDATE")
         PopulatePaydate_Yearly(SILYear_Combo, "RECORDED_ALLOW_DEDUC", "PAYDATE")
         Lists_Deduction_History(DeducHistory_List)
@@ -213,6 +228,25 @@ Public Class frmReport
 
     Friend Sub LoadSBU_ViewList()
         Rpt_SBU.LocalReport.DataSources.Clear()
+        Dim payDate As String = $"AND C.PAYDATE BETWEEN '12/31/2021' AND '{GetMAX("PAYROLL_PAYOUT", "PAYDATE")}'"
+        Dim selectedCompany As String = ""
+        If PaydateSBU_Combo.Text <> "" Then payDate = $"AND C.PAYDATE BETWEEN '12/31/2021' AND '{PaydateSBU_Combo.Text}'"
+
+        If CompanySBU_CB.SelectedIndex = 1 Then '=== PHOTO
+            selectedCompany = $"AND A.COMPANY  = 'PHOTO'"
+        ElseIf CompanySBU_CB.SelectedIndex = 2 Then '=== P&G UY
+            selectedCompany = $"AND A.COMPANY  = 'P&G UY'"
+        ElseIf CompanySBU_CB.SelectedIndex = 3 Then '=== DALTON
+            selectedCompany = $"AND A.COMPANY  = 'DALTON'"
+        ElseIf CompanySBU_CB.SelectedIndex = 4 Then '=== PERFECOM  
+            selectedCompany = $"AND A.COMPANY  = 'PERFECOM' OR A.HO_CATEGORY In ('Perfecom Admin Office','Perfecom Admin Operation')"
+        ElseIf CompanySBU_CB.SelectedIndex = 5 Then '=== PTU REALTY  
+            selectedCompany = $"AND A.HO_CATEGORY IN ('Construction' , 'Leasing Admin Office')"
+        ElseIf CompanySBU_CB.SelectedIndex = 6 Then '=== HEAD OFFICE  
+            selectedCompany = $"AND A.COMPANY  = 'HEAD OFFICE'"
+        ElseIf CompanySBU_CB.SelectedIndex = 7 Then '=== COMMON EMPLOYEES
+            selectedCompany = $"AND A.HO_CATEGORY = 'PGC Head Office'"
+        End If
 
         Try
             Dim dt As New DataTable()
@@ -226,48 +260,89 @@ Public Class frmReport
                 .Columns.Add("FORM_NAME")
             End With
 
-            Dim mysqll As String = $"select  
-                                        CASE
-		                                    WHEN BRANCHNAME IS NOT NULL AND BRANCHNAME <> '' THEN BRANCHNAME
-		                                    ELSE HO_CATEGORY
-                                        END AS BRANCHNAME,
-    
-                                        LASTNAME || ', ' || FIRSTNAME || 
-                                        CASE
-                                            WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
-                                            ELSE ''
-                                        END || 
-                                        CASE 
-                                            WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX
-                                            ELSE ''
-                                        END AS FULLNAME,
-    
-                                        PRINCIPAL,
-                                        B.AMOUNT as AMORT, 
-                                        COMPANY, 
-    
-                                        CASE 
-    	                                    WHEN CREDIT IS NULL AND BALANCE IS NULL THEN COALESCE(sum(C.AMOUNT), 0)
-                                            ELSE COALESCE(sum(C.AMOUNT), 0) + CREDIT 
-	                                    END AS NEW_CREDIT,
-    
-                                        PRINCIPAL - CASE 
-                                                        WHEN CREDIT IS NULL AND BALANCE IS NULL THEN COALESCE(sum(C.AMOUNT), 0)
-                                                        ELSE COALESCE(sum(C.AMOUNT), 0) + CREDIT 
-                                                    END
-                                        AS NEW_BALANCE
-    
-                                    from
-	                                    TBL_EMPLOYEE A
-                                    inner join
-	                                    PAYROLL_SBU B on B.BIO_NO = A.BIOMETRICID
-                                    left join
-	                                    RECORDED_ALLOW_DEDUC C on C.BIO_NO = A.BIOMETRICID and C.CATEGORY = 'SBU' and PAYDATE <> '12/15/2021'
-                                    LEFT JOIN
-	                                    PAYROLL_CITY_BRANCH D ON D.BRANCHCODE = A.BRANCHCODE
-                                    WHERE SOA_PATH IS NULL
-                                    GROUP BY FULLNAME, BRANCHNAME, CREDIT, PRINCIPAL, B.AMOUNT, COMPANY, BALANCE
-                                    ORDER BY BRANCHNAME, FULLNAME ASC; "
+#Region "To Delete"
+            'Dim mysqll As String = $"select  
+            '                            CASE
+            '                          WHEN BRANCHNAME IS NOT NULL AND BRANCHNAME <> '' THEN BRANCHNAME
+            '                          ELSE HO_CATEGORY
+            '                            END AS BRANCHNAME,
+
+            '                            LASTNAME || ', ' || FIRSTNAME || 
+            '                            CASE
+            '                                WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
+            '                                ELSE ''
+            '                            END || 
+            '                            CASE 
+            '                                WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX
+            '                                ELSE ''
+            '                            END AS FULLNAME,
+
+            '                            PRINCIPAL,
+            '                            B.AMOUNT as AMORT, 
+            '                            COMPANY, 
+
+            '                            CASE 
+            '                             WHEN CREDIT IS NULL AND BALANCE IS NULL THEN COALESCE(sum(C.AMOUNT), 0)
+            '                                ELSE COALESCE(sum(C.AMOUNT), 0) + CREDIT 
+            '                                END AS NEW_CREDIT,
+
+            '                            PRINCIPAL - CASE 
+            '                                            WHEN CREDIT IS NULL AND BALANCE IS NULL THEN COALESCE(sum(C.AMOUNT), 0)
+            '                                            ELSE COALESCE(sum(C.AMOUNT), 0) + CREDIT 
+            '                                        END
+            '                            AS NEW_BALANCE
+
+            '                        from
+            '                         TBL_EMPLOYEE A
+            '                        inner join
+            '                         PAYROLL_SBU B on B.BIO_NO = A.BIOMETRICID
+            '                        left join
+            '                         RECORDED_ALLOW_DEDUC C on C.BIO_NO = A.BIOMETRICID and C.CATEGORY = 'SBU' and {payDate}
+            '                        LEFT JOIN
+            '                         PAYROLL_CITY_BRANCH D ON D.BRANCHCODE = A.BRANCHCODE
+            '                        WHERE SOA_PATH IS NULL {selectedCompany}
+            '                        GROUP BY FULLNAME, BRANCHNAME, CREDIT, PRINCIPAL, B.AMOUNT, COMPANY, BALANCE
+            '                        ORDER BY BRANCHNAME, FULLNAME ASC; "
+#End Region
+
+            Dim mysqll As String = $"SELECT 
+                                    CASE 
+                                        WHEN BRANCHNAME IS NOT NULL AND BRANCHNAME <> '' THEN BRANCHNAME 
+                                        ELSE HO_CATEGORY 
+                                    END AS BRANCHNAME, 
+                                    LASTNAME || ', ' || FIRSTNAME || 
+                                    CASE 
+                                        WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
+                                        ELSE '' 
+                                    END || 
+                                    CASE 
+                                        WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX 
+                                        ELSE '' 
+                                    END AS FULLNAME, 
+                                    PRINCIPAL, 
+                                    B.AMOUNT AS AMORT, 
+                                    COMPANY, 
+                                    CASE 
+                                        WHEN CREDIT IS NULL AND BALANCE IS NULL 
+                                        THEN COALESCE(SUM(C.AMOUNT), 0) 
+                                        ELSE COALESCE(SUM(C.AMOUNT), 0) + CREDIT 
+                                    END AS NEW_CREDIT, 
+                                    PRINCIPAL - CASE 
+                                        WHEN CREDIT IS NULL AND BALANCE IS NULL 
+                                        THEN COALESCE(SUM(C.AMOUNT), 0) 
+                                        ELSE COALESCE(SUM(C.AMOUNT), 0) + CREDIT 
+                                    END AS NEW_BALANCE 
+                                FROM TBL_EMPLOYEE A 
+                                INNER JOIN PAYROLL_SBU B ON B.BIO_NO = A.BIOMETRICID 
+                                LEFT JOIN RECORDED_ALLOW_DEDUC C 
+                                    ON C.BIO_NO = A.BIOMETRICID 
+                                    AND C.CATEGORY = 'SBU' 
+                                    {payDate}  
+                                LEFT JOIN PAYROLL_CITY_BRANCH D ON D.BRANCHCODE = A.BRANCHCODE 
+                                WHERE SOA_PATH IS NULL {selectedCompany}
+                                GROUP BY FULLNAME, BRANCHNAME, CREDIT, PRINCIPAL, B.AMOUNT, COMPANY, BALANCE 
+                                ORDER BY BRANCHNAME, FULLNAME ASC;"
+
 
             Using dss As DataSet = LoadSQL(mysqll, "TBL_EMPLOYEE")
                 If dss.Tables(0).Rows.Count > 0 Then
@@ -310,8 +385,14 @@ Public Class frmReport
                 End If
             End Using
 
+            Dim paramPaydate As String = IIf(PaydateSBU_Combo.Text = Nothing, "", $"Payroll Date: {PaydateSBU_Combo.Text}")
+            Dim parameter As New List(Of Microsoft.Reporting.WinForms.ReportParameter) From {
+                New Microsoft.Reporting.WinForms.ReportParameter("paramPaydate", paramPaydate)
+                }
+
             Dim DATASET As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt)
             Rpt_SBU.LocalReport.ReportEmbeddedResource = "WindowsApp1.rpt_SBU_All.rdlc"
+            Rpt_SBU.LocalReport.SetParameters(parameter)
             Rpt_SBU.LocalReport.DataSources.Add(DATASET)
             Rpt_SBU.RefreshReport()
 
@@ -2807,7 +2888,7 @@ A
     End Sub
 
     Private Sub CompanySBU_CB_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CompanySBU_CB.SelectedIndexChanged
-        LoadSBU_Company(CompanySBU_CB.Text)
+        'LoadSBU_Company(CompanySBU_CB.Text)
     End Sub
 
     Private Sub CompanyDeduct_CB_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CompanyDeduct_CB.SelectedIndexChanged
@@ -2955,6 +3036,16 @@ A
         Catch ex As Exception
             MsgBox(ex.ToString)
         End Try
+    End Sub
+
+    Private Sub PaydateSBU_Combo_SelectedIndexChanged(sender As Object, e As EventArgs) Handles PaydateSBU_Combo.SelectedIndexChanged
+        If CompanySBU_CB.Text = Nothing Then
+            MsgBox("Please select a Company.", MsgBoxStyle.Exclamation)
+        ElseIf PaydateSBU_Combo.Text = Nothing Then
+            MsgBox("Please select a Payroll Date.", MsgBoxStyle.Exclamation)
+        Else
+            LoadSBU_ViewList()
+        End If
     End Sub
 
 End Class

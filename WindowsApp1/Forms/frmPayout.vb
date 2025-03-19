@@ -820,7 +820,7 @@ Public Class frmPayout
         Dim recipient As String
         Dim activeString As String = IIf(allActive, "AND EMP_STATUS <> 'INACTIVE'", "")
         Dim datee As DateTime = Payslip_paydate_Combo.Text
-        Dim mysqll As String = $"select A.*, B.*, 
+        Dim mysqll As String = $"select A.BIOMETRIC_ID, 
                                     LASTNAME || ', ' || FIRSTNAME || 
                                     CASE
                                         WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
@@ -832,7 +832,8 @@ Public Class frmPayout
                                     END AS FULLNAME 
                                     from payroll_payout A 
                                     inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRIC_ID {activeString}  
-                                    where paydate = '{Payslip_paydate_Combo.Text}' and EMAIL_SENT is null;"
+                                    where paydate = '{Payslip_paydate_Combo.Text}' and EMAIL_SENT is null
+                                    Order by A.BIOMETRIC_ID;"
 
         TestingScript_String(mysqll)
         Using ds As DataSet = LoadSQL(mysqll, "payroll_payout")
@@ -960,7 +961,7 @@ Public Class frmPayout
                 .Columns.Add("PAGIBIG")
             End With
 
-            Dim sql As String = $"select A.*, 
+            Dim sql As String = $"select RATE_DAILY, SSSNO, PHILHEALTHNO, TINNO, PAGIBIG, 
                                     LASTNAME || ', ' || FIRSTNAME || 
                                     CASE
                                         WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
@@ -971,6 +972,8 @@ Public Class frmPayout
                                         ELSE ''
                                     END AS FULLNAME 
                                     from TBL_EMPLOYEE A where BIOMETRICID = '{biometricID}';"
+
+            TestingScript_String(sql)
             Using ds As DataSet = LoadSQL(sql, "TBL_EMPLOYEE")
                 If ds.Tables(0).Rows.Count > 0 Then
                     Dim data As DataRow = ds.Tables(0).Rows(0)
@@ -1024,10 +1027,16 @@ Public Class frmPayout
             Dim NIGHT_RATE As Double = 0
             Dim TOTAL_NIGHT_RATE As Double = 0
 
-            Dim _mysql As String = $"select * from payroll_attendance where BIOMETRICID = '{biometricID}' and paydate = '{paydatee}';"
-            Using ds As DataSet = LoadSQL(_mysql, "payroll_attendance")
-                If ds.Tables(0).Rows.Count > 0 Then
-                    Dim data As DataRow = ds.Tables(0).Rows(0)
+            Dim _mysql As String = $"select PRESENT_DAYS, REGHOLIDAY, SPECHOLIDAY, OVERTIME, LATE, UNDERTIME, SPECHOLIDAY_HRS, NIGHT_RATE
+                                    from payroll_attendance where BIOMETRICID = '{biometricID}' and paydate = '{paydatee}';"
+
+            'Dim _mysql As String = $"select PRESENT_DAYS, REGHOLIDAY, SPECHOLIDAY, OVERTIME, LATE, UNDERTIME, SPECHOLIDAY_HRS, NIGHT_RATE
+            '                        from payroll_attendance where BIOMETRICID = '{biometricID}' and paydate = '{paydatee}';"
+
+            TestingScript_String(_mysql)
+            Using ds1 As DataSet = LoadSQL(_mysql, "payroll_attendance")
+                If ds1.Tables(0).Rows.Count > 0 Then
+                    Dim data As DataRow = ds1.Tables(0).Rows(0)
                     With data
 
                         present_hours = (.Item("PRESENT_DAYS") / 0.5) * 4 'CALCULATE PRESENT DAYS TO HOURS
@@ -1046,10 +1055,14 @@ Public Class frmPayout
                 End If
             End Using
 
-            Dim mysqll As String = $"select * from payroll_payout where BIOMETRIC_ID = '{biometricID}' and paydate = '{paydatee}';"
-            Using ds As DataSet = LoadSQL(mysqll, "payroll_payout")
-                If ds.Tables(0).Rows.Count > 0 Then
-                    Dim data As DataRow = ds.Tables(0).Rows(0)
+            Dim mysqll As String = $"select TOTAL_REGHOLIDAY, TOTAL_SPECHOLIDAY, TOTAL_ALLOWANCE, TOTAL_NIGHT_RATE, SSS_COMP, PAGIBIG_COMP, PHILHEALTH_COMP,
+                                            TOTAL_LATE_UT, TOTAL_BASIC, TOTAL_OVERTIME, GROSS_AMOUNT, NET_PAY
+                                    from payroll_payout where BIOMETRIC_ID = '{biometricID}' and paydate = '{paydatee}';"
+
+            TestingScript_String(mysqll)
+            Using ds2 As DataSet = LoadSQL(mysqll, "payroll_payout")
+                If ds2.Tables(0).Rows.Count > 0 Then
+                    Dim data As DataRow = ds2.Tables(0).Rows(0)
                     With data
 
                         TOTAL_REGHOLIDAY = .Item("TOTAL_REGHOLIDAY")
@@ -1081,10 +1094,12 @@ Public Class frmPayout
 
             If isExist_String("RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{biometricID}' AND PAYDATE = '{paydatee}' AND TRANSAC_NAME = 'ALLOWANCE'") Then
 
-                Dim mysql_1 As String = $"select * from RECORDED_ALLOW_DEDUC WHERE BIO_NO = '{biometricID}' AND PAYDATE = '{paydatee}' AND TRANSAC_NAME = 'ALLOWANCE'"
-                Using ds As DataSet = LoadSQL(mysql_1, "RECORDED_ALLOW_DEDUC")
-                    If ds.Tables(0).Rows.Count > 0 Then
-                        For Each dr In ds.Tables(0).Rows
+                Dim mysql_1 As String = $"select AMOUNT, CATEGORY from RECORDED_ALLOW_DEDUC WHERE BIO_NO = '{biometricID}' AND PAYDATE = '{paydatee}' AND TRANSAC_NAME = 'ALLOWANCE'"
+
+                TestingScript_String(mysql_1)
+                Using ds3 As DataSet = LoadSQL(mysql_1, "RECORDED_ALLOW_DEDUC")
+                    If ds3.Tables(0).Rows.Count > 0 Then
+                        For Each dr In ds3.Tables(0).Rows
                             With dr
                                 Dim amountt As Double = .item("AMOUNT")
 
@@ -1113,10 +1128,12 @@ Public Class frmPayout
             '================================================ DEDUCTIONS ================================================ 
             If isExist_String("RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{biometricID}' AND PAYDATE = '{paydatee}' and TRANSAC_NAME = 'DEDUCTION'") Then  '=======m MDIFIED DEDUCTION (ON/OFF) 
 
-                mysql_ = $"select * FROM RECORDED_ALLOW_DEDUC where BIO_NO = '{biometricID}' and PAYDATE = '{paydatee}' and TRANSAC_NAME = 'DEDUCTION'"
-                Using ds As DataSet = LoadSQL(mysql_, "RECORDED_ALLOW_DEDUC")
-                    If ds.Tables(0).Rows.Count > 0 Then
-                        For Each dr In ds.Tables(0).Rows
+                mysql_ = $"select CATEGORY, AMOUNT, R_DEDUC_ID FROM RECORDED_ALLOW_DEDUC where BIO_NO = '{biometricID}' and PAYDATE = '{paydatee}' and TRANSAC_NAME = 'DEDUCTION'"
+
+                TestingScript_String(mysql_)
+                Using ds4 As DataSet = LoadSQL(mysql_, "RECORDED_ALLOW_DEDUC")
+                    If ds4.Tables(0).Rows.Count > 0 Then
+                        For Each dr In ds4.Tables(0).Rows
                             With dr
 
                                 Dim category As String = .item("CATEGORY")

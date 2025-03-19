@@ -1117,6 +1117,29 @@ Module SelectFromDatabase
         End While
     End Sub
 
+    Public Sub PopulateComboBoxes_PayDate(combos As List(Of ComboBox), table As String, column As String)
+        Dim sql As String = $"SELECT DISTINCT({column}) FROM {table} ORDER BY {column} DESC"
+        Dim rdr As FbDataReader = LoadSQL_byDataReader(sql)
+
+        Dim data As New List(Of String)
+
+        While rdr.Read()
+            If rdr.HasRows Then
+                Dim value As String = rdr.Item(0).ToString()
+
+                If Not String.IsNullOrEmpty(value) Then
+                    data.Add(CDate(value).ToString("d"))
+                End If
+            End If
+        End While
+
+        For Each combo As ComboBox In combos
+            combo.Items.Clear()
+            combo.Items.AddRange(data.ToArray())
+        Next
+    End Sub
+
+
     Public Sub PopulateComboBox_Any(combo As ComboBox, table As String, column As String)
         Dim sql As String = $"select distinct({column}) from {table} ORDER BY {column} DESC"
         Dim rdr As FbDataReader = LoadSQL_byDataReader(sql)

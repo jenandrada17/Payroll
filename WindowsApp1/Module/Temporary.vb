@@ -13,6 +13,12 @@ Module Temporary
     Dim eBook As Excel.Workbook = Nothing
     Dim eSheet As Excel.Worksheet = Nothing
     Dim eCell As Excel.Range
+    Dim row As Integer = 2
+
+    'Private ReadOnly appXL As Excel.Application
+    'Private ReadOnly wbXl As Excel.Workbook
+    'Private ReadOnly shXL As Excel.Worksheet
+    'Private ReadOnly raXL As Excel.Range
 
     'Friend Sub Import_Employee_SBU_DATE_ONLY(Path As String)
 
@@ -466,12 +472,6 @@ Module Temporary
 
 #Region "Cost Distribution Error"
 
-    Dim appXL As Excel.Application
-    Dim wbXl As Excel.Workbook
-    Dim shXL As Excel.Worksheet
-    Dim raXL As Excel.Range
-    Dim row As Integer = 2
-
     'Friend Sub CostGetDetails()
     '    ' Start Excel and get Application object.
     '    appXL = CreateObject("Excel.Application")
@@ -591,8 +591,8 @@ Module Temporary
                             column = 6
                         End If
 
-                        shXL.Cells(row, column).Value = .item("CATEGORY")
-                        shXL.Cells(row, column + 1).Value = .item("AMOUNT")
+                        eSheet.Cells(row, column).Value = .item("CATEGORY")
+                        eSheet.Cells(row, column + 1).Value = .item("AMOUNT")
 
                         row += 1
                     End With
@@ -823,6 +823,7 @@ Module Temporary
     '    End Using
     'End Sub
 
+    <Obsolete>
     Friend Sub ExportDataToExcel()
         ' Set the license context to properly use EPPlus in a commercial context
         ExcelPackage.LicenseContext = LicenseContext.Commercial
@@ -1065,9 +1066,6 @@ Module Temporary
 
         progressBarStart(DtSet.Tables(0).Rows.Count + 1)
 
-        Dim EMP_NO As String = Nothing
-        Dim TEMP_BIO As Integer = 0
-
         For row = 2 To DtSet.Tables(0).Rows.Count
             Dim bioNo As Integer = eCell(row, 2).Value
             Dim fullname As String = eCell(row, 3).Value
@@ -1083,7 +1081,7 @@ Module Temporary
             End If
 
             SaveDeductionS(0, deducName, principal, amort, sched, Today, bioNo)
-            SaveLogs($"DEDUCTION ADDED FOR BRANCHES - {fullname} ({bioNo}), Category({deducName}), Total({principal}), Schedule({sched}), Date({Today.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
+            SaveLogs($"DEDUCTION ADDED FOR BRANCHES - {fullname} ({bioNo}), Category({deducName}), Total({principal}), Schedule({sched}), Date({Today:MMM dd, yyyy})", frmMainForm.UserName_LBL.Text)
 
             frmMainForm.AppProgressBar.Value += 1
         Next row
@@ -1324,6 +1322,16 @@ Module Temporary
             With ds.Tables(0).Rows(0)
                 Return .Item("LASTDATE")
             End With
+        End If
+        Return Nothing
+    End Function
+
+    Friend Function GetMAX(table As String, column As String)
+        Dim mysql As String = $"Select MAX({column}) FROM {table}"
+        Dim ds As DataSet = LoadSQL(mysql, table)
+        If ds.Tables(0).Rows.Count > 0 Then
+            Console.WriteLine(CDate(ds.Tables(0).Rows(0).Item(0)).ToShortDateString)
+            Return CDate(ds.Tables(0).Rows(0).Item(0)).ToShortDateString
         End If
         Return Nothing
     End Function
