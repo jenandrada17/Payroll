@@ -760,7 +760,7 @@ Partial Public Class reports
         
         Private columnPAGIBIG As Global.System.Data.DataColumn
         
-        Private columnSBU_CHARGES As Global.System.Data.DataColumn
+        Private columnCHARGES_SBU As Global.System.Data.DataColumn
         
         Private columnNET_PAY As Global.System.Data.DataColumn
         
@@ -781,6 +781,18 @@ Partial Public Class reports
         Private columnMONTH_13 As Global.System.Data.DataColumn
         
         Private columnACCOUNT_NO As Global.System.Data.DataColumn
+        
+        Private columnCHARGES_MP2 As Global.System.Data.DataColumn
+        
+        Private columnCHARGES_CA As Global.System.Data.DataColumn
+        
+        Private columnCHARGES_ECS As Global.System.Data.DataColumn
+        
+        Private columnCHARGES_OTHERS As Global.System.Data.DataColumn
+        
+        Private columnLOAN_SSS As Global.System.Data.DataColumn
+        
+        Private columnLOAN_PAGIBIG As Global.System.Data.DataColumn
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
@@ -907,9 +919,9 @@ Partial Public Class reports
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
-        Public ReadOnly Property SBU_CHARGESColumn() As Global.System.Data.DataColumn
+        Public ReadOnly Property CHARGES_SBUColumn() As Global.System.Data.DataColumn
             Get
-                Return Me.columnSBU_CHARGES
+                Return Me.columnCHARGES_SBU
             End Get
         End Property
         
@@ -994,6 +1006,54 @@ Partial Public Class reports
         End Property
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public ReadOnly Property CHARGES_MP2Column() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnCHARGES_MP2
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public ReadOnly Property CHARGES_CAColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnCHARGES_CA
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public ReadOnly Property CHARGES_ECSColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnCHARGES_ECS
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public ReadOnly Property CHARGES_OTHERSColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnCHARGES_OTHERS
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public ReadOnly Property LOAN_SSSColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnLOAN_SSS
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public ReadOnly Property LOAN_PAGIBIGColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnLOAN_PAGIBIG
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0"),  _
          Global.System.ComponentModel.Browsable(false)>  _
         Public ReadOnly Property Count() As Integer
@@ -1042,7 +1102,7 @@ Partial Public Class reports
                     ByVal SSS As String,  _
                     ByVal PHIC As String,  _
                     ByVal PAGIBIG As String,  _
-                    ByVal SBU_CHARGES As String,  _
+                    ByVal CHARGES_SBU As String,  _
                     ByVal NET_PAY As String,  _
                     ByVal BRANCH_CODE As String,  _
                     ByVal PAYDATE As String,  _
@@ -1052,9 +1112,15 @@ Partial Public Class reports
                     ByVal HO_CATEGORY As String,  _
                     ByVal PLUS As String,  _
                     ByVal MONTH_13 As String,  _
-                    ByVal ACCOUNT_NO As String) As NetPayRow
+                    ByVal ACCOUNT_NO As String,  _
+                    ByVal CHARGES_MP2 As String,  _
+                    ByVal CHARGES_CA As String,  _
+                    ByVal CHARGES_ECS As String,  _
+                    ByVal CHARGES_OTHERS As String,  _
+                    ByVal LOAN_SSS As String,  _
+                    ByVal LOAN_PAGIBIG As String) As NetPayRow
             Dim rowNetPayRow As NetPayRow = CType(Me.NewRow,NetPayRow)
-            Dim columnValuesArray() As Object = New Object() {EMP_NO, FULLNAME, BASIC, OVERTIME, HOLIDAY, N_DIFF, PI_ECOLA_SIL, TARDINESS, SSS, PHIC, PAGIBIG, SBU_CHARGES, NET_PAY, BRANCH_CODE, PAYDATE, PERIOD, RANGE, COMPANY, HO_CATEGORY, PLUS, MONTH_13, ACCOUNT_NO}
+            Dim columnValuesArray() As Object = New Object() {EMP_NO, FULLNAME, BASIC, OVERTIME, HOLIDAY, N_DIFF, PI_ECOLA_SIL, TARDINESS, SSS, PHIC, PAGIBIG, CHARGES_SBU, NET_PAY, BRANCH_CODE, PAYDATE, PERIOD, RANGE, COMPANY, HO_CATEGORY, PLUS, MONTH_13, ACCOUNT_NO, CHARGES_MP2, CHARGES_CA, CHARGES_ECS, CHARGES_OTHERS, LOAN_SSS, LOAN_PAGIBIG}
             rowNetPayRow.ItemArray = columnValuesArray
             Me.Rows.Add(rowNetPayRow)
             Return rowNetPayRow
@@ -1088,7 +1154,7 @@ Partial Public Class reports
             Me.columnSSS = MyBase.Columns("SSS")
             Me.columnPHIC = MyBase.Columns("PHIC")
             Me.columnPAGIBIG = MyBase.Columns("PAGIBIG")
-            Me.columnSBU_CHARGES = MyBase.Columns("SBU_CHARGES")
+            Me.columnCHARGES_SBU = MyBase.Columns("CHARGES_SBU")
             Me.columnNET_PAY = MyBase.Columns("NET_PAY")
             Me.columnBRANCH_CODE = MyBase.Columns("BRANCH_CODE")
             Me.columnPAYDATE = MyBase.Columns("PAYDATE")
@@ -1099,6 +1165,12 @@ Partial Public Class reports
             Me.columnPLUS = MyBase.Columns("PLUS")
             Me.columnMONTH_13 = MyBase.Columns("MONTH_13")
             Me.columnACCOUNT_NO = MyBase.Columns("ACCOUNT_NO")
+            Me.columnCHARGES_MP2 = MyBase.Columns("CHARGES_MP2")
+            Me.columnCHARGES_CA = MyBase.Columns("CHARGES_CA")
+            Me.columnCHARGES_ECS = MyBase.Columns("CHARGES_ECS")
+            Me.columnCHARGES_OTHERS = MyBase.Columns("CHARGES_OTHERS")
+            Me.columnLOAN_SSS = MyBase.Columns("LOAN_SSS")
+            Me.columnLOAN_PAGIBIG = MyBase.Columns("LOAN_PAGIBIG")
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -1126,8 +1198,8 @@ Partial Public Class reports
             MyBase.Columns.Add(Me.columnPHIC)
             Me.columnPAGIBIG = New Global.System.Data.DataColumn("PAGIBIG", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnPAGIBIG)
-            Me.columnSBU_CHARGES = New Global.System.Data.DataColumn("SBU_CHARGES", GetType(String), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnSBU_CHARGES)
+            Me.columnCHARGES_SBU = New Global.System.Data.DataColumn("CHARGES_SBU", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnCHARGES_SBU)
             Me.columnNET_PAY = New Global.System.Data.DataColumn("NET_PAY", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnNET_PAY)
             Me.columnBRANCH_CODE = New Global.System.Data.DataColumn("BRANCH_CODE", GetType(String), Nothing, Global.System.Data.MappingType.Element)
@@ -1148,6 +1220,18 @@ Partial Public Class reports
             MyBase.Columns.Add(Me.columnMONTH_13)
             Me.columnACCOUNT_NO = New Global.System.Data.DataColumn("ACCOUNT_NO", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnACCOUNT_NO)
+            Me.columnCHARGES_MP2 = New Global.System.Data.DataColumn("CHARGES_MP2", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnCHARGES_MP2)
+            Me.columnCHARGES_CA = New Global.System.Data.DataColumn("CHARGES_CA", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnCHARGES_CA)
+            Me.columnCHARGES_ECS = New Global.System.Data.DataColumn("CHARGES_ECS", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnCHARGES_ECS)
+            Me.columnCHARGES_OTHERS = New Global.System.Data.DataColumn("CHARGES_OTHERS", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnCHARGES_OTHERS)
+            Me.columnLOAN_SSS = New Global.System.Data.DataColumn("LOAN_SSS", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnLOAN_SSS)
+            Me.columnLOAN_PAGIBIG = New Global.System.Data.DataColumn("LOAN_PAGIBIG", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnLOAN_PAGIBIG)
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -6432,16 +6516,16 @@ Partial Public Class reports
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
-        Public Property SBU_CHARGES() As String
+        Public Property CHARGES_SBU() As String
             Get
                 Try 
-                    Return CType(Me(Me.tableNetPay.SBU_CHARGESColumn),String)
+                    Return CType(Me(Me.tableNetPay.CHARGES_SBUColumn),String)
                 Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'SBU_CHARGES' in table 'NetPay' is DBNull.", e)
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'CHARGES_SBU' in table 'NetPay' is DBNull.", e)
                 End Try
             End Get
             Set
-                Me(Me.tableNetPay.SBU_CHARGESColumn) = value
+                Me(Me.tableNetPay.CHARGES_SBUColumn) = value
             End Set
         End Property
         
@@ -6597,6 +6681,96 @@ Partial Public Class reports
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Property CHARGES_MP2() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableNetPay.CHARGES_MP2Column),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'CHARGES_MP2' in table 'NetPay' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableNetPay.CHARGES_MP2Column) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Property CHARGES_CA() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableNetPay.CHARGES_CAColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'CHARGES_CA' in table 'NetPay' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableNetPay.CHARGES_CAColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Property CHARGES_ECS() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableNetPay.CHARGES_ECSColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'CHARGES_ECS' in table 'NetPay' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableNetPay.CHARGES_ECSColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Property CHARGES_OTHERS() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableNetPay.CHARGES_OTHERSColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'CHARGES_OTHERS' in table 'NetPay' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableNetPay.CHARGES_OTHERSColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Property LOAN_SSS() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableNetPay.LOAN_SSSColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'LOAN_SSS' in table 'NetPay' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableNetPay.LOAN_SSSColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Property LOAN_PAGIBIG() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableNetPay.LOAN_PAGIBIGColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'LOAN_PAGIBIG' in table 'NetPay' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableNetPay.LOAN_PAGIBIGColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
         Public Function IsEMP_NONull() As Boolean
             Return Me.IsNull(Me.tableNetPay.EMP_NOColumn)
         End Function
@@ -6729,14 +6903,14 @@ Partial Public Class reports
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
-        Public Function IsSBU_CHARGESNull() As Boolean
-            Return Me.IsNull(Me.tableNetPay.SBU_CHARGESColumn)
+        Public Function IsCHARGES_SBUNull() As Boolean
+            Return Me.IsNull(Me.tableNetPay.CHARGES_SBUColumn)
         End Function
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
-        Public Sub SetSBU_CHARGESNull()
-            Me(Me.tableNetPay.SBU_CHARGESColumn) = Global.System.Convert.DBNull
+        Public Sub SetCHARGES_SBUNull()
+            Me(Me.tableNetPay.CHARGES_SBUColumn) = Global.System.Convert.DBNull
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -6857,6 +7031,78 @@ Partial Public Class reports
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
         Public Sub SetACCOUNT_NONull()
             Me(Me.tableNetPay.ACCOUNT_NOColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Function IsCHARGES_MP2Null() As Boolean
+            Return Me.IsNull(Me.tableNetPay.CHARGES_MP2Column)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Sub SetCHARGES_MP2Null()
+            Me(Me.tableNetPay.CHARGES_MP2Column) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Function IsCHARGES_CANull() As Boolean
+            Return Me.IsNull(Me.tableNetPay.CHARGES_CAColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Sub SetCHARGES_CANull()
+            Me(Me.tableNetPay.CHARGES_CAColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Function IsCHARGES_ECSNull() As Boolean
+            Return Me.IsNull(Me.tableNetPay.CHARGES_ECSColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Sub SetCHARGES_ECSNull()
+            Me(Me.tableNetPay.CHARGES_ECSColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Function IsCHARGES_OTHERSNull() As Boolean
+            Return Me.IsNull(Me.tableNetPay.CHARGES_OTHERSColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Sub SetCHARGES_OTHERSNull()
+            Me(Me.tableNetPay.CHARGES_OTHERSColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Function IsLOAN_SSSNull() As Boolean
+            Return Me.IsNull(Me.tableNetPay.LOAN_SSSColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Sub SetLOAN_SSSNull()
+            Me(Me.tableNetPay.LOAN_SSSColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Function IsLOAN_PAGIBIGNull() As Boolean
+            Return Me.IsNull(Me.tableNetPay.LOAN_PAGIBIGColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Sub SetLOAN_PAGIBIGNull()
+            Me(Me.tableNetPay.LOAN_PAGIBIGColumn) = Global.System.Convert.DBNull
         End Sub
     End Class
     

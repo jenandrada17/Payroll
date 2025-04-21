@@ -97,7 +97,7 @@ namespace DBConnect
         public string FBConnectionString()
         {
             var cs = new FbConnectionStringBuilder()
-            {
+            { 
                 UserID = UserName_TXT.Text,
                 Password = Password_TXT.Text,
                 Database = Database_TXT.Text,
@@ -108,7 +108,9 @@ namespace DBConnect
                 Dialect = 3,
                 Port = 3050,
                 ServerType = FbServerType.Default,
-                ReturnRecordsAffected = true
+                ReturnRecordsAffected = true, 
+                ConnectionLifeTime = 600,
+                ConnectionTimeout = 600
             };
 
             return cs.ConnectionString;

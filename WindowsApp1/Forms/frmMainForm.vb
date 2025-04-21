@@ -11,6 +11,16 @@ Public Class frmMainForm
 
     Private Sub frmMainForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
+        If GetVersion() > Application.ProductVersion Then
+            Dim result As DialogResult = MessageBox.Show($"New {GetVersion()} version of the program is available, do you want to upgrade?", "Question", MessageBoxButtons.YesNo)
+            If result = DialogResult.Yes Then
+                Dim MyAutoUpdate As New Updater
+                If MyAutoUpdate.AutoUpdate() Then
+                    Close()
+                End If
+            End If
+        End If
+
         If Not ValidServerConnection() Then
             MsgBox("Connection to the server has been interrupted.!", MsgBoxStyle.Exclamation)
             Close()
@@ -123,16 +133,6 @@ Public Class frmMainForm
 
         DAYS_COUNT = DAYS_COUNT - (RHOLIDAY + SHOLIDAY)
         '===========================================================
-
-        If GetVersion() > Application.ProductVersion Then
-            Dim result As DialogResult = MessageBox.Show($"New {GetVersion()} version of the program is available, do you want to upgrade?", "Question", MessageBoxButtons.YesNo)
-            If result = DialogResult.Yes Then
-                Dim MyAutoUpdate As New Updater
-                If MyAutoUpdate.AutoUpdate() Then
-                    Close()
-                End If
-            End If
-        End If
 
         Version_lbl.Text = $"Version {Application.ProductVersion}"
 

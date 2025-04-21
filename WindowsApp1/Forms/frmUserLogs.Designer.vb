@@ -65,7 +65,7 @@ Partial Class frmUserLogs
         'ColumnHeader3
         '
         Me.ColumnHeader3.Text = "Transaction"
-        Me.ColumnHeader3.Width = 1800
+        Me.ColumnHeader3.Width = 3500
         '
         'Label1
         '
@@ -73,7 +73,7 @@ Partial Class frmUserLogs
         Me.Label1.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Label1.Location = New System.Drawing.Point(2, 2)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(94, 32)
+        Me.Label1.Size = New System.Drawing.Size(93, 32)
         Me.Label1.TabIndex = 76
         Me.Label1.Text = "User Logs"
         '
@@ -83,7 +83,7 @@ Partial Class frmUserLogs
         Me.Close_LBL.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Close_LBL.Location = New System.Drawing.Point(1126, -4)
         Me.Close_LBL.Name = "Close_LBL"
-        Me.Close_LBL.Size = New System.Drawing.Size(57, 32)
+        Me.Close_LBL.Size = New System.Drawing.Size(56, 32)
         Me.Close_LBL.TabIndex = 78
         Me.Close_LBL.Text = "Close"
         '

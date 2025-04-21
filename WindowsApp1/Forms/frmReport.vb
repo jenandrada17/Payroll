@@ -660,7 +660,7 @@ A
                     .Columns.Add("SSS")
                     .Columns.Add("PHIC")
                     .Columns.Add("PAGIBIG")
-                    .Columns.Add("SBU_CHARGES")
+                    .Columns.Add("CHARGES_SBU")
                     .Columns.Add("NET_PAY")
                     .Columns.Add("BRANCH_CODE")
                     .Columns.Add("PAYDATE")
@@ -669,7 +669,15 @@ A
                     .Columns.Add("HO_CATEGORY")
                     .Columns.Add("PLUS")
                     .Columns.Add("MONTH_13")
+                    .Columns.Add("CHARGES_MP2")
+                    .Columns.Add("CHARGES_CA")
+                    .Columns.Add("CHARGES_ECS")
+                    .Columns.Add("CHARGES_OTHERS")
+                    .Columns.Add("LOAN_SSS")
+                    .Columns.Add("LOAN_PAGIBIG")
                 End With
+
+                TestingScript_String(mysqll)
 
                 Using ds As DataSet = LoadSQL(mysqll, "PAYROLL_PAYOUT")
 
@@ -694,7 +702,6 @@ A
                                 Dim SSS As Double = .Item("SSS_COMP")
                                 Dim PHIC As Double = .Item("PHILHEALTH_COMP")
                                 Dim PAGIBIG As Double = .Item("PAGIBIG_COMP")
-                                Dim SBU_CHARGES As Double = .Item("TOTAL_DEDUCTION")
                                 Dim NET_PAY As Double = .Item("NET_PAY")
                                 Dim BRANCH_CODE As String = IIf(.Item("BRANCH_CODE") = "" Or IsDBNull(.Item("BRANCH_CODE")), .Item("HO_CATEGORY"), .Item("BRANCHNAME"))
                                 Dim COMPANY As String = .Item("COMPANY")
@@ -702,6 +709,17 @@ A
                                 Dim Minimum_rate As Double = IIf(IsDBNull(.Item("BRANCH_CODE")) Or .Item("BRANCH_CODE").Equals(""), GetMinimumRate("CITY", "GENSAN"), GetMinimumRate("BRANCHCODE", .Item("BRANCH_CODE")))
                                 Dim Rate As Decimal = IIf(IsDBNull(.Item("RATE_DAILY")) Or .Item("RATE_DAILY") = 0, Minimum_rate, .Item("RATE_DAILY"))
                                 Dim fix_monthly_rate As Boolean = IIf(IsDBNull(.Item("FIX_MONTHLY_RATE")), False, .Item("FIX_MONTHLY_RATE"))
+                                'SEGRE CHARGES  
+                                Dim CHARGES_SBU As Decimal = GetDeductionAmount_SBU(BIO_NO, paydatee)
+                                Dim CHARGES_MP2 As Decimal = GetDeductionAmount_MP2(BIO_NO, paydatee)
+                                Dim CHARGES_CA As Decimal = GetDeductionAmount_CA(BIO_NO, paydatee)
+                                Dim CHARGES_ECS As Decimal = GetDeductionAmount_ECS(BIO_NO, paydatee)
+                                Dim LOAN_SSS As Decimal = GetDeductionAmount_SSSLOAN(BIO_NO, paydatee)
+                                Dim LOAN_PAGIBIG As Decimal = GetDeductionAmount_PAGIBIGLOAN(BIO_NO, paydatee)
+                                Dim OVERALL_CHARGES As Decimal = .Item("TOTAL_DEDUCTION")
+                                Dim COMBINE_CHARGES As Decimal = CHARGES_SBU + CHARGES_MP2 + CHARGES_CA + CHARGES_ECS + LOAN_SSS + LOAN_PAGIBIG
+                                Dim CHARGES_OTHERS As Decimal = IIf(OVERALL_CHARGES >= COMBINE_CHARGES, OVERALL_CHARGES - COMBINE_CHARGES, 0)
+
 
                                 If fix_monthly_rate = True Then
                                     OVERTIME = 0
@@ -756,8 +774,9 @@ A
 
                                 dt_NetPay.Rows.Add(EMP_NO, namee, BASIC.ToString("n"), OVERTIME.ToString("n"), HOLIDAY.ToString("n"), N_DIFF.ToString("n"),
                                                    PI_ECOLA_SIL.ToString("n"), TARDINESS.ToString("n"), SSS.ToString("n"), PHIC.ToString("n"), PAGIBIG.ToString("n"),
-                                                   SBU_CHARGES.ToString("n"), NET_PAY.ToString("n"), BRANCH_CODE, payroll.ToString("MMMM dd, yyyy"), period, COMPANY,
-                                                   HO_CATEGORY, tempPlus, MONTH_13.ToString("n"))
+                                                   CHARGES_SBU.ToString("n"), NET_PAY.ToString("n"), BRANCH_CODE, payroll.ToString("MMMM dd, yyyy"), period, COMPANY,
+                                                   HO_CATEGORY, tempPlus, MONTH_13.ToString("n"), CHARGES_MP2, CHARGES_CA, CHARGES_ECS, CHARGES_OTHERS,
+                                                   LOAN_SSS, LOAN_PAGIBIG)
 
                                 frmMainForm.AppProgressBar.Value += 1
                             End With
@@ -1969,16 +1988,7 @@ A
             If Company_Combo.SelectedIndex = 1 Then '=== PHOTO
 
                 If PaydateNet_ComboB.SelectedIndex >= 0 Then
-                    If NetBranch_Combo.SelectedIndex = 0 Then '=== Davao Perfect
-
-                        'mysql = $"Select * From PAYROLL_PAYOUT A 
-                        '                inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
-                        '                left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
-                        '                where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' and B.BRANCHCODE IN ('SMG','KCG','ACM','TAC') 
-                        '                Order by case when B.BRANCHCODE = 'KCG' then 0
-                        '                              when B.BRANCHCODE = 'SMG' then 1
-                        '                              when B.BRANCHCODE = 'TAC' then 2
-                        '                              when B.BRANCHCODE = 'ACM' then 3 end"
+                    If NetBranch_Combo.SelectedIndex = 0 Then '=== Davao Perfect 
 
                         mysql = $"Select * From PAYROLL_PAYOUT A 
                                         inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
@@ -1988,16 +1998,7 @@ A
 
                         PlusS = "DAVAO PERFECT"
 
-                    ElseIf NetBranch_Combo.SelectedIndex = 1 Then '=== JR Photo
-
-                        'mysql = $"Select * From PAYROLL_PAYOUT A 
-                        '                inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
-                        '                left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
-                        '                where A.PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' and B.BRANCH_CODE IN ('DIG','ISU','M1','POL')
-                        '                Order by case when B.BRANCHCODE = 'DIG' then 0
-                        '                              when B.BRANCHCODE = 'ISU' then 1
-                        '                              when B.BRANCHCODE = 'M1' then 2
-                        '                              when B.BRANCHCODE = 'POL' then 3 end"
+                    ElseIf NetBranch_Combo.SelectedIndex = 1 Then '=== JR Photo 
 
                         mysql = $"Select * From PAYROLL_PAYOUT A 
                                         inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
@@ -2006,26 +2007,7 @@ A
                                         Order by B.BRANCHCODE "
 
                         PlusS = "JR PHOTO"
-                    ElseIf NetBranch_Combo.SelectedIndex = 2 Then '=== Gensan Perfect
-
-                        'mysql = $"Select * From PAYROLL_PAYOUT A 
-                        '                inner JOIN TBL_EMPLOYEE B ON B.BRANCHCODE = A.BIOMETRIC_ID 
-                        '                left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
-                        '                where PAYDATE  = '{paydatee}' and B.COMPANY  = 'PHOTO' 
-                        '                and (B.BRANCHCODE IN ('ROG','ROX','FINEPIX','COT','MID','KID','SNP','GMA','SML','ZAM','SMD')
-                        '                or B.HO_CATEGORY IN ('Photo Admin Office', 'Photo Admin Operation'))
-                        '                Order by case when B.BRANCHCODE = 'ROG' then 1
-                        '                              when B.BRANCHCODE = 'ROX' then 2
-                        '                              when B.BRANCHCODE = 'FINEPIX' then 3
-                        '                              when B.BRANCHCODE = 'COT' then 4 
-                        '                              when B.BRANCHCODE = 'KID' then 5 
-                        '                              when B.BRANCHCODE = 'MID' then 6 
-                        '                              when B.BRANCHCODE = 'GMA' then 7 
-                        '                              when B.BRANCHCODE = 'SNP' then 8 
-                        '                              when B.BRANCHCODE = 'SMD' then 9 
-                        '                              when B.BRANCHCODE = 'SML' then 10 
-                        '                              when B.BRANCHCODE = 'ZAM' then 11 
-                        '                              else 0 end"
+                    ElseIf NetBranch_Combo.SelectedIndex = 2 Then '=== Gensan Perfect 
 
                         mysql = $"Select * From PAYROLL_PAYOUT A 
                                         inner JOIN TBL_EMPLOYEE B ON B.BRANCHCODE = A.BIOMETRIC_ID 
@@ -2098,86 +2080,7 @@ A
                                         where A.PAYDATE  = '{paydatee}' and B.HO_CATEGORY IN ('Dalton Admin Office','Dalton Retail','Dalton Admin Operation') 
                                         Order by case when B.HO_CATEGORY LIKE '%Operation%' then 1 else 0  end, B.HO_CATEGORY asc"
 
-                    ElseIf NetBranch_Combo.SelectedIndex = 1 Then '=== All Dalton Branches Maually Order
-
-                        'mysql = $"Select * From PAYROLL_PAYOUT A 
-                        '                inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
-                        '                left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
-                        '                where A.PAYDATE  = '{paydatee}' AND B.COMPANY  = 'DALTON'
-                        '                 Order by case when B.BRANCHCODE = 'CAG' then 0 
-                        '                               when B.BRANCHCODE = 'JCAT 2' then 1 
-                        '                               when B.BRANCHCODE = 'KCG' then 2 
-                        '                               when B.BRANCHCODE = 'LAG' then 3 
-                        '                               when B.BRANCHCODE = 'PMA' then 4  
-                        '                               when B.BRANCHCODE = 'NUN' then 5  
-                        '                               when B.BRANCHCODE = 'PEN' then 6  
-                        '                               when B.BRANCHCODE = 'PGN' then 7  
-                        '                               when B.BRANCHCODE = 'PIO' then 8  
-                        '                               when B.BRANCHCODE = 'ROG' then 9  
-                        '                               when B.BRANCHCODE = 'ROX' then 10  
-                        '                               when B.BRANCHCODE = 'SAN' then 11  
-                        '                               when B.BRANCHCODE = 'UHA' then 12  
-                        '                               when B.BRANCHCODE = 'POL' then 13  
-                        '                               when B.BRANCHCODE = 'POL2' then 14  
-                        '                               when B.BRANCHCODE = 'POL3' then 15  
-                        '                               when B.BRANCHCODE = 'GAP' then 16  
-                        '                               when B.BRANCHCODE = 'ACM' then 17  
-                        '                               when B.BRANCHCODE = 'GAM' then 18  
-                        '                               when B.BRANCHCODE = 'AL1' then 19  
-                        '                               when B.BRANCHCODE = 'AL2' then 20  
-                        '                               when B.BRANCHCODE = 'ZUL' then 21   
-                        '                               when B.BRANCHCODE = 'ISU 1' then 22  
-                        '                               when B.BRANCHCODE = 'ISU 2' then 23  
-                        '                               when B.BRANCHCODE = 'ISU 3' then 24   
-                        '                               when B.BRANCHCODE = 'TAC 1' then 25  
-                        '                               when B.BRANCHCODE = 'TAC 2' then 26  
-                        '                               when B.BRANCHCODE = 'PQO' then 27   
-                        '                               when B.BRANCHCODE = 'SRA' then 28  
-                        '                               when B.BRANCHCODE = 'TBOLI' then 29  
-                        '                               when B.BRANCHCODE = 'BANG' then 30   
-                        '                               when B.BRANCHCODE = 'ESPE' then 31  
-                        '                               when B.BRANCHCODE = 'KAL' then 32  
-                        '                               when B.BRANCHCODE = 'LAM' then 33  
-                        '                               when B.BRANCHCODE = 'LEBAK' then 34   
-                        '                               when B.BRANCHCODE = 'AWANG' then 35  
-                        '                               when B.BRANCHCODE = 'DAL' then 36  
-                        '                               when B.BRANCHCODE = 'COT 1' then 37  
-                        '                               when B.BRANCHCODE = 'COT 2' then 38   
-                        '                               when B.BRANCHCODE = 'COT 3' then 39   
-                        '                               when B.BRANCHCODE = 'COT 4' then 40   
-                        '                               when B.BRANCHCODE = 'KID' then 41  
-                        '                               when B.BRANCHCODE = 'KID2' then 42  
-                        '                               when B.BRANCHCODE = 'GAK' then 43   
-                        '                               when B.BRANCHCODE = 'MID' then 44  
-                        '                               when B.BRANCHCODE = 'KAB' then 45  
-                        '                               when B.BRANCHCODE = 'KAB 2' then 46  
-                        '                               when B.BRANCHCODE = 'KAB3' then 47   
-                        '                               when B.BRANCHCODE = 'PIKIT' then 48    
-                        '                               when B.BRANCHCODE = 'MLANG' then 49 
-                        '                               when B.BRANCHCODE = 'TUL' then 50 
-                        '                               when B.BRANCHCODE = 'SHARIFF' then 51 
-                        '                               when B.BRANCHCODE = 'SHARIFF 2' then 52 
-                        '                               when B.BRANCHCODE = 'UPI' then 53 
-                        '                               when B.BRANCHCODE = 'PAR' then 54 
-                        '                               when B.BRANCHCODE = 'BUL' then 55  
-                        '                               when B.BRANCHCODE = 'DIG 1' then 56 
-                        '                               when B.BRANCHCODE = 'DIG 2' then 57 
-                        '                               when B.BRANCHCODE = 'GAD' then 58  
-                        '                               when B.BRANCHCODE = 'GGP' then 59 
-                        '                               when B.BRANCHCODE = 'SNP' then 60 
-                        '                               when B.BRANCHCODE = 'TAG' then 61  
-                        '                               when B.BRANCHCODE = 'ALA' then 62  
-                        '                               when B.BRANCHCODE = 'GLAN' then 63 
-                        '                               when B.BRANCHCODE = 'KIA' then 64 
-                        '                               when B.BRANCHCODE = 'MAA' then 65 
-                        '                               when B.BRANCHCODE = 'MAITUM' then 66 
-                        '                               when B.BRANCHCODE = 'ABREA' then 67 
-                        '                               when B.BRANCHCODE = 'SURI 2' then 68  
-                        '                               when B.BRANCHCODE = 'SURI 3' then 69 
-                        '                               when B.BRANCHCODE = 'GCS' then 70  
-                        '                               when B.BRANCHCODE = 'BUT' then 71 
-                        '                               when B.BRANCHCODE = 'GCA' then 72  
-                        '                               end, B.BRANCHCODE asc"
+                    ElseIf NetBranch_Combo.SelectedIndex = 1 Then '=== All Dalton Branches Maually Order 
 
                         mysql = $"Select * From PAYROLL_PAYOUT A 
                                         inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
@@ -2625,7 +2528,7 @@ A
                 .Columns.Add("SSS")
                 .Columns.Add("PHIC")
                 .Columns.Add("PAGIBIG")
-                .Columns.Add("SBU_CHARGES")
+                .Columns.Add("CHARGES_SBU")
                 .Columns.Add("NET_PAY")
                 .Columns.Add("BRANCH_CODE")
                 .Columns.Add("PAYDATE")
@@ -2635,6 +2538,12 @@ A
                 .Columns.Add("PLUS")
                 .Columns.Add("MONTH_13")
                 .Columns.Add("ACCOUNT_NO")
+                .Columns.Add("CHARGES_MP2")
+                .Columns.Add("CHARGES_CA")
+                .Columns.Add("CHARGES_ECS")
+                .Columns.Add("CHARGES_OTHERS")
+                .Columns.Add("LOAN_SSS")
+                .Columns.Add("LOAN_PAGIBIG")
             End With
 
             Dim mysqll As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
@@ -2724,8 +2633,22 @@ A
                             Dim PHIC As Double = .Item("PHILHEALTH_COMP")
                             linee = "PAGIBIG"
                             Dim PAGIBIG As Double = .Item("PAGIBIG_COMP")
-                            linee = "SBU_CHARGES"
-                            Dim SBU_CHARGES As Double = .Item("TOTAL_DEDUCTION")
+                            linee = "CHARGES_SBU"
+                            Dim CHARGES_SBU As Decimal = GetDeductionAmount_SBU(BIO_NO, paydatee)
+                            linee = "CHARGES_MP2"
+                            Dim CHARGES_MP2 As Decimal = GetDeductionAmount_MP2(BIO_NO, paydatee)
+                            linee = "CHARGES_CA"
+                            Dim CHARGES_CA As Decimal = GetDeductionAmount_CA(BIO_NO, paydatee)
+                            linee = "CHARGES_ECS"
+                            Dim CHARGES_ECS As Decimal = GetDeductionAmount_ECS(BIO_NO, paydatee)
+                            linee = "LOAN_SSS"
+                            Dim LOAN_SSS As Decimal = GetDeductionAmount_SSSLOAN(BIO_NO, paydatee)
+                            linee = "LOAN_PAGIBIG"
+                            Dim LOAN_PAGIBIG As Decimal = GetDeductionAmount_PAGIBIGLOAN(BIO_NO, paydatee)
+                            linee = "CHARGES_OTHERS"
+                            Dim OVERALL_CHARGES As Decimal = .Item("TOTAL_DEDUCTION")
+                            Dim COMBINE_CHARGES As Decimal = CHARGES_SBU + CHARGES_MP2 + CHARGES_CA + CHARGES_ECS + LOAN_SSS + LOAN_PAGIBIG
+                            Dim CHARGES_OTHERS As Decimal = IIf(OVERALL_CHARGES >= COMBINE_CHARGES, OVERALL_CHARGES - COMBINE_CHARGES, 0)
                             linee = "NET_PAY"
                             Dim NET_PAY As Double = .Item("NET_PAY")
 
@@ -2760,13 +2683,6 @@ A
                                 TARDINESS = 0
                             End If
 
-                            'If HO_CATEGORY = "GHS/P&G UY Admin Office" Or HO_CATEGORY = "GHS/P&G UY Admin Operation" Or
-                            '    HO_CATEGORY.Contains("Dalton") Or HO_CATEGORY.Contains("Photo") Or HO_CATEGORY.Contains("PGC") Or
-                            '    plus_ = "PGC" Or plus_ = "PTU" Then
-
-                            '    BRANCHNAME = HO_CATEGORY
-                            'End If 
-
                             '--- RECENTLY ADDED ----
                             If BRANCH_CODE = Nothing Then
                                 BRANCHNAME = IIf(IsDBNull(.Item("HO_CATEGORY")), "", CStr(.Item("HO_CATEGORY")).TrimEnd)
@@ -2789,8 +2705,9 @@ A
 
                             dataTable.Rows.Add(EMP_NO, namee, BASIC.ToString("n"), OVERTIME.ToString("n"), HOLIDAY.ToString("n"), N_DIFF.ToString("n"),
                                                PI_ECOLA_SIL.ToString("n"), TARDINESS.ToString("n"), SSS.ToString("n"), PHIC.ToString("n"), PAGIBIG.ToString("n"),
-                                               SBU_CHARGES.ToString("n"), NET_PAY.ToString("n"), BRANCHNAME, payroll.ToString("MMMM dd, yyyy"), period, COMPANY,
-                                               HO_CATEGORY, tempPlus, MONTH_13.ToString("n"), ACCOUNTNO)
+                                               CHARGES_SBU.ToString("n"), NET_PAY.ToString("n"), BRANCHNAME, payroll.ToString("MMMM dd, yyyy"), period, COMPANY,
+                                               HO_CATEGORY, tempPlus, MONTH_13.ToString("n"), ACCOUNTNO, CHARGES_MP2, CHARGES_CA, CHARGES_ECS, CHARGES_OTHERS,
+                                               LOAN_SSS, LOAN_PAGIBIG)
 
                             frmMainForm.AppProgressBar.Value += 1
                         End With
