@@ -710,12 +710,12 @@ A
                                 Dim Rate As Decimal = IIf(IsDBNull(.Item("RATE_DAILY")) Or .Item("RATE_DAILY") = 0, Minimum_rate, .Item("RATE_DAILY"))
                                 Dim fix_monthly_rate As Boolean = IIf(IsDBNull(.Item("FIX_MONTHLY_RATE")), False, .Item("FIX_MONTHLY_RATE"))
                                 'SEGRE CHARGES  
-                                Dim CHARGES_SBU As Decimal = GetDeductionAmount_SBU(BIO_NO, paydatee)
-                                Dim CHARGES_MP2 As Decimal = GetDeductionAmount_MP2(BIO_NO, paydatee)
-                                Dim CHARGES_CA As Decimal = GetDeductionAmount_CA(BIO_NO, paydatee)
-                                Dim CHARGES_ECS As Decimal = GetDeductionAmount_ECS(BIO_NO, paydatee)
-                                Dim LOAN_SSS As Decimal = GetDeductionAmount_SSSLOAN(BIO_NO, paydatee)
-                                Dim LOAN_PAGIBIG As Decimal = GetDeductionAmount_PAGIBIGLOAN(BIO_NO, paydatee)
+                                Dim CHARGES_SBU As Decimal = GetDeductionAmount_SBU(paydatee, BIO_NO)
+                                Dim CHARGES_MP2 As Decimal = GetDeductionAmount_MP2(paydatee, BIO_NO)
+                                Dim CHARGES_CA As Decimal = GetDeductionAmount_CA(paydatee, BIO_NO)
+                                Dim CHARGES_ECS As Decimal = GetDeductionAmount_ECS(paydatee, BIO_NO)
+                                Dim LOAN_SSS As Decimal = GetDeductionAmount_SSSLOAN(paydatee, BIO_NO)
+                                Dim LOAN_PAGIBIG As Decimal = GetDeductionAmount_PAGIBIGLOAN(paydatee, BIO_NO)
                                 Dim OVERALL_CHARGES As Decimal = .Item("TOTAL_DEDUCTION")
                                 Dim COMBINE_CHARGES As Decimal = CHARGES_SBU + CHARGES_MP2 + CHARGES_CA + CHARGES_ECS + LOAN_SSS + LOAN_PAGIBIG
                                 Dim CHARGES_OTHERS As Decimal = IIf(OVERALL_CHARGES >= COMBINE_CHARGES, OVERALL_CHARGES - COMBINE_CHARGES, 0)
@@ -797,9 +797,19 @@ A
                         Dim TOTAL_SSS As Double = GetOVERALL_SUM("SSS_COMP", paydatee)
                         Dim TOTAL_PHIC As Double = GetOVERALL_SUM("PHILHEALTH_COMP", paydatee)
                         Dim TOTAL_PAGIBIG As Double = GetOVERALL_SUM("PAGIBIG_COMP", paydatee)
-                        Dim TOTAL_SBU_CHARGES As Double = GetOVERALL_SUM("TOTAL_DEDUCTION", paydatee)
                         Dim TOTAL_NET_PAY As Double = GetOVERALL_SUM("NET_PAY", paydatee)
                         Dim TOTAL_13MONTH As Double = Get13MONTH_TOTAL(paydatee)
+
+                        Dim TOTAL_CHARGES_SBU As Decimal = GetDeductionAmount_SBU(paydatee)
+                        Dim TOTAL_CHARGES_MP2 As Decimal = GetDeductionAmount_MP2(paydatee)
+                        Dim TOTAL_CHARGES_CA As Decimal = GetDeductionAmount_CA(paydatee)
+                        Dim TOTAL_CHARGES_ECS As Decimal = GetDeductionAmount_ECS(paydatee)
+                        Dim TOTAL_LOAN_SSS As Decimal = GetDeductionAmount_SSSLOAN(paydatee)
+                        Dim TOTAL_LOAN_PAGIBIG As Decimal = GetDeductionAmount_PAGIBIGLOAN(paydatee)
+
+                        Dim TOTAL_CHARGES As Double = GetOVERALL_SUM("TOTAL_DEDUCTION", paydatee)
+                        Dim TOTAL_COMBINE_CHARGES As Decimal = TOTAL_CHARGES_SBU + TOTAL_CHARGES_MP2 + TOTAL_CHARGES_CA + TOTAL_CHARGES_ECS + TOTAL_LOAN_SSS + TOTAL_LOAN_PAGIBIG
+                        Dim TOTAL_CHARGES_OTHERS As Decimal = IIf(TOTAL_CHARGES >= TOTAL_COMBINE_CHARGES, TOTAL_CHARGES - TOTAL_COMBINE_CHARGES, 0)
 
                         Dim paramList As New List(Of Microsoft.Reporting.WinForms.ReportParameter) From {
                     New Microsoft.Reporting.WinForms.ReportParameter("paramEmployees", TOTAL_EMP),
@@ -812,9 +822,15 @@ A
                     New Microsoft.Reporting.WinForms.ReportParameter("paramSSS", TOTAL_SSS.ToString(”N”)),
                     New Microsoft.Reporting.WinForms.ReportParameter("paramPHIC", TOTAL_PHIC.ToString(”N”)),
                     New Microsoft.Reporting.WinForms.ReportParameter("paramPagibig", TOTAL_PAGIBIG.ToString(”N”)),
-                    New Microsoft.Reporting.WinForms.ReportParameter("paramSBU_Charges", TOTAL_SBU_CHARGES.ToString(”N”)),
                     New Microsoft.Reporting.WinForms.ReportParameter("paramNetPay", TOTAL_NET_PAY.ToString(”N”)),
-                    New Microsoft.Reporting.WinForms.ReportParameter("param13Month", TOTAL_13MONTH.ToString(”N”))
+                    New Microsoft.Reporting.WinForms.ReportParameter("param13Month", TOTAL_13MONTH.ToString(”N”)),
+                    New Microsoft.Reporting.WinForms.ReportParameter("paramCharges_SBU", TOTAL_CHARGES_SBU.ToString(”N”)),
+                    New Microsoft.Reporting.WinForms.ReportParameter("paramCharges_MP2", TOTAL_CHARGES_MP2.ToString(”N”)),
+                    New Microsoft.Reporting.WinForms.ReportParameter("paramCharges_CA", TOTAL_CHARGES_CA.ToString(”N”)),
+                    New Microsoft.Reporting.WinForms.ReportParameter("paramCharges_ECS", TOTAL_CHARGES_ECS.ToString(”N”)),
+                    New Microsoft.Reporting.WinForms.ReportParameter("paramLoans_SSS", TOTAL_LOAN_SSS.ToString(”N”)),
+                    New Microsoft.Reporting.WinForms.ReportParameter("paramLoans_PAGIBIG", TOTAL_LOAN_PAGIBIG.ToString(”N”)),
+                    New Microsoft.Reporting.WinForms.ReportParameter("paramCharges_OTHERS", TOTAL_CHARGES_OTHERS.ToString(”N”))
                     }
 
                         Dim rds_DTR As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt_NetPay)
@@ -1934,19 +1950,6 @@ A
         ElseIf Company_Combo.SelectedIndex = 4 Then '=== PERFECOM 
 
             NetBranch_Combo.Items.Clear()
-            'Dim mysql = $"Select * From PAYROLL_PAYOUT A 
-            '                            inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
-            '                            left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
-            '                            where A.PAYDATE  = '{PaydateNet_ComboB.Text}' 
-            '                            and  (B.COMPANY  = 'PERFECOM' OR B.HO_CATEGORY In ('Perfecom Admin Office','Perfecom Admin Operation'))
-            '                            ORDER BY CASE WHEN B.BRANCHCODE = 'SMG' THEN 1
-            '                                          WHEN B.BRANCHCODE = 'KCG' THEN 2
-            '                                          WHEN B.BRANCHCODE = 'OPK' THEN 3
-            '                                          WHEN B.BRANCHCODE = 'ARC' THEN 4
-            '                                          WHEN B.BRANCHCODE = 'ARC' THEN 5
-            '                                          WHEN B.BRANCHCODE = 'KCM' THEN 6
-            '                                          WHEN B.BRANCHCODE = 'ZAM' THEN 7
-            '                                          else 0 end, B.HO_CATEGORY asc, B.BRANCHCODE asc"
             Dim mysql = $"Select * From PAYROLL_PAYOUT A 
                                         inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
                                         left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
@@ -2634,17 +2637,17 @@ A
                             linee = "PAGIBIG"
                             Dim PAGIBIG As Double = .Item("PAGIBIG_COMP")
                             linee = "CHARGES_SBU"
-                            Dim CHARGES_SBU As Decimal = GetDeductionAmount_SBU(BIO_NO, paydatee)
+                            Dim CHARGES_SBU As Decimal = GetDeductionAmount_SBU(paydatee, BIO_NO)
                             linee = "CHARGES_MP2"
-                            Dim CHARGES_MP2 As Decimal = GetDeductionAmount_MP2(BIO_NO, paydatee)
+                            Dim CHARGES_MP2 As Decimal = GetDeductionAmount_MP2(paydatee, BIO_NO)
                             linee = "CHARGES_CA"
-                            Dim CHARGES_CA As Decimal = GetDeductionAmount_CA(BIO_NO, paydatee)
+                            Dim CHARGES_CA As Decimal = GetDeductionAmount_CA(paydatee, BIO_NO)
                             linee = "CHARGES_ECS"
-                            Dim CHARGES_ECS As Decimal = GetDeductionAmount_ECS(BIO_NO, paydatee)
+                            Dim CHARGES_ECS As Decimal = GetDeductionAmount_ECS(paydatee, BIO_NO)
                             linee = "LOAN_SSS"
-                            Dim LOAN_SSS As Decimal = GetDeductionAmount_SSSLOAN(BIO_NO, paydatee)
+                            Dim LOAN_SSS As Decimal = GetDeductionAmount_SSSLOAN(paydatee, BIO_NO)
                             linee = "LOAN_PAGIBIG"
-                            Dim LOAN_PAGIBIG As Decimal = GetDeductionAmount_PAGIBIGLOAN(BIO_NO, paydatee)
+                            Dim LOAN_PAGIBIG As Decimal = GetDeductionAmount_PAGIBIGLOAN(paydatee, BIO_NO)
                             linee = "CHARGES_OTHERS"
                             Dim OVERALL_CHARGES As Decimal = .Item("TOTAL_DEDUCTION")
                             Dim COMBINE_CHARGES As Decimal = CHARGES_SBU + CHARGES_MP2 + CHARGES_CA + CHARGES_ECS + LOAN_SSS + LOAN_PAGIBIG

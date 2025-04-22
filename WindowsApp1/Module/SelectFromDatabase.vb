@@ -3051,9 +3051,10 @@ Module SelectFromDatabase
         Return dataa
     End Function
 
-    Friend Function GetDeductionAmount_SBU(bioNo As Integer, paydate As String) As Decimal
+    Friend Function GetDeductionAmount_SBU(paydate As String, Optional bioNo As Integer = 0) As Decimal
         Dim dataa As Decimal = 0
-        Dim mysql As String = $"SELECT SUM(AMOUNT) FROM RECORDED_ALLOW_DEDUC WHERE TRANSAC_NAME='DEDUCTION' AND CATEGORY='SBU' AND BIO_NO='{bioNo}' AND PAYDATE='{paydate}'"
+        Dim perBioNo As String = IIf(bioNo = 0, "", $"AND BIO_NO={bioNo}")
+        Dim mysql As String = $"SELECT SUM(AMOUNT) FROM RECORDED_ALLOW_DEDUC WHERE TRANSAC_NAME='DEDUCTION' AND CATEGORY='SBU' AND PAYDATE='{paydate}' {perBioNo}"
         Using ds As DataSet = LoadSQL(mysql)
             If ds.Tables(0).Rows.Count > 0 Then
                 With ds.Tables(0).Rows(0)
@@ -3064,9 +3065,10 @@ Module SelectFromDatabase
         Return dataa
     End Function
 
-    Friend Function GetDeductionAmount_MP2(bioNo As Integer, paydate As String) As Decimal
+    Friend Function GetDeductionAmount_MP2(paydate As String, Optional bioNo As Integer = 0) As Decimal
         Dim dataa As Decimal = 0
-        Dim mysql As String = $"SELECT SUM(AMOUNT) FROM RECORDED_ALLOW_DEDUC WHERE TRANSAC_NAME='DEDUCTION' AND CATEGORY='MP2' AND BIO_NO='{bioNo}' AND PAYDATE='{paydate}'"
+        Dim perBioNo As String = IIf(bioNo = 0, "", $"AND BIO_NO={bioNo}")
+        Dim mysql As String = $"SELECT SUM(AMOUNT) FROM RECORDED_ALLOW_DEDUC WHERE TRANSAC_NAME='DEDUCTION' AND CATEGORY='MP2' AND PAYDATE='{paydate}' {perBioNo}"
         Using ds As DataSet = LoadSQL(mysql)
             If ds.Tables(0).Rows.Count > 0 Then
                 With ds.Tables(0).Rows(0)
@@ -3077,9 +3079,10 @@ Module SelectFromDatabase
         Return dataa
     End Function
 
-    Friend Function GetDeductionAmount_CA(bioNo As Integer, paydate As String) As Decimal
+    Friend Function GetDeductionAmount_CA(paydate As String, Optional bioNo As Integer = 0) As Decimal
         Dim dataa As Decimal = 0
-        Dim mysql As String = $"SELECT SUM(AMOUNT) FROM RECORDED_ALLOW_DEDUC WHERE TRANSAC_NAME='DEDUCTION' AND UPPER(CATEGORY) LIKE UPPER('%CASH ADVANCE%') AND BIO_NO='{bioNo}' AND PAYDATE='{paydate}'"
+        Dim perBioNo As String = IIf(bioNo = 0, "", $"AND BIO_NO={bioNo}")
+        Dim mysql As String = $"SELECT SUM(AMOUNT) FROM RECORDED_ALLOW_DEDUC WHERE TRANSAC_NAME='DEDUCTION' AND UPPER(CATEGORY) LIKE UPPER('%CASH ADVANCE%') AND PAYDATE='{paydate}' {perBioNo}"
         Using ds As DataSet = LoadSQL(mysql)
             If ds.Tables(0).Rows.Count > 0 Then
                 With ds.Tables(0).Rows(0)
@@ -3090,9 +3093,10 @@ Module SelectFromDatabase
         Return dataa
     End Function
 
-    Friend Function GetDeductionAmount_ECS(bioNo As Integer, paydate As String) As Decimal
+    Friend Function GetDeductionAmount_ECS(paydate As String, Optional bioNo As Integer = 0) As Decimal
         Dim dataa As Decimal = 0
-        Dim mysql As String = $"SELECT SUM(AMOUNT) FROM RECORDED_ALLOW_DEDUC WHERE TRANSAC_NAME='DEDUCTION' AND UPPER(CATEGORY) LIKE UPPER('%ECS%') AND BIO_NO='{bioNo}' AND PAYDATE='{paydate}'"
+        Dim perBioNo As String = IIf(bioNo = 0, "", $"AND BIO_NO={bioNo}")
+        Dim mysql As String = $"SELECT SUM(AMOUNT) FROM RECORDED_ALLOW_DEDUC WHERE TRANSAC_NAME='DEDUCTION' AND UPPER(CATEGORY) LIKE UPPER('%ECS%') AND PAYDATE='{paydate}' {perBioNo}"
         Using ds As DataSet = LoadSQL(mysql)
             If ds.Tables(0).Rows.Count > 0 Then
                 With ds.Tables(0).Rows(0)
@@ -3103,9 +3107,10 @@ Module SelectFromDatabase
         Return dataa
     End Function
 
-    Friend Function GetDeductionAmount_SSSLOAN(bioNo As Integer, paydate As String) As Decimal
+    Friend Function GetDeductionAmount_SSSLOAN(paydate As String, Optional bioNo As Integer = 0) As Decimal
         Dim dataa As Decimal = 0
-        Dim mysql As String = $"SELECT SUM(AMOUNT) FROM RECORDED_ALLOW_DEDUC WHERE TRANSAC_NAME='DEDUCTION' AND CATEGORY='SSS LOAN' AND BIO_NO='{bioNo}' AND PAYDATE='{paydate}'"
+        Dim perBioNo As String = IIf(bioNo = 0, "", $"AND BIO_NO={bioNo}")
+        Dim mysql As String = $"SELECT SUM(AMOUNT) FROM RECORDED_ALLOW_DEDUC WHERE TRANSAC_NAME='DEDUCTION' AND CATEGORY='SSS LOAN' AND PAYDATE='{paydate}' {perBioNo}"
         Using ds As DataSet = LoadSQL(mysql)
             If ds.Tables(0).Rows.Count > 0 Then
                 With ds.Tables(0).Rows(0)
@@ -3116,9 +3121,10 @@ Module SelectFromDatabase
         Return dataa
     End Function
 
-    Friend Function GetDeductionAmount_PAGIBIGLOAN(bioNo As Integer, paydate As String) As Decimal
+    Friend Function GetDeductionAmount_PAGIBIGLOAN(paydate As String, Optional bioNo As Integer = 0) As Decimal
         Dim dataa As Decimal = 0
-        Dim mysql As String = $"SELECT SUM(AMOUNT) FROM RECORDED_ALLOW_DEDUC WHERE TRANSAC_NAME='DEDUCTION' AND CATEGORY='PAG-IBIG LOAN' AND BIO_NO='{bioNo}' AND PAYDATE='{paydate}'"
+        Dim perBioNo As String = IIf(bioNo = 0, "", $"AND BIO_NO={bioNo}")
+        Dim mysql As String = $"SELECT SUM(AMOUNT) FROM RECORDED_ALLOW_DEDUC WHERE TRANSAC_NAME='DEDUCTION' AND CATEGORY='PAG-IBIG LOAN' AND PAYDATE='{paydate}' {perBioNo}"
         Using ds As DataSet = LoadSQL(mysql)
             If ds.Tables(0).Rows.Count > 0 Then
                 With ds.Tables(0).Rows(0)
