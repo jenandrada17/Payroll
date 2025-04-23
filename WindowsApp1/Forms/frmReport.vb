@@ -635,6 +635,8 @@ A
             Dim paydatee As String = PaydateNet_ComboB.SelectedItem
             Dim GROUP As String = ""
             Dim period As String
+            Dim linee As String = Nothing
+            Dim fullname As String = Nothing
 
             Dim date_pay As DateTime = Convert.ToDateTime(PaydateNet_ComboB.Text)
             date_pay = date_pay.ToString("d")
@@ -669,6 +671,7 @@ A
                     .Columns.Add("HO_CATEGORY")
                     .Columns.Add("PLUS")
                     .Columns.Add("MONTH_13")
+                    .Columns.Add("ACCOUNT_NO")
                     .Columns.Add("CHARGES_MP2")
                     .Columns.Add("CHARGES_CA")
                     .Columns.Add("CHARGES_ECS")
@@ -687,39 +690,77 @@ A
                         For Each dr In ds.Tables(0).Rows
                             With dr
                                 Dim EMP_NO As String = IIf(IsDBNull(.Item("EMP_NO")), "", .Item("EMP_NO"))
-                                Dim BIO_NO As String = .Item("BIO_NO")
+                                Dim BIO_NO As String = .Item("BIOMETRIC_ID")
 
                                 Dim payroll As DateTime = paydatee
 
                                 '============================= NAME AND ATTENDANCE ============================  
+                                linee = "FULLNAME"
                                 Dim namee As String = .Item("FULLNAME")
+                                linee = "ACCOUNTNO"
+                                Dim ACCOUNTNO As String = IIf(IsDBNull(.Item("ACCOUNTNO")), "", .Item("ACCOUNTNO"))
+                                fullname = namee
+                                linee = "BASIC"
                                 Dim BASIC As Double = .Item("TOTAL_BASIC")
+                                linee = "OVERTIME"
                                 Dim OVERTIME As Decimal = .Item("TOTAL_OVERTIME")
+                                linee = "HOLIDAY"
                                 Dim HOLIDAY As Decimal = .Item("TOTAL_REGHOLIDAY") + .Item("TOTAL_SPECHOLIDAY")
+                                linee = "N_DIFF"
                                 Dim N_DIFF As Decimal = .Item("TOTAL_NIGHT_RATE")
+                                linee = "PI_ECOLA_SIL"
                                 Dim PI_ECOLA_SIL As Double = Get_PI_ECOLA_SIL(BIO_NO, paydatee)
+                                linee = "TARDINESS"
                                 Dim TARDINESS As Double = .Item("TOTAL_LATE_UT")
+                                linee = "SSS"
                                 Dim SSS As Double = .Item("SSS_COMP")
+                                linee = "PHIC"
                                 Dim PHIC As Double = .Item("PHILHEALTH_COMP")
+                                linee = "PAGIBIG"
                                 Dim PAGIBIG As Double = .Item("PAGIBIG_COMP")
+                                linee = "NET_PAY"
                                 Dim NET_PAY As Double = .Item("NET_PAY")
-                                Dim BRANCH_CODE As String = IIf(.Item("BRANCH_CODE") = "" Or IsDBNull(.Item("BRANCH_CODE")), .Item("HO_CATEGORY"), .Item("BRANCHNAME"))
+                                linee = "COMPANY"
                                 Dim COMPANY As String = .Item("COMPANY")
+                                linee = "HO_CATEGORY"
                                 Dim HO_CATEGORY As String = IIf(IsDBNull(.Item("HO_CATEGORY")), "", .Item("HO_CATEGORY"))
-                                Dim Minimum_rate As Double = IIf(IsDBNull(.Item("BRANCH_CODE")) Or .Item("BRANCH_CODE").Equals(""), GetMinimumRate("CITY", "GENSAN"), GetMinimumRate("BRANCHCODE", .Item("BRANCH_CODE")))
-                                Dim Rate As Decimal = IIf(IsDBNull(.Item("RATE_DAILY")) Or .Item("RATE_DAILY") = 0, Minimum_rate, .Item("RATE_DAILY"))
+                                linee = "fix_monthly_rate"
                                 Dim fix_monthly_rate As Boolean = IIf(IsDBNull(.Item("FIX_MONTHLY_RATE")), False, .Item("FIX_MONTHLY_RATE"))
                                 'SEGRE CHARGES  
+                                linee = "CHARGES_SBU"
                                 Dim CHARGES_SBU As Decimal = GetDeductionAmount_SBU(paydatee, BIO_NO)
+                                linee = "CHARGES_MP2"
                                 Dim CHARGES_MP2 As Decimal = GetDeductionAmount_MP2(paydatee, BIO_NO)
+                                linee = "CHARGES_CA"
                                 Dim CHARGES_CA As Decimal = GetDeductionAmount_CA(paydatee, BIO_NO)
+                                linee = "CHARGES_ECS"
                                 Dim CHARGES_ECS As Decimal = GetDeductionAmount_ECS(paydatee, BIO_NO)
+                                linee = "LOAN_SSS"
                                 Dim LOAN_SSS As Decimal = GetDeductionAmount_SSSLOAN(paydatee, BIO_NO)
+                                linee = "LOAN_PAGIBIG"
                                 Dim LOAN_PAGIBIG As Decimal = GetDeductionAmount_PAGIBIGLOAN(paydatee, BIO_NO)
+                                linee = "FULLNAME"
                                 Dim OVERALL_CHARGES As Decimal = .Item("TOTAL_DEDUCTION")
                                 Dim COMBINE_CHARGES As Decimal = CHARGES_SBU + CHARGES_MP2 + CHARGES_CA + CHARGES_ECS + LOAN_SSS + LOAN_PAGIBIG
+                                linee = "CHARGES_OTHERS"
                                 Dim CHARGES_OTHERS As Decimal = IIf(OVERALL_CHARGES >= COMBINE_CHARGES, OVERALL_CHARGES - COMBINE_CHARGES, 0)
 
+                                linee = "BRANCH_CODE - Minimum_rate"
+                                Dim Minimum_rate As Double = 0
+                                Dim BRANCH_CODE As String = Nothing
+                                If IsDBNull(.Item("BRANCH_CODE")) Then
+                                    BRANCH_CODE = .Item("HO_CATEGORY")
+                                    Minimum_rate = GetMinimumRate("CITY", "GENSAN")
+                                ElseIf .Item("BRANCH_CODE").Equals("") Then
+                                    BRANCH_CODE = .Item("HO_CATEGORY")
+                                    Minimum_rate = GetMinimumRate("CITY", "GENSAN")
+                                Else
+                                    BRANCH_CODE = IIf(IsDBNull(.Item("BRANCHNAME")), "", .Item("BRANCHNAME"))
+                                    Minimum_rate = GetMinimumRate("BRANCHCODE", .Item("BRANCH_CODE"))
+                                End If
+
+                                linee = "Rate"
+                                Dim Rate As Decimal = IIf(IsDBNull(.Item("RATE_DAILY")) Or .Item("RATE_DAILY") = 0, Minimum_rate, .Item("RATE_DAILY"))
 
                                 If fix_monthly_rate = True Then
                                     OVERTIME = 0
@@ -775,7 +816,7 @@ A
                                 dt_NetPay.Rows.Add(EMP_NO, namee, BASIC.ToString("n"), OVERTIME.ToString("n"), HOLIDAY.ToString("n"), N_DIFF.ToString("n"),
                                                    PI_ECOLA_SIL.ToString("n"), TARDINESS.ToString("n"), SSS.ToString("n"), PHIC.ToString("n"), PAGIBIG.ToString("n"),
                                                    CHARGES_SBU.ToString("n"), NET_PAY.ToString("n"), BRANCH_CODE, payroll.ToString("MMMM dd, yyyy"), period, COMPANY,
-                                                   HO_CATEGORY, tempPlus, MONTH_13.ToString("n"), CHARGES_MP2, CHARGES_CA, CHARGES_ECS, CHARGES_OTHERS,
+                                                   HO_CATEGORY, tempPlus, MONTH_13.ToString("n"), ACCOUNTNO, CHARGES_MP2, CHARGES_CA, CHARGES_ECS, CHARGES_OTHERS,
                                                    LOAN_SSS, LOAN_PAGIBIG)
 
                                 frmMainForm.AppProgressBar.Value += 1
@@ -833,7 +874,7 @@ A
                     New Microsoft.Reporting.WinForms.ReportParameter("paramCharges_OTHERS", TOTAL_CHARGES_OTHERS.ToString(”N”))
                     }
 
-                        Dim rds_DTR As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt_NetPay)
+                        Dim rds_DTR As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet2", dt_NetPay)
                         ReportV_NetPay.LocalReport.DataSources.Add(rds_DTR)
                         ReportV_NetPay.LocalReport.SetParameters(paramList)
                         ReportV_NetPay.RefreshReport()
@@ -845,7 +886,8 @@ A
                 End Using
 
             Catch ex As Exception
-                MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
+                Console.WriteLine($"{ex.ToString}{vbCrLf}{linee}{vbCrLf}{fullname}")
+                MsgBox($"{ex.ToString}{vbCrLf}{linee}{vbCrLf}{fullname}")
             End Try
         End If
     End Sub
@@ -1921,10 +1963,20 @@ A
 
         If Company_Combo.SelectedIndex = 0 Then '=== ALL COMPANY
             NetBranch_Combo.Items.Clear()
-            Dim mysql = $"Select * From PAYROLL_PAYOUT A 
-                                        inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
-                                        left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
-                                        where A.PAYDATE  = '{PaydateNet_ComboB.Text}' ORDER BY BRANCHNAME"
+            Dim mysql = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
+                                 LASTNAME || ', ' || FIRSTNAME || 
+                                        CASE
+                                            WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
+                                            ELSE ''
+                                        END || 
+                                        CASE 
+                                            WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX
+                                            ELSE ''
+                                        END AS FULLNAME 
+                         From PAYROLL_PAYOUT A 
+                         inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
+                         left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
+                         where A.PAYDATE  = '{PaydateNet_ComboB.Text}' ORDER BY BRANCHNAME"
             PlusS = "ALL"
 
             LoadNet_Print(mysql)
