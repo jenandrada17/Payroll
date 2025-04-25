@@ -38,6 +38,8 @@ Partial Class frmReport
         Me.PG_RealtyBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.RemittanceBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.PerformanceIncentivesBindingSource = New System.Windows.Forms.BindingSource(Me.components)
+        Me.EmployeeRateBindingSource = New System.Windows.Forms.BindingSource(Me.components)
+        Me.reports = New WindowsApp1.reports()
         Me.Reports_Tab = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
         Me.Label31 = New System.Windows.Forms.Label()
@@ -195,14 +197,15 @@ Partial Class frmReport
         Me.Rpt_Rate = New Microsoft.Reporting.WinForms.ReportViewer()
         Me.RateSearch_txt = New System.Windows.Forms.TextBox()
         Me.RateSearch_btn = New System.Windows.Forms.Button()
+        Me.tabReassignment = New System.Windows.Forms.TabPage()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Close_LBL = New System.Windows.Forms.Label()
-        Me.EmployeeRateBindingSource = New System.Windows.Forms.BindingSource(Me.components)
-        Me.reports = New WindowsApp1.reports()
         Me.Reports1 = New WindowsApp1.reports()
         CType(Me.PG_RealtyBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.RemittanceBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PerformanceIncentivesBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.EmployeeRateBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.reports, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Reports_Tab.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.TabPage3.SuspendLayout()
@@ -220,10 +223,18 @@ Partial Class frmReport
         Me.TabPage11.SuspendLayout()
         Me.TabPage12.SuspendLayout()
         Me.TabPage8.SuspendLayout()
-        CType(Me.EmployeeRateBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.reports, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Reports1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
+        '
+        'EmployeeRateBindingSource
+        '
+        Me.EmployeeRateBindingSource.DataMember = "EmployeeRate"
+        Me.EmployeeRateBindingSource.DataSource = Me.reports
+        '
+        'reports
+        '
+        Me.reports.DataSetName = "reports"
+        Me.reports.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema
         '
         'Reports_Tab
         '
@@ -240,6 +251,7 @@ Partial Class frmReport
         Me.Reports_Tab.Controls.Add(Me.TabPage11)
         Me.Reports_Tab.Controls.Add(Me.TabPage12)
         Me.Reports_Tab.Controls.Add(Me.TabPage8)
+        Me.Reports_Tab.Controls.Add(Me.tabReassignment)
         Me.Reports_Tab.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Reports_Tab.Location = New System.Drawing.Point(5, 30)
         Me.Reports_Tab.Name = "Reports_Tab"
@@ -1900,6 +1912,16 @@ Partial Class frmReport
         Me.RateSearch_btn.Text = "Search"
         Me.RateSearch_btn.UseVisualStyleBackColor = True
         '
+        'tabReassignment
+        '
+        Me.tabReassignment.Location = New System.Drawing.Point(4, 36)
+        Me.tabReassignment.Name = "tabReassignment"
+        Me.tabReassignment.Padding = New System.Windows.Forms.Padding(3)
+        Me.tabReassignment.Size = New System.Drawing.Size(1151, 596)
+        Me.tabReassignment.TabIndex = 15
+        Me.tabReassignment.Text = "Reassignment"
+        Me.tabReassignment.UseVisualStyleBackColor = True
+        '
         'Label1
         '
         Me.Label1.AutoSize = True
@@ -1920,16 +1942,6 @@ Partial Class frmReport
         Me.Close_LBL.TabIndex = 75
         Me.Close_LBL.Text = "Close"
         '
-        'EmployeeRateBindingSource
-        '
-        Me.EmployeeRateBindingSource.DataMember = "EmployeeRate"
-        Me.EmployeeRateBindingSource.DataSource = Me.reports
-        '
-        'reports
-        '
-        Me.reports.DataSetName = "reports"
-        Me.reports.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema
-        '
         'Reports1
         '
         Me.Reports1.DataSetName = "reports"
@@ -1949,6 +1961,8 @@ Partial Class frmReport
         CType(Me.PG_RealtyBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.RemittanceBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PerformanceIncentivesBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.EmployeeRateBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.reports, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Reports_Tab.ResumeLayout(False)
         Me.TabPage1.ResumeLayout(False)
         Me.TabPage1.PerformLayout()
@@ -1981,8 +1995,6 @@ Partial Class frmReport
         Me.TabPage12.PerformLayout()
         Me.TabPage8.ResumeLayout(False)
         Me.TabPage8.PerformLayout()
-        CType(Me.EmployeeRateBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.reports, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Reports1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
@@ -2154,4 +2166,5 @@ Partial Class frmReport
     Friend WithEvents btnDeductionList As Button
     Friend WithEvents Label53 As Label
     Friend WithEvents PaydateSBU_Combo As ComboBox
+    Friend WithEvents tabReassignment As TabPage
 End Class
