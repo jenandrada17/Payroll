@@ -263,40 +263,74 @@ Module Public_Function
     '    Console.WriteLine(recipient_Email)
     'End Sub
 
+    'Friend Sub Send_Email(byteViewer As Byte(), recipient_Email As String, recipient_Name As String, paydate As String, BodyText As String, subjectt As String, Optional bio_no As String = "", Optional payrollDate As String = "")
+    '    Try
+
+    '        Dim email As String = GetEmail()
+    '        Dim password As String = GetPassword()
+
+    '        Dim Smtp_Server As New SmtpClient
+    '        Dim e_mail As New MailMessage()
+    '        Smtp_Server.UseDefaultCredentials = False
+    '        Smtp_Server.Credentials = New Net.NetworkCredential(email, password)
+    '        Smtp_Server.Port = 587
+    '        Smtp_Server.EnableSsl = True
+    '        Smtp_Server.Host = "smtp.gmail.com"
+
+    '        e_mail = New MailMessage()
+    '        e_mail.From = New MailAddress(email)
+    '        e_mail.To.Add(recipient_Email)
+    '        e_mail.Subject = subjectt
+    '        e_mail.IsBodyHtml = False
+
+    '        Dim memoryStream = New MemoryStream(byteViewer)
+    '        memoryStream.Seek(0, SeekOrigin.Begin)
+
+    '        Dim attachment = New Attachment(memoryStream, recipient_Name & ".pdf")
+    '        e_mail.Attachments.Add(attachment)
+
+    '        e_mail.Body = BodyText
+    '        Smtp_Server.Send(e_mail)
+
+    '        If bio_no <> "" Then UpdateEMAIL_SENT(bio_no, payrollDate)
+    '    Catch error_t As Exception
+    '        MsgBox(error_t.ToString)
+    '    End Try
+    'End Sub
+
     Friend Sub Send_Email(byteViewer As Byte(), recipient_Email As String, recipient_Name As String, paydate As String, BodyText As String, subjectt As String, Optional bio_no As String = "", Optional payrollDate As String = "")
         Try
-
             Dim email As String = GetEmail()
             Dim password As String = GetPassword()
 
-            Dim Smtp_Server As New SmtpClient
-            Dim e_mail As New MailMessage()
-            Smtp_Server.UseDefaultCredentials = False
-            Smtp_Server.Credentials = New Net.NetworkCredential(email, password)
-            Smtp_Server.Port = 587
-            Smtp_Server.EnableSsl = True
-            Smtp_Server.Host = "smtp.gmail.com"
+            Using Smtp_Server As New SmtpClient("smtp.gmail.com", 587),
+              e_mail As New MailMessage(),
+              memoryStream As New MemoryStream(byteViewer)
 
-            e_mail = New MailMessage()
-            e_mail.From = New MailAddress(email)
-            e_mail.To.Add(recipient_Email)
-            e_mail.Subject = subjectt
-            e_mail.IsBodyHtml = False
+                Smtp_Server.UseDefaultCredentials = False
+                Smtp_Server.Credentials = New Net.NetworkCredential(email, password)
+                Smtp_Server.EnableSsl = True
 
-            Dim memoryStream = New MemoryStream(byteViewer)
-            memoryStream.Seek(0, SeekOrigin.Begin)
+                e_mail.From = New MailAddress(email)
+                e_mail.To.Add(recipient_Email)
+                e_mail.Subject = subjectt
+                e_mail.IsBodyHtml = False
+                e_mail.Body = BodyText
 
-            Dim attachment = New Attachment(memoryStream, recipient_Name & ".pdf")
-            e_mail.Attachments.Add(attachment)
+                memoryStream.Seek(0, SeekOrigin.Begin)
+                Dim attachment = New Attachment(memoryStream, recipient_Name & ".pdf")
+                e_mail.Attachments.Add(attachment)
 
-            e_mail.Body = BodyText
-            Smtp_Server.Send(e_mail)
+                Smtp_Server.Send(e_mail)
+            End Using
 
             If bio_no <> "" Then UpdateEMAIL_SENT(bio_no, payrollDate)
+
         Catch error_t As Exception
-            MsgBox(error_t.ToString)
+            MsgBox("Error sending to " & recipient_Email & vbCrLf & error_t.ToString)
         End Try
     End Sub
+
 
     Friend Sub TempAttendance()
         RunCommand("DELETE FROM TEMP_ATTENDANCE")

@@ -6391,8 +6391,6 @@ Partial Public Class reports
         
         Private columnDATE_CREATED As Global.System.Data.DataColumn
         
-        Private columnBRANCH As Global.System.Data.DataColumn
-        
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
         Public Sub New()
@@ -6485,14 +6483,6 @@ Partial Public Class reports
         End Property
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
-        Public ReadOnly Property BRANCHColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnBRANCH
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0"),  _
          Global.System.ComponentModel.Browsable(false)>  _
         Public ReadOnly Property Count() As Integer
@@ -6529,9 +6519,9 @@ Partial Public Class reports
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
-        Public Overloads Function AddReassignmentRow(ByVal FULLNAME As String, ByVal EFFECTIVE_DATE As String, ByVal EMP_POSITION As String, ByVal FROM_BRANCH As String, ByVal TO_BRANCH As String, ByVal REMARKS As String, ByVal DATE_CREATED As String, ByVal BRANCH As String) As ReassignmentRow
+        Public Overloads Function AddReassignmentRow(ByVal FULLNAME As String, ByVal EFFECTIVE_DATE As String, ByVal EMP_POSITION As String, ByVal FROM_BRANCH As String, ByVal TO_BRANCH As String, ByVal REMARKS As String, ByVal DATE_CREATED As String) As ReassignmentRow
             Dim rowReassignmentRow As ReassignmentRow = CType(Me.NewRow,ReassignmentRow)
-            Dim columnValuesArray() As Object = New Object() {FULLNAME, EFFECTIVE_DATE, EMP_POSITION, FROM_BRANCH, TO_BRANCH, REMARKS, DATE_CREATED, BRANCH}
+            Dim columnValuesArray() As Object = New Object() {FULLNAME, EFFECTIVE_DATE, EMP_POSITION, FROM_BRANCH, TO_BRANCH, REMARKS, DATE_CREATED}
             rowReassignmentRow.ItemArray = columnValuesArray
             Me.Rows.Add(rowReassignmentRow)
             Return rowReassignmentRow
@@ -6561,7 +6551,6 @@ Partial Public Class reports
             Me.columnTO_BRANCH = MyBase.Columns("TO_BRANCH")
             Me.columnREMARKS = MyBase.Columns("REMARKS")
             Me.columnDATE_CREATED = MyBase.Columns("DATE_CREATED")
-            Me.columnBRANCH = MyBase.Columns("BRANCH")
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -6581,8 +6570,6 @@ Partial Public Class reports
             MyBase.Columns.Add(Me.columnREMARKS)
             Me.columnDATE_CREATED = New Global.System.Data.DataColumn("DATE_CREATED", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnDATE_CREATED)
-            Me.columnBRANCH = New Global.System.Data.DataColumn("BRANCH", GetType(String), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnBRANCH)
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -11513,21 +11500,6 @@ Partial Public Class reports
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
-        Public Property BRANCH() As String
-            Get
-                Try 
-                    Return CType(Me(Me.tableReassignment.BRANCHColumn),String)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'BRANCH' in table 'Reassignment' is DBNull.", e)
-                End Try
-            End Get
-            Set
-                Me(Me.tableReassignment.BRANCHColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
         Public Function IsFULLNAMENull() As Boolean
             Return Me.IsNull(Me.tableReassignment.FULLNAMEColumn)
         End Function
@@ -11608,18 +11580,6 @@ Partial Public Class reports
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
         Public Sub SetDATE_CREATEDNull()
             Me(Me.tableReassignment.DATE_CREATEDColumn) = Global.System.Convert.DBNull
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
-        Public Function IsBRANCHNull() As Boolean
-            Return Me.IsNull(Me.tableReassignment.BRANCHColumn)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
-        Public Sub SetBRANCHNull()
-            Me(Me.tableReassignment.BRANCHColumn) = Global.System.Convert.DBNull
         End Sub
     End Class
     

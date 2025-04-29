@@ -2,6 +2,7 @@
 Imports System.Text.RegularExpressions
 Imports Microsoft.Reporting.WinForms
 Imports System.IO
+Imports System.Threading
 
 Public Class frmPayout
 
@@ -858,9 +859,13 @@ Public Class frmPayout
                             MsgBox(namee & " has an invalid email address.", MsgBoxStyle.Exclamation, "INVALID")
                             Continue For
                         Else                    '============== SEND TO EMAIL ADDRESS IF VALID ============================ 
+                            Try
+                                Thread.Sleep(500)
+                                Send_Email(ReportViewer_payslip.LocalReport.Render("PDF"), recipient, namee, Payslip_paydate_Combo.Text, BodyText_RichB.Text, datee.ToString("MMMM dd, yyyy") & " PAYROLL", .item("BIOMETRIC_ID"), Payslip_paydate_Combo.Text)
 
-                            Send_Email(ReportViewer_payslip.LocalReport.Render("PDF"), recipient, namee, Payslip_paydate_Combo.Text, BodyText_RichB.Text, datee.ToString("MMMM dd, yyyy") & " PAYROLL", .item("BIOMETRIC_ID"), Payslip_paydate_Combo.Text)
-
+                            Catch ex As Exception
+                                MsgBox($"Email not sent to {namee}", MsgBoxStyle.Exclamation)
+                            End Try
                         End If
 
                         frmMainForm.AppProgressBar.Value += 1
@@ -872,6 +877,8 @@ Public Class frmPayout
 
                 MsgBox("Email successfully sent!", MsgBoxStyle.Information, "Information")
                 progressBarEnd()
+            Else
+                MsgBox("All emails have been sent already!", MsgBoxStyle.Information, "Information")
             End If
         End Using
     End Sub

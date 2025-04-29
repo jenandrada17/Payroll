@@ -35,6 +35,7 @@ Public Class frmReport
         PopulateComboBoxes_PayDate(comboBoxes, "PAYROLL_PAYOUT", "PAYDATE")
         PopulatePaydate_Monthly(Allow_Paydate_Combo, "RECORDED_ALLOW_DEDUC", "PAYDATE")
         PopulatePaydate_Yearly(SILYear_Combo, "RECORDED_ALLOW_DEDUC", "PAYDATE")
+        PopulatePaydate_Monthly(cbDateEffectivity, "HR_LETTER", "EFFECTIVE_DATE", " WHERE ACTION_NAME = 'REASSIGNMENT'")
         Lists_Deduction_History(DeducHistory_List)
         Lists_SBU(SBU_LV)
         PopulateDateRange13Month()
@@ -3021,32 +3022,22 @@ A
     End Sub
 
     Private Sub cbDateEffectivity_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbDateEffectivity.SelectedIndexChanged
-
-    End Sub
-
-    Private Sub LoadReassigment(effectivityDate As Date)
-        Dim sql As String = $"SELECT * FROM HR_LETTER WHERE EFFECTIVE_DATE = '{effectivityDate}'"
-        Using ds As DataSet = LoadSQL(sql, "HR_LETTER")
-            If ds.Tables(0).Rows.Count > 0 Then
-                For Each dr In ds.Tables(0).Rows
-
-                Next
-            End If
-        End Using
-    End Sub
-
-    Private Sub btnReassignment_Click(sender As Object, e As EventArgs) Handles btnReassignment.Click
-        LoadReassigment()
-    End Sub
-
-    Public Sub LoadReassigment(Optional search As String = Nothing)
         rptReassignment.LocalReport.DataSources.Clear()
-        Dim linee As String = Nothing
+        Dim DATE_start As DateTime = cbDateEffectivity.Text
+        Dim DATE_end As New DateTime(DATE_start.Year, DATE_start.Month, System.DateTime.DaysInMonth(DATE_start.Year, DATE_start.Month))
+        If cbDateEffectivity.SelectedItem <> Nothing Then LoadReassigment($"AND EFFECTIVE_DATE BETWEEN '{DATE_start.ToShortDateString}' AND '{DATE_end.ToShortDateString}'")
+    End Sub
+
+    Private Sub btnSearchReassign_Click(sender As Object, e As EventArgs) Handles btnSearchReassign.Click
+        If txtReassignment.Text <> Nothing Then LoadReassigment($"AND UPPER(FULLNAME) LIKE UPPER('%{txtReassignment.Text}%')")
+    End Sub
+
+    Public Sub LoadReassigment(Optional addCondition As String = Nothing)
         Try
 
             Dim dt_Reassignment As New DataTable()
             With dt_Reassignment
-                .Columns.Add("NAME")
+                .Columns.Add("FULLNAME")
                 .Columns.Add("EFFECTIVE_DATE")
                 .Columns.Add("EMP_POSITION")
                 .Columns.Add("FROM_BRANCH")
@@ -3065,22 +3056,26 @@ A
                                             WHEN SUFFIX Is Not NULL And SUFFIX <> '' THEN ' ' || SUFFIX
                                             Else ''
                                         End As FULLNAME
-                                FROM HR_LETTER A WHERE ACTION_NAME = 'REASSIGNMENT' AND EFFECTIVE_DATE = '{effectivityDate}'"
+                                FROM HR_LETTER A 
+                                INNER JOIN TBL_EMPLOYEE B ON ID = EMP_ID
+                                WHERE ACTION_NAME = 'REASSIGNMENT' {addCondition}"
+
             Using ds As DataSet = LoadSQL(sql, "HR_LETTER")
                 If ds.Tables(0).Rows.Count > 0 Then
                     progressBarStart(ds.Tables(0).Rows.Count)
                     For Each dr In ds.Tables(0).Rows
                         With dr
 
-                            Dim FULLNAME As String = IIf(IsDBNull(.Item("FULLNAME")), "", .Item("FULLNAME"))
-                            Dim EFFECTIVE_DATE As String = IIf(IsDBNull(.Item("EFFECTIVE_DATE")), "", CDate(.Item("EFFECTIVE_DATE")))
-                            Dim EMP_POSITION As String = IIf(IsDBNull(.Item("EMP_POSITION")), "", CDate(.Item("EMP_POSITION")))
-                            Dim FROM_BRANCH As String = IIf(IsDBNull(.Item("FROM_BRANCH")), "", CDate(.Item("FROM_BRANCH")))
-                            Dim TO_BRANCH As String = IIf(IsDBNull(.Item("FROM_BRANCH")), "", CDate(.Item("FROM_BRANCH")))
-                            Dim REMARKS As String = IIf(IsDBNull(.Item("REMARKS")), "", CDate(.Item("REMARKS")))
-                            Dim DATE_CREATED As String = IIf(IsDBNull(.Item("DATE_CREATED")), "", CDate(.Item("DATE_CREATED")))
+                            Dim FULLNAME As String = .Item("FULLNAME")
+                            Dim EFFECTIVE_DATE As String = .Item("EFFECTIVE_DATE")
+                            Dim EMP_POSITION As String = .Item("EMP_POSITION")
+                            Dim FROM_BRANCH As String = .Item("FROM_BRANCH")
+                            Dim TO_BRANCH As String = .Item("TO_BRANCH")
+                            Dim REMARKS As String = .Item("REMARKS")
+                            Dim ACTION_STATUS As String = .Item("ACTION_STATUS")
+                            Dim DATE_CREATED As String = .Item("DATE_CREATED")
 
-                            dt_Reassignment.Rows.Add(FULLNAME, EFFECTIVE_DATE, EMP_POSITION, FROM_BRANCH, TO_BRANCH, REMARKS, DATE_CREATED)
+                            dt_Reassignment.Rows.Add(FULLNAME, EFFECTIVE_DATE, EMP_POSITION, FROM_BRANCH, TO_BRANCH, REMARKS, ACTION_STATUS, DATE_CREATED)
 
                             frmMainForm.AppProgressBar.Value += 1
                         End With
@@ -3091,21 +3086,18 @@ A
             End Using
 
             Dim DATASOURCE As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt_Reassignment)
-            Dim FORMNAME As String = "Reassignment Report"
-
-            Dim paramList As New List(Of Microsoft.Reporting.WinForms.ReportParameter) From {
-                    New Microsoft.Reporting.WinForms.ReportParameter("paramFormName", FORMNAME)
-                    }
-
             rptReassignment.LocalReport.DataSources.Add(DATASOURCE)
-            rptReassignment.LocalReport.SetParameters(paramList)
             rptReassignment.RefreshReport()
 
         Catch ex As Exception
-            'Log_Report(ex.ToString)
-            MessageBox.Show($"{ex.Message} {vbCrLf} {linee}", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
 
     End Sub
 
+    Private Sub Reports_Tab_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Reports_Tab.SelectedIndexChanged
+        If Reports_Tab.SelectedTab Is tabReassignment Then
+            LoadReassigment()
+        End If
+    End Sub
 End Class

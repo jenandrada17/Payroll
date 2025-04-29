@@ -1162,10 +1162,10 @@ Module SelectFromDatabase
         End While
     End Sub
 
-    Public Sub PopulatePaydate_Monthly(combo As ComboBox, table As String, column As String)
+    Public Sub PopulatePaydate_Monthly(combo As ComboBox, table As String, column As String, Optional addCondition As String = "")
         combo.Items.Clear()
 
-        Dim sql As String = $"SELECT EXTRACT(MONTH FROM PAYDATE) AS monthh,  EXTRACT(YEAR FROM PAYDATE) AS yearr FROM {table} GROUP BY yearr, monthh ORDER BY yearr DESC, monthh DESC;"
+        Dim sql As String = $"SELECT EXTRACT(MONTH FROM {column}) AS monthh,  EXTRACT(YEAR FROM {column}) AS yearr FROM {table} {addCondition} GROUP BY yearr, monthh ORDER BY yearr DESC, monthh DESC;"
         Using ds As DataSet = LoadSQL(sql)
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
