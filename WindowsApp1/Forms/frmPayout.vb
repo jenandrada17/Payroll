@@ -818,70 +818,133 @@ Public Class frmPayout
     End Sub
 
     Private Sub Payslip_All(Optional allActive As Boolean = False)
-        Dim recipient As String
-        Dim activeString As String = IIf(allActive, "AND EMP_STATUS <> 'INACTIVE'", "")
-        Dim datee As DateTime = Payslip_paydate_Combo.Text
-        Dim mysqll As String = $"select A.BIOMETRIC_ID, 
-                                    LASTNAME || ', ' || FIRSTNAME || 
-                                    CASE
-                                        WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
-                                        ELSE ''
-                                    END || 
-                                    CASE 
-                                        WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX
-                                        ELSE ''
-                                    END AS FULLNAME 
-                                    from payroll_payout A 
-                                    inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRIC_ID {activeString}  
-                                    where paydate = '{Payslip_paydate_Combo.Text}' and EMAIL_SENT is null
-                                    Order by A.BIOMETRIC_ID;"
+        Dim activeString As String = If(allActive, "AND EMP_STATUS <> 'INACTIVE'", "")
+        Dim payDate As DateTime = DateTime.Parse(Payslip_paydate_Combo.Text)
 
-        TestingScript_String(mysqll)
-        Using ds As DataSet = LoadSQL(mysqll, "payroll_payout")
-            If ds.Tables(0).Rows.Count > 0 Then
-                progressBarStart(ds.Tables(0).Rows.Count)
-                For Each dr In ds.Tables(0).Rows
-                    With dr
+        Dim query As String = $"
+        SELECT A.BIOMETRIC_ID, 
+               LASTNAME || ', ' || FIRSTNAME ||
+               CASE WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' ELSE '' END ||
+               CASE WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX ELSE '' END AS FULLNAME
+        FROM payroll_payout A
+        INNER JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID
+        {activeString}
+        WHERE paydate = '{payDate:yyyy-MM-dd}' AND EMAIL_SENT IS NULL
+        ORDER BY A.BIOMETRIC_ID;"
 
-                        Console.WriteLine(.item("BIOMETRIC_ID"))
-
-                        Dim namee = .Item("FULLNAME")
-
-                        LoadPayslip(.item("BIOMETRIC_ID"), Payslip_paydate_Combo.Text)
-
-                        recipient = GetEmail_recipient(.item("BIOMETRIC_ID"))
-
-                        CheckDeduction_Loans_IfZeroBalance(.item("BIOMETRIC_ID"))
-
-                        Dim FoundMatch As Boolean = Regex.IsMatch(recipient, "\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase)
-
-                        If Not FoundMatch Then  '=========== CHECK IF VALID EMAIL ADDRESS ============================
-                            MsgBox(namee & " has an invalid email address.", MsgBoxStyle.Exclamation, "INVALID")
-                            Continue For
-                        Else                    '============== SEND TO EMAIL ADDRESS IF VALID ============================ 
-                            Try
-                                Thread.Sleep(500)
-                                Send_Email(ReportViewer_payslip.LocalReport.Render("PDF"), recipient, namee, Payslip_paydate_Combo.Text, BodyText_RichB.Text, datee.ToString("MMMM dd, yyyy") & " PAYROLL", .item("BIOMETRIC_ID"), Payslip_paydate_Combo.Text)
-
-                            Catch ex As Exception
-                                MsgBox($"Email not sent to {namee}", MsgBoxStyle.Exclamation)
-                            End Try
-                        End If
-
-                        frmMainForm.AppProgressBar.Value += 1
-
-                        SaveLogs($"PAYSLIP EMAILED TO {namee}({ .item("BIOMETRIC_ID")}), Payroll({datee.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
-
-                    End With
-                Next
-
-                MsgBox("Email successfully sent!", MsgBoxStyle.Information, "Information")
-                progressBarEnd()
-            Else
+        Using ds As DataSet = LoadSQL(query, "payroll_payout")
+            If ds.Tables(0).Rows.Count = 0 Then
                 MsgBox("All emails have been sent already!", MsgBoxStyle.Information, "Information")
+                Exit Sub
             End If
+
+            progressBarStart(ds.Tables(0).Rows.Count)
+
+            Dim counter As Integer = 0
+
+            For Each dr As DataRow In ds.Tables(0).Rows
+                Dim bioId As String = dr("BIOMETRIC_ID").ToString()
+                Dim fullName As String = dr("FULLNAME").ToString()
+
+                Dim recipient As String = GetEmail_recipient(bioId)
+                If Not Regex.IsMatch(recipient, "\A[\w\.-]+@[\w\.-]+\.\w{2,}\Z", RegexOptions.IgnoreCase) Then
+                    MsgBox(fullName & " has an invalid email address.", MsgBoxStyle.Exclamation, "INVALID")
+                    Continue For
+                End If
+
+                CheckDeduction_Loans_IfZeroBalance(bioId)
+
+                ' ==== RENDER PAYSHEET REPORT INTO BYTE() FRESH PER PERSON ====
+                LoadPayslip(bioId, Payslip_paydate_Combo.Text)
+
+                Dim pdfBytes As Byte() = ReportViewer_payslip.LocalReport.Render("PDF")
+
+                ' ==== EMAIL SEND ====
+                Send_Email(
+                    byteViewer:=pdfBytes,
+                    recipient_Email:=recipient,
+                    recipient_Name:=fullName,
+                    paydate:=payDate.ToString("MMMM dd, yyyy"),
+                    BodyText:=BodyText_RichB.Text,
+                    subjectt:=$"{payDate:MMMM dd, yyyy} PAYROLL",
+                    bio_no:=bioId,
+                    payrollDate:=Payslip_paydate_Combo.Text
+                )
+
+                frmMainForm.AppProgressBar.Value += 1
+
+                SaveLogs($"PAYSLIP EMAILED TO {fullName}({bioId}), Payroll({payDate:MMM dd, yyyy})", frmMainForm.UserName_LBL.Text)
+
+                'counter += 1
+                'If counter Mod 10 = 0 Then Thread.Sleep(10000) Else Thread.Sleep(3000)
+            Next
+
+            progressBarEnd()
+            MsgBox("Email successfully sent!", MsgBoxStyle.Information, "Information")
         End Using
     End Sub
+
+
+
+    'Private Sub Payslip_All(Optional allActive As Boolean = False)
+    '    Dim recipient As String
+    '    Dim activeString As String = IIf(allActive, "AND EMP_STATUS <> 'INACTIVE'", "")
+    '    Dim datee As DateTime = Payslip_paydate_Combo.Text
+    '    Dim mysqll As String = $"select A.BIOMETRIC_ID, 
+    '                                LASTNAME || ', ' || FIRSTNAME || 
+    '                                CASE
+    '                                    WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
+    '                                    ELSE ''
+    '                                END || 
+    '                                CASE 
+    '                                    WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX
+    '                                    ELSE ''
+    '                                END AS FULLNAME 
+    '                                from payroll_payout A 
+    '                                inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRIC_ID {activeString}  
+    '                                where paydate = '{Payslip_paydate_Combo.Text}' and EMAIL_SENT is null
+    '                                Order by A.BIOMETRIC_ID;"
+
+    '    TestingScript_String(mysqll)
+    '    Using ds As DataSet = LoadSQL(mysqll, "payroll_payout")
+    '        If ds.Tables(0).Rows.Count > 0 Then
+    '            progressBarStart(ds.Tables(0).Rows.Count)
+    '            For Each dr In ds.Tables(0).Rows
+    '                With dr
+
+    '                    Console.WriteLine(.item("BIOMETRIC_ID"))
+
+    '                    Dim namee = .Item("FULLNAME")
+
+    '                    LoadPayslip(.item("BIOMETRIC_ID"), Payslip_paydate_Combo.Text)
+
+    '                    recipient = GetEmail_recipient(.item("BIOMETRIC_ID"))
+
+    '                    CheckDeduction_Loans_IfZeroBalance(.item("BIOMETRIC_ID"))
+
+    '                    Dim FoundMatch As Boolean = Regex.IsMatch(recipient, "\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase)
+
+    '                    If Not FoundMatch Then  '=========== CHECK IF VALID EMAIL ADDRESS ============================
+    '                        MsgBox(namee & " has an invalid email address.", MsgBoxStyle.Exclamation, "INVALID")
+    '                        Continue For
+    '                    Else                    '============== SEND TO EMAIL ADDRESS IF VALID ============================ 
+    '                        Send_Email(ReportViewer_payslip.LocalReport.Render("PDF"), recipient, namee, Payslip_paydate_Combo.Text, BodyText_RichB.Text, datee.ToString("MMMM dd, yyyy") & " PAYROLL", .item("BIOMETRIC_ID"), Payslip_paydate_Combo.Text)
+    '                    End If
+
+    '                    frmMainForm.AppProgressBar.Value += 1
+
+    '                    SaveLogs($"PAYSLIP EMAILED TO {namee}({ .item("BIOMETRIC_ID")}), Payroll({datee.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
+
+    '                End With
+    '            Next
+
+    '            MsgBox("Email successfully sent!", MsgBoxStyle.Information, "Information")
+    '            progressBarEnd()
+    '        Else
+    '            MsgBox("All emails have been sent already!", MsgBoxStyle.Information, "Information")
+    '        End If
+    '    End Using
+    'End Sub
 
     Private Sub Payslip_By(tbl_column As String, column_value As String)
 
@@ -1027,8 +1090,8 @@ Public Class frmPayout
             Dim TOTAL_SPECHOLIDAY As Decimal = 0
             Dim LATE_UNDERTIME As String = ""
             Dim present_hours As Double = 0
-            Dim SSS_LOAN_BALANCE As Decimal = 0
-            Dim PAGIBIG_LOAN_BALANCE As Decimal = 0
+            'Dim SSS_LOAN_BALANCE As Decimal = 0
+            'Dim PAGIBIG_LOAN_BALANCE As Decimal = 0
             Dim total_Allowance As Double = 0
             Dim SPECHOLIDAY_HRS As Double = 0
             Dim NIGHT_RATE As Double = 0

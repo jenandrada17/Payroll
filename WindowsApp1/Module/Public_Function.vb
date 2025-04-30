@@ -4,6 +4,7 @@ Imports System.IO
 Imports System.Net.Mail
 Imports System.Reflection
 Imports System.Text.RegularExpressions
+Imports System.Threading
 Imports FirebirdSql.Data.FirebirdClient
 
 Module Public_Function
@@ -303,33 +304,34 @@ Module Public_Function
             Dim email As String = GetEmail()
             Dim password As String = GetPassword()
 
-            Using Smtp_Server As New SmtpClient("smtp.gmail.com", 587),
-              e_mail As New MailMessage(),
-              memoryStream As New MemoryStream(byteViewer)
+            Using smtpClient As New SmtpClient("smtp.gmail.com", 587)
+                smtpClient.UseDefaultCredentials = False
+                smtpClient.Credentials = New Net.NetworkCredential(email, password)
+                smtpClient.EnableSsl = True
 
-                Smtp_Server.UseDefaultCredentials = False
-                Smtp_Server.Credentials = New Net.NetworkCredential(email, password)
-                Smtp_Server.EnableSsl = True
+                Using mail As New MailMessage(email, recipient_Email)
+                    mail.Subject = subjectt
+                    mail.IsBodyHtml = False
+                    mail.Body = BodyText
 
-                e_mail.From = New MailAddress(email)
-                e_mail.To.Add(recipient_Email)
-                e_mail.Subject = subjectt
-                e_mail.IsBodyHtml = False
-                e_mail.Body = BodyText
+                    Using memoryStream As New MemoryStream(byteViewer)
+                        memoryStream.Seek(0, SeekOrigin.Begin)
+                        Dim attachment = New Attachment(memoryStream, recipient_Name & ".pdf", "application/pdf")
+                        mail.Attachments.Add(attachment)
 
-                memoryStream.Seek(0, SeekOrigin.Begin)
-                Dim attachment = New Attachment(memoryStream, recipient_Name & ".pdf")
-                e_mail.Attachments.Add(attachment)
-
-                Smtp_Server.Send(e_mail)
+                        smtpClient.Send(mail)
+                        'Thread.Sleep(3000) ' Delay to avoid throttling or connection issues
+                    End Using
+                End Using
             End Using
 
             If bio_no <> "" Then UpdateEMAIL_SENT(bio_no, payrollDate)
 
-        Catch error_t As Exception
-            MsgBox("Error sending to " & recipient_Email & vbCrLf & error_t.ToString)
+        Catch ex As Exception
+            MsgBox("Error sending to " & recipient_Email & vbCrLf & ex.Message, MsgBoxStyle.Critical, "Email Error")
         End Try
     End Sub
+
 
 
     Friend Sub TempAttendance()

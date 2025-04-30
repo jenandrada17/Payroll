@@ -101,24 +101,8 @@
           <DataField>PHILHEALTH_COMP</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
-        <Field Name="TAX_WHELD">
-          <DataField>TAX_WHELD</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="SSS_LOAN">
-          <DataField>SSS_LOAN</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="PAGIBIG_LOAN">
-          <DataField>PAGIBIG_LOAN</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
         <Field Name="NET_PAY">
           <DataField>NET_PAY</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="SBU">
-          <DataField>SBU</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="TOTAL_DEDUCTION">
@@ -127,14 +111,6 @@
         </Field>
         <Field Name="present_hours">
           <DataField>present_hours</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="SSS_LOAN_BALANCE">
-          <DataField>SSS_LOAN_BALANCE</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="PAGIBIG_LOAN_BALANCE">
-          <DataField>PAGIBIG_LOAN_BALANCE</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="NIGHT_RATE">

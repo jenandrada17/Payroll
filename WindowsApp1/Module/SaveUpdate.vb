@@ -2271,7 +2271,7 @@ Module SaveUpdate
     End Sub
 
     Friend Sub SaveLogs(TRANSACTIONN As String, USER As String)
-        Dim mysql As String = $"Select * from PAYROLL_LOGS"
+        Dim mysql As String = $"Select * from PAYROLL_LOGS Rows 1"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_LOGS")
             Dim dsNew As DataRow = ds.Tables(0).NewRow
             With dsNew

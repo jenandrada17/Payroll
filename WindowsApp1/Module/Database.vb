@@ -13,87 +13,150 @@ Module Database
     Private language() As String =
         {"Connection error failed."} 'verification if the database is connected.
 
+    'Friend Function LoadSQL(ByVal mySql As String, Optional ByVal tblName As String = "QuickSQL") As DataSet
+    '    Dim da As FbDataAdapter
+    '    Dim ds As New DataSet, fillData As String = tblName
+    '    Try
+    '        DbOpen() 'open the database.
+
+    '        Try
+    '            da = New FbDataAdapter(mySql, con)
+    '            da.Fill(ds, fillData)
+    '        Catch ex As Exception
+
+    '            MsgBox(ex.ToString)
+
+    '        End Try
+
+    '        DbClose()
+
+    '        Return ds
+    '    Catch ex As FbException
+    '        Console.WriteLine(">>>>>" & mySql)
+    '        MessageBox.Show($"[{ex.ErrorCode.ToString}] - {ex.Message}", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
+    '        'Log_Report("LoadSQL - " & ex.ToString)
+    '        ds = Nothing
+    '        Return ds
+    '    End Try
+    'End Function
+
     Friend Function LoadSQL(ByVal mySql As String, Optional ByVal tblName As String = "QuickSQL") As DataSet
-        Dim da As FbDataAdapter
-        Dim ds As New DataSet, fillData As String = tblName
+        Dim ds As New DataSet()
+        Dim conStr As String = ConfigurationManager.ConnectionStrings("FbConString").ConnectionString
+
         Try
-            DbOpen() 'open the database.
-
-            Try
-                da = New FbDataAdapter(mySql, con)
-                da.Fill(ds, fillData)
-            Catch ex As Exception
-
-                MsgBox(ex.ToString)
-
-            End Try
-
-            DbClose()
-
-            Return ds
+            Using con As New FbConnection(conStr)
+                con.Open()
+                Using da As New FbDataAdapter(mySql, con)
+                    da.Fill(ds, tblName)
+                End Using
+            End Using
         Catch ex As FbException
-            Console.WriteLine(">>>>>" & mySql)
-            MessageBox.Show($"[{ex.ErrorCode.ToString}] - {ex.Message}", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
-            'Log_Report("LoadSQL - " & ex.ToString)
+            Console.WriteLine("Firebird SQL Error: " & ex.Message)
+            MessageBox.Show($"[{ex.ErrorCode}] - {ex.Message}", "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
             ds = Nothing
-            Return ds
+        Catch ex As Exception
+            Console.WriteLine("General Error: " & ex.Message)
+            MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            ds = Nothing
         End Try
+
+        Return ds
     End Function
 
-    Public Sub DbClose()
-        con.Close()
-    End Sub
+    'Public Sub DbClose()
+    '    con.Close()
+    'End Sub
 
-    Public Sub DbOpen()
-        conStr = ConfigurationManager.ConnectionStrings("FbConString").ConnectionString.ToString
+    'Public Sub DbOpen()
+    '    conStr = ConfigurationManager.ConnectionStrings("FbConString").ConnectionString.ToString
 
-        Try
-            con = New FbConnection(conStr)
-            con.Open()
-        Catch ex As FbException
-            MsgBox(language(0) & ex.ErrorCode & vbCrLf & ex.Message.ToString, vbCritical, "Connecting Error")
-            con.Dispose()
-            Exit Sub
-        Catch ex As Exception
-            MsgBox(language(0) & ex.HResult & vbCrLf & ex.Message.ToString, vbCritical, "Connecting Error")
-            con.Dispose()
-            Exit Sub
-        End Try
+    '    Try
+    '        con = New FbConnection(conStr)
+    '        con.Open()
+    '    Catch ex As FbException
+    '        MsgBox(language(0) & ex.ErrorCode & vbCrLf & ex.Message.ToString, vbCritical, "Connecting Error")
+    '        con.Dispose()
+    '        Exit Sub
+    '    Catch ex As Exception
+    '        MsgBox(language(0) & ex.HResult & vbCrLf & ex.Message.ToString, vbCritical, "Connecting Error")
+    '        con.Dispose()
+    '        Exit Sub
+    '    End Try
+    'End Sub
 
-    End Sub
+    'Friend Function SaveEntry(ByVal dsEntry As DataSet, Optional ByVal isNew As Boolean = True) As Boolean
+    '    Try
+    '        If dsEntry Is Nothing Then Return False
+
+    '        DbOpen()
+
+    '        Dim da As FbDataAdapter
+    '        Dim mySql As String, fillData As String
+    '        Dim ds As DataSet = dsEntry
+
+    '        For Each dsTable As DataTable In dsEntry.Tables
+    '            fillData = dsTable.TableName
+    '            mySql = "SELECT * FROM " & fillData
+    '            If Not isNew Then
+    '                Dim colName As String = dsTable.Columns(0).ColumnName
+    '                Dim idx As Integer = dsTable.Rows(0).Item(0)
+    '                mySql &= String.Format(" WHERE {0} = {1}", colName, idx)
+    '            End If
+
+    '            da = New FbDataAdapter(mySql, con)
+    '            Dim cb As New FbCommandBuilder(da)
+    '            cb.ConflictOption = ConflictOption.CompareRowVersion
+    '            da.Update(ds, fillData)
+    '        Next
+
+    '        DbClose()
+    '        Return True
+    '    Catch ex As FbException
+    '        MessageBox.Show($"[{ex.ErrorCode.ToString}] - {ex.Message}", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
+    '        Return False
+    '    End Try
+    'End Function
 
     Friend Function SaveEntry(ByVal dsEntry As DataSet, Optional ByVal isNew As Boolean = True) As Boolean
+        If dsEntry Is Nothing Then Return False
+
+        Dim conStr As String = ConfigurationManager.ConnectionStrings("FbConString").ConnectionString
+
         Try
-            If dsEntry Is Nothing Then Return False
+            Using con As New FbConnection(conStr)
+                con.Open()
 
-            DbOpen()
+                For Each dsTable As DataTable In dsEntry.Tables
+                    Dim fillData As String = dsTable.TableName
+                    Dim mySql As String = "SELECT * FROM " & fillData
 
-            Dim da As FbDataAdapter
-            Dim mySql As String, fillData As String
-            Dim ds As DataSet = dsEntry
+                    If Not isNew Then
+                        Dim colName As String = dsTable.Columns(0).ColumnName
+                        Dim idx As Object = dsTable.Rows(0).Item(0)
+                        mySql &= String.Format(" WHERE {0} = {1}", colName, idx)
+                    End If
 
-            For Each dsTable As DataTable In dsEntry.Tables
-                fillData = dsTable.TableName
-                mySql = "SELECT * FROM " & fillData
-                If Not isNew Then
-                    Dim colName As String = dsTable.Columns(0).ColumnName
-                    Dim idx As Integer = dsTable.Rows(0).Item(0)
-                    mySql &= String.Format(" WHERE {0} = {1}", colName, idx)
-                End If
+                    Using da As New FbDataAdapter(mySql, con)
+                        Using cb As New FbCommandBuilder(da)
+                            cb.ConflictOption = ConflictOption.CompareRowVersion
+                            da.Update(dsEntry, fillData)
+                        End Using
+                    End Using
+                Next
+            End Using
 
-                da = New FbDataAdapter(mySql, con)
-                Dim cb As New FbCommandBuilder(da)
-                cb.ConflictOption = ConflictOption.CompareRowVersion
-                da.Update(ds, fillData)
-            Next
-
-            DbClose()
             Return True
+
         Catch ex As FbException
-            MessageBox.Show($"[{ex.ErrorCode.ToString}] - {ex.Message}", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show($"[{ex.ErrorCode}] - {ex.Message}", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Return False
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
             Return False
         End Try
     End Function
+
 
     Friend Function LoadSQL_byDataReader(ByVal mySql As String) As FbDataReader
         DbReaderOpen()
