@@ -2273,20 +2273,54 @@ A
                 report = "WindowsApp1.rpt_PI_All.rdlc"
             End If
 
-            Dim mysql As String = $"Select A.*, B.*, C.*,  B.BRANCHCODE AS BRANCH_CODE, 
-                                        LASTNAME || ', ' || FIRSTNAME || 
-                                        CASE
-                                            WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
-                                            ELSE ''
+            'Dim mysqdl As String = $"Select A.AMOUNT, C.BRANCHNAME, B.PHOTO_CATEGORY, B.BRANCHCODE AS BRANCH_CODE, B.HO_CATEGORY, B.COMPANY,
+            '                            LASTNAME || ', ' || FIRSTNAME || 
+            '                            CASE
+            '                                WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
+            '                                ELSE ''
+            '                            END || 
+            '                            CASE 
+            '                                WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX
+            '                                ELSE ''
+            '                            END AS FULLNAME 
+            '                            From RECORDED_ALLOW_DEDUC A 
+            '                            INNER JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIO_NO   
+            '                            LEFT JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE           
+            '                            WHERE UPPER(A.CATEGORY) LIKE UPPER('%{category}%') {str} AND PAYDATE BETWEEN '{PAYDATE_start.ToShortDateString}' AND '{PAYDATE_end.ToShortDateString}' ORDER BY FULLNAME, PAYDATE"
+
+            Dim mysql As String = $"SELECT 
+                                      A.BIO_NO,
+                                      SUM(A.AMOUNT) AS TOTAL_AMOUNT,
+                                      C.BRANCHNAME,
+                                      B.PHOTO_CATEGORY,
+                                      B.BRANCHCODE AS BRANCH_CODE,
+                                      B.HO_CATEGORY,
+                                      B.COMPANY,
+                                      LASTNAME || ', ' || FIRSTNAME || 
+                                        CASE 
+                                          WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
+                                          ELSE '' 
                                         END || 
                                         CASE 
-                                            WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX
-                                            ELSE ''
-                                        END AS FULLNAME 
-                                        From RECORDED_ALLOW_DEDUC A INNER JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIO_NO   
-                                        LEFT JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE           
-                                        WHERE UPPER(A.CATEGORY) LIKE UPPER('%{category}%') {str} AND PAYDATE BETWEEN '{PAYDATE_start.AddDays(14).ToShortDateString}' AND '{PAYDATE_end.ToShortDateString}' ORDER BY FULLNAME, PAYDATE"
+                                          WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX 
+                                          ELSE '' 
+                                        END AS FULLNAME
+                                    FROM 
+                                      RECORDED_ALLOW_DEDUC A
+                                    INNER JOIN 
+                                      TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIO_NO
+                                    LEFT JOIN 
+                                      PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
+                                    WHERE 
+                                      UPPER(A.CATEGORY) LIKE UPPER('%{category}%') {str} 
+                                      AND A.PAYDATE BETWEEN '{PAYDATE_start.ToShortDateString}' AND '{PAYDATE_end.ToShortDateString}' 
+                                    GROUP BY 
+                                      A.BIO_NO, C.BRANCHNAME, B.PHOTO_CATEGORY, B.BRANCHCODE, B.HO_CATEGORY, B.COMPANY,
+                                      LASTNAME, FIRSTNAME, MIDDLENAME, SUFFIX
+                                    ORDER BY 
+                                      FULLNAME; "
 
+            TestingScript_String(mysql)
             Using ds As DataSet = LoadSQL(mysql, "RECORDED_ALLOW_DEDUC")
                 If ds.Tables(0).Rows.Count > 0 Then
 
@@ -2296,14 +2330,14 @@ A
 
                             '============================= NAME AND ATTENDANCE ============================  
                             Dim FULLNAME As String = IIf(IsDBNull(.Item("FULLNAME")), "", .Item("FULLNAME"))
-                            Dim AMOUNT As String = FormatNumber(.Item("AMOUNT"))
+                            Dim AMOUNT As String = FormatNumber(.Item("TOTAL_AMOUNT"))
 
                             '===================================== BRANCHES ===============================
                             Dim BRANCH_CODE As String '= IIf(.Item("BRANCH_CODE") = "" Or IsDBNull(.Item("BRANCH_CODE")), .Item("HO_CATEGORY"), .Item("BRANCHNAME"))
 
-                            If IsDBNull(.Item("BRANCHCODE")) Then
+                            If IsDBNull(.Item("BRANCH_CODE")) Then
                                 BRANCH_CODE = .Item("HO_CATEGORY")
-                            ElseIf .Item("BRANCHCODE") = "" Then
+                            ElseIf .Item("BRANCH_CODE") = "" Then
                                 BRANCH_CODE = .Item("HO_CATEGORY")
                             Else
                                 BRANCH_CODE = .Item("BRANCHNAME")
