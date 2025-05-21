@@ -121,7 +121,7 @@ Partial Class frmMainForm
         '
         'Allowance_btn
         '
-        Me.Allowance_btn.AccessibleName = "Loans"
+        Me.Allowance_btn.AccessibleName = "Allowance"
         Me.Allowance_btn.BackColor = System.Drawing.Color.Black
         Me.Allowance_btn.Cursor = System.Windows.Forms.Cursors.Hand
         Me.Allowance_btn.FlatAppearance.BorderSize = 0
@@ -149,7 +149,7 @@ Partial Class frmMainForm
         '
         'Paysilp_BTN
         '
-        Me.Paysilp_BTN.AccessibleName = "Report"
+        Me.Paysilp_BTN.AccessibleName = "Reports"
         Me.Paysilp_BTN.BackColor = System.Drawing.Color.Black
         Me.Paysilp_BTN.Cursor = System.Windows.Forms.Cursors.Hand
         Me.Paysilp_BTN.FlatAppearance.BorderSize = 0
@@ -238,7 +238,7 @@ Partial Class frmMainForm
         '
         'Employee_BTN
         '
-        Me.Employee_BTN.AccessibleName = "Employee"
+        Me.Employee_BTN.AccessibleName = "Employees"
         Me.Employee_BTN.BackColor = System.Drawing.Color.Black
         Me.Employee_BTN.Cursor = System.Windows.Forms.Cursors.Hand
         Me.Employee_BTN.FlatAppearance.BorderSize = 0
@@ -331,39 +331,39 @@ Partial Class frmMainForm
         'Schedule_Menu
         '
         Me.Schedule_Menu.Name = "Schedule_Menu"
-        Me.Schedule_Menu.Size = New System.Drawing.Size(207, 22)
+        Me.Schedule_Menu.Size = New System.Drawing.Size(209, 22)
         Me.Schedule_Menu.Text = "Employee's DTR Schedule"
         Me.Schedule_Menu.Visible = False
         '
         'ConnectToDatabase_Menu
         '
         Me.ConnectToDatabase_Menu.Name = "ConnectToDatabase_Menu"
-        Me.ConnectToDatabase_Menu.Size = New System.Drawing.Size(207, 22)
+        Me.ConnectToDatabase_Menu.Size = New System.Drawing.Size(209, 22)
         Me.ConnectToDatabase_Menu.Text = "&Connect to Database"
         '
         'ChangeUserInfo_Menu
         '
         Me.ChangeUserInfo_Menu.AccessibleName = "Change User Details"
         Me.ChangeUserInfo_Menu.Name = "ChangeUserInfo_Menu"
-        Me.ChangeUserInfo_Menu.Size = New System.Drawing.Size(207, 22)
+        Me.ChangeUserInfo_Menu.Size = New System.Drawing.Size(209, 22)
         Me.ChangeUserInfo_Menu.Text = "Change User Details"
         '
         'UserLogs_Menu
         '
         Me.UserLogs_Menu.AccessibleName = "User Logs"
         Me.UserLogs_Menu.Name = "UserLogs_Menu"
-        Me.UserLogs_Menu.Size = New System.Drawing.Size(207, 22)
+        Me.UserLogs_Menu.Size = New System.Drawing.Size(209, 22)
         Me.UserLogs_Menu.Text = "User Logs"
         '
         'ToolStripSeparator1
         '
         Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-        Me.ToolStripSeparator1.Size = New System.Drawing.Size(204, 6)
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(206, 6)
         '
         'Exit_Menu
         '
         Me.Exit_Menu.Name = "Exit_Menu"
-        Me.Exit_Menu.Size = New System.Drawing.Size(207, 22)
+        Me.Exit_Menu.Size = New System.Drawing.Size(209, 22)
         Me.Exit_Menu.Text = "&Exit"
         '
         'AboutUsToolStripMenuItem
@@ -526,11 +526,11 @@ Partial Class frmMainForm
         'Question_lbl
         '
         Me.Question_lbl.AutoSize = True
-        Me.Question_lbl.Font = New System.Drawing.Font("HoloLens MDL2 Assets", 24.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Question_lbl.Font = New System.Drawing.Font("Microsoft Sans Serif", 24.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Question_lbl.ForeColor = System.Drawing.Color.Black
         Me.Question_lbl.Location = New System.Drawing.Point(1097, -6)
         Me.Question_lbl.Name = "Question_lbl"
-        Me.Question_lbl.Size = New System.Drawing.Size(27, 32)
+        Me.Question_lbl.Size = New System.Drawing.Size(35, 37)
         Me.Question_lbl.TabIndex = 6
         Me.Question_lbl.Text = "?"
         '

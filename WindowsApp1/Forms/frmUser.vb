@@ -66,6 +66,8 @@
                         If ds.Tables(0).Rows.Count > 0 Then
                             For Each dr In ds.Tables(0).Rows
                                 With dr
+                                    Console.WriteLine(Access_CheckB.Items(i).ToString)
+                                    Console.WriteLine(.item("FUNCTION"))
                                     If Access_CheckB.Items(i).ToString = .item("FUNCTION") Then
                                         Access_CheckB.SetItemChecked(i, False)
                                     End If

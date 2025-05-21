@@ -10,12 +10,13 @@
                 loginNo = 0
 
                 Dim idx As Integer = GetData_Integer("ID", $"PAYROLL_USER where USERNAME = '{txtUser.Text}' AND PASSWORD = '{EncryptString(txtPass.Text)}'")
-                frmMainForm.Accessibility(idx)
                 frmMainForm.UserName_LBL.Tag = idx
+                userID = idx
 
                 txtUser.Clear()
                 txtPass.Clear()
                 Close()
+                frmMainForm.Accessibility(idx)
             Else
                 loginNo += 1
                 MsgBox("Invalid Username or password", MsgBoxStyle.Critical, "Error")

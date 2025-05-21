@@ -339,6 +339,8 @@ Public Class frmMainForm
                 If ds.Tables(0).Rows.Count > 0 Then
                     For Each dr In ds.Tables(0).Rows
                         With dr
+                            Console.WriteLine(btn.AccessibleName)
+                            Console.WriteLine(.Item("FUNCTION"))
                             If btn.AccessibleName = .Item("FUNCTION") Then
                                 btn.Enabled = False
                             End If

@@ -829,7 +829,12 @@ Public Class frmPayout
         FROM payroll_payout A
         INNER JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID
         {activeString}
-        WHERE paydate = '{payDate:yyyy-MM-dd}' AND EMAIL_SENT IS NULL
+        WHERE (paydate = '{payDate:yyyy-MM-dd}' AND EMAIL_SENT IS NULL)
+        AND NOT EXISTS (
+                SELECT 1
+                FROM USER_ACCESSIBILITY UA
+                WHERE UA.COMPANY = B.COMPANY
+                AND UA.USERID = {userID})
         ORDER BY A.BIOMETRIC_ID;"
 
         Using ds As DataSet = LoadSQL(query, "payroll_payout")
@@ -963,7 +968,12 @@ Public Class frmPayout
                                     END AS FULLNAME 
                                     from payroll_payout A 
                                     inner Join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRIC_ID   
-                                    where paydate = '{Payslip_paydate_Combo.Text}' and B.{tbl_column} = '{column_value}';"
+                                    where (paydate = '{Payslip_paydate_Combo.Text}' and B.{tbl_column} = '{column_value}')                                 
+                                    AND NOT EXISTS (
+                                            SELECT 1
+                                            FROM USER_ACCESSIBILITY UA
+                                            WHERE UA.COMPANY = B.COMPANY
+                                            AND UA.USERID = {userID});"
 
         Using ds As DataSet = LoadSQL(mysqll, "payroll_payout")
             If ds.Tables(0).Rows.Count > 0 Then

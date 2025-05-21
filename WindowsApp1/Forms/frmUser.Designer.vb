@@ -274,7 +274,7 @@ Partial Class frmUser
         '
         Me.Label8.AutoSize = True
         Me.Label8.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label8.Location = New System.Drawing.Point(548, 22)
+        Me.Label8.Location = New System.Drawing.Point(548, 14)
         Me.Label8.Name = "Label8"
         Me.Label8.Size = New System.Drawing.Size(94, 27)
         Me.Label8.TabIndex = 29
@@ -289,10 +289,10 @@ Partial Class frmUser
         Me.Access_CheckB.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Access_CheckB.ForeColor = System.Drawing.Color.Black
         Me.Access_CheckB.FormattingEnabled = True
-        Me.Access_CheckB.Items.AddRange(New Object() {"DTR Schedule", "Employee", "Attendance", "Payout", "Loans", "Contribution", "Settings", "Report", "Change User Details", "User Logs"})
-        Me.Access_CheckB.Location = New System.Drawing.Point(553, 52)
+        Me.Access_CheckB.Items.AddRange(New Object() {"DTR Schedule", "Employees", "Attendance", "Payout", "Loans", "Allowance", "Contribution", "Settings", "Reports", "Change User Details", "User Logs"})
+        Me.Access_CheckB.Location = New System.Drawing.Point(553, 44)
         Me.Access_CheckB.Name = "Access_CheckB"
-        Me.Access_CheckB.Size = New System.Drawing.Size(153, 280)
+        Me.Access_CheckB.Size = New System.Drawing.Size(153, 308)
         Me.Access_CheckB.TabIndex = 30
         '
         'frmUser

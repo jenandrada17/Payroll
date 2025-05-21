@@ -2003,12 +2003,22 @@ A
         ElseIf Company_Combo.SelectedIndex = 4 Then '=== PERFECOM 
 
             NetBranch_Combo.Items.Clear()
-            Dim mysql = $"Select * From PAYROLL_PAYOUT A 
-                                        inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
-                                        left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
-                                        where A.PAYDATE  = '{PaydateNet_ComboB.Text}' 
-                                        and  (B.COMPANY  = 'PERFECOM' OR B.HO_CATEGORY In ('Perfecom Admin Office','Perfecom Admin Operation'))
-                                        ORDER BY B.BRANCHCODE asc"
+            Dim mysql = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
+                                 LASTNAME || ', ' || FIRSTNAME || 
+                                        CASE
+                                            WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
+                                            ELSE ''
+                                        END || 
+                                        CASE 
+                                            WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX
+                                            ELSE ''
+                                        END AS FULLNAME 
+                        From PAYROLL_PAYOUT A 
+                        inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
+                        left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
+                        where A.PAYDATE  = '{PaydateNet_ComboB.Text}' 
+                             and  (B.COMPANY  = 'PERFECOM' OR B.HO_CATEGORY In ('Perfecom Admin Office','Perfecom Admin Operation'))
+                        ORDER BY B.BRANCHCODE asc"
             PlusS = "PERFECOM"
 
             LoadNet_Print(mysql)
@@ -2016,20 +2026,42 @@ A
 
             NetBranch_Combo.Items.Clear()
 
-            Dim mysql = $"Select * From PAYROLL_PAYOUT A 
-                                        inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
-                                        left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
-                                        where A.PAYDATE  = '{PaydateNet_ComboB.Text}' AND B.HO_CATEGORY IN ('Construction' , 'Leasing Admin Office') "
+            Dim mysql = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
+                                 LASTNAME || ', ' || FIRSTNAME || 
+                                        CASE
+                                            WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
+                                            ELSE ''
+                                        END || 
+                                        CASE 
+                                            WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX
+                                            ELSE ''
+                                        END AS FULLNAME 
+                        From PAYROLL_PAYOUT A 
+                        inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
+                        left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
+                        where A.PAYDATE  = '{PaydateNet_ComboB.Text}' AND B.HO_CATEGORY IN ('Construction' , 'Leasing Admin Office') "
+
             PlusS = "PTU"
             LoadNet_Print(mysql)
         ElseIf Company_Combo.SelectedIndex = 6 Then '=== PGC HEAD OFFICE
 
             NetBranch_Combo.Items.Clear()
 
-            Dim mysql = $"Select * From PAYROLL_PAYOUT A 
-                                        inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
-                                        left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
-                                        where A.PAYDATE  = '{PaydateNet_ComboB.Text}' AND B.HO_CATEGORY = 'PGC Head Office'"
+            Dim mysql = $"Select B.*, C.*,
+                                 LASTNAME || ', ' || FIRSTNAME || 
+                                        CASE
+                                            WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
+                                            ELSE ''
+                                        END || 
+                                        CASE 
+                                            WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX
+                                            ELSE ''
+                                        END AS FULLNAME 
+                        From PAYROLL_PAYOUT A 
+                        inner JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
+                        left JOIN PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
+                        where A.PAYDATE  = '{PaydateNet_ComboB.Text}' AND B.HO_CATEGORY = 'PGC Head Office'"
+
             PlusS = "PGC"
             LoadNet_Print(mysql)
         End If

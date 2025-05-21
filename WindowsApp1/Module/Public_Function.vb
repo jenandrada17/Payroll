@@ -15,6 +15,7 @@ Module Public_Function
     Friend dateStarted As String
     Friend payrollSched As String = ""
     Friend specialHolidayList As New List(Of String)
+    Friend userID As Integer
 
 
     Friend Function ExcelFilePath(ByVal filePath As String) As String

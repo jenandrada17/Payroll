@@ -338,7 +338,9 @@ Module SelectFromDatabase
                                 WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX
                                 ELSE ''
                             END AS FULLNAME 
-                            from {tablee} A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIO_NO Where A.CATEGORY = '{category}' AND ("
+                            from {tablee} A 
+                            inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIO_NO 
+                            Where A.CATEGORY = '{category}' AND ("
 
                 For Each name In strWords
                     mysql &= $"{vbCr}UPPER(A.BIO_NO) Like UPPER('%{name}%') OR "
@@ -349,7 +351,13 @@ Module SelectFromDatabase
                                     END) LIKE UPPER('%{name}%') OR"
                     mysql &= $"{vbCr}UPPER(COMPANY) Like UPPER('%{name}%') OR "
                     mysql &= $"{vbCr}UPPER(BRANCHCODE) LIKE UPPER('%{name}%') OR "
-                    mysql &= $"{vbCr}UPPER(A.STATUS) Like UPPER('%{name}%')) ORDER BY FULLNAME ASC "
+                    mysql &= $"{vbCr}UPPER(A.STATUS) Like UPPER('%{name}%')) AND 
+                            NOT EXISTS (
+                                   SELECT 1
+                                   FROM USER_ACCESSIBILITY UA
+                                   WHERE UA.COMPANY = B.COMPANY
+                                   AND UA.USERID = {userID})
+                            ORDER BY FULLNAME ASC "
                 Next
 
             Else
@@ -363,9 +371,18 @@ Module SelectFromDatabase
                                 WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX
                                 ELSE ''
                             END AS FULLNAME 
-                            from {tablee} A inner join TBL_EMPLOYEE B On B.BIOMETRICID = A.BIO_NO Where A.CATEGORY = '{category}'  ORDER BY FULLNAME ASC "
+                            from {tablee} A 
+                            inner join TBL_EMPLOYEE B On B.BIOMETRICID = A.BIO_NO 
+                            Where A.CATEGORY = '{category}' AND
+                            NOT EXISTS (
+                                   SELECT 1
+                                   FROM USER_ACCESSIBILITY UA
+                                   WHERE UA.COMPANY = B.COMPANY
+                                   AND UA.USERID = {userID})
+                            ORDER BY FULLNAME ASC "
             End If
 
+            TestingScript_String(mysql)
             Using ds As DataSet = LoadSQL(mysql, tablee)
                 rowCount = ds.Tables(0).Rows.Count
                 Dim maxEntries As Integer = ds.Tables(0).Rows.Count
@@ -421,7 +438,9 @@ Module SelectFromDatabase
                                 WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX
                                 ELSE ''
                             END AS FULLNAME
-                            from {tablee} A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIO_NO Where A.CATEGORY = '{category}' AND ("
+                            from {tablee} A 
+                            inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIO_NO 
+                            Where A.CATEGORY = '{category}' AND ("
 
                 For Each name In strWords
                     mysql &= $"{vbCr}UPPER(A.BIO_NO) Like UPPER('%{name}%') OR "
@@ -431,7 +450,13 @@ Module SelectFromDatabase
                                     CASE WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX  ELSE ''
                                     END) LIKE UPPER('%{name}%') OR"
                     mysql &= $"{vbCr}UPPER(COMPANY) Like UPPER('%{name}%') OR "
-                    mysql &= $"{vbCr}UPPER(BRANCHCODE) LIKE UPPER('%{name}%')) ORDER BY FULLNAME ASC "
+                    mysql &= $"{vbCr}UPPER(BRANCHCODE) LIKE UPPER('%{name}%')) AND
+                            NOT EXISTS (
+                                   SELECT 1
+                                   FROM USER_ACCESSIBILITY UA
+                                   WHERE UA.COMPANY = B.COMPANY
+                                   AND UA.USERID = {userID})
+                            ORDER BY FULLNAME ASC "
                 Next
 
             Else
@@ -445,9 +470,17 @@ Module SelectFromDatabase
                                 WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX
                                 ELSE ''
                             END AS FULLNAME
-                            from {tablee} A inner join TBL_EMPLOYEE B On B.BIOMETRICID = A.BIO_NO Where A.CATEGORY = '{category}'"
+                            from {tablee} A 
+                            inner join TBL_EMPLOYEE B On B.BIOMETRICID = A.BIO_NO 
+                            Where A.CATEGORY = '{category}' AND
+                            NOT EXISTS (
+                                   SELECT 1
+                                   FROM USER_ACCESSIBILITY UA
+                                   WHERE UA.COMPANY = B.COMPANY
+                                   AND UA.USERID = {userID})"
             End If
 
+            TestingScript_String(mysql)
             Using ds As DataSet = LoadSQL(mysql, tablee)
                 rowCount = ds.Tables(0).Rows.Count
                 Dim maxEntries As Integer = ds.Tables(0).Rows.Count
@@ -563,7 +596,9 @@ Module SelectFromDatabase
                                     WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX
                                     ELSE ''
                                 END AS FULLNAME 
-                                From PAYROLL_PAYOUT A inner join TBL_EMPLOYEE B on BIOMETRICID = BIOMETRIC_ID WHERE BIOMETRIC_ID = '{biometric}' and PAYDATE = '{paydate}'"
+                                FROM PAYROLL_PAYOUT A 
+                                INNER JOIN TBL_EMPLOYEE B on BIOMETRICID = BIOMETRIC_ID 
+                                WHERE BIOMETRIC_ID = '{biometric}' and PAYDATE = '{paydate}'"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
             If ds.Tables(0).Rows.Count > 0 Then
 
@@ -1442,11 +1477,17 @@ Module SelectFromDatabase
                                     CASE WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX  ELSE ''
                                     END) LIKE UPPER('%{name}%') OR"
                 mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(BRANCHCODE) LIKE UPPER('%{name}%')) ORDER BY FULLNAME, allow_id  ASC "
+                mysql &= $"{vbCr}UPPER(BRANCHCODE) LIKE UPPER('%{name}%')) 
+                        AND NOT EXISTS (
+                                SELECT 1
+                                FROM USER_ACCESSIBILITY UA
+                                WHERE UA.COMPANY = B.COMPANY
+                                AND UA.USERID = {userID})
+                        ORDER BY FULLNAME, allow_id  ASC "
             Next
 
         Else
-            mysql = "select A.*, A.id as allow_id, B.*, 
+            mysql = $"select A.*, A.id as allow_id, B.*, 
                         LASTNAME || ', ' || FIRSTNAME || 
                         CASE
                             WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
@@ -1456,7 +1497,15 @@ Module SelectFromDatabase
                             WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX
                             ELSE ''
                         END AS FULLNAME
-                        from PAYROLL_ALLOWANCES A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRIC_NO where ALLOWED = 'YES' ORDER BY FULLNAME, allow_id ASC "
+                        from PAYROLL_ALLOWANCES A 
+                        inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRIC_NO 
+                        where ALLOWED = 'YES' 
+                        AND NOT EXISTS (
+                                SELECT 1
+                                FROM USER_ACCESSIBILITY UA
+                                WHERE UA.COMPANY = B.COMPANY
+                                AND UA.USERID = {userID})
+                        ORDER BY FULLNAME, allow_id ASC "
         End If
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ALLOWANCES")
@@ -1510,7 +1559,9 @@ Module SelectFromDatabase
                         WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX
                         ELSE ''
                     END AS FULLNAME  
-                    from PAYROLL_DEDUCTION A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIO_NO WHERE (A.CATEGORY <> 'SSS LOAN' OR  A.CATEGORY <> 'PAG-IBIG LOAN') AND ("
+                    from PAYROLL_DEDUCTION A 
+                    inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIO_NO 
+                    WHERE (A.CATEGORY <> 'SSS LOAN' OR  A.CATEGORY <> 'PAG-IBIG LOAN') AND ("
 
             For Each name In strWords
                 mysql &= $"{vbCr}UPPER(A.BIO_NO) LIKE UPPER('%{name}%') OR "
@@ -1520,11 +1571,17 @@ Module SelectFromDatabase
                                     CASE WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX ELSE ''
                                     END) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(BRANCHCODE) LIKE UPPER('%{name}%'))  ORDER BY FULLNAME ASC "
+                mysql &= $"{vbCr}UPPER(BRANCHCODE) LIKE UPPER('%{name}%'))  
+                        AND NOT EXISTS (
+                                   SELECT 1
+                                   FROM USER_ACCESSIBILITY UA
+                                   WHERE UA.COMPANY = B.COMPANY
+                                   AND UA.USERID = {userID})
+                        ORDER BY FULLNAME ASC "
             Next
 
         Else
-            mysql = "select A.*, A.id as deduc_id, B.*, 
+            mysql = $"select A.*, A.id as deduc_id, B.*, 
                     LASTNAME || ', ' || FIRSTNAME || 
                     CASE
                         WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
@@ -1534,7 +1591,15 @@ Module SelectFromDatabase
                         WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX
                         ELSE ''
                     END AS FULLNAME  
-                    from PAYROLL_DEDUCTION A inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIO_NO WHERE (A.CATEGORY <> 'SSS LOAN' OR  A.CATEGORY <> 'PAG-IBIG LOAN') ORDER BY FULLNAME ASC"
+                    from PAYROLL_DEDUCTION A 
+                    inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIO_NO 
+                    WHERE (A.CATEGORY <> 'SSS LOAN' OR  A.CATEGORY <> 'PAG-IBIG LOAN') AND 
+                    NOT EXISTS (
+                        SELECT 1
+                        FROM USER_ACCESSIBILITY UA
+                        WHERE UA.COMPANY = B.COMPANY
+                        AND UA.USERID = {userID})
+                    ORDER BY FULLNAME ASC"
         End If
 
         TestingScript_String(mysql)
@@ -2003,7 +2068,13 @@ Module SelectFromDatabase
                         END AS FULLNAME  
                         From PAYROLL_PAYOUT A 
                         inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRIC_ID 
-                        where paydate = '{paydate}' and ( "
+                        where 
+                        NOT EXISTS (
+                                   SELECT 1
+                                   FROM USER_ACCESSIBILITY UA
+                                   WHERE UA.COMPANY = B.COMPANY
+                                   AND UA.USERID = {userID})
+                        AND paydate = '{paydate}' and ( "
 
             For Each name In strWords
                 mysql &= $"{vbCr}UPPER(BIOMETRIC_ID) LIKE UPPER('%{name}%') OR "
@@ -2028,7 +2099,15 @@ Module SelectFromDatabase
                             ELSE ''
                         END AS FULLNAME  
                         From PAYROLL_PAYOUT A  
-                        inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRIC_ID where paydate ='{paydate}'  ORDER BY FULLNAME"
+                        INNER JOIN TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRIC_ID 
+                        where 
+                        NOT EXISTS (
+                                   SELECT 1
+                                   FROM USER_ACCESSIBILITY UA
+                                   WHERE UA.COMPANY = B.COMPANY
+                                   AND UA.USERID = {userID}) 
+                        AND paydate ='{paydate}'                          
+                        ORDER BY FULLNAME"
         End If
 
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
@@ -2198,7 +2277,7 @@ Module SelectFromDatabase
                             from TBL_EMPLOYEE A where "
 
             For Each name In strWords
-                mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%') OR "
+                mysql &= $"({vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(BRANCHCODE) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(LASTNAME || ', ' || FIRSTNAME || 
                             CASE WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' ELSE ''
@@ -2214,11 +2293,17 @@ Module SelectFromDatabase
                 mysql &= $"{vbCr}UPPER(PAGIBIG) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(HO_CATEGORY) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(COMMON_CATEGORY) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(EMAILADD) LIKE UPPER('%{name}%') ORDER BY COMPANY, BRANCHCODE ASC "
+                mysql &= $"{vbCr}UPPER(EMAILADD) LIKE UPPER('%{name}%')) 
+                        AND NOT EXISTS (
+                                   SELECT 1
+                                   FROM USER_ACCESSIBILITY UA
+                                   WHERE UA.COMPANY = A.COMPANY
+                                   AND UA.USERID = {userID}) 
+                        ORDER BY COMPANY, BRANCHCODE ASC "
             Next
 
         Else
-            mysql = "select A.*,   
+            mysql = $"select A.*,   
                             LASTNAME || ', ' || FIRSTNAME || 
                             CASE
                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
@@ -2228,7 +2313,13 @@ Module SelectFromDatabase
                                 WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX
                                 ELSE ''
                             END AS FULLNAME 
-                            from TBL_EMPLOYEE A ORDER BY COMPANY, BRANCHCODE ASC "
+                            FROM TBL_EMPLOYEE A 
+                            WHERE NOT EXISTS (
+                                   SELECT 1
+                                   FROM USER_ACCESSIBILITY UA
+                                   WHERE UA.COMPANY = A.COMPANY
+                                   AND UA.USERID = {userID})
+                            ORDER BY COMPANY, BRANCHCODE ASC "
         End If
 
         TestingScript_String(mysql)
@@ -3436,7 +3527,12 @@ Module SelectFromDatabase
                             END AS FULLNAME
                             from PAYROLL_PAF A 
                             inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIO_NO 
-                            WHERE PAF_NO = '{search}' Or BIO_NO = '{search}'"
+                            WHERE PAF_NO = '{search}' Or BIO_NO = '{search}'
+                            AND NOT EXISTS (
+                                SELECT 1
+                                FROM USER_ACCESSIBILITY UA
+                                WHERE UA.COMPANY = B.COMPANY
+                                AND UA.USERID = {userID})"
             Else
 
                 mysql = $"Select A.*, B.BIOMETRICID as bioNo, 
@@ -3450,17 +3546,23 @@ Module SelectFromDatabase
                         ELSE ''
                     END AS FULLNAME
                     from PAYROLL_PAF A 
-                    inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIO_NO WHERE "
+                    inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIO_NO WHERE ("
 
                 For Each name In strWords
-                    mysql &= $"{vbCr}UPPER(BIOMETRIC_NO) LIKE UPPER('%{name}%') OR "
+                    mysql &= $"{vbCr}UPPER(BIOMETRICID) LIKE UPPER('%{name}%') OR "
                     mysql &= $"{vbCr}UPPER(LASTNAME || ', ' || FIRSTNAME || 
                                     CASE WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' ELSE ''
                                     END || 
                                     CASE WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX  ELSE ''
                                     END) LIKE UPPER('%{name}%') OR"
                     mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%') OR "
-                    mysql &= $"{vbCr}UPPER(BRANCHCODE) LIKE UPPER('%{name}%')) ORDER BY FULLNAME"
+                    mysql &= $"{vbCr}UPPER(BRANCHCODE) LIKE UPPER('%{name}%'))
+                            AND NOT EXISTS (
+                                   SELECT 1
+                                   FROM USER_ACCESSIBILITY UA
+                                   WHERE UA.COMPANY = B.COMPANY
+                                   AND UA.USERID = {userID})
+                            ORDER BY FULLNAME"
                 Next
 
             End If
@@ -3478,6 +3580,11 @@ Module SelectFromDatabase
                             END AS FULLNAME
                             from PAYROLL_PAF A 
                             inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIO_NO 
+                            where NOT EXISTS (
+                                   SELECT 1
+                                   FROM USER_ACCESSIBILITY UA
+                                   WHERE UA.COMPANY = B.COMPANY
+                                   AND UA.USERID = {userID})
                             Order by FULLNAME"
 
         End If
@@ -3567,7 +3674,7 @@ Module SelectFromDatabase
                             END AS FULLNAME  
                             from TBL_EMPLOYEE A 
                             inner join PAYROLL_SBU B on B.BIO_NO = A.BIOMETRICID 
-                            left join RECORDED_ALLOW_DEDUC C on C.BIO_NO = A.BIOMETRICID and C.CATEGORY = 'SBU' and PAYDATE <> '12/15/2021' WHERE "
+                            left join RECORDED_ALLOW_DEDUC C on C.BIO_NO = A.BIOMETRICID and C.CATEGORY = 'SBU' and PAYDATE <> '12/15/2021' WHERE ("
 
             For Each name In strWords
                 mysql &= $"{vbCr}UPPER(B.BIO_NO) LIKE UPPER('%{name}%') OR "
@@ -3577,12 +3684,18 @@ Module SelectFromDatabase
                                     CASE WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX  ELSE ''
                                     END) LIKE UPPER('%{name}%') OR"
                 mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(BRANCHCODE) LIKE UPPER('%{name}%') 
-                        GROUP BY FULLNAME, CREDIT, PRINCIPAL,  B.AMOUNT, B.BIO_NO ORDER BY FULLNAME ASC "
+                mysql &= $"{vbCr}UPPER(BRANCHCODE) LIKE UPPER('%{name}%')) AND 
+                        NOT EXISTS (
+                                   SELECT 1
+                                   FROM USER_ACCESSIBILITY UA
+                                   WHERE UA.COMPANY = A.COMPANY
+                                   AND UA.USERID = {userID})
+                        GROUP BY FULLNAME, CREDIT, PRINCIPAL,  B.AMOUNT, B.BIO_NO 
+                        ORDER BY FULLNAME ASC "
             Next
 
         Else
-            mysql = "select COALESCE(sum(C.AMOUNT), 0) AS TOTALS, CREDIT, PRINCIPAL, B.AMOUNT, B.BIO_NO as bio, 
+            mysql = $"SELECT COALESCE(sum(C.AMOUNT), 0) AS TOTALS, CREDIT, PRINCIPAL, B.AMOUNT, B.BIO_NO as bio, 
                         LASTNAME || ', ' || FIRSTNAME || 
                         CASE
                             WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
@@ -3594,7 +3707,12 @@ Module SelectFromDatabase
                         END AS FULLNAME  
                         from TBL_EMPLOYEE A 
                         inner join PAYROLL_SBU B on B.BIO_NO = A.BIOMETRICID 
-                        left join RECORDED_ALLOW_DEDUC C on C.BIO_NO = A.BIOMETRICID and C.CATEGORY = 'SBU'  and PAYDATE <> '12/15/2021'  
+                        left join RECORDED_ALLOW_DEDUC C on C.BIO_NO = A.BIOMETRICID and C.CATEGORY = 'SBU'  and PAYDATE <> '12/15/2021' 
+                        WHERE NOT EXISTS (
+                                   SELECT 1
+                                   FROM USER_ACCESSIBILITY UA
+                                   WHERE UA.COMPANY = A.COMPANY
+                                   AND UA.USERID = {userID})
                         GROUP BY FULLNAME, CREDIT, PRINCIPAL,  B.AMOUNT, B.BIO_NO
                         ORDER BY FULLNAME ASC "
         End If
@@ -3837,7 +3955,7 @@ Module SelectFromDatabase
                             ELSE ''
                         END AS FULLNAME, 
                         BIOMETRICID, EMP_POSITION, COMPANY, STATUS, DATE_ENDED, RATE_DAILY, SOA_PATH, SOA_REMARKS
-                    FROM TBL_EMPLOYEE 
+                    FROM TBL_EMPLOYEE A 
                     WHERE EMP_STATUS = 'INACTIVE' AND SOA_PATH IS NULL AND ("
 
             For Each name In strWords
@@ -3848,11 +3966,17 @@ Module SelectFromDatabase
                                     CASE WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX  ELSE ''
                                     END) LIKE UPPER('%{name}%') OR"
                 mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(EMP_POSITION) LIKE UPPER('%{name}%')) ORDER BY DATE_ENDED DESC, FULLNAME ASC "
+                mysql &= $"{vbCr}UPPER(EMP_POSITION) LIKE UPPER('%{name}%')) 
+                        AND NOT EXISTS (
+                            SELECT 1
+                            FROM USER_ACCESSIBILITY UA
+                            WHERE UA.COMPANY = A.COMPANY
+                            AND UA.USERID = {userID})
+                        ORDER BY DATE_ENDED DESC, FULLNAME ASC "
             Next
 
         Else
-            mysql = "SELECT 
+            mysql = $"SELECT 
                         LASTNAME || ', ' || FIRSTNAME || 
                         CASE
                             WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
@@ -3863,11 +3987,17 @@ Module SelectFromDatabase
                             ELSE ''
                         END AS FULLNAME, 
                         BIOMETRICID, EMP_POSITION, COMPANY, STATUS, DATE_ENDED, RATE_DAILY, SOA_PATH, SOA_REMARKS
-                    FROM TBL_EMPLOYEE 
-                    WHERE EMP_STATUS = 'INACTIVE' AND SOA_PATH IS NULL 
+                    FROM TBL_EMPLOYEE A 
+                    WHERE (EMP_STATUS = 'INACTIVE' AND SOA_PATH IS NULL)
+                    AND NOT EXISTS (
+                            SELECT 1
+                            FROM USER_ACCESSIBILITY UA
+                            WHERE UA.COMPANY = A.COMPANY
+                            AND UA.USERID = {userID})
                     ORDER BY DATE_ENDED DESC, FULLNAME ASC "
         End If
 
+        TestingScript_String(mysql)
         Using ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
@@ -3930,7 +4060,7 @@ Module SelectFromDatabase
                             ELSE ''
                         END AS FULLNAME, 
                         BIOMETRICID, EMP_POSITION, COMPANY, STATUS, DATE_ENDED, RATE_DAILY, SOA_PATH, SOA_REMARKS
-                    FROM TBL_EMPLOYEE WHERE SOA_PATH IS NOT NULL and ("
+                    FROM TBL_EMPLOYEE A WHERE SOA_PATH IS NOT NULL and ("
 
             For Each name In strWords
                 mysql &= $"{vbCr}UPPER(BIOMETRICID) LIKE UPPER('%{name}%') OR "
@@ -3940,11 +4070,17 @@ Module SelectFromDatabase
                                     CASE WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX  ELSE ''
                                     END) LIKE UPPER('%{name}%') OR"
                 mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(EMP_POSITION) LIKE UPPER('%{name}%')) ORDER BY FULLNAME  ASC "
+                mysql &= $"{vbCr}UPPER(EMP_POSITION) LIKE UPPER('%{name}%')) 
+                        AND NOT EXISTS (
+                                   SELECT 1
+                                   FROM USER_ACCESSIBILITY UA
+                                   WHERE UA.COMPANY = A.COMPANY
+                                   AND UA.USERID = {userID})
+                        ORDER BY FULLNAME  ASC "
             Next
 
         Else
-            mysql = "SELECT 
+            mysql = $"SELECT 
                         LASTNAME || ', ' || FIRSTNAME || 
                         CASE
                             WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
@@ -3955,9 +4091,16 @@ Module SelectFromDatabase
                             ELSE ''
                         END AS FULLNAME, 
                         BIOMETRICID, EMP_POSITION, COMPANY, STATUS, DATE_ENDED, RATE_DAILY, SOA_PATH, SOA_REMARKS
-                    FROM TBL_EMPLOYEE WHERE SOA_PATH IS NOT NULL"
+                    FROM TBL_EMPLOYEE A 
+                    WHERE (SOA_PATH IS NOT NULL)
+                    AND NOT EXISTS (
+                            SELECT 1
+                            FROM USER_ACCESSIBILITY UA
+                            WHERE UA.COMPANY = A.COMPANY
+                            AND UA.USERID = {userID})"
         End If
 
+        TestingScript_String(mysql)
         Using ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
