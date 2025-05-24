@@ -6391,6 +6391,10 @@ Partial Public Class reports
         
         Private columnDATE_CREATED As Global.System.Data.DataColumn
         
+        Private columnACTION_NAME As Global.System.Data.DataColumn
+        
+        Private columnACTION_STATUS As Global.System.Data.DataColumn
+        
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
         Public Sub New()
@@ -6483,6 +6487,22 @@ Partial Public Class reports
         End Property
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public ReadOnly Property ACTION_NAMEColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnACTION_NAME
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public ReadOnly Property ACTION_STATUSColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnACTION_STATUS
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0"),  _
          Global.System.ComponentModel.Browsable(false)>  _
         Public ReadOnly Property Count() As Integer
@@ -6519,9 +6539,9 @@ Partial Public Class reports
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
-        Public Overloads Function AddReassignmentRow(ByVal FULLNAME As String, ByVal EFFECTIVE_DATE As String, ByVal EMP_POSITION As String, ByVal FROM_BRANCH As String, ByVal TO_BRANCH As String, ByVal REMARKS As String, ByVal DATE_CREATED As String) As ReassignmentRow
+        Public Overloads Function AddReassignmentRow(ByVal FULLNAME As String, ByVal EFFECTIVE_DATE As String, ByVal EMP_POSITION As String, ByVal FROM_BRANCH As String, ByVal TO_BRANCH As String, ByVal REMARKS As String, ByVal DATE_CREATED As String, ByVal ACTION_NAME As String, ByVal ACTION_STATUS As String) As ReassignmentRow
             Dim rowReassignmentRow As ReassignmentRow = CType(Me.NewRow,ReassignmentRow)
-            Dim columnValuesArray() As Object = New Object() {FULLNAME, EFFECTIVE_DATE, EMP_POSITION, FROM_BRANCH, TO_BRANCH, REMARKS, DATE_CREATED}
+            Dim columnValuesArray() As Object = New Object() {FULLNAME, EFFECTIVE_DATE, EMP_POSITION, FROM_BRANCH, TO_BRANCH, REMARKS, DATE_CREATED, ACTION_NAME, ACTION_STATUS}
             rowReassignmentRow.ItemArray = columnValuesArray
             Me.Rows.Add(rowReassignmentRow)
             Return rowReassignmentRow
@@ -6551,6 +6571,8 @@ Partial Public Class reports
             Me.columnTO_BRANCH = MyBase.Columns("TO_BRANCH")
             Me.columnREMARKS = MyBase.Columns("REMARKS")
             Me.columnDATE_CREATED = MyBase.Columns("DATE_CREATED")
+            Me.columnACTION_NAME = MyBase.Columns("ACTION_NAME")
+            Me.columnACTION_STATUS = MyBase.Columns("ACTION_STATUS")
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -6570,6 +6592,10 @@ Partial Public Class reports
             MyBase.Columns.Add(Me.columnREMARKS)
             Me.columnDATE_CREATED = New Global.System.Data.DataColumn("DATE_CREATED", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnDATE_CREATED)
+            Me.columnACTION_NAME = New Global.System.Data.DataColumn("ACTION_NAME", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnACTION_NAME)
+            Me.columnACTION_STATUS = New Global.System.Data.DataColumn("ACTION_STATUS", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnACTION_STATUS)
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -11500,6 +11526,36 @@ Partial Public Class reports
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Property ACTION_NAME() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableReassignment.ACTION_NAMEColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'ACTION_NAME' in table 'Reassignment' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableReassignment.ACTION_NAMEColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Property ACTION_STATUS() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableReassignment.ACTION_STATUSColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'ACTION_STATUS' in table 'Reassignment' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableReassignment.ACTION_STATUSColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
         Public Function IsFULLNAMENull() As Boolean
             Return Me.IsNull(Me.tableReassignment.FULLNAMEColumn)
         End Function
@@ -11580,6 +11636,30 @@ Partial Public Class reports
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
         Public Sub SetDATE_CREATEDNull()
             Me(Me.tableReassignment.DATE_CREATEDColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Function IsACTION_NAMENull() As Boolean
+            Return Me.IsNull(Me.tableReassignment.ACTION_NAMEColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Sub SetACTION_NAMENull()
+            Me(Me.tableReassignment.ACTION_NAMEColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Function IsACTION_STATUSNull() As Boolean
+            Return Me.IsNull(Me.tableReassignment.ACTION_STATUSColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Sub SetACTION_STATUSNull()
+            Me(Me.tableReassignment.ACTION_STATUSColumn) = Global.System.Convert.DBNull
         End Sub
     End Class
     

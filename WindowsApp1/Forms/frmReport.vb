@@ -3088,17 +3088,35 @@ A
     End Sub
 
     Private Sub cbDateEffectivity_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbDateEffectivity.SelectedIndexChanged
-        rptReassignment.LocalReport.DataSources.Clear()
-        Dim DATE_start As DateTime = cbDateEffectivity.Text
-        Dim DATE_end As New DateTime(DATE_start.Year, DATE_start.Month, System.DateTime.DaysInMonth(DATE_start.Year, DATE_start.Month))
-        If cbDateEffectivity.SelectedItem <> Nothing Then LoadReassigment($"AND EFFECTIVE_DATE BETWEEN '{DATE_start.ToShortDateString}' AND '{DATE_end.ToShortDateString}'")
+        ReassignmentAppointment_Filter()
+    End Sub
+
+    Private Sub cbAction_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbAction.SelectedIndexChanged
+        ReassignmentAppointment_Filter()
+    End Sub
+
+    Private Sub ReassignmentAppointment_Filter()
+        Dim addCondition As String = ""
+        If cbAction.Text <> Nothing Then addCondition = $"AND ACTION_NAME = '{cbAction.Text}'"
+        If cbDateEffectivity.SelectedItem <> Nothing Then
+            Dim DATE_start As DateTime = cbDateEffectivity.Text
+            Dim DATE_end As New DateTime(DATE_start.Year, DATE_start.Month, System.DateTime.DaysInMonth(DATE_start.Year, DATE_start.Month))
+            addCondition &= $"AND EFFECTIVE_DATE BETWEEN '{DATE_start.ToShortDateString}' AND '{DATE_end.ToShortDateString}'"
+        End If
+        LoadReassigment(addCondition)
     End Sub
 
     Private Sub btnSearchReassign_Click(sender As Object, e As EventArgs) Handles btnSearchReassign.Click
-        If txtReassignment.Text <> Nothing Then LoadReassigment($"AND UPPER(FULLNAME) LIKE UPPER('%{txtReassignment.Text}%')")
+        'If txtReassignment.Text <> Nothing Then LoadReassigment($"AND UPPER(FULLNAME) LIKE UPPER('%{txtReassignment.Text}%')")
+        If txtReassignment.Text <> Nothing Then LoadReassigment($"AND UPPER(LASTNAME || ', ' || FIRSTNAME || 
+                                    CASE WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' ELSE ''
+                                    END || 
+                                    CASE WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX  ELSE ''
+                                    END) LIKE UPPER('%{txtReassignment.Text}%')")
     End Sub
 
     Public Sub LoadReassigment(Optional addCondition As String = Nothing)
+        rptReassignment.LocalReport.DataSources.Clear()
         Try
 
             Dim dt_Reassignment As New DataTable()
@@ -3109,8 +3127,9 @@ A
                 .Columns.Add("FROM_BRANCH")
                 .Columns.Add("TO_BRANCH")
                 .Columns.Add("REMARKS")
-                .Columns.Add("ACTION_STATUS")
                 .Columns.Add("DATE_CREATED")
+                .Columns.Add("ACTION_NAME")
+                .Columns.Add("ACTION_STATUS")
             End With
 
             Dim sql As String = $"Select A.*, lastName || ', ' || FIRSTNAME || 
@@ -3123,9 +3142,10 @@ A
                                             Else ''
                                         End As FULLNAME
                                 FROM HR_LETTER A 
-                                INNER JOIN TBL_EMPLOYEE B ON ID = EMP_ID
-                                WHERE ACTION_NAME = 'REASSIGNMENT' {addCondition}"
+                                INNER JOIN TBL_EMPLOYEE B ON B.ID = A.EMP_ID
+                                WHERE ACTION_NAME IS NOT NULL {addCondition}"
 
+            TestingScript_String(sql)
             Using ds As DataSet = LoadSQL(sql, "HR_LETTER")
                 If ds.Tables(0).Rows.Count > 0 Then
                     progressBarStart(ds.Tables(0).Rows.Count)
@@ -3138,10 +3158,11 @@ A
                             Dim FROM_BRANCH As String = .Item("FROM_BRANCH")
                             Dim TO_BRANCH As String = .Item("TO_BRANCH")
                             Dim REMARKS As String = .Item("REMARKS")
+                            Dim DATE_CREATED As String = IIf(IsDBNull(.Item("DATE_CREATED")), Nothing, .Item("DATE_CREATED"))
+                            Dim ACTION_NAME As String = .Item("ACTION_NAME")
                             Dim ACTION_STATUS As String = .Item("ACTION_STATUS")
-                            Dim DATE_CREATED As String = .Item("DATE_CREATED")
 
-                            dt_Reassignment.Rows.Add(FULLNAME, EFFECTIVE_DATE, EMP_POSITION, FROM_BRANCH, TO_BRANCH, REMARKS, ACTION_STATUS, DATE_CREATED)
+                            dt_Reassignment.Rows.Add(FULLNAME, EFFECTIVE_DATE, EMP_POSITION, FROM_BRANCH, TO_BRANCH, REMARKS, DATE_CREATED, ACTION_NAME, ACTION_STATUS)
 
                             frmMainForm.AppProgressBar.Value += 1
                         End With
@@ -3164,6 +3185,12 @@ A
     Private Sub Reports_Tab_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Reports_Tab.SelectedIndexChanged
         If Reports_Tab.SelectedTab Is tabReassignment Then
             LoadReassigment()
+        End If
+    End Sub
+
+    Private Sub txtReassignment_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtReassignment.KeyPress
+        If e.KeyChar = ChrW(Keys.Enter) Then
+            btnSearchReassign.PerformClick()
         End If
     End Sub
 End Class
