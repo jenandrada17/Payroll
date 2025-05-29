@@ -1260,8 +1260,16 @@ Public Class frmAttendance
                 Dim regHol_additional As Double = IIf(String.IsNullOrWhiteSpace(RegHol7_TXT.Text), 0, RegHol7_TXT.Text)
                 Dim RHOLIDAY As Double = REGHolidayCount(starting_date, ending_date) + regHol_additional
                 Dim specHoliday_hrs As Double = IIf(String.IsNullOrWhiteSpace(SpecHol7_TXT.Text), 0, SpecHol7_TXT.Text)
-                Dim SHOLIDAY As Double = IIf(specHoliday_hrs = 0, 0, specHoliday_hrs / 8)
-                If specHoliday_hrs Mod 8 > 0 Then SHOLIDAY += 1
+                'Dim SHOLIDAY As Double = IIf(specHoliday_hrs = 0, 0, specHoliday_hrs / 8)
+                Dim SHOLIDAY As Double = 0
+
+                If specHoliday_hrs = 0 Or specHoliday_hrs < 8 Then
+                    SHOLIDAY = 0
+                ElseIf specHoliday_hrs >= 8 Then
+                    SHOLIDAY = specHoliday_hrs / 8
+                End If
+
+                If specHoliday_hrs >= 8 And specHoliday_hrs Mod 8 > 0 Then SHOLIDAY += 1
                 Dim overtime As Double = IIf(String.IsNullOrWhiteSpace(Overtime7_NUP.Text), 0, Overtime7_NUP.Text)
                 Dim latee As Double = IIf(String.IsNullOrWhiteSpace(Late7_TXT.Text), 0, Late7_TXT.Text)
                 Dim undertimee As Double = IIf(String.IsNullOrWhiteSpace(Undertime7_TXT.Text), 0, Undertime7_TXT.Text)
