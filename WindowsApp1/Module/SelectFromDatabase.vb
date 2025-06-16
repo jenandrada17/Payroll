@@ -3789,8 +3789,8 @@ Module SelectFromDatabase
             Dim totalDeduction As Decimal = 0
             Dim NETPAY As Decimal = 0
 
-            Dim preparedBy As String = "Pearly Queen C. Benemerito"
-            If company = "DALTON" Then preparedBy = "Novelty S. Cababat"
+            'Dim preparedBy As String = "Pearly Queen C. Benemerito"
+            'If company = "DALTON" Then preparedBy = "Novelty S. Cababat"
 
             '======================================================== CLAIMS ====================================================================
             'HOLD SALARY
@@ -3828,24 +3828,6 @@ Module SelectFromDatabase
                     Dim creditSBU As Decimal = IIf(IsDBNull(.Item("CREDIT")), 0, .Item("CREDIT"))
                     totalSBUCredit = creditSBU + CDbl(.Item("TOTALS"))
                     totalClaims += totalSBUCredit
-
-                    'Dim fromSBUDate As String = Nothing
-                    'Dim toSBUDate As String = Nothing
-
-                    'If IsDBNull(.Item("FROMDATE")) Then
-                    'ElseIf String.IsNullOrWhiteSpace(.Item("FROMDATE")) Then
-                    'Else
-                    '    fromSBUDate = CDate(.Item("FROMDATE")).ToString("MMMM dd, yyyy")
-                    'End If
-
-                    'If IsDBNull(.Item("TODATE")) Then
-                    'ElseIf String.IsNullOrWhiteSpace(.Item("TODATE")) Then
-                    'Else
-                    '    fromSBUDate = CDate(.Item("TODATE")).ToString("MMMM dd, yyyy")
-                    'End If
-
-                    'Dim dateCovered As String = IIf(fromSBUDate = Nothing, Nothing, $"({fromSBUDate} - {toSBUDate})")
-                    'dt.Rows.Add($"SBU-SAVINGS BUILD UP {dateCovered}", totalSBUCredit.ToString("N"), "DEBIT")
 
                     dt.Rows.Add($"SBU-SAVINGS BUILD UP", totalSBUCredit.ToString("N"), "DEBIT")
                 End With
@@ -3887,8 +3869,7 @@ Module SelectFromDatabase
             New Microsoft.Reporting.WinForms.ReportParameter("paramDate", Today.ToShortDateString),
             New Microsoft.Reporting.WinForms.ReportParameter("paramTotalClaims", totalClaims.ToString("N")),
             New Microsoft.Reporting.WinForms.ReportParameter("paramTotalDeduction", totalDeduction.ToString("N")),
-            New Microsoft.Reporting.WinForms.ReportParameter("paramNetPay", NETPAY.ToString("N")),
-            New Microsoft.Reporting.WinForms.ReportParameter("paramPreparedBy", preparedBy)
+            New Microsoft.Reporting.WinForms.ReportParameter("paramNetPay", NETPAY.ToString("N"))
             }
 
             Dim dataSource As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt)
@@ -3954,7 +3935,7 @@ Module SelectFromDatabase
                             WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX
                             ELSE ''
                         END AS FULLNAME, 
-                        BIOMETRICID, EMP_POSITION, COMPANY, STATUS, DATE_ENDED, RATE_DAILY, SOA_PATH, SOA_REMARKS
+                        BIOMETRICID, EMP_POSITION, COMPANY, HO_CATEGORY, STATUS, DATE_ENDED, RATE_DAILY, SOA_PATH, SOA_REMARKS
                     FROM TBL_EMPLOYEE A 
                     WHERE EMP_STATUS = 'INACTIVE' AND SOA_PATH IS NULL AND ("
 
@@ -3986,7 +3967,7 @@ Module SelectFromDatabase
                             WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX
                             ELSE ''
                         END AS FULLNAME, 
-                        BIOMETRICID, EMP_POSITION, COMPANY, STATUS, DATE_ENDED, RATE_DAILY, SOA_PATH, SOA_REMARKS
+                        BIOMETRICID, EMP_POSITION, COMPANY, HO_CATEGORY, STATUS, DATE_ENDED, RATE_DAILY, SOA_PATH, SOA_REMARKS
                     FROM TBL_EMPLOYEE A 
                     WHERE (EMP_STATUS = 'INACTIVE' AND SOA_PATH IS NULL)
                     AND NOT EXISTS (
@@ -4011,6 +3992,8 @@ Module SelectFromDatabase
                         Dim company As String = Nothing
                         If IsDBNull(.Item("COMPANY")) Then
                         ElseIf String.IsNullOrWhiteSpace(.Item("COMPANY")) Then
+                        ElseIf .Item("COMPANY") = "HEAD OFFICE" Then
+                            company = .Item("HO_CATEGORY")
                         Else
                             company = .Item("COMPANY")
                         End If
