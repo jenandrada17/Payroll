@@ -2856,18 +2856,19 @@
                                   <TextRuns>
                                     <TextRun>
                                       <Value>=Switch(
-    Parameters!paramCompany.Value = "DALTON" OR 
-	Parameters!paramCompany.Value = "P&amp;G UY" OR 
-	InStr(Parameters!paramCompany.Value, "Dalton") &gt; 0 OR
+    Parameters!paramCompany.Value = "DALTON", "Lynton Y. Uy",
+	Parameters!paramCompany.Value = "P&amp;G UY", "Lynton Y. Uy",
+	InStr(Parameters!paramCompany.Value, "Dalton") &gt; 0, "Lynton Y. Uy", 
 	InStr(Parameters!paramCompany.Value, "GHS/P&amp;G UY") &gt; 0, "Lynton Y. Uy",
+	InStr(Parameters!paramCompany.Value, "PGC") &gt; 0, "Lynton Y. Uy",
     
-	Parameters!paramCompany.Value = "PHOTO" OR 
-	Parameters!paramCompany.Value = "PERFECOM" OR
-	InStr(Parameters!paramCompany.Value, "Photo") &gt; 0 OR
+	Parameters!paramCompany.Value = "PHOTO", "Darren Y. Uy",
+	Parameters!paramCompany.Value = "PERFECOM", "Darren Y. Uy",
+	InStr(Parameters!paramCompany.Value, "Photo") &gt; 0, "Darren Y. Uy",
 	InStr(Parameters!paramCompany.Value, "Perfecom") &gt; 0, "Darren Y. Uy",
     
 	Parameters!paramCompany.Value = "HER GRACE", "Godwin Lance Y. Uy",
-    True, "PGC"
+    True, ""
 )</Value>
                                       <Style>
                                         <FontSize>9pt</FontSize>
@@ -3300,7 +3301,7 @@
                 <DataSetName>DataSet1</DataSetName>
                 <Top>0.52396in</Top>
                 <Height>3.8652in</Height>
-                <Width>7.37898in</Width>
+                <Width>7.37899in</Width>
                 <ZIndex>1</ZIndex>
                 <Style>
                   <Border>

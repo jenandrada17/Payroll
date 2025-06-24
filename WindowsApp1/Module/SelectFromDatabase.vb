@@ -1131,19 +1131,27 @@ Module SelectFromDatabase
 
     End Sub
 
-    Public Sub PopulateComboBox(combo As ComboBox, table As String, column As String)
+    Public Sub PopulateComboBox(combo As ComboBox, table As String, column As String, Optional isDate As Boolean = False)
         Dim sql As String = $"select distinct({column}) from {table} order by {column} desc"
         Dim rdr As FbDataReader = LoadSQL_byDataReader(sql)
         combo.Items.Clear()
         While rdr.Read()
             If rdr.HasRows Then
                 With rdr
-                    If combo.Name = "Branch_ComboB" Or combo.Name = "DTR_Branch_Combo" Or combo.Name = "Rate_Branch_ComboB" Or combo.Name = "Rate_Pos_ComboB" Or combo.Name = "Allow_Category_Combo" Or combo.Name = "DE_Category_Combo" Then
-                        combo.Items.Add(rdr.Item(0).ToString)
-                        combo.Items.Remove("")
-                    Else
+                    'If combo.Name = "Branch_ComboB" Or combo.Name = "DTR_Branch_Combo" Or combo.Name = "Rate_Branch_ComboB" Or combo.Name = "Rate_Pos_ComboB" Or combo.Name = "Allow_Category_Combo" Or combo.Name = "DE_Category_Combo" Then
+                    '    combo.Items.Add(rdr.Item(0).ToString)
+                    '    combo.Items.Remove("")
+                    'Else
+                    '    Dim datee As DateTime = rdr.Item(0).ToString
+                    '    combo.Items.Add(datee.ToString("d"))
+                    'End If
+
+                    If isDate Then
                         Dim datee As DateTime = rdr.Item(0).ToString
                         combo.Items.Add(datee.ToString("d"))
+                    Else
+                        combo.Items.Add(rdr.Item(0).ToString)
+                        combo.Items.Remove("")
                     End If
                 End With
             Else
@@ -2242,18 +2250,36 @@ Module SelectFromDatabase
         End If
     End Sub
 
-    Public Sub Load_Category_LIST(LIST As ListView, table As String, coulumn As String)
-        LIST.Items.Clear()
-        Dim mysql As String = $"Select * From {table}"
-        Using ds As DataSet = LoadSQL(mysql, table)
-            For Each dr As DataRow In ds.Tables(0).Rows
-                With dr
-                    Dim lvitem As ListViewItem = LIST.Items.Add(.Item(coulumn))
-                End With
-            Next
+    Public Sub PopulateCategories(lv As ListView, Optional search As String = "")
+        lv.Items.Clear()
+        Dim sql As String = $"SELECT * FROM CATEGORIES "
+        If search <> "" Then sql &= $" WHERE UPPER(NAME) LIKE UPPER('%{search}%') OR UPPER(CATEGORY) LIKE UPPER('%{search}%')"
+        Using ds As DataSet = LoadSQL(sql)
+            If ds.Tables(0).Rows.Count > 0 Then
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+                        Dim i As ListViewItem = lv.Items.Add(.Item("NAME"))
+                        i.SubItems.Add(.Item("CATEGORY")).Tag = .Item("ID")
+                    End With
+                Next
+            End If
         End Using
     End Sub
 
+    Public Sub CategoriesDropdown(combo As ComboBox, column As String, Optional condition As String = "")
+        combo.Items.Clear()
+        Dim sql As String = $"SELECT DISTINCT({column}) FROM CATEGORIES {condition}"
+        Using ds As DataSet = LoadSQL(sql)
+            If ds.Tables(0).Rows.Count > 0 Then
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+                        Dim ccnt As String = .item(0)
+                        combo.Items.Add(ccnt)
+                    End With
+                Next
+            End If
+        End Using
+    End Sub
     Friend Sub Lists_Employees(LV As ListView, Optional searchName As String = "")
 
         Dim secured_str As String = searchName

@@ -77,18 +77,8 @@ Partial Class frmSettings
         Me.Name_TXT = New System.Windows.Forms.TextBox()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.TabPage4 = New System.Windows.Forms.TabPage()
-        Me.GroupBox8 = New System.Windows.Forms.GroupBox()
-        Me.Cat_Deduc_List = New System.Windows.Forms.ListView()
-        Me.ColumnHeader22 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.DeducSave_BTN = New System.Windows.Forms.Button()
-        Me.Label24 = New System.Windows.Forms.Label()
-        Me.Deduct_TXT = New System.Windows.Forms.TextBox()
-        Me.GroupBox7 = New System.Windows.Forms.GroupBox()
-        Me.Label23 = New System.Windows.Forms.Label()
-        Me.Allowance_List = New System.Windows.Forms.ListView()
+        Me.lvCategories = New System.Windows.Forms.ListView()
         Me.ColumnHeader21 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.AllowCat_TXT = New System.Windows.Forms.TextBox()
-        Me.Cat_Allow_Save_BTN = New System.Windows.Forms.Button()
         Me.TabPage7 = New System.Windows.Forms.TabPage()
         Me.SearchTime_TXT = New System.Windows.Forms.TextBox()
         Me.SearchTime_BTN = New System.Windows.Forms.Button()
@@ -149,6 +139,14 @@ Partial Class frmSettings
         Me.Holiday_Remove = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.RemoveToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.FileSystemWatcher1 = New System.IO.FileSystemWatcher()
+        Me.cbCName = New System.Windows.Forms.ComboBox()
+        Me.Label7 = New System.Windows.Forms.Label()
+        Me.Label13 = New System.Windows.Forms.Label()
+        Me.txtCategory = New System.Windows.Forms.TextBox()
+        Me.ColumnHeader3 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.btnCSave = New System.Windows.Forms.Button()
+        Me.txtCSearch = New System.Windows.Forms.TextBox()
+        Me.btnCSearch = New System.Windows.Forms.Button()
         Me.Settings_Tab.SuspendLayout()
         Me.TabPage5.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
@@ -157,8 +155,6 @@ Partial Class frmSettings
         Me.GroupBox2.SuspendLayout()
         Me.GroupBox1.SuspendLayout()
         Me.TabPage4.SuspendLayout()
-        Me.GroupBox8.SuspendLayout()
-        Me.GroupBox7.SuspendLayout()
         Me.TabPage7.SuspendLayout()
         Me.GroupBox4.SuspendLayout()
         Me.GroupBox9.SuspendLayout()
@@ -174,7 +170,7 @@ Partial Class frmSettings
         Me.Close_LBL.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Close_LBL.Location = New System.Drawing.Point(1121, -7)
         Me.Close_LBL.Name = "Close_LBL"
-        Me.Close_LBL.Size = New System.Drawing.Size(57, 32)
+        Me.Close_LBL.Size = New System.Drawing.Size(56, 32)
         Me.Close_LBL.TabIndex = 77
         Me.Close_LBL.Text = "Close"
         '
@@ -738,8 +734,14 @@ Partial Class frmSettings
         '
         'TabPage4
         '
-        Me.TabPage4.Controls.Add(Me.GroupBox8)
-        Me.TabPage4.Controls.Add(Me.GroupBox7)
+        Me.TabPage4.Controls.Add(Me.txtCSearch)
+        Me.TabPage4.Controls.Add(Me.btnCSearch)
+        Me.TabPage4.Controls.Add(Me.btnCSave)
+        Me.TabPage4.Controls.Add(Me.txtCategory)
+        Me.TabPage4.Controls.Add(Me.Label13)
+        Me.TabPage4.Controls.Add(Me.cbCName)
+        Me.TabPage4.Controls.Add(Me.lvCategories)
+        Me.TabPage4.Controls.Add(Me.Label7)
         Me.TabPage4.Location = New System.Drawing.Point(4, 38)
         Me.TabPage4.Name = "TabPage4"
         Me.TabPage4.Padding = New System.Windows.Forms.Padding(3)
@@ -748,137 +750,28 @@ Partial Class frmSettings
         Me.TabPage4.Text = "     Category     "
         Me.TabPage4.UseVisualStyleBackColor = True
         '
-        'GroupBox8
+        'lvCategories
         '
-        Me.GroupBox8.Controls.Add(Me.Cat_Deduc_List)
-        Me.GroupBox8.Controls.Add(Me.DeducSave_BTN)
-        Me.GroupBox8.Controls.Add(Me.Label24)
-        Me.GroupBox8.Controls.Add(Me.Deduct_TXT)
-        Me.GroupBox8.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GroupBox8.Location = New System.Drawing.Point(735, 28)
-        Me.GroupBox8.Name = "GroupBox8"
-        Me.GroupBox8.Size = New System.Drawing.Size(403, 570)
-        Me.GroupBox8.TabIndex = 122
-        Me.GroupBox8.TabStop = False
-        Me.GroupBox8.Text = "Deductions"
-        '
-        'Cat_Deduc_List
-        '
-        Me.Cat_Deduc_List.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+        Me.lvCategories.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Cat_Deduc_List.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader22})
-        Me.Cat_Deduc_List.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Cat_Deduc_List.FullRowSelect = True
-        Me.Cat_Deduc_List.GridLines = True
-        Me.Cat_Deduc_List.HideSelection = False
-        Me.Cat_Deduc_List.Location = New System.Drawing.Point(16, 120)
-        Me.Cat_Deduc_List.MultiSelect = False
-        Me.Cat_Deduc_List.Name = "Cat_Deduc_List"
-        Me.Cat_Deduc_List.Size = New System.Drawing.Size(309, 444)
-        Me.Cat_Deduc_List.TabIndex = 51
-        Me.Cat_Deduc_List.UseCompatibleStateImageBehavior = False
-        Me.Cat_Deduc_List.View = System.Windows.Forms.View.Details
-        '
-        'ColumnHeader22
-        '
-        Me.ColumnHeader22.Text = "List of Deduction"
-        Me.ColumnHeader22.Width = 300
-        '
-        'DeducSave_BTN
-        '
-        Me.DeducSave_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.DeducSave_BTN.Location = New System.Drawing.Point(332, 69)
-        Me.DeducSave_BTN.Name = "DeducSave_BTN"
-        Me.DeducSave_BTN.Size = New System.Drawing.Size(61, 35)
-        Me.DeducSave_BTN.TabIndex = 50
-        Me.DeducSave_BTN.Text = "Save"
-        Me.DeducSave_BTN.UseVisualStyleBackColor = True
-        '
-        'Label24
-        '
-        Me.Label24.AutoSize = True
-        Me.Label24.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label24.Location = New System.Drawing.Point(11, 35)
-        Me.Label24.Name = "Label24"
-        Me.Label24.Size = New System.Drawing.Size(111, 27)
-        Me.Label24.TabIndex = 122
-        Me.Label24.Text = "Category Name"
-        '
-        'Deduct_TXT
-        '
-        Me.Deduct_TXT.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper
-        Me.Deduct_TXT.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Deduct_TXT.Location = New System.Drawing.Point(15, 69)
-        Me.Deduct_TXT.Name = "Deduct_TXT"
-        Me.Deduct_TXT.Size = New System.Drawing.Size(310, 35)
-        Me.Deduct_TXT.TabIndex = 49
-        '
-        'GroupBox7
-        '
-        Me.GroupBox7.Controls.Add(Me.Label23)
-        Me.GroupBox7.Controls.Add(Me.Allowance_List)
-        Me.GroupBox7.Controls.Add(Me.AllowCat_TXT)
-        Me.GroupBox7.Controls.Add(Me.Cat_Allow_Save_BTN)
-        Me.GroupBox7.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.GroupBox7.Location = New System.Drawing.Point(6, 28)
-        Me.GroupBox7.Name = "GroupBox7"
-        Me.GroupBox7.Size = New System.Drawing.Size(415, 570)
-        Me.GroupBox7.TabIndex = 121
-        Me.GroupBox7.TabStop = False
-        Me.GroupBox7.Text = "Allowances"
-        '
-        'Label23
-        '
-        Me.Label23.AutoSize = True
-        Me.Label23.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label23.Location = New System.Drawing.Point(20, 37)
-        Me.Label23.Name = "Label23"
-        Me.Label23.Size = New System.Drawing.Size(111, 27)
-        Me.Label23.TabIndex = 118
-        Me.Label23.Text = "Category Name"
-        '
-        'Allowance_List
-        '
-        Me.Allowance_List.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-            Or System.Windows.Forms.AnchorStyles.Left) _
-            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Allowance_List.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader21})
-        Me.Allowance_List.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Allowance_List.FullRowSelect = True
-        Me.Allowance_List.GridLines = True
-        Me.Allowance_List.HideSelection = False
-        Me.Allowance_List.Location = New System.Drawing.Point(24, 123)
-        Me.Allowance_List.MultiSelect = False
-        Me.Allowance_List.Name = "Allowance_List"
-        Me.Allowance_List.Size = New System.Drawing.Size(310, 441)
-        Me.Allowance_List.TabIndex = 48
-        Me.Allowance_List.UseCompatibleStateImageBehavior = False
-        Me.Allowance_List.View = System.Windows.Forms.View.Details
+        Me.lvCategories.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader21, Me.ColumnHeader3})
+        Me.lvCategories.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lvCategories.FullRowSelect = True
+        Me.lvCategories.GridLines = True
+        Me.lvCategories.HideSelection = False
+        Me.lvCategories.Location = New System.Drawing.Point(21, 161)
+        Me.lvCategories.MultiSelect = False
+        Me.lvCategories.Name = "lvCategories"
+        Me.lvCategories.Size = New System.Drawing.Size(1106, 426)
+        Me.lvCategories.TabIndex = 48
+        Me.lvCategories.UseCompatibleStateImageBehavior = False
+        Me.lvCategories.View = System.Windows.Forms.View.Details
         '
         'ColumnHeader21
         '
-        Me.ColumnHeader21.Text = "List of Allowance"
-        Me.ColumnHeader21.Width = 300
-        '
-        'AllowCat_TXT
-        '
-        Me.AllowCat_TXT.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper
-        Me.AllowCat_TXT.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.AllowCat_TXT.Location = New System.Drawing.Point(24, 66)
-        Me.AllowCat_TXT.Name = "AllowCat_TXT"
-        Me.AllowCat_TXT.Size = New System.Drawing.Size(310, 35)
-        Me.AllowCat_TXT.TabIndex = 46
-        '
-        'Cat_Allow_Save_BTN
-        '
-        Me.Cat_Allow_Save_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Cat_Allow_Save_BTN.Location = New System.Drawing.Point(341, 66)
-        Me.Cat_Allow_Save_BTN.Name = "Cat_Allow_Save_BTN"
-        Me.Cat_Allow_Save_BTN.Size = New System.Drawing.Size(61, 35)
-        Me.Cat_Allow_Save_BTN.TabIndex = 47
-        Me.Cat_Allow_Save_BTN.Text = "Save"
-        Me.Cat_Allow_Save_BTN.UseVisualStyleBackColor = True
+        Me.ColumnHeader21.Text = "Name"
+        Me.ColumnHeader21.Width = 400
         '
         'TabPage7
         '
@@ -1472,6 +1365,79 @@ Partial Class frmSettings
         Me.FileSystemWatcher1.EnableRaisingEvents = True
         Me.FileSystemWatcher1.SynchronizingObject = Me
         '
+        'cbCName
+        '
+        Me.cbCName.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.cbCName.FormattingEnabled = True
+        Me.cbCName.Location = New System.Drawing.Point(100, 31)
+        Me.cbCName.Name = "cbCName"
+        Me.cbCName.Size = New System.Drawing.Size(279, 35)
+        Me.cbCName.TabIndex = 139
+        '
+        'Label7
+        '
+        Me.Label7.AutoSize = True
+        Me.Label7.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label7.Location = New System.Drawing.Point(16, 36)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(49, 27)
+        Me.Label7.TabIndex = 140
+        Me.Label7.Text = "Name"
+        '
+        'Label13
+        '
+        Me.Label13.AutoSize = True
+        Me.Label13.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label13.Location = New System.Drawing.Point(16, 88)
+        Me.Label13.Name = "Label13"
+        Me.Label13.Size = New System.Drawing.Size(70, 27)
+        Me.Label13.TabIndex = 141
+        Me.Label13.Text = "Category"
+        '
+        'txtCategory
+        '
+        Me.txtCategory.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper
+        Me.txtCategory.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtCategory.Location = New System.Drawing.Point(100, 85)
+        Me.txtCategory.Name = "txtCategory"
+        Me.txtCategory.Size = New System.Drawing.Size(279, 35)
+        Me.txtCategory.TabIndex = 123
+        '
+        'ColumnHeader3
+        '
+        Me.ColumnHeader3.Text = "Category"
+        Me.ColumnHeader3.Width = 700
+        '
+        'btnCSave
+        '
+        Me.btnCSave.BackColor = System.Drawing.Color.DarkSalmon
+        Me.btnCSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnCSave.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnCSave.Location = New System.Drawing.Point(401, 85)
+        Me.btnCSave.Name = "btnCSave"
+        Me.btnCSave.Size = New System.Drawing.Size(82, 35)
+        Me.btnCSave.TabIndex = 142
+        Me.btnCSave.Text = "Save"
+        Me.btnCSave.UseVisualStyleBackColor = False
+        '
+        'txtCSearch
+        '
+        Me.txtCSearch.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtCSearch.Location = New System.Drawing.Point(724, 123)
+        Me.txtCSearch.Name = "txtCSearch"
+        Me.txtCSearch.Size = New System.Drawing.Size(315, 33)
+        Me.txtCSearch.TabIndex = 143
+        '
+        'btnCSearch
+        '
+        Me.btnCSearch.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnCSearch.Location = New System.Drawing.Point(1045, 122)
+        Me.btnCSearch.Name = "btnCSearch"
+        Me.btnCSearch.Size = New System.Drawing.Size(82, 33)
+        Me.btnCSearch.TabIndex = 144
+        Me.btnCSearch.Text = "Search"
+        Me.btnCSearch.UseVisualStyleBackColor = True
+        '
         'frmSettings
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1496,10 +1462,7 @@ Partial Class frmSettings
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
         Me.TabPage4.ResumeLayout(False)
-        Me.GroupBox8.ResumeLayout(False)
-        Me.GroupBox8.PerformLayout()
-        Me.GroupBox7.ResumeLayout(False)
-        Me.GroupBox7.PerformLayout()
+        Me.TabPage4.PerformLayout()
         Me.TabPage7.ResumeLayout(False)
         Me.TabPage7.PerformLayout()
         Me.GroupBox4.ResumeLayout(False)
@@ -1564,18 +1527,8 @@ Partial Class frmSettings
     Friend WithEvents ColumnHeader19 As ColumnHeader
     Friend WithEvents ColumnHeader20 As ColumnHeader
     Friend WithEvents TabPage4 As TabPage
-    Friend WithEvents GroupBox7 As GroupBox
-    Friend WithEvents Label23 As Label
-    Friend WithEvents Allowance_List As ListView
+    Friend WithEvents lvCategories As ListView
     Friend WithEvents ColumnHeader21 As ColumnHeader
-    Friend WithEvents AllowCat_TXT As TextBox
-    Friend WithEvents Cat_Allow_Save_BTN As Button
-    Friend WithEvents GroupBox8 As GroupBox
-    Friend WithEvents Cat_Deduc_List As ListView
-    Friend WithEvents ColumnHeader22 As ColumnHeader
-    Friend WithEvents DeducSave_BTN As Button
-    Friend WithEvents Label24 As Label
-    Friend WithEvents Deduct_TXT As TextBox
     Friend WithEvents TabPage6 As TabPage
     Friend WithEvents Email_TXT As TextBox
     Friend WithEvents Label26 As Label
@@ -1643,4 +1596,12 @@ Partial Class frmSettings
     Friend WithEvents Label5 As Label
     Friend WithEvents RateFixNo_RB As RadioButton
     Friend WithEvents RateFixYes_RB As RadioButton
+    Friend WithEvents cbCName As ComboBox
+    Friend WithEvents Label7 As Label
+    Friend WithEvents Label13 As Label
+    Friend WithEvents txtCategory As TextBox
+    Friend WithEvents ColumnHeader3 As ColumnHeader
+    Friend WithEvents btnCSave As Button
+    Friend WithEvents txtCSearch As TextBox
+    Friend WithEvents btnCSearch As Button
 End Class

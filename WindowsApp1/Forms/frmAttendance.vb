@@ -54,10 +54,10 @@ Public Class frmAttendance
 
         CheckALL_CheckBox.Checked = True
 
-        PopulateComboBox(Paydate_ComboB, "BIOMETRIC_DTR", "PAYDATE")
-        PopulateComboBox(Payslip_DTR_Combo, "BIOMETRIC_DTR", "PAYDATE")
+        PopulateComboBox(Paydate_ComboB, "BIOMETRIC_DTR", "PAYDATE", True)
+        PopulateComboBox(Payslip_DTR_Combo, "BIOMETRIC_DTR", "PAYDATE", True)
         PopulateComboBox(DTR_Branch_Combo, "TBL_EMPLOYEE", "BRANCHCODE")
-        PopulateComboBox(Paydate7_CB, "BIOMETRIC_DTR", "PAYDATE")
+        PopulateComboBox(Paydate7_CB, "BIOMETRIC_DTR", "PAYDATE", True)
         PopulateBiometricSHEET(Branch_LV, Paydate, True)
         PopulateBiometricSHEET(Biometric_LV, Paydate)
 
@@ -1612,7 +1612,7 @@ Public Class frmAttendance
         SaveLogs($"IMPORTED BIOMETRIC - BRANCHES DTR ({listt})", frmMainForm.UserName_LBL.Text)
 
         '=============================================================
-        PopulateComboBox(Paydate7_CB, "PAYROLL_ATTENDANCE", "PAYDATE")
+        PopulateComboBox(Paydate7_CB, "PAYROLL_ATTENDANCE", "PAYDATE", True)
         PopulateBiometricSHEET(Branch_LV, Paydate, True)
     End Sub
 
@@ -1968,7 +1968,7 @@ Public Class frmAttendance
         SaveLogs($"IMPORTED BIOMETRIC ({listt})", frmMainForm.UserName_LBL.Text)
 
         '=============================================================
-        PopulateComboBox(Paydate_ComboB, "BIOMETRIC_DTR", "PAYDATE")
+        PopulateComboBox(Paydate_ComboB, "BIOMETRIC_DTR", "PAYDATE", True)
     End Sub
 
     Private Sub bio_White()

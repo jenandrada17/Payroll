@@ -24,10 +24,10 @@ Public Class frmPayout
 
         regHoliday_ = Holiday_Rate("REGULAR")
         specHoliday_ = Holiday_Rate("SPECIAL")
-        PopulateComboBox(Paydate_ComboB, "PAYROLL_PAYOUT", "PAYDATE")
+        PopulateComboBox(Paydate_ComboB, "PAYROLL_PAYOUT", "PAYDATE", True)
 
         '========================== PAYSLIP ===========================
-        PopulateComboBox(Payslip_paydate_Combo, "PAYROLL_PAYOUT", "PAYDATE")
+        PopulateComboBox(Payslip_paydate_Combo, "PAYROLL_PAYOUT", "PAYDATE", True)
         PopulateComboBox(Branch_ComboB, "TBL_EMPLOYEE", "BRANCHCODE")
         PopulateComboBox(Branch_ComboB, "TBL_EMPLOYEE", "BRANCHCODE")
 
@@ -448,12 +448,12 @@ Public Class frmPayout
     End Sub
 
     Private Sub CancelAdd_BTN_Click(sender As Object, e As EventArgs) Handles CancelAdd_BTN.Click
-        CategoryAdd_TXT.Clear()
+        cbCategoryAdd.Text = ""
         AmountAdd_TXT.Clear()
     End Sub
 
     Private Sub SaveAdd_BTN_Click(sender As Object, e As EventArgs) Handles SaveAdd_BTN.Click
-        If CategoryAdd_TXT.Text <> String.Empty And AmountAdd_TXT.Text <> String.Empty Then
+        If cbCategoryAdd.Text <> String.Empty And AmountAdd_TXT.Text <> String.Empty Then
 
             If TransacAdd_lbl.Text = "Allowance" Then
 
@@ -467,7 +467,7 @@ Public Class frmPayout
                     Dim toProper As String
                     Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
 
-                    toProper = info.ToTitleCase(CategoryAdd_TXT.Text)
+                    toProper = info.ToTitleCase(cbCategoryAdd.Text)
                     Dim amountt As Double = AmountAdd_TXT.Text
 
                     row.Cells(0).Value = toProper
@@ -494,7 +494,7 @@ Public Class frmPayout
                     Dim toProper As String
                     Dim info As TextInfo = CultureInfo.InvariantCulture.TextInfo
 
-                    toProper = info.ToTitleCase(CategoryAdd_TXT.Text)
+                    toProper = info.ToTitleCase(cbCategoryAdd.Text)
                     Dim amountt As Double = AmountAdd_TXT.Text
 
                     row.Cells(0).Value = toProper
@@ -531,6 +531,7 @@ Public Class frmPayout
         Additional_Panel.Visible = True
         TransacAdd_lbl.Text = "Allowance"
         Additional_Panel.BackColor = Color.LightCoral
+        PopulateComboBox(cbCategoryAdd, "CATEGORIES WHERE NAME = 'PAYOUT ADDITIONAL'", "CATEGORY")
     End Sub
 
     Private Sub Additional_Panel_MouseDown(sender As Object, e As MouseEventArgs) Handles Additional_Panel.MouseDown
@@ -550,6 +551,7 @@ Public Class frmPayout
         Additional_Panel.Visible = True
         TransacAdd_lbl.Text = "Deduction"
         Additional_Panel.BackColor = Color.Chocolate
+        cbCategoryAdd.Items.Clear()
     End Sub
 
     Private Sub RateFixYes_RB_CheckedChanged(sender As Object, e As EventArgs) Handles RateFixYes_RB.CheckedChanged

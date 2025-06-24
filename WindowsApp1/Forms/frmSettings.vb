@@ -19,8 +19,7 @@
         PopulateComboBox_Any(Address_Combo, "PAYROLL_CITY_BRANCH", "ADDRESS")
         Lists_Rate(Rate_list)
         Lists_TimeInOut(TimeInOut_LV)
-        Load_Category_LIST(Allowance_List, "CATEGORY_ALLOWANCE", "ALLOWANCE_NAME")
-        Load_Category_LIST(Cat_Deduc_List, "CATEGORY_DEDUCTION", "DEDUCTION_NAME")
+        CategoriesDropdown(cbCName, "NAME")
         Lists_City_Branch(CityBranch_List)
 
         Dim tm As New Date(1, 1, 1, 0, 0, 0)
@@ -263,35 +262,6 @@
 
     Private Sub Rate_Search_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Rate_Search_TXT.KeyPress
         If IsEnter(e) Then Rate_Search_BTN.PerformClick()
-    End Sub
-
-    Private Sub Cat_Allow_Save_BTN_Click(sender As Object, e As EventArgs) Handles Cat_Allow_Save_BTN.Click
-        If Not AllowCat_TXT.Text = "" Then
-            SaveCATEGORY(AllowCat_TXT.Text, "CATEGORY_ALLOWANCE", "ALLOWANCE_NAME")
-            Load_Category_LIST(Allowance_List, "CATEGORY_ALLOWANCE", "ALLOWANCE_NAME")
-
-            SaveLogs($"ADDED CATEGORY FOR ALLOWANCE - {AllowCat_TXT.Text}", frmMainForm.UserName_LBL.Text)
-            AllowCat_TXT.Text = ""
-        End If
-    End Sub
-
-    Private Sub AllowCat_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles AllowCat_TXT.KeyPress
-        If IsEnter(e) Then Cat_Allow_Save_BTN.PerformClick()
-    End Sub
-
-    Private Sub DeducSave_BTN_Click(sender As Object, e As EventArgs) Handles DeducSave_BTN.Click
-        If Not Deduct_TXT.Text = "" Then
-            SaveCATEGORY(Deduct_TXT.Text, "CATEGORY_DEDUCTION", "DEDUCTION_NAME")
-            Load_Category_LIST(Cat_Deduc_List, "CATEGORY_DEDUCTION", "DEDUCTION_NAME")
-
-            SaveLogs($"ADDED CATEGORY FOR DEDUCTION - {Deduct_TXT.Text}", frmMainForm.UserName_LBL.Text)
-
-            Deduct_TXT.Text = ""
-        End If
-    End Sub
-
-    Private Sub Deduct_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Deduct_TXT.KeyPress
-        If IsEnter(e) Then DeducSave_BTN.PerformClick()
     End Sub
 
     Private Sub Email_Save_BTN_Click(sender As Object, e As EventArgs) Handles Email_Save_BTN.Click
@@ -572,6 +542,25 @@
                 e.Handled = True
             End If
         End If
+    End Sub
+
+    Private Sub cbCName_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cbCName.SelectedIndexChanged
+        PopulateCategories(lvCategories, cbCName.Text)
+    End Sub
+
+    Private Sub btnCSave_Click(sender As Object, e As EventArgs) Handles btnCSave.Click
+        If cbCName.Text = "" Or txtCategory.Text = "" Then MsgBox("Incomplete Details", MsgBoxStyle.Critical) : Exit Sub
+        RunCommand($"INSERT INTO CATEGORIES (CATEGORY, NAME) VALUES ('{txtCategory.Text}', '{cbCName.Text}')")
+        MsgBox("Successfully Added.", MsgBoxStyle.Information)
+        PopulateCategories(lvCategories, cbCName.Text)
+    End Sub
+
+    Private Sub btnCSearch_Click(sender As Object, e As EventArgs) Handles btnCSearch.Click
+        PopulateCategories(lvCategories, txtCSearch.Text)
+    End Sub
+
+    Private Sub txtCSearch_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtCSearch.KeyPress
+        btnCSearch.PerformClick()
     End Sub
 
 End Class
