@@ -45,8 +45,6 @@ Module SaveUpdate
     Friend Sub SaveAttendanceEE(biometric As Integer, paydate As String, days As String, overTime As String, late_total As String, under_total As String,
                                 regHoliday As String, specHoliday As String, specHoliday_hrs As Double, SIL As Double, LATE_ADJUSTMENT As String, Optional LATE_APPROVED As String = "",
                                         Optional MORNING_OT As String = "", Optional NIGHT_RATE As String = "", Optional BRANCH As Boolean = False,
-                                        Optional TRAINING_DAYS As Double = 0, Optional TRAINING_REGHOLIDAY As Double = 0, Optional TRAINING_SPECHOLIDAY As Double = 0,
-                                        Optional TRAINING_OVERTIME As Double = 0, Optional TRAINING_LATE As Double = 0, Optional TRAINING_UNDERTIME As Double = 0, Optional TRAINING_NIGHTRATE As Double = 0,
                                         Optional DUTY_RESTDAY As Double = 0, Optional DUTY_SPEC_RESTDAY As Double = 0, Optional DUTY_REG_RESTDAY As Double = 0,
                                         Optional DUTY_RESTDAY_OT As Double = 0, Optional DUTY_SPEC_OT As Double = 0, Optional DUTY_SPEC_RESTDAY_OT As Double = 0, Optional DUTY_REG_OT As Double = 0, Optional DUTY_REG_RESTDAY_OT As Double = 0,
                                         Optional DUTY_SPEC_NIGHTSHIFT As Double = 0, Optional DUTY_REG_NIGHTSHIFT As Double = 0,
@@ -85,13 +83,6 @@ Module SaveUpdate
 
                 If BRANCH Then
                     .Item("BRANCH_MANUAL") = True
-                    .Item("TRAINING_DAYS") = TRAINING_DAYS
-                    .Item("TRAINING_REGHOLIDAY") = TRAINING_REGHOLIDAY
-                    .Item("TRAINING_SPECHOLIDAY") = TRAINING_SPECHOLIDAY
-                    .Item("TRAINING_OVERTIME") = TRAINING_OVERTIME
-                    .Item("TRAINING_LATE") = TRAINING_LATE
-                    .Item("TRAINING_UNDERTIME") = TRAINING_UNDERTIME
-                    .Item("TRAINING_NIGHTRATE") = TRAINING_NIGHTRATE
 
                     .Item("DUTY_RESTDAY") = DUTY_RESTDAY
                     .Item("DUTY_SPEC_RESTDAY") = DUTY_SPEC_RESTDAY
@@ -146,14 +137,6 @@ Module SaveUpdate
 
                     If BRANCH Then
                         .Item("BRANCH_MANUAL") = True
-
-                        If TRAINING_DAYS <> 0 Then .Item("TRAINING_DAYS") = TRAINING_DAYS
-                        If TRAINING_REGHOLIDAY <> 0 Then .Item("TRAINING_REGHOLIDAY") = TRAINING_REGHOLIDAY
-                        If TRAINING_SPECHOLIDAY <> 0 Then .Item("TRAINING_SPECHOLIDAY") = TRAINING_SPECHOLIDAY
-                        If TRAINING_OVERTIME <> 0 Then .Item("TRAINING_OVERTIME") = TRAINING_OVERTIME
-                        If TRAINING_LATE <> 0 Then .Item("TRAINING_LATE") = TRAINING_LATE
-                        If TRAINING_UNDERTIME <> 0 Then .Item("TRAINING_UNDERTIME") = TRAINING_UNDERTIME
-                        If TRAINING_NIGHTRATE <> 0 Then .Item("TRAINING_NIGHTRATE") = TRAINING_NIGHTRATE
 
                         If DUTY_RESTDAY <> 0 Then .Item("DUTY_RESTDAY") = DUTY_RESTDAY
                         If DUTY_SPEC_RESTDAY <> 0 Then .Item("DUTY_SPEC_RESTDAY") = DUTY_SPEC_RESTDAY
@@ -660,6 +643,815 @@ Module SaveUpdate
         End If
     End Sub
 
+#Region "Training Included"
+
+    '    Friend Sub SavePayout_IndividualL(bioNo As String, paydate_ As String, startingDate As DateTime, EndingDate As DateTime) '========== AUTO SAVE TO PAYOUT ============  
+
+    '        Dim regHoliday = Holiday_Rate("REGULAR")
+    '        Dim specHoliday = Holiday_Rate("SPECIAL")
+
+    '        Dim RESTDAY = Holiday_Rate("RESTDAY")
+    '        Dim SPEC_RESTDAY = Holiday_Rate("SPEC_RESTDAY")
+    '        Dim REG_RESTDAY = Holiday_Rate("REG_RESTDAY")
+
+    '        Dim RESTDAY_OT = Holiday_Rate("RESTDAY_OT")
+    '        Dim SPEC_OT = Holiday_Rate("SPEC_OT")
+    '        Dim SPEC_RESTDAY_OT = Holiday_Rate("SPEC_RESTDAY_OT")
+    '        Dim REG_OT = Holiday_Rate("REG_OT")
+    '        Dim REG_RESTDAY_OT = Holiday_Rate("REG_RESTDAY_OT")
+
+    '        Dim SPEC_NIGHTSHIFT = Holiday_Rate("SPEC_NIGHTSHIFT")
+    '        Dim REG_NIGHTSHIFT = Holiday_Rate("REG_NIGHTSHIFT")
+
+    '        Dim ORD_NIGHTSHIFT_OT = Holiday_Rate("ORD_NIGHTSHIFT_OT")
+    '        Dim SPEC_NIGHTSHIFT_OT = Holiday_Rate("SPEC_NIGHTSHIFT_OT")
+    '        Dim REG_NIGHTSHIFT_OT = Holiday_Rate("REG_NIGHTSHIFT_OT")
+
+    '        'Dim sched As String = ""
+    '        'Dim date_pay As DateTime = Convert.ToDateTime(paydate_)
+    '        'date_pay = date_pay.ToString("d")
+
+    '        'If IsLastDay(date_pay) Then
+    '        '    sched = "CLOSE PAYROLL"
+    '        'Else
+    '        '    sched = "OPEN PAYROLL"
+    '        'End If 
+
+    '        Dim mysql As String = $"Select * From payroll_attendance A 
+    '                                inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRICID  WHERE A.BIOMETRICID = '{bioNo}' and A.PAYDATE = '{paydate_}'"
+
+    '        Using ds As DataSet = LoadSQL(mysql, "payroll_attendance")
+    '            If ds.Tables(0).Rows.Count > 0 Then
+
+    '                Dim dr As DataRow = ds.Tables(0).Rows(0)
+    '                With dr
+
+    '                    Dim Late As String = ""
+    '                    Dim UnderTime As String = ""
+    '                    Dim RegularOT As String = ""
+    '                    Dim nightRate As Decimal = 0
+    '                    Dim SpecialHol_hrs As Double = 0
+    '                    Dim NoOfDays, SpecialHol, RegularHol As Double
+    '                    Dim Deduction, SBU As Decimal
+    '                    Dim Company As String = ""
+    '                    Dim noOf_days_training As Double = 0
+    '                    Dim PI_ADD_DAYS As Double = 0
+    '                    Dim TotalBasic As Decimal = 0
+    '                    Dim SSSComp As Decimal = 0
+    '                    Dim SSS_ER As Decimal = 0
+    '                    Dim SSS_EC As Decimal = 0
+    '                    Dim PagibigComp As Decimal = 0
+    '                    Dim PhilhealthComp As Decimal = 0
+    '                    Dim rate As Decimal = 0
+    '                    Dim SIL As Decimal = 0
+    '                    Dim Allowances As Decimal = 0
+    '                    Dim Late_Adjustment As Decimal = 0
+    '                    Dim Late_Approved As Integer = 0
+    '                    Dim TotalREGHol, TotalSPECHol, TotalOT, TotalLateUnder, TotalNight, GrossAmount As Decimal
+    '                    Dim Minimum_rate As Decimal = 0
+    '                    Dim Ecola As Decimal = 0
+    '                    Dim BranchCode As String = ""
+    '                    fix_monthly_rate = IIf(IsDBNull(.Item("FIX_MONTHLY_RATE")), False, .Item("FIX_MONTHLY_RATE"))
+    '                    Dim Monthly_rate As Decimal = 0
+    '                    Dim Old_Rate As Decimal = 0
+    '                    Dim SBU_sched As String = GetData("SCHED", $"PAYROLL_SBU WHERE BIO_NO = {bioNo}")
+    '                    Dim sss_no As String = IIf(IsDBNull(.Item("SSSNO")), Nothing, .Item("SSSNO"))
+    '                    Dim philhealth_no As String = IIf(IsDBNull(.Item("PHILHEALTHNO")), Nothing, .Item("PHILHEALTHNO"))
+    '                    Dim tin_no As String = IIf(IsDBNull(.Item("TINNO")), Nothing, .Item("TINNO"))
+    '                    Dim pagibig_no As String = IIf(IsDBNull(.Item("PAGIBIG")), Nothing, .Item("PAGIBIG"))
+    '                    Dim Hold_salary As Boolean = False
+
+    '                    If IsDBNull(.Item("HOLD_SALARY")) Then
+    '                        Hold_salary = False
+    '                    ElseIf .Item("HOLD_SALARY") = 1 Then
+    '                        Hold_salary = True
+    '                    End If
+
+    '#Region "INCOMPLETE RECORD TO NOTEPAD DESKTOP"
+    '                    'BRANCHCODE
+    '                    Try
+    '                        If IsDBNull(.Item("BRANCHCODE")) Or .Item("BRANCHCODE").Equals("") Or String.IsNullOrEmpty(.Item("BRANCHCODE")) Then
+    '                            Minimum_rate = GetMinimumRate("CITY", "GENSAN")
+    '                            Ecola = 0
+    '                            BranchCode = ""
+    '                        Else
+    '                            Minimum_rate = GetMinimumRate("BRANCHCODE", .Item("BRANCHCODE"))
+    '                            Ecola = GetEcola("BRANCHCODE", .Item("BRANCHCODE"))
+    '                            BranchCode = .Item("BRANCHCODE")
+    '                        End If
+    '                    Catch ex As Exception
+    '                        SaveToText(bioNo, $"{ .Item("LASTNAME")}, { .Item("FIRSTNAME")} { .Item("MIDDLENAME")}", "BRANCHCODE")
+    '                    End Try
+
+    '                    'COMPANY / COMPANY_CATEGORY
+    '                    Try
+    '                        If IsDBNull(.Item("COMPANY")) Or .Item("COMPANY").Equals("") Or String.IsNullOrEmpty(.Item("COMPANY")) Then
+    '                            Company = ""
+    '                        Else
+    '                            Company = .Item("COMPANY")
+    '                        End If
+    '                    Catch ex As Exception
+    '                        SaveToText(bioNo, $"{ .Item("LASTNAME")}, { .Item("FIRSTNAME")} { .Item("MIDDLENAME")}", "COMPANY")
+    '                    End Try
+
+    '                    'RATE_DAILY
+    '                    Try
+    '                        If IsDBNull(.Item("RATE_DAILY")) Or .Item("RATE_DAILY") = 0 Then
+    '                            rate = Minimum_rate
+    '                        Else
+    '                            rate = .Item("RATE_DAILY")
+    '                        End If
+    '                    Catch ex As Exception
+    '                        SaveToText(bioNo, $"{ .Item("LASTNAME")}, { .Item("FIRSTNAME")} { .Item("MIDDLENAME")}", "RATE_DAILY")
+    '                    End Try
+
+    '                    'RATE_MONTHLY
+    '                    Try
+    '                        If IsDBNull(.Item("RATE_MONTHLY")) Or .Item("RATE_MONTHLY") = 0 Then
+    '                            Monthly_rate = rate * 26
+    '                        Else
+    '                            Monthly_rate = .Item("RATE_MONTHLY")
+    '                        End If
+    '                    Catch ex As Exception
+    '                        SaveToText(bioNo, $"{ .Item("LASTNAME")}, { .Item("FIRSTNAME")} { .Item("MIDDLENAME")}", "RATE_MONTHLY")
+    '                    End Try
+
+    '                    'OLD_RATE
+    '                    Try
+    '                        If IsDBNull(.Item("OLD_RATE")) Or .Item("OLD_RATE") = 0 Then
+    '                            Old_Rate = rate
+    '                        Else
+    '                            Old_Rate = .Item("OLD_RATE")
+    '                        End If
+    '                    Catch ex As Exception
+    '                        SaveToText(bioNo, $"{ .Item("LASTNAME")}, { .Item("FIRSTNAME")} { .Item("MIDDLENAME")}", "OLD_RATE")
+    '                    End Try
+    '#End Region
+
+    '                    Dim Training_REGHoliday = 0, Training_SPECHoliday As Integer = 0
+    '                    Dim Training_totalLate As Integer = 0, Training_totalUT As Integer = 0, Training_nightRate As Integer = 0
+    '                    Dim training_overtime As Double = 0
+    '                    Dim training_late As TimeSpan = New TimeSpan(0, 0, 0, 0, 0)
+    '                    Dim training_undertime As TimeSpan = New TimeSpan(0, 0, 0, 0, 0)
+    '                    '============================= MINIMUM RATE CHANGE (DAYS COVERED) ==============================
+    '                    Dim Rholiday_newMin_covred_training As Integer = 0
+    '                    Dim Sholiday_newMin_covred_training As Integer = 0
+    '                    Dim branch_manual As Boolean = False
+    '                    '============================= BRANCH EXCESS DUTY ==============================
+    '                    Dim DUTY_RESTDAY As Double = 0 : Dim DUTY_SPEC_RESTDAY As Double = 0 : Dim DUTY_REG_RESTDAY As Double = 0
+    '                    Dim DUTY_RESTDAY_OT As Double = 0 : Dim DUTY_SPEC_OT As Double = 0 : Dim DUTY_SPEC_RESTDAY_OT As Double = 0 : Dim DUTY_REG_OT As Double = 0 : Dim DUTY_REG_RESTDAY_OT As Double = 0
+    '                    Dim DUTY_SPEC_NIGHTSHIFT As Double = 0 : Dim DUTY_REG_NIGHTSHIFT As Double = 0
+    '                    Dim DUTY_ORD_NIGHTSHIFT_OT As Double = 0 : Dim DUTY_SPEC_NIGHTSHIFT_OT As Double = 0 : Dim DUTY_REG_NIGHTSHIFT_OT As Double = 0
+    '                    Dim TOTAL_EXCESS_DUTY As Decimal = 0
+
+    '                    ''============================================= ATTENDANCE (TOTAL DAYS) =========================================================
+    '                    Dim sql_1 As String = $"Select * From PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{bioNo}' and paydate = '{paydate_}'"
+    '                    Using ds_1 As DataSet = LoadSQL(sql_1, "PAYROLL_ATTENDANCE")
+    '                        If ds_1.Tables(0).Rows.Count > 0 Then
+
+    '                            Dim dr_11 As DataRow = ds_1.Tables(0).Rows(0)
+    '                            With dr_11
+    '                                NoOfDays = .Item("PRESENT_DAYS")
+    '                                PI_ADD_DAYS = IIf(IsDBNull(.Item("PI_ADD_DAYS")), 0, .Item("PI_ADD_DAYS"))
+
+    '                                If fix_monthly_rate = False Then
+    '                                    RegularOT = .Item("OVERTIME")
+    '                                    SpecialHol = .Item("SPECHOLIDAY")
+    '                                    RegularHol = .Item("REGHOLIDAY")
+    '                                    Late = .Item("LATE")
+    '                                    UnderTime = .Item("UNDERTIME")
+    '                                    nightRate = IIf(IsDBNull(.Item("NIGHT_RATE")), 0, .Item("NIGHT_RATE"))
+    '                                    SpecialHol_hrs = IIf(IsDBNull(.Item("SPECHOLIDAY_HRS")), 0, .Item("SPECHOLIDAY_HRS"))
+    '                                    Late_Adjustment = IIf(IsDBNull(.Item("LATE_ADJUSTMENT")), 0, .Item("LATE_ADJUSTMENT"))
+    '                                    Late_Approved = IIf(IsDBNull(.Item("LATE_APPROVED")), 0, .Item("LATE_APPROVED"))
+    '                                    branch_manual = IIf(IsDBNull(.Item("BRANCH_MANUAL")), False, .Item("BRANCH_MANUAL"))
+
+    '                                    If branch_manual Then       'IF IN CASE BRANCH MANUAL
+    '                                        noOf_days_training = IIf(IsDBNull(.Item("TRAINING_DAYS")), 0, .Item("TRAINING_DAYS"))
+    '                                        Training_REGHoliday = IIf(IsDBNull(.Item("TRAINING_REGHOLIDAY")), 0, .Item("TRAINING_REGHOLIDAY"))
+    '                                        Training_SPECHoliday = IIf(IsDBNull(.Item("TRAINING_SPECHOLIDAY")), 0, .Item("TRAINING_SPECHOLIDAY"))
+    '                                        training_overtime = IIf(IsDBNull(.Item("TRAINING_OVERTIME")), 0, .Item("TRAINING_OVERTIME"))
+    '                                        Training_totalLate = IIf(IsDBNull(.Item("TRAINING_LATE")), 0, .Item("TRAINING_LATE"))
+    '                                        Training_totalUT = IIf(IsDBNull(.Item("TRAINING_UNDERTIME")), 0, .Item("TRAINING_UNDERTIME"))
+    '                                        Training_nightRate = IIf(IsDBNull(.Item("TRAINING_NIGHTRATE")), 0, .Item("TRAINING_NIGHTRATE"))
+
+    '                                        DUTY_RESTDAY = IIf(IsDBNull(.Item("DUTY_RESTDAY")), 0, .Item("DUTY_RESTDAY"))
+    '                                        DUTY_SPEC_RESTDAY = IIf(IsDBNull(.Item("DUTY_SPEC_RESTDAY")), 0, .Item("DUTY_SPEC_RESTDAY"))
+    '                                        DUTY_REG_RESTDAY = IIf(IsDBNull(.Item("DUTY_REG_RESTDAY")), 0, .Item("DUTY_REG_RESTDAY"))
+
+    '                                        DUTY_RESTDAY_OT = IIf(IsDBNull(.Item("DUTY_RESTDAY_OT")), 0, .Item("DUTY_RESTDAY_OT"))
+    '                                        DUTY_SPEC_OT = IIf(IsDBNull(.Item("DUTY_SPEC_OT")), 0, .Item("DUTY_SPEC_OT"))
+    '                                        DUTY_SPEC_RESTDAY_OT = IIf(IsDBNull(.Item("DUTY_SPEC_RESTDAY_OT")), 0, .Item("DUTY_SPEC_RESTDAY_OT"))
+    '                                        DUTY_REG_OT = IIf(IsDBNull(.Item("DUTY_REG_OT")), 0, .Item("DUTY_REG_OT"))
+    '                                        DUTY_REG_RESTDAY_OT = IIf(IsDBNull(.Item("DUTY_REG_RESTDAY_OT")), 0, .Item("DUTY_REG_RESTDAY_OT"))
+
+    '                                        DUTY_SPEC_NIGHTSHIFT = IIf(IsDBNull(.Item("DUTY_SPEC_NIGHTSHIFT")), 0, .Item("DUTY_SPEC_NIGHTSHIFT"))
+    '                                        DUTY_REG_NIGHTSHIFT = IIf(IsDBNull(.Item("DUTY_REG_NIGHTSHIFT")), 0, .Item("DUTY_REG_NIGHTSHIFT"))
+
+    '                                        DUTY_ORD_NIGHTSHIFT_OT = IIf(IsDBNull(.Item("DUTY_ORD_NIGHTSHIFT_OT")), 0, .Item("DUTY_ORD_NIGHTSHIFT_OT"))
+    '                                        DUTY_SPEC_NIGHTSHIFT_OT = IIf(IsDBNull(.Item("DUTY_SPEC_NIGHTSHIFT_OT")), 0, .Item("DUTY_SPEC_NIGHTSHIFT_OT"))
+    '                                        DUTY_REG_NIGHTSHIFT_OT = IIf(IsDBNull(.Item("DUTY_REG_NIGHTSHIFT_OT")), 0, .Item("DUTY_REG_NIGHTSHIFT_OT"))
+
+    '                                    End If
+    '                                End If
+
+    '                                SIL = .Item("SIL") + Get_SIL("PAYROLL_SCHED_COUNT", $"PAYROLL_SCHED_COUNT WHERE BIO_NO = '{bioNo}' AND PAYDATE = '{paydate_}'")
+    '                            End With
+    '                        End If
+    '                    End Using
+
+    '                    '====================================== IF TRAINEE GET TRAINING DAYS TO CALCULATE TRAINING FEE (FOR HEAD OFFICE ONLY) ===============================================
+    '                    If Not IsDBNull(.Item("DATEHIRED")) And branch_manual = False Then
+    '                        Dim training_days As Integer
+
+    '                        If Company = "DALTON" Or Company = "PHOTO" Or Company = "HEAD OFFICE" Then
+    '                            training_days = 15
+    '                        Else
+    '                            training_days = 30
+    '                        End If
+
+    '                        Dim Started As DateTime = .Item("DATEHIRED")
+
+    '                        Dim days As Long = DateDiff(DateInterval.Day, Started, startingDate)
+
+    '                        Dim days_covred As Integer = training_days - (days + 1) '====== KULANG UG 1 ANG COUNTING
+
+    '                        If days_covred > 0 Then
+
+    '                            Dim ending As DateTime = startingDate.AddDays(days_covred)
+    '                            While (startingDate <= ending)
+
+    '                                If PRESENT_Date(bioNo, paydate_, startingDate) Then
+
+    '                                    noOf_days_training += 1
+
+    '                                    Dim Time_In, Time_Out As DateTime
+
+    '                                    If CheckData("BIO_NO", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{bioNo}'") Then
+
+    '                                        If DateExist_IN_Schedule(bioNo, startingDate.ToShortDateString) Then
+    '                                            Time_In = GetData("TIME_IN", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{bioNo}' AND DATEE = '{startingDate.ToShortDateString}' ")
+    '                                            Time_Out = Time_In.AddHours(9)
+    '                                        Else
+    '                                            Time_In = GetData("VALUEE", $"PAYROLL_DEFAULT_TIMEIN")
+    '                                            Time_Out = Time_In.AddHours(9)
+    '                                        End If
+
+    '                                    Else
+
+    '                                        Time_In = IIf(IsDBNull(.Item("TIME_IN")), "", .Item("TIME_IN"))
+    '                                        Time_Out = IIf(IsDBNull(.Item("TIME_OUT")), "", .Item("TIME_OUT"))
+
+    '                                    End If
+
+    '                                    training_overtime += Calculate_Training_Overtime(bioNo, paydate_, startingDate, Time_Out)
+    '                                    training_late += Calculate_Training_Late(bioNo, paydate_, startingDate, Time_In)
+    '                                    training_undertime += Calculate_Training_Undertime(bioNo, paydate_, startingDate, Time_Out)
+
+    '                                    If Halfday_Training(bioNo, paydate_, startingDate) Then
+    '                                        noOf_days_training -= 0.5
+    '                                    End If
+
+    '                                    If DataeXIST($" PAYROLL_HOLIDAY WHERE DATEE = '{startingDate.ToString("M")}' AND KINDS = 'SPECIAL'") Then
+    '                                        Training_SPECHoliday += Calculate_Training_SpecHoliday(bioNo, paydate_, startingDate)
+
+    '                                        '===================== MINIMUM RATE CHANGED STARTING SEPTEMBER 1, 2022 =============== 
+    '                                        If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
+    '                                            Dim newMin_startingDate As Date = GetData("STARTING_DATE", $"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'")
+    '                                            If startingDate = newMin_startingDate.AddDays(-1) Then
+    '                                                Sholiday_newMin_covred_training += 1
+    '                                            End If
+    '                                        End If
+
+    '                                    End If
+
+    '                                End If
+
+    '                                '=============== IF HOLIDAY TRAINING COVERED ================
+    '                                If startingDate <= EndingDate Then
+    '                                    If DataeXIST($" PAYROLL_HOLIDAY WHERE DATEE = '{startingDate.ToString("M")}' AND KINDS = 'REGULAR'") Then
+    '                                        If startingDate >= Started Then
+    '                                            Training_REGHoliday += 1
+
+    '                                            '===================== MINIMUM RATE CHANGED STARTING SEPTEMBER 1, 2022 =============== 
+    '                                            If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
+    '                                                Dim newMin_startingDate As Date = GetData("STARTING_DATE", $"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'")
+    '                                                If startingDate = newMin_startingDate.AddDays(-1) Then
+    '                                                    Rholiday_newMin_covred_training += 1
+    '                                                End If
+    '                                            End If
+
+    '                                        End If
+    '                                    End If
+    '                                End If
+
+    '                                startingDate = startingDate.AddDays(1)
+    '                            End While
+
+    '                            Training_totalLate = training_late.TotalMinutes
+    '                            Training_totalUT = training_undertime.TotalMinutes
+
+    '                            SaveTraining_days(bioNo, paydate_, noOf_days_training, Training_REGHoliday, Training_SPECHoliday, training_overtime, Training_totalLate, Training_totalUT)
+    '                        End If
+    '                    End If
+
+    '                    '====================================== IF TRAINEE GET TRAINING DAYS TO CALCULATE TRAINING FEE (FOR BRANCHES MANUAL ONLY) ===============================================
+
+    '                    '============================================= BENIFITS CONTRIBUTION =========================================================  
+    '                    Dim trainee_rate As Decimal = rate * 0.75
+    '                    Dim exempted_trainee As Double = 0
+
+    '                    If .Item("EMP_POSITION") = "PROGRAMMER" Or .Item("EMP_POSITION") = "UTILITY" Or .Item("EMP_POSITION") = "DRIVER" Then
+    '                        exempted_trainee = noOf_days_training       'EXEMPTED ON TRAINING RATE
+    '                        noOf_days_training = 0
+    '                    End If
+
+    '                    If noOf_days_training <> 0 And exempted_trainee = 0 Then '================ IF TRAINEE BASE CALCULATE NEW RATE =================
+
+    '                        Dim total_train As Decimal = (Convert.ToDouble(rate) - trainee_rate) * Convert.ToDouble(noOf_days_training)
+    '                        TotalBasic = (NoOfDays * rate) - total_train
+
+    '                        '===================== TRAINING HOLIDAY ==================    
+    '                        If RegularHol <> 0 Then RegularHol = Math.Abs(RegularHol - Training_REGHoliday)
+    '                        If SpecialHol <> 0 Then SpecialHol = Math.Abs(SpecialHol_hrs - Training_SPECHoliday)
+
+    '                        Dim REG_STANDARD As Decimal = (RegularHol * rate) * regHoliday
+    '                        Dim SPEC_STANDARD As Decimal = ((SpecialHol / 8) * rate) * specHoliday
+
+    '                        Dim REG_TRAINEE As Decimal = (Training_REGHoliday * trainee_rate) * regHoliday
+    '                        Dim SPEC_TRAINEE As Decimal = ((Training_SPECHoliday / 8) * trainee_rate) * specHoliday
+
+    '                        TotalREGHol = REG_STANDARD + REG_TRAINEE
+    '                        TotalSPECHol = SPEC_STANDARD + SPEC_TRAINEE
+
+    '                        If rate > Minimum_rate Then
+    '                            Console.WriteLine("Above Minimum, not applicable for change minimum rate calculation!")
+    '                        Else
+    '                            'IMANUAL NALANG ANG BUNGKIG NGA DAYS SA RATE CHANGE
+
+    '                            ''===================== MINIMUM RATE CHANGED ===================================== 
+    '                            'If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
+    '                            '    Dim old_days As Double = OLD_NEW_RATE(bioNo, paydate_).old_days
+    '                            '    Dim new_days As Double = OLD_NEW_RATE(bioNo, paydate_).new_days
+
+    '                            '    Dim tot_days As Double = (old_days * Old_Rate) + (new_days * rate)
+    '                            '    TotalBasic = tot_days - total_train
+
+    '                            '    Dim newMin_rholiday As Integer = REG_SPEC_HOLIDAY(bioNo, paydate_).rholiday
+    '                            '    Dim newMin_sholiday As Integer = REG_SPEC_HOLIDAY(bioNo, paydate_).sholiday
+
+    '                            '    Dim old_rholiday As Decimal = ((RegularHol - newMin_rholiday) * Old_Rate) * regHoliday
+    '                            '    Dim new_rholiday As Decimal = (newMin_rholiday * rate) * regHoliday
+
+    '                            '    Dim old_sholiday As Decimal = ((SpecialHol / 8) * Old_Rate) * specHoliday
+    '                            '    Dim new_sholiday As Decimal = ((newMin_sholiday / 8) * rate) * specHoliday
+
+    '                            '    Dim old_training_rholiday As Decimal = (Training_REGHoliday * (Old_Rate * 0.75)) * regHoliday
+    '                            '    Dim new_training_rholiday As Decimal = (Rholiday_newMin_covred_training * trainee_rate) * regHoliday
+
+    '                            '    Dim old_training_sholiday As Decimal = (Training_SPECHoliday * (Old_Rate * 0.75)) * specHoliday
+    '                            '    Dim new_training_sholiday As Decimal = ((Sholiday_newMin_covred_training / 8) * trainee_rate) * specHoliday
+
+    '                            '    TotalREGHol = (old_rholiday + new_rholiday) + (old_training_rholiday + new_training_rholiday)
+    '                            '    TotalSPECHol = (old_sholiday + new_sholiday) + (old_training_sholiday + new_training_sholiday)
+    '                            'End If
+    '                        End If
+    '                    Else
+
+    '                        TotalBasic = (NoOfDays * rate)
+    '                        TotalREGHol = (RegularHol * rate) * regHoliday
+    '                        TotalSPECHol = ((SpecialHol_hrs / 8) * rate) * specHoliday
+
+    '                        If rate > Minimum_rate Then
+    '                            Console.WriteLine("Above Minimum, not applicable for change minimum rate calculation!")
+    '                        Else
+
+    '                            'IMANUAL NALANG ANG BUNGKIG NGA DAYS SA RATE CHANGE
+
+    '                            ''===================== MINIMUM RATE CHANGED ================================ 
+    '                            'If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
+    '                            '    Dim old_days As Double = OLD_NEW_RATE(bioNo, paydate_).old_days
+    '                            '    Dim new_days As Double = OLD_NEW_RATE(bioNo, paydate_).new_days
+
+    '                            '    TotalBasic = (old_days * Old_Rate) + (new_days * rate)
+
+    '                            '    Dim newMin_rholiday As Integer = REG_SPEC_HOLIDAY(bioNo, paydate_).rholiday
+    '                            '    Dim newMin_sholiday As Integer = REG_SPEC_HOLIDAY(bioNo, paydate_).sholiday
+
+    '                            '    Dim old_rholiday As Decimal = ((RegularHol - newMin_rholiday) * Old_Rate) * regHoliday
+    '                            '    Dim new_rholiday As Decimal = (newMin_rholiday * rate) * regHoliday
+
+    '                            '    Dim old_sholiday As Decimal = (((SpecialHol_hrs - newMin_sholiday) / 8) * Old_Rate) * specHoliday
+    '                            '    Dim new_sholiday As Decimal = ((newMin_sholiday / 8) * rate) * specHoliday
+
+    '                            '    TotalREGHol = old_rholiday + new_rholiday
+    '                            '    TotalSPECHol = old_sholiday + new_sholiday
+    '                            'End If
+    '                        End If
+    '                    End If
+
+    '                    ''============================= FIX MONTHLY RATE===============  
+    '                    If fix_monthly_rate = True Then
+    '                        Monthly_rate = Monthly_rate / 2
+    '                        TotalBasic = Monthly_rate
+
+    '                        TotalREGHol = 0
+    '                        TotalSPECHol = 0
+    '                    End If
+
+    '                    '============================ CHECK WITH TRAINING DAYS COVERED ======================== 
+    '                    If noOf_days_training = 0 And exempted_trainee = 0 Then
+    '                        '======================== CHECK IF CLOSE PAYROLL ==================================  
+    '                        If payrollSched = "CLOSE PAYROLL" Then
+    '                            If bioNo <> 58 Then
+    '                                Dim first_Basic As Decimal = GetFirst_Basic(bioNo, paydate_)
+    '                                Dim monthly_Basic As Decimal = TotalBasic + first_Basic
+
+    '                                If ThisNotIsNull("SSSNO", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo} ") Then 'IF HAS SSSNO DETAILS 
+    '                                    Get_SSS(monthly_Basic)
+    '                                    SSSComp = SSSEE
+    '                                    SSS_ER = SSSER
+    '                                    SSS_EC = SSSEC
+    '                                End If
+
+    '                                If ThisNotIsNull("PAGIBIG", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo}") Then PagibigComp = Get_Pagibig(monthly_Basic)
+    '                                If ThisNotIsNull("PHILHEALTHNO", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo}") Then PhilhealthComp = Get_PhilHealth(monthly_Basic)
+    '                            End If
+    '                        End If
+
+    '                    End If
+
+    '                    ''============================================= DELETE ALLOWANCE AND DEDUCTION TO REPLACE =================================================
+    '                    Replacing($"RECORDED_ALLOW_DEDUC where BIO_NO = '{bioNo}' and PAYDATE = '{paydate_}';")
+    '                    '============================================= ALLOWANCE ========================================================= 
+
+    '                    If SIL <> 0 Then ' FOR SIL ADDITIONAL ================================
+    '                        Dim SIL_Total As Decimal = SIL * rate
+    '                        Allowances = SIL_Total
+    '                        Save_Recorded_Allow_Deduc(bioNo, paydate_, "SIL", SIL_Total, "ALLOWANCE")
+    '                    End If
+
+    '                    If Ecola <> 0 Then ' FOR ECOLA ADDITIONAL ================================ 
+    '                        Allowances = Allowances + Ecola
+    '                        Save_Recorded_Allow_Deduc(bioNo, paydate_, "ECOLA", Ecola, "ALLOWANCE")
+    '                    End If
+
+    '                    If (CDate(paydate_).Month = 5 Or CDate(paydate_).Month = 12) And CDate(paydate_).Day = 15 Then ' FOR 13 MONTH PAY (MAY & DECEMBER)=============== 
+    '                        Dim Month13 As Decimal = Get13Month(bioNo)
+    '                        Allowances = Allowances + Month13
+    '                        Save_Recorded_Allow_Deduc(bioNo, paydate_, "13th Month Pay", Month13, "ALLOWANCE")
+    '                    End If
+
+    '                    '============================================= OTHER ALLOWANCES =========================================================
+    '                    Dim sql_ As String = $"Select * From PAYROLL_ALLOWANCES WHERE BIOMETRIC_NO = '{bioNo}' and ALLOWED = 'YES' and (SCHEDULE = '{payrollSched}' or SCHEDULE = 'EVERY PAYROLL')"
+    '                    Using dss_ As DataSet = LoadSQL(sql_, "PAYROLL_ALLOWANCES")
+    '                        If dss_.Tables(0).Rows.Count > 0 Then
+    '                            For Each drr_ In dss_.Tables(0).Rows
+    '                                With drr_
+    '                                    If .item("EFFECTIVE_DATE") <= paydate_ Then
+
+    '                                        '============== PERFORMANCE INCENTIVES DEDUCTION IF EVER MAY ABSENT =================== 
+    '                                        Dim PI As Decimal = 0
+    '                                        Dim deduc_to_PI As Decimal = 0
+
+    '                                        If .item("CATEGORY") = "PERFORMANCE INCENTIVES" Then
+    '                                            If fix_monthly_rate = False And .item("FIX") = "NO" Then
+
+    '                                                Dim PI_totalDays As Double = 0
+    '                                                If branch_manual Then
+    '                                                    PI_totalDays = GetFirst_NoOfDays(bioNo, paydate_) + NoOfDays + SIL + GetData_Decimal("BRANCH_NO_OF_DAYS", $"PAYROLL_PI_DAYS WHERE PAYDATE='{paydate_}'")
+    '                                                Else
+    '                                                    PI_totalDays = GetFirst_NoOfDays(bioNo, paydate_) + NoOfDays + RegularHol + SIL + GetData_Decimal("HO_NO_OF_DAYS", $"PAYROLL_PI_DAYS WHERE PAYDATE='{paydate_}'")
+    '                                                End If
+
+    '                                                Dim absent As Double = 0
+    '                                                If PI_totalDays < 26 Then
+    '                                                    absent = 26 - PI_totalDays
+    '                                                    deduc_to_PI = (.Item("AMOUNT") / 26) * absent
+    '                                                End If
+
+    '                                                Allowances = (Allowances + .Item("AMOUNT")) - deduc_to_PI
+    '                                                Save_Recorded_Allow_Deduc(bioNo, paydate_, .Item("CATEGORY"), .Item("AMOUNT") - deduc_to_PI, "ALLOWANCE")
+    '                                                Continue For  '========= EXIT FOR (PARA DILI MAGDOUBLE SAVING ========
+    '                                            Else
+    '                                                Allowances = Allowances + .Item("AMOUNT")
+    '                                                Save_Recorded_Allow_Deduc(bioNo, paydate_, .Item("CATEGORY"), .Item("AMOUNT"), "ALLOWANCE")
+    '                                                Continue For  '========= EXIT FOR (PARA DILI MAGDOUBLE SAVING ========
+    '                                            End If
+    '                                        End If
+
+    '                                        Allowances = Allowances + .Item("AMOUNT")
+    '                                        Save_Recorded_Allow_Deduc(bioNo, paydate_, .Item("CATEGORY"), .Item("AMOUNT"), "ALLOWANCE")
+    '                                    End If
+    '                                End With
+    '                            Next
+    '                        End If
+    '                    End Using
+
+    '                    '============================================= ADDITIONAL PAY DUTY ON REST DAY, HOLIDAYS (AS ADDITIONAL ALLOWANCE) =========================================================
+    '                    Dim DutyAmount As Decimal = 0
+    '                    If DUTY_RESTDAY <> 0 Then
+    '                        'AdditionalDuty(dayNotHour As Boolean, typeOfDay As Double, rate As Decimal, percentageRate As Decimal, nameOfCategory As String)
+    '                        'AdditionalDuty(True, DUTY_RESTDAY, rate, RESTDAY, "Rest Day Duty")
+    '                        DutyAmount = (DUTY_RESTDAY * rate) * RESTDAY
+    '                        Allowances = Allowances + DutyAmount
+    '                        Save_Recorded_Allow_Deduc(bioNo, paydate_, "Rest Day Duty", DutyAmount, "ALLOWANCE")
+    '                    End If
+    '                    If DUTY_SPEC_RESTDAY <> 0 Then
+    '                        DutyAmount = (DUTY_SPEC_RESTDAY * rate) * SPEC_RESTDAY
+    '                        Allowances = Allowances + DutyAmount
+    '                        Save_Recorded_Allow_Deduc(bioNo, paydate_, "Spec. Hol., Rest Day", DutyAmount, "ALLOWANCE")
+    '                    End If
+    '                    If DUTY_REG_RESTDAY <> 0 Then
+    '                        DutyAmount = (DUTY_REG_RESTDAY * rate) * REG_RESTDAY
+    '                        Allowances = Allowances + DutyAmount
+    '                        Save_Recorded_Allow_Deduc(bioNo, paydate_, "Reg. Hol., Rest Day", DutyAmount, "ALLOWANCE")
+    '                    End If
+
+    '                    If DUTY_RESTDAY_OT <> 0 Then
+    '                        Dim ott = DUTY_RESTDAY_OT / 8
+    '                        DutyAmount = (ott * rate) * RESTDAY_OT
+    '                        Allowances = Allowances + DutyAmount
+    '                        Save_Recorded_Allow_Deduc(bioNo, paydate_, "Rest Day, OT", DutyAmount, "ALLOWANCE")
+    '                    End If
+    '                    If DUTY_SPEC_OT <> 0 Then
+    '                        Dim ott = DUTY_SPEC_OT / 8
+    '                        DutyAmount = (ott * rate) * SPEC_OT
+    '                        Allowances = Allowances + DutyAmount
+    '                        Save_Recorded_Allow_Deduc(bioNo, paydate_, "Spec. Hol., OT", DutyAmount, "ALLOWANCE")
+    '                    End If
+    '                    If DUTY_SPEC_RESTDAY_OT <> 0 Then
+    '                        Dim ott = DUTY_SPEC_RESTDAY_OT / 8
+    '                        DutyAmount = (ott * rate) * SPEC_RESTDAY_OT
+    '                        Allowances = Allowances + DutyAmount
+    '                        Save_Recorded_Allow_Deduc(bioNo, paydate_, "Spec. Hol., Rest Day, OT", DutyAmount, "ALLOWANCE")
+    '                    End If
+    '                    If DUTY_REG_OT <> 0 Then
+    '                        Dim ott = DUTY_REG_OT / 8
+    '                        DutyAmount = (ott * rate) * REG_OT
+    '                        Allowances = Allowances + DutyAmount
+    '                        Save_Recorded_Allow_Deduc(bioNo, paydate_, "Reg. Hol., OT", DutyAmount, "ALLOWANCE")
+    '                    End If
+    '                    If DUTY_REG_RESTDAY_OT <> 0 Then
+    '                        Dim ott = DUTY_REG_RESTDAY_OT / 8
+    '                        DutyAmount = (ott * rate) * REG_RESTDAY_OT
+    '                        Allowances = Allowances + DutyAmount
+    '                        Save_Recorded_Allow_Deduc(bioNo, paydate_, "Reg. Hol., Rest Day, OT", DutyAmount, "ALLOWANCE")
+    '                    End If
+
+    '                    If DUTY_SPEC_NIGHTSHIFT <> 0 Then
+    '                        Dim ott = DUTY_SPEC_NIGHTSHIFT / 8
+    '                        DutyAmount = (ott * rate) * SPEC_NIGHTSHIFT
+    '                        Allowances = Allowances + DutyAmount
+    '                        Save_Recorded_Allow_Deduc(bioNo, paydate_, "Spec. Hol., Night Shift", DutyAmount, "ALLOWANCE")
+    '                    End If
+    '                    If DUTY_REG_NIGHTSHIFT <> 0 Then
+    '                        Dim ott = DUTY_REG_NIGHTSHIFT / 8
+    '                        DutyAmount = (ott * rate) * REG_NIGHTSHIFT
+    '                        Allowances = Allowances + DutyAmount
+    '                        Save_Recorded_Allow_Deduc(bioNo, paydate_, "Reg. Hol., Night Shift", DutyAmount, "ALLOWANCE")
+    '                    End If
+
+    '                    If DUTY_ORD_NIGHTSHIFT_OT <> 0 Then
+    '                        Dim ott = DUTY_ORD_NIGHTSHIFT_OT / 8
+    '                        DutyAmount = (ott * rate) * ORD_NIGHTSHIFT_OT
+    '                        Allowances = Allowances + DutyAmount
+    '                        Save_Recorded_Allow_Deduc(bioNo, paydate_, "Night Shift, OT", DutyAmount, "ALLOWANCE")
+    '                    End If
+    '                    If DUTY_SPEC_NIGHTSHIFT_OT <> 0 Then
+    '                        Dim ott = DUTY_SPEC_NIGHTSHIFT_OT / 8
+    '                        DutyAmount = (ott * rate) * SPEC_NIGHTSHIFT_OT
+    '                        Allowances = Allowances + DutyAmount
+    '                        Save_Recorded_Allow_Deduc(bioNo, paydate_, "Spec. Hol., Night Shift, OT", DutyAmount, "ALLOWANCE")
+    '                    End If
+    '                    If DUTY_REG_NIGHTSHIFT_OT <> 0 Then
+    '                        Dim ott = DUTY_REG_NIGHTSHIFT_OT / 8
+    '                        DutyAmount = (ott * rate) * REG_NIGHTSHIFT_OT
+    '                        Allowances = Allowances + DutyAmount
+    '                        Save_Recorded_Allow_Deduc(bioNo, paydate_, "Reg. Hol., Night Shift, OT", DutyAmount, "ALLOWANCE")
+    '                    End If
+
+
+    '                    '============================================= DEDUCTION =========================================================  
+    '                    Deduction = 0
+
+    '                    Dim sql_3 As String = $"Select Z.*, Z.id as idddd From PAYROLL_DEDUCTION Z WHERE BIO_NO = '{bioNo}' and STATUS is null and SCHEDULE IN ('{payrollSched}', 'EVERY PAYROLL') AND EFFECTIVE_DATE <= '{paydate_}'"
+    '                    Using ds_3 As DataSet = LoadSQL(sql_3, "PAYROLL_DEDUCTION")
+    '                        If ds_3.Tables(0).Rows.Count > 0 Then
+    '                            For Each dr_3 In ds_3.Tables(0).Rows
+    '                                With dr_3
+
+    '                                    Dim amountt As Decimal = 0
+    '                                    Dim idddd As String = .Item("idddd")
+
+    '                                    If IsDBNull(.Item("BALANCE")) Then
+
+    '                                        Deduction = Deduction + .Item("AMORT")
+    '                                        amountt = .Item("AMORT")
+
+    '                                    Else
+
+    '                                        Dim balance As Decimal = GetDeduction_Balance(idddd)
+
+    '                                        If balance < .Item("AMORT") Then
+    '                                            Deduction = Deduction + balance
+    '                                            amountt = balance
+    '                                        Else
+    '                                            Deduction = Deduction + .Item("AMORT")
+    '                                            amountt = .Item("AMORT")
+    '                                        End If
+    '                                    End If
+
+    '                                    Save_Recorded_Allow_Deduc(bioNo, paydate_, .Item("CATEGORY"), amountt, "DEDUCTION", idddd)
+
+    '                                End With
+    '                            Next
+    '                        End If
+    '                    End Using
+
+    '                    '============================================= OTHER DEDUCTION LIKE MP2, MAXICARE ==================================================  
+    '                    Dim sql_5 As String = $"Select * From PAYROLL_OTHER_DEDUCTION WHERE BIO_NO = '{bioNo}' and STATUS is null and (SCHEDULE = '{payrollSched}' or SCHEDULE = 'EVERY PAYROLL')"
+    '                    Using ds_5 As DataSet = LoadSQL(sql_5, "PAYROLL_OTHER_DEDUCTION")
+    '                        If ds_5.Tables(0).Rows.Count > 0 Then
+    '                            For Each dr_5 In ds_5.Tables(0).Rows
+    '                                With dr_5
+    '                                    Deduction = Deduction + .Item("AMORT")
+    '                                    Save_Recorded_Allow_Deduc(bioNo, paydate_, .Item("CATEGORY"), .Item("AMORT"), "DEDUCTION")
+    '                                End With
+    '                            Next
+    '                        End If
+    '                    End Using
+
+    '                    '============================================= IF NOT TRAINEE CALCULATE SBU ==================================================  
+    '                    If noOf_days_training = 0 Then
+
+    '                        If SBU_With_Balance(bioNo) Then
+
+    '                            SBU = SBU_Amount(bioNo)
+    '                            Dim balanceSBU As Decimal = SBU_Balance(bioNo)
+
+    '                            If balanceSBU < SBU Then SBU = balanceSBU
+
+    '                            If SBU_sched = "EVERY PAYROLL" Then
+    '                                Save_Recorded_Allow_Deduc(bioNo, paydate_, "SBU", SBU, "DEDUCTION")
+    '                                Deduction = Deduction + SBU
+    '                            Else
+    '                                If payrollSched = SBU_sched Then
+    '                                    Save_Recorded_Allow_Deduc(bioNo, paydate_, "SBU", SBU, "DEDUCTION")
+    '                                    Deduction = Deduction + SBU
+    '                                End If
+    '                            End If
+
+    '                        End If
+
+    '                    End If
+
+    '                    '============================================= Calculate_Gross() ========================================================= 
+    '                    If fix_monthly_rate = True Then
+    '                        GrossAmount = TotalBasic
+    '                    Else
+
+    '                        '===================== STANDARD AND TRAINING OVERTIME/LATE/UNDERTIME ==================    
+    '                        Dim LATEE, LATE_TRAIN, UNDERTIMEE, UNDERTIMEE_TRAIN, OVERTIMEE, OVERTIMEE_TRAIN, NIGHTRATEE, NIGHTRATEE_TRAIN As Decimal
+    '                        Dim cutomizeOT As Integer = GetData_Integer("OT_HRS", $"PAYROLL_CUSTOMIZE_OT WHERE BIONO = {bioNo}")
+    '                        Dim OTHRS As Integer = IIf(cutomizeOT = 0, 8, cutomizeOT)
+    '                        LATEE = ((rate / OTHRS) / 60) * (Late - Training_totalLate)
+    '                        UNDERTIMEE = ((rate / OTHRS) / 60) * (UnderTime - Training_totalUT)
+    '                        OVERTIMEE = ((rate / OTHRS) * 1.25) * (RegularOT - training_overtime)
+    '                        NIGHTRATEE = ((rate / OTHRS) * 0.1) * (nightRate - Training_nightRate)
+
+    '                        LATE_TRAIN = ((trainee_rate / OTHRS) / 60) * Training_totalLate
+    '                        UNDERTIMEE_TRAIN = ((trainee_rate / OTHRS) / 60) * Training_totalUT
+    '                        OVERTIMEE_TRAIN = ((trainee_rate / OTHRS) * 1.25) * training_overtime
+    '                        NIGHTRATEE_TRAIN = ((trainee_rate / OTHRS) * 0.1) * Training_nightRate
+
+    '                        LATEE = LATEE + LATE_TRAIN
+    '                        UNDERTIMEE = UNDERTIMEE + UNDERTIMEE_TRAIN
+    '                        OVERTIMEE = OVERTIMEE + OVERTIMEE_TRAIN
+    '                        NIGHTRATEE = NIGHTRATEE + NIGHTRATEE_TRAIN
+
+    '                        'IMANUAL NALANG ANG BUNGKIG NGA DAYS SA RATE CHANGE
+
+    '                        ''===================== MINIMUM RATE CHANGED STARTING SEPTEMBER 1, 2022 =========================== 
+    '                        'If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
+    '                        '    '==================== OVERTIMEEEEEEEE =====================================
+    '                        '    If RegularOT <> 0 Then
+    '                        '        Dim old_OT As Double = OLD_NEW_RATE(bioNo, paydate_).old_overtime
+    '                        '        Dim new_OT As Double = OLD_NEW_RATE(bioNo, paydate_).new_overtime
+
+    '                        '        Dim percentOT_training As Double = training_overtime / RegularOT
+    '                        '        Dim percentOT_old As Double = old_OT / RegularOT
+    '                        '        Dim percentOT_new As Double = new_OT / RegularOT
+
+    '                        '        Dim OT_training As Double = ((trainee_rate / OTHRS) / 60) * (RegularOT * percentOT_training)
+    '                        '        Dim OT_old As Double = ((Old_Rate / OTHRS) * 1.25) * (RegularOT * percentOT_old)
+    '                        '        Dim OT_new As Double = ((rate / OTHRS) * 1.25) * (RegularOT * percentOT_new)
+
+    '                        '        OVERTIMEE = OT_training + OT_old + OT_new
+    '                        '    End If
+    '                        '    '==================== LATEEEEEEEEEEE =====================================
+    '                        '    If Late <> 0 Then
+    '                        '        Dim old_late As Double = OLD_NEW_RATE(bioNo, paydate_).old_late
+    '                        '        Dim new_late As Double = OLD_NEW_RATE(bioNo, paydate_).new_late
+
+    '                        '        Dim percentLate_training As Double = Training_totalLate / Late
+    '                        '        Dim percentLate_old As Double = old_late / Late
+    '                        '        Dim percentLate_new As Double = new_late / Late
+
+    '                        '        Dim Late_training As Double = ((trainee_rate / OTHRS) / 60) * (Late * percentLate_training)
+    '                        '        Dim Late_old As Double = ((Old_Rate / OTHRS) / 60) * (Late * percentLate_old)
+    '                        '        Dim Late_new As Double = ((rate / OTHRS) / 60) * (Late * percentLate_new)
+
+    '                        '        LATEE = Late_training + Late_old + Late_new
+
+    '                        '        '=================  LATE ADJUSTMENT IF NOT EXEMPTED ==================== 
+    '                        '        Dim LateAdjust As Boolean = IIf(GetData("VALUESS", $"MAINTENANCE WHERE KEYSS='LateAdjustment'") = "ON", True, False)
+    '                        '        If LateAdjust = True And Late_Adjustment > 1 And Not ThisHasRow($"LATE_EXEMPTED WHERE BIONO = {bioNo}") Then
+    '                        '            Dim t1 As Decimal = (Old_Rate / OTHRS) / 60
+    '                        '            Dim t2 As Decimal = (rate / OTHRS) / 60
+    '                        '            Dim lateMinusApprove As Decimal = Late - Late_Approved
+    '                        '            Dim total_adjustment1 As Decimal = ((lateMinusApprove * percentLate_old) * (Late_Adjustment - 1)) * t1
+    '                        '            Dim total_adjustment2 As Decimal = ((lateMinusApprove * percentLate_new) * (Late_Adjustment - 1)) * t2
+    '                        '            Dim total_adjustment As Decimal = total_adjustment1 + total_adjustment2
+    '                        '            Deduction += total_adjustment
+    '                        '            Save_Recorded_Allow_Deduc(bioNo, paydate_, "Late Adjustment", total_adjustment, "DEDUCTION")
+    '                        '        End If
+    '                        '    End If
+    '                        '    '==================== UNDERTIMEEEEEEEEEEEE =============================== 
+    '                        '    If UNDERTIMEE <> 0 Then
+    '                        '        Dim old_undertime As Double = OLD_NEW_RATE(bioNo, paydate_).old_undertime
+    '                        '        Dim new_undertime As Double = OLD_NEW_RATE(bioNo, paydate_).new_undertime
+
+    '                        '        Dim percentUT_training As Double = Training_totalUT / UNDERTIMEE
+    '                        '        Dim percentUT_old As Double = old_undertime / UNDERTIMEE
+    '                        '        Dim percentUT_new As Double = new_undertime / UNDERTIMEE
+
+    '                        '        Dim UT_training As Double = ((trainee_rate / OTHRS) / 60) * (UNDERTIMEE * percentUT_training)
+    '                        '        Dim UT_old As Double = ((Old_Rate / OTHRS) / 60) * (UNDERTIMEE * percentUT_old)
+    '                        '        Dim UT_new As Double = ((rate / OTHRS) / 60) * (UNDERTIMEE * percentUT_new)
+
+    '                        '        UNDERTIMEE = UT_training + UT_old + UT_new
+    '                        '    End If
+    '                        'End If
+    '                        ''===================================================================================
+
+    '                        TotalOT = OVERTIMEE
+
+    '                        TotalLateUnder = LATEE + UNDERTIMEE
+
+    '                        TotalNight = NIGHTRATEE
+
+    '                        GrossAmount = (TotalBasic + TotalREGHol + TotalSPECHol + TotalOT + TotalNight) - TotalLateUnder
+
+    '                        ''IMANUAL NALANG ANG BUNGKIG NGA DAYS SA RATE CHANGE
+
+    '                        ''======================================= LATE ADJUSTMENT IF NOT EXEMPTED ====================================== 
+    '                        'If Not ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
+    '                        '    Dim LateAdjust As Boolean = IIf(GetData("VALUESS", $"MAINTENANCE WHERE KEYSS = 'LateAdjustment'") = "ON", True, False)
+    '                        '    If LateAdjust = True And Late_Adjustment > 1 And Not ThisHasRow($"LATE_EXEMPTED WHERE BIONO = {bioNo}") Then
+
+    '                        '        Dim late_rate As Decimal = (rate / OTHRS) / 60
+    '                        '        Dim total_adjustment As Decimal = ((Late - Late_Approved) * (Late_Adjustment - 1)) * late_rate
+    '                        '        Deduction += total_adjustment
+    '                        '        Save_Recorded_Allow_Deduc(bioNo, paydate_, "Late Adjustment", total_adjustment, "DEDUCTION")
+
+    '                        '    End If
+    '                        'End If
+    '                    End If
+
+    '                    '============================================= Calculate =========================================================  
+    '                    Dim NetPay As Decimal
+
+    '                    Dim CONTRIB As Decimal = SSSComp + PagibigComp + PhilhealthComp
+
+    '                    Dim positive, negative As Decimal
+    '                    If IsLastDay(paydate_) Then
+    '                        positive = GrossAmount + Allowances
+    '                        negative = CONTRIB + Deduction
+    '                    Else
+    '                        positive = GrossAmount + Allowances
+    '                        negative = Deduction
+    '                    End If
+
+    '                    NetPay = positive - negative
+
+    '                    'HOLD SALARY
+    '                    If Hold_salary And NetPay > 0 Then Save_Recorded_Allow_Deduc(bioNo, paydate_, "HOLD SALARY", NetPay, "DEDUCTION") : NetPay = 0
+
+    '                    SavePayout(bioNo, paydate_, TotalBasic, TotalOT,
+    '                                      TotalLateUnder, GrossAmount,
+    '                                      SSSComp, SSS_ER, SSS_EC,
+    '                                      PagibigComp, PhilhealthComp,
+    '                                      Allowances, Deduction, NetPay,
+    '                                      TotalREGHol, TotalSPECHol, TotalNight, rate)
+
+    '                End With
+    '            End If
+    '        End Using
+    '    End Sub
+
+#End Region
+
     Friend Sub SavePayout_IndividualL(bioNo As String, paydate_ As String, startingDate As DateTime, EndingDate As DateTime) '========== AUTO SAVE TO PAYOUT ============  
 
         Dim regHoliday = Holiday_Rate("REGULAR")
@@ -682,16 +1474,6 @@ Module SaveUpdate
         Dim SPEC_NIGHTSHIFT_OT = Holiday_Rate("SPEC_NIGHTSHIFT_OT")
         Dim REG_NIGHTSHIFT_OT = Holiday_Rate("REG_NIGHTSHIFT_OT")
 
-        'Dim sched As String = ""
-        'Dim date_pay As DateTime = Convert.ToDateTime(paydate_)
-        'date_pay = date_pay.ToString("d")
-
-        'If IsLastDay(date_pay) Then
-        '    sched = "CLOSE PAYROLL"
-        'Else
-        '    sched = "OPEN PAYROLL"
-        'End If 
-
         Dim mysql As String = $"Select * From payroll_attendance A 
                                 inner join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRICID  WHERE A.BIOMETRICID = '{bioNo}' and A.PAYDATE = '{paydate_}'"
 
@@ -709,7 +1491,6 @@ Module SaveUpdate
                     Dim NoOfDays, SpecialHol, RegularHol As Double
                     Dim Deduction, SBU As Decimal
                     Dim Company As String = ""
-                    Dim noOf_days_training As Double = 0
                     Dim PI_ADD_DAYS As Double = 0
                     Dim TotalBasic As Decimal = 0
                     Dim SSSComp As Decimal = 0
@@ -803,14 +1584,14 @@ Module SaveUpdate
                     End Try
 #End Region
 
-                    Dim Training_REGHoliday = 0, Training_SPECHoliday As Integer = 0
-                    Dim Training_totalLate As Integer = 0, Training_totalUT As Integer = 0, Training_nightRate As Integer = 0
-                    Dim training_overtime As Double = 0
-                    Dim training_late As TimeSpan = New TimeSpan(0, 0, 0, 0, 0)
-                    Dim training_undertime As TimeSpan = New TimeSpan(0, 0, 0, 0, 0)
+                    'Dim Training_REGHoliday = 0, Training_SPECHoliday As Integer = 0
+                    'Dim Training_totalLate As Integer = 0, Training_totalUT As Integer = 0, Training_nightRate As Integer = 0
+                    'Dim training_overtime As Double = 0
+                    'Dim training_late As TimeSpan = New TimeSpan(0, 0, 0, 0, 0)
+                    'Dim training_undertime As TimeSpan = New TimeSpan(0, 0, 0, 0, 0)
                     '============================= MINIMUM RATE CHANGE (DAYS COVERED) ==============================
-                    Dim Rholiday_newMin_covred_training As Integer = 0
-                    Dim Sholiday_newMin_covred_training As Integer = 0
+                    'Dim Rholiday_newMin_covred_training As Integer = 0
+                    'Dim Sholiday_newMin_covred_training As Integer = 0
                     Dim branch_manual As Boolean = False
                     '============================= BRANCH EXCESS DUTY ==============================
                     Dim DUTY_RESTDAY As Double = 0 : Dim DUTY_SPEC_RESTDAY As Double = 0 : Dim DUTY_REG_RESTDAY As Double = 0
@@ -841,15 +1622,7 @@ Module SaveUpdate
                                     Late_Approved = IIf(IsDBNull(.Item("LATE_APPROVED")), 0, .Item("LATE_APPROVED"))
                                     branch_manual = IIf(IsDBNull(.Item("BRANCH_MANUAL")), False, .Item("BRANCH_MANUAL"))
 
-                                    If branch_manual Then       'IF IN CASE BRANCH MANUAL
-                                        noOf_days_training = IIf(IsDBNull(.Item("TRAINING_DAYS")), 0, .Item("TRAINING_DAYS"))
-                                        Training_REGHoliday = IIf(IsDBNull(.Item("TRAINING_REGHOLIDAY")), 0, .Item("TRAINING_REGHOLIDAY"))
-                                        Training_SPECHoliday = IIf(IsDBNull(.Item("TRAINING_SPECHOLIDAY")), 0, .Item("TRAINING_SPECHOLIDAY"))
-                                        training_overtime = IIf(IsDBNull(.Item("TRAINING_OVERTIME")), 0, .Item("TRAINING_OVERTIME"))
-                                        Training_totalLate = IIf(IsDBNull(.Item("TRAINING_LATE")), 0, .Item("TRAINING_LATE"))
-                                        Training_totalUT = IIf(IsDBNull(.Item("TRAINING_UNDERTIME")), 0, .Item("TRAINING_UNDERTIME"))
-                                        Training_nightRate = IIf(IsDBNull(.Item("TRAINING_NIGHTRATE")), 0, .Item("TRAINING_NIGHTRATE"))
-
+                                    If branch_manual Then       'IF IN CASE BRANCH MANUAL 
                                         DUTY_RESTDAY = IIf(IsDBNull(.Item("DUTY_RESTDAY")), 0, .Item("DUTY_RESTDAY"))
                                         DUTY_SPEC_RESTDAY = IIf(IsDBNull(.Item("DUTY_SPEC_RESTDAY")), 0, .Item("DUTY_SPEC_RESTDAY"))
                                         DUTY_REG_RESTDAY = IIf(IsDBNull(.Item("DUTY_REG_RESTDAY")), 0, .Item("DUTY_REG_RESTDAY"))
@@ -875,195 +1648,10 @@ Module SaveUpdate
                         End If
                     End Using
 
-                    '====================================== IF TRAINEE GET TRAINING DAYS TO CALCULATE TRAINING FEE (FOR HEAD OFFICE ONLY) ===============================================
-                    If Not IsDBNull(.Item("DATEHIRED")) And branch_manual = False Then
-                        Dim training_days As Integer
 
-                        If Company = "DALTON" Or Company = "PHOTO" Or Company = "HEAD OFFICE" Then
-                            training_days = 15
-                        Else
-                            training_days = 30
-                        End If
-
-                        Dim Started As DateTime = .Item("DATEHIRED")
-
-                        Dim days As Long = DateDiff(DateInterval.Day, Started, startingDate)
-
-                        Dim days_covred As Integer = training_days - (days + 1) '====== KULANG UG 1 ANG COUNTING
-
-                        If days_covred > 0 Then
-
-                            Dim ending As DateTime = startingDate.AddDays(days_covred)
-                            While (startingDate <= ending)
-
-                                If PRESENT_Date(bioNo, paydate_, startingDate) Then
-
-                                    noOf_days_training += 1
-
-                                    Dim Time_In, Time_Out As DateTime
-
-                                    If CheckData("BIO_NO", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{bioNo}'") Then
-
-                                        If DateExist_IN_Schedule(bioNo, startingDate.ToShortDateString) Then
-                                            Time_In = GetData("TIME_IN", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{bioNo}' AND DATEE = '{startingDate.ToShortDateString}' ")
-                                            Time_Out = Time_In.AddHours(9)
-                                        Else
-                                            Time_In = GetData("VALUEE", $"PAYROLL_DEFAULT_TIMEIN")
-                                            Time_Out = Time_In.AddHours(9)
-                                        End If
-
-                                    Else
-
-                                        Time_In = IIf(IsDBNull(.Item("TIME_IN")), "", .Item("TIME_IN"))
-                                        Time_Out = IIf(IsDBNull(.Item("TIME_OUT")), "", .Item("TIME_OUT"))
-
-                                    End If
-
-                                    training_overtime += Calculate_Training_Overtime(bioNo, paydate_, startingDate, Time_Out)
-                                    training_late += Calculate_Training_Late(bioNo, paydate_, startingDate, Time_In)
-                                    training_undertime += Calculate_Training_Undertime(bioNo, paydate_, startingDate, Time_Out)
-
-                                    If Halfday_Training(bioNo, paydate_, startingDate) Then
-                                        noOf_days_training -= 0.5
-                                    End If
-
-                                    If DataeXIST($" PAYROLL_HOLIDAY WHERE DATEE = '{startingDate.ToString("M")}' AND KINDS = 'SPECIAL'") Then
-                                        Training_SPECHoliday += Calculate_Training_SpecHoliday(bioNo, paydate_, startingDate)
-
-                                        '===================== MINIMUM RATE CHANGED STARTING SEPTEMBER 1, 2022 =============== 
-                                        If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
-                                            Dim newMin_startingDate As Date = GetData("STARTING_DATE", $"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'")
-                                            If startingDate = newMin_startingDate.AddDays(-1) Then
-                                                Sholiday_newMin_covred_training += 1
-                                            End If
-                                        End If
-
-                                    End If
-
-                                End If
-
-                                '=============== IF HOLIDAY TRAINING COVERED ================
-                                If startingDate <= EndingDate Then
-                                    If DataeXIST($" PAYROLL_HOLIDAY WHERE DATEE = '{startingDate.ToString("M")}' AND KINDS = 'REGULAR'") Then
-                                        If startingDate >= Started Then
-                                            Training_REGHoliday += 1
-
-                                            '===================== MINIMUM RATE CHANGED STARTING SEPTEMBER 1, 2022 =============== 
-                                            If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
-                                                Dim newMin_startingDate As Date = GetData("STARTING_DATE", $"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'")
-                                                If startingDate = newMin_startingDate.AddDays(-1) Then
-                                                    Rholiday_newMin_covred_training += 1
-                                                End If
-                                            End If
-
-                                        End If
-                                    End If
-                                End If
-
-                                startingDate = startingDate.AddDays(1)
-                            End While
-
-                            Training_totalLate = training_late.TotalMinutes
-                            Training_totalUT = training_undertime.TotalMinutes
-
-                            SaveTraining_days(bioNo, paydate_, noOf_days_training, Training_REGHoliday, Training_SPECHoliday, training_overtime, Training_totalLate, Training_totalUT)
-                        End If
-                    End If
-
-                    '====================================== IF TRAINEE GET TRAINING DAYS TO CALCULATE TRAINING FEE (FOR BRANCHES MANUAL ONLY) ===============================================
-
-                    '============================================= BENIFITS CONTRIBUTION =========================================================  
-                    Dim trainee_rate As Decimal = rate * 0.75
-                    Dim exempted_trainee As Double = 0
-
-                    If .Item("EMP_POSITION") = "PROGRAMMER" Or .Item("EMP_POSITION") = "UTILITY" Or .Item("EMP_POSITION") = "DRIVER" Then
-                        exempted_trainee = noOf_days_training       'EXEMPTED ON TRAINING RATE
-                        noOf_days_training = 0
-                    End If
-
-                    If noOf_days_training <> 0 And exempted_trainee = 0 Then '================ IF TRAINEE BASE CALCULATE NEW RATE =================
-
-                        Dim total_train As Decimal = (Convert.ToDouble(rate) - trainee_rate) * Convert.ToDouble(noOf_days_training)
-                        TotalBasic = (NoOfDays * rate) - total_train
-
-                        '===================== TRAINING HOLIDAY ==================    
-                        If RegularHol <> 0 Then RegularHol = Math.Abs(RegularHol - Training_REGHoliday)
-                        If SpecialHol <> 0 Then SpecialHol = Math.Abs(SpecialHol_hrs - Training_SPECHoliday)
-
-                        Dim REG_STANDARD As Decimal = (RegularHol * rate) * regHoliday
-                        Dim SPEC_STANDARD As Decimal = ((SpecialHol / 8) * rate) * specHoliday
-
-                        Dim REG_TRAINEE As Decimal = (Training_REGHoliday * trainee_rate) * regHoliday
-                        Dim SPEC_TRAINEE As Decimal = ((Training_SPECHoliday / 8) * trainee_rate) * specHoliday
-
-                        TotalREGHol = REG_STANDARD + REG_TRAINEE
-                        TotalSPECHol = SPEC_STANDARD + SPEC_TRAINEE
-
-                        If rate > Minimum_rate Then
-                            Console.WriteLine("Above Minimum, not applicable for change minimum rate calculation!")
-                        Else
-                            'IMANUAL NALANG ANG BUNGKIG NGA DAYS SA RATE CHANGE
-
-                            ''===================== MINIMUM RATE CHANGED ===================================== 
-                            'If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
-                            '    Dim old_days As Double = OLD_NEW_RATE(bioNo, paydate_).old_days
-                            '    Dim new_days As Double = OLD_NEW_RATE(bioNo, paydate_).new_days
-
-                            '    Dim tot_days As Double = (old_days * Old_Rate) + (new_days * rate)
-                            '    TotalBasic = tot_days - total_train
-
-                            '    Dim newMin_rholiday As Integer = REG_SPEC_HOLIDAY(bioNo, paydate_).rholiday
-                            '    Dim newMin_sholiday As Integer = REG_SPEC_HOLIDAY(bioNo, paydate_).sholiday
-
-                            '    Dim old_rholiday As Decimal = ((RegularHol - newMin_rholiday) * Old_Rate) * regHoliday
-                            '    Dim new_rholiday As Decimal = (newMin_rholiday * rate) * regHoliday
-
-                            '    Dim old_sholiday As Decimal = ((SpecialHol / 8) * Old_Rate) * specHoliday
-                            '    Dim new_sholiday As Decimal = ((newMin_sholiday / 8) * rate) * specHoliday
-
-                            '    Dim old_training_rholiday As Decimal = (Training_REGHoliday * (Old_Rate * 0.75)) * regHoliday
-                            '    Dim new_training_rholiday As Decimal = (Rholiday_newMin_covred_training * trainee_rate) * regHoliday
-
-                            '    Dim old_training_sholiday As Decimal = (Training_SPECHoliday * (Old_Rate * 0.75)) * specHoliday
-                            '    Dim new_training_sholiday As Decimal = ((Sholiday_newMin_covred_training / 8) * trainee_rate) * specHoliday
-
-                            '    TotalREGHol = (old_rholiday + new_rholiday) + (old_training_rholiday + new_training_rholiday)
-                            '    TotalSPECHol = (old_sholiday + new_sholiday) + (old_training_sholiday + new_training_sholiday)
-                            'End If
-                        End If
-                    Else
-
-                        TotalBasic = (NoOfDays * rate)
-                        TotalREGHol = (RegularHol * rate) * regHoliday
-                        TotalSPECHol = ((SpecialHol_hrs / 8) * rate) * specHoliday
-
-                        If rate > Minimum_rate Then
-                            Console.WriteLine("Above Minimum, not applicable for change minimum rate calculation!")
-                        Else
-
-                            'IMANUAL NALANG ANG BUNGKIG NGA DAYS SA RATE CHANGE
-
-                            ''===================== MINIMUM RATE CHANGED ================================ 
-                            'If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
-                            '    Dim old_days As Double = OLD_NEW_RATE(bioNo, paydate_).old_days
-                            '    Dim new_days As Double = OLD_NEW_RATE(bioNo, paydate_).new_days
-
-                            '    TotalBasic = (old_days * Old_Rate) + (new_days * rate)
-
-                            '    Dim newMin_rholiday As Integer = REG_SPEC_HOLIDAY(bioNo, paydate_).rholiday
-                            '    Dim newMin_sholiday As Integer = REG_SPEC_HOLIDAY(bioNo, paydate_).sholiday
-
-                            '    Dim old_rholiday As Decimal = ((RegularHol - newMin_rholiday) * Old_Rate) * regHoliday
-                            '    Dim new_rholiday As Decimal = (newMin_rholiday * rate) * regHoliday
-
-                            '    Dim old_sholiday As Decimal = (((SpecialHol_hrs - newMin_sholiday) / 8) * Old_Rate) * specHoliday
-                            '    Dim new_sholiday As Decimal = ((newMin_sholiday / 8) * rate) * specHoliday
-
-                            '    TotalREGHol = old_rholiday + new_rholiday
-                            '    TotalSPECHol = old_sholiday + new_sholiday
-                            'End If
-                        End If
-                    End If
+                    TotalBasic = (NoOfDays * rate)
+                    TotalREGHol = (RegularHol * rate) * regHoliday
+                    TotalSPECHol = ((SpecialHol_hrs / 8) * rate) * specHoliday
 
                     ''============================= FIX MONTHLY RATE===============  
                     If fix_monthly_rate = True Then
@@ -1074,27 +1662,24 @@ Module SaveUpdate
                         TotalSPECHol = 0
                     End If
 
-                    '============================ CHECK WITH TRAINING DAYS COVERED ======================== 
-                    If noOf_days_training = 0 And exempted_trainee = 0 Then
-                        '======================== CHECK IF CLOSE PAYROLL ==================================  
-                        If payrollSched = "CLOSE PAYROLL" Then
-                            If bioNo <> 58 Then
-                                Dim first_Basic As Decimal = GetFirst_Basic(bioNo, paydate_)
-                                Dim monthly_Basic As Decimal = TotalBasic + first_Basic
+                    '======================== CHECK IF CLOSE PAYROLL ==================================  
+                    If payrollSched = "CLOSE PAYROLL" Then
+                        If bioNo <> 58 Then
+                            Dim first_Basic As Decimal = GetFirst_Basic(bioNo, paydate_)
+                            Dim monthly_Basic As Decimal = TotalBasic + first_Basic
 
-                                If ThisNotIsNull("SSSNO", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo} ") Then 'IF HAS SSSNO DETAILS 
-                                    Get_SSS(monthly_Basic)
-                                    SSSComp = SSSEE
-                                    SSS_ER = SSSER
-                                    SSS_EC = SSSEC
-                                End If
-
-                                If ThisNotIsNull("PAGIBIG", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo}") Then PagibigComp = Get_Pagibig(monthly_Basic)
-                                If ThisNotIsNull("PHILHEALTHNO", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo}") Then PhilhealthComp = Get_PhilHealth(monthly_Basic)
+                            If ThisNotIsNull("SSSNO", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo} ") Then 'IF HAS SSSNO DETAILS 
+                                Get_SSS(monthly_Basic)
+                                SSSComp = SSSEE
+                                SSS_ER = SSSER
+                                SSS_EC = SSSEC
                             End If
-                        End If
 
+                            If ThisNotIsNull("PAGIBIG", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo}") Then PagibigComp = Get_Pagibig(monthly_Basic)
+                            If ThisNotIsNull("PHILHEALTHNO", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo}") Then PhilhealthComp = Get_PhilHealth(monthly_Basic)
+                        End If
                     End If
+
 
                     ''============================================= DELETE ALLOWANCE AND DEDUCTION TO REPLACE =================================================
                     Replacing($"RECORDED_ALLOW_DEDUC where BIO_NO = '{bioNo}' and PAYDATE = '{paydate_}';")
@@ -1166,8 +1751,6 @@ Module SaveUpdate
                     '============================================= ADDITIONAL PAY DUTY ON REST DAY, HOLIDAYS (AS ADDITIONAL ALLOWANCE) =========================================================
                     Dim DutyAmount As Decimal = 0
                     If DUTY_RESTDAY <> 0 Then
-                        'AdditionalDuty(dayNotHour As Boolean, typeOfDay As Double, rate As Decimal, percentageRate As Decimal, nameOfCategory As String)
-                        'AdditionalDuty(True, DUTY_RESTDAY, rate, RESTDAY, "Rest Day Duty")
                         DutyAmount = (DUTY_RESTDAY * rate) * RESTDAY
                         Allowances = Allowances + DutyAmount
                         Save_Recorded_Allow_Deduc(bioNo, paydate_, "Rest Day Duty", DutyAmount, "ALLOWANCE")
@@ -1297,26 +1880,21 @@ Module SaveUpdate
                         End If
                     End Using
 
-                    '============================================= IF NOT TRAINEE CALCULATE SBU ==================================================  
-                    If noOf_days_training = 0 Then
+                    If SBU_With_Balance(bioNo) Then
 
-                        If SBU_With_Balance(bioNo) Then
+                        SBU = SBU_Amount(bioNo)
+                        Dim balanceSBU As Decimal = SBU_Balance(bioNo)
 
-                            SBU = SBU_Amount(bioNo)
-                            Dim balanceSBU As Decimal = SBU_Balance(bioNo)
+                        If balanceSBU < SBU Then SBU = balanceSBU
 
-                            If balanceSBU < SBU Then SBU = balanceSBU
-
-                            If SBU_sched = "EVERY PAYROLL" Then
+                        If SBU_sched = "EVERY PAYROLL" Then
+                            Save_Recorded_Allow_Deduc(bioNo, paydate_, "SBU", SBU, "DEDUCTION")
+                            Deduction = Deduction + SBU
+                        Else
+                            If payrollSched = SBU_sched Then
                                 Save_Recorded_Allow_Deduc(bioNo, paydate_, "SBU", SBU, "DEDUCTION")
                                 Deduction = Deduction + SBU
-                            Else
-                                If payrollSched = SBU_sched Then
-                                    Save_Recorded_Allow_Deduc(bioNo, paydate_, "SBU", SBU, "DEDUCTION")
-                                    Deduction = Deduction + SBU
-                                End If
                             End If
-
                         End If
 
                     End If
@@ -1327,88 +1905,13 @@ Module SaveUpdate
                     Else
 
                         '===================== STANDARD AND TRAINING OVERTIME/LATE/UNDERTIME ==================    
-                        Dim LATEE, LATE_TRAIN, UNDERTIMEE, UNDERTIMEE_TRAIN, OVERTIMEE, OVERTIMEE_TRAIN, NIGHTRATEE, NIGHTRATEE_TRAIN As Decimal
+                        Dim LATEE, UNDERTIMEE, OVERTIMEE, NIGHTRATEE As Decimal
                         Dim cutomizeOT As Integer = GetData_Integer("OT_HRS", $"PAYROLL_CUSTOMIZE_OT WHERE BIONO = {bioNo}")
                         Dim OTHRS As Integer = IIf(cutomizeOT = 0, 8, cutomizeOT)
-                        LATEE = ((rate / OTHRS) / 60) * (Late - Training_totalLate)
-                        UNDERTIMEE = ((rate / OTHRS) / 60) * (UnderTime - Training_totalUT)
-                        OVERTIMEE = ((rate / OTHRS) * 1.25) * (RegularOT - training_overtime)
-                        NIGHTRATEE = ((rate / OTHRS) * 0.1) * (nightRate - Training_nightRate)
-
-                        LATE_TRAIN = ((trainee_rate / OTHRS) / 60) * Training_totalLate
-                        UNDERTIMEE_TRAIN = ((trainee_rate / OTHRS) / 60) * Training_totalUT
-                        OVERTIMEE_TRAIN = ((trainee_rate / OTHRS) * 1.25) * training_overtime
-                        NIGHTRATEE_TRAIN = ((trainee_rate / OTHRS) * 0.1) * Training_nightRate
-
-                        LATEE = LATEE + LATE_TRAIN
-                        UNDERTIMEE = UNDERTIMEE + UNDERTIMEE_TRAIN
-                        OVERTIMEE = OVERTIMEE + OVERTIMEE_TRAIN
-                        NIGHTRATEE = NIGHTRATEE + NIGHTRATEE_TRAIN
-
-                        'IMANUAL NALANG ANG BUNGKIG NGA DAYS SA RATE CHANGE
-
-                        ''===================== MINIMUM RATE CHANGED STARTING SEPTEMBER 1, 2022 =========================== 
-                        'If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
-                        '    '==================== OVERTIMEEEEEEEE =====================================
-                        '    If RegularOT <> 0 Then
-                        '        Dim old_OT As Double = OLD_NEW_RATE(bioNo, paydate_).old_overtime
-                        '        Dim new_OT As Double = OLD_NEW_RATE(bioNo, paydate_).new_overtime
-
-                        '        Dim percentOT_training As Double = training_overtime / RegularOT
-                        '        Dim percentOT_old As Double = old_OT / RegularOT
-                        '        Dim percentOT_new As Double = new_OT / RegularOT
-
-                        '        Dim OT_training As Double = ((trainee_rate / OTHRS) / 60) * (RegularOT * percentOT_training)
-                        '        Dim OT_old As Double = ((Old_Rate / OTHRS) * 1.25) * (RegularOT * percentOT_old)
-                        '        Dim OT_new As Double = ((rate / OTHRS) * 1.25) * (RegularOT * percentOT_new)
-
-                        '        OVERTIMEE = OT_training + OT_old + OT_new
-                        '    End If
-                        '    '==================== LATEEEEEEEEEEE =====================================
-                        '    If Late <> 0 Then
-                        '        Dim old_late As Double = OLD_NEW_RATE(bioNo, paydate_).old_late
-                        '        Dim new_late As Double = OLD_NEW_RATE(bioNo, paydate_).new_late
-
-                        '        Dim percentLate_training As Double = Training_totalLate / Late
-                        '        Dim percentLate_old As Double = old_late / Late
-                        '        Dim percentLate_new As Double = new_late / Late
-
-                        '        Dim Late_training As Double = ((trainee_rate / OTHRS) / 60) * (Late * percentLate_training)
-                        '        Dim Late_old As Double = ((Old_Rate / OTHRS) / 60) * (Late * percentLate_old)
-                        '        Dim Late_new As Double = ((rate / OTHRS) / 60) * (Late * percentLate_new)
-
-                        '        LATEE = Late_training + Late_old + Late_new
-
-                        '        '=================  LATE ADJUSTMENT IF NOT EXEMPTED ==================== 
-                        '        Dim LateAdjust As Boolean = IIf(GetData("VALUESS", $"MAINTENANCE WHERE KEYSS='LateAdjustment'") = "ON", True, False)
-                        '        If LateAdjust = True And Late_Adjustment > 1 And Not ThisHasRow($"LATE_EXEMPTED WHERE BIONO = {bioNo}") Then
-                        '            Dim t1 As Decimal = (Old_Rate / OTHRS) / 60
-                        '            Dim t2 As Decimal = (rate / OTHRS) / 60
-                        '            Dim lateMinusApprove As Decimal = Late - Late_Approved
-                        '            Dim total_adjustment1 As Decimal = ((lateMinusApprove * percentLate_old) * (Late_Adjustment - 1)) * t1
-                        '            Dim total_adjustment2 As Decimal = ((lateMinusApprove * percentLate_new) * (Late_Adjustment - 1)) * t2
-                        '            Dim total_adjustment As Decimal = total_adjustment1 + total_adjustment2
-                        '            Deduction += total_adjustment
-                        '            Save_Recorded_Allow_Deduc(bioNo, paydate_, "Late Adjustment", total_adjustment, "DEDUCTION")
-                        '        End If
-                        '    End If
-                        '    '==================== UNDERTIMEEEEEEEEEEEE =============================== 
-                        '    If UNDERTIMEE <> 0 Then
-                        '        Dim old_undertime As Double = OLD_NEW_RATE(bioNo, paydate_).old_undertime
-                        '        Dim new_undertime As Double = OLD_NEW_RATE(bioNo, paydate_).new_undertime
-
-                        '        Dim percentUT_training As Double = Training_totalUT / UNDERTIMEE
-                        '        Dim percentUT_old As Double = old_undertime / UNDERTIMEE
-                        '        Dim percentUT_new As Double = new_undertime / UNDERTIMEE
-
-                        '        Dim UT_training As Double = ((trainee_rate / OTHRS) / 60) * (UNDERTIMEE * percentUT_training)
-                        '        Dim UT_old As Double = ((Old_Rate / OTHRS) / 60) * (UNDERTIMEE * percentUT_old)
-                        '        Dim UT_new As Double = ((rate / OTHRS) / 60) * (UNDERTIMEE * percentUT_new)
-
-                        '        UNDERTIMEE = UT_training + UT_old + UT_new
-                        '    End If
-                        'End If
-                        ''===================================================================================
+                        LATEE = ((rate / OTHRS) / 60) * Late
+                        UNDERTIMEE = ((rate / OTHRS) / 60) * UnderTime
+                        OVERTIMEE = ((rate / OTHRS) * 1.25) * RegularOT
+                        NIGHTRATEE = ((rate / OTHRS) * 0.1) * nightRate
 
                         TotalOT = OVERTIMEE
 
@@ -1418,20 +1921,6 @@ Module SaveUpdate
 
                         GrossAmount = (TotalBasic + TotalREGHol + TotalSPECHol + TotalOT + TotalNight) - TotalLateUnder
 
-                        ''IMANUAL NALANG ANG BUNGKIG NGA DAYS SA RATE CHANGE
-
-                        ''======================================= LATE ADJUSTMENT IF NOT EXEMPTED ====================================== 
-                        'If Not ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
-                        '    Dim LateAdjust As Boolean = IIf(GetData("VALUESS", $"MAINTENANCE WHERE KEYSS = 'LateAdjustment'") = "ON", True, False)
-                        '    If LateAdjust = True And Late_Adjustment > 1 And Not ThisHasRow($"LATE_EXEMPTED WHERE BIONO = {bioNo}") Then
-
-                        '        Dim late_rate As Decimal = (rate / OTHRS) / 60
-                        '        Dim total_adjustment As Decimal = ((Late - Late_Approved) * (Late_Adjustment - 1)) * late_rate
-                        '        Deduction += total_adjustment
-                        '        Save_Recorded_Allow_Deduc(bioNo, paydate_, "Late Adjustment", total_adjustment, "DEDUCTION")
-
-                        '    End If
-                        'End If
                     End If
 
                     '============================================= Calculate =========================================================  

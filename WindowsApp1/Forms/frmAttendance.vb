@@ -1171,15 +1171,6 @@ Public Class frmAttendance
                         SIL7_NUP.Text = IIf(IsDBNull(.Item("SIL")) Or .Item("SIL") = 0, "", .Item("SIL"))
                         SpecHol7_TXT.Text = IIf(IsDBNull(.Item("SPECHOLIDAY_HRS")) Or .Item("SPECHOLIDAY_HRS") = 0, "", .Item("SPECHOLIDAY_HRS"))
 
-                        'IF TRAINEE
-                        T_Days7_TXT.Text = IIf(IsDBNull(.Item("TRAINING_DAYS")) Or .Item("TRAINING_DAYS") = 0, "", .Item("TRAINING_DAYS"))
-                        T_RegHol7_TXT.Text = IIf(IsDBNull(.Item("TRAINING_REGHOLIDAY")) Or .Item("TRAINING_REGHOLIDAY") = 0, "", .Item("TRAINING_REGHOLIDAY"))
-                        T_SpecHol7_TXT.Text = IIf(IsDBNull(.Item("TRAINING_SPECHOLIDAY")) Or .Item("TRAINING_SPECHOLIDAY") = 0, "", .Item("TRAINING_SPECHOLIDAY"))
-                        T_OT7_TXT.Text = IIf(IsDBNull(.Item("TRAINING_OVERTIME")) Or .Item("TRAINING_OVERTIME").Equals("0"), "", .Item("TRAINING_OVERTIME"))
-                        T_Late7_TXT.Text = IIf(IsDBNull(.Item("TRAINING_LATE")) Or .Item("TRAINING_LATE").Equals("0"), "", .Item("TRAINING_LATE"))
-                        T_UT7_TXT.Text = IIf(IsDBNull(.Item("TRAINING_UNDERTIME")) Or .Item("TRAINING_UNDERTIME").Equals("0"), "", .Item("TRAINING_UNDERTIME"))
-                        T_Night7_TXT.Text = IIf(IsDBNull(.Item("TRAINING_NIGHTRATE")) Or .Item("TRAINING_NIGHTRATE").Equals("0"), "", .Item("TRAINING_NIGHTRATE"))
-
                         txtRestDayDuty.Text = IIf(IsDBNull(.Item("DUTY_RESTDAY")) Or .Item("DUTY_RESTDAY").Equals("0"), "", .Item("DUTY_RESTDAY"))
                         txtSpecRestDay.Text = IIf(IsDBNull(.Item("DUTY_SPEC_RESTDAY")) Or .Item("DUTY_SPEC_RESTDAY").Equals("0"), "", .Item("DUTY_SPEC_RESTDAY"))
                         txtRegRestDay.Text = IIf(IsDBNull(.Item("DUTY_REG_RESTDAY")) Or .Item("DUTY_REG_RESTDAY").Equals("0"), "", .Item("DUTY_REG_RESTDAY"))
@@ -1211,13 +1202,6 @@ Public Class frmAttendance
                 Night7_TXT.Clear()
                 SIL7_NUP.TextAlign = 0
                 Save7_BTN.Tag = "ADDED"
-                T_Days7_TXT.Clear()
-                T_RegHol7_TXT.Clear()
-                T_SpecHol7_TXT.Clear()
-                T_OT7_TXT.TextAlign = 0
-                T_Late7_TXT.Clear()
-                T_UT7_TXT.Clear()
-                T_Night7_TXT.Clear()
 
                 txtRestDayDuty.Clear()
                 txtSpecRestDay.Clear()
@@ -1276,14 +1260,6 @@ Public Class frmAttendance
                 Dim sil As Double = IIf(String.IsNullOrWhiteSpace(SIL7_NUP.Text), 0, SIL7_NUP.Text)
                 Dim night7 As Double = IIf(String.IsNullOrWhiteSpace(Night7_TXT.Text), 0, Night7_TXT.Text)
 
-                Dim TRAINING_DAYS As Double = IIf(String.IsNullOrWhiteSpace(T_Days7_TXT.Text), 0, T_Days7_TXT.Text)
-                Dim TRAINING_REGHOLIDAY As Double = IIf(String.IsNullOrWhiteSpace(T_RegHol7_TXT.Text), 0, T_RegHol7_TXT.Text)
-                Dim TRAINING_SPECHOLIDAY As Double = IIf(String.IsNullOrWhiteSpace(T_SpecHol7_TXT.Text), 0, T_SpecHol7_TXT.Text)
-                Dim TRAINING_OVERTIME As Double = IIf(String.IsNullOrWhiteSpace(T_OT7_TXT.Text), 0, T_OT7_TXT.Text)
-                Dim TRAINING_LATE As Double = IIf(String.IsNullOrWhiteSpace(T_Late7_TXT.Text), 0, T_Late7_TXT.Text)
-                Dim TRAINING_UNDERTIME As Double = IIf(String.IsNullOrWhiteSpace(T_UT7_TXT.Text), 0, T_UT7_TXT.Text)
-                Dim TRAINING_NIGHTRATE As Double = IIf(String.IsNullOrWhiteSpace(T_Night7_TXT.Text), 0, T_Night7_TXT.Text)
-
                 Dim DUTY_RESTDAY As Double = IIf(String.IsNullOrWhiteSpace(txtRestDayDuty.Text), 0, txtRestDayDuty.Text)
                 Dim DUTY_SPEC_RESTDAY As Double = IIf(String.IsNullOrWhiteSpace(txtSpecRestDay.Text), 0, txtSpecRestDay.Text)
                 Dim DUTY_REG_RESTDAY As Double = IIf(String.IsNullOrWhiteSpace(txtRegRestDay.Text), 0, txtRegRestDay.Text)
@@ -1331,8 +1307,7 @@ Public Class frmAttendance
                 End If
 
                 SaveAttendanceEE(Bio7_TXT.Text, PAYROLL, Days7_TXT.Text, overtime, latee, undertimee,
-                                     RHOLIDAY, SHOLIDAY, specHoliday_hrs, sil, 0, "", "", night7, True, TRAINING_DAYS, TRAINING_REGHOLIDAY,
-                                     TRAINING_SPECHOLIDAY, TRAINING_OVERTIME, TRAINING_LATE, TRAINING_UNDERTIME, TRAINING_NIGHTRATE,
+                                     RHOLIDAY, SHOLIDAY, specHoliday_hrs, sil, 0, "", "", night7, True,
                                      DUTY_RESTDAY, DUTY_SPEC_RESTDAY, DUTY_REG_RESTDAY, DUTY_RESTDAY_OT, DUTY_SPEC_OT, DUTY_SPEC_RESTDAY_OT, DUTY_REG_OT, DUTY_REG_RESTDAY_OT,
                                      DUTY_SPEC_NIGHTSHIFT, DUTY_REG_NIGHTSHIFT, DUTY_ORD_NIGHTSHIFT_OT, DUTY_SPEC_NIGHTSHIFT_OT, DUTY_REG_NIGHTSHIFT_OT)
 
@@ -1371,13 +1346,6 @@ Public Class frmAttendance
         Night7_TXT.Clear()
         RegHol7_TXT.Clear()
         SpecHol7_TXT.Clear()
-        T_Days7_TXT.Clear()
-        T_Late7_TXT.Clear()
-        T_OT7_TXT.Value = Nothing
-        T_UT7_TXT.Clear()
-        T_RegHol7_TXT.Clear()
-        T_SpecHol7_TXT.Clear()
-        T_Night7_TXT.Clear()
 
         txtRestDayDuty.Clear()
         txtSpecRestDay.Clear()
@@ -1563,23 +1531,12 @@ Public Class frmAttendance
 
                     '===================================== MINIMUM CHANGED STARTING SEPTEMBER 1, 2022 =================================
                     If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
-                        ''TODO - IBUTANG APIL SA EXCEL IF NEED JUD ANG NUMBER OF DAYS NGA DILI COVERED SA NEW RATE (FOR THE MEANTIME ZERO MUNA ANG OLD DAYS KAY GIMANUAL UG ADD LAST PAYROLL)
-                        'Dim old_days As Double
-                        'old_days = (temp_present * 8) - temp_half
-                        'old_days = old_days / 8
-                        'Dim new_days As Double = CDbl(Days7_TXT.Text) - old_days
-                        'Dim new_overtime As Double = CDbl(Overtime7_NUP.Text) - temp_overtime
-                        'Dim new_late As Double = CDbl(Late7_TXT.Text) - temp_late
-                        'Dim new_undertime As Double = CDbl(Undertime7_TXT.Text) - temp_undertime
-                        'SaveTemporary(Bio7_TXT.Text, old_days, new_days, temp_overtime, new_overtime, temp_late, new_late, temp_undertime, new_undertime, temp_Rholiday, temp_Sholiday, PAYROLL)
-
                         SaveTemporary(bioNo, 0, totalDays, 0, overtime, 0, late, 0, undertime, 0, 0, payroll)
                     End If
 
 
                     SaveAttendanceEE(bioNo, payroll, totalDays, overtime, late, undertime,
                                  regHoliday, TotalSHoliday_LBL.Text, specHoliday_hrs, sil, Nothing, Nothing, Nothing, nightRate, True,
-                                 TRAINING_DAYS, TRAINING_REGHOLIDAY, TRAINING_SPECHOLIDAY, TRAINING_OVERTIME, TRAINING_LATE, TRAINING_UNDERTIME, TRAINING_NIGHTRATE,
                                  DUTY_RESTDAY, DUTY_SPEC_RESTDAY, DUTY_REG_RESTDAY,
                                  DUTY_RESTDAY_OT, DUTY_SPEC_OT, DUTY_SPEC_RESTDAY_OT, DUTY_REG_OT, DUTY_REG_RESTDAY_OT,
                                  DUTY_SPEC_NIGHTSHIFT, DUTY_REG_NIGHTSHIFT,
