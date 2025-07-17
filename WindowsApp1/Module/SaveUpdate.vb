@@ -493,7 +493,7 @@ Module SaveUpdate
         Dim mysql As String
 
         mysql = $"Select * FROM PAYROLL_CITY_BRANCH where CITY = '{value}'"
-                        Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_CITY_BRANCH")
+        Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_CITY_BRANCH")
         If dss.Tables(0).Rows.Count > 0 Then
             For Each dr In dss.Tables(0).Rows
                 With dr
@@ -621,25 +621,6 @@ Module SaveUpdate
                 ds.Tables(0).Rows.Add(dsNewRow)
                 SaveEntry(ds)
             End Using
-        End If
-    End Sub
-
-    Friend Sub SaveTraining_days(BIO_NO As String, PAYDATE As String, TRAINING_DAYS As String, TRAINING_REGHOLIDAY As String, TRAINING_SPECHOLIDAY As String,
-                                   TRAINING_OVERTIME As Double, TRAINING_LATE As Double, TRAINING_UNDERTIME As Double)
-
-        Dim mysql As String = $"Select * FROM PAYROLL_ATTENDANCE where BIOMETRICID = '{BIO_NO}' and PAYDATE = '{PAYDATE}'"
-        Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
-        If dss.Tables(0).Rows.Count > 0 Then
-            Dim dr As DataRow = dss.Tables(0).Rows(0)
-            With dr
-                .Item("TRAINING_DAYS") = TRAINING_DAYS
-                .Item("TRAINING_REGHOLIDAY") = TRAINING_REGHOLIDAY
-                .Item("TRAINING_SPECHOLIDAY") = TRAINING_SPECHOLIDAY
-                .Item("TRAINING_OVERTIME") = TRAINING_OVERTIME
-                .Item("TRAINING_LATE") = TRAINING_LATE
-                .Item("TRAINING_UNDERTIME") = TRAINING_UNDERTIME
-            End With
-            SaveEntry(dss, False)
         End If
     End Sub
 
@@ -1584,14 +1565,6 @@ Module SaveUpdate
                     End Try
 #End Region
 
-                    'Dim Training_REGHoliday = 0, Training_SPECHoliday As Integer = 0
-                    'Dim Training_totalLate As Integer = 0, Training_totalUT As Integer = 0, Training_nightRate As Integer = 0
-                    'Dim training_overtime As Double = 0
-                    'Dim training_late As TimeSpan = New TimeSpan(0, 0, 0, 0, 0)
-                    'Dim training_undertime As TimeSpan = New TimeSpan(0, 0, 0, 0, 0)
-                    '============================= MINIMUM RATE CHANGE (DAYS COVERED) ==============================
-                    'Dim Rholiday_newMin_covred_training As Integer = 0
-                    'Dim Sholiday_newMin_covred_training As Integer = 0
                     Dim branch_manual As Boolean = False
                     '============================= BRANCH EXCESS DUTY ==============================
                     Dim DUTY_RESTDAY As Double = 0 : Dim DUTY_SPEC_RESTDAY As Double = 0 : Dim DUTY_REG_RESTDAY As Double = 0

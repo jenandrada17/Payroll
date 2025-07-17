@@ -829,6 +829,8 @@ Partial Public Class reports
         
         Private columnLOAN_PAGIBIG As Global.System.Data.DataColumn
         
+        Private columnWH_TAX As Global.System.Data.DataColumn
+        
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
         Public Sub New()
@@ -1089,6 +1091,14 @@ Partial Public Class reports
         End Property
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public ReadOnly Property WH_TAXColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnWH_TAX
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0"),  _
          Global.System.ComponentModel.Browsable(false)>  _
         Public ReadOnly Property Count() As Integer
@@ -1153,9 +1163,10 @@ Partial Public Class reports
                     ByVal CHARGES_ECS As String,  _
                     ByVal CHARGES_OTHERS As String,  _
                     ByVal LOAN_SSS As String,  _
-                    ByVal LOAN_PAGIBIG As String) As NetPayRow
+                    ByVal LOAN_PAGIBIG As String,  _
+                    ByVal WH_TAX As String) As NetPayRow
             Dim rowNetPayRow As NetPayRow = CType(Me.NewRow,NetPayRow)
-            Dim columnValuesArray() As Object = New Object() {EMP_NO, FULLNAME, BASIC, OVERTIME, HOLIDAY, N_DIFF, PI_ECOLA_SIL, TARDINESS, SSS, PHIC, PAGIBIG, CHARGES_SBU, NET_PAY, BRANCH_CODE, PAYDATE, PERIOD, RANGE, COMPANY, HO_CATEGORY, PLUS, MONTH_13, ACCOUNT_NO, CHARGES_MP2, CHARGES_CA, CHARGES_ECS, CHARGES_OTHERS, LOAN_SSS, LOAN_PAGIBIG}
+            Dim columnValuesArray() As Object = New Object() {EMP_NO, FULLNAME, BASIC, OVERTIME, HOLIDAY, N_DIFF, PI_ECOLA_SIL, TARDINESS, SSS, PHIC, PAGIBIG, CHARGES_SBU, NET_PAY, BRANCH_CODE, PAYDATE, PERIOD, RANGE, COMPANY, HO_CATEGORY, PLUS, MONTH_13, ACCOUNT_NO, CHARGES_MP2, CHARGES_CA, CHARGES_ECS, CHARGES_OTHERS, LOAN_SSS, LOAN_PAGIBIG, WH_TAX}
             rowNetPayRow.ItemArray = columnValuesArray
             Me.Rows.Add(rowNetPayRow)
             Return rowNetPayRow
@@ -1206,6 +1217,7 @@ Partial Public Class reports
             Me.columnCHARGES_OTHERS = MyBase.Columns("CHARGES_OTHERS")
             Me.columnLOAN_SSS = MyBase.Columns("LOAN_SSS")
             Me.columnLOAN_PAGIBIG = MyBase.Columns("LOAN_PAGIBIG")
+            Me.columnWH_TAX = MyBase.Columns("WH_TAX")
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -1267,6 +1279,8 @@ Partial Public Class reports
             MyBase.Columns.Add(Me.columnLOAN_SSS)
             Me.columnLOAN_PAGIBIG = New Global.System.Data.DataColumn("LOAN_PAGIBIG", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnLOAN_PAGIBIG)
+            Me.columnWH_TAX = New Global.System.Data.DataColumn("WH_TAX", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnWH_TAX)
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -7162,6 +7176,21 @@ Partial Public Class reports
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Property WH_TAX() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableNetPay.WH_TAXColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'WH_TAX' in table 'NetPay' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableNetPay.WH_TAXColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
         Public Function IsEMP_NONull() As Boolean
             Return Me.IsNull(Me.tableNetPay.EMP_NOColumn)
         End Function
@@ -7494,6 +7523,18 @@ Partial Public Class reports
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
         Public Sub SetLOAN_PAGIBIGNull()
             Me(Me.tableNetPay.LOAN_PAGIBIGColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Function IsWH_TAXNull() As Boolean
+            Return Me.IsNull(Me.tableNetPay.WH_TAXColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Sub SetWH_TAXNull()
+            Me(Me.tableNetPay.WH_TAXColumn) = Global.System.Convert.DBNull
         End Sub
     End Class
     

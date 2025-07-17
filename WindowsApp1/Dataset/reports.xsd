@@ -43,6 +43,7 @@
               <xs:element name="CHARGES_OTHERS" msprop:Generator_ColumnPropNameInTable="CHARGES_OTHERSColumn" msprop:Generator_ColumnPropNameInRow="CHARGES_OTHERS" msprop:Generator_UserColumnName="CHARGES_OTHERS" msprop:Generator_ColumnVarNameInTable="columnCHARGES_OTHERS" type="xs:string" minOccurs="0" />
               <xs:element name="LOAN_SSS" msprop:Generator_ColumnPropNameInTable="LOAN_SSSColumn" msprop:Generator_ColumnPropNameInRow="LOAN_SSS" msprop:Generator_UserColumnName="LOAN_SSS" msprop:Generator_ColumnVarNameInTable="columnLOAN_SSS" type="xs:string" minOccurs="0" />
               <xs:element name="LOAN_PAGIBIG" msprop:Generator_ColumnPropNameInTable="LOAN_PAGIBIGColumn" msprop:Generator_ColumnPropNameInRow="LOAN_PAGIBIG" msprop:Generator_UserColumnName="LOAN_PAGIBIG" msprop:Generator_ColumnVarNameInTable="columnLOAN_PAGIBIG" type="xs:string" minOccurs="0" />
+              <xs:element name="WH_TAX" msprop:Generator_ColumnPropNameInRow="WH_TAX" msprop:Generator_ColumnPropNameInTable="WH_TAXColumn" msprop:Generator_ColumnVarNameInTable="columnWH_TAX" msprop:Generator_UserColumnName="WH_TAX" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>
@@ -271,8 +272,8 @@
               <xs:element name="TO_BRANCH" msprop:Generator_ColumnPropNameInTable="TO_BRANCHColumn" msprop:Generator_ColumnPropNameInRow="TO_BRANCH" msprop:Generator_UserColumnName="TO_BRANCH" msprop:Generator_ColumnVarNameInTable="columnTO_BRANCH" type="xs:string" minOccurs="0" />
               <xs:element name="REMARKS" msprop:Generator_ColumnPropNameInTable="REMARKSColumn" msprop:Generator_ColumnPropNameInRow="REMARKS" msprop:Generator_UserColumnName="REMARKS" msprop:Generator_ColumnVarNameInTable="columnREMARKS" type="xs:string" minOccurs="0" />
               <xs:element name="DATE_CREATED" msprop:Generator_ColumnPropNameInTable="DATE_CREATEDColumn" msprop:Generator_ColumnPropNameInRow="DATE_CREATED" msprop:Generator_UserColumnName="DATE_CREATED" msprop:Generator_ColumnVarNameInTable="columnDATE_CREATED" type="xs:string" minOccurs="0" />
-              <xs:element name="ACTION_NAME" msprop:Generator_UserColumnName="ACTION_NAME" msprop:Generator_ColumnPropNameInTable="ACTION_NAMEColumn" msprop:Generator_ColumnPropNameInRow="ACTION_NAME" msprop:Generator_ColumnVarNameInTable="columnACTION_NAME" type="xs:string" minOccurs="0" />
-              <xs:element name="ACTION_STATUS" msprop:Generator_ColumnPropNameInRow="ACTION_STATUS" msprop:Generator_ColumnPropNameInTable="ACTION_STATUSColumn" msprop:Generator_ColumnVarNameInTable="columnACTION_STATUS" msprop:Generator_UserColumnName="ACTION_STATUS" type="xs:string" minOccurs="0" />
+              <xs:element name="ACTION_NAME" msprop:Generator_ColumnPropNameInTable="ACTION_NAMEColumn" msprop:Generator_ColumnPropNameInRow="ACTION_NAME" msprop:Generator_UserColumnName="ACTION_NAME" msprop:Generator_ColumnVarNameInTable="columnACTION_NAME" type="xs:string" minOccurs="0" />
+              <xs:element name="ACTION_STATUS" msprop:Generator_UserColumnName="ACTION_STATUS" msprop:Generator_ColumnPropNameInTable="ACTION_STATUSColumn" msprop:Generator_ColumnPropNameInRow="ACTION_STATUS" msprop:Generator_ColumnVarNameInTable="columnACTION_STATUS" type="xs:string" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>

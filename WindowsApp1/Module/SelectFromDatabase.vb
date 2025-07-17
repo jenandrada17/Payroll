@@ -3210,6 +3210,20 @@ Module SelectFromDatabase
         Return dataa
     End Function
 
+    Friend Function GetDeductionAmount_WHTAX(paydate As String, Optional bioNo As Integer = 0) As Decimal
+        Dim dataa As Decimal = 0
+        Dim perBioNo As String = IIf(bioNo = 0, "", $"AND BIO_NO={bioNo}")
+        Dim mysql As String = $"SELECT SUM(AMOUNT) FROM RECORDED_ALLOW_DEDUC WHERE TRANSAC_NAME='DEDUCTION' AND CATEGORY = 'Withholding Tax' AND PAYDATE='{paydate}' {perBioNo}"
+        Using ds As DataSet = LoadSQL(mysql)
+            If ds.Tables(0).Rows.Count > 0 Then
+                With ds.Tables(0).Rows(0)
+                    dataa = IIf(IsDBNull(.Item(0)), 0.00, .Item(0))
+                End With
+            End If
+        End Using
+        Return dataa
+    End Function
+
     Friend Function GetDeductionAmount_ECS(paydate As String, Optional bioNo As Integer = 0) As Decimal
         Dim dataa As Decimal = 0
         Dim perBioNo As String = IIf(bioNo = 0, "", $"AND BIO_NO={bioNo}")

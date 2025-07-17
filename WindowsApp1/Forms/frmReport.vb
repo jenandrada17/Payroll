@@ -39,7 +39,6 @@ Public Class frmReport
         Lists_Deduction_History(DeducHistory_List)
         Lists_SBU(SBU_LV)
         PopulateDateRange13Month()
-        Me.ReportViewer1.RefreshReport
     End Sub
 
     Private Sub SearchSBU_BTN_Click(sender As Object, e As EventArgs) Handles SearchSBU_BTN.Click
@@ -2667,6 +2666,7 @@ A
                 .Columns.Add("CHARGES_OTHERS")
                 .Columns.Add("LOAN_SSS")
                 .Columns.Add("LOAN_PAGIBIG")
+                .Columns.Add("WH_TAX")
             End With
 
             Dim mysqll As String = $"Select A.*, B.*, C.*, B.BRANCHCODE as BRANCH_CODE,
@@ -2764,6 +2764,8 @@ A
                             Dim CHARGES_CA As Decimal = GetDeductionAmount_CA(paydatee, BIO_NO)
                             linee = "CHARGES_ECS"
                             Dim CHARGES_ECS As Decimal = GetDeductionAmount_ECS(paydatee, BIO_NO)
+                            linee = "CHARGES_WHTAX"
+                            Dim CHARGES_WHTAX As Decimal = GetDeductionAmount_WHTAX(paydatee, BIO_NO)
                             linee = "LOAN_SSS"
                             Dim LOAN_SSS As Decimal = GetDeductionAmount_SSSLOAN(paydatee, BIO_NO)
                             linee = "LOAN_PAGIBIG"
@@ -2830,7 +2832,7 @@ A
                                                PI_ECOLA_SIL.ToString("n"), TARDINESS.ToString("n"), SSS.ToString("n"), PHIC.ToString("n"), PAGIBIG.ToString("n"),
                                                CHARGES_SBU.ToString("n"), NET_PAY.ToString("n"), BRANCHNAME, payroll.ToString("MMMM dd, yyyy"), period, COMPANY,
                                                HO_CATEGORY, tempPlus, MONTH_13.ToString("n"), ACCOUNTNO, CHARGES_MP2, CHARGES_CA, CHARGES_ECS, CHARGES_OTHERS,
-                                               LOAN_SSS, LOAN_PAGIBIG)
+                                               LOAN_SSS, LOAN_PAGIBIG, CHARGES_WHTAX)
 
                             frmMainForm.AppProgressBar.Value += 1
                         End With

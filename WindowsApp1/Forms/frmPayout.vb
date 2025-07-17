@@ -552,6 +552,7 @@ Public Class frmPayout
         TransacAdd_lbl.Text = "Deduction"
         Additional_Panel.BackColor = Color.Chocolate
         cbCategoryAdd.Items.Clear()
+        PopulateComboBox(cbCategoryAdd, "CATEGORIES WHERE NAME = 'PAYOUT DEDUCTION'", "CATEGORY")
     End Sub
 
     Private Sub RateFixYes_RB_CheckedChanged(sender As Object, e As EventArgs) Handles RateFixYes_RB.CheckedChanged

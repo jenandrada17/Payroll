@@ -59,7 +59,6 @@ Partial Class frmMainForm
         Me.Dashboard_lbl = New System.Windows.Forms.Label()
         Me.AppProgressBar = New System.Windows.Forms.ProgressBar()
         Me.ProgressBar1 = New System.Windows.Forms.ProgressBar()
-        Me.Question_lbl = New System.Windows.Forms.Label()
         Me.Minimize_LBL = New System.Windows.Forms.Label()
         Me.Exit_LBL = New System.Windows.Forms.Label()
         Me.PictureBox5 = New System.Windows.Forms.PictureBox()
@@ -475,7 +474,6 @@ Partial Class frmMainForm
         Me.Panel1.Controls.Add(Me.Dashboard_lbl)
         Me.Panel1.Controls.Add(Me.AppProgressBar)
         Me.Panel1.Controls.Add(Me.ProgressBar1)
-        Me.Panel1.Controls.Add(Me.Question_lbl)
         Me.Panel1.Controls.Add(Me.Minimize_LBL)
         Me.Panel1.Controls.Add(Me.Exit_LBL)
         Me.Panel1.Controls.Add(Me.PictureBox5)
@@ -522,17 +520,6 @@ Partial Class frmMainForm
         Me.ProgressBar1.Name = "ProgressBar1"
         Me.ProgressBar1.Size = New System.Drawing.Size(1186, 3)
         Me.ProgressBar1.TabIndex = 22
-        '
-        'Question_lbl
-        '
-        Me.Question_lbl.AutoSize = True
-        Me.Question_lbl.Font = New System.Drawing.Font("Microsoft Sans Serif", 24.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Question_lbl.ForeColor = System.Drawing.Color.Black
-        Me.Question_lbl.Location = New System.Drawing.Point(1097, -6)
-        Me.Question_lbl.Name = "Question_lbl"
-        Me.Question_lbl.Size = New System.Drawing.Size(35, 37)
-        Me.Question_lbl.TabIndex = 6
-        Me.Question_lbl.Text = "?"
         '
         'Minimize_LBL
         '
@@ -634,7 +621,6 @@ Partial Class frmMainForm
     Friend WithEvents Panel1 As Panel
     Friend WithEvents AppDateTime As Label
     Friend WithEvents AppProgressBar As ProgressBar
-    Friend WithEvents Question_lbl As Label
     Friend WithEvents Minimize_LBL As Label
     Friend WithEvents Exit_LBL As Label
     Friend WithEvents ProgressBar1 As ProgressBar
