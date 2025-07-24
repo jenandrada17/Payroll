@@ -444,7 +444,7 @@ Module SaveUpdate
             Next
         End If
     End Sub
-    'SaveRATE("BIO_NO", Rate_BioNo_TXT.Text, Rate_EmpAmount_TXT.Text, fix_monthly)
+
     Friend Sub SaveRATE(column As String, value As String, daily_rate As String, Optional fix_monthly As Boolean = False, Optional group As Boolean = False) '=========== BOOLEAN IF MORE THAN 1 ========== 
 
         Dim mysql As String = $"Select * FROM  TBL_EMPLOYEE WHERE {column} = '{value}'"
@@ -1973,8 +1973,6 @@ Module SaveUpdate
         End Using
     End Sub
 
-
-
     Public Sub SaveSSS_Contribution(RANGECOMP As String, RSS_EC As String, MPF As String, TOTAL As String, RSS_ER As String, RSS_EE As String, RSS_TOTAL As String,
                                     EC_ER As String, EC_EE As String, EC_TOTAL As String, MPF_ER As String, MPF_EE As String, MPF_TOTAL As String, TOTAL_ER As String,
                                     TOTAL_EE As String, TOTAL_TOTAL As String)
@@ -1984,8 +1982,6 @@ Module SaveUpdate
 
             Dim dsNewRow As DataRow = ds.Tables(0).NewRow
             With dsNewRow
-
-                'SaveSSS_Contribution(RANGECOMP, RSS_EC, MPF, TOTAL, RSS_ER, RSS_EE, RSS_TOTAL, EC_ER, EC_EE, EC_TOTAL, MPF_ER, MPF_EE, MPF_TOTAL, TOTAL_ER, TOTAL_EE, TOTAL_TOTAL)
 
                 .Item("rangeComp") = RANGECOMP
                 .Item("rss_ec") = RSS_EC
@@ -2306,9 +2302,6 @@ Module SaveUpdate
         Dim ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE ")
         If ds.Tables(0).Rows.Count > 0 Then
             With ds.Tables(0).Rows(0)
-                'Dim namee As String() = FULLNAME.Split({","c, " "c}, StringSplitOptions.RemoveEmptyEntries)
-                'Dim firstname As String = namee(1)
-                'Dim lastname As String = namee(0)
 
                 .Item("COMPANY") = COMPANY
                 .Item("BRANCHCODE") = BRANCH_CODE
@@ -2378,9 +2371,6 @@ Module SaveUpdate
 
                 Dim dsNewRow As DataRow = dss.Tables(0).NewRow
                 With dsNewRow
-                    'Dim namee As String() = FULLNAME.Split({","c, " "c}, StringSplitOptions.RemoveEmptyEntries)
-                    'Dim firstname As String = namee(1).ToString
-                    'Dim lastname As String = namee(0).ToString
 
                     .Item("BIOMETRICID") = BIO_NO
                     .Item("COMPANY") = COMPANY
@@ -2391,7 +2381,6 @@ Module SaveUpdate
                     .Item("EMP_STATUS") = EMP_STATUS
                     .Item("RATE_DAILY") = IIf(.Item("BRANCHCODE") = Nothing, GetMinimumRate("CITY", "GENSAN"), GetMinimumRate("BRANCHCODE", .Item("BRANCHCODE")))
 
-
                     Dim val As Double
                     If Double.TryParse(TIME_IN, val) Then
                         If TIME_IN <> "" Then .Item("TIME_IN") = DateTime.FromOADate(TIME_IN)
@@ -2400,7 +2389,6 @@ Module SaveUpdate
                         If TIME_IN <> "" Then .Item("TIME_IN") = TIME_IN
                         If TIME_OUT <> "" Then .Item("TIME_OUT") = TIME_OUT
                     End If
-
 
                     If DATE_STARTED <> "" Then .Item("DATEHIRED") = DATE_STARTED
                     If EMP_NO <> "" Then .Item("EMP_NO") = EMP_NO
@@ -2503,34 +2491,6 @@ Module SaveUpdate
 
     End Sub
 
-    'Public Sub Update_Emp_DateHired_Position(FULLNAME As String, DATE_STARTED As String, EMP_POSITION As String, EMP_NO As String, empNo As String)
-
-    '    Dim mysql As String = $"Select A.*, 
-    '                            LASTNAME || ', ' || FIRSTNAME || ' ' || 
-    '                                 CASE 
-    '                                     WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
-    '                                     ELSE ''
-    '                                 END AS FULLNAME
-    '                            FROM TBL_EMPLOYEE where FULLNAME = '{FULLNAME}'"
-    '    Dim ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE ")
-    '    If ds.Tables(0).Rows.Count > 0 Then
-
-    '        With ds.Tables(0).Rows(0)
-
-    '            If DATE_STARTED <> Nothing Then
-    '                .Item("DATEHIRED") = DATE_STARTED
-    '            End If
-
-    '            .Item("EMP_POSITION") = EMP_POSITION.ToUpper
-    '            .Item("EMP_NO") = EMP_NO
-
-    '        End With
-
-    '        SaveEntry(ds, False)
-    '    End If
-
-    'End Sub
-
     Public Sub SAVE_13MONTH_EMPNO(EMP_NO As String, RowNo As Integer)
         Dim mysql As String = "Select * From PAYROLL_13MONTH Rows 1"
         Using dssS As DataSet = LoadSQL(mysql, "PAYROLL_13MONTH")
@@ -2565,38 +2525,6 @@ Module SaveUpdate
         End Using
 
     End Sub
-
-    'Public Sub Update_Emp_Benefits_DetailS_BY_NAME(FULLNAME As String, TINNO As String, SSSNO As String, PHILHEALTHNO As String, PAGIBIGNO As String, DATE_STARTED As String, EMP_POSITION As String, empNo As String)
-
-    '    Console.WriteLine("empNo " & empNo)
-
-    '    Dim mysql As String = $"Select A.*, 
-    '                            LASTNAME || ', ' || FIRSTNAME || ' ' || 
-    '                                 CASE 
-    '                                     WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN LEFT(MIDDLENAME, 1) || '.'
-    '                                     ELSE ''
-    '                                 END AS FULLNAME
-    '                            FROM TBL_EMPLOYEE A where FULLNAME = '{FULLNAME}'"
-    '    Dim ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE ")
-    '    If ds.Tables(0).Rows.Count > 0 Then
-
-    '        With ds.Tables(0).Rows(0)
-
-    '            If DATE_STARTED <> Nothing Then
-    '                .Item("DATEHIRED") = DATE_STARTED
-    '            End If
-
-    '            .Item("EMP_POSITION") = EMP_POSITION
-    '            .Item("TINNO") = TINNO
-    '            .Item("SSSNO") = SSSNO
-    '            .Item("PHILHEALTHNO") = PHILHEALTHNO
-    '            .Item("PAGIBIG") = PAGIBIGNO
-
-    '        End With
-
-    '        SaveEntry(ds, False)
-    '    End If
-    'End Sub
 
     Friend Sub Save_ClockINOUT(column As String, columnValue As String, TIME_IN As String, TIME_OUT As String)
         Dim mysql As String
@@ -3072,17 +3000,5 @@ Module SaveUpdate
             End If
         End Using
     End Sub
-
-    'Friend Sub UpdateLate_Adjustment(bioNum As String, paydate_ As String, percentage As String)
-    '    Dim mysql As String = $"Select * from PAYROLL_ATTENDANCE where biometricid = '{bioNum}' and PAYDATE = '{paydate_}'"
-    '    Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
-    '        If ds.Tables(0).Rows.Count > 0 Then
-    '            With ds.Tables(0).Rows(0)
-    '                .Item("LATE_ADJUSTMENT") = percentage
-    '            End With
-    '            SaveEntry(ds, False)
-    '        End If
-    '    End Using
-    'End Sub 
 
 End Module

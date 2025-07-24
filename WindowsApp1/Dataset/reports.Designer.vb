@@ -785,8 +785,6 @@ Partial Public Class reports
         
         Private columnN_DIFF As Global.System.Data.DataColumn
         
-        Private columnPI_ECOLA_SIL As Global.System.Data.DataColumn
-        
         Private columnTARDINESS As Global.System.Data.DataColumn
         
         Private columnSSS As Global.System.Data.DataColumn
@@ -830,6 +828,14 @@ Partial Public Class reports
         Private columnLOAN_PAGIBIG As Global.System.Data.DataColumn
         
         Private columnWH_TAX As Global.System.Data.DataColumn
+        
+        Private columnSIL As Global.System.Data.DataColumn
+        
+        Private columnPERF_IN As Global.System.Data.DataColumn
+        
+        Private columnSALES_IN As Global.System.Data.DataColumn
+        
+        Private columnOTHER_ADDITIONAL As Global.System.Data.DataColumn
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
@@ -911,14 +917,6 @@ Partial Public Class reports
         Public ReadOnly Property N_DIFFColumn() As Global.System.Data.DataColumn
             Get
                 Return Me.columnN_DIFF
-            End Get
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
-        Public ReadOnly Property PI_ECOLA_SILColumn() As Global.System.Data.DataColumn
-            Get
-                Return Me.columnPI_ECOLA_SIL
             End Get
         End Property
         
@@ -1099,6 +1097,38 @@ Partial Public Class reports
         End Property
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public ReadOnly Property SILColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnSIL
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public ReadOnly Property PERF_INColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnPERF_IN
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public ReadOnly Property SALES_INColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnSALES_IN
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public ReadOnly Property OTHER_ADDITIONALColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnOTHER_ADDITIONAL
+            End Get
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0"),  _
          Global.System.ComponentModel.Browsable(false)>  _
         Public ReadOnly Property Count() As Integer
@@ -1142,7 +1172,6 @@ Partial Public Class reports
                     ByVal OVERTIME As String,  _
                     ByVal HOLIDAY As String,  _
                     ByVal N_DIFF As String,  _
-                    ByVal PI_ECOLA_SIL As String,  _
                     ByVal TARDINESS As String,  _
                     ByVal SSS As String,  _
                     ByVal PHIC As String,  _
@@ -1164,9 +1193,13 @@ Partial Public Class reports
                     ByVal CHARGES_OTHERS As String,  _
                     ByVal LOAN_SSS As String,  _
                     ByVal LOAN_PAGIBIG As String,  _
-                    ByVal WH_TAX As String) As NetPayRow
+                    ByVal WH_TAX As String,  _
+                    ByVal SIL As String,  _
+                    ByVal PERF_IN As String,  _
+                    ByVal SALES_IN As String,  _
+                    ByVal OTHER_ADDITIONAL As String) As NetPayRow
             Dim rowNetPayRow As NetPayRow = CType(Me.NewRow,NetPayRow)
-            Dim columnValuesArray() As Object = New Object() {EMP_NO, FULLNAME, BASIC, OVERTIME, HOLIDAY, N_DIFF, PI_ECOLA_SIL, TARDINESS, SSS, PHIC, PAGIBIG, CHARGES_SBU, NET_PAY, BRANCH_CODE, PAYDATE, PERIOD, RANGE, COMPANY, HO_CATEGORY, PLUS, MONTH_13, ACCOUNT_NO, CHARGES_MP2, CHARGES_CA, CHARGES_ECS, CHARGES_OTHERS, LOAN_SSS, LOAN_PAGIBIG, WH_TAX}
+            Dim columnValuesArray() As Object = New Object() {EMP_NO, FULLNAME, BASIC, OVERTIME, HOLIDAY, N_DIFF, TARDINESS, SSS, PHIC, PAGIBIG, CHARGES_SBU, NET_PAY, BRANCH_CODE, PAYDATE, PERIOD, RANGE, COMPANY, HO_CATEGORY, PLUS, MONTH_13, ACCOUNT_NO, CHARGES_MP2, CHARGES_CA, CHARGES_ECS, CHARGES_OTHERS, LOAN_SSS, LOAN_PAGIBIG, WH_TAX, SIL, PERF_IN, SALES_IN, OTHER_ADDITIONAL}
             rowNetPayRow.ItemArray = columnValuesArray
             Me.Rows.Add(rowNetPayRow)
             Return rowNetPayRow
@@ -1195,7 +1228,6 @@ Partial Public Class reports
             Me.columnOVERTIME = MyBase.Columns("OVERTIME")
             Me.columnHOLIDAY = MyBase.Columns("HOLIDAY")
             Me.columnN_DIFF = MyBase.Columns("N_DIFF")
-            Me.columnPI_ECOLA_SIL = MyBase.Columns("PI_ECOLA_SIL")
             Me.columnTARDINESS = MyBase.Columns("TARDINESS")
             Me.columnSSS = MyBase.Columns("SSS")
             Me.columnPHIC = MyBase.Columns("PHIC")
@@ -1218,6 +1250,10 @@ Partial Public Class reports
             Me.columnLOAN_SSS = MyBase.Columns("LOAN_SSS")
             Me.columnLOAN_PAGIBIG = MyBase.Columns("LOAN_PAGIBIG")
             Me.columnWH_TAX = MyBase.Columns("WH_TAX")
+            Me.columnSIL = MyBase.Columns("SIL")
+            Me.columnPERF_IN = MyBase.Columns("PERF_IN")
+            Me.columnSALES_IN = MyBase.Columns("SALES_IN")
+            Me.columnOTHER_ADDITIONAL = MyBase.Columns("OTHER_ADDITIONAL")
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -1235,8 +1271,6 @@ Partial Public Class reports
             MyBase.Columns.Add(Me.columnHOLIDAY)
             Me.columnN_DIFF = New Global.System.Data.DataColumn("N_DIFF", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnN_DIFF)
-            Me.columnPI_ECOLA_SIL = New Global.System.Data.DataColumn("PI_ECOLA_SIL", GetType(String), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnPI_ECOLA_SIL)
             Me.columnTARDINESS = New Global.System.Data.DataColumn("TARDINESS", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnTARDINESS)
             Me.columnSSS = New Global.System.Data.DataColumn("SSS", GetType(String), Nothing, Global.System.Data.MappingType.Element)
@@ -1281,6 +1315,14 @@ Partial Public Class reports
             MyBase.Columns.Add(Me.columnLOAN_PAGIBIG)
             Me.columnWH_TAX = New Global.System.Data.DataColumn("WH_TAX", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnWH_TAX)
+            Me.columnSIL = New Global.System.Data.DataColumn("SIL", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnSIL)
+            Me.columnPERF_IN = New Global.System.Data.DataColumn("PERF_IN", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnPERF_IN)
+            Me.columnSALES_IN = New Global.System.Data.DataColumn("SALES_IN", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnSALES_IN)
+            Me.columnOTHER_ADDITIONAL = New Global.System.Data.DataColumn("OTHER_ADDITIONAL", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnOTHER_ADDITIONAL)
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -6846,21 +6888,6 @@ Partial Public Class reports
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
-        Public Property PI_ECOLA_SIL() As String
-            Get
-                Try 
-                    Return CType(Me(Me.tableNetPay.PI_ECOLA_SILColumn),String)
-                Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'PI_ECOLA_SIL' in table 'NetPay' is DBNull.", e)
-                End Try
-            End Get
-            Set
-                Me(Me.tableNetPay.PI_ECOLA_SILColumn) = value
-            End Set
-        End Property
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
         Public Property TARDINESS() As String
             Get
                 Try 
@@ -7191,6 +7218,66 @@ Partial Public Class reports
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Property SIL() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableNetPay.SILColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'SIL' in table 'NetPay' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableNetPay.SILColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Property PERF_IN() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableNetPay.PERF_INColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'PERF_IN' in table 'NetPay' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableNetPay.PERF_INColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Property SALES_IN() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableNetPay.SALES_INColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'SALES_IN' in table 'NetPay' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableNetPay.SALES_INColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Property OTHER_ADDITIONAL() As String
+            Get
+                Try 
+                    Return CType(Me(Me.tableNetPay.OTHER_ADDITIONALColumn),String)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'OTHER_ADDITIONAL' in table 'NetPay' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableNetPay.OTHER_ADDITIONALColumn) = value
+            End Set
+        End Property
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
         Public Function IsEMP_NONull() As Boolean
             Return Me.IsNull(Me.tableNetPay.EMP_NOColumn)
         End Function
@@ -7259,18 +7346,6 @@ Partial Public Class reports
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
         Public Sub SetN_DIFFNull()
             Me(Me.tableNetPay.N_DIFFColumn) = Global.System.Convert.DBNull
-        End Sub
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
-        Public Function IsPI_ECOLA_SILNull() As Boolean
-            Return Me.IsNull(Me.tableNetPay.PI_ECOLA_SILColumn)
-        End Function
-        
-        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
-        Public Sub SetPI_ECOLA_SILNull()
-            Me(Me.tableNetPay.PI_ECOLA_SILColumn) = Global.System.Convert.DBNull
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -7535,6 +7610,54 @@ Partial Public Class reports
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
         Public Sub SetWH_TAXNull()
             Me(Me.tableNetPay.WH_TAXColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Function IsSILNull() As Boolean
+            Return Me.IsNull(Me.tableNetPay.SILColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Sub SetSILNull()
+            Me(Me.tableNetPay.SILColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Function IsPERF_INNull() As Boolean
+            Return Me.IsNull(Me.tableNetPay.PERF_INColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Sub SetPERF_INNull()
+            Me(Me.tableNetPay.PERF_INColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Function IsSALES_INNull() As Boolean
+            Return Me.IsNull(Me.tableNetPay.SALES_INColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Sub SetSALES_INNull()
+            Me(Me.tableNetPay.SALES_INColumn) = Global.System.Convert.DBNull
+        End Sub
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Function IsOTHER_ADDITIONALNull() As Boolean
+            Return Me.IsNull(Me.tableNetPay.OTHER_ADDITIONALColumn)
+        End Function
+        
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
+        Public Sub SetOTHER_ADDITIONALNull()
+            Me(Me.tableNetPay.OTHER_ADDITIONALColumn) = Global.System.Convert.DBNull
         End Sub
     End Class
     

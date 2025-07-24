@@ -887,9 +887,6 @@ Public Class frmLoan
             If openFileDialog.ShowDialog() = DialogResult.OK Then
                 Dim filename As String = openFileDialog.FileName
 
-                'Dim result As DialogResult = MsgBox($"The account of {fullname} will be closed, proceed anyway?", MessageBoxButtons.YesNo)
-                'If result = DialogResult.Yes Then
-
                 If ShowPasswordForm() Then
 
                     Dim userName As String = frmMainForm.UserName_LBL.Text
@@ -907,7 +904,6 @@ Public Class frmLoan
                     rpt_SOA_.Clear()
                 End If
 
-                'End If
             End If
         End Using
 

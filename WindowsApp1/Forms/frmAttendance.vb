@@ -1159,8 +1159,6 @@ Public Class frmAttendance
                 For Each dr In ds.Tables(0).Rows
                     With dr
 
-                        'Dim isBranch As Boolean = IIf(IsDBNull(.Item("BRANCH_MANUAL")), False, True)
-
                         Days7_TXT.Text = .Item("PRESENT_DAYS")
                         Overtime7_NUP.Text = IIf(IsDBNull(.Item("OVERTIME")) Or .Item("OVERTIME").Equals("0"), "", .Item("OVERTIME"))
 
@@ -1244,7 +1242,6 @@ Public Class frmAttendance
                 Dim regHol_additional As Double = IIf(String.IsNullOrWhiteSpace(RegHol7_TXT.Text), 0, RegHol7_TXT.Text)
                 Dim RHOLIDAY As Double = REGHolidayCount(starting_date, ending_date) + regHol_additional
                 Dim specHoliday_hrs As Double = IIf(String.IsNullOrWhiteSpace(SpecHol7_TXT.Text), 0, SpecHol7_TXT.Text)
-                'Dim SHOLIDAY As Double = IIf(specHoliday_hrs = 0, 0, specHoliday_hrs / 8)
                 Dim SHOLIDAY As Double = 0
 
                 If specHoliday_hrs = 0 Or specHoliday_hrs < 8 Then
@@ -1280,15 +1277,6 @@ Public Class frmAttendance
 
                 '===================================== MINIMUM CHANGED STARTING SEPTEMBER 1, 2022 =================================
                 If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
-                    ''TODO - IBUTANG APIL SA EXCEL IF NEED JUD ANG NUMBER OF DAYS NGA DILI COVERED SA NEW RATE (FOR THE MEANTIME ZERO MUNA ANG OLD DAYS KAY GIMANUAL UG ADD SA LAST PAYROLL)
-                    'Dim old_days As Double
-                    'old_days = (temp_present * 8) - temp_half
-                    'old_days = old_days / 8
-                    'Dim new_days As Double = CDbl(Days7_TXT.Text) - old_days
-                    'Dim new_overtime As Double = CDbl(Overtime7_NUP.Text) - temp_overtime
-                    'Dim new_late As Double = CDbl(Late7_TXT.Text) - temp_late
-                    'Dim new_undertime As Double = CDbl(Undertime7_TXT.Text) - temp_undertime
-                    'SaveTemporary(Bio7_TXT.Text, old_days, new_days, temp_overtime, new_overtime, temp_late, new_late, temp_undertime, new_undertime, temp_Rholiday, temp_Sholiday, PAYROLL)
 
                     'AS IF WALANG OLD DAYS NA COVERED KAY NA'MANUAL ADD NA NUNG LAST PAYROLL 
                     Dim new_days As Double = CDbl(Days7_TXT.Text)

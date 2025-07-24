@@ -463,8 +463,6 @@
     End Sub
 
     Private Sub SaveCity_BTN_Click(sender As Object, e As EventArgs) Handles SaveCity_BTN.Click
-        'SaveCityBranch() 
-
         If City_Combo.Text <> Nothing And CityBName_Combo.Text <> Nothing And CityCode_Combo.Text <> Nothing And Address_Combo.Text <> Nothing Then
 
             Dim result As DialogResult = MsgBox($"Branch information will be Saved/Updated, proceed anyway?", MessageBoxButtons.YesNo)

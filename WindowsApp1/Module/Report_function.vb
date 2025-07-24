@@ -649,9 +649,68 @@ Module Report_function
         Return VALUEE
     End Function
 
-    Public Function Get_PI_ECOLA_SIL(BIO_NO As String, PAYDATE As String)
+    Public Function Get_PI_ECOLA_SIL(BIO_NO As Integer, PAYDATE As String)
         Dim VALUEE As Decimal
-        Dim mysql As String = $"Select SUM(AMOUNT) AS TOTS FROM  RECORDED_ALLOW_DEDUC WHERE BIO_NO = '{BIO_NO}' AND  PAYDATE = '{PAYDATE}' AND TRANSAC_NAME = 'ALLOWANCE' AND CATEGORY <> '13th Month Pay'"
+        Dim mysql As String = $"Select SUM(AMOUNT) AS TOTS FROM  RECORDED_ALLOW_DEDUC WHERE BIO_NO = {BIO_NO} AND  PAYDATE = '{PAYDATE}' AND TRANSAC_NAME = 'ALLOWANCE' AND CATEGORY <> '13th Month Pay'"
+        Dim ds As DataSet = LoadSQL(mysql, "RECORDED_ALLOW_DEDUC")
+        If ds.Tables(0).Rows.Count > 0 Then
+            Dim DR As DataRow = ds.Tables(0).Rows(0)
+            With DR
+                VALUEE = IIf(IsDBNull(.Item("TOTS")), 0, .Item("TOTS"))
+            End With
+        End If
+
+        Return VALUEE
+    End Function
+
+    Public Function Get_TOTAL_SIL(BIO_NO As Integer, PAYDATE As String)
+        Dim VALUEE As Decimal
+        Dim mysql As String = $"Select SUM(AMOUNT) AS TOTS FROM  RECORDED_ALLOW_DEDUC WHERE BIO_NO = {BIO_NO} AND  PAYDATE = '{PAYDATE}' AND TRANSAC_NAME = 'ALLOWANCE' AND CATEGORY = 'SIL'"
+        Dim ds As DataSet = LoadSQL(mysql, "RECORDED_ALLOW_DEDUC")
+        If ds.Tables(0).Rows.Count > 0 Then
+            Dim DR As DataRow = ds.Tables(0).Rows(0)
+            With DR
+                VALUEE = IIf(IsDBNull(.Item("TOTS")), 0, .Item("TOTS"))
+            End With
+        End If
+
+        Return VALUEE
+    End Function
+
+    Public Function Get_PERF_IN(BIO_NO As Integer, PAYDATE As String)
+        Dim VALUEE As Decimal
+        Dim mysql As String = $"Select AMOUNT FROM  RECORDED_ALLOW_DEDUC WHERE BIO_NO = {BIO_NO} AND  PAYDATE = '{PAYDATE}' AND TRANSAC_NAME = 'ALLOWANCE' AND CATEGORY = 'PERFORMANCE INCENTIVES'"
+        Dim ds As DataSet = LoadSQL(mysql, "RECORDED_ALLOW_DEDUC")
+        If ds.Tables(0).Rows.Count > 0 Then
+            Dim DR As DataRow = ds.Tables(0).Rows(0)
+            With DR
+                VALUEE = IIf(IsDBNull(.Item("AMOUNT")), 0, .Item("AMOUNT"))
+            End With
+        End If
+
+        Return VALUEE
+    End Function
+
+    Public Function Get_SALES_IN(BIO_NO As Integer, PAYDATE As String)
+        If BIO_NO = 606 Then
+            Console.WriteLine(BIO_NO)
+        End If
+        Dim VALUEE As Decimal
+        Dim mysql As String = $"Select AMOUNT FROM  RECORDED_ALLOW_DEDUC WHERE BIO_NO = {BIO_NO} AND  PAYDATE = '{PAYDATE}' AND TRANSAC_NAME = 'ALLOWANCE' AND CATEGORY = 'Sales Incentive'"
+        Dim ds As DataSet = LoadSQL(mysql, "RECORDED_ALLOW_DEDUC")
+        If ds.Tables(0).Rows.Count > 0 Then
+            Dim DR As DataRow = ds.Tables(0).Rows(0)
+            With DR
+                VALUEE = IIf(IsDBNull(.Item("AMOUNT")), 0, .Item("AMOUNT"))
+            End With
+        End If
+
+        Return VALUEE
+    End Function
+
+    Public Function Get_OTHER_ADDTL(BIO_NO As Integer, PAYDATE As String)
+        Dim VALUEE As Decimal
+        Dim mysql As String = $"Select SUM(AMOUNT) AS TOTS FROM  RECORDED_ALLOW_DEDUC WHERE BIO_NO = {BIO_NO} AND  PAYDATE = '{PAYDATE}' AND TRANSAC_NAME = 'ALLOWANCE' AND CATEGORY NOT IN ('13th Month Pay','Sales Incentive','PERFORMANCE INCENTIVES','SIL')"
         Dim ds As DataSet = LoadSQL(mysql, "RECORDED_ALLOW_DEDUC")
         If ds.Tables(0).Rows.Count > 0 Then
             Dim DR As DataRow = ds.Tables(0).Rows(0)
