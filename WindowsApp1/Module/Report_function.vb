@@ -692,9 +692,6 @@ Module Report_function
     End Function
 
     Public Function Get_SALES_IN(BIO_NO As Integer, PAYDATE As String)
-        If BIO_NO = 606 Then
-            Console.WriteLine(BIO_NO)
-        End If
         Dim VALUEE As Decimal
         Dim mysql As String = $"Select AMOUNT FROM  RECORDED_ALLOW_DEDUC WHERE BIO_NO = {BIO_NO} AND  PAYDATE = '{PAYDATE}' AND TRANSAC_NAME = 'ALLOWANCE' AND CATEGORY = 'Sales Incentive'"
         Dim ds As DataSet = LoadSQL(mysql, "RECORDED_ALLOW_DEDUC")

@@ -2673,7 +2673,7 @@ A
                                                TARDINESS.ToString("n"), SSS.ToString("n"), PHIC.ToString("n"), PAGIBIG.ToString("n"),
                                                CHARGES_SBU.ToString("n"), NET_PAY.ToString("n"), BRANCHNAME, payroll.ToString("MMMM dd, yyyy"), period, COMPANY,
                                                HO_CATEGORY, tempPlus, MONTH_13.ToString("n"), ACCOUNTNO, CHARGES_MP2, CHARGES_CA, CHARGES_ECS, CHARGES_OTHERS,
-                                               LOAN_SSS, LOAN_PAGIBIG, CHARGES_WHTAX, SIL.ToString("n"), PERF_IN.ToString("n"), SALES_IN.ToString("n"))
+                                               LOAN_SSS, LOAN_PAGIBIG, CHARGES_WHTAX, SIL.ToString("n"), PERF_IN.ToString("n"), SALES_IN.ToString("n"), OTHER_ADDTL.ToString("n"))
 
                             frmMainForm.AppProgressBar.Value += 1
                         End With

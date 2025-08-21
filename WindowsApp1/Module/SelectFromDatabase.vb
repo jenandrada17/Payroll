@@ -1056,7 +1056,7 @@ Module SelectFromDatabase
 
         If searchName.Length <> 0 Then
 
-            mysql = $"Select A.*, 
+            mysql = $"Select A.*, EMP_STATUS, 
                     LASTNAME || ', ' || FIRSTNAME || 
                     CASE
                         WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
@@ -1079,7 +1079,7 @@ Module SelectFromDatabase
             Next
 
         Else
-            mysql = $"Select  A.*, 
+            mysql = $"Select  A.*, EMP_STATUS, 
                         LASTNAME || ', ' || FIRSTNAME || 
                         CASE
                             WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
@@ -1109,6 +1109,14 @@ Module SelectFromDatabase
                         i.SubItems.Add(IIf(.Item("LATE") = 0, "", .Item("LATE")))
                         i.SubItems.Add(IIf(.Item("UNDERTIME") = 0, "", .Item("UNDERTIME")))
                         Console.WriteLine($"BIOMETRICID - { .Item("BIOMETRICID")}")
+
+                        If IsDBNull(.Item("EMP_STATUS")) Then
+                            i.BackColor = Color.Wheat
+                        ElseIf String.IsNullOrWhiteSpace(.Item("EMP_STATUS")) Then
+                            i.BackColor = Color.Wheat
+                        ElseIf .Item("EMP_STATUS") = "INACTIVE" Then
+                            i.BackColor = Color.Wheat
+                        End If
                     End With
 
                     frmMainForm.AppProgressBar.Value += 1
@@ -1544,6 +1552,14 @@ Module SelectFromDatabase
             i.SubItems.Add(effectivity.ToString("MMM dd, yyyy"))
             i.SubItems.Add(FormatNumber(.Item("AMOUNT"))).Tag = .Item("id")
             i.SubItems.Add(.Item("ALLOWED"))
+
+            If IsDBNull(.Item("EMP_STATUS")) Then
+                i.BackColor = Color.Wheat
+            ElseIf String.IsNullOrWhiteSpace(.Item("EMP_STATUS")) Then
+                i.BackColor = Color.Wheat
+            ElseIf .Item("EMP_STATUS") = "INACTIVE" Then
+                i.BackColor = Color.Wheat
+            End If
         End With
     End Sub
 
@@ -1753,6 +1769,14 @@ Module SelectFromDatabase
                         i.SubItems.Add(.Item("FULLNAME"))
                         i.SubItems.Add(.Item("BIOMETRICID"))
                         i.SubItems.Add(rate)
+
+                        If IsDBNull(.Item("EMP_STATUS")) Then
+                            i.BackColor = Color.Wheat
+                        ElseIf String.IsNullOrWhiteSpace(.Item("EMP_STATUS")) Then
+                            i.BackColor = Color.Wheat
+                        ElseIf .Item("EMP_STATUS") = "INACTIVE" Then
+                            i.BackColor = Color.Wheat
+                        End If
                     End With
                     frmMainForm.AppProgressBar.Value += 1
                 Next
@@ -1887,7 +1911,7 @@ Module SelectFromDatabase
         Dim mysql As String
 
         If searchName.Length <> 0 Then
-            mysql = $"select COALESCE(sum(SIL), 0) AS TOTALS, A.BIOMETRICID, 
+            mysql = $"select COALESCE(sum(SIL), 0) AS TOTALS, A.BIOMETRICID, EMP_STATUS, 
                         LASTNAME || ', ' || FIRSTNAME || 
                         CASE
                             WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
@@ -1909,10 +1933,10 @@ Module SelectFromDatabase
                                     CASE WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX  ELSE ''
                                     END) LIKE UPPER('%{name}%') OR"
                 mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(BRANCHCODE) LIKE UPPER('%{name}%'))  GROUP BY FULLNAME, BIOMETRICID ORDER BY FULLNAME ASC "
+                mysql &= $"{vbCr}UPPER(BRANCHCODE) LIKE UPPER('%{name}%'))  GROUP BY FULLNAME, BIOMETRICID, EMP_STATUS ORDER BY FULLNAME ASC "
             Next
         Else
-            mysql = $"select COALESCE(sum(SIL), 0) AS TOTALS, A.BIOMETRICID,
+            mysql = $"select COALESCE(sum(SIL), 0) AS TOTALS, A.BIOMETRICID, EMP_STATUS, 
                         LASTNAME || ', ' || FIRSTNAME || 
                         CASE
                             WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
@@ -1925,7 +1949,7 @@ Module SelectFromDatabase
                         from TBL_EMPLOYEE A 
                         INNER JOIN PAYROLL_ATTENDANCE B on B.BIOMETRICID = A.BIOMETRICID 
                         Where PAYDATE BETWEEN '{startt.ToShortDateString}' AND '{endd.ToShortDateString}' 
-                        GROUP BY FULLNAME, A.BIOMETRICID ORDER BY FULLNAME ASC "
+                        GROUP BY FULLNAME, A.BIOMETRICID, EMP_STATUS ORDER BY FULLNAME ASC "
         End If
 
         TestingScript_String(mysql)
@@ -1938,6 +1962,13 @@ Module SelectFromDatabase
                     Dim i As ListViewItem = LV.Items.Add(.Item("FULLNAME"))
                     i.SubItems.Add(.Item("TOTALS") + Get_SIL("PAYROLL_SCHED_COUNT", $"PAYROLL_SCHED_COUNT WHERE BIO_NO = '{ .item("BIOMETRICID")}' AND PAYDATE BETWEEN '{startt.ToShortDateString}' AND '{endd.ToShortDateString}'"))
 
+                    If IsDBNull(.Item("EMP_STATUS")) Then
+                        i.BackColor = Color.Wheat
+                    ElseIf String.IsNullOrWhiteSpace(.Item("EMP_STATUS")) Then
+                        i.BackColor = Color.Wheat
+                    ElseIf .Item("EMP_STATUS") = "INACTIVE" Then
+                        i.BackColor = Color.Wheat
+                    End If
                 End With
                 frmMainForm.AppProgressBar.Value += 1
             Next
@@ -1955,7 +1986,7 @@ Module SelectFromDatabase
 
         If searchName.Length <> 0 Then
 
-            mysql = $"select BIOMETRIC_ID,
+            mysql = $"select BIOMETRIC_ID, EMP_STATUS, 
                         LASTNAME || ', ' || FIRSTNAME || 
                         CASE
                             WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
@@ -1976,12 +2007,12 @@ Module SelectFromDatabase
                                     CASE WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX  ELSE ''
                                     END) LIKE UPPER('%{name}%') OR"
                 mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(BRANCHCODE) LIKE UPPER('%{name}%') Group by FULLNAME, BIOMETRIC_ID ORDER BY FULLNAME ASC "
+                mysql &= $"{vbCr}UPPER(BRANCHCODE) LIKE UPPER('%{name}%') Group by FULLNAME, BIOMETRIC_ID, EMP_STATUS ORDER BY FULLNAME ASC "
             Next
 
         Else
 
-            mysql = $"select BIOMETRIC_ID,
+            mysql = $"select BIOMETRIC_ID, EMP_STATUS, 
                         LASTNAME || ', ' || FIRSTNAME || 
                         CASE
                             WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
@@ -1993,7 +2024,8 @@ Module SelectFromDatabase
                         END AS FULLNAME  
                         from TBL_EMPLOYEE A 
                         inner join PAYROLL_PAYOUT B on B.BIOMETRIC_ID = A.BIOMETRICID 
-                        Group by FULLNAME, BIOMETRIC_ID ORDER BY FULLNAME ASC "
+                        Group by FULLNAME, BIOMETRIC_ID, EMP_STATUS
+                        ORDER BY FULLNAME ASC "
 
         End If
 
@@ -2007,6 +2039,13 @@ Module SelectFromDatabase
                     Dim i As ListViewItem = LV.Items.Add(.Item("FULLNAME"))
                     i.SubItems.Add(TOTALS.ToString("N")).Tag = .item("BIOMETRIC_ID")
 
+                    If IsDBNull(.Item("EMP_STATUS")) Then
+                        i.BackColor = Color.Wheat
+                    ElseIf String.IsNullOrWhiteSpace(.Item("EMP_STATUS")) Then
+                        i.BackColor = Color.Wheat
+                    ElseIf .Item("EMP_STATUS") = "INACTIVE" Then
+                        i.BackColor = Color.Wheat
+                    End If
                 End With
                 frmMainForm.AppProgressBar.Value += 1
             Next
@@ -2064,7 +2103,7 @@ Module SelectFromDatabase
 
         If searchName.Length <> 0 Then
 
-            mysql = $"Select A.*, B.*,  
+            mysql = $"Select A.*, B.*, 
                         LASTNAME || ', ' || FIRSTNAME || 
                         CASE
                             WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
@@ -2131,6 +2170,14 @@ Module SelectFromDatabase
                     i.SubItems.Add(FormatNumber(.Item("TOTAL_ALLOWANCE")))
                     i.SubItems.Add(FormatNumber(.Item("TOTAL_DEDUCTION")))
                     i.SubItems.Add(FormatNumber(.Item("NET_PAY")))
+
+                    If IsDBNull(.Item("EMP_STATUS")) Then
+                        i.BackColor = Color.Wheat
+                    ElseIf String.IsNullOrWhiteSpace(.Item("EMP_STATUS")) Then
+                        i.BackColor = Color.Wheat
+                    ElseIf .Item("EMP_STATUS") = "INACTIVE" Then
+                        i.BackColor = Color.Wheat
+                    End If
 
                     netPay += FormatNumber(.Item("NET_PAY"))
                 End With
@@ -2290,7 +2337,7 @@ Module SelectFromDatabase
 
         If searchName.Length <> 0 Then
 
-            mysql = $"select A.*,   
+            mysql = $"select A.*,  
                             LASTNAME || ', ' || FIRSTNAME || 
                             CASE
                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
@@ -2329,7 +2376,7 @@ Module SelectFromDatabase
             Next
 
         Else
-            mysql = $"select A.*,   
+            mysql = $"select A.*,  
                             LASTNAME || ', ' || FIRSTNAME || 
                             CASE
                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
@@ -2392,6 +2439,14 @@ Module SelectFromDatabase
             i.SubItems.Add(IIf(IsDBNull(.Item("SSSNO")), "", .Item("SSSNO")))
             i.SubItems.Add(IIf(IsDBNull(.Item("PHILHEALTHNO")), "", .Item("PHILHEALTHNO")))
             i.SubItems.Add(IIf(IsDBNull(.Item("PAGIBIG")), "", .Item("PAGIBIG")))
+
+            If IsDBNull(.Item("EMP_STATUS")) Then
+                i.BackColor = Color.Wheat
+            ElseIf String.IsNullOrWhiteSpace(.Item("EMP_STATUS")) Then
+                i.BackColor = Color.Wheat
+            ElseIf .Item("EMP_STATUS") = "INACTIVE" Then
+                i.BackColor = Color.Wheat
+            End If
         End With
     End Sub
 
@@ -3702,7 +3757,7 @@ Module SelectFromDatabase
 
         If searchName.Length <> 0 Then
 
-            mysql = "select  COALESCE(sum(C.AMOUNT), 0) AS TOTALS, CREDIT, PRINCIPAL, B.AMOUNT, B.BIO_NO as bio , 
+            mysql = "select  COALESCE(sum(C.AMOUNT), 0) AS TOTALS, CREDIT, PRINCIPAL, B.AMOUNT, B.BIO_NO as bio, EMP_STATUS,  
                             LASTNAME || ', ' || FIRSTNAME || 
                             CASE
                                 WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
@@ -3730,12 +3785,12 @@ Module SelectFromDatabase
                                    FROM USER_ACCESSIBILITY UA
                                    WHERE UA.COMPANY = A.COMPANY
                                    AND UA.USERID = {userID})
-                        GROUP BY FULLNAME, CREDIT, PRINCIPAL,  B.AMOUNT, B.BIO_NO 
+                        GROUP BY FULLNAME, CREDIT, PRINCIPAL,  B.AMOUNT, B.BIO_NO, EMP_STATUS
                         ORDER BY FULLNAME ASC "
             Next
 
         Else
-            mysql = $"SELECT COALESCE(sum(C.AMOUNT), 0) AS TOTALS, CREDIT, PRINCIPAL, B.AMOUNT, B.BIO_NO as bio, 
+            mysql = $"SELECT COALESCE(sum(C.AMOUNT), 0) AS TOTALS, CREDIT, PRINCIPAL, B.AMOUNT, B.BIO_NO as bio, EMP_STATUS, 
                         LASTNAME || ', ' || FIRSTNAME || 
                         CASE
                             WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
@@ -3753,7 +3808,7 @@ Module SelectFromDatabase
                                    FROM USER_ACCESSIBILITY UA
                                    WHERE UA.COMPANY = A.COMPANY
                                    AND UA.USERID = {userID})
-                        GROUP BY FULLNAME, CREDIT, PRINCIPAL,  B.AMOUNT, B.BIO_NO
+                        GROUP BY FULLNAME, CREDIT, PRINCIPAL,  B.AMOUNT, B.BIO_NO, EMP_STATUS
                         ORDER BY FULLNAME ASC "
         End If
 
@@ -3781,6 +3836,13 @@ Module SelectFromDatabase
                     i.SubItems.Add(FormatNumber(totalCredit))
                     i.SubItems.Add(FormatNumber(balance)).Tag = .item("bio")
 
+                    If IsDBNull(.Item("EMP_STATUS")) Then
+                        i.BackColor = Color.Wheat
+                    ElseIf String.IsNullOrWhiteSpace(.Item("EMP_STATUS")) Then
+                        i.BackColor = Color.Wheat
+                    ElseIf .Item("EMP_STATUS") = "INACTIVE" Then
+                        i.BackColor = Color.Wheat
+                    End If
                 End With
                 frmMainForm.AppProgressBar.Value += 1
             Next

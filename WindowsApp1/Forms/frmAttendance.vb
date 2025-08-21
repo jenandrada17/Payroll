@@ -1587,6 +1587,23 @@ Public Class frmAttendance
         B_PI_Days.Value = 0.0
     End Sub
 
+    Private Sub SIL7_NUP_ValueChanged(sender As Object, e As EventArgs) Handles SIL7_NUP.ValueChanged
+
+        Dim totalMonths As Integer = CountYear_SIL(Bio7_TXT.Text, ending_date)
+
+        If totalMonths >= 13 Then
+
+            If Count_SIL(Bio7_TXT.Text) < 5 Then
+            Else
+                MsgBox($"Already reached the maximum number of SIL for this year.", MsgBoxStyle.Critical, "Invalid")
+            End If
+
+        Else
+            MsgBox($"Not yet allowed to avail SIL.", MsgBoxStyle.Critical, "Invalid")
+        End If
+
+    End Sub
+
     Private Sub Calculate_BTN_Click(sender As Object, e As EventArgs) Handles Calculate_BTN.Click
         If Name_TXT.Text <> Nothing Then
             TotalDays_LBL.Text = 0
