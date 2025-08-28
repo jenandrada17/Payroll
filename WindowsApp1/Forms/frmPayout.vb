@@ -376,7 +376,7 @@ Public Class frmPayout
 
                             '======================== SAVING TRANSACTION ========================
                             If deduc_list <> Nothing Then
-                                deduc_list = $"{allow_list}, {row.Cells(0).Value}({row.Cells(1).Value}), "
+                                deduc_list = $"{deduc_list}, {row.Cells(0).Value}({row.Cells(1).Value}), "
                             Else
                                 deduc_list = $"{row.Cells(0).Value}({row.Cells(1).Value}), "
                             End If
