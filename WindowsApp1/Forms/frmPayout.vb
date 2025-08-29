@@ -759,6 +759,7 @@ Public Class frmPayout
         If result = DialogResult.Yes Then
 
             Dim datee As DateTime
+            Dim emailAddress As String = Email_TXT.Text.Trim
 
             If Payslip_paydate_Combo.SelectedIndex >= 0 Then
                 datee = Payslip_paydate_Combo.Text
@@ -800,7 +801,7 @@ Public Class frmPayout
                 CheckDeduction_Loans_IfZeroBalance(Employee_TXT.Tag)
 
                 '================================ CHECK IF VALID EMAIL ADDRESS ============================
-                Dim FoundMatch As Boolean = Regex.IsMatch(Email_TXT.Text, "\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase)
+                Dim FoundMatch As Boolean = Regex.IsMatch(emailAddress, "\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)\Z", RegexOptions.IgnoreCase)
 
                 If Not FoundMatch Then
                     MsgBox(Employee_TXT.Text & " has an invalid email address.", MsgBoxStyle.Exclamation, "INVALID")
@@ -808,7 +809,7 @@ Public Class frmPayout
                 Else
 
                     '================================ SEND TO EMAIL ADDRESS IF VALID ============================
-                    Send_Email(ReportViewer_payslip.LocalReport.Render("PDF"), Email_TXT.Text, Employee_TXT.Text, Payslip_paydate_Combo.Text, BodyText_RichB.Text, datee.ToString("MMMM dd, yyyy") & " PAYROLL", Employee_TXT.Tag, datee)
+                    Send_Email(ReportViewer_payslip.LocalReport.Render("PDF"), emailAddress, Employee_TXT.Text, Payslip_paydate_Combo.Text, BodyText_RichB.Text, datee.ToString("MMMM dd, yyyy") & " PAYROLL", Employee_TXT.Tag, datee)
 
                     MsgBox("Email sent to " & Employee_TXT.Text, MsgBoxStyle.Information, "Information")
                 End If
@@ -854,7 +855,7 @@ Public Class frmPayout
                 Dim bioId As String = dr("BIOMETRIC_ID").ToString()
                 Dim fullName As String = dr("FULLNAME").ToString()
 
-                Dim recipient As String = GetEmail_recipient(bioId)
+                Dim recipient As String = GetEmail_recipient(bioId).Trim
                 If Not Regex.IsMatch(recipient, "\A[\w\.-]+@[\w\.-]+\.\w{2,}\Z", RegexOptions.IgnoreCase) Then
                     MsgBox(fullName & " has an invalid email address.", MsgBoxStyle.Exclamation, "INVALID")
                     Continue For
@@ -893,7 +894,7 @@ Public Class frmPayout
     Private Sub Payslip_By(tbl_column As String, column_value As String)
 
         Dim recipient As String
-        Dim datee As DateTime = Payslip_paydate_Combo.Text
+        Dim datee As DateTime = DateTime.Parse(Payslip_paydate_Combo.Text)
 
         Dim mysqll As String = $"Select A.*, B.*, B.id as emp_id,
                                     LASTNAME || ', ' || FIRSTNAME || 
@@ -905,9 +906,10 @@ Public Class frmPayout
                                         WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX
                                         ELSE ''
                                     END AS FULLNAME 
-                                    from payroll_payout A 
-                                    inner Join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRIC_ID   
-                                    where (paydate = '{Payslip_paydate_Combo.Text}' and B.{tbl_column} = '{column_value}')                                 
+                                    FROM PAYROLL_PAYOUT A 
+                                    INNER JOIN TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRIC_ID   
+                                    WHERE (PAYDATE = '{datee:yyyy-MM-dd}' AND EMAIL_SENT IS NULL)
+                                    AND (PAYDATE = '{Payslip_paydate_Combo.Text}' and B.{tbl_column} = '{column_value}')                                 
                                     AND NOT EXISTS (
                                             SELECT 1
                                             FROM USER_ACCESSIBILITY UA
@@ -924,7 +926,7 @@ Public Class frmPayout
 
                         LoadPayslip(.item("BIOMETRIC_ID"), Payslip_paydate_Combo.Text)
 
-                        recipient = GetEmail_recipient(.item("BIOMETRIC_ID"))
+                        recipient = GetEmail_recipient(.item("BIOMETRIC_ID")).Trim
 
                         CheckDeduction_Loans_IfZeroBalance(.item("BIOMETRIC_ID"))
 
