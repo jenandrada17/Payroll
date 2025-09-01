@@ -28,9 +28,6 @@ Public Class frmReport
         PopulatePaydate_Monthly(Allow_Paydate_Combo, "RECORDED_ALLOW_DEDUC", "PAYDATE")
         PopulatePaydate_Yearly(SILYear_Combo, "RECORDED_ALLOW_DEDUC", "PAYDATE")
         PopulatePaydate_Monthly(cbDateEffectivity, "HR_LETTER", "EFFECTIVE_DATE", " WHERE ACTION_NAME = 'REASSIGNMENT'")
-        Lists_Deduction_History(DeducHistory_List)
-        Lists_SBU(SBU_LV)
-        PopulateDateRange13Month()
     End Sub
 
     Private Sub SearchSBU_BTN_Click(sender As Object, e As EventArgs) Handles SearchSBU_BTN.Click
@@ -2118,6 +2115,7 @@ A
         Rpt_PI.LocalReport.DataSources.Clear()
         Dim PAYDATE_start As DateTime = Allow_Paydate_Combo.Text
         Dim PAYDATE_end As New DateTime(PAYDATE_start.Year, PAYDATE_start.Month, System.DateTime.DaysInMonth(PAYDATE_start.Year, PAYDATE_start.Month))
+        Dim FULLNAME As String
 
         Try
 
@@ -2174,11 +2172,11 @@ A
                                     FROM 
                                       RECORDED_ALLOW_DEDUC A
                                     INNER JOIN 
-                                      TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIO_NO
+                                      TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIO_NO {str} 
                                     LEFT JOIN 
                                       PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
                                     WHERE 
-                                      UPPER(A.CATEGORY) LIKE UPPER('%{category}%') {str} 
+                                      UPPER(A.CATEGORY) LIKE UPPER('%{category}%') 
                                       AND A.PAYDATE BETWEEN '{PAYDATE_start.ToShortDateString}' AND '{PAYDATE_end.ToShortDateString}' 
                                     GROUP BY 
                                       A.BIO_NO, C.BRANCHNAME, B.PHOTO_CATEGORY, B.BRANCHCODE, B.HO_CATEGORY, B.COMPANY,
@@ -2195,11 +2193,12 @@ A
                         With dr
 
                             '============================= NAME AND ATTENDANCE ============================  
-                            Dim FULLNAME As String = IIf(IsDBNull(.Item("FULLNAME")), "", .Item("FULLNAME"))
+                            FULLNAME = IIf(IsDBNull(.Item("FULLNAME")), "", .Item("FULLNAME"))
+                            'Dim bioNo As Integer = CInt(.Item("BIO_NO"))
                             Dim AMOUNT As String = FormatNumber(.Item("TOTAL_AMOUNT"))
 
                             '===================================== BRANCHES ===============================
-                            Dim BRANCH_CODE As String '= IIf(.Item("BRANCH_CODE") = "" Or IsDBNull(.Item("BRANCH_CODE")), .Item("HO_CATEGORY"), .Item("BRANCHNAME"))
+                            Dim BRANCH_CODE As String = ""
 
                             If IsDBNull(.Item("BRANCH_CODE")) Then
                                 BRANCH_CODE = .Item("HO_CATEGORY")
@@ -2254,7 +2253,7 @@ A
             Rpt_PI.RefreshReport()
 
         Catch ex As Exception
-            MessageBox.Show(ex.Message, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
+            MessageBox.Show($"{ex.Message}{vbCrLf}{FULLNAME}", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
 
     End Sub
@@ -3027,6 +3026,12 @@ A
     Private Sub Reports_Tab_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Reports_Tab.SelectedIndexChanged
         If Reports_Tab.SelectedTab Is tabReassignment Then
             LoadReassigment()
+        ElseIf Reports_Tab.SelectedTab Is tabDeduction Then
+            Lists_Deduction_History(DeducHistory_List)
+        ElseIf Reports_Tab.SelectedTab Is tabSBU Then
+            Lists_SBU(SBU_LV)
+        ElseIf Reports_Tab.SelectedTab Is tab13month Then
+            PopulateDateRange13Month()
         End If
     End Sub
 
