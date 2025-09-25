@@ -22,13 +22,13 @@ Partial Class frmPayout
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle8 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle10 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle9 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle11 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle14 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle12 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
-        Dim DataGridViewCellStyle13 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle7 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle5 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
+        Dim DataGridViewCellStyle6 As System.Windows.Forms.DataGridViewCellStyle = New System.Windows.Forms.DataGridViewCellStyle()
         Me.GroupBox6 = New System.Windows.Forms.GroupBox()
         Me.Label41 = New System.Windows.Forms.Label()
         Me.RateFixNo_RB = New System.Windows.Forms.RadioButton()
@@ -175,6 +175,7 @@ Partial Class frmPayout
         Me.Prev_Amount_lbl = New System.Windows.Forms.Label()
         Me.Details_Save_BTN = New System.Windows.Forms.Button()
         Me.TabPage4 = New System.Windows.Forms.TabPage()
+        Me.btnPrint = New System.Windows.Forms.Button()
         Me.rbAllActive = New System.Windows.Forms.RadioButton()
         Me.ConfirmDeduc_btn = New System.Windows.Forms.Button()
         Me.Company_RadioB = New System.Windows.Forms.RadioButton()
@@ -970,13 +971,15 @@ Partial Class frmPayout
         '
         'Pay_Refresh_BTN
         '
+        Me.Pay_Refresh_BTN.BackColor = System.Drawing.Color.Linen
+        Me.Pay_Refresh_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.Pay_Refresh_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Pay_Refresh_BTN.Location = New System.Drawing.Point(327, 41)
         Me.Pay_Refresh_BTN.Name = "Pay_Refresh_BTN"
-        Me.Pay_Refresh_BTN.Size = New System.Drawing.Size(84, 31)
+        Me.Pay_Refresh_BTN.Size = New System.Drawing.Size(84, 33)
         Me.Pay_Refresh_BTN.TabIndex = 106
         Me.Pay_Refresh_BTN.Text = "Refresh"
-        Me.Pay_Refresh_BTN.UseVisualStyleBackColor = True
+        Me.Pay_Refresh_BTN.UseVisualStyleBackColor = False
         '
         'GroupBox5
         '
@@ -1190,13 +1193,15 @@ Partial Class frmPayout
         '
         'Search_BTN
         '
+        Me.Search_BTN.BackColor = System.Drawing.Color.PeachPuff
+        Me.Search_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.Search_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Search_BTN.Location = New System.Drawing.Point(327, 120)
         Me.Search_BTN.Name = "Search_BTN"
         Me.Search_BTN.Size = New System.Drawing.Size(82, 33)
         Me.Search_BTN.TabIndex = 102
         Me.Search_BTN.Text = "Search"
-        Me.Search_BTN.UseVisualStyleBackColor = True
+        Me.Search_BTN.UseVisualStyleBackColor = False
         '
         'Payout_list
         '
@@ -1641,25 +1646,25 @@ Partial Class frmPayout
         Me.Allowance_grid.CausesValidation = False
         Me.Allowance_grid.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None
         Me.Allowance_grid.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None
-        DataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle8.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle8.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.Allowance_grid.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle8
+        DataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle1.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.Allowance_grid.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
         Me.Allowance_grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing
         Me.Allowance_grid.ColumnHeadersVisible = False
         Me.Allowance_grid.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.grid_1, Me.grid_2})
-        DataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle10.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle10.ForeColor = System.Drawing.Color.Black
-        DataGridViewCellStyle10.SelectionBackColor = System.Drawing.Color.White
-        DataGridViewCellStyle10.SelectionForeColor = System.Drawing.Color.Black
-        DataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.Allowance_grid.DefaultCellStyle = DataGridViewCellStyle10
+        DataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle3.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle3.ForeColor = System.Drawing.Color.Black
+        DataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.White
+        DataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.Black
+        DataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.Allowance_grid.DefaultCellStyle = DataGridViewCellStyle3
         Me.Allowance_grid.Dock = System.Windows.Forms.DockStyle.Top
         Me.Allowance_grid.Location = New System.Drawing.Point(3, 36)
         Me.Allowance_grid.Name = "Allowance_grid"
@@ -1679,8 +1684,8 @@ Partial Class frmPayout
         '
         'grid_2
         '
-        DataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.grid_2.DefaultCellStyle = DataGridViewCellStyle9
+        DataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.grid_2.DefaultCellStyle = DataGridViewCellStyle2
         Me.grid_2.HeaderText = "Amount"
         Me.grid_2.Name = "grid_2"
         '
@@ -1726,25 +1731,25 @@ Partial Class frmPayout
         Me.Deduction_grid.CausesValidation = False
         Me.Deduction_grid.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None
         Me.Deduction_grid.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None
-        DataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Control
-        DataGridViewCellStyle11.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle11.ForeColor = System.Drawing.SystemColors.WindowText
-        DataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight
-        DataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText
-        DataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.Deduction_grid.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle11
+        DataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control
+        DataGridViewCellStyle4.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.WindowText
+        DataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight
+        DataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText
+        DataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.[False]
+        Me.Deduction_grid.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle4
         Me.Deduction_grid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing
         Me.Deduction_grid.ColumnHeadersVisible = False
         Me.Deduction_grid.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.DataGridViewTextBoxColumn1, Me.DataGridViewTextBoxColumn2, Me.Column1, Me.Deduc_BTN})
-        DataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
-        DataGridViewCellStyle14.BackColor = System.Drawing.SystemColors.Window
-        DataGridViewCellStyle14.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        DataGridViewCellStyle14.ForeColor = System.Drawing.Color.Black
-        DataGridViewCellStyle14.SelectionBackColor = System.Drawing.Color.White
-        DataGridViewCellStyle14.SelectionForeColor = System.Drawing.Color.Black
-        DataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.Deduction_grid.DefaultCellStyle = DataGridViewCellStyle14
+        DataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft
+        DataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Window
+        DataGridViewCellStyle7.Font = New System.Drawing.Font("Dubai", 14.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        DataGridViewCellStyle7.ForeColor = System.Drawing.Color.Black
+        DataGridViewCellStyle7.SelectionBackColor = System.Drawing.Color.White
+        DataGridViewCellStyle7.SelectionForeColor = System.Drawing.Color.Black
+        DataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.Deduction_grid.DefaultCellStyle = DataGridViewCellStyle7
         Me.Deduction_grid.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnKeystroke
         Me.Deduction_grid.Location = New System.Drawing.Point(3, 142)
         Me.Deduction_grid.Name = "Deduction_grid"
@@ -1758,8 +1763,8 @@ Partial Class frmPayout
         '
         'DataGridViewTextBoxColumn1
         '
-        DataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
-        Me.DataGridViewTextBoxColumn1.DefaultCellStyle = DataGridViewCellStyle12
+        DataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.[True]
+        Me.DataGridViewTextBoxColumn1.DefaultCellStyle = DataGridViewCellStyle5
         Me.DataGridViewTextBoxColumn1.HeaderText = "Name"
         Me.DataGridViewTextBoxColumn1.Name = "DataGridViewTextBoxColumn1"
         Me.DataGridViewTextBoxColumn1.ReadOnly = True
@@ -1767,8 +1772,8 @@ Partial Class frmPayout
         '
         'DataGridViewTextBoxColumn2
         '
-        DataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
-        Me.DataGridViewTextBoxColumn2.DefaultCellStyle = DataGridViewCellStyle13
+        DataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight
+        Me.DataGridViewTextBoxColumn2.DefaultCellStyle = DataGridViewCellStyle6
         Me.DataGridViewTextBoxColumn2.HeaderText = "Amount"
         Me.DataGridViewTextBoxColumn2.Name = "DataGridViewTextBoxColumn2"
         Me.DataGridViewTextBoxColumn2.ReadOnly = True
@@ -1834,6 +1839,7 @@ Partial Class frmPayout
         '
         'TabPage4
         '
+        Me.TabPage4.Controls.Add(Me.btnPrint)
         Me.TabPage4.Controls.Add(Me.rbAllActive)
         Me.TabPage4.Controls.Add(Me.ConfirmDeduc_btn)
         Me.TabPage4.Controls.Add(Me.Company_RadioB)
@@ -1854,6 +1860,18 @@ Partial Class frmPayout
         Me.TabPage4.Text = "    Payslip    "
         Me.TabPage4.UseVisualStyleBackColor = True
         '
+        'btnPrint
+        '
+        Me.btnPrint.BackColor = System.Drawing.Color.MistyRose
+        Me.btnPrint.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnPrint.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnPrint.Location = New System.Drawing.Point(318, 145)
+        Me.btnPrint.Name = "btnPrint"
+        Me.btnPrint.Size = New System.Drawing.Size(124, 37)
+        Me.btnPrint.TabIndex = 110
+        Me.btnPrint.Text = "Saved as PDF"
+        Me.btnPrint.UseVisualStyleBackColor = False
+        '
         'rbAllActive
         '
         Me.rbAllActive.AutoSize = True
@@ -1867,13 +1885,15 @@ Partial Class frmPayout
         '
         'ConfirmDeduc_btn
         '
+        Me.ConfirmDeduc_btn.BackColor = System.Drawing.Color.Linen
+        Me.ConfirmDeduc_btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.ConfirmDeduc_btn.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ConfirmDeduc_btn.Location = New System.Drawing.Point(414, 14)
         Me.ConfirmDeduc_btn.Name = "ConfirmDeduc_btn"
         Me.ConfirmDeduc_btn.Size = New System.Drawing.Size(154, 37)
         Me.ConfirmDeduc_btn.TabIndex = 108
         Me.ConfirmDeduc_btn.Text = "Update Deduction"
-        Me.ConfirmDeduc_btn.UseVisualStyleBackColor = True
+        Me.ConfirmDeduc_btn.UseVisualStyleBackColor = False
         '
         'Company_RadioB
         '
@@ -1910,13 +1930,13 @@ Partial Class frmPayout
         '
         'Branch_ComboB
         '
+        Me.Branch_ComboB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.Branch_ComboB.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Branch_ComboB.FormattingEnabled = True
         Me.Branch_ComboB.Location = New System.Drawing.Point(11, 28)
         Me.Branch_ComboB.Name = "Branch_ComboB"
         Me.Branch_ComboB.Size = New System.Drawing.Size(319, 33)
         Me.Branch_ComboB.TabIndex = 8
-        Me.Branch_ComboB.Text = "   Select Branch"
         '
         'Company_group
         '
@@ -1932,6 +1952,7 @@ Partial Class frmPayout
         '
         'Company_ComboB
         '
+        Me.Company_ComboB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.Company_ComboB.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Company_ComboB.FormattingEnabled = True
         Me.Company_ComboB.Items.AddRange(New Object() {"PHOTO", "P&G UY", "DALTON", "PERFECOM", "HEAD OFFICE"})
@@ -1939,7 +1960,6 @@ Partial Class frmPayout
         Me.Company_ComboB.Name = "Company_ComboB"
         Me.Company_ComboB.Size = New System.Drawing.Size(319, 33)
         Me.Company_ComboB.TabIndex = 8
-        Me.Company_ComboB.Text = "   Select Company"
         '
         'Employee_GroupB
         '
@@ -2015,13 +2035,15 @@ Partial Class frmPayout
         '
         'Send_BTN
         '
+        Me.Send_BTN.BackColor = System.Drawing.Color.DarkSalmon
+        Me.Send_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.Send_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Send_BTN.Location = New System.Drawing.Point(458, 538)
         Me.Send_BTN.Name = "Send_BTN"
         Me.Send_BTN.Size = New System.Drawing.Size(93, 50)
         Me.Send_BTN.TabIndex = 103
         Me.Send_BTN.Text = "Send"
-        Me.Send_BTN.UseVisualStyleBackColor = True
+        Me.Send_BTN.UseVisualStyleBackColor = False
         '
         'ReportViewer_payslip
         '
@@ -2079,13 +2101,13 @@ Partial Class frmPayout
         '
         'Payslip_paydate_Combo
         '
+        Me.Payslip_paydate_Combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.Payslip_paydate_Combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Payslip_paydate_Combo.FormattingEnabled = True
         Me.Payslip_paydate_Combo.Location = New System.Drawing.Point(73, 148)
         Me.Payslip_paydate_Combo.Name = "Payslip_paydate_Combo"
-        Me.Payslip_paydate_Combo.Size = New System.Drawing.Size(272, 33)
+        Me.Payslip_paydate_Combo.Size = New System.Drawing.Size(226, 33)
         Me.Payslip_paydate_Combo.TabIndex = 97
-        Me.Payslip_paydate_Combo.Text = "   Select Date"
         '
         'frmPayout
         '
@@ -2298,4 +2320,5 @@ Partial Class frmPayout
     Friend WithEvents subTotal_lbl As Label
     Friend WithEvents rbAllActive As RadioButton
     Friend WithEvents cbCategoryAdd As ComboBox
+    Friend WithEvents btnPrint As Button
 End Class

@@ -2115,7 +2115,7 @@ A
         Rpt_PI.LocalReport.DataSources.Clear()
         Dim PAYDATE_start As DateTime = Allow_Paydate_Combo.Text
         Dim PAYDATE_end As New DateTime(PAYDATE_start.Year, PAYDATE_start.Month, System.DateTime.DaysInMonth(PAYDATE_start.Year, PAYDATE_start.Month))
-        Dim FULLNAME As String
+        Dim FULLNAME As String = Nothing
 
         Try
 

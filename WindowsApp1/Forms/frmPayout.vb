@@ -1,8 +1,13 @@
 ﻿Imports System.Globalization
-Imports System.Text.RegularExpressions
-Imports Microsoft.Reporting.WinForms
 Imports System.IO
-Imports System.Threading
+Imports System.Text.RegularExpressions
+Imports iTextSharp.text
+Imports iTextSharp.text.pdf
+Imports Microsoft.Reporting.WinForms
+Imports PdfSharp.Pdf
+Imports PdfSharp.Pdf.IO
+Imports Syncfusion.Pdf.Lists
+Imports PdfReader = iTextSharp.text.pdf.PdfReader
 
 Public Class frmPayout
 
@@ -142,7 +147,7 @@ Public Class frmPayout
                         row.Height = 25
                     Next
                     Allowance_grid.Height = totalRowHeight
-                    Allowance_grid.DefaultCellStyle.Font = New Font("Dubai", 11)
+                    'Allowance_grid.DefaultCellStyle.Font = New Font("Dubai", 11) 'TODO FONT
                 End If
 
             End If
@@ -159,7 +164,7 @@ Public Class frmPayout
                         row.Height = 25
                     Next
                     Deduction_grid.Height = totalRowHeight
-                    Deduction_grid.DefaultCellStyle.Font = New Font("Dubai", 11)
+                    'Deduction_grid.DefaultCellStyle.Font = New Font("Dubai", 11) 'TODO FONT
                 End If
 
             End If
@@ -668,6 +673,48 @@ Public Class frmPayout
 
     End Sub
 
+    Private Sub btnPrint_Click(sender As Object, e As EventArgs) Handles btnPrint.Click
+
+        Dim datee As DateTime
+
+        If Payslip_paydate_Combo.SelectedIndex >= 0 Then
+            datee = Payslip_paydate_Combo.Text
+        Else
+            MsgBox("Please Select Payroll.", MsgBoxStyle.Exclamation, "INVALID")
+            Exit Sub
+        End If
+
+        If All_RadioB.Checked = True OrElse rbAllActive.Checked = True Then
+
+            Print_Payslip_All()
+
+        ElseIf Company_RadioB.Checked = True Then
+
+            If Company_ComboB.SelectedIndex >= 0 Then
+                Print_Payslip_By("COMPANY", Company_ComboB.Text)
+            Else
+                MsgBox("Please Select Company.", MsgBoxStyle.Exclamation, "INVALID")
+            End If
+
+        ElseIf Branch_RadioB.Checked = True Then
+
+            If Branch_ComboB.SelectedIndex >= 0 Then
+                Print_Payslip_By("BRANCHCODE", Branch_ComboB.Text)
+            Else
+                MsgBox("Please Select Branch.", MsgBoxStyle.Exclamation, "INVALID")
+            End If
+
+        Else
+
+            If Employee_TXT.Tag <> Nothing Then
+                Print_Payslip_By("BIOMETRICID", Employee_TXT.Tag)
+            Else
+                MsgBox("Please Select Employee.", MsgBoxStyle.Exclamation, "INVALID")
+            End If
+
+        End If
+    End Sub
+
     Private Sub Calculate_NetPay()
 
         Dim CONTRIB As Decimal = CDbl(SSSComp_LBL.Text) + CDbl(HDMF_LBL.Text) + CDbl(Philhealth_LBL.Text)
@@ -787,7 +834,7 @@ Public Class frmPayout
             ElseIf Branch_RadioB.Checked = True Then
 
                 If Branch_ComboB.SelectedIndex >= 0 Then
-                    Payslip_By("BRANCH_CODE", Branch_ComboB.Text)
+                    Payslip_By("BRANCHCODE", Branch_ComboB.Text)
 
                     SaveLogs($"PAYSLIP EMAILED PER BRANCH - {Branch_ComboB.Text}, Payroll({datee.ToString("MMM dd, yyyy")})", frmMainForm.UserName_LBL.Text)
                 Else
@@ -818,7 +865,121 @@ Public Class frmPayout
 
             End If
         End If
+    End Sub
 
+    Private Sub Print_Payslip_All(Optional allActive As Boolean = False)
+        Dim payDate As DateTime = DateTime.Parse(Payslip_paydate_Combo.Text)
+
+        Dim query As String = $"
+             SELECT A.BIOMETRIC_ID, 
+                    LASTNAME || ', ' || FIRSTNAME ||
+                    CASE WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' ELSE '' END ||
+                    CASE WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX ELSE '' END AS FULLNAME
+             FROM payroll_payout A
+             INNER JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_ID 
+             WHERE (paydate = '{payDate:yyyy-MM-dd}' AND EMAIL_SENT = 1)
+             AND NOT EXISTS (
+                     SELECT 1
+                     FROM USER_ACCESSIBILITY UA
+                     WHERE UA.COMPANY = B.COMPANY
+                     AND UA.USERID = {userID})
+             ORDER BY A.BIOMETRIC_ID;"
+
+        Using ds As DataSet = LoadSQL(query, "payroll_payout")
+            If ds.Tables(0).Rows.Count = 0 Then
+                MsgBox("No payslips have been emailed.", MsgBoxStyle.Information, "Information")
+                Exit Sub
+            End If
+
+            progressBarStart(ds.Tables(0).Rows.Count)
+
+            Using fbd As New FolderBrowserDialog()
+                fbd.Description = "Select folder to save individual payslips"
+                If fbd.ShowDialog() <> DialogResult.OK Then Exit Sub
+
+                Dim folderPath As String = Path.Combine(fbd.SelectedPath, $"Payslips_{payDate:MMddyyyy}")
+                If Not Directory.Exists(folderPath) Then
+                    Directory.CreateDirectory(folderPath)
+                End If
+
+                For Each dr As DataRow In ds.Tables(0).Rows
+                    Dim bioId As String = dr("BIOMETRIC_ID").ToString()
+                    Dim fullName As String = dr("FULLNAME").ToString()
+
+                    LoadPayslip(bioId, Payslip_paydate_Combo.Text)
+                    Dim pdfBytes As Byte() = ReportViewer_payslip.LocalReport.Render("PDF")
+
+                    Dim safeName As String = String.Concat(fullName.Split(Path.GetInvalidFileNameChars()))
+                    Dim filePath As String = Path.Combine(folderPath, $"{safeName}.pdf")
+
+                    File.WriteAllBytes(filePath, pdfBytes)
+
+                    frmMainForm.AppProgressBar.Value += 1
+                Next
+            End Using
+
+            progressBarEnd()
+            MessageBox.Show("All payslips saved successfully!", "Done", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        End Using
+    End Sub
+
+    Private Sub Print_Payslip_By(tbl_column As String, column_value As String)
+        Dim payDate As DateTime = DateTime.Parse(Payslip_paydate_Combo.Text)
+        Dim query As String = $"Select A.*, B.*, B.id as emp_id,
+                                    LASTNAME || ', ' || FIRSTNAME || 
+                                    CASE
+                                        WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
+                                        ELSE ''
+                                    END || 
+                                    CASE 
+                                        WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX
+                                        ELSE ''
+                                    END AS FULLNAME 
+                                    FROM PAYROLL_PAYOUT A 
+                                    INNER JOIN TBL_EMPLOYEE B on B.BIOMETRICID = A.BIOMETRIC_ID   
+                                    WHERE (PAYDATE = '{payDate:yyyy-MM-dd}' AND EMAIL_SENT = 1 AND B.{tbl_column} = '{column_value}')                           
+                                    AND NOT EXISTS (
+                                            SELECT 1
+                                            FROM USER_ACCESSIBILITY UA
+                                            WHERE UA.COMPANY = B.COMPANY
+                                            AND UA.USERID = {userID});"
+
+        Using ds As DataSet = LoadSQL(query, "payroll_payout")
+            If ds.Tables(0).Rows.Count = 0 Then
+                MsgBox("No payslips have been emailed.", MsgBoxStyle.OkOnly, "Information")
+                Exit Sub
+            End If
+
+            progressBarStart(ds.Tables(0).Rows.Count)
+
+            Using fbd As New FolderBrowserDialog()
+                fbd.Description = "Select folder to save individual payslips"
+                If fbd.ShowDialog() <> DialogResult.OK Then Exit Sub
+
+                Dim folderPath As String = Path.Combine(fbd.SelectedPath, $"Payslips_{payDate:MMddyyyy}")
+                If Not Directory.Exists(folderPath) Then
+                    Directory.CreateDirectory(folderPath)
+                End If
+
+                For Each dr As DataRow In ds.Tables(0).Rows
+                    Dim bioId As String = dr("BIOMETRIC_ID").ToString()
+                    Dim fullName As String = dr("FULLNAME").ToString()
+
+                    LoadPayslip(bioId, Payslip_paydate_Combo.Text)
+                    Dim pdfBytes As Byte() = ReportViewer_payslip.LocalReport.Render("PDF")
+
+                    Dim safeName As String = String.Concat(fullName.Split(Path.GetInvalidFileNameChars()))
+                    Dim filePath As String = Path.Combine(folderPath, $"{safeName}.pdf")
+
+                    File.WriteAllBytes(filePath, pdfBytes)
+
+                    frmMainForm.AppProgressBar.Value += 1
+                Next
+            End Using
+
+            progressBarEnd()
+            MessageBox.Show("All payslips saved successfully!", "Done", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        End Using
     End Sub
 
     Private Sub Payslip_All(Optional allActive As Boolean = False)
