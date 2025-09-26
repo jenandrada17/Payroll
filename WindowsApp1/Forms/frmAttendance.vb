@@ -2171,6 +2171,9 @@ Public Class frmAttendance
             eCell = eSheet.UsedRange
             Dim row As Integer
 
+            'Dim connStr As String = $"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={Path_TXT.Text};Extended Properties='Excel 12.0 Xml;HDR=YES';"
+            'MyConnection = New System.Data.OleDb.OleDbConnection(connStr)
+
             MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path_TXT.Text}';Extended Properties=Excel 8.0;")
             MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
             MyCommand.TableMappings.Add("Table", "Net-informations.com")
@@ -2206,6 +2209,7 @@ Public Class frmAttendance
             eApp.Quit()
 
         Catch ex As Exception
+            Console.WriteLine(ex.ToString)
             MsgBox("Excel is open or inaccessible!" & vbNewLine & ex.ToString, MsgBoxStyle.Critical, "Error")
         End Try
     End Sub
@@ -2328,25 +2332,42 @@ Public Class frmAttendance
                     TIME_OUT = GetTimeInOut(biometric_No).Time_out
                 End If
 
-                '============================== TOTAL SPECIAL HOLIDAY BASE ON TOTAL HOURS OF DUTY ==================== 
+
+
+                '============================== TOTAL SPECIAL HOLIDAY BASE ON TOTAL HOURS OF DUTY ====================
                 If DataeXIST($" PAYROLL_HOLIDAY WHERE DATEE = '{DATEE.ToString("MMMM d")}' AND KINDS = 'SPECIAL'") Then
 
-                    If DataeXIST($" PAYROLL_SCHEDULE WHERE BIO_NO = '{biometric_No}' AND DATEE = '{DATEE.ToShortDateString}'") Then
-                        Dim list_ As New List(Of String)
-                        list_.Add(row.Cells(1).Value)
-                        list_.Add(row.Cells(2).Value)
-                        list_.Add(row.Cells(3).Value)
-                        list_.Add(row.Cells(4).Value)
-                        list_ = list_.Where(Function(s) Not String.IsNullOrEmpty(s)).ToList()
+                    Dim list_ As New List(Of String)
+                    list_.Add(row.Cells(1).Value)
+                    list_.Add(row.Cells(2).Value)
+                    list_.Add(row.Cells(3).Value)
+                    list_.Add(row.Cells(4).Value)
+                    list_ = list_.Where(Function(s) Not String.IsNullOrEmpty(s)).ToList()
 
-                        'specHoliday_hrs
-                        Dim hrs As Integer = GetSpecial_hrs(list_.First, list_.Last, biometric_No)
-                        Dim hrss As Integer = hrs / 8
-                        Dim hrsss As Integer = hrss * 8
-                        specHoliday_hrs += hrsss
-                    End If
-
+                    'specHoliday_hrs
+                    Dim hrs As Integer = GetSpecial_hrs(list_.First, list_.Last, biometric_No)
+                    specHoliday_hrs += hrs
                 End If
+
+                ''============================== TOTAL SPECIAL HOLIDAY BASE ON TOTAL HOURS OF DUTY ==================== 
+                'If DataeXIST($" PAYROLL_HOLIDAY WHERE DATEE = '{DATEE.ToString("MMMM d")}' AND KINDS = 'SPECIAL'") Then
+
+                '    If DataeXIST($" PAYROLL_SCHEDULE WHERE BIO_NO = '{biometric_No}' AND DATEE = '{DATEE.ToShortDateString}'") Then
+                '        Dim list_ As New List(Of String)
+                '        list_.Add(row.Cells(1).Value)
+                '        list_.Add(row.Cells(2).Value)
+                '        list_.Add(row.Cells(3).Value)
+                '        list_.Add(row.Cells(4).Value)
+                '        list_ = list_.Where(Function(s) Not String.IsNullOrEmpty(s)).ToList()
+
+                '        'specHoliday_hrs
+                '        Dim hrs As Integer = GetSpecial_hrs(list_.First, list_.Last, biometric_No)
+                '        Dim hrss As Integer = hrs / 8
+                '        Dim hrsss As Integer = hrss * 8
+                '        specHoliday_hrs += hrsss
+                '    End If
+
+                'End If
 
                 CalculateLATE(row, TIME_IN)
 
