@@ -665,6 +665,48 @@ Public Class frmPayout
             Remittance_LBL.Text = Remittance_LBL.Tag
             RemitOff_BTN.Text = "OFF"
         End If
+
+        Calculate_NetPay()
+
+        'HOLD SALARY
+        Dim Hold_Salary As Boolean = GetDataBoolean("HOLD_SALARY", $"TBL_EMPLOYEE WHERE BIOMETRICID = {BiometricID_TXT.Text}")
+        If Hold_Salary And RemitOff_BTN.Text = "ON" Then
+
+            If CDec(NetPay_LBL.Text) > 0 Then
+
+                Deduction_grid.Visible = True
+                Dim rowId As Integer = Deduction_grid.Rows.Add()
+                Dim row As DataGridViewRow = Deduction_grid.Rows(rowId)
+                Dim amountt As Double = NetPay_LBL.Text
+
+                row.Cells(0).Value = "HOLD SALARY"
+                row.Cells(0).Tag = amountt
+                row.Cells(1).Value = amountt.ToString("N")
+                row.Cells(3).Value = "OFF"
+
+                CancelAdd_BTN.PerformClick()
+                Additional_Panel.Visible = False
+
+                AdjustHeightOfGridBasedOnRows(Deduction_grid)
+                Calculate_Deduction()
+            End If
+
+        ElseIf Hold_Salary And RemitOff_BTN.Text = "OFF" Then
+            ' Remove any HOLD SALARY row if it exists
+            If CDbl(Remittance_LBL.Text) > 0 Then
+
+                For Each row As DataGridViewRow In Deduction_grid.Rows
+                    If Not row.IsNewRow AndAlso row.Cells(0).Value?.ToString() = "HOLD SALARY" Then
+                        Deduction_grid.Rows.Remove(row)
+                        Exit For ' Remove only one instance (the first match)
+                    End If
+                Next
+
+                AdjustHeightOfGridBasedOnRows(Deduction_grid)
+                Calculate_Deduction()
+            End If
+        End If
+
         Calculate_NetPay()
     End Sub
 
@@ -752,7 +794,7 @@ Public Class frmPayout
         '    'Remittance_LBL.Text = 0.00
         '    positive = FormatNumber(CDec(GrossAmount_LBL.Tag) + CDec(Allowances_LBL.Tag))
         '    negative = FormatNumber(CDec(Deduction_LBL.Tag))
-        'End If
+        'End If 
 
         Dim positive, negative As Decimal
         positive = FormatNumber(CDec(GrossAmount_LBL.Tag) + CDec(Allowances_LBL.Tag))
