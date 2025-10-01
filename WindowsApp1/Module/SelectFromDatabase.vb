@@ -692,6 +692,26 @@ Module SelectFromDatabase
         End Using
     End Sub
 
+    Public Function GetFirst_SSSComp(BIO_NO As String, paydate As String) As Decimal
+        Dim first_SSSComp As Decimal
+
+        Dim paydate_ As DateTime = Convert.ToDateTime(paydate)
+        paydate_ = paydate_.ToString("d")
+
+        Dim first_payroll = New DateTime(paydate_.Year, paydate_.Month, 15)
+
+        Dim sql As String = $"Select * FROM PAYROLL_PAYOUT where BIOMETRIC_ID = '{BIO_NO}' and PAYDATE = '{first_payroll.ToString("d")}'"
+        Using ds As DataSet = LoadSQL(sql, "PAYROLL_PAYOUT")
+            If ds.Tables(0).Rows.Count > 0 Then
+                first_SSSComp = ds.Tables(0).Rows(0).Item("SSS_COMP")
+            Else
+                first_SSSComp = 0
+            End If
+        End Using
+
+        Return first_SSSComp
+    End Function
+
     Public Function GetFirst_Basic(BIO_NO As String, paydate As String) As Decimal
         Dim first_Basic As Decimal
 
@@ -703,11 +723,7 @@ Module SelectFromDatabase
         Dim sql As String = $"Select * FROM PAYROLL_PAYOUT where BIOMETRIC_ID = '{BIO_NO}' and PAYDATE = '{first_payroll.ToString("d")}'"
         Using ds As DataSet = LoadSQL(sql, "PAYROLL_PAYOUT")
             If ds.Tables(0).Rows.Count > 0 Then
-                For Each dr In ds.Tables(0).Rows
-                    With dr
-                        first_Basic = .Item("TOTAL_BASIC")
-                    End With
-                Next
+                first_Basic = ds.Tables(0).Rows(0).Item("TOTAL_BASIC")
             Else
                 first_Basic = 0
             End If

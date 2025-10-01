@@ -1643,7 +1643,8 @@ Module SaveUpdate
 
                             If ThisNotIsNull("SSSNO", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo} ") Then 'IF HAS SSSNO DETAILS 
                                 Get_SSS(monthly_Basic)
-                                SSSComp = SSSEE
+                                Dim firstSSSComp As Decimal = GetFirst_SSSComp(bioNo, paydate_)
+                                SSSComp = SSSEE - firstSSSComp
                                 SSS_ER = SSSER
                                 SSS_EC = SSSEC
                             End If
@@ -1651,8 +1652,14 @@ Module SaveUpdate
                             If ThisNotIsNull("PAGIBIG", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo}") Then PagibigComp = Get_Pagibig(monthly_Basic)
                             If ThisNotIsNull("PHILHEALTHNO", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo}") Then PhilhealthComp = Get_PhilHealth(monthly_Basic)
                         End If
+                    Else
+                        If bioNo <> 58 Then
+                            If ThisNotIsNull("SSSNO", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo} ") Then 'IF HAS SSSNO DETAILS 
+                                Get_SSS(TotalBasic)
+                                SSSComp = SSSEE
+                            End If
+                        End If
                     End If
-
 
                     ''============================================= DELETE ALLOWANCE AND DEDUCTION TO REPLACE =================================================
                     Replacing($"RECORDED_ALLOW_DEDUC where BIO_NO = '{bioNo}' and PAYDATE = '{paydate_}';")
