@@ -1643,14 +1643,21 @@ Module SaveUpdate
 
                             If ThisNotIsNull("SSSNO", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo} ") Then 'IF HAS SSSNO DETAILS 
                                 Get_SSS(monthly_Basic)
-                                Dim firstSSSComp As Decimal = GetFirst_SSSComp(bioNo, paydate_)
+                                Dim firstSSSComp As Decimal = GetFirst_Conttrib(bioNo, paydate_, "SSS_COMP")
                                 SSSComp = SSSEE - firstSSSComp
                                 SSS_ER = SSSER
                                 SSS_EC = SSSEC
                             End If
 
-                            If ThisNotIsNull("PAGIBIG", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo}") Then PagibigComp = Get_Pagibig(monthly_Basic)
-                            If ThisNotIsNull("PHILHEALTHNO", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo}") Then PhilhealthComp = Get_PhilHealth(monthly_Basic)
+                            If ThisNotIsNull("PAGIBIG", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo}") Then
+                                Dim firstPAGIBIGComp As Decimal = GetFirst_Conttrib(bioNo, paydate_, "PAGIBIG_COMP")
+                                PagibigComp = Get_Pagibig() - firstPAGIBIGComp
+                            End If
+
+                            If ThisNotIsNull("PHILHEALTHNO", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo}") Then
+                                Dim firstPHIL_Comp As Decimal = GetFirst_Conttrib(bioNo, paydate_, "PHILHEALTH_COMP")
+                                PhilhealthComp = Get_PhilHealth(monthly_Basic) - firstPHIL_Comp
+                            End If
                         End If
                     Else
                         If bioNo <> 58 Then
@@ -1659,6 +1666,9 @@ Module SaveUpdate
                                 SSSComp = SSSEE
                             End If
                         End If
+
+                        If ThisNotIsNull("PAGIBIG", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo}") Then PagibigComp = Get_Pagibig() / 2
+                        If ThisNotIsNull("PHILHEALTHNO", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo}") Then PhilhealthComp = Get_PhilHealth(TotalBasic) / 2
                     End If
 
                     ''============================================= DELETE ALLOWANCE AND DEDUCTION TO REPLACE =================================================
@@ -1908,14 +1918,19 @@ Module SaveUpdate
 
                     Dim CONTRIB As Decimal = SSSComp + PagibigComp + PhilhealthComp
 
+                    'Dim positive, negative As Decimal
+                    'If IsLastDay(paydate_) Then
+                    '    positive = GrossAmount + Allowances
+                    '    negative = CONTRIB + Deduction
+                    'Else
+                    '    positive = GrossAmount + Allowances
+                    '    negative = Deduction
+                    'End If
+
+                    ''======= CONTRIBUTION HAS SPLIT INTO EVERY PAYROLL =======
                     Dim positive, negative As Decimal
-                    If IsLastDay(paydate_) Then
-                        positive = GrossAmount + Allowances
-                        negative = CONTRIB + Deduction
-                    Else
-                        positive = GrossAmount + Allowances
-                        negative = Deduction
-                    End If
+                    positive = GrossAmount + Allowances
+                    negative = CONTRIB + Deduction
 
                     NetPay = positive - negative
 

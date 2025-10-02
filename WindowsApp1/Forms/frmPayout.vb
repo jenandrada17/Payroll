@@ -107,34 +107,58 @@ Public Class frmPayout
                 NightTime_TXT.Text = 0
             End If
 
-            '============================ CHECK IF NOT TRAINEE ==================================  
-            If TrainingDays_LBL.Text = 0 Or TrainingDays_LBL.Text = Nothing Then
-                Training_GB.Visible = False
-                '============================ CHECK IF CLOSE PAYROLL ==================================  
-                If IsLastDay(paydate_) Then
-                    If BIO_NO <> 58 Then
+            ''============================ CHECK IF NOT TRAINEE ==================================  
+            'If TrainingDays_LBL.Text = 0 Or TrainingDays_LBL.Text = Nothing Then
+            '    Training_GB.Visible = False
+            '    '============================ CHECK IF CLOSE PAYROLL ==================================  
+            '    If IsLastDay(paydate_) Then
+            '        If BIO_NO <> 58 Then
 
-                        Dim monthly_Basic As Double = GetMonthly_Basic(BIO_NO, paydate_)
-                        Prev_Amount_lbl.Text = (GetFirst_Basic(BIO_NO, paydate_)).ToString("N")
+            '            Dim monthly_Basic As Double = GetMonthly_Basic(BIO_NO, paydate_)
+            '            Prev_Amount_lbl.Text = (GetFirst_Basic(BIO_NO, paydate_)).ToString("N")
 
-                        Previous_groupB.Visible = True
+            '            Previous_groupB.Visible = True
 
-                        Remittance_LBL.Text = (CDbl(SSSComp_LBL.Text) + CDbl(HDMF_LBL.Text) + CDbl(Philhealth_LBL.Text)).ToString(”N”)
-                        Remittance_LBL.Tag = (CDbl(SSSComp_LBL.Text) + CDbl(HDMF_LBL.Text) + CDbl(Philhealth_LBL.Text)).ToString(”N”)
+            '            Remittance_LBL.Text = (CDbl(SSSComp_LBL.Text) + CDbl(HDMF_LBL.Text) + CDbl(Philhealth_LBL.Text)).ToString(”N”)
+            '            Remittance_LBL.Tag = (CDbl(SSSComp_LBL.Text) + CDbl(HDMF_LBL.Text) + CDbl(Philhealth_LBL.Text)).ToString(”N”)
 
-                        sched_deduc = "CLOSE PAYROLL"
-                    End If
+            '            sched_deduc = "CLOSE PAYROLL"
+            '        End If
 
-                Else
-                    Previous_groupB.Visible = False
-                    Remittance_LBL.Text = Zeroo
+            '    Else
+            '        Previous_groupB.Visible = False
+            '        Remittance_LBL.Text = Zeroo
 
-                    sched_deduc = "OPEN PAYROLL"
+            '        sched_deduc = "OPEN PAYROLL"
+            '    End If
+            'Else
+            '    Remittance_LBL.Text = Zeroo
+            '    Training_GB.Visible = True
+            'End If 
+
+            '============================ WITHOUT TRAINING (REMOVED) ============================== 
+            '============================ CHECK IF CLOSE PAYROLL ==================================  
+
+            If CDec(Rate_TXT.Text) > 0 Then
+                Remittance_LBL.Text = (CDbl(SSSComp_LBL.Text) + CDbl(HDMF_LBL.Text) + CDbl(Philhealth_LBL.Text)).ToString(”N”)
+                Remittance_LBL.Tag = (CDbl(SSSComp_LBL.Text) + CDbl(HDMF_LBL.Text) + CDbl(Philhealth_LBL.Text)).ToString(”N”)
+            End If
+
+            If IsLastDay(paydate_) Then
+                If BIO_NO <> 58 Then
+
+                    Dim monthly_Basic As Double = GetMonthly_Basic(BIO_NO, paydate_)
+                    Prev_Amount_lbl.Text = (GetFirst_Basic(BIO_NO, paydate_)).ToString("N")
+
+                    Previous_groupB.Visible = True
+
+                    sched_deduc = "CLOSE PAYROLL"
                 End If
             Else
-                Remittance_LBL.Text = Zeroo
-                Training_GB.Visible = True
+                Previous_groupB.Visible = False
+                sched_deduc = "OPEN PAYROLL"
             End If
+
 
             '================ FETCHING ALLOWANCE RECORDED WHEN ATTENDANCE BIOMETRIC IMPORTED ================== 
             If isExist_String("RECORDED_ALLOW_DEDUC", $"WHERE BIO_NO = '{BIO_NO}' AND PAYDATE = '{paydate_}' AND TRANSAC_NAME = 'ALLOWANCE'") Then
@@ -719,15 +743,20 @@ Public Class frmPayout
 
         Dim CONTRIB As Decimal = CDbl(SSSComp_LBL.Text) + CDbl(HDMF_LBL.Text) + CDbl(Philhealth_LBL.Text)
 
+        '============ SWITCH TO EVERY PAYROLL DISTRIBUTION ==========
+        'Dim positive, negative As Decimal
+        'If IsLastDay(paydate_) Then
+        '    positive = FormatNumber(CDec(GrossAmount_LBL.Tag) + CDec(Allowances_LBL.Tag))
+        '    negative = FormatNumber(CONTRIB + CDec(Deduction_LBL.Tag))
+        'Else
+        '    'Remittance_LBL.Text = 0.00
+        '    positive = FormatNumber(CDec(GrossAmount_LBL.Tag) + CDec(Allowances_LBL.Tag))
+        '    negative = FormatNumber(CDec(Deduction_LBL.Tag))
+        'End If
+
         Dim positive, negative As Decimal
-        If IsLastDay(paydate_) Then
-            positive = FormatNumber(CDec(GrossAmount_LBL.Tag) + CDec(Allowances_LBL.Tag))
-            negative = FormatNumber(CONTRIB + CDec(Deduction_LBL.Tag))
-        Else
-            Remittance_LBL.Text = 0.00
-            positive = FormatNumber(CDec(GrossAmount_LBL.Tag) + CDec(Allowances_LBL.Tag))
-            negative = FormatNumber(CDec(Deduction_LBL.Tag))
-        End If
+        positive = FormatNumber(CDec(GrossAmount_LBL.Tag) + CDec(Allowances_LBL.Tag))
+        negative = FormatNumber(CONTRIB + CDec(Deduction_LBL.Tag))
 
         NetPay_LBL.Text = FormatNumber(positive - negative)
         NetPay_LBL.Tag = FormatNumber(positive - negative)

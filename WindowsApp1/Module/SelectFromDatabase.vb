@@ -692,7 +692,7 @@ Module SelectFromDatabase
         End Using
     End Sub
 
-    Public Function GetFirst_SSSComp(BIO_NO As String, paydate As String) As Decimal
+    Public Function GetFirst_Conttrib(BIO_NO As String, paydate As String, column As String) As Decimal
         Dim first_SSSComp As Decimal
 
         Dim paydate_ As DateTime = Convert.ToDateTime(paydate)
@@ -700,10 +700,10 @@ Module SelectFromDatabase
 
         Dim first_payroll = New DateTime(paydate_.Year, paydate_.Month, 15)
 
-        Dim sql As String = $"Select * FROM PAYROLL_PAYOUT where BIOMETRIC_ID = '{BIO_NO}' and PAYDATE = '{first_payroll.ToString("d")}'"
+        Dim sql As String = $"Select {column} FROM PAYROLL_PAYOUT where BIOMETRIC_ID = '{BIO_NO}' and PAYDATE = '{first_payroll.ToString("d")}'"
         Using ds As DataSet = LoadSQL(sql, "PAYROLL_PAYOUT")
             If ds.Tables(0).Rows.Count > 0 Then
-                first_SSSComp = ds.Tables(0).Rows(0).Item("SSS_COMP")
+                first_SSSComp = ds.Tables(0).Rows(0).Item(0)
             Else
                 first_SSSComp = 0
             End If
@@ -789,7 +789,7 @@ Module SelectFromDatabase
     Friend SSSEC As Decimal = 0
     Friend SSSTOTAL As Decimal = 0
 
-    Public Sub Get_SSS(monthly_Basic As Decimal)
+    Public Sub Get_SSS(total_Basic As Decimal)
         SSSEE = 0
         SSSER = 0
         SSSEC = 0
@@ -812,7 +812,7 @@ Module SelectFromDatabase
                             strWords(2) = 200000 '200,000 Monthly income
                         End If
 
-                        If (Enumerable.Range(strWords(0), strWords.Last).Contains(monthly_Basic)) Then
+                        If (Enumerable.Range(strWords(0), strWords.Last).Contains(total_Basic)) Then
                             SSSEE = .Item("RSS_EE")
                             SSSER = .Item("RSS_ER")
                             SSSEC = .Item("EC_TOTAL")
@@ -842,8 +842,8 @@ Module SelectFromDatabase
         End If
     End Sub
 
-    Public Function Get_Pagibig(monthly_Basic As Decimal) As Decimal
-        Dim pagibig As Decimal
+    Public Function Get_Pagibig() As Decimal
+        Dim pagibig As Decimal = 0
 
         Dim mysql As String = $"Select * FROM PAYROLL_PAGIBIG"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAGIBIG")
@@ -858,26 +858,22 @@ Module SelectFromDatabase
         Return pagibig
     End Function
 
-    Public Function Get_PhilHealth(monthly_Basic As Decimal) As Decimal
-        Dim philhealth As Decimal
+    Public Function Get_PhilHealth(total_Basic As Decimal) As Decimal
+        Dim philhealth As Decimal = 0
 
         Dim mysql As String = $"Select * FROM PAYROLL_PHILHEALTH"
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PHILHEALTH")
             If ds.Tables(0).Rows.Count > 0 Then
-                For Each dr In ds.Tables(0).Rows
-                    With dr
-                        Dim convertTopercent As Decimal = .Item("PREMIUM_RATE") / 100
-                        Dim total As Decimal
+                Dim convertTopercent As Decimal = ds.Tables(0).Rows(0).Item("PREMIUM_RATE") / 100
+                Dim total As Decimal
 
-                        If monthly_Basic <= 10000 Then
-                            total = 10000 * convertTopercent
-                            philhealth = total / 2
-                        Else
-                            total = monthly_Basic * convertTopercent
-                            philhealth = total / 2
-                        End If
-                    End With
-                Next
+                If total_Basic <= 10000 Then
+                    total = 10000 * convertTopercent
+                    philhealth = total / 2
+                Else
+                    total = total_Basic * convertTopercent
+                    philhealth = total / 2
+                End If
             End If
         End Using
 
@@ -887,7 +883,7 @@ Module SelectFromDatabase
     Public Function Get_Taxable(monthly_Basic As String) As Decimal
         Get_SSS((monthly_Basic))
         Dim sss As Decimal = SSSEE
-        Dim pagibig As Decimal = Get_Pagibig(monthly_Basic)
+        Dim pagibig As Decimal = Get_Pagibig()
         Dim philhealth As Decimal = Get_PhilHealth(monthly_Basic)
         Dim taxable As Decimal
 
