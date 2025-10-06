@@ -38,8 +38,6 @@ Partial Class frmReport
         Me.PG_RealtyBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.RemittanceBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.PerformanceIncentivesBindingSource = New System.Windows.Forms.BindingSource(Me.components)
-        Me.EmployeeRateBindingSource = New System.Windows.Forms.BindingSource(Me.components)
-        Me.reports = New WindowsApp1.reports()
         Me.Reports_Tab = New System.Windows.Forms.TabControl()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
         Me.Label31 = New System.Windows.Forms.Label()
@@ -207,12 +205,14 @@ Partial Class frmReport
         Me.cbDateEffectivity = New System.Windows.Forms.ComboBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.Close_LBL = New System.Windows.Forms.Label()
+        Me.Label56 = New System.Windows.Forms.Label()
+        Me.statusSBU_combo = New System.Windows.Forms.ComboBox()
+        Me.EmployeeRateBindingSource = New System.Windows.Forms.BindingSource(Me.components)
+        Me.reports = New WindowsApp1.reports()
         Me.Reports1 = New WindowsApp1.reports()
         CType(Me.PG_RealtyBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.RemittanceBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PerformanceIncentivesBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.EmployeeRateBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.reports, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Reports_Tab.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.TabPage3.SuspendLayout()
@@ -231,18 +231,10 @@ Partial Class frmReport
         Me.TabPage12.SuspendLayout()
         Me.TabPage8.SuspendLayout()
         Me.tabReassignment.SuspendLayout()
+        CType(Me.EmployeeRateBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.reports, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.Reports1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
-        '
-        'EmployeeRateBindingSource
-        '
-        Me.EmployeeRateBindingSource.DataMember = "EmployeeRate"
-        Me.EmployeeRateBindingSource.DataSource = Me.reports
-        '
-        'reports
-        '
-        Me.reports.DataSetName = "reports"
-        Me.reports.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema
         '
         'Reports_Tab
         '
@@ -1346,6 +1338,8 @@ Partial Class frmReport
         '
         'tabSBU
         '
+        Me.tabSBU.Controls.Add(Me.Label56)
+        Me.tabSBU.Controls.Add(Me.statusSBU_combo)
         Me.tabSBU.Controls.Add(Me.Label53)
         Me.tabSBU.Controls.Add(Me.PaydateSBU_Combo)
         Me.tabSBU.Controls.Add(Me.btnViewList)
@@ -1367,7 +1361,7 @@ Partial Class frmReport
         '
         Me.Label53.AutoSize = True
         Me.Label53.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label53.Location = New System.Drawing.Point(793, 31)
+        Me.Label53.Location = New System.Drawing.Point(819, 3)
         Me.Label53.Name = "Label53"
         Me.Label53.Size = New System.Drawing.Size(53, 25)
         Me.Label53.TabIndex = 139
@@ -1379,7 +1373,7 @@ Partial Class frmReport
         Me.PaydateSBU_Combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.PaydateSBU_Combo.FormattingEnabled = True
         Me.PaydateSBU_Combo.Items.AddRange(New Object() {"ALL", "PHOTO", "P&G UY", "DALTON", "PERFECOM", "PTU REALTY", "PGC HEAD OFFICE"})
-        Me.PaydateSBU_Combo.Location = New System.Drawing.Point(855, 28)
+        Me.PaydateSBU_Combo.Location = New System.Drawing.Point(824, 28)
         Me.PaydateSBU_Combo.Name = "PaydateSBU_Combo"
         Me.PaydateSBU_Combo.Size = New System.Drawing.Size(125, 33)
         Me.PaydateSBU_Combo.TabIndex = 138
@@ -1388,7 +1382,7 @@ Partial Class frmReport
         '
         Me.btnViewList.BackColor = System.Drawing.Color.LightGray
         Me.btnViewList.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnViewList.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnViewList.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.btnViewList.Location = New System.Drawing.Point(1019, 28)
         Me.btnViewList.Name = "btnViewList"
         Me.btnViewList.Size = New System.Drawing.Size(126, 33)
@@ -1400,7 +1394,7 @@ Partial Class frmReport
         '
         Me.Label51.AutoSize = True
         Me.Label51.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label51.Location = New System.Drawing.Point(467, 31)
+        Me.Label51.Location = New System.Drawing.Point(366, 3)
         Me.Label51.Name = "Label51"
         Me.Label51.Size = New System.Drawing.Size(71, 25)
         Me.Label51.TabIndex = 127
@@ -1412,7 +1406,7 @@ Partial Class frmReport
         Me.CompanySBU_CB.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.CompanySBU_CB.FormattingEnabled = True
         Me.CompanySBU_CB.Items.AddRange(New Object() {"ALL", "PHOTO", "P&G UY", "DALTON", "PERFECOM", "PTU REALTY", "HEAD OFFICE", "COMMON EMPLOYEES"})
-        Me.CompanySBU_CB.Location = New System.Drawing.Point(541, 28)
+        Me.CompanySBU_CB.Location = New System.Drawing.Point(371, 30)
         Me.CompanySBU_CB.Name = "CompanySBU_CB"
         Me.CompanySBU_CB.Size = New System.Drawing.Size(221, 33)
         Me.CompanySBU_CB.TabIndex = 126
@@ -1478,15 +1472,15 @@ Partial Class frmReport
         Me.SearchSBU_TXT.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.SearchSBU_TXT.Location = New System.Drawing.Point(4, 30)
         Me.SearchSBU_TXT.Name = "SearchSBU_TXT"
-        Me.SearchSBU_TXT.Size = New System.Drawing.Size(298, 33)
+        Me.SearchSBU_TXT.Size = New System.Drawing.Size(222, 33)
         Me.SearchSBU_TXT.TabIndex = 122
         '
         'SearchSBU_BTN
         '
         Me.SearchSBU_BTN.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.SearchSBU_BTN.Location = New System.Drawing.Point(310, 29)
+        Me.SearchSBU_BTN.Location = New System.Drawing.Point(232, 30)
         Me.SearchSBU_BTN.Name = "SearchSBU_BTN"
-        Me.SearchSBU_BTN.Size = New System.Drawing.Size(114, 33)
+        Me.SearchSBU_BTN.Size = New System.Drawing.Size(80, 33)
         Me.SearchSBU_BTN.TabIndex = 123
         Me.SearchSBU_BTN.Text = "Search"
         Me.SearchSBU_BTN.UseVisualStyleBackColor = True
@@ -2025,6 +2019,37 @@ Partial Class frmReport
         Me.Close_LBL.TabIndex = 75
         Me.Close_LBL.Text = "Close"
         '
+        'Label56
+        '
+        Me.Label56.AutoSize = True
+        Me.Label56.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label56.Location = New System.Drawing.Point(604, 2)
+        Me.Label56.Name = "Label56"
+        Me.Label56.Size = New System.Drawing.Size(86, 25)
+        Me.Label56.TabIndex = 141
+        Me.Label56.Text = "Emp. Status"
+        '
+        'statusSBU_combo
+        '
+        Me.statusSBU_combo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
+        Me.statusSBU_combo.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.statusSBU_combo.FormattingEnabled = True
+        Me.statusSBU_combo.Items.AddRange(New Object() {"ALL", "ACTIVE", "INACTIVE"})
+        Me.statusSBU_combo.Location = New System.Drawing.Point(609, 28)
+        Me.statusSBU_combo.Name = "statusSBU_combo"
+        Me.statusSBU_combo.Size = New System.Drawing.Size(125, 33)
+        Me.statusSBU_combo.TabIndex = 140
+        '
+        'EmployeeRateBindingSource
+        '
+        Me.EmployeeRateBindingSource.DataMember = "EmployeeRate"
+        Me.EmployeeRateBindingSource.DataSource = Me.reports
+        '
+        'reports
+        '
+        Me.reports.DataSetName = "reports"
+        Me.reports.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema
+        '
         'Reports1
         '
         Me.Reports1.DataSetName = "reports"
@@ -2044,8 +2069,6 @@ Partial Class frmReport
         CType(Me.PG_RealtyBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.RemittanceBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PerformanceIncentivesBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.EmployeeRateBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.reports, System.ComponentModel.ISupportInitialize).EndInit()
         Me.Reports_Tab.ResumeLayout(False)
         Me.TabPage1.ResumeLayout(False)
         Me.TabPage1.PerformLayout()
@@ -2080,6 +2103,8 @@ Partial Class frmReport
         Me.TabPage8.PerformLayout()
         Me.tabReassignment.ResumeLayout(False)
         Me.tabReassignment.PerformLayout()
+        CType(Me.EmployeeRateBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.reports, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Reports1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
@@ -2259,4 +2284,6 @@ Partial Class frmReport
     Friend WithEvents btnSearchReassign As Button
     Friend WithEvents Label55 As Label
     Friend WithEvents cbAction As ComboBox
+    Friend WithEvents Label56 As Label
+    Friend WithEvents statusSBU_combo As ComboBox
 End Class

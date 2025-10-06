@@ -222,6 +222,9 @@ Public Class frmReport
         Dim selectedCompany As String = ""
         If PaydateSBU_Combo.Text <> "" Then payDate = $"AND C.PAYDATE BETWEEN '12/31/2021' AND '{PaydateSBU_Combo.Text}'"
 
+        Dim empStatus As String = ""
+        If statusSBU_combo.SelectedIndex <> 0 Then empStatus = $" AND EMP_STATUS = '{statusSBU_combo.Text}'"
+
         If CompanySBU_CB.SelectedIndex = 1 Then '=== PHOTO
             selectedCompany = $"AND A.COMPANY  = 'PHOTO'"
         ElseIf CompanySBU_CB.SelectedIndex = 2 Then '=== P&G UY
@@ -329,11 +332,11 @@ Public Class frmReport
                                     AND C.CATEGORY = 'SBU' 
                                     {payDate}  
                                 LEFT JOIN PAYROLL_CITY_BRANCH D ON D.BRANCHCODE = A.BRANCHCODE 
-                                WHERE SOA_PATH IS NULL {selectedCompany}
+                                WHERE SOA_PATH IS NULL {empStatus} {selectedCompany}
                                 GROUP BY FULLNAME, BRANCHNAME, CREDIT, PRINCIPAL, B.AMOUNT, COMPANY, BALANCE 
                                 ORDER BY BRANCHNAME, FULLNAME ASC;"
 
-
+            TestingScript_String(mysqll)
             Using dss As DataSet = LoadSQL(mysqll, "TBL_EMPLOYEE")
                 If dss.Tables(0).Rows.Count > 0 Then
                     progressBarStart(dss.Tables(0).Rows.Count)
@@ -375,7 +378,7 @@ Public Class frmReport
                 End If
             End Using
 
-            Dim paramPaydate As String = IIf(PaydateSBU_Combo.Text = Nothing, "", $"Payroll Date: {PaydateSBU_Combo.Text}")
+            Dim paramPaydate As String = IIf(PaydateSBU_Combo.Text = Nothing, "", $"Payroll Date: {PaydateSBU_Combo.Text} - ({statusSBU_combo.Text})")
             Dim parameter As New List(Of Microsoft.Reporting.WinForms.ReportParameter) From {
                 New Microsoft.Reporting.WinForms.ReportParameter("paramPaydate", paramPaydate)
                 }
