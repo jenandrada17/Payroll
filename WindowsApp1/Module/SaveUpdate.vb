@@ -1635,25 +1635,6 @@ Module SaveUpdate
                         TotalSPECHol = 0
                     End If
 
-                    '======================== CHECK IF CLOSE PAYROLL ==================================  
-                    If payrollSched = "CLOSE PAYROLL" Then
-                        If bioNo <> 58 Then
-                            Dim first_Basic As Decimal = GetFirst_Basic(bioNo, paydate_)
-                            Dim monthly_Basic As Decimal = TotalBasic + first_Basic
-
-                            If ThisNotIsNull("SSSNO", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo} ") Then 'IF HAS SSSNO DETAILS 
-                                Get_SSS(monthly_Basic)
-                                SSSComp = SSSEE
-                                SSS_ER = SSSER
-                                SSS_EC = SSSEC
-                            End If
-
-                            If ThisNotIsNull("PAGIBIG", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo}") Then PagibigComp = Get_Pagibig()
-                            If ThisNotIsNull("PHILHEALTHNO", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo}") Then PhilhealthComp = Get_PhilHealth(monthly_Basic)
-                        End If
-                    End If
-
-                    ''FOR NEXT MONTH DIVISION OF REMITTANCE
                     ''======================== CHECK IF CLOSE PAYROLL ==================================  
                     'If payrollSched = "CLOSE PAYROLL" Then
                     '    If bioNo <> 58 Then
@@ -1662,33 +1643,52 @@ Module SaveUpdate
 
                     '        If ThisNotIsNull("SSSNO", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo} ") Then 'IF HAS SSSNO DETAILS 
                     '            Get_SSS(monthly_Basic)
-                    '            Dim firstSSSComp As Decimal = GetFirst_Conttrib(bioNo, paydate_, "SSS_COMP")
-                    '            SSSComp = SSSEE - firstSSSComp
+                    '            SSSComp = SSSEE
                     '            SSS_ER = SSSER
                     '            SSS_EC = SSSEC
                     '        End If
 
-                    '        If ThisNotIsNull("PAGIBIG", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo}") Then
-                    '            Dim firstPAGIBIGComp As Decimal = GetFirst_Conttrib(bioNo, paydate_, "PAGIBIG_COMP")
-                    '            PagibigComp = Get_Pagibig() - firstPAGIBIGComp
-                    '        End If
-
-                    '        If ThisNotIsNull("PHILHEALTHNO", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo}") Then
-                    '            Dim firstPHIL_Comp As Decimal = GetFirst_Conttrib(bioNo, paydate_, "PHILHEALTH_COMP")
-                    '            PhilhealthComp = Get_PhilHealth(monthly_Basic) - firstPHIL_Comp
-                    '        End If
+                    '        If ThisNotIsNull("PAGIBIG", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo}") Then PagibigComp = Get_Pagibig()
+                    '        If ThisNotIsNull("PHILHEALTHNO", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo}") Then PhilhealthComp = Get_PhilHealth(monthly_Basic)
                     '    End If
-                    'Else
-                    '    If bioNo <> 58 Then
-                    '        If ThisNotIsNull("SSSNO", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo} ") Then 'IF HAS SSSNO DETAILS 
-                    '            Get_SSS(TotalBasic)
-                    '            SSSComp = SSSEE
-                    '        End If
-                    '    End If
-
-                    '    If ThisNotIsNull("PAGIBIG", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo}") Then PagibigComp = Get_Pagibig() / 2
-                    '    If ThisNotIsNull("PHILHEALTHNO", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo}") Then PhilhealthComp = Get_PhilHealth(TotalBasic) / 2
                     'End If
+
+                    'FOR NEXT MONTH DIVISION OF REMITTANCE
+                    '======================== CHECK IF CLOSE PAYROLL ==================================  
+                    If payrollSched = "CLOSE PAYROLL" Then
+                        If bioNo <> 58 Then
+                            Dim first_Basic As Decimal = GetFirst_Basic(bioNo, paydate_)
+                            Dim monthly_Basic As Decimal = TotalBasic + first_Basic
+
+                            If ThisNotIsNull("SSSNO", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo} ") Then 'IF HAS SSSNO DETAILS 
+                                Get_SSS(monthly_Basic)
+                                Dim firstSSSComp As Decimal = GetFirst_Conttrib(bioNo, paydate_, "SSS_COMP")
+                                SSSComp = SSSEE - firstSSSComp
+                                SSS_ER = SSSER
+                                SSS_EC = SSSEC
+                            End If
+
+                            If ThisNotIsNull("PAGIBIG", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo}") Then
+                                Dim firstPAGIBIGComp As Decimal = GetFirst_Conttrib(bioNo, paydate_, "PAGIBIG_COMP")
+                                PagibigComp = Get_Pagibig() - firstPAGIBIGComp
+                            End If
+
+                            If ThisNotIsNull("PHILHEALTHNO", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo}") Then
+                                Dim firstPHIL_Comp As Decimal = GetFirst_Conttrib(bioNo, paydate_, "PHILHEALTH_COMP")
+                                PhilhealthComp = Get_PhilHealth(monthly_Basic) - firstPHIL_Comp
+                            End If
+                        End If
+                    Else
+                        If bioNo <> 58 Then
+                            If ThisNotIsNull("SSSNO", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo} ") Then 'IF HAS SSSNO DETAILS 
+                                Get_SSS(TotalBasic)
+                                SSSComp = SSSEE
+                            End If
+                        End If
+
+                        If ThisNotIsNull("PAGIBIG", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo}") Then PagibigComp = Get_Pagibig() / 2
+                        If ThisNotIsNull("PHILHEALTHNO", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo}") Then PhilhealthComp = Get_PhilHealth(TotalBasic) / 2
+                    End If
 
                     ''============================================= DELETE ALLOWANCE AND DEDUCTION TO REPLACE =================================================
                     Replacing($"RECORDED_ALLOW_DEDUC where BIO_NO = '{bioNo}' and PAYDATE = '{paydate_}';")
