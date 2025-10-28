@@ -1656,11 +1656,11 @@ Module SaveUpdate
                     'FOR NEXT MONTH DIVISION OF REMITTANCE
                     '======================== CHECK IF CLOSE PAYROLL ==================================  
                     If payrollSched = "CLOSE PAYROLL" Then
-                        If bioNo <> 58 Then
+                        If bioNo <> 58 And isNewEmployee(bioNo, paydate_) Then
                             Dim first_Basic As Decimal = GetFirst_Basic(bioNo, paydate_)
                             Dim monthly_Basic As Decimal = TotalBasic + first_Basic
 
-                            If ThisNotIsNull("SSSNO", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo} ") Then 'IF HAS SSSNO DETAILS 
+                            If ThisNotIsNull("SSSNO", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo} ") Then 'IF HAS SSSNO DETAILS
                                 Get_SSS(monthly_Basic)
                                 Dim firstSSSComp As Decimal = GetFirst_Conttrib(bioNo, paydate_, "SSS_COMP")
                                 SSSComp = SSSEE - firstSSSComp
@@ -1679,20 +1679,21 @@ Module SaveUpdate
                             End If
                         End If
                     Else
-                        If bioNo <> 58 Then
-                            If ThisNotIsNull("SSSNO", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo} ") Then 'IF HAS SSSNO DETAILS 
+                        If bioNo <> 58 And isNewEmployee(bioNo, paydate_) Then
+                            If ThisNotIsNull("SSSNO", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo} ") Then 'IF HAS SSSNO DETAILS
                                 Get_SSS(TotalBasic)
                                 SSSComp = SSSEE
                             End If
+
+                            If ThisNotIsNull("PAGIBIG", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo}") Then PagibigComp = Get_Pagibig() / 2
+                            If ThisNotIsNull("PHILHEALTHNO", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo}") Then PhilhealthComp = Get_PhilHealth(TotalBasic) / 2
                         End If
 
-                        If ThisNotIsNull("PAGIBIG", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo}") Then PagibigComp = Get_Pagibig() / 2
-                        If ThisNotIsNull("PHILHEALTHNO", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo}") Then PhilhealthComp = Get_PhilHealth(TotalBasic) / 2
                     End If
 
                     ''============================================= DELETE ALLOWANCE AND DEDUCTION TO REPLACE =================================================
                     Replacing($"RECORDED_ALLOW_DEDUC where BIO_NO = '{bioNo}' and PAYDATE = '{paydate_}';")
-                    '============================================= ALLOWANCE ========================================================= 
+                    '============================================= ALLOWANCE =========================================================
 
                     If SIL <> 0 Then ' FOR SIL ADDITIONAL ================================
                         Dim SIL_Total As Decimal = SIL * rate
@@ -1700,7 +1701,7 @@ Module SaveUpdate
                         Save_Recorded_Allow_Deduc(bioNo, paydate_, "SIL", SIL_Total, "ALLOWANCE")
                     End If
 
-                    If Ecola <> 0 Then ' FOR ECOLA ADDITIONAL ================================ 
+                    If Ecola <> 0 Then ' FOR ECOLA ADDITIONAL ================================
                         Allowances = Allowances + Ecola
                         Save_Recorded_Allow_Deduc(bioNo, paydate_, "ECOLA", Ecola, "ALLOWANCE")
                     End If
@@ -1719,7 +1720,7 @@ Module SaveUpdate
                                 With drr_
                                     If .item("EFFECTIVE_DATE") <= paydate_ Then
 
-                                        '============== PERFORMANCE INCENTIVES DEDUCTION IF EVER MAY ABSENT =================== 
+                                        '============== PERFORMANCE INCENTIVES DEDUCTION IF EVER MAY ABSENT ===================
                                         Dim PI As Decimal = 0
                                         Dim deduc_to_PI As Decimal = 0
 
