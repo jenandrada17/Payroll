@@ -21,6 +21,7 @@
         Lists_TimeInOut(TimeInOut_LV)
         CategoriesDropdown(cbCName, "NAME")
         Lists_City_Branch(CityBranch_List)
+        Lists_Change_Minimum_RAte(MRC_list)
 
         Dim tm As New Date(1, 1, 1, 0, 0, 0)
         For x = 1 To 48
@@ -561,4 +562,12 @@
         btnCSearch.PerformClick()
     End Sub
 
+    Private Sub btnMRateChangeSave_Click(sender As Object, e As EventArgs) Handles btnMRateChangeSave.Click
+        If txtMRCRate.Text = Nothing Then
+            MsgBox("Please input the rate.", MsgBoxStyle.Exclamation)
+        Else
+            SaveChangeMinimumRate(dtpMRCPaydate.Value, dtpMRCStartingDate.Value, txtMRCRate.Text)
+            Lists_Change_Minimum_RAte(MRC_list)
+        End If
+    End Sub
 End Class

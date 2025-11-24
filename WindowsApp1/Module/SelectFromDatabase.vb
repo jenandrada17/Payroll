@@ -4263,4 +4263,26 @@ Module SelectFromDatabase
         End Using
     End Sub
 
+    Friend Sub Lists_Change_Minimum_RAte(listview As ListView)
+        Dim mysql As String = $"Select * From CHANGE_MINIMUM_RATE ORDER BY RATE"
+
+        Using ds As DataSet = LoadSQL(mysql, "CHANGE_MINIMUM_RATE")
+            If ds.Tables(0).Rows.Count > 0 Then
+
+                listview.Items.Clear()
+                progressBarStart(ds.Tables(0).Rows.Count)
+
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+                        Dim i As ListViewItem = listview.Items.Add(.Item("PAYDATE"))
+                        i.SubItems.Add(.Item("STARTING_DATE"))
+                        i.SubItems.Add(.Item("RATE"))
+                    End With
+                    frmMainForm.AppProgressBar.Value += 1
+                Next
+            End If
+        End Using
+
+        progressBarEnd()
+    End Sub
 End Module

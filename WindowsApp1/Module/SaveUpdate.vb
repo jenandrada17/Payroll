@@ -3167,4 +3167,46 @@ Module SaveUpdate
         End Using
     End Sub
 
+
+    Friend Sub SaveChangeMinimumRate(paydate As String, startingDate As String, rate As Double)
+
+        Dim mysql As String
+
+        mysql = $"Select * FROM CHANGE_MINIMUM_RATE  WHERE PAYDATE = '{paydate}' AND STARTING_DATE = '{startingDate}' AND RATE = '{rate}'"
+        Dim ds As DataSet = LoadSQL(mysql, "CHANGE_MINIMUM_RATE ")
+        If ds.Tables(0).Rows.Count > 0 Then
+            With ds.Tables(0).Rows(0)
+
+                .Item("PAYDATE") = paydate
+                .Item("STARTING_DATE") = startingDate
+                .Item("RATE") = rate
+
+            End With
+
+            SaveEntry(ds, False)
+
+            MsgBox("Successfully Updated!", MsgBoxStyle.Information, "Information")
+
+        Else
+            mysql = "Select * From CHANGE_MINIMUM_RATE Rows 1"
+            Using dss As DataSet = LoadSQL(mysql, "CHANGE_MINIMUM_RATE")
+
+                Dim dsNewRow As DataRow = dss.Tables(0).NewRow
+                With dsNewRow
+
+                    .Item("PAYDATE") = paydate
+                    .Item("STARTING_DATE") = startingDate
+                    .Item("RATE") = rate
+
+                End With
+
+                dss.Tables(0).Rows.Add(dsNewRow)
+                SaveEntry(dss)
+
+                MsgBox("Successfully Saved!", MsgBoxStyle.Information, "Information")
+
+            End Using
+        End If
+    End Sub
+
 End Module

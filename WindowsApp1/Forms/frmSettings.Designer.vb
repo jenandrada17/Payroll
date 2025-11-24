@@ -148,6 +148,18 @@ Partial Class frmSettings
         Me.RemoveToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.FileSystemWatcher1 = New System.IO.FileSystemWatcher()
         Me.TabPage1 = New System.Windows.Forms.TabPage()
+        Me.GroupBox6 = New System.Windows.Forms.GroupBox()
+        Me.dtpMRCPaydate = New System.Windows.Forms.DateTimePicker()
+        Me.btnMRateChangeSave = New System.Windows.Forms.Button()
+        Me.Label15 = New System.Windows.Forms.Label()
+        Me.MRC_list = New System.Windows.Forms.ListView()
+        Me.ColumnHeader4 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader5 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader6 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.dtpMRCStartingDate = New System.Windows.Forms.DateTimePicker()
+        Me.Label16 = New System.Windows.Forms.Label()
+        Me.txtMRCRate = New System.Windows.Forms.TextBox()
+        Me.Label14 = New System.Windows.Forms.Label()
         Me.Settings_Tab.SuspendLayout()
         Me.TabPage5.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
@@ -163,6 +175,8 @@ Partial Class frmSettings
         Me.TabPage3.SuspendLayout()
         Me.Holiday_Remove.SuspendLayout()
         CType(Me.FileSystemWatcher1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.TabPage1.SuspendLayout()
+        Me.GroupBox6.SuspendLayout()
         Me.SuspendLayout()
         '
         'Close_LBL
@@ -179,11 +193,11 @@ Partial Class frmSettings
         '
         Me.Settings_Tab.Controls.Add(Me.TabPage5)
         Me.Settings_Tab.Controls.Add(Me.Holiday_Tab)
+        Me.Settings_Tab.Controls.Add(Me.TabPage1)
         Me.Settings_Tab.Controls.Add(Me.TabPage4)
         Me.Settings_Tab.Controls.Add(Me.TabPage7)
         Me.Settings_Tab.Controls.Add(Me.TabPage6)
         Me.Settings_Tab.Controls.Add(Me.TabPage3)
-        Me.Settings_Tab.Controls.Add(Me.TabPage1)
         Me.Settings_Tab.Font = New System.Drawing.Font("Dubai", 12.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Settings_Tab.Location = New System.Drawing.Point(10, 23)
         Me.Settings_Tab.Name = "Settings_Tab"
@@ -1442,13 +1456,138 @@ Partial Class frmSettings
         '
         'TabPage1
         '
+        Me.TabPage1.Controls.Add(Me.MRC_list)
+        Me.TabPage1.Controls.Add(Me.GroupBox6)
         Me.TabPage1.Location = New System.Drawing.Point(4, 38)
         Me.TabPage1.Name = "TabPage1"
         Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
         Me.TabPage1.Size = New System.Drawing.Size(1147, 604)
         Me.TabPage1.TabIndex = 11
-        Me.TabPage1.Text = "TabPage1"
+        Me.TabPage1.Text = "     Change Minimum Rate Date    "
         Me.TabPage1.UseVisualStyleBackColor = True
+        '
+        'GroupBox6
+        '
+        Me.GroupBox6.Controls.Add(Me.dtpMRCStartingDate)
+        Me.GroupBox6.Controls.Add(Me.Label16)
+        Me.GroupBox6.Controls.Add(Me.dtpMRCPaydate)
+        Me.GroupBox6.Controls.Add(Me.Label14)
+        Me.GroupBox6.Controls.Add(Me.btnMRateChangeSave)
+        Me.GroupBox6.Controls.Add(Me.txtMRCRate)
+        Me.GroupBox6.Controls.Add(Me.Label15)
+        Me.GroupBox6.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.GroupBox6.Location = New System.Drawing.Point(19, 21)
+        Me.GroupBox6.Name = "GroupBox6"
+        Me.GroupBox6.Size = New System.Drawing.Size(458, 302)
+        Me.GroupBox6.TabIndex = 1
+        Me.GroupBox6.TabStop = False
+        Me.GroupBox6.Text = "Information"
+        '
+        'dtpMRCPaydate
+        '
+        Me.dtpMRCPaydate.CalendarFont = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.dtpMRCPaydate.CustomFormat = ""
+        Me.dtpMRCPaydate.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.dtpMRCPaydate.Location = New System.Drawing.Point(131, 49)
+        Me.dtpMRCPaydate.Name = "dtpMRCPaydate"
+        Me.dtpMRCPaydate.Size = New System.Drawing.Size(274, 33)
+        Me.dtpMRCPaydate.TabIndex = 26
+        Me.dtpMRCPaydate.Value = New Date(2025, 11, 24, 0, 0, 0, 0)
+        '
+        'btnMRateChangeSave
+        '
+        Me.btnMRateChangeSave.BackColor = System.Drawing.Color.DarkSalmon
+        Me.btnMRateChangeSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnMRateChangeSave.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnMRateChangeSave.Location = New System.Drawing.Point(203, 246)
+        Me.btnMRateChangeSave.Name = "btnMRateChangeSave"
+        Me.btnMRateChangeSave.Size = New System.Drawing.Size(99, 37)
+        Me.btnMRateChangeSave.TabIndex = 28
+        Me.btnMRateChangeSave.Text = "Save"
+        Me.btnMRateChangeSave.UseVisualStyleBackColor = False
+        '
+        'Label15
+        '
+        Me.Label15.AutoSize = True
+        Me.Label15.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label15.Location = New System.Drawing.Point(15, 50)
+        Me.Label15.Name = "Label15"
+        Me.Label15.Size = New System.Drawing.Size(61, 25)
+        Me.Label15.TabIndex = 0
+        Me.Label15.Text = "Paydate"
+        '
+        'MRC_list
+        '
+        Me.MRC_list.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+            Or System.Windows.Forms.AnchorStyles.Left) _
+            Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.MRC_list.Columns.AddRange(New System.Windows.Forms.ColumnHeader() {Me.ColumnHeader4, Me.ColumnHeader5, Me.ColumnHeader6})
+        Me.MRC_list.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.MRC_list.FullRowSelect = True
+        Me.MRC_list.GridLines = True
+        Me.MRC_list.HideSelection = False
+        Me.MRC_list.Location = New System.Drawing.Point(523, 21)
+        Me.MRC_list.MultiSelect = False
+        Me.MRC_list.Name = "MRC_list"
+        Me.MRC_list.Size = New System.Drawing.Size(618, 551)
+        Me.MRC_list.TabIndex = 26
+        Me.MRC_list.UseCompatibleStateImageBehavior = False
+        Me.MRC_list.View = System.Windows.Forms.View.Details
+        '
+        'ColumnHeader4
+        '
+        Me.ColumnHeader4.Text = "Paydate"
+        Me.ColumnHeader4.Width = 200
+        '
+        'ColumnHeader5
+        '
+        Me.ColumnHeader5.Text = "Starting Date"
+        Me.ColumnHeader5.Width = 200
+        '
+        'ColumnHeader6
+        '
+        Me.ColumnHeader6.Text = "Rate"
+        Me.ColumnHeader6.Width = 200
+        '
+        'dtpMRCStartingDate
+        '
+        Me.dtpMRCStartingDate.CalendarFont = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.dtpMRCStartingDate.CustomFormat = ""
+        Me.dtpMRCStartingDate.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.dtpMRCStartingDate.Location = New System.Drawing.Point(131, 109)
+        Me.dtpMRCStartingDate.Name = "dtpMRCStartingDate"
+        Me.dtpMRCStartingDate.Size = New System.Drawing.Size(274, 33)
+        Me.dtpMRCStartingDate.TabIndex = 30
+        Me.dtpMRCStartingDate.Value = New Date(2025, 11, 24, 0, 0, 0, 0)
+        '
+        'Label16
+        '
+        Me.Label16.AutoSize = True
+        Me.Label16.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label16.Location = New System.Drawing.Point(15, 110)
+        Me.Label16.Name = "Label16"
+        Me.Label16.Size = New System.Drawing.Size(93, 25)
+        Me.Label16.TabIndex = 29
+        Me.Label16.Text = "Starting Date"
+        '
+        'txtMRCRate
+        '
+        Me.txtMRCRate.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper
+        Me.txtMRCRate.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtMRCRate.Location = New System.Drawing.Point(131, 169)
+        Me.txtMRCRate.Name = "txtMRCRate"
+        Me.txtMRCRate.Size = New System.Drawing.Size(274, 33)
+        Me.txtMRCRate.TabIndex = 27
+        '
+        'Label14
+        '
+        Me.Label14.AutoSize = True
+        Me.Label14.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label14.Location = New System.Drawing.Point(15, 169)
+        Me.Label14.Name = "Label14"
+        Me.Label14.Size = New System.Drawing.Size(40, 25)
+        Me.Label14.TabIndex = 2
+        Me.Label14.Text = "Rate"
         '
         'frmSettings
         '
@@ -1487,6 +1626,9 @@ Partial Class frmSettings
         Me.TabPage3.PerformLayout()
         Me.Holiday_Remove.ResumeLayout(False)
         CType(Me.FileSystemWatcher1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.TabPage1.ResumeLayout(False)
+        Me.GroupBox6.ResumeLayout(False)
+        Me.GroupBox6.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -1617,4 +1759,16 @@ Partial Class frmSettings
     Friend WithEvents txtCSearch As TextBox
     Friend WithEvents btnCSearch As Button
     Friend WithEvents TabPage1 As TabPage
+    Friend WithEvents MRC_list As ListView
+    Friend WithEvents ColumnHeader4 As ColumnHeader
+    Friend WithEvents ColumnHeader5 As ColumnHeader
+    Friend WithEvents ColumnHeader6 As ColumnHeader
+    Friend WithEvents GroupBox6 As GroupBox
+    Friend WithEvents dtpMRCPaydate As DateTimePicker
+    Friend WithEvents btnMRateChangeSave As Button
+    Friend WithEvents Label15 As Label
+    Friend WithEvents dtpMRCStartingDate As DateTimePicker
+    Friend WithEvents Label16 As Label
+    Friend WithEvents Label14 As Label
+    Friend WithEvents txtMRCRate As TextBox
 End Class
