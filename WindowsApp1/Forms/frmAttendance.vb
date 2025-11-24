@@ -1186,6 +1186,8 @@ Public Class frmAttendance
                         txtSpecNightShiftOT.Text = IIf(IsDBNull(.Item("DUTY_SPEC_NIGHTSHIFT_OT")) Or .Item("DUTY_SPEC_NIGHTSHIFT_OT").Equals("0"), "", .Item("DUTY_SPEC_NIGHTSHIFT_OT"))
                         txtRegNightShiftOT.Text = IIf(IsDBNull(.Item("DUTY_REG_NIGHTSHIFT_OT")) Or .Item("DUTY_REG_NIGHTSHIFT_OT").Equals("0"), "", .Item("DUTY_REG_NIGHTSHIFT_OT"))
 
+                        NewRateDaysCovered_NUP.Text = IIf(IsDBNull(.Item("NEW_RATE_DAYS_COVERED")) Or .Item("NEW_RATE_DAYS_COVERED").Equals("0"), "", .Item("NEW_RATE_DAYS_COVERED"))
+
                     End With
                 Next
 
@@ -1217,6 +1219,8 @@ Public Class frmAttendance
                 txtOrdNightShiftOT.Clear()
                 txtSpecNightShiftOT.Clear()
                 txtRegNightShiftOT.Clear()
+
+                NewRateDaysCovered_NUP.TextAlign = 0
 
             End If
         End Using
@@ -1274,6 +1278,7 @@ Public Class frmAttendance
                 Dim DUTY_SPEC_NIGHTSHIFT_OT As Double = IIf(String.IsNullOrWhiteSpace(txtSpecNightShiftOT.Text), 0, txtSpecNightShiftOT.Text)
                 Dim DUTY_REG_NIGHTSHIFT_OT As Double = IIf(String.IsNullOrWhiteSpace(txtRegNightShiftOT.Text), 0, txtRegNightShiftOT.Text)
 
+                Dim NEW_RATE_DAYS_COVERED As Double = IIf(String.IsNullOrWhiteSpace(NewRateDaysCovered_NUP.Text), 0, NewRateDaysCovered_NUP.Text)
 
                 '===================================== MINIMUM CHANGED STARTING SEPTEMBER 1, 2022 =================================
                 If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
@@ -1296,9 +1301,10 @@ Public Class frmAttendance
 
                 SaveAttendanceEE(Bio7_TXT.Text, PAYROLL, Days7_TXT.Text, overtime, latee, undertimee,
                                      RHOLIDAY, SHOLIDAY, specHoliday_hrs, sil, 0, "", "", night7, True,
-                                     DUTY_RESTDAY, DUTY_SPEC_RESTDAY, DUTY_REG_RESTDAY, DUTY_RESTDAY_OT, DUTY_SPEC_OT, DUTY_SPEC_RESTDAY_OT, DUTY_REG_OT, DUTY_REG_RESTDAY_OT,
-                                     DUTY_SPEC_NIGHTSHIFT, DUTY_REG_NIGHTSHIFT, DUTY_ORD_NIGHTSHIFT_OT, DUTY_SPEC_NIGHTSHIFT_OT, DUTY_REG_NIGHTSHIFT_OT)
-
+                                     DUTY_RESTDAY, DUTY_SPEC_RESTDAY, DUTY_REG_RESTDAY, DUTY_RESTDAY_OT,
+                                     DUTY_SPEC_OT, DUTY_SPEC_RESTDAY_OT, DUTY_REG_OT, DUTY_REG_RESTDAY_OT,
+                                     DUTY_SPEC_NIGHTSHIFT, DUTY_REG_NIGHTSHIFT, DUTY_ORD_NIGHTSHIFT_OT,
+                                     DUTY_SPEC_NIGHTSHIFT_OT, DUTY_REG_NIGHTSHIFT_OT, NEW_RATE_DAYS_COVERED)
 
                 SavePayout_IndividualL(Bio7_TXT.Text, PAYROLL, starting_date, ending_date)
 
@@ -1487,30 +1493,24 @@ Public Class frmAttendance
                 Dim regHol_additional As Integer = IIf(String.IsNullOrWhiteSpace(eCell(row, 10).Value), 0, eCell(row, 10).Value)
                 Dim regHoliday As Integer = REGHolidayCount(starting_date, ending_date) + regHol_additional
 
-                Dim TRAINING_OVERTIME As Integer = IIf(String.IsNullOrWhiteSpace(eCell(row, 11).Value), 0, eCell(row, 11).Value)
-                Dim TRAINING_LATE As Integer = IIf(String.IsNullOrWhiteSpace(eCell(row, 12).Value), 0, eCell(row, 12).Value)
-                Dim TRAINING_UNDERTIME As Integer = IIf(String.IsNullOrWhiteSpace(eCell(row, 13).Value), 0, eCell(row, 13).Value)
-                Dim TRAINING_REGHOLIDAY As Integer = IIf(String.IsNullOrWhiteSpace(eCell(row, 14).Value), 0, eCell(row, 14).Value)
-                Dim TRAINING_SPECHOLIDAY As Integer = IIf(String.IsNullOrWhiteSpace(eCell(row, 15).Value), 0, eCell(row, 15).Value)
-                Dim TRAINING_NIGHTRATE As Integer = IIf(String.IsNullOrWhiteSpace(eCell(row, 16).Value), 0, eCell(row, 16).Value)
-                Dim TRAINING_DAYS As Integer = IIf(String.IsNullOrWhiteSpace(eCell(row, 17).Value), 0, eCell(row, 17).Value)
+                Dim DUTY_RESTDAY As Integer = IIf(String.IsNullOrWhiteSpace(eCell(row, 11).Value), 0, eCell(row, 11).Value)
+                Dim DUTY_SPEC_RESTDAY As Integer = IIf(String.IsNullOrWhiteSpace(eCell(row, 12).Value), 0, eCell(row, 12).Value)
+                Dim DUTY_REG_RESTDAY As Integer = IIf(String.IsNullOrWhiteSpace(eCell(row, 13).Value), 0, eCell(row, 13).Value)
 
-                Dim DUTY_RESTDAY As Integer = IIf(String.IsNullOrWhiteSpace(eCell(row, 18).Value), 0, eCell(row, 18).Value)
-                Dim DUTY_SPEC_RESTDAY As Integer = IIf(String.IsNullOrWhiteSpace(eCell(row, 19).Value), 0, eCell(row, 19).Value)
-                Dim DUTY_REG_RESTDAY As Integer = IIf(String.IsNullOrWhiteSpace(eCell(row, 20).Value), 0, eCell(row, 20).Value)
+                Dim DUTY_RESTDAY_OT As Double = IIf(String.IsNullOrWhiteSpace(eCell(row, 14).Value), 0, eCell(row, 14).Value)
+                Dim DUTY_SPEC_OT As Double = IIf(String.IsNullOrWhiteSpace(eCell(row, 15).Value), 0, eCell(row, 15).Value)
+                Dim DUTY_SPEC_RESTDAY_OT As Double = IIf(String.IsNullOrWhiteSpace(eCell(row, 16).Value), 0, eCell(row, 16).Value)
+                Dim DUTY_REG_OT As Double = IIf(String.IsNullOrWhiteSpace(eCell(row, 17).Value), 0, eCell(row, 17).Value)
+                Dim DUTY_REG_RESTDAY_OT As Double = IIf(String.IsNullOrWhiteSpace(eCell(row, 18).Value), 0, eCell(row, 18).Value)
 
-                Dim DUTY_RESTDAY_OT As Double = IIf(String.IsNullOrWhiteSpace(eCell(row, 21).Value), 0, eCell(row, 21).Value)
-                Dim DUTY_SPEC_OT As Double = IIf(String.IsNullOrWhiteSpace(eCell(row, 22).Value), 0, eCell(row, 22).Value)
-                Dim DUTY_SPEC_RESTDAY_OT As Double = IIf(String.IsNullOrWhiteSpace(eCell(row, 23).Value), 0, eCell(row, 23).Value)
-                Dim DUTY_REG_OT As Double = IIf(String.IsNullOrWhiteSpace(eCell(row, 24).Value), 0, eCell(row, 24).Value)
-                Dim DUTY_REG_RESTDAY_OT As Double = IIf(String.IsNullOrWhiteSpace(eCell(row, 25).Value), 0, eCell(row, 25).Value)
+                Dim DUTY_SPEC_NIGHTSHIFT As Integer = IIf(String.IsNullOrWhiteSpace(eCell(row, 19).Value), 0, eCell(row, 19).Value)
+                Dim DUTY_REG_NIGHTSHIFT As Integer = IIf(String.IsNullOrWhiteSpace(eCell(row, 20).Value), 0, eCell(row, 20).Value)
 
-                Dim DUTY_SPEC_NIGHTSHIFT As Integer = IIf(String.IsNullOrWhiteSpace(eCell(row, 26).Value), 0, eCell(row, 26).Value)
-                Dim DUTY_REG_NIGHTSHIFT As Integer = IIf(String.IsNullOrWhiteSpace(eCell(row, 27).Value), 0, eCell(row, 27).Value)
+                Dim DUTY_ORD_NIGHTSHIFT_OT As Double = IIf(String.IsNullOrWhiteSpace(eCell(row, 21).Value), 0, eCell(row, 21).Value)
+                Dim DUTY_SPEC_NIGHTSHIFT_OT As Double = IIf(String.IsNullOrWhiteSpace(eCell(row, 22).Value), 0, eCell(row, 22).Value)
+                Dim DUTY_REG_NIGHTSHIFT_OT As Double = IIf(String.IsNullOrWhiteSpace(eCell(row, 23).Value), 0, eCell(row, 23).Value)
 
-                Dim DUTY_ORD_NIGHTSHIFT_OT As Double = IIf(String.IsNullOrWhiteSpace(eCell(row, 28).Value), 0, eCell(row, 28).Value)
-                Dim DUTY_SPEC_NIGHTSHIFT_OT As Double = IIf(String.IsNullOrWhiteSpace(eCell(row, 29).Value), 0, eCell(row, 29).Value)
-                Dim DUTY_REG_NIGHTSHIFT_OT As Double = IIf(String.IsNullOrWhiteSpace(eCell(row, 30).Value), 0, eCell(row, 30).Value)
+                Dim NEW_RATE_DAYS_COVERED As Integer = IIf(String.IsNullOrWhiteSpace(eCell(row, 24).Value), 0, eCell(row, 24).Value)
 
                 If totalDays <> 0 Then
                     RunCommand($"DELETE FROM PAYROLL_ATTENDANCE WHERE PAYDATE = '{payroll}' AND BRANCH_MANUAL = TRUE AND BIOMETRICID = {bioNo};")
@@ -1528,7 +1528,7 @@ Public Class frmAttendance
                                  DUTY_RESTDAY, DUTY_SPEC_RESTDAY, DUTY_REG_RESTDAY,
                                  DUTY_RESTDAY_OT, DUTY_SPEC_OT, DUTY_SPEC_RESTDAY_OT, DUTY_REG_OT, DUTY_REG_RESTDAY_OT,
                                  DUTY_SPEC_NIGHTSHIFT, DUTY_REG_NIGHTSHIFT,
-                                 DUTY_ORD_NIGHTSHIFT_OT, DUTY_SPEC_NIGHTSHIFT_OT, DUTY_REG_NIGHTSHIFT_OT)
+                                 DUTY_ORD_NIGHTSHIFT_OT, DUTY_SPEC_NIGHTSHIFT_OT, DUTY_REG_NIGHTSHIFT_OT, NEW_RATE_DAYS_COVERED)
 
                     SavePayout_IndividualL(bioNo, payroll, starting_date, ending_date)
 

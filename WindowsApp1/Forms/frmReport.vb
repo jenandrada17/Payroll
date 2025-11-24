@@ -1670,7 +1670,6 @@ A
                                 BRANCHNAME = CStr(.Item("HO_CATEGORY")).TrimEnd
                             End If
 
-
                             If COMPANY <> "" Then
                                 BRANCHNAME = $"{COMPANY} - {BRANCHNAME}"
                             End If

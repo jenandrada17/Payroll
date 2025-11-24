@@ -48,7 +48,8 @@ Module SaveUpdate
                                         Optional DUTY_RESTDAY As Double = 0, Optional DUTY_SPEC_RESTDAY As Double = 0, Optional DUTY_REG_RESTDAY As Double = 0,
                                         Optional DUTY_RESTDAY_OT As Double = 0, Optional DUTY_SPEC_OT As Double = 0, Optional DUTY_SPEC_RESTDAY_OT As Double = 0, Optional DUTY_REG_OT As Double = 0, Optional DUTY_REG_RESTDAY_OT As Double = 0,
                                         Optional DUTY_SPEC_NIGHTSHIFT As Double = 0, Optional DUTY_REG_NIGHTSHIFT As Double = 0,
-                                        Optional DUTY_ORD_NIGHTSHIFT_OT As Double = 0, Optional DUTY_SPEC_NIGHTSHIFT_OT As Double = 0, Optional DUTY_REG_NIGHTSHIFT_OT As Double = 0)
+                                        Optional DUTY_ORD_NIGHTSHIFT_OT As Double = 0, Optional DUTY_SPEC_NIGHTSHIFT_OT As Double = 0,
+                                        Optional DUTY_REG_NIGHTSHIFT_OT As Double = 0, Optional NEW_RATE_DAYS_COVERED As Double = 0)
 
         Dim mysql As String = $"Select * FROM PAYROLL_ATTENDANCE A inner join tbl_employee B on B.BIOMETRICID = A.BIOMETRICID where A.BIOMETRICID = '{biometric}' and PAYDATE = '{paydate}'"
         Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
@@ -97,6 +98,7 @@ Module SaveUpdate
                     .Item("DUTY_ORD_NIGHTSHIFT_OT") = DUTY_ORD_NIGHTSHIFT_OT
                     .Item("DUTY_SPEC_NIGHTSHIFT_OT") = DUTY_SPEC_NIGHTSHIFT_OT
                     .Item("DUTY_REG_NIGHTSHIFT_OT") = DUTY_REG_NIGHTSHIFT_OT
+                    .Item("NEW_RATE_DAYS_COVERED") = NEW_RATE_DAYS_COVERED
                 End If
 
             End With
@@ -151,6 +153,7 @@ Module SaveUpdate
                         If DUTY_ORD_NIGHTSHIFT_OT <> 0 Then .Item("DUTY_ORD_NIGHTSHIFT_OT") = DUTY_ORD_NIGHTSHIFT_OT
                         If DUTY_SPEC_NIGHTSHIFT_OT <> 0 Then .Item("DUTY_SPEC_NIGHTSHIFT_OT") = DUTY_SPEC_NIGHTSHIFT_OT
                         If DUTY_REG_NIGHTSHIFT_OT <> 0 Then .Item("DUTY_REG_NIGHTSHIFT_OT") = DUTY_REG_NIGHTSHIFT_OT
+                        If NEW_RATE_DAYS_COVERED <> 0 Then .Item("NEW_RATE_DAYS_COVERED") = NEW_RATE_DAYS_COVERED
 
                     End If
 
@@ -1682,9 +1685,17 @@ Module SaveUpdate
                             If ThisNotIsNull("SSSNO", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo} ") Then 'IF HAS SSSNO DETAILS
                                 Get_SSS(monthly_Basic)
                                 Dim firstSSSComp As Decimal = GetFirst_Conttrib(bioNo, paydate_, "SSS_COMP")
+                                Dim firstSSS_ER As Decimal = GetFirst_Conttrib(bioNo, paydate_, "SSS_ER")
+                                Dim firstSSS_EC As Decimal = GetFirst_Conttrib(bioNo, paydate_, "SSS_EC")
                                 SSSComp = SSSEE - firstSSSComp
-                                SSS_ER = SSSER
-                                SSS_EC = SSSEC
+                                SSS_ER = SSSER - firstSSS_ER
+                                SSS_EC = SSSEC - firstSSS_EC
+
+                                'TEMPORARILY (November 15, 2025 ADJUSTMENT) KALAHATI NALANG DAPAT ANG SSS_ER AND SSS_EC sa November 30, 2025
+                                If paydate_ = "11/30/2025" Then
+                                    SSS_EC = 5
+                                End If
+
                             End If
 
                             If ThisNotIsNull("PAGIBIG", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo}") Then
@@ -1702,6 +1713,8 @@ Module SaveUpdate
                             If ThisNotIsNull("SSSNO", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo} ") Then 'IF HAS SSSNO DETAILS
                                 Get_SSS(TotalBasic)
                                 SSSComp = SSSEE
+                                SSS_ER = SSSER
+                                SSS_EC = SSSEC
                             End If
 
                             If ThisNotIsNull("PAGIBIG", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo}") Then PagibigComp = Get_Pagibig() / 2
