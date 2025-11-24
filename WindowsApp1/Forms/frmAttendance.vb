@@ -413,7 +413,7 @@ Public Class frmAttendance
                     End If
                 Next
 
-                '===================================== MINIMUM CHANGED STARTING SEPTEMBER 1, 2022 =================================
+                '===================================== MINIMUM CHANGED =================================
                 If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
                     Dim old_days As Double
                     old_days = (temp_present * 8) - temp_half
@@ -1187,6 +1187,11 @@ Public Class frmAttendance
                         txtRegNightShiftOT.Text = IIf(IsDBNull(.Item("DUTY_REG_NIGHTSHIFT_OT")) Or .Item("DUTY_REG_NIGHTSHIFT_OT").Equals("0"), "", .Item("DUTY_REG_NIGHTSHIFT_OT"))
 
                         NewRateDaysCovered_NUP.Text = IIf(IsDBNull(.Item("NEW_RATE_DAYS_COVERED")) Or .Item("NEW_RATE_DAYS_COVERED").Equals("0"), "", .Item("NEW_RATE_DAYS_COVERED"))
+                        txtNewRateLate.Text = IIf(IsDBNull(.Item("NEW_RATE_LATE_COVERED")) Or .Item("NEW_RATE_LATE_COVERED").Equals("0"), "", .Item("NEW_RATE_LATE_COVERED"))
+                        txtNewRateUT.Text = IIf(IsDBNull(.Item("NEW_RATE_UT_COVERED")) Or .Item("NEW_RATE_UT_COVERED").Equals("0"), "", .Item("NEW_RATE_UT_COVERED"))
+                        newRateOT_NUP.Text = IIf(IsDBNull(.Item("NEW_RATE_OT_COVERED")) Or .Item("NEW_RATE_OT_COVERED").Equals("0"), "", .Item("NEW_RATE_OT_COVERED"))
+                        txtNewRateRegHoliday.Text = IIf(IsDBNull(.Item("NEW_RATE_REGHOLIDAY_COVERED")) Or .Item("NEW_RATE_REGHOLIDAY_COVERED").Equals("0"), "", .Item("NEW_RATE_REGHOLIDAY_COVERED"))
+                        txtNewRateSpecHoliday.Text = IIf(IsDBNull(.Item("NEW_RATE_SPECHOLIDAY_COVERED")) Or .Item("NEW_RATE_SPECHOLIDAY_COVERED").Equals("0"), "", .Item("NEW_RATE_SPECHOLIDAY_COVERED"))
 
                     End With
                 Next
@@ -1221,6 +1226,11 @@ Public Class frmAttendance
                 txtRegNightShiftOT.Clear()
 
                 NewRateDaysCovered_NUP.TextAlign = 0
+                txtNewRateLate.Clear()
+                txtNewRateUT.Clear()
+                newRateOT_NUP.TextAlign = 0
+                txtNewRateRegHoliday.Clear()
+                txtNewRateSpecHoliday.Clear()
 
             End If
         End Using
@@ -1279,32 +1289,46 @@ Public Class frmAttendance
                 Dim DUTY_REG_NIGHTSHIFT_OT As Double = IIf(String.IsNullOrWhiteSpace(txtRegNightShiftOT.Text), 0, txtRegNightShiftOT.Text)
 
                 Dim NEW_RATE_DAYS_COVERED As Double = IIf(String.IsNullOrWhiteSpace(NewRateDaysCovered_NUP.Text), 0, NewRateDaysCovered_NUP.Text)
+                Dim NEW_RATE_LATE_COVERED As Double = IIf(String.IsNullOrWhiteSpace(txtNewRateLate.Text), 0, txtNewRateLate.Text)
+                Dim NEW_RATE_UT_COVERED As Double = IIf(String.IsNullOrWhiteSpace(txtNewRateUT.Text), 0, txtNewRateUT.Text)
+                Dim NEW_RATE_OT_COVERED As Double = IIf(String.IsNullOrWhiteSpace(newRateOT_NUP.Text), 0, newRateOT_NUP.Text)
+                Dim NEW_RATE_REGHOLIDAY_COVERED As Double = IIf(String.IsNullOrWhiteSpace(txtNewRateRegHoliday.Text), 0, txtNewRateRegHoliday.Text)
+                Dim NEW_RATE_SPECHOLIDAY_COVERED As Double = IIf(String.IsNullOrWhiteSpace(txtNewRateSpecHoliday.Text), 0, txtNewRateSpecHoliday.Text)
 
-                '===================================== MINIMUM CHANGED STARTING SEPTEMBER 1, 2022 =================================
+                Dim totalDays As Double = IIf(String.IsNullOrWhiteSpace(Days7_TXT.Text), 0, Days7_TXT.Text)
+
+                '===================================== MINIMUM CHANGED =================================
                 If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
+                    Dim new_days As Double = NEW_RATE_DAYS_COVERED
+                    Dim old_days As Double = totalDays - new_days
 
-                    'AS IF WALANG OLD DAYS NA COVERED KAY NA'MANUAL ADD NA NUNG LAST PAYROLL 
-                    Dim new_days As Double = CDbl(Days7_TXT.Text)
+                    Dim new_overtime As Double = NEW_RATE_OT_COVERED
+                    Dim old_overtime As Double = overtime - new_overtime
 
-                    Dim new_overtime As Double
-                    If Not Double.TryParse(Overtime7_NUP.TextAlign, new_overtime) Then new_overtime = 0
+                    Dim new_late As Double = NEW_RATE_LATE_COVERED
+                    Dim old_late As Double = latee - new_late
 
-                    Dim new_late As Double
-                    If Not Double.TryParse(Late7_TXT.Text, new_late) Then new_late = 0
+                    Dim new_undertime As Double = NEW_RATE_UT_COVERED
+                    Dim old_undertime As Double = undertimee - new_undertime
 
-                    Dim new_undertime As Double
-                    If Not Double.TryParse(Undertime7_TXT.Text, new_undertime) Then new_undertime = 0
+                    Dim new_regHoliday As Double = NEW_RATE_REGHOLIDAY_COVERED
+                    Dim new_specHoliday As Double = NEW_RATE_SPECHOLIDAY_COVERED
 
-
-                    SaveTemporary(Bio7_TXT.Text, 0, new_days, 0, new_overtime, 0, new_late, 0, new_undertime, 0, 0, PAYROLL)
+                    SaveTemporary(Bio7_TXT.Text,
+                                  old_days, new_days,
+                                  old_overtime, new_overtime,
+                                  old_late, new_late,
+                                  old_undertime, new_undertime,
+                                  new_regHoliday, new_specHoliday, PAYROLL)
                 End If
 
                 SaveAttendanceEE(Bio7_TXT.Text, PAYROLL, Days7_TXT.Text, overtime, latee, undertimee,
                                      RHOLIDAY, SHOLIDAY, specHoliday_hrs, sil, 0, "", "", night7, True,
                                      DUTY_RESTDAY, DUTY_SPEC_RESTDAY, DUTY_REG_RESTDAY, DUTY_RESTDAY_OT,
                                      DUTY_SPEC_OT, DUTY_SPEC_RESTDAY_OT, DUTY_REG_OT, DUTY_REG_RESTDAY_OT,
-                                     DUTY_SPEC_NIGHTSHIFT, DUTY_REG_NIGHTSHIFT, DUTY_ORD_NIGHTSHIFT_OT,
-                                     DUTY_SPEC_NIGHTSHIFT_OT, DUTY_REG_NIGHTSHIFT_OT, NEW_RATE_DAYS_COVERED)
+                                     DUTY_SPEC_NIGHTSHIFT, DUTY_REG_NIGHTSHIFT, DUTY_ORD_NIGHTSHIFT_OT, DUTY_SPEC_NIGHTSHIFT_OT, DUTY_REG_NIGHTSHIFT_OT,
+                                     NEW_RATE_DAYS_COVERED, NEW_RATE_LATE_COVERED, NEW_RATE_UT_COVERED, NEW_RATE_OT_COVERED,
+                                     NEW_RATE_REGHOLIDAY_COVERED, NEW_RATE_SPECHOLIDAY_COVERED)
 
                 SavePayout_IndividualL(Bio7_TXT.Text, PAYROLL, starting_date, ending_date)
 
@@ -1357,25 +1381,48 @@ Public Class frmAttendance
         txtOrdNightShiftOT.Clear()
         txtSpecNightShiftOT.Clear()
         txtRegNightShiftOT.Clear()
+
+        NewRateDaysCovered_NUP.Value = Nothing
+        txtNewRateLate.Clear()
+        txtNewRateUT.Clear()
+        newRateOT_NUP.Value = Nothing
+        txtNewRateRegHoliday.Clear()
+        txtNewRateSpecHoliday.Clear()
+
     End Sub
 
     Private Sub SIL_BTN_Click(sender As Object, e As EventArgs) Handles SIL_BTN.Click
         If Name_TXT.Text <> "" Then
             If SIL_BTN.Text = "Add" Then
 
+                SIL_NUP.Value = SIL_LBL.Text
+
                 Dim totalMonths As Integer = CountYear_SIL(BiometricID_TXT.Text, ending_date)
 
                 If totalMonths >= 13 Then
+                    Dim sil_this_paydate As Double = GetData_Integer("SIL", $"PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{BiometricID_TXT.Text}' AND PAYDATE = '{paydate_}'")
+                    Dim total_SIL As Double = Count_SIL(BiometricID_TXT.Text)
+                    Dim additional_SIL As Double = CDbl(SIL_NUP.Text)
 
-                    If Count_SIL(BiometricID_TXT.Text) < 5 Then
+                    Dim tot As Double = ((total_SIL - sil_this_paydate) + additional_SIL)
+
+                    If tot < 5 Then
                         SIL_Panel.Visible = True
                         SIL_Panel.Location = New Point(SIL_BTN.Location.X - 160, SIL_BTN.Location.Y - 10)
+                    ElseIf tot = 5 Then
+                        MsgBox("Already reached the maximum number of SIL for this year.", MsgBoxStyle.Critical, "Invalid")
+                        Exit Sub
                     Else
-                        MsgBox($"Already reached the maximum number of SIL for this year.", MsgBoxStyle.Critical, "Invalid")
+                        Dim allowable_SIL As Double = 5 - (total_SIL - sil_this_paydate)
+                        SIL_NUP.Value = allowable_SIL
+                        SIL_LBL.Text = allowable_SIL
+                        Exit Sub
                     End If
 
                 Else
-                    MsgBox($"Not yet allowed to avail SIL.", MsgBoxStyle.Critical, "Invalid")
+                    MsgBox("Not yet allowed to avail SIL.", MsgBoxStyle.Critical, "Invalid")
+                    SIL_NUP.Value = 0
+                    Exit Sub
                 End If
 
             Else
@@ -1389,6 +1436,34 @@ Public Class frmAttendance
     End Sub
 
     Private Sub AddSIL_BTN_Click(sender As Object, e As EventArgs) Handles AddSIL_BTN.Click
+        Dim totalMonths As Integer = CountYear_SIL(BiometricID_TXT.Text, ending_date)
+
+        If totalMonths >= 13 Then
+            Dim sil_this_paydate As Double = GetData_Integer("SIL", $"PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{BiometricID_TXT.Text}' AND PAYDATE = '{paydate_}'")
+            Dim total_SIL As Double = Count_SIL(BiometricID_TXT.Text)
+            Dim additional_SIL As Double = 0
+
+            If SIL_NUP.Text = Nothing Then
+                SIL_NUP.Text = 0
+            Else
+                additional_SIL = CDbl(SIL_NUP.Text)
+            End If
+
+            Dim allowable_SIL As Double = 5 - (total_SIL - sil_this_paydate)
+
+            If ((total_SIL - sil_this_paydate) + additional_SIL) <= 5 Then
+            Else
+                MsgBox($"Only {allowable_SIL} SIL is available. The rest have been used.", MsgBoxStyle.Critical, "Invalid")
+                SIL_NUP.Value = allowable_SIL
+                Exit Sub
+            End If
+
+        Else
+            MsgBox("Not yet allowed to avail SIL.", MsgBoxStyle.Critical, "Invalid")
+            SIL_NUP.Value = 0
+            Exit Sub
+        End If
+
         SIL_LBL.Text = SIL_NUP.Text
         SIL_BTN.Text = "Clear"
         SIL_Panel.Visible = False
@@ -1511,24 +1586,55 @@ Public Class frmAttendance
                 Dim DUTY_REG_NIGHTSHIFT_OT As Double = IIf(String.IsNullOrWhiteSpace(eCell(row, 23).Value), 0, eCell(row, 23).Value)
 
                 Dim NEW_RATE_DAYS_COVERED As Integer = IIf(String.IsNullOrWhiteSpace(eCell(row, 24).Value), 0, eCell(row, 24).Value)
+                Dim NEW_RATE_LATE_COVERED As Integer = IIf(String.IsNullOrWhiteSpace(eCell(row, 25).Value), 0, eCell(row, 25).Value)
+                Dim NEW_RATE_UT_COVERED As Integer = IIf(String.IsNullOrWhiteSpace(eCell(row, 26).Value), 0, eCell(row, 26).Value)
+                Dim NEW_RATE_OT_COVERED As Integer = IIf(String.IsNullOrWhiteSpace(eCell(row, 27).Value), 0, eCell(row, 27).Value)
+                Dim NEW_RATE_REGHOLIDAY_COVERED As Integer = IIf(String.IsNullOrWhiteSpace(eCell(row, 28).Value), 0, eCell(row, 28).Value)
+                Dim NEW_RATE_SPECHOLIDAY_COVERED As Integer = IIf(String.IsNullOrWhiteSpace(eCell(row, 29).Value), 0, eCell(row, 29).Value)
 
                 If totalDays <> 0 Then
                     RunCommand($"DELETE FROM PAYROLL_ATTENDANCE WHERE PAYDATE = '{payroll}' AND BRANCH_MANUAL = TRUE AND BIOMETRICID = {bioNo};")
                     RunCommand($"DELETE FROM PAYROLL_PAYOUT WHERE PAYDATE = '{payroll}' AND BIOMETRIC_ID = {bioNo};")
                     RunCommand($"DELETE FROM RECORDED_ALLOW_DEDUC WHERE PAYDATE = '{payroll}' AND BIO_NO = {bioNo};")
 
-                    '===================================== MINIMUM CHANGED STARTING SEPTEMBER 1, 2022 =================================
-                    If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
-                        SaveTemporary(bioNo, 0, totalDays, 0, overtime, 0, late, 0, undertime, 0, 0, payroll)
-                    End If
+                    ''===================================== MINIMUM CHANGED STARTING SEPTEMBER 1, 2022 =================================
+                    'If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
+                    '    SaveTemporary(bioNo, 0, totalDays, 0, overtime, 0, late, 0, undertime, 0, 0, payroll)
+                    'End If 
 
+                    '===================================== MINIMUM CHANGED =================================
+                    If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
+                        Dim new_days As Double = NEW_RATE_DAYS_COVERED
+                        Dim old_days As Double = totalDays - new_days
+
+                        Dim new_overtime As Double = NEW_RATE_OT_COVERED
+                        Dim old_overtime As Double = overtime - new_overtime
+
+                        Dim new_late As Double = NEW_RATE_LATE_COVERED
+                        Dim old_late As Double = late - new_late
+
+                        Dim new_undertime As Double = NEW_RATE_UT_COVERED
+                        Dim old_undertime As Double = undertime - new_undertime
+
+                        Dim new_regHoliday As Double = NEW_RATE_REGHOLIDAY_COVERED
+                        Dim new_specHoliday As Double = NEW_RATE_SPECHOLIDAY_COVERED
+
+                        SaveTemporary(bioNo,
+                                  old_days, new_days,
+                                  old_overtime, new_overtime,
+                                  old_late, new_late,
+                                  old_undertime, new_undertime,
+                                  new_regHoliday, new_specHoliday, payroll)
+                    End If
 
                     SaveAttendanceEE(bioNo, payroll, totalDays, overtime, late, undertime,
                                  regHoliday, TotalSHoliday_LBL.Text, specHoliday_hrs, sil, Nothing, Nothing, Nothing, nightRate, True,
                                  DUTY_RESTDAY, DUTY_SPEC_RESTDAY, DUTY_REG_RESTDAY,
                                  DUTY_RESTDAY_OT, DUTY_SPEC_OT, DUTY_SPEC_RESTDAY_OT, DUTY_REG_OT, DUTY_REG_RESTDAY_OT,
                                  DUTY_SPEC_NIGHTSHIFT, DUTY_REG_NIGHTSHIFT,
-                                 DUTY_ORD_NIGHTSHIFT_OT, DUTY_SPEC_NIGHTSHIFT_OT, DUTY_REG_NIGHTSHIFT_OT, NEW_RATE_DAYS_COVERED)
+                                 DUTY_ORD_NIGHTSHIFT_OT, DUTY_SPEC_NIGHTSHIFT_OT, DUTY_REG_NIGHTSHIFT_OT,
+                                 NEW_RATE_DAYS_COVERED, NEW_RATE_LATE_COVERED, NEW_RATE_UT_COVERED, NEW_RATE_OT_COVERED,
+                                 NEW_RATE_REGHOLIDAY_COVERED, NEW_RATE_SPECHOLIDAY_COVERED)
 
                     SavePayout_IndividualL(bioNo, payroll, starting_date, ending_date)
 
@@ -1588,20 +1694,183 @@ Public Class frmAttendance
     End Sub
 
     Private Sub SIL7_NUP_ValueChanged(sender As Object, e As EventArgs) Handles SIL7_NUP.ValueChanged
-
         Dim totalMonths As Integer = CountYear_SIL(Bio7_TXT.Text, ending_date)
 
         If totalMonths >= 13 Then
+            Dim sil_this_paydate As Double = GetData_Integer("SIL", $"PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{Bio7_TXT.Text}' AND PAYDATE = '{paydate_}'")
+            Dim total_SIL As Double = Count_SIL(Bio7_TXT.Text)
+            Dim additional_SIL As Double = CDbl(SIL7_NUP.Text)
+            Dim allowable_SIL As Double = 5 - (total_SIL - sil_this_paydate)
 
-            If Count_SIL(Bio7_TXT.Text) < 5 Then
+            If ((total_SIL - sil_this_paydate) + additional_SIL) <= 5 Then
             Else
-                MsgBox($"Already reached the maximum number of SIL for this year.", MsgBoxStyle.Critical, "Invalid")
+                MsgBox($"Only {allowable_SIL} SIL is available. The rest have been used.", MsgBoxStyle.Critical, "Invalid")
+                SIL7_NUP.Value = allowable_SIL
+                Exit Sub
             End If
 
         Else
-            MsgBox($"Not yet allowed to avail SIL.", MsgBoxStyle.Critical, "Invalid")
+            MsgBox("Not yet allowed to avail SIL.", MsgBoxStyle.Critical, "Invalid")
+            SIL7_NUP.Value = 0
+            Exit Sub
         End If
+    End Sub
 
+    Private Sub SIL7_NUP_KeyDown(sender As Object, e As EventArgs) Handles SIL7_NUP.KeyDown
+        Dim totalMonths As Integer = CountYear_SIL(Bio7_TXT.Text, ending_date)
+
+        If totalMonths >= 13 Then
+            Dim sil_this_paydate As Double = GetData_Integer("SIL", $"PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{Bio7_TXT.Text}' AND PAYDATE = '{paydate_}'")
+            Dim total_SIL As Double = Count_SIL(Bio7_TXT.Text)
+
+            Dim additional_SIL As Double = 0
+            If SIL7_NUP.Text <> Nothing Then additional_SIL = SIL7_NUP.Text     'IF THE USER ERASE THE INPUT SIL
+
+            Dim allowable_SIL As Double = 5 - (total_SIL - sil_this_paydate)
+
+            If ((total_SIL - sil_this_paydate) + additional_SIL) <= 5 Then
+            Else
+                MsgBox($"Only {allowable_SIL} SIL is available. The rest have been used.", MsgBoxStyle.Critical, "Invalid")
+                SIL7_NUP.Value = allowable_SIL
+                Exit Sub
+            End If
+
+        Else
+            MsgBox("Not yet allowed to avail SIL.", MsgBoxStyle.Critical, "Invalid")
+            SIL7_NUP.Value = 0
+            Exit Sub
+        End If
+    End Sub
+
+    Private previousValue As Integer
+    Private Sub SIL7_NUP_MouseDown(sender As Object, e As EventArgs) Handles SIL7_NUP.MouseDown
+        Dim totalMonths As Integer = CountYear_SIL(Bio7_TXT.Text, ending_date)
+
+        If totalMonths >= 13 Then
+            Dim sil_this_paydate As Double = GetData_Integer("SIL", $"PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{Bio7_TXT.Text}' AND PAYDATE = '{paydate_}'")
+            Dim total_SIL As Double = Count_SIL(Bio7_TXT.Text)
+
+            Dim additional_SIL As Double = 0
+            If SIL7_NUP.Text <> Nothing Then additional_SIL = SIL7_NUP.Text     'IF THE USER ERASE THE INPUT SIL
+
+            Dim allowable_SIL As Double = 5 - (total_SIL - sil_this_paydate)
+
+            If ((total_SIL - sil_this_paydate) + additional_SIL) <= 5 Then
+            Else
+                MsgBox($"Only {allowable_SIL} SIL is available. The rest have been used.", MsgBoxStyle.Critical, "Invalid")
+                SIL7_NUP.Value = allowable_SIL
+                Exit Sub
+            End If
+
+        Else
+            MsgBox("Not yet allowed to avail SIL.", MsgBoxStyle.Critical, "Invalid")
+            SIL7_NUP.Value = 0
+            Exit Sub
+        End If
+    End Sub
+
+    Private Sub SIL7_NUP_Enter(sender As Object, e As EventArgs) Handles SIL7_NUP.Enter
+        Dim totalMonths As Integer = CountYear_SIL(Bio7_TXT.Text, ending_date)
+
+        If totalMonths >= 13 Then
+            Dim sil_this_paydate As Double = GetData_Integer("SIL", $"PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{Bio7_TXT.Text}' AND PAYDATE = '{paydate_}'")
+            Dim total_SIL As Double = Count_SIL(Bio7_TXT.Text)
+
+            Dim additional_SIL As Double = 0
+            If SIL7_NUP.Text <> Nothing Then additional_SIL = SIL7_NUP.Text     'IF THE USER ERASE THE INPUT SIL
+
+            Dim allowable_SIL As Double = 5 - (total_SIL - sil_this_paydate)
+
+            If ((total_SIL - sil_this_paydate) + additional_SIL) <= 5 Then
+            Else
+                MsgBox($"Only {allowable_SIL} SIL is available. The rest have been used.", MsgBoxStyle.Critical, "Invalid")
+                SIL7_NUP.Value = allowable_SIL
+                Exit Sub
+            End If
+
+        Else
+            MsgBox("Not yet allowed to avail SIL.", MsgBoxStyle.Critical, "Invalid")
+            SIL7_NUP.Value = 0
+            Exit Sub
+        End If
+    End Sub
+
+    Private Sub SIL_NUP_MouseDown(sender As Object, e As MouseEventArgs) Handles SIL_NUP.MouseDown
+        Dim totalMonths As Integer = CountYear_SIL(BiometricID_TXT.Text, ending_date)
+
+        If totalMonths >= 13 Then
+            Dim sil_this_paydate As Double = GetData_Integer("SIL", $"PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{BiometricID_TXT.Text}' AND PAYDATE = '{paydate_}'")
+            Dim total_SIL As Double = Count_SIL(BiometricID_TXT.Text)
+
+            Dim additional_SIL As Double = 0
+            If SIL_NUP.Text <> Nothing Then additional_SIL = SIL_NUP.Text     'IF THE USER ERASE THE INPUT SIL
+
+            Dim allowable_SIL As Double = 5 - (total_SIL - sil_this_paydate)
+
+            If ((total_SIL - sil_this_paydate) + additional_SIL) <= 5 Then
+            Else
+                MsgBox($"Only {allowable_SIL} SIL is available. The rest have been used.", MsgBoxStyle.Critical, "Invalid")
+                SIL_NUP.Value = allowable_SIL
+                Exit Sub
+            End If
+
+        Else
+            MsgBox("Not yet allowed to avail SIL.", MsgBoxStyle.Critical, "Invalid")
+            SIL_NUP.Value = 0
+            Exit Sub
+        End If
+    End Sub
+
+    Private Sub SIL_NUP_KeyDown(sender As Object, e As KeyEventArgs) Handles SIL_NUP.KeyDown
+        Dim totalMonths As Integer = CountYear_SIL(BiometricID_TXT.Text, ending_date)
+
+        If totalMonths >= 13 Then
+            Dim sil_this_paydate As Double = GetData_Integer("SIL", $"PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{BiometricID_TXT.Text}' AND PAYDATE = '{paydate_}'")
+            Dim total_SIL As Double = Count_SIL(BiometricID_TXT.Text)
+
+            Dim additional_SIL As Double = 0
+            If SIL_NUP.Text <> Nothing Then additional_SIL = SIL_NUP.Text     'IF THE USER ERASE THE INPUT SIL
+
+            Dim allowable_SIL As Double = 5 - (total_SIL - sil_this_paydate)
+
+            If ((total_SIL - sil_this_paydate) + additional_SIL) <= 5 Then
+            Else
+                MsgBox($"Only {allowable_SIL} SIL is available. The rest have been used.", MsgBoxStyle.Critical, "Invalid")
+                SIL_NUP.Value = allowable_SIL
+                Exit Sub
+            End If
+
+        Else
+            MsgBox("Not yet allowed to avail SIL.", MsgBoxStyle.Critical, "Invalid")
+            SIL_NUP.Value = 0
+            Exit Sub
+        End If
+    End Sub
+
+    Private Sub SIL_NUP_Enter(sender As Object, e As EventArgs) Handles SIL_NUP.Enter
+        Dim totalMonths As Integer = CountYear_SIL(BiometricID_TXT.Text, ending_date)
+
+        If totalMonths >= 13 Then
+            Dim sil_this_paydate As Double = GetData_Integer("SIL", $"PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{BiometricID_TXT.Text}' AND PAYDATE = '{paydate_}'")
+            Dim total_SIL As Double = Count_SIL(BiometricID_TXT.Text)
+
+            Dim additional_SIL As Double = 0
+            If SIL_NUP.Text <> Nothing Then additional_SIL = SIL_NUP.Text     'IF THE USER ERASE THE INPUT SIL
+
+            Dim allowable_SIL As Double = 5 - (total_SIL - sil_this_paydate)
+
+            If ((total_SIL - sil_this_paydate) + additional_SIL) <= 5 Then
+            Else
+                MsgBox($"Only {allowable_SIL} SIL is available. The rest have been used.", MsgBoxStyle.Critical, "Invalid")
+                SIL_NUP.Value = allowable_SIL
+                Exit Sub
+            End If
+
+        Else
+            MsgBox("Not yet allowed to avail SIL.", MsgBoxStyle.Critical, "Invalid")
+            SIL_NUP.Value = 0
+            Exit Sub
+        End If
     End Sub
 
     Private Sub Calculate_BTN_Click(sender As Object, e As EventArgs) Handles Calculate_BTN.Click
@@ -2417,7 +2686,7 @@ Public Class frmAttendance
             InsertTempAttendance(biometric_No, paydate_, TotalDays_LBL.Text, TotalOTHr_LBL.Text,
                                     late_count.TotalMinutes, under_count.TotalMinutes, RHOLIDAY, SHOLIDAY)
 
-            '===================================== TEMPORARYYYYYYY =================================  
+            '===================================== MINIMUM CHANGED =================================  
             If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
                 Dim newMin_startingDate As Date = GetData("STARTING_DATE", $"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'")
                 If biometric_No <> Nothing Then

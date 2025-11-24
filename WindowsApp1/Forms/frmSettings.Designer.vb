@@ -77,8 +77,16 @@ Partial Class frmSettings
         Me.Name_TXT = New System.Windows.Forms.TextBox()
         Me.Label2 = New System.Windows.Forms.Label()
         Me.TabPage4 = New System.Windows.Forms.TabPage()
+        Me.txtCSearch = New System.Windows.Forms.TextBox()
+        Me.btnCSearch = New System.Windows.Forms.Button()
+        Me.btnCSave = New System.Windows.Forms.Button()
+        Me.txtCategory = New System.Windows.Forms.TextBox()
+        Me.Label13 = New System.Windows.Forms.Label()
+        Me.cbCName = New System.Windows.Forms.ComboBox()
         Me.lvCategories = New System.Windows.Forms.ListView()
         Me.ColumnHeader21 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.ColumnHeader3 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
+        Me.Label7 = New System.Windows.Forms.Label()
         Me.TabPage7 = New System.Windows.Forms.TabPage()
         Me.SearchTime_TXT = New System.Windows.Forms.TextBox()
         Me.SearchTime_BTN = New System.Windows.Forms.Button()
@@ -139,14 +147,7 @@ Partial Class frmSettings
         Me.Holiday_Remove = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.RemoveToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.FileSystemWatcher1 = New System.IO.FileSystemWatcher()
-        Me.cbCName = New System.Windows.Forms.ComboBox()
-        Me.Label7 = New System.Windows.Forms.Label()
-        Me.Label13 = New System.Windows.Forms.Label()
-        Me.txtCategory = New System.Windows.Forms.TextBox()
-        Me.ColumnHeader3 = CType(New System.Windows.Forms.ColumnHeader(), System.Windows.Forms.ColumnHeader)
-        Me.btnCSave = New System.Windows.Forms.Button()
-        Me.txtCSearch = New System.Windows.Forms.TextBox()
-        Me.btnCSearch = New System.Windows.Forms.Button()
+        Me.TabPage1 = New System.Windows.Forms.TabPage()
         Me.Settings_Tab.SuspendLayout()
         Me.TabPage5.SuspendLayout()
         Me.GroupBox5.SuspendLayout()
@@ -182,6 +183,7 @@ Partial Class frmSettings
         Me.Settings_Tab.Controls.Add(Me.TabPage7)
         Me.Settings_Tab.Controls.Add(Me.TabPage6)
         Me.Settings_Tab.Controls.Add(Me.TabPage3)
+        Me.Settings_Tab.Controls.Add(Me.TabPage1)
         Me.Settings_Tab.Font = New System.Drawing.Font("Dubai", 12.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Settings_Tab.Location = New System.Drawing.Point(10, 23)
         Me.Settings_Tab.Name = "Settings_Tab"
@@ -750,6 +752,64 @@ Partial Class frmSettings
         Me.TabPage4.Text = "     Category     "
         Me.TabPage4.UseVisualStyleBackColor = True
         '
+        'txtCSearch
+        '
+        Me.txtCSearch.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtCSearch.Location = New System.Drawing.Point(724, 123)
+        Me.txtCSearch.Name = "txtCSearch"
+        Me.txtCSearch.Size = New System.Drawing.Size(315, 33)
+        Me.txtCSearch.TabIndex = 143
+        '
+        'btnCSearch
+        '
+        Me.btnCSearch.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnCSearch.Location = New System.Drawing.Point(1045, 122)
+        Me.btnCSearch.Name = "btnCSearch"
+        Me.btnCSearch.Size = New System.Drawing.Size(82, 33)
+        Me.btnCSearch.TabIndex = 144
+        Me.btnCSearch.Text = "Search"
+        Me.btnCSearch.UseVisualStyleBackColor = True
+        '
+        'btnCSave
+        '
+        Me.btnCSave.BackColor = System.Drawing.Color.DarkSalmon
+        Me.btnCSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnCSave.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.btnCSave.Location = New System.Drawing.Point(401, 85)
+        Me.btnCSave.Name = "btnCSave"
+        Me.btnCSave.Size = New System.Drawing.Size(82, 35)
+        Me.btnCSave.TabIndex = 142
+        Me.btnCSave.Text = "Save"
+        Me.btnCSave.UseVisualStyleBackColor = False
+        '
+        'txtCategory
+        '
+        Me.txtCategory.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper
+        Me.txtCategory.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtCategory.Location = New System.Drawing.Point(100, 85)
+        Me.txtCategory.Name = "txtCategory"
+        Me.txtCategory.Size = New System.Drawing.Size(279, 35)
+        Me.txtCategory.TabIndex = 123
+        '
+        'Label13
+        '
+        Me.Label13.AutoSize = True
+        Me.Label13.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label13.Location = New System.Drawing.Point(16, 88)
+        Me.Label13.Name = "Label13"
+        Me.Label13.Size = New System.Drawing.Size(70, 27)
+        Me.Label13.TabIndex = 141
+        Me.Label13.Text = "Category"
+        '
+        'cbCName
+        '
+        Me.cbCName.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.cbCName.FormattingEnabled = True
+        Me.cbCName.Location = New System.Drawing.Point(100, 31)
+        Me.cbCName.Name = "cbCName"
+        Me.cbCName.Size = New System.Drawing.Size(279, 35)
+        Me.cbCName.TabIndex = 139
+        '
         'lvCategories
         '
         Me.lvCategories.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
@@ -772,6 +832,21 @@ Partial Class frmSettings
         '
         Me.ColumnHeader21.Text = "Name"
         Me.ColumnHeader21.Width = 400
+        '
+        'ColumnHeader3
+        '
+        Me.ColumnHeader3.Text = "Category"
+        Me.ColumnHeader3.Width = 700
+        '
+        'Label7
+        '
+        Me.Label7.AutoSize = True
+        Me.Label7.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label7.Location = New System.Drawing.Point(16, 36)
+        Me.Label7.Name = "Label7"
+        Me.Label7.Size = New System.Drawing.Size(49, 27)
+        Me.Label7.TabIndex = 140
+        Me.Label7.Text = "Name"
         '
         'TabPage7
         '
@@ -1365,78 +1440,15 @@ Partial Class frmSettings
         Me.FileSystemWatcher1.EnableRaisingEvents = True
         Me.FileSystemWatcher1.SynchronizingObject = Me
         '
-        'cbCName
+        'TabPage1
         '
-        Me.cbCName.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.cbCName.FormattingEnabled = True
-        Me.cbCName.Location = New System.Drawing.Point(100, 31)
-        Me.cbCName.Name = "cbCName"
-        Me.cbCName.Size = New System.Drawing.Size(279, 35)
-        Me.cbCName.TabIndex = 139
-        '
-        'Label7
-        '
-        Me.Label7.AutoSize = True
-        Me.Label7.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label7.Location = New System.Drawing.Point(16, 36)
-        Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(49, 27)
-        Me.Label7.TabIndex = 140
-        Me.Label7.Text = "Name"
-        '
-        'Label13
-        '
-        Me.Label13.AutoSize = True
-        Me.Label13.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label13.Location = New System.Drawing.Point(16, 88)
-        Me.Label13.Name = "Label13"
-        Me.Label13.Size = New System.Drawing.Size(70, 27)
-        Me.Label13.TabIndex = 141
-        Me.Label13.Text = "Category"
-        '
-        'txtCategory
-        '
-        Me.txtCategory.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper
-        Me.txtCategory.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtCategory.Location = New System.Drawing.Point(100, 85)
-        Me.txtCategory.Name = "txtCategory"
-        Me.txtCategory.Size = New System.Drawing.Size(279, 35)
-        Me.txtCategory.TabIndex = 123
-        '
-        'ColumnHeader3
-        '
-        Me.ColumnHeader3.Text = "Category"
-        Me.ColumnHeader3.Width = 700
-        '
-        'btnCSave
-        '
-        Me.btnCSave.BackColor = System.Drawing.Color.DarkSalmon
-        Me.btnCSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat
-        Me.btnCSave.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnCSave.Location = New System.Drawing.Point(401, 85)
-        Me.btnCSave.Name = "btnCSave"
-        Me.btnCSave.Size = New System.Drawing.Size(82, 35)
-        Me.btnCSave.TabIndex = 142
-        Me.btnCSave.Text = "Save"
-        Me.btnCSave.UseVisualStyleBackColor = False
-        '
-        'txtCSearch
-        '
-        Me.txtCSearch.Font = New System.Drawing.Font("Dubai", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtCSearch.Location = New System.Drawing.Point(724, 123)
-        Me.txtCSearch.Name = "txtCSearch"
-        Me.txtCSearch.Size = New System.Drawing.Size(315, 33)
-        Me.txtCSearch.TabIndex = 143
-        '
-        'btnCSearch
-        '
-        Me.btnCSearch.Font = New System.Drawing.Font("Dubai", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.btnCSearch.Location = New System.Drawing.Point(1045, 122)
-        Me.btnCSearch.Name = "btnCSearch"
-        Me.btnCSearch.Size = New System.Drawing.Size(82, 33)
-        Me.btnCSearch.TabIndex = 144
-        Me.btnCSearch.Text = "Search"
-        Me.btnCSearch.UseVisualStyleBackColor = True
+        Me.TabPage1.Location = New System.Drawing.Point(4, 38)
+        Me.TabPage1.Name = "TabPage1"
+        Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage1.Size = New System.Drawing.Size(1147, 604)
+        Me.TabPage1.TabIndex = 11
+        Me.TabPage1.Text = "TabPage1"
+        Me.TabPage1.UseVisualStyleBackColor = True
         '
         'frmSettings
         '
@@ -1604,4 +1616,5 @@ Partial Class frmSettings
     Friend WithEvents btnCSave As Button
     Friend WithEvents txtCSearch As TextBox
     Friend WithEvents btnCSearch As Button
+    Friend WithEvents TabPage1 As TabPage
 End Class

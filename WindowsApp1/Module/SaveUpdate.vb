@@ -47,9 +47,9 @@ Module SaveUpdate
                                         Optional MORNING_OT As String = "", Optional NIGHT_RATE As String = "", Optional BRANCH As Boolean = False,
                                         Optional DUTY_RESTDAY As Double = 0, Optional DUTY_SPEC_RESTDAY As Double = 0, Optional DUTY_REG_RESTDAY As Double = 0,
                                         Optional DUTY_RESTDAY_OT As Double = 0, Optional DUTY_SPEC_OT As Double = 0, Optional DUTY_SPEC_RESTDAY_OT As Double = 0, Optional DUTY_REG_OT As Double = 0, Optional DUTY_REG_RESTDAY_OT As Double = 0,
-                                        Optional DUTY_SPEC_NIGHTSHIFT As Double = 0, Optional DUTY_REG_NIGHTSHIFT As Double = 0,
-                                        Optional DUTY_ORD_NIGHTSHIFT_OT As Double = 0, Optional DUTY_SPEC_NIGHTSHIFT_OT As Double = 0,
-                                        Optional DUTY_REG_NIGHTSHIFT_OT As Double = 0, Optional NEW_RATE_DAYS_COVERED As Double = 0)
+                                        Optional DUTY_SPEC_NIGHTSHIFT As Double = 0, Optional DUTY_REG_NIGHTSHIFT As Double = 0, Optional DUTY_ORD_NIGHTSHIFT_OT As Double = 0, Optional DUTY_SPEC_NIGHTSHIFT_OT As Double = 0, Optional DUTY_REG_NIGHTSHIFT_OT As Double = 0,
+                                        Optional NEW_RATE_DAYS_COVERED As Double = 0, Optional NEW_RATE_LATE_COVERED As Double = 0, Optional NEW_RATE_UT_COVERED As Double = 0, Optional NEW_RATE_OT_COVERED As Double = 0,
+                                        Optional NEW_RATE_REGHOLIDAY_COVERED As Double = 0, Optional NEW_RATE_SPECHOLIDAY_COVERED As Double = 0)
 
         Dim mysql As String = $"Select * FROM PAYROLL_ATTENDANCE A inner join tbl_employee B on B.BIOMETRICID = A.BIOMETRICID where A.BIOMETRICID = '{biometric}' and PAYDATE = '{paydate}'"
         Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
@@ -98,7 +98,14 @@ Module SaveUpdate
                     .Item("DUTY_ORD_NIGHTSHIFT_OT") = DUTY_ORD_NIGHTSHIFT_OT
                     .Item("DUTY_SPEC_NIGHTSHIFT_OT") = DUTY_SPEC_NIGHTSHIFT_OT
                     .Item("DUTY_REG_NIGHTSHIFT_OT") = DUTY_REG_NIGHTSHIFT_OT
+
                     .Item("NEW_RATE_DAYS_COVERED") = NEW_RATE_DAYS_COVERED
+                    .Item("NEW_RATE_LATE_COVERED") = NEW_RATE_LATE_COVERED
+                    .Item("NEW_RATE_UT_COVERED") = NEW_RATE_UT_COVERED
+                    .Item("NEW_RATE_OT_COVERED") = NEW_RATE_OT_COVERED
+                    .Item("NEW_RATE_REGHOLIDAY_COVERED") = NEW_RATE_REGHOLIDAY_COVERED
+                    .Item("NEW_RATE_SPECHOLIDAY_COVERED") = NEW_RATE_SPECHOLIDAY_COVERED
+
                 End If
 
             End With
@@ -153,7 +160,13 @@ Module SaveUpdate
                         If DUTY_ORD_NIGHTSHIFT_OT <> 0 Then .Item("DUTY_ORD_NIGHTSHIFT_OT") = DUTY_ORD_NIGHTSHIFT_OT
                         If DUTY_SPEC_NIGHTSHIFT_OT <> 0 Then .Item("DUTY_SPEC_NIGHTSHIFT_OT") = DUTY_SPEC_NIGHTSHIFT_OT
                         If DUTY_REG_NIGHTSHIFT_OT <> 0 Then .Item("DUTY_REG_NIGHTSHIFT_OT") = DUTY_REG_NIGHTSHIFT_OT
+
                         If NEW_RATE_DAYS_COVERED <> 0 Then .Item("NEW_RATE_DAYS_COVERED") = NEW_RATE_DAYS_COVERED
+                        If NEW_RATE_LATE_COVERED <> 0 Then .Item("NEW_RATE_LATE_COVERED") = NEW_RATE_LATE_COVERED
+                        If NEW_RATE_UT_COVERED <> 0 Then .Item("NEW_RATE_UT_COVERED") = NEW_RATE_UT_COVERED
+                        If NEW_RATE_OT_COVERED <> 0 Then .Item("NEW_RATE_OT_COVERED") = NEW_RATE_OT_COVERED
+                        If NEW_RATE_REGHOLIDAY_COVERED <> 0 Then .Item("NEW_RATE_REGHOLIDAY_COVERED") = NEW_RATE_REGHOLIDAY_COVERED
+                        If NEW_RATE_SPECHOLIDAY_COVERED <> 0 Then .Item("NEW_RATE_SPECHOLIDAY_COVERED") = NEW_RATE_SPECHOLIDAY_COVERED
 
                     End If
 
@@ -1576,6 +1589,10 @@ Module SaveUpdate
                     Dim DUTY_ORD_NIGHTSHIFT_OT As Double = 0 : Dim DUTY_SPEC_NIGHTSHIFT_OT As Double = 0 : Dim DUTY_REG_NIGHTSHIFT_OT As Double = 0
                     Dim TOTAL_EXCESS_DUTY As Decimal = 0
 
+                    '============================= BRANCH NEW MINIMUM RATE COVERED ==============================
+                    Dim NEW_RATE_DAYS_COVERED As Double = 0 : Dim NEW_RATE_LATE_COVERED As Double = 0
+                    Dim NEW_RATE_UT_COVERED As Double = 0 : Dim NEW_RATE_OT_COVERED As Double = 0
+
                     ''============================================= ATTENDANCE (TOTAL DAYS) =========================================================
                     Dim sql_1 As String = $"Select * From PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{bioNo}' and paydate = '{paydate_}'"
                     Using ds_1 As DataSet = LoadSQL(sql_1, "PAYROLL_ATTENDANCE")
@@ -1615,6 +1632,13 @@ Module SaveUpdate
                                         DUTY_ORD_NIGHTSHIFT_OT = IIf(IsDBNull(.Item("DUTY_ORD_NIGHTSHIFT_OT")), 0, .Item("DUTY_ORD_NIGHTSHIFT_OT"))
                                         DUTY_SPEC_NIGHTSHIFT_OT = IIf(IsDBNull(.Item("DUTY_SPEC_NIGHTSHIFT_OT")), 0, .Item("DUTY_SPEC_NIGHTSHIFT_OT"))
                                         DUTY_REG_NIGHTSHIFT_OT = IIf(IsDBNull(.Item("DUTY_REG_NIGHTSHIFT_OT")), 0, .Item("DUTY_REG_NIGHTSHIFT_OT"))
+
+                                        NEW_RATE_DAYS_COVERED = IIf(IsDBNull(.Item("NEW_RATE_DAYS_COVERED")), 0, .Item("NEW_RATE_DAYS_COVERED"))
+                                        NEW_RATE_LATE_COVERED = IIf(IsDBNull(.Item("NEW_RATE_LATE_COVERED")), 0, .Item("NEW_RATE_LATE_COVERED"))
+                                        NEW_RATE_UT_COVERED = IIf(IsDBNull(.Item("NEW_RATE_UT_COVERED")), 0, .Item("NEW_RATE_UT_COVERED"))
+                                        NEW_RATE_OT_COVERED = IIf(IsDBNull(.Item("NEW_RATE_OT_COVERED")), 0, .Item("NEW_RATE_OT_COVERED"))
+                                        NEW_RATE_OT_COVERED = IIf(IsDBNull(.Item("NEW_RATE_OT_COVERED")), 0, .Item("NEW_RATE_OT_COVERED"))
+                                        NEW_RATE_OT_COVERED = IIf(IsDBNull(.Item("NEW_RATE_OT_COVERED")), 0, .Item("NEW_RATE_OT_COVERED"))
 
                                     End If
                                 End If

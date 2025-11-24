@@ -1949,14 +1949,14 @@ Module SelectFromDatabase
                         Where PAYDATE BETWEEN '{startt.ToShortDateString}' AND '{endd.ToShortDateString}' and ("
 
             For Each name In strWords
-                mysql &= $"{vbCr}UPPER(BIOMETRICID) LIKE UPPER('%{name}%') OR "
+                mysql &= $"{vbCr}UPPER(A.BIOMETRICID) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(LASTNAME || ', ' || FIRSTNAME || 
                                     CASE WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' ELSE ''
                                     END || 
                                     CASE WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX  ELSE ''
                                     END) LIKE UPPER('%{name}%') OR"
                 mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%') OR "
-                mysql &= $"{vbCr}UPPER(BRANCHCODE) LIKE UPPER('%{name}%'))  GROUP BY FULLNAME, BIOMETRICID, EMP_STATUS ORDER BY FULLNAME ASC "
+                mysql &= $"{vbCr}UPPER(BRANCHCODE) LIKE UPPER('%{name}%'))  GROUP BY FULLNAME, A.BIOMETRICID, EMP_STATUS ORDER BY FULLNAME ASC "
             Next
         Else
             mysql = $"select COALESCE(sum(SIL), 0) AS TOTALS, A.BIOMETRICID, EMP_STATUS, 
@@ -2972,9 +2972,9 @@ Module SelectFromDatabase
         Return cnt
     End Function
 
-    Public Function Count_SIL(Bio_no As String) As Integer
+    Public Function Count_SIL(Bio_no As String) As Double
 
-        Dim cnt As Integer = 0
+        Dim cnt As Double = 0
         Dim mysql As String = $"Select SUM(SIL) as tots From PAYROLL_ATTENDANCE where BIOMETRICID = '{Bio_no}' AND EXTRACT (YEAR FROM PAYDATE) = '{Date.Now.Year}'"
         Using dss As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
             If dss.Tables(0).Rows.Count > 0 Then
