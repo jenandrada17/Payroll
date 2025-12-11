@@ -349,14 +349,46 @@ Public Class frmPayout
             Dim result As DialogResult = MessageBox.Show($"The record will be edited, do you want to proceed?", "Warning", MessageBoxButtons.YesNo)
             If result = DialogResult.Yes Then
 
-                If payrollSched = "CLOSE PAYROLL" Then
-                    If BIO_NO <> 58 Then
+                'If payrollSched = "CLOSE PAYROLL" Then
+                '    If BIO_NO <> 58 Then
+                '        Dim first_Basic As Decimal = GetFirst_Basic(BIO_NO, paydate_)
+                '        Dim monthly_Basic As Decimal = CDec(TotalBasic_LBL.Tag) + first_Basic
+
+                '        If ThisNotIsNull("SSSNO", $"TBL_EMPLOYEE where BIOMETRICID = {BIO_NO} ") Then 'IF HAS SSSNO DETAILS 
+                '            Get_SSS(monthly_Basic)
+                '            'SSSComp = SSSEE
+                '            SSS_ER = SSSER
+                '            SSS_EC = SSSEC
+                '        End If
+                '    End If
+                'End If
+                SSSComp_LBL
+                'FOR NEXT MONTH DIVISION OF REMITTANCE
+                '======================== CHECK IF CLOSE PAYROLL ==================================  
+                If payrollSched = "CLOSE PAYROLL" And  Then
+                    If BIO_NO <> 58 And isNewEmployee(BIO_NO, paydate_) Then
                         Dim first_Basic As Decimal = GetFirst_Basic(BIO_NO, paydate_)
                         Dim monthly_Basic As Decimal = CDec(TotalBasic_LBL.Tag) + first_Basic
 
-                        If ThisNotIsNull("SSSNO", $"TBL_EMPLOYEE where BIOMETRICID = {BIO_NO} ") Then 'IF HAS SSSNO DETAILS 
+                        If ThisNotIsNull("SSSNO", $"TBL_EMPLOYEE where BIOMETRICID = {BIO_NO} ") Then 'IF HAS SSSNO DETAILS
                             Get_SSS(monthly_Basic)
-                            'SSSComp = SSSEE
+                            Dim firstSSSComp As Decimal = GetFirst_Conttrib(BIO_NO, paydate_, "SSS_COMP")
+                            Dim firstSSS_ER As Decimal = GetFirst_Conttrib(BIO_NO, paydate_, "SSS_ER")
+                            Dim firstSSS_EC As Decimal = GetFirst_Conttrib(BIO_NO, paydate_, "SSS_EC")
+                            SSS_ER = SSSER - firstSSS_ER
+                            SSS_EC = SSSEC - firstSSS_EC
+
+                            'TEMPORARILY (November 15, 2025 ADJUSTMENT) KALAHATI NALANG DAPAT ANG SSS_ER AND SSS_EC sa November 30, 2025
+                            If paydate_ = "11/30/2025" Then
+                                SSS_EC = 5
+                            End If
+
+                        End If
+                    End If
+                Else
+                    If BIO_NO <> 58 And isNewEmployee(BIO_NO, paydate_) Then
+                        If ThisNotIsNull("SSSNO", $"TBL_EMPLOYEE where BIOMETRICID = {BIO_NO} ") Then 'IF HAS SSSNO DETAILS
+                            Get_SSS(CDec(TotalBasic_LBL.Tag))
                             SSS_ER = SSSER
                             SSS_EC = SSSEC
                         End If

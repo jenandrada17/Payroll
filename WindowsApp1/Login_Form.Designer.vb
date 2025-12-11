@@ -372,8 +372,7 @@ Partial Class Login_Form
         Me.Controls.Add(Me.Box_Minimize)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         Me.Name = "Login_Form"
-        Me.StartPosition = System.Windows.Forms.FormStartPosition.Manual
-        Me.Text = "s"
+        Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         CType(Me.Guna2CirclePictureBox5, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Guna2CirclePictureBox7, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.Guna2CirclePictureBox8, System.ComponentModel.ISupportInitialize).EndInit()
