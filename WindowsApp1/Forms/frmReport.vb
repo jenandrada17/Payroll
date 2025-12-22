@@ -99,7 +99,6 @@ Public Class frmReport
                 End If
             End Using
 
-
             Dim mysqll As String = $"Select  PAYDATE, B.DATEHIRED, AMOUNT  from RECORDED_ALLOW_DEDUC A  
                             left join TBL_EMPLOYEE B on B.BIOMETRICID = A.BIO_NO 
                             WHERE  A.BIO_NO = '{bioNo}'  and A.CATEGORY = 'SBU' and PAYDATE <> '12/15/2021' ORDER BY PAYDATE ASC "
@@ -2695,14 +2694,40 @@ A
         rpt_13Month.Clear()
 
         Lists_13Month(Month_LV, "", Range_Combo.Text)
-
     End Sub
 
     Private Sub PopulateDateRange13Month()
-        Dim mysql As String = "SELECT DISTINCT PAYDATE FROM PAYROLL_PAYOUT 
-                                WHERE (EXTRACT(MONTH FROM PAYDATE) = 5 AND EXTRACT(DAY FROM PAYDATE) = 15) 
-                                OR (EXTRACT(MONTH FROM PAYDATE) = 12 AND EXTRACT(DAY FROM PAYDATE) = 15) ORDER BY PAYDATE
-"
+        'Dim mysql As String = "SELECT DISTINCT PAYDATE FROM PAYROLL_PAYOUT 
+        '                        WHERE (EXTRACT(MONTH FROM PAYDATE) = 5 AND EXTRACT(DAY FROM PAYDATE) = 15) 
+        '                        OR (EXTRACT(MONTH FROM PAYDATE) = 12 AND EXTRACT(DAY FROM PAYDATE) = 15) ORDER BY PAYDATE
+
+        Dim mysql As String = "SELECT PAYDATE
+                                FROM (
+                                    SELECT DISTINCT PAYDATE
+                                    FROM PAYROLL_PAYOUT
+                                    WHERE 
+                                        (EXTRACT(MONTH FROM PAYDATE) = 5  AND EXTRACT(DAY FROM PAYDATE) = 15)
+                                     OR (EXTRACT(MONTH FROM PAYDATE) = 12 AND EXTRACT(DAY FROM PAYDATE) = 15)
+
+                                    UNION
+
+                                    SELECT
+                                        CAST(
+                                            (EXTRACT(YEAR FROM CURRENT_DATE) + 1) || '-05-15'
+                                            AS DATE
+                                        )
+                                    FROM RDB$DATABASE
+                                    WHERE EXISTS (
+                                        SELECT 1
+                                        FROM PAYROLL_PAYOUT
+                                        WHERE 
+                                            EXTRACT(MONTH FROM PAYDATE) = 12
+                                            AND EXTRACT(DAY FROM PAYDATE) = 15
+                                            AND EXTRACT(YEAR FROM PAYDATE) = EXTRACT(YEAR FROM CURRENT_DATE)
+                                    )
+                                )
+                                ORDER BY 1;"
+
         Using ds As DataSet = LoadSQL(mysql, "PAYROLL_PAYOUT")
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows

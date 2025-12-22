@@ -361,38 +361,43 @@ Public Class frmPayout
                 '            SSS_EC = SSSEC
                 '        End If
                 '    End If
-                'End If
-                SSSComp_LBL
+                'End If 
                 'FOR NEXT MONTH DIVISION OF REMITTANCE
                 '======================== CHECK IF CLOSE PAYROLL ==================================  
-                If payrollSched = "CLOSE PAYROLL" And  Then
-                    If BIO_NO <> 58 And isNewEmployee(BIO_NO, paydate_) Then
-                        Dim first_Basic As Decimal = GetFirst_Basic(BIO_NO, paydate_)
-                        Dim monthly_Basic As Decimal = CDec(TotalBasic_LBL.Tag) + first_Basic
+                Dim hasSSSComp As Boolean = IIf(CDec(SSSComp_LBL.Text) = 0, False, True)
+                If hasSSSComp Then
+                    If payrollSched = "CLOSE PAYROLL" Then
+                        If BIO_NO <> 58 And isRemittanceActivated(BIO_NO, paydate_) Then
+                            Dim first_Basic As Decimal = GetFirst_Basic(BIO_NO, paydate_)
+                            Dim monthly_Basic As Decimal = CDec(TotalBasic_LBL.Tag) + first_Basic
 
-                        If ThisNotIsNull("SSSNO", $"TBL_EMPLOYEE where BIOMETRICID = {BIO_NO} ") Then 'IF HAS SSSNO DETAILS
-                            Get_SSS(monthly_Basic)
-                            Dim firstSSSComp As Decimal = GetFirst_Conttrib(BIO_NO, paydate_, "SSS_COMP")
-                            Dim firstSSS_ER As Decimal = GetFirst_Conttrib(BIO_NO, paydate_, "SSS_ER")
-                            Dim firstSSS_EC As Decimal = GetFirst_Conttrib(BIO_NO, paydate_, "SSS_EC")
-                            SSS_ER = SSSER - firstSSS_ER
-                            SSS_EC = SSSEC - firstSSS_EC
+                            If ThisNotIsNull("SSSNO", $"TBL_EMPLOYEE where BIOMETRICID = {BIO_NO} ") Then 'IF HAS SSSNO DETAILS
+                                Get_SSS(monthly_Basic)
+                                Dim firstSSSComp As Decimal = GetFirst_Conttrib(BIO_NO, paydate_, "SSS_COMP")
+                                Dim firstSSS_ER As Decimal = GetFirst_Conttrib(BIO_NO, paydate_, "SSS_ER")
+                                Dim firstSSS_EC As Decimal = GetFirst_Conttrib(BIO_NO, paydate_, "SSS_EC")
+                                SSS_ER = SSSER - firstSSS_ER
+                                SSS_EC = SSSEC - firstSSS_EC
 
-                            'TEMPORARILY (November 15, 2025 ADJUSTMENT) KALAHATI NALANG DAPAT ANG SSS_ER AND SSS_EC sa November 30, 2025
-                            If paydate_ = "11/30/2025" Then
-                                SSS_EC = 5
+                                'TEMPORARILY (November 15, 2025 ADJUSTMENT) KALAHATI NALANG DAPAT ANG SSS_ER AND SSS_EC sa November 30, 2025
+                                If paydate_ = "11/30/2025" Then
+                                    SSS_EC = 5
+                                End If
+
                             End If
-
+                        End If
+                    Else
+                        If BIO_NO <> 58 And isRemittanceActivated(BIO_NO, paydate_) Then
+                            If ThisNotIsNull("SSSNO", $"TBL_EMPLOYEE where BIOMETRICID = {BIO_NO} ") Then 'IF HAS SSSNO DETAILS
+                                Get_SSS(CDec(TotalBasic_LBL.Tag))
+                                SSS_ER = SSSER
+                                SSS_EC = SSSEC
+                            End If
                         End If
                     End If
                 Else
-                    If BIO_NO <> 58 And isNewEmployee(BIO_NO, paydate_) Then
-                        If ThisNotIsNull("SSSNO", $"TBL_EMPLOYEE where BIOMETRICID = {BIO_NO} ") Then 'IF HAS SSSNO DETAILS
-                            Get_SSS(CDec(TotalBasic_LBL.Tag))
-                            SSS_ER = SSSER
-                            SSS_EC = SSSEC
-                        End If
-                    End If
+                    SSS_ER = 0
+                    SSS_EC = 0
                 End If
 
                 SavePayout(BIO_NO, paydate_, TotalBasic_LBL.Tag, TotalOT_LBL.Tag,

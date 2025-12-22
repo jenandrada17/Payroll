@@ -712,7 +712,7 @@ Module SelectFromDatabase
         Return first_SSSComp
     End Function
 
-    Public Function isNewEmployee(BIO_NO As String, paydate As String) As Boolean
+    Public Function isRemittanceActivated(BIO_NO As String, paydate As String) As Boolean
         Dim sql As String = $"SELECT * FROM CHECK_PREVIOUS_15TH({BIO_NO}, '{paydate}');"
         Using ds As DataSet = LoadSQL(sql, "CHECK_PREVIOUS_15TH")
             If ds.Tables(0).Rows(0).Item(0) = "YES" Then

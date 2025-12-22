@@ -1702,7 +1702,7 @@ Module SaveUpdate
                     'FOR NEXT MONTH DIVISION OF REMITTANCE
                     '======================== CHECK IF CLOSE PAYROLL ==================================  
                     If payrollSched = "CLOSE PAYROLL" Then
-                        If bioNo <> 58 And isNewEmployee(bioNo, paydate_) Then
+                        If bioNo <> 58 And isRemittanceActivated(bioNo, paydate_) Then
                             Dim first_Basic As Decimal = GetFirst_Basic(bioNo, paydate_)
                             Dim monthly_Basic As Decimal = TotalBasic + first_Basic
 
@@ -1733,7 +1733,7 @@ Module SaveUpdate
                             End If
                         End If
                     Else
-                        If bioNo <> 58 And isNewEmployee(bioNo, paydate_) Then
+                        If bioNo <> 58 And isRemittanceActivated(bioNo, paydate_) Then
                             If ThisNotIsNull("SSSNO", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo} ") Then 'IF HAS SSSNO DETAILS
                                 Get_SSS(TotalBasic)
                                 SSSComp = SSSEE
