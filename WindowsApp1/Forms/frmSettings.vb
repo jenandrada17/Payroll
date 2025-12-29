@@ -228,9 +228,9 @@
 
                 SaveRATE_City("CITY", Rate_City_ComboB.Text, Rate_CityAmount_TXT.Text, True)
 
-                SaveMinimum_RATE(Rate_City_ComboB.Text, Rate_CityAmount_TXT.Text, Ecola_TXT.Text)
+                SaveMinimum_RATE(Rate_City_ComboB.Text, Rate_CityAmount_TXT.Text, Ecola_TXT.Text, frmMainForm.Paydate)
 
-                SaveLogs($"UPDATED MINIMUM RATE - City({Rate_City_ComboB.Text}), Rate( from {Rate_CityAmount_TXT.Tag} to {Rate_CityAmount_TXT.Text} )", frmMainForm.UserName_LBL.Text)
+                SaveLogs($"UPDATED MINIMUM RATE - City({Rate_City_ComboB.Text}), Rate( from {Rate_CityAmount_TXT.Tag} to {Rate_CityAmount_TXT.Text} ), Paydate - {frmMainForm.Paydate}", frmMainForm.UserName_LBL.Text)
 
                 CityClear_BTN.PerformClick()
 

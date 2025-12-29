@@ -324,7 +324,7 @@ Public Class frmPayout
             End If
 
 
-            '===================== MINIMUM RATE CHANGED STARTING SEPTEMBER 1, 2022 ===================== 
+            '===================== MINIMUM RATE CHANGED ===================== 
             If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
                 Dim Old_Rate As Decimal = GetData_Decimal("OLD_RATE", $"TBL_EMPLOYEE WHERE BIOMETRICID = '{BIO_NO}'")
                 Dim newMin_rholiday As Integer = REG_SPEC_HOLIDAY(BIO_NO, paydate_).rholiday

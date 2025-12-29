@@ -480,6 +480,7 @@ Module SaveUpdate
                                 .Item("RATE_DAILY") = daily_rate
                                 .Item("RATE_MONTHLY") = daily_rate * 26
                                 .Item("OLD_RATE") = existing_rate
+                                .Item("MINIMUM_RATE_UPDATED_AT") = frmMainForm.Paydate
                             End If
 
                             If fix_monthly = True Then
@@ -505,10 +506,8 @@ Module SaveUpdate
         End If
     End Sub
 
-    Friend Sub SaveMinimum_RATE(value As String, MINIMUM_RATE As String, ECOLA As String) '=========== BOOLEAN IF MORE THAN 1 ========== 
-        Dim mysql As String
-
-        mysql = $"Select * FROM PAYROLL_CITY_BRANCH where CITY = '{value}'"
+    Friend Sub SaveMinimum_RATE(value As String, MINIMUM_RATE As String, ECOLA As String, paydate As String) '=========== BOOLEAN IF MORE THAN 1 ========== 
+        Dim mysql As String = $"Select * FROM PAYROLL_CITY_BRANCH where CITY = '{value}'"
         Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_CITY_BRANCH")
         If dss.Tables(0).Rows.Count > 0 Then
             For Each dr In dss.Tables(0).Rows
