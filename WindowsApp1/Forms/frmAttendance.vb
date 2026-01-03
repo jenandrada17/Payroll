@@ -414,7 +414,7 @@ Public Class frmAttendance
                 Next
 
                 '===================================== MINIMUM CHANGED =================================
-                If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
+                If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") AndAlso ThisHasRow($"TBL_EMPLOYEE WHERE BIOMETRICID = '{BiometricID_TXT.Text}' AND MINIMUM_RATE_UPDATED_AT = '{paydate_}'") Then
                     Dim old_days As Double
                     old_days = (temp_present * 8) - temp_half
                     old_days = old_days / 8
@@ -1298,7 +1298,7 @@ Public Class frmAttendance
                 Dim totalDays As Double = IIf(String.IsNullOrWhiteSpace(Days7_TXT.Text), 0, Days7_TXT.Text)
 
                 '===================================== MINIMUM CHANGED =================================
-                If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
+                If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") AndAlso ThisHasRow($"TBL_EMPLOYEE WHERE BIOMETRICID = '{Bio7_TXT.Text}' AND MINIMUM_RATE_UPDATED_AT = '{paydate_}'") Then
                     Dim new_days As Double = NEW_RATE_DAYS_COVERED
                     Dim old_days As Double = totalDays - new_days
 
@@ -1603,7 +1603,7 @@ Public Class frmAttendance
                     'End If 
 
                     '===================================== MINIMUM CHANGED =================================
-                    If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
+                    If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") AndAlso ThisHasRow($"TBL_EMPLOYEE WHERE BIOMETRICID = '{bioNo}' AND MINIMUM_RATE_UPDATED_AT = '{paydate_}'") Then
                         Dim new_days As Double = NEW_RATE_DAYS_COVERED
                         Dim old_days As Double = totalDays - new_days
 
@@ -1999,7 +1999,7 @@ Public Class frmAttendance
                             End If
 
                             '=========================== MINIMUM RATE CHANGED STARTED SEPTEMBER 1, 2022 ONLY (JUNE 30, 2022)=====================  
-                            If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
+                            If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") AndAlso ThisHasRow($"TBL_EMPLOYEE WHERE BIOMETRICID = '{bioNum}' AND MINIMUM_RATE_UPDATED_AT = '{paydate_}'") Then
                                 Dim newMin_startingDate As Date = GetData("STARTING_DATE", $"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'")
                                 Dim short_date As String = DATEE.ToShortDateString
 
@@ -2027,7 +2027,7 @@ Public Class frmAttendance
                 CalculateuOVERTIME(row, TIME_OUT)
 
                 '=========================== MINIMUM RATE CHANGED STARTED SEPTEMBER 1, 2022 ONLY (JUNE 30, 2022)=====================  
-                If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
+                If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") AndAlso ThisHasRow($"TBL_EMPLOYEE WHERE BIOMETRICID = '{bioNum}' AND MINIMUM_RATE_UPDATED_AT = '{paydate_}'") Then
                     Dim newMin_startingDate As Date = GetData("STARTING_DATE", $"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'")
                     Dim short_date As String = DATEE.ToShortDateString
                     If short_date = newMin_startingDate.AddDays(-1) Then
@@ -2047,7 +2047,7 @@ Public Class frmAttendance
 
             'TODO - INACTIVE REGULAR HOLIDAY
             '=========================== MINIMUM RATE CHANGED STARTED SEPTEMBER 1, 2022 ONLY (JUNE 30, 2022)===================== 
-            If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
+            If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") AndAlso ThisHasRow($"TBL_EMPLOYEE WHERE BIOMETRICID = '{bioNum}' AND MINIMUM_RATE_UPDATED_AT = '{paydate_}'") Then
                 Dim newMin_startingDate As Date = GetData("STARTING_DATE", $"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'")
                 temp_Rholiday = REGHolidayCount(newMin_startingDate.AddDays(-1), ending_date)
                 temp_Sholiday = SPECHolidayCount(newMin_startingDate.AddDays(-1), ending_date)
@@ -2070,7 +2070,7 @@ Public Class frmAttendance
                     End If
 
                     '=========================== MINIMUM RATE CHANGED STARTED SEPTEMBER 1, 2022 ONLY (JUNE 30, 2022)=====================  
-                    If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
+                    If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") AndAlso ThisHasRow($"TBL_EMPLOYEE WHERE BIOMETRICID = '{bioNum}' AND MINIMUM_RATE_UPDATED_AT = '{paydate_}'") Then
                         Dim newMin_startingDate As Date = GetData("STARTING_DATE", $"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'")
                         Dim DATEE As DateTime = oRow.Tag
                         Dim short_date As String = DATEE.ToShortDateString
@@ -2655,7 +2655,7 @@ Public Class frmAttendance
                 End If
 
                 '=========================== MINIMUM RATE CHANGED =====================  
-                If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
+                If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") AndAlso ThisHasRow($"TBL_EMPLOYEE WHERE BIOMETRICID = '{biometric_No}' AND MINIMUM_RATE_UPDATED_AT = '{paydate_}'") Then
                     Dim newMin_startingDate As Date = GetData("STARTING_DATE", $"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'")
                     If DATEE.ToShortDateString = newMin_startingDate.AddDays(-1) Then
                         temp_present = Present
@@ -2687,7 +2687,7 @@ Public Class frmAttendance
                                     late_count.TotalMinutes, under_count.TotalMinutes, RHOLIDAY, SHOLIDAY)
 
             '===================================== MINIMUM CHANGED =================================  
-            If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
+            If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") AndAlso ThisHasRow($"TBL_EMPLOYEE WHERE BIOMETRICID = '{biometric_No}' AND MINIMUM_RATE_UPDATED_AT = '{paydate_}'") Then
                 Dim newMin_startingDate As Date = GetData("STARTING_DATE", $"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'")
                 If biometric_No <> Nothing Then
                     Dim old_days As Double

@@ -229,7 +229,7 @@ Module SaveUpdate
         Dim temp_Rholiday As Integer = 0
         Dim temp_Sholiday As Integer = 0
 
-        '=========================== MINIMUM RATE CHANGED STARTED SEPTEMBER 1, 2022 ONLY (JUNE 30, 2022) ===================== 
+        '=========================== MINIMUM RATE CHANGED ===================== 
         If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate}'") Then
             newMin_startingDate = GetData("STARTING_DATE", $"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate}'")
             temp_Rholiday = REGHolidayCount(newMin_startingDate.AddDays(-1), endd)
@@ -1652,7 +1652,7 @@ Module SaveUpdate
                     TotalSPECHol = ((SpecialHol_hrs / 8) * rate) * specHoliday
 
                     '===================== MINIMUM RATE CHANGED ================================ 
-                    If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
+                    If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") AndAlso ThisHasRow($"TBL_EMPLOYEE WHERE BIOMETRICID = '{bioNo}' AND MINIMUM_RATE_UPDATED_AT = '{paydate_}'") Then
                         Dim old_days As Double = OLD_NEW_RATE(bioNo, paydate_).old_days
                         Dim new_days As Double = OLD_NEW_RATE(bioNo, paydate_).new_days
 
@@ -1737,7 +1737,7 @@ Module SaveUpdate
                                 Get_SSS(TotalBasic)
                                 SSSComp = SSSEE
                                 SSS_ER = SSSER
-                                SSS_EC = SSSEC
+                                SSS_EC = SSSEC / 2
                             End If
 
                             If ThisNotIsNull("PAGIBIG", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo}") Then PagibigComp = Get_Pagibig() / 2
@@ -1979,7 +1979,7 @@ Module SaveUpdate
                         NIGHTRATEE = ((rate / OTHRS) * 0.1) * nightRate
 
                         '===================== MINIMUM RATE CHANGED STARTING SEPTEMBER 1, 2022 =========================== 
-                        If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
+                        If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") AndAlso ThisHasRow($"TBL_EMPLOYEE WHERE BIOMETRICID = '{bioNo}' AND MINIMUM_RATE_UPDATED_AT = '{paydate_}'") Then
                             '==================== OVERTIMEEEEEEEE =====================================
                             If RegularOT <> 0 Then
                                 Dim old_OT As Double = OLD_NEW_RATE(bioNo, paydate_).old_overtime

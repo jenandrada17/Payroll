@@ -140,6 +140,11 @@ Partial Class frmAttendance
         Me.Label30 = New System.Windows.Forms.Label()
         Me.Paydate7_CB = New System.Windows.Forms.ComboBox()
         Me.Panel2 = New System.Windows.Forms.Panel()
+        Me.Label46 = New System.Windows.Forms.Label()
+        Me.txtNewRateSpecHoliday = New System.Windows.Forms.TextBox()
+        Me.Label42 = New System.Windows.Forms.Label()
+        Me.txtNewRateRegHoliday = New System.Windows.Forms.TextBox()
+        Me.Label41 = New System.Windows.Forms.Label()
         Me.newRateOT_NUP = New System.Windows.Forms.NumericUpDown()
         Me.txtNewRateUT = New System.Windows.Forms.TextBox()
         Me.Label43 = New System.Windows.Forms.Label()
@@ -234,10 +239,6 @@ Partial Class frmAttendance
         Me.RE_NAME_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.RE_BIO_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.RE_BRANCH_DGV = New System.Windows.Forms.DataGridViewTextBoxColumn()
-        Me.txtNewRateRegHoliday = New System.Windows.Forms.TextBox()
-        Me.Label41 = New System.Windows.Forms.Label()
-        Me.txtNewRateSpecHoliday = New System.Windows.Forms.TextBox()
-        Me.Label42 = New System.Windows.Forms.Label()
         CType(Me.overAllBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.dtr_all, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.Attendance_Tab.SuspendLayout()
@@ -1416,6 +1417,7 @@ Partial Class frmAttendance
         '
         'Panel2
         '
+        Me.Panel2.Controls.Add(Me.Label46)
         Me.Panel2.Controls.Add(Me.txtNewRateSpecHoliday)
         Me.Panel2.Controls.Add(Me.Label42)
         Me.Panel2.Controls.Add(Me.txtNewRateRegHoliday)
@@ -1473,17 +1475,64 @@ Partial Class frmAttendance
         Me.Panel2.Controls.Add(Me.Label26)
         Me.Panel2.Controls.Add(Me.Late7_TXT)
         Me.Panel2.Controls.Add(Me.Label25)
-        Me.Panel2.Location = New System.Drawing.Point(4, 102)
+        Me.Panel2.Location = New System.Drawing.Point(4, 101)
         Me.Panel2.Name = "Panel2"
-        Me.Panel2.Size = New System.Drawing.Size(1144, 255)
+        Me.Panel2.Size = New System.Drawing.Size(1144, 256)
         Me.Panel2.TabIndex = 109
+        '
+        'Label46
+        '
+        Me.Label46.AutoSize = True
+        Me.Label46.Font = New System.Drawing.Font("Dubai", 8.249999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label46.ForeColor = System.Drawing.Color.DarkRed
+        Me.Label46.Location = New System.Drawing.Point(935, -4)
+        Me.Label46.Name = "Label46"
+        Me.Label46.Size = New System.Drawing.Size(120, 18)
+        Me.Label46.TabIndex = 176
+        Me.Label46.Text = "If minimum rate changed"
+        '
+        'txtNewRateSpecHoliday
+        '
+        Me.txtNewRateSpecHoliday.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtNewRateSpecHoliday.Location = New System.Drawing.Point(1056, 180)
+        Me.txtNewRateSpecHoliday.Name = "txtNewRateSpecHoliday"
+        Me.txtNewRateSpecHoliday.Size = New System.Drawing.Size(79, 29)
+        Me.txtNewRateSpecHoliday.TabIndex = 174
+        '
+        'Label42
+        '
+        Me.Label42.AutoSize = True
+        Me.Label42.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label42.Location = New System.Drawing.Point(933, 183)
+        Me.Label42.Name = "Label42"
+        Me.Label42.Size = New System.Drawing.Size(122, 22)
+        Me.Label42.TabIndex = 175
+        Me.Label42.Text = "New Spec. Hol.    (hr)"
+        '
+        'txtNewRateRegHoliday
+        '
+        Me.txtNewRateRegHoliday.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.txtNewRateRegHoliday.Location = New System.Drawing.Point(1056, 145)
+        Me.txtNewRateRegHoliday.Name = "txtNewRateRegHoliday"
+        Me.txtNewRateRegHoliday.Size = New System.Drawing.Size(79, 29)
+        Me.txtNewRateRegHoliday.TabIndex = 172
+        '
+        'Label41
+        '
+        Me.Label41.AutoSize = True
+        Me.Label41.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label41.Location = New System.Drawing.Point(932, 147)
+        Me.Label41.Name = "Label41"
+        Me.Label41.Size = New System.Drawing.Size(122, 22)
+        Me.Label41.TabIndex = 173
+        Me.Label41.Text = "New Reg. Hol.     (dd)"
         '
         'newRateOT_NUP
         '
         Me.newRateOT_NUP.DecimalPlaces = 1
         Me.newRateOT_NUP.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.newRateOT_NUP.Increment = New Decimal(New Integer() {5, 0, 0, 65536})
-        Me.newRateOT_NUP.Location = New System.Drawing.Point(1056, 108)
+        Me.newRateOT_NUP.Location = New System.Drawing.Point(1056, 111)
         Me.newRateOT_NUP.Maximum = New Decimal(New Integer() {200, 0, 0, 0})
         Me.newRateOT_NUP.Name = "newRateOT_NUP"
         Me.newRateOT_NUP.Size = New System.Drawing.Size(79, 29)
@@ -1492,7 +1541,7 @@ Partial Class frmAttendance
         'txtNewRateUT
         '
         Me.txtNewRateUT.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtNewRateUT.Location = New System.Drawing.Point(1056, 74)
+        Me.txtNewRateUT.Location = New System.Drawing.Point(1056, 77)
         Me.txtNewRateUT.Name = "txtNewRateUT"
         Me.txtNewRateUT.Size = New System.Drawing.Size(79, 29)
         Me.txtNewRateUT.TabIndex = 167
@@ -1501,7 +1550,7 @@ Partial Class frmAttendance
         '
         Me.Label43.AutoSize = True
         Me.Label43.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label43.Location = New System.Drawing.Point(933, 73)
+        Me.Label43.Location = New System.Drawing.Point(933, 76)
         Me.Label43.Name = "Label43"
         Me.Label43.Size = New System.Drawing.Size(120, 22)
         Me.Label43.TabIndex = 171
@@ -1511,7 +1560,7 @@ Partial Class frmAttendance
         '
         Me.Label44.AutoSize = True
         Me.Label44.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label44.Location = New System.Drawing.Point(933, 110)
+        Me.Label44.Location = New System.Drawing.Point(933, 113)
         Me.Label44.Name = "Label44"
         Me.Label44.Size = New System.Drawing.Size(118, 22)
         Me.Label44.TabIndex = 169
@@ -1520,7 +1569,7 @@ Partial Class frmAttendance
         'txtNewRateLate
         '
         Me.txtNewRateLate.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtNewRateLate.Location = New System.Drawing.Point(1056, 40)
+        Me.txtNewRateLate.Location = New System.Drawing.Point(1056, 43)
         Me.txtNewRateLate.Name = "txtNewRateLate"
         Me.txtNewRateLate.Size = New System.Drawing.Size(79, 29)
         Me.txtNewRateLate.TabIndex = 166
@@ -1529,7 +1578,7 @@ Partial Class frmAttendance
         '
         Me.Label45.AutoSize = True
         Me.Label45.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label45.Location = New System.Drawing.Point(933, 39)
+        Me.Label45.Location = New System.Drawing.Point(933, 42)
         Me.Label45.Name = "Label45"
         Me.Label45.Size = New System.Drawing.Size(121, 22)
         Me.Label45.TabIndex = 170
@@ -1538,7 +1587,7 @@ Partial Class frmAttendance
         'NewRateDaysCovered_NUP
         '
         Me.NewRateDaysCovered_NUP.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.NewRateDaysCovered_NUP.Location = New System.Drawing.Point(1056, 7)
+        Me.NewRateDaysCovered_NUP.Location = New System.Drawing.Point(1056, 10)
         Me.NewRateDaysCovered_NUP.Maximum = New Decimal(New Integer() {5, 0, 0, 0})
         Me.NewRateDaysCovered_NUP.Name = "NewRateDaysCovered_NUP"
         Me.NewRateDaysCovered_NUP.Size = New System.Drawing.Size(79, 29)
@@ -1548,7 +1597,7 @@ Partial Class frmAttendance
         '
         Me.Label40.AutoSize = True
         Me.Label40.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label40.Location = New System.Drawing.Point(933, 9)
+        Me.Label40.Location = New System.Drawing.Point(933, 12)
         Me.Label40.Name = "Label40"
         Me.Label40.Size = New System.Drawing.Size(114, 22)
         Me.Label40.TabIndex = 163
@@ -1835,7 +1884,7 @@ Partial Class frmAttendance
         Me.Save7_BTN.BackColor = System.Drawing.Color.LightSalmon
         Me.Save7_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.Save7_BTN.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Save7_BTN.Location = New System.Drawing.Point(1030, 213)
+        Me.Save7_BTN.Location = New System.Drawing.Point(1030, 216)
         Me.Save7_BTN.Name = "Save7_BTN"
         Me.Save7_BTN.Size = New System.Drawing.Size(111, 37)
         Me.Save7_BTN.TabIndex = 90
@@ -1847,7 +1896,7 @@ Partial Class frmAttendance
         Me.Cancel7_BTN.BackColor = System.Drawing.Color.RosyBrown
         Me.Cancel7_BTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.Cancel7_BTN.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Cancel7_BTN.Location = New System.Drawing.Point(896, 213)
+        Me.Cancel7_BTN.Location = New System.Drawing.Point(896, 216)
         Me.Cancel7_BTN.Name = "Cancel7_BTN"
         Me.Cancel7_BTN.Size = New System.Drawing.Size(108, 37)
         Me.Cancel7_BTN.TabIndex = 89
@@ -2365,42 +2414,6 @@ Partial Class frmAttendance
         Me.RE_BRANCH_DGV.ReadOnly = True
         Me.RE_BRANCH_DGV.Width = 140
         '
-        'txtNewRateRegHoliday
-        '
-        Me.txtNewRateRegHoliday.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtNewRateRegHoliday.Location = New System.Drawing.Point(1056, 142)
-        Me.txtNewRateRegHoliday.Name = "txtNewRateRegHoliday"
-        Me.txtNewRateRegHoliday.Size = New System.Drawing.Size(79, 29)
-        Me.txtNewRateRegHoliday.TabIndex = 172
-        '
-        'Label41
-        '
-        Me.Label41.AutoSize = True
-        Me.Label41.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label41.Location = New System.Drawing.Point(932, 144)
-        Me.Label41.Name = "Label41"
-        Me.Label41.Size = New System.Drawing.Size(122, 22)
-        Me.Label41.TabIndex = 173
-        Me.Label41.Text = "New Reg. Hol.     (dd)"
-        '
-        'txtNewRateSpecHoliday
-        '
-        Me.txtNewRateSpecHoliday.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.txtNewRateSpecHoliday.Location = New System.Drawing.Point(1056, 177)
-        Me.txtNewRateSpecHoliday.Name = "txtNewRateSpecHoliday"
-        Me.txtNewRateSpecHoliday.Size = New System.Drawing.Size(79, 29)
-        Me.txtNewRateSpecHoliday.TabIndex = 174
-        '
-        'Label42
-        '
-        Me.Label42.AutoSize = True
-        Me.Label42.Font = New System.Drawing.Font("Dubai", 9.749999!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label42.Location = New System.Drawing.Point(933, 180)
-        Me.Label42.Name = "Label42"
-        Me.Label42.Size = New System.Drawing.Size(122, 22)
-        Me.Label42.TabIndex = 175
-        Me.Label42.Text = "New Spec. Hol.    (hr)"
-        '
         'frmAttendance
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -2671,4 +2684,5 @@ Partial Class frmAttendance
     Friend WithEvents Label42 As Label
     Friend WithEvents txtNewRateRegHoliday As TextBox
     Friend WithEvents Label41 As Label
+    Friend WithEvents Label46 As Label
 End Class

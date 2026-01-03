@@ -325,7 +325,7 @@ Public Class frmPayout
 
 
             '===================== MINIMUM RATE CHANGED ===================== 
-            If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") Then
+            If ThisHasRow($"CHANGE_MINIMUM_RATE WHERE PAYDATE = '{paydate_}'") AndAlso ThisHasRow($"TBL_EMPLOYEE WHERE BIOMETRICID = '{BIO_NO}' AND MINIMUM_RATE_UPDATED_AT = '{paydate_}'") Then
                 Dim Old_Rate As Decimal = GetData_Decimal("OLD_RATE", $"TBL_EMPLOYEE WHERE BIOMETRICID = '{BIO_NO}'")
                 Dim newMin_rholiday As Integer = REG_SPEC_HOLIDAY(BIO_NO, paydate_).rholiday
                 Dim newMin_sholiday As Integer = REG_SPEC_HOLIDAY(BIO_NO, paydate_).sholiday
@@ -685,7 +685,6 @@ Public Class frmPayout
             Calculate_Late(Late_TXT.Text)
             Calculate_NetPay()
         End If
-
     End Sub
 
     Private Sub RemitOff_BTN_Click(sender As Object, e As EventArgs) Handles RemitOff_BTN.Click
