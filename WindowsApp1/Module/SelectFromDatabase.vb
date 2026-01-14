@@ -1924,8 +1924,12 @@ Module SelectFromDatabase
     Friend Sub Lists_SIL(LV As ListView, year As String, Optional searchName As String = "")
         If year = Nothing Then year = Date.Now.Year
 
-        Dim startt As New Date(year, 1, 1)
-        Dim endd As New Date(year, 12, 31)
+        Dim startt As New Date(year, 1, 31)
+        'Dim endd As New Date(year, 12, 31) 
+        Dim endd As New Date(CInt(year) + 1, 1, 15)
+
+        Dim startDate As String = startt.ToString("yyyy-MM-dd")
+        Dim endDate As String = endd.ToString("yyyy-MM-dd")
 
         Dim secured_str As String = searchName
         secured_str = DreadKnight(secured_str)
@@ -1946,7 +1950,7 @@ Module SelectFromDatabase
                         END AS FULLNAME
                         from TBL_EMPLOYEE A 
                         INNER JOIN PAYROLL_ATTENDANCE B on B.BIOMETRICID = A.BIOMETRICID 
-                        Where PAYDATE BETWEEN '{startt.ToShortDateString}' AND '{endd.ToShortDateString}' and ("
+                        Where PAYDATE BETWEEN '{startDate}' AND '{endDate}' and ("
 
             For Each name In strWords
                 mysql &= $"{vbCr}UPPER(A.BIOMETRICID) LIKE UPPER('%{name}%') OR "
@@ -1971,7 +1975,7 @@ Module SelectFromDatabase
                         END AS FULLNAME
                         from TBL_EMPLOYEE A 
                         INNER JOIN PAYROLL_ATTENDANCE B on B.BIOMETRICID = A.BIOMETRICID 
-                        Where PAYDATE BETWEEN '{startt.ToShortDateString}' AND '{endd.ToShortDateString}' 
+                        Where PAYDATE BETWEEN '{startDate}' AND '{endDate}' 
                         GROUP BY FULLNAME, A.BIOMETRICID, EMP_STATUS ORDER BY FULLNAME ASC "
         End If
 
@@ -1981,9 +1985,8 @@ Module SelectFromDatabase
             progressBarStart(ds.Tables(0).Rows.Count)
             For Each dr In ds.Tables(0).Rows
                 With dr
-
                     Dim i As ListViewItem = LV.Items.Add(.Item("FULLNAME"))
-                    i.SubItems.Add(.Item("TOTALS") + Get_SIL("PAYROLL_SCHED_COUNT", $"PAYROLL_SCHED_COUNT WHERE BIO_NO = '{ .item("BIOMETRICID")}' AND PAYDATE BETWEEN '{startt.ToShortDateString}' AND '{endd.ToShortDateString}'"))
+                    i.SubItems.Add(.Item("TOTALS") + Get_SIL("PAYROLL_SCHED_COUNT", $"PAYROLL_SCHED_COUNT WHERE BIO_NO = '{ .item("BIOMETRICID")}' AND PAYDATE BETWEEN '{startDate}' AND '{endDate}'"))
 
                     If IsDBNull(.Item("EMP_STATUS")) Then
                         i.BackColor = Color.Wheat
