@@ -789,4 +789,23 @@ Module Public_Function
         Return False
     End Function
 
+    Private Function GetEasterSunday(year As Integer) As Date
+        Dim a As Integer = year Mod 19
+        Dim b As Integer = year \ 100
+        Dim c As Integer = year Mod 100
+        Dim d As Integer = b \ 4
+        Dim e As Integer = b Mod 4
+        Dim f As Integer = (b + 8) \ 25
+        Dim g As Integer = (b - f + 1) \ 3
+        Dim h As Integer = (19 * a + b - d - g + 15) Mod 30
+        Dim i As Integer = c \ 4
+        Dim k As Integer = c Mod 4
+        Dim l As Integer = (32 + 2 * e + 2 * i - h - k) Mod 7
+        Dim m As Integer = (a + 11 * h + 22 * l) \ 451
+        Dim month As Integer = (h + l - 7 * m + 114) \ 31
+        Dim day As Integer = ((h + l - 7 * m + 114) Mod 31) + 1
+
+        Return New Date(year, month, day)
+    End Function
+
 End Module

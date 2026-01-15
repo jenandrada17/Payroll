@@ -434,7 +434,7 @@ Public Class frmAttendance
                 End If
 
                 SaveAttendanceEE(BiometricID_TXT.Text, PAYROLL, TotalDays_LBL.Text, TotalOTHr_LBL.Text, TotalLateHR_LBL.Text, TotalUTHR_LBL.Text,
-                                 TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text, specHoliday_hrs, SIL_LBL.Text, Late_percentage, Late_approved, AM_OT_NUP.Value)
+                                 TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text, specHoliday_hrs, SIL_LBL.Text, Late_percentage, Late_approved, AM_OT_NUP.Value, TotalRHoliday_LBL.Tag)
 
                 SavePayout_IndividualL(BiometricID_TXT.Text, PAYROLL, starting_date, ending_date)
 
@@ -1259,7 +1259,10 @@ Public Class frmAttendance
                 '======================== HOLIDAY ============================ 
                 Dim regHol_additional As Double = IIf(String.IsNullOrWhiteSpace(RegHol7_TXT.Text), 0, RegHol7_TXT.Text)
                 Dim regHol_deduction As Double = IIf(String.IsNullOrWhiteSpace(txtRegHolDeduction.Text), 0, txtRegHolDeduction.Text)    'ABSENT BEFORE/AFTER REGULAR HOLIDAY
-                Dim RHOLIDAY As Double = (REGHolidayCount(starting_date, ending_date) + regHol_additional) - regHol_deduction
+                Dim RHOLIDAY As Double = (REGHolidayCount(starting_date, ending_date) + regHol_additional)
+
+                If RHOLIDAY > 0 Then RHOLIDAY -= regHol_deduction   'PREVENT NEGATIVE VALUE (WHEN THERE'S NO REGULAR HOLIDAY)
+
                 Dim specHoliday_hrs As Double = IIf(String.IsNullOrWhiteSpace(SpecHol7_TXT.Text), 0, SpecHol7_TXT.Text)
                 Dim SHOLIDAY As Double = 0
 
@@ -1373,6 +1376,7 @@ Public Class frmAttendance
         Undertime7_TXT.Clear()
         Night7_TXT.Clear()
         RegHol7_TXT.Clear()
+        txtRegHolDeduction.Clear()
         SpecHol7_TXT.Clear()
 
         txtRestDayDuty.Clear()
@@ -1578,7 +1582,9 @@ Public Class frmAttendance
                 '======================== HOLIDAY ============================   
                 Dim regHol_additional As Integer = IIf(String.IsNullOrWhiteSpace(eCell(row, 10).Value), 0, eCell(row, 10).Value)
                 Dim regHol_deduction As Double = IIf(String.IsNullOrWhiteSpace(eCell(row, 30).Value), 0, eCell(row, 30).Value)    'ABSENT BEFORE/AFTER REGULAR HOLIDAY
-                Dim regHoliday As Integer = (REGHolidayCount(starting_date, ending_date) + regHol_additional) - regHol_deduction
+                Dim regHoliday As Integer = (REGHolidayCount(starting_date, ending_date) + regHol_additional)
+
+                If regHoliday > 0 Then regHoliday -= regHol_deduction   'PREVENT NEGATIVE VALUE (WHEN THERE'S NO REGULAR HOLIDAY) 
 
                 Dim DUTY_RESTDAY As Integer = IIf(String.IsNullOrWhiteSpace(eCell(row, 11).Value), 0, eCell(row, 11).Value)
                 Dim DUTY_SPEC_RESTDAY As Integer = IIf(String.IsNullOrWhiteSpace(eCell(row, 12).Value), 0, eCell(row, 12).Value)
@@ -1639,14 +1645,24 @@ Public Class frmAttendance
                                   new_regHoliday, new_specHoliday, payroll)
                     End If
 
+
+                    'Friend Sub SaveAttendanceEE(biometric As Integer, paydate As String, days As String, overTime As String, late_total As String, under_total As String,
+                    '                            regHoliday As String, specHoliday As String, specHoliday_hrs As Double, SIL As Double, LATE_ADJUSTMENT As String, Optional LATE_APPROVED As String = "",
+                    '                                    Optional MORNING_OT As String = "", Optional regHol_deduction As Integer = 0, Optional NIGHT_RATE As String = "", Optional BRANCH As Boolean = False,
+                    '                                    Optional DUTY_RESTDAY As Double = 0, Optional DUTY_SPEC_RESTDAY As Double = 0, Optional DUTY_REG_RESTDAY As Double = 0,
+                    '                                    Optional DUTY_RESTDAY_OT As Double = 0, Optional DUTY_SPEC_OT As Double = 0, Optional DUTY_SPEC_RESTDAY_OT As Double = 0, Optional DUTY_REG_OT As Double = 0, Optional DUTY_REG_RESTDAY_OT As Double = 0,
+                    '                                    Optional DUTY_SPEC_NIGHTSHIFT As Double = 0, Optional DUTY_REG_NIGHTSHIFT As Double = 0, Optional DUTY_ORD_NIGHTSHIFT_OT As Double = 0, Optional DUTY_SPEC_NIGHTSHIFT_OT As Double = 0, Optional DUTY_REG_NIGHTSHIFT_OT As Double = 0,
+                    '                                    Optional NEW_RATE_DAYS_COVERED As Double = 0, Optional NEW_RATE_LATE_COVERED As Double = 0, Optional NEW_RATE_UT_COVERED As Double = 0, Optional NEW_RATE_OT_COVERED As Double = 0,
+                    '                                    Optional NEW_RATE_REGHOLIDAY_COVERED As Double = 0, Optional NEW_RATE_SPECHOLIDAY_COVERED As Double = 0, Optional regHol_additional As Integer = 0)
+
                     SaveAttendanceEE(bioNo, payroll, totalDays, overtime, late, undertime,
-                                 regHoliday, TotalSHoliday_LBL.Text, specHoliday_hrs, sil, Nothing, Nothing, Nothing, nightRate, True,
+                                 regHoliday, TotalSHoliday_LBL.Text, specHoliday_hrs, sil, Nothing, Nothing, Nothing, regHol_deduction, nightRate, True,
                                  DUTY_RESTDAY, DUTY_SPEC_RESTDAY, DUTY_REG_RESTDAY,
                                  DUTY_RESTDAY_OT, DUTY_SPEC_OT, DUTY_SPEC_RESTDAY_OT, DUTY_REG_OT, DUTY_REG_RESTDAY_OT,
                                  DUTY_SPEC_NIGHTSHIFT, DUTY_REG_NIGHTSHIFT,
                                  DUTY_ORD_NIGHTSHIFT_OT, DUTY_SPEC_NIGHTSHIFT_OT, DUTY_REG_NIGHTSHIFT_OT,
                                  NEW_RATE_DAYS_COVERED, NEW_RATE_LATE_COVERED, NEW_RATE_UT_COVERED, NEW_RATE_OT_COVERED,
-                                 NEW_RATE_REGHOLIDAY_COVERED, NEW_RATE_SPECHOLIDAY_COVERED, regHol_additional, regHol_deduction)
+                                 NEW_RATE_REGHOLIDAY_COVERED, NEW_RATE_SPECHOLIDAY_COVERED, regHol_additional)
 
                     SavePayout_IndividualL(bioNo, payroll, starting_date, ending_date)
 
@@ -1885,6 +1901,37 @@ Public Class frmAttendance
         End If
     End Sub
 
+    Private Function IsFixedNoDutyDate(d As Date) As Boolean
+
+        ' Sunday
+        If d.DayOfWeek = DayOfWeek.Sunday Then Return True
+
+        ' December 24 or 31
+        If d.Month = 12 AndAlso (d.Day = 24 OrElse d.Day = 31) Then
+            Return True
+        End If
+
+        ' Black Saturday (day after Good Friday)
+        Dim easterSunday As Date = GetEasterSunday(d.Year)
+        Dim goodFriday As Date = easterSunday.AddDays(-2)
+        Dim blackSaturday As Date = goodFriday.AddDays(1)
+
+        If d.Date = blackSaturday.Date Then Return True
+
+        Return False
+    End Function
+
+
+    Private Function GetPreviousWorkingDay(d As Date) As Date
+        Dim checkDate As Date = d.AddDays(-1)
+
+        While IsFixedNoDutyDate(checkDate)
+            checkDate = checkDate.AddDays(-1)
+        End While
+
+        Return checkDate
+    End Function
+
     Private Sub Calculate_BTN_Click(sender As Object, e As EventArgs) Handles Calculate_BTN.Click
         If Name_TXT.Text <> Nothing Then
             TotalDays_LBL.Text = 0
@@ -1924,32 +1971,91 @@ Public Class frmAttendance
 
                 If Not row.DefaultCellStyle.ForeColor = Color.Red Then
 
-                    '================================= CALCULATE HOLIDAYS  ===============================
+#Region "WITHOUT REGULAR HOLIDAY DEDUCTION"
+
+                    ''================================= CALCULATE HOLIDAYS  ===============================
+                    'If row.DefaultCellStyle.BackColor = Color.MediumOrchid Then
+
+                    '    If DATEE >= dateStarted Then
+                    '        If emp_status = "INACTIVE" Then
+                    '            If DATEE <= CDate(dateEnded).ToShortDateString Then
+                    '                TotalRHoliday_LBL.Text = TotalRHoliday_LBL.Text + 1
+                    '            Else
+                    '                Console.WriteLine("INACTIVE - HOLIDAY NOT INCLUDED")
+                    '            End If
+                    '        Else
+                    '            TotalRHoliday_LBL.Text = TotalRHoliday_LBL.Text + 1
+                    '        End If
+                    '    End If
+
+                    'ElseIf row.DefaultCellStyle.BackColor = Color.Plum Then
+
+                    '    If Paydate_ComboB.SelectedIndex >= 0 Then paydate_ = Paydate_ComboB.Text '======= IF PAYDATE SELECTED IN BIOMETRIC
+
+                    '    If PRESENT_Date(bioNum, paydate_, row.Cells(0).Tag) Then
+                    '        If row.Cells(0).Tag >= dateStarted Then
+                    '            TotalSHoliday_LBL.Text = TotalSHoliday_LBL.Text + 1
+                    '        End If
+                    '    End If
+
+                    'End If 
+
+#End Region
+
+                    '================================= CALCULATE HOLIDAYS ===============================
                     If row.DefaultCellStyle.BackColor = Color.MediumOrchid Then
 
-                        If DATEE >= dateStarted Then
-                            If emp_status = "INACTIVE" Then
-                                If DATEE <= CDate(dateEnded).ToShortDateString Then
-                                    TotalRHoliday_LBL.Text = TotalRHoliday_LBL.Text + 1
-                                Else
-                                    Console.WriteLine("INACTIVE - HOLIDAY NOT INCLUDED")
-                                End If
-                            Else
-                                TotalRHoliday_LBL.Text = TotalRHoliday_LBL.Text + 1
+                        Dim holidayDate As Date = CDate(row.Cells(0).Tag)
+
+                        If holidayDate >= dateStarted Then
+
+                            Dim presentBefore As Boolean = False
+                            Dim presentAfter As Boolean = False
+
+                            Dim beforeDate As Date = holidayDate.AddDays(-1)
+                            Dim afterDate As Date = holidayDate.AddDays(1)
+
+                            If beforeDate.DayOfWeek <> DayOfWeek.Sunday Then
+                                presentBefore = PRESENT_Date(bioNum, paydate_, beforeDate)
                             End If
+
+                            If afterDate.DayOfWeek <> DayOfWeek.Sunday Then
+                                presentAfter = PRESENT_Date(bioNum, paydate_, afterDate)
+                            End If
+
+                            If presentBefore AndAlso presentAfter Then
+
+                                If emp_status = "INACTIVE" Then
+                                    If holidayDate <= CDate(dateEnded) Then
+                                        TotalRHoliday_LBL.Text = CInt(TotalRHoliday_LBL.Text) + 1
+                                    Else
+                                        Console.WriteLine("INACTIVE - HOLIDAY NOT INCLUDED")
+                                    End If
+                                Else
+                                    TotalRHoliday_LBL.Text = CInt(TotalRHoliday_LBL.Text) + 1
+                                End If
+
+                            Else
+                                TotalRHoliday_LBL.Tag = CInt(TotalRHoliday_LBL.Tag) + 1
+                                Console.WriteLine("HOLIDAY NOT COUNTED - ABSENT BEFORE AND AFTER")
+                            End If
+
                         End If
 
                     ElseIf row.DefaultCellStyle.BackColor = Color.Plum Then
 
-                        If Paydate_ComboB.SelectedIndex >= 0 Then paydate_ = Paydate_ComboB.Text '======= IF PAYDATE SELECTED IN BIOMETRIC
+                        If Paydate_ComboB.SelectedIndex >= 0 Then
+                            paydate_ = Paydate_ComboB.Text
+                        End If
 
-                        If PRESENT_Date(bioNum, paydate_, row.Cells(0).Tag) Then
-                            If row.Cells(0).Tag >= dateStarted Then
-                                TotalSHoliday_LBL.Text = TotalSHoliday_LBL.Text + 1
+                        If PRESENT_Date(bioNum, paydate_, CDate(row.Cells(0).Tag)) Then
+                            If CDate(row.Cells(0).Tag) >= dateStarted Then
+                                TotalSHoliday_LBL.Text = CInt(TotalSHoliday_LBL.Text) + 1
                             End If
                         End If
 
                     End If
+
                 End If
 
                 '======================== GET TIME IN/OUT TO CALCULATE LATE UNDERTIME OVERTIME ============================  
@@ -2495,6 +2601,56 @@ Public Class frmAttendance
         End Try
     End Sub
 
+    Function IsEmployeePresent(bioNo As String, workDate As Date) As Boolean
+
+        Return DataeXIST(
+            $"BIOMETRIC_DTR 
+              WHERE BIO_ID = '{bioNo}' 
+              AND DATE_ONLY = '{workDate:yyyy-MM-dd}' 
+              AND (
+                (AM_IN IS NOT NULL OR PM_IN IS NOT NULL) AND 
+                (AM_OUT IS NOT NULL OR PM_OUT IS NOT NULL)
+              )"
+        )
+
+    End Function
+
+    Function REGHolidayCount_WithAttendance(bioNo As String, startDate As Date, endDate As Date) As Integer
+
+        Dim count As Integer = 0
+
+        Dim holidays = LoadSQL($"SELECT DATEE FROM PAYROLL_HOLIDAY WHERE KINDS = 'REGULAR' AND DATEE BETWEEN '{startDate:yyyy-MM-dd}' AND '{endDate:yyyy-MM-dd}'", "PAYROLL_HOLIDAY")
+
+        For Each dr As DataRow In holidays.Tables(0).Rows
+
+            Dim holidayDate As Date = dr("DATEE")
+
+            Dim beforeDate As Date = holidayDate.AddDays(-1)
+            Dim afterDate As Date = holidayDate.AddDays(1)
+
+            Dim presentBefore As Boolean = False
+            Dim presentAfter As Boolean = False
+
+            ' Check day BEFORE holiday (skip Sunday)
+            If beforeDate.DayOfWeek <> DayOfWeek.Sunday Then
+                presentBefore = IsEmployeePresent(bioNo, beforeDate)
+            End If
+
+            ' Check day AFTER holiday (skip Sunday)
+            If afterDate.DayOfWeek <> DayOfWeek.Sunday Then
+                presentAfter = IsEmployeePresent(bioNo, afterDate)
+            End If
+
+            If presentBefore OrElse presentAfter Then
+                count += 1
+            End If
+
+        Next
+
+        Return count
+    End Function
+
+
     Public Sub SAVE_DIRECT_Attendance()
         LoadDateTime()
         TempAttendance()
@@ -2502,13 +2658,20 @@ Public Class frmAttendance
         Dim paydate_ As String = Paydate.ToString("d")
 
         '======================== HOLIDAY ============================ 
-        Dim RHOLIDAY As Integer = REGHolidayCount(starting_date, ending_date)
+        'Dim RHOLIDAY As Integer = REGHolidayCount(starting_date, ending_date)
+        Dim regHol_original As Integer = REGHolidayCount(starting_date, ending_date)
+        Dim regHol_deduction As Integer = 0
+
+        Dim RHOLIDAY As Integer = 0
         Dim SHOLIDAY As Integer = SPECHolidayCount(starting_date, ending_date)
 
         distinct_bio = distinct_bio.Distinct.ToList
 
         progressBarStart(distinct_bio.Count)
         For Each biometric_No As String In distinct_bio
+
+            RHOLIDAY = REGHolidayCount_WithAttendance(biometric_No, starting_date, ending_date)
+            regHol_deduction = regHol_original - RHOLIDAY
 
             Dim all_date, exist_date, add_date As New List(Of String)()
 
@@ -2692,8 +2855,17 @@ Public Class frmAttendance
                 Late_percentage = LatePercentage(biometric_No, paydate_, late_count.TotalMinutes)
             End If
 
+            'Friend Sub SaveAttendanceEE(biometric As Integer, paydate As String, days As String, overTime As String, late_total As String, under_total As String,
+            '                            regHoliday As String, specHoliday As String, specHoliday_hrs As Double, SIL As Double, LATE_ADJUSTMENT As String, Optional LATE_APPROVED As String = "",
+            '                                    Optional MORNING_OT As String = "", Optional regHol_deduction As Integer = 0, Optional NIGHT_RATE As String = "", Optional BRANCH As Boolean = False,
+            '                                    Optional DUTY_RESTDAY As Double = 0, Optional DUTY_SPEC_RESTDAY As Double = 0, Optional DUTY_REG_RESTDAY As Double = 0,
+            '                                    Optional DUTY_RESTDAY_OT As Double = 0, Optional DUTY_SPEC_OT As Double = 0, Optional DUTY_SPEC_RESTDAY_OT As Double = 0, Optional DUTY_REG_OT As Double = 0, Optional DUTY_REG_RESTDAY_OT As Double = 0,
+            '                                    Optional DUTY_SPEC_NIGHTSHIFT As Double = 0, Optional DUTY_REG_NIGHTSHIFT As Double = 0, Optional DUTY_ORD_NIGHTSHIFT_OT As Double = 0, Optional DUTY_SPEC_NIGHTSHIFT_OT As Double = 0, Optional DUTY_REG_NIGHTSHIFT_OT As Double = 0,
+            '                                    Optional NEW_RATE_DAYS_COVERED As Double = 0, Optional NEW_RATE_LATE_COVERED As Double = 0, Optional NEW_RATE_UT_COVERED As Double = 0, Optional NEW_RATE_OT_COVERED As Double = 0,
+            '                                    Optional NEW_RATE_REGHOLIDAY_COVERED As Double = 0, Optional NEW_RATE_SPECHOLIDAY_COVERED As Double = 0, Optional regHol_additional As Integer = 0)
+
             SaveAttendanceEE(biometric_No, paydate_, TotalDays_LBL.Text, TotalOTHr_LBL.Text, late_count.TotalMinutes, under_count.TotalMinutes,
-                             RHOLIDAY, SHOLIDAY, specHoliday_hrs, 0, Late_percentage)
+                             RHOLIDAY, SHOLIDAY, specHoliday_hrs, 0, Late_percentage, Nothing, Nothing, regHol_deduction)
 
             InsertTempAttendance(biometric_No, paydate_, TotalDays_LBL.Text, TotalOTHr_LBL.Text,
                                     late_count.TotalMinutes, under_count.TotalMinutes, RHOLIDAY, SHOLIDAY)
