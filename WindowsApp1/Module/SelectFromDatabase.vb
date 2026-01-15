@@ -1925,8 +1925,8 @@ Module SelectFromDatabase
         If year = Nothing Then year = Date.Now.Year
 
         Dim startt As New Date(year, 1, 31)
-        'Dim endd As New Date(year, 12, 31) 
-        Dim endd As New Date(CInt(year) + 1, 1, 15)
+        Dim endd As New Date(year, 12, 31)
+        'Dim endd As New Date(CInt(year) + 1, 1, 15)
 
         Dim startDate As String = startt.ToString("yyyy-MM-dd")
         Dim endDate As String = endd.ToString("yyyy-MM-dd")

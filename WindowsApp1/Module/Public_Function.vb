@@ -789,7 +789,7 @@ Module Public_Function
         Return False
     End Function
 
-    Private Function GetEasterSunday(year As Integer) As Date
+    Friend Function GetEasterSunday(year As Integer) As Date
         Dim a As Integer = year Mod 19
         Dim b As Integer = year \ 100
         Dim c As Integer = year Mod 100

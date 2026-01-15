@@ -1921,7 +1921,6 @@ Public Class frmAttendance
         Return False
     End Function
 
-
     Private Function GetPreviousWorkingDay(d As Date) As Date
         Dim checkDate As Date = d.AddDays(-1)
 
@@ -1931,6 +1930,27 @@ Public Class frmAttendance
 
         Return checkDate
     End Function
+
+    Private Function GetNextWorkingDay(d As Date) As Date
+        Dim checkDate As Date = d.AddDays(1)
+
+        While IsFixedNoDutyDate(checkDate)
+            checkDate = checkDate.AddDays(1)
+        End While
+
+        Return checkDate
+    End Function
+
+
+    Function IsPresent_FromGrid(dgv As DataGridView, workDate As Date) As Boolean
+        For Each r As DataGridViewRow In dgv.Rows
+            If CDate(r.Tag) = workDate Then
+                Return CBool(r.Cells(5).Value)
+            End If
+        Next
+        Return False ' date not found = absent
+    End Function
+
 
     Private Sub Calculate_BTN_Click(sender As Object, e As EventArgs) Handles Calculate_BTN.Click
         If Name_TXT.Text <> Nothing Then
@@ -2009,19 +2029,12 @@ Public Class frmAttendance
 
                         If holidayDate >= dateStarted Then
 
-                            Dim presentBefore As Boolean = False
-                            Dim presentAfter As Boolean = False
+                            ' Get valid working days around holiday
+                            Dim prevWorkDay As Date = GetPreviousWorkingDay(holidayDate)
+                            Dim nextWorkDay As Date = GetNextWorkingDay(holidayDate)
 
-                            Dim beforeDate As Date = holidayDate.AddDays(-1)
-                            Dim afterDate As Date = holidayDate.AddDays(1)
-
-                            If beforeDate.DayOfWeek <> DayOfWeek.Sunday Then
-                                presentBefore = PRESENT_Date(bioNum, paydate_, beforeDate)
-                            End If
-
-                            If afterDate.DayOfWeek <> DayOfWeek.Sunday Then
-                                presentAfter = PRESENT_Date(bioNum, paydate_, afterDate)
-                            End If
+                            Dim presentBefore As Boolean = IsPresent_FromGrid(DataGridView1, prevWorkDay)
+                            Dim presentAfter As Boolean = IsPresent_FromGrid(DataGridView1, nextWorkDay)
 
                             If presentBefore AndAlso presentAfter Then
 
@@ -2048,7 +2061,8 @@ Public Class frmAttendance
                             paydate_ = Paydate_ComboB.Text
                         End If
 
-                        If PRESENT_Date(bioNum, paydate_, CDate(row.Cells(0).Tag)) Then
+                        'If PRESENT_Date(bioNum, paydate_, CDate(row.Cells(0).Tag)) Then
+                        If CBool(row.Cells(5).Value) Then   'IF CHECKED PRESENT
                             If CDate(row.Cells(0).Tag) >= dateStarted Then
                                 TotalSHoliday_LBL.Text = CInt(TotalSHoliday_LBL.Text) + 1
                             End If
