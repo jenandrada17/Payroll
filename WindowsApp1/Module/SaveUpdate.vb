@@ -42,14 +42,19 @@ Module SaveUpdate
         RunCommand("DELETE FROM PAYROLL_HOLIDAY WHERE DATEE = '" & datee & "'")
     End Sub
 
+
+    'SaveAttendanceEE(BiometricID_TXT.Text, PAYROLL, TotalDays_LBL.Text, TotalOTHr_LBL.Text, TotalLateHR_LBL.Text, TotalUTHR_LBL.Text,
+    '                 TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text, specHoliday_hrs, SIL_LBL.Text, Late_percentage, Late_approved, AM_OT_NUP.Value)
+
+
     Friend Sub SaveAttendanceEE(biometric As Integer, paydate As String, days As String, overTime As String, late_total As String, under_total As String,
                                 regHoliday As String, specHoliday As String, specHoliday_hrs As Double, SIL As Double, LATE_ADJUSTMENT As String, Optional LATE_APPROVED As String = "",
-                                        Optional MORNING_OT As String = "", Optional NIGHT_RATE As String = "", Optional BRANCH As Boolean = False,
+                                        Optional MORNING_OT As String = "", Optional regHol_deduction As Integer = 0, Optional NIGHT_RATE As String = "", Optional BRANCH As Boolean = False,
                                         Optional DUTY_RESTDAY As Double = 0, Optional DUTY_SPEC_RESTDAY As Double = 0, Optional DUTY_REG_RESTDAY As Double = 0,
                                         Optional DUTY_RESTDAY_OT As Double = 0, Optional DUTY_SPEC_OT As Double = 0, Optional DUTY_SPEC_RESTDAY_OT As Double = 0, Optional DUTY_REG_OT As Double = 0, Optional DUTY_REG_RESTDAY_OT As Double = 0,
                                         Optional DUTY_SPEC_NIGHTSHIFT As Double = 0, Optional DUTY_REG_NIGHTSHIFT As Double = 0, Optional DUTY_ORD_NIGHTSHIFT_OT As Double = 0, Optional DUTY_SPEC_NIGHTSHIFT_OT As Double = 0, Optional DUTY_REG_NIGHTSHIFT_OT As Double = 0,
                                         Optional NEW_RATE_DAYS_COVERED As Double = 0, Optional NEW_RATE_LATE_COVERED As Double = 0, Optional NEW_RATE_UT_COVERED As Double = 0, Optional NEW_RATE_OT_COVERED As Double = 0,
-                                        Optional NEW_RATE_REGHOLIDAY_COVERED As Double = 0, Optional NEW_RATE_SPECHOLIDAY_COVERED As Double = 0)
+                                        Optional NEW_RATE_REGHOLIDAY_COVERED As Double = 0, Optional NEW_RATE_SPECHOLIDAY_COVERED As Double = 0, Optional regHol_additional As Integer = 0)
 
         Dim mysql As String = $"Select * FROM PAYROLL_ATTENDANCE A inner join tbl_employee B on B.BIOMETRICID = A.BIOMETRICID where A.BIOMETRICID = '{biometric}' and PAYDATE = '{paydate}'"
         Dim dss As DataSet = LoadSQL(mysql, "PAYROLL_ATTENDANCE")
@@ -69,6 +74,7 @@ Module SaveUpdate
                 .Item("TRAINING_REGHOLIDAY") = 0
                 .Item("TRAINING_SPECHOLIDAY") = 0
                 .Item("SPECHOLIDAY_HRS") = specHoliday_hrs ' ==== SPECIAL HOLIDAY COVERED HOURS 
+                .Item("REGHOLIDAY_DEDUCTION") = regHol_deduction ' ==== ABSENT BEFORE/AFTER REHULAR HOLIDAY 
 
                 If LATE_ADJUSTMENT = Nothing Then
                     .Item("LATE_ADJUSTMENT") = 1
@@ -106,6 +112,8 @@ Module SaveUpdate
                     .Item("NEW_RATE_REGHOLIDAY_COVERED") = NEW_RATE_REGHOLIDAY_COVERED
                     .Item("NEW_RATE_SPECHOLIDAY_COVERED") = NEW_RATE_SPECHOLIDAY_COVERED
 
+                    .Item("REGHOLIDAY_ADDITIONAL") = regHol_additional      ' ==== SOME BRANCH AREA HAS ITS OWN LOCAL REGULAR HOLIDAY
+
                 End If
 
             End With
@@ -131,6 +139,7 @@ Module SaveUpdate
                     .Item("TRAINING_REGHOLIDAY") = 0
                     .Item("TRAINING_SPECHOLIDAY") = 0
                     .Item("SPECHOLIDAY_HRS") = specHoliday_hrs ' ==== SPECIAL HOLIDAY COVERED HOURS  
+                    .Item("REGHOLIDAY_DEDUCTION") = regHol_deduction ' ==== ABSENT BEFORE/AFTER REHULAR HOLIDAY 
 
                     If LATE_ADJUSTMENT = Nothing Then
                         .Item("LATE_ADJUSTMENT") = 1
@@ -167,6 +176,8 @@ Module SaveUpdate
                         If NEW_RATE_OT_COVERED <> 0 Then .Item("NEW_RATE_OT_COVERED") = NEW_RATE_OT_COVERED
                         If NEW_RATE_REGHOLIDAY_COVERED <> 0 Then .Item("NEW_RATE_REGHOLIDAY_COVERED") = NEW_RATE_REGHOLIDAY_COVERED
                         If NEW_RATE_SPECHOLIDAY_COVERED <> 0 Then .Item("NEW_RATE_SPECHOLIDAY_COVERED") = NEW_RATE_SPECHOLIDAY_COVERED
+
+                        .Item("REGHOLIDAY_ADDITIONAL") = regHol_additional      ' ==== SOME BRANCH AREA HAS ITS OWN LOCAL REGULAR HOLIDAY
 
                     End If
 
@@ -1512,6 +1523,7 @@ Module SaveUpdate
                     Dim tin_no As String = IIf(IsDBNull(.Item("TINNO")), Nothing, .Item("TINNO"))
                     Dim pagibig_no As String = IIf(IsDBNull(.Item("PAGIBIG")), Nothing, .Item("PAGIBIG"))
                     Dim Hold_salary As Boolean = False
+                    Dim active_employee As Boolean = IIf(.Item("EMP_STATUS") = "ACTIVE", True, False)
 
                     If IsDBNull(.Item("HOLD_SALARY")) Then
                         Hold_salary = False
@@ -1680,6 +1692,7 @@ Module SaveUpdate
                         TotalSPECHol = 0
                     End If
 
+#Region "REMITTANCE AT THE END OF THE MONTH ONLY"
                     ''======================== CHECK IF CLOSE PAYROLL ==================================  
                     'If payrollSched = "CLOSE PAYROLL" Then
                     '    If bioNo <> 58 Then
@@ -1697,6 +1710,7 @@ Module SaveUpdate
                     '        If ThisNotIsNull("PHILHEALTHNO", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo}") Then PhilhealthComp = Get_PhilHealth(monthly_Basic)
                     '    End If
                     'End If
+#End Region
 
                     'FOR NEXT MONTH DIVISION OF REMITTANCE
                     '======================== CHECK IF CLOSE PAYROLL ==================================  
@@ -1732,18 +1746,19 @@ Module SaveUpdate
                             End If
                         End If
                     Else
-                        If bioNo <> 58 And isRemittanceActivated(bioNo, paydate_) Then
-                            If ThisNotIsNull("SSSNO", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo} ") Then 'IF HAS SSSNO DETAILS
-                                Get_SSS(TotalBasic)
-                                SSSComp = SSSEE
-                                SSS_ER = SSSER
-                                SSS_EC = SSSEC / 2
+                        If active_employee Then
+                            If bioNo <> 58 And isRemittanceActivated(bioNo, paydate_) Then
+                                If ThisNotIsNull("SSSNO", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo} ") Then 'IF HAS SSSNO DETAILS
+                                    Get_SSS(TotalBasic)
+                                    SSSComp = SSSEE
+                                    SSS_ER = SSSER
+                                    SSS_EC = SSSEC / 2
+                                End If
+
+                                If ThisNotIsNull("PAGIBIG", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo}") Then PagibigComp = Get_Pagibig() / 2
+                                If ThisNotIsNull("PHILHEALTHNO", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo}") Then PhilhealthComp = Get_PhilHealth(TotalBasic) / 2
                             End If
-
-                            If ThisNotIsNull("PAGIBIG", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo}") Then PagibigComp = Get_Pagibig() / 2
-                            If ThisNotIsNull("PHILHEALTHNO", $"TBL_EMPLOYEE where BIOMETRICID = {bioNo}") Then PhilhealthComp = Get_PhilHealth(TotalBasic) / 2
                         End If
-
                     End If
 
                     ''============================================= DELETE ALLOWANCE AND DEDUCTION TO REPLACE =================================================

@@ -1168,6 +1168,8 @@ Public Class frmAttendance
                         Night7_TXT.Text = IIf(IsDBNull(.Item("NIGHT_RATE")) Or .Item("NIGHT_RATE") = 0, "", .Item("NIGHT_RATE"))
                         SIL7_NUP.Text = IIf(IsDBNull(.Item("SIL")) Or .Item("SIL") = 0, "", .Item("SIL"))
                         SpecHol7_TXT.Text = IIf(IsDBNull(.Item("SPECHOLIDAY_HRS")) Or .Item("SPECHOLIDAY_HRS") = 0, "", .Item("SPECHOLIDAY_HRS"))
+                        RegHol7_TXT.Text = IIf(IsDBNull(.Item("REGHOLIDAY_ADDITIONAL")) Or .Item("REGHOLIDAY_ADDITIONAL") = 0, "", .Item("REGHOLIDAY_ADDITIONAL"))
+                        txtRegHolDeduction.Text = IIf(IsDBNull(.Item("REGHOLIDAY_DEDUCTION")) Or .Item("REGHOLIDAY_DEDUCTION") = 0, "", .Item("REGHOLIDAY_DEDUCTION"))
 
                         txtRestDayDuty.Text = IIf(IsDBNull(.Item("DUTY_RESTDAY")) Or .Item("DUTY_RESTDAY").Equals("0"), "", .Item("DUTY_RESTDAY"))
                         txtSpecRestDay.Text = IIf(IsDBNull(.Item("DUTY_SPEC_RESTDAY")) Or .Item("DUTY_SPEC_RESTDAY").Equals("0"), "", .Item("DUTY_SPEC_RESTDAY"))
@@ -1203,6 +1205,8 @@ Public Class frmAttendance
                 Overtime7_NUP.Value = Nothing
                 Late7_TXT.Clear()
                 SpecHol7_TXT.Clear()
+                RegHol7_TXT.Clear()
+                txtRegHolDeduction.Clear()
                 Undertime7_TXT.Clear()
                 Night7_TXT.Clear()
                 SIL7_NUP.TextAlign = 0
@@ -1254,7 +1258,8 @@ Public Class frmAttendance
                 dateStarted = GetData("DATEHIRED", $"TBL_EMPLOYEE WHERE BIOMETRICID = '{Bio7_TXT.Text}'")
                 '======================== HOLIDAY ============================ 
                 Dim regHol_additional As Double = IIf(String.IsNullOrWhiteSpace(RegHol7_TXT.Text), 0, RegHol7_TXT.Text)
-                Dim RHOLIDAY As Double = REGHolidayCount(starting_date, ending_date) + regHol_additional
+                Dim regHol_deduction As Double = IIf(String.IsNullOrWhiteSpace(txtRegHolDeduction.Text), 0, txtRegHolDeduction.Text)    'ABSENT BEFORE/AFTER REGULAR HOLIDAY
+                Dim RHOLIDAY As Double = (REGHolidayCount(starting_date, ending_date) + regHol_additional) - regHol_deduction
                 Dim specHoliday_hrs As Double = IIf(String.IsNullOrWhiteSpace(SpecHol7_TXT.Text), 0, SpecHol7_TXT.Text)
                 Dim SHOLIDAY As Double = 0
 
@@ -1322,13 +1327,18 @@ Public Class frmAttendance
                                   new_regHoliday, new_specHoliday, PAYROLL)
                 End If
 
+
+                'SaveAttendanceEE(BiometricID_TXT.Text, PAYROLL, TotalDays_LBL.Text, TotalOTHr_LBL.Text, TotalLateHR_LBL.Text, TotalUTHR_LBL.Text,
+                '                 TotalRHoliday_LBL.Text, TotalSHoliday_LBL.Text, specHoliday_hrs, SIL_LBL.Text, Late_percentage, Late_approved, AM_OT_NUP.Value)
+
+
                 SaveAttendanceEE(Bio7_TXT.Text, PAYROLL, Days7_TXT.Text, overtime, latee, undertimee,
-                                     RHOLIDAY, SHOLIDAY, specHoliday_hrs, sil, 0, "", "", night7, True,
+                                     RHOLIDAY, SHOLIDAY, specHoliday_hrs, sil, 0, "", "", regHol_deduction, night7, True,
                                      DUTY_RESTDAY, DUTY_SPEC_RESTDAY, DUTY_REG_RESTDAY, DUTY_RESTDAY_OT,
                                      DUTY_SPEC_OT, DUTY_SPEC_RESTDAY_OT, DUTY_REG_OT, DUTY_REG_RESTDAY_OT,
                                      DUTY_SPEC_NIGHTSHIFT, DUTY_REG_NIGHTSHIFT, DUTY_ORD_NIGHTSHIFT_OT, DUTY_SPEC_NIGHTSHIFT_OT, DUTY_REG_NIGHTSHIFT_OT,
                                      NEW_RATE_DAYS_COVERED, NEW_RATE_LATE_COVERED, NEW_RATE_UT_COVERED, NEW_RATE_OT_COVERED,
-                                     NEW_RATE_REGHOLIDAY_COVERED, NEW_RATE_SPECHOLIDAY_COVERED)
+                                     NEW_RATE_REGHOLIDAY_COVERED, NEW_RATE_SPECHOLIDAY_COVERED, regHol_additional)
 
                 SavePayout_IndividualL(Bio7_TXT.Text, PAYROLL, starting_date, ending_date)
 
@@ -1346,7 +1356,7 @@ Public Class frmAttendance
         End If
     End Sub
 
-    Private Sub Hours7_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Undertime7_TXT.KeyPress, Night7_TXT.KeyPress, Late7_TXT.KeyPress, Days7_TXT.KeyPress, SpecHol7_TXT.KeyPress, RegHol7_TXT.KeyPress
+    Private Sub Hours7_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Undertime7_TXT.KeyPress, Night7_TXT.KeyPress, Late7_TXT.KeyPress, Days7_TXT.KeyPress, SpecHol7_TXT.KeyPress, RegHol7_TXT.KeyPress, txtRegHolDeduction.KeyPress
         If e.KeyChar <> ChrW(Keys.Back) Then
             If Not Char.IsNumber(e.KeyChar) AndAlso Not Char.IsControl(e.KeyChar) Then
                 e.Handled = True
@@ -1537,7 +1547,8 @@ Public Class frmAttendance
         eSheet = eBook.Worksheets(1)
         eCell = eSheet.UsedRange
 
-        MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path7_TXT.Text}';Extended Properties=Excel 8.0;")
+        MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.ACE.OLEDB.12.0;Data Source='{Path7_TXT.Text}';Extended Properties='Excel 8.0;HDR=YES';")
+        'MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path7_TXT.Text}';Extended Properties=Excel 8.0;")
         MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
         MyCommand.TableMappings.Add("Table", "Net-informations.com")
         DtSet = New System.Data.DataSet
@@ -1566,7 +1577,8 @@ Public Class frmAttendance
                 dateStarted = GetData("DATEHIRED", $"TBL_EMPLOYEE WHERE BIOMETRICID = '{bioNo}'")
                 '======================== HOLIDAY ============================   
                 Dim regHol_additional As Integer = IIf(String.IsNullOrWhiteSpace(eCell(row, 10).Value), 0, eCell(row, 10).Value)
-                Dim regHoliday As Integer = REGHolidayCount(starting_date, ending_date) + regHol_additional
+                Dim regHol_deduction As Double = IIf(String.IsNullOrWhiteSpace(eCell(row, 30).Value), 0, eCell(row, 30).Value)    'ABSENT BEFORE/AFTER REGULAR HOLIDAY
+                Dim regHoliday As Integer = (REGHolidayCount(starting_date, ending_date) + regHol_additional) - regHol_deduction
 
                 Dim DUTY_RESTDAY As Integer = IIf(String.IsNullOrWhiteSpace(eCell(row, 11).Value), 0, eCell(row, 11).Value)
                 Dim DUTY_SPEC_RESTDAY As Integer = IIf(String.IsNullOrWhiteSpace(eCell(row, 12).Value), 0, eCell(row, 12).Value)
@@ -1634,7 +1646,7 @@ Public Class frmAttendance
                                  DUTY_SPEC_NIGHTSHIFT, DUTY_REG_NIGHTSHIFT,
                                  DUTY_ORD_NIGHTSHIFT_OT, DUTY_SPEC_NIGHTSHIFT_OT, DUTY_REG_NIGHTSHIFT_OT,
                                  NEW_RATE_DAYS_COVERED, NEW_RATE_LATE_COVERED, NEW_RATE_UT_COVERED, NEW_RATE_OT_COVERED,
-                                 NEW_RATE_REGHOLIDAY_COVERED, NEW_RATE_SPECHOLIDAY_COVERED)
+                                 NEW_RATE_REGHOLIDAY_COVERED, NEW_RATE_SPECHOLIDAY_COVERED, regHol_additional, regHol_deduction)
 
                     SavePayout_IndividualL(bioNo, payroll, starting_date, ending_date)
 
