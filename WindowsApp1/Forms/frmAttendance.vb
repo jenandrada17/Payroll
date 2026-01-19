@@ -1427,11 +1427,11 @@ Public Class frmAttendance
         Dim row As DataGridViewRow = DataGridView1.Rows(DataGridView1.CurrentRow.Index)
         If e.Button = MouseButtons.Right Then
 
-            If row.Cells(1).Style.ForeColor = Color.Blue Then
-                Menu_SILHalfDay.Text = "Disapproved"
-            Else
-                Menu_SILHalfDay.Text = "Approved"
-            End If
+            'If row.Cells(1).Style.ForeColor = Color.Blue Then
+            '    Menu_SILHalfDay.Text = "Disapproved"
+            'Else
+            '    Menu_SILHalfDay.Text = "Approved"
+            'End If
 
             ContextMenu_SIL.Show(DataGridView1, New Point(e.X, e.Y))
 
@@ -1796,198 +1796,110 @@ Public Class frmAttendance
         Return False
     End Function
 
-    Private Sub RegHolMinus_BTN_Click(sender As Object, e As EventArgs)
-        'If Name_TXT.Text <> "" Then
-        '    If SIL_BTN.Text = "Add" Then
+    Private Sub SIL_Check(half_or_Whole_day As Double)
+        Dim row As DataGridViewRow = DataGridView1.Rows(DataGridView1.CurrentRow.Index)
+        Dim dateStarted As Date = CDate(GetData("DATEHIRED", $"TBL_EMPLOYEE WHERE BIOMETRICID = '{BiometricID_TXT.Text}'"))
+        Dim oneYearAnniversary As Date = dateStarted.AddYears(1)
+        Dim fiveYearAnniversary As Date = dateStarted.AddYears(5)
+        Dim silDate As Date = CDate(DataGridView1.Rows(DataGridView1.CurrentRow.Index).Tag).ToString("d")
+        Dim SIL_count As Integer = 0
 
-        '        RegHol_NUP.Value = SIL_LBL.Text
+        If silDate >= fiveYearAnniversary Then
+            SIL_count = 10      'FIVE YEARS IN SERVICE
+        ElseIf silDate >= oneYearAnniversary Then
+            SIL_count = 5       'ONE YEAR IN SERVICE
+        End If
 
-        '        Dim totalMonths As Integer = CountYear_SIL(BiometricID_TXT.Text, ending_date)
+        Dim usedSIL As Double = Total_SIL_Used(BiometricID_TXT.Text)
+        Dim allowable_SIL As Double = (SIL_count - usedSIL)
 
-        '        If totalMonths >= 13 Then
-        '            Dim sil_this_paydate As Double = GetData_Integer("SIL", $"PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{BiometricID_TXT.Text}' AND PAYDATE = '{paydate_}'")
-        '            Dim total_SIL As Double = Count_SIL(BiometricID_TXT.Text)
-        '            Dim additional_SIL As Double = CDbl(RegHol_NUP.Text)
+        If SIL_count > 0 Then
 
-        '            Dim tot As Double = ((total_SIL - sil_this_paydate) + additional_SIL)
+            If (usedSIL + half_or_Whole_day) <= SIL_count Then
+                row.Cells(1).Style.ForeColor = Color.PowderBlue
+                SIL_LBL.Text = CDbl(SIL_LBL.Text) + half_or_Whole_day
+            Else
+                MsgBox($"Only {SIL_count} SIL is available. The rest have been used.", MsgBoxStyle.Critical, "Invalid")
+            End If
 
-        '            If tot < 5 Then
-        '                RegHol_Panel.Visible = True
-        '                RegHol_Panel.Location = New Point(SIL_BTN.Location.X - 160, SIL_BTN.Location.Y - 10)
-        '            ElseIf tot = 5 Then
-        '                MsgBox("Already reached the maximum number of SIL for this year.", MsgBoxStyle.Critical, "Invalid")
-        '                Exit Sub
-        '            Else
-        '                Dim allowable_SIL As Double = 5 - (total_SIL - sil_this_paydate)
-        '                RegHol_NUP.Value = allowable_SIL
-        '                SIL_LBL.Text = allowable_SIL
-        '                Exit Sub
-        '            End If
+        Else
+            MsgBox("Not yet allowed to avail SIL.", MsgBoxStyle.Critical, "Invalid")
+        End If
+    End Sub
 
-        '        Else
-        '            MsgBox("Not yet allowed to avail SIL.", MsgBoxStyle.Critical, "Invalid")
-        '            RegHol_NUP.Value = 0
-        '            Exit Sub
-        '        End If
+    Private Sub Menu_SILHalfDay_Click(sender As Object, e As EventArgs) Handles Menu_SILHalfDay.Click
 
+        SIL_Check(0.5)
+
+        'Dim row As DataGridViewRow = DataGridView1.Rows(DataGridView1.CurrentRow.Index)
+        'Dim dateStarted As Date = CDate(GetData("DATEHIRED", $"TBL_EMPLOYEE WHERE BIOMETRICID = '{BiometricID_TXT.Text}'"))
+        'Dim oneYearAnniversary As Date = dateStarted.AddYears(1)
+        'Dim fiveYearAnniversary As Date = dateStarted.AddYears(5)
+        'Dim silDate As Date = CDate(DataGridView1.Rows(DataGridView1.CurrentRow.Index).Tag).ToString("d")
+        'Dim SIL_count As Integer = 0
+
+        'If silDate >= fiveYearAnniversary Then
+        '    SIL_count = 10      'FIVE YEARS IN SERVICE
+        'ElseIf silDate >= oneYearAnniversary Then
+        '    SIL_count = 5       'ONE YEAR IN SERVICE
+        'End If
+
+        'Dim usedSIL As Double = Total_SIL_Used(BiometricID_TXT.Text)
+        'Dim allowable_SIL As Double = (SIL_count - usedSIL)
+
+        'If SIL_count > 0 Then
+
+        '    If (allowable_SIL + 0.5) <= SIL_count Then
+        '        row.Cells(1).Style.ForeColor = Color.PowderBlue
+        '        SIL_LBL.Text = CDbl(SIL_LBL.Text) + 0.5
         '    Else
-        '        SIL_BTN.Text = "Add"
-        '        SIL_LBL.Text = 0
-        '        RegHol_NUP.Text = 1
+        '        MsgBox($"Only {SIL_count} SIL is available. The rest have been used.", MsgBoxStyle.Critical, "Invalid")
         '    End If
+
         'Else
-        '    MsgBox($"Please select employee.", MsgBoxStyle.Exclamation, "Invalid")
+        '    MsgBox("Not yet allowed to avail SIL.", MsgBoxStyle.Critical, "Invalid")
+        'End If
+
+
+        '========================== TO DELETE ===========================
+        'row.Cells(2).Tag 'PARA SA TEMPORARY RECORD OF HALF DAY SIL
+
+        'If Menu_Approve.Text = "Approved" Then
+        '    row.Cells(1).Style.ForeColor = Color.Blue
+        '    Menu_Approve.Text = "Disapproved"
+        '    Late_approved += CInt(row.Cells(1).Tag)
+        '    MsgBox("Total Late Approved: " & Late_approved)
+        'Else
+        '    row.Cells(1).Style.ForeColor = Color.Black
+        '    Menu_Approve.Text = "Approved"
+        '    If Late_approved <> 0 Then Late_approved -= CInt(row.Cells(1).Tag)
+        '    MsgBox("Total Late Approved: " & Late_approved)
+        'End If 
+
+        'Dim totalMonths As Integer = CountYear_SIL(BiometricID_TXT.Text, ending_date)
+
+        'If totalMonths >= 13 Then
+        '    Dim sil_this_paydate As Double = GetData_Decimal("COUNT", $"PAYROLL_SIL WHERE BIONO = '{BiometricID_TXT.Text}' AND PAYDATE = '{paydate_}'")
+        '    Dim totalSIL As Double = Total_SIL(BiometricID_TXT.Text)
+
+        '    Dim allowable_SIL As Double = 5 - (totalSIL - sil_this_paydate)
+
+        '    If ((totalSIL - sil_this_paydate) + additional_SIL) <= 5 Then
+        '    Else
+        '        MsgBox($"Only {allowable_SIL} SIL is available. The rest have been used.", MsgBoxStyle.Critical, "Invalid")
+        '        RegHol_NUP.Value = allowable_SIL
+        '        Exit Sub
+        '    End If
+
+        'Else
+        '    MsgBox("Not yet allowed to avail SIL.", MsgBoxStyle.Critical, "Invalid")
+        '    RegHol_NUP.Value = 0
+        '    Exit Sub
         'End If
     End Sub
 
-    Private Sub CancelRegHol_BTN_Click(sender As Object, e As EventArgs) Handles CancelRegHol_BTN.Click
-        RegHol_NUP.Text = 1
-        RegHol_Panel.Visible = False
-    End Sub
-
-    Private Sub RegHol_NUP_MouseDown(sender As Object, e As MouseEventArgs) Handles RegHol_NUP.MouseDown
-        Dim totalMonths As Integer = CountYear_SIL(BiometricID_TXT.Text, ending_date)
-
-        If totalMonths >= 13 Then
-            Dim sil_this_paydate As Double = GetData_Integer("SIL", $"PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{BiometricID_TXT.Text}' AND PAYDATE = '{paydate_}'")
-            Dim total_SIL As Double = Count_SIL(BiometricID_TXT.Text)
-
-            Dim additional_SIL As Double = 0
-            If RegHol_NUP.Text <> Nothing Then additional_SIL = RegHol_NUP.Text     'IF THE USER ERASE THE INPUT SIL
-
-            Dim allowable_SIL As Double = 5 - (total_SIL - sil_this_paydate)
-
-            If ((total_SIL - sil_this_paydate) + additional_SIL) <= 5 Then
-            Else
-                MsgBox($"Only {allowable_SIL} SIL is available. The rest have been used.", MsgBoxStyle.Critical, "Invalid")
-                RegHol_NUP.Value = allowable_SIL
-                Exit Sub
-            End If
-
-        Else
-            MsgBox("Not yet allowed to avail SIL.", MsgBoxStyle.Critical, "Invalid")
-            RegHol_NUP.Value = 0
-            Exit Sub
-        End If
-    End Sub
-
-    Private Sub RegHol_NUP_Enter(sender As Object, e As EventArgs) Handles RegHol_NUP.Enter
-        Dim totalMonths As Integer = CountYear_SIL(BiometricID_TXT.Text, ending_date)
-
-        If totalMonths >= 13 Then
-            Dim sil_this_paydate As Double = GetData_Integer("SIL", $"PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{BiometricID_TXT.Text}' AND PAYDATE = '{paydate_}'")
-            Dim total_SIL As Double = Count_SIL(BiometricID_TXT.Text)
-
-            Dim additional_SIL As Double = 0
-            If RegHol_NUP.Text <> Nothing Then additional_SIL = RegHol_NUP.Text     'IF THE USER ERASE THE INPUT SIL
-
-            Dim allowable_SIL As Double = 5 - (total_SIL - sil_this_paydate)
-
-            If ((total_SIL - sil_this_paydate) + additional_SIL) <= 5 Then
-            Else
-                MsgBox($"Only {allowable_SIL} SIL is available. The rest have been used.", MsgBoxStyle.Critical, "Invalid")
-                RegHol_NUP.Value = allowable_SIL
-                Exit Sub
-            End If
-
-        Else
-            MsgBox("Not yet allowed to avail SIL.", MsgBoxStyle.Critical, "Invalid")
-            RegHol_NUP.Value = 0
-            Exit Sub
-        End If
-    End Sub
-
-    Private Sub RegHol_NUP_KeyDown(sender As Object, e As KeyEventArgs)
-
-    End Sub
-
-    Private Sub RegHol_NUP_KeyDown_1(sender As Object, e As KeyEventArgs) Handles RegHol_NUP.KeyDown
-        Dim totalMonths As Integer = CountYear_SIL(BiometricID_TXT.Text, ending_date)
-
-        If totalMonths >= 13 Then
-            Dim sil_this_paydate As Double = GetData_Integer("SIL", $"PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{BiometricID_TXT.Text}' AND PAYDATE = '{paydate_}'")
-            Dim total_SIL As Double = Count_SIL(BiometricID_TXT.Text)
-
-            Dim additional_SIL As Double = 0
-            If RegHol_NUP.Text <> Nothing Then additional_SIL = RegHol_NUP.Text     'IF THE USER ERASE THE INPUT SIL
-
-            Dim allowable_SIL As Double = 5 - (total_SIL - sil_this_paydate)
-
-            If ((total_SIL - sil_this_paydate) + additional_SIL) <= 5 Then
-            Else
-                MsgBox($"Only {allowable_SIL} SIL is available. The rest have been used.", MsgBoxStyle.Critical, "Invalid")
-                RegHol_NUP.Value = allowable_SIL
-                Exit Sub
-            End If
-
-        Else
-            MsgBox("Not yet allowed to avail SIL.", MsgBoxStyle.Critical, "Invalid")
-            RegHol_NUP.Value = 0
-            Exit Sub
-        End If
-    End Sub
-
-    Private Function Allowable_SIL(bioNum As Integer)
-        paydate_ = "1/31/2026"
-        Dim dateStarted = GetData("DATEHIRED", $"TBL_EMPLOYEE WHERE BIOMETRICID = '{bioNum}'")
-
-    End Function
-
-    Private Sub Menu_SILHalfDay_Click(sender As Object, e As EventArgs) Handles Menu_SILHalfDay.Click
-        Dim totalMonths As Integer = CountYear_SIL(BiometricID_TXT.Text, ending_date)
-
-        If totalMonths >= 13 Then
-            Dim sil_this_paydate As Double = GetData_Decimal("COUNT", $"PAYROLL_SIL WHERE BIONO = '{BiometricID_TXT.Text}' AND PAYDATE = '{paydate_}'")
-            Dim totalSIL As Double = Total_SIL(BiometricID_TXT.Text)
-
-            Dim allowable_SIL As Double = 5 - (totalSIL - sil_this_paydate)
-
-            If ((totalSIL - sil_this_paydate) + additional_SIL) <= 5 Then
-            Else
-                MsgBox($"Only {allowable_SIL} SIL is available. The rest have been used.", MsgBoxStyle.Critical, "Invalid")
-                RegHol_NUP.Value = allowable_SIL
-                Exit Sub
-            End If
-
-        Else
-            MsgBox("Not yet allowed to avail SIL.", MsgBoxStyle.Critical, "Invalid")
-            RegHol_NUP.Value = 0
-            Exit Sub
-        End If
-    End Sub
-
-    Private Sub AddRegHol_BTN_Click(sender As Object, e As EventArgs) Handles AddRegHol_BTN.Click
-        Dim totalMonths As Integer = CountYear_SIL(BiometricID_TXT.Text, ending_date)
-
-        If totalMonths >= 13 Then
-            Dim sil_this_paydate As Double = GetData_Integer("SIL", $"PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{BiometricID_TXT.Text}' AND PAYDATE = '{paydate_}'")
-            Dim total_SIL As Double = Count_SIL(BiometricID_TXT.Text)
-            Dim additional_SIL As Double = 0
-
-            If RegHol_NUP.Text = Nothing Then
-                RegHol_NUP.Text = 0
-            Else
-                additional_SIL = CDbl(RegHol_NUP.Text)
-            End If
-
-            Dim allowable_SIL As Double = 5 - (total_SIL - sil_this_paydate)
-
-            If ((total_SIL - sil_this_paydate) + additional_SIL) <= 5 Then
-            Else
-                MsgBox($"Only {allowable_SIL} SIL is available. The rest have been used.", MsgBoxStyle.Critical, "Invalid")
-                RegHol_NUP.Value = allowable_SIL
-                Exit Sub
-            End If
-
-        Else
-            MsgBox("Not yet allowed to avail SIL.", MsgBoxStyle.Critical, "Invalid")
-            RegHol_NUP.Value = 0
-            Exit Sub
-        End If
-
-        SIL_LBL.Text = RegHol_NUP.Text
-        'SIL_BTN.Text = "Clear"
-        RegHol_Panel.Visible = False
+    Private Sub Menu_SILWholeDay_Click(sender As Object, e As EventArgs) Handles Menu_SILWholeDay.Click
+        SIL_Check(1)
     End Sub
 
     Private Sub Calculate_BTN_Click(sender As Object, e As EventArgs) Handles Calculate_BTN.Click
@@ -3015,7 +2927,6 @@ Public Class frmAttendance
 
         If BiometricID_TXT.Text = "" Then
             Name_TXT.Text = ""
-            RegHol_Panel.Visible = False
 
             For Each oRow As DataGridViewRow In DataGridView1.Rows
                 oRow.Cells(5).Value = False
