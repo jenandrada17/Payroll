@@ -2993,6 +2993,24 @@ Module SelectFromDatabase
         Return cnt
     End Function
 
+    Public Function Total_SIL(Bio_no As String) As Double
+
+        Dim cnt As Double = 0
+        Dim mysql As String = $"Select SUM(COUNT) as tots From PAYROLL_SIL where BIONO = '{Bio_no}' AND EXTRACT (YEAR FROM SIL_DATE) = '{Date.Now.Year}'"
+        Using dss As DataSet = LoadSQL(mysql, "PAYROLL_SIL")
+            If dss.Tables(0).Rows.Count > 0 Then
+                For Each dr In dss.Tables(0).Rows
+                    With dr
+                        cnt += .Item("tots")
+                    End With
+                Next
+            End If
+        End Using
+
+        'cnt = cnt + Get_SIL("PAYROLL_SCHED_COUNT", $"PAYROLL_SCHED_COUNT WHERE BIO_NO = '{Bio_no}' AND EXTRACT (YEAR FROM PAYDATE) = '{Date.Now.Year}'")
+        Return cnt
+    End Function
+
     Public Function GetCount_Common(whereString As String) As Integer
         Dim countt As Integer = 0
         Dim mysql As String = $"Select Count(*) as Countt From TBL_EMPLOYEE {whereString} and EMP_STATUS = 'ACTIVE'"

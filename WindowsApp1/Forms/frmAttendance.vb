@@ -1359,7 +1359,7 @@ Public Class frmAttendance
         End If
     End Sub
 
-    Private Sub Hours7_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Undertime7_TXT.KeyPress, Night7_TXT.KeyPress, Late7_TXT.KeyPress, Days7_TXT.KeyPress, SpecHol7_TXT.KeyPress, RegHol7_TXT.KeyPress, txtRegHolDeduction.KeyPress
+    Private Sub Hours7_TXT_KeyPress(sender As Object, e As KeyPressEventArgs) Handles Undertime7_TXT.KeyPress, txtRegHolDeduction.KeyPress, SpecHol7_TXT.KeyPress, RegHol7_TXT.KeyPress, Night7_TXT.KeyPress, Late7_TXT.KeyPress, Days7_TXT.KeyPress
         If e.KeyChar <> ChrW(Keys.Back) Then
             If Not Char.IsNumber(e.KeyChar) AndAlso Not Char.IsControl(e.KeyChar) Then
                 e.Handled = True
@@ -1405,84 +1405,6 @@ Public Class frmAttendance
 
     End Sub
 
-    Private Sub SIL_BTN_Click(sender As Object, e As EventArgs) Handles SIL_BTN.Click
-        If Name_TXT.Text <> "" Then
-            If SIL_BTN.Text = "Add" Then
-
-                SIL_NUP.Value = SIL_LBL.Text
-
-                Dim totalMonths As Integer = CountYear_SIL(BiometricID_TXT.Text, ending_date)
-
-                If totalMonths >= 13 Then
-                    Dim sil_this_paydate As Double = GetData_Integer("SIL", $"PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{BiometricID_TXT.Text}' AND PAYDATE = '{paydate_}'")
-                    Dim total_SIL As Double = Count_SIL(BiometricID_TXT.Text)
-                    Dim additional_SIL As Double = CDbl(SIL_NUP.Text)
-
-                    Dim tot As Double = ((total_SIL - sil_this_paydate) + additional_SIL)
-
-                    If tot < 5 Then
-                        SIL_Panel.Visible = True
-                        SIL_Panel.Location = New Point(SIL_BTN.Location.X - 160, SIL_BTN.Location.Y - 10)
-                    ElseIf tot = 5 Then
-                        MsgBox("Already reached the maximum number of SIL for this year.", MsgBoxStyle.Critical, "Invalid")
-                        Exit Sub
-                    Else
-                        Dim allowable_SIL As Double = 5 - (total_SIL - sil_this_paydate)
-                        SIL_NUP.Value = allowable_SIL
-                        SIL_LBL.Text = allowable_SIL
-                        Exit Sub
-                    End If
-
-                Else
-                    MsgBox("Not yet allowed to avail SIL.", MsgBoxStyle.Critical, "Invalid")
-                    SIL_NUP.Value = 0
-                    Exit Sub
-                End If
-
-            Else
-                SIL_BTN.Text = "Add"
-                SIL_LBL.Text = 0
-                SIL_NUP.Text = 1
-            End If
-        Else
-            MsgBox($"Please select employee.", MsgBoxStyle.Exclamation, "Invalid")
-        End If
-    End Sub
-
-    Private Sub AddSIL_BTN_Click(sender As Object, e As EventArgs) Handles AddSIL_BTN.Click
-        Dim totalMonths As Integer = CountYear_SIL(BiometricID_TXT.Text, ending_date)
-
-        If totalMonths >= 13 Then
-            Dim sil_this_paydate As Double = GetData_Integer("SIL", $"PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{BiometricID_TXT.Text}' AND PAYDATE = '{paydate_}'")
-            Dim total_SIL As Double = Count_SIL(BiometricID_TXT.Text)
-            Dim additional_SIL As Double = 0
-
-            If SIL_NUP.Text = Nothing Then
-                SIL_NUP.Text = 0
-            Else
-                additional_SIL = CDbl(SIL_NUP.Text)
-            End If
-
-            Dim allowable_SIL As Double = 5 - (total_SIL - sil_this_paydate)
-
-            If ((total_SIL - sil_this_paydate) + additional_SIL) <= 5 Then
-            Else
-                MsgBox($"Only {allowable_SIL} SIL is available. The rest have been used.", MsgBoxStyle.Critical, "Invalid")
-                SIL_NUP.Value = allowable_SIL
-                Exit Sub
-            End If
-
-        Else
-            MsgBox("Not yet allowed to avail SIL.", MsgBoxStyle.Critical, "Invalid")
-            SIL_NUP.Value = 0
-            Exit Sub
-        End If
-
-        SIL_LBL.Text = SIL_NUP.Text
-        SIL_BTN.Text = "Clear"
-        SIL_Panel.Visible = False
-    End Sub
-
     Private Sub Biometric_LV_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles Biometric_LV.MouseDoubleClick
         CheckALL_CheckBox.Checked = False
 
@@ -1500,33 +1422,18 @@ Public Class frmAttendance
         PI_Days.Value = 0.0
     End Sub
 
-    Private Sub Menu_Approve_Click(sender As Object, e As EventArgs) Handles Menu_Approve.Click
-        Dim row As DataGridViewRow = DataGridView1.Rows(DataGridView1.CurrentRow.Index)
-
-        If Menu_Approve.Text = "Approved" Then
-            row.Cells(1).Style.ForeColor = Color.Blue
-            Menu_Approve.Text = "Disapproved"
-            Late_approved += CInt(row.Cells(1).Tag)
-            MsgBox("Total Late Approved: " & Late_approved)
-        Else
-            row.Cells(1).Style.ForeColor = Color.Black
-            Menu_Approve.Text = "Approved"
-            If Late_approved <> 0 Then Late_approved -= CInt(row.Cells(1).Tag)
-            MsgBox("Total Late Approved: " & Late_approved)
-        End If
-    End Sub
 
     Private Sub DataGridView1_MouseClick(sender As Object, e As MouseEventArgs) Handles DataGridView1.MouseClick
         Dim row As DataGridViewRow = DataGridView1.Rows(DataGridView1.CurrentRow.Index)
         If e.Button = MouseButtons.Right Then
 
             If row.Cells(1).Style.ForeColor = Color.Blue Then
-                Menu_Approve.Text = "Disapproved"
+                Menu_SILHalfDay.Text = "Disapproved"
             Else
-                Menu_Approve.Text = "Approved"
+                Menu_SILHalfDay.Text = "Approved"
             End If
 
-            ContextMenu_Late.Show(DataGridView1, New Point(e.X, e.Y))
+            ContextMenu_SIL.Show(DataGridView1, New Point(e.X, e.Y))
 
         End If
     End Sub
@@ -1823,84 +1730,6 @@ Public Class frmAttendance
         End If
     End Sub
 
-    Private Sub SIL_NUP_MouseDown(sender As Object, e As MouseEventArgs) Handles SIL_NUP.MouseDown
-        Dim totalMonths As Integer = CountYear_SIL(BiometricID_TXT.Text, ending_date)
-
-        If totalMonths >= 13 Then
-            Dim sil_this_paydate As Double = GetData_Integer("SIL", $"PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{BiometricID_TXT.Text}' AND PAYDATE = '{paydate_}'")
-            Dim total_SIL As Double = Count_SIL(BiometricID_TXT.Text)
-
-            Dim additional_SIL As Double = 0
-            If SIL_NUP.Text <> Nothing Then additional_SIL = SIL_NUP.Text     'IF THE USER ERASE THE INPUT SIL
-
-            Dim allowable_SIL As Double = 5 - (total_SIL - sil_this_paydate)
-
-            If ((total_SIL - sil_this_paydate) + additional_SIL) <= 5 Then
-            Else
-                MsgBox($"Only {allowable_SIL} SIL is available. The rest have been used.", MsgBoxStyle.Critical, "Invalid")
-                SIL_NUP.Value = allowable_SIL
-                Exit Sub
-            End If
-
-        Else
-            MsgBox("Not yet allowed to avail SIL.", MsgBoxStyle.Critical, "Invalid")
-            SIL_NUP.Value = 0
-            Exit Sub
-        End If
-    End Sub
-
-    Private Sub SIL_NUP_KeyDown(sender As Object, e As KeyEventArgs) Handles SIL_NUP.KeyDown
-        Dim totalMonths As Integer = CountYear_SIL(BiometricID_TXT.Text, ending_date)
-
-        If totalMonths >= 13 Then
-            Dim sil_this_paydate As Double = GetData_Integer("SIL", $"PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{BiometricID_TXT.Text}' AND PAYDATE = '{paydate_}'")
-            Dim total_SIL As Double = Count_SIL(BiometricID_TXT.Text)
-
-            Dim additional_SIL As Double = 0
-            If SIL_NUP.Text <> Nothing Then additional_SIL = SIL_NUP.Text     'IF THE USER ERASE THE INPUT SIL
-
-            Dim allowable_SIL As Double = 5 - (total_SIL - sil_this_paydate)
-
-            If ((total_SIL - sil_this_paydate) + additional_SIL) <= 5 Then
-            Else
-                MsgBox($"Only {allowable_SIL} SIL is available. The rest have been used.", MsgBoxStyle.Critical, "Invalid")
-                SIL_NUP.Value = allowable_SIL
-                Exit Sub
-            End If
-
-        Else
-            MsgBox("Not yet allowed to avail SIL.", MsgBoxStyle.Critical, "Invalid")
-            SIL_NUP.Value = 0
-            Exit Sub
-        End If
-    End Sub
-
-    Private Sub SIL_NUP_Enter(sender As Object, e As EventArgs) Handles SIL_NUP.Enter
-        Dim totalMonths As Integer = CountYear_SIL(BiometricID_TXT.Text, ending_date)
-
-        If totalMonths >= 13 Then
-            Dim sil_this_paydate As Double = GetData_Integer("SIL", $"PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{BiometricID_TXT.Text}' AND PAYDATE = '{paydate_}'")
-            Dim total_SIL As Double = Count_SIL(BiometricID_TXT.Text)
-
-            Dim additional_SIL As Double = 0
-            If SIL_NUP.Text <> Nothing Then additional_SIL = SIL_NUP.Text     'IF THE USER ERASE THE INPUT SIL
-
-            Dim allowable_SIL As Double = 5 - (total_SIL - sil_this_paydate)
-
-            If ((total_SIL - sil_this_paydate) + additional_SIL) <= 5 Then
-            Else
-                MsgBox($"Only {allowable_SIL} SIL is available. The rest have been used.", MsgBoxStyle.Critical, "Invalid")
-                SIL_NUP.Value = allowable_SIL
-                Exit Sub
-            End If
-
-        Else
-            MsgBox("Not yet allowed to avail SIL.", MsgBoxStyle.Critical, "Invalid")
-            SIL_NUP.Value = 0
-            Exit Sub
-        End If
-    End Sub
-
     Private Function IsFixedNoDutyDate(d As Date) As Boolean
 
         ' Sunday
@@ -1924,7 +1753,7 @@ Public Class frmAttendance
     Private Function GetPreviousWorkingDay(d As Date) As Date
         Dim checkDate As Date = d.AddDays(-1)
 
-        While IsFixedNoDutyDate(checkDate)
+        While IsNotWorkingDay(checkDate)
             checkDate = checkDate.AddDays(-1)
         End While
 
@@ -1934,16 +1763,15 @@ Public Class frmAttendance
     Private Function GetNextWorkingDay(d As Date) As Date
         Dim checkDate As Date = d.AddDays(1)
 
-        While IsFixedNoDutyDate(checkDate)
+        While IsNotWorkingDay(checkDate)
             checkDate = checkDate.AddDays(1)
         End While
 
         Return checkDate
     End Function
 
-
-    Function IsPresent_FromGrid(dgv As DataGridView, workDate As Date) As Boolean
-        For Each r As DataGridViewRow In dgv.Rows
+    Function IsPresent_FromGrid(workDate As Date) As Boolean
+        For Each r As DataGridViewRow In DataGridView1.Rows
             If CDate(r.Tag) = workDate Then
                 Return CBool(r.Cells(5).Value)
             End If
@@ -1951,11 +1779,222 @@ Public Class frmAttendance
         Return False ' date not found = absent
     End Function
 
+    Private Function IsNotWorkingDay(d As Date) As Boolean
+        ' Fixed no duty dates
+        If IsFixedNoDutyDate(d) Then Return True
+
+        ' Check if date is a holiday in the grid
+        For Each r As DataGridViewRow In DataGridView1.Rows
+            If CDate(r.Tag) = d Then
+                If r.DefaultCellStyle.BackColor = Color.MediumOrchid _
+               OrElse r.DefaultCellStyle.BackColor = Color.Plum Then
+                    Return True
+                End If
+            End If
+        Next
+
+        Return False
+    End Function
+
+    Private Sub RegHolMinus_BTN_Click(sender As Object, e As EventArgs)
+        'If Name_TXT.Text <> "" Then
+        '    If SIL_BTN.Text = "Add" Then
+
+        '        RegHol_NUP.Value = SIL_LBL.Text
+
+        '        Dim totalMonths As Integer = CountYear_SIL(BiometricID_TXT.Text, ending_date)
+
+        '        If totalMonths >= 13 Then
+        '            Dim sil_this_paydate As Double = GetData_Integer("SIL", $"PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{BiometricID_TXT.Text}' AND PAYDATE = '{paydate_}'")
+        '            Dim total_SIL As Double = Count_SIL(BiometricID_TXT.Text)
+        '            Dim additional_SIL As Double = CDbl(RegHol_NUP.Text)
+
+        '            Dim tot As Double = ((total_SIL - sil_this_paydate) + additional_SIL)
+
+        '            If tot < 5 Then
+        '                RegHol_Panel.Visible = True
+        '                RegHol_Panel.Location = New Point(SIL_BTN.Location.X - 160, SIL_BTN.Location.Y - 10)
+        '            ElseIf tot = 5 Then
+        '                MsgBox("Already reached the maximum number of SIL for this year.", MsgBoxStyle.Critical, "Invalid")
+        '                Exit Sub
+        '            Else
+        '                Dim allowable_SIL As Double = 5 - (total_SIL - sil_this_paydate)
+        '                RegHol_NUP.Value = allowable_SIL
+        '                SIL_LBL.Text = allowable_SIL
+        '                Exit Sub
+        '            End If
+
+        '        Else
+        '            MsgBox("Not yet allowed to avail SIL.", MsgBoxStyle.Critical, "Invalid")
+        '            RegHol_NUP.Value = 0
+        '            Exit Sub
+        '        End If
+
+        '    Else
+        '        SIL_BTN.Text = "Add"
+        '        SIL_LBL.Text = 0
+        '        RegHol_NUP.Text = 1
+        '    End If
+        'Else
+        '    MsgBox($"Please select employee.", MsgBoxStyle.Exclamation, "Invalid")
+        'End If
+    End Sub
+
+    Private Sub CancelRegHol_BTN_Click(sender As Object, e As EventArgs) Handles CancelRegHol_BTN.Click
+        RegHol_NUP.Text = 1
+        RegHol_Panel.Visible = False
+    End Sub
+
+    Private Sub RegHol_NUP_MouseDown(sender As Object, e As MouseEventArgs) Handles RegHol_NUP.MouseDown
+        Dim totalMonths As Integer = CountYear_SIL(BiometricID_TXT.Text, ending_date)
+
+        If totalMonths >= 13 Then
+            Dim sil_this_paydate As Double = GetData_Integer("SIL", $"PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{BiometricID_TXT.Text}' AND PAYDATE = '{paydate_}'")
+            Dim total_SIL As Double = Count_SIL(BiometricID_TXT.Text)
+
+            Dim additional_SIL As Double = 0
+            If RegHol_NUP.Text <> Nothing Then additional_SIL = RegHol_NUP.Text     'IF THE USER ERASE THE INPUT SIL
+
+            Dim allowable_SIL As Double = 5 - (total_SIL - sil_this_paydate)
+
+            If ((total_SIL - sil_this_paydate) + additional_SIL) <= 5 Then
+            Else
+                MsgBox($"Only {allowable_SIL} SIL is available. The rest have been used.", MsgBoxStyle.Critical, "Invalid")
+                RegHol_NUP.Value = allowable_SIL
+                Exit Sub
+            End If
+
+        Else
+            MsgBox("Not yet allowed to avail SIL.", MsgBoxStyle.Critical, "Invalid")
+            RegHol_NUP.Value = 0
+            Exit Sub
+        End If
+    End Sub
+
+    Private Sub RegHol_NUP_Enter(sender As Object, e As EventArgs) Handles RegHol_NUP.Enter
+        Dim totalMonths As Integer = CountYear_SIL(BiometricID_TXT.Text, ending_date)
+
+        If totalMonths >= 13 Then
+            Dim sil_this_paydate As Double = GetData_Integer("SIL", $"PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{BiometricID_TXT.Text}' AND PAYDATE = '{paydate_}'")
+            Dim total_SIL As Double = Count_SIL(BiometricID_TXT.Text)
+
+            Dim additional_SIL As Double = 0
+            If RegHol_NUP.Text <> Nothing Then additional_SIL = RegHol_NUP.Text     'IF THE USER ERASE THE INPUT SIL
+
+            Dim allowable_SIL As Double = 5 - (total_SIL - sil_this_paydate)
+
+            If ((total_SIL - sil_this_paydate) + additional_SIL) <= 5 Then
+            Else
+                MsgBox($"Only {allowable_SIL} SIL is available. The rest have been used.", MsgBoxStyle.Critical, "Invalid")
+                RegHol_NUP.Value = allowable_SIL
+                Exit Sub
+            End If
+
+        Else
+            MsgBox("Not yet allowed to avail SIL.", MsgBoxStyle.Critical, "Invalid")
+            RegHol_NUP.Value = 0
+            Exit Sub
+        End If
+    End Sub
+
+    Private Sub RegHol_NUP_KeyDown(sender As Object, e As KeyEventArgs)
+
+    End Sub
+
+    Private Sub RegHol_NUP_KeyDown_1(sender As Object, e As KeyEventArgs) Handles RegHol_NUP.KeyDown
+        Dim totalMonths As Integer = CountYear_SIL(BiometricID_TXT.Text, ending_date)
+
+        If totalMonths >= 13 Then
+            Dim sil_this_paydate As Double = GetData_Integer("SIL", $"PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{BiometricID_TXT.Text}' AND PAYDATE = '{paydate_}'")
+            Dim total_SIL As Double = Count_SIL(BiometricID_TXT.Text)
+
+            Dim additional_SIL As Double = 0
+            If RegHol_NUP.Text <> Nothing Then additional_SIL = RegHol_NUP.Text     'IF THE USER ERASE THE INPUT SIL
+
+            Dim allowable_SIL As Double = 5 - (total_SIL - sil_this_paydate)
+
+            If ((total_SIL - sil_this_paydate) + additional_SIL) <= 5 Then
+            Else
+                MsgBox($"Only {allowable_SIL} SIL is available. The rest have been used.", MsgBoxStyle.Critical, "Invalid")
+                RegHol_NUP.Value = allowable_SIL
+                Exit Sub
+            End If
+
+        Else
+            MsgBox("Not yet allowed to avail SIL.", MsgBoxStyle.Critical, "Invalid")
+            RegHol_NUP.Value = 0
+            Exit Sub
+        End If
+    End Sub
+
+    Private Function Allowable_SIL(bioNum As Integer)
+        paydate_ = "1/31/2026"
+        Dim dateStarted = GetData("DATEHIRED", $"TBL_EMPLOYEE WHERE BIOMETRICID = '{bioNum}'")
+
+    End Function
+
+    Private Sub Menu_SILHalfDay_Click(sender As Object, e As EventArgs) Handles Menu_SILHalfDay.Click
+        Dim totalMonths As Integer = CountYear_SIL(BiometricID_TXT.Text, ending_date)
+
+        If totalMonths >= 13 Then
+            Dim sil_this_paydate As Double = GetData_Decimal("COUNT", $"PAYROLL_SIL WHERE BIONO = '{BiometricID_TXT.Text}' AND PAYDATE = '{paydate_}'")
+            Dim totalSIL As Double = Total_SIL(BiometricID_TXT.Text)
+
+            Dim allowable_SIL As Double = 5 - (totalSIL - sil_this_paydate)
+
+            If ((totalSIL - sil_this_paydate) + additional_SIL) <= 5 Then
+            Else
+                MsgBox($"Only {allowable_SIL} SIL is available. The rest have been used.", MsgBoxStyle.Critical, "Invalid")
+                RegHol_NUP.Value = allowable_SIL
+                Exit Sub
+            End If
+
+        Else
+            MsgBox("Not yet allowed to avail SIL.", MsgBoxStyle.Critical, "Invalid")
+            RegHol_NUP.Value = 0
+            Exit Sub
+        End If
+    End Sub
+
+    Private Sub AddRegHol_BTN_Click(sender As Object, e As EventArgs) Handles AddRegHol_BTN.Click
+        Dim totalMonths As Integer = CountYear_SIL(BiometricID_TXT.Text, ending_date)
+
+        If totalMonths >= 13 Then
+            Dim sil_this_paydate As Double = GetData_Integer("SIL", $"PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{BiometricID_TXT.Text}' AND PAYDATE = '{paydate_}'")
+            Dim total_SIL As Double = Count_SIL(BiometricID_TXT.Text)
+            Dim additional_SIL As Double = 0
+
+            If RegHol_NUP.Text = Nothing Then
+                RegHol_NUP.Text = 0
+            Else
+                additional_SIL = CDbl(RegHol_NUP.Text)
+            End If
+
+            Dim allowable_SIL As Double = 5 - (total_SIL - sil_this_paydate)
+
+            If ((total_SIL - sil_this_paydate) + additional_SIL) <= 5 Then
+            Else
+                MsgBox($"Only {allowable_SIL} SIL is available. The rest have been used.", MsgBoxStyle.Critical, "Invalid")
+                RegHol_NUP.Value = allowable_SIL
+                Exit Sub
+            End If
+
+        Else
+            MsgBox("Not yet allowed to avail SIL.", MsgBoxStyle.Critical, "Invalid")
+            RegHol_NUP.Value = 0
+            Exit Sub
+        End If
+
+        SIL_LBL.Text = RegHol_NUP.Text
+        'SIL_BTN.Text = "Clear"
+        RegHol_Panel.Visible = False
+    End Sub
 
     Private Sub Calculate_BTN_Click(sender As Object, e As EventArgs) Handles Calculate_BTN.Click
         If Name_TXT.Text <> Nothing Then
             TotalDays_LBL.Text = 0
             TotalRHoliday_LBL.Text = 0
+            TotalRHoliday_LBL.Tag = 0
             TotalSHoliday_LBL.Text = 0
             TotalLateHR_LBL.Text = 0
             TotalUTHR_LBL.Text = 0
@@ -2033,8 +2072,22 @@ Public Class frmAttendance
                             Dim prevWorkDay As Date = GetPreviousWorkingDay(holidayDate)
                             Dim nextWorkDay As Date = GetNextWorkingDay(holidayDate)
 
-                            Dim presentBefore As Boolean = IsPresent_FromGrid(DataGridView1, prevWorkDay)
-                            Dim presentAfter As Boolean = IsPresent_FromGrid(DataGridView1, nextWorkDay)
+                            Dim presentBefore As Boolean = IsPresent_FromGrid(prevWorkDay)
+                            Dim presentAfter As Boolean = IsPresent_FromGrid(nextWorkDay)
+
+                            If prevWorkDay < CDate(starting_date) Then
+                                RegHolPresentNextWorkingDay.Visible = True
+                                cbPresentPrevNextWorkingDay.Text = $"Present on {CDate(starting_date).AddDays(-1):M}"
+
+                                If cbPresentPrevNextWorkingDay.Checked Then presentBefore = True
+                            End If
+
+                            If nextWorkDay > CDate(ending_date) Then
+                                RegHolPresentNextWorkingDay.Visible = True
+                                cbPresentPrevNextWorkingDay.Text = $"Present on {CDate(ending_date).AddDays(1):M}"
+
+                                If cbPresentPrevNextWorkingDay.Checked Then presentAfter = True
+                            End If
 
                             If presentBefore AndAlso presentAfter Then
 
@@ -2255,11 +2308,6 @@ Public Class frmAttendance
 
     Private Sub Cancel_lbl_Click(sender As Object, e As EventArgs) Handles Cancel_lbl.Click
         AM_OT_NUP.Value = 0.0
-    End Sub
-
-    Private Sub CancelSIL_BTN_Click(sender As Object, e As EventArgs) Handles CancelSIL_BTN.Click
-        SIL_NUP.Text = 1
-        SIL_Panel.Visible = False
     End Sub
 
     Private Sub Bio2_DTR_TXT_TextChanged(sender As Object, e As EventArgs) Handles Bio2_DTR_TXT.TextChanged
@@ -2572,10 +2620,11 @@ Public Class frmAttendance
             eCell = eSheet.UsedRange
             Dim row As Integer
 
-            'Dim connStr As String = $"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={Path_TXT.Text};Extended Properties='Excel 12.0 Xml;HDR=YES';"
-            'MyConnection = New System.Data.OleDb.OleDbConnection(connStr)
+            'ONLY FOR JEN PC TESTING
+            Dim connStr As String = $"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={Path_TXT.Text};Extended Properties='Excel 12.0 Xml;HDR=YES';"
+            MyConnection = New System.Data.OleDb.OleDbConnection(connStr)
 
-            MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path_TXT.Text}';Extended Properties=Excel 8.0;")
+            'MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path_TXT.Text}';Extended Properties=Excel 8.0;")
             MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
             MyCommand.TableMappings.Add("Table", "Net-informations.com")
             DtSet = New System.Data.DataSet
@@ -2615,56 +2664,6 @@ Public Class frmAttendance
         End Try
     End Sub
 
-    Function IsEmployeePresent(bioNo As String, workDate As Date) As Boolean
-
-        Return DataeXIST(
-            $"BIOMETRIC_DTR 
-              WHERE BIO_ID = '{bioNo}' 
-              AND DATE_ONLY = '{workDate:yyyy-MM-dd}' 
-              AND (
-                (AM_IN IS NOT NULL OR PM_IN IS NOT NULL) AND 
-                (AM_OUT IS NOT NULL OR PM_OUT IS NOT NULL)
-              )"
-        )
-
-    End Function
-
-    Function REGHolidayCount_WithAttendance(bioNo As String, startDate As Date, endDate As Date) As Integer
-
-        Dim count As Integer = 0
-
-        Dim holidays = LoadSQL($"SELECT DATEE FROM PAYROLL_HOLIDAY WHERE KINDS = 'REGULAR' AND DATEE BETWEEN '{startDate:yyyy-MM-dd}' AND '{endDate:yyyy-MM-dd}'", "PAYROLL_HOLIDAY")
-
-        For Each dr As DataRow In holidays.Tables(0).Rows
-
-            Dim holidayDate As Date = dr("DATEE")
-
-            Dim beforeDate As Date = holidayDate.AddDays(-1)
-            Dim afterDate As Date = holidayDate.AddDays(1)
-
-            Dim presentBefore As Boolean = False
-            Dim presentAfter As Boolean = False
-
-            ' Check day BEFORE holiday (skip Sunday)
-            If beforeDate.DayOfWeek <> DayOfWeek.Sunday Then
-                presentBefore = IsEmployeePresent(bioNo, beforeDate)
-            End If
-
-            ' Check day AFTER holiday (skip Sunday)
-            If afterDate.DayOfWeek <> DayOfWeek.Sunday Then
-                presentAfter = IsEmployeePresent(bioNo, afterDate)
-            End If
-
-            If presentBefore OrElse presentAfter Then
-                count += 1
-            End If
-
-        Next
-
-        Return count
-    End Function
-
-
     Public Sub SAVE_DIRECT_Attendance()
         LoadDateTime()
         TempAttendance()
@@ -2672,11 +2671,9 @@ Public Class frmAttendance
         Dim paydate_ As String = Paydate.ToString("d")
 
         '======================== HOLIDAY ============================ 
-        'Dim RHOLIDAY As Integer = REGHolidayCount(starting_date, ending_date)
-        Dim regHol_original As Integer = REGHolidayCount(starting_date, ending_date)
-        Dim regHol_deduction As Integer = 0
-
+        'Dim RHOLIDAY As Integer = REGHolidayCount(starting_date, ending_date) 
         Dim RHOLIDAY As Integer = 0
+        Dim regHol_deduction As Integer = 0
         Dim SHOLIDAY As Integer = SPECHolidayCount(starting_date, ending_date)
 
         distinct_bio = distinct_bio.Distinct.ToList
@@ -2684,8 +2681,9 @@ Public Class frmAttendance
         progressBarStart(distinct_bio.Count)
         For Each biometric_No As String In distinct_bio
 
-            RHOLIDAY = REGHolidayCount_WithAttendance(biometric_No, starting_date, ending_date)
-            regHol_deduction = regHol_original - RHOLIDAY
+            Dim dateStarted = GetData("DATEHIRED", $"TBL_EMPLOYEE WHERE BIOMETRICID = '{biometric_No}'")
+            emp_status = GetData("EMP_STATUS", $"TBL_EMPLOYEE WHERE BIOMETRICID = '{biometric_No}'")
+            dateEnded = GetData("DATE_ENDED", $"TBL_EMPLOYEE WHERE BIOMETRICID = '{biometric_No}'")
 
             Dim all_date, exist_date, add_date As New List(Of String)()
 
@@ -2705,6 +2703,7 @@ Public Class frmAttendance
                         With dr
                             Dim date_ As Date = .Item("DATE_ONLY")
 
+                            'POPULATE FIRST THE DataGridView1 FROM TABLE
                             For Each row As DataGridViewRow In DataGridView1.Rows
 
                                 Dim rowIndex As Integer = row.Index
@@ -2719,6 +2718,7 @@ Public Class frmAttendance
                                     row.Cells(5) = New DataGridViewCheckBoxCell With {.Value = True}
 
                                 End If
+
                             Next
 
                         End With
@@ -2807,6 +2807,8 @@ Public Class frmAttendance
                     specHoliday_hrs += hrs
                 End If
 
+#Region "TO DELETE"
+
                 ''============================== TOTAL SPECIAL HOLIDAY BASE ON TOTAL HOURS OF DUTY ==================== 
                 'If DataeXIST($" PAYROLL_HOLIDAY WHERE DATEE = '{DATEE.ToString("MMMM d")}' AND KINDS = 'SPECIAL'") Then
 
@@ -2826,6 +2828,7 @@ Public Class frmAttendance
                 '    End If
 
                 'End If
+#End Region
 
                 CalculateLATE(row, TIME_IN)
 
@@ -2852,6 +2855,41 @@ Public Class frmAttendance
                         temp_overtime = TotalOTHr_LBL.Text
                         temp_late = late_count.TotalMinutes
                         temp_undertime = under_count.TotalMinutes
+                    End If
+                End If
+
+                Console.WriteLine(DATEE)
+                '================================= CALCULATE HOLIDAYS ===============================
+                If row.DefaultCellStyle.BackColor = Color.MediumOrchid Then
+
+                    Dim holidayDate As Date = CDate(row.Cells(0).Tag)
+
+                    If holidayDate >= dateStarted Then
+
+                        ' Get valid working days around holiday
+                        Dim prevWorkDay As Date = GetPreviousWorkingDay(holidayDate)
+                        Dim nextWorkDay As Date = GetNextWorkingDay(holidayDate)
+
+                        Dim presentBefore As Boolean = IsPresent_FromGrid(prevWorkDay)
+                        Dim presentAfter As Boolean = IsPresent_FromGrid(nextWorkDay)
+
+                        If presentBefore AndAlso presentAfter Then
+
+                            If emp_status = "INACTIVE" Then
+                                If holidayDate <= CDate(dateEnded) Then
+                                    RHOLIDAY += 1
+                                Else
+                                    Console.WriteLine("INACTIVE - HOLIDAY NOT INCLUDED")
+                                End If
+                            Else
+                                RHOLIDAY += 1
+                            End If
+
+                        Else
+                            regHol_deduction += 1
+                            Console.WriteLine("HOLIDAY NOT COUNTED - ABSENT BEFORE AND AFTER")
+                        End If
+
                     End If
                 End If
 
@@ -2977,7 +3015,7 @@ Public Class frmAttendance
 
         If BiometricID_TXT.Text = "" Then
             Name_TXT.Text = ""
-            SIL_Panel.Visible = False
+            RegHol_Panel.Visible = False
 
             For Each oRow As DataGridViewRow In DataGridView1.Rows
                 oRow.Cells(5).Value = False
