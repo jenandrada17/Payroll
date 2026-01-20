@@ -325,11 +325,20 @@ Public Class frmAttendance
         End If
     End Sub
 
+    Private Sub ClearSIL()
+        SIL_LBL.Text = 0
+        For Each row As DataGridViewRow In DataGridView1.Rows
+            If row.DefaultCellStyle.BackColor = Color.LightGreen Then
+                row.DefaultCellStyle.BackColor = Color.Empty
+                row.Cells(2).Tag = 0
+            End If
+        Next
+    End Sub
+
     Private Sub Cancel_BTN_Click(sender As Object, e As EventArgs) Handles Cancel_BTN.Click
 
         BiometricID_TXT.Clear()
         Name_TXT.Clear()
-        SIL_LBL.Text = 0
         TotalDays_LBL.Text = 0
         TotalRHoliday_LBL.Text = 0
         TotalSHoliday_LBL.Text = 0
@@ -338,6 +347,8 @@ Public Class frmAttendance
         TotalOTHr_LBL.Text = 0
         AM_OT_NUP.Text = 0
         CheckALL_CheckBox.Checked = False
+        cbPresentPrevNextWorkingDay.Checked = False
+        ClearSIL()
 
     End Sub
 
@@ -382,6 +393,10 @@ Public Class frmAttendance
                     Replacing($"BIOMETRIC_DTR where BIO_ID = '{BiometricID_TXT.Text}' and PAYDATE = '{PAYROLL}';")
                 End If
 
+                If ThisHasRow($"PAYROLL_SIL where BIONO = '{BiometricID_TXT.Text}' and PAYDATE = '{PAYROLL}'") Then
+                    Replacing($"PAYROLL_SIL where BIONO = '{BiometricID_TXT.Text}' and PAYDATE = '{PAYROLL}';")
+                End If
+
                 For Each row As DataGridViewRow In DataGridView1.Rows
 
                     Dim dateOnly As DateTime = DataGridView1.Rows(row.Index).Tag
@@ -395,6 +410,10 @@ Public Class frmAttendance
 
                         SaveDTR(BiometricID_TXT.Text, Paydate, dateOnly.ToString("d"),
                             row.Cells(1).Value, row.Cells(2).Value, row.Cells(3).Value, row.Cells(4).Value, LateApproved, row.Cells(1).Tag)
+
+                        If CDbl(row.Cells(2).Tag) > 0 Then      'IF SIL
+                            SaveSIL(BiometricID_TXT.Text, CDate(row.Tag).ToString("d"), CDbl(row.Cells(2).Tag), Paydate)
+                        End If
 
                         '============================== TOTAL SPECIAL HOLIDAY BASE ON TOTAL HOURS OF DUTY ====================
                         If DataeXIST($" PAYROLL_HOLIDAY WHERE DATEE = '{dateOnly.ToString("MMMM d")}' AND KINDS = 'SPECIAL'") Then
@@ -1808,16 +1827,19 @@ Public Class frmAttendance
             SIL_count = 10      'FIVE YEARS IN SERVICE
         ElseIf silDate >= oneYearAnniversary Then
             SIL_count = 5       'ONE YEAR IN SERVICE
+
+
         End If
 
         Dim usedSIL As Double = Total_SIL_Used(BiometricID_TXT.Text)
         Dim allowable_SIL As Double = (SIL_count - usedSIL)
 
-        If SIL_count > 0 Then
 
-            If (usedSIL + half_or_Whole_day) <= SIL_count Then
-                row.Cells(1).Style.ForeColor = Color.PowderBlue
+        If SIL_count > 0 Then
+            If (usedSIL + CDbl(SIL_LBL.Text) + half_or_Whole_day) <= SIL_count Then
+                row.DefaultCellStyle.BackColor = Color.LightGreen
                 SIL_LBL.Text = CDbl(SIL_LBL.Text) + half_or_Whole_day
+                row.Cells(2).Tag = half_or_Whole_day
             Else
                 MsgBox($"Only {SIL_count} SIL is available. The rest have been used.", MsgBoxStyle.Critical, "Invalid")
             End If
@@ -1828,78 +1850,19 @@ Public Class frmAttendance
     End Sub
 
     Private Sub Menu_SILHalfDay_Click(sender As Object, e As EventArgs) Handles Menu_SILHalfDay.Click
-
-        SIL_Check(0.5)
-
-        'Dim row As DataGridViewRow = DataGridView1.Rows(DataGridView1.CurrentRow.Index)
-        'Dim dateStarted As Date = CDate(GetData("DATEHIRED", $"TBL_EMPLOYEE WHERE BIOMETRICID = '{BiometricID_TXT.Text}'"))
-        'Dim oneYearAnniversary As Date = dateStarted.AddYears(1)
-        'Dim fiveYearAnniversary As Date = dateStarted.AddYears(5)
-        'Dim silDate As Date = CDate(DataGridView1.Rows(DataGridView1.CurrentRow.Index).Tag).ToString("d")
-        'Dim SIL_count As Integer = 0
-
-        'If silDate >= fiveYearAnniversary Then
-        '    SIL_count = 10      'FIVE YEARS IN SERVICE
-        'ElseIf silDate >= oneYearAnniversary Then
-        '    SIL_count = 5       'ONE YEAR IN SERVICE
-        'End If
-
-        'Dim usedSIL As Double = Total_SIL_Used(BiometricID_TXT.Text)
-        'Dim allowable_SIL As Double = (SIL_count - usedSIL)
-
-        'If SIL_count > 0 Then
-
-        '    If (allowable_SIL + 0.5) <= SIL_count Then
-        '        row.Cells(1).Style.ForeColor = Color.PowderBlue
-        '        SIL_LBL.Text = CDbl(SIL_LBL.Text) + 0.5
-        '    Else
-        '        MsgBox($"Only {SIL_count} SIL is available. The rest have been used.", MsgBoxStyle.Critical, "Invalid")
-        '    End If
-
-        'Else
-        '    MsgBox("Not yet allowed to avail SIL.", MsgBoxStyle.Critical, "Invalid")
-        'End If
-
-
-        '========================== TO DELETE ===========================
-        'row.Cells(2).Tag 'PARA SA TEMPORARY RECORD OF HALF DAY SIL
-
-        'If Menu_Approve.Text = "Approved" Then
-        '    row.Cells(1).Style.ForeColor = Color.Blue
-        '    Menu_Approve.Text = "Disapproved"
-        '    Late_approved += CInt(row.Cells(1).Tag)
-        '    MsgBox("Total Late Approved: " & Late_approved)
-        'Else
-        '    row.Cells(1).Style.ForeColor = Color.Black
-        '    Menu_Approve.Text = "Approved"
-        '    If Late_approved <> 0 Then Late_approved -= CInt(row.Cells(1).Tag)
-        '    MsgBox("Total Late Approved: " & Late_approved)
-        'End If 
-
-        'Dim totalMonths As Integer = CountYear_SIL(BiometricID_TXT.Text, ending_date)
-
-        'If totalMonths >= 13 Then
-        '    Dim sil_this_paydate As Double = GetData_Decimal("COUNT", $"PAYROLL_SIL WHERE BIONO = '{BiometricID_TXT.Text}' AND PAYDATE = '{paydate_}'")
-        '    Dim totalSIL As Double = Total_SIL(BiometricID_TXT.Text)
-
-        '    Dim allowable_SIL As Double = 5 - (totalSIL - sil_this_paydate)
-
-        '    If ((totalSIL - sil_this_paydate) + additional_SIL) <= 5 Then
-        '    Else
-        '        MsgBox($"Only {allowable_SIL} SIL is available. The rest have been used.", MsgBoxStyle.Critical, "Invalid")
-        '        RegHol_NUP.Value = allowable_SIL
-        '        Exit Sub
-        '    End If
-
-        'Else
-        '    MsgBox("Not yet allowed to avail SIL.", MsgBoxStyle.Critical, "Invalid")
-        '    RegHol_NUP.Value = 0
-        '    Exit Sub
-        'End If
+        Dim row As DataGridViewRow = DataGridView1.Rows(DataGridView1.CurrentRow.Index)
+        row.DefaultCellStyle.BackColor = Color.LightGreen
+        row.Cells(2).Tag = 0.5
     End Sub
 
     Private Sub Menu_SILWholeDay_Click(sender As Object, e As EventArgs) Handles Menu_SILWholeDay.Click
-        SIL_Check(1)
+        Dim row As DataGridViewRow = DataGridView1.Rows(DataGridView1.CurrentRow.Index)
+        row.DefaultCellStyle.BackColor = Color.LightGreen
+        row.Cells(2).Tag = 1
+    End Sub
+
+    Private Sub SIL_BTN_Click(sender As Object, e As EventArgs) Handles SIL_BTN.Click
+        ClearSIL()
     End Sub
 
     Private Sub Calculate_BTN_Click(sender As Object, e As EventArgs) Handles Calculate_BTN.Click
@@ -2916,6 +2879,28 @@ Public Class frmAttendance
         '========================= Need para di magERROR ang Datagrid==============
     End Sub
 
+    Friend Sub GetSILDates(bioNo As Integer, paydate As String)
+        Dim mysql As String = $"SELECT * FROM PAYROLL_SIL WHERE BIONO = {bioNo} AND PAYDATE = '{paydate}'"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_SIL")
+            If ds.Tables(0).Rows.Count > 0 Then
+                For Each dr In ds.Tables(0).Rows
+                    With dr
+                        Dim SIL_DATE As Date = CDate(.item("SIL_DATE"))
+                        Dim count As Double = .item("COUNT")
+                        For Each row As DataGridViewRow In DataGridView1.Rows
+                            Console.WriteLine(SIL_DATE)
+                            Console.WriteLine(CDate(row.Tag))
+                            If SIL_DATE = CDate(row.Tag) Then
+                                row.DefaultCellStyle.BackColor = Color.LightGreen
+                                row.Cells(2).Tag = count
+                            End If
+                        Next
+                    End With
+                Next
+            End If
+        End Using
+    End Sub
+
     Private Sub BiometricID_TXT_TextChanged(sender As Object, e As EventArgs) Handles BiometricID_TXT.TextChanged
 
         Dim PAYROLL As String
@@ -2940,6 +2925,10 @@ Public Class frmAttendance
             GetName(BiometricID_TXT.Text, Name_TXT)
 
             SIL_LBL.Text = Get_SIL("PAYROLL_ATTENDANCE", $"PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{BiometricID_TXT.Text}' AND PAYDATE = '{PAYROLL}'") + Get_SIL("PAYROLL_SCHED_COUNT", $"PAYROLL_SCHED_COUNT WHERE BIO_NO = '{BiometricID_TXT.Text}' AND PAYDATE = '{PAYROLL}'")
+
+            If CDbl(SIL_LBL.Text) > 0 Then
+                GetSILDates(BiometricID_TXT.Text, PAYROLL)
+            End If
 
             If Not Name_TXT.Text = String.Empty Then
                 TIME_IN = GetTime_In(BiometricID_TXT.Text)

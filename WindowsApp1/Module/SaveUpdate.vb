@@ -1,5 +1,6 @@
 ﻿Imports System.Globalization
 Imports System.IO
+Imports Org.BouncyCastle.Bcpg
 
 Module SaveUpdate
 
@@ -40,6 +41,22 @@ Module SaveUpdate
 
     Friend Sub RemoveHoliday(datee As String)
         RunCommand("DELETE FROM PAYROLL_HOLIDAY WHERE DATEE = '" & datee & "'")
+    End Sub
+
+    Friend Sub SaveSIL(bioNo As Integer, silDate As String, count As Double, paydate As String)
+        Dim mysql As String = "Select * From PAYROLL_SIL Rows 1"
+        Using ds As DataSet = LoadSQL(mysql, "PAYROLL_SIL")
+
+            Dim dsNewRow As DataRow = ds.Tables(0).NewRow
+            With dsNewRow
+                .Item("BIONO") = bioNo
+                .Item("SIL_DATE") = silDate
+                .Item("COUNT") = count
+                .Item("PAYDATE") = paydate
+            End With
+            ds.Tables(0).Rows.Add(dsNewRow)
+            SaveEntry(ds)
+        End Using
     End Sub
 
 
