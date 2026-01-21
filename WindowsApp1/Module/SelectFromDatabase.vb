@@ -1921,7 +1921,6 @@ Module SelectFromDatabase
         End Using
     End Sub
 
-
 #Region "TO DELETE"
 
     'Friend Sub Lists_SIL(LV As ListView, year As String, Optional searchName As String = "")
