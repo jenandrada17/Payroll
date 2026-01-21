@@ -328,7 +328,7 @@ Public Class frmAttendance
     Private Sub ClearSIL()
         SIL_LBL.Text = 0
         For Each row As DataGridViewRow In DataGridView1.Rows
-            If row.DefaultCellStyle.BackColor = Color.LightGreen Then
+            If row.DefaultCellStyle.BackColor = Color.Aquamarine Or row.DefaultCellStyle.BackColor = Color.MediumAquamarine Then
                 row.DefaultCellStyle.BackColor = Color.Empty
                 row.Cells(2).Tag = 0
             End If
@@ -1815,6 +1815,16 @@ Public Class frmAttendance
         Return False
     End Function
 
+    Private Function CurrentSILCount()
+        Dim total As Double = 0
+        For Each row As DataGridViewRow In DataGridView1.Rows
+            If row.DefaultCellStyle.BackColor = Color.Aquamarine Or row.DefaultCellStyle.BackColor = Color.MediumAquamarine Then
+                total += CDbl(row.Cells(2).Tag)
+            End If
+        Next
+        Return total
+    End Function
+
     Private Sub SIL_Check(half_or_Whole_day As Double)
         Dim row As DataGridViewRow = DataGridView1.Rows(DataGridView1.CurrentRow.Index)
         Dim dateStarted As Date = CDate(GetData("DATEHIRED", $"TBL_EMPLOYEE WHERE BIOMETRICID = '{BiometricID_TXT.Text}'"))
@@ -1826,39 +1836,49 @@ Public Class frmAttendance
         If silDate >= fiveYearAnniversary Then
             SIL_count = 10      'FIVE YEARS IN SERVICE
         ElseIf silDate >= oneYearAnniversary Then
-            SIL_count = 5       'ONE YEAR IN SERVICE
-
-
+            SIL_count = 5       'ONE YEAR IN SERVICE 
         End If
 
-        Dim usedSIL As Double = Total_SIL_Used(BiometricID_TXT.Text)
-        Dim allowable_SIL As Double = (SIL_count - usedSIL)
-
+        Dim usedSIL As Double = Overall_SIL_Used(BiometricID_TXT.Text)
+        Dim silPaydate As Double = Paydate_SIL_Used(BiometricID_TXT.Text, Paydate)
+        Dim silExceptPaydate As Double = usedSIL - silPaydate
+        Dim currentSIL As Double = CurrentSILCount()
+        Dim totalSIL As Double = currentSIL + silExceptPaydate
+        Dim allowable_SIL As Double = (SIL_count - totalSIL)
 
         If SIL_count > 0 Then
-            If (usedSIL + CDbl(SIL_LBL.Text) + half_or_Whole_day) <= SIL_count Then
-                row.DefaultCellStyle.BackColor = Color.LightGreen
-                SIL_LBL.Text = CDbl(SIL_LBL.Text) + half_or_Whole_day
-                row.Cells(2).Tag = half_or_Whole_day
-            Else
-                MsgBox($"Only {SIL_count} SIL is available. The rest have been used.", MsgBoxStyle.Critical, "Invalid")
-            End If
+            Dim proposeSIL As Double = totalSIL + half_or_Whole_day
+            If (allowable_SIL > 0) And (proposeSIL <= SIL_count) Then
 
+                Dim present As Boolean = row.Cells(5).Value
+                If present Then
+                    MsgBox("This employee is present on this date.", MsgBoxStyle.Exclamation, "Invalid")
+                    Exit Sub
+                End If
+
+                If half_or_Whole_day = 0.5 Then
+                    row.DefaultCellStyle.BackColor = Color.Aquamarine
+                    row.Cells(2).Tag = half_or_Whole_day
+                Else
+                    row.DefaultCellStyle.BackColor = Color.MediumAquamarine
+                    row.Cells(2).Tag = half_or_Whole_day
+                End If
+
+                SIL_LBL.Text = CurrentSILCount()
+            Else
+                MsgBox($"Only {allowable_SIL} SIL is available. The rest have been used.", MsgBoxStyle.Critical, "No more available SIL")
+            End If
         Else
             MsgBox("Not yet allowed to avail SIL.", MsgBoxStyle.Critical, "Invalid")
         End If
     End Sub
 
     Private Sub Menu_SILHalfDay_Click(sender As Object, e As EventArgs) Handles Menu_SILHalfDay.Click
-        Dim row As DataGridViewRow = DataGridView1.Rows(DataGridView1.CurrentRow.Index)
-        row.DefaultCellStyle.BackColor = Color.LightGreen
-        row.Cells(2).Tag = 0.5
+        SIL_Check(0.5)
     End Sub
 
     Private Sub Menu_SILWholeDay_Click(sender As Object, e As EventArgs) Handles Menu_SILWholeDay.Click
-        Dim row As DataGridViewRow = DataGridView1.Rows(DataGridView1.CurrentRow.Index)
-        row.DefaultCellStyle.BackColor = Color.LightGreen
-        row.Cells(2).Tag = 1
+        SIL_Check(1)
     End Sub
 
     Private Sub SIL_BTN_Click(sender As Object, e As EventArgs) Handles SIL_BTN.Click
@@ -2888,11 +2908,14 @@ Public Class frmAttendance
                         Dim SIL_DATE As Date = CDate(.item("SIL_DATE"))
                         Dim count As Double = .item("COUNT")
                         For Each row As DataGridViewRow In DataGridView1.Rows
-                            Console.WriteLine(SIL_DATE)
-                            Console.WriteLine(CDate(row.Tag))
                             If SIL_DATE = CDate(row.Tag) Then
-                                row.DefaultCellStyle.BackColor = Color.LightGreen
                                 row.Cells(2).Tag = count
+
+                                If count = 0.5 Then
+                                    row.DefaultCellStyle.BackColor = Color.Aquamarine
+                                Else
+                                    row.DefaultCellStyle.BackColor = Color.MediumAquamarine
+                                End If
                             End If
                         Next
                     End With

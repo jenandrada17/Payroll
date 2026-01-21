@@ -2993,18 +2993,28 @@ Module SelectFromDatabase
         Return cnt
     End Function
 
-    Public Function Total_SIL_Used(Bio_no As String) As Double
+    Public Function Overall_SIL_Used(Bio_no As String) As Double
 
         Dim cnt As Double = 0
 
-        Dim mysql As String =
-        $"SELECT COALESCE(SUM(""COUNT""), 0) AS tots
-          FROM PAYROLL_SIL
-          WHERE BIONO = '{Bio_no}'
-          AND EXTRACT(YEAR FROM SIL_DATE) = {Date.Now.Year}"
-
+        Dim mysql As String = $"SELECT COALESCE(SUM(""COUNT""), 0) AS tots FROM PAYROLL_SIL WHERE BIONO = '{Bio_no}' AND EXTRACT(YEAR FROM SIL_DATE) = {Date.Now.Year}"
         Using dss As DataSet = LoadSQL(mysql, "PAYROLL_SIL")
             If dss.Tables.Count > 0 AndAlso dss.Tables(0).Rows.Count > 0 Then
+                cnt = CDbl(dss.Tables(0).Rows(0)("tots"))
+            End If
+        End Using
+
+        Return cnt
+    End Function
+
+
+    Public Function Paydate_SIL_Used(Bio_no As String, paydate As String) As Double
+
+        Dim cnt As Double = 0
+
+        Dim mysql As String = $"SELECT COALESCE(SUM(""COUNT""), 0) AS tots FROM PAYROLL_SIL WHERE BIONO = '{Bio_no}' AND PAYDATE = '{paydate}'"
+        Using dss As DataSet = LoadSQL(mysql, "PAYROLL_SIL")
+            If dss.Tables(0).Rows.Count > 0 Then
                 cnt = CDbl(dss.Tables(0).Rows(0)("tots"))
             End If
         End Using
