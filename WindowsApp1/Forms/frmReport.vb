@@ -26,7 +26,8 @@ Public Class frmReport
 
         PopulateComboBoxes_PayDate(comboBoxes, "PAYROLL_PAYOUT", "PAYDATE")
         PopulatePaydate_Monthly(Allow_Paydate_Combo, "RECORDED_ALLOW_DEDUC", "PAYDATE")
-        PopulatePaydate_Yearly(SILYear_Combo, "RECORDED_ALLOW_DEDUC", "PAYDATE")
+        'PopulatePaydate_Yearly(SILYear_Combo, "RECORDED_ALLOW_DEDUC", "PAYDATE")
+        PopulatePaydate_Yearly(SILYear_Combo, "PAYROLL_SIL", "PAYDATE")
         PopulatePaydate_Monthly(cbDateEffectivity, "HR_LETTER", "EFFECTIVE_DATE", " WHERE ACTION_NAME = 'REASSIGNMENT'")
     End Sub
 

@@ -411,10 +411,6 @@ Public Class frmAttendance
                         SaveDTR(BiometricID_TXT.Text, Paydate, dateOnly.ToString("d"),
                             row.Cells(1).Value, row.Cells(2).Value, row.Cells(3).Value, row.Cells(4).Value, LateApproved, row.Cells(1).Tag)
 
-                        If CDbl(row.Cells(2).Tag) > 0 Then      'IF SIL
-                            SaveSIL(BiometricID_TXT.Text, CDate(row.Tag).ToString("d"), CDbl(row.Cells(2).Tag), Paydate)
-                        End If
-
                         '============================== TOTAL SPECIAL HOLIDAY BASE ON TOTAL HOURS OF DUTY ====================
                         If DataeXIST($" PAYROLL_HOLIDAY WHERE DATEE = '{dateOnly.ToString("MMMM d")}' AND KINDS = 'SPECIAL'") Then
 
@@ -429,6 +425,17 @@ Public Class frmAttendance
                             Dim hrs As Integer = GetSpecial_hrs(list_.First, list_.Last, BiometricID_TXT.Text)
                             specHoliday_hrs += hrs
                         End If
+                    End If
+
+
+                    'IF SIL
+                    'Dim silCount As Double = 0
+                    'If row.Cells(2).Tag IsNot Nothing AndAlso IsNumeric(row.Cells(2).Tag) Then
+                    '    silCount = CDbl(row.Cells(2).Tag)
+                    'End If
+
+                    If CDbl(row.Cells(2).Tag) > 0 Then
+                        SaveSIL(BiometricID_TXT.Text, CDate(row.Tag).ToString("d"), CDbl(row.Cells(2).Tag), Paydate)
                     End If
                 Next
 
@@ -1850,11 +1857,11 @@ Public Class frmAttendance
             Dim proposeSIL As Double = totalSIL + half_or_Whole_day
             If (allowable_SIL > 0) And (proposeSIL <= SIL_count) Then
 
-                Dim present As Boolean = row.Cells(5).Value
-                If present Then
-                    MsgBox("This employee is present on this date.", MsgBoxStyle.Exclamation, "Invalid")
-                    Exit Sub
-                End If
+                'Dim present As Boolean = row.Cells(5).Value
+                'If present Then
+                '    MsgBox("This employee is present on this date.", MsgBoxStyle.Exclamation, "Invalid")
+                '    Exit Sub
+                'End If
 
                 If half_or_Whole_day = 0.5 Then
                     row.DefaultCellStyle.BackColor = Color.Aquamarine
@@ -2947,6 +2954,7 @@ Public Class frmAttendance
 
             GetName(BiometricID_TXT.Text, Name_TXT)
 
+            ClearSIL()
             SIL_LBL.Text = Get_SIL("PAYROLL_ATTENDANCE", $"PAYROLL_ATTENDANCE WHERE BIOMETRICID = '{BiometricID_TXT.Text}' AND PAYDATE = '{PAYROLL}'") + Get_SIL("PAYROLL_SCHED_COUNT", $"PAYROLL_SCHED_COUNT WHERE BIO_NO = '{BiometricID_TXT.Text}' AND PAYDATE = '{PAYROLL}'")
 
             If CDbl(SIL_LBL.Text) > 0 Then

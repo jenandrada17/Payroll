@@ -1921,15 +1921,93 @@ Module SelectFromDatabase
         End Using
     End Sub
 
+
+#Region "TO DELETE"
+
+    'Friend Sub Lists_SIL(LV As ListView, year As String, Optional searchName As String = "")
+    '    If year = Nothing Then year = Date.Now.Year
+
+    '    Dim startt As New Date(year, 1, 31)
+    '    Dim endd As New Date(year, 12, 31)
+    '    'Dim endd As New Date(CInt(year) + 1, 1, 15)
+
+    '    Dim startDate As String = startt.ToString("yyyy-MM-dd")
+    '    Dim endDate As String = endd.ToString("yyyy-MM-dd")
+
+    '    Dim secured_str As String = searchName
+    '    secured_str = DreadKnight(secured_str)
+    '    Dim strWords As String() = secured_str.Split(New Char() {" "c})
+    '    Dim name As String
+    '    Dim mysql As String
+
+    '    If searchName.Length <> 0 Then
+    '        mysql = $"select COALESCE(sum(SIL), 0) AS TOTALS, A.BIOMETRICID, EMP_STATUS, 
+    '                    LASTNAME || ', ' || FIRSTNAME || 
+    '                    CASE
+    '                        WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
+    '                        ELSE ''
+    '                    END || 
+    '                    CASE 
+    '                        WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX
+    '                        ELSE ''
+    '                    END AS FULLNAME
+    '                    from TBL_EMPLOYEE A 
+    '                    INNER JOIN PAYROLL_ATTENDANCE B on B.BIOMETRICID = A.BIOMETRICID 
+    '                    Where PAYDATE BETWEEN '{startDate}' AND '{endDate}' and ("
+
+    '        For Each name In strWords
+    '            mysql &= $"{vbCr}UPPER(A.BIOMETRICID) LIKE UPPER('%{name}%') OR "
+    '            mysql &= $"{vbCr}UPPER(LASTNAME || ', ' || FIRSTNAME || 
+    '                                CASE WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' ELSE ''
+    '                                END || 
+    '                                CASE WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX  ELSE ''
+    '                                END) LIKE UPPER('%{name}%') OR"
+    '            mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%') OR "
+    '            mysql &= $"{vbCr}UPPER(BRANCHCODE) LIKE UPPER('%{name}%'))  GROUP BY FULLNAME, A.BIOMETRICID, EMP_STATUS ORDER BY FULLNAME ASC "
+    '        Next
+    '    Else
+    '        mysql = $"select COALESCE(sum(SIL), 0) AS TOTALS, A.BIOMETRICID, EMP_STATUS, 
+    '                    LASTNAME || ', ' || FIRSTNAME || 
+    '                    CASE
+    '                        WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
+    '                        ELSE ''
+    '                    END || 
+    '                    CASE 
+    '                        WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX
+    '                        ELSE ''
+    '                    END AS FULLNAME
+    '                    from TBL_EMPLOYEE A 
+    '                    INNER JOIN PAYROLL_ATTENDANCE B on B.BIOMETRICID = A.BIOMETRICID 
+    '                    Where PAYDATE BETWEEN '{startDate}' AND '{endDate}' 
+    '                    GROUP BY FULLNAME, A.BIOMETRICID, EMP_STATUS ORDER BY FULLNAME ASC "
+    '    End If
+
+    '    TestingScript_String(mysql)
+    '    Using ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
+    '        LV.Items.Clear()
+    '        progressBarStart(ds.Tables(0).Rows.Count)
+    '        For Each dr In ds.Tables(0).Rows
+    '            With dr
+    '                Dim i As ListViewItem = LV.Items.Add(.Item("FULLNAME"))
+    '                i.SubItems.Add(.Item("TOTALS") + Get_SIL("PAYROLL_SCHED_COUNT", $"PAYROLL_SCHED_COUNT WHERE BIO_NO = '{ .item("BIOMETRICID")}' AND PAYDATE BETWEEN '{startDate}' AND '{endDate}'"))
+
+    '                If IsDBNull(.Item("EMP_STATUS")) Then
+    '                    i.BackColor = Color.Wheat
+    '                ElseIf String.IsNullOrWhiteSpace(.Item("EMP_STATUS")) Then
+    '                    i.BackColor = Color.Wheat
+    '                ElseIf .Item("EMP_STATUS") = "INACTIVE" Then
+    '                    i.BackColor = Color.Wheat
+    '                End If
+    '            End With
+    '            frmMainForm.AppProgressBar.Value += 1
+    '        Next
+    '        progressBarEnd()
+    '    End Using
+    'End Sub
+#End Region
+
     Friend Sub Lists_SIL(LV As ListView, year As String, Optional searchName As String = "")
         If year = Nothing Then year = Date.Now.Year
-
-        Dim startt As New Date(year, 1, 31)
-        Dim endd As New Date(year, 12, 31)
-        'Dim endd As New Date(CInt(year) + 1, 1, 15)
-
-        Dim startDate As String = startt.ToString("yyyy-MM-dd")
-        Dim endDate As String = endd.ToString("yyyy-MM-dd")
 
         Dim secured_str As String = searchName
         secured_str = DreadKnight(secured_str)
@@ -1938,7 +2016,7 @@ Module SelectFromDatabase
         Dim mysql As String
 
         If searchName.Length <> 0 Then
-            mysql = $"select COALESCE(sum(SIL), 0) AS TOTALS, A.BIOMETRICID, EMP_STATUS, 
+            mysql = $"select COALESCE(SUM(""COUNT""), 0) AS TOTALS, A.BIOMETRICID, EMP_STATUS, 
                         LASTNAME || ', ' || FIRSTNAME || 
                         CASE
                             WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
@@ -1949,8 +2027,8 @@ Module SelectFromDatabase
                             ELSE ''
                         END AS FULLNAME
                         from TBL_EMPLOYEE A 
-                        INNER JOIN PAYROLL_ATTENDANCE B on B.BIOMETRICID = A.BIOMETRICID 
-                        Where PAYDATE BETWEEN '{startDate}' AND '{endDate}' and ("
+                        INNER JOIN PAYROLL_SIL B on B.BIONO = A.BIOMETRICID 
+                        Where EXTRACT(YEAR FROM SIL_DATE) = {year} and ("
 
             For Each name In strWords
                 mysql &= $"{vbCr}UPPER(A.BIOMETRICID) LIKE UPPER('%{name}%') OR "
@@ -1963,7 +2041,7 @@ Module SelectFromDatabase
                 mysql &= $"{vbCr}UPPER(BRANCHCODE) LIKE UPPER('%{name}%'))  GROUP BY FULLNAME, A.BIOMETRICID, EMP_STATUS ORDER BY FULLNAME ASC "
             Next
         Else
-            mysql = $"select COALESCE(sum(SIL), 0) AS TOTALS, A.BIOMETRICID, EMP_STATUS, 
+            mysql = $"select COALESCE(SUM(""COUNT""), 0) AS TOTALS, A.BIOMETRICID, EMP_STATUS, 
                         LASTNAME || ', ' || FIRSTNAME || 
                         CASE
                             WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
@@ -1974,8 +2052,8 @@ Module SelectFromDatabase
                             ELSE ''
                         END AS FULLNAME
                         from TBL_EMPLOYEE A 
-                        INNER JOIN PAYROLL_ATTENDANCE B on B.BIOMETRICID = A.BIOMETRICID 
-                        Where PAYDATE BETWEEN '{startDate}' AND '{endDate}' 
+                        INNER JOIN PAYROLL_SIL B on B.BIONO = A.BIOMETRICID 
+                        Where EXTRACT(YEAR FROM SIL_DATE) = {year}
                         GROUP BY FULLNAME, A.BIOMETRICID, EMP_STATUS ORDER BY FULLNAME ASC "
         End If
 
@@ -1986,7 +2064,7 @@ Module SelectFromDatabase
             For Each dr In ds.Tables(0).Rows
                 With dr
                     Dim i As ListViewItem = LV.Items.Add(.Item("FULLNAME"))
-                    i.SubItems.Add(.Item("TOTALS") + Get_SIL("PAYROLL_SCHED_COUNT", $"PAYROLL_SCHED_COUNT WHERE BIO_NO = '{ .item("BIOMETRICID")}' AND PAYDATE BETWEEN '{startDate}' AND '{endDate}'"))
+                    i.SubItems.Add(.Item("TOTALS"))
 
                     If IsDBNull(.Item("EMP_STATUS")) Then
                         i.BackColor = Color.Wheat
