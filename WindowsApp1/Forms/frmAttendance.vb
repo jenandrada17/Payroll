@@ -1457,9 +1457,13 @@ Public Class frmAttendance
             '    Menu_SILHalfDay.Text = "Disapproved"
             'Else
             '    Menu_SILHalfDay.Text = "Approved"
-            'End If
+            'End If 
 
-            ContextMenu_SIL.Show(DataGridView1, New Point(e.X, e.Y))
+            If BiometricID_TXT.Text = "" Then
+                MsgBox("Please Enter Employee's Name.", MsgBoxStyle.Critical, "Error")
+            Else
+                ContextMenu_SIL.Show(DataGridView1, New Point(e.X, e.Y))
+            End If
 
         End If
     End Sub
@@ -1833,8 +1837,9 @@ Public Class frmAttendance
     End Function
 
     Private Sub SIL_Check(half_or_Whole_day As Double)
+        Dim bioNo As Integer = If(Integer.TryParse(CStr(BiometricID_TXT.Text), 0), CInt(BiometricID_TXT.Text), 0)
         Dim row As DataGridViewRow = DataGridView1.Rows(DataGridView1.CurrentRow.Index)
-        Dim dateStarted As Date = CDate(GetData("DATEHIRED", $"TBL_EMPLOYEE WHERE BIOMETRICID = '{BiometricID_TXT.Text}'"))
+        Dim dateStarted As Date = CDate(GetData("DATEHIRED", $"TBL_EMPLOYEE WHERE BIOMETRICID = '{bioNo}'"))
         Dim oneYearAnniversary As Date = dateStarted.AddYears(1)
         Dim fiveYearAnniversary As Date = dateStarted.AddYears(5)
         Dim silDate As Date = CDate(DataGridView1.Rows(DataGridView1.CurrentRow.Index).Tag).ToString("d")
@@ -1846,8 +1851,8 @@ Public Class frmAttendance
             SIL_count = 5       'ONE YEAR IN SERVICE 
         End If
 
-        Dim usedSIL As Double = Overall_SIL_Used(BiometricID_TXT.Text)
-        Dim silPaydate As Double = Paydate_SIL_Used(BiometricID_TXT.Text, Paydate)
+        Dim usedSIL As Double = Overall_SIL_Used(bioNo)
+        Dim silPaydate As Double = Paydate_SIL_Used(bioNo, Paydate)
         Dim silExceptPaydate As Double = usedSIL - silPaydate
         Dim currentSIL As Double = CurrentSILCount()
         Dim totalSIL As Double = currentSIL + silExceptPaydate
