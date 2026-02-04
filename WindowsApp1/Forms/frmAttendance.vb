@@ -2527,11 +2527,14 @@ Public Class frmAttendance
             eCell = eSheet.UsedRange
             Dim row As Integer
 
-            'ONLY FOR JEN PC TESTING
-            Dim connStr As String = $"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={Path_TXT.Text};Extended Properties='Excel 12.0 Xml;HDR=YES';"
-            MyConnection = New System.Data.OleDb.OleDbConnection(connStr)
+            MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path_TXT.Text}';Extended Properties=Excel 8.0;")
 
-            'MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path_TXT.Text}';Extended Properties=Excel 8.0;")
+            'ONLY FOR JEN PC TESTING
+            If Environment.MachineName = "JEN" Then
+                Dim connStr As String = $"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={Path_TXT.Text};Extended Properties='Excel 12.0 Xml;HDR=YES';"
+                MyConnection = New System.Data.OleDb.OleDbConnection(connStr)
+            End If
+
             MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
             MyCommand.TableMappings.Add("Table", "Net-informations.com")
             DtSet = New System.Data.DataSet
