@@ -2713,8 +2713,17 @@ Public Class frmAttendance
                     list_ = list_.Where(Function(s) Not String.IsNullOrEmpty(s)).ToList()
 
                     'specHoliday_hrs
-                    Dim hrs As Integer = GetSpecial_hrs(list_.First, list_.Last, biometric_No)
-                    specHoliday_hrs += hrs
+                    'Dim hrs As Integer = GetSpecial_hrs(list_.First, list_.Last, biometric_No)
+                    'specHoliday_hrs += hrs
+
+                    If list_.Any() AndAlso list_.Count >= 2 Then
+                        Dim timeStart = list_(0)
+                        Dim timeEnd = list_(list_.Count - 1)
+
+                        Dim hrs As Integer = GetSpecial_hrs(timeStart, timeEnd, biometric_No)
+                        specHoliday_hrs += hrs
+                    End If
+
                 End If
 
 #Region "TO DELETE"
@@ -2816,15 +2825,6 @@ Public Class frmAttendance
             If Late_applied = True Then
                 Late_percentage = LatePercentage(biometric_No, paydate_, late_count.TotalMinutes)
             End If
-
-            'Friend Sub SaveAttendanceEE(biometric As Integer, paydate As String, days As String, overTime As String, late_total As String, under_total As String,
-            '                            regHoliday As String, specHoliday As String, specHoliday_hrs As Double, SIL As Double, LATE_ADJUSTMENT As String, Optional LATE_APPROVED As String = "",
-            '                                    Optional MORNING_OT As String = "", Optional regHol_deduction As Integer = 0, Optional NIGHT_RATE As String = "", Optional BRANCH As Boolean = False,
-            '                                    Optional DUTY_RESTDAY As Double = 0, Optional DUTY_SPEC_RESTDAY As Double = 0, Optional DUTY_REG_RESTDAY As Double = 0,
-            '                                    Optional DUTY_RESTDAY_OT As Double = 0, Optional DUTY_SPEC_OT As Double = 0, Optional DUTY_SPEC_RESTDAY_OT As Double = 0, Optional DUTY_REG_OT As Double = 0, Optional DUTY_REG_RESTDAY_OT As Double = 0,
-            '                                    Optional DUTY_SPEC_NIGHTSHIFT As Double = 0, Optional DUTY_REG_NIGHTSHIFT As Double = 0, Optional DUTY_ORD_NIGHTSHIFT_OT As Double = 0, Optional DUTY_SPEC_NIGHTSHIFT_OT As Double = 0, Optional DUTY_REG_NIGHTSHIFT_OT As Double = 0,
-            '                                    Optional NEW_RATE_DAYS_COVERED As Double = 0, Optional NEW_RATE_LATE_COVERED As Double = 0, Optional NEW_RATE_UT_COVERED As Double = 0, Optional NEW_RATE_OT_COVERED As Double = 0,
-            '                                    Optional NEW_RATE_REGHOLIDAY_COVERED As Double = 0, Optional NEW_RATE_SPECHOLIDAY_COVERED As Double = 0, Optional regHol_additional As Integer = 0)
 
             SaveAttendanceEE(biometric_No, paydate_, TotalDays_LBL.Text, TotalOTHr_LBL.Text, late_count.TotalMinutes, under_count.TotalMinutes,
                              RHOLIDAY, SHOLIDAY, specHoliday_hrs, 0, Late_percentage, Nothing, Nothing, regHol_deduction)
