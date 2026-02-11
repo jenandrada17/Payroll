@@ -1488,8 +1488,15 @@ Public Class frmAttendance
         eSheet = eBook.Worksheets(1)
         eCell = eSheet.UsedRange
 
-        MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.ACE.OLEDB.12.0;Data Source='{Path7_TXT.Text}';Extended Properties='Excel 8.0;HDR=YES';")
-        'MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path7_TXT.Text}';Extended Properties=Excel 8.0;")
+
+        MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path7_TXT.Text}';Extended Properties=Excel 8.0;")
+
+        'ONLY FOR JEN PC TESTING
+        If Environment.MachineName = "JEN" Then
+            Dim connStr As String = $"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={Path7_TXT.Text};Extended Properties='Excel 12.0 Xml;HDR=YES';"
+            MyConnection = New System.Data.OleDb.OleDbConnection(connStr)
+        End If
+
         MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
         MyCommand.TableMappings.Add("Table", "Net-informations.com")
         DtSet = New System.Data.DataSet
