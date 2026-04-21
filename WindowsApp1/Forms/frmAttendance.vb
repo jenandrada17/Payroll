@@ -2589,8 +2589,6 @@ Public Class frmAttendance
 
         '======================== HOLIDAY ============================ 
         'Dim RHOLIDAY As Integer = REGHolidayCount(starting_date, ending_date) 
-        Dim RHOLIDAY As Integer = 0
-        Dim regHol_deduction As Integer = 0
         Dim SHOLIDAY As Integer = SPECHolidayCount(starting_date, ending_date)
 
         distinct_bio = distinct_bio.Distinct.ToList
@@ -2598,6 +2596,8 @@ Public Class frmAttendance
         progressBarStart(distinct_bio.Count)
         For Each biometric_No As String In distinct_bio
 
+            Dim RHOLIDAY As Integer = 0
+            Dim regHol_deduction As Integer = 0
             Dim dateStarted = GetData("DATEHIRED", $"TBL_EMPLOYEE WHERE BIOMETRICID = '{biometric_No}'")
             emp_status = GetData("EMP_STATUS", $"TBL_EMPLOYEE WHERE BIOMETRICID = '{biometric_No}'")
             dateEnded = GetData("DATE_ENDED", $"TBL_EMPLOYEE WHERE BIOMETRICID = '{biometric_No}'")

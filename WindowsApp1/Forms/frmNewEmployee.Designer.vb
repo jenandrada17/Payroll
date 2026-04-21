@@ -84,6 +84,8 @@ Partial Class frmNewEmployee
         Me.LastName_txt = New System.Windows.Forms.TextBox()
         Me.Label29 = New System.Windows.Forms.Label()
         Me.MName_txt = New System.Windows.Forms.TextBox()
+        Me.Label21 = New System.Windows.Forms.Label()
+        Me.Suffix_txt = New System.Windows.Forms.TextBox()
         Me.Label30 = New System.Windows.Forms.Label()
         Me.BDate_dtp = New System.Windows.Forms.DateTimePicker()
         Me.Label31 = New System.Windows.Forms.Label()
@@ -117,8 +119,6 @@ Partial Class frmNewEmployee
         Me.Add_Panel = New System.Windows.Forms.Panel()
         Me.Context_Details = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.View_Menu = New System.Windows.Forms.ToolStripMenuItem()
-        Me.Label21 = New System.Windows.Forms.Label()
-        Me.Suffix_txt = New System.Windows.Forms.TextBox()
         Me.Excel_Panel.SuspendLayout()
         Me.FlowLayoutPanel1.SuspendLayout()
         Me.Panel5.SuspendLayout()
@@ -470,7 +470,7 @@ Partial Class frmNewEmployee
         Me.Add_Company_CB.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList
         Me.Add_Company_CB.Font = New System.Drawing.Font("Microsoft Sans Serif", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Add_Company_CB.FormattingEnabled = True
-        Me.Add_Company_CB.Items.AddRange(New Object() {"PHOTO", "P&G UY", "DALTON", "PERFECOM", "HEAD OFFICE"})
+        Me.Add_Company_CB.Items.AddRange(New Object() {"PHOTO", "P&G UY", "DALTON", "PERFECOM", "HEAD OFFICE", "10 BALLS CORPORATION"})
         Me.Add_Company_CB.Location = New System.Drawing.Point(128, 35)
         Me.Add_Company_CB.Name = "Add_Company_CB"
         Me.Add_Company_CB.Size = New System.Drawing.Size(291, 26)
@@ -789,6 +789,26 @@ Partial Class frmNewEmployee
         Me.MName_txt.Name = "MName_txt"
         Me.MName_txt.Size = New System.Drawing.Size(292, 26)
         Me.MName_txt.TabIndex = 100
+        '
+        'Label21
+        '
+        Me.Label21.AutoSize = True
+        Me.Label21.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Label21.ForeColor = System.Drawing.Color.Black
+        Me.Label21.Location = New System.Drawing.Point(3, 467)
+        Me.Label21.Name = "Label21"
+        Me.Label21.Size = New System.Drawing.Size(119, 16)
+        Me.Label21.TabIndex = 155
+        Me.Label21.Text = "Suffix                           "
+        '
+        'Suffix_txt
+        '
+        Me.Suffix_txt.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper
+        Me.Suffix_txt.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Suffix_txt.Location = New System.Drawing.Point(128, 470)
+        Me.Suffix_txt.Name = "Suffix_txt"
+        Me.Suffix_txt.Size = New System.Drawing.Size(292, 26)
+        Me.Suffix_txt.TabIndex = 154
         '
         'Label30
         '
@@ -1125,26 +1145,6 @@ Partial Class frmNewEmployee
         Me.View_Menu.Name = "View_Menu"
         Me.View_Menu.Size = New System.Drawing.Size(137, 22)
         Me.View_Menu.Text = "View Details"
-        '
-        'Label21
-        '
-        Me.Label21.AutoSize = True
-        Me.Label21.Font = New System.Drawing.Font("Microsoft Sans Serif", 9.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label21.ForeColor = System.Drawing.Color.Black
-        Me.Label21.Location = New System.Drawing.Point(3, 467)
-        Me.Label21.Name = "Label21"
-        Me.Label21.Size = New System.Drawing.Size(119, 16)
-        Me.Label21.TabIndex = 155
-        Me.Label21.Text = "Suffix                           "
-        '
-        'Suffix_txt
-        '
-        Me.Suffix_txt.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper
-        Me.Suffix_txt.Font = New System.Drawing.Font("Microsoft Sans Serif", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Suffix_txt.Location = New System.Drawing.Point(128, 470)
-        Me.Suffix_txt.Name = "Suffix_txt"
-        Me.Suffix_txt.Size = New System.Drawing.Size(292, 26)
-        Me.Suffix_txt.TabIndex = 154
         '
         'frmNewEmployee
         '

@@ -431,9 +431,7 @@ Public Class frmReport
                                         SUM((SELECT COALESCE(SUM(AMOUNT), 0) FROM RECORDED_ALLOW_DEDUC WHERE R_DEDUC_ID = A.ID AND PAYDATE <> '12/15/2021')) AS TOTAL_NEWCREDIT,
                                         SUM((SELECT COALESCE(SUM(AMOUNT), 0) FROM PARTIAL_PAYMENT WHERE DEDUCT_ID = A.ID)) AS TOTAL_PARTIAL, 
                                         COMPANY, PHOTO_CATEGORY, HO_CATEGORY 
-                                    FROM
-                                        
-A 
+                                    FROM PAYROLL_DEDUCTION A
                                     INNER JOIN 
                                         TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIO_NO
                                     WHERE 
@@ -454,7 +452,7 @@ A
                             totalCredit = remanticCredit + newPayrollCredit + partialPayment
                             balance = principal - totalCredit
                             company = .Item("COMPANY")
-                            ho_category = .Item("HO_CATEGORY")
+                            ho_category = IIf(IsDBNull(.Item("HO_CATEGORY")), Nothing, .Item("HO_CATEGORY"))
 
                             If company = "PHOTO" Then
                                 company_category = .Item("PHOTO_CATEGORY")
