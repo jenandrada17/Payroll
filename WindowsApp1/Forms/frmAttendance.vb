@@ -38,6 +38,9 @@ Public Class frmAttendance
     Dim Late_total As Integer = 0
     Dim Late_approved As Integer = 0
 
+
+    Dim BioNumber As String
+
     Private Sub frmAttendance_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
         LoadDateTime()
@@ -1491,11 +1494,11 @@ Public Class frmAttendance
 
         MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path7_TXT.Text}';Extended Properties=Excel 8.0;")
 
-        'ONLY FOR JEN PC TESTING
-        If Environment.MachineName = "JEN" Then
-            Dim connStr As String = $"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={Path7_TXT.Text};Extended Properties='Excel 12.0 Xml;HDR=YES';"
-            MyConnection = New System.Data.OleDb.OleDbConnection(connStr)
-        End If
+        ''ONLY FOR JEN PC TESTING
+        'If Environment.MachineName = "JEN" Then
+        '    Dim connStr As String = $"Provider=Microsoft.ACE.OLEDB.12.0;Data Source={Path7_TXT.Text};Extended Properties='Excel 12.0 Xml;HDR=YES';"
+        '    MyConnection = New System.Data.OleDb.OleDbConnection(connStr)
+        'End If
 
         MyCommand = New System.Data.OleDb.OleDbDataAdapter($"select * from [{eSheet.Name}$]", MyConnection)
         MyCommand.TableMappings.Add("Table", "Net-informations.com")
@@ -2526,13 +2529,13 @@ Public Class frmAttendance
     End Sub
 
     Private Sub bio_OURCOMPANY()
+        Dim row As Integer
         Try
 
             eApp = New Excel.Application
             eBook = eApp.Workbooks.Open(Path_TXT.Text)
             eSheet = eBook.Worksheets(1)
             eCell = eSheet.UsedRange
-            Dim row As Integer
 
             MyConnection = New System.Data.OleDb.OleDbConnection($"provider=Microsoft.Jet.OLEDB.4.0;Data Source='{Path_TXT.Text}';Extended Properties=Excel 8.0;")
 
@@ -2553,6 +2556,11 @@ Public Class frmAttendance
             progressBarStart(DtSet.Tables(0).Rows.Count)
 
             For row = 1 To DtSet.Tables(0).Rows.Count
+                If row = 2 Then
+                    Console.WriteLine(eCell(row, 3).Value)
+                    Console.WriteLine(eCell(row, 4).Value)
+                End If
+
                 If IsNumeric(eCell(row, 3).Value) Then
                     SaveBiometricSheet(Paydate, eCell(row, 3).Value, eCell(row, 4).Value)
                     distinct_bio.Add(eCell(row, 3).Value)
@@ -2577,7 +2585,7 @@ Public Class frmAttendance
 
         Catch ex As Exception
             Console.WriteLine(ex.ToString)
-            MsgBox("Excel is open or inaccessible!" & vbNewLine & ex.ToString, MsgBoxStyle.Critical, "Error")
+            MsgBox("Excel is open or inaccessible!" & vbNewLine & ex.ToString & vbCrLf & "BioNumber - " & BioNumber, MsgBoxStyle.Critical, "Error")
         End Try
     End Sub
 
@@ -2595,6 +2603,7 @@ Public Class frmAttendance
 
         progressBarStart(distinct_bio.Count)
         For Each biometric_No As String In distinct_bio
+            BioNumber = biometric_No  'TO TRACE ERROR
 
             Dim RHOLIDAY As Integer = 0
             Dim regHol_deduction As Integer = 0
@@ -2666,6 +2675,11 @@ Public Class frmAttendance
 
                 '======================== GET TIME IN/OUT TO CALCULATE LATE UNDERTIME OVERTIME ============================ 
                 Dim DATEE As DateTime = row.Tag
+                Console.WriteLine(biometric_No)
+
+                If biometric_No = 5924 Then
+                    Console.WriteLine(DATEE)
+                End If
 
                 If CheckData("BIO_NO", $"PAYROLL_SCHEDULE WHERE BIO_NO = '{biometric_No}'") Then
 
