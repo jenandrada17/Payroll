@@ -2258,6 +2258,154 @@ Public Class frmReport
 
     End Sub
 
+    Public Sub LoadListOfAllowance(category As String)
+
+        Rpt_PI.LocalReport.DataSources.Clear()
+        Dim PAYDATE_start As DateTime = Allow_Paydate_Combo.Text
+        Dim PAYDATE_end As New DateTime(PAYDATE_start.Year, PAYDATE_start.Month, System.DateTime.DaysInMonth(PAYDATE_start.Year, PAYDATE_start.Month))
+        Dim FULLNAME As String = Nothing
+
+        Try
+
+            Dim str As String = ""
+            Dim report As String = "WindowsApp1.rpt_ListOfAllowance.rdlc"
+
+            Dim dt_PI As New DataTable()
+            With dt_PI
+                .Columns.Add("NAME")
+                .Columns.Add("AMOUNT")
+                .Columns.Add("BRANCH")
+                .Columns.Add("POSITION")
+            End With
+
+            If Allow_Company_CB.SelectedIndex = 0 Then
+                str = $" AND HO_CATEGORY LIKE '%Photo%'"
+            ElseIf Allow_Company_CB.SelectedIndex = 1 Then
+                str = $" AND PHOTO_CATEGORY = 'GENSAN PERFECT'"
+            ElseIf Allow_Company_CB.SelectedIndex = 2 Then
+                str = $" AND PHOTO_CATEGORY = 'DAVAO PERFECT'"
+            ElseIf Allow_Company_CB.SelectedIndex = 3 Then
+                str = $" AND PHOTO_CATEGORY = 'JR PHOTO' "
+            ElseIf Allow_Company_CB.SelectedIndex = 4 Then
+                str = $" AND (COMPANY = 'DALTON' OR HO_CATEGORY LIKE '%Dalton%')"
+            ElseIf Allow_Company_CB.SelectedIndex = 5 Then
+                str = $" AND  (COMPANY = 'PERFECOM' OR HO_CATEGORY LIKE '%Perfecom%')"
+            ElseIf Allow_Company_CB.SelectedIndex = 6 Then
+                str = $" AND  (COMPANY = 'P&G UY' OR HO_CATEGORY LIKE '%GHS%')"
+            ElseIf Allow_Company_CB.SelectedIndex = 7 Then
+                str = $" AND  HO_CATEGORY IN ('Leasing Admin Office','Construction')"
+            ElseIf Allow_Company_CB.SelectedIndex = 8 Then
+                str = $" AND  HO_CATEGORY = 'PGC Head Office'"
+            Else
+                str = ""
+            End If
+
+            Dim mysql As String = $"SELECT 
+                                      A.BIO_NO,
+                                      SUM(A.AMOUNT) AS TOTAL_AMOUNT,
+                                      A.CATEGORY,
+                                      C.BRANCHNAME,
+                                      B.PHOTO_CATEGORY,
+                                      B.BRANCHCODE AS BRANCH_CODE,
+                                      B.HO_CATEGORY,
+                                      B.COMPANY,
+                                      LASTNAME || ', ' || FIRSTNAME || 
+                                        CASE 
+                                          WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
+                                          ELSE '' 
+                                        END || 
+                                        CASE 
+                                          WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX 
+                                          ELSE '' 
+                                        END AS FULLNAME
+                                    FROM 
+                                      PAYROLL_ALLOWANCES A
+                                    INNER JOIN 
+                                      TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIO_NO {str} 
+                                    LEFT JOIN 
+                                      PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
+                                    WHERE 
+                                      EMP_STATUS = 'ACTIVE' 
+                                    GROUP BY 
+                                      A.BIO_NO, C.BRANCHNAME, B.PHOTO_CATEGORY, B.BRANCHCODE, B.HO_CATEGORY, B.COMPANY,
+                                      LASTNAME, FIRSTNAME, MIDDLENAME, SUFFIX
+                                    ORDER BY 
+                                      FULLNAME; "
+
+            TestingScript_String(mysql)
+            Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ALLOWANCES")
+                If ds.Tables(0).Rows.Count > 0 Then
+
+                    progressBarStart(ds.Tables(0).Rows.Count)
+                    For Each dr In ds.Tables(0).Rows
+                        With dr
+
+                            '============================= NAME AND ATTENDANCE ============================  
+                            FULLNAME = IIf(IsDBNull(.Item("FULLNAME")), "", .Item("FULLNAME"))
+                            'Dim bioNo As Integer = CInt(.Item("BIO_NO"))
+                            Dim AMOUNT As String = FormatNumber(.Item("TOTAL_AMOUNT"))
+
+                            '===================================== BRANCHES ===============================
+                            Dim BRANCH_CODE As String = ""
+
+                            If IsDBNull(.Item("BRANCH_CODE")) Then
+                                BRANCH_CODE = .Item("HO_CATEGORY")
+                            ElseIf .Item("BRANCH_CODE") = "" Then
+                                BRANCH_CODE = .Item("HO_CATEGORY")
+                            Else
+                                BRANCH_CODE = .Item("BRANCHNAME")
+                            End If
+
+                            Dim COMPANY As String = .Item("COMPANY")
+                            Dim HO_CATEGORY As String = IIf(IsDBNull(.Item("HO_CATEGORY")), "", .Item("HO_CATEGORY"))
+                            Dim COMPANY_CATEGORY As String = IIf(IsDBNull(.Item("PHOTO_CATEGORY")), "", .Item("PHOTO_CATEGORY"))
+
+                            If COMPANY = "DALTON" Then
+                                BRANCH_CODE = IIf(.Item("BRANCH_CODE") = "" Or IsDBNull(.Item("BRANCH_CODE")), .Item("HO_CATEGORY"), TitleCase(.Item("COMPANY")) & "-" & .Item("BRANCHNAME"))
+                            End If
+
+                            If HO_CATEGORY = "GHS/P&G UY Admin Office" Or HO_CATEGORY = "GHS/P&G UY Admin Operation" Then
+                                BRANCH_CODE = HO_CATEGORY
+
+                            ElseIf HO_CATEGORY.Contains("Dalton") Then
+                                BRANCH_CODE = HO_CATEGORY
+
+                            ElseIf HO_CATEGORY.Contains("Photo") Or HO_CATEGORY.Contains("PGC") Then
+                                BRANCH_CODE = HO_CATEGORY
+                            End If
+
+                            If COMPANY_CATEGORY <> "" Then
+                                BRANCH_CODE = COMPANY_CATEGORY
+                            End If
+
+                            dt_PI.Rows.Add(FULLNAME, AMOUNT, AMOUNT, BRANCH_CODE)
+
+                            frmMainForm.AppProgressBar.Value += 1
+                        End With
+
+                    Next
+                    progressBarEnd()
+                End If
+            End Using
+
+            Dim DATASOURCE As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt_PI)
+            Dim FORMNAME As String = $"LIST OF {category} - {Allow_Paydate_Combo.Text}"
+
+            Dim paramList As New List(Of Microsoft.Reporting.WinForms.ReportParameter) From {
+                    New Microsoft.Reporting.WinForms.ReportParameter("paramFormName", FORMNAME)
+                    }
+
+            Rpt_PI.LocalReport.ReportEmbeddedResource = report
+            Rpt_PI.LocalReport.DataSources.Add(DATASOURCE)
+            Rpt_PI.LocalReport.SetParameters(paramList)
+            Rpt_PI.RefreshReport()
+
+        Catch ex As Exception
+            MessageBox.Show($"{ex.Message}{vbCrLf}{FULLNAME}", Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+
+    End Sub
+
     Public Sub LoadEmployeeRate(Optional search As String = Nothing)
         Rpt_Rate.LocalReport.DataSources.Clear()
         Dim linee As String = Nothing
@@ -3065,5 +3213,9 @@ Public Class frmReport
         If e.KeyChar = ChrW(Keys.Enter) Then
             btnSearchReassign.PerformClick()
         End If
+    End Sub
+
+    Private Sub btnListOfAllowance_Click(sender As Object, e As EventArgs) Handles btnListOfAllowance.Click
+
     End Sub
 End Class

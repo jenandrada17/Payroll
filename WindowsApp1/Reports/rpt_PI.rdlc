@@ -29,10 +29,14 @@
           <DataField>BRANCH</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
+        <Field Name="POSITION">
+          <DataField>POSITION</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
       </Fields>
       <rd:DataSetInfo>
         <rd:DataSetName>reports</rd:DataSetName>
-        <rd:SchemaPath>G:\Payroll-System\PAYROLL\WindowsApp1\Dataset\reports.xsd</rd:SchemaPath>
+        <rd:SchemaPath>D:\PGC APPS\PAYROLL\WindowsApp1\Dataset\reports.xsd</rd:SchemaPath>
         <rd:TableName>PerformanceIncentives</rd:TableName>
         <rd:TableAdapterFillMethod />
         <rd:TableAdapterGetDataMethod />

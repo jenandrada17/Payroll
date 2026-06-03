@@ -520,6 +520,7 @@
     <EmbeddedResource Include="Reports\rpt_Deduction_All.rdlc" />
     <EmbeddedResource Include="Reports\rpt_Deduction_Company.rdlc" />
     <EmbeddedResource Include="Reports\rpt_DTR_ByGroup.rdlc" />
+    <EmbeddedResource Include="Reports\rpt_ListOfAllowance.rdlc" />
     <EmbeddedResource Include="Reports\rpt_Loans.rdlc" />
     <EmbeddedResource Include="Reports\rpt_LoansALL.rdlc" />
     <EmbeddedResource Include="Reports\rpt_NetPay_SegreCharges.rdlc" />
