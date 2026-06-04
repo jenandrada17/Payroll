@@ -2266,7 +2266,6 @@ Public Class frmReport
 
         Try
 
-            Dim str As String = ""
             Dim report As String = "WindowsApp1.rpt_ListOfAllowance.rdlc"
 
             Dim dt_PI As New DataTable()
@@ -2278,66 +2277,11 @@ Public Class frmReport
                 .Columns.Add("CATEGORY")
             End With
 
-            If Allow_Company_CB.SelectedIndex = 0 Then
-                str = $" AND HO_CATEGORY LIKE '%Photo%'"
-            ElseIf Allow_Company_CB.SelectedIndex = 1 Then
-                str = $" AND PHOTO_CATEGORY = 'GENSAN PERFECT'"
-            ElseIf Allow_Company_CB.SelectedIndex = 2 Then
-                str = $" AND PHOTO_CATEGORY = 'DAVAO PERFECT'"
-            ElseIf Allow_Company_CB.SelectedIndex = 3 Then
-                str = $" AND PHOTO_CATEGORY = 'JR PHOTO' "
-            ElseIf Allow_Company_CB.SelectedIndex = 4 Then
-                str = $" AND (COMPANY = 'DALTON' OR HO_CATEGORY LIKE '%Dalton%')"
-            ElseIf Allow_Company_CB.SelectedIndex = 5 Then
-                str = $" AND  (COMPANY = 'PERFECOM' OR HO_CATEGORY LIKE '%Perfecom%')"
-            ElseIf Allow_Company_CB.SelectedIndex = 6 Then
-                str = $" AND  (COMPANY = 'P&G UY' OR HO_CATEGORY LIKE '%GHS%')"
-            ElseIf Allow_Company_CB.SelectedIndex = 7 Then
-                str = $" AND  HO_CATEGORY IN ('Leasing Admin Office','Construction')"
-            ElseIf Allow_Company_CB.SelectedIndex = 8 Then
-                str = $" AND  HO_CATEGORY = 'PGC Head Office'"
-            Else
-                str = ""
-            End If
-
             If Allow_Category_CB.SelectedIndex = -1 Then
                 category = ""
             Else
                 category = $" AND UPPER(A.CATEGORY) Like UPPER('%{Allow_Category_CB.Text}%') "
             End If
-
-            'Dim mysql As String = $"SELECT 
-            '                          A.BIO_NO,
-            '                          SUM(A.AMOUNT) AS TOTAL_AMOUNT,
-            '                          A.CATEGORY,
-            '                          C.BRANCHNAME,
-            '                          B.PHOTO_CATEGORY,
-            '                          B.BRANCHCODE AS BRANCH_CODE,
-            '                          B.HO_CATEGORY,
-            '                          B.COMPANY, 
-            '                          B.EMP_POSITION,
-            '                          LASTNAME || ', ' || FIRSTNAME || 
-            '                            CASE 
-            '                              WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
-            '                              ELSE '' 
-            '                            END || 
-            '                            CASE 
-            '                              WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX 
-            '                              ELSE '' 
-            '                            END AS FULLNAME
-            '                        FROM 
-            '                          PAYROLL_ALLOWANCES A
-            '                        INNER JOIN 
-            '                          TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIO_NO {str} 
-            '                        LEFT JOIN 
-            '                          PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
-            '                        WHERE 
-            '                          EMP_STATUS = 'ACTIVE' {category}
-            '                        GROUP BY 
-            '                          A.BIO_NO, C.BRANCHNAME, B.PHOTO_CATEGORY, B.BRANCHCODE, B.HO_CATEGORY, B.COMPANY,
-            '                          LASTNAME, FIRSTNAME, MIDDLENAME, SUFFIX
-            '                        ORDER BY 
-            '                          FULLNAME; "
 
             Dim mysql As String = $"SELECT 
                                     A.BIOMETRIC_NO, 
@@ -2374,7 +2318,7 @@ Public Class frmReport
                                         ELSE '' 
                                     END AS FULLNAME 
                                 FROM PAYROLL_ALLOWANCES A 
-                                INNER JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_NO {str} 
+                                INNER JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_NO
                                 LEFT JOIN PAYROLL_CITY_BRANCH C 
                                     ON C.BRANCHCODE = B.BRANCHCODE 
                                 WHERE B.EMP_STATUS = 'ACTIVE' {category} 
