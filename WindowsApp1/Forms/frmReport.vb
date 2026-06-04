@@ -2258,12 +2258,11 @@ Public Class frmReport
 
     End Sub
 
-    Public Sub LoadListOfAllowance(category As String)
+    Public Sub LoadListOfAllowance()
 
         Rpt_PI.LocalReport.DataSources.Clear()
-        Dim PAYDATE_start As DateTime = Allow_Paydate_Combo.Text
-        Dim PAYDATE_end As New DateTime(PAYDATE_start.Year, PAYDATE_start.Month, System.DateTime.DaysInMonth(PAYDATE_start.Year, PAYDATE_start.Month))
         Dim FULLNAME As String = Nothing
+        Dim category As String = Nothing
 
         Try
 
@@ -2276,6 +2275,7 @@ Public Class frmReport
                 .Columns.Add("AMOUNT")
                 .Columns.Add("BRANCH")
                 .Columns.Add("POSITION")
+                .Columns.Add("CATEGORY")
             End With
 
             If Allow_Company_CB.SelectedIndex = 0 Then
@@ -2300,37 +2300,88 @@ Public Class frmReport
                 str = ""
             End If
 
+            If Allow_Category_CB.SelectedIndex = -1 Then
+                category = ""
+            Else
+                category = $" AND UPPER(A.CATEGORY) Like UPPER('%{Allow_Category_CB.Text}%') "
+            End If
+
+            'Dim mysql As String = $"SELECT 
+            '                          A.BIO_NO,
+            '                          SUM(A.AMOUNT) AS TOTAL_AMOUNT,
+            '                          A.CATEGORY,
+            '                          C.BRANCHNAME,
+            '                          B.PHOTO_CATEGORY,
+            '                          B.BRANCHCODE AS BRANCH_CODE,
+            '                          B.HO_CATEGORY,
+            '                          B.COMPANY, 
+            '                          B.EMP_POSITION,
+            '                          LASTNAME || ', ' || FIRSTNAME || 
+            '                            CASE 
+            '                              WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
+            '                              ELSE '' 
+            '                            END || 
+            '                            CASE 
+            '                              WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX 
+            '                              ELSE '' 
+            '                            END AS FULLNAME
+            '                        FROM 
+            '                          PAYROLL_ALLOWANCES A
+            '                        INNER JOIN 
+            '                          TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIO_NO {str} 
+            '                        LEFT JOIN 
+            '                          PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
+            '                        WHERE 
+            '                          EMP_STATUS = 'ACTIVE' {category}
+            '                        GROUP BY 
+            '                          A.BIO_NO, C.BRANCHNAME, B.PHOTO_CATEGORY, B.BRANCHCODE, B.HO_CATEGORY, B.COMPANY,
+            '                          LASTNAME, FIRSTNAME, MIDDLENAME, SUFFIX
+            '                        ORDER BY 
+            '                          FULLNAME; "
+
             Dim mysql As String = $"SELECT 
-                                      A.BIO_NO,
-                                      SUM(A.AMOUNT) AS TOTAL_AMOUNT,
-                                      A.CATEGORY,
-                                      C.BRANCHNAME,
-                                      B.PHOTO_CATEGORY,
-                                      B.BRANCHCODE AS BRANCH_CODE,
-                                      B.HO_CATEGORY,
-                                      B.COMPANY,
-                                      LASTNAME || ', ' || FIRSTNAME || 
+                                    A.BIOMETRIC_NO, 
+
+                                    SUM(
                                         CASE 
-                                          WHEN MIDDLENAME IS NOT NULL AND MIDDLENAME <> '' THEN ' ' || LEFT(MIDDLENAME, 1) || '.' 
-                                          ELSE '' 
-                                        END || 
-                                        CASE 
-                                          WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX 
-                                          ELSE '' 
-                                        END AS FULLNAME
-                                    FROM 
-                                      PAYROLL_ALLOWANCES A
-                                    INNER JOIN 
-                                      TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIO_NO {str} 
-                                    LEFT JOIN 
-                                      PAYROLL_CITY_BRANCH C ON C.BRANCHCODE = B.BRANCHCODE
-                                    WHERE 
-                                      EMP_STATUS = 'ACTIVE' 
-                                    GROUP BY 
-                                      A.BIO_NO, C.BRANCHNAME, B.PHOTO_CATEGORY, B.BRANCHCODE, B.HO_CATEGORY, B.COMPANY,
-                                      LASTNAME, FIRSTNAME, MIDDLENAME, SUFFIX
-                                    ORDER BY 
-                                      FULLNAME; "
+                                            WHEN TRIM(UPPER(A.SCHEDULE)) = 'EVERY PAYROLL' 
+                                                THEN COALESCE(A.AMOUNT, 0) * 2
+
+                                            WHEN TRIM(UPPER(A.SCHEDULE)) IN ('OPEN PAYROLL', 'CLOSE PAYROLL') 
+                                                THEN COALESCE(A.AMOUNT, 0)
+
+                                            ELSE COALESCE(A.AMOUNT, 0)
+                                        END
+                                    ) AS TOTAL_AMOUNT,
+
+                                    A.CATEGORY, 
+                                    C.BRANCHNAME, 
+                                    B.PHOTO_CATEGORY, 
+                                    B.BRANCHCODE AS BRANCH_CODE, 
+                                    B.HO_CATEGORY, 
+                                    B.COMPANY, 
+                                    B.EMP_POSITION,
+
+                                    B.LASTNAME || ', ' || B.FIRSTNAME || 
+                                    CASE 
+                                        WHEN B.MIDDLENAME IS NOT NULL AND B.MIDDLENAME <> '' 
+                                        THEN ' ' || LEFT(B.MIDDLENAME, 1) || '.' 
+                                        ELSE '' 
+                                    END ||
+                                    CASE 
+                                        WHEN B.SUFFIX IS NOT NULL AND B.SUFFIX <> '' 
+                                        THEN ' ' || B.SUFFIX 
+                                        ELSE '' 
+                                    END AS FULLNAME 
+                                FROM PAYROLL_ALLOWANCES A 
+                                INNER JOIN TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIOMETRIC_NO {str} 
+                                LEFT JOIN PAYROLL_CITY_BRANCH C 
+                                    ON C.BRANCHCODE = B.BRANCHCODE 
+                                WHERE B.EMP_STATUS = 'ACTIVE' {category} 
+                                GROUP BY 
+                                    A.BIOMETRIC_NO, A.CATEGORY, C.BRANCHNAME, B.PHOTO_CATEGORY, B.BRANCHCODE,
+                                    B.HO_CATEGORY, B.COMPANY, B.EMP_POSITION, LASTNAME, FIRSTNAME, MIDDLENAME, SUFFIX
+                                ORDER BY FULLNAME;"
 
             TestingScript_String(mysql)
             Using ds As DataSet = LoadSQL(mysql, "PAYROLL_ALLOWANCES")
@@ -2344,6 +2395,12 @@ Public Class frmReport
                             FULLNAME = IIf(IsDBNull(.Item("FULLNAME")), "", .Item("FULLNAME"))
                             'Dim bioNo As Integer = CInt(.Item("BIO_NO"))
                             Dim AMOUNT As String = FormatNumber(.Item("TOTAL_AMOUNT"))
+                            Dim TYPE As String = .Item("CATEGORY")
+                            Dim POSITION As String = .Item("EMP_POSITION")
+
+                            If FULLNAME.Contains("ZULIETA") Then
+                                Console.WriteLine("ASD")
+                            End If
 
                             '===================================== BRANCHES ===============================
                             Dim BRANCH_CODE As String = ""
@@ -2378,7 +2435,7 @@ Public Class frmReport
                                 BRANCH_CODE = COMPANY_CATEGORY
                             End If
 
-                            dt_PI.Rows.Add(FULLNAME, AMOUNT, AMOUNT, BRANCH_CODE)
+                            dt_PI.Rows.Add(FULLNAME, AMOUNT, BRANCH_CODE, POSITION, TYPE)
 
                             frmMainForm.AppProgressBar.Value += 1
                         End With
@@ -2389,7 +2446,7 @@ Public Class frmReport
             End Using
 
             Dim DATASOURCE As New Microsoft.Reporting.WinForms.ReportDataSource("DataSet1", dt_PI)
-            Dim FORMNAME As String = $"LIST OF {category} - {Allow_Paydate_Combo.Text}"
+            Dim FORMNAME As String = $"LIST OF ALLOWANCE - {Allow_Paydate_Combo.Text}"
 
             Dim paramList As New List(Of Microsoft.Reporting.WinForms.ReportParameter) From {
                     New Microsoft.Reporting.WinForms.ReportParameter("paramFormName", FORMNAME)
@@ -3216,6 +3273,6 @@ Public Class frmReport
     End Sub
 
     Private Sub btnListOfAllowance_Click(sender As Object, e As EventArgs) Handles btnListOfAllowance.Click
-
+        LoadListOfAllowance()
     End Sub
 End Class

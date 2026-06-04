@@ -3847,7 +3847,7 @@ Partial Public Class reports
         
         Private columnPOSITION As Global.System.Data.DataColumn
         
-        Private columnTYPE As Global.System.Data.DataColumn
+        Private columnCATEGORY As Global.System.Data.DataColumn
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
@@ -3918,9 +3918,9 @@ Partial Public Class reports
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
-        Public ReadOnly Property TYPEColumn() As Global.System.Data.DataColumn
+        Public ReadOnly Property CATEGORYColumn() As Global.System.Data.DataColumn
             Get
-                Return Me.columnTYPE
+                Return Me.columnCATEGORY
             End Get
         End Property
         
@@ -3961,9 +3961,9 @@ Partial Public Class reports
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
-        Public Overloads Function AddPerformanceIncentivesRow(ByVal NAME As String, ByVal AMOUNT As Decimal, ByVal BRANCH As String, ByVal POSITION As String, ByVal TYPE As String) As PerformanceIncentivesRow
+        Public Overloads Function AddPerformanceIncentivesRow(ByVal NAME As String, ByVal AMOUNT As Decimal, ByVal BRANCH As String, ByVal POSITION As String, ByVal CATEGORY As String) As PerformanceIncentivesRow
             Dim rowPerformanceIncentivesRow As PerformanceIncentivesRow = CType(Me.NewRow,PerformanceIncentivesRow)
-            Dim columnValuesArray() As Object = New Object() {NAME, AMOUNT, BRANCH, POSITION, TYPE}
+            Dim columnValuesArray() As Object = New Object() {NAME, AMOUNT, BRANCH, POSITION, CATEGORY}
             rowPerformanceIncentivesRow.ItemArray = columnValuesArray
             Me.Rows.Add(rowPerformanceIncentivesRow)
             Return rowPerformanceIncentivesRow
@@ -3990,7 +3990,7 @@ Partial Public Class reports
             Me.columnAMOUNT = MyBase.Columns("AMOUNT")
             Me.columnBRANCH = MyBase.Columns("BRANCH")
             Me.columnPOSITION = MyBase.Columns("POSITION")
-            Me.columnTYPE = MyBase.Columns("TYPE")
+            Me.columnCATEGORY = MyBase.Columns("CATEGORY")
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -4004,8 +4004,8 @@ Partial Public Class reports
             MyBase.Columns.Add(Me.columnBRANCH)
             Me.columnPOSITION = New Global.System.Data.DataColumn("POSITION", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnPOSITION)
-            Me.columnTYPE = New Global.System.Data.DataColumn("TYPE", GetType(String), Nothing, Global.System.Data.MappingType.Element)
-            MyBase.Columns.Add(Me.columnTYPE)
+            Me.columnCATEGORY = New Global.System.Data.DataColumn("CATEGORY", GetType(String), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnCATEGORY)
         End Sub
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
@@ -10166,16 +10166,16 @@ Partial Public Class reports
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
-        Public Property TYPE() As String
+        Public Property CATEGORY() As String
             Get
                 Try 
-                    Return CType(Me(Me.tablePerformanceIncentives.TYPEColumn),String)
+                    Return CType(Me(Me.tablePerformanceIncentives.CATEGORYColumn),String)
                 Catch e As Global.System.InvalidCastException
-                    Throw New Global.System.Data.StrongTypingException("The value for column 'TYPE' in table 'PerformanceIncentives' is DBNull.", e)
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'CATEGORY' in table 'PerformanceIncentives' is DBNull.", e)
                 End Try
             End Get
             Set
-                Me(Me.tablePerformanceIncentives.TYPEColumn) = value
+                Me(Me.tablePerformanceIncentives.CATEGORYColumn) = value
             End Set
         End Property
         
@@ -10229,14 +10229,14 @@ Partial Public Class reports
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
-        Public Function IsTYPENull() As Boolean
-            Return Me.IsNull(Me.tablePerformanceIncentives.TYPEColumn)
+        Public Function IsCATEGORYNull() As Boolean
+            Return Me.IsNull(Me.tablePerformanceIncentives.CATEGORYColumn)
         End Function
         
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")>  _
-        Public Sub SetTYPENull()
-            Me(Me.tablePerformanceIncentives.TYPEColumn) = Global.System.Convert.DBNull
+        Public Sub SetCATEGORYNull()
+            Me(Me.tablePerformanceIncentives.CATEGORYColumn) = Global.System.Convert.DBNull
         End Sub
     End Class
     
