@@ -500,7 +500,7 @@ Public Class frmReport
                                         EXTRACT(MONTH FROM C.PAYDATE)"
 
             TestingScript_String(mysqll)
-            Using dss As DataSet = LoadSQL(mysqll, "RECORDED_ALLOW_DEDUC")
+            Using dss As DataSet = LoadSQL(mysqll, "RECORDED_ALLOW_DEDUC")s
                 If dss.Tables(0).Rows.Count > 0 Then
                     progressBarStart(dss.Tables(0).Rows.Count)
                     For Each dr In dss.Tables(0).Rows
