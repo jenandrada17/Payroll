@@ -29,6 +29,8 @@ Public Class frmReport
         'PopulatePaydate_Yearly(SILYear_Combo, "RECORDED_ALLOW_DEDUC", "PAYDATE")
         PopulatePaydate_Yearly(SILYear_Combo, "PAYROLL_SIL", "PAYDATE")
         PopulatePaydate_Monthly(cbDateEffectivity, "HR_LETTER", "EFFECTIVE_DATE", " WHERE ACTION_NAME = 'REASSIGNMENT'")
+
+        cbDeductionStatus.SelectedIndex = 1
     End Sub
 
     Private Sub SearchSBU_BTN_Click(sender As Object, e As EventArgs) Handles SearchSBU_BTN.Click
@@ -396,6 +398,7 @@ Public Class frmReport
 
     Friend Sub LoadDeduction_Company(conditional As String)
         Rpt_Deduction.LocalReport.DataSources.Clear()
+        Dim emp_status As String = IIf(cbDeductionStatus.SelectedIndex = 0, "", "B.EMP_STATUS = 'ACTIVE'")
 
         Try
 
@@ -435,7 +438,8 @@ Public Class frmReport
                                     INNER JOIN 
                                         TBL_EMPLOYEE B ON B.BIOMETRICID = A.BIO_NO
                                     WHERE 
-                                         {conditional}
+                                        {emp_status}
+                                        {conditional}
                                     GROUP BY  
                                         COMPANY, PHOTO_CATEGORY, HO_CATEGORY"
 
@@ -485,6 +489,7 @@ Public Class frmReport
                                     LEFT JOIN 
                                         RECORDED_ALLOW_DEDUC C ON C.BIO_NO = A.BIO_NO AND C.R_DEDUC_ID = A.ID  
                                     WHERE
+                                        {emp_status}
                                         {conditional} AND C.PAYDATE <> '12/15/2021'
                                     GROUP BY 
                                         EXTRACT(MONTH FROM C.PAYDATE),
@@ -504,7 +509,7 @@ Public Class frmReport
                             Dim amount As Double = .Item("TOTAL_AMOUNT")
                             Dim monthName As String = New DateTime(.Item("YEARR"), .Item("MONTHH"), 1).ToString("Y")
                             company = .Item("COMPANY")
-                            ho_category = .Item("HO_CATEGORY")
+                            ho_category = IIf(IsDBNull(.Item("HO_CATEGORY")), "", .Item("HO_CATEGORY"))
 
                             If company = "PHOTO" Then
                                 company_category = .Item("PHOTO_CATEGORY")
@@ -2949,13 +2954,13 @@ Public Class frmReport
     End Sub
 
     Private Sub CompanyDeduct_CB_SelectedIndexChanged(sender As Object, e As EventArgs) Handles CompanyDeduct_CB.SelectedIndexChanged
-        Dim conditional As String = $"COMPANY = '{CompanyDeduct_CB.Text}'"
+        Dim conditional As String = $"AND COMPANY = '{CompanyDeduct_CB.Text}'"
         If CompanyDeduct_CB.Text = "PTU REALTY" Then
-            conditional = "HO_CATEGORY IN ('Construction' , 'Leasing Admin Office')"
+            conditional = "AND HO_CATEGORY IN ('Construction' , 'Leasing Admin Office')"
         ElseIf CompanyDeduct_CB.Text = "PGC HEAD OFFICE" Then
-            conditional = "HO_CATEGORY = 'PGC Head Office'"
+            conditional = "AND HO_CATEGORY = 'PGC Head Office'"
         ElseIf CompanyDeduct_CB.Text = "ALL" Then
-            conditional = "COMPANY IS NOT NULL"
+            conditional = "AND COMPANY IS NOT NULL"
         End If
 
         LoadDeduction_Company(conditional)
@@ -2971,6 +2976,7 @@ Public Class frmReport
 
     Friend Sub LoadDEDUCTION_ViewList()
         Rpt_Deduction.LocalReport.DataSources.Clear()
+        Dim conditions As String = IIf(cbDeductionStatus.SelectedIndex = 0, "", "WHERE B.EMP_STATUS = 'ACTIVE'")
 
         Try
             Dim dt As New DataTable()
@@ -3034,11 +3040,13 @@ Public Class frmReport
                                          GROUP BY DEDUCT_ID) D ON D.DEDUCT_ID = A.ID
                                     LEFT JOIN 
 	                                    PAYROLL_CITY_BRANCH E ON E.BRANCHCODE = B.BRANCHCODE 
+                                    {conditions}
                                     GROUP BY 
                                         A.BIO_NO, FULLNAME, BRANCHNAME, COMPANY, A.ID, A.CATEGORY, A.DATEE, CREDIT,
                                         PRINCIPAL, A.AMORT, BALANCE, A.STATUS, C.C_SUM, D.P_TOTAL
                                     ORDER BY FULLNAME ASC;"
 
+            TestingScript_String(mysqll)
             Using dss As DataSet = LoadSQL(mysqll, "TBL_EMPLOYEE")
                 If dss.Tables(0).Rows.Count > 0 Then
                     progressBarStart(dss.Tables(0).Rows.Count)

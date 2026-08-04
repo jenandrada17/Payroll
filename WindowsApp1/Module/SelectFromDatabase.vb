@@ -1618,6 +1618,8 @@ Module SelectFromDatabase
                                     CASE WHEN SUFFIX IS NOT NULL AND SUFFIX <> '' THEN ' ' || SUFFIX ELSE ''
                                     END) LIKE UPPER('%{name}%') OR "
                 mysql &= $"{vbCr}UPPER(COMPANY) LIKE UPPER('%{name}%') OR "
+
+                'RESTRICTED ACCESS - NOT SHOWING EMPLOYEE IF COMPANY IS NOT IN USER ACCESSIBILITY
                 mysql &= $"{vbCr}UPPER(BRANCHCODE) LIKE UPPER('%{name}%'))  
                         AND NOT EXISTS (
                                    SELECT 1
@@ -4214,6 +4216,7 @@ Module SelectFromDatabase
         End If
 
         TestingScript_String(mysql)
+        Console.WriteLine(mysql)
         Using ds As DataSet = LoadSQL(mysql, "TBL_EMPLOYEE")
             If ds.Tables(0).Rows.Count > 0 Then
                 For Each dr In ds.Tables(0).Rows
